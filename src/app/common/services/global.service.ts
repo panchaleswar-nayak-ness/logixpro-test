@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Api } from 'datatables.net-bs5';
 import { ToastrService } from 'ngx-toastr';
 import { BrChooseReportTypeComponent } from 'src/app/dialogs/br-choose-report-type/br-choose-report-type.component';
@@ -12,6 +14,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class GlobalService {
+  safeUrl: SafeUrl;
   userData:any;
   sqlLimits : any = {
     numerics: {
@@ -46,7 +49,8 @@ export class GlobalService {
   };
   changesConfirmation = false;
 
-  constructor(private Api:ApiFuntions,private toast:ToastrService,private dialog: MatDialog,private authService:AuthService) {
+  constructor(private Api:ApiFuntions,private toast:ToastrService,private dialog: MatDialog, private httpClient : HttpClient
+    ,private authService:AuthService,private sanitizer: DomSanitizer) {
     this.userData=this.authService.userData();
   }
 
@@ -243,11 +247,19 @@ export class GlobalService {
                     positionClass: 'toast-bottom-right',
                     timeOut: 2000,
                   });  
-                  
-                  // ${environment.apiUrl.replace("/api","")}
-                   document.getElementById('CurrentDownload')?.setAttribute("href",`${res.data.fileName.indexOf('txt') > -1 ? 'data:text/plain;charset=UTF-8,':res.data.fileName.indexOf('pdf') > -1 ? 'data:pdf;charset=UTF-8,':''}${environment.apiUrl.replace("/api","")}/pdf/`+res.data.fileName);
+                   debugger
+                  if(res.data.fileName.indexOf("txt") > -1){
+                    this.downloadTextFile(res.data.fileName, res.data.fileContent);
+                  }else{
+                document.getElementById('CurrentDownload')?.setAttribute("href",`${environment.apiUrl.replace("/api","")}/pdf/`+res.data.fileName);
                   document.getElementById('CurrentDownload')?.setAttribute("download",res.data.fileName);
-                   document.getElementById('CurrentDownload')?.click();
+                    document.getElementById('CurrentDownload')?.click();
+                  }
+                    
+                 
+                   
+
+               
                    
                      
                   
@@ -258,6 +270,24 @@ export class GlobalService {
                   });
               }
         })
+      }
+
+       downloadTextFile(filename, textContent) {
+        // Create a Blob from the text content
+        const blob = new Blob([textContent], { type: 'text/plain' });
+      
+        // Create a temporary link element
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        
+        // Set the download attribute and the file name
+        link.download = filename;
+      
+        // Simulate a click to trigger the download
+        link.click();
+      
+        // Clean up the URL object
+        URL.revokeObjectURL(link.href);
       }
       
 
