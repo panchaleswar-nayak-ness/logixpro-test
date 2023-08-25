@@ -317,6 +317,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       .OrderStatusData(this.payload)
       .subscribe(
         (res: any) => {
+          
           // this.getTransactionModelIndex();
           this.detailDataInventoryMap = res.data?.orderStatus;
           this.getOrderForTote = res.data?.orderNo;

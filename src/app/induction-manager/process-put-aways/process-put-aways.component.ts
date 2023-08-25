@@ -39,7 +39,6 @@ export interface PeriodicElement {
   styleUrls: ['./process-put-aways.component.scss'],
 })
 export class ProcessPutAwaysComponent implements OnInit {
-  @ViewChild('start_location') start_location: ElementRef;
   ELEMENT_DATA = [{ position: 0, cells: '', toteid: '', locked: '' }];
   displayedColumns: string[] = ['positions', 'cells', 'toteid', 'save'];
   dataSource: any;
@@ -138,7 +137,9 @@ export class ProcessPutAwaysComponent implements OnInit {
     private _liveAnnouncer: LiveAnnouncer,
   ) { }
   ngAfterViewInit() {
-    this.start_location.nativeElement.focus();
+    setTimeout(() => {
+      this.inputVal.nativeElement.focus();
+      }, 2000);
     this.imPreferences=this.global.getImPreferences();
   }
 
@@ -195,6 +196,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   @HostListener('click')
   documentClick(event: MouseEvent) {
+    this.global.changesConfirmation = true;
     this.ifAllowed = true
   }
   public OSFieldFilterNames() { 
@@ -991,6 +993,31 @@ export class ProcessPutAwaysComponent implements OnInit {
           }); 
           dialogRef.afterClosed().subscribe((result) => {
             if (result == 'NO') {
+              if(this.inputType !='Serial Number' && this.processPutAwayIndex.imPreference.createItemMaster ){
+                this.ifAllowed=false;
+    
+                const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+                  height: 'auto',
+                  width: '50vw',
+                  autoFocus: '__non_existing_element__',
+          disableClose:true,
+                  data: {
+                    message: "The input code provided was not recognized.  Click OK to add the item to inventory or cancel to return.",
+                    heading: ''
+                  },
+                });
+          
+                dialogRef.afterClosed().subscribe((result) => {
+                  if(result){
+                    this.ifAllowed=false;
+                    window.open(`/#/InductionManager/Admin/InventoryMaster?addItemNumber=${this.inputValue}`, '_self');
+    
+                  }
+                  
+                })
+    
+                return
+              }
               if (this.inputType == 'Any') {
                 this.toastr.error('The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.', 'Error!', {
                   positionClass: 'toast-bottom-right',
@@ -1003,9 +1030,40 @@ export class ProcessPutAwaysComponent implements OnInit {
                 });
               }
             } else if (result == "Task Completed") {
+              
+              this.inputValue='';
               this.fillToteTable(this.batchId2);
+          
             } else if (result == "New Batch") {
+              
+              this.inputValue='';
+
               this.clearFormAndTable();
+            }
+            else if(result.category == "isReel"){
+              const d: Date = new Date();
+              const now: string = `${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}${d.getHours()}${d.getMinutes()}${d.getSeconds()}-IM`;
+                    let hvObj =  {
+                        order: now,
+                        uf1: '',
+                        uf2: '',
+                        lot: 0,
+                        warehouse: '',
+                        expdate: '',
+                        notes: ''
+                      }
+                    let itemObj =  {
+                        number: result.item.itemNumber,
+                        numReels: 1,
+                        totalParts: 0,
+                        description: result.item.description,
+                        whseRequired: result.item.warehouseSensitive
+                        
+                      }
+                      
+                      this.ReelTransactionsDialogue(hvObj,itemObj,this.fieldNames)
+                      
+              
             }
           });
 
@@ -1083,9 +1141,12 @@ export class ProcessPutAwaysComponent implements OnInit {
             });
           }
         } else if (result == "Task Completed") {
+          debugger
           this.inputValue='';
           this.fillToteTable(this.batchId2);
         } else if (result == "New Batch") {
+          debugger
+          this.inputValue='';
           this.selectedIndex = 0;
           // this.clearFormAndTable();
         }

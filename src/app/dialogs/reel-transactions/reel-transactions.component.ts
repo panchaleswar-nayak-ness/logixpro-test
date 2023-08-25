@@ -32,9 +32,15 @@ fieldNames:any;
   partsNotAssigned:any;
   noOfReels:any
   AutoGenerateReel:any =false
-  HiddenInputValue
-  generatedReelQty
+  HiddenInputValue:any
+  generatedReelQty:any
   imPreferences:any;
+  createdReel:any
+  checkSNS:any
+  generatedReelQtyIndex:any
+  fromReelCheck:any
+  reel:any
+  oldIncluded:any
 
   @ViewChild('noOfReeltemp') noOfReeltemp: ElementRef
   @ViewChild('serialTemp') serialTemp: ElementRef
@@ -74,8 +80,7 @@ fieldNames:any;
     this.partsNotAssigned = total - counted
   }
 
-reel
-oldIncluded
+
   ReelDetailDialogue() {
     
     const dialogRef = this.dialog.open(ReelDetailComponent, {
@@ -215,16 +220,16 @@ oldIncluded
         else{
           let numUnassigned =this.partsNotAssigned;
           if (numUnassigned != 0){
-              this.dialog1(numUnassigned)
+              this.ConfirmNoOFReel(numUnassigned)
           }  else{
-            this.test();
+            this.CreateReels();
           }
                 
         }
       }
     })
   }
-dialog1(numUnassigned){
+ConfirmNoOFReel(numUnassigned){
   const dialogRef = this.dialog.open(AlertConfirmationComponent, {
     height: 'auto',
     width: '560px',
@@ -238,20 +243,19 @@ dialog1(numUnassigned){
     if(!result){
       return
     }else{
-    this.test();
+    this.CreateReels();
     }
 
   
   })
 }
-createdReel
-checkSNS
+
 validateInputs() {
   this.serialInputs.forEach(input => {
     input.nativeElement.focus(); // This will force Angular to validate each input
   });
 }
-test(){
+CreateReels(){
   let reels:any = [];
                 let rc$;
                 let SNs:any[] = [];
@@ -456,8 +460,7 @@ var res:any =   this.global.Print(`FileName:PrintReelLabels|OTID:${this.createdR
     )
   }
 
-  generatedReelQtyIndex
-  fromReelCheck
+  
   OpenDetails(index,e){
     // debugger
 this.generatedReelQty = e.reel_part_quantity

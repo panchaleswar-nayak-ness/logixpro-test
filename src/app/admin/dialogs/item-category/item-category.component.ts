@@ -16,7 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   templateUrl: './item-category.component.html',
   styleUrls: ['./item-category.component.scss']
 })
-export class ItemCategoryComponent implements OnInit {
+export class  ItemCategoryComponent implements OnInit {
   @ViewChildren('category_category', { read: ElementRef }) category_category: QueryList<ElementRef>;
   public category_list: any;
   public userData: any;
@@ -82,20 +82,20 @@ export class ItemCategoryComponent implements OnInit {
   saveCategory(category : any, oldCat : any, subCategory : any, oldSubCat : any) {
     
     let cond = true;
-  //   if(category){ 
-  //   this.category_list.forEach(element => {
-  //     if(element.category?.toLowerCase() == category?.toLowerCase() && element.subCategory?.toLowerCase() == subCategory?.toLowerCase() ) {
-  //       cond = false;
-  //      this.toastr.error('Category cannot be saved. Category matches another entry. Save any pending changes before attempting to save this entry.', 'Error!', {
-  //        positionClass: 'toast-bottom-right',
-  //        timeOut: 2000
-  //      });
+    if(category){ 
+    this.category_list.forEach(element => {
+      if(element.category?.toLowerCase() == category?.toLowerCase() && element.subCategory?.toLowerCase() == subCategory?.toLowerCase() ) {
+        cond = false;
+       this.toastr.error('Category cannot be saved. Category matches another entry. Save any pending changes before attempting to save this entry.', 'Error!', {
+         positionClass: 'toast-bottom-right',
+         timeOut: 2000
+       });
    
-  //     }  
-  //     return; 
-  //   });
+      }  
+      return; 
+    });
 
-  // } 
+  } 
   if(cond){
   
     if(category || subCategory){

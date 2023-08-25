@@ -49,6 +49,7 @@ export class InventoryMasterComponent implements OnInit {
   public invMasterLocations: any;
   public isDialogOpen = false;
   public fieldNames:any;
+  public isParameter=false;
   public paginationData: {
     total: 0,
     position: 0,
@@ -226,9 +227,16 @@ export class InventoryMasterComponent implements OnInit {
 
   public setVal: boolean = false;
   ngOnInit(): void {
+    const paramName = this.route.snapshot.queryParamMap.get('itemNumber');
+
     // window.addEventListener('scroll', this.scrollEvent, true);
     this.userData = this.authService.userData();
     this.initialzeIMFeilds();
+    if(!paramName){
+      this.prevPage(true);
+    }
+    // this.prevPage(true);
+
     this.getInventory();
     this.OSFieldFilterNames();
     this.route
@@ -564,7 +572,9 @@ export class InventoryMasterComponent implements OnInit {
     }
 
   }
-  prevPage() {
+
+
+  prevPage(init?) {
     
     // const dialogRef = this.dialog.open(this.propertiesChanged, {
     //   width: '450px',
@@ -572,11 +582,11 @@ export class InventoryMasterComponent implements OnInit {
       
     // });
     this.searchValue = this.currentPageItemNo;
-    if (this.paginationData.position >= 1 && this.paginationData.position <= this.paginationData.total) {
+    if ((this.paginationData?.position >= 1 && this.paginationData?.position <= this.paginationData?.total) || init) {
       let paylaod = {
         "itemNumber": this.currentPageItemNo,
         "filter": "1=1",
-        "firstItem": 1,
+        "firstItem":init?0:1,
         "username": this.userData.userName,
         "wsid": this.userData.wsid,
       }

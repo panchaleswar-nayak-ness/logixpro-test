@@ -24,12 +24,12 @@ export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
   public locationZonesData: any = [];
   dataSource = new MatTableDataSource<any>(ELEMENT_DATA);
   displayedColumns: string[] = [
-    'Carousel',
-    'Zone',
-    'Location Name',
-    'Total Lines',
-    'Open',
-    'Completed',
+    'carousel',
+    'zone',
+    'locationName',
+    'totalLines',
+    'open',
+    'completed',
   ];
   selection = new SelectionModel<any>(true, []);
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -58,7 +58,7 @@ export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
 
   @Input() set locationZonesEvent(event: any) {
     if (event) {
-      this.dataSource = event;
+      this.dataSource = new MatTableDataSource(event);
       this.locationZonesData = event;
     }
   }

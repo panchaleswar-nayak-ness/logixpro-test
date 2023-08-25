@@ -5,17 +5,22 @@ import { FlowrackReplenishmentComponent } from './flowrack-replenishment.compone
 import { AuthGuardGuard } from '../guard/auth-guard.guard';
 import { FrFlowrackReplenishmentComponent } from './fr-flowrack-replenishment/fr-flowrack-replenishment.component';
 
-const routes: Routes = [{ path: '', component: FlowrackReplenishmentComponent },
-{
-  path: 'Preferences',
-  component: FrPreferencesComponent,
-  canActivate: [AuthGuardGuard],
-},
-{
-  path: 'Flowrack',
-  component: FrFlowrackReplenishmentComponent,
-  canActivate: [AuthGuardGuard],
-},
+const routes: Routes = [
+  { 
+    path: '', 
+    component: FlowrackReplenishmentComponent,
+    canActivate: [AuthGuardGuard]
+  },
+  {
+    path: 'Preferences',
+    component: FrPreferencesComponent,
+    canActivate: [AuthGuardGuard],
+  },
+  {
+    path: 'Flowrack',
+    component: FrFlowrackReplenishmentComponent,
+    canActivate: [AuthGuardGuard],
+  },
 ]
 
 @NgModule({

@@ -339,12 +339,12 @@ export class CmShippingTransactionComponent implements OnInit {
   }
 
   selectRow(row: any) {
-    this.tableData.forEach(element => {
+    this.tableData.data.forEach(element => {
       if(row != element){
         element.selected = false;
       }
     });
-    const selectedRow = this.tableData.find((x: any) => x === row);
+    const selectedRow = this.tableData.data.find((x: any) => x === row);
     if (selectedRow) {
       selectedRow.selected = !selectedRow.selected;
     }

@@ -180,9 +180,9 @@
                                     <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef>Action
                                     </th>
                                     <td class="pe-0" mat-cell *matCellDef="let element; let i = index" width="10%">
-                                        <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete" [disabled]="BasicReportModel.ChooseReport == ''"
+                                        <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Remove" [disabled]="BasicReportModel.ChooseReport == ''"
                                         (click)="Remove(i)"
-                                            matTooltip="Delete" matTooltipPosition="above" color="warn">
+                                            matTooltip="Remove" matTooltipPosition="above" color="warn">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </td>

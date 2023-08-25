@@ -44,6 +44,7 @@ export class GlobalService {
         }
     }
   };
+  changesConfirmation = false;
 
   constructor(private Api:ApiFuntions,private toast:ToastrService,private dialog: MatDialog,private authService:AuthService) {
     this.userData=this.authService.userData();

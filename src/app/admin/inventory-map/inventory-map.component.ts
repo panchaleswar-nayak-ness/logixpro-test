@@ -230,6 +230,7 @@ export class InventoryMapComponent implements OnInit {
         colDef: this.router.getCurrentNavigation()?.extras?.state?.['colDef'],
         colHeader: this.router.getCurrentNavigation()?.extras?.state?.['colHeader']
       }
+      this.isSearchColumn = true;
     }
     else {
       

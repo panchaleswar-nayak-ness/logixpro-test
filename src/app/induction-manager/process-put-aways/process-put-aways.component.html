@@ -293,7 +293,7 @@
                   <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
                     
                     <mat-label>Input Value</mat-label>
-                    <input  #start_location  (keydown.shift.enter)="$event.preventDefault()" 
+                    <input (keydown.shift.enter)="$event.preventDefault()" 
                     #inputVal matInput type="text" [(ngModel)]="inputValue"
                     [disabled]="!dataSource2?.filteredData || !dataSource2?.filteredData.length"
                     (keypress)="openST($event)" >

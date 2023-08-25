@@ -7,6 +7,7 @@ import { mergeMap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -109,7 +110,7 @@ export class SideNavComponent implements OnInit {
   ];
 
   flowrackReplenishmentMenus: any = [
-    { icon: 'arrow_back', title: 'Flowrack Replenish', route: '/dashboard', class: 'back-class' , permission: 'FlowRack Replenish'},
+    { icon: 'arrow_back', title: 'Flowrack Replenish', route: '/FlowrackReplenishment', class: 'back-class' , permission: 'FlowRack Replenish'},
     { icon: 'schema', title: 'Flowrack Replenishment', route: '/FlowrackReplenishment/Flowrack' ,permission:'FlowRack Replenish'},
     { icon: 'tune', title: 'Preferences ', route: '/FlowrackReplenishment/Preferences' ,permission:'FlowRack Replenish'},
   ];
@@ -123,6 +124,7 @@ export class SideNavComponent implements OnInit {
               private authService: AuthService,
               private sharedService:SharedService, 
               private currentTabDataService:CurrentTabDataService,
+              private global:GlobalService,
               private Api:ApiFuntions) { 
                 this.sharedService?.sideMenuHideObserver?.subscribe(menu => {
                   this.isMenuHide = menu;   
@@ -336,6 +338,9 @@ redirect(){
   }
 
   loadMenus(menu: any) {
+    if(this.global.changesConfirmation){
+      return
+    }
         this.sharedService.updateLoggedInUser(this.userData.userName,this.userData.wsid,menu.route);
     if (!menu) {
       menu = {route : '/dashboard'};      

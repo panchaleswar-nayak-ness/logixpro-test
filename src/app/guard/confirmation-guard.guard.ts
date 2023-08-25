@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanDeactivate, Router, RouterStateSnapshot, Url
 import { Observable } from 'rxjs';
 import { ConfirmationDialogComponent } from '../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { GlobalService } from '../common/services/global.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { MatDialog } from '@angular/material/dialog';
 export class ConfirmationGuard implements CanDeactivate<any> {
   constructor( 
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private global:GlobalService,
     // public quarantineDialogRef: MatDialogRef<'quarantineAction'>,
   ) { }
   async  canDeactivate(component: any,route:ActivatedRouteSnapshot):Promise<boolean> { 
@@ -34,8 +36,10 @@ export class ConfirmationGuard implements CanDeactivate<any> {
   
       dialogRef.afterClosed().subscribe((result) => {
         if (result === 'Yes') {
+          this.global.changesConfirmation = false;
           resolve(true);
         } else {
+          this.global.changesConfirmation = true;
           resolve(false);
         }
       });

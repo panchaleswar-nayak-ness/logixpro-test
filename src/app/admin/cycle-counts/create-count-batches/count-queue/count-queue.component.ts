@@ -113,7 +113,7 @@ export class CCBCountQueueComponent implements OnInit {
     };
     this.Api.GetCCQueue(payload).subscribe(
       (res: any) => {
-        if (res.isExecuted && res.data.invCycleCount.length > 0) {
+        if (res.isExecuted && res.data.invCycleCount.length >= 0) {
           this.dataSource = new MatTableDataSource(res.data.invCycleCount);
           this.customPagination.total = res.data?.recordsFiltered;
           this.noData=true;

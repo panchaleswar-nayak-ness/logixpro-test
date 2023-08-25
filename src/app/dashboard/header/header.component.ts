@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions'; 
 import { MatDialog } from '@angular/material/dialog';
 import { DPrinterSetupComponent } from 'src/app/dialogs/d-printer-setup/d-printer-setup.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-header',
@@ -36,7 +37,8 @@ statusTab;
     private toastr: ToastrService,
     private sharedService: SharedService,
     private titleService: Title,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private global:GlobalService,
     ) {
       let width=0;
       let height =0;
@@ -53,18 +55,21 @@ statusTab;
       
    this.isConfigUser=  this.authService.isConfigUser()
     router.events.subscribe((val: any) => {
-      this.breadcrumbList = [];
-      if(this.authService.isConfigUser()){
-        // this.breadcrumbList.push({
-        //   name:'',
-        //   value:'/globalconfig/dashboard'
-        // })
-      }else{
-        this.breadcrumbList.push({
-          name:'LogixPro',
-          menu: '',
-          value:'/dashboard'
-        })
+      if(!this.global.changesConfirmation){
+
+        this.breadcrumbList = [];
+        if(this.authService.isConfigUser()){
+          // this.breadcrumbList.push({
+            //   name:'',
+            //   value:'/globalconfig/dashboard'
+            // })
+          }else{
+            this.breadcrumbList.push({
+              name:'LogixPro',
+              menu: '',
+              value:'/dashboard'
+            })
+          }
       }
   
       if(val instanceof NavigationEnd){
@@ -76,7 +81,7 @@ statusTab;
         let withoutParam = res.split('?')[0]
         let splittedArray = withoutParam.split('/'); 
           if(splittedArray[0]==='FlowrackReplenishment'){
-            splittedArray[0]='FlowrackReplenish'
+            splittedArray[0]='FlowrackReplenishment'
           }
         splittedArray.forEach((element,i) => {
          if(element==='createCountBatches' || element==='cycleCounts'){
@@ -192,6 +197,7 @@ statusTab;
   }
 
   breadCrumbClick(menu,index:any = null) { 
+    debugger
      if(index != null){ 
       var Url = "";  
       for (let i = 0; i <= index; i++) {

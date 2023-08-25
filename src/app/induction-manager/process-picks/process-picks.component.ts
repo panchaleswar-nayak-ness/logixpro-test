@@ -82,7 +82,7 @@ export class ProcessPicksComponent implements OnInit {
     this.getAllZones();
     this.getAllOrders();
     this.isBatchIdFocus = true;
-    this.imPreferences = this.global.getImPreferences();
+    // this.imPreferences = this.global.getImPreferences();
 
   }
   async printExisting(type) {
@@ -116,11 +116,8 @@ export class ProcessPicksComponent implements OnInit {
         }
       }
       if (type === 'PrintPickLabel') {
-
-
         if (this.imPreferences.printDirectly) {
         await  this.global.Print(`FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, 'lbl')
-
         } else {
           window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
@@ -407,6 +404,7 @@ async  printPickLabels(row) {
 
   @HostListener('click')
   documentClick(event: MouseEvent) {
+    this.global.changesConfirmation = true;
     this.ifAllowed = true
   }
 
@@ -424,6 +422,7 @@ async  printPickLabels(row) {
   }
 
   pickToteSetupIndex() {
+    return new Promise((resolve, reject) => {
     let paylaod = {
       "username": this.userData.userName,
       "wsid": this.userData.wsid,
@@ -446,8 +445,12 @@ async  printPickLabels(row) {
         startWith(""),
         map(value => (typeof value === "string" ? value : value)),
         map(name => (name ? this._filter(name) : this.pickBatchesList.slice()))
+        
       );
+      resolve(res?.data?.imPreference);
     });
+
+  });
   }
 
   createToteSetupTable(pickBatchQuantity: any) {
@@ -847,7 +850,7 @@ async  printPickLabels(row) {
 
   }
 
-  previewWindow(url): Promise<boolean> {
+ async previewWindow(url): Promise<boolean> {
     return new Promise((resolve, reject) => {
       let newWindow: Window | null = null;
       let windowCheckInterval: any = null;
@@ -904,7 +907,7 @@ async  printPickLabels(row) {
       disableClose: true,
     });
   }
-  onPrcessBatch() {
+ async onPrcessBatch() {
     if (!this.batchID) {
       this.toastr.error('Please enter in a batch id to proccess.', 'Error!', {
         positionClass: 'toast-bottom-right',
@@ -913,6 +916,7 @@ async  printPickLabels(row) {
       this.dialog.closeAll();
       return
     }
+
     let Positions: any[] = [];
     let ToteIDs: any[] = [];
     let OrderNumbers: any[] = [];
@@ -938,7 +942,10 @@ async  printPickLabels(row) {
       this.dialog.closeAll();
       return
     }
-    if (this.useInZonePickScreen) {
+   const isPref=await this.pickToteSetupIndex();
+    this.imPreferences=isPref
+    if ( isPref && this.useInZonePickScreen) {
+      
       let paylaod = {
         Positions,
         ToteIDs,
@@ -1007,8 +1014,10 @@ async  printPickLabels(row) {
 
           // AUTO PRINT PREFERENCES CONDITIONS ON PICK TOTE SETUP 
 
-
-          this.ProcessPickPrintPref(Positions, ToteIDs, OrderNumbers, batId)
+          if(isPref){
+            this.ProcessPickPrintPref(Positions, ToteIDs, OrderNumbers, batId)
+          }
+        
 
 
         }
@@ -1028,7 +1037,7 @@ async  printPickLabels(row) {
 
   async ProcessPickPrintPref(Positions, ToteIDs, OrderNumbers, batchId) {
     try {
-      this.imPreferences = this.global.getImPreferences();
+      // this.imPreferences = this.global.getImPreferences();
       let isWindowClosed: any = null;
       let isAnyWindowOpen = false;
       if (this.imPreferences.autoPrintPickToteLabels) {
@@ -1076,7 +1085,7 @@ async  printPickLabels(row) {
 
     } catch (error) {
 
-      this.alertPopUpBlocked();
+      // this.alertPopUpBlocked();
       console.error('Error occurred:', error);
     }
   }
@@ -1084,10 +1093,10 @@ async  printPickLabels(row) {
   async InZoneProcessPrintPref(batchId) {
     try {
 
-      this.imPreferences = this.global.getImPreferences();
+      // this.imPreferences = this.global.getImPreferences();
       let isWindowClosed: any = null;
       let isAnyWindowOpen = false;
-      debugger
+      
       if (this.imPreferences.autoPrintPickToteLabels) {
 
         if (this.imPreferences.printDirectly) {
