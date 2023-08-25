@@ -237,6 +237,7 @@ export class InventoryMapComponent implements OnInit {
       if (this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP])
       {
           this.ApplySavedItem();
+          this.isSearchColumn = true;
       }
     }
  

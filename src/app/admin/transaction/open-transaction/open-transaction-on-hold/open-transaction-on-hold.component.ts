@@ -627,7 +627,10 @@ this.router.navigate([]).then((result) => {
           this.customPagination.total = res.data?.recordsFiltered;
           this.dataSource.sort = this.sort;
           if (isInit && this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS])
+          {
             this.ApplySavedItem();
+            this.orderSelectionSearch = false;
+          }
           else
             this.RecordSavedItem();
         },
