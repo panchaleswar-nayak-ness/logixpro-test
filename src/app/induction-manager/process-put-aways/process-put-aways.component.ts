@@ -153,7 +153,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       setTimeout(() => {
       this.inputVal.nativeElement.focus();
         
-      }, 100);
+      }, 2000);
    
       this.autocompleteSearchColumnItem2();
     }else if(newIndex===0){
