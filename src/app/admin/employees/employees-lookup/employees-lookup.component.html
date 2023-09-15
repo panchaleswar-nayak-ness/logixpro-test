@@ -4,8 +4,14 @@
       <span class="material-symbols-outlined icon-search">
         search
       </span>
-      <input type="search" matTooltip="You must select an employee from the list to continue" matTooltipPosition="above" maxlength="50" placeholder="Search Employee" aria-label="Search Employee" matInput
-        (keyup)="applyFilter($event)" [(ngModel)]="searchVal">
+      <input type="search" matTooltip="You must select an employee from the list to continue" matTooltipPosition="above" maxlength="50" placeholder="Search Employee By Last Name" aria-label="Search Employee" matInput
+        (keyup)="applyFilter($event)" [(ngModel)]="searchVal" #autoFocusField>
+        <button matSuffix *ngIf="searchVal" class="clear-btn" (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+
+        <!-- <button *ngIf="searchVal" matSuffix mat-icon-button aria-label="Clear" (click)="searchVal=''">
+          <mat-icon>close</mat-icon>
+        </button> -->
+
         <!-- <button *ngIf="searchVal" matSuffix mat-icon-button aria-label="Clear" (click)="clear()">
           <mat-icon>close</mat-icon>
         </button> -->
@@ -20,9 +26,9 @@
   </div>
 </div>
 <div class="card br-14 table-responsive my-3">
-  <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding" style="height: 860px">
+  <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding scroll-fix" appearance="compact" pointerEventsMethod="scrollbar"  style="height: 860px">
     <table style="width: 100%;" mat-table [dataSource]="employee_data_source" matSort
-      (matSortChange)="announceSortChange($event)" class="g-card-table employee-location-table action-clickable-table">
+      (matSortChange)="announceSortChange($event)" class="g-card-table table1 employee-location-table custom-action-clickable-table">
       <ng-container matColumnDef="id">
         <th width="25%" mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
         <td width="25%" mat-cell *matCellDef="let element"> {{element?.id}} </td>
@@ -57,7 +63,7 @@
         white-space: nowrap;" mat-cell *matCellDef="let element"> {{element.username}} </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" style="background-color: #F9F9FF;"></tr>
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" [attr.colspan]="displayedColumns.length">
           No data matching the filter.

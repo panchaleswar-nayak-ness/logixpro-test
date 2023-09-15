@@ -2,10 +2,10 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { IConnectionString } from 'src/app/interface/transaction';
-import { GlobalconfigService } from '../../globalconfig.service';
+import { IConnectionString } from 'src/app/interface/transaction'; 
 import { Output, EventEmitter } from '@angular/core';
 import { GlobalConfigSetSqlComponent } from 'src/app/admin/dialogs/global-config-set-sql/global-config-set-sql.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-connection-strings',
@@ -19,7 +19,7 @@ export class ConnectionStringsComponent implements OnInit {
   isDuplicateAllow=false;
   duplicateIndex;
   constructor(
-    private globalConfService: GlobalconfigService,
+    private Api: ApiFuntions,
     private toastr: ToastrService,
     private dialog: MatDialog,
   ) {}
@@ -137,8 +137,8 @@ export class ConnectionStringsComponent implements OnInit {
       DatabaseName: item.databaseName,
       ServerName: item.serverName,
     };
-    this.globalConfService
-      .get(payload, '/GlobalConfig/ConnectionSave')
+    this.Api
+      .ConnectionSave(payload)
       .subscribe(
         (res: any) => {
           if (res.isExecuted) {
@@ -194,8 +194,8 @@ export class ConnectionStringsComponent implements OnInit {
     let payload = {
       ConnectionName: item.connectionName,
     };
-    this.globalConfService
-      .get(payload, '/GlobalConfig/ConnectionUserPassword')
+    this.Api
+      .ConnectionUserPassword(payload)
       .subscribe(
         (res: any) => {
    
@@ -206,6 +206,7 @@ export class ConnectionStringsComponent implements OnInit {
               height: 'auto',
               width: '600px',
               autoFocus: '__non_existing_element__',
+      disableClose:true,
               data: {
                 mode: 'sql-auth-string',
                 userName: res.data?.user,

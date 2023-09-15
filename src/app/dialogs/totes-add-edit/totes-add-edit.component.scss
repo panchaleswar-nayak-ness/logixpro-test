@@ -28,3 +28,12 @@
     -webkit-hyphens: auto;
     hyphens: auto;
 }
+table{
+    tr{
+        &:first-child{
+            td{
+                padding-top: 10px;
+            }
+        }
+    }
+}

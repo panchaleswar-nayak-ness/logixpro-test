@@ -4,3 +4,13 @@
     overflow: hidden !important;
     text-overflow: ellipsis;
   }
+
+  table{
+    th {
+        white-space: nowrap;
+        padding-right: 12px;
+      }
+      td{
+        border:0
+      }
+}

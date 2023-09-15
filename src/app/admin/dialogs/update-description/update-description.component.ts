@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -7,7 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./update-description.component.scss']
 })
 export class UpdateDescriptionComponent implements OnInit {
-
+  @ViewChild('des_focus') des_focus: ElementRef;
   // updateItemNumber : boolean = true;
   addItem : boolean = true;
 
@@ -19,5 +19,8 @@ export class UpdateDescriptionComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+  ngAfterViewInit() {
+    this.des_focus.nativeElement.focus();
   }
 }

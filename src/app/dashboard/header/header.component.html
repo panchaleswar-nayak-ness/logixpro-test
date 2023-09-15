@@ -2,7 +2,7 @@
   <button mat-icon-button aria-label="icon-button with menu icon" (click)="toggleSidebar()">
     <mat-icon>menu</mat-icon>
   </button>
-  <div class="breadcrumb-menu ps-3" style="height: 30px;">
+  <div class="breadcrumb-menu ps-1 ps-xl-3" style="height: 30px;">
 
 
     <nav aria-label="breadcrumb" class="breadcrumb m-0">
@@ -77,14 +77,21 @@
       <li>
         <button mat-button [matMenuTriggerFor]="menu" class="user">
           <mat-icon class="material-symbols-outlined me-1">account_circle</mat-icon>
-          {{userData.userName}}
+          <ng-container *ngIf="!ConfigUserLogin">
+            {{userData.userName}}
+          </ng-container>
+          <ng-container *ngIf="ConfigUserLogin">
+            {{configUser.userName}}
+          </ng-container>
           <mat-icon class="user-image-icon" style="height: 18px ;">keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #menu="matMenu" class="custom mat-menu-panel " xPosition="before">
-          <!-- <button mat-menu-item>
-            <mat-icon>assignment_ind</mat-icon>
-            Profile
-          </button> -->
+          <button mat-menu-item (click)="openPrintSetting()">
+            <mat-icon class="material-symbols-outlined">
+              print
+            </mat-icon>
+            Printer Settings
+          </button>
           <button mat-menu-item (click)="logout()">
             <mat-icon>exit_to_app</mat-icon>
             Logout

@@ -1,9 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit , Inject, Output, EventEmitter} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ProcessPutAwayService } from 'src/app/induction-manager/processPutAway.service';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
 import { ToastrService } from 'ngx-toastr';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 export interface PeriodicElement {
   zone: string
@@ -20,6 +20,7 @@ export interface PeriodicElement {
   styleUrls: ['./select-zones.component.scss']
 })
 export class SelectZonesComponent implements OnInit {
+  isNewBatch=false;
   ELEMENT_DATA = [{ zone: '',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
   displayedColumns: string[] = ['select', 'zone', 'locationdesc', 'locationtype', 'stagingzone' , 'flag'];
   dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
@@ -193,21 +194,26 @@ export class SelectZonesComponent implements OnInit {
       username: this.username,
       wsid: this.wsid
     };
-    this.service.create(payLoad, '/Induction/AvailableZone').subscribe(
+    this.Api.AvailableZone(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
-        this.zoneDetails = res.data.zoneDetails;
-        // console.log('TEST');
+        this.zoneDetails = res.data.zoneDetails; 
         // console.log(this.alreadyAssignedZones);
         for(var i=0;i<this.zoneDetails.length;i++)
         {
+          
           var isSelected = false;
           
           if(this.alreadyAssignedZones!=null && this.alreadyAssignedZones.length>0)
           {
             let obj = this.alreadyAssignedZones.find((o) => {
               if (o.zone == this.zoneDetails[i].zone) {
-                isSelected = true;
+                if(this.isNewBatch){
+                  isSelected=false
+                }else{
+                  isSelected = true;
+                }
+             
                 return true; // stop searching
               }
               else 
@@ -218,7 +224,14 @@ export class SelectZonesComponent implements OnInit {
   
           }
           this.ELEMENT_DATA.push(
-            { zone: this.zoneDetails[i].zone,locationName:this.zoneDetails[i].locationName,locationType:this.zoneDetails[i].locationType,stagingZone:this.zoneDetails[i].stagingZone,selected:isSelected,available: this.zoneDetails[i].available}
+            { 
+              zone: this.zoneDetails[i].zone,
+              locationName:this.zoneDetails[i].locationName,
+              locationType:this.zoneDetails[i].locationType,
+              stagingZone:this.zoneDetails[i].stagingZone,
+              selected:this.zoneDetails[i].selected,
+              available: this.zoneDetails[i].available
+            }
             );
         }
         this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
@@ -235,12 +248,13 @@ export class SelectZonesComponent implements OnInit {
 
   }
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private service: ProcessPutAwayService , private toastr: ToastrService , public dialogRef: MatDialogRef<SelectZonesComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private Api: ApiFuntions , private toastr: ToastrService , public dialogRef: MatDialogRef<SelectZonesComponent>) { }
 
   ngOnInit(): void {
     this.ELEMENT_DATA.length=0;
     this.batchID = this.data.batchId;
     this.username= this.data.userId;
+    this.isNewBatch=this.data.isNewBatch;
     this.wsid=this.data.wsid;
     this.alreadyAssignedZones = this.data.assignedZones;
     this.getAvailableZones();

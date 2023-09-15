@@ -25,9 +25,9 @@
                     (openedChange)="actionDialog($event)">
                     <mat-option value="clearTote">Clear Tote</mat-option>
                     <mat-option value="fullTote">Full Tote</mat-option>
-                    <mat-option value="printToteLabel">Print Tote Label</mat-option>
-                    <mat-option value="printItemLabel">Print Item Label</mat-option>
-                    <mat-option value="printToteContent">Print Tote Contents</mat-option>
+                    <mat-option value="printToteLabel" (click)="print('tote-label')">Print Tote Label</mat-option>
+                    <mat-option value="printItemLabel" (click)="print('item-label')">Print Item Label</mat-option>
+                    <mat-option value="printToteContent" (click)="print('tote-contents')">Print Tote Contents</mat-option>
                     <!-- <mat-option value="back">Back</mat-option> -->
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
@@ -81,7 +81,7 @@
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline">
                     <mat-label>Number Of Copies</mat-label>
-                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="25">
+                    <input #field_focus (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="25">
                 </mat-form-field>
             </div>
         </div>
@@ -151,7 +151,7 @@
                         <td mat-cell *matCellDef="let element; let i = index;">
                             <div class="d-flex justify-content-end">
                                 <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
-                                    class="circle-icon-o" appearance="outline">
+                                [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline">
                                     <mat-icon>more_horiz</mat-icon>
                                 </button>
 
@@ -160,7 +160,7 @@
                                             class="text-tertiary-900">Clear</b></button>
                                     <button mat-menu-item (click)="clear('clearAndDeallocate',element)">Clear &
                                         Deallocate</button>
-                                    <button mat-menu-item>Print Tote Label</button>
+                                    <button mat-menu-item (click)="printToteLabel()">Print Tote Label</button>
                                 </mat-menu>
                             </div>
                         </td>
@@ -174,14 +174,14 @@
                     </tr>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)">
                     </tr>
                 </table>
             </ng-scrollbar>
         </div>
         <div class="table-pagination d-flex justify-content-start"
             *ngIf=" displayedColumns && dataSource">
-            <mat-paginator [length]="this.customPagination.total" [pageSize]="10" [pageSizeOptions]="[10, 20, 100]"
+            <mat-paginator [length]="this.customPagination.total" [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"
                 (page)="handlePageEvent($event)"></mat-paginator>
 
 

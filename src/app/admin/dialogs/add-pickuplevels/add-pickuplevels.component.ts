@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import labels from '../../../labels/labels.json';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { EmployeeService } from 'src/app/employee.service';
+import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from '../../../../app/init/auth.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-add-pickuplevels',
@@ -12,7 +12,7 @@ import { AuthService } from '../../../../app/init/auth.service';
   styleUrls: ['./add-pickuplevels.component.scss']
 })
 export class AddPickuplevelsComponent implements OnInit {
-
+  @ViewChild('start_shelf') start_shelf: ElementRef;
   form_heading: string = 'Add Pick Level';
   form_btn_label: string = 'Add';
   levelId: any;
@@ -24,13 +24,12 @@ export class AddPickuplevelsComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
-    private employeeService: EmployeeService,
+    private employeeService: ApiFuntions,
     private toastr: ToastrService,
     private authService: AuthService
   ) { }
 
-  ngOnInit(): void {
-    //console.log(this.data);
+  ngOnInit(): void { 
 
     this.userData = this.authService.userData();
     if (this.data.mode === 'edit') {
@@ -93,6 +92,9 @@ export class AddPickuplevelsComponent implements OnInit {
       });
     }
 
+  }
+  ngAfterViewInit() {
+    this.start_shelf.nativeElement.focus();
   }
 
 }

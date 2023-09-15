@@ -5,9 +5,9 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { TransactionService } from '../../transaction/transaction.service';
+import { ToastrService } from 'ngx-toastr'; 
 import labels from '../../../labels/labels.json';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-delete-confirmation-manual-transaction',
@@ -22,7 +22,7 @@ export class DeleteConfirmationManualTransactionComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private transactionService: TransactionService,
+    private Api: ApiFuntions,
     public dialogRef: MatDialogRef<any>
   ) {
     this.heading = data.heading;
@@ -46,8 +46,8 @@ export class DeleteConfirmationManualTransactionComponent implements OnInit {
           username: this.data.userName,
           wsid: this.data.wsid,
         };
-        this.transactionService
-          .get(payload, '/Admin/TransactionDelete')
+        this.Api
+          .TransactionDelete(payload)
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
@@ -74,8 +74,8 @@ export class DeleteConfirmationManualTransactionComponent implements OnInit {
           wsid: this.data.wsid,
         };
  
-        this.transactionService
-          .get(payload, '/Admin/TransactionForOrderDelete')
+        this.Api
+          .TransactionForOrderDelete(payload)
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
@@ -101,7 +101,7 @@ export class DeleteConfirmationManualTransactionComponent implements OnInit {
           username: this.data.userName,
           wsid: this.data.wsid,
         };
-        this.transactionService.get(payload, '/Admin/TransactionDelete').subscribe(
+        this.Api.TransactionDelete(payload).subscribe(
           (res: any) => {
             if (res && res.isExecuted) {
               this.toastr.success(labels.alert.delete, 'Success!', {

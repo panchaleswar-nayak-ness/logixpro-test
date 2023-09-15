@@ -13,7 +13,7 @@
             <div class="col-xl-12">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Location</mat-label>
-                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="location" [matAutocomplete]="item" (ngModelChange)="this.searchByItem.next($event)">
+                    <input #loc_focus (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [(ngModel)]="location" [matAutocomplete]="item" (ngModelChange)="this.searchByItem.next($event)">
 
                     <mat-autocomplete class="card custom-scroll" #item="matAutocomplete">
             

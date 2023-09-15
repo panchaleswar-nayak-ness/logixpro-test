@@ -1,5 +1,11 @@
 table {
     width: 100%;
+    th{
+      white-space: nowrap;
+    }
+    td{
+      border:0
+    }
   }
 //   td.mat-cell{
 //     border-bottom-style: none;

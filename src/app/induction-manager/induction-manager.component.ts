@@ -3,6 +3,7 @@ import { Router,RoutesRecognized } from '@angular/router';
 import { filter, pairwise } from 'rxjs/operators';
 import { AuthService } from '../init/auth.service';
 import { SharedService } from '../services/shared.service';
+import { ApiFuntions } from '../services/ApiFuntions';
 
 @Component({
   selector: 'app-induction-manager',
@@ -11,10 +12,12 @@ import { SharedService } from '../services/shared.service';
 })
 export class InductionManagerComponent implements OnInit {
   tab_hover_color:string = '#cf9bff3d';
+  fieldNames:any;
   constructor(
     private router: Router, 
     private sharedService: SharedService,
     private authService: AuthService,
+    private Api:ApiFuntions
     ) { 
     router.events
       .pipe(
@@ -22,23 +25,43 @@ export class InductionManagerComponent implements OnInit {
         pairwise()
       )
       .subscribe((events: RoutesRecognized[]) => {
-        
+        const prevRoute= events[0].urlAfterRedirects.split('/');
+        const nextRoute = events[1].urlAfterRedirects.split('/');
+
     
-        if (events[0].urlAfterRedirects == '/InductionManager/Admin' || events[1].urlAfterRedirects == '/InductionManager/Admin') {
+    
+        // debugger;
+        // if (events[0].urlAfterRedirects == '/InductionManager' || events[1].urlAfterRedirects == '/InductionManager') {
+    
+        if (prevRoute[1]== 'InductionManager' || nextRoute[1] == 'InductionManager') {
           localStorage.setItem('routeFromInduction','true')
-            // this.showReprocess=false;
-            // this.showReprocessed=false;
          
         }else{
           localStorage.setItem('routeFromInduction','false')
-          // this.showReprocess=true;
-          // this.showReprocessed=true;
         }
+       
       });
   }
 
   ngOnInit(): void {
+    this.userData = this.authService.userData();
+    this.pickToteSetupIndex();
+   
   }
+
+  public userData: any;
+  useInZonePickScreen:boolean = false;
+  pickToteSetupIndex() {
+    let paylaod = {
+      "username": this.userData.userName,
+      "wsid": this.userData.wsid,
+    }
+    this.Api.PickToteSetupIndex(paylaod).subscribe(res => {
+      this.useInZonePickScreen = res.data.imPreference.useInZonePickScreen;
+      this.sharedService.BroadCastInductionMenuUpdate(this.useInZonePickScreen);
+    });
+  }
+
   updateMenu(menu = '', route = ''){
     // if (menu == 'transaction-admin') {
     //   this.sharedService.updateInductionAdminMenu(menu);

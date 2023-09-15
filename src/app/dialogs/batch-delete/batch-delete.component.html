@@ -6,8 +6,12 @@
     </button>
 </div>
 <div class="pb-3">
-    <mat-radio-group color="primary" [(ngModel)]="clearBatchTote" >
-        <mat-radio-button class="me-3" value="clearBatch" [disabled]="deleteAllDisable">Clear Batch</mat-radio-button>
+    <mat-radio-group color="primary" [(ngModel)]="clearBatchTote" *ngIf="!this.enableClear">
+        <mat-radio-button class="me-3" value="clearBatch" [disabled]="deleteAllDisable">Clear Batch </mat-radio-button>
+        <mat-radio-button value="clearTote"  >Clear Tote</mat-radio-button>
+    </mat-radio-group>
+    <mat-radio-group color="primary" [(ngModel)]="clearBatchTote" *ngIf="this.enableClear">
+        <mat-radio-button class="me-3" value="clearBatch" >Clear Batch </mat-radio-button>
         <mat-radio-button value="clearTote"  >Clear Tote</mat-radio-button>
     </mat-radio-group>
 </div>
@@ -16,7 +20,7 @@
     <div class="col-xl-4">
         <mat-form-field class="custom-form-field w-100" appearance="outline">
             <mat-label>Batch ID</mat-label>
-            <input [(ngModel)]="batchID" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [value]="batchID" disabled>
+            <input  #batchId_focus [(ngModel)]="batchID" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" [value]="batchID" disabled>
         </mat-form-field>
     </div>
     <div class="col-xl-4">
@@ -33,19 +37,27 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-xl-4 mb-2">
-        <button mat-flat-button color="warn" class=" btn-lg w-100" (click)="batchTotesDelete(true)">
-           Clear/De-Allocate
+    <div [ngClass]="{
+        'col-xl-4': !deleteAllDisable,
+        'col-xl-6': deleteAllDisable,
+        'mb-2': true
+      }">
+        <button mat-flat-button color="warn" class="btn-lg w-100" (click)="batchTotesDelete(true)">
+          Clear/De-Allocate
         </button>
-    </div>
-    <div class="col-xl-4 mb-2">
-        <button mat-flat-button color="warn" class=" btn-lg w-100"  (click)="batchTotesDelete(true)">
-            Clear Only
+      </div>
+      <div [ngClass]="{
+        'col-xl-4': !deleteAllDisable,
+        'col-xl-6': deleteAllDisable,
+        'mb-2': true
+      }">
+        <button mat-flat-button color="warn" class="btn-lg w-100" (click)="batchTotesDelete(true)">
+          Clear Only
         </button>
-    </div>
-    <div class="col-xl-4 mb-2">
-        <button mat-flat-button color="warn" class="btn-lg w-100" [disabled]="deleteAllDisable" (click)="allBatchDelete()">
-            Delete All Batches 
+      </div>
+      <div class="col-xl-4 mb-2">
+        <button mat-flat-button color="warn" class="btn-lg w-100" [disabled]="deleteAllDisable" [hidden]="deleteBtnHide" (click)="allBatchDelete()">
+          Delete All Batches
         </button>
-    </div>
+      </div>
 </div>

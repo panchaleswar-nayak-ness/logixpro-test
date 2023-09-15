@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { disableDebugTools } from '@angular/platform-browser';
 
-import { IEmployee,EmployeeObject,AdminEmployeeLookupResponse,AccessGroupObject } from '../Iemployee';
-import { EmployeeService } from '../employee.service';
+import { IEmployee,EmployeeObject,AdminEmployeeLookupResponse,AccessGroupObject } from '../Iemployee'; 
 import { Router,NavigationEnd  } from '@angular/router';
+import { ApiFuntions } from '../services/ApiFuntions';
+import { SharedService } from '../services/shared.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -14,7 +15,14 @@ export class DashboardComponent implements OnInit {
   emp: IEmployee;
   empRes:EmployeeObject;
   breadcrumbList: any = [];
-  constructor(public employeeService: EmployeeService,  public router: Router,) {
+  isMenuHide:any=false;
+  constructor(public employeeService: ApiFuntions,  public router: Router,private sharedService:SharedService) {
+    this.sharedService.SideBarMenu.subscribe(menu => {
+      this.sideBarOpen = menu;   
+    });
+    this.sharedService.sideMenuHideObserver.subscribe(menu => {
+      this.isMenuHide = menu;   
+    });
 
   //   router.events.subscribe((val: any) => {
   //     this.breadcrumbList = [];
@@ -31,8 +39,7 @@ export class DashboardComponent implements OnInit {
   //         value:'/'+element
   //       })
   //     });
-  //     }
-  //     // console.log(val instanceof NavigationEnd) 
+  //     } 
   // });
    }
 
@@ -79,6 +86,11 @@ export class DashboardComponent implements OnInit {
     // this.updateAccessGroup()
   }
 
+  ngOnDestroy(){
+    console.log('sideMenuHideObserver');
+    this.sharedService.sideMenuHideObserver.unsubscribe();
+  }
+
 
   
 
@@ -97,7 +109,7 @@ export class DashboardComponent implements OnInit {
     };
 this.employeeService.getEmployeeData(this.emp)
 .subscribe((response: EmployeeObject) => {
-  // console.log(response);
+  
 
 
   });
@@ -116,7 +128,7 @@ this.employeeService.getEmployeeData(this.emp)
     };
 this.employeeService.employeeStatsInfo(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-  // console.log(response);
+  
 
 
   });
@@ -137,7 +149,7 @@ this.employeeService.employeeStatsInfo(this.emp)
 
 // this.employeeService.saveAdminEmployee(this.emp)
 // .subscribe((response: AdminEmployeeLookupResponse) => {
-// console.log(response);
+
 
 
 // });
@@ -152,7 +164,7 @@ deleteEmployee() {
   };
 this.employeeService.deleteAdminEmployee(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-// console.log(response);
+
 
 
 });
@@ -176,7 +188,7 @@ updateEmployee() {
   };
 this.employeeService.updateAdminEmployee(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-// console.log(response);
+
 
 
 });
@@ -197,7 +209,7 @@ getControlName() {
   };
 this.employeeService.getControlName(this.emp)
 .subscribe((response: EmployeeObject) => {
-// console.log(response);
+
 
 
 });
@@ -212,7 +224,7 @@ updateControlName() {
   };
 this.employeeService.updateControlName(this.emp)
 .subscribe((response: EmployeeObject) => {
-//console.log(response);
+
 
 
 });
@@ -227,7 +239,7 @@ deleteControlName() {
   };
 this.employeeService.deleteControlName(this.emp)
 .subscribe((response: EmployeeObject) => {
-//console.log(response);
+
 
 
 });
@@ -242,7 +254,7 @@ submitControlName() {
   };
 this.employeeService.submitControlResponse(this.emp)
 .subscribe((response: EmployeeObject) => {
-//console.log(response);
+
 
 
 });
@@ -261,7 +273,7 @@ updateEmployeeZone() {
   };
 this.employeeService.updateEmployeeZone(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-//console.log(response);
+
 
 
 });
@@ -278,7 +290,7 @@ deleteEmployeeZone() {
   };
 this.employeeService.deleteEmployeeZone(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-//console.log(response);
+
 
 
 });
@@ -300,14 +312,10 @@ this.employeeService.deleteEmployeeZone(this.emp)
 
 
 
-getZones() {
-  this.emp = {
-  "userName": "1234",
-  "wsid": "TESTWID"
-  };
-this.employeeService.getZones(this.emp)
+getZones() { 
+this.employeeService.getZones()
 .subscribe((response: AdminEmployeeLookupResponse) => {
-//console.log(response);
+
 
 
 });
@@ -325,7 +333,7 @@ insertAllAccess() {
   };
 this.employeeService.insertAllAccess(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-//console.log(response);
+
 
 
 });
@@ -342,7 +350,7 @@ insertEmployeeLocation() {
   };
 this.employeeService.insertEmployeeLocation(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-//console.log(response);
+
 
 
 });
@@ -359,7 +367,7 @@ updateEmployeeLocation() {
   };
 this.employeeService.updateEmployeeLocation(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-//console.log(response);
+
 
 
 });
@@ -374,7 +382,7 @@ deleteEmployeeLocation() {
   };
 this.employeeService.deleteEmployeeLocation(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-//console.log(response);
+
 
 
 });
@@ -392,7 +400,7 @@ insertPickLevels() {
   };
 this.employeeService.insertPickLevels(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-//console.log(response);
+
 
 
 });
@@ -410,7 +418,7 @@ updatePickLevels() {
   };
 this.employeeService.updatePickLevels(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-//console.log(response);
+
 
 
 });
@@ -427,7 +435,7 @@ deletePickLevels() {
   };
 this.employeeService.deletePickLevels(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
-//console.log(response);
+
 
 
 });
@@ -445,7 +453,7 @@ updateAccessGroup() {
   };
 this.employeeService.updateAccessGroup(this.emp)
 .subscribe((response: AccessGroupObject) => {
-//console.log(response);
+
 
 
 });
@@ -462,7 +470,7 @@ insertGroup() {
   };
 this.employeeService.updateAccessGroup(this.emp)
 .subscribe((response: AccessGroupObject) => {
-//console.log(response);
+
 
 
 });

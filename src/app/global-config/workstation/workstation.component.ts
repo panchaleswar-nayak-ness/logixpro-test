@@ -2,13 +2,13 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { SharedService } from 'src/app/services/shared.service';
-import { GlobalconfigService } from '../globalconfig.service';
+import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../labels/labels.json';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 export interface PeriodicElement {
   position: string;
@@ -80,7 +80,7 @@ export class WorkstationComponent implements OnInit {
 
   constructor(
     private sharedService: SharedService,
-    private globalConfService: GlobalconfigService,
+    private api: ApiFuntions,
     private toastr: ToastrService,
     private dialog: MatDialog
   ) {}
@@ -133,7 +133,7 @@ export class WorkstationComponent implements OnInit {
       DisplayName: 'Consolidation Manager',
       AppName: 'Consolidation Manager',
     };
-    this.globalConfService.get(payload, '/GlobalConfig/Menu').subscribe(
+    this.api.GlobalMenu(payload).subscribe(
       (res: any) => {
         res && res.data;
         if (res && res.data) {
@@ -152,7 +152,7 @@ export class WorkstationComponent implements OnInit {
     );
   }
   async getAppLicense() {
-    this.globalConfService.get(null, '/GlobalConfig/AppLicense').subscribe(
+    this.api.AppLicense().subscribe(
       (res: any) => {
         if (res && res.data) {
           this.licAppNames = res.data;
@@ -185,10 +185,9 @@ export class WorkstationComponent implements OnInit {
     // get can access
 
     let payload = {
-      WSID: wsid,
+      workstationid: wsid,
     };
-    this.globalConfService
-      .get(payload, '/GlobalConfig/WorkStationAppSelect')
+    this.api.getWorkstationapp(payload)
       .subscribe(
         (res: any) => {
           if (res && res.data) {
@@ -207,10 +206,9 @@ export class WorkstationComponent implements OnInit {
   async getDefaultAppList(wsid, canAccessArr) {
     // get can access
     let payload = {
-      WSID: wsid,
+      workstationid: wsid,
     };
-    this.globalConfService
-      .get(payload, '/GlobalConfig/WorkStationDefaultAppSelect')
+    this.api.workstationdefaultapp(payload)
       .subscribe(
         (res: any) => {
           this.defaultAccessApp = res && res.data ? res.data : '';
@@ -243,7 +241,7 @@ export class WorkstationComponent implements OnInit {
 
   onChangeCheckbox(event, item) {
     let payload = {
-      WSID: this.wsid,
+      wsid: this.wsid,
       AppName: item.appName,
     };
     if (event.checked) {
@@ -254,15 +252,14 @@ export class WorkstationComponent implements OnInit {
   }
   onChangeRadio(event, item) {
     let payload = {
-      WSID: this.wsid,
+      WSID:this.wsid,
       AppName: item.appName,
     };
     this.defaultAppAdd(payload);
   }
 
   defaultAppAdd(payload) {
-    this.globalConfService
-      .get(payload, '/GlobalConfig/WorkStationDefaultAppAdd')
+    this.api.WorkStationDefaultAppAddDefault(payload)
       .subscribe(
         (res: any) => {
 
@@ -276,20 +273,17 @@ export class WorkstationComponent implements OnInit {
   }
 
   removeCanAccess(payload) {
-    this.globalConfService
-      .get(payload, '/GlobalConfig/WorkStationAppDelete')
+    this.api.WorkStationAppDelete(payload)
       .subscribe(
         (res: any) => {
-          // console.log(res);
+          ;
         },
         (error) => {}
       );
   }
 
   addCanAccess(payload) {
-    this.globalConfService
-      .get(payload, '/GlobalConfig/WorkStationAppAdd')
-      .subscribe(
+    this.api.workstationapp(payload).subscribe(
         (res: any) => {
           if (res.isExecuted) {
             this.getCanAccessList(this.wsid);
@@ -306,6 +300,7 @@ export class WorkstationComponent implements OnInit {
           height: 'auto',
           width: '480px',
           autoFocus: '__non_existing_element__',
+      disableClose:true,
           data: {
             mode: 'delete_workstation',
             wsid: this.wsid,
@@ -331,9 +326,7 @@ export class WorkstationComponent implements OnInit {
     let payload = {
       WSID: this.wsid,
     };
-    this.globalConfService
-      .get(payload, '/GlobalConfig/WorkStationDelete')
-      .subscribe(
+    this.api.WorkStationDelete(payload).subscribe(
         (res: any) => {
           if (res.isExecuted) {
             this.toastr.success(labels.alert.success, 'Success!', {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AddGroupAllowedComponent } from '../add-group-allowed/add-group-allowed.component';
 
-import { AddGroupAllowedComponent } from './add-group-allowed.component';
 
 describe('AddGroupAllowedComponent', () => {
   let component: AddGroupAllowedComponent;

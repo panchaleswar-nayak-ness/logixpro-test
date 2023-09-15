@@ -36,12 +36,16 @@
         </div>
   
         <!-- Main Section Option (Induction Manager) -->
-        <div class="col-xl-3 col-lg-6 isDivDisabled">
-          <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option">
+        <div class="col-xl-3 col-lg-6 ">
+          <div matRipple [matRippleColor]="tab_hover_color"
+           class="main-section-option"
+           (click)="updateMenu('transaction-admin', '/InductionManager/Admin/ToteTransactionManager')"
+           routerLink="/InductionManager/Admin/ToteTransactionManager"
+           >
             <a class="main-section-option-link" href="#"></a>
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
-                line_style
+                inventory_2
               </span>
             </div>
             <h4 class="main-section-title" style="font-size:22px;">Tote Transaction Manager</h4>
@@ -58,10 +62,28 @@
             <a class="main-section-option-link" href="#"></a>
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
-                linear_scale
+                ads_click
               </span>
             </div>
             <h4 class="main-section-title" style="font-size:22px;">Manual Transactions</h4>
+          </div>
+        </div>
+
+
+        <!-- Main Section Option (Induction Manager) -->
+        <div class="col-xl-3 col-lg-6">
+          <div matRipple 
+            [matRippleColor]="tab_hover_color" 
+            class="main-section-option" 
+            (click)="updateMenu('transaction-admin', '/InductionManager/Admin/ImToteManager')"
+            routerLink="/InductionManager/Admin/ImToteManager">
+            <a class="main-section-option-link" href="#"></a>
+            <div class="main-section-icon">
+              <span class="material-symbols-outlined">
+                elevator
+              </span>
+            </div>
+            <h4 class="main-section-title" style="font-size:22px;">Tote Manager</h4>
           </div>
         </div>
   
@@ -75,7 +97,7 @@
             <a class="main-section-option-link" href="#"></a>
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
-                edit_attributes
+                post_add
               </span>
             </div>
             <h4 class="main-section-title" style="font-size:22px;">Transaction Journal</h4>
@@ -83,12 +105,14 @@
         </div>
   
         <!-- Main Section Option (Order Manager) -->
-        <div class="col-xl-3 col-lg-6 isDivDisabled">
-          <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option">
-            <a class="main-section-option-link" href="#"></a>
+        <div class="col-xl-3 col-lg-6 ">
+          <div matRipple [matRippleColor]="tab_hover_color" 
+          (click)="updateMenu('transaction-admin', '/InductionManager/Admin/Reports')"
+           routerLink="Reports" class="main-section-option">
+            <a class="main-section-option-link" href="/InductionManager/Admin/Reports"></a>
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
-                manage_accounts
+                analytics
               </span>
             </div>
             <h4 class="main-section-title" style="font-size:22px;">Reports </h4>
@@ -99,7 +123,7 @@
             <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" routerLink="/InductionManager/Admin/AdminPrefrences">
               <div class="main-section-icon">
                 <span class="material-symbols-outlined">
-                  manage_accounts
+                  tune
                 </span>
               </div>
               <h4 class="main-section-title" style="font-size:22px;">Preferences </h4>

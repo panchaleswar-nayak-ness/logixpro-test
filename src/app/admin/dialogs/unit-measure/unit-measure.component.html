@@ -25,7 +25,7 @@
 
 
 
-    <ng-scrollbar style="height: 360px;">
+    <ng-scrollbar style="height: 360px;" track="all">
     <div class="card-body">
         <div class="container">
         <!-- <div class="row">
@@ -54,12 +54,12 @@
                                     <mat-form-field class="custom-form-field w-100" appearance="outline">
                                         <!-- <mat-label>Unit Of Measure</mat-label> -->
                                         <!-- (keyup)="onValueChange($event,i)" -->
-                                        <input (keydown)="enableDisableButton(i)"
+                                        <input  #unit_name [autofocus]="i === 0" (keydown)="enableDisableButton(i)"
                                         (keydown.shift.enter)="$event.preventDefault()" 
-                                        matInput type="text" name="{{unit}}" value="{{unit}}" #unitMeasure>
+                                        matInput type="text" name="{{unit}}" value="{{unit}}" #unitMeasure maxlength="50">
                                     </mat-form-field>
 
-                                    <button [disabled]="(enableButton[i]&&enableButton[i].value!=null) ? enableButton[i].value:false" mat-flat-button color="primary" class="xsm-icon-button" (click)="saveUnitMeasure(unitMeasure.value, unit)">
+                                    <button [disabled]="(enableButton[i] && enableButton[i].value!=null) ? enableButton[i].value:false" mat-flat-button color="primary" class="xsm-icon-button" (click)="saveUnitMeasure(unitMeasure.value, unit)">
                                         <mat-icon class="material-symbols-outlined">
                                             save
                                         </mat-icon>

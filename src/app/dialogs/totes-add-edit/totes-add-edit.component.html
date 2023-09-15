@@ -1,128 +1,203 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div style="width:48px"></div>
-    <h1 class="m-0" mat-dialog-title>Totes - Add, Edit, Delete and Print</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+<mat-card class="mat-elevation-z g-card mb-3" style="height: 100%;">
+  <mat-card-content>
+
+    <div *ngIf="!isIMPath" class="d-flex justify-content-between align-items-center mb-4">
+      <div style="width:48px"></div>
+      <h1 class="m-0" mat-dialog-title>Totes - Add, Edit, Delete and Print</h1>
+      <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
-    </button>
-</div>
-
-<div class="card br-14 p-3 mb-3">
-    <div class="d-flex gap-12 align-items-center">
-    <mat-form-field class="custom-form-field w-100" appearance="outline">
-        <mat-label>From Tote ID</mat-label>
-        <input matInput type="text" maxlength="255" value="0000000" disabled>
-      </mat-form-field>
-      <mat-form-field class="custom-form-field w-100" appearance="outline">
-        <mat-label>To Tote ID</mat-label>
-        <input matInput type="text" maxlength="255" value="0000000" disabled>
-      </mat-form-field>
-      <div><button disabled type="submit" mat-flat-button class="form-button-submit btn-regular" color="primary">Print Range</button></div>
+      </button>
     </div>
-</div>
 
-<!-- <mat-radio-group color="primary"> -->
+    <h2 *ngIf="isIMPath" class="card-header-title mb-3 d-flex align-items-center">
 
-<div class="mb-4" *ngIf="!data.validateTotes">
-    <b>Unmanaged Tote IDs</b>
-</div>
+      <div class="mat-icon-wrap me-1 me-lg-3">
+        <span class="material-symbols-outlined">
+          ballot
+        </span>
+      </div>
+      <span>Tote</span>
+    </h2>
 
-<div class="card br-14 table-responsive borderless px-0 mb-4" *ngIf="!data.validateTotes">
-  <ng-scrollbar class="mat-table-scrollbar" track="all" style="height:160px;">
-    <table mat-table [dataSource]="dataSource" class="">
-        
-      <ng-container matColumnDef="select">
-        <th mat-header-cell *matHeaderCellDef>
-        </th>
-        <td mat-cell *matCellDef="let row">
-          <div class="pe-2">
-            <!-- (change)="$event ? selection.toggle(row) : null"
-                        [checked]="selection.isSelected(row)" -->
-          <mat-radio-button (click)="selectTote()" 
-            color="primary">
-          </mat-radio-button>
-        </div>
-        </td>
-      </ng-container>
-        <!-- Position Column -->
-        <ng-container matColumnDef="zone">
-          <th mat-header-cell *matHeaderCellDef> Unmanaged Tote IDs </th>
-          <td mat-cell *matCellDef="let element">
-            <div class="pe-2">
-              <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <input matInput type="text" #specialFeature maxlength="255" [(ngModel)]="toteID">
-              </mat-form-field>
-            </div>
-          </td>
-        </ng-container>
-      
-        <!-- Name Column -->
-        <ng-container matColumnDef="locationdesc">
-          <th mat-header-cell *matHeaderCellDef> Cells </th>
-          <td mat-cell *matCellDef="let element">
-            <div class="pe-2">
-              <mat-form-field class="custom-form-field w-100" appearance="outline">
-                <input matInput oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" type="text" #specialFeature maxlength="255" [(ngModel)]="cellID">
-              </mat-form-field>
-            </div>
-          </td>
-        </ng-container>
-        
-      
-      
-      
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-            (click)="selection.toggle(row)">
-        </tr>
-      </table>
-    </ng-scrollbar>
-</div>
-
-<div class="d-flex justify-content-between">
-  <div class="mb-4" (click)="$event.stopPropagation()">
-      <b>Managed Tote IDs</b>
-  </div>
+    <div class="card br-14 p-3 mb-3">
+      <div class="d-xl-flex gap-12 align-items-center">
+       
+        <mat-form-field class="custom-form-field w-100 mb-3 mb-xl-0" appearance="outline" [floatLabel]="getFloatLabelValue()"
+        [hideRequiredMarker]="hideRequiredControl.value"  >
+        <mat-label>From Tote ID</mat-label>
+        <input #field_focus type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
+          [(ngModel)]='fromTote' [matAutocomplete]="auto"
+          (keyup)="autocompleteSearchColumn()"  (keyup.enter)="searchData()"  >
+          <button matSuffix *ngIf="fromTote" class="clear-btn"  (click)="fromTote=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()" #autocompleteInventory>
+          <h6 class="card-header matAutoCompHeader  "><span style="margin-left:5%;width:  140px;">Tote ID</span><span style="width: 43%;" >Cells</span> </h6>
   
-  <button mat-flat-button color="primary" class="add-icon-button mb-2" (click)="addRow()">
-    <span class="material-symbols-outlined">
-      add
-    </span>
-  </button>
-</div>
-
-    <div class="card br-14 table-responsive borderless px-0">
-      <ng-scrollbar class="mat-table-scrollbar" track="all" style="height:200px;">
-      <table mat-table [dataSource]="dataSourceManagedTotes" class="">
-          
-        <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef>
-          </th>
-          <td mat-cell *matCellDef="let row">
-            <div class="pe-2">
-              <!-- [checked]="selection.isSelected(row)"
-              (click)="$event.stopPropagation()"
-                          (change)="$event ? selection.toggle(row) : null"
-                         
-                          [aria-label]="checkboxLabel(row)" -->
-            <mat-radio-button  color="primary" (click)="selectTote(row.toteID,row.cells)" >
-            </mat-radio-button>
+          <mat-option *ngFor="let option of searchAutocompleteList"
+          [value]="option.toteID" class="matAutoCompTableContent">
+          <div class="loc_option">
+              <span class="searchColumn" style="width:  140px;" >{{option.toteID}}</span><span  style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:45%; white-space: nowrap;"matTooltipPosition="above"  >{{option.cells}}</span>
           </div>
-          </td>
-        </ng-container>
+      </mat-option>
+          <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
+            No data found
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      
+        <!-- <mat-form-field class="custom-form-field w-100 mb-3 mb-xl-0" appearance="outline">
+          <mat-label>To Tote ID</mat-label>
+          <input matInput type="text" maxlength="255" value="0000000" disabled>
+        </mat-form-field> -->
+
+
+
+        <mat-form-field class="custom-form-field w-100 mb-3 mb-xl-0" appearance="outline" [floatLabel]="getFloatLabelValue()"
+        [hideRequiredMarker]="hideRequiredControl.value"  >
+        <mat-label>To Tote ID</mat-label>
+        <input type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
+          [(ngModel)]='toTote' [matAutocomplete]="auto" [disabled]="!fromTote"
+          (keyup)="autocompleteSearchColumn()"  (keyup.enter)="searchData()"  >
+          <button matSuffix *ngIf="toTote" class="clear-btn"  (click)="toTote=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()" #autocompleteInventory>
+            <h6 class="card-header matAutoCompHeader stickyHeader "><span style="margin-left:5%;width:  140px;">Tote ID</span><span style="width: 43%;" >Cells</span> </h6>
+    
+            <mat-option *ngFor="let option of searchAutocompleteList"
+            [value]="option.toteID" class="matAutoCompTableContent">
+            <div class="loc_option">
+                <span class="searchColumn" style="width:  140px;" >{{option.toteID}}</span><span  style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:45%; white-space: nowrap;"matTooltipPosition="above"  >{{option.cells}}</span>
+            </div>
+        </mat-option>
+            <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
+              No data found
+            </mat-option>
+          </mat-autocomplete>
+      </mat-form-field>
+
+
+        <div (click)="printRange()" class="d-flex d-xl-block"><button style="flex: 1 auto;" [disabled]="!fromTote && !toTote" type="submit" mat-flat-button class="float-end form-button-submit btn-regular" color="primary">Print
+            Range</button></div>
+      </div>
+    </div>
+
+    <!-- <mat-radio-group color="primary"> -->
+      
+    <div class="mb-4 " *ngIf="!data.validateTotes && !isIMPath">
+      <b>Unmanaged Tote IDs</b>
+    </div>
+
+    <div  class="card br-14 table-responsive borderless px-0 mb-4" *ngIf="!data.validateTotes && !isIMPath">
+      <ng-scrollbar class="mat-table-scrollbar" track="all" style="height:160px;">
+        <table mat-table [dataSource]="dataSource" class="">
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <div class="pe-2">
+              <!-- (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"  -->
+               
+                <mat-radio-button (click)="selectTote()" [disabled]="toteID ? false : true" 
+                  color="primary"></mat-radio-button>
+              </div>
+            </td>
+          </ng-container>
+
           <!-- Position Column -->
           <ng-container matColumnDef="zone">
-            <th mat-header-cell *matHeaderCellDef> Managed Tote IDs </th>
-            <td mat-cell *matCellDef="let element; let i = index">
+            <th mat-header-cell *matHeaderCellDef> Unmanaged Tote IDs </th>
+            <td mat-cell *matCellDef="let element">
               <div class="pe-2">
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
+                  <input matInput type="text" #specialFeature maxlength="255" [(ngModel)]="toteID">
+                </mat-form-field>
+              </div>
+            </td>
+          </ng-container>
 
-                  <input matInput type="text" #specialFeature maxlength="255"
-                    [value]="element.toteID" (keydown)="onToteChange($event,i,'')" (keyup)="onToteChange($event,i,'')" (change)="onToteChange($event,i,'')" (keypress)="onToteChange($event,i,'')"  (keypress)="onToteChange($event,i,'')">
+          <!-- Name Column -->
+          <ng-container matColumnDef="locationdesc">
+            <th mat-header-cell *matHeaderCellDef> Cells </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="pe-2">
+                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                  <input matInput
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" type="text"
+                    #specialFeature maxlength="255" [(ngModel)]="cellID">
                 </mat-form-field>
               </div>
             </td>
           </ng-container>
         
+<!-- 
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="pe-2">
+                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="selectTote()" [disabled]="toteID ? false : true" >
+                  <mat-icon class="material-symbols-outlined">
+                    check
+                  </mat-icon>
+                </button>
+              </div>
+
+            </td>
+          </ng-container> -->
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></tr>
+        </table>
+      </ng-scrollbar>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="mb-4" (click)="$event.stopPropagation()">
+        <b>Managed Tote IDs</b>
+      </div>
+
+      <button [disabled]="isRowAdded" mat-flat-button color="primary" class="add-icon-button mb-2" (click)="addRow()">
+        <span class="material-symbols-outlined">
+          add
+        </span>
+      </button>
+    </div>
+
+
+    <div class="card br-14 table-responsive borderless px-0">
+      <ng-scrollbar class="mat-table-scrollbar" track="all"  [style.height]="!isIMPath?'200px':'400px'" >
+        <table mat-table [dataSource]="dataSourceManagedTotes" class="">
+
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+            </th>
+            <td mat-cell *matCellDef="let row; let i = index;">
+              <div class="pe-2">
+                <!-- [checked]="selection.isSelected(row)"
+              (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                         
+                          [aria-label]="checkboxLabel(row)" -->
+                <mat-radio-button  [disabled]="!row.toteID || !row.cells || row.isInserted==0 || row.isEdit" color="primary" (click)="selectTote(row.toteID,row.cells,!row.toteID?false:!row.cells?false:row.isInserted==0?false:row.isEdit?false:true)">
+                </mat-radio-button>
+              </div>
+            </td>
+          </ng-container>
+          <!-- Position Column -->
+          <ng-container matColumnDef="zone">
+            <th mat-header-cell *matHeaderCellDef>Tote IDs </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              <div class="pe-2">
+            
+                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                
+                  <input matInput type="text" #specialFeature maxlength="255" [value]="element.toteID"  #category_category [autofocus]="i === 0" 
+                  (keydown.shift.enter)="$event.preventDefault()"  
+                  (keydown)="onToteChange($event,i,'')" (keyup)="onToteChange($event,i,'')"
+                    (change)="onToteChange($event,i,'')" (keypress)="onToteChange($event,i,'')"
+                    (keypress)="onToteChange($event,i,'')">
+                </mat-form-field>
+              </div>
+            </td>
+          </ng-container>
+
           <!-- Name Column -->
           <ng-container matColumnDef="locationdesc">
             <th mat-header-cell *matHeaderCellDef> Cells </th>
@@ -130,45 +205,56 @@
               <div class="pe-2">
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
 
-                  <input matInput type="text" #specialFeature maxlength="255"
-                    [value]="element.cells" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" (keydown)="onToteChange($event,i,'1')" (keyup)="onToteChange($event,i,'1')" (change)="onToteChange($event,i,'1')" (keypress)="onToteChange($event,i,'1')"  (keypress)="onToteChange($event,i,'1')">
+                  <input matInput type="text" #specialFeature maxlength="255" [value]="element.cells"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                    (keydown)="onToteChange($event,i,'1')" (keyup)="onToteChange($event,i,'1')"
+                    (change)="onToteChange($event,i,'1')" (keypress)="onToteChange($event,i,'1')"
+                    (keypress)="onToteChange($event,i,'1')">
                 </mat-form-field>
               </div>
+             
             </td>
           </ng-container>
-          
+
           <!-- Name Column -->
           <ng-container matColumnDef="options">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let element; let i = index">
               <div class="d-flex gap-12">
-                <button mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteTote(element.toteID)">
+                <!-- <button [disabled]="!element.toteID || !element.cells" matTooltip="Check" [hidden]="isIMPath" mat-flat-button color="primary" class="xsm-icon-button" (click)="selectTote(element.toteID,element.cells)">
                   <mat-icon class="material-symbols-outlined">
-                      close
+                    check
+                  </mat-icon>
+                </button> -->
+                <button  (click)="printTote('tote',element)"  [disabled]="!element.toteID || !element.cells || element.isInserted==0 || element.isEdit" matTooltip="Print" mat-flat-button color="primary" class="xsm-icon-button">
+                  <mat-icon class="material-symbols-outlined">
+                    print
                   </mat-icon>
                 </button>
-                <button mat-flat-button color="primary" class="xsm-icon-button">
+                <button [disabled]="!element.toteID || !element.cells || !element.isEdit" matTooltip="Save" mat-flat-button color="primary" class="xsm-icon-button"
+                  (click)="saveTote(element.toteID,element.cells,element.oldToteID,element.isInserted,i)">
                   <mat-icon class="material-symbols-outlined">
-                      print
+                    save
                   </mat-icon>
                 </button>
-                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="saveTote(element.toteID,element.cells,element.oldToteID,element.isInserted,i)">
+                <button [disabled]="!element.toteID || !element.cells" matTooltip="Delete" mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteTote(element.toteID,i)">
                   <mat-icon class="material-symbols-outlined">
-                      save
+                    close
                   </mat-icon>
                 </button>
               </div>
             </td>
           </ng-container>
-          
-        
-        
-        
+
+
+
+
           <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky:true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns1;"
-              (click)="selection.toggle(row)">
+          <tr mat-row *matRowDef="let row; columns: displayedColumns1;" (click)="selection.toggle(row)">
           </tr>
         </table>
       </ng-scrollbar>
     </div>
+  </mat-card-content>
+</mat-card>
 <!-- </mat-radio-group> -->

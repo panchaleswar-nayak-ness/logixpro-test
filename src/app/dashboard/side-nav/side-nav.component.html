@@ -2,23 +2,27 @@
 
   <mat-nav-list *ngIf="isParentMenu">
     <ng-container *ngFor="let menu of dynamicMenu;let i = index">
-      <mat-list-item routerLinkActive="active" routerLink="{{menu.route}}" (click)="loadMenus(menu)"
+    
+      <mat-list-item routerLinkActive="active" routerLink="{{menu.route}}" (click)="isMenuHide ? redirect() : loadMenus(menu)"
         [disabled]="isAuthorized(menu.permission) || menu.route==='#'">
         <span mat-list-icon class="material-symbols-outlined">
           {{menu.icon}}
         </span>
         <!-- <mat-icon mat-list-icon>{{menu.icon}}</mat-icon> -->
-        <div class="sidenav-item" *ngIf="sideBarOpen">{{menu.title}}</div>
+        <div class="sidenav-item" *ngIf="sideBarOpen">{{menu.title}}  </div>
       </mat-list-item>
     </ng-container>
   </mat-nav-list>
 
   <mat-nav-list *ngIf="isChildMenu">
     <ng-container *ngFor="let childMenu of childMenus;let i = index">
+      
       <mat-list-item 
-        routerLinkActive="{{ (childMenu.route != '/InductionManager' && childMenu.route != '/InductionManager/Admin' && childMenu.route != '/admin') ? 'active' : ''}}" 
-        routerLink="{{childMenu.route}}" (click)="loadMenus(childMenu)"
-        [disabled]="isAuthorized(childMenu.permission) || childMenu.route==='#'">
+        routerLinkActive="{{ (childMenu.route != '/InductionManager' && childMenu.route != '/InductionManager/Admin' && childMenu.route != '/OrderManager' && childMenu.route != '/FlowrackReplenishment' && childMenu.route != '/ConsolidationManager'  && childMenu.route != '/admin') ? 'active' : ''}}" 
+        routerLink="{{childMenu.route}}" (click)="isMenuHide ? redirect() : loadMenus(childMenu)"
+        [disabled]="childMenu.permission != true ? (isAuthorized(childMenu.permission) || childMenu.route==='#'):false"
+        [queryParams]="childMenu.paramsObj"
+        >
         <span mat-list-icon class="material-symbols-outlined">
           {{childMenu.icon}}
         </span>
@@ -49,7 +53,7 @@
 <div *ngIf="isConfigUser">
 <mat-nav-list *ngIf="isChildMenu">
   <ng-container *ngFor="let childMenu of childMenus;">
-    <mat-list-item routerLinkActive="active"  [disabled]=" childMenu.route==='#'"a routerLink="{{childMenu.route}}" (click)="loadMenus(childMenu)">
+    <mat-list-item routerLinkActive="active"  [queryParams]="{tabIndex: 0}" [disabled]=" childMenu.route==='#'"a routerLink="{{childMenu.route}}" (click)="isMenuHide ? redirect() : loadMenus(childMenu)">
       <span mat-list-icon class="material-symbols-outlined">
         {{childMenu.icon}}
       </span>

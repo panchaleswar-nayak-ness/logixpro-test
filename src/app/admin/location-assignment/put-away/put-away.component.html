@@ -1,1 +1,271 @@
-<p>put-away works!</p>
+<div class="row my-3">
+
+  <div class="col-xl-6">
+    <mat-card class="mat-elevation-z g-card mb-2">
+      <mat-card-content>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="card-header-title mb-0 d-flex align-items-center">
+            <div class="mat-icon-wrap me-lg-3 me-2">
+              <span class="material-symbols-outlined">
+                format_list_numbered
+              </span>
+            </div>
+            <span>Put Away Order Selection</span>
+          </h2>
+        </div>
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="g-mini-search-box mb-3">
+              <div class="search-box">
+                <mat-form-field class="w-100 bg-white br-14" appearance="fill">
+                  <span class="material-symbols-outlined icon-search">
+                    search
+                  </span>
+                  <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50" (keyup)="applyFilter1($event)" [(ngModel)]="filterValue1">
+                  <button *ngIf="filterValue1 != ''" matSuffix class="clear-btn" (click)="filterValue1 = ''; this.tableData1.filter = filterValue1;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="d-xxl-block d-flex justify-content-end">
+              <button mat-stroked-button color="primary" class="button-add-all mb-3 float-end" (click)="addAll()" style="flex:1">
+                Add All
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card br-14 borderless" style="overflow-x: auto;">
+          <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding" style="height: 550px;" track="all">
+            <table mat-table #table1 [dataSource]="tableData1" class="w-100" matSort #MatSort1="matSort"
+            (matSortChange)="announceSortChange1($event)">
+
+              <ng-container matColumnDef="orderNumber">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Order No.
+                </th>
+                <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                  [matTooltip]="element.orderNumber"
+                  style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
+                  [matTooltipDisabled]="element.orderNumber && element.orderNumber.length>=20?false:true">
+                  {{element.orderNumber}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="itemCount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Quantity
+                </th>
+                <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                  [matTooltip]="element.itemCount"
+                  style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
+                  [matTooltipDisabled]="element.itemCount && element.itemCount.length>=20?false:true">
+                  {{element.itemCount}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="priority">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Priority
+                </th>
+                <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                  [matTooltip]="element.priority"
+                  style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
+                  [matTooltipDisabled]="element.priority && element.priority.length>=20?false:true">
+                  {{element.priority}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="requiredDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Required
+                  Date
+                </th>
+                <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                  [matTooltip]="element.requiredDate"
+                  style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
+                  [matTooltipDisabled]="element.requiredDate && element.requiredDate.length>=20?false:true">
+                  {{element.requiredDate}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="action" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let element" class="text-end">
+                  <button mat-icon-button aria-label="Delete Function" matTooltip="Add" matTooltipPosition="above" (click)="add(element)">
+                    <mat-icon class="icon-circle-edit">add</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr class="mat-row" *matNoDataRow >
+                <td class="mat-cell " [attr.colspan]="displayedColumns1.length">
+                    No data available in table.
+                </td>
+              </tr>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true;"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+            </table>
+          </ng-scrollbar>
+        </div>
+        <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[10, 20]" [pageSize]="10" #paginator1
+          aria-label="Select page of periodic elements">
+        </mat-paginator>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-xl-6">
+    <mat-card class="mat-elevation-z g-card mb-2">
+      <mat-card-content>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="card-header-title mb-0 d-flex align-items-center">
+            <div class="mat-icon-wrap me-lg-3 me-2">
+              <span class="material-symbols-outlined">
+                task_alt
+              </span>
+            </div>
+            <span>Put Away Select Orders</span>
+          </h2>
+        </div>
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="g-mini-search-box mb-3">
+              <div class="search-box">
+                <mat-form-field class="w-100 bg-white br-14" appearance="fill">
+                  <span class="material-symbols-outlined icon-search">
+                    search
+                  </span>
+                  <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50" (keyup)="applyFilter2($event)" [(ngModel)]="filterValue2">
+                  <button *ngIf="filterValue2 != ''" matSuffix class="clear-btn" (click)="filterValue2 = ''; this.tableData2.filter = filterValue2;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="d-xxl-block d-flex justify-content-end">
+              <button mat-stroked-button color="warn" class="button-add-all mb-3 float-end" (click)="removeAll()" style="flex:1">
+                Remove All
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card br-14 borderless" style="overflow-x: auto;">
+          <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding" style="height:550px" track="all">
+            <table mat-table #table2 [dataSource]="tableData2" class="w-100" matSort #MatSort2="matSort"
+              (matSortChange)="announceSortChange2($event)">
+
+              <ng-container matColumnDef="orderNumber">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Order No.
+                </th>
+                <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                  [matTooltip]="element.orderNumber"
+                  style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
+                  [matTooltipDisabled]="element.orderNumber && element.orderNumber.length>=20?false:true">
+                  {{element.orderNumber}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="itemCount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Quantity
+                </th>
+                <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                  [matTooltip]="element.itemCount"
+                  style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
+                  [matTooltipDisabled]="element.itemCount && element.itemCount.length>=20?false:true">
+                  {{element.itemCount}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="priority">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Priority
+                </th>
+                <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                  [matTooltip]="element.priority"
+                  style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
+                  [matTooltipDisabled]="element.priority && element.priority.length>=20?false:true">
+                  {{element.priority}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="requiredDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Required
+                  Date
+                </th>
+                <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltipPosition="above"
+                  [matTooltip]="element.requiredDate"
+                  style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
+                  [matTooltipDisabled]="element.requiredDate && element.requiredDate.length>=20?false:true">
+                  {{element.requiredDate}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="action" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let element" class="text-end">
+                  <button mat-icon-button aria-label="Delete" matTooltip="Remove" matTooltipPosition="above" (click)="remove(element)">
+                    <mat-icon class="icon-circle-cancel">close</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr class="mat-row" *matNoDataRow >
+                <td class="mat-cell " [attr.colspan]="displayedColumns2.length">
+                    No data available in table.
+                </td>
+              </tr>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true;"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+            </table>
+          </ng-scrollbar>
+        </div>
+        <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[10, 20]" [pageSize]="10" #paginator2
+          aria-label="Select page of periodic elements">
+        </mat-paginator>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>
+
+
+<button color="primary" class="mat-focus-indicator w-100 btn-lg mat-flat-button mat-button-base mat-primary mb-3"
+  (click)="locationAssignment()" style="flex: 1;" ng-reflect-color="primary" ng-reflect-disabled="false"><span
+    class="mat-button-wrapper"> Location
+    Assignment
+  </span><span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false" ng-reflect-centered="false"
+    ng-reflect-trigger="[object HTMLButtonElement]"></span><span class="mat-button-focus-overlay"></span>
+</button>
+
+<!-- <ng-template #deleteAction>
+  <div class="d-flex flex-column justify-content-center px-2 py-4">
+    <div class="d-flex justify-content-between">
+      <h2 class="p-0 me-2">Mark Selected Orders for Pick Location Assignment</h2>
+      <button mat-icon-button class="close-button br-14" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+      </button>
+    </div>
+    <div>
+      <p class="bold text-tritary-900 mb-4 pt-4">Do you want to mark these orders for location assignment?</p>
+      <div class="d-flex justify-content-end text-center">
+        <button mat-flat-button color="primary" class="custom-btn">
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template> -->
+
+<!-- <ng-template #addOrder>
+  <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
+    <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
+      <mat-icon color="primary">add</mat-icon>
+    </div>
+    <div>
+      <p class="bold text-tritary-900 mb-4">Are you sure you want to add?</p>
+      <p class="bold text-primary-900 mb-4">Selected order numbers will be added once done.</p>
+      <div class="mb-3">
+        <button mat-flat-button color="warn" class="custom-btn button-primary-flat text-primary-900 bg-white">
+          Yes
+        </button>
+      </div>
+      <div>
+        <button mat-stroked-button color="basic" class="custom-btn bg-white" [mat-dialog-close]="true">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template> -->

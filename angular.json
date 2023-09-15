@@ -41,6 +41,7 @@
           },
           "configurations": {
             "production": {
+              "aot": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -154,7 +155,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "production": {
+            "production": { 
               "browserTarget": "ClientApp:build:production"
             },
             "development": {

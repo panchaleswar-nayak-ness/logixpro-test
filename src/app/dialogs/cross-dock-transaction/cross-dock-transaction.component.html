@@ -53,9 +53,9 @@
                     <mat-option [disabled]="!selectedRowObj" value="clear" (click)="openUserFieldsDialogue()">User Fields</mat-option>
                     <mat-option [disabled]="!selectedRowObj" value="viewOrderStatus" (click)="viewOrderStatus()">View Order Status</mat-option>
                     <mat-option [disabled]="!selectedRowObj" value="viewReprocess" (click)="openReprocessTransactionViewDialogue()">View Reprocess</mat-option>
-                    <mat-option value="completePick" (click)="completePick()">Complete Pick</mat-option>
-                    <mat-option value="printToteLabel">Print Tote Label</mat-option>
-                    <mat-option value="printItemLabel">Print Item Label</mat-option>
+                    <mat-option [disabled]="!selectedRowObj" value="completePick" (click)="completePick()">Complete Pick</mat-option>
+                    <mat-option [disabled]="!selectedRowObj" value="printToteLabel" (click)="print('printtotelabel')">Print Tote Label</mat-option>
+                    <mat-option [disabled]="!selectedRowObj" value="printItemLabel" (click)="print('printitemlabel')">Print Item Label</mat-option>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
                     expand_more
@@ -89,7 +89,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
                         <mat-label>Completed Qty</mat-label>
-                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.completedQuantity}}" #compQty (focusout)="compQtyChange({ i, compQty : compQty.value })">
+                        <input [NumbersOnly]="true" #complete_focus  (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.completedQuantity}}" #compQty (focusout)="compQtyChange({ i, compQty : compQty.value })">
                         <!-- <span matSuffix>
                             <mat-icon style="color: var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
                         </span> -->

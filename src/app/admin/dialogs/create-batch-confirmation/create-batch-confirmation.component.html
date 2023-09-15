@@ -3,26 +3,31 @@
 <div class="mat-modal-wrap text-center">
     <mat-dialog-content>
       <div class="prompt-wrap">
-        <div class="d-flex justify-content-center prompt-icon-wrap">
-          <span #cancel class="material-symbols-outlined prompt-icon-add">
-           check
+        <div class="d-flex justify-content-center prompt-icon-wrap mb-3">
+          <span #cancel class="material-symbols-outlined prompt-icon-add text-24">
+           print
           </span>
   
         </div>
-        <p class="prompt-message py-4 mb-0">
-            If any desired labels have not been printed click CANCEL to cancel a batch process.
-            If all desired labels for these items have been printed click OK.
+        <h1 class="mat-card-title text-primary">
+          Print Labels
+      </h1>
+        <p class="prompt-message py-3 mb-2">
+            <b>If any desired labels have not been printed click CANCEL to cancel a batch process.
+            If all desired labels for these items have been printed click OK.</b>
         </p>
         <!-- <p class="bold text-danger mb-4">This action can not be redone.</p> -->
-        <div class="br-14 px-4 py-3 checkbox-background mb-4">
+        <!-- <div class="br-14 px-4 py-3 checkbox-background mb-4">
           <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary">I understand and confirm my action</mat-checkbox>
-        </div>
+        </div> -->
       </div>
     </mat-dialog-content>
     <mat-dialog-actions class="d-flex flex-column justify-content-center">
-      <button  class="mat-button-base prompt-action-accent-button  mb-3" mat-stroked-button mat-button
-      tabindex="1" [disabled]="isChecked" [ngStyle]="{'opacity': isChecked ? '0.8' : '1' }" (click)="createBatch()">Ok</button>
-      <button class="mat-button-base prompt-action-danger-button" mat-button mat-dialog-close
+      <!-- <button  class="mat-button-base prompt-action-accent-button btn-lg w-100 mb-3" mat-stroked-button mat-button
+      tabindex="1" [disabled]="isChecked" [ngStyle]="{'opacity': isChecked ? '0.8' : '1' }" (click)="createBatch()">Ok</button> -->
+      <button  class="mat-button-base prompt-action-accent-button btn-lg w-100 mb-3" mat-stroked-button mat-button
+      tabindex="1" (click)="createBatch()">Ok</button>
+      <button class="mat-button-base btn-lg w-100 mb-3" mat-button mat-dialog-close mat-stroked-button color="secondary"
         tabindex="-1">
         Cancel
       </button>

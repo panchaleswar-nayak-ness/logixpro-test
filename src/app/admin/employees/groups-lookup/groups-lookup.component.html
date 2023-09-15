@@ -4,7 +4,8 @@
       <span class="material-symbols-outlined icon-search">
         search
       </span>
-      <input type="text" placeholder="Search Groups" maxlength="50" aria-label="Search Groups" matInput (keyup)="applyFilter($event)" [matAutocomplete]="auto">
+      <input type="text" [(ngModel)]="searchGrp"  placeholder="Search Groups" maxlength="50" aria-label="Search Groups" matInput (keyup)="applyFilter($event)" [matAutocomplete]="auto"  #autoFocusField>
+      <button matSuffix *ngIf="searchGrp" class="clear-btn" (click)="clearFields()" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
           {{option}}
@@ -16,7 +17,7 @@
 
   <div class="card table-responsive">
     <ng-scrollbar class="mat-table-scrollbar" style="height: 560px"> 
-<table #groupDataRefresh mat-table [dataSource]="group_data_source" matSort (matSortChange)="announceSortChange($event)" class="action-clickable-table g-card-table employee-location-table">
+<table  mat-table [dataSource]="group_data_source" matSort (matSortChange)="announceSortChange($event)" class="g-card-table table1 employee-location-table custom-action-clickable-table">
 
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
@@ -28,7 +29,7 @@
 
 
   
-  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" style="background-color: #F9F9FF;"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="getGrpDetails(row)"></tr>
 
 </table>

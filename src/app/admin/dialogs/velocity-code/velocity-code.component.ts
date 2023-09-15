@@ -1,11 +1,11 @@
-import { Component, OnInit , Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit , Inject, ViewChild, ElementRef, ViewChildren, QueryList, Renderer2 } from '@angular/core';
 import { MatDialog, MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, takeUntil } from 'rxjs';
-import { VelocityCodeService } from '../../../../app/common/services/velocity-code.service';
+import { Subject, takeUntil } from 'rxjs'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-velocity-code',
@@ -14,7 +14,7 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 })
 
 export class VelocityCodeComponent implements OnInit {
-  
+  @ViewChildren('vl_name', { read: ElementRef }) vl_name: QueryList<ElementRef>;
   public velocity_code_list: any;
   public velocity_code_list_Res: any;
   public currentVelocity="";
@@ -25,11 +25,12 @@ export class VelocityCodeComponent implements OnInit {
   constructor(
     
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private velcodeService: VelocityCodeService,
+    private Api: ApiFuntions,
     private authService: AuthService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>,
     private dialog: MatDialog,
+    private renderer: Renderer2,
     ) { }
 
   ngOnInit(): void {
@@ -40,7 +41,7 @@ export class VelocityCodeComponent implements OnInit {
   }
 
   getVelocity(){
-    this.velcodeService.getVelocityCode().subscribe((res) => {
+    this.Api.getVelocityCode().subscribe((res) => {
       this.velocity_code_list_Res = [...res.data];
       this.velocity_code_list = res.data;
       this.disableEnable.shift();
@@ -48,6 +49,11 @@ export class VelocityCodeComponent implements OnInit {
       {
       this.disableEnable.push({index:i,value:true});
       }
+      setTimeout(() => {
+        const inputElements = this.vl_name.toArray();
+        const inputElement = inputElements[0].nativeElement as HTMLInputElement;
+          this.renderer.selectRootElement(inputElement).focus();
+      }, 100)
      });
 
   }
@@ -60,6 +66,15 @@ export class VelocityCodeComponent implements OnInit {
   addVLRow(row:any){
     this.velocity_code_list.unshift([]);
     //this.disableEnable.unshift({index:0,value:false});
+    
+    const lastIndex = this.velocity_code_list.length - 1;
+    setTimeout(() => {
+      const inputElements = this.vl_name.toArray();
+      if (inputElements.length > lastIndex) {
+        const inputElement = inputElements[0].nativeElement as HTMLInputElement;
+        this.renderer.selectRootElement(inputElement).focus();
+      }
+    });
   }
   saveVlCode(vlcode:any, oldVC:any){ 
     if(vlcode){
@@ -83,7 +98,7 @@ export class VelocityCodeComponent implements OnInit {
       "username": this.userData.userName,
       "wsid": this.userData.wsid,
     } 
-    this.velcodeService.saveVelocityCode(paylaod).subscribe((res) => {
+    this.Api.saveVelocityCode(paylaod).subscribe((res) => {
       this.toastr.success(labels.alert.success, 'Success!', {
         positionClass: 'toast-bottom-right',
         timeOut: 2000
@@ -105,6 +120,7 @@ export class VelocityCodeComponent implements OnInit {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
+      disableClose:true,
       })
       dialogRef.afterClosed().subscribe(result => {
           if(result === 'Yes'){
@@ -113,7 +129,7 @@ export class VelocityCodeComponent implements OnInit {
               "username": this.userData.userName,
               "wsid": this.userData.wsid,
             }
-            this.velcodeService.dltVelocityCode(paylaod).subscribe((res) => {
+            this.Api.dltVelocityCode(paylaod).subscribe((res) => {
               this.toastr.success(labels.alert.delete, 'Success!', {
                 positionClass: 'toast-bottom-right',
                 timeOut: 2000
@@ -130,20 +146,30 @@ export class VelocityCodeComponent implements OnInit {
   }
   }
 
-  delete(event: any){
-    let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-      height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
-      data: {
-        mode: 'delete-velocity',
-        velocity: event
-      //  grp_data: grp_data
-      }
-    })
-    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-    this.getVelocity();
-    })
+  deleteVC(event: any){
+    
+    
+    if(event != ''){
+      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+        height: 'auto',
+        width: '480px',
+        autoFocus: '__non_existing_element__',
+      disableClose:true,
+        data: {
+          mode: 'delete-velocity',
+          velocity: event
+        //  grp_data: grp_data
+        }
+      })
+      dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
+      this.getVelocity();
+      })
+    }
+    else{
+      this.velocity_code_list.shift();
+      this.getVelocity();
+    }
+    
   }
 
   valueEntered()

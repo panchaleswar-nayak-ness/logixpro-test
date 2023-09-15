@@ -12,10 +12,15 @@
                 <span class="material-symbols-outlined icon-search">
                   search
                 </span>
-                <input type="text" placeholder="Search Pick Levels" aria-label="Search Pick Levels" matInput
+                <input type="text" [(ngModel)]="searchPickLvl" placeholder="Search Pick Levels" aria-label="Search Pick Levels" matInput
                   (keyup)="applyFilter($event)" maxlength="50">
+        <button matSuffix *ngIf="searchPickLvl" class="clear-btn" (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                  
+                  <!-- <button *ngIf="searchPickLvl" matSuffix mat-icon-button aria-label="Clear" (click)="searchPickLvl=''">
+                    <mat-icon>close</mat-icon>
+                  </button> -->
               </mat-form-field>
-              <button mat-flat-button color="primary" class="mat-button-icon" (click)="pickUpLevelDialog()">
+              <button mat-flat-button color="primary" [disabled]="!isLookup" class="mat-button-icon" (click)="pickUpLevelDialog()">
                 <span class="material-symbols-outlined" matTooltip="Add pick levels" matTooltipPosition="above">
                   add
                 </span>
@@ -43,12 +48,12 @@
               </ng-container>
 
               <!-- End Location Column -->
-              <ng-container matColumnDef="startCarousel">
+              <ng-container matColumnDef="startShelf">
                 <th width="26.66%" mat-header-cell *matHeaderCellDef mat-sort-header>Start Shelf</th>
                 <td width="26.66%" mat-cell *matCellDef="let element"> {{element.startShelf}} </td>
               </ng-container>
 
-              <ng-container matColumnDef="endCarousel">
+              <ng-container matColumnDef="endShelf">
                 <th width="26.66%" mat-header-cell *matHeaderCellDef mat-sort-header>End Shelf</th>
                 <td width="26.66%" mat-cell *matCellDef="let element"> {{element.endShelf}} </td>
               </ng-container>

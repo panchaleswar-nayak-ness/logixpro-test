@@ -10,6 +10,7 @@ import { FunctionAllocationComponent } from '../function-allocation/function-all
 })
 export class ConfirmationDialogComponent implements OnInit {
   dialog_msg: string = '';
+  dialog_heading: string = '';
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
   private dialog: MatDialog, 
   private toastr: ToastrService, 
@@ -17,6 +18,7 @@ export class ConfirmationDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialog_msg = this.data?.message;
+    this.dialog_heading = this.data?.heading;
   }
 
   confirmOK()

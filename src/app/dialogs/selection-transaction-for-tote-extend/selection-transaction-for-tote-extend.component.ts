@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common' 
 import {
@@ -7,18 +7,18 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ProcessPutAwayService } from 'src/app/induction-manager/processPutAway.service';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { CrossDockTransactionComponent } from '../cross-dock-transaction/cross-dock-transaction.component';
 import labels from '../../labels/labels.json';
 import { CellSizeComponent } from 'src/app/admin/dialogs/cell-size/cell-size.component';
-import { VelocityCodeComponent } from 'src/app/admin/dialogs/velocity-code/velocity-code.component';
-import { CellSizeService } from 'src/app/common/services/cell-size.service';
-import { VelocityCodeService } from 'src/app/common/services/velocity-code.service';
+import { VelocityCodeComponent } from 'src/app/admin/dialogs/velocity-code/velocity-code.component';  
 import { ChooseLocationComponent } from '../choose-location/choose-location.component';
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
 import { Router } from '@angular/router';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { PaPrintLabelConfirmationComponent } from '../pa-print-label-confirmation/pa-print-label-confirmation.component';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -26,8 +26,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./selection-transaction-for-tote-extend.component.scss']
 })
 export class SelectionTransactionForToteExtendComponent implements OnInit {
+  @ViewChild('field_focus') field_focus: ElementRef;
 
   public userData   : any;
+  isWarehouseSensitive:boolean=false;
   toteForm          : FormGroup;
   cellSizeList      : any = [];
   velocityCodeList  : any = [];
@@ -35,18 +37,18 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   totes             : any = [];
   selectedTotePosition:any='';
   selectedToteID:any='';
-
+  fieldNames:any;
+  imPreferences:any;
   constructor(public dialogRef                  : MatDialogRef<SelectionTransactionForToteExtendComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private dialog                    : MatDialog,
               public formBuilder                : FormBuilder,
               private authService               : AuthService,
-              private toast                     : ToastrService,
-              private service                   : ProcessPutAwayService,
-              private cellSizeService           : CellSizeService,
-              private velocityCodeService       : VelocityCodeService,
+              private toast                     : ToastrService, 
+              private Api : ApiFuntions, 
               private toastr: ToastrService,
               public router: Router,
+              private global:GlobalService,
               ) {
 
     this.toteForm = this.formBuilder.group({
@@ -114,11 +116,21 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
+    this.OSFieldFilterNames();
     this.getCellSizeList();
     this.getVelocityCodeList();
     this.getDetails();    
+    this.imPreferences=this.global.getImPreferences();
   }
+  ngAfterViewInit(): void {
+    this.field_focus.nativeElement.focus();
+  }
+  public OSFieldFilterNames() { 
+    this.Api.ColumnAlias().subscribe((res: any) => {
+      this.fieldNames = res.data;
 
+    })
+  }
   onToteChange(event,type){
   // event.value
     this.totes.filter(item=>{
@@ -145,11 +157,11 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         "username": this.userData.userName,
         wsid: this.userData.wsid 
       }
-      this.service.get(payload, '/Induction/ItemDetails').subscribe(
+      this.Api.ItemDetails(payload).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
             const values = res.data[0];  
-
+            this.isWarehouseSensitive=values.warehouseSensitive
             this.orderNum = values.orderNumber;
             this.totes = this.data.totes;
 
@@ -225,7 +237,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         (error) => { }
       );
     } catch (error) {
-      console.log(error);
+      
     }
   }
 
@@ -235,6 +247,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         message: 'Click OK to clear serial number, lot number, expiration date, warehouse, Ship VIA, and Ship To Name',
       },
@@ -255,13 +268,13 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   }
 
   getCellSizeList() {
-    this.cellSizeService.getCellSize().subscribe((res) => {
+    this.Api.getCellSize().subscribe((res) => {
       this.cellSizeList = res.data;
     });
   }
 
   getVelocityCodeList() {
-    this.velocityCodeService.getVelocityCode().subscribe((res) => {
+    this.Api.getVelocityCode().subscribe((res) => {
       this.velocityCodeList = res.data;
     });
   }
@@ -273,6 +286,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
+      disableClose:true,
         data: {
           message: 'Click OK to save current cell sizes and velocity codes for this item to the inventory master.',
         },
@@ -297,7 +311,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             wsid: this.userData.wsid 
           }
           
-          this.service.update(payload, '/Induction/IMUpdate').subscribe(
+          this.Api.IMUpdate(payload).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
                 this.toast.success(labels.alert.update, 'Success!',{
@@ -318,7 +332,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       }); 
       
     } catch (error) {
-      console.log(error);
+      
     }
   }
 
@@ -338,6 +352,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         mode: '',
         cs:currentValue
@@ -385,6 +400,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         mode: '',
         vc: currentValue
@@ -422,11 +438,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       height: 'auto',
       width: '70vw',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: values
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      if (res.responseMessage == "Reserved Successfully") {        
+      if (res && res.responseMessage  === "Reserved Successfully") {        
         this.toteForm.patchValue({
           zone                              : res.zone,
           carousel                          : res.carousel,
@@ -461,7 +478,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         wsid: this.userData.wsid,
       };
 
-      this.service.get(payLoad, '/Induction/CheckForwardLocations').subscribe(
+      this.Api.CheckForwardLocations(payLoad).subscribe(
         (res: any) => {
           if (res.data > 0 && res.isExecuted && this.data.autoForwardReplenish) {
             
@@ -469,6 +486,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               height: 'auto',
               width: '560px',
               autoFocus: '__non_existing_element__',
+      disableClose:true,
               data: {
                 message: 'There is a need for ' + res.data + ' of item: ' + values.itemNumber + '. Press OK to find a location needing replenishment. Otherwise press CANCEL to do a normal location search',
               }
@@ -492,7 +510,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       );      
 
     } catch (error) {
-      console.log(error);
+      
     }    
   }
 
@@ -530,24 +548,31 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         username: this.userData.userName,
         wsid: this.userData.wsid,
       };
-      this.service.create(payLoad, '/Induction/FindLocation').subscribe(
+      this.Api.FindLocation(payLoad).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
 
-            this.toteForm.patchValue({
-              // Location Info
-              zone                              : res.data.zone,
-              carousel                          : res.data.carousel,
-              row                               : res.data.row,
-              shelf                             : res.data.shelf,
-              bin                               : res.data.bin,
-              cellSize                          : res.data.cellSz,
-              velocityCode                      : res.data.velCode,
-              itemQuantity                      : res.data.locQty,
-              maximumQuantity                   : res.data.locMaxQty,
-              quantityAllocatedPutAway          : res.data.qtyAlloc,
-              invMapID                          : res.data.invMapID
-            });
+            if (res.data.success) {
+              this.toteForm.patchValue({
+                // Location Info
+                zone                              : res.data.zone,
+                carousel                          : res.data.carousel,
+                row                               : res.data.row,
+                shelf                             : res.data.shelf,
+                bin                               : res.data.bin,
+                cellSize                          : res.data.cellSz,
+                velocityCode                      : res.data.velCode,
+                itemQuantity                      : res.data.locQty,
+                maximumQuantity                   : res.data.locMaxQty,
+                quantityAllocatedPutAway          : res.data.qtyAlloc,
+                invMapID                          : res.data.invMapID
+              }); 
+            } else {
+              this.toastr.error('No available locations were found for this item.', 'Error!', {
+                positionClass: 'toast-bottom-right',
+                timeOut: 2000,
+              });
+            }
 
           } else {
             this.toastr.error('Something went wrong', 'Error!', {
@@ -571,6 +596,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       height: 'auto',
       width: '70vw',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         itemWhse: values.itemNumber,
         userId: this.userData.userName,
@@ -597,11 +623,13 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   }
   
   openWareHouse() {
+    if(!this.isWarehouseSensitive)return
     const values = this.toteForm.value;
     const dialogRef = this.dialog.open(WarehouseComponent, {
       height: 'auto',
       width: '640px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         userName: this.userData.userName,
         wsid: this.userData.wsid,
@@ -613,6 +641,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         this.toteForm.patchValue({
           'warehouse' : res
         });
+        this.findLocation(false, 0);
       } else if (res == 'clear') {
         this.toteForm.patchValue({
           'warehouse' : ''
@@ -622,9 +651,8 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   }
 
   validationPopups(val : any) {
-
     if (val.type == 1) {
-      if (val.invMapID <= 0 || !val.invMapID) {
+      if (val.invMapID <= 0 || !val.invMapID || val.zone == "") {
         this.toast.error('You must select a location for this transaction before it can be processed.', 'Error!', {
           positionClass: 'toast-bottom-right',
           timeOut: 2000
@@ -639,6 +667,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         });
         return false;
       }
+
     }    
 
     if (this.toteForm.getRawValue().fifo && val.fifoDate.toLowerCase() == 'expiration date' && !val.expirationDate) {
@@ -672,66 +701,104 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     try {
 
       const values = this.toteForm.value;
-   
-      let payLoad = {
-        sRow: 1,
-        eRow: 5,
-        itemWhse: [
-          values.itemNumber,
-          // "238562",
-          values.warehouse,
-          "1=1"
-        ],
-        username: this.userData.userName,
-        wsid: this.userData.wsid 
-      };
+      if (!this.validationPopups({...values, type : 1})) {
+        return;
+      }
 
-      this.service
-        .get(payLoad, '/Induction/CrossDock')
+        let payload = {
+        zone: this.toteForm.value.zone,      
+        username: this.userData.userName,
+        wsid: this.userData.wsid
+      };
+      
+      this.Api
+        .BatchByZone(payload)
         .subscribe(
           (res: any) => {
-            if (res.data && res.isExecuted) 
-            {
-              if(res.data.transaction.length > 0)
-              {
+            if (res.isExecuted) {
+              if (!res.data) {
                 let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
                   height: 'auto',
                   width: '560px',
                   autoFocus: '__non_existing_element__',
                   data: {
-                    message: 'Cross Dock opportunity!  Click OK to view backorder transactions for the item you are putting away.',
+                    message: 'There are no batches with this zone (' + this.toteForm.value.zone + ') assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
                   },
                 });
-
-                dialogRef.afterClosed().subscribe((result) => {
-                  if (result == 'Yes') {
-                    this.openCrossDockTransactionDialogue();
-                  }
-                  else {
-                    this.complete(values);
-                  }
-                });                
+  
+                dialogRef.afterClosed().subscribe((res) => {
+                  if (res == 'Yes') {
+                    this.dialogRef.close("New Batch"); 
+                  }      
+                });
               }
-              else 
-              {
-                this.complete(values);              
+              else{
+                let payLoad = {
+                  sRow: 1,
+                  eRow: 5,
+                  itemWhse: [
+                    values.itemNumber,
+                    // "238562",
+                    values.warehouse,
+                    "1=1"
+                  ],
+                  username: this.userData.userName,
+                  wsid: this.userData.wsid 
+                };
+          
+                this.Api
+                  .CrossDock(payLoad)
+                  .subscribe(
+                    (res: any) => {
+                      if (res.data && res.isExecuted) 
+                      {
+                        if(res.data.transaction.length > 0)
+                        {
+                          let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+                            height: 'auto',
+                            width: '560px',
+                            autoFocus: '__non_existing_element__',
+                disableClose:true,
+                            data: {
+                              message: 'Cross Dock opportunity!  Click OK to view backorder transactions for the item you are putting away.',
+                            },
+                          });
+          
+                          dialogRef.afterClosed().subscribe((result) => {
+                            if (result == 'Yes') {
+                              this.openCrossDockTransactionDialogue();
+                            }
+                            else {
+                              this.complete(values);
+                            }
+                          });                
+                        }
+                        else 
+                        {
+                          this.complete(values);              
+                        }
+                      } else {
+                        this.toastr.error('Something went wrong', 'Error!', {
+                          positionClass: 'toast-bottom-right',
+                          timeOut: 2000,
+                        });
+                      }
+                    },
+                    (error) => {}
+                  );   
               }
-            } else {
-              this.toastr.error('Something went wrong', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
             }
-          },
-          (error) => {}
-        );   
+          });
+   
               
       
     } catch (error) {
-      console.log(error);
+      
     }
   }
 
+
+  
   complete(values : any) {
 
     if (!this.validationPopups({...values, type : 1})) {
@@ -742,6 +809,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         message: 'Click OK to complete this transaction and assign it to the selected batch and tote.',
       },
@@ -787,10 +855,58 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             wsid: this.userData.wsid 
           }
           
-          this.service.create(payload2, '/Induction/TaskComplete').subscribe(
+          this.Api.TaskComplete(payload2).subscribe(
             (res: any) => {
-              // console.log(res)
+              
               if (res.data && res.isExecuted) {
+                let OTID = res.data
+                if(this.imPreferences.autoPrintPutAwayLabels){
+                  let numLabel = 1
+                    if(this.imPreferences.requestNumberOfPutAwayLabels && this.imPreferences.printDirectly){
+                      // here pop up will be implemented which will ask for number of labels
+                      let dialogRef = this.dialog.open(PaPrintLabelConfirmationComponent, {
+                        height: 'auto',
+                        width: '560px',
+                        autoFocus: '__non_existing_element__',
+                        disableClose:true,
+                    
+                      });
+                      dialogRef.afterClosed().subscribe((result) => {
+                        if(result>0){
+                          if(!this.imPreferences.printDirectly){
+                            window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+
+                          }
+                          else{
+                            for (var i = 0; i < result; i++) {
+                              this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`)
+                          };
+                          }
+                        }
+                     
+                      })
+
+                    }
+                    else{
+                      if(numLabel>0){
+                        if(!this.imPreferences.printDirectly){
+                          window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+
+                        }
+                        else{
+                          for (var i = 0; i < numLabel; i++) {
+                            this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`)
+                        };
+                        }
+                      }
+                   
+                    }
+
+                 
+
+                }
+
+
                 this.dialogRef.close("Task Completed");
                 this.toast.success(labels.alert.update, 'Success!',{
                   positionClass: 'toast-bottom-right',

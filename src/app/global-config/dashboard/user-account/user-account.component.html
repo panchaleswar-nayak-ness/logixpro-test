@@ -13,7 +13,7 @@
 
       <form [formGroup]="addLoginForm" (ngSubmit)="changeGlobalAcc()" name="addLoginForm">
          <div class="row">
-            <div class="col-3">
+            <div class="col-xl-3">
                <div class="mb-3">
                   <mat-form-field class="w-100 "appearance="outline">
                      <mat-label>Username</mat-label>
@@ -32,7 +32,7 @@
                   </mat-hint>
                </div>
             </div>
-            <div class="col-3">
+            <div class="col-xl-3">
                <div class="mb-3">
                <mat-form-field class="d-block w-100" appearance="outline">
                   <mat-label>Password</mat-label>
@@ -54,7 +54,7 @@
                </mat-hint>
                </div>
             </div>
-            <div class="col-3 offset-3">
+            <div class="col-xl-3 offset-xl-3">
                <!-- (click)="changeGlobalAcc()" -->
                <button mat-flat-button color="primary" [disabled]="password==='' || password===passwordCompare" class="btn-regular w-100">
                   Submit

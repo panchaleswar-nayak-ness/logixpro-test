@@ -1,6 +1,6 @@
 export const environment = { 
   production: true,
-  apiUrl: "http://api.logixpro.com/api",
+  apiUrl: "https://localhost:5001/api",
   userName: "pickpro",
   password: "Admin$11"
 };

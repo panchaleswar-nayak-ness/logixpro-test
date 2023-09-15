@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { ItemNumUpdateConfirmationComponent } from '../item-num-update-confirmation/item-num-update-confirmation.component';
 
@@ -8,7 +8,7 @@ import { ItemNumUpdateConfirmationComponent } from '../item-num-update-confirmat
   styleUrls: ['./item-number.component.scss']
 })
 export class ItemNumberComponent implements OnInit {
-
+  @ViewChild('itm_nmb') itm_nmb: ElementRef;
   // updateItemNumber : boolean = true;
   addItem : boolean = true;
   submit: boolean = false;
@@ -18,8 +18,14 @@ export class ItemNumberComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any,
               private confirmationdialog: MatDialog) { }
 
-  ngOnInit(): void {  
-    if(this.data.fromInventoryMaster)
+  ngOnInit(): void { 
+
+    if(this.data.fromPutaways){
+      this.addItem = true;
+      this.data.itemNumber=this.data.itemNumber;
+      this.data.description="";
+    }
+    else if(this.data.fromInventoryMaster)
     {
       this.data.itemNumber = "";
       this.data.description = "";
@@ -27,7 +33,7 @@ export class ItemNumberComponent implements OnInit {
     else 
     {
       
-    // console.log(this.data)
+    
     if (this.data.addItem) {
       this.addItem = true;
       this.data.itemNumber="";
@@ -38,9 +44,12 @@ export class ItemNumberComponent implements OnInit {
     }
      
   }
+  ngAfterViewInit() {
+    this.itm_nmb.nativeElement.focus();
+  }
 
   onNoClick(onsubmit: any, status : any): void {
-    // console.log();
+    
     
     if(status == 'createNew'){
     this.submit= true;

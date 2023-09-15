@@ -2,12 +2,12 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { SharedService } from 'src/app/services/shared.service';
-import { GlobalconfigService } from '../globalconfig.service';
+import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../labels/labels.json';
 import { MatDialog } from '@angular/material/dialog';
 import { LicensingInvalidComponent } from 'src/app/admin/dialogs/licensing-invalid/licensing-invalid.component';
 import { Subject, takeUntil } from 'rxjs';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 export interface PeriodicElement {
   position: string;
@@ -81,7 +81,7 @@ export class LicensingComponent implements OnInit {
     }`;
   }
   constructor(
-    private globalConfService: GlobalconfigService,
+    private Api: ApiFuntions,
     private sharedService: SharedService,
     private toastr: ToastrService,
     private dialog: MatDialog
@@ -98,7 +98,7 @@ export class LicensingComponent implements OnInit {
   }
   async getAppLicense() {
     // get can access
-    this.globalConfService.get(null, '/GlobalConfig/AppLicense').subscribe(
+    this.Api.AppLicense().subscribe(
       (res: any) => {
         if (res && res.data) {
           this.licAppData = res.data;
@@ -138,8 +138,8 @@ export class LicensingComponent implements OnInit {
       DisplayName:item.displayname,
       AppName: item.appname
     };
-    this.globalConfService
-      .get(payload, '/GlobalConfig/ValidateLicenseSave')
+    this.Api
+      .ValidateLicenseSave(payload)
       .subscribe(
         (res: any) => {
           if (res.isExecuted) {
@@ -154,6 +154,7 @@ export class LicensingComponent implements OnInit {
             let dialogRef = this.dialog.open(LicensingInvalidComponent, {
               width: '550px',
               autoFocus: '__non_existing_element__',
+      disableClose:true,
 
 
               data: {

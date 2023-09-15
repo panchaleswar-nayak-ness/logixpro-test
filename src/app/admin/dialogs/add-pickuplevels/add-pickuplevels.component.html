@@ -16,7 +16,7 @@
             </mat-form-field>
             <mat-form-field class="mb-3 w-100" appearance="outline">
                 <mat-label>Start Shelf</mat-label>
-                <input matInput type="text" [NumbersOnly]="true" name="startShelf" required="required" [(ngModel)]="startShelf" maxlength="2" (keydown.space)="$event.preventDefault()" (keyup)="checkIfValid()">
+                <input #start_shelf matInput type="text" [NumbersOnly]="true" name="startShelf" required="required" [(ngModel)]="startShelf" maxlength="2" (keydown.space)="$event.preventDefault()" (keyup)="checkIfValid()">
             </mat-form-field>
             <mat-form-field class="mb-3 w-100" appearance="outline">
                 <mat-label>End Shelf</mat-label>

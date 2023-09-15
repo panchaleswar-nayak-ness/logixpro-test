@@ -1,14 +1,13 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-import { Subject } from 'rxjs/internal/Subject';
-import { ProcessPicksService } from '../../../app/induction-manager/process-picks/process-picks.service';
+import { Subject } from 'rxjs/internal/Subject'; 
 import { DeleteConfirmationComponent } from '../../../app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { ConfirmationDialogComponent } from '../../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { VelocityCodeService } from '../../../app/common/services/velocity-code.service';
+import { ConfirmationDialogComponent } from '../../admin/dialogs/confirmation-dialog/confirmation-dialog.component'; 
 import { AuthService } from '../../../app/init/auth.service';
 import labels from '../../labels/labels.json';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-workstation-zones',
@@ -16,20 +15,20 @@ import labels from '../../labels/labels.json';
   styleUrls: ['./workstation-zones.component.scss']
 })
 export class WorkstationZonesComponent implements OnInit {
+  @ViewChild('field_focus') field_focus: ElementRef;
 
   public velocity_code_list: any[] = [];
   public velocity_code_list_Res: any;
   public currentVelocity = "";
   onDestroy$: Subject<boolean> = new Subject();
   public userData: any;
-  public selectedZone: any;
+  public selectedZone: any = '';
   public allZoneList: any[] = [];
   public zones: any[] = [];
   @ViewChild('btnSave') button;
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private velcodeService: VelocityCodeService,
-    private proPickService: ProcessPicksService,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    private Api: ApiFuntions,
     private authService: AuthService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>,
@@ -43,20 +42,21 @@ export class WorkstationZonesComponent implements OnInit {
     this.getAllZoneList();
 
   }
-
+  ngAfterViewInit(): void {
+    this.field_focus.nativeElement.focus();
+  }
   getVelocity() {
     let paylaod = {
       "username": this.userData.userName,
       "wsid": this.userData.wsid,
     }
     this.velocity_code_list = [];
-    this.proPickService.get(paylaod, '/Induction/WSPickZoneSelect').subscribe((res) => {
+    this.Api.WSPickZoneSelect(paylaod).subscribe((res) => {
       if (res.data) {
         res.data.map(val => {
           this.velocity_code_list.push({ 'zone': val, isSaved: true })
         })
-      }
-      // console.log(this.velocity_code_list);
+      } 
     });
   }
   getAllZoneList() {
@@ -65,7 +65,7 @@ export class WorkstationZonesComponent implements OnInit {
       "wsid": this.userData.wsid,
     }
     this.velocity_code_list = [];
-    this.proPickService.get(paylaod, '/Induction/LocationZonesSelect').subscribe((res) => {
+    this.Api.LocationZonesSelect(paylaod).subscribe((res) => {
       if (res.data) {
         this.zones = res.data;
       }
@@ -73,6 +73,7 @@ export class WorkstationZonesComponent implements OnInit {
   }
 
   addVLRow(row: any) {
+    this.selectedZone = '';
     this.allZoneList.unshift([]);
   }
   dltZone(){
@@ -82,11 +83,12 @@ export class WorkstationZonesComponent implements OnInit {
     this.selectedZone = val
   }
   saveVlCode() {
+    if(this.selectedZone){
       let paylaod = {
         "zone": this.selectedZone,
         "wsid": this.userData.wsid,
       }
-      this.proPickService.create(paylaod, '/Induction/WSPickZoneInsert').subscribe((res) => {
+      this.Api.WSPickZoneInsert(paylaod).subscribe((res) => {
         if (res.data) {
           this.toastr.success(labels.alert.success, 'Success!', {
             positionClass: 'toast-bottom-right',
@@ -96,13 +98,21 @@ export class WorkstationZonesComponent implements OnInit {
           this.allZoneList = [];
         }
         else {
-          this.toastr.error("This Zone is already selected for this workstation", 'Error!', {
+          this.toastr.error("This Zone is already selected for this workstation.", 'Error!', {
             positionClass: 'toast-bottom-right',
             timeOut: 2000
           });
         }
 
       });
+    }
+    else{
+      this.toastr.error("Please select any zone,", 'Error!', {
+        positionClass: 'toast-bottom-right',
+        timeOut: 2000
+      });
+    }
+     
   }
   dltVlCode(vlCode: any) {
     if (vlCode) {
@@ -110,6 +120,7 @@ export class WorkstationZonesComponent implements OnInit {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
+      disableClose:true,
       })
       dialogRef.afterClosed().subscribe(result => {
         if (result === 'Yes') {
@@ -118,7 +129,7 @@ export class WorkstationZonesComponent implements OnInit {
             "username": this.userData.userName,
             "wsid": this.userData.wsid,
           }
-          this.velcodeService.dltVelocityCode(paylaod).subscribe((res) => {
+          this.Api.dltVelocityCode(paylaod).subscribe((res) => {
             this.toastr.success(labels.alert.delete, 'Success!', {
               positionClass: 'toast-bottom-right',
               timeOut: 2000
@@ -140,6 +151,7 @@ export class WorkstationZonesComponent implements OnInit {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         message: "Remove Zone "+event+" from picking for this workstation"
       }
@@ -150,7 +162,7 @@ export class WorkstationZonesComponent implements OnInit {
           "Zone": event,
           "wsid": this.userData.wsid,
         }
-        this.proPickService.delete(paylaod, '/Induction/WSPickZoneDelete').subscribe((res) => {
+        this.Api.WSPickZoneDelete(paylaod).subscribe((res) => {
           // console.log(res);
           if (res.isExecuted) {
             this.toastr.success(labels.alert.delete, 'Success!', {

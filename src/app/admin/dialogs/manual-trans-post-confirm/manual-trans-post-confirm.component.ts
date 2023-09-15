@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { TransactionService } from '../../transaction/transaction.service';
+import { ToastrService } from 'ngx-toastr'; 
 import labels from '../../../labels/labels.json';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-manual-trans-post-confirm',
@@ -14,7 +14,7 @@ export class ManualTransPostConfirmComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
     private toastr: ToastrService,
-    private transactionService: TransactionService
+    private Api: ApiFuntions
   ) {}
 
   ngOnInit(): void {}
@@ -25,7 +25,7 @@ export class ManualTransPostConfirmComponent implements OnInit {
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.transactionService.get(payload, '/Admin/ManualOrdersPost').subscribe(
+    this.Api.ManualOrdersPost(payload).subscribe(
       (res: any) => {
         if (res.isExecuted) {
           this.toastr.success(labels.alert.delete, 'Success!', {

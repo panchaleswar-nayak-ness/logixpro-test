@@ -10,8 +10,8 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { SetColumnSeqService } from 'src/app/admin/dialogs/set-column-seq/set-column-seq.service';
+import { Router } from '@angular/router'; 
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 const ELEMENT_DATA: any[] = [];
 @Component({
@@ -24,12 +24,12 @@ export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
   public locationZonesData: any = [];
   dataSource = new MatTableDataSource<any>(ELEMENT_DATA);
   displayedColumns: string[] = [
-    'Carousel',
-    'Zone',
-    'Location Name',
-    'Total Lines',
-    'Open',
-    'Completed',
+    'carousel',
+    'zone',
+    'locationName',
+    'totalLines',
+    'open',
+    'completed',
   ];
   selection = new SelectionModel<any>(true, []);
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -58,7 +58,7 @@ export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
 
   @Input() set locationZonesEvent(event: any) {
     if (event) {
-      this.dataSource = event;
+      this.dataSource = new MatTableDataSource(event);
       this.locationZonesData = event;
     }
   }
@@ -74,7 +74,7 @@ export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
   }
 
 
-  constructor(private router: Router, private seqColumn: SetColumnSeqService) {
+  constructor(private router: Router, private Api: ApiFuntions) {
     if (this.router.getCurrentNavigation()?.extras?.state?.['searchValue']) {
       this.columnSearch.searchValue =
         this.router.getCurrentNavigation()?.extras?.state?.['searchValue'];

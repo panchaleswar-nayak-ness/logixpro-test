@@ -7,9 +7,11 @@
         </span>
         <input type="text" placeholder="Search Unassigned Function"
           aria-label="Search Unassigned Function"  matInput [(ngModel)]="filterName" maxlength="50">
+      <button matSuffix *ngIf="filterName" class="clear-btn" (click)="clearFields()" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+
       </mat-form-field>
     </div>
-    <button mat-stroked-button color="primary" class="button-add-all w-100 mb-3" (click)="assignFunction(unassignedFunctions)" [disabled]="!isGroupLookUp">
+    <button mat-stroked-button color="primary" class="button-add-all w-100 mb-3 justify-content-end" (click)="assignFunction(unassignedFunctions)" [disabled]="!isGroupLookUp">
       Add All
     </button>
     <div class="card w-100">

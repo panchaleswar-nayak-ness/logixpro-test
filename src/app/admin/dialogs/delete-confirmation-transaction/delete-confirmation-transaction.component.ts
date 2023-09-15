@@ -6,11 +6,10 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { EmployeeService } from 'src/app/employee.service';
-import { AuthService } from '../../../../app/init/auth.service';
-import { TransactionService } from '../../transaction/transaction.service';
+import { ToastrService } from 'ngx-toastr'; 
+import { AuthService } from '../../../../app/init/auth.service'; 
 import labels from '../../../labels/labels.json';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-delete-confirmation-transaction',
@@ -23,11 +22,10 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
-    private toastr: ToastrService,
-    private employeeService: EmployeeService,
+    private toastr: ToastrService, 
     public dialogRef: MatDialogRef<DeleteConfirmationTransactionComponent>,
     private authService: AuthService,
-    private transactionService: TransactionService,
+    private Api: ApiFuntions,
     private router: Router
   ) {}
 
@@ -48,7 +46,7 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
       wsid: this.userData.wsid,
     };
 
-    this.transactionService.get(deletePayload, '/Admin/DeleteOrder').subscribe(
+    this.Api.DeleteOrder(deletePayload).subscribe(
       (res: any) => {
         if(res.isExecuted){
           this.dialogRef.close("Yes");

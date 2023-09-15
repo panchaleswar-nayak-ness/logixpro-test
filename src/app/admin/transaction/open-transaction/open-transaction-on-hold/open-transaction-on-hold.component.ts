@@ -21,11 +21,8 @@ import { Subject, takeUntil, interval, Subscription, Observable } from 'rxjs';
 import { AddInvMapLocationComponent } from 'src/app/admin/dialogs/add-inv-map-location/add-inv-map-location.component';
 import { AdjustQuantityComponent } from 'src/app/admin/dialogs/adjust-quantity/adjust-quantity.component';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { QuarantineConfirmationComponent } from 'src/app/admin/dialogs/quarantine-confirmation/quarantine-confirmation.component';
-import { SetColumnSeqService } from 'src/app/admin/dialogs/set-column-seq/set-column-seq.service';
-import { InventoryMapService } from 'src/app/admin/inventory-map/inventory-map.service';
-import { AuthService } from 'src/app/init/auth.service';
-import { TransactionService } from '../../transaction.service';
+import { QuarantineConfirmationComponent } from 'src/app/admin/dialogs/quarantine-confirmation/quarantine-confirmation.component';  
+import { AuthService } from 'src/app/init/auth.service'; 
 import { DeleteConfirmationTransactionComponent } from 'src/app/admin/dialogs/delete-confirmation-transaction/delete-confirmation-transaction.component';
 import { SetColumnSeqComponent } from 'src/app/admin/dialogs/set-column-seq/set-column-seq.component';
 import { FloatLabelType } from '@angular/material/form-field';
@@ -33,6 +30,12 @@ import { ColumnSequenceDialogComponent } from 'src/app/admin/dialogs/column-sequ
 import { FunctionAllocationComponent } from 'src/app/admin/dialogs/function-allocation/function-allocation.component';
 import { SendTranHistoryComponent } from 'src/app/admin/dialogs/send-tran-history/send-tran-history.component';
 import { SharedService } from 'src/app/services/shared.service';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
+import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 
 const TRNSC_DATA = [
   { colHeader: 'id', colDef: 'ID' },
@@ -123,6 +126,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   searchAutocompleteList: any;
   searchAutocompleteListByCol: any;
   isDeleteVisible:any=localStorage.getItem('routeFromInduction')
+  // isResetVisible:any=localStorage.getItem('routeFromOrderStatus')
+ 
   /*for data col. */
   public columnValues: any = [];
   onDestroy$: Subject<boolean> = new Subject();
@@ -139,6 +144,14 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   transStatusSelect = 'All Transactions';
   rowClicked;
   hideDelete
+  hideReset
+
+  directAdmin;
+  throughOrderManager
+  setVal
+  spliUrl;
+  orderSelectionSearch  : boolean = true
+
   public detailDataInventoryMap: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -227,15 +240,17 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       value: 'Completed Transactions',
     },
   ];
+
   constructor(
-    private router: Router,
-    private seqColumn: SetColumnSeqService,
-    private transactionService: TransactionService,
-    private authService: AuthService,
-    private toastr: ToastrService,
-    private invMapService: InventoryMapService,
+    private router: Router, 
+    private Api: ApiFuntions,
+    public authService: AuthService,
+    private global:GlobalService,
+    private toastr: ToastrService, 
     private dialog: MatDialog,
-    private sharedService:SharedService
+    private sharedService:SharedService,
+    private filterService: ContextMenuFiltersService,
+    private currentTabDataService: CurrentTabDataService
   ) {
     if (this.router.getCurrentNavigation()?.extras?.state?.['searchValue']) {
       this.columnSearch.searchValue =
@@ -256,7 +271,20 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   };
 
   ngOnInit(): void {
+    this.setVal = localStorage.getItem('routeFromOrderStatus') 
+    if(this.router.url == '/OrderManager/OrderStatus' || this.setVal == 'true'){
+      this.throughOrderManager = true;
+      this.directAdmin = false;
+    }
+    else if(this.router.url == '/admin/transaction'|| this.setVal != 'true'){
+      this.throughOrderManager = false;
+      this.directAdmin = true;
+    }
     this.hideDelete=JSON.parse(this.isDeleteVisible);
+
+    // this.hideReset=JSON.parse(this.isResetVisible);
+
+
     this.customPagination = {
       total: '',
       recordsPerPage: 10,
@@ -300,13 +328,32 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       });
 
     this.userData = this.authService.userData();
-    this.getColumnsData();
+    this.getColumnsData(true);    
   }
   viewOrderInOrder(row) {
     this.returnToOrder.emit();
-    this.router.navigate([]).then((result) => {
-      window.open(`/#/admin/transaction?orderStatus=${row.orderNumber}`, '_self');
-    });
+    // this.router.navigate([]).then((result) => {
+    //   window.open(`/#/admin/transaction?orderStatus=${row.orderNumber}`, '_self');
+    // });
+
+
+if( this.spliUrl[1] == 'OrderManager' ){
+  this.router.navigate([]).then((result) => {
+    // window.open(`/#/OrderManager/OrderStatus?itemNumber=${row.itemNumber}`, '_blank');
+    window.open(`/#/OrderManager/OrderStatus?orderStatus=${row.orderNumber}`, '_self');
+  });
+}
+else {
+localStorage.setItem('routeFromInduction','false')
+this.router.navigate([]).then((result) => {
+  window.open(`/#/admin/transaction?orderStatus=${row.orderNumber}`, '_self');
+});
+
+}
+
+
+
+
   }
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value || 'auto';
@@ -337,6 +384,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       }
        })
     )
+    this.spliUrl=this.router.url.split('/');
   }
   /*FUnctions for Table*/
   isAuthorized(controlName: any) {
@@ -397,8 +445,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       };
     }
 
-    this.transactionService
-      .get(searchPayload, '/Admin/NextSuggestedTransactions', true)
+    this.Api
+      .NextSuggestedTransactions(searchPayload)
       .subscribe(
         (res: any) => {
           if (isSearchByOrder) {
@@ -412,16 +460,37 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   }
 
   viewInInventoryMaster(row) {
-    // this.router.navigate(['/admin/inventoryMaster']);
+
+
+    
+    if( this.spliUrl[1] == 'OrderManager' ){
+      this.router.navigate([]).then((result) => {
+        window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, '_self');
+      });
+   }
+   else if(this.spliUrl[1] == 'InductionManager' ){
+    window.open(`/#/InductionManager/Admin/InventoryMaster?itemNumber=${row.itemNumber}`, '_self');
+
+   }
+   else {
+    localStorage.setItem('routeFromInduction','false')
     this.router.navigate([]).then((result) => {
       window.open(`/#/admin/inventoryMaster?itemNumber=${row.itemNumber}`, '_self');
     });
+
+   }
+
+    //////////////////////////////////////////////////////////
+    // this.router.navigate([]).then((result) => {
+    //   window.open(`/#/admin/inventoryMaster?itemNumber=${row.itemNumber}`, '_self');
+    // });
   }
   sendComp(event) {
     let dialogRef = this.dialog.open(FunctionAllocationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         target: 'assigned',
         function: '',
@@ -470,23 +539,25 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     this.columnSearch.searchColumn.colDef='';
     this.columnSearch.searchValue='';
     this.orderNumber='';
+    
+    this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS] = undefined;
     // this.initializeApi();
     this.getContentData();
   }
 
-  getColumnsData() {
+  getColumnsData(isInit : boolean = false) {
     let payload = {
       username: this.userData.userName,
       wsid: this.userData.wsid,
       tableName: 'Open Transactions',
     };
-    this.transactionService.get(payload, '/Admin/GetColumnSequence').subscribe(
+    this.Api.GetColumnSequence(payload).subscribe(
       (res: any) => {
         this.displayedColumns = TRNSC_DATA;
         if (res.data) {
           this.columnValues = res.data;
           this.columnValues.push('actions');
-          this.getContentData();
+          this.getContentData(isInit);
         } else {
           this.toastr.error('Something went wrong', 'Error!', {
             positionClass: 'toast-bottom-right',
@@ -526,7 +597,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     // this.getContentData();
   }
 
-  getContentData() {
+  getContentData(isInit: boolean = false) {
     this.payload = {
       draw: 0,
       sDate: this.sdate,
@@ -541,12 +612,12 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       toteID: this.toteId,
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
-      filter: '1=1',
+      filter: this.FilterString,
       username: this.userData.userName,
       wsid: this.userData.wsid,
     };
-    this.transactionService
-      .get(this.payload, '/Admin/OpenTransactionTable', true)
+    this.Api
+      .OpenTransactionTable(this.payload)
       .subscribe(
         (res: any) => {
           // this.getTransactionModelIndex();
@@ -555,6 +626,13 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
           //  this.dataSource.paginator = this.paginator;
           this.customPagination.total = res.data?.recordsFiltered;
           this.dataSource.sort = this.sort;
+          if (isInit && this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS])
+          {
+            this.ApplySavedItem();
+            this.orderSelectionSearch = false;
+          }
+          else
+            this.RecordSavedItem();
         },
         (error) => {}
       );
@@ -574,7 +652,40 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     //     this.dataSource.sort = this.sort;
     //   });
   }
-
+  
+  ApplySavedItem() {
+    if (this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS]) {
+      let item = this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS];
+      this.detailDataInventoryMap = item.detailDataInventoryMap;
+      this.dataSource = item.dataSource;
+      //  this.dataSource.paginator = this.paginator;
+      this.customPagination.total = item.customPaginationTotal;
+      this.dataSource.sort = item.dataSourceSort;
+      this.sdate= item.sdate;
+      this.edate= item.edate;
+      this.statusType= item.statusType;
+      this.orderNumber= item.orderNumber;
+      this.toteId= item.toteId;
+      this.transTypeSelect= item.transTypeSelect;
+      this.columnSearch= item.columnSearch
+    }
+  }
+  RecordSavedItem() {
+    this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS]= {
+          detailDataInventoryMap : this.detailDataInventoryMap,
+          dataSource : this.dataSource,
+          //  this.dataSource.paginator = this.paginator;
+          customPaginationTotal : this.customPagination.total,
+          dataSourceSort : this.dataSource.sort,
+          sdate: this.sdate,
+          edate: this.edate,
+          statusType: this.statusType,
+          orderNumber: this.orderNumber,
+          toteId: this.toteId,
+          transTypeSelect: this.transTypeSelect,
+          columnSearch: this.columnSearch
+    }
+  }
   // initializeApi() {
   //   this.userData = this.authService.userData();
   //   this.payload = {
@@ -602,8 +713,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       username: this.userData.userName,
       wsid: this.userData.wsid,
     };
-    this.transactionService
-      .get(paylaod, '/Admin/TransactionModelIndex')
+    this.Api
+      .TransactionModelIndex(paylaod)
       .subscribe(
         (res: any) => {
           this.columnValues = res.data?.openTransactionColumns;
@@ -617,8 +728,9 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   actionDialog(opened: boolean) {
     if (!opened && this.selectedVariable && this.selectedVariable==='set_column_sq') {
       let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
-        height: '96%',
-        width: '70vw',
+        height: 'auto',
+        width: '960',
+        disableClose: true,
         data: {
           mode: event,
           tableName: 'Open Transactions',
@@ -640,6 +752,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     // this.orderNo = '';
     this.columnSearch.searchValue = '';
     this.searchAutocompleteListByCol = [];
+    this.orderSelectionSearch = false
+    this.searchByColumn.next(event);
   }
   resetColumn() {
     this.columnSearch.searchColumn.colDef = '';
@@ -678,7 +792,9 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   sendCompletedToHistory() {
     let dialogRef = this.dialog.open(SendTranHistoryComponent, {
       height: 'auto',
-      width: '800px',
+      width: '580px',
+      autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         user: this.userData.userName,
         wsid: this.userData.wsid,
@@ -701,4 +817,87 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     this.searchByColumn.unsubscribe();
     this.subscription.unsubscribe();
   }
+
+
+  @ViewChild('trigger') trigger: MatMenuTrigger;
+  contextMenuPosition = { x: '0px', y: '0px' };
+  FilterString: string = "1 = 1";
+
+
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
+    this.trigger.menu?.focusFirstItem('mouse');
+    this.trigger.openMenu();
+  }
+
+  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) { 
+    this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
+    if(FilterColumnName != "" || Condition == "clear"){
+      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
+      this.FilterString = this.FilterString != "" ? this.FilterString : "1=1";
+      this.resetPagination();
+      this.getContentData();
+    }
+  }
+
+  resetPagination(){
+    this.customPagination.startIndex = 0;
+    this.customPagination.endIndex = 20;
+    this.paginator.pageIndex = 0;
+  }
+
+  getType(val): string {
+    return this.filterService.getType(val);
+  }
+
+  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
+    const dialogRef = this.dialog.open(InputFilterComponent, {
+      height: 'auto',
+      width: '480px',
+      data: {
+        FilterColumnName: FilterColumnName,
+        Condition: Condition,
+        TypeOfElement: TypeOfElement
+      },
+      autoFocus: '__non_existing_element__',
+      disableClose:true,
+    })
+    dialogRef.afterClosed().subscribe((result) => {
+      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
+    }
+    );
+  }
+
+  clear(){
+    this.columnSearch.searchValue = ''
+    this.getContentData()
+  }
+
+  printCycleCountReport(){
+    this.global.Print(`FileName:printCycleCountReport`)
+    // window.location.href = `/#/report-view?file=FileName:printCycleCountReport`;
+    // window.location.reload();
+  }
+
+  previewFiftyPagesOnly(){
+    window.open(`/#/report-view?file=CycleCount-lst-prv`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+    // window.location.href = `/#/report-view?file=CycleCount-lst-prv`;
+    // window.location.reload();
+  }
+
+  selectRow(row: any) {
+    this.dataSource.filteredData.forEach(element => {
+      if(row != element){
+        element.selected = false;
+      }
+    });
+    const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
+    if (selectedRow) {
+      selectedRow.selected = !selectedRow.selected;
+    }
+  }
+
 }

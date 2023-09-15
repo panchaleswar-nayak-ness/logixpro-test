@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CellSizeComponent } from '../cell-size/cell-size.component';
 import { VelocityCodeComponent } from '../velocity-code/velocity-code.component';
@@ -6,10 +6,10 @@ import { WarehouseComponent } from '../warehouse/warehouse.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
-import { map } from 'rxjs/internal/operators/map';
-import { AdjustQuantityService } from './adjust-quantity.service';
+import { map } from 'rxjs/internal/operators/map'; 
 import { ToastrService } from 'ngx-toastr';
 import { ConditionalExpr } from '@angular/compiler';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 export interface  AdjustQuantityDataStructure   {
  // invMapID : string |  '',
@@ -18,6 +18,7 @@ export interface  AdjustQuantityDataStructure   {
   location :  string |  '',
   quantityAllocatedPick:  string |  '',
   quantityAllocatedPutAway :  string |  '',
+  itemQuantity :  string |  '',
 
   zone:   any |  '',  //notExist
   currentMaxQty:  any |  '',  //notExist
@@ -33,7 +34,8 @@ export interface  AdjustQuantityDataStructure   {
   styleUrls: ['./adjust-quantity.component.scss']
 })
 export class AdjustQuantityComponent implements OnInit {
-
+  @ViewChild('newQty') newQty: ElementRef;
+  fieldName="";
  adjustInventoryMapForm: FormGroup;
 
  getAdjustQuantityData  :    AdjustQuantityDataStructure = {
@@ -45,9 +47,10 @@ export class AdjustQuantityComponent implements OnInit {
   quantityAllocatedPick:  '',
   quantityAllocatedPutAway : '',
   locationZone : '',
-  currentMaxQty: '', //notExist
+  currentMaxQty: '', //notExistdi
   currentMinQty: '', //notExist
   currentLocationQty: '' , //notExist
+  itemQuantity: '' , //notExist
 
 } ;
 
@@ -58,56 +61,63 @@ export class AdjustQuantityComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     public fb: FormBuilder,
-    private adjustQuantityService: AdjustQuantityService,
+    private Api: ApiFuntions,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>
   ) {
-
+   this.fieldName=data.fieldNames;
   }
 
-  ngOnInit(): void {
-    //console.log(this.data.id)
+  ngOnInit(): void { 
     this.getItemQuantity(this.data.id);
     this.getAdjustmentReasons();
     this.initializeDataSet();
   }
+  
+  ngAfterViewInit() {
+ 
+
+      this.newQty.nativeElement.focus();
+
+   
+  }
+
 
   initializeDataSet(){
     this.adjustInventoryMapForm = this.fb.group({
       mapID: [ this.data.id, [Validators.required]],
-      quantity: [  '', [Validators.required]],
+      quantity: [  0, [Validators.required]],
       description: [  '', [Validators.required]],
     });
   }
 
   getItemQuantity(id: any){
-    this.adjustQuantityService.getItemQuantityDetail(id).subscribe((res) => {
+    this.Api.getItemQuantityDetail(id).subscribe((res) => {
       if(res.data && res.isExecuted){
         this.getAdjustQuantityData = res.data;
+        this.newQty.nativeElement.focus();
       }
     });
   }
 
   getAdjustmentReasons(){
-    this.adjustQuantityService.getAdjustmentReasonsList().subscribe((res) => {
+    this.Api.getAdjustmentReasonsList().subscribe((res) => {
       if(res.data && res.isExecuted){
         this.getAdjustReasonsList = res.data;
       }
     });
   }
-  onSubmit(form: FormGroup) {
-    //console.log('create',form);
+  onSubmit(form: FormGroup) { 
 
     if(form.valid){
-      this.adjustQuantityService.updateItemQuantity(form.value).subscribe((res) => {
+      this.Api.updateItemQuantity(form.value).subscribe((res) => {
         if(res.isExecuted){
           this.toastr.success(res.responseMessage, 'Success!',{
             positionClass: 'toast-bottom-right',
             timeOut:2000
-         });
-          // console.log(res.responseMessage)
-         // this.dialog.closeAll(form.value.quantity);
+         }); 
+        //  this.dialog.closeAll(form.value.quantity);
           this.dialogRef.close(form.value.quantity);   
         }
       });

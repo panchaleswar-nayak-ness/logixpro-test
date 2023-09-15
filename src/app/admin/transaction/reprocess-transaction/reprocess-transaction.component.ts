@@ -19,13 +19,14 @@ import { debounceTime, distinctUntilChanged, Subject, Subscription,takeUntil } f
 import { AuthService } from 'src/app/init/auth.service';
 import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { ReprocessTransactionDetailComponent } from '../../dialogs/reprocess-transaction-detail/reprocess-transaction-detail.component';
-import { SetColumnSeqService } from '../../dialogs/set-column-seq/set-column-seq.service';
-import { InventoryMapService } from '../../inventory-map/inventory-map.service';
-import { TransactionService } from '../transaction.service';
+ 
 import { SharedService } from '../../../services/shared.service';
 import { DialogConfig } from '@angular/cdk/dialog';
 import { FunctionAllocationComponent } from '../../dialogs/function-allocation/function-allocation.component';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { Router } from '@angular/router';
+import { GlobalService } from 'src/app/common/services/global.service';
 const TRNSC_DATA = [
   { colHeader: 'id', colDef: 'ID' },
   { colHeader: 'importDate', colDef: 'Import Date' },
@@ -87,6 +88,7 @@ const TRNSC_DATA = [
   { colHeader: 'dateStamp', colDef: 'Date Stamp' },
   { colHeader: 'reason', colDef: 'Reason' },
   { colHeader: 'nameStamp', colDef: 'Name Stamp' },
+  { colHeader: 'blank', colDef: 'blank' },
 ];
 @Component({
   selector: 'app-reprocess-transaction',
@@ -183,6 +185,7 @@ export class ReprocessTransactionComponent implements OnInit {
   itemNumber: string = '';
   selectedVariable;
   isHistory: boolean = false;
+  orderSelectionSearch: boolean = false;
   toteId: string = '';
   searchByToteId = new Subject<string>();
   searchByOrderNumber = new Subject<string>();
@@ -199,14 +202,14 @@ export class ReprocessTransactionComponent implements OnInit {
 
   /*for data col. */
 
-  constructor(
-    private seqColumn: SetColumnSeqService,
-    private transactionService: TransactionService,
+  constructor( 
+    private Api: ApiFuntions,
     private authService: AuthService,
-    private toastr: ToastrService,
-    private invMapService: InventoryMapService,
+    private toastr: ToastrService, 
     private dialog: MatDialog,
     private sharedService: SharedService,
+    private router: Router,
+    private global:GlobalService,
   ) { }
 
   ngOnInit(): void {
@@ -227,9 +230,9 @@ export class ReprocessTransactionComponent implements OnInit {
         this.customPagination.length=20;
         this.paginator.pageIndex = 0;
         if(this.searchFieldsTrueFalse.indexOf(this.columnSearch.searchColumn.colDef) > -1){
-          if(this.trueString.match(value.toLowerCase())){
+          if(this.trueString.match(this.columnSearch.searchValue.toLowerCase())){
               this.switchTrueString=true;
-          }else if(this.falseString.match(value.toLowerCase())){
+          }else if(this.falseString.match(this.columnSearch.searchValue.toLowerCase())){
             this.switchTrueString=false;
           }
         }   
@@ -278,7 +281,11 @@ export class ReprocessTransactionComponent implements OnInit {
   
   }
 
+  selectedTransaction:any;
   getTransaction(row: any) {
+    this.selectedTransaction = row;
+    console.log(this.selectedTransaction);
+
     this.isEnabled = false;
     this.transactionID = row.id;
 
@@ -300,7 +307,7 @@ export class ReprocessTransactionComponent implements OnInit {
         username: this.userData.userName,
         wsid: this.userData.wsid,
       }
-      this.transactionService.get(payload, '/Admin/ReprocessTransactionData').subscribe(
+      this.Api.ReprocessTransactionData(payload).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
             this.createdBy = res.data[0].nameStamp;
@@ -358,8 +365,8 @@ export class ReprocessTransactionComponent implements OnInit {
         wsid: this.userData.wsid,
       };
     }
-    this.transactionService
-      .get(searchPayload, '/Admin/NextSuggestedTransactions', true)
+    this.Api
+      .NextSuggestedTransactions(searchPayload)
       .subscribe(
         (res: any) => {
           if (isSearchByOrder) {
@@ -385,9 +392,36 @@ export class ReprocessTransactionComponent implements OnInit {
 
   filterCleared(evt:any)
   {
-    this.getContentData("1");
-    
+    if(evt==='cleared'){
+      this.setResetValues();
+    this.isHistory ? this.getHistoryData() : this.getContentData("1");
 
+    }
+    else{
+      this.itemNumber='';
+      this.orderNumber='';
+    // this.isHistory ? this.getHistoryData() : this.getContentData("1");
+
+    }
+  
+    // this.getContentData("1");
+  
+  }
+
+
+  setResetValues(){
+    this.itemNumber='';
+    this.orderNumber='';
+    this.isHistory=false;
+    this.isHold = false;
+    this.customPagination = {
+      total: '',
+      recordsPerPage: 20,
+      startIndex: 0,
+      endIndex: 10,
+    };
+     this.sortCol= 5;
+     this.sortOrder= 'asc';
   }
 
   actionDialog(opened: boolean) {
@@ -395,8 +429,9 @@ export class ReprocessTransactionComponent implements OnInit {
     {
       if (!opened && this.selectedVariable && this.selectedVariable === 'set_column_sq') {
         let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
-          height: '96%',
-          width: '70vw',
+          height: 'auto',
+          width: '960px',
+          disableClose: true,
           data: {
             mode: event,
             tableName: 'Open Transactions Temp',
@@ -534,6 +569,7 @@ export class ReprocessTransactionComponent implements OnInit {
             height: 'auto',
             width: '480px',
             autoFocus: '__non_existing_element__',
+      disableClose:true,
             data: {
               mode: '',
             }
@@ -541,7 +577,7 @@ export class ReprocessTransactionComponent implements OnInit {
           dialogRef.afterClosed().subscribe(result => {
             if(result=='Yes')
             {
-              this.seqColumn.delete(deletePayload).subscribe((res: any) => {
+              this.Api.ReprocessTransactionDelete(deletePayload).subscribe((res: any) => {
     
                 this.selectedVariable = "";
                 this.toastr.success(labels.alert.update, 'Success!',{
@@ -658,6 +694,7 @@ export class ReprocessTransactionComponent implements OnInit {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
+      disableClose:true,
         data: {
           message: message
         }
@@ -683,10 +720,9 @@ export class ReprocessTransactionComponent implements OnInit {
             username: this.userData.userName,
             wsid: this.userData.wsid,
           }
-          this.transactionService.get(payload, '/Admin/SetAllReprocessColumn').subscribe(
+          this.Api.SetAllReprocessColumn(payload).subscribe(
             (res: any) => {
-              if (res.data && res.isExecuted) {
-                // console.log(res);
+              if (res.data && res.isExecuted) { 
                 this.getContentData();
                 this.getOrdersWithStatus();
                 this.toastr.success(labels.alert.update, 'Success!', {
@@ -718,6 +754,7 @@ export class ReprocessTransactionComponent implements OnInit {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
+      disableClose:true,
         data: {
           target: 'unassigned',
           function: null
@@ -733,7 +770,7 @@ export class ReprocessTransactionComponent implements OnInit {
               username: this.userData.userName,
               wsid: this.userData.wsid,
             }
-            this.transactionService.get(payloadForReprocess, '/Admin/ReprocessIncludeSet').subscribe(
+            this.Api.ReprocessIncludeSet(payloadForReprocess).subscribe(
               (res: any) => {
                 if (res.data && res.isExecuted) {
                   this.getContentData();
@@ -770,7 +807,7 @@ export class ReprocessTransactionComponent implements OnInit {
       username: this.userData.userName,
       wsid: this.userData.wsid
     };
-    this.transactionService.get(payload, '/Admin/OrderToPost').subscribe(
+    this.Api.OrderToPost(payload).subscribe(
       (res: any) => {
         if (res.data) {
           this.orders.reprocess = res.data.reprocessCount;
@@ -832,7 +869,7 @@ export class ReprocessTransactionComponent implements OnInit {
       wsid: this.userData.wsid,
       tableName: 'Open Transactions Temp',
     };
-    this.transactionService.get(payload, '/Admin/GetColumnSequence').subscribe(
+    this.Api.GetColumnSequence(payload).subscribe(
       (res: any) => {
         this.displayedColumns = TRNSC_DATA;
         if (res.data) {
@@ -867,11 +904,10 @@ export class ReprocessTransactionComponent implements OnInit {
       username: this.userData.userName,
       wsid: this.userData.wsid
     };
-    this.transactionService
-      .get(payload, '/Admin/ReprocessTransactionTable', true)
+    this.Api
+      .ReprocessTransactionTable(payload)
       .subscribe(
-        (res: any) => {
-          //console.log(res)
+        (res: any) => { 
           // this.getTransactionModelIndex();
           this.detailDataInventoryMap = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
@@ -909,8 +945,8 @@ export class ReprocessTransactionComponent implements OnInit {
       username: this.userData.userName,
       wsid: this.userData.wsid
     };
-    this.transactionService
-      .get(payload, '/Admin/ReprocessedTransactionHistoryTable',true)
+    this.Api
+      .ReprocessedTransactionHistoryTable(payload)
       .subscribe(
         (res: any) => {
           // this.getTransactionModelIndex();
@@ -937,14 +973,20 @@ export class ReprocessTransactionComponent implements OnInit {
     // this.pageIndex = e.pageIndex;
 
     // this.initializeApi();
-    this.getContentData();
+    if(this.isHistory){
+      this.getHistoryData()
+    }else{
+      this.getContentData();
+    }
+ 
   }
-
 
   resetFields(event?) {
     // this.orderNo = '';
     this.columnSearch.searchValue = '';
     this.searchAutocompleteListByCol = [];
+    this.orderSelectionSearch = false
+    this.searchByColumn.next('');
   }
 
   openReasonDialog(reasonMessage:any)
@@ -952,6 +994,7 @@ export class ReprocessTransactionComponent implements OnInit {
     const dialogRef = this.dialog.open(this.description, {
       width: '560px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
     });
     dialogRef.afterClosed().subscribe((x) => {
 
@@ -966,14 +1009,114 @@ export class ReprocessTransactionComponent implements OnInit {
       height: 'auto',
       width: '100%',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         transactionID: id,
         history: this.isHistory
       }
+    });
+    dialogRef.afterClosed().subscribe((x) => {
+      
+      if(x==='add'){
+        this.itemNumber='';
+        this.orderNumber='';
+        if(this.isHistory){
+          this.getHistoryData()
+        }else{
+          this.getContentData()
+        }
+      }
+      
     })
   }
+  getObjChange(event){
+    if(event.radioChange){
+      this.orderNumber='';
+      this.itemNumber='';
+      this.customPagination.startIndex=0;
+      this.customPagination.total='';
+      this.customPagination.recordsPerPage=20;
+      this.customPagination.endIndex='';
+      this.paginator.pageIndex = 0;
+    }
 
+  }
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+  clear(){
+    this.columnSearch.searchValue = ''
+    this.getContentData()
+  }
+
+  recordsToView: string = "";
+  selectedOptionChange($event){
+    this.recordsToView = $event;
+  }
+
+  printPreview(type:string,print=true){
+    let id: number = this.selectedTransaction?.id;
+    let history = this.recordsToView == 'history' ? 1 : 0;
+    let reason = this.selectedTransaction?.reason;
+    let message = this.selectedTransaction?.reasonMessage;
+    let date = this.selectedTransaction?.dateStamp;
+    let orderNumber = this.orderNumber;
+    let itemNumber = this.itemNumber;
+    if(type == 'all'){
+      if(print){
+        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`);  
+      }
+      else{
+        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+      }
+    }
+    else if(type == 'selected'){
+      if(print){
+        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:${id}|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`);  
+      }
+      else{
+        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:${id}|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+      }
+    }
+    else if(type == 'reason'){
+      if(print){
+        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:${reason}|Message:|Date:`);  
+      }
+      else{
+        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:${reason}|Message:|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+      }
+    }
+    else if(type == 'message'){
+      if(print){
+        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:${message}|Date:`);  
+      }
+      else{
+        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:${message}|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+      }
+    }
+    else if(type == 'date'){
+      if(print){
+        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:${date}`);
+      }
+      else{
+        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:${date}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+      }
+    }
+    else if(type == 'item'){
+      if(print){
+        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:${itemNumber}|Reason:|Message:|Date:`);
+      }
+      else{
+        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:${itemNumber}|Reason:|Message:|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+      }
+    }
+    else if(type == 'order'){
+      if(print){
+        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:${orderNumber}|ItemNumber:|Reason:|Message:|Date:`);
+      }
+      else{
+        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:${orderNumber}|ItemNumber:|Reason:|Message:|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+      }
+    }
   }
 }

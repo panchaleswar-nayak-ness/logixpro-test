@@ -12,10 +12,11 @@
 
             <mat-form-field class="w-100 mb-2" appearance="outline">
                 <mat-label>Select Zone</mat-label>
-                <input type="text" placeholder="Select Zone" (blur)="blurInput()" aria-label="Select Zone" matInput formControlName="zoneList"
+                <input  #select_zone type="text" placeholder="Select Zone" (blur)="blurInput()" aria-label="Select Zone" matInput formControlName="zoneList"
                     [matAutocomplete]="auto" maxlength="2"value="{{editZoneName ?? ''}}">
                     <mat-icon class="icon-kbdown-dropdown" matSuffix>keyboard_arrow_down</mat-icon>
-                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                
+                    <mat-autocomplete  autoActiveFirstOption #auto="matAutocomplete" >
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                         {{option}}
                     </mat-option>

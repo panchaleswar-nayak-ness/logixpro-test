@@ -1,81 +1,87 @@
-<h1 mat-dialog-title>Adjust Quantity</h1>
-<button mat-icon-button class="close-button dialog-close-button" [mat-dialog-close]="true">
-    <mat-icon class="close-icon">close</mat-icon>
-</button>
-    <div class="container item_detail">
-        <div class="row">
-            <div class="col-6">
-                <mat-form-field class="d-block w-100 bg-tetiary-10" appearance="outline">
-                    <mat-label>Item Number</mat-label>
+
+<div class="d-flex justify-content-between mb-4 align-items-center">
+    <div style="width:48px"></div>
+    <h1 class="m-0" mat-dialog-title>Adjust Quantity</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+        <div class="card p-3 mb-3">
+            <div class="row">
+            <div class="col-xl-4">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label>{{fieldName?fieldName:'Item Number'}}</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.itemNumber"   name="this.getAdjustQuantityData.itemNumber"
                         disabled>
                 </mat-form-field>
             </div>
-            <div class="col-6">
-                <mat-form-field class="d-block w-100 " appearance="outline"aria-disabled="true">
+            <div class="col-xl-8">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"aria-disabled="true">
                     <mat-label>Description</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.description"   name="this.getAdjustQuantityData.itemNumber"
                     disabled>
                 </mat-form-field>
             </div>
-            <div class="col-6">
-                <mat-form-field class="d-block w-100 " appearance="outline" aria-disabled="true">
+            <div class="col-xl-4">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
                     <mat-label>Location Zone</mat-label>
+                    <input matInput class="" [value]="this.getAdjustQuantityData.zone"   name="this.getAdjustQuantityData.itemNumber"
+                    disabled>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-4">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
+                    <mat-label>Location</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.location"   name="this.getAdjustQuantityData.itemNumber"
                     disabled>
                 </mat-form-field>
             </div>
-            <div class="col-6">
-                <mat-form-field class="d-block w-100 " appearance="outline" aria-disabled="true">
-                    <mat-label>Location</mat-label>
-                    <input matInput class="" [value]="this.getAdjustQuantityData.locationZone"   name="this.getAdjustQuantityData.itemNumber"
-                    disabled>
-                </mat-form-field>
-            </div>
-            <div class="col-4">
-                <mat-form-field class="d-block w-100 " appearance="outline" aria-disabled="true">
+            <div class="col-xl-4">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
                     <mat-label>Qty Put Away</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.quantityAllocatedPutAway"   name="this.getAdjustQuantityData.itemNumber"
                     disabled>
                 </mat-form-field>
             </div>
-            <div class="col-4">
-                <mat-form-field class="d-block w-100 " appearance="outline" aria-disabled="true">
+            <div class="col-xl-4">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
                     <mat-label>Qty Pick</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.quantityAllocatedPick"   name="this.getAdjustQuantityData.itemNumber"
                     disabled>
                 </mat-form-field>
             </div>
-            <div class="col-4">
-                <mat-form-field class="d-block w-100 " appearance="outline" aria-disabled="true">
+            <div class="col-xl-4">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
                     <mat-label>Current Location Qty</mat-label>
-                    <input matInput class="" [value]="this.getAdjustQuantityData.currentLocationQty? this.getAdjustQuantityData.currentLocationQty : '-' "   name="this.getAdjustQuantityData.itemNumber"
+                    <input matInput class="" [value]="this.getAdjustQuantityData.itemQuantity? this.getAdjustQuantityData.itemQuantity : '-' "   name="this.getAdjustQuantityData.itemNumber"
                     disabled>
                 </mat-form-field>
             </div>
-            <div class="col-4">
-                <mat-form-field class="d-block w-100 " appearance="outline" aria-disabled="true">
+            <div class="col-xl-4">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" aria-disabled="true">
                     <mat-label>Current Max. Qty</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.currentMaxQty? this.getAdjustQuantityData.currentMaxQty : '-'"   name="this.getAdjustQuantityData.itemNumber"
                     disabled>
                 </mat-form-field>
             </div>
-            <div class="col-4">
-                <mat-form-field class="d-block w-100" appearance="outline" aria-disabled="true">
+            <div class="col-xl-4">
+                <mat-form-field class="custom-form-field w-100" appearance="outline" aria-disabled="true">
                     <mat-label>Current Min. Qty</mat-label>
                     <input matInput class="" [value]="this.getAdjustQuantityData.currentMinQty? this.getAdjustQuantityData.currentMinQty : '-'"   name="this.getAdjustQuantityData.itemNumber"
                     disabled>
                 </mat-form-field>
             </div>
         </div>
-    </div>
+        </div>
+
+
     <form [formGroup]="adjustInventoryMapForm" (ngSubmit)="onSubmit(adjustInventoryMapForm)">
-    <div class="container newEntry">
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-6">
-            <mat-form-field class="d-block w-100" appearance="outline">
+            <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <mat-label>Enter New Quantity</mat-label>
-                <input matInput formControlName="quantity"   name="quantity">
+                <input matInput #newQty  [NumbersOnly]="true" type="number" formControlName="quantity" maxlength="9"  name="quantity">
             </mat-form-field>
             <div class="error" *ngIf="hasError('quantity', 'required')">This field is required.</div>
         </div>
@@ -85,7 +91,7 @@
                 <input matInput class="readonly" value="itemNumber"   name="locationNumber"
                     readonly>
             </mat-form-field> -->
-            <mat-form-field class="d-block w-100" appearance="outline">
+            <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <mat-label>Reason For Adjustment</mat-label>
                 <input   placeholder="Reason For Adjustment" aria-label="Reason For Adjustment" matInput
                     formControlName="description" [matAutocomplete]="auto">
@@ -99,10 +105,12 @@
             <div class="error" *ngIf="hasError('description', 'required')">This field is required.</div>
         </div>
     </div>
-    </div>
 
-    <mat-dialog-actions align="end">
-        <button mat-stroked-button color="warn" class="" (click)="initializeDataSet()">Clear</button>
-        <button type="submit" mat-flat-button class="form-button-submit" color="primary" [disabled]="!isValid()">Save Changes</button>
+    <mat-dialog-actions>
+        <!-- <button mat-stroked-button color="warn" class="button-primary btn-lg" (click)="initializeDataSet()">Clear</button> -->
+        <button style="flex: 1;"  type="submit" mat-flat-button class="btn-lg" color="primary" [disabled]="!isValid()">Save Changes</button>
+        <!-- <button type="submit" style="flex: 1;" mat-flat-button class="button-primary btn-lg" color="primary" [disabled]="!isValid()">Save Changes</button> -->
     </mat-dialog-actions>
 </form>
+
+

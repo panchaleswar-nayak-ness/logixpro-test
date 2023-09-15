@@ -10,7 +10,7 @@ export class CustomHttpInterceptor implements HttpInterceptor {
 
     constructor(private spinnerService: SpinnerService) { }
 
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> { 
         if (req.context.get(BYPASS_LOG) === false){
             this.spinnerService.show();
         }

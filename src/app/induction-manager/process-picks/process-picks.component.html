@@ -2,12 +2,13 @@
     <mat-card-content>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="card-header-title mb-0 d-flex align-items-center">
-                <div class="mat-icon-wrap me-lg-3">
+                <div class="mat-icon-wrap me-lg-3 me-2">
                     <span class="material-symbols-outlined">
                         ballot
                     </span>
                 </div>
                 <span>Batch Setup</span>
+                <!-- <button (click)="ProcessPickPrintPref('','','')"> TEST</button> -->
             </h2>
             <button type="submit" mat-stroked-button class="btn-regular" color="primary" [matMenuTriggerFor]="appMenu">
                 <mat-icon class="material-symbols-outlined">print</mat-icon>
@@ -15,45 +16,46 @@
                     expand_more
                 </span>
             </button>
-            <mat-menu #appMenu="matMenu">
-                <button mat-menu-item><b>Print Tote/Location Labels</b></button>
-                <button mat-menu-item>Print Pick Labels</button>
-                <button mat-menu-item>Print Pick List</button>
+            <mat-menu #appMenu="matMenu" >
+                <button (click)="printPick('PrintTote')" mat-menu-item><b>Print Tote/Location Labels</b></button>
+                <button (click)="printPick('PrintPickLabel')"mat-menu-item>Print Pick Labels</button>
+                <button (click)="printPick('PrintPickList')" mat-menu-item>Print Pick List</button>
             </mat-menu>
         </div>
         <div class="row">
-            <div [ngClass]="useInZonePickScreen === true ? 'col-xl-12' : 'col-xl-4'">
-                <div class="card p-3 mb-2">
+            <div class="mb-3 mb-xxl-0" [ngClass]="useInZonePickScreen === true ? 'col-xxl-12' : 'col-xxl-4'">
+                <div class="card p-3">
                     <div class="row">
                         <div [ngClass]="useInZonePickScreen === true ? 'col-xl-6' : 'col-xl-12'">
                             <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
                                 <mat-label>Batch ID</mat-label>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
                                     [(ngModel)]="batchID" #batch_id required="required">
+                                    <button matSuffix *ngIf="batchID" class="clear-btn"  (click)="batchID= ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             </mat-form-field>
                         </div>
                     </div>
 
-                    <div class="d-flex gap-12">
-                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100"
+                    <div class="d-block d-xl-flex gap-12">
+                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100 mb-3 mb-xl-0"
                             style="min-width: 150px;" (click)="onAddBatch('batchWithID')">
                             New Batch with ID
                         </button>
-                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100"
+                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100 mb-3 mb-xl-0"
                             style="min-width: 150px;" (click)="onAddBatch('newBatch')">
                             New Batch
                         </button>
-                        <button *ngIf="useInZonePickScreen" mat-stroked-button color="primary" class="w-100"
+                        <button *ngIf="useInZonePickScreen" mat-stroked-button color="primary" class="w-100 mb-3 mb-xl-0"
                             style="min-width: 150px;" (click)="openBlossomToteDialogue()">
                             Blossom
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-8" *ngIf="!useInZonePickScreen">
-                <div class="card p-3 mb-2">
-                    <mat-radio-group color="primary" class="d-flex" name="radioOpt1" [(ngModel)]="pickType">
-                        <div class="d-flex w-100 pe-2 align-items-center">
+            <div class="col-xxl-8" *ngIf="!useInZonePickScreen">
+                <div class="card p-3">
+                    <mat-radio-group color="primary" class="d-block d-xl-flex" name="radioOpt1" [(ngModel)]="pickType">
+                        <div class="d-flex w-100 pe-2 align-items-center mb-3 mb-xl-0">
                             <mat-radio-button class=" custom-horizontal-radio" value="MixedZones">
                             </mat-radio-button>
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
@@ -62,7 +64,7 @@
                                     value="{{countInfo?.mixed}}" disabled="true">
                             </mat-form-field>
                         </div>
-                        <div class="d-flex w-100 pe-2 align-items-center">
+                        <div class="d-flex w-100 pe-2 align-items-center mb-3 mb-xl-0">
                             <mat-radio-button class=" custom-horizontal-radio" value="OffCarousel">
                             </mat-radio-button>
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
@@ -71,7 +73,7 @@
                                     value="{{countInfo?.offCarousel}}" disabled="true">
                             </mat-form-field>
                         </div>
-                        <div class="d-flex w-100 pe-2 align-items-center">
+                        <div class="d-flex w-100 pe-2 align-items-center mb-3 mb-xl-0">
                             <mat-radio-button class=" custom-horizontal-radio" value="Carousel">
                             </mat-radio-button>
                             <mat-form-field class="custom-form-field w-100" appearance="outline">
@@ -81,8 +83,8 @@
                             </mat-form-field>
                         </div>
                     </mat-radio-group>
-                    <div class="d-flex gap-12 mt-2">
-                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100"
+                    <div class="d-block d-xl-flex gap-12 mt-2">
+                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100 mb-3 mb-xl-0"
                             style="min-width: 150px;">
                             Refresh Order Count
                         </button>
@@ -97,12 +99,12 @@
     </mat-card-content>
 </mat-card>
 <div class="row">
-    <div [ngClass]="useInZonePickScreen === true ? 'col-xl-6' : 'col-xl-12'">
-        <mat-card class="mat-elevation-z g-card mb-3">
+    <div [ngClass]="useInZonePickScreen === true ? 'col-xl-6' : 'col-xl-12'" class="mb-3">
+        <mat-card class="mat-elevation-z g-card mb-3 h-100">
             <mat-card-content class=" h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2 class="card-header-title mb-0 d-flex align-items-center">
-                        <div class="mat-icon-wrap me-lg-3">
+                        <div class="mat-icon-wrap me-lg-3 me-2">
                             <span class="material-symbols-outlined">
                                 print
                             </span>
@@ -117,20 +119,21 @@
                         </span>
                     </button>
                     <mat-menu #appMenu1="matMenu">
-                        <button mat-menu-item><b>Print Tote/Location Labels</b></button>
-                        <button mat-menu-item>Print Pick Labels</button>
-                        <button mat-menu-item>Print Pick List</button>
-                        <button mat-menu-item>Print Case Labels</button>
-                        <button mat-menu-item>Print Pick Batch List</button>
+                        <button (click)="printExisting('PrintTote')" mat-menu-item><b>Print Tote/Location Labels</b></button>
+                        <button  (click)="printExisting('PrintPickLabel')" mat-menu-item>Print Pick Labels</button>
+                        <button  (click)="printExisting('PrintPickList')" mat-menu-item>Print Pick List</button>
+                        <button  (click)="printExisting('PrintCase')" mat-menu-item>Print Case Labels</button>
+                        <button  (click)="printExisting('PrintBatch')" mat-menu-item>Print Pick Batch List</button>
                     </mat-menu>
                 </div>
                 <div class="card p-3 mb-2">
                     <div class="row">
-                        <div class="col-xl-5">
+                        <div class="col-xl-12">
                             <mat-form-field class="custom-form-field w-100 position-relative" appearance="outline">
                                 <mat-label>Batch ID</mat-label>
                                 <input type="text" [formControl]="pickBatches" aria-label="Number" matInput
-                                    [matAutocomplete]="auto">
+                                    [matAutocomplete]="auto" [(ngModel)]="pickBatchesCrossbtn">
+                                    <button matSuffix *ngIf="pickBatchesCrossbtn" class="clear-btn" (click)="pickBatchesCrossbtn= ''" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>                              
                                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                                     <h6 class="ctl_name ac-dropdown-label"><span>Batch ID</span></h6>
                                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
@@ -147,8 +150,8 @@
             </mat-card-content>
         </mat-card>
     </div>
-    <div class="col-xl-6" *ngIf="useInZonePickScreen">
-        <mat-card class="mat-elevation-z g-card mb-3">
+    <div class="col-xl-6 mb-3" *ngIf="useInZonePickScreen">
+        <mat-card class="mat-elevation-z g-card mb-3 h-100">
             <mat-card-content>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2 class="card-header-title mb-0 d-flex align-items-center">
@@ -165,10 +168,11 @@
 
                 <div class="row align-items-center">
                     <div class="col-xl-8">
-                        <mat-form-field class="custom-form-field w-100 position-relative" appearance="outline">
+                        <mat-form-field class="custom-form-field w-100 position-relative mb-2" appearance="outline">
                             <mat-label>Order No.</mat-label>
                             <input type="text" [formControl]="orderNumber" aria-label="Number" matInput
                                 [matAutocomplete]="auto" [(ngModel)]="orderInput" (keyup.enter)="ifOrderExits(orderInput)">
+                                <button matSuffix *ngIf="orderInput" class="clear-btn" (click)="orderInput = ''" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
                             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="ifOrderExits(orderInput)">
                                 <h6 class="ctl_name ac-dropdown-label"><span>Batch ID</span></h6>
                                 <mat-option *ngFor="let option of filteredOrderNum | async" [value]="option">
@@ -182,7 +186,7 @@
                     </div>
                     <div class="col-xl-4">
                         <a mat-flat-button [matMenuTriggerFor]="orderMenu" color="primary"
-                            class="primary-button btn-regular w-100" style="min-width: 150px;">
+                            class="primary-button btn-regular w-100 mb-2" style="min-width: 150px;">
                             View Orders
                             <mat-icon matSuffix> expand_more</mat-icon>
                         </a>
@@ -210,16 +214,17 @@
 
 <mat-card class="mat-elevation-z g-card mb-3">
     <mat-card-content>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="card-header-title mb-0 d-flex align-items-center">
-                <div class="mat-icon-wrap me-lg-3">
+        <div class="d-block d-lg-flex justify-content-between align-items-center">
+            <h2 class="card-header-title mb-3 d-flex align-items-center">
+                <div class="mat-icon-wrap me-lg-3 me-2">
                     <span class="material-symbols-outlined">
                         inbox
                     </span>
                 </div>
                 <span>Totes</span>
             </h2>
-            <mat-form-field class="action-dropdown" appearance="outline">
+            <div class="d-flex">
+            <mat-form-field class="action-dropdown mb-3" appearance="outline" style="flex:1">
                 <mat-label>Actions</mat-label>
                 <mat-select class="employees-action" placeholder="Actions" (selectionChange)="onToteAction($event)">
                     <mat-option value="fill_all_tote"><b class="text-tertiary-900">Fill All Empty Tote
@@ -232,6 +237,7 @@
                     expand_more
                 </span>
             </mat-form-field>
+            </div>
         </div>
         <div class="card br-14 table-responsive borderless px-0 mb-3">
             <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 620px;">
@@ -270,9 +276,9 @@
                         <td mat-cell *matCellDef="let element">
                             <div class="pe-2">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
-
+                              
                                     <input matInput type="text" #specialFeature maxlength="255"
-                                        [(ngModel)]="element.orderNumber" disabled="{{useInZonePickScreen}}" (focusout)="isValidOrderNumber(element)">
+                                        [(ngModel)]="element.orderNumber" disabled="{{useInZonePickScreen}}"  (focusout)="isValidOrderNumber(element)">
                                 </mat-form-field>
                             </div>
                         </td>
@@ -289,9 +295,9 @@
                         </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="other">
-                        <th mat-header-cell *matHeaderCellDef></th>
-                        <td mat-cell *matCellDef="let element; let i = index;">
+                    <ng-container matColumnDef="other" stickyEnd>
+                        <th mat-header-cell *matHeaderCellDef class="ps-2"></th>
+                        <td mat-cell *matCellDef="let element; let i = index;"  class="ps-2">
                             <div class="d-flex justify-content-end">
                                 <button type="button" mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
                                     class="circle-icon-o" appearance="outline">
@@ -299,10 +305,10 @@
                                 </button>
 
                                 <mat-menu #appMenu="matMenu">
-                                    <a mat-menu-item><b class="text-tertiary-900" (click)="onViewOrder(element)">View Order</b></a>
+                                    <button type="button" mat-menu-item (click)="onViewOrder(element)"><b class="text-tertiary-900">View Order</b></button>
                                     <button type="button" mat-menu-item (click)="clearOrderNumber(i)">Clear</button>
-                                    <button type="button" mat-menu-item>Print Tote Labels</button>
-                                    <button type="button" mat-menu-item>Print Pick Labels</button>
+                                    <button type="button" (click)="printToteLabels(element)" mat-menu-item>Print Tote Labels</button>
+                                    <button type="button" (click)="printPickLabels(element)" mat-menu-item>Print Pick Labels</button>
                                     <button type="button" mat-menu-item (click)="fillNextToteID(i)">Next Tote ID</button>
                                 </mat-menu>
                             </div>
@@ -350,12 +356,12 @@
                 </ng-container>
             </p>
             <div class="mb-3">
-                <button mat-flat-button color="primary" class="custom-btn w-100" (click)="confirmAddBatchDialog()">
+                <button mat-flat-button color="primary" class="btn-lg w-100" (click)="confirmAddBatchDialog()">
                     Ok
                 </button>
             </div>
             <div>
-                <button mat-stroked-button color="basic" class="custom-btn bg-white w-100" (click)="closeBatchDialog()">
+                <button mat-stroked-button color="basic" class="btn-lg bg-white w-100" (click)="closeBatchDialog()">
                     Cancel
                 </button>
             </div>
@@ -363,24 +369,55 @@
     </div>
 </ng-template>
 <ng-template #processSetup>
-
+    
     <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
         <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
             <mat-icon color="primary">ballot</mat-icon>
         </div>
-        <div>
+        <div class="w-100">
             <h4 class="bold text-primary-900 mb-4">Process Batch</h4>
             <p class="bold mb-4">Process the current setup?</p>
             <div class="mb-3">
-                <button mat-flat-button color="primary" class="custom-btn w-100" (click)="onPrcessBatch()">
+                <button mat-flat-button color="primary" class="btn-lg w-100" (click)="onPrcessBatch()">
                     Ok
                 </button>
             </div>
             <div>
-                <button mat-stroked-button color="basic" class="custom-btn bg-white w-100" (click)="closeBatchDialog()">
+                <button mat-stroked-button color="basic" class="btn-lg bg-white w-100" (click)="closeBatchDialog()">
                     Cancel
                 </button>
             </div>
         </div>
     </div>
+</ng-template>
+
+<ng-template #popupBlocked>
+
+    <div class="mat-modal-wrap text-center">
+        <mat-dialog-content>
+          <div class="prompt-wrap">
+            <div class="d-flex justify-content-center prompt-icon-wrap ">
+              <span #cancel class="material-symbols-outlined prompt-icon-delete">
+                notification_important
+              </span>
+      
+            </div>
+            <div class=" py-4"> 
+            <p class="text-danger bold card-header-title p-0 mb-2" >
+              An Error Occured
+            </p>
+            <p class="prompt-message mb-0 bold">
+                Pop-ups appear to be blocked for this workstation.  Please check your settings and ensure that the browser allows pop-ups for this site.
+            </p>
+     </div>
+        
+          </div>
+        </mat-dialog-content>
+        <mat-dialog-actions class="d-flex flex-column justify-content-center m-0 p-0">
+          <button  class="mat-button-base prompt-action-danger-button  mb-3 btn-lg w-100"  [mat-dialog-close]="false" mat-stroked-button mat-button
+         >OK</button>
+     
+        </mat-dialog-actions>
+      </div>
+      
 </ng-template>

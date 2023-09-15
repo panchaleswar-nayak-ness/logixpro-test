@@ -12,7 +12,7 @@
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Order Number</mat-label>
-                    <input matInput   formControlName="orderNumber"  type="text" >
+                    <input #field_focus matInput   formControlName="orderNumber"  type="text" >
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
@@ -161,25 +161,25 @@
         <div class="row">
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Ship VIA</mat-label>
+                    <mat-label>{{fieldNames.userField1}}</mat-label>
                     <textarea matInput type="text"  [disabled]="true" formControlName="shipVia" ></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Ship To Name</mat-label>
+                    <mat-label>{{fieldNames.userField2}}</mat-label>
                     <textarea matInput type="text"  [disabled]="true" formControlName="shipToName" ></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Ship To Line 1</mat-label>
+                    <mat-label>{{fieldNames.userField3}}</mat-label>
                     <textarea matInput type="text"   [disabled]="true" formControlName="shipToLine1" ></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Ship To Line 2</mat-label>
+                    <mat-label>{{fieldNames.userField4}}</mat-label>
                     <textarea matInput type="text"  [disabled]="true" formControlName="shipToLine2"></textarea>
                 </mat-form-field>
             </div>
@@ -188,25 +188,25 @@
         <div class="row">
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Ship To Country</mat-label>
+                    <mat-label>{{fieldNames.userField5}}</mat-label>
                     <textarea matInput type="text"  [disabled]="true" formControlName="shipToCountry"></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Ship To State</mat-label>
+                    <mat-label>{{fieldNames.userField6}}</mat-label>
                     <textarea matInput type="text" [disabled]="true" formControlName="shipToState"></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Ship To Zip</mat-label>
+                    <mat-label>{{fieldNames.userField7}}</mat-label>
                     <textarea matInput type="text"  [disabled]="true" formControlName="shipToZip"></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Promised Date</mat-label>
+                    <mat-label>{{fieldNames.userField8}}</mat-label>
                     <textarea matInput type="text" [disabled]="true" formControlName="promisedDate"></textarea>
                 </mat-form-field>
             </div>
@@ -215,13 +215,13 @@
         <div class="row">
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>User Field 9</mat-label>
+                    <mat-label>{{fieldNames.userField9}}</mat-label>
                     <textarea matInput type="text"  [disabled]="true" formControlName="userField9"></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>User Field 10</mat-label>
+                    <mat-label>{{fieldNames.userField10}}</mat-label>
                     <textarea matInput type="text"  [disabled]="true" formControlName="userField10"></textarea>
                 </mat-form-field>
             </div>

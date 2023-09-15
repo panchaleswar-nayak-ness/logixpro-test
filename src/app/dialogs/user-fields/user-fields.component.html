@@ -9,18 +9,18 @@
 <div mat-dialog-content>
     <div class="card p-3">
 
-        <form [formGroup]="userForm">
+        <form [formGroup]="userForm" >
 
             <div class="row">
                 <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>Ship VIA</mat-label>
-                        <textarea formControlName="userField1" matInput type="text"></textarea>
+                        <mat-label>{{fieldNames?.userField1}}</mat-label>
+                        <textarea #field_focus formControlName="userField1" matInput type="text"></textarea>
                     </mat-form-field>
                 </div>
                 <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>Ship To State</mat-label>
+                        <mat-label>{{fieldNames?.userField6}}</mat-label>
                         <textarea formControlName="userField6" matInput type="text"></textarea>
                     </mat-form-field>
                 </div>
@@ -29,13 +29,13 @@
             <div class="row">
                 <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>Ship To Name</mat-label>
+                        <mat-label>{{fieldNames?.userField2}}</mat-label>
                         <textarea formControlName="userField2" matInput type="text"></textarea>
                     </mat-form-field>
                 </div>
                 <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>Ship To Zip</mat-label>
+                        <mat-label>{{fieldNames?.userField7}}</mat-label>
                         <textarea formControlName="userField7" matInput type="text"></textarea>
                     </mat-form-field>
                 </div>
@@ -44,13 +44,13 @@
             <div class="row">
                 <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>Ship To Line 1</mat-label>
+                        <mat-label>{{fieldNames?.userField3}}</mat-label>
                         <textarea formControlName="userField3" matInput type="text"></textarea>
                     </mat-form-field>
                 </div>
                 <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>Promised Date</mat-label>
+                        <mat-label>{{fieldNames?.userField8}}</mat-label>
                         <textarea formControlName="userField8" matInput type="text"></textarea>
                     </mat-form-field>
                 </div>
@@ -59,7 +59,7 @@
             <div class="row">
                 <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>Ship To Line 1</mat-label>
+                        <mat-label>{{fieldNames?.userField4}}</mat-label>
                         <textarea formControlName="userField4" matInput type="text"></textarea>
                     </mat-form-field>
                 </div>
@@ -74,13 +74,13 @@
             <div class="row">
                 <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>Ship To Country</mat-label>
+                        <mat-label>{{fieldNames?.userField5}}</mat-label>
                         <textarea formControlName="userField5" matInput type="text"></textarea>
                     </mat-form-field>
                 </div>
                 <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                        <mat-label>User Field 10</mat-label>
+                        <mat-label>{{fieldNames?.userField10}}</mat-label>
                         <textarea formControlName="userField10" matInput type="text"></textarea>
                     </mat-form-field>
                 </div>
@@ -92,7 +92,7 @@
 </div>
 
 <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-    <button mat-stroked-button color="primary" class="btn-lg" [mat-dialog-close]="true">
+    <button mat-stroked-button color="primary" class="btn-lg" type="button" [mat-dialog-close]="true">
         Close
     </button>
     <button mat-flat-button color="primary" class="btn-lg" style="flex:1" (click)="submit()">

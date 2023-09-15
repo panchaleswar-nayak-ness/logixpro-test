@@ -6,7 +6,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
                         <h2 class="card-header-title mb-0 d-flex align-items-center">
-                            <div class="mat-icon-wrap me-lg-3">
+                            <div class="mat-icon-wrap me-lg-3 me-2">
                                 <span class="material-symbols-outlined">
                                     filter_list
                                 </span>
@@ -45,8 +45,10 @@
 
 
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <mat-label>Order No.</mat-label>
-                        <input [(ngModel)]="orderNumber" [matAutocomplete]="auto" matInput class="" value="" type="text" (ngModelChange)="this.searchByOrderNumber.next($event)" type="text" placeholder="Search" aria-label="Number" matInput >
+                        <!-- (input)="onInputChange($event)-->
+                        <mat-label>Order Number</mat-label>
+                        <input [(ngModel)]="orderNumber" [min]="0" [matAutocomplete]="auto" matInput class="" value="" type="text" (ngModelChange)="this.searchByOrderNumber.next($event)" type="text" placeholder="Search" aria-label="Number" matInput >
+                        <button matSuffix *ngIf="orderNumber" class="clear-btn"  (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData($event.option.value)">
                             <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
                                 {{option}}
@@ -74,7 +76,7 @@
 
                 <div class="col-xl-3  justify-content-center  ">
 
-                    <button mat-flat-button class="btn-regular w-100 mb-3" color="primary" (click)="resetToTodaysDate()">
+                    <button mat-flat-button class="btn-regular w-100 mb-3" color="primary" (click)="resetToTodaysDate()" >
 
                         <mat-label> Reset to Today's Date</mat-label>
                     </button>

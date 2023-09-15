@@ -19,11 +19,13 @@ import {
 } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { AuthService } from 'src/app/init/auth.service';
-import { BYPASS_LOG } from 'src/app/init/http-interceptor';
-import { TransactionService } from '../../transaction.service';
+import { BYPASS_LOG } from 'src/app/init/http-interceptor'; 
 import labels from '../../../../labels/labels.json';
 import { SharedService } from 'src/app/services/shared.service';
 import { FilterToteComponent } from 'src/app/admin/dialogs/filter-tote/filter-tote.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-tran-select-order',
@@ -109,11 +111,13 @@ export class TranSelectOrderComponent implements OnInit {
     }
   }
   constructor(
-    private authService: AuthService,
-    private transactionService: TransactionService,
+    public authService: AuthService,
+    private Api:ApiFuntions,
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private currentTabDataService: CurrentTabDataService,
+    private route: ActivatedRoute
   ) {}
   ngOnChanges(changes: SimpleChanges) {
     if (changes['orderStatNextData']) {
@@ -134,6 +138,13 @@ export class TranSelectOrderComponent implements OnInit {
         filterCheck: this.filterByTote,
         type: this.columnSelect,
       });
+      
+      this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT] = {
+        searchField: this.searchField,
+        columnSelect: this.columnSelect,
+        filterByTote: this.filterByTote,
+        totalLinesOrder: this.totalLinesOrder
+      };
     }
   }
 
@@ -145,8 +156,31 @@ export class TranSelectOrderComponent implements OnInit {
           this.searchField = orderNo;
           this.onOrderNoChange();
         }
+        
       })
     );
+    const hasOrderStatus = this.route.snapshot.queryParamMap.has('orderStatus');
+    
+    if (!hasOrderStatus) {
+      if (this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT])
+      {
+        let param = this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT];
+        this.searchField = param.searchField;
+        this.columnSelect = param.columnSelect;
+        this.filterByTote = param.filterByTote;
+        this.totalLinesOrder = param.totalLinesOrder;
+
+        if (this.columnSelect === 'Order Number') {
+          this.sharedService.updateOrderStatus(param.searchField);
+          this.onOrderNoChange();
+        }
+        else {
+          this.selectOrderByTote();
+          this.onOrderNoChange();
+        }
+      }
+      // Perform actions based on the order status
+    } 
   }
   ngOnInit(): void {
     
@@ -231,6 +265,12 @@ export class TranSelectOrderComponent implements OnInit {
       columnFIeld: this.columnSelect,
     };
     this.orderNo.emit(obj);
+    this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT] = {
+      searchField: this.searchField,
+      columnSelect: this.columnSelect,
+      filterByTote: this.filterByTote,
+      totalLinesOrder: this.totalLinesOrder
+    };
   }
   onToteIdChange(event) {
     this.toteId.emit(event);
@@ -250,8 +290,11 @@ export class TranSelectOrderComponent implements OnInit {
     this.searchAutocompleteList = [];
     this.searchField = '';
     this.columnSelect = '';
+    this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS_ORDER_SELECT] = undefined; 
   }
   deleteOrder() {
+
+    
     let paylaod = {
       OrderNumber: this.searchField,
       TotalLines: JSON.stringify(this.totalLinesOrder),
@@ -261,12 +304,16 @@ export class TranSelectOrderComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         mode: 'delete-order-status',
         paylaod: paylaod,
+        action:'delete'
         //itemList : this.itemList,
         //  detailData : event
       },
+
+     
     });
     dialogRef.afterClosed().subscribe((res) => {
       if (res.isExecuted) {
@@ -324,25 +371,22 @@ export class TranSelectOrderComponent implements OnInit {
         wsid: this.userData.wsid,
       };
     }
-
-    // NextSuggestedTransactions
-    // OrderNumberNext
-    this.transactionService
-      .get(
-        searchPayload,
-        `/Admin/${
-          this.columnSelect == 'Order Number'
-            ? 'OrderNumberNext'
-            : 'NextSuggestedTransactions'
-        }`,
-        true
-      )
-      .subscribe(
-        (res: any) => {
-          this.searchAutocompleteList = res.data;
-        },
-        (error) => {}
-      );
+ 
+   if( this.columnSelect == 'Order Number'){
+    this.Api.OrderNumberNext(searchPayload).subscribe(
+      (res: any) => {
+        this.searchAutocompleteList = res.data;
+      },
+      (error) => {}
+    );
+   }else{
+    this.Api.NextSuggestedTransactions(searchPayload).subscribe(
+      (res: any) => {
+        this.searchAutocompleteList = res.data;
+      },
+      (error) => {}
+    );
+   }
   }
   // async autocompleteSearchColumn() {
   //   let searchPayload = {

@@ -19,7 +19,7 @@
      <div class="mb-3"> <strong>{{connectionName}}</strong></div>
       <mat-form-field class="mb-3 w-100" appearance="outline">
         <mat-label>Username</mat-label>
-        <input [(ngModel)]="userName" [value]="userName" matInput type="text" maxlength="30">
+        <input #user_name [(ngModel)]="userName" [value]="userName" matInput type="text" maxlength="30">
       </mat-form-field>
       
       <mat-form-field class="mb-3 w-100" appearance="outline">

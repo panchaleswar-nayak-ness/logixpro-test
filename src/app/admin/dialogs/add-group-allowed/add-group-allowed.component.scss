@@ -1,0 +1,26 @@
+.stickyHeader{
+    position: sticky;
+    top: 0px;
+    z-index: 200000000;
+  }
+
+  ::ng-deep .custom-scroll{
+    overflow:auto;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+  
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: #D7D7F9;
+    }
+  
+    &::-webkit-scrollbar-track {
+      border-radius: 4px;
+      background-color: transparent;
+    }}
+
+    ::ng-deep .mat-autocomplete-panel{
+      overflow: hidden;
+    }

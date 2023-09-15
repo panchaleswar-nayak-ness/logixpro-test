@@ -8,7 +8,7 @@
                     arrow_back
                 </span>
             </div>
-            <div class="mat-icon-wrap me-lg-3">
+            <div class="mat-icon-wrap mx-1 mx-lg-0 me-lg-3">
                 <span class="material-symbols-outlined">
                     filter_list
                 </span>
@@ -16,7 +16,7 @@
             <span>Filters</span>
         </h2>
         <div class="row align-items-center mb-3">
-            <div class="col-md-4 ">
+            <div class="col-xl-4 mb-4 mb-xl-0">
                 <div>
                     <h2 class="mb-2 mt-3 d-flex align-items-center f-16">
         
@@ -25,21 +25,21 @@
         
                     </h2>
                   </div>
-                <div >
-                    <mat-radio-group class="d-flex gap-12 " [(ngModel)]="selectedCheck" color="primary" (change)="radioChange($event)">
-                        <mat-radio-button value="non" color="primary">
+                <div>
+                    <mat-radio-group class="d-xl-flex gap-12 " [(ngModel)]="selectedCheck" color="primary" (change)="radioChange($event)">
+                        <mat-radio-button value="non" color="primary" class="me-3 me-xl-0">
                             Non-Reel
                         </mat-radio-button>
-                        <mat-radio-button value="reel" color="primary">
+                        <mat-radio-button value="reel" color="primary" class="me-3 me-xl-0">
                             Reel
                         </mat-radio-button>
-                        <mat-radio-button value="both" color="primary">
+                        <mat-radio-button value="both" color="primary" class="me-3 me-xl-0">
                             Both
                         </mat-radio-button>
                     </mat-radio-group>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-xl-4 ">
                 <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
                     <mat-label>Enter Filter Type</mat-label>
                     <mat-select [(ngModel)]="selectedOption" (selectionChange)="selectedItem($event.value)">
@@ -48,7 +48,7 @@
                             Order Number
                         </mat-option>
                         <mat-option value="Item Number">
-                            Item Number.
+                           {{fieldNames?.itemNumber}}
                         </mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">
@@ -57,23 +57,19 @@
                 </mat-form-field>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline"
                     [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-                    <mat-label>{{selectedOption}}</mat-label>
+                    <mat-label>{{selectedOption==='Item Number'?fieldNames?.itemNumber:selectedOption}}</mat-label>
                     <input [matAutocomplete]="auto" [(ngModel)]="searchValue"
                         (ngModelChange)="this.searchDeb.next($event)" matInput type="text">
+                        <button matSuffix *ngIf="searchValue" class="clear-btn"  (click)="searchValue = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
                         <mat-option *ngFor="let option of autoCompleteSearchResult" [value]="option">
                             {{option}}
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-
-
-
-
-
 
             </div>
         </div>

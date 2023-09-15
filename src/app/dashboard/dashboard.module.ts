@@ -3,8 +3,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
-import { DataTablesModule } from "angular-datatables";
+import { ToastrModule } from 'ngx-toastr'; 
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
 // import { EmployeesComponent } from './employees/employees.component';
@@ -60,8 +59,7 @@ import { GeneralModule } from '../gen-module';
     CommonModule,
     //  RouterModule,
     // FormsModule,
-    BrowserModule,
-    // DataTablesModule,
+    BrowserModule, 
     HttpClientModule,
     // ReactiveFormsModule,
     MaterialModule,

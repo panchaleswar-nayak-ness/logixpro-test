@@ -1,18 +1,18 @@
-<mat-card class="mat-elevation-z g-card mb-4 h-100">
+<mat-card class="mat-elevation-z g-card h-100">
   <mat-card-content>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="card-header-title mb-0 d-flex align-items-center">
-        <div class="mat-icon-wrap me-lg-3">
+    <div class="row d-block d-xl-flex justify-content-between align-items-center mb-3 flex-wrap">
+      <h2 class="col card-header-title d-flex align-items-center mb-3">
+        <div class="mat-icon-wrap me-3">
           <span class="material-symbols-outlined">
             filter_frames
           </span>
         </div>
         <span>Select Order</span>
       </h2>
-      <div class="col-md-4">
-        <button (click)="deleteOrder()" [disabled]="totalLinesOrder==0" mat-flat-button color="warn"
-          class="btn-regular w-100"
+      <div class="col-xxl-4">
+        <button (click)="deleteOrder()" *ngIf="authService.UserPermissonByFuncName('Order Status Delete')" [disabled]="totalLinesOrder==0 || !(authService.UserPermissonByFuncName('Order Status Delete'))" mat-flat-button color="warn"
+          class="btn-regular w-100 mb-3"
           [ngClass]="{'disabled-button' : totalLinesOrder==0, 'delete-button' : totalLinesOrder>0 }">
           Delete Order
         </button>
@@ -32,46 +32,45 @@
 
 
 
-    <div class="row align-items-center">
-      <div class="col-12">
-        <div class="d-flex gap-12 align-items-center flex-wrap">
+    <div class="row">
+      <div class="col-xxl-9">
 
-          <div class="d-flex align-items-center gap-12">
-            <mat-form-field class="action-dropdown" appearance="outline">
-              <mat-label>Select</mat-label>
-              <mat-select class="employees-action" [(ngModel)]="columnSelect"
-                (selectionChange)="actionDialog($event.value)">
-                <mat-option selected value="Order Number">
-                  Order No.
-                </mat-option>
-                <mat-option value="Tote ID">
-                  Tote ID
-                </mat-option>
-              </mat-select>
-              <span class="material-symbols-outlined icon-expand-more">
-                expand_more
+        <div class="d-xl-flex gap-12 align-items-center">
+          <mat-form-field class="action-dropdown mb-3 w-100" appearance="outline" style="flex:1">
+            <mat-label>Select</mat-label>
+            <mat-select class="employees-action" [(ngModel)]="columnSelect"
+              (selectionChange)="actionDialog($event.value)">
+              <mat-option selected value="Order Number">
+                Order No.
+              </mat-option>
+              <mat-option value="Tote ID">
+                Tote ID
+              </mat-option>
+            </mat-select>
+            <span class="material-symbols-outlined icon-expand-more">
+              expand_more
+            </span>
+          </mat-form-field>
+          <span class="v-br mb-3 d-xl-block d-none">-</span>
+          <div class="d-flex g-mini-search-box mb-3" style="flex:1; min-width:40px">
+
+            <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()"
+              [hideRequiredMarker]="hideRequiredControl.value" style="min-width: 20px;">
+              <span class="material-symbols-outlined icon-search">
+                Search
               </span>
+              <!-- (ngModelChange)="this.searchBar.next($event)" -->
+              <input  (keyup.enter)="selectOrderByTote()" (keyup)="getNextItemNo($event)" type="text" placeholder="Search" aria-label="Number" matInput [disabled]="!columnSelect"
+                [(ngModel)]='searchField' [matAutocomplete]="auto">
+                <button matSuffix *ngIf="searchField" class="clear-btn"  (click)="searchField = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
+                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
+                  {{option}}
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
-
-            <span class="v-br">-</span>
-            <div class="d-flex g-mini-search-box w-100">
-
-              <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()"
-                [hideRequiredMarker]="hideRequiredControl.value" style="min-width: 20px;">
-                <span class="material-symbols-outlined icon-search">
-                  Search
-                </span>
-                <!-- (ngModelChange)="this.searchBar.next($event)" -->
-                <input  (keyup.enter)="selectOrderByTote()" (keyup)="getNextItemNo($event)" type="text" placeholder="Search" aria-label="Number" matInput [disabled]="!columnSelect"
-                  [(ngModel)]='searchField' [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
-                  <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                    {{option}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-            </div>
-
+          </div>
+        </div>
 
 
             <!-- <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()"
@@ -117,17 +116,15 @@
             </mat-form-field>
 
           </div> -->
-          <div style="flex:1">
+          <div class="col-xxl-3">
             <button (click)="clear()" mat-flat-button color="primary"
-              class="button-remove-all-w-stroke w-100" style="color:white!important">
+              class="button-remove-all-w-stroke w-100 mb-3" style="color:white!important">
               Clear
             </button>
           </div>
         </div>
-      </div>
+      
 
-
-    </div>
 
     <div class="row align-items-center mb-2">
       <div class="col-md-12">
@@ -135,7 +132,7 @@
           <div>
             <h2 class="mb-2 mt-3 d-flex align-items-center f-16">
 
-              <b>Lines</b> <mat-checkbox [checked]="filterByTote" (change)="checkFilter($event.checked)" class="example-margin custom-checkbox offset-xl-3 " color="primary">Filter Info by Tote</mat-checkbox>
+              <b>Lines</b> <mat-checkbox [checked]="filterByTote" (change)="checkFilter($event.checked)" class="example-margin custom-checkbox ms-3" color="primary">Filter Info by Tote</mat-checkbox>
 
 
             </h2>

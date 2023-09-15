@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -7,9 +7,12 @@ import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/d
 import { ItemCategoryComponent } from '../../dialogs/item-category/item-category.component';
 import { ItemNumberComponent } from '../../dialogs/item-number/item-number.component';
 import { UnitMeasureComponent } from '../../dialogs/unit-measure/unit-measure.component';
-import { UpdateDescriptionComponent } from '../../dialogs/update-description/update-description.component';
-import { InventoryMasterService } from '../inventory-master.service';
+import { UpdateDescriptionComponent } from '../../dialogs/update-description/update-description.component'; 
 import { Router } from '@angular/router';
+import { SharedService } from 'src/app/services/shared.service';
+import { Observable, Subscription } from 'rxjs';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { CurrentTabDataService } from '../current-tab-data-service';
 
 @Component({
   selector: 'app-detail',
@@ -17,34 +20,70 @@ import { Router } from '@angular/router';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
-
-  @Input() details: FormGroup;
+  private eventsSubscription: Subscription;
+  @Input() events: Observable<String>;
+  @Input() fieldNameDetails: any;
+  @Input() details: FormGroup;  
   public userData: any;
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   sendNotification(e) {
       this.notifyParent.emit(e);
   }
+
+  public setVal: boolean = false;
+  spliUrl;
   
 
   constructor(   
-    private invMasterService: InventoryMasterService, 
+    private Api: ApiFuntions, 
     private router: Router,
+    private sharedService:SharedService,
     private authService: AuthService, 
-    private dialog: MatDialog,
+    private dialog: MatDialog,    
+    private currentTabDataService: CurrentTabDataService,
     private toastr: ToastrService,) { }
+  
+    ngOnChanges(changes: SimpleChanges) {
+      if(changes['fieldNameDetails']){
+        this.fieldNameDetails=changes['fieldNameDetails']
+        
+      }
 
+      
+      }
   ngOnInit(): void {
+     
     this.userData = this.authService.userData();
-    // console.log(this.details)
-
+    this.setVal = localStorage.getItem('routeFromOrderStatus') == 'true' ? true : false;
+   
+    this.spliUrl=this.router.url.split('/');
+   
+    this.eventsSubscription = this.events.subscribe((val) => {
+      if(val==='h' && this.details.controls['histCount'].value!=0){
+        this.RedirectInv('TransactionHistory')
+      }
+      if(val==='v' && this.details.controls['openCount'].value!=0){
+        this.RedirectInv('OpenTransaction')
+      }
+      if(val==='r' && this.details.controls['procCount'].value!=0){
+        this.RedirectInv('ReprocessTransaction')
+      }
+    
+    });
   }
 
 
+
+  handleInputChange(event: Event) {
+    this.sharedService.updateInvMasterState(event,true)
+  }
   public openItemNumDialog() {
+
     let dialogRef = this.dialog.open(ItemNumberComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         itemNumber: this.details.controls['itemNumber'].value,
         newItemNumber : '',
@@ -52,14 +91,16 @@ export class DetailComponent implements OnInit {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result) { 
         let paylaod = {
           "oldItemNumber": this.details.controls['itemNumber'].value,
           "newItemNumber": result,
           "username": this.userData.userName,
           "wsid": this.userData.wsid
         }
-        this.invMasterService.update(paylaod, '/Admin/UpdateItemNumber').subscribe((res: any) => {
+        this.Api.UpdateItemNumber(paylaod).subscribe((res: any) => {
+          this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY] = result;
+
           // console.log(res.data);
           if (res.isExecuted) {
             this.details.patchValue({
@@ -83,12 +124,14 @@ export class DetailComponent implements OnInit {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         description: this.details.controls['description'].value,
       }
     })
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.sharedService.updateInvMasterState(result,true)
         this.details.patchValue({
           'description' : result.description
         });
@@ -102,42 +145,42 @@ export class DetailComponent implements OnInit {
       height: 'auto',
       width: '860px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         mode: '',
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-      if(result.category!='' && result!=true)
-      {
+        if(result.category!='' && result!=true)
+       { 
         this.details.patchValue({        
           'category': result.category      
         });
       }
-      if(result.subCategory!='' && result!=true)
-      {
+        if(result.subCategory!='' && result!=true)
+        {
         this.details.patchValue({            
           'subCategory': result.subCategory,        
         });
       }
       
-      
+      this.sharedService.updateInvMasterState(result,true)
     })
   }
-  public openUmDialog() {
-    // console.log(this.details.controls['replenishmentLevel'].value)
+  public openUmDialog() { 
     let dialogRef = this.dialog.open(UnitMeasureComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         mode: '',
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(result);
-      if(result!='' && result!=true)
-      {
-
+      ;
+      if(result !== '' && result !== true)
+      { 
         this.details.patchValue({
           'unitOfMeasure' : result
         });
@@ -149,9 +192,44 @@ export class DetailComponent implements OnInit {
 
  RedirectInv(type){
 
+// if(this.details.controls['histCount'].value==0 || this.details.controls['openCount'].value==0 ||this.details.controls['procCount'].value==0 ) return
+
+
+//   if( this.spliUrl[1] == 'OrderManager' ){
+//     this.router.navigate([]).then((result) => {
+//       let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
+//       window.open(url, '_blank');
+//     });
+//  }
+//  else {
+//   this.router.navigate([]).then((result) => {
+//     let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
+//     window.open(url, '_blank');
+//   });
+
+//  }
+
+  if(this.setVal == true){
+    this.router.navigate([]).then((result) => {
+      let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
+      window.open(url, '_blank');
+    });
+  }
+  else if(this.spliUrl[1] == 'InductionManager'){
+    this.router.navigate([]).then((result) => {
+      let url = '/#/InductionManager/Admin/TransactionJournal?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
+      window.open(url, '_blank');
+    });
+  }
+  else{
     this.router.navigate([]).then((result) => {
       let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
       window.open(url, '_blank');
     });
+  }
+
+  }
+  ngOnDestroy() {
+    this.eventsSubscription.unsubscribe();
   }
 }

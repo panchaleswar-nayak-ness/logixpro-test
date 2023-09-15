@@ -1,57 +1,114 @@
-.make-gold{background-color: blue !important;font-size: 555px;}
-
-.mat-row, .mat-header-row, .mat-footer-row{
-    display: table-row;
-    white-space: nowrap;
-    td{
-        min-height: 50px;
-    }
-  }
-.click-table{
-    thead{
-        border-left: 8px solid #fff !important;
-    }
+table{
     tr{
-        position: relative;
-        cursor: pointer;
-        &:hover{
-            // &::before{
-            //     content: "";
-            //     position: absolute;
-            //     left: 10px;
-            //     top: 0px;
-            //     background-color: bisque;
-            //     height: 50px;
-            //     width: 100%;
-            //     z-index: 0;
-            //     border-radius: 8px;
-            // }
-            td{
-                background-color: var(--clr-primary-300);
-                color: #fff;
-                &:first-child{
-                    border-top-left-radius: 8px;
-                    border-bottom-left-radius: 8px;
-                }
-                &:last-child{
-                    border-top-right-radius: 8px;
-                    border-bottom-right-radius: 8px;
-                }
-            }
-        }
-    }
-    .selected{
-        td{
-            background-color: var(--clr-primary-300);
-            color: #fff;
+        display: table-row!important;
+        white-space: nowrap;
+        border-radius: 8px;
+        th, td{
+            vertical-align: middle;
+            border-bottom: 1px solid #fff;
+            padding-right: 10px;
             &:first-child{
+                padding-left: 20px !important;
                 border-top-left-radius: 8px;
                 border-bottom-left-radius: 8px;
             }
             &:last-child{
+                padding-right:20px !important;
                 border-top-right-radius: 8px;
                 border-bottom-right-radius: 8px;
             }
         }
     }
+
+    .highlight-row {
+        background-color: #FCEAEE;
+      }
+      
+.selected {
+    background-color: #5555EC !important;
+    border-radius: 0px !important;
+    color: #fff;
+  }
 }
+
+.stickyHeader{
+  position: sticky;
+  top: 0px;
+  z-index: 200000000;
+}
+
+.toolTipConf{
+  padding: 10px 12px;
+   border: 0; 
+   text-overflow: ellipsis;
+    overflow: hidden; 
+    max-width: 23ch;
+     white-space: nowrap;
+}
+
+
+table.custom-action-clickable-table tr{
+  top: 0;
+  left: 0px;
+  right: 14px;
+  bottom: 0;
+  cursor: pointer;
+  color:#000;
+  border-radius: 8px !important;
+  margin-left:15px;
+}
+
+table.custom-action-clickable-table tr:hover{
+        transition: 0.3s ease all;
+        color: #fff !important;
+        background: var(--clr-primary-300);
+        position: relative;
+        border-radius: 8px !important;
+        z-index:0;
+        cursor: pointer;
+}
+
+table.custom-action-clickable-table tr:hover td{
+  color: #fff !important;
+  border: none;
+}
+
+table tr.selected {
+    color: #fff !important;
+  }
+
+
+.scroll-fix{
+  // --scrollbar-track-color: #fff !important;
+  --scrollbar-thumb-color: rgb(200, 200, 200) !important;
+  // --scrollbar-padding: 0px;
+  // --scrollbar-size: 10px;
+  
+  }
+  
+::ng-deep .scroll-fix scrollbar-y.scrollbar-control {
+  top: 68px !important;
+}
+::ng-deep .scroll-fix scrollbar-x.scrollbar-control {
+  left: 10px !important;
+}
+
+// .custom-scrollbar {
+//   height: 63vh;
+//   overflow: scroll;
+//   -webkit-overflow-scrolling: touch;
+  
+//   }
+//   .custom-scrollbar::-webkit-scrollbar-padding{
+//     padding: 10px;
+//   }
+  
+//   .custom-scrollbar::-webkit-scrollbar {
+//       width: 8px;
+//       -webkit-overflow-scrolling: touch;
+//   }
+  
+//   .custom-scrollbar::-webkit-scrollbar-thumb {
+//       background: rgb(216, 215, 215);
+//       border-radius: 10px;
+//   }

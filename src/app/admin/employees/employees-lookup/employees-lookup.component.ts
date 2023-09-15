@@ -5,9 +5,9 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AddNewEmployeeComponent } from '../../dialogs/add-new-employee/add-new-employee.component';
 import { NgForm } from '@angular/forms';
-import { AdminEmployeeLookupResponse, IEmployee } from 'src/app/Iemployee';
-import { EmployeeService } from 'src/app/employee.service';
+import { AdminEmployeeLookupResponse, IEmployee } from 'src/app/Iemployee'; 
 import { AuthService } from '../../../../app/init/auth.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 // employee_details table data
 
@@ -34,41 +34,48 @@ export class EmployeesLookupComponent implements OnInit {
 
   // table initialization
   displayedColumns: string[] = ['lastName', 'firstName', 'mi', 'username'];
-  constructor(private _liveAnnouncer: LiveAnnouncer, private dialog: MatDialog, private employeeService: EmployeeService, private authService: AuthService) { }
+  constructor(private _liveAnnouncer: LiveAnnouncer, private dialog: MatDialog, private employeeService: ApiFuntions, private authService: AuthService) { }
 
   @ViewChild(MatSort) sort: MatSort;
   employees_details_data: [] = [];
-
+  @ViewChild('autoFocusField') searchBoxField: ElementRef;
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.env = JSON.parse(localStorage.getItem('env') || '');
-    this.emp = {
-      "lastName": "%",
-      "userName": this.userData.userName,
-      "wsid": this.userData.wsid
-    };
-    this.employeeService.getAdminEmployeeLookup(this.emp)
-      .subscribe((response: AdminEmployeeLookupResponse) => {
-        this.employees_res = response
-        this.employees_details_data = this.employees_res.data.employees
-        // console.log(this.employees_details_data)
-        this.employee_data_source = new MatTableDataSource(this.employees_details_data);
-      });
+    this.EmployeeLookUp();
 
   }
-
+EmployeeLookUp(LastName:any = "",IsLoader=true){
+  
+  this.emp = {
+    "lastName": LastName,
+    "userName": this.userData.userName,
+    "wsid": this.userData.wsid
+  };
+  this.employeeService.getAdminEmployeeLookup(this.emp,false)
+    .subscribe((response: any) => { 
+      this.employee_data_source = new MatTableDataSource(response.data.employees);
+    });
+}
   ngAfterViewInit() {
     this.employee_data_source.sort = this.sort;
+    setTimeout(()=>{
+      this.searchBoxField.nativeElement.focus();  
+    }, 500);
+
   }
 
 
   public clear() {
     this.searchVal = '';
+    this.EmployeeLookUp();
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.employee_data_source.filter = filterValue.trim().toLowerCase();
+    if(filterValue?.trim()?.toLowerCase()) this.EmployeeLookUp(filterValue?.trim()?.toLowerCase(),false);
+    else this.EmployeeLookUp();
+    // this.employee_data_source.filter = ;
   }
 
   /** Announce the change in sort state for assistive technology. */

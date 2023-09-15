@@ -1,9 +1,9 @@
-<mat-card class="mat-elevation-z g-card mb-4 h-100">
+<mat-card class="mat-elevation-z g-card mb-4 h-100" >
   <mat-card-content>
 
     <div class="row">
-      <div class="col-5">
-        <div class="d-flex gap-12 align-items-center ">
+      <div class="col-xl-5">
+        <div class="d-xl-flex gap-12 align-items-center ">
           <!-- <mat-form-field class="action-dropdown" appearance="outline">
                         <mat-label>Search</mat-label>
                         <mat-select class="employees-action">
@@ -32,11 +32,12 @@
               expand_more
             </span>
           </mat-form-field> -->
-          <mat-form-field class="action-dropdown" appearance="outline">
+          <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
             <mat-label>Select</mat-label>
             <mat-select class="employees-action" [(ngModel)]="this.searchCol"
               (selectionChange)="actionDialog($event.value)">
-              <mat-option *ngFor="let item of Order_Table_Config" [value]="item.colDef">
+              <mat-option value=""></mat-option>
+              <mat-option *ngFor="let item of Order_Table_Config | sort:'colDef':false" [value]="item.colDef">
                 {{item.colDef}}
               </mat-option>
             </mat-select>
@@ -44,8 +45,8 @@
               expand_more
             </span>
           </mat-form-field>
-          <span class="v-br">-</span>
-          <div class="d-flex g-mini-search-box w-100">
+          <span class="v-br d-xl-block d-none mb-3">-</span>
+          <div class="d-flex g-mini-search-box w-100 mb-3">
 
 
             <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()"
@@ -55,6 +56,7 @@
               </span>
               <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='searchString' [disabled]="!searchCol"
                 [matAutocomplete]="auto" (ngModelChange)="this.searchByInput.next($event)">
+                <button matSuffix *ngIf="searchString" class="clear-btn"  (click)="searchString = '';this.searchByInput.next('')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
               <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
                 <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
                   {{option}}
@@ -73,33 +75,38 @@
 
 
           </div>
+          <div class="d-block d-lg-flex">
+          <button  (click)="clearData($event)" mat-stroked-button appearance="outline" color="warn"
+            class="button-remove-all-w-stroke mb-3 w-100" style="flex:1">
+            Clear
+          </button>
+          </div>
         </div>
       </div>
-      <div class="col-7 d-flex flex-row-reverse">
-        <mat-form-field class="action-dropdown w-30" appearance="outline">
+      <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
+        <div class="d-block d-lg-flex w-100 justify-content-end">
+        <mat-form-field class="action-dropdown" appearance="outline" style="flex:1 auto">
           <mat-label>Action</mat-label>
           <mat-select class="employees-action">
-            <mat-option value="pagesNumber">Preview 50 Pages Only</mat-option>
-            <mat-option value="set_column_sq">Print</mat-option>
+            <mat-option (click)="previewReport()">Preview 50 Pages Only</mat-option>
+            <mat-option (click)="printReport()">Print Report</mat-option>
           </mat-select>
           <span class="material-symbols-outlined icon-expand-more">
             expand_more
           </span>
         </mat-form-field>
-      
-        <div style="flex:1">
-          <button  (click)="clearData($event)" mat-stroked-button appearance="outline" color="warn"
-            class="button-remove-all-w-stroke">
-            Clear
-          </button>
         </div>
+      
+        <!-- <div style="flex:1">
+          
+        </div> -->
 
       </div>
    
     </div>
 
 
-    <div class="row align-items-center mt-3 ">
+    <div class="row align-items-center ">
       <div class="col-12">
         <!-- <div class="card br-14 table-responsive px-0" style="overflow-x: auto;"> -->
         <!-- 1 -->
@@ -127,15 +134,25 @@
                     </mat-table> -->
 
         <!-- OlD -->
-        <div class="card br-14 table-responsive my-3">
+        <div class="card br-14 borderless px-0 mb-3" style="overflow-x: auto;">
           <ng-scrollbar track="all" class="mat-table-scrollbar " style="height: 300px">
             <table  style="width: 100%;" mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
               style=" min-height: 150px;">
-              <ng-container matColumnDef="transactionType">
+
+              <ng-container matColumnDef="status" sticky>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="d-flex align-items-center ">
+                      <span class="br-14  label px-3 f-16" [style]="getColor(element)">{{getStatus(element)}}</span>
+                    </div>
+                </td>
+
+              </ng-container> 
+              <ng-container matColumnDef="transactionType" sticky>
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Transaction Type </th>
                 <td mat-cell *matCellDef="let element">
                   <div class="d-flex align-items-center ">
-                      <span class="br-14  label px-3 f-16" [style]="getColor(element)">{{element.transactionType}}</span>
+                      <span class="br-14  label px-2 f-16" [style]="getTransTypeColor(element)">{{element.transactionType}}</span>
                     </div>
                 </td>
 
@@ -144,178 +161,249 @@
               <!-- Name Column -->
               <ng-container matColumnDef="completedDate">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Completed Date </th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.completedDate"   matTooltipPosition="above" [matTooltipDisabled]="element.completedDate && element.completedDate.length>=15?false:true" > {{element.completedDate}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.completedDate, getColDef('completedDate'))"
+                #tooltip="matTooltip" [matTooltip]="element.completedDate"   matTooltipPosition="above" [matTooltipDisabled]="element.completedDate && element.completedDate.length>=15?false:true" > {{element.completedDate}} </td>
               </ng-container>
 
               <!-- Weight Column -->
               <ng-container matColumnDef="location">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Location </th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.location"   matTooltipPosition="above" [matTooltipDisabled]="element.location && element.location.length>=15?false:true" > {{element.location}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.location, getColDef('location'))"
+                #tooltip="matTooltip" [matTooltip]="element.location"   matTooltipPosition="above" [matTooltipDisabled]="element.location && element.location.length>=13?false:true" > {{element.location}} </td>
               </ng-container>
 
               <!-- Symbol Column -->
               <ng-container matColumnDef="transactionQuantity">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Transaction Quantity </th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.transactionQuantity"   matTooltipPosition="above" [matTooltipDisabled]="element.transactionQuantity && element.transactionQuantity.length>=15?false:true" > {{element.transactionQuantity}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.transactionQuantity, getColDef('transactionQuantity'))"
+                #tooltip="matTooltip" [matTooltip]="element.transactionQuantity"   matTooltipPosition="above" [matTooltipDisabled]="element.transactionQuantity && element.transactionQuantity.length>=15?false:true" > {{element.transactionQuantity}} </td>
               </ng-container>
 
               <ng-container matColumnDef="itemNumber">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Item Number</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.itemNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=15?false:true" > {{element.itemNumber}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.itemNumber, getColDef('itemNumber'))"
+                #tooltip="matTooltip" [matTooltip]="element.itemNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=15?false:true" >{{element.itemNumber}}</td>
               </ng-container>
 
               <ng-container matColumnDef="lineNumber">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Line Number</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.lineNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.lineNumber && element.lineNumber.length>=15?false:true" > {{element.lineNumber}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.lineNumber, getColDef('lineNumber'))"
+                #tooltip="matTooltip" [matTooltip]="element.lineNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.lineNumber && element.lineNumber.length>=15?false:true" > {{element.lineNumber}} </td>
               </ng-container>
 
               <ng-container matColumnDef="requiredDate">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Required Date</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.requiredDate"   matTooltipPosition="above" [matTooltipDisabled]="element.requiredDate && element.requiredDate.length>=15?false:true"  > {{element.requiredDate}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.requiredDate, getColDef('requiredDate'))"
+                #tooltip="matTooltip" [matTooltip]="element.requiredDate"   matTooltipPosition="above" [matTooltipDisabled]="element.requiredDate && element.requiredDate.length>=15?false:true"  > {{element.requiredDate}} </td>
               </ng-container>
 
               <ng-container matColumnDef="description">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Description</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.description"   matTooltipPosition="above" [matTooltipDisabled]="element.description && element.description.length>=15?false:true"   >  {{element.description}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.description, getColDef('description'))"
+                #tooltip="matTooltip" [matTooltip]="element.description"   matTooltipPosition="above" [matTooltipDisabled]="element.description && element.description.length>=15?false:true"   >  {{element.description}} </td>
               </ng-container>
 
               <ng-container matColumnDef="completedQuantity">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Completed Quantity</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.completedQuantity"   matTooltipPosition="above" [matTooltipDisabled]="element.completedQuantity && element.completedQuantity.length>=15?false:true" > {{element.completedQuantity}}  </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.completedQuantity, getColDef('completedQuantity'))"
+                #tooltip="matTooltip" [matTooltip]="element.completedQuantity"   matTooltipPosition="above" [matTooltipDisabled]="element.completedQuantity && element.completedQuantity.length>=15?false:true" > {{element.completedQuantity}}  </td>
               </ng-container>
 
               <ng-container matColumnDef="toteID">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Tote ID</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.toteID"   matTooltipPosition="above" [matTooltipDisabled]="element.toteID && element.toteID.length>=15?false:true" > {{element.toteID}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.toteID, getColDef('toteID'))"
+                #tooltip="matTooltip" [matTooltip]="element.toteID"   matTooltipPosition="above" [matTooltipDisabled]="element.toteID && element.toteID.length>=15?false:true" > {{element.toteID}} </td>
               </ng-container>
 
               <ng-container matColumnDef="priority">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Priority</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.priority"   matTooltipPosition="above" [matTooltipDisabled]="element.priority && element.priority.length>=15?false:true" > {{element.priority}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.priority, getColDef('priority'))"
+                #tooltip="matTooltip" [matTooltip]="element.priority"   matTooltipPosition="above" [matTooltipDisabled]="element.priority && element.priority.length>=15?false:true" > {{element.priority}} </td>
               </ng-container>
 
               <ng-container matColumnDef="completedBy">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Completed By</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.completedBy"   matTooltipPosition="above" [matTooltipDisabled]="element.completedBy && element.completedBy.length>=15?false:true" > {{element.completedBy}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.completedBy, getColDef('completedBy'))"
+                #tooltip="matTooltip" [matTooltip]="element.completedBy"   matTooltipPosition="above" [matTooltipDisabled]="element.completedBy && element.completedBy.length>=15?false:true" > {{element.completedBy}} </td>
               </ng-container>
 
               <ng-container matColumnDef="unitOfMeasure">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Unit of Measure</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.unitOfMeasure"   matTooltipPosition="above" [matTooltipDisabled]="element.unitOfMeasure && element.unitOfMeasure.length>=15?false:true" > {{element.unitOfMeasure}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.unitOfMeasure, getColDef('unitOfMeasure'))"
+                #tooltip="matTooltip" [matTooltip]="element.unitOfMeasure"   matTooltipPosition="above" [matTooltipDisabled]="element.unitOfMeasure && element.unitOfMeasure.length>=15?false:true" > {{element.unitOfMeasure}} </td>
               </ng-container>
 
               <ng-container matColumnDef="lotNumber">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Lot Number</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.lotNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.lotNumber && element.lotNumber.length>=15?false:true" > {{element.lotNumber}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.lotNumber, getColDef('lotNumber'))"
+                #tooltip="matTooltip" [matTooltip]="element.lotNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.lotNumber && element.lotNumber.length>=15?false:true" > {{element.lotNumber}} </td>
               </ng-container>
 
               <ng-container matColumnDef="expirationDate">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Expiration Date</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.expirationDate"   matTooltipPosition="above" [matTooltipDisabled]="element.expirationDate && element.expirationDate.length>=15?false:true" > {{element.expirationDate}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.expirationDate, getColDef('expirationDate'))"
+                #tooltip="matTooltip" [matTooltip]="element.expirationDate"   matTooltipPosition="above" [matTooltipDisabled]="element.expirationDate && element.expirationDate.length>=15?false:true" > {{element.expirationDate}} </td>
               </ng-container>
 
 
               <ng-container matColumnDef="serialNumber">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Serial Number</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.serialNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.serialNumber && element.serialNumber.length>=15?false:true" > {{element.serialNumber}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.serialNumber, getColDef('serialNumber'))"
+                #tooltip="matTooltip" [matTooltip]="element.serialNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.serialNumber && element.serialNumber.length>=15?false:true" > {{element.serialNumber}} </td>
               </ng-container>
 
               <ng-container matColumnDef="revision">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Revision</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.revision"   matTooltipPosition="above" [matTooltipDisabled]="element.revision && element.revision.length>=15?false:true" > {{element.revision}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.revision, getColDef('revision'))"
+                #tooltip="matTooltip" [matTooltip]="element.revision"   matTooltipPosition="above" [matTooltipDisabled]="element.revision && element.revision.length>=15?false:true" > {{element.revision}} </td>
               </ng-container>
 
               <ng-container matColumnDef="wareHouse">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Warehouse</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.wareHouse"   matTooltipPosition="above" [matTooltipDisabled]="element.wareHouse && element.wareHouse.length>=15?false:true" > {{element.wareHouse}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.wareHouse, getColDef('wareHouse'))"
+                #tooltip="matTooltip" [matTooltip]="element.wareHouse"   matTooltipPosition="above" [matTooltipDisabled]="element.wareHouse && element.wareHouse.length>=15?false:true" > {{element.wareHouse}} </td>
               </ng-container>
 
               <ng-container matColumnDef="importDate" >
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef>Import Date</th>
-                <td mat-cell *matCellDef="let element" #tooltip="matTooltip" [matTooltip]="element.importDate" matTooltipPosition="above"  [matTooltipDisabled]="element.importDate && element.importDate.length>=15?false:true"> {{element.importDate}} </td>
+                <td mat-cell *matCellDef="let element" 
+                (contextmenu)="onContextMenu($event, element.importDate, getColDef('importDate'))"
+                #tooltip="matTooltip" [matTooltip]="element.importDate" matTooltipPosition="above"  [matTooltipDisabled]="element.importDate && element.importDate.length>=15?false:true"> {{element.importDate}} </td>
               </ng-container>
               <ng-container matColumnDef="batchPickID">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef>Batch Pick ID</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.batchPickID"   matTooltipPosition="above" [matTooltipDisabled]="element.batchPickID && element.batchPickID.length>=15?false:true" > {{element.batchPickID}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.batchPickID, getColDef('batchPickID'))"
+                #tooltip="matTooltip" [matTooltip]="element.batchPickID"   matTooltipPosition="above" [matTooltipDisabled]="element.batchPickID && element.batchPickID.length>=15?false:true" > {{element.batchPickID}} </td>
               </ng-container>
 
               <ng-container matColumnDef="userField1">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef>User Field1</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.userField1"   matTooltipPosition="above" [matTooltipDisabled]="element.userField1 && element.userField1.length>=15?false:true" > {{element.userField1}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.userField1, getColDef('userField1'))"
+                #tooltip="matTooltip" [matTooltip]="element.userField1"   matTooltipPosition="above" [matTooltipDisabled]="element.userField1 && element.userField1.length>=15?false:true" > {{element.userField1}} </td>
               </ng-container>
               <ng-container matColumnDef="userField2">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef>User Field2</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.userField2"   matTooltipPosition="above" [matTooltipDisabled]="element.userField2 && element.userField2.length>=15?false:true" > {{element.userField2}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.userField2, getColDef('userField2'))"
+                #tooltip="matTooltip" [matTooltip]="element.userField2"   matTooltipPosition="above" [matTooltipDisabled]="element.userField2 && element.userField2.length>=15?false:true" > {{element.userField2}} </td>
               </ng-container>
               <ng-container matColumnDef="userField3">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef>User Field3</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.userField3"   matTooltipPosition="above" [matTooltipDisabled]="element.userField3 && element.userField3.length>=15?false:true" > {{element.userField3}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.userField3, getColDef('userField3'))"
+                #tooltip="matTooltip" [matTooltip]="element.userField3"   matTooltipPosition="above" [matTooltipDisabled]="element.userField3 && element.userField3.length>=15?false:true" > {{element.userField3}} </td>
               </ng-container>
               <ng-container matColumnDef="userField4">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef>User Field4</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.userField4"   matTooltipPosition="above" [matTooltipDisabled]="element.userField4 && element.userField4.length>=15?false:true" > {{element.userField4}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.userField4, getColDef('userField4'))"
+                #tooltip="matTooltip" [matTooltip]="element.userField4"   matTooltipPosition="above" [matTooltipDisabled]="element.userField4 && element.userField4.length>=15?false:true" > {{element.userField4}} </td>
               </ng-container>
               <ng-container matColumnDef="userField5">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef>User Field5</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.userField5"   matTooltipPosition="above" [matTooltipDisabled]="element.userField5 && element.userField5.length>=15?false:true" > {{element.userField5}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.userField5, getColDef('userField5'))"
+                #tooltip="matTooltip" [matTooltip]="element.userField5"   matTooltipPosition="above" [matTooltipDisabled]="element.userField5 && element.userField5.length>=15?false:true" > {{element.userField5}} </td>
               </ng-container>
               <ng-container matColumnDef="userField6">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>User Field6</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.userField6"   matTooltipPosition="above" [matTooltipDisabled]="element.userField6 && element.userField6.length>=15?false:true" > {{element.userField6}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.userField6, getColDef('userField6'))"
+                #tooltip="matTooltip" [matTooltip]="element.userField6"   matTooltipPosition="above" [matTooltipDisabled]="element.userField6 && element.userField6.length>=15?false:true" > {{element.userField6}} </td>
               </ng-container>
 
               <ng-container matColumnDef="userField7">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef>User Field7</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.userField7"   matTooltipPosition="above" [matTooltipDisabled]="element.userField7 && element.userField7.length>=15?false:true" > {{element.userField7}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.userField7, getColDef('userField7'))"
+                #tooltip="matTooltip" [matTooltip]="element.userField7"   matTooltipPosition="above" [matTooltipDisabled]="element.userField7 && element.userField7.length>=15?false:true" > {{element.userField7}} </td>
               </ng-container>
               <ng-container matColumnDef="userField8">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>User Field8</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.userField8"   matTooltipPosition="above" [matTooltipDisabled]="element.userField8 && element.userField8.length>=15?false:true" > {{element.userField8}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.userField8, getColDef('userField8'))"
+                #tooltip="matTooltip" [matTooltip]="element.userField8"   matTooltipPosition="above" [matTooltipDisabled]="element.userField8 && element.userField8.length>=15?false:true" > {{element.userField8}} </td>
               </ng-container>
               <ng-container matColumnDef="userField9">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>User Field9</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.userField9"   matTooltipPosition="above" [matTooltipDisabled]="element.userField9 && element.userField9.length>=15?false:true" > {{element.userField9}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.userField9, getColDef('userField9'))"
+                #tooltip="matTooltip" [matTooltip]="element.userField9"   matTooltipPosition="above" [matTooltipDisabled]="element.userField9 && element.userField9.length>=15?false:true" > {{element.userField9}} </td>
               </ng-container>
               <ng-container matColumnDef="userField10">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>User Field10</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.userField10"   matTooltipPosition="above" [matTooltipDisabled]="element.userField10 && element.userField10.length>=15?false:true" > {{element.userField10}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.userField10, getColDef('userField10'))"
+                #tooltip="matTooltip" [matTooltip]="element.userField10"   matTooltipPosition="above" [matTooltipDisabled]="element.userField10 && element.userField10.length>=15?false:true" > {{element.userField10}} </td>
               </ng-container>
               <ng-container matColumnDef="toteNumber">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Tote Number</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.toteNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.toteNumber && element.toteNumber.length>=15?false:true" > {{element.toteNumber}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.toteNumber, getColDef('toteNumber'))"
+                #tooltip="matTooltip" [matTooltip]="element.toteNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.toteNumber && element.toteNumber.length>=15?false:true" > {{element.toteNumber}} </td>
               </ng-container>
               <ng-container matColumnDef="cell">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Cell</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.cell"   matTooltipPosition="above" [matTooltipDisabled]="element.cell && element.cell.length>=15?false:true" > {{element.cell}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.cell, getColDef('cell'))"
+                #tooltip="matTooltip" [matTooltip]="element.cell"   matTooltipPosition="above" [matTooltipDisabled]="element.cell && element.cell.length>=15?false:true" > {{element.cell}} </td>
               </ng-container>
               <ng-container matColumnDef="zone">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Zone</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.zone"   matTooltipPosition="above" [matTooltipDisabled]="element.zone && element.zone.length>=15?false:true" > {{element.zone}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.zone, getColDef('zone'))"
+                #tooltip="matTooltip" [matTooltip]="element.zone"   matTooltipPosition="above" [matTooltipDisabled]="element.zone && element.zone.length>=15?false:true" > {{element.zone}} </td>
               </ng-container>
 
               <ng-container matColumnDef="hostTransactionID">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Host Transaction ID</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.hostTransactionID"   matTooltipPosition="above" [matTooltipDisabled]="element.hostTransactionID && element.hostTransactionID.length>=15?false:true" > {{element.hostTransactionID}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.hostTransactionID, getColDef('hostTransactionID'))"
+                #tooltip="matTooltip" [matTooltip]="element.hostTransactionID"   matTooltipPosition="above" [matTooltipDisabled]="element.hostTransactionID && element.hostTransactionID.length>=15?false:true" > {{element.hostTransactionID}} </td>
               </ng-container>
 
               <ng-container matColumnDef="emergency">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>Emergency</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.emergency"   matTooltipPosition="above" [matTooltipDisabled]="element.emergency && element.emergency.length>=15?false:true" > {{element.emergency}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.emergency, getColDef('emergency'))"
+                #tooltip="matTooltip" [matTooltip]="element.emergency"   matTooltipPosition="above" [matTooltipDisabled]="element.emergency && element.emergency.length>=15?false:true" > {{element.emergency}} </td>
               </ng-container>
 
               <ng-container matColumnDef="id">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>ID</th>
-                <td mat-cell *matCellDef="let element"  #tooltip="matTooltip" [matTooltip]="element.itemNumber"   matTooltipPosition="above" [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=15?false:true" > {{element.id}} </td>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.id, getColDef('id'))"
+                #tooltip="matTooltip" [matTooltip]="element.id"   matTooltipPosition="above" [matTooltipDisabled]="element.id && element.id.length>=15?false:true" > {{element.id}} </td>
               </ng-container>
 
               
 
 
-              <tr class="mat-row" *matNoDataRow>
+              <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
                 <td class="mat-cell " [attr.colspan]="displayedColumns.length">
                   No data available in table.
                 </td>
               </tr>
+              
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -332,7 +420,29 @@
             </div>
 
           </div> -->
-          <div class="col-xl-6">
+          <div class="col-xl-5">
+            <div class="table-pagination d-flex justify-content-start"
+              *ngIf=" columnValues && columnValues.length>0 && displayedColumns && dataSource">
+              <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"
+                (page)="handlePageEvent($event)"></mat-paginator>
+
+
+            </div>
+          </div>
+          <div class="col-xl-4 offset-xl-3">
+            <div class="d-flex justify-content-end">
+              <button [disabled]="!shippingComplete" mat-flat-button color="primary" class="btn-regular mx-2 w-100" (click)="ShippingCompleteDialog()">
+                Shipping Complete
+              </button>
+              <button *ngIf="priority" mat-flat-button color="primary" class="btn-regular w-100" (click)="openGcBeginTest()">
+                Change Priority
+              </button>
+            </div>
+
+          </div>
+
+
+          <!-- <div class="col-xl-3">
             <div class="table-pagination d-flex justify-content-start"
               *ngIf=" columnValues && columnValues.length>0 && displayedColumns && dataSource">
               <mat-paginator [length]="this.customPagination.total" [pageSize]="20" [pageSizeOptions]="[10, 20, 100]"
@@ -341,14 +451,19 @@
 
             </div>
           </div>
-          <div class="col-xl-3 offset-xl-3">
-            <div class="d-flex justify-content-end">
+          <div class="col-xl-6 offset-xl-3 d-flex justify-content-end">
+            <div class="">
               <button disabled mat-flat-button color="primary" class="btn-regular w-100">
                 Shipping Complete
               </button>
             </div>
+            <div class="">
+              <button disabled mat-flat-button color="primary" class="btn-regular w-100">
+                Change Priority
+              </button>
+            </div>
 
-          </div>
+          </div> -->
 
         </div>
 
@@ -357,3 +472,40 @@
     </div>
   </mat-card-content>
 </mat-card>
+
+
+
+<div #trigger="matMenuTrigger"
+style="visibility: hidden; position: fixed"
+[style.left]="contextMenuPosition.x"
+[style.top]="contextMenuPosition.y"
+[matMenuTriggerFor]="contextMenuFilter"
+></div>
+<mat-menu #contextMenuFilter="matMenu">
+<ng-template matMenuContent let-item="item">
+  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'equals to',getType(item.SelectedItem))"> Equals</button>
+  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not equals to', getType(item.SelectedItem))">Not Equals</button>
+  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is greater than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Greater than or Equal</button>
+  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is less than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Less than or Equal</button>
+  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Like</button>
+  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Not Like</button>
+  <button mat-menu-item [matMenuTriggerFor]="InputFiltersList" [matMenuTriggerData]="{category: item}" *ngIf="getType(item.SelectedItem) != 'boolean'" >Input FIlters</button>
+  <button mat-menu-item (click)="onContextMenuCommand('', '', 'clear', '')">Clear Filters</button>
+</ng-template>
+</mat-menu>
+
+<mat-menu #InputFiltersList="matMenu">
+    <ng-template matMenuContent let-category="category">
+      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'equals to', getType(category.SelectedItem))">Equals</button>
+      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is not equals to', getType(category.SelectedItem))">Not Equals</button>
+      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Begins</button>
+      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Begin</button>
+      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Ends With</button>
+      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not End With</button>
+      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Contains</button>
+      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Contain</button>
+      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is less than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Less Than</button>
+      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is greater than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Greater Than</button>
+      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is between', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Between</button>
+    </ng-template>
+</mat-menu>

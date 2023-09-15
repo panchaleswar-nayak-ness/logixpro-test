@@ -44,6 +44,7 @@
             [matRippleColor]="tab_hover_color" 
             class="main-section-option" 
             (click)="updateMenu('induction', '/InductionManager/SuperBatch')"
+            [ngClass]="isAuthorized('Induction Manager') ? 'isDivDisabled' : ''"
             routerLink="/InductionManager/SuperBatch">
             <!-- <a class="main-section-option-link" href="#"></a> -->
             <div class="main-section-icon">
@@ -56,12 +57,20 @@
         </div>
   
         <!-- Main Section Option (Work Manager) -->
-        <div class="col-xl-3 col-lg-6 isDivDisabled">
-          <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option">
-            <a class="main-section-option-link" href="#"></a>
+    
+
+        <div class="col-xl-3 col-lg-6">
+          <div matRipple 
+            [matRippleColor]="tab_hover_color" 
+            class="main-section-option" 
+            (click)="updateMenu('induction', '/InductionManager/PalletReceiving')"
+            [ngClass]="isAuthorized('Induction Manager') ? 'isDivDisabled' : ''"
+            routerLink="/InductionManager/PalletReceiving">
+            <!-- <a class="main-section-option-link" href="#"></a> -->
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
                 linear_scale
+
               </span>
             </div>
             <h4 class="main-section-title" style="font-size:22px;">Pallet Receiving</h4>
@@ -69,9 +78,17 @@
         </div>
   
         <!-- Main Section Option (Consolidation Manager) -->
-        <div class="col-xl-3 col-lg-6 isDivDisabled">
-          <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option">
-            <a class="main-section-option-link" href="#"></a>
+     
+
+        
+        <div class="col-xl-3 col-lg-6">
+          <div matRipple 
+            [matRippleColor]="tab_hover_color" 
+            class="main-section-option" 
+            (click)="updateMenu('induction', '/InductionManager/MarkEmptyReels')"
+            [ngClass]="isAuthorized('Induction Manager') ? 'isDivDisabled' : ''"
+            routerLink="/InductionManager/MarkEmptyReels">
+            <!-- <a class="main-section-option-link" href="#"></a> -->
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
                 edit_attributes
@@ -93,6 +110,27 @@
             <h4 class="main-section-title" style="font-size:22px;">Admin</h4>
           </div>
         </div>
+
+        <!-- Main Section Option (Import Export) -->
+        <div class="col-xl-3 col-lg-6" [ngClass]="isAuthorized('Induction Manager') || !useInZonePickScreen ? 'isDivDisabled' : ''">
+          <div 
+          matRipple 
+          [matRippleColor]="tab_hover_color" 
+          class="main-section-option" 
+          routerLink="/InductionManager/CompletePickBatch"
+          [ngClass]="isAuthorized('Induction Manager') || !useInZonePickScreen ? 'isDivDisabled' : ''"
+          (click)="updateMenu('induction', '/InductionManager/CompletePickBatch')"
+          >
+            <a class="main-section-option-link" href="#"></a>
+            <div class="main-section-icon">
+              <span class="material-symbols-outlined">
+                library_add_check 
+              </span>
+            </div>
+            <h4 class="main-section-title" style="font-size:22px;">Complete Pick Batch</h4>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

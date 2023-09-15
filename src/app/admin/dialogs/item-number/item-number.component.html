@@ -14,7 +14,7 @@
         <div class="col-12 mb-2">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <mat-label>Old Item No.</mat-label>
-                <input matInput type="text" disabled [(ngModel)]="data.itemNumber" [readonly]="true">
+                <input #itm_nmb matInput type="text" disabled [(ngModel)]="data.itemNumber" [readonly]="true">
             </mat-form-field>
         </div>
         <div class="col-12">
@@ -34,7 +34,7 @@
         <div class="col-12 mb-2">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <mat-label>Item No.</mat-label>
-                <input matInput type="text" [(ngModel)]="data.itemNumber" required maxlength="50" value="">
+                <input #itm_nmb  matInput type="text" [(ngModel)]="data.itemNumber" required maxlength="50" value="">
             </mat-form-field>
             <div class="error" *ngIf="submit && !data.itemNumber">This field is required.</div>
         </div>

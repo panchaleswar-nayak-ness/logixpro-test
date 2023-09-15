@@ -2,7 +2,7 @@
     <mat-card-content>
         <h2 class="card-header-title mb-0 d-flex align-items-center mb-3">
 
-            <div class="mat-icon-wrap me-lg-3">
+            <div class="mat-icon-wrap me-lg-3 me-2">
                 <span class="material-symbols-outlined">
                     receipt
                 </span>
@@ -24,7 +24,7 @@
                 <div class="row mb-3">
                     <div>
                         <mat-radio-group class="d-flex align-items-center gap-12" aria-label="Select an option"
-                            [(ngModel)]="selectedOption" (change)="radioButtonChange($event)">
+                        [ngModelOptions]="{standalone: true}"  [(ngModel)]="selectedOption" (change)="radioButtonChange($event)">
 
                             <mat-radio-button value="reprocess" color="primary">
                                 Reprocess
@@ -38,7 +38,7 @@
             </div>
 
             <div class="col-md-6">
-                <div class="row">
+                <div class="">
                     <div class="d-flex justify-content-between align-items-center ">
                         <div>
                             <h2 class="f-16 bold mb-3 d-flex align-items-center">
@@ -48,7 +48,7 @@
 
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="mb-3">
                     <div class="d-flex align-items-center gap-12">
                         <mat-radio-group class="d-flex align-items-center gap-12" aria-label="Select an option"
                         [(ngModel)]="reasonFilter" (change)="reasonFilterChange($event)" [disabled]="history">
@@ -65,24 +65,50 @@
             </div>
         </div>
 
-        <div class="row align-items-center mb-3">
-            <div class="d-flex align-items-center gap-12">
-                <div class="w-100">
-                    <mat-form-field class="w-100 bg-white br-8" appearance="outline">
+        <div class="row align-items-center">
+            <div class="d-block d-lg-flex align-items-center gap-12">
+                <div class="w-100 mb-3" style="flex:1">
+
+                    <!-- <mat-form-field class="custom-form-field custom-form-field-bg-white w-100" appearance="outline">
                         <mat-label>Order Number</mat-label>
-                        <input type="text" aria-label="Number" matInput
+                        <input type="text" maxlength="50" aria-label="Number" matInput
                             [matAutocomplete]="autoOrder" [(ngModel)]="orderNumber" (keypress)="getFilteredList()" (keyup)="orderSelected()">
-                        <mat-autocomplete class="autocomplete-center" panelWidth="auto" autoActiveFirstOption
+                      
+                      
+                            <mat-autocomplete class="card custom-scroll" panelWidth="auto" autoActiveFirstOption
                             #autoOrder="matAutocomplete" (optionSelected)="orderSelected()">
-                            <h6 class="ctl_name ac-dropdown-label">
+                            <h6 class="card-header matAutoCompHeader">
                                 <span>Order Number</span> <span>Date</span>
-                                <span>Transaction Type</span> <span>Item Number</span> <span>Transaction Quantity</span>
+                                <span style="width:  140px;">Transaction Type</span> <span style="width:  140px;">Item Number</span> <span style="width:  140px;">Transaction Quantity</span>
                             </h6>
-                            <mat-option style="width:900px !important;" *ngFor="let option of orderList"
+                            <mat-option  *ngFor="let option of orderList" [value]="option.orderNumber" class="matAutoCompTableContent">
+                                <div  class="loc_option">
+                                    <span  class="searchColumn" style="width:  140px;">{{option.orderNumber}}</span> <span  class="searchColumn" style="width:  140px;">{{option.dateField}}</span>
+                                    <span  class="searchColumn" style="width:  140px;">{{option.transType}}</span><span  class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span><span  class="searchColumn" style="width:  140px;">{{option.qty}}</span>
+                                </div>
+                            </mat-option>
+                        </mat-autocomplete>
+
+
+
+                    </mat-form-field>  -->
+                    <mat-form-field class="w-100 bg-white" appearance="outline">
+                        <mat-label>Order Number</mat-label>
+                        <input type="text" maxlength="50" aria-label="Number" matInput
+                            [matAutocomplete]="autoOrder" [(ngModel)]="orderNumber" (keypress)="getFilteredList()" (keyup)="orderSelected()">
+                            <button matSuffix *ngIf="orderNumber" class="clear-btn"  (click)="orderNumber=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+
+                        <mat-autocomplete class="card custom-scroll" panelWidth="auto" autoActiveFirstOption
+                            #autoOrder="matAutocomplete" (optionSelected)="orderSelected()">
+                            <h6 class="card-header matAutoCompHeader ">
+                                <span style="width:  140px;">Order Number</span> <span style="width:  200px;">Date</span>
+                                <span style="width:  160px;">Transaction Type</span> <span style="width:  140px;">Item Number</span> <span style="width:  180px;">Transaction Quantity</span>
+                            </h6>
+                            <mat-option class="matAutoCompTableContent" *ngFor="let option of orderList"
                                 [value]="option.orderNumber">
-                                <div class="ctl_option ac-dropdown-option">
-                                    <span>{{option.orderNumber}}</span> <span>{{option.dateField}}</span>
-                                    <span>{{option.transType}}</span><span>{{option.itemNumber}}</span><span>{{option.qty}}</span>
+                                <div class="loc_option">
+                                    <span class="searchColumn" style="width:  140px;">{{option.orderNumber}}</span> <span class="searchColumn" style="width:  200px;">{{option.dateField}}</span>
+                                    <span class="searchColumn" style="width:  160px;">{{option.transType}}</span><span class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span><span class="searchColumn" style="width: 180px;">{{option.qty}}</span>
                                 </div>
                             </mat-option>
                         </mat-autocomplete>
@@ -90,23 +116,24 @@
 
 
                 </div>
-                <span class="bg-tertiary-900" style="width: 14px; height:2px;"></span>
-                <div class="d-flex g-mini-search-box w-100">
+                <span class="bg-tertiary-900 d-none d-lg-flex mb-3" style="width: 14px; height:2px;"></span>
+                <div class="d-flex w-100 mb-3" style="flex:1">
                     <mat-form-field class="w-100 bg-white" appearance="outline">
-                        <mat-label>Item Number</mat-label>
-                        <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="itemNumber" style="padding-left: 0px !important;">
-                        <mat-autocomplete class="autocomplete-center" panelWidth="auto" autoActiveFirstOption
-                            #auto="matAutocomplete" (optionSelected)="listSelected()">
-                            <h6 class="ctl_name ac-dropdown-label">
-                                <span>Item Number</span> <span>Date</span>
-                                <span>Transaction Type</span> <span>Order Number</span> <span>Transaction
+                        <mat-label>{{fieldNames?.itemNumber}}</mat-label>
+                        <input type="text" maxlength="50" matInput [matAutocomplete]="auto" [(ngModel)]="itemNumber" style="padding-left: 0px !important;">
+                        <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemNumber=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <mat-autocomplete class="card custom-scroll" panelWidth="auto" autoActiveFirstOption
+                            #auto="matAutocomplete" (optionSelected)="listSelected($event)">
+                            <h6 class="card-header matAutoCompHeader ">
+                                <span style="width:  140px;">Item Number</span> <span class="searchColumn" style="width:  200px;">Date</span>
+                                <span style="width:  140px;">Transaction Type</span> <span style="width:  140px;">Order Number</span> <span style="width:  180px;">Transaction
                                     Quantity</span>
                             </h6>
-                            <mat-option style="width:900px !important;" *ngFor="let option of itemNumberList"
-                                [value]="option.orderNumber">
-                                <div class="ctl_option ac-dropdown-option">
-                                    <span>{{option.itemNumber}}</span> <span>{{option.dateField}}</span>
-                                    <span>{{option.transType}}</span><span>{{option.orderNumber}}</span><span>{{option.qty}}</span>
+                            <mat-option class="matAutoCompTableContent" *ngFor="let option of itemNumberList"
+                                [value]="option.itemNumber">
+                                <div class="loc_option">
+                                    <span class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span> <span class="searchColumn" style="width:  200px;">{{option.dateField}}</span>
+                                    <span class="searchColumn" style="width:  140px;">{{option.transType}}</span><span class="searchColumn" style="width:  140px;">{{option.orderNumber}}</span><span class="searchColumn" style="width:  180px;">{{option.qty}}</span>
                                 </div>
                             </mat-option>
                         </mat-autocomplete>
@@ -118,7 +145,7 @@
 
         </div>
         <div>
-            <button mat-stroked-button color="warn" class="button-remove-all-w-stroke w-100" (click)="clear()">
+            <button mat-stroked-button color="warn" class="button-remove-all-w-stroke w-100" (click)="clear(true)">
                 Clear
             </button>
         </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from 'src/app/services/shared.service';
-import { GlobalconfigService } from '../globalconfig.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { SharedService } from 'src/app/services/shared.service'; 
 
 @Component({
   selector: 'app-global-dashboard',
@@ -11,7 +11,7 @@ export class GlobalDashboardComponent implements OnInit {
   licAppNames: any = [];
   sideBarOpen: boolean = true;
   constructor(
-    private globalConfService: GlobalconfigService,
+    private Api:ApiFuntions,
     private sharedService: SharedService
   ) {}
 
@@ -30,7 +30,7 @@ export class GlobalDashboardComponent implements OnInit {
   async getAppLicense() {
     // get can access
 
-    this.globalConfService.get(null, '/GlobalConfig/AppLicense').subscribe(
+    this.Api.AppLicense().subscribe(
       (res: any) => {
         if (res && res.data) {
           this.licAppNames = res.data;

@@ -1,4 +1,4 @@
-<mat-dialog-content>
+<!-- <mat-dialog-content>
     <p>
         Are you sure you want to {{this.action}}?
     </p>
@@ -6,4 +6,26 @@
 <mat-dialog-actions>
     <button color="primary" mat-flat-button (click)="onConfirmQuarantine()" tabindex="1">{{this.action}}</button>
     <button  mat-button mat-dialog-close tabindex="-1">Close</button>
-</mat-dialog-actions>
+</mat-dialog-actions> -->
+
+<!-- <ng-template #quarantineAction> -->
+    <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
+      <div color="warn" class="circle-icon circle-66 circle-danger mb-4">
+        <mat-icon color="warn">vpn_lock</mat-icon>
+      </div>
+      <div>
+        <p class="bold text-tritary-900 mb-4">Are you sure you want to {{this.action}} this location?</p>
+        <div class="mb-3">
+          <button mat-flat-button color="warn" class="custom-btn button-delete-flat bg-white w-100 btn-lg"
+            [mat-dialog-close]="true" tabindex="1" (click)="onConfirmQuarantine()">
+            {{this.action}}
+          </button>
+        </div>
+        <div>
+          <button tabindex="-1" mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false">
+            Cancel
+          </button>
+        </div> 
+      </div>
+    </div>
+  <!-- </ng-template> -->

@@ -17,9 +17,13 @@
         </span>
 
       </div>
-      <p class="prompt-message py-4 mb-0">
-        Are you sure you want to {{action}} ? {{data && data.message}}
+      <p class="prompt-message py-4 mb-0" *ngIf="this.Message == ''">
+        Are you sure you want to {{action}} {{data && data.actionMessage}} ? {{data && data.message}}
       </p>
+      <p class="prompt-message py-4 mb-0" *ngIf="this.Message != ''">
+       {{this.Message}}
+      </p>
+
       <p class="bold text-danger mb-4">This action can not be undone.</p>
       <div class="br-14 px-4 py-3 checkbox-background mb-4">
         <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary">I understand data cannot be recovered</mat-checkbox>

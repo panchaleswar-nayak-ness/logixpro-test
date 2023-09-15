@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from 'src/app/services/shared.service';
-import { GlobalconfigService } from '../globalconfig.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { SharedService } from 'src/app/services/shared.service'; 
 
 @Component({
   selector: 'app-database-connections',
@@ -10,7 +10,7 @@ import { GlobalconfigService } from '../globalconfig.service';
 export class DatabaseConnectionsComponent implements OnInit {
   sideBarOpen: boolean = true;
   constructor(
-    private globalConfService: GlobalconfigService,
+    private Api:ApiFuntions,
     private sharedService: SharedService
   ) {}
   dbConnectionData = [];
@@ -37,7 +37,7 @@ export class DatabaseConnectionsComponent implements OnInit {
       DisplayName: 'Consolidation Manager',
       AppName: 'Consolidation Manager',
     };
-    this.globalConfService.get(payload, '/GlobalConfig/Menu').subscribe(
+    this.Api.Menu(payload).subscribe(
       (res: any) => {
 
         this.dbConnectionData = res && res.data;

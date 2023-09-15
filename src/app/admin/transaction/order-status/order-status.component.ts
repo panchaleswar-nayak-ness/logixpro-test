@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/init/auth.service';
-import { TransactionService } from '../transaction.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/init/auth.service'; 
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-order-status',
@@ -24,8 +24,11 @@ export class OrderStatusComponent implements OnInit {
   userData;
   constructor(
     private authService: AuthService,
-    private transactionService: TransactionService,
-  ) {}
+    private Api:ApiFuntions,
+  ) {
+
+ 
+  }
   ngOnInit(): void {
 
     this.userData = this.authService.userData();
@@ -68,20 +71,5 @@ export class OrderStatusComponent implements OnInit {
   onClearList(event: Event) {
     this.clearFromList = event;
   }
-  // async autocompleteSearchColumn() {
-  //   let searchPayload = {
-  //     orderNumber: '',
-  //     username:this.userData.userName,
-  //     wsid: this.userData.wsid,
-  //   };
-  //   this.transactionService
-  //     .get(searchPayload, '/Admin/OrderNumberNext')
-  //     .subscribe(
-  //       (res: any) => {
-  //       this.orderStatusNext=res && res.data
-
-  //       },
-  //       (error) => {}
-  //     );
-  // }
+  
 }

@@ -9,7 +9,7 @@
 <div class="row row-flex p-0 mb-3">
   <div class="col-xl-4">
     <div class="card p-3">
-      <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-xl-flex justify-content-between align-items-center mb-3">
         <h2 class="card-header-title mb-0 d-flex align-items-center">
           <div class="mat-icon-wrap me-lg-3">
             <span class="material-symbols-outlined">
@@ -18,7 +18,7 @@
           </div>
           <span>Orders</span>
         </h2>
-        <mat-form-field class="action-dropdown" appearance="outline">
+        <mat-form-field class="action-dropdown d-block" appearance="outline">
           <mat-label>Actions</mat-label>
           <mat-select #matRef class="employees-action" placeholder="Actions"
             (selectionChange)="onChangeOrderAction($event.value)">
@@ -49,7 +49,7 @@
         </ng-scrollbar>
       </div>
       <div class="d-flex justify-content-start">
-        <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]">
+        <mat-paginator #paginator [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[5, 10, 20]">
         </mat-paginator>
       </div>
     </div>
@@ -80,7 +80,7 @@
         </ng-scrollbar>
       </div>
       <div class="d-flex justify-content-start">
-        <mat-paginator #paginatorTrans [pageSize]="10" [pageSizeOptions]="[5, 10, 20]">
+        <mat-paginator #paginatorTrans [pageSize]="10"showFirstLastButtons [pageSizeOptions]="[5, 10, 20]">
         </mat-paginator>
       </div>
     </div>
@@ -89,5 +89,5 @@
 
 <div class="d-flex gap-12">
   <button type="submit" mat-flat-button class="form-button-submit btn-lg" style="flex:1" color="primary"
-    (click)="onSelectedOrders()">Submit</button>
+    (click)="onSelectedOrders()" [disabled]="isDisableSubmit">Submit</button>
 </div>

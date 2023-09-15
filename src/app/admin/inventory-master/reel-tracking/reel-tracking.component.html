@@ -1,25 +1,37 @@
+<div class="container-fluid-0 py-4 br-14" [formGroup]="reelTracking">
 
-<div class="row py-4 br-14"  [formGroup]="reelTracking">
+  <div class="row" style="display: flex; justify-content: space-between;">
+    <div class="col-xl-5 mb-3">
+      <mat-form-field class="filter w-100 stats-filters" appearance="outline">
+        <mat-label>Minimum RTS Reel Quantity</mat-label>
+        <!-- <input matInput type="number" class="custom-input-number" formControlName="minimumRTSReelQuantity"  > -->
+        <input (input)="handleInputChange($event)" matInput placeholder="Minimum RTS Reel Qty" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = 
+          !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" maxlength="9"
+          class="custom-input-number" formControlName="minimumRTSReelQuantity" (focusout)="onFocusOutEvent($event)">
+      </mat-form-field>
+    </div>
 
-  <div class="row" style="display: flex;
-  justify-content: space-between;">
-    <div class="col-md-5 mb-3">
-        <mat-form-field class="filter w-100 stats-filters" appearance="outline">
-          <mat-label>Minimum RTS Reel Quantity</mat-label>
-          <input matInput type="number" class="custom-input-number" formControlName="minimumRTSReelQuantity">
-        </mat-form-field>
-      </div>
-      
-      <div class="col-md-3 mb-3">
-        <button mat-stroked-button color="primary" class="br-14 bg-white primary-btn" style="height: 100%; width: 100%;">
+    <div class="col-xl-4 mb-3">
+      <!-- <button mat-stroked-button color="primary" class="br-14 bg-white primary-btn" style="height: 100%; width: 100%;" (click)="updateReelQty()">
           <mat-icon>perm_data_setting</mat-icon>
           Update Min. Reel Qty for All
-        </button>
-      </div>
+        </button> -->
+      <button type="button" mat-flat-button color="primary"
+        class="mat-focus-indicator primary-button btn-regular w-100 mat-flat-button mat-button-base mat-primary " (click)="updateReelQty()">Update Min. Reel Qty for All
+
+        <span matSuffix>
+
+          <mat-icon style="color:#ffffff; transform: rotate(45deg); padding-top: 4px;">unfold_more</mat-icon>
+
+        </span>
+
+      </button>
+    </div>
   </div>
   <div class="row">
     <div class="px-3">
-      <mat-checkbox class="example-margin custom-checkbox" color="primary" formControlName="includeInAutoRTSUpdate">Include in Auto RTS update</mat-checkbox>
+      <mat-checkbox  class="example-margin custom-checkbox" color="primary" formControlName="includeInAutoRTSUpdate"
+        [disabled]="btnDisabled" (change)="onChangeRTSUpdate($event)">Include in Auto RTS update</mat-checkbox>
     </div>
   </div>
 

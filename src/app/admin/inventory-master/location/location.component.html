@@ -8,6 +8,7 @@
   </div>
 
 <div class="card br-14 table-responsive px-0" style="overflow-x: auto;">
+  <ng-scrollbar class="mat-table-scrollbar" track="all" style="min-height:320px">
          
     <table mat-table [dataSource]="location.controls['inventoryTable'].value" matSort (matSortChange)="announceSortChange($event)" style=" min-height: 150px;">
       <ng-container matColumnDef="location">
@@ -69,12 +70,12 @@
       </ng-container>
 
       <ng-container matColumnDef="shipVia">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Ship Via</th>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef>{{this.fieldNameDetails?.currentValue?.userField1}}</th>
         <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.userField1}} </td>
       </ng-container>
 
       <ng-container matColumnDef="shipToName">
-        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Ship To Name</th>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef>{{this.fieldNameDetails?.currentValue?.userField2}}</th>
         <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.userField2}} </td>
       </ng-container>
 
@@ -105,7 +106,7 @@
       </ng-container>
 
       <ng-container matColumnDef="velocity">
-        <th mat-header-cell *matHeaderCellDef>Velocity</th>
+        <th mat-header-cell mat-sort-header  *matHeaderCellDef>Velocity</th>
         <td mat-cell *matCellDef="let element" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}"> {{element.goldenZone}} </td>
       </ng-container>
       <tr class="mat-row" *matNoDataRow>
@@ -117,11 +118,11 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-  
+  </ng-scrollbar>
 </div>
 
 
-<div class="d-flex justify-content-between bg-white">
-  <mat-paginator [pageSize]="5" [length]="count" [pageSizeOptions]="[5, 10, 20]"  (page)="handlePageEvent($event)"></mat-paginator>          
+<div class="d-flex justify-content-between bg-white p-0">
+  <mat-paginator [pageSize]="5" showFirstLastButtons [length]="count" [pageSizeOptions]="[5, 10, 20]"  (page)="handlePageEvent($event)"></mat-paginator>          
 </div>
 </div>

@@ -11,6 +11,9 @@ import { catchError, Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from './auth.service';
+import { ApiFuntions } from '../services/ApiFuntions';
+import { SpinnerService } from './spinner.service';
 
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
@@ -19,46 +22,85 @@ export class HeaderInterceptor implements HttpInterceptor {
     private router: Router,
     private toastr: ToastrService,
     private dialog: MatDialog,
+    private authService: AuthService,
+    private api:ApiFuntions,
+    private spinnerService: SpinnerService
     ) {}
-
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    let authReq: any;
-    if(localStorage.getItem('user')){
-      const { _token }  = JSON.parse(localStorage.getItem('user') || "{}");
-      authReq = request.clone({
-        headers: new HttpHeaders({
-          'Content-Type':  'application/json',
-          '_token': _token
-        })
-      });
-    
+    intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+      
+      return next.handle(request).pipe(
+        catchError((error, caught) => {
+          this.handleAuthError(error);
+          return of(error);
+        }) as any
+      );
     }
-    else{
-      authReq = request.clone({
-        headers: new HttpHeaders({
-          'Content-Type':  'application/json',
-          '_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VyTmFtZSI6IjEyMzQiLCJVc2VyVHlwZSI6IlUiLCJBY2Nlc3NEdHRtIjo2MzgwMTk0ODA5MTQ0MTk5NTksIkFwcGxpY2F0aW9uSUQiOiJQaWNrUHJvIiwiQWNjZXNzTGV2ZWwiOiJBZG1pbmlzdHJhdG9yIiwiRmlyc3RMb2dpblRpbWUiOjYzODAxOTQ4MDkxNDQxOTk1OX0.Cyg97oHb_UlFuuBd8MadpE037CW52VPF-_sdYCbxfyA'
-        })
-      });
-    }
-    return next.handle(authReq).pipe(catchError((error, caught) => {
-      this.handleAuthError(error);
-      return of(error);
-    }) as any);
-  
-  }
 
-  private handleAuthError(err: HttpErrorResponse): Observable<any> {
+  private handleAuthError(err: HttpErrorResponse): Observable<any> { 
     if (err.status === 401) {
-      this.dialog.closeAll();
-      this.toastr.error('Token Expire', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
-      localStorage.clear();
-      this.router.navigate([`/login`]);
+      
+      let userData = this.authService.userData();
+      let paylaod = {
+        "username": userData.userName,
+        "wsid": userData.wsid,
+      }      
+      
+      if(this.router.url.split('?')[0] != '/report-view'){
+      if(this.authService.isConfigUser()){
+          this.api.configLogout(paylaod).subscribe((res:any) => {
+            if (res.isExecuted) {       
+              this.dialog.closeAll();
+              this.toastr.error('Token Expire', 'Error!', {
+                positionClass: 'toast-bottom-right',
+                timeOut: 2000
+              });
+              this.router.navigate(['/globalconfig']);
+            } else {
+              this.toastr.error(res.responseMessage, 'Error!', {
+                positionClass: 'toast-bottom-right',
+                timeOut: 2000
+              });
+            }
+          });    
+      } else {
+        this.api.Logout(paylaod).subscribe((res:any) => {
+          if (res.isExecuted) {  
+            let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : "";
+            localStorage.clear();     
+            if(lastRoute != ""){
+              localStorage.setItem('LastRoute', lastRoute);
+            } 
+            if(!localStorage.getItem('LastRoute')){
+              localStorage.setItem('LastRoute', this.router.url);
+            }     
+            this.dialog.closeAll();
+            this.toastr.error('Token Expire', 'Error!', {
+              positionClass: 'toast-bottom-right',
+              timeOut: 2000
+            });  
+            if(!(this.router.url.indexOf('login') > -1)) localStorage.setItem('LastRoute', this.router.url);        
+            this.router.navigate(['/login']);    
+          } else {
+            this.toastr.error(res.responseMessage, 'Error!', {
+              positionClass: 'toast-bottom-right',
+              timeOut: 2000
+            });
+          }
+        })
+      }
+
       return of(err.message);
     }
     throw err;
-  }
+  }else if(err.status === 500){
+    if(`${err.url}`.indexOf("insertnewprinter") > -1){
+      this.toastr.error(err.error.ResponseMessage, 'Error!', {
+        positionClass: 'toast-bottom-right',
+        timeOut: 2000,
+      }); 
+    }
+    this.spinnerService.hide();
+  } 
+  return of(err.message);
+} 
 }

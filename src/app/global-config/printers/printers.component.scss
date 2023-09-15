@@ -1,0 +1,21 @@
+table{
+    th,td{
+        padding-right: 15px;
+        &:nth-child(3){
+            width: 150px;
+            mat-form-field{
+                width: 140px;
+            }
+        }
+        &:last-child{
+            width: 20px;
+        }
+    }
+    tr{
+        &:first-child{
+            td{
+            padding-top: 10px;
+        }
+        }
+    }
+}

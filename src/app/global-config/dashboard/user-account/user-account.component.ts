@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { SharedService } from 'src/app/services/shared.service';
-import { GlobalconfigService } from '../../globalconfig.service';
+import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../../labels/labels.json';
 import { Router,NavigationEnd  } from '@angular/router';
 import { FormControl, FormGroup, Validators, } from '@angular/forms';
 import { AuthService } from 'src/app/init/auth.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 
 @Component({
@@ -16,7 +16,7 @@ import { AuthService } from 'src/app/init/auth.service';
 export class UserAccountComponent implements OnInit {
   constructor(
     private sharedService: SharedService,
-    private globalConfService: GlobalconfigService,
+    private Api:ApiFuntions,
     private toastr: ToastrService,
     private router: Router,
     private authService:AuthService
@@ -49,7 +49,7 @@ export class UserAccountComponent implements OnInit {
       DisplayName: 'Consolidation Manager',
       AppName: 'Consolidation Manager',
     };
-    this.globalConfService.get(payload, '/GlobalConfig/Menu').subscribe(
+    this.Api.Menu(payload).subscribe(
       (res: any) => {
         res && res.data;
         if (res && res.data ) {
@@ -73,8 +73,8 @@ export class UserAccountComponent implements OnInit {
       userName:this.authService.userData().userName,
       password: this.password,
     };
-    this.globalConfService
-      .get(payload, '/GlobalConfig/ChangeGlobalAccount')
+    this.Api
+      .ChangeGlobalAccount(payload)
       .subscribe(
         (res: any) => {
           if (res.isExecuted) {

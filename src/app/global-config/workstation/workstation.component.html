@@ -35,9 +35,9 @@
 
                             <mat-card class="mat-elevation-z g-card mb-4 h-100">
                                 <mat-card-content>
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="d-xl-flex justify-content-between align-items-center mb-3">
                                         <h2 class="card-header-title mb-0 d-flex align-items-center">
-                                            <div class="mat-icon-wrap me-lg-3">
+                                            <div class="mat-icon-wrap me-1 me-lg-3">
                                                 <span class="material-symbols-outlined">
                                                     online_prediction
                                                 </span>
@@ -45,7 +45,7 @@
                                             <span>Workstation App</span>
                                         </h2>
 
-                                        <mat-form-field class="action-dropdown" appearance="outline">
+                                        <mat-form-field class="action-dropdown d-block" appearance="outline">
                                             <mat-label>Actions</mat-label>
                                             <mat-select  #matRef class="employees-action" (openedChange)="actionDialog($event)"   [(value)]="selectedVariable">
                                                 <mat-option value="clear_disabled" [disabled]="!wsid" (click)="clearDefaultApp()" >Clear Default App</mat-option>
@@ -58,20 +58,21 @@
                                             </span>
                                         </mat-form-field>
                                     </div>
-                                    <div class="row mb-3">
-                                        <mat-label class="px-3"><b>Apps Selected WS:</b>
-                                            {{selectedItem}} </mat-label>
+                                    <div class="row mb-4">
+                                        <mat-label class="px-3">Apps Selected WS:
+                                            <b> {{selectedItem}}</b> </mat-label>
                                     </div>
                                     <div class="row">
-                                        <div class="col-5">
-                                            <div class="card br-14 table-responsive ">
+                                        <div class="col-xl-5 mb-3 mb-xl-0">
+                                            <div class="card br-14" >
                                                 <div class="card-header">Workstations</div>
                                                
-                                                <ng-scrollbar style="height: 500px;">
-                                                    <div class="card-body">
+                                                 <ng-scrollbar class="mat-table-scrollbar"  style="height: 500px;" track="all">
+                                                    <div class="card-body table-responsive">
+
                                                 <mat-radio-group color="primary" [(ngModel)]="selectedItem">
                                                     <div *ngFor="let item of workstationData; let i = index"
-                                                        class="d-flex flex-column gap-12 mb-2">
+                                                        class="d-flex flex-column gap-12 mb-2"> 
                                                         <mat-radio-button [value]="item.pcName" [checked]="item.checked"
                                                             (change)="radioChange(item)">
                                                             {{item.pcName}}
@@ -80,14 +81,14 @@
                                                     </div>
                                                 </mat-radio-group>
                                             </div>
-                                                </ng-scrollbar>
+                                                 </ng-scrollbar> 
                                         
                                             </div>
                                         </div>
-                                        <div class="col-7">
+                                        <div class="col-xl-7">
                                             <div class="card br-14 table-responsive borderless px-0"
                                                >
-                                                <ng-scrollbar style="height: 557px;"  class="mat-table-scrollbar">
+                                                <ng-scrollbar style="height: 557px;"  class="mat-table-scrollbar" track="all">
                                                 <!-- <table>
                                                     <thead class="card-header">
                                                         <tr>
@@ -111,18 +112,18 @@
                                                     
                                                 </table> -->
 
-                                                <table mat-table [dataSource]="appName_datasource">
+                                                <table class="table-responsive"  mat-table [dataSource]="appName_datasource">
 
 
 
                                                     <!-- Position Column -->
-                                                    <ng-container matColumnDef="appName">
+                                                    <ng-container matColumnDef="appName" mat-dialog-content>
                                                         <th mat-header-cell *matHeaderCellDef> App Name </th>
                                                         <td mat-cell *matCellDef="let element"> {{element.displayName}}
                                                         </td>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="canAccess">
+                                                    <ng-container matColumnDef="canAccess" mat-dialog-content>
                                                         <th mat-header-cell *matHeaderCellDef>
                                                             Can Access?
                                                         </th>
@@ -141,7 +142,7 @@
                                                     </ng-container>
 
                                                     <!-- Radio Column -->
-                                                    <ng-container matColumnDef="defaultApp">
+                                                    <ng-container matColumnDef="defaultApp" mat-dialog-content>
                                                         <th mat-header-cell *matHeaderCellDef>
                                                             Default App?
                                                         </th>

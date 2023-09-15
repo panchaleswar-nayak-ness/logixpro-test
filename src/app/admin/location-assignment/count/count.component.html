@@ -1,180 +1,257 @@
-<div class="my-3">
-    <mat-card class="mat-elevation-z g-card br-14 mb-4">
-        <mat-card-content>
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="card-header-title mb-0 d-flex align-items-center">
-                    <div class="mat-icon-wrap me-lg-3">
-                        <span class="material-symbols-outlined">
-                            dialpad
-                        </span>
-                    </div>
-                    <span>Count</span>
-                </h2>
+<div class="row mb-3">
+      <div class="col-xl-6">
+    <mat-card class="mat-elevation-z g-card mb-2">
+      <mat-card-content>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="card-header-title mb-0 d-flex align-items-center">
+            <div class="mat-icon-wrap me-lg-3">
+              <span class="material-symbols-outlined">
+                format_list_numbered
+              </span>
             </div>
+            <span>Count Order Selection</span>
+          </h2>
+        </div>
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="g-mini-search-box mb-3">
+            <div class="search-box">
+              <mat-form-field class="w-100 bg-white br-14" appearance="fill">
+                <span class="material-symbols-outlined icon-search">
+                  search
+                </span>
+                <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50" [(ngModel)]="searchOrder" (ngModelChange)="applyFilter($event)" #autoFocusField>
+                <button *ngIf="searchOrder != ''" matSuffix class="clear-btn" (click)="searchOrder = ''; this.leftTable.filter = searchOrder;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+              </mat-form-field>
+              
+            </div>
+          </div>
+          </div>
 
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h2 class="card-header-title mb-0 d-flex align-items-center">
-                    <span>Count Order Selection</span>
-                </h2>
-                <button mat-stroked-button color="primary" class="button-primary-o bg-white" (click)="addOrdereDialog()">
-                    <mat-icon>add</mat-icon>
-                    Add All
-                </button>
-            </div>
-            <div class="card br-14 p-0">
-                <table mat-table [dataSource]="dataSource" class="custom-table" matSort>
-            
-                    <!--- Note that these columns can be defined in any order.
-                          The actual rendered columns are set as a property on the row definition" -->
-                  
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="location">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Order no. </th>
-                      <td mat-cell *matCellDef="let element"> {{element.location}} </td>
-                    </ng-container>
-                  
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="warehouse">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Quantity </th>
-                      <td mat-cell *matCellDef="let element"> {{element.warehouse}} </td>
-                    </ng-container>
-                  
-                    <!-- Weight Column -->
-                    <ng-container matColumnDef="zone">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight"> Priority </th>
-                      <td mat-cell *matCellDef="let element"> {{element.zone}} </td>
-                    </ng-container>
-                  
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="carousel">
-                      <th mat-header-cell *matHeaderCellDef> Required Date </th>
-                      <td mat-cell *matCellDef="let element"> {{element.carousel}} </td>
-                    </ng-container>
-            
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="row">
-                      <th mat-header-cell *matHeaderCellDef> </th>
-                      <td mat-cell *matCellDef="let element" class="text-end"> <button mat-flat-button class="bg-white text-primary-900" >
-                        <mat-icon>add_circle</mat-icon>
-                      </button> </td>
-                    </ng-container>
-                  
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                  </table>
-                  <mat-paginator class="d-flex justify-content-start" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"
-                             aria-label="Select page of periodic elements">
-                  </mat-paginator>
-            </div>
-        </mat-card-content>
-    </mat-card>
+          <div class="col-xl-6">
+           <div class="d-xl-block d-flex justify-content-end">
+            <button mat-stroked-button color="primary" class="button-add-all mb-3 float-end" (click)="addOrdereDialog()" style="flex:1">
+              Add All
+            </button>
+          </div>
+        </div>
+        </div>
+          
+        <div class="card br-14  borderless" style="overflow-x: auto;">
+          <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding" style="height:550px" track="all">
+          <table mat-table #table1 [dataSource]="leftTable" class="w-100" matSort #matSort="matSort" (matSortChange)="announceSortChange($event)">
 
-    <mat-card class="mat-elevation-z g-card br-14 mb-4">
-        <mat-card-content>
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h2 class="card-header-title mb-0 d-flex align-items-center">
-                    <span>Count Select Orders</span>
-                </h2>
-                <button mat-stroked-button color="warn" class="button-remove-all bg-white" (click)="deleteItem($event)">
-                    <mat-icon>clear</mat-icon>
-                    Remove All
-                </button>
-            </div>
-            <div class="card br-14 p-0">
-                <table mat-table [dataSource]="dataSource" class="custom-table" matSort>
-            
-                    <!--- Note that these columns can be defined in any order.
+            <!--- Note that these columns can be defined in any order.
                           The actual rendered columns are set as a property on the row definition" -->
-                  
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="location">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Order no. </th>
-                      <td mat-cell *matCellDef="let element"> {{element.location}} </td>
-                    </ng-container>
-                  
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="warehouse">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Quantity </th>
-                      <td mat-cell *matCellDef="let element"> {{element.warehouse}} </td>
-                    </ng-container>
-                  
-                    <!-- Weight Column -->
-                    <ng-container matColumnDef="zone">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight"> Priority </th>
-                      <td mat-cell *matCellDef="let element"> {{element.zone}} </td>
-                    </ng-container>
-                  
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="carousel">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight"> Required Date </th>
-                      <td mat-cell *matCellDef="let element"> {{element.carousel}} </td>
-                    </ng-container>
-            
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="row">
-                      <th mat-header-cell *matHeaderCellDef> </th>
-                      <td mat-cell *matCellDef="let element" class="text-end"> <button mat-flat-button class="bg-white text-error" >
-                        <mat-icon style="transform: rotate(45deg) ;">add_circle</mat-icon>
-                      </button> </td>
-                    </ng-container>
-                  
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                  </table>
-                  <div class="d-flex justify-content-between my-2">
-                  <mat-paginator class="d-flex justify-content-start" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"
-                             aria-label="Select page of periodic elements">
-                  </mat-paginator>
-                  <button mat-flat-button color="primary" class="br-14 mx-2"(click)="quarantineDialog()">
-                    Location Assignment 
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="orderNumber">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Order no.
+              </th>
+              <td mat-cell *matCellDef="let element"> {{element.orderNumber}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="itemCount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Quantity </th>
+              <td mat-cell *matCellDef="let element"> {{element.itemCount}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="priority">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight"> Priority
+              </th>
+              <td mat-cell *matCellDef="let element"> {{element.priority}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="requiredDate">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Required Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.requiredDate}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" stickyEnd>
+              <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef>Action</th>
+              <td class="pe-0" mat-cell *matCellDef="let element; let i = index" width="10%">
+                  <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete"
+                      matTooltip="Add" matTooltipPosition="above" color="primary" (click)="add(element)">
+                      <mat-icon>add</mat-icon>
                   </button>
-                  </div>
-            </div>
-        </mat-card-content>
+              </td>
+          </ng-container>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell " [attr.colspan]="displayedColumns.length">
+              No data available in table.
+            </td>
+          </tr>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </ng-scrollbar>
+      </div>
+          <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[10, 20]" [pageSize]="10"
+            aria-label="Select page of periodic elements" #paginator>
+          </mat-paginator>
+        
+      </mat-card-content>
     </mat-card>
 </div>
 
-<ng-template #deleteAction>
-    
-    <div class="d-flex flex-column justify-content-center px-2 py-4">
-        <div class="d-flex justify-content-between">
-            <h2 class="p-0 me-2">Mark Selected Orders for Pick Location Assignment</h2>
-            <button mat-icon-button class="close-button br-14" [mat-dialog-close]="true">
-                <mat-icon class="close-icon">close</mat-icon>
+
+      <div class="col-xl-6">
+        
+    <mat-card class="mat-elevation-z g-card mb-2">
+      <mat-card-content>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="card-header-title mb-0 d-flex align-items-center">
+            <div class="mat-icon-wrap me-lg-3 me-2">
+              <span class="material-symbols-outlined">
+                task_alt
+              </span>
+            </div>
+            <span>Count Select Orders</span>
+          </h2>
+        </div>
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="g-mini-search-box mb-3">
+            <div class="search-box">
+              <mat-form-field class="w-100 bg-white br-14" appearance="fill">
+                <span class="material-symbols-outlined icon-search">
+                  search
+                </span>
+                <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50"  [(ngModel)]="searchOrder1" (ngModelChange)="applyFilter1($event)">
+                <button *ngIf="searchOrder1 != ''" matSuffix class="clear-btn" (click)="searchOrder1 = ''; this.rightTable.filter = searchOrder1;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+              </mat-form-field>
+            </div>
+          </div>
+          </div>
+
+          <div class="col-xl-6">
+           <div class="d-xl-block d-flex justify-content-end">
+            <button mat-stroked-button color="warn" class="button-add-all mb-3 float-end" (click)="deleteItem()" style="flex:1">
+              Remove All
             </button>
+          </div>
         </div>
-      <div>
-        <p class="bold text-tritary-900 mb-4 pt-4">Do you want to mark these orders for location assignment?</p>
-        <div class="d-flex justify-content-end text-center">
-          <button mat-flat-button color="primary" class="custom-btn">
-            Continue
-          </button>
         </div>
+
+        <div class="card br-14 borderless" style="overflow-x: auto;"> 
+          <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding" style="height:550px" track="all">
+          <table mat-table #table2 [dataSource]="rightTable" class="w-100" matSort #matSort="matSort" (matSortChange)="announceSortChange1($event)"  #matSort1="matSort">
+
+            <!--- Note that these columns can be defined in any order.
+                          The actual rendered columns are set as a property on the row definition" -->
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="orderNumber">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Order no.
+              </th>
+              <td mat-cell *matCellDef="let element">{{element.orderNumber}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="itemCount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Quantity </th>
+              <td mat-cell *matCellDef="let element"> {{element.itemCount}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="priority">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight"> Priority
+              </th>
+              <td mat-cell *matCellDef="let element">{{element.priority}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="requiredDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight"> Required
+                Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.requiredDate}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" stickyEnd>
+              <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef>Action</th>
+              <td class="pe-0" mat-cell  *matCellDef="let element; let i = index" width="10%">
+                  <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete"
+                      matTooltip="Remove" matTooltipPosition="above" color="warn" (click)="remove(element)">
+                      <mat-icon>close</mat-icon>
+                  </button>
+              </td>
+          </ng-container>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell " [attr.colspan]="displayedColumns1.length">
+              No data available in table.
+            </td>
+          </tr>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+          </table>
+          </ng-scrollbar>
+        </div>
+         
+        <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[10, 20]" [pageSize]="10"
+        aria-label="Select page of periodic elements" #paginator1>
+      </mat-paginator>
+
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>
+
+
+<button color="primary" class="mat-focus-indicator w-100 btn-lg mat-flat-button mat-button-base mat-primary mb-3" style="flex: 1;"
+  ng-reflect-color="primary" ng-reflect-disabled="false" (click)="quarantineDialog()"><span class="mat-button-wrapper" > Location Assignment
+  </span><span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false" ng-reflect-centered="false"
+    ng-reflect-trigger="[object HTMLButtonElement]"></span><span class="mat-button-focus-overlay"></span></button>
+
+<ng-template #deleteAction>
+
+  <div class="d-flex flex-column justify-content-center px-2 py-4">
+    <div class="d-flex justify-content-between">
+      <h2 class="p-0 me-2">Mark Selected Orders for Pick Location Assignment</h2>
+      <button mat-icon-button class="close-button br-14" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+      </button>
+    </div>
+    <div>
+      <p class="bold text-tritary-900 mb-4 pt-4">Do you want to mark these orders for location assignment?</p>
+      <div class="d-flex justify-content-end text-center">
+        <button mat-flat-button color="primary" class="custom-btn" (click)="locationAssignment()">
+          Continue
+        </button>
       </div>
     </div>
-  </ng-template>
+  </div>
+</ng-template>
 
 
 
-  <ng-template #addOrder>
-  
-    <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
-      <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
-          <mat-icon color="primary">add</mat-icon>
+<!-- <ng-template #addOrder>
+
+  <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
+    <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
+      <mat-icon color="primary">add</mat-icon>
+    </div>
+    <div>
+      <p class="bold text-tritary-900 mb-4">Are you sure you want to add?</p>
+      <p class="bold text-primary-900 mb-4">Selected order numbers will be added once done.</p>
+      <div class="mb-3">
+        <button mat-flat-button color="warn" class="custom-btn button-primary-flat text-primary-900 bg-white">
+          Yes
+        </button>
       </div>
       <div>
-          <p class="bold text-tritary-900 mb-4">Are you sure you want to add?</p>
-          <p class="bold text-primary-900 mb-4">Selected order numbers will be added once done.</p>
-          <div class="mb-3">
-          <button mat-flat-button color="warn" class="custom-btn button-primary-flat text-primary-900 bg-white">
-              Yes
-          </button>
-          </div>
-          <div>
-            <button mat-stroked-button color="basic" class="custom-btn bg-white" [mat-dialog-close]="true">
-              Cancel
-            </button>
-          </div>
+        <button mat-stroked-button color="basic" class="custom-btn bg-white" [mat-dialog-close]="true">
+          Cancel
+        </button>
       </div>
-      </div>
-  </ng-template>
+    </div>
+  </div>
+</ng-template> -->

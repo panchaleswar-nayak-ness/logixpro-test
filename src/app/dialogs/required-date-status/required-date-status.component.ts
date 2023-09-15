@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { SuperBatchService } from '../../../app/induction-manager/super-batch/super-batch.service';
+import { MatTableDataSource } from '@angular/material/table'; 
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-required-date-status',
@@ -52,7 +52,7 @@ export class RequiredDateStatusComponent implements OnInit {
     { countToInduct: "1", reqDate: "12/14/2022", zone: "12" }
   ];
 
-  constructor(private sb_service: SuperBatchService) { }
+  constructor(private Api:ApiFuntions) { }
 
   ngOnInit(): void {
     this.getReqDateDataSelect();
@@ -64,7 +64,7 @@ export class RequiredDateStatusComponent implements OnInit {
   }
 
   getReqDateDataSelect(){
-    this.sb_service.get('', '/Induction/ReqDateDataSelect').subscribe(res => {
+    this.Api.ReqDateDataSelect().subscribe(res => {
       if(res.data.length > 0) {
         // console.log(res.data)
         this.dataSource = new MatTableDataSource(res.data);

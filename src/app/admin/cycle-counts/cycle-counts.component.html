@@ -1,12 +1,15 @@
 <div class="container-fluid p-0" style="height: 800px;">
     <div class="row">
       <div class="col-12">
-        <div style="height: 400px; margin-bottom: 20px;">
+        <div class="mb-3">
           <app-cccount-queue></app-cccount-queue>
         </div>
-        <div  style="height: 360px;">
+        <div class="mb-3">
           <app-ccdiscrepancies></app-ccdiscrepancies>
         </div>
       </div>
+    </div>
+    <div class="mb-3">
+      <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100 mb-3" color="primary"  (click)="createTransaction()">Create Count Batches</button>
     </div>
 </div>

@@ -4,9 +4,10 @@ import { MatRadioChange } from '@angular/material/radio';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { RequiredDateStatusComponent } from '../../../app/dialogs/required-date-status/required-date-status.component';
-import { AuthService } from '../../../app/init/auth.service';
-import { SuperBatchService } from './super-batch.service';
+import { AuthService } from '../../../app/init/auth.service'; 
 import labels from '../../labels/labels.json';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-super-batch',
@@ -26,31 +27,33 @@ export class SuperBatchComponent implements OnInit {
   order_to_batch: any;
   type: any = 'Order';
   tote_id: any;
+  printBatchLabels:any;
   batchRowData: any;
   isConfirmation: boolean = false;
+  isConfirmSuperBatch:boolean=false;
   itemNum : any;
-
+  selectedOption:any;
   @ViewChild('batchOrderConfirmation') batchOrderConfirmation: TemplateRef<any>;
 
   constructor(
     private authService: AuthService,
     private dialog: MatDialog,
+    private global:GlobalService,
     private toastr: ToastrService,
-    private sb_service: SuperBatchService
+    private Api: ApiFuntions
   ) { }
 
   ngOnInit(): void {
-    this.user_data = this.authService.userData();
-    let payload = {
-      "WSID": this.user_data.wsid
-    }
-    this.sb_service.get(payload, '/Induction/SuperBatchIndex').subscribe(res => {
+    this.user_data = this.authService.userData(); 
+    this.Api.SuperBatchIndex().subscribe(res => {
       const { preferences } = res.data;
-      // console.log(res.data);
+      
       this.itemNumbers = res.data.itemNums;
       this.defaultSuperBatchSize = preferences.defaultSuperBatchSize;
       this.superBatches = res.data.superBatches;
-      this.getSuperBatchBy('Order');
+      this.selectedOption=preferences.superBatchByToteID?'Tote':'Order'
+      this.isConfirmSuperBatch=preferences.confirmSuperBatch
+      this.getSuperBatchBy(this.selectedOption);
     })
   }
 
@@ -61,7 +64,28 @@ export class SuperBatchComponent implements OnInit {
       autoFocus: '__non_existing_element__'
     })
   }
+  printBatchLabel(type){
+    if(!this.printBatchLabels){
+      this.toastr.error('Please Select a Batch ID to Print', 'Error!', {
+        positionClass: 'toast-bottom-right',
+        timeOut: 2000
+      });
+    }else{
+      if(type=='printBatchLabels'){
+    this.global.Print(`FileName:PrintSuperBatchLabel|ToteID:${this.printBatchLabels}`,'lbl');
+    }
+      if(type=='printOrderLabels'){
+    this.global.Print(`FileName:PrintSuperBatchOrderLabel|ToteID:${this.printBatchLabels}`,'lbl');
+        }
+      if(type=='printCaseLabels'){
+        debugger
+    this.global.Print(`FileName:PrintPrevInZoneCaseLabelToteID|ToteID:${this.printBatchLabels}`,'lbl');
 
+       }
+   
+
+    }
+  }
   getSuperBatchBy(type: any, itemNumber?: any) {
     this.type = type;
     this.itemNum = itemNumber ? itemNumber : '';
@@ -69,7 +93,7 @@ export class SuperBatchComponent implements OnInit {
       "Type": type,
       "ItemNumber": itemNumber
     }
-    this.sb_service.get(payload, '/Induction/ItemZoneDataSelect').subscribe(res => {
+    this.Api.ItemZoneDataSelect(payload).subscribe(res => {
       const batchTableData = res.data.map((v, key) => ({ ...v, 'key': key, 'orderToBatch': this.defaultSuperBatchSize, 'newToteID': '' }))
       this.dataSource = batchTableData;
     });
@@ -99,7 +123,7 @@ export class SuperBatchComponent implements OnInit {
 
   onCreateBtach(element: any) {
     this.batchRowData = element;
-      // console.log(element);
+      
       
     if (element.newToteID <= 1) {
       this.toastr.error('Must enter a tote id to batch orders', 'Error!', {
@@ -123,9 +147,11 @@ export class SuperBatchComponent implements OnInit {
       return;
     }
 
+    if(this.isConfirmSuperBatch){
     const dialogRef = this.dialog.open(this.batchOrderConfirmation, {
       width: 'auto',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -133,6 +159,9 @@ export class SuperBatchComponent implements OnInit {
         this.saveBatch(element);
       }
     });
+  }else{
+    this.saveBatch(element);
+  }
   }
 
   saveBatch(element: any) {
@@ -152,10 +181,10 @@ export class SuperBatchComponent implements OnInit {
       "ItemNum": this.itemNum.toString(),
       "BatchByOrder": BatchByOrder.toString()
     }
-    this.sb_service.create(payload, '/Induction/SuperBatchCreate').subscribe(response => {
+    this.Api.SuperBatchCreate(payload).subscribe(response => {
       // console.log(response);
       if (response.isExecuted) {
-        this.sb_service.create({ "ToteID": element.newToteID.toString() }, '/Induction/TotePrintTableInsert').subscribe(res => {
+        this.Api.TotePrintTableInsert({ "ToteID": element.newToteID.toString() }).subscribe(res => {
           // console.log(res);
           if(res.isExecuted){
             this.superBatches.push(element.newToteID);
@@ -182,6 +211,16 @@ export class SuperBatchComponent implements OnInit {
 
   isConfirm(val: boolean) {
     this.isConfirmation = val;
+  }
+
+  checkOTB(element: any, i : any) {
+    if (element.orderToBatch <= 1) {
+      this.dataSource[i].orderToBatch = 2;
+      this.toastr.error('Orders to Batch must be greater than 1 ', 'Error!', {
+        positionClass: 'toast-bottom-right',
+        timeOut: 2000
+      });
+    }
   }
 
 }

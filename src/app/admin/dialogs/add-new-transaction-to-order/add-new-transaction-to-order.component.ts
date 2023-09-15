@@ -1,17 +1,17 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { TransactionService } from '../../transaction/transaction.service';
+import { ToastrService } from 'ngx-toastr'; 
 import { FormControl, FormGroup } from '@angular/forms';
 import labels from '../../../labels/labels.json';
 import { FloatLabelType } from '@angular/material/form-field';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ItemExistGenerateOrderComponent } from '../item-exist-generate-order/item-exist-generate-order.component';
 import { EmptyFieldsComponent } from '../empty-fields/empty-fields.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-add-new-transaction-to-order',
@@ -19,6 +19,7 @@ import { EmptyFieldsComponent } from '../empty-fields/empty-fields.component';
   styleUrls: ['./add-new-transaction-to-order.component.scss'],
 })
 export class AddNewTransactionToOrderComponent implements OnInit {
+  @ViewChild('item_num') item_num: ElementRef;
   orderNumber;
   quantity=0;
   itemNumber:any='';
@@ -33,7 +34,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private transactionService: TransactionService,
+    private Api: ApiFuntions,
     public dialogRef: MatDialogRef<any>
   ) {}
   transactionInfo = new FormGroup({
@@ -59,9 +60,8 @@ export class AddNewTransactionToOrderComponent implements OnInit {
     userField9: new FormControl(''),
     userField10: new FormControl(''),
   });
-  ngOnInit(): void {
-    //console.log('data item', this.data.item);
-
+  ngOnInit(): void { 
+    this.autocompleteSearchColumn();
     // if(this.itemNumber==='')return
     // this.searchByInput
     // .pipe(debounceTime(400), distinctUntilChanged())
@@ -142,7 +142,39 @@ export class AddNewTransactionToOrderComponent implements OnInit {
     this.autocompleteSearchColumn()
   }
   searchData(){
+    let payload = {
+      itemNumber: this.itemNumber,
+      username: this.data.userName,
+      wsid: this.data.wsid,
+    }
+
+  
+      this.Api.ItemExists(payload)
+      .subscribe(
+        (res: any) => {
+          if(res.isExecuted){
+              if(res.data==''){
+                const dialogRef = this.dialog.open(ItemExistGenerateOrderComponent, {
+                  height: 'auto',
+                  width: '560px',
+                  autoFocus: '__non_existing_element__',
+      disableClose:true,
+                  data: {
+                    itemNumber:this.itemNumber,
+                  },
+                });
+                dialogRef.afterClosed().subscribe((res) => {
+                 this.itemNumber=''
+                });
+              }
+            
+          }
+        },
+        (error) => {
     
+        }
+      );
+  
   }
   async autocompleteSearchColumn() {
     let searchPayload = {
@@ -156,8 +188,8 @@ export class AddNewTransactionToOrderComponent implements OnInit {
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.transactionService
-      .get(searchPayload, '/Common/SearchItem', true)
+    this.Api
+      .SearchItem(searchPayload)
       .subscribe(
         (res: any) => {
           if(res.data){
@@ -175,7 +207,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   }
 
   onFocusOutItemNum(event){
-
+return
     if(event.target.value==='')return
     
     let payload = {
@@ -184,11 +216,8 @@ export class AddNewTransactionToOrderComponent implements OnInit {
       wsid: this.data.wsid,
     }
 
-    this.transactionService
-      .get(
-        payload,
-        `/Common/ItemExists`,true
-      )
+    setTimeout(() => {
+      this.Api.ItemExists(payload)
       .subscribe(
         (res: any) => {
           if(res.isExecuted){
@@ -197,6 +226,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                   height: 'auto',
                   width: '560px',
                   autoFocus: '__non_existing_element__',
+      disableClose:true,
                   data: {
                     itemNumber:this.itemNumber,
                   },
@@ -212,98 +242,153 @@ export class AddNewTransactionToOrderComponent implements OnInit {
     
         }
       );
+    }, 500);
+   
   }
   saveTransaction() {
-    if(this.itemNumber===''  || this.quantity===0 || this.quantity<0){
-      const dialogRef = this.dialog.open(EmptyFieldsComponent, {
-        height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
-        data: {
-          itemNumber:this.itemNumber,
-        },
-      });
-      dialogRef.afterClosed().subscribe((res) => {
-        
-      });
-      return
-    }
-    let payload = {
-      // itemNum: this.data.itemNumber,
-      transQty: this.quantity.toString(),
-      reqDate: this.requiredDate ? this.requiredDate.toISOString() : '',
-      expDate: this.expirationDate ? this.expirationDate.toISOString() : '',
-      lineNum: this.transactionInfo.value.lineNumber?.toString(),
-      lineSeq: this.transactionInfo.value.lineSequence?.toString(),
-      priority: this.transactionInfo.value.priority?.toString(),
-      toteNum: this.transactionInfo.value.toteNumber,
-      batchPickID: this.transactionInfo.value.batchPickID?.toString(),
-      warehouse: this.transactionInfo.value.warehouse,
-      lotNum: this.transactionInfo.value.lotNumber,
-      serialNum: this.transactionInfo.value.serialNumber,
-      hostTransID: this.transactionInfo.value.hostTranID?.toString(),
-      emergency: this.transactionInfo.value.emergency,
-      notes: this.transactionInfo.value.notes,
-      userField1: this.transactionInfo.value.userField1,
-      userField2: this.transactionInfo.value.userField2,
-      userField3: this.transactionInfo.value.userField3,
-      userField4: this.transactionInfo.value.userField4,
-      userField5: this.transactionInfo.value.userField5,
-      userField6: this.transactionInfo.value.userField6,
-      userField7: this.transactionInfo.value.userField7,
-      userField8: this.transactionInfo.value.userField8,
-      userField9: this.transactionInfo.value.userField9,
-      userField10: this.transactionInfo.value.userField10,
+    let payloadItem = {
+      itemNumber: this.itemNumber,
       username: this.data.userName,
       wsid: this.data.wsid,
-    };
-
-   
-    // TransactionForOrderInsert
-    if (this.data.mode === 'add-trans') {
-      (payload['orderNumber'] = this.data.orderNumber),
-        (payload['transType'] = this.data.transactionType),
-        (payload['itemNum'] = this.itemNumber);
-    } else {
-      payload['itemNum'] = this.data.item.itemNumber;
-      payload['id'] = this.data.item.id;
     }
-    this.transactionService
-      .get(
-        payload,
-        `/Admin/${
-          this.data && this.data.mode === 'add-trans'
-            ? 'TransactionForOrderInsert'
-            : 'TransactionForOrderUpdate'
-        }`
-      )
-      .subscribe(
-        (res: any) => {
-          if (res.isExecuted) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
-            this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
-          } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
-            this.dialogRef.close({ isExecuted: false });
-          }
-        },
-        (error) => {
-          this.toastr.error('something went wrong!', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
-          this.dialogRef.close({ isExecuted: false });
+    this.Api.ItemExists(payloadItem)
+    .subscribe(
+      (res: any) => {
+        if(res.isExecuted){
+            if(res.data==''){
+              const dialogRef = this.dialog.open(ItemExistGenerateOrderComponent, {
+                height: 'auto',
+                width: '560px',
+                autoFocus: '__non_existing_element__',
+      disableClose:true,
+                data: {
+                  itemNumber:this.itemNumber,
+                },
+              });
+              dialogRef.afterClosed().subscribe((res) => {
+               this.itemNumber=''
+              });
+            }else{
+              if(this.itemNumber===''  || this.quantity===0 || this.quantity<0){
+                const dialogRef = this.dialog.open(EmptyFieldsComponent, {
+                  height: 'auto',
+                  width: '560px',
+                  autoFocus: '__non_existing_element__',
+      disableClose:true,
+                  data: {
+                    itemNumber:this.itemNumber,
+                  },
+                });
+                dialogRef.afterClosed().subscribe((res) => {
+                  
+                });
+                return
+              }
+              let payload = {
+                // itemNum: this.data.itemNumber,
+                transQty: this.quantity.toString(),
+                reqDate: this.requiredDate ? this.requiredDate.toISOString() : '',
+                expDate: this.expirationDate ? this.expirationDate.toISOString() : '',
+                lineNum: this.transactionInfo.value.lineNumber?.toString(),
+                lineSeq: this.transactionInfo.value.lineSequence?.toString(),
+                priority: this.transactionInfo.value.priority?.toString(),
+                toteNum: this.transactionInfo.value.toteNumber,
+                batchPickID: this.transactionInfo.value.batchPickID?.toString(),
+                warehouse: this.transactionInfo.value.warehouse,
+                lotNum: this.transactionInfo.value.lotNumber,
+                serialNum: this.transactionInfo.value.serialNumber,
+                hostTransID: this.transactionInfo.value.hostTranID?.toString(),
+                emergency: this.transactionInfo.value.emergency,
+                notes: this.transactionInfo.value.notes,
+                userField1: this.transactionInfo.value.userField1,
+                userField2: this.transactionInfo.value.userField2,
+                userField3: this.transactionInfo.value.userField3,
+                userField4: this.transactionInfo.value.userField4,
+                userField5: this.transactionInfo.value.userField5,
+                userField6: this.transactionInfo.value.userField6,
+                userField7: this.transactionInfo.value.userField7,
+                userField8: this.transactionInfo.value.userField8,
+                userField9: this.transactionInfo.value.userField9,
+                userField10: this.transactionInfo.value.userField10,
+                username: this.data.userName,
+                wsid: this.data.wsid,
+              };
+          
+             
+              // TransactionForOrderInsert
+              if (this.data.mode === 'add-trans') {
+                (payload['orderNumber'] = this.data.orderNumber),
+                  (payload['transType'] = this.data.transactionType),
+                  (payload['itemNum'] = this.itemNumber);
+              } else {
+                payload['itemNum'] = this.data.item.itemNumber;
+                payload['id'] = this.data.item.id;
+              }
+              if(this.data && this.data.mode === 'add-trans'){
+                this.Api.TransactionForOrderInsert(payload).subscribe(
+                  (res: any) => {
+                    if (res.isExecuted) {
+                      this.toastr.success(labels.alert.success, 'Success!', {
+                        positionClass: 'toast-bottom-right',
+                        timeOut: 2000,
+                      });
+                      this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
+                    } else {
+                      this.toastr.error(res.responseMessage, 'Error!', {
+                        positionClass: 'toast-bottom-right',
+                        timeOut: 2000,
+                      });
+                      this.dialogRef.close({ isExecuted: false });
+                    }
+                  },
+                  (error) => {
+                    this.toastr.error('something went wrong!', 'Error!', {
+                      positionClass: 'toast-bottom-right',
+                      timeOut: 2000,
+                    });
+                    this.dialogRef.close({ isExecuted: false });
+                  }
+                );
+              } else{
+                this.Api.TransactionForOrderUpdate(payload).subscribe(
+                  (res: any) => {
+                    if (res.isExecuted) {
+                      this.toastr.success(labels.alert.success, 'Success!', {
+                        positionClass: 'toast-bottom-right',
+                        timeOut: 2000,
+                      });
+                      this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
+                    } else {
+                      this.toastr.error(res.responseMessage, 'Error!', {
+                        positionClass: 'toast-bottom-right',
+                        timeOut: 2000,
+                      });
+                      this.dialogRef.close({ isExecuted: false });
+                    }
+                  },
+                  (error) => {
+                    this.toastr.error('something went wrong!', 'Error!', {
+                      positionClass: 'toast-bottom-right',
+                      timeOut: 2000,
+                    });
+                    this.dialogRef.close({ isExecuted: false });
+                  }
+                );
+              } 
+              
+            }
+          
         }
-      );
+      })
+   
+      
   }
 
   ngOnDestroy() {
     this.searchByInput.unsubscribe();
+  }
+  
+  ngAfterViewInit() {
+    this.item_num.nativeElement.focus();
   }
 }

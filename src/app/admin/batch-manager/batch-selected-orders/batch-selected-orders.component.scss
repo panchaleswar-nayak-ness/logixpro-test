@@ -1,19 +1,66 @@
-.notify-center-table{
-    text-align: center;
-    color:rgba(0, 0, 0, .54)
+.notify-center-table {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.54);
 }
-:host ::ng-deep  .create-batch-btn-custom
-{ 
-   position: absolute;
+:host ::ng-deep .create-batch-btn-custom {
+  position: absolute;
   left: 10px;
   width: calc(100% - 50px);
-  
+
   padding: 6px;
   text-align: center;
   box-sizing: border-box;
-    
- }
+}
 
  .td-right-align{
     text-align: right;
  }
+
+ ::ng-deep .mat-menu-panel{
+   display: flex;
+   width: 100vh;
+   max-width: 290px;
+   .mat-menu-content{
+      width: 100%;
+   }
+ }
+.td-right-align {
+  text-align: right;
+}
+.custom-menu {
+  width: 200px; /* Set your desired width */
+}
+// :host ::ng-deep .mat-menu-panel {
+//   width: auto !important;
+//   min-width: fit-content !important;
+//   max-width: unset !important;
+// }
+
+// ::ng-deep .menu-button {
+//   display: inline-block;
+// }
+// ::ng-deep .menu-panel {
+//   display: flex;
+//   flex-direction: column;
+//   min-width: unset !important;
+//   width: auto !important;
+// }
+// :ng-deep .menu-panel .mat-menu-content {
+//   width: auto !important;
+// }
+
+
+// .menu-container {
+//    position: relative;
+//    display: inline-block;
+//  }
+ 
+//  .menu-button {
+//    width: 100%;
+//  }
+ 
+//  .menu-panel {
+//    position: absolute;
+//    width: 100%;
+//    max-width: none !important;
+//  }

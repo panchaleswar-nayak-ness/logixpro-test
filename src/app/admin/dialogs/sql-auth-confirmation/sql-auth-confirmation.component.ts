@@ -7,6 +7,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
   styleUrls: ['./sql-auth-confirmation.component.scss'],
 })
 export class SqlAuthConfirmationComponent implements OnInit {
+  dialog_msg: string = '';
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
@@ -14,7 +15,9 @@ export class SqlAuthConfirmationComponent implements OnInit {
     private dialog: MatDialog,
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.dialog_msg = this.data?.message;
+  }
 
   confirmValue(){
     this.dialogRef.close({isExecuted:true})

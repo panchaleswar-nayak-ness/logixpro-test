@@ -9,7 +9,7 @@
 <div class="d-flex gap-12 mb-3">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>Orignal Tote ID</mat-label>
-        <input (keydown.shift.enter)="$event.preventDefault()" [(ngModel)]="oldToteID" matInput type="number">
+        <input #tote_focus  (keydown.shift.enter)="$event.preventDefault()" [(ngModel)]="oldToteID" matInput type="number">
     </mat-form-field>
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>New Tote ID</mat-label>

@@ -6,7 +6,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { GlobalconfigService } from '../../globalconfig.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-config-database',
@@ -18,7 +18,7 @@ export class ConfigDatabaseComponent implements OnInit {
   @Output() configdbUpdateEvent = new EventEmitter<string>();
 
   connectionNameSelect: any = '';
-  constructor(private globalConfService: GlobalconfigService) {}
+  constructor(private Api:ApiFuntions) {}
 
   ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges) {
@@ -50,8 +50,8 @@ export class ConfigDatabaseComponent implements OnInit {
     let payload = {
       ConnectionName: item,
     };
-    this.globalConfService
-      .get(payload, '/GlobalConfig/LAConnectionStringSet')
+    this.Api
+      .LAConnectionStringSet(payload)
       .subscribe(
         (res: any) => {
           if (res.isExecuted) {

@@ -37,7 +37,7 @@
 
 
 
-<ng-scrollbar style="height: 380px;">
+<ng-scrollbar style="height: 380px;" track="all">
         <div class="card-body">
             <div class="container">
 
@@ -56,7 +56,7 @@
                                 <div class="col-6">
                                     <mat-form-field class="custom-form-field w-100" appearance="outline">
                                         <!-- <mat-label>Category</mat-label> -->
-                                        <input (keydown)="enableDisableButton(i)" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #catName name="{{category.category}}" value="{{category.category}}" maxlength="50">
+                                        <input  #category_category [autofocus]="i === 0"  (keydown)="enableDisableButton(i)" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #catName name="{{category.category}}"  value="{{category.category}}" maxlength="50">
                                     </mat-form-field>
                                 </div>
 
@@ -65,14 +65,14 @@
 
                                         <mat-form-field class="custom-form-field w-100" appearance="outline">
                                             <!-- <mat-label>Sub-Category</mat-label> -->
-                                            <input (keydown)="enableDisableButton(i)" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" name="{{category.subCategory}}" value="{{category.subCategory}}" #subCatName maxlength="50">
+                                            <input (keydown)="enableDisableButton(i)" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" name="{{category.subCategory}}"  value="{{category.subCategory}}" #subCatName maxlength="50">
                                         </mat-form-field>
 
                                         <button [disabled]="(enableButton[i]&&enableButton[i].value!=null)?enableButton[i].value:false" mat-flat-button color="primary" class="xsm-icon-button ms-2" (click)="saveCategory(catName.value, category.category, subCatName.value, category.subCategory)">
                                             <mat-icon class="material-symbols-outlined">save</mat-icon>
                                         </button>
 
-                                        <button mat-flat-button color="warn" class="xsm-icon-button" (click)="dltCategory(catName.value, subCatName.value , category.fromDB);">
+                                        <button mat-flat-button color="warn" class="xsm-icon-button" (click)="dltCategory(category.category, category.subCategory);">
                                             <mat-icon class="material-symbols-outlined">close</mat-icon>
                                         </button>
 

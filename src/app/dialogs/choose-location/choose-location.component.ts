@@ -1,13 +1,13 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import {
   MatDialog,
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { ProcessPutAwayService } from 'src/app/induction-manager/processPutAway.service';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import { AuthService } from 'src/app/init/auth.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-choose-location',
@@ -15,7 +15,7 @@ import { AuthService } from 'src/app/init/auth.service';
   styleUrls: ['./choose-location.component.scss']
 })
 export class ChooseLocationComponent implements OnInit {
-
+  @ViewChild('loc_focus') loc_focus: ElementRef;
   public userData: any;
   searchByItem: any = new Subject<string>();
   searchAutocompleteItemNum: any = [];
@@ -23,7 +23,7 @@ export class ChooseLocationComponent implements OnInit {
   selectedLocation : any;
 
   constructor(private toastr: ToastrService,
-              private service: ProcessPutAwayService,
+              private Api:ApiFuntions,
               private authService: AuthService,
               public dialogRef                  : MatDialogRef<ChooseLocationComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -31,13 +31,17 @@ export class ChooseLocationComponent implements OnInit {
 
   ngOnInit(): void {    
     this.userData = this.authService.userData();
+    this.autocompleteSearchColumnItem();
     this.searchByItem
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
         this.autocompleteSearchColumnItem();
       });
   }
-
+ 
+  ngAfterViewInit(): void {
+    this.loc_focus.nativeElement.focus();
+  }
   selectLoc(val : any) {
     this.location = val.locNum;
     this.selectedLocation = val;
@@ -46,7 +50,7 @@ export class ChooseLocationComponent implements OnInit {
   async autocompleteSearchColumnItem() {
     try {
       let searchPayload = {
-        "location": this.location,
+        "location": this.location?this.location:"",
         "warehouse": this.data.warehouse,
         "serial": this.data.serialNumber,
         "lot": this.data.lotNumber,
@@ -61,7 +65,7 @@ export class ChooseLocationComponent implements OnInit {
         wsid: this.userData.wsid,
       };
 
-      this.service.get(searchPayload, '/Induction/BatchLocationTypeAhead', true).subscribe(
+      this.Api.BatchLocationTypeAhead(searchPayload).subscribe(
         (res: any) => {
           if (res.data) {
             this.searchAutocompleteItemNum = res.data;
@@ -74,8 +78,7 @@ export class ChooseLocationComponent implements OnInit {
         },
         (error) => {}
       );      
-    } catch (error) {
-      console.log(error);
+    } catch (error) { 
     }    
   }
 
@@ -88,7 +91,7 @@ export class ChooseLocationComponent implements OnInit {
         username: this.userData.userName,
         wsid: this.userData.wsid,
       };
-      this.service.create(payLoad, '/Induction/ReserveLocation').subscribe(
+      this.Api.ReserveLocation(payLoad).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
             this.dialogRef.close({responseMessage : res.responseMessage, ...this.selectedLocation});
@@ -101,8 +104,7 @@ export class ChooseLocationComponent implements OnInit {
         },
         (error) => {}
       );      
-    } catch (error) {
-      console.log(error)
+    } catch (error) { 
     }
   }
 

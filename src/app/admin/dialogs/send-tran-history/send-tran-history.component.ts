@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { TransactionService } from '../../transaction/transaction.service';
+import { ToastrService } from 'ngx-toastr'; 
 import labels from '../../../labels/labels.json';
 import { data } from 'jquery';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-send-tran-history',
@@ -17,7 +17,7 @@ export class SendTranHistoryComponent implements OnInit {
     public dialogRef: MatDialogRef<SendTranHistoryComponent>,
     private toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) data,
-    private transactionService: TransactionService
+    private Api: ApiFuntions
   ) {
     this.dialogData = data;
   }
@@ -29,7 +29,7 @@ export class SendTranHistoryComponent implements OnInit {
       userName: this.dialogData.user,
       wsid: this.dialogData.wsid,
     };
-    this.transactionService.get(payload, '/Admin/SendCompletedToTH').subscribe(
+    this.Api.SendCompletedToTH(payload).subscribe(
       (res: any) => {
         if (res.isExecuted) {
           this.toastr.success(labels.alert.success, 'Success!', {
@@ -37,7 +37,7 @@ export class SendTranHistoryComponent implements OnInit {
             timeOut: 2000,
           });
           this.dialogRef.close({ isExecuted: true });
-        } else {
+        } else { 
           this.toastr.error(labels.alert.went_worng, 'Error!', {
             positionClass: 'toast-bottom-right',
             timeOut: 2000,

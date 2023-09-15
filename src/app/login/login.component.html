@@ -13,48 +13,64 @@
         <div class="card bg-tertiary-10" style="border-radius: 16px; border:none">
           <div class="row g-0">
             <div class="col-md-6 col-lg-6 d-none d-md-block">
-              <img src="../../assets/images/LogixPro-login-image2.jpg" alt="login form" class="img-fluid w-100"
-                style="border-top-left-radius: 16px; border-bottom-left-radius:16px;" />
-            </div>
-            <div class="col-md-5 col-lg-6 d-flex">
-              <div class="card-body p-4 text-black mx-auto d-flex flex-column" style="max-width: 380px;">
+              <!-- <img src="../../assets/images/LogixPro-login-image2.jpg" alt="login form" class="img-fluid w-100"
+                style="border-top-left-radius: 16px; border-bottom-left-radius:16px;" /> -->
+                <div class="login-bg-img" style="background: url('../../assets/images/LogixPro-login-image2.jpg');width:100%;height: 100%; min-height: 580px; background-size: cover;border-top-left-radius: 16px; border-bottom-left-radius:16px;">
 
-                <div class="text-center mb-3 mt-5 pt-2">
-                  <h1 class="text-32 text-tertiary-900 fw-bold pb-3">LogixPro</h1>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 d-flex">
+              <div class="card-body p-4 text-black mx-auto d-flex flex-column" style="max-width: 380px; min-height: 612px">
+
+                <div class="text-center mb-2 mt-4 pt-2">
+                  <!-- <h1 class="text-32 text-tertiary-900 fw-bold pb-3">LogixPro</h1> -->
+                  <div class="my-3 brand-logo">
+                    <img src="../../assets/images/LogixPro-Logo.png" alt="">
+                  </div>
+                  <!-- <h3 class="text-20 text-tertiary-800 fw-bold pb-3" *ngIf="info.companyName">{{info.companyName}}</h3>
+                  <h4 class="text-18 text-tertiary-800 fw-bold pb-3" *ngIf="info.address1">{{info.address1}}</h4>
+                  <h4 class="text-18 text-tertiary-800 fw-bold pb-3" *ngIf="info?.city && info.state">{{info.city}} , {{info.state}}</h4>
+                -->
                 </div>
 
-                <form [formGroup]="addLoginForm" (ngSubmit)="loginUser()" name="addLoginForm" autocomplete="off" style="flex: 1;">
-
+                <!-- <form  autocomplete="false " style="flex: 1;"> -->
+<div   >
                   <!-- <div class="d-flex align-items-center mb-3 pb-1" style="justify-content: center;">
                     <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                     <span class="h1 fw-bold mb-0" class="account_login">Account Login</span>
                   </div> -->
-                  <div class="text-center  mb-4 pb-1">
+                  <div class="text-center  mb-2 pb-1">
                     <h2 class="text-tertiary-900 text-24 fw-bold">Account Login</h2>
                   </div>
                   <div class="form-outline mb-2">
                     <mat-form-field appearance="outline" style=" width: 100%;">
                       <mat-label>Username</mat-label>
-                      <input type="text" matInput placeholder="Enter Username" formControlName="username" maxlength="50"
-                        required autocomplete="off" [readonly]="isReadOnly" (focus)="removeReadOnly()" (focusout)="removeReadOnly()" />
+                      <input type="text" matInput placeholder="Enter Username"
+                      (keyup.enter)="enterUserName()"
+                      [(ngModel)]="addLoginForm.username" name="username" #userName="ngModel" maxlength="50"
+                        
+                        required autocomplete="off"    />
                       <mat-icon matPrefix style="color: #090948;">account_circle</mat-icon>
                     </mat-form-field>
                     <mat-hint class="error-message" style="color: red;font-size: 14px;"
-                      *ngIf="addLoginForm.controls['username'].invalid && (addLoginForm.controls['username'].dirty || addLoginForm.controls['username'].touched)">
+                      *ngIf="userName.invalid 
+                      && (userName.dirty || userName.touched)">
                       Username is required
+                       
                     </mat-hint>
                     <br>
-                    <mat-hint class="error-message" style="color: red;font-size: 14px;"
+                    <!-- <mat-hint class="error-message" style="color: red;font-size: 14px;"
                       *ngIf="addLoginForm.get('username')?.hasError('whitespace')">
                       Please enter valid username
-                    </mat-hint>
+                    </mat-hint> -->
                   </div>
-                  <div class="form-outline mb-2">
+                  <div class="form-outline mb-1">
                     <mat-form-field appearance="outline" style=" width: 100%;">
                       <mat-label>Password</mat-label>
-                      <input placeholder="Password" formControlName="password" maxlength="50" matInput
-                        [type]="toggle_password ? 'password' : 'text'" autocomplete="off" [readonly]="isReadOnly"
-                        (focus)="removeReadOnly()" (focusout)="removeReadOnly()">
+                      <input #passwordInput placeholder="Password" [(ngModel)]="addLoginForm.password" #password="ngModel"   maxlength="50"
+                      (keyup.enter)="loginUser()"
+                      matInput
+                        [type]="toggle_password == true ? 'password' : 'text'" autocomplete="false"   required="" >
                       <mat-icon matPrefix style="color: #090948;">lock</mat-icon>
                       <button type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password"
                         [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
@@ -63,17 +79,17 @@
                     </mat-form-field>
 
                     <mat-hint class="error-message" style="color: red;font-size: 14px;"
-                      *ngIf="addLoginForm.controls['password'].invalid && (addLoginForm.controls['password'].dirty || addLoginForm.controls['password'].touched)">
+                      *ngIf="password.invalid && (password.dirty || password.touched)">
                       Password is required
                     </mat-hint>
                     <br>
-                    <mat-hint class="error-message" style="color: red;font-size: 14px;"
+                    <!-- <mat-hint class="error-message" style="color: red;font-size: 14px;"
                       *ngIf="addLoginForm.get('password')?.hasError('whitespace')">
                       Please enter valid password
-                    </mat-hint>
+                    </mat-hint> -->
                   </div>
                   <ng-container *ngIf="(env === 'DB' || env === 'ADLDS')">
-                    <div class="form-outline text-end mb-4">
+                    <div class="form-outline text-end mb-3">
                       <button color="primary" type="button" class="small anchor-feel anchor-focus forgotPassword-link"
                         (click)="changePass()">Reset password?</button>
                     </div>
@@ -84,8 +100,8 @@
                     <mat-checkbox color="primary">Remember me</mat-checkbox> -->
                   <!-- <button class="btn btn-dark btn-lg btn-block" [disabled]="!addLoginForm.valid"
                       type="submit">Login</button> -->
-                  <div class="d-flex justify-content-center my-3">
-                    <button class="form-button-submit w-100" [disabled]="!addLoginForm.valid" mat-flat-button
+                  <div class="d-flex justify-content-center my-3">  
+                    <button class="form-button-submit w-100" (click)="loginUser()" [disabled]="(userName.invalid || password.invalid)" mat-flat-button
                       color="primary">Login</button>
                   </div>
                   <!-- </div> -->
@@ -97,7 +113,13 @@
                       style="color: #393f81;">Register here</a></p> -->
                   <!-- <a href="#!" class="small text-muted">Terms of use.</a>
                    <a href="#!" class="small text-muted">Privacy policy</a> -->
-                </form>
+                  </div>
+
+                <div class="p-2 text-center mb-3" style="border-top:1px solid var(--clr-tertiary-50)">
+                <h3 class="text-18 text-tertiary-800 fw-bold mb-1" *ngIf="info.companyName">{{info.companyName}}</h3>
+                  <h4 class="text-16 text-tertiary-800 fw-bold mb-1" *ngIf="info.address1">{{info.address1}}</h4>
+                  <h4 class="text-16 text-tertiary-800 fw-bold"*ngIf="info.city&&info.state">{{info.city}} , {{info.state}}</h4>
+                </div>
 
                 <div class="text-center text-14">
                   v{{version}}

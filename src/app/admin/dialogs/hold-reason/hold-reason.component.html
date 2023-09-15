@@ -15,7 +15,7 @@
             <div>
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                     <mat-label>Operator pleaced transaction on hold</mat-label>
-                    <textarea [(ngModel)]="reason"  formControlName="reason" name="name" required  matInput style="min-height: 100px ;" maxlength="255"></textarea>
+                    <textarea #order_text [(ngModel)]="reason"  formControlName="reason" name="name" required  matInput style="min-height: 100px ;" maxlength="255"></textarea>
                 </mat-form-field>
             </div>
             <!-- <mat-error *ngIf="reason.value">Please Type Reason</mat-error> -->

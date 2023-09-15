@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { TransactionService } from '../../../transaction/transaction.service';
+import { MatCheckboxChange } from '@angular/material/checkbox'; 
 import { ToastrService } from 'ngx-toastr';
 import labels from '../../../../labels/labels.json';
 import { Output, EventEmitter } from '@angular/core';
 import { SharedService } from '../../../../services/shared.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-reprocess-choice',
@@ -23,7 +23,7 @@ export class ReprocessChoiceComponent implements OnInit {
   @Output() itemUpdatedEvent = new EventEmitter<boolean>();
   
 
-  constructor(private transactionService: TransactionService,private toastr: ToastrService , private sharedService:SharedService) { }
+  constructor(private Api:ApiFuntions,private toastr: ToastrService , private sharedService:SharedService) { }
 
   ngOnInit(): void {
 
@@ -35,7 +35,7 @@ export class ReprocessChoiceComponent implements OnInit {
       username: this.userData.userName,
       wsid: this.userData.wsid,
       }
-    this.transactionService.get(payload, '/Admin/PostReprocessTransaction').subscribe(
+    this.Api.PostReprocessTransaction(payload).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.isEnabled=true;
@@ -66,8 +66,7 @@ export class ReprocessChoiceComponent implements OnInit {
     this.isHistoryChecked.flag=false;
   }
 
-  changeOrderStatus(event:MatCheckboxChange,status): void {
-    // console.log("CHANGE======");
+  changeOrderStatus(event:MatCheckboxChange,status): void { 
     if(status=='Reprocess')
     {
     this.isCompleteChecked.flag = false;
@@ -85,7 +84,7 @@ export class ReprocessChoiceComponent implements OnInit {
         username: this.userData.userName,
         wsid: this.userData.wsid,
         }
-        this.transactionService.get(payload, '/Admin/ReprocessIncludeSet').subscribe(
+        this.Api.ReprocessIncludeSet(payload).subscribe(
           (res: any) => {
             if (res.data && res.isExecuted) {
               this.toastr.success(labels.alert.update, 'Success!',{

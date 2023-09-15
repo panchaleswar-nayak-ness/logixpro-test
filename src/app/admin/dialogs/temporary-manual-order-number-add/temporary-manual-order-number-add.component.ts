@@ -1,11 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { ToastrService } from 'ngx-toastr';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { TransactionService } from '../../transaction/transaction.service';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import labels from '../../../labels/labels.json';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-temporary-manual-order-number-add',
@@ -13,6 +13,7 @@ import labels from '../../../labels/labels.json';
   styleUrls: ['./temporary-manual-order-number-add.component.scss'],
 })
 export class TemporaryManualOrderNumberAddComponent implements OnInit {
+  @ViewChild('ord_nmb') ord_nmb: ElementRef;
   floatLabelControl: any = new FormControl('auto' as FloatLabelType);
   floatLabelControlItem: any = new FormControl('item' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
@@ -27,11 +28,11 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
   transType = 'Pick';
   itemNumber;
   orderRequired:boolean=false;
-  itemInvalid:boolean;
+  itemInvalid=false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
-    private transactionService: TransactionService,
+    private Api: ApiFuntions,
     public dialogRef: MatDialogRef<any>
 
   ) {
@@ -43,16 +44,47 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
   getFloatLabelValueItem(): FloatLabelType {
     return this.floatLabelControlItem.value || 'item';
   }
-  searchData(event) {
-    // console.log(event);
+  ngAfterViewInit() {
+    this.ord_nmb.nativeElement.focus();
   }
+  searchData(event) {
+    // if(!this.itemNumber) return
+    let payLoad = {
+      itemNumber: this.itemNumber,
+        username: this.data.userName,
+        wsid: this.data.wsid,
+      };
+  
+     
+        this.Api
+        .ItemExists(payLoad)
+        .subscribe(
+          (res: any) => {
+            if(res && res.isExecuted){
+              if(res.data===''){
+                this.itemInvalid=true
+                this.setLocationByItemList.length=0;
+              }else{
+                this.itemInvalid=false
+                this.setItem()
+              }
+       
+            }
+            // this.searchAutocompleteItemNum = res.data;
+          },
+          (error) => {}
+        );
+    
+  }
+
   setItem(event?) {
+  
     let payLoad = {
       itemNumber: this.itemNumber,
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.transactionService.get(payLoad, '/Admin/GetLocations', true).subscribe(
+    this.Api.GetLocations(payLoad).subscribe(
       (res: any) => {
         if (res && res.data) {
           this.setLocationByItemList = res.data.map((item) => {
@@ -61,8 +93,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
               select: `${item.itemQty} @ ${item.locationNumber}`,
             };
           });
-
-          // console.log(this.setLocationByItemList);
+ 
         }
 
         // this.searchAutocompleteItemNum = res.data;
@@ -71,9 +102,28 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
     );
   }
 
+
   saveTransaction() {
 
-    if(this.orderRequired || this.itemInvalid ||   this.itemNumber==='' || this.itemNumber===undefined)return
+    let payLoadItem = {
+      itemNumber: this.itemNumber,
+        username: this.data.userName,
+        wsid: this.data.wsid,
+      };
+  
+     
+        this.Api
+        .ItemExists(payLoadItem)
+        .subscribe(
+          (res: any) => {
+            if(res && res.isExecuted){
+              if(res.data===''){
+                this.itemInvalid=true
+                this.setLocationByItemList.length=0;
+
+              }else{
+                this.itemInvalid=false
+                if(this.orderRequired || this.itemInvalid ||   this.itemNumber==='' || this.itemNumber===undefined)return
     let payLoad = {
       orderNumber: this.orderNumber,
       itemNumber: this.itemNumber,
@@ -83,8 +133,8 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
       wsid: this.data.wsid,
     };
 
-    this.transactionService
-      .get(payLoad, '/Admin/NewTransactionSave', true)
+    this.Api
+      .NewTransactionSave(payLoad)
       .subscribe(
         (res: any) => {
           if (res.isExecuted) {
@@ -103,9 +153,22 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
         },
         (error) => {}
       );
+              }
+       
+            }
+            // this.searchAutocompleteItemNum = res.data;
+          },
+          (error) => {}
+        );
+
+    
   }
-  onFocusOutEvent(event,type){
-// console.log(event.target.value)
+
+
+
+  onFocusOutEvent(event,type){ 
+    if(this.searchAutocompleteItemNum.length>0)return
+   
 if(type==='order'){
 if(event.target.value===''){
 this.orderRequired=true
@@ -113,14 +176,16 @@ this.orderRequired=true
   this.orderRequired=false;
 }
 }else if(type==='item'){
-  // if(this.itemNumber==='')return;
+  if(!this.itemNumber) return ;
    let payLoad = {
     itemNumber: this.itemNumber,
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.transactionService
-      .get(payLoad, '/Common/ItemExists', true)
+
+  
+      this.Api
+      .ItemExists(payLoad)
       .subscribe(
         (res: any) => {
           if(res && res.isExecuted){
@@ -136,10 +201,12 @@ this.orderRequired=true
         },
         (error) => {}
       );
+
+
 }
   } 
   getRow(row) {
-    // console.log(row);
+    
     // let payLoad = {
     //   id: row.id,
     //   username: this.data.userName,
@@ -152,8 +219,7 @@ this.orderRequired=true
     //       if(res && res.data){
     //         this.setLocationByItemList=res.data.map((item)=>{
     //           return {invMapID:item.invMapID,select:`${item.itemQty}@${item.locationNumber}`}
-    //         })
-    //         console.log(this.setLocationByItemList);
+    //         }) 
     //       }
     //       // this.searchAutocompleteItemNum = res.data;
     //     },
@@ -167,8 +233,8 @@ this.orderRequired=true
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.transactionService
-      .get(searchPayload, '/Admin/ManualTransactionTypeAhead', true)
+    this.Api
+      .ManualTransactionTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
           this.searchAutocompleteOrderNum = res.data;
@@ -187,16 +253,21 @@ this.orderRequired=true
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.transactionService
-      .get(searchPayload, '/Common/SearchItem', true)
+    this.Api
+      .SearchItem(searchPayload)
       .subscribe(
         (res: any) => {
-          if (res.data) {
+          
+          if (res.data.length>0) {
             this.searchAutocompleteItemNum=res.data
             this.setItem()
             // if (this.searchAutocompleteItemNum.includes(res.data)) return;
             // this.searchAutocompleteItemNum.push(res.data);
+          }else{
+            
+            this.searchAutocompleteItemNum.length=0;
           }
+        
         },
         (error) => {}
       );
@@ -205,6 +276,9 @@ this.orderRequired=true
     this.searchByOrder
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
+        if(this.orderNumber != ""){
+          this.orderRequired = false;
+        }
         this.autocompleteSearchColumn();
       });
 

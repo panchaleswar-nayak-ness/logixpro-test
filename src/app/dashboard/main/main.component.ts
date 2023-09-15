@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalconfigService } from 'src/app/global-config/globalconfig.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { SharedService } from '../../../app/services/shared.service';
 import { mergeMap, map } from 'rxjs/operators';
-import { forkJoin, of, Subscription } from 'rxjs'; 
+import { forkJoin, of, Subscription } from 'rxjs';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -17,57 +17,62 @@ export class MainComponent implements OnInit {
   appNames: any = [];
   applicationData: any = [];
   userData: any;
-  isDefaultAppVerify:any;
-private subscription: Subscription = new Subscription();
+  isDefaultAppVerify: any;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private sharedService: SharedService,
-    private globalService: GlobalconfigService,
+    private Api: ApiFuntions,
     private authService: AuthService
   ) {}
 
+  
   ngOnInit(): void {
-    this.userData = this.authService.userData();
 
-    this.isDefaultAppVerify =  JSON.parse(localStorage.getItem('isAppVerified') || '');
+
+    this.userData = this.authService.userData();
+    if(localStorage.getItem('isAppVerified') ){
+      this.isDefaultAppVerify =  JSON.parse(localStorage.getItem('isAppVerified') || '');
+    }else{
+      this.isDefaultAppVerify={appName: "",isVerified:true}
+    }
+    
 
   }
+
 
   ngAfterViewInit() {
     this.getAppLicense();
-    
-
   }
 
   getAppLicense() {
-    
-
-    // moved the logic to login component and added these 2 lines to fetch the apps from localstorage and commented the api below in getAppLicence  .. 
+    // moved the logic to login component and added these 2 lines to fetch the apps from localstorage and commented the api below in getAppLicence  ..
     // this.applicationData=JSON.parse(localStorage.getItem('availableApps') || '');
     // this.sharedService.setMenuData(this.applicationData)
 
     let payload = {
-      WSID: this.userData.wsid,
+      workstationid: this.userData.wsid,
     };
-    this.globalService
-      .get(payload, '/GlobalConfig/AppNameByWorkstation')
-      .subscribe(
-        (res: any) => {
-          if (res && res.data) {
-            this.convertToObj(res.data);
-            localStorage.setItem('availableApps',JSON.stringify(this.applicationData))
-            this.sharedService.setMenuData(this.applicationData)
-          }
-        },
-        (error) => {}
-      );
+    this.Api.AppNameByWorkstation(payload).subscribe(
+      (res: any) => {
+        if (res && res.data) {
+          this.convertToObj(res.data);
+          localStorage.setItem(
+            'availableApps',
+            JSON.stringify(this.applicationData)
+          );
+          this.sharedService.setMenuData(this.applicationData);
+        }
+      },
+      (error) => {}
+    );
   }
 
   convertToObj(data) {
-    data.wsAllAppPermission.forEach((item,i) => {
+    data.wsAllAppPermission.forEach((item, i) => {
       for (const key of Object.keys(data.appLicenses)) {
         // arrayOfObjects.push({ key, value: this.licAppData[key] });
-        if (item.includes(key)  && data.appLicenses[key].isLicenseValid) {
+        if (item.includes(key) && data.appLicenses[key].isLicenseValid) {
           this.applicationData.push({
             appname: data.appLicenses[key].info.name,
             displayname: data.appLicenses[key].info.displayName,
@@ -82,7 +87,6 @@ private subscription: Subscription = new Subscription();
       }
     });
     this.sortAppsData();
-    
   }
   // OLD-----
   // async getAppLicense() {
@@ -145,10 +149,10 @@ private subscription: Subscription = new Subscription();
       },
       {
         appName: 'Consolidation Manager',
-        route: '#',
+        route: '/ConsolidationManager',
         iconName: 'insert_chart',
         name: 'Consolidation Manager',
-        updateMenu: '',
+        updateMenu: 'consolidation',
         permission: 'Consolidation Manager',
       },
       {
@@ -161,15 +165,15 @@ private subscription: Subscription = new Subscription();
       },
       {
         appName: 'FlowRackReplenish',
-        route: '#',
+        route: '/FlowrackReplenishment',
         iconName: 'schema',
         name: 'FlowRack Replenishment',
-        updateMenu: '',
+        updateMenu: 'FlowReplenishment',
         permission: 'FlowRack Replenish',
       },
       {
         appName: 'ImportExport',
-        route: '#',
+        route: '/ImportExport',
         iconName: 'electric_bolt',
         name: 'Import Export',
         updateMenu: '',
@@ -185,10 +189,10 @@ private subscription: Subscription = new Subscription();
       },
       {
         appName: 'OrderManager',
-        route: '#',
+        route: '/OrderManager',
         iconName: 'pending_actions',
         name: 'Order Manager',
-        updateMenu: '',
+        updateMenu: 'orderManager',
         permission: 'Order Manager',
       },
       {
@@ -216,31 +220,37 @@ private subscription: Subscription = new Subscription();
       return 0; //default return value (no sorting)
     });
   }
-  updateMenu(menu = '',obj:any=null) {
+  updateMenu(menu = '', obj: any = null) {
    
-    if(menu!='')
-    {
-      this.sharedService.updateLoggedInUser(this.userData.userName,this.userData.wsid,menu);
+    if (menu != '') {
+      this.sharedService.updateLoggedInUser(
+        this.userData.userName,
+        this.userData.wsid,
+        menu
+      );
     }
-    
+
     if (menu == 'admin') {
       this.sharedService.updateAdminMenu();
-    }
-    else if(menu=='induction'){
-      debugger
+    } else if (menu == 'induction') {
       this.sharedService.BroadCastMenuUpdate(obj.route);
       // this.sharedService.updateInductionAdminMenu(menu)
+    } else if (menu == 'orderManager') {
+      this.sharedService.BroadCastMenuUpdate(obj.route);
+      // this.sharedService.updateInductionAdminMenu(menu)
+    } else if (menu == 'consolidation') {
+      this.sharedService.BroadCastMenuUpdate(obj.route);
+      // this.sharedService.updateInductionAdminMenu(menu)
+    } else if (menu === 'FlowReplenishment') {
+      this.sharedService.updateFlowrackMenu(menu);
     }
-    
-    // console.log(this.sharedService.updateSidebar());
     this.sharedService.updateSidebar();
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-  isAuthorized(controlName:any) {
+  isAuthorized(controlName: any) {
     return !this.authService.isAuthorized(controlName);
- }
-
+  }
 }

@@ -1,65 +1,88 @@
-<div class="d-flex justify-content-between mb-4 align-items-center">
+<div class="d-flex justify-content-between mb-4 align-items-center" mat-dialog-title>
     <div style="width:48px"></div>
-<h1 class="m-0 text-22" mat-dialog-title>Warehouse - Add, Delete, Edit and Set</h1>
-<button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
-    <mat-icon class="close-icon">close</mat-icon>
-</button>
-</div>
-<div class="d-flex gap-12 my-4 justify-content-end">
-    <button mat-flat-button color="primary" class="add-icon-button" (click)="addwhRow($event)">
-      <span class="material-symbols-outlined">
-        add
-      </span>
+    <h1 class="m-0 text-22" mat-dialog-title>Warehouse - Add, Delete, Edit and Set</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
+        <mat-icon class="close-icon">close</mat-icon>
     </button>
-  </div>
+</div>
+<div class="d-flex gap-12 my-4 justify-content-end" mat-dialog-content>
+    <button mat-flat-button color="primary" class="add-icon-button" (click)="addwhRow($event)" [disabled]="disableBtn">
+        <span class="material-symbols-outlined">
+            add
+        </span>
+    </button>
+</div>
 <div class="warehouse">
     <div class="card w-100">
         <div class="card-header">
             <div class="row">
-                <div class="col-6" style="padding-left:64px;">
+                <div class="col-6" style="padding-left:20px;">
                     Warehouse
                 </div>
             </div>
         </div>
 
-        <ng-scrollbar style="height: 240px;">
-        <div class="card-body">
-            <ng-container *ngFor="let warehouse of warehouse_list;let i = index">
-                <div class="d-flex align-items-center mb-3">
-                        <mat-radio-button  value="{{warehouse}}" color="primary" (change)="selectWearHouse(whname.value)">
+        <ng-scrollbar style="height: 400px;" track="all">
+            <div class="card-body">
+                <ng-container *ngFor="let warehouse of warehouse_list;let i = index">
+                    <div class="d-flex align-items-center mb-3">
+                        <mat-radio-button value="{{warehouse}}" color="primary"
+                            (change)="selectWearHouse(whname.value)">
                         </mat-radio-button>
                         <div class="container w-100">
                             <div class="row">
-                    <div class="col-12">
-                        
-                        <div class="d-flex justify-content-between align-items-center gap-12">
-                            <mat-form-field class="d-block w-100" appearance="outline">
-                                <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #whname
-                                    name="{{warehouse}}" value="{{warehouse}}">
-                            </mat-form-field>
-                            <div class="d-flex gap-12">
-                                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="saveWareHouse(whname.value, warehouse)">
-                                    <mat-icon class="material-symbols-outlined">save</mat-icon>
-                                </button>
-                                <button mat-flat-button color="warn" class="xsm-icon-button" 
-                                (click)="delete(whname.value)"
-                                #inputEl>
-                                <mat-icon class="material-symbols-outlined">close</mat-icon>
-                            </button>
-                        
-                            
+                                <div class="col-12">
+
+                                    <div class="d-flex justify-content-between align-items-center gap-12">
+                                        <mat-form-field class="d-block w-100" appearance="outline">
+                                            <input [disabled]="disableBtn" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
+                                                #whname [autofocus]="i === 0" name="{{warehouse}}" value="{{warehouse}}" (keydown)="enableDisableButton(i)" maxlength="50">
+                                        </mat-form-field>
+
+                                        <ng-container stickyEnd>
+                                        <div class="d-flex gap-12">
+
+                                            <div *ngIf="disableBtn;then content else other_content">here is ignored</div>
+                                            <ng-template #content>
+                                                <button mat-flat-button color="primary" class="xsm-icon-button" 
+                                                (click)="saveWareHouse(whname.value, warehouse)" 
+                                                disabled
+                                                >
+                                                <mat-icon class="material-symbols-outlined">save</mat-icon>
+                                            </button>
+                                            </ng-template>
+                                            <ng-template #other_content>    
+                                                  <button mat-flat-button color="primary" class="xsm-icon-button" 
+                                                (click)="saveWareHouse(whname.value, warehouse)" 
+                                                [disabled]="(enableButton[i] && enableButton[i].value!=null ) ? enableButton[i].value:false"
+                                                >
+                                                <mat-icon class="material-symbols-outlined">save</mat-icon>
+                                            </button></ng-template>
+
+
+
+
+                                      
+                                            <button [disabled]="disableBtn" mat-flat-button color="warn" class="xsm-icon-button"
+                                                (click)="deleteWH(warehouse)" #inputEl>
+                                                <mat-icon class="material-symbols-outlined">close</mat-icon>
+                                            </button>
+
+
+                                        </div>
+                                    </ng-container>
+                                    </div>
+                                </div>
                             </div>
-                </div>
-                </div>
-                </div>
-                </div>
-                </div>
-            </ng-container>
-        </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
         </ng-scrollbar>
-    </div>    
-    <mat-dialog-actions align="end">
+    </div>
+    <mat-dialog-actions>
         <!-- <button mat-button matDialogClose="no" color="danger">Cancel</button> -->
-        <button type="button" (click)="clearWareHouse()" mat-flat-button class="btn-lg w-100" color="warn">Clear Warehouse</button>
+        <button type="button" (click)="clearWareHouse()" mat-flat-button class="btn-lg w-100" color="warn">Clear
+            Warehouse</button>
     </mat-dialog-actions>
 </div>

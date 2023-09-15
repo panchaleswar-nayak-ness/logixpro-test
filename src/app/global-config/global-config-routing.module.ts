@@ -14,6 +14,7 @@ const routes: Routes = [
     path: 'database-connections',
     component: DatabaseConnectionsComponent,
   },
+  
 ];
 
 @NgModule({

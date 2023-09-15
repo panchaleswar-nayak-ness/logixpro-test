@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PrintRangeComponent } from '../print-range/print-range.component';
-import { ToastrService } from 'ngx-toastr';
-import { UnitOfMeasureService } from 'src/app/common/services/unit-measure.service';
+import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from '../../../../app/init/auth.service';
-import labels from '../../../labels/labels.json';
-import { InventoryMasterService } from '../../inventory-master/inventory-master.service';
+import labels from '../../../labels/labels.json'; 
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-scan-type-code',
@@ -14,6 +14,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
   styleUrls: ['./scan-type-code.component.scss']
 })
 export class ScanTypeCodeComponent implements OnInit {
+  @ViewChildren('scan_code_type', { read: ElementRef }) scan_code_type: QueryList<ElementRef>;
 
   public scanTypeCode_list: any;
   public scanTypeCode_list_Response: any;
@@ -21,9 +22,10 @@ export class ScanTypeCodeComponent implements OnInit {
 
 
   constructor(private dialog: MatDialog,
-    private invMasterService: InventoryMasterService, 
+    private Api: ApiFuntions, 
               private authService: AuthService,
               private toastr: ToastrService,
+              private renderer: Renderer2,
               public dialogRef: MatDialogRef<any>) { }
 
   ngOnInit(): void {
@@ -35,16 +37,31 @@ export class ScanTypeCodeComponent implements OnInit {
       "username": this.userData.userName,
       "wsid": this.userData.wsid,
     }
-    this.invMasterService.get(paylaod, '/Common/ScanCodeTypes').subscribe((res) => {
+    this.Api.ScanCodeTypes().subscribe((res) => {
       if (res.isExecuted) {
         this.scanTypeCode_list_Response = [...res.data];
         this.scanTypeCode_list = res.data;
+        setTimeout(() => {
+          const inputElements = this.scan_code_type.toArray();
+          const inputElement = inputElements[0].nativeElement as HTMLInputElement;
+            this.renderer.selectRootElement(inputElement).focus();
+        }, 100);
+  
       }
+
     });
   }
 
   addUMRow(row : any){
     this.scanTypeCode_list.unshift("");
+    const lastIndex = this.scanTypeCode_list.length - 1;
+    setTimeout(() => {
+      const inputElements = this.scan_code_type.toArray();
+      if (inputElements.length > lastIndex) {
+        const inputElement = inputElements[0].nativeElement as HTMLInputElement;
+        this.renderer.selectRootElement(inputElement).focus();
+      }
+    });
   }
 
   saveScanCodeType(newScanCode : any, oldScanCode  : any) {
@@ -69,7 +86,7 @@ export class ScanTypeCodeComponent implements OnInit {
       "wsid": this.userData.wsid,
     }
     
-    this.invMasterService.get(paylaod, '/Common/CodeTypeSave').subscribe((res) => {
+    this.Api.CodeTypeSave(paylaod).subscribe((res) => {
       if(res.isExecuted){
         this.getScanCodeType();
         this.toastr.success(labels.alert.success, 'Success!', {
@@ -89,16 +106,18 @@ export class ScanTypeCodeComponent implements OnInit {
 
   dltScanTypeCode(newScanTypeCode : any) {
 
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: '480px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
-        message: 'Click OK to delete Scan Type ' + newScanTypeCode,
+        mode: 'dltScanTypeCode',
+        ErrorMessage: `Are you sure you want to delete Scan Type ${newScanTypeCode}?`,
+        action: 'delete'
       },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
+    })
+    dialogRef.afterClosed().subscribe(result => {
       if (result == 'Yes') {
         if(newScanTypeCode){
           let paylaod = {
@@ -107,7 +126,7 @@ export class ScanTypeCodeComponent implements OnInit {
             "wsid": this.userData.wsid,
           }
           
-          this.invMasterService.get(paylaod,'/Common/ScanCodeTypeDelete').subscribe((res) => {
+          this.Api.ScanCodeTypeDelete(paylaod).subscribe((res) => {
             if(res.isExecuted){
               this.getScanCodeType();
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -120,7 +139,7 @@ export class ScanTypeCodeComponent implements OnInit {
           this.scanTypeCode_list.shift();
         }
       }
-    });
+    })
     
   }
 

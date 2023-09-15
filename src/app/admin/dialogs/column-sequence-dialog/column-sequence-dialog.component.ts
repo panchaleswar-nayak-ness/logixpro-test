@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -6,8 +6,7 @@ import {
 } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/init/auth.service';
-import { ColumnSequenceService } from './column-sequence.service';
+import { AuthService } from 'src/app/init/auth.service'; 
 import labels from '../../../labels/labels.json';
 import {
   CdkDragDrop,
@@ -15,6 +14,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-column-sequence-dialog',
@@ -28,7 +28,7 @@ export class ColumnSequenceDialogComponent implements OnInit {
   unorderedCol: any = [];
   defaultCol: any = [];
   constructor(
-    private columnseqService: ColumnSequenceService,
+    private Api: ApiFuntions,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
     private toastr: ToastrService,
@@ -96,8 +96,8 @@ export class ColumnSequenceDialogComponent implements OnInit {
       viewName:this.dialogData.tableName,
     };
     
-    this.columnseqService
-      .get(this.payload, '/Admin/DeleteColumns')
+    this.Api
+      .DeleteColumns(this.payload)
       .subscribe(
         (res: any) => {
           if (res.isExecuted) {
@@ -167,7 +167,7 @@ export class ColumnSequenceDialogComponent implements OnInit {
   }
 
   saveColumnsSeq() {
-    this.columnseqService.get(this.payload, '/Admin/SaveColumns').subscribe(
+    this.Api.SaveColumns(this.payload).subscribe(
       (res: any) => {
         if (res.isExecuted) {
           this.toastr.success(labels.alert.success, 'Success!', {
@@ -190,8 +190,8 @@ export class ColumnSequenceDialogComponent implements OnInit {
   }
 
   getColumnsSeqDetail() {
-    this.columnseqService
-      .get(this.payload, '/Admin/GetColumnSequenceDetail')
+    this.Api
+      .GetColumnSequenceDetail(this.payload)
       .subscribe((res: any) => {
         this.unorderedCol = res.data?.allColumnSequence;
         if (res.data?.columnSequence.length) {
@@ -205,4 +205,34 @@ export class ColumnSequenceDialogComponent implements OnInit {
         }
       });
   }
+
+  @HostListener('document:keyup', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) { 
+    const target = event.target as HTMLElement;
+    if (!this.isInputField(target) && event.key === 'a') {
+      event.preventDefault();
+      this.autofill();
+    }
+    if (!this.isInputField(target) && event.key === 'b') {
+      event.preventDefault();
+      this.dialogRef.close();
+    }
+    if (!this.isInputField(target) && event.key === 'c') {
+      event.preventDefault();
+      this.deleteColSeq();
+    }
+    if (!this.isInputField(target) && event.key === 'r') {
+      event.preventDefault();
+      this.restoreCol();
+    }
+    if (!this.isInputField(target) && event.key === 's') {
+      event.preventDefault();
+      this.save();
+    }
+  }
+
+  isInputField(element: HTMLElement): boolean {
+    return element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.isContentEditable;
+  }
+
 }

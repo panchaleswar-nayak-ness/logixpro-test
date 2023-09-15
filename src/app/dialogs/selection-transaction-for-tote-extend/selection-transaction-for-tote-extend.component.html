@@ -70,13 +70,14 @@
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-            <mat-label>Ship Via</mat-label>
+            <mat-label>{{fieldNames?.userField1}}</mat-label>
+            <!-- #field_focus  -->
             <input formControlName="userField1" (keydown.shift.enter)="$event.preventDefault()" matInput type="text">
           </mat-form-field>
         </div>
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-            <mat-label>Ship To Name</mat-label>
+            <mat-label>{{fieldNames?.userField2}}</mat-label>
             <input formControlName="userField2" (keydown.shift.enter)="$event.preventDefault()" matInput type="text">
           </mat-form-field>
         </div>
@@ -107,7 +108,7 @@
           </mat-form-field>
         </div>
         <div class="col-xl-3">
-          <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline" (click)="openWareHouse()">
+          <mat-form-field class="custom-form-field w-100 mb-2"  [class.mat-form-field-disabled]="!isWarehouseSensitive"  appearance="outline" (click)="toteForm.getRawValue().warehouseSensitive ? openWareHouse() : false">
             <mat-label>Warehouse</mat-label>
             <input formControlName="warehouse" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
               readonly>
@@ -156,7 +157,7 @@
       <div class="row">
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2 mat-form-field-disabled" appearance="outline">
-            <mat-label>Item Number</mat-label>
+            <mat-label>{{fieldNames?.itemNumber}}</mat-label>
             <input formControlName="itemNumber" #itemNum (keydown.shift.enter)="$event.preventDefault()" matInput
               type="text" readonly>
           </mat-form-field>
@@ -467,7 +468,7 @@
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline">
             <mat-label>Quantity To Assign</mat-label>
-            <input formControlName="toteQty" (keydown.shift.enter)="$event.preventDefault()" matInput type="number">
+            <input formControlName="toteQty" (keydown.shift.enter)="$event.preventDefault()" matInput type="number" min="1" oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 1">
           </mat-form-field>
         </div>
       </div>

@@ -19,8 +19,8 @@
             <span>Editable Fields</span>
         </h2>
         <div class="d-flex gap-12">
-        <mat-checkbox color="primary" formControlName="label" [checked]="label">Label</mat-checkbox>
-        <mat-checkbox color="primary" formControlName="emergency" [checked]="emergency"  >Emergency</mat-checkbox>
+        <mat-checkbox color="primary" formControlName="label" checked >Label</mat-checkbox>
+        <mat-checkbox color="primary" formControlName="emergency" checked  >Emergency</mat-checkbox>
         </div>
         </div>
        
@@ -41,29 +41,33 @@
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Trans. Qty</mat-label>
-                    <input matInput type="text" value="" formControlName="transactionQuantity">
+                    <input #trans_qty maxlength="9" [NumbersOnly]="true"  matInput maxlength="11" type="text" value="" formControlName="transactionQuantity">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Unit Of Measure</mat-label>
+                    <mat-label>{{fieldNames?.unitOfMeasure}}</mat-label>
                     <mat-select formControlName="unitOfMeasure">
                         <mat-option *ngFor="let type of unitOfMeasure_list" value="{{type}}">{{type}}</mat-option>                        
                       </mat-select>
-
+                      <span class="material-symbols-outlined icon-expand-more">
+                        expand_more
+                    </span>
 
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Serial Number</mat-label>
-                    <input matInput type="text" value="Label" formControlName="serialNumber" (keydown)="onNumberValueChange()" (keyup)="onNumberValueChange()" (change)="onNumberValueChange()" (keypress)="onNumberValueChange()">
+                    <!-- (keydown)="onNumberValueChange()" (keyup)="onNumberValueChange()" (change)="onNumberValueChange()" (keypress)="onNumberValueChange()" // ADD these function for Number only field  -->
+                    <input matInput maxlength="50" type="text" value="Label" formControlName="serialNumber" >
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Lot number</mat-label>
-                    <input matInput type="text" value="Label" formControlName="lotNumber" (keydown)="onNumberValueChange()" (keyup)="onNumberValueChange()" (change)="onNumberValueChange()" (keypress)="onNumberValueChange()">
+                    <!-- (keydown)="onNumberValueChange()" (keyup)="onNumberValueChange()" (change)="onNumberValueChange()" (keypress)="onNumberValueChange()"    // ADD these function for Number only field-->
+                    <input matInput maxlength="50" type="text" value="Label" formControlName="lotNumber">
                 </mat-form-field>
             </div>
         </div>
@@ -94,13 +98,13 @@
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Revision</mat-label>
-                    <input matInput type="text" value="Label" formControlName="revision">
+                    <input matInput maxlength="50" type="text" value="Label" formControlName="revision">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Host Transaction ID</mat-label>
-                    <input matInput type="text" value="Label" formControlName="hostTransactionID">
+                    <input matInput  maxlength="50"  type="text" value="Label" formControlName="hostTransactionID">
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
@@ -127,19 +131,19 @@
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Batch Pick ID</mat-label>
-                    <input matInput type="text" value="Label" formControlName="batchPickID">
+                    <input maxlength="50" matInput type="text" value="Label" formControlName="batchPickID">
                 </mat-form-field>
             </div>
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Line Number</mat-label>
-                    <input matInput type="text" value="Label" formControlName="lineNumber">
+                    <input maxlength="9" [NumbersOnly]="true"  matInput type="text" value="Label" formControlName="lineNumber">
                 </mat-form-field>
             </div>
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Line Sequence</mat-label>
-                    <input matInput type="text" value="Label" formControlName="lineSequence">
+                    <input maxlength="9" [NumbersOnly]="true" matInput type="text" value="Label" formControlName="lineSequence">
                 </mat-form-field>
             </div>
             
@@ -149,7 +153,7 @@
             <div class="col-xl-6">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Priority</mat-label>
-                    <input matInput type="text" value="Label" formControlName="priority">
+                    <input maxlength="9" [NumbersOnly]="true" matInput type="text" value="Label" formControlName="priority">
                 </mat-form-field>
             </div>
             <div class="col-xl-6">
@@ -158,6 +162,9 @@
                     <mat-select formControlName="wareHouse">
                         <mat-option *ngFor="let type of warehouse_list" value="{{type}}">{{type}}</mat-option>                        
                       </mat-select>
+                      <span class="material-symbols-outlined icon-expand-more">
+                        expand_more
+                    </span>
                 </mat-form-field>
             </div>
             
@@ -167,19 +174,19 @@
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Notes</mat-label>
-                    <textarea matInput formControlName="notes"></textarea>
+                    <textarea maxlength="255" matInput formControlName="notes"></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Ship VIA</mat-label>
-                    <textarea matInput formControlName="userField1" ></textarea>
+                    <mat-label>{{fieldNames?.userField1}}</mat-label>
+                    <textarea maxlength="255" matInput formControlName="userField1" ></textarea>
                 </mat-form-field>
             </div>
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Ship To Name</mat-label>
-                    <textarea matInput formControlName="userField2" ></textarea>
+                    <mat-label>{{fieldNames?.userField2}}</mat-label>
+                    <textarea maxlength="255" matInput formControlName="userField2" ></textarea>
                 </mat-form-field>
             </div>
         </div>
@@ -209,7 +216,7 @@
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Item Number</mat-label>
+                    <mat-label>{{fieldNames?.itemNumber}}</mat-label>
                     <input formControlName="itemNumber" matInput type="text" value="Label">
                 </mat-form-field>
             </div>

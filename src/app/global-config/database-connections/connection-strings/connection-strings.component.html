@@ -37,26 +37,24 @@
                     <div class="row">
                         <div class="col-3 ">Connection Name</div>
                         <div class="col-3 ">Database Name</div>
-                        <div class="col-2 ">Server Name</div>
-                        <div class="col-2 "></div>
+                        <div class="col-2 px-2">Server Name</div>
+                        <div class="col-4 "></div>
                     </div>
                 </div>
                 <!-- <ng-scrollbar style="height:260px"> -->
-                    <ng-scrollbar style="height: 500px;">
+                    <ng-scrollbar style="height: 500px;" track="all">
                 <div class="card-body" style="overflow-x: auto;">
                     
 
                     <div class="row">
                         <mat-radio-group aria-label="Select an option" color="primary" class="w-100">
-                            <ng-container *ngFor="let item of connectionStringData;let index = index;trackBy:trackByIndex;">
+                            <ng-container *ngFor="let item of connectionStringData;let index = index;trackBy:trackByIndex;" track="all" mat-dialog-content>
                                 <div class="row align-items-center mb-3">
-
-
 
                                     <div class="col-3" >
                                         <!-- (click)="openAddItemNumDialog(kitItem)" -->
                                         <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                            <input matInput type="text" [(ngModel)]="item.connectionName" name="connectionName" (ngModelChange)="onInputValueChange($event,item,index)" #specialFeature maxlength="255"
+                                            <input matInput type="text" [(ngModel)]="item.connectionName" name="connectionName" (ngModelChange)="onInputValueChange($event,item,index)" #specialFeature maxlength="50"
                                                 [value]="item.connectionName">
                                                 <mat-hint class="error-message" style="color: red;font-size: 14px;padding-top:5%"
                                                 *ngIf="item.isDuplicate">
@@ -66,39 +64,37 @@
                                     </div>
 
                                     <div class="col-3">
-                                        <div class="d-flex gap-12 align-items-center">
+                                        <div class="d-xl-flex gap-12 align-items-center">
 
                                             <mat-form-field class="custom-form-field w-100" appearance="outline">
 
-                                                <input matInput type="text" #specialFeature maxlength="255" name="databaseName" [(ngModel)]="item.databaseName" (ngModelChange)="onInputValueChange($event,item,index)"
+                                                <input matInput type="text" #specialFeature maxlength="50" name="databaseName" [(ngModel)]="item.databaseName" (ngModelChange)="onInputValueChange($event,item,index)"
                                                     [value]="item.databaseName">
                                             </mat-form-field>
 
                                         </div>
                                     </div>
                                     <div class="col-3">
-                                        <div class="d-flex gap-12 align-items-center">
+                                        <div class="d-xl-flex gap-12 align-items-center">
                                             <mat-form-field class="custom-form-field w-100" appearance="outline">
 
-                                                <input matInput type="text" #specialFeature maxlength="255"  name="databaseName" [(ngModel)]="item.serverName" (ngModelChange)="onInputValueChange($event,item,index)"
+                                                <input matInput type="text" #specialFeature maxlength="50"  name="databaseName" [(ngModel)]="item.serverName" (ngModelChange)="onInputValueChange($event,item,index)"
                                                     [value]="item.serverName">
                                             </mat-form-field>
 
-
-
                                         </div>
                                     </div>
-                                    <div class="col-3">
-                                        <div class="d-flex gap-12 align-items-center pe-3">
+                                    <div class="col-3" style="overflow-x: auto;">
+                                        <div class="d-flex gap-12 align-items-center pe-0 pe-xl-3 justifly-content-center">
                                             <button type="button" mat-flat-button 
-                                               (click)="openSqlAuth(item)" class="button-primary-i button-sm"  [disabled]="item.isSqlButtonDisable" style="flex:1" > Set SQL Auth</button>
+                                               (click)="openSqlAuth(item)" class="button-primary-i button-md"  [disabled]="item.isSqlButtonDisable" style="flex:1" > Set SQL Auth</button>
 
-                                            <button mat-flat-button color="primary" class="xsm-icon-button " [disabled]="item.isButtonDisable"
+                                            <button mat-flat-button color="primary" class="xsm-icon-button m-1 m-xl-0" [disabled]="item.isButtonDisable"
                                                (click)="saveString(item,index)" #namebutton>
-                                                <mat-icon class="material-symbols-outlined">save</mat-icon>
+                                                <mat-icon class="material-symbols-outlined" matTooltip="Save" matTooltipPosition="above">save</mat-icon>
                                             </button>
 
-                                            <button (click)="deleteString(item)" mat-flat-button color="warn" class="xsm-icon-button">
+                                            <button (click)="deleteString(item)" mat-flat-button color="warn" class="xsm-icon-button m-1 m-xl-0" matTooltip="Delete" matTooltipPosition="above">
                                                 <mat-icon class="material-symbols-outlined">close</mat-icon>
                                             </button>
                                         </div>

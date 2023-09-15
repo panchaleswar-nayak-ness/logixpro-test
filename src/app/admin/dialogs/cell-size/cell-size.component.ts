@@ -1,10 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChildren, ElementRef, QueryList, Renderer2 } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { CellSizeService } from '../../../../app/common/services/cell-size.service';
+import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-cell-size',
@@ -12,16 +12,20 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
   styleUrls: ['./cell-size.component.scss']
 })
 export class CellSizeComponent implements OnInit {
+  @ViewChildren('cell_size', { read: ElementRef }) cell_size: QueryList<ElementRef>;
+  
   public cellsize_list: any;
   public userData: any;
   public currentCellValue = "";
+  enableButton = [{ index: -1, value: true }];
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private cellSizeService: CellSizeService,
+    private api: ApiFuntions,
     private authService: AuthService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>,
     private dialog: MatDialog,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
@@ -31,20 +35,40 @@ export class CellSizeComponent implements OnInit {
 
   }
 
+
   getCellSizeList() {
-    this.cellSizeService.getCellSize().subscribe((res) => {
+    this.enableButton = [];
+    this.api.getCellSize().subscribe((res) => {
       for(var i=0;i<res.data.length;i++){
         res.data[i].isInserted = 1;
+        this.enableButton.push({ index: i, value: true });
       }
       this.cellsize_list = res.data;
+      setTimeout(() => {
+        const inputElements = this.cell_size.toArray();
+        const inputElement = inputElements[0].nativeElement as HTMLInputElement;
+          this.renderer.selectRootElement(inputElement).focus();
+      }, 100);
+   
     });
   }
 
   addczRow(row: any) {
     this.cellsize_list.unshift({ cells: '', cellTypes: '' });
+    this.enableButton.push({ index: -1, value: true })
+    const lastIndex = this.cellsize_list.length - 1;
+    setTimeout(() => {
+      const inputElements = this.cell_size.toArray();
+      if (inputElements.length > lastIndex) {
+        const inputElement = inputElements[0].nativeElement as HTMLInputElement;
+        this.renderer.selectRootElement(inputElement).focus();
+      }
+    });
   }
-  handleChange($event) {
-    //console.log($event);
+  enableDisableButton(i: any) {
+    this.enableButton[i].value = false;
+  }
+  handleChange($event) { 
 
   }
   saveCellSize(cell: any, cellType: any, i,isInserted:any) {
@@ -75,7 +99,7 @@ export class CellSizeComponent implements OnInit {
           "username": this.userData.userName,
           "wsid": this.userData.wsid,
         }
-        this.cellSizeService.saveCellSize(paylaod).subscribe((res) => {
+        this.api.saveCellSize(paylaod).subscribe((res) => {
           //console.log(res);
           if (res.isExecuted) {
             this.getCellSizeList();
@@ -99,21 +123,23 @@ export class CellSizeComponent implements OnInit {
       });
     }
   }
-  dltCellSize(cell: any, i) {
-    if (cell) {
+  dltCellSize(cell: any, i) { 
+    
+    if (cell.cells != '') {
       const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
+      disableClose:true,
       })
       dialogRef.afterClosed().subscribe(result => {
        if(result === 'Yes'){
         let paylaod = {
-        "cell": cell.toString(),
+        "cell": cell.cells.toString(),
         "username": this.userData.userName,
         "wsid": this.userData.wsid,
       }
-      this.cellSizeService.dltCellSize(paylaod).subscribe((res) => {
+      this.api.dltCellSize(paylaod).subscribe((res) => {
         if (res.isExecuted) {
           this.getCellSizeList();
           this.toastr.success(labels.alert.delete, 'Success!', {
@@ -126,7 +152,8 @@ export class CellSizeComponent implements OnInit {
       })
       
     } else {
-      this.cellsize_list.shift()
+      this.cellsize_list.shift();
+      this.getCellSizeList();
     }
   }
 

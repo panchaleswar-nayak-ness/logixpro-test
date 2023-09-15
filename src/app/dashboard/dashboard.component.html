@@ -1,16 +1,16 @@
 <div class="f-container">
-<app-header (toggleSidebarForMe)="sideBarToggler()" >
+<app-header (toggleSidebarForMe)="sideBarToggler()" [ngClass]="{'d-none' : isMenuHide}">
 </app-header>
 <mat-sidenav-container class="main-container">
   <mat-sidenav #sidenav mode="side" disableClose="true" [opened]="sideBarOpen">
-    <app-side-nav [sideBarOpen]="sideBarOpen"></app-side-nav>
+    <app-side-nav [sideBarOpen]="sideBarOpen" [ngClass]="{'d-none' : isMenuHide}"></app-side-nav>
   </mat-sidenav>
  
   <mat-sidenav-content [ngClass]="{'default-margin' : sideBarOpen}">
-    <div class="dashboard-section" [ngClass]="{'side-bar-opened' : sideBarOpen}">
+    <div [ngClass]="{'side-bar-opened' : sideBarOpen, 'dashboard-section' : !isMenuHide}">
       <div class="breadcrumb-menu">
    
-        <nav aria-label="breadcrumb" class="breadcrumb" >
+        <nav aria-label="breadcrumb" class="breadcrumb" [ngClass]="{'d-none' : isMenuHide}">
        
           <!-- <div *ngFor="let item of breadcrumbList; index as i;">
           

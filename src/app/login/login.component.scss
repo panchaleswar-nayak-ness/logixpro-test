@@ -75,3 +75,9 @@
 color:var(--clr-primary-500);
 &:hover{color:var(--clr-primary-300)}
 }
+
+.brand-logo{
+  img{
+    max-width: 200px;
+  }
+}

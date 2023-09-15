@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { ProcessPutAwayService } from 'src/app/induction-manager/processPutAway.service';
+import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from 'src/app/init/auth.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-reprocess-transaction-detail-view',
@@ -11,10 +11,12 @@ import { AuthService } from 'src/app/init/auth.service';
   styleUrls: ['./reprocess-transaction-detail-view.component.scss'],
 })
 export class ReprocessTransactionDetailViewComponent implements OnInit {
+  @ViewChild('field_focus') field_focus: ElementRef;
   itemID:any;
   userData:any;
+  fieldNames:any;
   constructor(
-    private service: ProcessPutAwayService,
+    private Api: ApiFuntions,
     private userService:AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
@@ -58,14 +60,23 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
     this.itemID=this.data.itemID
     this.userData=this.userService.userData();
     this.getReprocessData();
+    this.OSFieldFilterNames();
     // this.reprocessInfo.controls.orderNumber.setValue('123213');
   }
-
+  ngAfterViewInit(): void {
+    this.field_focus.nativeElement.focus();
+  }
+  public OSFieldFilterNames() { 
+    this.Api.ColumnAlias().subscribe((res: any) => {
+      this.fieldNames = res.data;
+      // this.sharedService.updateFieldNames(this.fieldNames)
+    })
+  }
   getReprocessData() {
     let payLoad = { id: this.itemID, username: this.userData.userName, wsid: this.userData.wsid};
 
-    this.service
-      .get(payLoad, '/Induction/RPDetails')
+    this.Api
+      .RPDetails(payLoad)
       .subscribe((res: any) => {
         if (res && res.isExecuted) {
           let item=res.data;

@@ -14,7 +14,7 @@
       <div class="header-filter-bar">
         <div class="row">
           <div class="col-xl-3">
-            <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline">
+            <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3 mb-xl-0" appearance="outline">
               <mat-label>Transaction Type</mat-label>
               <mat-select [(ngModel)]="transType" class="employees-action" value="pick"
                 (selectionChange)="onSelectionChange($event)">
@@ -30,11 +30,12 @@
           <div class="col-xl-3">
 
 
-            <mat-form-field class="custom-form-field custom-form-field-bg-white w-100" appearance="outline"
+            <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3 mb-xl-0" appearance="outline"
               [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
               <mat-label>Order Number</mat-label>
-              <input type="text" placeholder="Search"  #inputVal aria-label="Number" matInput [(ngModel)]='orderNumber'
+              <input type="text" placeholder="Search"  #autoFocusField aria-label="Number" matInput [(ngModel)]='orderNumber'
                 maxlength="255" [matAutocomplete]="auto" (ngModelChange)="this.searchByInput.next($event)">
+                <button matSuffix *ngIf="orderNumber" class="clear-btn"  (click)=" clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
               <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
                 <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
                   {{option}}
@@ -45,7 +46,7 @@
 
           <div class="col-xl-3 offset-xl-3">
             <div class="d-flex justify-content-end">
-              <mat-form-field class="action-dropdown custom-form-field-bg-white" appearance="outline">
+              <mat-form-field class="action-dropdown custom-form-field w-100 mb-3" appearance="outline">
                 <mat-select #matRef class="employees-action" placeholder="Actions" [(ngModel)]="selectedOption"
                   (openedChange)="actionDialog($event)">
                   <mat-option [disabled]="!isPost " value="post_order">Post Order</mat-option>
@@ -80,24 +81,25 @@
         <span class="label label-gray px-2 f-14">Tote ID for Number:&nbsp;<b>000000</b></span> -->
       </div>
       <div class="row">
-        <div class="col-2">
-          <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
+        <div class="col-xl-3">
+          <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
             <mat-label>Transaction Type</mat-label>
             <input type="text" placeholder="Search" disabled [value]="transType" matInput maxlength="255">
           </mat-form-field>
           
         </div>
-        <div class="col-2">
-          <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
+        <div class="col-xl-3">
+          <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
             <mat-label>Displayed Order</mat-label>
-            <input type="text" placeholder="Search" disabled [value]="selectedOrder"  matInput maxlength="255">
+            <input type="text" placeholder="Search" disabled  [value]="selectedOrder"  matInput maxlength="255">
           </mat-form-field>
           
         </div>
-        <div class="col-2">
-          <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3"  appearance="outline">
+        <div class="col-xl-3">
+          <mat-form-field class="custom-form-field w-100 mb-3"  appearance="outline">
             <mat-label>Tote ID For Order</mat-label>
             <input type="text" placeholder="Search" [(ngModel)]="toteID" matInput maxlength="255">
+            <button matSuffix *ngIf="toteID" class="clear-btn"  (click)=" toteID = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
           </mat-form-field>
           
         </div>
@@ -110,156 +112,155 @@
 
             <ng-container matColumnDef="ItemNumber">
               <th mat-header-cell mat-sort-header *matHeaderCellDef>Item Number</th>
-              <td mat-cell *matCellDef="let element">{{element?.itemNumber}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.itemNumber}}</td>
             </ng-container>
 
             <ng-container matColumnDef="TransactionQuantity">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
-              <td mat-cell *matCellDef="let element">{{element?.transactionQuantity}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.transactionQuantity}}</td>
             </ng-container>
 
             <ng-container matColumnDef="LineNumber">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Line Number </th>
-              <td mat-cell *matCellDef="let element">{{element?.lineNumber}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.lineNumber}}</td>
             </ng-container>
 
             <ng-container matColumnDef="LineSequence">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Line Sequence </th>
-              <td mat-cell *matCellDef="let element">{{element?.lineSequence}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.lineSequence}}</td>
             </ng-container>
 
             <ng-container matColumnDef="Priority">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Priority </th>
-              <td mat-cell *matCellDef="let element">{{element?.priority}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.priority}}</td>
             </ng-container>
 
             <ng-container matColumnDef="RequiredDate">
               <th mat-header-cell *matHeaderCellDef mat-sort-header > Required Date </th>
-              <td mat-cell *matCellDef="let element" tooltip="matTooltip"
-              [matTooltip]="element?.requiredDate"   matTooltipPosition="above" [matTooltipDisabled]="element?.requiredDate && element?.requiredDate.length>=15?false:true">{{element?.requiredDate}}</td>
+              <td mat-cell *matCellDef="let seletedRecord" tooltip="matTooltip"
+              [matTooltip]="seletedRecord?.requiredDate"   matTooltipPosition="above" [matTooltipDisabled]="seletedRecord?.requiredDate && seletedRecord?.requiredDate.length>=15?false:true">{{seletedRecord?.requiredDate}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="LotNumber">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Lot Number </th>
-              <td mat-cell *matCellDef="let element">{{element?.lotNumber}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.lotNumber}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="ExpirationDate">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Expiration Date </th>
-              <td mat-cell *matCellDef="let element" tooltip="matTooltip"
-              [matTooltip]="element?.expirationDate"   matTooltipPosition="above" [matTooltipDisabled]="element?.expirationDate && element?.expirationDate.length>=15?false:true">{{element?.expirationDate}}</td>
+              <td mat-cell *matCellDef="let seletedRecord" tooltip="matTooltip"
+              [matTooltip]="seletedRecord?.expirationDate"   matTooltipPosition="above" [matTooltipDisabled]="seletedRecord?.expirationDate && seletedRecord?.expirationDate.length>=15?false:true">{{seletedRecord?.expirationDate}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="SerialNumber">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Serial Number </th>
-              <td mat-cell *matCellDef="let element">{{element?.serialNumber}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.serialNumber}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="Warehouse">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Warehouse </th>
-              <td mat-cell *matCellDef="let element">{{element?.warehouse}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.warehouse}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="BatchPickID">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch Pick ID </th>
-              <td mat-cell *matCellDef="let element">{{element?.batchPickID}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.batchPickID}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="Notes">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Notes </th>
-              <td mat-cell *matCellDef="let element">{{element?.notes}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.notes}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="ToteNumber">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote Number </th>
-              <td mat-cell *matCellDef="let element">{{element?.toteNumber}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.toteNumber}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="HostTransactionID">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Host Transaction ID </th>
-              <td mat-cell *matCellDef="let element">{{element?.hostTransactionID}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.hostTransactionID}}</td>
             </ng-container>
 
             <ng-container matColumnDef="Emergency">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Emergency</th>
-              <td mat-cell *matCellDef="let element">{{element?.emergency}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.emergency}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="UserField1">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 1 </th>
-              <td mat-cell *matCellDef="let element">{{element?.userField1}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.userField1}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="UserField2">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 2 </th>
-              <td mat-cell *matCellDef="let element">{{element?.userField2}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.userField2}}</td>
             </ng-container>
 
 
 
             <ng-container matColumnDef="UserField3">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 3</th>
-              <td mat-cell *matCellDef="let element">{{element?.userField3}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.userField3}}</td>
             </ng-container>
 
             <ng-container matColumnDef="UserField4">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 4 </th>
-              <td mat-cell *matCellDef="let element">{{element?.userField4}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.userField4}}</td>
             </ng-container>
 
             <ng-container matColumnDef="UserField5">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 5</th>
-              <td mat-cell *matCellDef="let element">{{element?.userField5}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.userField5}}</td>
             </ng-container>
 
             <ng-container matColumnDef="UserField6">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 6</th>
-              <td mat-cell *matCellDef="let element">{{element?.userField6}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.userField6}}</td>
             </ng-container>
 
             <ng-container matColumnDef="UserField7">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 7 </th>
-              <td mat-cell *matCellDef="let element">{{element?.userField7}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.userField7}}</td>
             </ng-container>
 
 
             <ng-container matColumnDef="UserField8">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 8 </th>
-              <td mat-cell *matCellDef="let element">{{element?.userField8}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.userField8}}</td>
             </ng-container>
 
             <ng-container matColumnDef="UserField9">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 9 </th>
-              <td mat-cell *matCellDef="let element">{{element?.userField9}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.userField9}}</td>
             </ng-container>
 
             <ng-container matColumnDef="UserField10">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 10 </th>
-              <td mat-cell *matCellDef="let element">{{element?.userField10}}</td>
+              <td mat-cell *matCellDef="let seletedRecord">{{seletedRecord?.userField10}}</td>
             </ng-container>
 
             <ng-container matColumnDef="actions" stickyEnd>
               <th mat-header-cell *matHeaderCellDef
                 style="border: 0;height: 58px; padding-left:65px; border-bottom: 1px solid var(--clr-tertiary-50); width: 80px;">
               </th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" class="circle-icon-o"
-                  appearance="outline">
+              <td mat-cell *matCellDef="let seletedRecord">
+                <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline">
                   <mat-icon>more_horiz</mat-icon>
                 </button>
                 <mat-menu #appMenu="matMenu">
-                  <span mat-menu-item (click)="editTransaction(element)">Edit Transaction</span>
-                  <button mat-menu-item (click)="deleteTransaction(element)">Delete Transaction</button>
+                  <span mat-menu-item (click)="editTransaction(seletedRecord)">Edit Transaction</span>
+                  <button mat-menu-item (click)="deleteTransaction(seletedRecord)">Delete Transaction</button>
                 </mat-menu>
               </td>
             </ng-container>
@@ -274,13 +275,13 @@
 
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)">
             </tr>
           </table>
         </ng-scrollbar>
       </div>
       <div class="table-pagination d-flex justify-content-start" *ngIf="  displayedColumns && dataSource">
-        <mat-paginator [length]="this.customPagination.total" [pageSize]="20" [pageSizeOptions]="[10, 20, 100]"
+        <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"
           (page)="handlePageEvent($event)"></mat-paginator>
 
 

@@ -21,9 +21,9 @@
 .mat-column-status {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 75px !important;
-  width: 75px !important;
-  min-width: 75px !important;
+  flex: 0 0 90px !important;
+  width: 90px !important;
+  min-width: 90px !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -33,6 +33,7 @@
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
+  padding: 0px 12px;
 }
 .mat-column-save {
   word-wrap: break-word !important;

@@ -20,78 +20,57 @@
 
                 <div class="text-center mb-3 mt-5 pt-3">
                   <h1 class="text-32 text-tertiary-900 fw-bold pb-3">LogixPro</h1>
+                </div> 
+                <div class="text-center  mb-4 pb-1">
+                  <h2 class="text-tertiary-900 text-24 fw-bold">Configuration Login</h2>
                 </div>
-                <!-- (ngSubmit)="loginUser()" -->
-                <form [formGroup]="addLoginForm" (ngSubmit)="loginUser()" name="addLoginForm">
-
-                  <!-- <div class="d-flex align-items-center mb-3 pb-1" style="justify-content: center;">
-                    <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
-                    <span class="h1 fw-bold mb-0" class="account_login">Account Login</span>
-                  </div> -->
-                  <div class="text-center  mb-4 pb-1">
-                    <h2 class="text-tertiary-900 text-24 fw-bold">Configuration Login</h2>
-                  </div>
+                <div   > 
                   <div class="form-outline mb-2">
                     <mat-form-field appearance="outline" style=" width: 100%;">
                       <mat-label>Username</mat-label>
-                      <input  type="text" matInput placeholder="Enter Username" formControlName="username" maxlength="50" required />
-                      <mat-icon matPrefix style="color: #090948;" >account_circle</mat-icon>
+                      <input type="text" matInput placeholder="Enter Username"
+                      (keyup.enter)="enterUserName()"
+                      [(ngModel)]="addLoginForm.username" name="username" #userName="ngModel" maxlength="50"
+                        
+                        required autocomplete="off"    />
+                      <mat-icon matPrefix style="color: #090948;">account_circle</mat-icon>
                     </mat-form-field>
                     <mat-hint class="error-message" style="color: red;font-size: 14px;"
-                      *ngIf="addLoginForm.controls['username'].invalid && (addLoginForm.controls['username'].dirty || addLoginForm.controls['username'].touched)">
+                      *ngIf="userName.invalid 
+                      && (userName.dirty || userName.touched)">
                       Username is required
+                       
                     </mat-hint>
                     <br>
-                    <mat-hint class="error-message" style="color: red;font-size: 14px;"
-                      *ngIf="addLoginForm.get('username')?.hasError('whitespace')">
-                      Please enter valid username
-                    </mat-hint>
+                  
                   </div>
-                  <div class="form-outline mb-2">
+                  <div class="form-outline mb-1">
                     <mat-form-field appearance="outline" style=" width: 100%;">
                       <mat-label>Password</mat-label>
-                      <input placeholder="Password" formControlName="password" maxlength="50" matInput [type]="toggle_password ? 'password' : 'text'">
+                      <input #passwordInput placeholder="Password" [(ngModel)]="addLoginForm.password" #password="ngModel"   maxlength="50"
+                      (keyup.enter)="loginUser()"
+                      matInput
+                        [type]="toggle_password == true ? 'password' : 'text'" autocomplete="false"   required="" >
                       <mat-icon matPrefix style="color: #090948;">lock</mat-icon>
-                      <button type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
+                      <button type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
                         <mat-icon>{{toggle_password ? 'visibility_off' : 'visibility'}}</mat-icon>
                       </button>
                     </mat-form-field>
 
                     <mat-hint class="error-message" style="color: red;font-size: 14px;"
-                      *ngIf="addLoginForm.controls['password'].invalid && (addLoginForm.controls['password'].dirty || addLoginForm.controls['password'].touched)">
+                      *ngIf="password.invalid && (password.dirty || password.touched)">
                       Password is required
                     </mat-hint>
                     <br>
-                    <mat-hint class="error-message" style="color: red;font-size: 14px;"
-                      *ngIf="addLoginForm.get('password')?.hasError('whitespace')">
-                      Please enter valid password
-                    </mat-hint>
+                     
+                  <div class="d-flex justify-content-center my-3">  
+                    <button class="form-button-submit w-100" (click)="loginUser()" [disabled]="(userName.invalid || password.invalid)" mat-flat-button
+                      color="primary">Login</button>
                   </div>
-                  <!-- <ng-container *ngIf="(env === 'DB' || env === 'ADLDS')">
-                    <div class="form-outline text-end mb-4">
-                      <button color="primary" type="button" class="small anchor-feel anchor-focus forgotPassword-link" (click)="changePass()">Reset password?</button>
-                    </div>
-                  </ng-container> -->
+                
+                  </div>
 
-
-                  <!-- <div class="form-outline col-9 pt-5" style="margin: 0 auto;">
-                    <mat-checkbox color="primary">Remember me</mat-checkbox> -->
-                    <!-- <button class="btn btn-dark btn-lg btn-block" [disabled]="!addLoginForm.valid"
-                      type="submit">Login</button> -->
-                      <div class="d-flex justify-content-center my-3">
-                        <button class="form-button-submit w-100"  [disabled]="!addLoginForm.valid" mat-flat-button color="primary">Login</button>
-                      </div>
-                      <mat-icon class="material-symbols-outlined" matPrefix style="color: #090948; visibility: hidden; position: absolute;">lock</mat-icon>
-                  <!-- </div> -->
-
-                  <!-- <div class="form-outline col-9 pt-3" style="text-align: center;float: none;margin: 0 auto;">
-                    <img src="../../assets/images/ScottTech _ Pickpro_Blue.png" alt="">
-                  </div> -->
-                  <!-- <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="#!"
-                      style="color: #393f81;">Register here</a></p> -->
-                  <!-- <a href="#!" class="small text-muted">Terms of use.</a>
-                   <a href="#!" class="small text-muted">Privacy policy</a> -->
-                </form>
 
               </div>
             </div>
@@ -104,5 +83,6 @@
     <div class="center">
       <!-- <mat-spinner [diameter]="50"></mat-spinner> -->
     </div>
+  </div>
   </div>
 </section>

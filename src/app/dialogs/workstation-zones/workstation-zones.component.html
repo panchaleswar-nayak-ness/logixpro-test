@@ -26,33 +26,6 @@
 
         <ng-scrollbar style="height: 250px;">
             <div class="card-body">
-                <ng-container *ngFor="let vlcode of velocity_code_list;let i = index">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="container w-100">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="d-flex justify-content-between align-items-center gap-12">
-                                        <mat-form-field class="d-block w-100" appearance="outline">
-                                            <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-                                                #vlname name="{{vlcode.zone}}" value="{{vlcode.zone}}"
-                                                [disabled]="vlcode.isSaved">
-                                        </mat-form-field>
-                                        <div class="d-flex gap-12">
-                                            <!-- <button *ngIf="!vlcode.isSaved" mat-flat-button color="primary"
-                                                class="xsm-icon-button" (click)="saveVlCode(vlname.value, vlcode)">
-                                                <mat-icon class="material-symbols-outlined">save</mat-icon>
-                                            </button> -->
-                                            <button mat-flat-button color="warn" class="xsm-icon-button"
-                                                (click)="delete(vlname.value);">
-                                                <mat-icon class="material-symbols-outlined">close</mat-icon>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </ng-container>
                 <ng-container *ngFor="let zone of allZoneList;let i = index">
                     <div class="d-flex align-items-center mb-3" *ngIf="allZoneList.length > 0">
                         <div class="container w-100">
@@ -81,6 +54,34 @@
                         </div>
                     </div>
                 </ng-container>
+                <ng-container *ngFor="let vlcode of velocity_code_list;let i = index">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="container w-100">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between align-items-center gap-12">
+                                        <mat-form-field class="d-block w-100" appearance="outline">
+                                            <input #field_focus (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
+                                                #vlname name="{{vlcode.zone}}" value="{{vlcode.zone}}"
+                                                [disabled]="vlcode.isSaved">
+                                        </mat-form-field>
+                                        <div class="d-flex gap-12">
+                                            <!-- <button *ngIf="!vlcode.isSaved" mat-flat-button color="primary"
+                                                class="xsm-icon-button" (click)="saveVlCode(vlname.value, vlcode)">
+                                                <mat-icon class="material-symbols-outlined">save</mat-icon>
+                                            </button> -->
+                                            <button mat-flat-button color="warn" class="xsm-icon-button"
+                                                (click)="delete(vlname.value);">
+                                                <mat-icon class="material-symbols-outlined">close</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+          
             </div>
         </ng-scrollbar>
     </div>

@@ -12,13 +12,14 @@
 
             <mat-form-field class="mb-3 w-100" appearance="outline">
                 <mat-label>Start Location</mat-label>
-                <input type="text"
+                <input  #start_location  type="text"
                 placeholder="Pick one"
                 aria-label="Number"
                 matInput
                 [(ngModel)]="startLocation"
                 [matAutocomplete]="auto"
-                name="startLocation" required="required"
+                name="startLocation" re
+                quired="required"
                 (keyup)="getstartLocationList()" (focusout)="onBlur()" >
                 <mat-autocomplete #auto="matAutocomplete" >
                     <mat-option *ngFor="let option of startLocationList" [value]="option">

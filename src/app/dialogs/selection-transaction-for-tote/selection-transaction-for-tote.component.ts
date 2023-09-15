@@ -1,9 +1,9 @@
 import { Component, OnInit , Inject } from '@angular/core';
 import { MatDialog , MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SelectionTransactionForToteExtendComponent } from '../selection-transaction-for-tote-extend/selection-transaction-for-tote-extend.component';
-import { ToastrService } from 'ngx-toastr';
-import { ProcessPutAwayService } from '../../../app/induction-manager/processPutAway.service';
+import { ToastrService } from 'ngx-toastr'; 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
@@ -22,14 +22,15 @@ export class SelectionTransactionForToteComponent implements OnInit {
   public batchID;
   public itemNumber;
   public description;
+  public fieldNames;
 
   public lowerBound=1;
-  public upperBound=5;
+  public upperBound=2;
 
 
 
   constructor(private dialog: MatDialog,public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,private service: ProcessPutAwayService,private toastr: ToastrService) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.inputType  =  this.data.inputType;
@@ -37,7 +38,8 @@ export class SelectionTransactionForToteComponent implements OnInit {
     this.userName   =  this.data.userName;
     this.wsid       =  this.data.wsid;
     this.zone       =  this.data.zones;
-    this.batchID    =  this.data.batchID
+    this.batchID    =  this.data.batchID,
+    this.fieldNames    =  this.data.propFields
     this.getTransactions();
   }
 
@@ -57,8 +59,8 @@ export class SelectionTransactionForToteComponent implements OnInit {
         wsid: this.wsid
       };
       
-      this.service
-        .get(payload, '/Induction/BatchByZone')
+      this.Api
+        .BatchByZone(payload)
         .subscribe(
           (res: any) => {
             if (res.isExecuted) {
@@ -67,6 +69,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
                   height: 'auto',
                   width: '560px',
                   autoFocus: '__non_existing_element__',
+      disableClose:true,
                   data: {
                     message: 'There are no batches with this zone (' + val.zone + ') assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
                   },
@@ -84,6 +87,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
                   height: 'auto',
                   width: '100vw',
                   autoFocus: '__non_existing_element__',
+      disableClose:true,
                   data: {
                     otid        : id,
                     itemNumber  : itemNumber,
@@ -117,6 +121,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
         height: 'auto',
         width: '100vw',
         autoFocus: '__non_existing_element__',
+      disableClose:true,
         data: {
           otid        : id,
           itemNumber  : itemNumber,
@@ -165,20 +170,26 @@ export class SelectionTransactionForToteComponent implements OnInit {
         this.inputType,
         "1=1"
       ],
-      username: this.userName,
-      wsid: this.wsid
     };
     //console.log(getTransaction);
-    this.service
-      .get(getTransaction, '/Induction/TransactionForTote')
+    this.Api
+      .TransactionForTote(getTransaction)
       .subscribe(
         (res: any) => {
+          // console.log(res,'getTransaction')
           if (res.data && res.isExecuted) {
+            if(res.data.subCategory == 'Reel Tracking'&&res.data.inputType != 'Serial Number' ){
+               this.dialogRef.close({category:'isReel',item:res.data});
+                return;
+                }
+
+             
             this.transactionTable = res.data.transactionTable;
             
             // !res.data.transactionTable || res.data.transactionTable.length == 0
             if (res.data.success == "0") {
               this.dialogRef.close("NO");
+              return;
             }
 
             if (this.data.selectIfOne && res.data.transactionTable.length == 1) {
@@ -204,6 +215,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data: {
         otid        : 0,
         itemNumber  : this.itemNumber,

@@ -3,9 +3,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../../../../app/init/auth.service';
-import { SetColumnSeqService } from './set-column-seq.service';
+import { AuthService } from '../../../../app/init/auth.service'; 
 import labels from '../../../labels/labels.json'
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -19,7 +19,7 @@ export interface PeriodicElement {
 export class SetColumnSeqComponent implements OnInit {
   ELEMENT_DATA: PeriodicElement[] = [];
   constructor(
-    private seqColumn: SetColumnSeqService, 
+    private Api: ApiFuntions, 
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
     private toastr: ToastrService
@@ -29,7 +29,13 @@ export class SetColumnSeqComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource = [];
     this.ELEMENT_DATA = [];
-    this.seqColumn.getSetColumnSeq().subscribe((res) => {
+    let userData = this.authService.userData();
+  let payload = {
+    "username": userData.userName,
+    "wsid": userData.wsid,
+    "viewName": "Inventory Map"
+  }
+    this.Api.GetColumnSequenceDetail(payload).subscribe((res) => {
           this.formatColumn(res.data.columnSequence);
     });
   }
@@ -60,7 +66,7 @@ export class SetColumnSeqComponent implements OnInit {
       "wsid": userData.wsid,
       "viewName": "Inventory Map"
     }
-    this.seqColumn.saveColumnSeq(payload).subscribe((res:any) => {
+    this.Api.SaveColumns(payload).subscribe((res:any) => {
       // console.log(res);
       if(res.isExecuted){
         this.toastr.success(labels.alert.success, 'Success!', {

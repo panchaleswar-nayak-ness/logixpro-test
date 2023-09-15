@@ -1,4 +1,4 @@
-<ng-scrollbar class="mat-table-scrollbar" style="height: 90vh;">
+<!-- <ng-scrollbar class="mat-table-scrollbar" style="height: 90vh;"> -->
   <div class="d-flex justify-content-between mb-4 align-items-center">
     <div style="width:48px"></div>
     <h1 class="m-0" mat-dialog-title>Pick Tote Manager - Select Order Number</h1>
@@ -6,7 +6,7 @@
       <mat-icon class="close-icon">close</mat-icon>
     </button>
   </div>
-
+<div mat-dialog-content>
   <div>
     <div class="row mb-3 px-3">
       <mat-label class="mb-2"><b>Batch By:</b></mat-label>
@@ -19,12 +19,13 @@
 
   <ng-container *ngIf="isFilter=='filter'; else zone">
     <div class="card p-3">
-      <mat-tab-group>
+      <mat-tab-group (selectedTabChange)="tabChange($event)">
         <mat-tab label="Batch By Filters">
-          <ng-scrollbar style="height: 550px ;">
+          <!-- <ng-scrollbar style="height: 550px ;"> -->
+            <div class="d-block" style="overflow: hidden;">
             <div class="my-3">
               <h2 class="card-header-title mb-0 d-flex align-items-center">
-                <div class="mat-icon-wrap me-lg-3">
+                <div class="mat-icon-wrap me-lg-3 me-2">
                   <span class="material-symbols-outlined">
                     filter_list
                   </span>
@@ -36,16 +37,33 @@
               <div class="d-flex justify-content-between">
                 <mat-form-field class="custom-form-field custom-form-field-bg-white position-relative" appearance="outline">
                   <mat-label>Select Saved filter</mat-label>
-                  <input type="text" [formControl]="savedFilter" aria-label="Number" matInput [matAutocomplete]="auto">
-                  <mat-autocomplete  autoActiveFirstOption
+                  <input #field_focus type="text" [formControl]="savedFilter" aria-label="Number" matInput [matAutocomplete]="auto">
+                  <mat-autocomplete class="br-14" style="padding-bottom: 16px; padding-top: 16px;" autoActiveFirstOption
                     #auto="matAutocomplete" (optionSelected)="onSavedFilterChange($event)" (closed)="savedFilClosed()">
-                    <h6 class="ctl_name ac-dropdown-label"><span>Batch ID</span></h6>
+                    <h6 class="card-header matAutoCompHeader stickyHeader"><span style="padding: 0px 25px; border: 0; text-overflow: ellipsis; overflow: hidden; width:100%; white-space: nowrap;">Batch ID</span></h6>
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                      <div class="ctl_option ac-dropdown-option">
-                        <span>{{option}}</span>
+                      <div class="loc_option">
+                        <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:100%; white-space: nowrap;" >{{option}}</span>
                       </div>
                     </mat-option>
                   </mat-autocomplete>
+
+
+                  <!-- <mat-autocomplete class="br-14" style="padding-bottom: 16px; padding-top: 16px;" autoActiveFirstOption #auto="matAutocomplete"
+                  (optionSelected)="loadZones($event)">
+
+
+                  <h6 class="card-header matAutoCompHeader stickyHeader"> <span style="padding: 0px 25px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;"> Location</span> <span style="padding: 0px 0px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">Zone</span></h6>
+                  <mat-option class="" *ngFor="let option of filteredOptions | async"
+                      [value]="option.locationName">
+                      <div class="loc_option">
+                          <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;" >{{option.locationName}}</span> <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">{{option.zone}}</span>
+                      </div>
+                  </mat-option>
+              </mat-autocomplete> -->
+
+
+
                 </mat-form-field>
                 <mat-form-field class="action-dropdown" appearance="outline">
                   <mat-label>Actions</mat-label>
@@ -64,11 +82,11 @@
               </div>
             </div>
             <div class="row row-flex p-0">
-              <div class="col-xl-7">
+              <div class="col-xl-7 mb-xl-0 mb-3">
                 <div class="card p-3">
                   <div>
                     <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3">
+                      <div class="mat-icon-wrap me-lg-3 me-2">
                         <span class="material-symbols-outlined">
                           filter_alt
                         </span>
@@ -106,7 +124,7 @@
                           <td mat-cell *matCellDef="let element">
                             <div class="pe-2">
                               <mat-form-field class="custom-form-field" appearance="outline" style="width:160px">
-                                <mat-select #matRef class="employees-action" [(ngModel)]="element.field">
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.field" (ngModelChange)="onChangeFunctionsFields(element)">
                                   <mat-option value="Emergency">Emergency</mat-option>
                                   <mat-option value="Host Transaction ID">Host Transaction ID</mat-option>
                                   <mat-option value="Import Date">Import Date</mat-option>
@@ -141,7 +159,7 @@
                           <td mat-cell *matCellDef="let element">
                             <div class="pe-2">
                               <mat-form-field class="custom-form-field" appearance="outline" style="width:160px">
-                                <mat-select #matRef class="employees-action" [(ngModel)]="element.criteria">
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.criteria" (ngModelChange)="onChangeFunctionsFields(element)">
                                   <mat-option value="Equals">Equals</mat-option>
                                   <mat-option value="Not Equal To">Not Equal To</mat-option>
                                   <mat-option value="Greater Than">Greater Than</mat-option>
@@ -164,7 +182,7 @@
                           <td mat-cell *matCellDef="let element">
                             <div class="pe-2">
                               <mat-form-field class="custom-form-field" appearance="outline" style="width:60px">
-                                <input matInput type="text" maxlength="255" [(ngModel)]="element.value">
+                                <input matInput type="text" maxlength="255" [(ngModel)]="element.value" (ngModelChange)="onChangeFunctionsFields(element)">
                               </mat-form-field>
                             </div>
                           </td>
@@ -176,7 +194,7 @@
                           <td mat-cell *matCellDef="let element">
                             <div class="pe-2">
                               <mat-form-field class="custom-form-field" appearance="outline" style="width:90px">
-                                <mat-select #matRef class="employees-action" [(ngModel)]="element.andOr">
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.andOr" (ngModelChange)="onChangeFunctionsFields(element)">
                                   <mat-option value="And">And</mat-option>
                                   <mat-option value="Or">Or</mat-option>
                                 </mat-select>
@@ -193,7 +211,7 @@
                           <td mat-cell *matCellDef="let element">
                             <div class="d-flex justify-content-end">
                               <div class="d-flex gap-12">
-                                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="onSaveSingleFilter(element)">
+                                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="onSaveSingleFilter(element)" [disabled]="element.isSaved">
                                   <mat-icon class="material-symbols-outlined">save</mat-icon>
                                 </button>
                                 <button mat-flat-button color="warn" class="xsm-icon-button" (click)="onDeleteSingleFilter(element)">
@@ -217,7 +235,7 @@
                 <div class="card p-3">
                   <div>
                     <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3">
+                      <div class="mat-icon-wrap me-lg-3 me-2">
                         <span class="material-symbols-outlined">
                           filter_frames
                         </span>
@@ -242,7 +260,7 @@
                           <td mat-cell *matCellDef="let element">
                             <div class="pe-2">
                               <mat-form-field class="custom-form-field" appearance="outline" style="width:80px">
-                                <input matInput type="text" #specialFeature maxlength="255" [(ngModel)]="element.sequence">
+                                <input matInput type="text" #specialFeature maxlength="255" [(ngModel)]="element.sequence" (ngModelChange)="onChangeFunctionsFields(element)" (focusout)="isUniqueSeq(element)">
                               </mat-form-field>
                             </div>
                           </td>
@@ -255,7 +273,7 @@
                             <div class="pe-2">
                               <mat-form-field class="custom-form-field" appearance="outline" style="width:170px">
 
-                                <mat-select #matRef class="employees-action" [(ngModel)]="element.field">
+                                <mat-select #matRef class="employees-action" [(ngModel)]="element.field" (ngModelChange)="onChangeFunctionsFields(element)">
                                   <mat-option value="Emergency">Emergency</mat-option>
                                   <mat-option value="Host Transaction ID">Host Transaction ID</mat-option>
                                   <mat-option value="Import Date">Import Date</mat-option>
@@ -290,7 +308,7 @@
                           <td mat-cell *matCellDef="let element">
                             <div class="pe-2">
                               <mat-form-field class="custom-form-field" appearance="outline" style="width:100px">
-                                <mat-select #matRef class="employees-action"  [(ngModel)]="element.sortOrder">
+                                <mat-select #matRef class="employees-action"  [(ngModel)]="element.sortOrder" (ngModelChange)="onChangeFunctionsFields(element)">
                                   <mat-option value="DESC">DESC</mat-option>
                                   <mat-option value="ASC">ASC</mat-option>
                                 </mat-select>
@@ -316,12 +334,12 @@
                         </ng-container>
 
 
-                        <ng-container matColumnDef="actions">
+                        <ng-container matColumnDef="actions" stickyEnd>
                           <th mat-header-cell *matHeaderCellDef></th>
                           <td mat-cell *matCellDef="let element">
                             <div class="d-flex justify-content-end">
                               <div class="d-flex gap-12">
-                                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="onSaveSingleOrder(element)">
+                                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="onSaveSingleOrder(element)" [disabled]="element.isSaved">
                                   <mat-icon class="material-symbols-outlined">save</mat-icon>
                                 </button>
                                 <button mat-flat-button color="warn" class="xsm-icon-button" (click)="onDeleteSingleOrder(element)">
@@ -342,10 +360,12 @@
                 </div>
               </div>
             </div>
-          </ng-scrollbar>
+            </div>
+          <!-- </ng-scrollbar> -->
         </mat-tab>
         <mat-tab label="Batch Results">
-          <ng-scrollbar style="height: 550px ;">
+          <!-- <ng-scrollbar style="height: 550px ;"> -->
+            <div class="d-block" style="overflow: hidden;">
             <div class="p-3">
               <div class="mb-2">
                 <mat-label><b>View Order Lines</b></mat-label>
@@ -360,11 +380,11 @@
               </mat-radio-group>
             </div>
             <div class="row row-flex p-0">
-              <div class="col-xl-5">
+              <div class="col-xl-5 mb-xl-0 mb-3">
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3">
+                      <div class="mat-icon-wrap me-lg-3 me-2">
                         <span class="material-symbols-outlined">
                           filter_frames
                         </span>
@@ -433,7 +453,7 @@
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3">
+                      <div class="mat-icon-wrap me-lg-3 me-2">
                         <span class="material-symbols-outlined">
                           dvr
                         </span>
@@ -444,15 +464,15 @@
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
                     <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 280px;">
 
-                      <mat-table #table [dataSource]="filterOrderTransactionSource" matSort>
+                      <table mat-table #table [dataSource]="filterOrderTransactionSource" matSort>
 
                         <ng-container *ngFor="let column of filterBatchTransColumns" [cdkColumnDef]="column.columnDef">
-                          <mat-header-cell *cdkHeaderCellDef mat-sort-header style="width:200px;">{{ column.header }}</mat-header-cell>
-                          <mat-cell *cdkCellDef="let row">{{ column.cell(row) }}</mat-cell>
+                          <th mat-header-cell *cdkHeaderCellDef mat-sort-header>{{ column.header }}</th>
+                          <td mat-cell *cdkCellDef="let row">{{ column.cell(row) }}</td>
                         </ng-container>
-                        <mat-header-row *matHeaderRowDef="displayedTransColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedTransColumns;"></mat-row>
-                      </mat-table>
+                        <tr mat-header-row *matHeaderRowDef="displayedTransColumns;sticky:true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedTransColumns;"></tr>
+                      </table>
                     </ng-scrollbar>
                   </div>
                   <div class="d-flex justify-content-start">
@@ -462,18 +482,19 @@
                 </div>
               </div>
             </div>
-          </ng-scrollbar>
+            </div>
+          <!-- </ng-scrollbar> -->
         </mat-tab>
       </mat-tab-group>
     </div>
   </ng-container>
-
+</div>
   <ng-template #zone>
     <div class="card p-3">
       <mat-tab-group [(selectedIndex)]="TabIndex">
         <mat-tab label="Batch By Zone">
           <div class="card br-14 table-responsive borderless px-0 mt-3">
-            <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 500px;">
+            <!-- <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 500px;"> -->
               <table mat-table [dataSource]="batchByZoneSource" class="w-100 table1">
 
                 <ng-container matColumnDef="default">
@@ -557,15 +578,16 @@
                 <tr mat-row *matRowDef="let row; columns: batchByOrderColumns;" (click)="selection.toggle(row)">
                 </tr>
               </table>
-            </ng-scrollbar>
+            <!-- </ng-scrollbar> -->
           </div>
           <div class="d-flex justify-content-start">
             <mat-paginator #batchByZonePaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
             </mat-paginator>
           </div>
         </mat-tab>
-        <mat-tab label="Batch Results">
-          <ng-scrollbar style="height: 550px ;">
+        <mat-tab label="Batch Results" class="b-result">
+          <!-- <ng-scrollbar style="height: 550px ;"> -->
+            
             <div class="p-3">
               <div class="mb-2">
                 <mat-label><b>View Order Lines</b></mat-label>
@@ -579,12 +601,13 @@
                 </mat-radio-button>
               </mat-radio-group>
             </div>
+            <div class="container-fluid-0" style="overflow:hidden">
             <div class="row row-flex p-0">
-              <div class="col-xl-5">
+              <div class="col-xl-4 mb-xl-0 mb-3">
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3">
+                      <div class="mat-icon-wrap me-lg-3 me-2">
                         <span class="material-symbols-outlined">
                           filter_frames
                         </span>
@@ -605,15 +628,13 @@
                   </div>
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
                     <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 280px;">
-                      <table mat-table [dataSource]="filterBatchOrdersZone" class="w-100 table1">
+                      <table mat-table [dataSource]="filterBatchOrdersZone" class="w-100 table2">
 
                         <!-- Position Column -->
                         <ng-container matColumnDef="orderno">
                           <th mat-header-cell *matHeaderCellDef> Order Number </th>
                           <td mat-cell *matCellDef="let element"  [class.selected]="element.isSelected">
-                            <div class="pe-2">
                               {{element.orderNumber}}
-                            </div>
                           </td>
                         </ng-container>
 
@@ -621,9 +642,7 @@
                         <ng-container matColumnDef="requireddate">
                           <th mat-header-cell *matHeaderCellDef> Required Date </th>
                           <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
-                            <div class="pe-2">
                               {{element.reqDate}}
-                            </div>
                           </td>
                         </ng-container>
 
@@ -631,9 +650,7 @@
                         <ng-container matColumnDef="priority">
                           <th mat-header-cell *matHeaderCellDef> Priority </th>
                           <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
-                            <div class="pe-2">
                               {{element.priority}}
-                            </div>
                           </td>
                         </ng-container>
 
@@ -650,11 +667,11 @@
                   </div>
                 </div>
               </div>
-              <div class="col-xl-7">
+              <div class="col-xl-8">
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3">
+                      <div class="mat-icon-wrap me-lg-3 me-2">
                         <span class="material-symbols-outlined">
                           dvr
                         </span>
@@ -664,15 +681,15 @@
                   </div>
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
                     <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 280px;">
-                      <mat-table #table [dataSource]="zoneOrderTransactionSource" matSort>
+                      <table mat-table #table [dataSource]="zoneOrderTransactionSource" matSort class="table2">
 
                         <ng-container *ngFor="let column of filterBatchTransColumns" [cdkColumnDef]="column.columnDef">
-                          <mat-header-cell *cdkHeaderCellDef mat-sort-header style="width:200px;">{{ column.header }}</mat-header-cell>
-                          <mat-cell *cdkCellDef="let row">{{ column.cell(row) }}</mat-cell>
+                          <th mat-header-cell *cdkHeaderCellDef mat-sort-header>{{ column.header }}</th>
+                          <td mat-cell *cdkCellDef="let row" matTooltip="{{ column.cell(row) }}" matTooltipPosition="above" [matTooltipDisabled]="column.cell(row) && column.cell(row).length>=15?false:true">{{ column.cell(row) }}</td>
                         </ng-container>
-                        <mat-header-row *matHeaderRowDef="displayedTransColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedTransColumns;"></mat-row>
-                      </mat-table>
+                        <tr mat-header-row *matHeaderRowDef="displayedTransColumns; sticky:true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedTransColumns;"></tr>
+                      </table>
                     </ng-scrollbar>
                   </div>
                   <div class="d-flex justify-content-start">
@@ -682,9 +699,10 @@
                 </div>
               </div>
             </div>
-          </ng-scrollbar>
+            </div>
+          <!-- </ng-scrollbar> -->
         </mat-tab>
       </mat-tab-group>
     </div>
   </ng-template>
-</ng-scrollbar>
+<!-- </ng-scrollbar> -->

@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-// import { ILogin, ILoginInfo } from './Ilogin';
-import { LoginService } from '../login.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+// import { ILogin, ILoginInfo } from './Ilogin'; 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -8,45 +7,37 @@ import labels from '../labels/labels.json';
 import { MatDialog } from '@angular/material/dialog';
 // import { ChangePasswordComponent } from './change-password/change-password.component';
 import { SpinnerService } from '../init/spinner.service';
-import { AuthService } from '../init/auth.service';
-import { GlobalconfigService } from './globalconfig.service';
+import { AuthService } from '../init/auth.service'; 
 import { ILogin } from '../login/Ilogin';
+import { ApiFuntions } from '../services/ApiFuntions';
 
 @Component({
   selector: 'global-config',
-  templateUrl: './global-config.component.html',
-  providers: [LoginService],
+  templateUrl: './global-config.component.html', 
   styleUrls: ['./global-config.component.scss'],
 })
 export class GlobalConfigComponent {
   login: ILogin;
-
+  addLoginForm:any = {};
+  @ViewChild('passwordInput') passwordInput: ElementRef;
   returnUrl: string;
   public env;
   public toggle_password = true;
   url = '';
 
   constructor(
-    public loginService: LoginService,
+    public Api: ApiFuntions,
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private dialog: MatDialog,
     public loader: SpinnerService,
-    private auth: AuthService,
-    private globalConfService: GlobalconfigService
+    private auth: AuthService 
   ) {
     this.url = this.router.url;
   }
 
-  addLoginForm = new FormGroup({
-    username: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(50),
-    ]),
-    password: new FormControl('', [Validators.required]),
-  });
+ 
 
   public noWhitespaceValidator(control: FormControl) {
     const isSpace = (control.value || '').match(/\s/g);
@@ -55,18 +46,16 @@ export class GlobalConfigComponent {
 
   loginUser() {
     this.loader.show();
-    this.addLoginForm
-      .get('username')
-      ?.setValue(this.addLoginForm.value.username?.replace(/\s/g, '') || null);
-    this.login = this.addLoginForm.value;
+    this.addLoginForm.username = this.addLoginForm.username?.replace(/\s/g, "")||null;
+    this.addLoginForm.password = this.addLoginForm.password?.replace(/\s/g, "")||null;
+    this.login = this.addLoginForm;
     const workStation: any = JSON.parse(
       localStorage.getItem('workStation') || ''
     );
     this.login.wsid = workStation.workStationID;
-    this.globalConfService.get(this.login, '/GlobalConfig/LoginUser').subscribe(
-      (res: any) => {
-
-        if (res.isExecuted) {
+    this.Api.LoginUser(this.login).subscribe(
+      (res: any) => { 
+        if (res.isExecuted && res.data !=null) { 
           let data = {
             _token: res.data.token,
             userName: res.data.userName,
@@ -76,10 +65,11 @@ export class GlobalConfigComponent {
           };
           let userRights = res.data.userRights;
                   // userRights = this.addCustomPermission(userRights);
-                  this.addLoginForm.reset();
+                  // this.addLoginForm.reset();
                   localStorage.setItem('userConfig', JSON.stringify(data));
                   // localStorage.setItem('global-config-userRights', JSON.stringify(userRights));
-          this.router.navigate(['/globalconfig/home']);
+          window.location.href =  '/#/globalconfig/home';
+          window.location.reload();
         } else {
           const errorMessage = res.responseMessage;
           this.toastr.error(errorMessage?.toString(), 'Error!', {
@@ -125,18 +115,22 @@ export class GlobalConfigComponent {
 
     // });
   }
-
+  enterUserName(){
+    this.passwordInput.nativeElement.focus();
+  }
   ngOnInit() {
-    if (this.auth.IsloggedIn()) {
-      this.router.navigate(['/dashboard']);
+    debugger
+    if (this.auth.IsloggedIn()) { 
+        window.location.href = '/#/dashboard'; 
+       
     }
-    else{
+      else{
     this.route.url.forEach((res) => {
       if(res[0].path.includes('globalconfig')){
           localStorage.setItem('isConfigUser', JSON.stringify(true))
       }
     })
-      this.loginService.getSecurityEnvironment().subscribe((res:any) => {
+      this.Api.getSecurityEnvironment().subscribe((res:any) => {
         this.env = res.data.securityEnvironment;
         if (this.env) {
           const { workStation } = res.data;
@@ -153,7 +147,7 @@ export class GlobalConfigComponent {
           );
         }
       });
-    }
+  }
   }
 
   changePass() {

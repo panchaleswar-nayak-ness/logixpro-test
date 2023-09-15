@@ -7,7 +7,7 @@
 </div>
 <div mat-dialog-content>
 <div class="d-flex align-items-center justify-content-center flex-wrap px-5 gap-12">
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Item No.:&nbsp;<b>{{itemNumber}}</b></span></div>
+    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{this.fieldNames.itemNumber}}:&nbsp;<b>{{itemNumber}}</b></span></div>
     <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Batch ID:&nbsp;<b>{{batchID}}</b></span></div>
     <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Zones:&nbsp;<b>{{zone.replace("Zones:","")}}</b></span></div>
     <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Description:&nbsp;<b>{{description}}</b></span></div>
@@ -40,8 +40,8 @@
 
     <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Lot Number.:&nbsp;<b>{{col.lotNumber}}</b></span></div>
     <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Transaction Quantity:&nbsp;<b>{{col.transactionQuantity}}</b></span></div>
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Ship via:&nbsp;<b>{{col.userField1}}</b></span></div>
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Ship to name:&nbsp;<b>{{col.userField2}}</b></span></div>
+    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{fieldNames.userField1}}:&nbsp;<b>{{col.userField1}}</b></span></div>
+    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{fieldNames.userField2}}:&nbsp;<b>{{col.userField2}}</b></span></div>
 
 
 

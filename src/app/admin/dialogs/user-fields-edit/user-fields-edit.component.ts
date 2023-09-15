@@ -1,11 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { TransactionService } from '../../transaction/transaction.service';
+import { ToastrService } from 'ngx-toastr'; 
 import labels from '../../../labels/labels.json';
 import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-user-fields-edit',
@@ -13,6 +13,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
   styleUrls: ['./user-fields-edit.component.scss'],
 })
 export class UserFieldsEditComponent implements OnInit {
+  @ViewChild('ship_via') ship_via: ElementRef;
   floatLabelControl: any = new FormControl('auto' as FloatLabelType);
   floatLabelControlShipName: any = new FormControl(
     'shipName' as FloatLabelType
@@ -25,7 +26,7 @@ export class UserFieldsEditComponent implements OnInit {
   searchByShipName: any = new Subject<string>();
   searchAutocompleteShipVia: any = [];
   searchAutocompleteShipName: any = [];
-
+  fieldNames:any;
   userField10 = '';
   userField9 = '';
   shipToLine1 = '';
@@ -38,9 +39,11 @@ export class UserFieldsEditComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
-    private transactionService: TransactionService,
+    private Api: ApiFuntions,
     public dialogRef: MatDialogRef<any>
-  ) {}
+  ) {
+    this.fieldNames=data.fieldNames
+  }
 
   ngOnInit(): void {
     this.getUserFields();
@@ -56,7 +59,9 @@ export class UserFieldsEditComponent implements OnInit {
         this.autocompleteSearchColumnShipName();
       });
   }
-
+  ngAfterViewInit() {
+    this.ship_via.nativeElement.focus();
+  }
   saveUserFields() {
 
     let userFields:any=[];
@@ -78,7 +83,7 @@ export class UserFieldsEditComponent implements OnInit {
       wsid: this.data.wsid,
     };
 
-    this.transactionService.get(payload,'/Common/UserFieldMTSave').subscribe((res:any)=>{
+    this.Api.UserFieldMTSave(payload).subscribe((res:any)=>{
       if(res.isExecuted){
              this.toastr.success(labels.alert.success, 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -101,19 +106,19 @@ export class UserFieldsEditComponent implements OnInit {
     return this.floatLabelControlShipName.value || 'shipName';
   }
   searchData(event) {
-    // console.log(event);
+    
   }
 
   async autocompleteSearchColumn() {
     let searchPayload = {
       value: this.shipVia,
-      uFs: 0,
+      uFs: 1,
 
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.transactionService
-      .get(searchPayload, '/Common/UserFieldTypeAhead', true)
+    this.Api
+      .UserFieldTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
           this.searchAutocompleteShipVia = res.data;
@@ -128,8 +133,8 @@ export class UserFieldsEditComponent implements OnInit {
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.transactionService
-      .get(payload, '/Common/UserFieldGetByID')
+    this.Api
+      .UserFieldGetByID(payload)
       .subscribe((res: any) => {
         if (res && res.data) {
           let item = res.data;
@@ -150,12 +155,12 @@ export class UserFieldsEditComponent implements OnInit {
   async autocompleteSearchColumnShipName() {
     let searchPayload = {
       value: this.shipToName,
-      uFs: 1,
+      uFs: 2,
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.transactionService
-      .get(searchPayload, '/Common/UserFieldTypeAhead', true)
+    this.Api
+      .UserFieldTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
           this.searchAutocompleteShipName = res.data;

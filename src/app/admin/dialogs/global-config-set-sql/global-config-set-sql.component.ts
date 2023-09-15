@@ -1,13 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { GlobalconfigService } from 'src/app/global-config/globalconfig.service';
+import { ToastrService } from 'ngx-toastr'; 
 import labels from '../../../labels/labels.json';
 import { SqlAuthConfirmationComponent } from '../sql-auth-confirmation/sql-auth-confirmation.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-global-config-set-sql',
@@ -15,9 +15,11 @@ import { SqlAuthConfirmationComponent } from '../sql-auth-confirmation/sql-auth-
   styleUrls: ['./global-config-set-sql.component.scss'],
 })
 export class GlobalConfigSetSqlComponent implements OnInit {
+  @ViewChild('user_name') user_name: ElementRef;
   form_heading = 'SQL Auth Username and Password';
   userName: any ;
   password: any;
+  message:string='';
   connectionName:any;
   public toggle_password = true;
   constructor(
@@ -25,7 +27,7 @@ export class GlobalConfigSetSqlComponent implements OnInit {
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<any>,
     private toastr: ToastrService,
-    private globalConfService: GlobalconfigService
+    private Api:ApiFuntions
   ) {
 
     this.userName=data.userName
@@ -37,7 +39,9 @@ export class GlobalConfigSetSqlComponent implements OnInit {
    
     // this.getConnectionUser();
   }
-
+  ngAfterViewInit() {
+    this.user_name.nativeElement.focus();
+  }
   getConnectionUser() {
     // let payload = {
     //   ConnectionName: this.data.connectionName,
@@ -61,10 +65,18 @@ export class GlobalConfigSetSqlComponent implements OnInit {
   }
   saveLogin() {
 
+    if(this.userName===''|| this.password===''){
+      this.message='Username and/or Password are empty. This will set this connection for Windows Authentication. Press OK to set this';
+    }else{
+      this.message='Username and Password are set. This will set this connection for SQL Authentication. Press OK to set this';
+
+    }
     const dialogRef = this.dialog.open(SqlAuthConfirmationComponent, {
       height: 'auto',
       width: '560px',
-    
+      data:{
+        message:this.message
+      }
     });
     dialogRef.afterClosed().subscribe((res) => {
     
@@ -75,8 +87,8 @@ export class GlobalConfigSetSqlComponent implements OnInit {
           UserName: this.userName,
           Password: this.password,
         };
-        this.globalConfService
-          .get(payload, '/GlobalConfig/ConnectionUserPasswordUpdate')
+        this.Api
+          .ConnectionUserPasswordUpdate(payload)
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {

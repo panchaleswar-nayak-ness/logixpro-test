@@ -20,8 +20,8 @@
                 <div class="px-3"> Location Assignment Connection: <strong [ngClass]="{'text-error': connectionNameSelect==='Connection not set', 'text-success' : connectionNameSelect != 'Connection not set' }">{{connectionNameSelect }}</strong></div>
             </div>
             <div class="row">
-                <div class="col-5">
-                    <div class="d-flex gap-12 align-items-center justify-content-between">
+                <div class="col-xl-5">
+                    <div class="d-xl-flex gap-12 align-items-center justify-content-between">
                         <mat-form-field class="action-dropdown" appearance="outline"   name="connectionName"  ngDefaultControl >
                             <mat-label>Connection Name</mat-label>
                             <mat-select [(ngModel)]="connectionNameSelect" class="employees-action" (selectionChange)="onSelectionChange($event)" >
@@ -36,7 +36,7 @@
                         
                     </div>
                 </div>
-                <div class="col-3 offset-4">
+                <div class="col-xl-3 offset-xl-4">
                     <button mat-flat-button color="primary" class="button-primary w-100" style="display: none;">
                         Change Database
                     </button>

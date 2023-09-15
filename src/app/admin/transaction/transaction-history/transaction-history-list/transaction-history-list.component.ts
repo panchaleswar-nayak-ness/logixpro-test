@@ -17,16 +17,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, takeUntil, interval, Subscription, Observable } from 'rxjs';
-
-import { AddInvMapLocationComponent } from 'src/app/admin/dialogs/add-inv-map-location/add-inv-map-location.component';
-import { AdjustQuantityComponent } from 'src/app/admin/dialogs/adjust-quantity/adjust-quantity.component';
-import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { QuarantineConfirmationComponent } from 'src/app/admin/dialogs/quarantine-confirmation/quarantine-confirmation.component';
-import { SetColumnSeqService } from 'src/app/admin/dialogs/set-column-seq/set-column-seq.service';
-import { InventoryMapService } from 'src/app/admin/inventory-map/inventory-map.service';
-import { AuthService } from 'src/app/init/auth.service';
-import { TransactionService } from '../../transaction.service';
+import { Subject, takeUntil, interval, Subscription, Observable } from 'rxjs'; 
+import { AuthService } from 'src/app/init/auth.service'; 
 import { DeleteConfirmationTransactionComponent } from 'src/app/admin/dialogs/delete-confirmation-transaction/delete-confirmation-transaction.component';
 import { SetColumnSeqComponent } from 'src/app/admin/dialogs/set-column-seq/set-column-seq.component';
 import { FloatLabelType } from '@angular/material/form-field';
@@ -34,6 +26,10 @@ import { ColumnSequenceDialogComponent } from 'src/app/admin/dialogs/column-sequ
 import { SharedService } from 'src/app/services/shared.service';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
+import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 const TRNSC_DATA = [
   { colHeader: 'tH_ID', colDef: 'TH_ID' },
@@ -158,6 +154,14 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     //   this.getContentData()
     // }
   }
+
+  @Input()
+  set clearEvent(event: Event) {
+    if (event) {
+      this.selectedDropdown='';
+      this.columnSearch.searchValue = ''
+    }
+  }
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   pageEvent: PageEvent;
@@ -166,8 +170,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   customPagination: any = {
     total: '',
     recordsPerPage: 20,
-    startIndex: '',
-    endIndex: '',
+    startIndex: 0,
+    endIndex: 20,
   };
   columnSearch: any = {
     searchColumn: {
@@ -182,16 +186,20 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     sortOrder: 'asc',
   };
   constructor(
-    private router: Router,
-    private seqColumn: SetColumnSeqService,
-    private transactionService: TransactionService,
+    private router: Router, 
+    private Api:ApiFuntions,
     private authService: AuthService,
     private toastr: ToastrService,
     private dialog: MatDialog,
-    private sharedService:SharedService
-  ) {}
+    private sharedService:SharedService,
+    private filterService: ContextMenuFiltersService
+  ) {
+    this.userData = this.authService.userData();
+  }
 
   ngOnInit(): void {
+    
+
     this.customPagination = {
       total: '',
       recordsPerPage: 20,
@@ -212,14 +220,13 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
         // }
       });
 
-    this.userData = this.authService.userData();
     this.getColumnsData();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.subscription.add(
-    this.sharedService.historyItemObserver.subscribe(itemNo => {
+    this.sharedService.historyItemObserver.subscribe(itemNo => { 
       if(itemNo){
         this.selectedDropdown='Item Number';
         this.columnSearch.searchValue=itemNo;
@@ -228,6 +235,19 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       }
        })
     )
+
+    this.subscription.add(
+    this.sharedService.reprocessItemObserver.subscribe(itemNo => { 
+      if(itemNo){
+        this.selectedDropdown='Item Number';
+        this.columnSearch.searchValue=itemNo;
+       
+      //  this.onOrderNoChange();
+      }
+       })
+    )
+
+    
 
     this.subscription.add(
       this.sharedService.historyLocObserver.subscribe(loc => {
@@ -246,8 +266,9 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     if (!opened && this.selectedVariable === 'set_column_sq') {
       this.sortCol=0;
       let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
-        height: '96%',
-        width: '70vw',
+        height: 'auto',
+        width: '960px',
+        disableClose: true,
         data: {
           mode: event,
           tableName: 'Transaction History',
@@ -273,8 +294,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       username: this.userData.userName,
       wsid: this.userData.wsid,
     };
-    this.transactionService
-      .get(searchPayload, '/Admin/NextSuggestedTransactions', true)
+    this.Api
+      .NextSuggestedTransactions(searchPayload)
       .subscribe(
         (res: any) => {
           this.searchAutocompleteList = res.data;
@@ -288,8 +309,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       wsid: this.userData.wsid,
       tableName: 'Transaction History',
     };
-    this.transactionService
-      .get(payload, '/Admin/GetColumnSequence', true)
+    this.Api
+      .GetColumnSequence(payload)
       .subscribe(
         (res: any) => {
           this.displayedColumns = TRNSC_DATA;
@@ -317,11 +338,11 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       holds: false,
       orderStatusOrder: '',
       app: 'Admin',
-      username: this.userData.userName,
-      wsid:this.userData.wsid,
+      username: this.userData?.userName,
+      wsid:this.userData?.wsid,
     };
-    this.transactionService
-      .get(paylaod, '/Admin/TransactionModelIndex')
+    this.Api
+      .TransactionModelIndex(paylaod)
       .subscribe(
         (res: any) => {
           this.columnValues = res.data?.transactionHistoryColumns;
@@ -344,12 +365,13 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       orderNumber: this.orderNo,
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
-      filter: '1=1',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
-    };
-    this.transactionService
-      .get(payload, '/Admin/TransactionHistoryTable', true)
+      filter: this.FilterString ,
+      username: this.userData?.userName,
+      wsid: this.userData?.wsid,
+    }; 
+    
+    this.Api
+      .TransactionHistoryTable(payload)
       .subscribe(
         (res: any) => {
           // this.getTransactionModelIndex();
@@ -419,5 +441,68 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     this.searchBar.unsubscribe();
     this.subscription.unsubscribe();
+  }
+  onInputChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    if (Number(value) < 0) {
+      this.columnSearch.searchValue = 0;
+    }
+  }
+
+
+  @ViewChild('trigger') trigger: MatMenuTrigger;
+  contextMenuPosition = { x: '0px', y: '0px' };
+  FilterString: string = "1 = 1";
+
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
+    this.trigger.menu?.focusFirstItem('mouse');
+    this.trigger.openMenu();
+  }
+
+  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) { 
+    this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
+    if(FilterColumnName != "" || Condition == "clear"){
+      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
+      this.FilterString = this.FilterString != "" ? this.FilterString : "1=1";
+      this.resetPagination();
+      this.getContentData();
+    }
+  }
+
+  resetPagination(){
+    this.customPagination.startIndex = 0;
+    this.customPagination.endIndex = 20;
+    this.paginator.pageIndex = 0;
+  }
+
+  getType(val): string {
+    return this.filterService.getType(val);
+  }
+
+  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
+    const dialogRef = this.dialog.open(InputFilterComponent, {
+      height: 'auto',
+      width: '480px',
+      data: {
+        FilterColumnName: FilterColumnName,
+        Condition: Condition,
+        TypeOfElement: TypeOfElement
+      },
+      autoFocus: '__non_existing_element__',
+      disableClose:true,
+    })
+    dialogRef.afterClosed().subscribe((result) => {
+      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
+    }
+    );
+  }
+
+  clear(){
+    this.columnSearch.searchValue = ''
+    this.getContentData()
   }
 }

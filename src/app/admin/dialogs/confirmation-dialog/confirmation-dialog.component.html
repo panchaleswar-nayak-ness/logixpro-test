@@ -1,20 +1,23 @@
+<div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
+  <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
+    <mat-icon class="material-symbols-outlined" color="primary">info</mat-icon>
+  </div>
+  <div>
 
-  <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
-    <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
-        <mat-icon class="material-symbols-outlined" color="primary">info</mat-icon>
-    </div>
-    <div>
-        <p class="bold text-tritary-900 mb-4"> {{dialog_msg}}</p>
-        <!-- <p class="bold text-primary-900 mb-4">Selected order numbers will be added once done.</p> -->
-        
-    </div>
-    <div class="w-100">
-        <button (click)="confirmOK()" mat-stroked-button color="primary" class="w-100 btn-lg mb-3 prompt-action-accent-button">
-            Ok
-        </button>
-          <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="true">
-            Cancel
-          </button>
-        </div>
-    </div>
-  
+    <h1 class="mat-card-title text-primary-900" *ngIf="data && data.heading">
+      {{dialog_heading}}
+    </h1>
+    <p class="bold text-tritary-900 mb-4" *ngIf="data && data.message" > {{dialog_msg}}</p>
+    <!-- <p class="bold text-primary-900 mb-4">Selected order numbers will be added once done.</p> -->
+
+  </div>
+  <div class="w-100">
+    <button (click)="confirmOK()" mat-stroked-button color="primary"
+      class="w-100 btn-lg mb-3 prompt-action-accent-button">
+      Ok
+    </button>
+    <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="true">
+      Cancel
+    </button>
+  </div>
+</div>

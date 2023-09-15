@@ -126,6 +126,50 @@ import { UserFieldsEditComponent } from './dialogs/user-fields-edit/user-fields-
 import { PostManualTransactionComponent } from './dialogs/post-manual-transaction/post-manual-transaction.component';
 import { InvalidQuantityComponent } from './dialogs/invalid-quantity/invalid-quantity.component';
 import { FilterToteComponent } from './dialogs/filter-tote/filter-tote.component';
+import { CCBCreateCountsComponent } from './cycle-counts/create-count-batches/create-counts/create-counts.component';
+import { CCBCountQueueComponent } from './cycle-counts/create-count-batches/count-queue/count-queue.component';
+import { CreateCountBatchesComponent } from './cycle-counts/create-count-batches/create-count-batches.component';
+import { BatchManagerDetailViewComponent } from './dialogs/batch-manager-detail-view/batch-manager-detail-view.component';
+import { InputSpacesPreventDirective } from '../init/input-spaces-prevent.directive';
+import { BmToteidEntryComponent } from './dialogs/bm-toteid-entry/bm-toteid-entry.component';
+import { SystemReplenishmentComponent } from './system-replenishment/system-replenishment.component';
+import { SrNewOrderComponent } from './system-replenishment/sr-new-order/sr-new-order.component';
+import { FilterItemNumbersComponent } from './dialogs/filter-item-numbers/filter-item-numbers.component';
+import { SrCurrentOrderComponent } from './system-replenishment/sr-current-order/sr-current-order.component';
+import { SortPipe } from '../init/sort.pipe';
+import { LaLocationAssignmentQuantitiesComponent } from './dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
+import { MoveItemsComponent } from './move-items/move-items.component';
+import { AdminPreferencesComponent } from './admin-preferences/admin-preferences.component';
+import { WorkstationPreferencesComponent } from './admin-preferences/workstation-preferences/workstation-preferences.component';
+import { SystemPreferencesComponent } from './admin-preferences/system-preferences/system-preferences.component';
+import { SpGeneralSetupComponent } from './admin-preferences/system-preferences/sp-general-setup/sp-general-setup.component';
+import { SpLocationZonesComponent } from './admin-preferences/system-preferences/sp-location-zones/sp-location-zones.component';
+import { SpFieldNameMappingComponent } from './admin-preferences/system-preferences/sp-field-name-mapping/sp-field-name-mapping.component';
+import { SpDevicePreferenceComponent } from './admin-preferences/system-preferences/sp-device-preference/sp-device-preference.component';
+import { AddNewDeviceComponent } from './dialogs/add-new-device/add-new-device.component';
+import { SpBulkHandheldSettingComponent } from './admin-preferences/system-preferences/sp-bulk-handheld-setting/sp-bulk-handheld-setting.component';
+import { SpLightTreeSetupComponent } from './admin-preferences/system-preferences/sp-light-tree-setup/sp-light-tree-setup.component';
+import { SpScanVerificationSetupComponent } from './admin-preferences/system-preferences/sp-scan-verification-setup/sp-scan-verification-setup.component';
+import { ScanVerificationDefaultsComponent } from './dialogs/scan-verification-defaults/scan-verification-defaults.component';
+import { LocationNameComponent } from './dialogs/location-name/location-name.component';
+import { KanbanZoneAllocationConflictComponent } from './dialogs/kanban-zone-allocation-conflict/kanban-zone-allocation-conflict.component';
+import { WpWorkstationSetupComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/wp-workstation-setup.component';
+import { DeAllocateOrdersComponent } from './de-allocate-orders/de-allocate-orders.component';
+import { ReportsComponent } from './reports/reports.component';
+import { WpBulkZonesComponent } from './admin-preferences/workstation-preferences/wp-bulk-zones/wp-bulk-zones.component';
+import { WpPodSetupComponent } from './admin-preferences/workstation-preferences/wp-pod-setup/wp-pod-setup.component';
+import { BasicReportsAndLabelsComponent } from './reports/basic-reports-and-labels/basic-reports-and-labels.component';
+import { CustomReportsAndLabelsComponent } from './reports/custom-reports-and-labels/custom-reports-and-labels.component';
+import { AddNotesComponent } from './dialogs/add-notes/add-notes.component';
+import { WpPickLevelsComponent } from './admin-preferences/workstation-preferences/wp-pick-levels/wp-pick-levels.component';
+import { WpCustomAppsComponent } from './admin-preferences/workstation-preferences/wp-custom-apps/wp-custom-apps.component';
+import { WpMiscellaneousSettingsComponent } from './admin-preferences/workstation-preferences/wp-miscellaneous-settings/wp-miscellaneous-settings.component';
+import { WpSortBarSetupComponent } from './admin-preferences/workstation-preferences/wp-sort-bar-setup/wp-sort-bar-setup.component';
+import { SpLookupListsComponent } from './admin-preferences/system-preferences/sp-lookup-lists/sp-lookup-lists.component';
+import { LookupUserTwoSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-user-two-setup/lookup-user-two-setup.component';
+import { LookupUserOneSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-user-one-setup/lookup-user-one-setup.component';
+import { LookupAdjustmentLookupSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-adjustment-lookup-setup/lookup-adjustment-lookup-setup.component';
+import { LookupToteSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-tote-setup/lookup-tote-setup.component';
 
 
 
@@ -242,7 +286,50 @@ import { FilterToteComponent } from './dialogs/filter-tote/filter-tote.component
     PostManualTransactionComponent,
     InvalidQuantityComponent,
     FilterToteComponent,
-    
+    CCBCreateCountsComponent,
+    CCBCountQueueComponent,
+    CreateCountBatchesComponent,
+    BatchManagerDetailViewComponent,
+    InputSpacesPreventDirective,
+    BmToteidEntryComponent,
+    SystemReplenishmentComponent,
+    SrNewOrderComponent,
+    FilterItemNumbersComponent,
+    SrCurrentOrderComponent,
+    SortPipe,
+    LaLocationAssignmentQuantitiesComponent,
+    MoveItemsComponent,
+    AdminPreferencesComponent,
+    WorkstationPreferencesComponent,
+    SystemPreferencesComponent,
+    SpGeneralSetupComponent,
+    SpLocationZonesComponent,
+    SpFieldNameMappingComponent,
+    SpDevicePreferenceComponent,
+    AddNewDeviceComponent,
+    SpBulkHandheldSettingComponent,
+    SpLightTreeSetupComponent,
+    SpScanVerificationSetupComponent,
+    ScanVerificationDefaultsComponent,
+    LocationNameComponent,
+    KanbanZoneAllocationConflictComponent,
+    WpWorkstationSetupComponent,
+    DeAllocateOrdersComponent,
+    ReportsComponent,
+    WpBulkZonesComponent,
+    WpPodSetupComponent,
+    BasicReportsAndLabelsComponent,
+    CustomReportsAndLabelsComponent,
+    AddNotesComponent,
+    WpPickLevelsComponent,
+    WpCustomAppsComponent,
+    WpMiscellaneousSettingsComponent,
+    WpSortBarSetupComponent,
+    SpLookupListsComponent,
+    LookupUserTwoSetupComponent,
+    LookupUserOneSetupComponent,
+    LookupAdjustmentLookupSetupComponent,
+    LookupToteSetupComponent,
 
   ],
   imports: [

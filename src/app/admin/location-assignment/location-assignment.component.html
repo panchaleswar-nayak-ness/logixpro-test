@@ -1,11 +1,11 @@
-<mat-tab-group dynamicHeight>
-  <mat-tab label="Count">
-    <app-count></app-count>
+<mat-tab-group dynamicHeight [(selectedIndex)]="Tab" >
+  <mat-tab [label]="countLabel">
+    <app-count (newItemEvent)="addItem($event)"></app-count>
   </mat-tab>
-  <mat-tab label="Pick">
+  <mat-tab [label]="pickLabel">
     <app-pick></app-pick>
   </mat-tab>
-  <mat-tab label="Put Away">
+  <mat-tab [label]="putAwayLabel">
     <app-put-away></app-put-away>
   </mat-tab>
 </mat-tab-group>

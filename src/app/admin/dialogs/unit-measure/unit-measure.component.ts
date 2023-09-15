@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PrintRangeComponent } from '../print-range/print-range.component';
-import { ToastrService } from 'ngx-toastr';
-import { UnitOfMeasureService } from 'src/app/common/services/unit-measure.service';
+import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-unit-measure',
@@ -13,16 +13,17 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
   styleUrls: ['./unit-measure.component.scss']
 })
 export class UnitMeasureComponent implements OnInit {
-
+  @ViewChildren('unit_name', { read: ElementRef }) unit_name: QueryList<ElementRef>;
   public unitOfMeasure_list: any;
   public userData: any;
   enableButton=[{index:-1,value:true}];
 
 
   constructor(private dialog: MatDialog,
-              private umService: UnitOfMeasureService,
+              private api: ApiFuntions,
               private authService: AuthService,
               private toastr: ToastrService,
+              private renderer: Renderer2,
               public dialogRef: MatDialogRef<any>) { }
 
   ngOnInit(): void {
@@ -32,7 +33,7 @@ export class UnitMeasureComponent implements OnInit {
   getUOM(){
     // this.enableButton.shift();
     this.enableButton = [];
-    this.umService.getUnitOfMeasure().subscribe((res) => {
+    this.api.getUnitOfMeasure().subscribe((res) => {
       if (res.isExecuted) {
         this.unitOfMeasure_list = res.data;
 
@@ -41,6 +42,11 @@ export class UnitMeasureComponent implements OnInit {
         this.unitOfMeasure_list.fromDB = true;
         this.enableButton.push({index:i,value:true});
       }
+      setTimeout(() => {
+        const inputElements = this.unit_name.toArray();
+        const inputElement = inputElements[0].nativeElement as HTMLInputElement;
+          this.renderer.selectRootElement(inputElement).focus();
+      }, 100)
       }
     });
   }
@@ -51,8 +57,16 @@ export class UnitMeasureComponent implements OnInit {
   // }
   addUMRow(row : any){
     this.unitOfMeasure_list.unshift("");
-    this.enableButton.push({index:-1,value:true})
-    // console.log(this.unitOfMeasure_list)
+    this.enableButton.push({index:-1,value:true}) 
+
+    const lastIndex = this.unitOfMeasure_list.length - 1;
+    setTimeout(() => {
+      const inputElements = this.unit_name.toArray();
+      if (inputElements.length > lastIndex) {
+        const inputElement = inputElements[0].nativeElement as HTMLInputElement;
+        this.renderer.selectRootElement(inputElement).focus();
+      }
+    });
   }
 
   saveUnitMeasure(um : any, oldUM : any) {
@@ -78,7 +92,7 @@ export class UnitMeasureComponent implements OnInit {
       "wsid": this.userData.wsid,
     }
     
-    this.umService.saveUnitOfMeasure(paylaod).subscribe((res) => {
+    this.api.saveUnitOfMeasure(paylaod).subscribe((res) => {
       if(res.isExecuted){
         this.getUOM();
         this.toastr.success( oldUM.toString()==''?labels.alert.success:labels.alert.update, 'Success!', {
@@ -97,14 +111,13 @@ export class UnitMeasureComponent implements OnInit {
   }
 
   dltUnitMeasure(um : any,fromDB:any) {
-
-
-    console.log(um, fromDB);
+ 
     
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
     })
     dialogRef.afterClosed().subscribe(result => {
      if(result === 'Yes'){
@@ -115,8 +128,8 @@ export class UnitMeasureComponent implements OnInit {
           "wsid": this.userData.wsid,
         }
         
-        this.umService.dltUnitOfMeasure(paylaod).subscribe((res) => {
-          console.log(res);
+        this.api.dltUnitOfMeasure(paylaod).subscribe((res) => {
+          // console.log(res);
           
           if(res.isExecuted){
             this.getUOM();

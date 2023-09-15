@@ -43,20 +43,22 @@
                         <div class="row">
                     <div class="col-4">
                         <mat-form-field class="d-block" appearance="outline">
-                            <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{cell.cells}}" #sigleCell maxlength="50">
+                            <input  #cell_size (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{cell.cells}}" #sigleCell maxlength="50" (keydown)="enableDisableButton(i)" [autofocus]="i === 0">
                         </mat-form-field>
                     </div>
                     <div class="col-8">
                         <div class="d-flex align-items-center gap-12">
                         <mat-form-field class="w-100" appearance="outline">
-                            <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{cell.cellTypes}}" #cellType maxlength="50">
+                            <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{cell.cellTypes}}" #cellType maxlength="50" (keydown)="enableDisableButton(i)">
                         </mat-form-field>
                         <div class="d-flex gap-12">
-                            <button mat-flat-button color="primary" class="xsm-icon-button" (click)="saveCellSize(sigleCell.value, cellType.value, i,cell.isInserted)">
+                            <button mat-flat-button color="primary" class="xsm-icon-button" (click)="saveCellSize(sigleCell.value, cellType.value, i,cell.isInserted)"
+                            [disabled]="(enableButton[i] && enableButton[i].value!=null) ? enableButton[i].value:false"
+                            >
                                 <mat-icon class="material-symbols-outlined">save</mat-icon>
                             </button>
                             <button mat-flat-button color="warn" class="xsm-icon-button"
-                                    (click)="dltCellSize(sigleCell.value,i);">
+                                    (click)="dltCellSize(cell,i);">
                                     <mat-icon class="material-symbols-outlined">close</mat-icon>
                                 </button>
                        

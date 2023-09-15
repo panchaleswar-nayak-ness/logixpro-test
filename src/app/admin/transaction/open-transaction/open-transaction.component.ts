@@ -4,8 +4,8 @@ import { AuthService } from 'src/app/init/auth.service';
 import {
   ITransactionModelIndex,
   OpenTransactionResponse,
-} from 'src/app/interface/transaction';
-import { TransactionService } from '../transaction.service';
+} from 'src/app/interface/transaction'; 
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-open-transaction',
@@ -22,7 +22,7 @@ export class OpenTransactionComponent implements OnInit {
   // displayOrderCols : string[] = ["orderNumber", "countOfOrderNumber", "minOfPriority", "detail", "action"];
   displayOrderCols: any = []; //'position', 'name', 'weight', 'symbol'
   constructor(
-    private transactionService: TransactionService,
+    private Api:ApiFuntions,
     private authService: AuthService
   ) {}
 

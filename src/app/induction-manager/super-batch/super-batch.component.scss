@@ -16,3 +16,15 @@ tr.mat-row, tr.mat-footer-row {
 td.mat-cell{
     padding-top: 10px;
 }
+
+table{
+  th{
+    white-space: nowrap;
+      padding-right: 12px;
+  }
+  
+  th,td{
+      padding-right: 15px;
+      padding-left: 10px;
+  }
+  }

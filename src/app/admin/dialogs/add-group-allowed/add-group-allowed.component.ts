@@ -1,14 +1,14 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json';
-import { ToastrService } from 'ngx-toastr';
-import { EmployeeService } from 'src/app/employee.service';
+import { ToastrService } from 'ngx-toastr'; 
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map';
 import { AuthService } from '../../../../app/init/auth.service';
 import { Router } from '@angular/router';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-add-group-allowed',
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-group-allowed.component.scss']
 })
 export class AddGroupAllowedComponent implements OnInit {
-
+  @ViewChild('control_name') control_name: ElementRef;
   form_heading: string = 'Add Group Allowed';
   form_btn_label: string = 'Add';
   GroupName: any;
@@ -26,10 +26,11 @@ export class AddGroupAllowedComponent implements OnInit {
   filteredOptions: Observable<any[]>;
   userData: any;
   controlNameForm: FormGroup;
+  constrolName
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
-    private employeeService: EmployeeService,
+    private employeeService: ApiFuntions,
     private toastr: ToastrService,
     private authService: AuthService,
     private fb: FormBuilder,
@@ -42,12 +43,12 @@ export class AddGroupAllowedComponent implements OnInit {
     })
     this.userData = this.authService.userData();
     let payload = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "username": this.data.userName,
+      "wsid": this.data.wsid,
       "filter": "%"
     }
     this.employeeService.getControlName(payload).subscribe((res: any) => {
-      //console.log(res.data);
+      
       this.controlNameList = res.data;
       this.filteredOptions = this.controlNameForm.controls['controlName'].valueChanges.pipe(
         startWith(''),
@@ -59,6 +60,13 @@ export class AddGroupAllowedComponent implements OnInit {
 
 
   }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.control_name.nativeElement.focus();
+    }, 200);
+  }
+
   filterx(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.controlNameList.filter(option => option.controlName.toLowerCase().includes(filterValue));
@@ -66,8 +74,8 @@ export class AddGroupAllowedComponent implements OnInit {
   onSend(form: any) {
     let payload = {
       "controlName": form.value.controlName,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "username": this.data.userName,
+      "wsid": this.data.wsid,
     }
     this.employeeService.submitControlResponse(payload).subscribe((res: any) => {
       if (res.isExecuted) {
@@ -75,8 +83,7 @@ export class AddGroupAllowedComponent implements OnInit {
         this.toastr.success(labels.alert.success, 'Success!', {
           positionClass: 'toast-bottom-right',
           timeOut: 2000
-        });
-        this.reloadCurrentRoute();
+        }); 
       }
       else{
         this.toastr.success(res.responseMessage, 'Success!', {

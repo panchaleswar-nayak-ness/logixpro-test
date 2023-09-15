@@ -11,16 +11,24 @@ import { DatabaseConnectionsComponent } from './global-config/database-connectio
 import { PrintersComponent } from './global-config/printers/printers.component';
 import { WorkstationComponent } from './global-config/workstation/workstation.component';
 import { LicensingComponent } from './global-config/licensing/licensing.component';
+import { CcsifComponent } from './global-config/ccsif/ccsif.component';
+import { SteComponent } from './global-config/ste/ste.component';
+import { SteServicesComponent } from './global-config/ste-services/ste-services.component';
+import { FlowrackReplenishmentComponent } from './flowrack-replenishment/flowrack-replenishment.component';
+import { ImportExportComponent } from './import-export/import-export.component';
+
+import { WrdComponent } from './list-and-label/wrd/wrd.component';
+import { WrvComponent } from './list-and-label/wrv/wrv.component';
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',
   },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent,canActivate: [AuthGuardGuard] },
   {
     path: 'globalconfig',
-    component: GlobalConfigComponent,
+    component: GlobalConfigComponent,canActivate: [AuthGuardGuard],
     children: []
     
   },
@@ -53,6 +61,23 @@ const routes: Routes = [
     canActivate:[AuthGuardGuard]
   },
   {
+    path: 'globalconfig/ccsif',
+    component: CcsifComponent,
+    canActivate:[AuthGuardGuard]
+  },{
+    path: 'globalconfig/ste',
+    component: SteComponent,
+    canActivate:[AuthGuardGuard]
+  },
+  {
+    path: 'globalconfig/steServices',
+    component: SteServicesComponent,
+    canActivate:[AuthGuardGuard]
+  },
+  
+  { path: 'report-view-iframe', component: WrvComponent },
+  { path: 'report-iframe', component: WrdComponent },
+  {
     path: '',
     component: DashboardComponent,
     children: [
@@ -61,6 +86,16 @@ const routes: Routes = [
         component: MainComponent,
         canActivate: [AuthGuardGuard],
       },
+      {
+        path: 'ImportExport',
+        component: ImportExportComponent,
+        canActivate: [AuthGuardGuard] 
+      },
+      // {
+      //   path: 'FlowrackReplenishment',
+      //   component: FlowrackReplenishmentComponent,
+      //   canActivate: [AuthGuardGuard] 
+      // },
       // {
       //   path: 'globalconfig/dashboard',
       //   component: MainComponent,
@@ -78,13 +113,29 @@ const routes: Routes = [
         loadChildren: () => import('./induction-manager/induction-manager.module').then(m => m.InductionManagerModule),
         canActivate:[AuthGuardGuard]
       },
-
+      { 
+        path: 'ConsolidationManager', 
+        loadChildren: () => import('./consolidation-manager/consolidation-manager.module').then(m => m.ConsolidationManagerModule),
+        canActivate:[AuthGuardGuard]
+      },
+      { 
+        path: 'OrderManager', 
+        loadChildren: () => import('./order-manager/order-manager.module').then(m => m.OrderManagerModule),
+        canActivate:[AuthGuardGuard]
+      },
+      { 
+        path: 'FlowrackReplenishment', 
+        loadChildren: () => import('./flowrack-replenishment/flowrack-replenishment.module').then(m => m.FlowrackReplenishmentModule),
+        canActivate:[AuthGuardGuard]
+      },
+      { 
+        path: '', 
+        loadChildren: () => import('./list-and-label/list-and-label.module').then(m => m.ListAndLabelModule),
+        // canActivate:[AuthGuardGuard]
+      },
     ]
 
-  },
-
-
-  
+  },  
 
   // {
   //   path:'dashboard',

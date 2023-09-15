@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { ToastrService } from 'ngx-toastr';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { TransactionService } from '../../transaction/transaction.service';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-set-item-location',
@@ -12,6 +12,7 @@ import { TransactionService } from '../../transaction/transaction.service';
   styleUrls: ['./set-item-location.component.scss'],
 })
 export class SetItemLocationComponent implements OnInit {
+  @ViewChild('itm_nmb') itm_nmb: ElementRef;
   itemNumber;
   floatLabelControl: any = new FormControl('item' as FloatLabelType);
   floatLabelControlLocation: any = new FormControl(
@@ -29,7 +30,7 @@ export class SetItemLocationComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
-    private transactionService: TransactionService,
+    private Api:ApiFuntions,
     public dialogRef: MatDialogRef<any>
 
   ) {
@@ -64,8 +65,11 @@ export class SetItemLocationComponent implements OnInit {
         username: this.data.userName,
         wsid: this.data.wsid,
       };
-      this.transactionService
-        .get(payLoad, '/Common/ItemExists', true)
+      setTimeout(() => {
+        
+   
+      this.Api
+        .ItemExists(payLoad)
         .subscribe(
           (res: any) => {
             if(res && res.isExecuted){
@@ -84,6 +88,7 @@ export class SetItemLocationComponent implements OnInit {
           },
           (error) => {}
         );
+      }, 500);
   }
   ngOnInit(): void {
     this.autocompleteGetLocation();
@@ -98,6 +103,9 @@ export class SetItemLocationComponent implements OnInit {
       .subscribe((value) => {
         this.autocompleteGetItem();
       });
+  }
+  ngAfterViewInit() {
+    this.itm_nmb.nativeElement.focus();
   }
 
   // getItemLocation(){
@@ -121,8 +129,8 @@ export class SetItemLocationComponent implements OnInit {
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.transactionService
-      .get(searchPayload, '/Admin/GetLocations', true)
+    this.Api
+      .GetLocations(searchPayload)
       .subscribe(
         (res: any) => {
           this.searchAutocompleteList = res.data;
@@ -139,8 +147,8 @@ export class SetItemLocationComponent implements OnInit {
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.transactionService
-      .get(searchPayload, '/Common/SearchItem', true)
+    this.Api
+      .SearchItem(searchPayload)
       .subscribe(
         (res: any) => {
           this.searchAutocompleteListItem = res.data;

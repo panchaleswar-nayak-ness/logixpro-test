@@ -4,199 +4,258 @@
       <div class="col-12">
         <mat-card class="mat-elevation-z g-card">
           <mat-card-content>
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <div>
-              <h2 class="card-header-title mb-0 d-flex align-items-center">
-                <div class="mat-icon-wrap me-lg-3">
-                  <span class="material-symbols-outlined">
-                    manage_search
-                  </span>
+            <div class="row align-items-center">
+              <div class="col">
+                <h2 class="card-header-title mb-0 d-flex align-items-center mb-2">
+                  <div class="mat-icon-wrap me-3">
+                    <span class="material-symbols-outlined">
+                      manage_search
+                    </span>
+                  </div>
+                  <span>{{columns.itemNumber}} Lookup</span>
+                </h2>
+              </div>
+              <div class="col-xl-3 col-lg-4 ms-xl-5">
+                <div class="d-flex align-items-center gap-12 ms-xl-5 ps-xl-5 mb-2">
+                  <button mat-flat-button color="primary" class="sm-icon-button"  [disabled]="paginationData && paginationData.position<2"  (click)="prevPage()">
+                    <span class="material-symbols-outlined">
+                      keyboard_arrow_left
+                    </span>
+                  </button>
+                  <div class="text-chrome-600 text-center" style="flex:1; white-space: nowrap;"><b>{{paginationData && paginationData.position}}</b> of {{paginationData &&
+                    paginationData.total}}</div>
+                  <button mat-flat-button color="primary" class="sm-icon-button" [disabled]="paginationData && paginationData.position===paginationData.total" (click)="nextPage()">
+                    <span class="material-symbols-outlined">
+                      keyboard_arrow_right
+                    </span>
+                  </button>
+                  <!-- <mat-paginator>
+                  </mat-paginator> -->
                 </div>
-                <span>Item Number Lookup</span>
-              </h2>
               </div>
-              <div class="d-flex align-items-center gap-12">
-                <button mat-flat-button color="primary" class="sm-icon-button" (click)="prevPage()">
-                  <span class="material-symbols-outlined">
-                    keyboard_arrow_left
-                  </span>
-                </button>
-                <div class="text-chrome-600"><b>{{paginationData && paginationData.position}}</b> of {{paginationData && paginationData.total}}</div>
-                <button mat-flat-button color="primary" class="sm-icon-button" (click)="nextPage()">
-                  <span class="material-symbols-outlined">
-                    keyboard_arrow_right
-                  </span>
-                </button>
-                <!-- <mat-paginator>
-                </mat-paginator> -->
-              </div>
+              
             </div>
             <div class="card bg-light-blue bg-50 br-none px-4 py-4 br-20 mb-3">
               <div class="d-flex justify-content-between">
-              <div class="d-flex g-mini-search-box gap-20 align-items-center w-100">
-                <div class="search-box" style="flex:1">
-                <mat-form-field class="w-100 bg-white br-14" appearance="fill">
-                  <span class="material-symbols-outlined icon-search">
-                    search
-                  </span>
-                  <input  [matAutocomplete]="searchauto" type="text" placeholder="Item No." aria-label="Search" matInput  (keyup)="getSearchList($event)" [value]="searchValue" maxlength="50">
-                  <mat-autocomplete class="card custom-scroll" #searchauto="matAutocomplete" (optionSelected)="onSearchSelect($event)">
-                    <h6 class ="card-header matAutoCompHeader "><span style="width:  140px;">Item No./Supp No./Supp Code</span> <span  style="width:  140px;">Description</span> <span  style="width:  140px;">Category</span> <span  style="width:  140px;">Sub Category</span></h6>
-                    <mat-option *ngFor="let option of searchList" [value]="option.itemNumber" class="matAutoCompTableContent">
-                      <div class="loc_option" >
-                        <span  class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span> <span  class="searchColumn" style="width:  140px;">{{option.description}}</span> <span  class="searchColumn" style="width:  140px;">{{option.category}}</span> <span class="searchColumn" style="width:  140px;">{{option.subCategory}}</span>
-                    </div>
-                    </mat-option>
-                  </mat-autocomplete>
-                  
-                </mat-form-field>
-              </div>
-              <button mat-stroked-button color="warn" class="button-remove-all bg-white" (click)="clearSearchField()">
-                <!-- <mat-icon>block</mat-icon> -->
-                Clear
-              </button>
+                <div class="d-block d-xl-flex g-mini-search-box gap-20 align-items-center w-100">
+                  <div class="search-box mb-3 mb-xl-0 w-100" >
+                    <mat-form-field class="w-100 bg-white br-14" appearance="fill">
+                      <span class="material-symbols-outlined icon-search">
+                        search
+                      </span>
+                      <input #alertInput [matAutocomplete]="searchauto" type="text" placeholder="Item No."
+                        aria-label="Search" matInput (blur)="handleFocusOut()" (keyup)="getSearchList($event)" [value]="searchValue"
+                        maxlength="50" #autoFocusField>
 
-                <div class="br-14 d-flex align-items-center label label-yellow px-3 f-16" *ngIf="this.getInvMasterData?.kitInventories.length>0">
-                  Kit
+                         <button matSuffix *ngIf="searchValue" class="clear-btn"  (click)="searchValue = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                         <mat-autocomplete class="card custom-scroll panel-custom-scroll" #searchauto="matAutocomplete"
+                         (optionSelected)="onSearchSelect($event)">
+                         <h6 class="card-header matAutoCompHeader stickyHeader ps-4"> <span style="width:  30%;">Item No./Supp No./Supp
+                                 Code</span> <span style="width:  30%;">Description</span> <span style="width:  20%;">Category</span> <span
+                                 style="width:  20%;">Sub Category</span></h6>
+                         <mat-option *ngFor="let option of searchList" [value]="option.itemNumber" class="matAutoCompTableContent">
+                             <div class="loc_option">
+                                 <span
+                                     style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">{{option.itemNumber}}</span>
+                                 <span
+                                     style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;" matTooltip="{{option.description}}" matTooltipPosition="above">{{option.description}}</span>
+                                 <span
+                                     style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:20%; white-space: nowrap;">{{option.category}}</span>
+                                 <span
+                                     style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:20%; white-space: nowrap;">{{option.subCategory}}</span>
+                             </div>
+                         </mat-option>
+                     </mat-autocomplete>
+
+                    </mat-form-field>
+                  </div>
+                  <div class="d-flex d-xl-block">
+                  <button mat-stroked-button color="warn" class="button-remove-all bg-white mb-3 mb-xl-0"
+                    (click)="clearSearchField()" style="flex:1">
+                    <!-- <mat-icon>block</mat-icon> -->
+                    Clear
+                  </button>
+                  </div>
+
+                  <div class="br-14 d-flex align-items-center label label-yellow px-3 f-16 justify-content-center mb-3 mb-xl-0"
+                  *ngIf="this.getInvMasterData?.kitInventories.length>0" >
+                    Kit
+                  </div>
+                  <div class="br-14 d-flex align-items-center label label-red px-3 f-16 justify-content-center mb-3 mb-xl-0"
+                    *ngIf="this.getInvMasterData?.itemQuarantined">
+                    Quarantine
+                  </div>
+                  <!-- <button mat-flat-button color="secondary" class="button-secondary" (click)="viewLocations()">
+                    View Item Location
+                  </button> -->
+                    <div class="w-100 d-flex d-xl-block">
+                        <mat-form-field class="action-dropdown custom-form-field-bg-white float-end" appearance="outline" style="flex:1">
+                            <mat-label>Actions</mat-label>
+                            <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="inventoryMapAction($event)" >
+                              <mat-option value="add_new_transaction" (click)="openAddItemDialog()">Add New Item</mat-option>
+                                <mat-option value="add_new_transaction" (click)="viewLocations()">View Item Location</mat-option>
+                                <mat-option value="add_new_transaction" [disabled]="!(this.currentPageItemNo)" (click)="deleteItem($event)">Delete Item</mat-option>
+                                <mat-option value="add_new_transaction"  *ngIf="invMaster.controls['itemQuarantined'].value == 0" (click)="quarantineDialog()">Quarantine Item</mat-option>
+                                <mat-option value="add_new_transaction" *ngIf="invMaster.controls['itemQuarantined'].value == 1" (click)="unquarantineDialog()">Un-Quarantine Item</mat-option>
+                            </mat-select>
+                            <span class="material-symbols-outlined icon-expand-more">
+                                expand_more
+                            </span> 
+                        </mat-form-field>
+                    </div>
                 </div>
-                <div class="br-14 d-flex align-items-center label label-red px-3 f-16" *ngIf="this.getInvMasterData?.itemQuarantined">
-                  Quarantine
-                </div>
-                <button mat-flat-button color="secondary" class="button-secondary" (click)="viewLocations()">
-                  <!-- <mat-icon>clear_all</mat-icon> -->
-                  View Item Location
-                </button>
-              </div>
-              <div class="d-flex gap-12">
-              <!-- <button mat-flat-button color="primary" class=" mat-button-icon" (click)="openAddItemDialog()">
+                <div class="d-flex gap-12">
+                  <!-- <button mat-flat-button color="primary" class=" mat-button-icon" (click)="openAddItemDialog()">
                   <span class="material-symbols-outlined">
                     add
                   </span>
                 </button> -->
-                <!-- <button mat-flat-button color="secondary" class="button-secondary" (click)="viewLocations()">
+                  <!-- <button mat-flat-button color="secondary" class="button-secondary" (click)="viewLocations()">
                   <mat-icon>clear_all</mat-icon>
                   View Item Location
                 </button> -->
-              </div>
+                </div>
               </div>
             </div>
             <div class="card bg-white bg-50 px-4 py-4 br-20 mb-3" style="min-height: 450px;">
-              <mat-tab-group dynamicHeight (selectedTabChange)="tabChanged($event)">
+              <mat-tab-group   dynamicHeight (selectedTabChange)="tabChanged($event)" [(selectedIndex)]="tabIndex" >
                 <mat-tab label="Details">
-                  <app-detail [details]="invMaster" (notifyParent)="getNotification($event)"></app-detail>
+                  <app-detail [events]="eventsSubject.asObservable()" [fieldNameDetails]="fieldNames" [details]="invMaster"  (notifyParent)="getNotification($event)"></app-detail>
                 </mat-tab>
-                <mat-tab label="Item Setup">
-                  <app-item-setup [itemSetup]="invMaster"></app-item-setup>
+                <mat-tab label="Item Setup" >
+                  <div class="remaining"></div> 
+                  <app-item-setup [itemSetup]="invMaster"  ></app-item-setup>
                 </mat-tab>
-                <mat-tab label="Kit Items">
-                  <app-kit-item [kitItem]="invMaster" (notifyParent)="getNotification($event)"></app-kit-item>
+                <mat-tab label="Kit Items" >
+                  <div class="remaining"></div> 
+                  <app-kit-item [kitItem]="invMaster"   (notifyParent)="getNotification($event)"></app-kit-item>
                 </mat-tab>
-                <mat-tab label="Location">
-                  <app-location [count]="count" [location]="invMaster" (notifyParent)="getNotification($event)"></app-location>
+                <mat-tab label="Location"  >
+                  <div class="remaining"></div>
+
+                  <app-location [fieldNameDetails]="fieldNames" [count]="count" [location]="invMaster" 
+                    (notifyParent)="getNotification($event)"></app-location>
                 </mat-tab>
-                <mat-tab label="Reel Tracking"  [disabled]="true">
-                  <app-reel-tracking [reelTracking]="invMaster"></app-reel-tracking>
+                <mat-tab label="Reel Tracking">
+                  <app-reel-tracking  [events]="reelSubject.asObservable()" [reelTracking]="invMaster"></app-reel-tracking>
                 </mat-tab>
-                <mat-tab label="Scan  Codes">
-                  <app-scan-codes [scanCodes]="invMaster" (notifyParent)="getNotification($event)"></app-scan-codes>
+                <mat-tab label="Scan Codes">
+                  <div class="remaining"></div>
+
+                  <app-scan-codes [scanCodes]="invMaster"   (notifyParent)="getNotification($event)"></app-scan-codes>
                 </mat-tab>
-                <mat-tab label="Weigh Scale" [disabled]="true">
-                  <app-weight-scale [weighScale]="invMaster"></app-weight-scale>
+                <mat-tab label="Weigh Scale">
+                  <div class="remaining"></div>
+
+                  <app-weight-scale [weighScale]="invMaster"  ></app-weight-scale>
                 </mat-tab>
-                <mat-tab label="Other" [disabled]="true">
-                  <app-others [others]="invMaster"></app-others>
+                <mat-tab label="Other">
+                  <div class="remaining"></div>
+
+                  <app-others [others]="invMaster"  ></app-others>
                 </mat-tab>
               </mat-tab-group>
             </div>
           </mat-card-content>
-          
+
         </mat-card>
         <div class="d-flex gap-20 justify-content-end py-3">
-          <button mat-stroked-button color="danger" class=" button-warn btn-lg" (click)="deleteItem($event)" [disabled]="!(this.currentPageItemNo)">
+          <!-- <button mat-stroked-button color="danger" class=" button-warn btn-lg" (click)="deleteItem($event)"
+            [disabled]="!(this.currentPageItemNo)">
             Delete
-          </button>
-          <button mat-flat-button color="secondary" class="button-secondary btn-lg" (click)="openAddItemDialog()">
-           Add New Item
-          </button>
-          <button *ngIf="invMaster.controls['itemQuarantined'].value == 0" mat-flat-button color="secondary" class="button-secondary btn-lg" (click)="quarantineDialog()">
+          </button> -->
+          <!-- <button mat-flat-button color="secondary" class="button-secondary btn-lg" (click)="openAddItemDialog()">
+            Add New Item
+          </button> -->
+          <!-- <button *ngIf="invMaster.controls['itemQuarantined'].value == 0" mat-flat-button color="secondary"
+            class="button-secondary btn-lg" (click)="quarantineDialog()">
             Quarantine Item
-          </button>
-          <button *ngIf="invMaster.controls['itemQuarantined'].value == 1" mat-flat-button color="primary" class="button-secondary btn-lg" (click)="unquarantineDialog()">
+          </button> -->
+          <!-- <button *ngIf="invMaster.controls['itemQuarantined'].value == 1" mat-flat-button color="primary"
+            class="button-secondary btn-lg" (click)="unquarantineDialog()">
             Un-Quarantine Item
-          </button>
-          <button [disabled]="saveDisabled" style="flex:1" mat-flat-button color="primary" class="btn-lg" (click)="updateInventoryMaster()">
+          </button> -->
+          <button [disabled]="saveDisabled" style="flex:1" mat-flat-button color="primary" class="btn-lg"
+            (click)="updateInventoryMaster()">
             Save
           </button>
         </div>
       </div>
     </div>
   </form>
-  </div>
+</div>
 
-  <ng-template #quarantineAction>
-    <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
-        <div color="warn" class="circle-icon circle-66 circle-danger mb-4">
-            <mat-icon color="warn">vpn_lock</mat-icon>
-        </div>
-        <div>
-            <p class="bold text-tritary-900 mb-4">Click submit to quarantine item {{this.currentPageItemNo}}. This will cause any allocated
-                orders and locations with this item to be deallocated.</p>
-            <div class="mb-3">
-                <button mat-flat-button color="warn" class="custom-btn button-delete-flat bg-white w-100 btn-lg" [mat-dialog-close]="true">
-                    Submit
-                </button>
-            </div>
-            <div>
-                <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false">
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-</ng-template>
-<ng-template #UNquarantineAction>
+<ng-template #quarantineAction>
   <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
-      <div color="warn" class="circle-icon circle-66 circle-danger mb-4">
-          <mat-icon color="warn">vpn_lock</mat-icon>
+    <div color="warn" class="circle-icon circle-66 circle-danger mb-4">
+      <mat-icon color="warn">vpn_lock</mat-icon>
+    </div>
+    <div>
+      <p class="bold text-tritary-900 mb-4">Click submit to quarantine item {{this.currentPageItemNo}}. This will cause
+        any allocated
+        orders and locations with this item to be deallocated.</p>
+      <div class="mb-3">
+        <button mat-flat-button color="warn" class="custom-btn button-delete-flat bg-white w-100 btn-lg"
+          [mat-dialog-close]="true">
+          Submit
+        </button>
       </div>
       <div>
-          <p class="bold text-tritary-900 mb-4">Are you sure you want to Un-Quarantine item {{this.currentPageItemNo}}.</p>
-          <div class="mb-3">
-          <mat-checkbox (change)="checkCheckBoxvalue($event)">Append Reprocess to Open Transactions?</mat-checkbox>
-          </div>
-          <div class="mb-3">
-              <button mat-flat-button color="warn" class="custom-btn button-delete-flat bg-white w-100 btn-lg" [mat-dialog-close]="true">
-                  Un-Quarantine
-              </button>
-          </div>
-          <div>
-              <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false">
-                  Cancel
-              </button>
-          </div>
+        <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false">
+          Cancel
+        </button>
       </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #UNquarantineAction>
+  <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
+    <div color="warn" class="circle-icon circle-66 circle-danger mb-4">
+      <mat-icon color="warn">vpn_lock</mat-icon>
+    </div>
+    <div>
+      <p class="bold text-tritary-900 mb-4">Are you sure you want to Un-Quarantine item {{this.currentPageItemNo}}.</p>
+      <div class="mb-3">
+        <mat-checkbox (change)="checkCheckBoxvalue($event)">Append Reprocess to Open Transactions?</mat-checkbox>
+      </div>
+      <div class="mb-3">
+        <button mat-flat-button color="warn" class="custom-btn button-delete-flat bg-white w-100 btn-lg"
+          [mat-dialog-close]="true">
+          Un-Quarantine
+        </button>
+      </div>
+      <div>
+        <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false">
+          Cancel
+        </button>
+      </div>
+    </div>
   </div>
 </ng-template>
 
 <ng-template #propertiesChanged>
-  
+
   <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
     <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
-        <mat-icon color="primary">add</mat-icon>
+      <mat-icon color="primary">add</mat-icon>
     </div>
     <div>
-        <p class="bold text-tritary-900 mb-4">Are you sure you want to add?</p>
-        <p class="bold text-primary-900 mb-4">Selected order numbers will be added once done.</p>
-        <div class="mb-3">
+      <p class="bold text-tritary-900 mb-4">Are you sure you want to add?</p>
+      <p class="bold text-primary-900 mb-4">Selected order numbers will be added once done.</p>
+      <div class="mb-3">
         <button mat-flat-button color="warn" class="custom-btn button-primary-flat text-primary-900 bg-white">
-            Yes
+          Yes
         </button>
-        </div>
-        <div>
-          <button mat-stroked-button color="basic" class="custom-btn bg-white" [mat-dialog-close]="true">
-            Cancel
-          </button>
-        </div>
+      </div>
+      <div>
+        <button mat-stroked-button color="basic" class="custom-btn bg-white" [mat-dialog-close]="true">
+          Cancel
+        </button>
+      </div>
     </div>
-    </div>
+  </div>
 </ng-template>
+
+
+<div class="confirmation-dialog" style="display: none;">h1</div>

@@ -10,23 +10,17 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { SelectionModel } from '@angular/cdk/collections';
-
-import { SetColumnSeqService } from 'src/app/admin/dialogs/set-column-seq/set-column-seq.service';
-import { AuthService } from 'src/app/init/auth.service';
-import { TransactionService } from '../../transaction.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator'; 
+import { AuthService } from 'src/app/init/auth.service'; 
 import { Subject, takeUntil } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import { InventoryMapService } from 'src/app/admin/inventory-map/inventory-map.service';
+import { ToastrService } from 'ngx-toastr'; 
 import { AddInvMapLocationComponent } from 'src/app/admin/dialogs/add-inv-map-location/add-inv-map-location.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { QuarantineConfirmationComponent } from 'src/app/admin/dialogs/quarantine-confirmation/quarantine-confirmation.component';
 import { AdjustQuantityComponent } from 'src/app/admin/dialogs/adjust-quantity/adjust-quantity.component';
 import { HoldReasonComponent } from 'src/app/admin/dialogs/hold-reason/hold-reason.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 const TRNSC_DATA = [
   { colHeader: 'orderNumber', colDef: 'Order Number' },
@@ -84,7 +78,7 @@ export class OpenTransactionDataTableComponent
   ngAfterViewInit() {}
   pageEvent: PageEvent;
   constructor(
-    private transactionService: TransactionService,
+    private Api: ApiFuntions,
     private authService: AuthService,
     private dialog: MatDialog
 
@@ -123,8 +117,8 @@ export class OpenTransactionDataTableComponent
       orderItem: this.orderItem,
       wsid: this.userData.wsid,
     };
-    this.transactionService
-      .get(this.payload, '/Admin/HoldTransactionsData', true)
+    this.Api
+      .HoldTransactionsData(this.payload)
       .subscribe(
         (res: any) => {
           this.datasource = res.data.holdTransactions;
@@ -193,5 +187,16 @@ export class OpenTransactionDataTableComponent
 
   }
 
+  selectRow(row: any) {
+    this.datasource.forEach(element => {
+      if(row != element){
+        element.selected = false;
+      }
+    });
+    const selectedRow = this.datasource.find((x: any) => x === row);
+    if (selectedRow) {
+      selectedRow.selected = !selectedRow.selected;
+    }
+  }
 
 }

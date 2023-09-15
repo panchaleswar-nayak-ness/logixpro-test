@@ -7,10 +7,12 @@
         </span>
         <input type="text" placeholder="Search Assigned Function"
           aria-label="Search Groups Allowed" matInput [(ngModel)]="filterName" maxlength="50">
+      <button matSuffix *ngIf="filterName" class="clear-btn" (click)="clearFields()" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+
       </mat-form-field>
     </div>
 
-    <button mat-stroked-button color="warn" class="button-remove-all-w-stroke w-100 mb-3" (click)="unassignFunction(assignedFunctions)" [disabled]="!isGroupLookUp">
+    <button mat-stroked-button color="warn" class="button-remove-all-w-stroke w-100 mb-3" onclick="this.blur()" (click)="unassignFunction(assignedFunctions)" [disabled]="!isGroupLookUp">
       Remove All
     </button>
     <div class="card w-100">

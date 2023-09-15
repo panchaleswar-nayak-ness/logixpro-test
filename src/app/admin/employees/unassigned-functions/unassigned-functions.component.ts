@@ -29,7 +29,9 @@ export class UnassignedFunctionsComponent implements OnInit {
 
 
   }
-
+  clearFields(){
+    this.filterName='';
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

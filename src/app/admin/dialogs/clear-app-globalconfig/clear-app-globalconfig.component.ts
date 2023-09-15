@@ -1,8 +1,8 @@
 import { Component, OnInit,Inject } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GlobalconfigService } from 'src/app/global-config/globalconfig.service';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 import { AuthService } from 'src/app/init/auth.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-clear-app-globalconfig',
@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/init/auth.service';
 })
 export class ClearAppGlobalconfigComponent implements OnInit {
 
-  constructor( @Inject(MAT_DIALOG_DATA) public data: any,private dialog: MatDialog,  private globalconfigService:GlobalconfigService,private authService:AuthService) { }
+  constructor( @Inject(MAT_DIALOG_DATA) public data: any,private dialog: MatDialog,  private Api:ApiFuntions,private authService:AuthService) { }
   isChecked = true;
   userData;
   ngOnInit(): void {

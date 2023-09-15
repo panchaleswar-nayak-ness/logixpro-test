@@ -1,13 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
-import { startWith } from 'rxjs/internal/operators/startWith';
-import { EmployeeService } from 'src/app/employee.service';
+import { startWith } from 'rxjs/internal/operators/startWith'; 
 import labels from '../../../labels/labels.json';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-add-zone',
@@ -15,11 +15,14 @@ import labels from '../../../labels/labels.json';
   styleUrls: ['./add-zone.component.scss']
 })
 export class AddZoneComponent implements OnInit {
+  @ViewChild('select_zone') select_zone: ElementRef;
+
   form_heading: string = 'Add New Zone';
   form_btn_label: string = 'Add';
-  zone = new FormControl('');;
+  zone = new FormControl('');
+  fetchedZones:any;
   all_zones: any = this.data.allZones;
-  filteredOptions: Observable<string[]>;
+  filteredOptions: Observable<any>;
   addZoneForm: FormGroup;
   isValid = false;
   public editZoneName: any;
@@ -28,15 +31,19 @@ export class AddZoneComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private employeeService: EmployeeService,
+    private employeeService: ApiFuntions,
     private router: Router,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<any>
+
   ) { }
 
   ngOnInit(): void {
     this.data?.mode === 'edit-zone' ? this.form_heading = 'Edit Zone' : 'Update Zone';
     this.data?.mode === 'edit-zone' ? this.form_btn_label = 'Update' : 'Add';
+    this.fetchedZones=this.data?.fetchedZones;
+    
+    this.editZoneName=this.data?.fetchedZones;
 
     this.initialzeEmpForm();
     this.filteredOptions = this.addZoneForm.controls['zoneList'].valueChanges.pipe(
@@ -50,6 +57,10 @@ export class AddZoneComponent implements OnInit {
     if (this.data.mode === 'edit-zone') {
       this.addZoneForm.controls['zoneList'].setValue(this.data.zone);
     }
+    setTimeout(() => {
+      this.select_zone.nativeElement.focus();
+    }, 200);
+   
   }
 
   private noWhitespaceValidator(control: FormControl) {
@@ -95,11 +106,22 @@ export class AddZoneComponent implements OnInit {
           "zone": oldZone,
           "username": this.data.userName
         }
-        this.employeeService.deleteEmployeeZone(zoneData).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.addUpdateZone(addZoneData, oldZone, mode)
-          }
-        });
+
+        let fetchedIndex=this.fetchedZones.findIndex(item => item.zones === form.value.zoneList )
+        if(fetchedIndex===-1){
+          this.employeeService.deleteEmployeeZone(zoneData).subscribe((res: any) => {
+            if (res.isExecuted) {
+              this.addUpdateZone(addZoneData, oldZone, mode)
+            }
+          });
+        }else{
+          this.toastr.error('Zone Already Exists!', 'Error!', {
+            positionClass: 'toast-bottom-right',
+            timeOut: 2000
+          });
+        }
+     
+    
       }
       else {
         this.addUpdateZone(addZoneData, oldZone, mode);

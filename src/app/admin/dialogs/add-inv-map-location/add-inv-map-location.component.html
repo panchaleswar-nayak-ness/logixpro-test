@@ -5,333 +5,351 @@
     <mat-icon class="close-icon">close</mat-icon>
 </button>
 </div>
-<form [formGroup]="addInvMapLocation" (ngSubmit)="onSubmit(addInvMapLocation)">
-    <div class="row mb-3">
-        <div class="col-6">
-            <ng-scrollbar style="height: 500px">
-                <div class="container location_detail">
-                    <h1 mat-dialog-title>Location Details</h1>
-                    <div class="row">
-                        <div class="col-6  mb-2">
-                            <mat-form-field class="d-block w-100 " appearance="outline">
-                                <mat-label>Location Number</mat-label>
-                                <input matInput  disabled name="locationNumber" value="{{autoFillLocNumber}}">
-                            </mat-form-field>
+<form [formGroup]="addInvMapLocation" (ngSubmit)="onSubmit(addInvMapLocation)" mat-dialog-content>
+    <ng-scrollbar class="scroll-color" style="height:65vh" [track]="itemNumberScroll">
+        <div class="row mb-3 mx-1">
+            <div class="col-xl-6 col-md-12 col-sm-12 col-xs-12 mb-3 mb-xl-0 ">
+                    <div class="container location_detail px-md-3">
+                        <!-- <ng-scrollbar style="height: 500px"> -->
+                        <h1 mat-dialog-title>Location Details</h1>
+                        <div class="row">
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100 " appearance="outline">
+                                    <mat-label>Location Number</mat-label>
+                                    <input matInput disabled name="locationNumber" value="{{autoFillLocNumber}}">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100" appearance="outline">
+                                    <mat-label>Location Name</mat-label>
+                                    <!--   #location_name  -->
+                                    <input placeholder="Location Name" aria-label="Location Name" matInput maxlength="50"
+                                        formControlName="location" [matAutocomplete]="auto" (focus)="focusinmethod()" (focusout)="focusoutmethod()">
+                                    <mat-autocomplete class="br-14" style="padding-bottom: 16px; padding-top: 16px;" autoActiveFirstOption #auto="matAutocomplete"
+                                        (optionSelected)="loadZones($event)">
+    
+    
+                                        <h6 class="card-header matAutoCompHeader stickyHeader"> <span style="padding: 0px 25px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;"> Location</span> <span style="padding: 0px 0px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">Zone</span></h6>
+                                        <mat-option class="" *ngFor="let option of filteredOptions | async"
+                                            [value]="option.locationName">
+                                            <div class="loc_option">
+                                                <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;" >{{option.locationName}}</span> <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">{{option.zone}}</span>
+                                            </div>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                                <div class="error" *ngIf="hasError('location', 'required')">This field is required.</div>
+    
+                            </div>
                         </div>
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Location Name</mat-label>
-                                <input   placeholder="Location Name" aria-label="Location Name" matInput
-                                    formControlName="location" [matAutocomplete]="auto">
-                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
-                                    (optionSelected)="loadZones($event)">
-
-                                    <h6 class="loc_name"><span>Location</span> <span>Zone</span></h6>
-                                    <mat-option *ngFor="let option of filteredOptions | async"
-                                        [value]="option.locationName">
-                                        <div class="loc_option">
-                                            <span>{{option.locationName}}</span> <span>{{option.zone}}</span>
-                                        </div>
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                            <div class="error" *ngIf="hasError('location', 'required')">This field is required.</div>
-
+                        <div class="row">
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100 " appearance="outline">
+                                    <mat-label>Laser X</mat-label>
+                                    <input [NumbersOnly]="true" maxlength="9" matInput formControlName="laserX"   name="laserX"  >
+                                </mat-form-field>
+                                <div class="error" *ngIf="hasError('laserX', 'required')">This field is required.</div>
+                                <div class="error" *ngIf="hasError('laserX', 'pattern')">Please enter numbers only.</div>
+                                <div class="error" *ngIf="hasError('laserX', 'maxlength')">Max number allowed is 9.</div>
+                            </div>
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100" appearance="outline">
+                                    <mat-label>Laser Y</mat-label>
+                                    <input [NumbersOnly]="true" maxlength="9" matInput formControlName="laserY"   name="laserY" >
+                                </mat-form-field>
+                                <div class="error" *ngIf="hasError('laserY', 'required')">This field is required.</div>
+                                <div class="error" *ngIf="hasError('laserY', 'pattern')">Please enter numbers only.</div>
+                                <div class="error" *ngIf="hasError('laserY', 'maxlength')">Max number allowed is 9.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6  mb-2">
-                            <mat-form-field class="d-block w-100 " appearance="outline">
-                                <mat-label>Laser X</mat-label>
-                                <input matInput formControlName="laserX"   name="laserX"  >
-                            </mat-form-field>
-                            <div class="error" *ngIf="hasError('laserX', 'required')">This field is required.</div>
-                            <div class="error" *ngIf="hasError('laserX', 'pattern')">Please enter numbers only.</div>
-                            <div class="error" *ngIf="hasError('laserX', 'maxlength')">Max number allowed is 9.</div>
+                        <div class="row">
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100 " appearance="outline" (click)="loadWarehouse()">
+                                    <mat-label>Warehouse</mat-label>
+                                    <input matInput formControlName="warehouse" name="warehouse" readonly="true">
+                                    <span matSuffix>
+                                        <mat-icon style="color:#8B8BA3; transform: rotate(45deg);" >unfold_more</mat-icon>
+                                    </span>
+                                </mat-form-field>
+                                <div class="error" *ngIf="hasError('warehouse', 'required')">This field is required.</div>
+                            </div>
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <!-- <mat-form-field class="d-block w-100" appearance="outline">
+                                    <mat-label>Zone</mat-label>
+                                    <input   placeholder="Zone" aria-label="Zone" matInput
+                                        formControlName="zone" [matAutocomplete]="zoneAuto">
+                                    <mat-autocomplete autoActiveFirstOption #zoneAuto="matAutocomplete" (optionSelected)="loadZones($event)">
+                                        <h6 class="loc_name"><span>Zone</span> <span>Location</span></h6>
+                                        <mat-option *ngFor="let option of zoneList"
+                                            [value]="option.zone" #szone>
+                                            <div class="loc_optionZ">
+                                                <span>{{option.zone}}</span> <span>{{option.locationName}}</span>
+                                            </div>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field> -->
+    
+                                <mat-form-field class="d-block w-100" appearance="outline">
+                                    <mat-label>Zone</mat-label>
+                                    <input  maxlength="2" placeholder="Zone" aria-label="Zone" matInput
+                                        formControlName="zone" [matAutocomplete]="autoZone">
+                                    <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete"
+                                        (optionSelected)="loadZones($event)">
+    
+                                        <h6 class="loc_name"><span>Zone</span> <span>Location</span></h6>
+                                        <mat-option *ngFor="let option of filteredOptions | async"
+                                            [value]="option.zone">
+                                            <div class="loc_option">
+                                                <span>{{option.zone}}  </span> <span>{{option.locationName}}</span>
+                                            </div>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+    
+    
+                                <div class="error" *ngIf="hasError('zone', 'required')">This field is required.</div>
+                                <div class="error" *ngIf="hasError('zone', 'maxlength')">Max number allowed is 2.</div>
+                            </div>
                         </div>
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Laser Y</mat-label>
-                                <input matInput formControlName="laserY"   name="laserY" >
-                            </mat-form-field>
-                            <div class="error" *ngIf="hasError('laserY', 'required')">This field is required.</div>
-                            <div class="error" *ngIf="hasError('laserY', 'pattern')">Please enter numbers only.</div>
-                            <div class="error" *ngIf="hasError('laserY', 'maxlength')">Max number allowed is 9.</div>
+                        <div class="row">
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100 " appearance="outline">
+                                    <mat-label>Carousel</mat-label>
+                                    <input [NumbersOnly]="true" matInput formControlName="carousel" #carousel   name="carousel"  [maxlength]="1" (change)="updateItemNumber('carousel', carousel.value)">
+                                </mat-form-field>
+                                <div class="error" *ngIf="hasError('carousel', 'required')">This field is required.</div>
+                                <div class="error" *ngIf="hasError('carousel', 'maxlength')">Max number allowed is 1.</div>
+                                <div class="error" *ngIf="hasError('carousel', 'pattern')">Please enter numbers only.</div>
+                            </div>
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100" appearance="outline">
+                                    <mat-label>Row</mat-label>
+                                    <input maxlength="5" matInput formControlName="row" #row   name="row" (change)="updateItemNumber('row', row.value)">
+                                </mat-form-field>
+                                <div class="error" *ngIf="hasError('row', 'required')">This field is required.</div>
+                                <div class="error" *ngIf="hasError('row', 'maxlength')">Max number allowed is 5.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100 " appearance="outline" (click)="loadWarehouse()">
-                                <mat-label>Warehouse</mat-label>
-                                <input matInput formControlName="warehouse" name="warehouse" readonly="true">
-                                <span matSuffix>
-                                    <mat-icon style="color:#8B8BA3;">open_in_full</mat-icon>
-                                </span>
-                            </mat-form-field>
-                            <div class="error" *ngIf="hasError('warehouse', 'required')">This field is required.</div>
+                        <div class="row">
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100 " appearance="outline">
+                                    <mat-label>Shelf</mat-label>
+                                    <input  maxlength="2"  matInput formControlName="shelf" #shelf   name="shelf" (change)="updateItemNumber('shelf', shelf.value)">
+                                </mat-form-field>
+                                <div class="error" *ngIf="hasError('shelf', 'required')">This field is required.</div>
+                                <div class="error" *ngIf="hasError('shelf', 'maxlength')">Max number allowed is 2.</div>
+                            </div>
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100" appearance="outline">
+                                    <mat-label>Bin</mat-label>
+                                    <input  maxlength="3"  matInput formControlName="bin" #bin   name="bin" (change)="updateItemNumber('bin', bin.value)">
+                                </mat-form-field>
+                                <div class="error" *ngIf="hasError('bin', 'required')">This field is required.</div>
+                                <div class="error" *ngIf="hasError('bin', 'maxlength')">Max number allowed is 3.</div>
+                            </div>
                         </div>
-                        <div class="col-6 mb-2">
-                            <!-- <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Zone</mat-label>
-                                <input   placeholder="Zone" aria-label="Zone" matInput
-                                    formControlName="zone" [matAutocomplete]="zoneAuto">
-                                <mat-autocomplete autoActiveFirstOption #zoneAuto="matAutocomplete" (optionSelected)="loadZones($event)">
-                                    <h6 class="loc_name"><span>Zone</span> <span>Location</span></h6>
-                                    <mat-option *ngFor="let option of zoneList"
-                                        [value]="option.zone" #szone>
-                                        <div class="loc_optionZ">
-                                            <span>{{option.zone}}</span> <span>{{option.locationName}}</span>
-                                        </div>
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field> -->
-
-                            <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Zone</mat-label>
-                                <input   placeholder="Zone" aria-label="Zone" matInput
-                                    formControlName="zone" [matAutocomplete]="autoZone">
-                                <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete"
-                                    (optionSelected)="loadZones($event)">
-
-                                    <h6 class="loc_name"><span>Zone</span> <span>Location</span></h6>
-                                    <mat-option *ngFor="let option of filteredOptions | async"
-                                        [value]="option.zone">
-                                        <div class="loc_option">
-                                            <span>{{option.zone}}  </span> <span>{{option.locationName}}</span>
-                                        </div>
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-
-
-
-
-
-
-
-
-                            <div class="error" *ngIf="hasError('zone', 'required')">This field is required.</div>
-                            <div class="error" *ngIf="hasError('zone', 'maxlength')">Max number allowed is 2.</div>
+                        <div class="row">
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100 "   appearance="outline">
+                                    <mat-label>{{fieldNames?.unitOfMeasure}}</mat-label>
+                                    <input matInput formControlName="unitOfMeasure"  [ngModel]="unitOFMeasure" name="unitOfMeasure" >
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100" appearance="outline" (click)="loadCellSize()">
+                                    <mat-label>Cell Size</mat-label>
+                                    <input matInput formControlName="cell" name="cell" readonly #cellSizeVal>
+                                    <span matSuffix>
+                                        <mat-icon style="color:#8B8BA3; transform: rotate(45deg);" >unfold_more</mat-icon>
+                                    </span>
+                                </mat-form-field>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100 " appearance="outline">
-                                <mat-label>Carousel</mat-label>
-                                <input matInput formControlName="carousel" #carousel   name="carousel"  [maxlength]="1" (change)="updateItemNumber('carousel', carousel.value)">
-                            </mat-form-field>
-                            <div class="error" *ngIf="hasError('carousel', 'required')">This field is required.</div>
-                            <div class="error" *ngIf="hasError('carousel', 'maxlength')">Max number allowed is 1.</div>
-                            <div class="error" *ngIf="hasError('carousel', 'pattern')">Please enter numbers only.</div>
+                        <div class="row">
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100 " appearance="outline" (click)="loadVelocityCode()">
+                                    <mat-label>Velocity Code</mat-label>
+                                    <input matInput formControlName="velocity" name="velocity" readonly #velCodeVal>
+                                    <span matSuffix>
+                                        <mat-icon style="color:#8B8BA3; transform: rotate(45deg);" >unfold_more</mat-icon>
+                                    </span>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100" appearance="outline">
+                                    <mat-label>Alternate Light</mat-label>
+                                    <input [NumbersOnly]="true"  maxlength="9"  matInput formControlName="altLight"   name="altLight"  >
+                                </mat-form-field>
+                                <div class="error" *ngIf="hasError('altLight', 'pattern')">Please enter numbers only.</div>
+                                <div class="error" *ngIf="hasError('altLight', 'maxlength')">Max number allowed is 9.</div>
+                            </div>
                         </div>
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Row</mat-label>
-                                <input matInput formControlName="row" #row   name="row" (change)="updateItemNumber('row', row.value)">
-                            </mat-form-field>
-                            <div class="error" *ngIf="hasError('row', 'required')">This field is required.</div>
-                            <div class="error" *ngIf="hasError('row', 'maxlength')">Max number allowed is 5.</div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100 " appearance="outline">
-                                <mat-label>Shelf</mat-label>
-                                <input matInput formControlName="shelf" #shelf   name="shelf" (change)="updateItemNumber('shelf', shelf.value)">
-                            </mat-form-field>
-                            <div class="error" *ngIf="hasError('shelf', 'required')">This field is required.</div>
-                            <div class="error" *ngIf="hasError('shelf', 'maxlength')">Max number allowed is 2.</div>
-                        </div>
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Bin</mat-label>
-                                <input matInput formControlName="bin" #bin   name="bin" (change)="updateItemNumber('bin', bin.value)">
-                            </mat-form-field>
-                            <div class="error" *ngIf="hasError('bin', 'required')">This field is required.</div>
-                            <div class="error" *ngIf="hasError('bin', 'maxlength')">Max number allowed is 3.</div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100 "  [ngClass]="{'readonly': this.data.detailData}" appearance="outline">
-                                <mat-label>Unit of Measure</mat-label>
-                                <input matInput formControlName="unitOfMeasure" class="readonly" [ngClass]="{'readonly': this.data.detailData}"   name="unitOfMeasure" [readonly]="this.data.detailData? true: false">
-                            </mat-form-field>
-                        </div>
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100" appearance="outline" (click)="loadCellSize()">
-                                <mat-label>Cell Size</mat-label>
-                                <input matInput formControlName="cell" name="cell" readonly>
-                                <span matSuffix>
-                                    <mat-icon style="color:#8B8BA3;">open_in_full</mat-icon>
-                                </span>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100 " appearance="outline" (click)="loadVelocityCode()">
-                                <mat-label>Velocity Code</mat-label>
-                                <input matInput formControlName="velocity"   name="velocity" readonly>
-                                <span matSuffix>
-                                    <mat-icon style="color:#8B8BA3;">open_in_full</mat-icon>
-                                </span>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100" appearance="outline">
-                                <mat-label>Alternate Light</mat-label>
-                                <input matInput formControlName="altLight"   name="altLight"  >
-                            </mat-form-field>
-                            <div class="error" *ngIf="hasError('altLight', 'pattern')">Please enter numbers only.</div>
-                            <div class="error" *ngIf="hasError('altLight', 'maxlength')">Max number allowed is 9.</div>
-                        </div>
-                    </div>
-
-                    <mat-form-field class="d-block w-100 mb-3" appearance="outline">
-                        <mat-label>Ship Via</mat-label>
-                        <input matInput type="text" formControlName="userField1"   name="userField1">
-                        <!-- <mat-hint align="end">{{input.value?.length || 0}}/50</mat-hint> -->
-
-                    </mat-form-field>
-
-                    <mat-form-field class="d-block w-100 mb-2" appearance="outline">
-                        <mat-label>Ship To Name</mat-label>
-                        <input type="text" matInput formControlName="userField2"   name="userField2">
-                    </mat-form-field>
-                    <div class="row mt-2" *ngIf="data.mode == 'editInvMapLocation'">
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100 " appearance="outline">
-                                <mat-label>Quantity Allocated Pick</mat-label>
-                                <input type="text" matInput formControlName="quantityAllocatedPick" name="quantityAllocatedPick">
-                            </mat-form-field>
-                        </div>
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100 " appearance="outline">
-                                <mat-label>Quantity Allocated Put Away</mat-label>
-                                <input type="text" matInput formControlName="quantityAllocatedPutAway" name="quantityAllocatedPutAway">
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="row" *ngIf="data.mode == 'editInvMapLocation'">
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100 readonly" appearance="outline">
-                                <mat-label>Inv Map ID</mat-label>
-                                <input type="text" matInput class="readonly" formControlName="inventoryMapID" name="inventoryMapID" readonly>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-6 mb-2">
-                            <mat-form-field class="d-block w-100 readonly" appearance="outline">
-                                <mat-label>Master Inv Map ID</mat-label>
-                                <input type="text" class="readonly" matInput formControlName="masterInventoryMapID" name="masterInventoryMapID" readonly>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    
-                    <section class="ld_checks">
-                        <mat-checkbox *ngIf="data.mode == 'editInvMapLocation'" formControlName="masterLocation" class="ld_checkbox" color="primary">Master Location 
-                        </mat-checkbox>
-                        <mat-checkbox formControlName="dedicated" class="ld_checkbox" color="primary">Dedicated
-                        </mat-checkbox>
-                        <mat-checkbox formControlName="dateSensitive" class="ld_checkbox" color="primary">Date Sensitive
-                        </mat-checkbox>
-                    </section>
-
-                </div>
-            </ng-scrollbar>
-        </div>
-        <div class="col-6">
-            <div class="container item_detail">
-                <h1 mat-dialog-title>Assigned Item Details</h1>
-                <div class="row">
-                    <div class="col-6 mb-2">
-                        <mat-form-field class="d-block w-100" appearance="outline">
-                            <mat-label>Item Number</mat-label>
-                            <input placeholder="Item Number" aria-label="Item Number" matInput
-                                formControlName="item" [matAutocomplete]="itemNumAuto" #searchItam (keyup)="searchItemNumber(searchItam)">
-                            <mat-autocomplete  #itemNumAuto="matAutocomplete" [panelWidth]="400" (optionSelected)="loadItemDetails($event.option.value)">
-                                <h6 class="loc_name"><span>Item Number</span> <span>Description</span></h6>
-                                <mat-option *ngFor="let option of itemNumberList"
-                                    [value]="option.itemNumber">
-                                    <div class="itemNum">
-                                        <span>{{option.itemNumber}}</span> <span>{{option.description}}</span>
-                                    </div>
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <mat-form-field class="d-block w-100 mb-3" appearance="outline">
-                    <mat-label>Description</mat-label>
-                    <input matInput disabled name="description" value="{{itemDescription}}">
-                </mat-form-field>
-                <div class="row">
-                    <div class="col-4  mb-2" *ngIf="data.mode != 'addInvMapLocation'">
-                        <mat-form-field class="d-block w-100 " appearance="outline" (click)="adjustQuantity()">
-                            <mat-label>Item Quantity</mat-label>
-                            <input matInput formControlName="itemQuantity"   name="itemQuantity" readonly>
-                            <span matSuffix>
-                                <mat-icon style="color:#8B8BA3;">open_in_full</mat-icon>
-                            </span>
-                        </mat-form-field>
-                    </div>
-                    <div class="mb-2" [ngClass]="{'col-4': data.mode != 'addInvMapLocation', 'col-6' : data.mode == 'addInvMapLocation' }">
-                        <mat-form-field class="d-block w-100" appearance="outline">
-                            <mat-label>Maximum (Location) Quantity</mat-label>
-                            <input matInput formControlName="maxQuantity"   name="maxQuantity" (keydown)="onMaxChange($event)" (keyup)="onMaxChange($event)" (change)="onMaxChange($event)" (keypress)="onMaxChange($event)"  type="number">
-                        </mat-form-field>
-                        <div class="error" *ngIf="hasError('maxQuantity', 'maxlength')">Max number allowed is 9.</div>
-                    </div>
-                    <div class="mb-2" [ngClass]="{'col-4': data.mode != 'addInvMapLocation', 'col-6' : data.mode == 'addInvMapLocation' }">
-                        <mat-form-field class="d-block w-100" appearance="outline">
-                            <mat-label>Min (Location) Quantity</mat-label>
-                            <input matInput formControlName="minQuantity"   name="minQuantity" (keydown)="onMinChange($event)" (keyup)="onMinChange($event)" (change)="onMinChange($event)" (keypress)="onMinChange($event)"  type="number">
+    
+                        <mat-form-field class="d-block w-100 mb-3" appearance="outline">
+                            <mat-label>{{fieldNames?.userField1}}</mat-label>
+                            <input  maxlength="255"  matInput type="text" formControlName="userField1"   name="userField1">
                             <!-- <mat-hint align="end">{{input.value?.length || 0}}/50</mat-hint> -->
+    
                         </mat-form-field>
-                            <div class="error" *ngIf="hasError('minQuantity', 'maxlength')">Max number allowed is 9.</div>
-                    </div>
-                </div>
-                <div class="row">
-                     <div class="col-6">
-                        <mat-form-field class="d-block w-100" appearance="outline">
-                            <mat-label>Put Away Date</mat-label>
-                            <input matInput type="text" formControlName="putAwayDate" name="putAwayDate">
+    
+                        <mat-form-field class="d-block w-100 mb-2" appearance="outline">
+                            <mat-label>{{fieldNames?.userField2}}</mat-label>
+                            <input  maxlength="255" type="text" matInput formControlName="userField2"   name="userField2">
                         </mat-form-field>
+                        <div class="row mt-2" *ngIf="data.mode == 'editInvMapLocation'">
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100 " appearance="outline">
+                                    <mat-label>Quantity Allocated Pick</mat-label>
+                                    <input  type="text" matInput formControlName="quantityAllocatedPick" name="quantityAllocatedPick">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100 " appearance="outline">
+                                    <mat-label>Quantity Allocated Put Away</mat-label>
+                                    <input type="text" matInput formControlName="quantityAllocatedPutAway" name="quantityAllocatedPutAway">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="data.mode == 'editInvMapLocation'">
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100 " appearance="outline">
+                                    <mat-label>Inv Map ID</mat-label>
+                                    <input type="text" matInput formControlName="inventoryMapID" name="inventoryMapID" >
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-6 col-md-12 mb-2">
+                                <mat-form-field class="d-block w-100 " appearance="outline">
+                                    <mat-label>Master Inv Map ID</mat-label>
+                                    <input type="text" matInput formControlName="masterInventoryMapID" name="masterInventoryMapID" >
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        
+                        <section class="ld_checks d-block d-xl-flex">
+                            <mat-checkbox *ngIf="data.mode == 'editInvMapLocation'" formControlName="masterLocation" class="ld_checkbox" color="primary">Master Location 
+                            </mat-checkbox>
+                            <mat-checkbox formControlName="dedicated" class="ld_checkbox col-12 col-xl-4 " color="primary">Dedicated
+                            </mat-checkbox>
+                            <mat-checkbox formControlName="dateSensitive" class="ld_checkbox col-12 col-xl-4 " color="primary">Date Sensitive
+                            </mat-checkbox>
+                        </section>
+                    <!-- </ng-scrollbar> -->
                     </div>
-                    <div class="col-6">
-                        <mat-form-field class="d-block w-100" appearance="outline">
-                            <mat-label>Serial Number</mat-label>
-                            <input type="text" matInput  formControlName="serialNumber" name="serialNumber">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <mat-form-field class="d-block w-100" appearance="outline">
-                            <mat-label>Lot Number</mat-label>
-                            <input matInput formControlName="lotNumber" name="lotNumber">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-6">
-                        <mat-form-field class="d-block w-100 " appearance="outline">
-                            <mat-label>Revision</mat-label>
-                            <input matInput formControlName="revision" name="revision">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <mat-form-field class="d-block w-100 " appearance="outline">
-                    <mat-label>Expiration Date</mat-label>
-                    <input matInput formControlName="expirationDate" name="expirationDate">
-                </mat-form-field>
+                
             </div>
-        </div>
+            <div class="col-xl-6 col-md-12 col-sm-12 col-xs-12">
+                <div class="container item_detail px-md-3">
+                    <h1 mat-dialog-title>Assigned Item Details</h1>
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 mb-2">
+                            <mat-form-field class="d-block w-100" appearance="outline" >
+                                <mat-label>{{fieldNames?.itemNumber}}</mat-label>
+                                <input  maxlength="50"  aria-label="Item Number" matInput (focus)="focusinmethod()" (focusout)="focusoutmethod()"
+                                    formControlName="item" [matAutocomplete]="itemNumAuto" [(ngModel)]="searchItemNumbers" #searchItam (keyup)="searchItemNumber($event,searchItam)">
+                                    <button matSuffix *ngIf="searchItemNumbers" class="clear-btn" type="button" (click)="[searchItemNumbers='',clearFields()]"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                                    <mat-autocomplete class="br-14" style="padding-bottom: 16px; padding-top: 16px;" #itemNumAuto="matAutocomplete" (optionSelected)="loadItemDetails($event.option.value)">
+                                        <h6 class="card-header matAutoCompHeader stickyHeader"> <span style="padding: 0px 25px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">Item Number</span>
+                                            <span style="padding: 0px 25px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;">Description</span></h6>
+                                    <mat-option *ngFor="let option of itemNumberList"
+                                        [value]="option.itemNumber">
+                                        <div class="loc_option" >
+                                            <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">{{option.itemNumber}}</span> <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;" >{{option.description}}</span>
+                                            </div>
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                    </div>
+    
+                    <mat-form-field class="d-block w-100 mb-3" appearance="outline">
+                        <mat-label>Description</mat-label>
+                        <input matInput  name="description"     [value]="addInvMapLocation.controls['description'].value"   disabled >
+                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-4  mb-2" *ngIf="data.mode != 'addInvMapLocation'">
+                            <mat-form-field class="d-block w-100 " appearance="outline" (click)="adjustQuantity()">
+                                <mat-label>Item Quantity</mat-label>
+                                <input matInput formControlName="itemQuantity"   name="itemQuantity" readonly>
+                                <span matSuffix>
+                                    <mat-icon style="color:#8B8BA3; transform: rotate(45deg);" >unfold_more</mat-icon>
 
-    </div>
-    <!-- <mat-dialog-actions align="end"> -->
-        <div class="d-flex gap-12">
-        <button type="button" mat-stroked-button color="warn" class="form-button-submit btn-lg" (click)="clearFields()"  *ngIf="!routeFromIM">Clear</button>
-        <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100" color="primary"  *ngIf="!routeFromIM"  [disabled]="!isValid()">Save Changes</button>
-    </div>
-    <!-- </mat-dialog-actions> -->
+                                    <!-- <mat-icon style="color:#8B8BA3;">open_in_full</mat-icon> -->
+                                </span>
+                            </mat-form-field>
+                        </div>
+                        <div class="mb-2" [ngClass]="{'col-xl-4 col-md-12': data.mode != 'addInvMapLocation', 'col-6' : data.mode == 'addInvMapLocation' }">
+                            <mat-form-field class="d-block w-100" appearance="outline">
+                                <mat-label>Maximum (Location) Quantity</mat-label>
+                                <input 
+                                [NumbersOnly]="true" 
+                                maxlength="9" 
+                                matInput 
+                                formControlName="maxQuantity"   
+                                name="maxQuantity" 
+                                (keyup)="onMaxChange($event)"  
+                                type="text">
+                                <!-- <input [NumbersOnly]="true" maxlength="9" matInput formControlName="maxQuantity"   name="maxQuantity" (keydown)="onMaxChange($event)" (keyup)="onMaxChange($event)" (change)="onMaxChange($event)" (keypress)="onMaxChange($event)"  type="text" [NumbersOnly]="true" maxlength="9"> -->
+                            </mat-form-field>
+                            <div class="error" *ngIf="hasError('maxQuantity', 'maxlength')">Max number allowed is 9.</div>
+                        </div>
+                        <div class="mb-2" [ngClass]="{'col-xl-4 col-md-12': data.mode != 'addInvMapLocation', 'col-6' : data.mode == 'addInvMapLocation' }">
+                            <mat-form-field class="d-block w-100" appearance="outline">
+                                <mat-label>Min (Location) Quantity</mat-label>
+                                <input 
+                                [NumbersOnly]="true" 
+                                maxlength="9" 
+                                matInput 
+                                formControlName="minQuantity"   
+                                name="minQuantity" 
+                                (keyup)="onMinChange($event)" 
+                                type="text">
+                                <!-- <input [NumbersOnly]="true" maxlength="9" matInput formControlName="minQuantity"   name="minQuantity" (keydown)="onMinChange($event)" (keyup)="onMinChange($event)" (change)="onMinChange($event)" (keypress)="onMinChange($event)"  type="text" [NumbersOnly]="true" maxlength="9"> -->
+                                <!-- <mat-hint align="end">{{input.value?.length || 0}}/50</mat-hint> -->
+                            </mat-form-field>
+                                <div class="error" *ngIf="hasError('minQuantity', 'maxlength')">Max number allowed is 9.</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-xl-6 col-md-12 mb-2">
+                            <mat-form-field class="d-block w-100" appearance="outline">
+                                <mat-label>Put Away Date</mat-label>
+                                <input matInput type="text" formControlName="putAwayDate" name="putAwayDate">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-6 col-md-12 mb-2">
+                            <mat-form-field class="d-block w-100" appearance="outline">
+                                <mat-label>Serial Number</mat-label>
+                                <input type="text" matInput  formControlName="serialNumber" name="serialNumber">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6 col-md-12 mb-2">
+                            <mat-form-field class="d-block w-100" appearance="outline">
+                                <mat-label>Lot Number</mat-label>
+                                <input matInput formControlName="lotNumber" name="lotNumber">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-6 col-md-12 mb-2">
+                            <mat-form-field class="d-block w-100 " appearance="outline">
+                                <mat-label>Revision</mat-label>
+                                <input matInput formControlName="revision" name="revision">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <mat-form-field class="d-block w-100 " appearance="outline">
+                        <mat-label>Expiration Date</mat-label>
+                        <input matInput formControlName="expirationDate" name="expirationDate">
+                    </mat-form-field>
+                </div>
+            </div>
+    
+        </div>
+    </ng-scrollbar>
 </form>
+<mat-dialog-actions>
+    <div class="d-flex gap-12 w-100">
+        <button type="button" mat-stroked-button color="warn" class="form-button-submit btn-lg" (click)="clearFields()"  *ngIf="myroute1">Clear</button>
+        <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100" color="primary"  *ngIf="myroute2" (click)="onSubmit(addInvMapLocation)" [disabled]="!isValid()">Save Changes</button>
+    </div>
+    </mat-dialog-actions>

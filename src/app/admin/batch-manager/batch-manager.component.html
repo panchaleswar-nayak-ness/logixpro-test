@@ -1,8 +1,8 @@
-<div class="container-fluid p-0" style="height: 800px;">
+<div class="container-fluid p-0">
   <div class="row">
     <div class="col-12">
 
-      <app-batch-delete  [batchUpdater]="batchUpdater" (transTypeEmitter)="getOrders($event)" (deleteEmitter)="getDeletedOrder($event)">
+      <app-batch-delete   [batchUpdater]="batchUpdater" (transTypeEmitter)="getOrders($event)" (deleteEmitter)="getDeletedOrder($event)">
       </app-batch-delete>
 
     </div>
@@ -11,17 +11,19 @@
 
   
   <div class="row">
-    <div class="col-7 ">
-      <app-batch-order-list   [orderListData]="orderList" [displayedColumns]="displayOrderCols"
+    <div class="col-12 col-xl-7 mb-3 mb-xl-0">
+      <app-batch-order-list  [extraField]="extraField" [transTypeEvent]="transTypeEvent" [orderStatus]="seeOrderStatus"  [orderListData]="orderList" [displayedColumns]="displayOrderCols"
         (addOrderEmitter)="addRemoveOrder($event, 1)" (addRemoveAll)="addRemoveAllOrders('add')">
       </app-batch-order-list>
     </div>
-      <div class="col-5">
-      <app-batch-selected-orders (batchIdUpdateEmit)="onBatchUpdate($event)" [selectedOrderList]="selOrderList" [displayedColumns]="displaySelOrderCols"
+      <div class="col-12 col-xl-5">
+      <app-batch-selected-orders  (batchIdUpdateEmit)="onBatchUpdate($event)" [selectedOrderList]="selOrderList" [displayedColumns]="displaySelOrderCols"
         (removeOrderEmitter)="addRemoveOrder($event, 2)" 
         [batchManagerSettings]="batchManagerSettings" 
+        [isAutoBatch]="isAutoBatch"
         [type]="type" (addRemoveAll)="addRemoveAllOrders('remove')"
         (batchCreated)="batchCreated($event)"
+        [transTypeEvent]="transTypeEvent"
         >
       </app-batch-selected-orders>
     </div>

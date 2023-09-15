@@ -5,6 +5,8 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SharedService } from 'src/app/services/shared.service';
+import { AuthService } from 'src/app/init/auth.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-transaction',
@@ -17,9 +19,11 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   public showReprocess;
   public showReprocessed;
   public setval;
+  fieldNames:any;
   orderStatus$: Observable<any>;
   itemNumber$: Observable<any>;
   type$: Observable<any>;
+  IsOrderStatus:any = false;
   type:any;
   itemNumber:any;
   tabIndex$: Observable<any>;
@@ -28,8 +32,10 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   constructor(
     router: Router,
     private route: ActivatedRoute,
-    private sharedService: SharedService
-  ) {
+    private sharedService: SharedService,
+    public authService: AuthService,
+    private Api: ApiFuntions,
+  ) { 
     // router.events
     //   .pipe(
     //     filter((evt: any) => evt instanceof RoutesRecognized),
@@ -46,9 +52,18 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     //       // this.showReprocessed=true;
     //     }
     //   });
+
+    //get absolute url 
+   if(router.url == '/OrderManager/OrderStatus'){
+    this.TabIndex = 0;
+   }
+   else if(router.url == '/admin/transaction'){
+    this.TabIndex = 1;
+   }
+
   }
   ngAfterViewInit() {
-
+    
 
     this.setval = localStorage.getItem('routeFromInduction')
     this.showReprocess = JSON.parse(this.setval)
@@ -58,21 +73,29 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     this.orderStatus$ = this.route.queryParamMap.pipe(
       map((params: ParamMap) => params.get('orderStatus')),
     );
+ 
     this.tabIndex$ = this.route.queryParamMap.pipe(
       map((params: ParamMap) => params.get('tabIndex')),
     );
-
-    this.tabIndex$.subscribe((param) => {
-      // console.log(param)
+    var IsStatus = this.route.queryParamMap.pipe(
+      map((params: ParamMap) => params.get('IsOrderStatus')),
+    );
+    IsStatus.subscribe((param) => {
+      // debugger
+      if (param!=null &&param != undefined) {
+        this.IsOrderStatus = true;
+      }else this.IsOrderStatus = false;
+    });
+    this.tabIndex$.subscribe((param) => { 
       if (param) {
         this.TabIndex = 0;
         // this.sharedService.updateOrderStatus(param)
       }
     });
-
-    this.orderStatus$.subscribe((param) => {
-      // console.log(param)
-      if (param) {
+    
+    this.orderStatus$.subscribe((param) => { 
+      if(param!=null && param !== undefined){
+       
         this.TabIndex = 0;
         this.sharedService.updateOrderStatus(param)
       }
@@ -123,14 +146,25 @@ export class TransactionComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.OSFieldFilterNames();
+  }
 
   public demo1BtnClick() {
     const tabCount = 3;
     this.TabIndex = (this.TabIndex + 1) % tabCount;
   }
-
+  public OSFieldFilterNames() { 
+    this.Api.ColumnAlias().subscribe((res: any) => {
+      this.fieldNames = res.data;
+      this.sharedService.updateFieldNames(this.fieldNames)
+    })
+  }
   switchToOrder(event) {
     this.TabIndex = 0;
+  }
+
+  onTabChanged(event) {
+    this.sharedService.updateBreadcrumb(event)
   }
 }

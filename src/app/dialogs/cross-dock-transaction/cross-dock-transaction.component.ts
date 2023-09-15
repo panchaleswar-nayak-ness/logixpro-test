@@ -1,7 +1,6 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ReprocessTransactionDetailViewComponent } from '../reprocess-transaction-detail-view/reprocess-transaction-detail-view.component';
-import { ProcessPutAwayService } from '../../../app/induction-manager/processPutAway.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserFieldsComponent } from '../user-fields/user-fields.component';
 import { TotesAddEditComponent } from '../totes-add-edit/totes-add-edit.component';
@@ -10,6 +9,8 @@ import { Router } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -17,7 +18,7 @@ import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirma
   styleUrls: ['./cross-dock-transaction.component.scss']
 })
 export class CrossDockTransactionComponent implements OnInit {
-
+  @ViewChild('complete_focus') complete_focus: ElementRef;
   public itemWhse;
   public userId;
   public wsid;
@@ -42,6 +43,7 @@ export class CrossDockTransactionComponent implements OnInit {
   public nxtToteID;
   public toteID;
   public loopIndex = -1;
+  imPreferences:any;
   @ViewChild('openAction') openAction: MatSelect;
 
 
@@ -50,8 +52,9 @@ export class CrossDockTransactionComponent implements OnInit {
               public dialogRef: MatDialogRef<CrossDockTransactionComponent>, 
               private dialog: MatDialog, 
               @Inject(MAT_DIALOG_DATA) public data: any, 
-              private service: ProcessPutAwayService, 
-              private toastr: ToastrService) { }
+              private Api:ApiFuntions, 
+              private toastr: ToastrService,
+              private global:GlobalService) { }
 
   ngOnInit(): void {
     
@@ -63,10 +66,15 @@ export class CrossDockTransactionComponent implements OnInit {
     this.batchID = this.data.batchID;
     this.zone = this.data.zone;
     this.description = this.data.description;
+    this.imPreferences=this.global.getImPreferences();
+    
 
     this.getCrossDock();
   }
 
+  ngAfterViewInit(): void {
+    this.complete_focus.nativeElement.focus();
+  }
   selectTote(i: any) {
     this.openTotesDialogue(i);
   }
@@ -80,6 +88,7 @@ export class CrossDockTransactionComponent implements OnInit {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data:
       {
         position: position
@@ -136,8 +145,8 @@ export class CrossDockTransactionComponent implements OnInit {
       wsid: this.wsid
     };
 
-    this.service
-      .get(payLoad, '/Induction/CrossDock')
+    this.Api
+      .CrossDock(payLoad)
       .subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
@@ -146,7 +155,7 @@ export class CrossDockTransactionComponent implements OnInit {
             this.allocatedTotal = res.data.allocatedTotal;
             this.backOrderTotal = res.data.backOrderTotal;
             this.numberRecords = res.data.numberRecords;
-            this.upperBound = res.data.transaction.length < 5 ? res.data.numberRecords : 5;
+            this.upperBound = res.data.transaction.length < 5 ? res.data.numberRecords : 5; 
           } else {
             this.toastr.error('Something went wrong', 'Error!', {
               positionClass: 'toast-bottom-right',
@@ -162,13 +171,13 @@ export class CrossDockTransactionComponent implements OnInit {
     this.getCrossDock();
   }
 
-  openUserFieldsDialogue() {
-    // console.log(this.selectedRowObj);
+  openUserFieldsDialogue() { 
     if (this.selectedRowObj) {
       const dialogRef = this.dialog.open(UserFieldsComponent, {
         height: 'auto',
         width: '70vw',
         autoFocus: '__non_existing_element__',
+      disableClose:true,
         data: this.selectedRowObj
       })
       dialogRef.afterClosed().subscribe((res) => {
@@ -208,13 +217,9 @@ export class CrossDockTransactionComponent implements OnInit {
   //   });
   // }
 
-  getNxtToteIds() {
-    let paylaod = {
-      username: this.userId,
-      wsid: this.wsid
-    }
+  getNxtToteIds() { 
     if (this.loopIndex >= 0) {
-      this.service.get(paylaod, '/Induction/NextTote').subscribe(res => {
+      this.Api.NextTote().subscribe(res => {
         this.transactions[this.loopIndex].toteID = res.data  + '-RT';
         this.nxtToteID = ++res.data;
         this.updateNxtTote();
@@ -237,7 +242,7 @@ export class CrossDockTransactionComponent implements OnInit {
       username: this.userId,
       wsid: this.wsid
     }
-    this.service.update(updatePayload, '/Induction/NextToteUpdate').subscribe(res => {
+    this.Api.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
         this.toastr.error('Something is wrong.', 'Error!', {
           positionClass: 'toast-bottom-right',
@@ -253,6 +258,7 @@ export class CrossDockTransactionComponent implements OnInit {
       height: 'auto',
       width: '70vw',
       autoFocus: '__non_existing_element__',
+      disableClose:true,
       data:{
         itemID:this.selectedRowObj.id
       }
@@ -284,21 +290,22 @@ export class CrossDockTransactionComponent implements OnInit {
     this.dialogRef.close({ data : "Submit", qtyToSubtract : this.qtyToSubtract });
   }
 
-  viewOrderStatus() {
-    // console.log(this.selectedRowObj);
-    this.clearMatSelectList()
+  viewOrderStatus() { 
+    this.clearMatSelectList();
     this.router.navigate([]).then((result) => {
-      window.open(`/#/InductionManager/TransactionJournal?orderStatus=${this.selectedRowObj.orderNumber}`, '_blank');
+      window.open(`/#/InductionManager/Admin/TransactionJournal?orderStatus=${this.selectedRowObj.orderNumber}`, '_blank');
     });
   }
 
+  OTRecID
+   
   compPick() {
     try {
-
       let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
+      disableClose:true,
         data: {
           message: 'Click OK to complete this Cross Dock transaction.  The pick transaction will be posted as completed for the displayed quantity.  A matching put away record will be created for the Cross Dock quantity.',
         },
@@ -312,13 +319,13 @@ export class CrossDockTransactionComponent implements OnInit {
             "put": this.data.values.toteQty,
             "reel": this.data.values.subCategory == 'reel tracking' ? true : false,
             "ser": this.data.values.serialNumber,
-            "htid": this.selectedRowObj.hostTransactionID,
-            "rpid": this.selectedRowObj.id,
+            "htid": this.transactions[this.selectedRow].hostTransactionID,
+            "rpid": this.transactions[this.selectedRow].id,
             "otid": this.data.otid,
             "item": this.data.values.itemNumber,
-            "uf1": this.selectedRowObj.userField1 ? this.selectedRowObj.userField1 : "",
-            "toteID": this.selectedRowObj.toteID,
-            "order": this.selectedRowObj.orderNumber,
+            "uf1": this.transactions[this.selectedRow].userField1 ? this.transactions[this.selectedRow].userField1 : "",
+            "toteID": this.transactions[this.selectedRow].toteID,
+            "order": this.transactions[this.selectedRow].orderNumber,
             "invMapID": this.data.values.invMapID,
             "whse": this.data.values.warehouse,
             "batch": this.data.values.batchID,
@@ -326,11 +333,31 @@ export class CrossDockTransactionComponent implements OnInit {
             "wsid": this.wsid
           };
     
-          this.service.create(payLoad, '/Induction/CompletePick').subscribe(
+          this.Api.CompletePick(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
+               this.OTRecID = res.data
                 this.qtyToSubtract += this.selectedRowObj.completedQuantity ? parseInt(this.selectedRowObj.completedQuantity) : 0;
                 this.getCrossDock();
+
+                if(this.imPreferences.autoPrintCrossDockLabel){
+                  if (this.imPreferences.printDirectly) {
+                    this.PrintCrossDock()
+                  }
+                  else{
+                    window.open(`/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                    this.toastr.success('Pick Completed Successfully', 'Success!', {
+                      positionClass: 'toast-bottom-right',
+                      timeOut: 2000,
+                    });
+                  }
+                }
+                else{
+                  this.toastr.success('Pick Completed Successfully', 'Success!', {
+                    positionClass: 'toast-bottom-right',
+                    timeOut: 2000,
+                  });
+                }
               } else {
                 this.toastr.error('Something went wrong', 'Error!', {
                   positionClass: 'toast-bottom-right',
@@ -343,9 +370,60 @@ export class CrossDockTransactionComponent implements OnInit {
         }
       });
       
-    } catch (error) {
-      console.log(error);
+    } catch (error) { 
     }
+  }
+
+  PrintCrossDock(){
+    var res:any =  this.global.Print(`FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`);
+     
+        if(res){
+      this.showConfirmationDialog('Click OK if the tote label printed correctly.',(open)=>{
+        if(!open){
+        this.PrintCrossDock();
+        }else{
+          this.PrintCrossDockForLbl();
+        }
+      });
+        } 
+  }
+
+
+   PrintCrossDockForLbl(){
+   var res:any =  this.global.Print(`FileName:autoPrintCrossDock|tote:false|otid:${this.OTRecID}|ZoneLabel:${this.zone}`);
+    
+     if(res){
+    this.showConfirmationDialog('Click OK if the item label printed correctly.',(open)=>{
+      if(!open){
+      this.PrintCrossDockForLbl();
+      }else{
+        this.toastr.success('Pick Completed Successfully', 'Success!', {
+          positionClass: 'toast-bottom-right',
+          timeOut: 2000,
+        });
+       return
+      }
+    });
+      } 
+  }
+
+  async showConfirmationDialog(message,callback) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: '560px',
+      autoFocus: '__non_existing_element__',
+      disableClose: true,
+      data: {
+        message: message,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result=='Yes'){
+        callback(true)
+      }else{
+        callback(false)
+      }
+    })
   }
 
   completePick() {
@@ -356,6 +434,7 @@ export class CrossDockTransactionComponent implements OnInit {
           height: 'auto',
           width: '560px',
           autoFocus: '__non_existing_element__',
+      disableClose:true,
           data: {
             message: 'Click OK to proceed without a tote ID. Click Cancel to provide a tote ID.',
           },
@@ -370,8 +449,25 @@ export class CrossDockTransactionComponent implements OnInit {
         this.compPick();
       }
       
-    } catch (error) {
-      console.log(error)
+    } catch (error) { 
+    }
+  }
+
+  print(type:any){
+
+    if(type == 'printtotelabel'){
+      if(this.imPreferences.printDirectly){
+        this.global.Print(`FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:${this.selectedRowObj.toteID}`)
+      }else{
+        window.open(`/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:${this.selectedRowObj.toteID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+      }
+    }
+    else{
+      if(this.imPreferences.printDirectly){
+        this.global.Print(`FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`)
+      }else{
+        window.open(`/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+      }
     }
   }
 }

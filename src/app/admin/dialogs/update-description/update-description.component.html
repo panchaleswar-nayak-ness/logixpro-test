@@ -19,7 +19,7 @@
         <div>
             <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <mat-label>Description</mat-label>
-                <textarea matInput [(ngModel)]="data.description" style="min-height: 100px ;" maxlength="255"></textarea>
+                <textarea #des_focus matInput [(ngModel)]="data.description" style="min-height: 100px ;" maxlength="255"></textarea>
             </mat-form-field>
         </div>
         <div class="d-flex justify-content-end pt-3">

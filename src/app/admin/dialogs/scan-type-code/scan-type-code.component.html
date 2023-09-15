@@ -37,7 +37,7 @@
         <div class="row">
             <mat-radio-group aria-label="Select an option" color="primary" class="w-100">
 
-                <div *ngFor="let unit of scanTypeCode_list;" class="d-flex align-items-center">
+                <div *ngFor="let unit of scanTypeCode_list;let i = index" class="d-flex align-items-center">
 
                     <mat-radio-button class="custom-radio-btn w-100 mb-2" value="{{unit}}" class="custom-radio-btn" (change)="selectScanTypeCode(scanCodeType.value)">
                     </mat-radio-button>
@@ -48,7 +48,7 @@
                                 <div class="d-flex gap-12 align-items-center">
                                     <mat-form-field class="custom-form-field w-100" appearance="outline">
                                         <mat-label>Scan Code Type</mat-label>
-                                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" name="{{unit}}" value="{{unit}}" #scanCodeType>
+                                        <input #scan_code_type [autofocus]="i === 0" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" name="{{unit}}" value="{{unit}}" #scanCodeType>
                                     </mat-form-field>
 
                                     <button mat-flat-button color="warn" class="xsm-icon-button" (click)="dltScanTypeCode(scanCodeType.value);">

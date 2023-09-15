@@ -43,15 +43,15 @@
                     <div class="col-12">
                         <div class="d-flex justify-content-between align-items-center gap-12">
                         <mat-form-field class="d-block w-100" appearance="outline">
-                            <input (keydown.shift.enter)="$event.preventDefault()" (keypress)="changeDisable(i)" matInput type="text" #vlname
-                                name="{{vlcode}}" value="{{vlcode}}">
+                            <input #vl_name [autofocus]="i === 0" (keydown.shift.enter)="$event.preventDefault()" (keypress)="changeDisable(i)" matInput type="text" #vlname
+                                name="{{vlcode}}" value="{{vlcode}}" maxlength="50">
                         </mat-form-field>
                         <div class="d-flex gap-12">
                             <button [disabled]="disableEnable[i] && disableEnable[i].value ? disableEnable[i].value : false" mat-flat-button color="primary" class="xsm-icon-button" (click)="saveVlCode(vlname.value, vlcode)">
                                 <mat-icon class="material-symbols-outlined">save</mat-icon>
                             </button>
                             <button mat-flat-button color="warn" class="xsm-icon-button"
-                            (click)="delete(vlname.value);">
+                            (click)="deleteVC(vlcode);">
                             <mat-icon class="material-symbols-outlined">close</mat-icon>
                         </button>
                     

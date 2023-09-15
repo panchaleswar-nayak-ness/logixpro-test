@@ -1,10 +1,10 @@
 <mat-card class="mat-elevation-z g-card mb-4 mt-2 h-100">
     <mat-card-content>
         <div class="row">
-            <div class="col-xl-9">
+            <div class="col mb-3">
                 <h2 class="card-header-title mb-0 d-flex align-items-center mb-3">
 
-                    <div class="mat-icon-wrap me-lg-3">
+                    <div class="mat-icon-wrap me-lg-3 me-2">
                         <span class="material-symbols-outlined">
                             tab_unselected
                         </span>
@@ -12,9 +12,9 @@
                     <span>Reprocessed Transactions</span>
                 </h2>
             </div>
-            <div class="col-xl-3 d-flex justify-content-end">
-
-                <mat-form-field class="action-dropdown w-30" appearance="outline">
+            <div class="col-xl-2 offset-xl-5 d-flex justify-content-end mb-3">
+                <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
+                <mat-form-field class="action-dropdown" appearance="outline" style="flex:1 auto">
                     <mat-label>Action</mat-label>
                     <mat-select  #matRef  class="employees-action" (openedChange)="actionDialog($event)"
                         [(value)]="selectedVariable" placeholder="Actions">
@@ -25,15 +25,18 @@
                         expand_more
                     </span>
                 </mat-form-field>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-5">
-                <div class="d-flex gap-12 align-items-center ">
-                    <mat-form-field class="action-dropdown" appearance="outline">
+            <div class="col-xl-5">
+                <div class="d-block d-xl-flex gap-12 align-items-center">
+                    <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline" style="flex:1">
                         <mat-label>Search</mat-label>
-                        <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn">
-                            <mat-option *ngFor="let item of displayedColumns" [value]="item">
+                        <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn"
+                        (selectionChange)="resetFields($event.value)">
+                            <mat-option value="" (click)="this.orderSelectionSearch = true"></mat-option>
+                            <mat-option *ngFor="let item of displayedColumns | sort:'colDef':false" [value]="item">
                                 {{item.colDef}}
                             </mat-option>
                         </mat-select>
@@ -42,8 +45,8 @@
                         </span>
                     </mat-form-field>
 
-                    <span class="v-br">-</span>
-                    <div class="d-flex g-mini-search-box w-100">
+                    <span class="v-br d-none d-xl-flex mb-3">-</span>
+                    <div class="d-flex g-mini-search-box w-100 mb-3">
 
                        
 
@@ -54,7 +57,8 @@
                             </span>
                             <input type="text" placeholder="Search" aria-label="Number" matInput
                                 [(ngModel)]='this.columnSearch.searchValue' [matAutocomplete]="auto"
-                                (ngModelChange)="this.searchBar.next($event)">
+                                (ngModelChange)="this.searchBar.next($event)"  [disabled]="orderSelectionSearch">
+                                <button matSuffix *ngIf="this.columnSearch.searchValue" class="clear-btn"  (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             <mat-autocomplete #auto="matAutocomplete"
                                 (optionSelected)="searchData($event.option.value)">
                                 <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
@@ -70,7 +74,7 @@
 
         </div>
 
-        <div class="card br-14 table-responsive my-3">
+        <div class="card br-14 table-responsive mb-3">
             <!-- <ng-scrollbar style="height: 200px;"></ng-scrollbar> -->
             <ng-scrollbar style="height:500px" track="all" class="mat-table-scrollbar">
                 <table mat-table class="custom-table  table-fix" #table [dataSource]="dataSource" matSort
@@ -81,12 +85,12 @@
 
                         <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header
                             (sortActionDescription)="indexOfelement"
-                            style="width:auto; padding: 5px 18px; border-bottom: 1px solid var(--clr-tertiary-50);">
+                            style="width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);">
                             {{ col.colDef }}
 
                         </th>
 
-                        <td *matCellDef="let element"  mat-cell  style="padding: 10px 18px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;" #tooltip="matTooltip"
+                        <td *matCellDef="let element"  mat-cell  style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;" #tooltip="matTooltip"
                          [matTooltip]="element[col.colHeader]"   matTooltipPosition="above" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true"> {{
                             element[col.colHeader] }}</td>
 
@@ -113,7 +117,7 @@
         </div>
 
         <div class="table-pagination d-flex justify-content-start" *ngIf="columnValues.length>0 && displayedColumns && dataSource">
-            <mat-paginator [length]="this.customPagination.total" [pageSize]="20" [pageSizeOptions]="[10, 20, 100]"
+            <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"
                 (page)="handlePageEvent($event)"></mat-paginator>
 
 

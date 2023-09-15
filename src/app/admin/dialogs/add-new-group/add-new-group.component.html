@@ -11,7 +11,7 @@
 
     <mat-form-field class="mb-3 w-100" appearance="outline">
       <mat-label>New Group Name</mat-label>
-      <input matInput type="text" maxlength="50" name="groupName" required="required" [(ngModel)]="groupName" (keyup)="checkIfValid(groupName)">
+      <input #new_group matInput type="text" maxlength="50" name="groupName" required="required" [(ngModel)]="groupName" (keyup)="checkIfValid(groupName)">
     </mat-form-field>
 
     <mat-dialog-actions align="end">

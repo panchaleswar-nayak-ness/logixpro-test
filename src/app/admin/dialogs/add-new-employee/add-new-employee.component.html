@@ -20,12 +20,12 @@
     <mat-checkbox *ngIf="data?.mode === 'edit'" matInput  formControlName="active" style="margin-right: 12px;" class="example-margin custom-checkbox mb-3" color="primary">Active</mat-checkbox>
     <mat-form-field class="mb-3 w-100" appearance="outline">
       <mat-label>Last Name</mat-label>
-      <input matInput type="text" formControlName="lastName" maxlength="30">
+      <input #last_name matInput type="text" formControlName="lastName" maxlength="30" (keydown.space)="$event.preventDefault();">
     </mat-form-field>
     
     <mat-form-field class="mb-3 w-100" appearance="outline">
       <mat-label>First Name</mat-label>
-      <input matInput type="text" formControlName="firstName" maxlength="30">
+      <input matInput type="text" formControlName="firstName" maxlength="30" (keydown.space)="$event.preventDefault();">
     </mat-form-field>
     
     <mat-form-field class="mb-3 w-100" appearance="outline">
@@ -60,24 +60,49 @@
       </span>
     </mat-form-field>
 
-    <mat-form-field class="mb-3 w-100" appearance="outline" (click)="toggleDisabled()">
+    <mat-form-field class="mb-3 w-100" appearance="outline"  *ngIf="(env === 'DB') && this.IsEdit == true">
+      <mat-label>Group</mat-label>
+      <mat-select formControlName="groupName" (selectionChange)="groupChange($event)">
+        <mat-option *ngFor="let item of allGroups" [value]="item.groupName">{{item.groupName}}</mat-option>
+      </mat-select>
+      <span class="material-symbols-outlined icon-expand-more">
+        expand_more
+      </span>
+    </mat-form-field>
+
+    <mat-form-field class="mb-1 w-100" appearance="outline" (click)="toggleDisabled()" *ngIf="(env === 'DB'|| env === 'ADLDS')">
       <mat-label>Password</mat-label>
-      <input matInput [type]="toggle_password ? 'password' : 'text'" #focusFeild formControlName="password" (focusout)="isEmptyPass()" (keydown.space)="$event.preventDefault()" maxlength="16">
-      <button *ngIf="!isDisabledPassword" type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
+      <input matInput [type]="toggle_password ? 'password' : 'text'" #focusFeild formControlName="password" 
+      (ngModelChange)="ChangePassword($event)"
+      (focusout)="isEmptyPass()" (keydown.space)="$event.preventDefault()" [maxlength]="env === 'DB' ? 8 : 16">
+      <button *ngIf="!isDisabledPassword && (!IsEdit)"
+       type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
         <mat-icon>{{toggle_password ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
     </mat-form-field>
+    <!-- <div *ngIf="empForm.get('password')?.invalid && (empForm.get('password')?.dirty || empForm.get('password')?.touched)"
+    style="color: red;
+    font-size: 13px;
+    margin: 0;
+    padding: 0;"
+    >Password must be maximum {{env === 'DB'?'16':'8'}} characters long.</div>  -->
     <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
 
-    <mat-form-field class="mb-3 w-100" appearance="outline" *ngIf="isEmail">
+    <mat-form-field class="mb-1 w-100" appearance="outline" *ngIf="isEmail">
       <mat-label>Email Address</mat-label>
-      <input matInput type="email" formControlName="emailAddress" maxlength="255">
+      <input matInput type="email" formControlName="emailAddress" maxlength="255" (keydown.space)="$event.preventDefault();">
+      <!-- <div *ngIf="empForm.get('emailAddress')?.invalid && (empForm.get('emailAddress')?.dirty || empForm.get('emailAddress')?.touched)">Email is invalid</div> -->
+
     </mat-form-field>
 
-
+    <mat-hint class="error-message" style="color: red;font-size: 14px;"
+    *ngIf="empForm.get('emailAddress')?.invalid && (empForm.get('emailAddress')?.dirty || empForm.get('emailAddress')?.touched)">
+   Invalid email address
+  </mat-hint>
     
 
     <mat-dialog-actions align="end">
+       
       <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100 mb-3" [disabled]="!empForm.valid" color="primary">{{form_btn_label}}</button>
     </mat-dialog-actions>
 

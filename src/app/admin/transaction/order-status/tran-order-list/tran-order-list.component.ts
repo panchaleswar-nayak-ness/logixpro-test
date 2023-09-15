@@ -12,9 +12,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { SelectionModel } from '@angular/cdk/collections';
-import { SetColumnSeqService } from 'src/app/admin/dialogs/set-column-seq/set-column-seq.service';
-import { TransactionService } from '../../transaction.service';
+import { SelectionModel } from '@angular/cdk/collections'; 
 import { AuthService } from 'src/app/init/auth.service';
 import {
   debounceTime,
@@ -30,6 +28,13 @@ import { BYPASS_LOG } from 'src/app/init/http-interceptor';
 import { SharedService } from 'src/app/services/shared.service';
 import { FilterToteComponent } from 'src/app/admin/dialogs/filter-tote/filter-tote.component';
 import { MatDialog } from '@angular/material/dialog';
+import { OmChangePriorityComponent } from 'src/app/dialogs/om-change-priority/om-change-priority.component';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
+import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ShippingCompleteDialogComponent } from 'src/app/dialogs/shipping-complete-dialog/shipping-complete-dialog.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-tran-order-list',
@@ -39,6 +44,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class TranOrderListComponent implements OnInit, AfterViewInit {
   public columnValues: any = [];
   public Order_Table_Config = [
+    { colHeader: 'status', colDef: 'Status' },
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
     { colHeader: 'completedDate', colDef: 'Completed Date' },
     { colHeader: 'location', colDef: 'Location' },
@@ -98,6 +104,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'inProcess', colDef: 'In Process' },
   ];
   public displayedColumns: string[] = [
+    'status',
     'transactionType',
     'completedDate',
     'location',
@@ -156,6 +163,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   //   'label',
   //   'inProcess',
   //   'rn',
+
   public dataSource: any = new MatTableDataSource();
   public userData: any;
   public detailDataInventoryMap: any;
@@ -172,13 +180,13 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   public catchToteId;
   isToolTipDisabled = false;
   searchByInput = new Subject<string>();
+  setVal
 
-  compDate='';
+  compDate = '';
   @Input()
   set deleteEvnt(event: Event) {
     if (event) {
-      this.getContentData();
-      // console.log(this.detailDataInventoryMap);
+      this.getContentData(); 
     }
   }
 
@@ -195,7 +203,9 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       //     ? (this.orderNo = event.searchField)
       //     : (this.toteId = event.searchField);
 
+      console.log('orderNoEvent',this.orderNo,event);
       this.getContentData();
+      this.selShipComp(event);
       // }
     }
     // this.getContentData();
@@ -256,21 +266,35 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public priority = false;
+  shippingComplete = false;
+
   constructor(
-    private transactionService: TransactionService,
+    private Api:ApiFuntions,
     private authService: AuthService,
     private _liveAnnouncer: LiveAnnouncer,
     private sharedService: SharedService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private global:GlobalService,
+    private router: Router,
+    private filterService: ContextMenuFiltersService
+  ) {
+    this.setVal = localStorage.getItem('routeFromOrderStatus')
+    if(router.url == '/OrderManager/OrderStatus' || router.url == '/OrderManager/OrderStatus?type=TransactionHistory'|| this.setVal == 'true'){
+      this.priority = true;
+    }
+    else if(router.url == '/admin/transaction'){
+      this.priority = false;
+    }
+  }
 
-  getEleLength(ele) {
-    // console.log('=----',ele)
+  getEleLength(ele) { 
   }
   getContentData() {
     if (this.searchCol === 'Tote ID') {
     }
-    this.payload = {
+     
+    this.payload = { 
       draw: 0,
       compDate: this.compDate,
       identify: this.orderNo ? 0 : 1,
@@ -285,14 +309,15 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       toteID: this.toteId,
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
-      filter: '1=1',
+      filter: this.FilterString,
       username: this.userData.userName,
       wsid: this.userData.wsid,
     };
-    this.transactionService
-      .get(this.payload, '/Admin/OrderStatusData', true)
+    this.Api
+      .OrderStatusData(this.payload)
       .subscribe(
         (res: any) => {
+          
           // this.getTransactionModelIndex();
           this.detailDataInventoryMap = res.data?.orderStatus;
           this.getOrderForTote = res.data?.orderNo;
@@ -328,9 +353,12 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                 res.data.orderStatus.length > 0 &&
                 res.data.orderStatus[0].transactionType
             );
+            
             this.currentStatusChange(res.data.completedStatus);
             this.totalLinesOrderChange(res.data?.totalRecords);
-            this.sharedService.updateOrderStatusSelect({totalRecords:res.data?.totalRecords})
+            this.sharedService.updateOrderStatusSelect({
+              totalRecords: res.data?.totalRecords,
+            });
           }
 
           if (res.data?.onCar.length) {
@@ -352,6 +380,23 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       );
   }
 
+  selShipComp(event:any){
+    if(event.searchField != "" && event.columnFIeld == "Order Number"){
+      this.Api.selShipComp({ orderNumber: event.searchField }).subscribe((res: any) => {
+        if (res.isExecuted) {
+          if (res.data == "") {
+            this.shippingComplete = false;
+          } else {
+            this.shippingComplete = true;
+          }
+        }
+      });
+    }
+    else{
+      this.shippingComplete = false;
+    }
+  }
+
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value || 'auto';
   }
@@ -366,11 +411,10 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       wsid: this.userData.wsid,
     };
 
-    this.transactionService
-      .get(this.payload, '/Admin/DeleteOrder', true)
+    this.Api
+      .DeleteOrder(this.payload)
       .subscribe(
-        (res: any) => {
-          // console.log(res);
+        (res: any) => { 
         },
         (error) => {}
       );
@@ -414,8 +458,8 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       username: this.userData.userName,
       wsid: this.userData.wsid,
     };
-    this.transactionService
-      .get(paylaod, '/Admin/TransactionModelIndex')
+    this.Api
+      .TransactionModelIndex(paylaod)
       .subscribe(
         (res: any) => {
           // this.columnValues = res.data?.openTransactionColumns;
@@ -430,6 +474,46 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.searchCol = '';
     this.searchString = '';
     this.clearFromListChange.emit(event);
+  }
+  getClass(element) {
+    return 'addRow';
+  }
+  getTransTypeColor(element) {
+    if (element.transactionType.toLowerCase() === 'pick') {
+      return 'background-color: #CF9ECF';
+    } else if (element.transactionType.toLowerCase() === 'putaway' || element.transactionType.toLowerCase() ===  'put away') {
+      return 'background-color: #d9edf7';
+    } else if (element.transactionType.toLowerCase() === 'count') {
+      return 'background-color: #FFDBB8';
+    } else if (element.transactionType.toLowerCase() === 'complete') {
+      return 'background-color: #e0e0d1';
+    } else if (element.transactionType.toLowerCase() === 'locationChange') {
+      return 'background-color: #ADAD85';
+    } else if (element.transactionType.toLowerCase() === 'shipping') {
+      return 'background-color: #8585A6';
+    } else if (element.transactionType.toLowerCase() === 'shippingcomplete' || element.transactionType.toLowerCase() === 'shipping complete' ) {
+      return 'background-color: #ff708c';
+    } else if (element.transactionType.toLowerCase() === 'adjustment') {
+      return 'background-color: #85A37A';
+    } else {
+      return;
+    }
+  }
+
+  getStatus(element){
+    if (
+      element.tableType.toLowerCase() === 'open' &&
+      element.completedDate == '' &&
+      element.fileFrom.toLowerCase() == 'open'
+    ) {
+      return 'Open';
+    } else if (element.completedDate != '') {
+      return 'Completed';
+    } else if (element.fileFrom.toLowerCase() != 'open') {
+      return 'Re-process';
+    } else {
+      return;
+    }
   }
   getColor(element) {
     if (
@@ -468,8 +552,8 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
     // NextSuggestedTransactions
     // OrderNumberNext
-    this.transactionService
-      .get(searchPayload, `/Admin/NextSuggestedTransactions`, true)
+    this.Api
+      .NextSuggestedTransactions(searchPayload)
       .subscribe(
         (res: any) => {
           this.searchAutocompleteList = res.data;
@@ -509,6 +593,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.searchCol = event;
     this.searchString = '';
     this.searchAutocompleteList = [];
+    this.searchByInput.next(event)
   }
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
@@ -546,83 +631,188 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.searchByInput
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
-        this.searchString = value;
+        // this.searchString = value;
         this.autocompleteSearchColumn();
         this.getContentData();
       });
-    this.getContentData();
-
+    // this.getContentData();
 
     // Data coming from select order when user enter / check tote filter by Id it gets object type it tote id selected only
-    // then it will do send back the order number to select order component and set order field and also check if 
-    // scanValidate to check dates available if available it shows popup and when we select date it filters data by passing compdate to 
-    // orderstatus table generation api . 
+    // then it will do send back the order number to select order component and set order field and also check if
+    // scanValidate to check dates available if available it shows popup and when we select date it filters data by passing compdate to
+    // orderstatus table generation api .
     this.subscription.add(
       this.sharedService.orderStatusObjObserver.subscribe((obj) => {
         if (obj.type === 'Tote ID') {
           this.sharedService.updateOrderStatusOrderNo(this.getOrderForTote);
           this.orderNo = this.getOrderForTote;
-          this.toteId='';
+          this.toteId = '';
           this.getContentData();
           let payload = {
-            orderNumber:this.getOrderForTote, // 1974869 //this.getOrderForTote
+            orderNumber: this.getOrderForTote, // 1974869 //this.getOrderForTote
             username: this.userData.userName,
             wsid: this.userData.wsid,
           };
-          this.transactionService
-            .get(payload, `/Admin/ScanValidateOrder`, true)
+          this.Api
+            .ScanValidateOrder(payload)
             .subscribe(
               (res: any) => {
-                if (res.isExecuted && res.data.length > 0 && res.data.length>=2) {
-                  res.data[0]='Entire Order';
+                if (
+                  res.isExecuted &&
+                  res.data.length > 0 &&
+                  res.data.length >= 2
+                ) {
+                  res.data[0] = 'Entire Order';
                   // add default check for tote id
-                    this.sharedService.updateToteFilterCheck(true);
+                  this.sharedService.updateToteFilterCheck(true);
                   const dialogRef = this.dialog.open(FilterToteComponent, {
                     width: '650px',
                     autoFocus: '__non_existing_element__',
+      disableClose:true,
                     data: {
                       dates: res.data,
                       orderName: this.getOrderForTote,
                     },
                   });
                   dialogRef.afterClosed().subscribe((res) => {
-                    if(res.selectedDate!='' && res.selectedDate!=undefined ){
-                      if(res.selectedDate=='Entire Order'){
-                        this.compDate='';
-                      }else{
-                        this.compDate=res.selectedDate;
+                    if (
+                      res.selectedDate != '' &&
+                      res.selectedDate != undefined
+                    ) {
+                      if (res.selectedDate == 'Entire Order') {
+                        this.compDate = '';
+                      } else {
+                        this.compDate = res.selectedDate;
                       }
-                      
+
                       this.getContentData();
                     }
-                 
                   });
-                }else{
-                  this.compDate='';
+                } else {
+                  this.compDate = '';
                 }
               },
               (error) => {}
             );
-
-
         }
-
-      
       })
     );
 
-
     this.subscription.add(
-           this.sharedService.updateCompDateObserver.subscribe((obj) => {
-            this.compDate='';
-           })
-    )
+      this.sharedService.updateCompDateObserver.subscribe((obj) => {
+        this.compDate = '';
+      })
+    );
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-  
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  openGcBeginTest() { 
+    let dialogRef = this.dialog.open(OmChangePriorityComponent, { 
+      height: 'auto',
+      width: '560px',
+      autoFocus: '__non_existing_element__',
+      disableClose:true, 
+      data: {
+        orderNo: this.orderNo,
+        priorityTable: this.dataSource.filteredData[0].priority,
+        
+        
+      }
+    })
+    dialogRef.afterClosed().subscribe(result =>{
+      if( result.isExecuted){
+        this.getContentData();
+      }
+    })
+    }
+
+  @ViewChild('trigger') trigger: MatMenuTrigger;
+  contextMenuPosition = { x: '0px', y: '0px' };
+  FilterString: string = "1 = 1";
+
+  getColDef(colHeader:any){
+    return this.Order_Table_Config.filter((item) => item.colHeader == colHeader)[0]?.colDef ?? '';
+  }
+
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
+    this.trigger.menu?.focusFirstItem('mouse');
+    this.trigger.openMenu();
+  }
+
+  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
+
+    this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
+    if(FilterColumnName != "" || Condition == "clear"){
+      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
+      this.FilterString = this.FilterString != "" ? this.FilterString : "1=1";
+      this.resetPagination();
+      this.getContentData();
+    }
+  }
+
+  resetPagination(){
+    this.customPagination.startIndex = 0;
+    this.customPagination.endIndex = 20;
+    this.paginator.pageIndex = 0;
+  }
+
+  getType(val): string {
+    return this.filterService.getType(val);
+  }
+
+  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
+    const dialogRef = this.dialog.open(InputFilterComponent, {
+      height: 'auto',
+      width: '480px',
+      data: {
+        FilterColumnName: FilterColumnName,
+        Condition: Condition,
+        TypeOfElement: TypeOfElement
+      },
+      autoFocus: '__non_existing_element__',
+      disableClose:true,
+    })
+    dialogRef.afterClosed().subscribe((result) => {
+      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
+    }
+    );
+  }
+
+
+  ShippingCompleteDialog() {
+    const dialogRef = this.dialog.open(ShippingCompleteDialogComponent,{
+      height: 'auto',
+      width: '100vw',
+      autoFocus: '__non_existing_element__',
+      disableClose:true,
+      data: {
+        orderNumber: this.orderNo,
+      },
+    });
+
+  }
+
+  printReport(){
+    this.global.Print(`FileName:printOSReport|OrderNum:${this.orderNo}|ToteID:|Identifier:0`)
+    // window.location.href = `/#/report-view?file=FileName:printOSReport|OrderNum:${this.orderNo}|ToteID:|Identifier:0`;
+    // window.location.reload();
+  }
+
+  previewReport(){ 
+    window.open(`/#/report-view?file=OrderStatus-lst-prv|field:Order Number|exptype:=|expone:${this.orderNo}|exptwo:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+   
+      
+    // window.location.href = `/#/report-view?file=OrderStatus-lst-prv|field:Order Number|exptype:=|expone:${this.orderNo}|exptwo:`;
+    // window.location.reload();
   }
 }

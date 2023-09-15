@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-between mb-4 align-items-center">
+<div class="d-flex justify-content-between mb-4 align-items-center" mat-dialog-title>
     <div style="width:48px"></div>
     <h1 class="m-0" mat-dialog-title>Set Column Sequence</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
@@ -6,38 +6,39 @@
     </button>
 </div>
 
-<div class="d-flex flex-column justify-content-between" style=" height: 89%;">
+<div class="d-flex flex-column justify-content-between" mat-dialog-content>
     <div class=" mb-3" cdkDropListGroup>
-        <div class="row">
+        <div class="row" >
             <div class="col-6">
                 <div class="card w-100">
                     <div class="card-header">
                         Unordered Columns
                     </div>
                     <div class="card-body py-0 example-container">
-                        <ng-scrollbar style="height: 63vh">
-
-                            <mat-list cdkDropList [cdkDropListData]="unorderedCol" class="example-list"
-                                (cdkDropListDropped)="drop($event)" class="zones-list g-card-list list-style-1"
-                                role="list">
-
-                                <mat-list-item *ngFor="let item of unorderedCol ; let indexOfelement=index;" cdkDrag
-                                    class="pe-0" role="listitem">
-                                    <div class="d-flex w-100 justify-content-between __grab_cursor ">
-                                        <span class="list-label zone-list-label d-flex align-items-center">
-                                            <mat-icon class="me-2" matTooltip="Drag"
-                                                matTooltipPosition="left">drag_indicator</mat-icon>
-                                            <span>{{item}}</span>
-                                        </span>
-                                        <button (click)="addArr(indexOfelement)" mat-icon-button
-                                            aria-label="Add Function" matTooltip="Add" matTooltipPosition="right">
-                                            <mat-icon class="icon-circle-edit">add</mat-icon>
-                                        </button>
-                                    </div>
-                                </mat-list-item>
-
-                            </mat-list>
-                        </ng-scrollbar>
+                        <!-- <ng-scrollbar style="height: 53vh" cdkScrollable mat-dialog-content> -->
+                            <div cdkScrollable scrollViewport  class="custom-scrollbar" style="height: 53vh; -webkit-overflow-scrolling: touch;">
+                                <mat-list cdkDropList [cdkDropListData]="unorderedCol" class="example-list"
+                                    (cdkDropListDropped)="drop($event)" class="zones-list g-card-list list-style-1"
+                                    role="list">
+    
+                                    <mat-list-item *ngFor="let item of unorderedCol ; let indexOfelement=index;" 
+                                        class="pe-0" role="listitem" cdkDrag>
+                                        <div class="d-flex w-100 justify-content-between __grab_cursor ">
+                                            <span class="list-label zone-list-label d-flex align-items-center">
+                                                <mat-icon class="me-2" matTooltip="Drag"
+                                                    matTooltipPosition="left" cdkDragHandle>drag_indicator</mat-icon>
+                                                <span>{{item}}</span>
+                                            </span>
+                                            <button (click)="addArr(indexOfelement)" mat-icon-button
+                                                aria-label="Add Function" matTooltip="Add" matTooltipPosition="right">
+                                                <mat-icon class="icon-circle-edit">add</mat-icon>
+                                            </button>
+                                        </div>
+                                    </mat-list-item>
+    
+                                </mat-list>
+                        </div>
+                        <!-- </ng-scrollbar> -->
                     </div>
                 </div>
 
@@ -48,45 +49,49 @@
                         Default Columns
                     </div>
                     <div class="card-body py-0 example-container">
-                        <ng-scrollbar style="height: 63vh">
-
-                            <mat-list cdkDropList [cdkDropListData]="defaultCol" class="example-list"
-                                (cdkDropListDropped)="drop($event)" class="zones-list g-card-list list-style-1"
-                                role="list">
-
-                                <mat-list-item *ngFor="let item of defaultCol ; let indexOfelement=index;" cdkDrag
-                                    class="pe-0" role="listitem">
-                                    <div class="d-flex w-100 justify-content-between __grab_cursor ">
-                                        <span class="list-label zone-list-label d-flex align-items-center">
-                                            <mat-icon class="me-2" matTooltip="Drag"
-                                                matTooltipPosition="left">drag_indicator</mat-icon>
-                                            <span>{{item}}</span>
-                                        </span>
-                                        <button (click)="remove(indexOfelement)" mat-icon-button
-                                            aria-label="Remove Function" matTooltip="Remove" matTooltipPosition="right">
-                                            <mat-icon class="icon-circle-cancel">close</mat-icon>
-                                        </button>
-                                    </div>
-                                </mat-list-item>
-
-                            </mat-list>
-                        </ng-scrollbar>
+                        <!-- <ng-scrollbar style="height: 53vh" mat-dialog-content> -->
+                            <div cdkScrollable scrollViewport class="custom-scrollbar" style="height: 53vh; -webkit-overflow-scrolling: touch;">
+                                <mat-list cdkDropList [cdkDropListData]="defaultCol" class="example-list"
+                                    (cdkDropListDropped)="drop($event)" class="zones-list g-card-list list-style-1"
+                                    role="list">
+    
+                                    <mat-list-item *ngFor="let item of defaultCol ; let indexOfelement=index;" 
+                                        class="pe-0" role="listitem" cdkDrag>
+                                        <div class="d-flex w-100 justify-content-between __grab_cursor ">
+                                            <span class="list-label zone-list-label d-flex align-items-center">
+                                                <mat-icon class="me-2" matTooltip="Drag"
+                                                    matTooltipPosition="left" cdkDragHandle>drag_indicator</mat-icon>
+                                                <span>{{item}}</span>
+                                            </span>
+                                            <button (click)="remove(indexOfelement)" mat-icon-button
+                                                aria-label="Remove Function" matTooltip="Remove" matTooltipPosition="right">
+                                                <mat-icon class="icon-circle-cancel">close</mat-icon>
+                                            </button>
+                                        </div>
+                                    </mat-list-item>
+                                </mat-list>
+                          
+                            </div>
+                        <!-- </ng-scrollbar> -->
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
-    <div class="d-flex gap-12">
-        <button (click)="deleteColSeq()"mat-stroked-button class="form-button-submit btn-lg" color="warn">Clear All</button>
-        <button type="submit" (click)="autofill()"  mat-stroked-button class="form-button-submit btn-lg" color="primary">Autofill
+   
+</div>
+<mat-dialog-actions class="d-block">
+    <div class="d-xl-flex d-lg-block gap-12 mb-0 mb-xl-3">
+        <button (click)="deleteColSeq()"mat-stroked-button class="form-button-submit btn-lg m-1 m-xl-0 " color="warn">Clear All</button>
+        <button type="submit" (click)="autofill()"  mat-stroked-button class="form-button-submit btn-lg m-1 m-xl-0" color="primary">Autofill
             Column</button>
-        <button type="submit"  (click)="restoreCol()"  mat-stroked-button class="form-button-submit btn-lg" color="primary">Restore To
+        <button type="submit"  (click)="restoreCol()"  mat-stroked-button class="restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0" color="primary">Restore To
             Default</button>
-        <button type="submit" (click)="save()"  mat-flat-button class="form-button-submit btn-lg" color="primary" style="flex:1">Save as
+        <button type="submit" (click)="save()"  mat-flat-button class="w-100 form-button-submit btn-lg m-1 m-xl-0" color="primary" style="flex:1">Save as
             Default</button>
     </div>
-</div>
+</mat-dialog-actions>
 
 <!-- 
 <mat-list-item role="listitem">
