@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service'; 
 import { FormControl, FormGroup, Validators } from '@angular/forms'; 
@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-reprocess-transaction-detail',
   templateUrl: './reprocess-transaction-detail.component.html',
-  styleUrls: ['./reprocess-transaction-detail.component.scss']
+  styleUrls: []
 })
 export class ReprocessTransactionDetailComponent implements OnInit {
   @ViewChild('trans_qty') trans_qty: ElementRef;
@@ -84,19 +84,19 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   }
   onNumberValueChange() {
 
-    var currentLotNumber = this.editTransactionForm.get("lotNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("lotNumber")?.value?.toString();
-    var currentSerialNumber = this.editTransactionForm.get("serialNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("serialNumber")?.value?.toString();
+    let currentLotNumber = this.editTransactionForm.get("lotNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("lotNumber")?.value?.toString();
+    let currentSerialNumber = this.editTransactionForm.get("serialNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("serialNumber")?.value?.toString();
 
 
 
-    this.editTransactionForm.get("lotNumber")?.setValue(parseInt(currentLotNumber || '').toString());
-    this.editTransactionForm.get("serialNumber")?.setValue(parseInt(currentSerialNumber || '').toString());
+    this.editTransactionForm.get("lotNumber")?.setValue(parseInt(currentLotNumber ?? '').toString());
+    this.editTransactionForm.get("serialNumber")?.setValue(parseInt(currentSerialNumber ?? '').toString());
 
 
   }
 
   editTransaction() { 
-    var payload = {
+    let payload = {
       "id": this.transactionID,
       "oldValues": [
       ],
@@ -105,14 +105,12 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get("unitOfMeasure")?.value,
         this.editTransactionForm.get("serialNumber")?.value,
         this.editTransactionForm.get("lotNumber")?.value?.toString(),
-        // (this.expDate!=null&&this.expDate!="1900-01-01T19:31:48.000Z")?this.expDate:" ",
         this.dayIncrement(this.expDate),
         this.editTransactionForm.get("revision")?.value,
         this.editTransactionForm.get("notes")?.value,
         this.editTransactionForm.get("userField1")?.value,
         this.editTransactionForm.get("userField2")?.value,
         this.editTransactionForm.get("hostTransactionID")?.value,
-        // (this.reqDate!=null&&this.reqDate!="1900-01-01T19:31:48.000Z")?this.reqDate:" ",
         this.dayIncrement(this.reqDate),
 
         this.editTransactionForm.get("batchPickID")?.value,
@@ -128,15 +126,14 @@ export class ReprocessTransactionDetailComponent implements OnInit {
     }
 
     this.Api.SaveTransaction(payload).subscribe((res: any) => {
-
-
-      this.dialogRef.close('add');
-      this.toastr.success(labels.alert.update, 'Success!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
-
-      (error) => {
+      if (res.isExecuted){
+        this.dialogRef.close('add');
+        this.toastr.success(labels.alert.update, 'Success!', {
+          positionClass: 'toast-bottom-right',
+          timeOut: 2000
+        });
+      }
+      else{
         this.toastr.error('Something went wrong', 'Error!', {
           positionClass: 'toast-bottom-right',
           timeOut: 2000,
@@ -180,7 +177,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   }
 
   onDateChange(event: any, fromExpDate = ""): void {
-    if (!(fromExpDate == "")) {
+    if ((fromExpDate !== "")) {
       this.expDate = new Date(event).toISOString();
     }
     else {
@@ -190,28 +187,22 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   }
 
   getTransactionDetail() {
-    var payload = {
+    let payload = {
       id: '' + this.transactionID + '',
       username: this.userData.userName,
       wsid: this.userData.wsid,
       history: false,
     }
     this.Api.TransactionByID(payload).subscribe(
-      (res: any) => {
+      {next: (res: any) => {
         if (res.data && res.isExecuted) {
           let finalExpiryDate, finalReqDate;
           try {
             if (res.data[0].expirationDate != '') {
-              // var expDate = res.data[0].expirationDate.split(" ");
-              // expDate = expDate[0].split('/');
-              // finalExpiryDate = new Date(expDate[2],expDate[0]-1,parseInt(expDate[1])+1);
               finalExpiryDate = new Date(res.data[0].expirationDate);
 
             }
             if (res.data[0].requiredDate != '') {
-              // var reqDate = res.data[0].requiredDate.split(" ");
-              // reqDate = reqDate[0].split('/');
-              // finalReqDate = new Date(reqDate[2],reqDate[0]-1,parseInt(reqDate[1])+1);
               finalReqDate = new Date(res.data[0].requiredDate);
 
 
@@ -221,15 +212,12 @@ export class ReprocessTransactionDetailComponent implements OnInit {
             this.reqDate = finalReqDate ? finalReqDate.toISOString() : '';
           }
           catch (e) { }
-          // console.log('===========GET===============>');
-          // console.log(this.expDate);
-          // console.log(this.reqDate);
 
           this.expDate = this.expDate != "1900-01-01T19:31:48.000Z" ? this.expDate : " ";
           this.reqDate = this.reqDate != "1900-01-01T19:31:48.000Z" ? this.reqDate : " ";
 
 
-          if (res.data[0].label == false) { this.label = false; } else { this.label = true; }
+          if (!res.data[0].label) { this.label = false; } else { this.label = true; }
           if (res.data[0].emergency == 'False') { this.emergency = false; } else { this.emergency = true; }
           this.editTransactionForm.patchValue({
             "transactionQuantity": res.data[0].transactionQuantity,
@@ -269,22 +257,20 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
 
         } else {
-          // console.log(res);
           this.toastr.error('Something went wrong', 'Error!', {
             positionClass: 'toast-bottom-right',
             timeOut: 2000,
           });
         }
       },
-      (error) => { }
+      error: (error) => { }}
     );
   }
 
   dayIncrement(date: any) {
 
-    // (this.expDate!=null&&this.expDate!="1900-01-01T19:31:48.000Z")?this.expDate:" ",
     if (date != null && date != "1900-01-01T19:31:48.000Z" && date!='') {
-      var newDate = new Date(date);
+      let newDate = new Date(date);
       newDate.setDate(newDate.getDate() + 1);
       return newDate;
     } else {

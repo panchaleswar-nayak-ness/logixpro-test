@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, NgForm } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import {
   MatDialog,
@@ -12,7 +11,7 @@ import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.compo
 @Component({
   selector: 'app-create-batch-confirmation',
   templateUrl: './create-batch-confirmation.component.html',
-  styleUrls: ['./create-batch-confirmation.component.scss'],
+  styleUrls: [],
 })
 export class CreateBatchConfirmationComponent implements OnInit {
   isChecked = true;

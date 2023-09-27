@@ -1,21 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef} from '@angular/material/dialog';
-import { data } from 'jquery';
+import { Component} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
+import {} from 'jquery';
 
 @Component({
   selector: 'app-kanban-zone-allocation-conflict',
   templateUrl: './kanban-zone-allocation-conflict.component.html',
-  styleUrls: ['./kanban-zone-allocation-conflict.component.scss']
+  styleUrls: []
 })
-export class KanbanZoneAllocationConflictComponent implements OnInit {
+export class KanbanZoneAllocationConflictComponent{
 allocation;
 kanban;
 both;
 
   constructor( public dialogRef: MatDialogRef<any>,) { }
 
-  ngOnInit(): void {
-  }
+
   changeValue(val,type){ 
     if(type == 'allocation'){
       this.allocation = true;

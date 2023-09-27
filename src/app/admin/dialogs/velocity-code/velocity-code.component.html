@@ -26,12 +26,6 @@
 
         <ng-scrollbar style="height: 250px;">
         <div class="card-body">
-            <!-- <div class="d-flex justify-content-end">
-                <button mat-mini-fab color="primary" aria-label="Add Warehouse" style="border-radius: 10px;float: right;"
-                    (click)="addVLRow($event)">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div> -->
             <ng-container *ngFor="let vlcode of velocity_code_list;let i = index">
                 <div class="d-flex align-items-center mb-3">
                     <mat-radio-group color="primary">
@@ -68,41 +62,4 @@
         </div>
     </ng-scrollbar>
     </div>
-
-    <!-- <h1 mat-dialog-title>Velocity</h1>
-    <div class="col">
-        <button mat-mini-fab color="primary" aria-label="Add Warehouse" style="border-radius: 10px;float: right;"
-            (click)="addVLRow($event)">
-            <mat-icon>add</mat-icon>
-        </button>
-    </div>
-    <div class="row">
-        <ng-container *ngFor="let vlcode of velocity_code_list;let i = index">
-            <div class="row mt-3">
-                <div class="col-1" style="margin-top: 20px;">
-                    <mat-radio-button value="{{vlcode}}" color="primary" (change)="selectVlCode($event)">
-                    </mat-radio-button>
-                </div>
-                <div class="col-8" style="font-size: 12px">
-                    <mat-form-field class="d-block w-100" appearance="outline">
-                        <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #vlname
-                            name="{{vlcode}}" value="{{vlcode}}">
-                    </mat-form-field>
-                </div>
-                <div class="col-1"><button style="color:#DE2654;margin-top: 20px;"
-                        (click)="dltVlCode(vlname.value);">
-                        <mat-icon>cancel</mat-icon>
-                    </button>
-                </div>
-                <div class="col-1">
-                    <button style="color:#000080;margin-top: 20px;" (click)="saveVlCode(vlname.value, vlcode)">
-                        <mat-icon>save</mat-icon>
-                    </button>
-                </div>
-            </div>
-        </ng-container>
-    </div> -->
-    <!-- <mat-dialog-actions align="end">
-        <button type="button" (click)="clearVlCode()" mat-stroked-button class="form-button-submit btn-lg w-100" color="warning">Clear Velocity Code</button>
-    </mat-dialog-actions> -->
 </div>

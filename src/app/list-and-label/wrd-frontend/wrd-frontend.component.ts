@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { map } from 'rxjs';
 import { SharedService } from 'src/app/services/shared.service';
@@ -15,9 +15,6 @@ export class WrdFrontendComponent implements OnInit {
   constructor(private sharedService:SharedService,private route:ActivatedRoute) {    
     this.sharedService.SideBarMenu.next(false);
     this.sharedService.updateMenuState(true);
-    // var file = localStorage.getItem("ListAndLandFile")?.replace(".","-");
-    // this.FileName = file;
-     
   }
   ngOnDestroy(){ 
     this.sharedService.SideBarMenu.next(true);
@@ -25,11 +22,9 @@ export class WrdFrontendComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // let appd=JSON.parse(localStorage.getItem('availableApps') || '');
-    // this.sharedService.setMenuData(appd);
     this.sharedService.updateLoadMenuFunction({route:'/admin/reports'})
     
-    var filename = this.route.queryParamMap.pipe(
+    let filename = this.route.queryParamMap.pipe(
       map((params: ParamMap) => params.get('file')),
     );
     filename.subscribe((param) => { 

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json';
 import { ToastrService } from 'ngx-toastr'; 
@@ -21,7 +21,6 @@ export class AddGroupAllowedComponent implements OnInit {
   form_btn_label: string = 'Add';
   GroupName: any;
   controlNameList: any[] = [];
-  // myControl = new FormControl('');
   options: string[] = [];
   filteredOptions: Observable<any[]>;
   userData: any;

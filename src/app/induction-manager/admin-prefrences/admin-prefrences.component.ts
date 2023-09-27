@@ -2,7 +2,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   FormGroup,
   FormControl,
-  FormArray,
   FormBuilder,
   Validators,
 } from '@angular/forms';
@@ -224,7 +223,7 @@ export class AdminPrefrencesComponent implements OnInit {
 
   getPreferences() {
     try {
-      var payload = { wsid: this.userData.wsid };
+      
       this.Api
         .PreferenceIndex()
         .subscribe(
@@ -357,8 +356,8 @@ export class AdminPrefrencesComponent implements OnInit {
           CarTotePicks: values.carouselToteIDPicks,
           OffCarTotePicks: values.offCarouselToteIDPicks,
           UsePickBatch: values.usePickBatchManager,
-          UseDefFilter: values.useDefault == 'filter' ? true : false,
-          UseDefZone: values.useDefault == 'zone' ? true : false,
+          UseDefFilter: values.useDefault == 'filter',
+          UseDefZone: values.useDefault == 'zone',
           AutoPutTote: values.autoPutAwayToteID,
           DefPutPrior: values.defaultPutAwayPriority,
           DefPutQuant: values.defaultPutAwayQuantity,
@@ -404,7 +403,7 @@ export class AdminPrefrencesComponent implements OnInit {
         };
         endPoint = '/Induction/rtsuserdata';
       } else if (type == 3) {
-        if (event && event.checked) {
+        if (event?.checked) {
           this.preferencesForm.get('inductionLocation')?.enable();
           this.trackIndIsDisable = false;
         } else if(event && !event.checked) {
@@ -413,7 +412,6 @@ export class AdminPrefrencesComponent implements OnInit {
         }
 
         if(values.defaultSuperBatchSize<2){
-          // this.preferencesForm.get('defaultSuperBatchSize')?.setValue(2);
           this.toast.error('Default Super Batch Size must be greater than 1', 'Error!', {
             positionClass: 'toast-bottom-right',
             timeOut: 2000,
@@ -428,7 +426,7 @@ export class AdminPrefrencesComponent implements OnInit {
           StageVelCode: values.stageVelocityCode,
           DefaultSuperBatch: values.defaultSuperBatchSize,
           ConfirmSuperBatch: values.confirmSuperBatch,
-          superBatchFilt: values.superBatchFilter === '1' ? true : false,
+          superBatchFilt: values.superBatchFilter === '1',
           WSID: this.userData.wsid,
         };
         endPoint = '/Induction/immiscsetup';
@@ -455,9 +453,7 @@ export class AdminPrefrencesComponent implements OnInit {
       this.Api.DynamicMethod(payLoad, endPoint).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
-            // if(endPoint == '/Induction/imprintsettings'){
               this.global.updateImPreferences()
-            // }
             this.toast.success(labels.alert.update, 'Success!', {
               positionClass: 'toast-bottom-right',
               timeOut: 2000,
@@ -475,17 +471,13 @@ export class AdminPrefrencesComponent implements OnInit {
     }
   }
   getCompName() {
-    let payload = {
-      WSID: this.userData.wsid,
-    };
+    
     this.Api.CompName().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
 
           this.preferencesForm.get('inductionLocation')?.setValue(res.data);
           this.updatePreferences(3);
-          // this.preferencesForm.get('inductionLocation')?.enable();
-          // this.trackIndIsDisable=false;
           this.toast.success(labels.alert.update, 'Success!', {
             positionClass: 'toast-bottom-right',
             timeOut: 2000,
@@ -513,13 +505,8 @@ export class AdminPrefrencesComponent implements OnInit {
     const inputElement = this.myInput.nativeElement;
     let value = inputElement.value.replace(/\D/g, ''); // Remove non-digit characters
     if (parseInt(value) > 2147483647) {
-      value = value.substr(0, 10);
-    } else {
-      value = value.substr(0, 10);
-    }
-    // if (value === '') {
-    //   value = '0';
-    // }
+      value = value.slice(0, 10);
+    } 
     inputElement.value = value;
   }
 
@@ -527,13 +514,8 @@ export class AdminPrefrencesComponent implements OnInit {
     const inputElement = this.maxNumber.nativeElement;
     let value = inputElement.value.replace(/\D/g, ''); // Remove non-digit characters
     if (parseInt(value) > 2147483647) {
-      value = value.substr(0, 309);
-    } else {
-      value = value.substr(0, 309);
+      value = value.slice(0, 309);
     }
-    // if (value === '') {
-    //   value = '0';
-    // }
     inputElement.value = value;
   }
 

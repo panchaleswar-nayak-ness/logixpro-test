@@ -6,7 +6,7 @@ import { FunctionAllocationComponent } from '../function-allocation/function-all
 @Component({
   selector: 'app-confirmation-dialog',
   templateUrl: './confirmation-dialog.component.html',
-  styleUrls: ['./confirmation-dialog.component.scss']
+  styleUrls: []
 })
 export class ConfirmationDialogComponent implements OnInit {
   dialog_msg: string = '';

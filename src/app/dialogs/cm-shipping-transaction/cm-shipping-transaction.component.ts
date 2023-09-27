@@ -55,8 +55,8 @@ export class CmShippingTransactionComponent implements OnInit {
   getShippingTransactionIndex() {
     try {
       // Set the parameters for the API call
-      var payLoad = {
-        orderNumber : this.data && this.data.orderNum ? this.data.orderNum : '2909782A',
+      let payLoad = {
+        orderNumber : this.data?.orderNum ? this.data.orderNum : '2909782A',
         username: this.userData.userName,
         wsid: this.userData.wsid
       };
@@ -87,9 +87,9 @@ export class CmShippingTransactionComponent implements OnInit {
   }
 
   checkToteID() {
-    var noExists = false; // this is a flag that will let us know if the toteID exists in the data
-    for (var x = 0; x < this.tableData.data.length; x++) { // this is a loop that will go through each row in the data
-        var tabTote = this.tableData.data[x].toteID; // this will get the toteID value from the current row of the data
+    let noExists = false; // this is a flag that will let us know if the toteID exists in the data
+    for (let x = 0; x < this.tableData.data.length; x++) { // this is a loop that will go through each row in the data
+        let tabTote = this.tableData.data[x].toteID; // this will get the toteID value from the current row of the data
         if (this.toteID == tabTote) { // this is a conditional statement that will check if the toteID entered by the user matches the toteID in the current row of the data
             this.openToteIDUpdate(); // if the toteID does match, then we will open the modal
             noExists = false; // we will set the flag to false since the toteID does exist
@@ -116,16 +116,16 @@ export class CmShippingTransactionComponent implements OnInit {
       disableClose:true,
       data: {
         toteID : this.toteID,
-        orderNumber : this.data && this.data.orderNum ? this.data.orderNum : '2909782A'
+        orderNumber : this.data?.orderNum ? this.data.orderNum : '2909782A'
       }
     });
 
     // subscribe to the dialog closing
     dialogRef.afterClosed().subscribe(res => {
       // update the container ID for the selected tote ID
-      if (res && res.isExecuted) {
+      if (res?.isExecuted) {
         // loop through the table data
-        for (var x = 0; x < this.tableData.data.length; x++) {
+        for (let x = 0; x < this.tableData.data.length; x++) {
           // if the tote ID matches the one that was updated
           if (res.toteID == this.tableData.data[x].toteID) {
               // set the container ID
@@ -139,8 +139,8 @@ export class CmShippingTransactionComponent implements OnInit {
   completePacking() {
     try {
 
-      var payLoad = {
-        orderNumber: this.data && this.data.orderNum ? this.data.orderNum : '2909782A',
+      let payLoad = {
+        orderNumber: this.data?.orderNum ? this.data.orderNum : '2909782A',
         username: this.userData.userName,
         wsid: this.userData.wsid,
       };
@@ -253,7 +253,7 @@ export class CmShippingTransactionComponent implements OnInit {
     // Wait for the ship split line dialog to close
     dialogRef.afterClosed().subscribe(res => {
       // If the dialog was closed with 'OK' then update the ship quantity
-      if (res && res.isExecuted) {
+      if (res?.isExecuted) {
         this.tableData.data[i].transactionQuantity = res.orderQty;
         this.tableData.data[i].completedQuantity = res.pickQty;
         this.tableData.data[i].shipQuantity = res.shipQty;
@@ -283,7 +283,7 @@ export class CmShippingTransactionComponent implements OnInit {
 
     // After the dialog is closed, get the modified data and update the table data
     dialogRef.afterClosed().subscribe(res => {
-      if (res && res.isExecuted) {
+      if (res?.isExecuted) {
         this.tableData.data[i].shipQuantity = res.shipQuantity;
       } 
     });
@@ -303,7 +303,7 @@ export class CmShippingTransactionComponent implements OnInit {
 
     // Handle the dialog closing
     dialogRef.afterClosed().subscribe(res => {
-      if (res && res.isExecuted) {
+      if (res?.isExecuted) {
         this.tableData.data[i].containerID = res.containerID;
       }  
     });

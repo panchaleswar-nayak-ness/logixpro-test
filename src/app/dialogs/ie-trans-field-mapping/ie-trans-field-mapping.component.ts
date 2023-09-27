@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component,  ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-ie-trans-field-mapping',
@@ -9,7 +9,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 })
 
 
-export class IeTransFieldMappingComponent implements OnInit {
+export class IeTransFieldMappingComponent{
 
   ELEMENT_DATA: any[] =[
     {fields: '1202122'},
@@ -29,10 +29,6 @@ export class IeTransFieldMappingComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
   ) { }
-
-  ngOnInit(): void {
-  }
-
   @ViewChild(MatSort) sort: MatSort;
 
 }

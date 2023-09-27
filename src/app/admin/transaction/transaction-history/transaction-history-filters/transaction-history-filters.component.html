@@ -45,7 +45,6 @@
 
 
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                        <!-- (input)="onInputChange($event)-->
                         <mat-label>Order Number</mat-label>
                         <input [(ngModel)]="orderNumber" [min]="0" [matAutocomplete]="auto" matInput class="" value="" type="text" (ngModelChange)="this.searchByOrderNumber.next($event)" type="text" placeholder="Search" aria-label="Number" matInput >
                         <button matSuffix *ngIf="orderNumber" class="clear-btn"  (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
@@ -55,21 +54,6 @@
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
-
-                    <!-- <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()"
-                        [hideRequiredMarker]="hideRequiredControl.value">
-                        <span class="material-symbols-outlined icon-search">
-                            search
-                        </span>
-                        <input type="text" placeholder="search" aria-label="Number" matInput
-                            [(ngModel)]='this.columnSearch.searchValue' [matAutocomplete]="auto"
-                            (ngModelChange)="this.searchBar.next($event)">
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData($event.option.value)">
-                            <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                                {{option}}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field> -->
 
 
                 </div>

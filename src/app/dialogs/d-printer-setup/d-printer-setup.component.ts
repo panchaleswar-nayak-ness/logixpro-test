@@ -6,7 +6,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-d-printer-setup',
   templateUrl: './d-printer-setup.component.html',
-  styleUrls: ['./d-printer-setup.component.scss']
+  styleUrls: []
 })
 export class DPrinterSetupComponent implements OnInit {
   ReportPrinter:any;
@@ -27,7 +27,7 @@ ClosePopup(){
   this.dialog.closeAll();
 }
 getAllPrinters(){
-  var payload = {
+  let payload = {
       UserName:   this.userData.userName,
       WSID:this.userData.wsid
   }
@@ -37,7 +37,7 @@ getAllPrinters(){
   });
 }
 UpdWSPrefsPrinters(ReportPrinter,LabelPrinter){
-  var payload = {
+  let payload = {
       ReportPrinter:ReportPrinter,
       LabelPrinter:LabelPrinter,
       WSID:this.userData.wsid

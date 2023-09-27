@@ -1,16 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-om-add-transaction',
   templateUrl: './om-add-transaction.component.html',
-  styleUrls: ['./om-add-transaction.component.scss']
+  styleUrls: []
 })
-export class OmAddTransactionComponent implements OnInit {
+export class OmAddTransactionComponent {
   @ViewChild('procc_focus') procc_focus: ElementRef;
-  constructor() { }
+ 
 
-  ngOnInit(): void {
-  }
+  
   ngAfterViewInit(): void {
     this.procc_focus.nativeElement.focus();
   }

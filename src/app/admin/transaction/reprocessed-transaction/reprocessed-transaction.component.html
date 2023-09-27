@@ -18,7 +18,6 @@
                     <mat-label>Action</mat-label>
                     <mat-select  #matRef  class="employees-action" (openedChange)="actionDialog($event)"
                         [(value)]="selectedVariable" placeholder="Actions">
-                        <!-- <mat-option value="print">Print</mat-option> -->
                         <mat-option value="set_column_sq">Set Column Sequence</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">
@@ -75,7 +74,6 @@
         </div>
 
         <div class="card br-14 table-responsive mb-3">
-            <!-- <ng-scrollbar style="height: 200px;"></ng-scrollbar> -->
             <ng-scrollbar style="height:500px" track="all" class="mat-table-scrollbar">
                 <table mat-table class="custom-table  table-fix" #table [dataSource]="dataSource" matSort
                     (matSortChange)="sortChange($event)">

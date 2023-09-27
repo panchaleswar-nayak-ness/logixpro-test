@@ -1,4 +1,4 @@
-import { SelectionModel } from '@angular/cdk/collections';
+import { } from '@angular/cdk/collections';
 import { Component, ElementRef, OnInit, ViewChild, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
@@ -74,7 +74,6 @@ export class GenerateOrderComponent implements OnInit {
     this.searchByInput
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
-        // if (this.orderNumber === '') return;
         this.autocompleteSearchColumn();
         this.getOrderTableData();
       });      
@@ -112,7 +111,7 @@ export class GenerateOrderComponent implements OnInit {
   public dataSource: any = new MatTableDataSource();
 
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
   async autocompleteSearchColumn() {
     let searchPayload = {
@@ -156,7 +155,6 @@ export class GenerateOrderComponent implements OnInit {
         if (res.isExecuted) {
           this.selectedOrder=this.orderNumber
           this.getOrderTableData();
-          // this.clearFields()
         }
       });
     } else if (
@@ -209,7 +207,6 @@ export class GenerateOrderComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
-        // this.clearFields()
         this.clearMatSelectList()
         if (res.isExecuted) {
           this.clearFields();
@@ -231,13 +228,6 @@ export class GenerateOrderComponent implements OnInit {
   }
   editTransaction(element){
 
-
-// JSON.stringify(element.batchPickID)
-// JSON.stringify(element.hostTransactionID)
-// JSON.stringify(element.lineNumber)
-// JSON.stringify(element.lineSequence)
-// JSON.stringify(element.priority)
-// JSON.stringify(element.toteID)
   const dialogRef = this.dialog.open(AddNewTransactionToOrderComponent, {
         height: 'auto',
         width: '100vw',
@@ -263,7 +253,7 @@ export class GenerateOrderComponent implements OnInit {
     if (!this.dataSource || event.direction == '') return;
 
     let index;
-    this.displayedColumns.find((x, i) => {
+    this.displayedColumns.forEach((x, i) => {
       if (x === event.active) {
         index = i;
       }
@@ -276,11 +266,9 @@ export class GenerateOrderComponent implements OnInit {
 
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-    // this.customPagination.startIndex =  e.pageIndex
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
 
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
-    // this.length = e.length;
     this.customPagination.recordsPerPage = e.pageSize;
 
     this.getOrderTableData();
@@ -305,9 +293,7 @@ export class GenerateOrderComponent implements OnInit {
     );
     dialogRef.afterClosed().subscribe((res) => {
       this.clearMatSelectList()
-      // if (res.isExecuted) {
         this.getOrderTableData();
-      // }
     });
   }
   getOrderTableData() {
@@ -326,37 +312,6 @@ export class GenerateOrderComponent implements OnInit {
       .GernerateOrderTable(payload)
       .subscribe(
         (res: any) => {
-          // let dummy_data = [
-          //   {
-
-          //     itemNumber: 2,
-          //     TransactionQuantity: '2',
-          //     LineNumber: '2',
-          //     LineSequence: '2',
-          //     Priority: '2',
-          //     RequiredDate: '2/2/222',
-          //     LotNumber: '1',
-          //     ExpirationDate: '2/2/222',
-          //     SerialNumber: '',
-          //     Warehouse: '',
-          //     BatchPickID: '',
-          //     Notes: '',
-          //     ToteNumber: '',
-          //     HostTransactionID: '',
-          //     Emergency: '',
-          //     UserField1: '',
-          //     UserField2: '',
-          //     UserField3: '',
-          //     UserField4: '',
-          //     UserField5: '',
-          //     UserField6: '',
-          //     UserField7: '',
-          //     UserField8: '',
-          //     UserField9: '',
-          //     UserField10: '',
-          //     actions:''
-          //   },
-          // ];
           if (res.isExecuted) {
             if(res.data.orderTable && res.data.orderTable.length>0){
               this.isPost=true;
@@ -372,16 +327,13 @@ export class GenerateOrderComponent implements OnInit {
             }else{
               this.isPost=false;
             }
-            this.dataSource = new MatTableDataSource(res.data && res.data.orderTable);
-            this.itemNumberForInsertion=res.data && res.data.orderTable && res.data.orderTable[0] &&res.data.orderTable[0].itemNumber
+            this.dataSource = new MatTableDataSource(res?.data?.orderTable);
+            this.itemNumberForInsertion= res?.data?.orderTable[0]?.itemNumber
           }
         },
         (error) => {}
       );
   }
-onSelectionChange(event){
-  // this.clearFields();
-}
   ngOnDestroy() {
     this.searchByInput.unsubscribe();
   }

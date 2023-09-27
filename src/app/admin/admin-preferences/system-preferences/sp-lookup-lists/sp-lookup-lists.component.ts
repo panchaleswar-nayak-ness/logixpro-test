@@ -5,7 +5,7 @@ import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-sp-lookup-lists',
   templateUrl: './sp-lookup-lists.component.html',
-  styleUrls: ['./sp-lookup-lists.component.scss']
+  styleUrls: []
 })
 export class SpLookupListsComponent implements OnInit {
   fieldNames:any

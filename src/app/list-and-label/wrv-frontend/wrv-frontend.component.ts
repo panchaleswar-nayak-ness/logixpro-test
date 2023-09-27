@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { map } from 'rxjs';
 import { SharedService } from 'src/app/services/shared.service';
@@ -17,11 +17,8 @@ export class WrvFrontendComponent implements OnInit {
     this.sharedService.updateMenuState(true)
   }
   ngOnInit(): void {
-    // let appd=JSON.parse(localStorage.getItem('availableApps') || '');
-    // this.sharedService.setMenuData(appd);
-   
     this.sharedService.updateLoadMenuFunction({route:localStorage?.getItem('reportNav'),isBackFromReport:false})
-    var filename = this.route.queryParamMap.pipe(
+    let filename = this.route.queryParamMap.pipe(
       map((params: ParamMap) => params.get('file')),
     );
     filename.subscribe((param) => { 

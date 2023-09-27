@@ -38,10 +38,6 @@
                         <mat-datepicker-toggle matSuffix [for]="end" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #end></mat-datepicker>
                     </mat-form-field>
-                    <!-- <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
-                        <mat-label>End Date</mat-label>
-                        <input matInput value="22/08/22" type="text">
-                    </mat-form-field> -->
                 </div>
 
                 <div class=" col-xl-3">
@@ -76,13 +72,6 @@
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
-
-
-                    <!-- <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline">
-                        <mat-label>Order Number</mat-label>
-                        <input [(ngModel)]="orderNumber" matInput class="" value="" type="text"
-                            (ngModelChange)="this.searchByOrderNumber.next($event)">
-                    </mat-form-field> -->
                 </div>
 
             </div>
@@ -250,12 +239,8 @@
                 </div>
 
 
-
-                <!-- <div class="card br-14 table-responsive my-3"
-                *ngIf="columnValues?.length>0 && displayedColumns && dataSource?.data?.length>0"> -->
-
                 <div class="card br-14 table-responsive mb-3">
-                    <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 400px;">
+                    <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 400px;" pointerEventsMethod="scrollbar">
 
                         <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort
                             (matSortChange)="sortChange($event)">
@@ -285,8 +270,6 @@
 
                                 <td mat-cell *matCellDef="let seletedRecord" style="border: 0; padding-left: 24px; background: #fff;">
 
-                                    <!-- <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
-                                        class="circle-icon-o" appearance="outline"> -->
                                         <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" 
                                     [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" 
                                     appearance="outline">
@@ -300,8 +283,6 @@
                                             Status</button>
                                         <button mat-menu-item  *ngIf="!hideDelete && !throughOrderManager && authService.UserPermissonByFuncName('Transaction Journal Delete') "  (click)="deleteItem(seletedRecord)">Delete
                                             Transaction</button>
-                                        <!-- <button mat-menu-item   *ngIf="!hideDelete" (click)="sendCompletedToHistory()">Send Completed to
-                                            History</button> -->
                               
                                     </mat-menu>
 
@@ -322,14 +303,6 @@
                        
 
                         </table>
-
-                                <!-- <mat-row  *matRowDef="let row; columns: columnValues; let idx=index let even=even"  [style.background-color]="rowClicked == idx ? 'hwb(240deg 33% 8%) ' : (even ? 'white' : 'white')" 
-                                 [style.color]="rowClicked == idx ? 'white ' :'black'"
-                        (click)="[changeTableRowColor(idx),rowClick(row,$event)]" ></mat-row> 
-                          <mat-row  *matRowDef="let row; columns: columnValues;" [class.selected]="row.selected"   (click)="row.selected= !row.selected" ></mat-row> 
-                           *matRowDef="let element; columns: columnsToDisplay;"
-                        [class.selected]="element.selected"
-                        (click)="element.selected= !element.selected" -->
                     </ng-scrollbar>
                 </div>
                 <div class="table-pagination d-flex justify-content-start" *ngIf="columnValues.length>0 && displayedColumns && dataSource">

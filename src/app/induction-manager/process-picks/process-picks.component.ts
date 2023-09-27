@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, ElementRef, HostListener, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, ElementRef, HostListener,OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog} from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BlossomToteComponent } from 'src/app/dialogs/blossom-tote/blossom-tote.component';
 import { ToastrService } from 'ngx-toastr';
@@ -49,7 +49,6 @@ export class ProcessPicksComponent implements OnInit {
   batchWithID = false;
   toteEmpty = false;
   orderEmpty = false;
-  // pickBatches:any = '';
   filteredOptions: Observable<any[]>;
   filteredOrderNum: Observable<any[]>;
   displayedColumns: string[] = ['position', 'toteid', 'orderno', 'priority', 'other'];
@@ -82,23 +81,19 @@ export class ProcessPicksComponent implements OnInit {
     this.getAllZones();
     this.getAllOrders();
     this.isBatchIdFocus = true;
-    // this.imPreferences = this.global.getImPreferences();
-
   }
   async printExisting(type) {
 
 
-    var positionList: any[] = [];
-    var toteIds: any[] = [];
-    var OrderNumList: any[] = [];
+    let positionList: any[] = [];
+    let toteIds: any[] = [];
+    let OrderNumList: any[] = [];
     this.dataSource?._data?._value.forEach(element => {
       if (element.position) positionList.push(element.position);
       if (element.toteID) toteIds.push(element.toteID);
       if (element.orderNumber) OrderNumList.push(element.orderNumber);
     });
-    var strposition = JSON.stringify(positionList);
-    var strtoteIds = JSON.stringify(toteIds);
-    var strOrderNumList = JSON.stringify(OrderNumList);
+    
     if (!this.pickBatchesCrossbtn) {
       this.toastr.error('Please select a Batch ID to print', 'Error!', {
         positionClass: 'toast-bottom-right',
@@ -224,7 +219,7 @@ async  printPickLabels(row) {
     let PositionList: any = [];
     let ToteList: any = [];
     let OrderList: any = [];
-    for (var i = 0; i <= counter - 1; i++) {
+    for (let i = 0; i <= counter - 1; i++) {
 
       if (this.dataSource._data?._value[i].orderNumber != "" && this.dataSource._data?._value[i].toteID != "") {
         PositionList.push(this.dataSource._data?._value[i].position);
@@ -256,9 +251,6 @@ async  printPickLabels(row) {
           window.open(`/#/report-view?file=FileName:PrintPrevIMPickItemLabel|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
         }
-
-        //  this.global.Print(`FileName:PrintPrevIMPickBatchToteLabel|BatchID:${this.pickBatches.value}`)
-
 
         await this.global.Print(`FileName:PrintPrevIMPickToteLabelButt|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}`, 'lbl');
 
@@ -328,7 +320,7 @@ async  printPickLabels(row) {
       }
       this.filteredOrderNum = this.orderNumber.valueChanges.pipe(
         startWith(""),
-        map(value => (typeof value === "string" ? value : value)),
+        map(value => (value)),
         map(name => (name ? this._orderFilter(name) : this.orderNumberList.slice()))
       );
     });
@@ -417,7 +409,6 @@ async  printPickLabels(row) {
       if (res.data) {
         this.allZones = res.data;
       }
-      // console.log(this.allZones);
     });
   }
 
@@ -428,7 +419,6 @@ async  printPickLabels(row) {
       "wsid": this.userData.wsid,
     }
     this.Api.PickToteSetupIndex(paylaod).subscribe(res => {
-      // console.log(res.data.imPreference);
       this.countInfo = res.data.countInfo;
       this.pickBatchesList = res.data.pickBatches;
       this.pickBatchQuantity = res.data.imPreference.pickBatchQuantity;
@@ -438,12 +428,11 @@ async  printPickLabels(row) {
       this.usePickBatchManager = res.data.imPreference.usePickBatchManager;
       this.useDefaultFilter = res.data.imPreference.useDefaultFilter;
       this.useDefaultZone = res.data.imPreference.useDefaultZone;
-      // this.useInZonePickScreen = false;
       this.createToteSetupTable(this.pickBatchQuantity);
 
       this.filteredOptions = this.pickBatches.valueChanges.pipe(
         startWith(""),
-        map(value => (typeof value === "string" ? value : value)),
+        map(value => (value)),
         map(name => (name ? this._filter(name) : this.pickBatchesList.slice()))
         
       );
@@ -477,8 +466,6 @@ async  printPickLabels(row) {
         filledTote = true;
       }
     });
-
-    // console.log(filledTote);
 
     if (filledTote) {
       let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -552,10 +539,10 @@ async  printPickLabels(row) {
               });
               this.allOrders = [];
             }
-            else {
-              if (this.autoPickToteID) {
+            else if (this.autoPickToteID) {
+               
                 this.getAllToteIds(true);
-              }
+              
             }
           });
         }
@@ -589,10 +576,9 @@ async  printPickLabels(row) {
                 obj.orderNumber = '';
               });
             }
-            else {
-              if (this.autoPickToteID) {
+            else if (this.autoPickToteID){
+               
                 this.getAllToteIds(true)
-              }
             }
 
 
@@ -648,8 +634,6 @@ async  printPickLabels(row) {
         autoFocus: '__non_existing_element__'
       });
       dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(resultObj => {
-        // console.log(resultObj);
-
         let result: any = [];
         resultObj?.forEach((val: any) => {
           result.push(val.orderNumber);
@@ -688,10 +672,7 @@ async  printPickLabels(row) {
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
 
 
-      if (result === true) {
-
-      }
-      else {
+      if (!result) {
         if (result.length > 0) {
           this.allOrders = result;
           this.TOTE_SETUP.forEach((element, key) => {
@@ -711,7 +692,7 @@ async  printPickLabels(row) {
   }
 
   openBlossomToteDialogue() {
-    const dialogRef = this.dialog.open(BlossomToteComponent, {
+    this.dialog.open(BlossomToteComponent, {
       height: 'auto',
       width: '786px',
       autoFocus: '__non_existing_element__'
@@ -734,7 +715,6 @@ async  printPickLabels(row) {
   }
 
   isValidOrderNumber(element: any) {
-    // console.log(element.orderNumber);
     let payload = {
       "OrderNumber": element.orderNumber
     }
@@ -768,10 +748,6 @@ async  printPickLabels(row) {
   }
 
   getAllToteIds(autoToteIds: boolean = false) {
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
-    }
     this.Api.NextTote().subscribe(res => {
       this.nxtToteID = res.data;
       this.TOTE_SETUP.forEach((element, key) => {
@@ -858,7 +834,6 @@ async  printPickLabels(row) {
       newWindow = window.open(`/#/report-view?file=${url}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
       if (!newWindow) { // Check if popup was blocked
         reject(new Error('Popup was blocked by the browser.'));
-        return; // Exit the function
       }
       else if (newWindow) {
         windowCheckInterval = setInterval(() => {
@@ -873,10 +848,6 @@ async  printPickLabels(row) {
 
 
   fillNextToteID(i: any) {
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
-    }
     this.Api.NextTote().subscribe(res => {
       this.nxtToteID = res.data;
       this.TOTE_SETUP[i].toteID = this.nxtToteID;
@@ -892,14 +863,14 @@ async  printPickLabels(row) {
   }
 
   confirmProcessSetup() {
-    const dialogRef = this.dialog.open(this.processSetup, {
+    this.dialog.open(this.processSetup, {
       width: '450px',
       autoFocus: '__non_existing_element__',
       disableClose: true,
     });
   }
   alertPopUpBlocked() {
-    const dialogRef = this.dialog.open(this.popupBlocked, {
+    this.dialog.open(this.popupBlocked, {
       width: '450px',
       height: 'auto',
       minHeight: 'auto',
@@ -925,7 +896,6 @@ async  printPickLabels(row) {
       ToteIDs.push(obj.toteID?.toString() ?? '');
       OrderNumbers.push(obj.orderNumber?.toString() ?? '');
     });
-    // console.log(this.TOTE_SETUP);
     if (this.TOTE_SETUP.filter(e => e.toteID).length == 0) {
       this.toastr.error('Please enter in at least 1 tote id to process.', 'Error!', {
         positionClass: 'toast-bottom-right',
@@ -1037,7 +1007,6 @@ async  printPickLabels(row) {
 
   async ProcessPickPrintPref(Positions, ToteIDs, OrderNumbers, batchId) {
     try {
-      // this.imPreferences = this.global.getImPreferences();
       let isWindowClosed: any = null;
       let isAnyWindowOpen = false;
       if (this.imPreferences.autoPrintPickToteLabels) {
@@ -1064,8 +1033,6 @@ async  printPickLabels(row) {
         } else {
           isAnyWindowOpen = true;
           isWindowClosed = await this.previewWindow(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
-          //  window.open(`/#/report-view?file=FileName:PrintPrevPickToteLabel|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}|BatchID:${this.batchID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-
         }
 
       }else if (this.imPreferences.autoPrintCaseLabel) {
@@ -1084,18 +1051,13 @@ async  printPickLabels(row) {
 
 
     } catch (error) {
-
-      // this.alertPopUpBlocked();
       console.error('Error occurred:', error);
     }
   }
 
   async InZoneProcessPrintPref(batchId) {
     try {
-
-      // this.imPreferences = this.global.getImPreferences();
       let isWindowClosed: any = null;
-      let isAnyWindowOpen = false;
       
       if (this.imPreferences.autoPrintPickToteLabels) {
 
@@ -1136,16 +1098,12 @@ async  printPickLabels(row) {
           await this.global.Print(`FileName:PrintPrevIMPickBatchList|BatchID:${batchId}`);
         } else {
           isWindowClosed = await this.previewWindow(`FileName:PrintPrevIMPickBatchList|BatchID:${batchId}`);
-
-          // window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchList|BatchID:${this.batchID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
         }
         if (this.imPreferences.autoPrintCaseLabel) {
           if (this.imPreferences.printDirectly) {
             await this.global.Print(`FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`);
           } else if (isWindowClosed) {
             isWindowClosed = await this.previewWindow(`FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`);
-
-            // window.open(`/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${this.batchID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
           }
         }
 
@@ -1154,8 +1112,6 @@ async  printPickLabels(row) {
             await this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           } else if (isWindowClosed) {
             isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
-
-            // window.open(`/#/report-view?file=FileName:PrintPrevPickBatchList|BatchID:${this.batchID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
           }
         }
       }
@@ -1164,8 +1120,6 @@ async  printPickLabels(row) {
           await this.global.Print(`FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`);
         } else {
           isWindowClosed = await this.previewWindow(`FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`);
-
-          // window.open(`/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${this.batchID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
         }
 
         if (this.imPreferences.autoPrintPickBatchList) {
@@ -1173,8 +1127,6 @@ async  printPickLabels(row) {
             await this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           } else if (isWindowClosed) {
             isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
-
-            // window.open(`/#/report-view?file=FileName:PrintPrevPickBatchList|BatchID:${this.batchID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
           }
         }
 

@@ -12,9 +12,9 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-delete-confirmation-manual-transaction',
   templateUrl: './delete-confirmation-manual-transaction.component.html',
-  styleUrls: ['./delete-confirmation-manual-transaction.component.scss'],
+  styleUrls: [],
 })
-export class DeleteConfirmationManualTransactionComponent implements OnInit {
+export class DeleteConfirmationManualTransactionComponent {
   isChecked = true;
   heading: '';
   message: '';
@@ -29,7 +29,6 @@ export class DeleteConfirmationManualTransactionComponent implements OnInit {
     this.message = data.message;
   }
 
-  ngOnInit(): void {}
   checkOptions(event: MatCheckboxChange): void {
     if (event.checked) {
       this.isChecked = false;
@@ -103,7 +102,7 @@ export class DeleteConfirmationManualTransactionComponent implements OnInit {
         };
         this.Api.TransactionDelete(payload).subscribe(
           (res: any) => {
-            if (res && res.isExecuted) {
+            if (res?.isExecuted) {
               this.toastr.success(labels.alert.delete, 'Success!', {
                 positionClass: 'toast-bottom-right',
                 timeOut: 2000,

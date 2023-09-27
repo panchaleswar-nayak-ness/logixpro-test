@@ -41,13 +41,6 @@
 
                             <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
                                 <mat-label>Device Type</mat-label>
-
-                                <!-- <mat-select formControlName="unitOfMeasure">
-                        <mat-option *ngFor="let type of unitOfMeasure_list" value="{{type}}">{{type}}</mat-option>                        
-                      </mat-select>
-                      <span class="material-symbols-outlined icon-expand-more">
-                        expand_more
-                    </span> -->
                                 <mat-select formControlName="deviceType">
                                     <mat-option value="Carousel">Carousel</mat-option>
                                     <mat-option value="Carton Flow">Carton Flow</mat-option>
@@ -158,12 +151,6 @@
                                     <mat-option value="I8">I8</mat-option>
                                     <mat-option value="I9">I9</mat-option>
                                     <mat-option value="WMI">WMI</mat-option>
-                                    <!-- <mat-option value="Order Number">
-                                        Order Number
-                                    </mat-option>
-                                    <mat-option value="Item Number">
-                                        Item Number.
-                                    </mat-option> -->
                                 </mat-select>
                                 <span class="material-symbols-outlined icon-expand-more">
                                     expand_more
@@ -283,11 +270,6 @@
 
 
                 </ng-scrollbar>
-
-                <!-- <div class="label-yellow p-3 d-flex br-8 mb-3" >
-                    <mat-icon class="material-symbols-outlined">info</mat-icon>
-                    <span class="ps-2 w-100">Device Details needs to be saved before edits can be made to Comm Settings.</span>
-                </div> -->
                 <div *ngIf="isEdit && this.interFaceType==='WMI'">
                     <h1 mat-dialog-title>Communication Settings</h1>
                     <div class="row">
@@ -321,8 +303,6 @@
                     </div>
 
                 </div>
-
-<!--  -->
 
                 <div *ngIf="isEdit && this.interFaceType==='Other'" >
                     <h1 mat-dialog-title>Communication Settings</h1>

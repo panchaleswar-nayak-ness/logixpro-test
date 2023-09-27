@@ -1,7 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Router, RoutesRecognized } from '@angular/router';
-import { filter, pairwise } from 'rxjs/operators';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap  } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SharedService } from 'src/app/services/shared.service';
@@ -11,7 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-transaction',
   templateUrl: './transaction.component.html',
-  styleUrls: ['./transaction.component.scss'],
+  styleUrls: [],
 })
 export class TransactionComponent implements OnInit, AfterViewInit {
   public TabIndex = 1;
@@ -36,22 +34,6 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     public authService: AuthService,
     private Api: ApiFuntions,
   ) { 
-    // router.events
-    //   .pipe(
-    //     filter((evt: any) => evt instanceof RoutesRecognized),
-    //     pairwise()
-    //   )
-    //   .subscribe((events: RoutesRecognized[]) => {
-    //     if (events[0].urlAfterRedirects == '/InductionManager/Admin') {
-    //       localStorage.setItem('routeFromInduction','true')
-    //         // this.showReprocess=false;
-    //         // this.showReprocessed=false;
-    //     }else{
-    //       localStorage.setItem('routeFromInduction','false')
-    //       // this.showReprocess=true;
-    //       // this.showReprocessed=true;
-    //     }
-    //   });
 
     //get absolute url 
    if(router.url == '/OrderManager/OrderStatus'){
@@ -77,11 +59,10 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     this.tabIndex$ = this.route.queryParamMap.pipe(
       map((params: ParamMap) => params.get('tabIndex')),
     );
-    var IsStatus = this.route.queryParamMap.pipe(
+    let IsStatus = this.route.queryParamMap.pipe(
       map((params: ParamMap) => params.get('IsOrderStatus')),
     );
     IsStatus.subscribe((param) => {
-      // debugger
       if (param!=null &&param != undefined) {
         this.IsOrderStatus = true;
       }else this.IsOrderStatus = false;
@@ -89,7 +70,6 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     this.tabIndex$.subscribe((param) => { 
       if (param) {
         this.TabIndex = 0;
-        // this.sharedService.updateOrderStatus(param)
       }
     });
     
@@ -142,7 +122,6 @@ export class TransactionComponent implements OnInit, AfterViewInit {
       if (param) {
         this.TabIndex = 2;
         this.sharedService.updateTransactionLocHistory(param);
-        // this.location=param;
       }
     });
   }

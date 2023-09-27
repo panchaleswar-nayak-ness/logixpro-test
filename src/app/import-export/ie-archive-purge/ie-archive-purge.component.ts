@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
@@ -7,7 +7,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
   templateUrl: './ie-archive-purge.component.html',
   styleUrls: ['./ie-archive-purge.component.scss']
 })
-export class IeArchivePurgeComponent implements OnInit {
+export class IeArchivePurgeComponent  {
 
   ELEMENT_DATA: any[] =[
     {table_name: 'Archive Event Log'},
@@ -32,12 +32,10 @@ export class IeArchivePurgeComponent implements OnInit {
     private dialog: MatDialog,
   ) { }
 
-  ngOnInit(
-  ): void {
-  }
+
 
   IeImportAllDialog(){
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+     this.dialog.open(ConfirmationDialogComponent, {
       height: 'auto',
       width: '550px',
       autoFocus: '__non_existing_element__',

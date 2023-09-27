@@ -150,7 +150,6 @@ export class OmAddRecordComponent implements OnInit {
     else if (this.data.transaction.inProcess == "True") {
       this.oTTempUpdatePayload.inProcess = true;
     }
-    // this.oTTempUpdatePayload.inProcess = this.data.transaction.inProcess;
     this.oTTempUpdatePayload.processBy = this.data.transaction.processingBy;
     this.oTTempUpdatePayload.importBy = this.data.transaction.importBy;
     this.oTTempUpdatePayload.importDate = this.data.transaction.importDate ? new Date(this.data.transaction.importDate) : new Date();
@@ -278,12 +277,7 @@ export class OmAddRecordComponent implements OnInit {
       this.Api.SearchItem(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.itemNumberSearchList = res.data;
-        } else {
-          // this.toastr.error(res.responseMessage, 'Error!', {
-          //   positionClass: 'toast-bottom-right',
-          //   timeOut: 2000
-          // });
-        }
+        } 
       });
     }
     else {
@@ -311,17 +305,11 @@ export class OmAddRecordComponent implements OnInit {
         this.wharehouses = res.data;
         this.wharehouses = res.data.sort();
         this.wharehouses.unshift("")
-      } else {
-        // this.toastr.error(res.responseMessage, 'Error!', {
-        //   positionClass: 'toast-bottom-right',
-        //   timeOut: 2000
-        // });
-      }
+      } 
     });
   }
 
   onDateChange(event, key: any): void {
-    this.oTTempUpdatePayload[key] = "";
     this.oTTempUpdatePayload[key] = event;
   }
 

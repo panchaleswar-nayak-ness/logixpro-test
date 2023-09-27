@@ -21,11 +21,6 @@
             <div class="header-filter-bar">
                 <div class="row">
                     <div class="col-xl-6">
-                        <!-- <mat-form-field class="custom-form-field custom-form-field-bg-white w-100" appearance="outline">
-                            <mat-label>Order Type</mat-label>
-                            <input matInput type="text" maxlength="255"
-                              value="00000">
-                          </mat-form-field> -->
 
                    
                         <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3 mb-xl-0" appearance="outline"
@@ -38,14 +33,7 @@
 
                                 <button matSuffix *ngIf="orderNumber" class="clear-btn"  (click)=" orderNumber = '';autocompleteSearchColumn();clearFields();"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
 
-                            <!-- <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData($event)">
-                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber">
-                                    <div (click)="getRow(option)">{{option.orderNumber}}</div>
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field> -->
-
-                        <mat-autocomplete class="card custom-scroll" #auto="matAutocomplete"  (optionSelected)="searchData($event)">
+                        <mat-autocomplete class="card custom-scroll" #auto="matAutocomplete">
                             
                             <h6 class ="card-header matAutoCompHeader "><span style="width:  140px;">Order Number</span> <span  style="width:  140px;">Trans. Type</span> <span  style="width:  140px;">Item Number</span> <span  style="width:  140px;">Trans. Quantity</span></h6>
                           
@@ -153,11 +141,6 @@
                     </mat-form-field>
                 </div>
                 <div class="col-xl-3">
-                    <!-- <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Expiration Date</mat-label>
-                        <input [(ngModel)]="expDate" matInput type="text" maxlength="255" value="Value">
-                    </mat-form-field> -->
 
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline"
                     [class.mat-form-field-invalid]="isInvalid" >
@@ -181,10 +164,6 @@
                         appearance="outline">
                         <mat-label>Description</mat-label>
                         <input readonly [disabled]="!item" [(ngModel)]="description" matInput type="text" maxlength="255" value="Value">
-                        <!-- <span matSuffix>
-                            <mat-icon
-                                style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
-                        </span> -->
                     </mat-form-field>
                 </div>
                 <div class="col-xl-3">
@@ -257,11 +236,6 @@
                     </mat-form-field>
                 </div>
                 <div class="col-xl-3">
-                    <!-- <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Required Date</mat-label>
-                        <input [disabled]="!item" [(ngModel)]="reqDate" matInput type="text" maxlength="255" value="Value">
-                    </mat-form-field> -->
 
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" 
                     [class.mat-form-field-invalid]="isInvalid">

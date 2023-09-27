@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from 'src/app/init/auth.service';
@@ -8,9 +8,9 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-preferences-consolidation',
   templateUrl: './preferences-consolidation.component.html',
-  styleUrls: ['./preferences-consolidation.component.scss'],
+  styleUrls: [],
 })
-export class PreferencesConsolidationComponent implements OnInit {
+export class PreferencesConsolidationComponent {
   filtersForm: FormGroup;
   @Input() pref: any;
   userData: any;
@@ -38,9 +38,7 @@ export class PreferencesConsolidationComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    
-  }
+
   setPreferences(item) { 
            this.filtersForm.controls['defPackList'].setValue(item.defaultPackingList);
           this.filtersForm.controls['blindVerify'].setValue(item.blindVerifyItems);
@@ -60,13 +58,6 @@ export class PreferencesConsolidationComponent implements OnInit {
     if (changes['pref']['currentValue']) {
       this.setPreferences(changes['pref']['currentValue'])
     }
-    // if (changes['orderListData']) {
-    //   this.tableData['_data']['_value'] =
-    //     changes['orderListData']['currentValue'];
-    // }
-    // if (changes['extraField']) {
-    //   this.extraField = changes['extraField']['currentValue'];
-    // }
   }
   changePreferences() {
     this.updatePreferencesValues();
@@ -94,8 +85,6 @@ this.Api
           timeOut: 2000,
         });
 
-        // Refresh the data on the page
-        this.ngOnInit();
       } else {
         // Show an error message
         this.toastr.error(
@@ -132,43 +121,6 @@ this.Api
         (response: any) => {
           if (response.isExecuted) {
             this.consolidationEvnt.emit();
-            // this.filtersForm.controls['defPackList'].setValue(
-            //   response.data.defPackList
-            // );
-            // this.filtersForm.controls['blindVerify'].setValue(
-            //   response.data.blindVerify
-            // );
-            // this.filtersForm.controls['verifyEach'].setValue(
-            //   response.data.verifyItems
-            // );
-            // this.filtersForm.controls['packingList'].setValue(
-            //   response.data.packingListSort
-            // );
-            // this.filtersForm.controls['printUnVerified'].setValue(
-            //   response.data.printUnVerified
-            // );
-            // this.filtersForm.controls['printVerified'].setValue(
-            //   response.data.printVerified
-            // );
-            // this.filtersForm.controls['defLookType'].setValue(
-            //   response.data.deffLookType
-            // );
-            // this.filtersForm.controls['backOrders'].setValue(
-            //   response.data.autoCompleteShip
-            // );
-            // this.filtersForm.controls['nonPickpro'].setValue(
-            //   response.data.nonPickpro
-            // );
-            // this.filtersForm.controls['validateStaingLocs'].setValue(
-            //   response.data.validateStaingLocs
-            // );
-
-            // this.toastr.success(response.responseMessage, 'Success!', {
-            //   positionClass: 'toast-bottom-right',
-            //   timeOut: 2000,
-            // });
-
-            // this.ngOnInit();
           } else {
             this.toastr.error(
               'Error',

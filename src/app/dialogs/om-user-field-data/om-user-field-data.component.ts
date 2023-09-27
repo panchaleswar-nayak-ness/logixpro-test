@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-om-user-field-data',
   templateUrl: './om-user-field-data.component.html',
-  styleUrls: ['./om-user-field-data.component.scss']
+  styleUrls: []
 })
 export class OmUserFieldDataComponent implements OnInit {
   @ViewChild('user_focus') user_focus: ElementRef;
@@ -29,11 +29,7 @@ export class OmUserFieldDataComponent implements OnInit {
   }
 
   getUserFieldData(loader: boolean = false) {
-    let payload = {
-      "userName": this.userData.userName,
-      "wsid": this.userData.wsid,
-      "appName": ""
-    }
+    
     this.Api.UserFieldData().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.userFieldData = res.data[0];

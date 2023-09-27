@@ -24,18 +24,9 @@
                             <mat-checkbox [checked]="kanban" color="primary" (change)="onChangeKanban($event)" [(ngModel)]="kanban">
                                 Kanban
                             </mat-checkbox>
-                            <!-- <div class="br-14 d-flex align-items-center label label-yellow px-3 f-16">
-                            Kanban
-                        </div> -->
                         </div>
                     </div>
                 </div>
-                <!-- <div>
-                <mat-form-field class=" custom-form-field custom-form-field-bg-white" appearance="outline">
-                    <mat-label>No. of Selected Replenishments</mat-label>
-                    <input type="text" aria-label="Search" matInput>
-                </mat-form-field>
-            </div> -->
 
             </div>
             <div class="col-xl-4 offset-xl-2">
@@ -43,11 +34,6 @@
                     <button style="flex:1 auto" mat-flat-button color="primary" class="btn-md float-end" (click)="createNewOrdersList()">
                         Create New Order List
                     </button>
-                    <!-- <button mat-flat-button color="primary" class=" mat-button-icon">
-                <span class="material-symbols-outlined">
-                add
-                </span>
-            </button> -->
                 </div>
             </div>
         </div>
@@ -139,17 +125,6 @@
             <ng-scrollbar class="mat-table-scrollbar" style="height:635px" track="all">
 
                 <table class="w-100 table-borderless" mat-table [dataSource]="filteredTableData" matSort (matSortChange)="announceSortChange($event)">
-
-                    <!-- <ng-container matColumnDef="select" sticky>
-                        <th mat-header-cell *matHeaderCellDef>
-                            <mat-checkbox color="primary">
-                            </mat-checkbox>
-                        </th>
-                        <td mat-cell *matCellDef="let seletedRecord">
-                            <mat-checkbox color="primary" matTooltip="Check" matTooltipPosition="above">
-                            </mat-checkbox>
-                        </td>
-                    </ng-container> -->
 
                     <ng-container matColumnDef="Item Number">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Item No. </th>

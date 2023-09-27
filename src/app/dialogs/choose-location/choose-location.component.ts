@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-choose-location',
   templateUrl: './choose-location.component.html',
-  styleUrls: ['./choose-location.component.scss']
+  styleUrls: []
 })
 export class ChooseLocationComponent implements OnInit {
   @ViewChild('loc_focus') loc_focus: ElementRef;
@@ -84,7 +84,7 @@ export class ChooseLocationComponent implements OnInit {
 
   submit() {
     try {
-      var payLoad = {
+      let payLoad = {
         "invMapID": this.selectedLocation.invMapID,
         "previousZone": this.data.zones.replace("Zones:",""),
         "dedicated": this.data.dedicated,

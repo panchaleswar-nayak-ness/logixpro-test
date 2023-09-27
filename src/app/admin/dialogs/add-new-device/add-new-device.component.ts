@@ -9,7 +9,6 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { AuthService } from 'src/app/init/auth.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { ToastrService } from 'ngx-toastr';
-import labels from '../../../labels/labels.json';
 import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { catchError, of } from 'rxjs';
@@ -17,7 +16,7 @@ import { catchError, of } from 'rxjs';
 @Component({
   selector: 'app-add-new-device',
   templateUrl: './add-new-device.component.html',
-  styleUrls: ['./add-new-device.component.scss'],
+  styleUrls: [],
 })
 export class AddNewDeviceComponent implements OnInit {
   @ViewChild('first_address') first_address: ElementRef;
@@ -95,11 +94,9 @@ export class AddNewDeviceComponent implements OnInit {
     }
     if (form.value.deviceNumber === null || form.value.deviceNumber === '') {
       this.openAlertDialog('Device Number cannot be left blank.');
-      return;
     } else {
       let item = form.value;
-      // const preferences = Object.values(form.value);
-      var preferences = [
+      let preferences = [
         item.zone,
         item.deviceType,
         item.deviceNumber,
@@ -115,8 +112,8 @@ export class AddNewDeviceComponent implements OnInit {
         item.displayCharacters,
         item.pairKey,
       ];
-      var shown = this.showDPTypeFields();
-      if (this.data && this.data.item && this.data.item.deviceID != 0 || this.newDeviceID !=0 ) {
+      let shown = this.showDPTypeFields();
+      if (this.data?.item && this.data.item.deviceID != 0 || this.newDeviceID !=0 ) {
         switch (shown) {
           case 'WMI JMIF':
             preferences = preferences.concat(this.JMIF);
@@ -144,15 +141,14 @@ export class AddNewDeviceComponent implements OnInit {
             break;
         }
       }
+      let newdeviceID = this.newDeviceID>0?this.newDeviceID:0
       let paylaod = {
         DeviceID:
-        this.data && this.data.item && this.data.item.deviceID
+        this.data?.item && this.data.item.deviceID
           ? this.data.item.deviceID
-          : this.newDeviceID>0?this.newDeviceID:0,
+          : newdeviceID,
           shown: shown,
           Preference: preferences,
-       
-      
       };
       
       this.Api
@@ -167,7 +163,6 @@ export class AddNewDeviceComponent implements OnInit {
             if (res.data != 0) {
               this.newDeviceID=res.data;
               
-              // this.item.deviceID=res.data;
               this.getDeviceInformation(res.data);
             }
             if (type === 'close') {
@@ -187,62 +182,62 @@ export class AddNewDeviceComponent implements OnInit {
   initializeDataSet() {
     this.newDeviceForm = this.fb.group({
       zone: new FormControl({
-        value: (this.item && this.item.zone) || '',
+        value: (this.item?.zone && this.item.zone) || '',
         disabled: false,
       }),
       deviceType: new FormControl({
-        value: (this.item && this.item.deviceType) || '',
+        value: (this.item?.deviceType && this.item.deviceType) || '',
         disabled: false,
       }),
       deviceNumber: new FormControl({
-        value: (this.item && this.item.deviceNumber) || '',
+        value: (this.item?.deviceNumber && this.item.deviceNumber) || '',
         disabled: false,
       }),
       deviceModel: new FormControl({
-        value: (this.item && this.item.deviceModel) || '',
+        value: (this.item?.deviceModel && this.item.deviceModel) || '',
         disabled: false,
       }),
       controllerType: new FormControl({
-        value: (this.item && this.item.controllerType) || '',
+        value: (this.item?.controllerType && this.item.controllerType) || '',
         disabled: false,
       }),
       controllerTerminalPort: new FormControl({
-        value: (this.item && this.item.controllerTermPort) || '',
+        value: (this.item?.controllerTermPort && this.item.controllerTermPort) || '',
         disabled: false,
       }),
       arrowDirection: new FormControl({
-        value: (this.item && this.item.arrowDirection) || '',
+        value: (this.item?.arrowDirection && this.item.arrowDirection) || '',
         disabled: false,
       }),
       lightDirection: new FormControl({
-        value: (this.item && this.item.lightDirection) || '',
+        value: (this.item?.lightDirection && this.item.lightDirection) || '',
         disabled: false,
       }),
       useLightTreeNumber: new FormControl({
-        value: (this.item && this.item.lightTreeNumber) || '0',
+        value: (this.item?.lightTreeNumber && this.item.lightTreeNumber) || '0',
         disabled: false,
       }),
       firstAddress: new FormControl({
-        value: (this.item && this.item.beginAddress) || '0',
+        value: (this.item?.beginAddress && this.item.beginAddress) || '0',
         disabled: false,
       }),
       displayPositions: new FormControl({
-        value: (this.item && this.item.displayPositions) || '0',
+        value: (this.item?.displayPositions && this.item.displayPositions) || '0',
         disabled: false,
       }),
       displayCharacters: new FormControl({
-        value: (this.item && this.item.displayCharacters) || '0',
+        value: (this.item?.displayCharacters && this.item.displayCharacters) || '0',
         disabled: false,
       }),
       pairKey: new FormControl({
-        value: (this.item && this.item.pairKey) || '',
+        value: (this.item?.pairKey && this.item.pairKey) || '',
         disabled: false,
       }),
       useLaserPointer: new FormControl({
         value:
-          this.item && this.item.laserPointer
+          this.item?.laserPointer && this.item.laserPointer
             ? JSON.parse(this.item.laserPointer.toLowerCase())
-            : false || false,
+            : false,
         disabled: false,
       }),
       hostIP: new FormControl({ value: '', disabled: false }),
@@ -256,7 +251,7 @@ export class AddNewDeviceComponent implements OnInit {
     });
 
     if (
-      this.WMIControllers.indexOf(this.item && this.item.controllerType) >= 0
+      this.WMIControllers.indexOf(this.item?.controllerType && this.item.controllerType) >= 0
     ) {
       this.interFaceType = 'WMI';
     } else {
@@ -281,7 +276,7 @@ export class AddNewDeviceComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
         let payload = {
-          deviceID: this.data && this.data.item ? this.data.item.deviceID : this.newDeviceID>0?this.newDeviceID:0,
+          deviceID: this.data?.item  ? this.data.item.deviceID : this.newDeviceID > 0? this.newDeviceID:0,
           username: this.userData.userName,
           wsid: this.userData.wsid,
         };
@@ -306,13 +301,9 @@ export class AddNewDeviceComponent implements OnInit {
   }
 
   getDeviceInformation(deviceID?) {
-    
+    let con = this.data?.item ? this.data.item.deviceID : 0;
     let payload = {
-      deviceID: deviceID
-        ? deviceID
-        : this.data && this.data.item
-        ? this.data.item.deviceID
-        : 0,
+      deviceID: deviceID ? deviceID : con,
       username: this.userData.userName,
       wsid: this.userData.wsid,
     };
@@ -331,10 +322,10 @@ export class AddNewDeviceComponent implements OnInit {
         if(res.isExecuted){
 
        
-        this.zoneList = res && res.data ? res.data.zoneList : [];
+        this.zoneList = res?.data && res.data ? res.data.zoneList : [];
         this.controllerTypeList =
-          res && res.data ? res.data.controllerTypeList : [];
-        this.deviceModelList = res && res.data ? res.data.deviceModelList : [];
+          res?.data && res.data ? res.data.controllerTypeList : [];
+        this.deviceModelList = res?.data && res.data ? res.data.deviceModelList : [];
         this.newDeviceForm.controls['hostIP'].setValue(res.data.hostIPAddress);
         this.newDeviceForm.controls['hostPort'].setValue(res.data.hostPort);
         this.newDeviceForm.controls['workstationName'].setValue(
@@ -344,10 +335,6 @@ export class AddNewDeviceComponent implements OnInit {
         this.newDeviceForm.controls['Baud'].setValue(res.data.baudRate);
         this.newDeviceForm.controls['StopBit'].setValue(res.data.stopBit);
         this.newDeviceForm.controls['Parity'].setValue(res.data.parity);
-        // this.COMPort = res.data.hostPCComPort;
-        // this.Baud = res.data.baudRate;
-        // this.StopBit = res.data.stopBit;
-        // this.Parity = res.data.parity;
       }else{
         this.toastr.error('An Error occured while retrieving data.', 'Error!', {
           positionClass: 'toast-bottom-right',
@@ -374,62 +361,30 @@ export class AddNewDeviceComponent implements OnInit {
 
   getCompName() {
     this.newDeviceForm.controls['workstationName'].setValue(this.userData.wsid);
-    // this.newDeviceForm.get('workstationName')?.setValue(this.userData.wsid);
-    // let payload = {
-    //   WSID: this.userData.wsid,
-    // };
-    // this.adminService.get(payload, '/Induction/CompName', true).subscribe(
-    //   (res: any) => {
-    //     if (res.data && res.isExecuted) {
-    //       this.newDeviceForm.get('workstationName')?.setValue(res.data);
-    //     }
-    //   },
-    //   (error) => {}
-    // );
   }
 
   showDPTypeFields() {
-    var ctype = this.newDeviceForm.controls['controllerType'].value;
-    var IPTI = this.IPTI;
-    var WMI = this.WMI;
-    var Other = this.Other;
-    var setup = this.setup;
-    var JMIF = this.JMIF;
+    let ctype = this.newDeviceForm.controls['controllerType'].value;
+    
 
-    var shown = '';
+    let shown = '';
     if (
       this.newDeviceForm.controls['deviceType'].value == 'Light Tree' &&
       this.newDeviceForm.controls['deviceModel'].value == 'IPTI'
     ) {
-      // IPTI.show();
-      // WMI.hide();
-      // Other.hide();
       shown = 'IPTI';
     } else if (this.WMIControllers.indexOf(ctype) >= 0) {
       shown = 'WMI';
       this.interFaceType = 'WMI';
       this.isEdit = true;
-      // WMI.show();
       if (ctype == 'JMIFShuttle') {
         shown += ' JMIF';
-        // JMIF.show();
-        // setup.hide();
       } else if (ctype.toLowerCase().indexOf('sapientshuttle') >= 0) {
         shown += ' SETUP';
-        // setup.show();
-        // JMIF.hide();
-      } else {
-        // setup.hide();
-        // JMIF.hide();
       }
-      // IPTI.hide();
-      // Other.hide();
     } else {
       this.interFaceType = 'Other';
       this.isEdit = true;
-      // Other.show();
-      // IPTI.hide();
-      // WMI.hide();
       shown = 'OTHER';
     }
     return shown;

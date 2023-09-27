@@ -1,17 +1,15 @@
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { PrintRangeComponent } from '../print-range/print-range.component';
 import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'; 
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-scan-type-code',
   templateUrl: './scan-type-code.component.html',
-  styleUrls: ['./scan-type-code.component.scss']
+  styleUrls: []
 })
 export class ScanTypeCodeComponent implements OnInit {
   @ViewChildren('scan_code_type', { read: ElementRef }) scan_code_type: QueryList<ElementRef>;
@@ -33,10 +31,7 @@ export class ScanTypeCodeComponent implements OnInit {
     this.getScanCodeType()
   }
   getScanCodeType(){
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
-    }
+    
     this.Api.ScanCodeTypes().subscribe((res) => {
       if (res.isExecuted) {
         this.scanTypeCode_list_Response = [...res.data];
@@ -68,13 +63,12 @@ export class ScanTypeCodeComponent implements OnInit {
 
     let cond = true;
     this.scanTypeCode_list_Response.forEach(element => {
-      if(element.toLowerCase() == newScanCode.toLowerCase() ) {
+      if(element.toLowerCase() == newScanCode.toLowerCase() && cond) {
         cond = false;
        this.toastr.error('Already Exists', 'Error!', {
          positionClass: 'toast-bottom-right',
          timeOut: 2000
        });
-       return;
       }   
     });
 
@@ -147,10 +141,10 @@ export class ScanTypeCodeComponent implements OnInit {
 
     let notselected = true;
     this.scanTypeCode_list_Response.forEach(element => {
-      if(element.toLowerCase() == selectedrecord.toLowerCase() ) {
+      if(element.toLowerCase() == selectedrecord.toLowerCase() && notselected ) {
         notselected = false;
         this.dialogRef.close(selectedrecord);
-       return;
+       
       }   
     });
     if(notselected){

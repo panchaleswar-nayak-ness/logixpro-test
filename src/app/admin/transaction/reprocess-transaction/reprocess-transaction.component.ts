@@ -1,8 +1,6 @@
 import {
   Component,
-  EventEmitter,
   OnInit,
-  Output,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -21,7 +19,6 @@ import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dia
 import { ReprocessTransactionDetailComponent } from '../../dialogs/reprocess-transaction-detail/reprocess-transaction-detail.component';
  
 import { SharedService } from '../../../services/shared.service';
-import { DialogConfig } from '@angular/cdk/dialog';
 import { FunctionAllocationComponent } from '../../dialogs/function-allocation/function-allocation.component';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -247,7 +244,6 @@ export class ReprocessTransactionComponent implements OnInit {
         this.columnSearch.searchColumn.colDef='Item Number';
         this.columnSearch.searchValue=itemNo;
        
-      //  this.onOrderNoChange();
       }
        })
     )
@@ -302,13 +298,13 @@ export class ReprocessTransactionComponent implements OnInit {
 
   getTransactionInfo(completeInfo: boolean) {
     if (!completeInfo) {
-      var payload = {
+      let payload = {
         id: '' + this.transactionID + '',
         username: this.userData.userName,
         wsid: this.userData.wsid,
       }
       this.Api.ReprocessTransactionData(payload).subscribe(
-        (res: any) => {
+        {next: (res: any) => {
           if (res.data && res.isExecuted) {
             this.createdBy = res.data[0].nameStamp;
             this.transactionDateTime = res.data[0].dateStamp;
@@ -321,7 +317,7 @@ export class ReprocessTransactionComponent implements OnInit {
             });
           }
         },
-        (error) => { }
+        error: (error) => { }}
       );
     }
     else {
@@ -368,25 +364,23 @@ export class ReprocessTransactionComponent implements OnInit {
     this.Api
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
-        (res: any) => {
+        {next: (res: any) => {
           if (isSearchByOrder) {
             this.searchAutocompleteList = res.data;
           } else {
             this.searchAutocompleteListByCol = res.data;
           }
         },
-        (error) => { }
+        error: (error) => { }}
       );
   }
 
   selectedOrderNumber(value: any) {
     this.orderNumber = value;
-    // this.getContentData();
     this.isHistory ? this.getHistoryData() : this.getContentData();
   }
   selectedItemNum(value: any) {
     this.itemNumber = value;
-    // this.getContentData();
     this.isHistory ? this.getHistoryData() : this.getContentData();
   }
 
@@ -400,11 +394,8 @@ export class ReprocessTransactionComponent implements OnInit {
     else{
       this.itemNumber='';
       this.orderNumber='';
-    // this.isHistory ? this.getHistoryData() : this.getContentData("1");
-
     }
   
-    // this.getContentData("1");
   
   }
 
@@ -442,15 +433,14 @@ export class ReprocessTransactionComponent implements OnInit {
           .pipe(takeUntil(this.onDestroy$))
           .subscribe((result) => {
             this.selectedVariable = '';
-            if (result && result.isExecuted) {
+            if (result?.isExecuted) {
               this.getColumnsData();
             }
           });
       }
-      else
+      else if (this.selectedVariable.includes('delete'))
       {
-        if(this.selectedVariable.includes('delete'))
-        {
+        
           let deletePayload ;
           if (!opened && this.selectedVariable && this.selectedVariable =='deleteReplenishment') 
           {
@@ -578,22 +568,22 @@ export class ReprocessTransactionComponent implements OnInit {
             if(result=='Yes')
             {
               this.Api.ReprocessTransactionDelete(deletePayload).subscribe((res: any) => {
+                if (res.isExecuted){
+                  this.selectedVariable = "";
+                  this.toastr.success(labels.alert.update, 'Success!',{
+                    positionClass: 'toast-bottom-right',
+                    timeOut:2000
+                 });
     
-                this.selectedVariable = "";
-                this.toastr.success(labels.alert.update, 'Success!',{
-                  positionClass: 'toast-bottom-right',
-                  timeOut:2000
-               });
-  
-               this.getContentData("1");
-               this.getOrdersWithStatus();
-      
-          (error) => {
-            this.toastr.error('Something went wrong', 'Error!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
-          }
+                 this.getContentData("1");
+                 this.getOrdersWithStatus();
+                }
+                else{
+                  this.toastr.error('Something went wrong', 'Error!', {
+                    positionClass: 'toast-bottom-right',
+                    timeOut: 2000,
+                  });
+                }
         });
             }
             else 
@@ -602,7 +592,7 @@ export class ReprocessTransactionComponent implements OnInit {
             }
       
           })
-        }
+        
 
   
         
@@ -641,12 +631,11 @@ export class ReprocessTransactionComponent implements OnInit {
       this.columnSearch.searchColumn ||
       this.columnSearch.searchColumn == ''
     ) {
-      // this.getContentData();
       this.isHistory ? this.getHistoryData() : this.getContentData();
     }
   }
   getFloatFormabelValue(): FloatLabelType {
-    return this.floatLabelControlColumn.value || 'auto';
+    return this.floatLabelControlColumn.value ?? 'auto';
   }
   getProcessSelection(checkValues) {
     this.tableEvent = checkValues;
@@ -672,8 +661,8 @@ export class ReprocessTransactionComponent implements OnInit {
   deleteOrder(id: any, event) {
 
     if (id == 0 || id == -1) {
-      var message = "";
-      var command = "";
+      let message = "";
+      let command = "";
 
 
       if(event=='reprocess'){command = "reprocess"}
@@ -702,8 +691,8 @@ export class ReprocessTransactionComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if(result=='Yes'){
 
-          var MarkAsTrue = (id == 0 ? true : false);
-          var column = "";
+          let MarkAsTrue = (id == 0 ? true : false);
+          let column = "";
           if (event == 'reprocess') {
             column = 'Reprocess';
           }
@@ -714,14 +703,14 @@ export class ReprocessTransactionComponent implements OnInit {
             //history
             column = 'Send to History';
           }
-          var payload = {
+          let payload = {
             Column: column,
             MarkAsTrue: MarkAsTrue,
             username: this.userData.userName,
             wsid: this.userData.wsid,
           }
           this.Api.SetAllReprocessColumn(payload).subscribe(
-            (res: any) => {
+            {next: (res: any) => {
               if (res.data && res.isExecuted) { 
                 this.getContentData();
                 this.getOrdersWithStatus();
@@ -736,7 +725,7 @@ export class ReprocessTransactionComponent implements OnInit {
                 });
               }
             },
-            (error) => { }
+            error: (error) => { }}
           );
 
 
@@ -761,7 +750,7 @@ export class ReprocessTransactionComponent implements OnInit {
         }
       })
       dialogRef.afterClosed().subscribe(result => {
-            var payloadForReprocess = {
+            let payloadForReprocess = {
               id: id,
               reprocess: 0,
               postComplete: 0,
@@ -771,7 +760,7 @@ export class ReprocessTransactionComponent implements OnInit {
               wsid: this.userData.wsid,
             }
             this.Api.ReprocessIncludeSet(payloadForReprocess).subscribe(
-              (res: any) => {
+              {next: (res: any) => {
                 if (res.data && res.isExecuted) {
                   this.getContentData();
                   this.getOrdersWithStatus();
@@ -786,7 +775,7 @@ export class ReprocessTransactionComponent implements OnInit {
                   });
                 }
               },
-              (error) => { }
+              error: (error) => { }}
             );
   
   
@@ -808,24 +797,12 @@ export class ReprocessTransactionComponent implements OnInit {
       wsid: this.userData.wsid
     };
     this.Api.OrderToPost(payload).subscribe(
-      (res: any) => {
+      {next: (res: any) => {
         if (res.data) {
           this.orders.reprocess = res.data.reprocessCount;
           this.orders.complete = res.data.completeCount;
           this.orders.history = res.data.historyCount;
 
-          // if(this.orders.reprocessOrders.length&&this.orders.reprocessOrders.length>0)
-          // {
-          //   this.orders.reprocessOrders.shift();
-          // }
-          // if(this.orders.completeOrders.length&&this.orders.completeOrders.length>0)
-          // {
-          //   this.orders.completeOrders.shift();
-          // }
-          // if(this.orders.historyOrders.length&&this.orders.historyOrders.length>0)
-          // {
-          //   this.orders.historyOrders.shift();
-          // }
           this.orders.reprocessOrders = res.data.reprocess;
 
           this.orders.completeOrders = res.data.complete;
@@ -838,15 +815,14 @@ export class ReprocessTransactionComponent implements OnInit {
           });
         }
       },
-      (error) => { }
+      error: (error) => { }}
     );
 
   }
 
-  deleteReprocessOrder(record: any) { }
+  
 
   itemUpdatedEvent(event: any) {
-    //alert("TRIGGERED");
     this.getContentData('1');
     this.getOrdersWithStatus();
     this.isEnabled = false; 
@@ -870,7 +846,7 @@ export class ReprocessTransactionComponent implements OnInit {
       tableName: 'Open Transactions Temp',
     };
     this.Api.GetColumnSequence(payload).subscribe(
-      (res: any) => {
+      {next: (res: any) => {
         this.displayedColumns = TRNSC_DATA;
         if (res.data) {
           this.columnValues = res.data;
@@ -883,7 +859,7 @@ export class ReprocessTransactionComponent implements OnInit {
           });
         }
       },
-      (error) => { }
+      error: (error) => { }}
     );
   }
 
@@ -907,21 +883,15 @@ export class ReprocessTransactionComponent implements OnInit {
     this.Api
       .ReprocessTransactionTable(payload)
       .subscribe(
-        (res: any) => { 
-          // this.getTransactionModelIndex();
+        {next: (res: any) => { 
           this.detailDataInventoryMap = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
-          // this.dataSource.paginator = this.paginator;
           this.customPagination.total = res.data?.recordsFiltered;        
           
-          // this.pageEvent = this.paginator;          
-          // this.customPagination.startIndex = this.paginator.pageIndex;
-          // this.customPagination.endIndex = res.data?.recordsFiltered;
-          // this.customPagination.recordsPerPage = this.paginator.pageSize;
 
           this.dataSource.sort = this.sort;
         },
-        (error) => { }
+        error: (error) => { }}
       );
 
 
@@ -941,22 +911,19 @@ export class ReprocessTransactionComponent implements OnInit {
       sortOrder: this.sortOrder,
       orderNumber: "",
       itemNumber: this.itemNumber,
-      // hold: false,
       username: this.userData.userName,
       wsid: this.userData.wsid
     };
     this.Api
       .ReprocessedTransactionHistoryTable(payload)
       .subscribe(
-        (res: any) => {
-          // this.getTransactionModelIndex();
+        {next: (res: any) => {
           this.detailDataInventoryMap = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
-          //  this.dataSource.paginator = this.paginator;
           this.customPagination.total = res.data?.recordsFiltered;
           this.dataSource.sort = this.sort;
         },
-        (error) => { }
+        error: (error) => { }}
       );
 
 
@@ -964,15 +931,11 @@ export class ReprocessTransactionComponent implements OnInit {
   }
   handlePageEvent(e: PageEvent) {    
     this.pageEvent = e;
-    // this.customPagination.startIndex =  e.pageIndex
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
 
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
-    // this.length = e.length;
     this.customPagination.recordsPerPage = e.pageSize;
-    // this.pageIndex = e.pageIndex;
 
-    // this.initializeApi();
     if(this.isHistory){
       this.getHistoryData()
     }else{
@@ -982,7 +945,6 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   resetFields(event?) {
-    // this.orderNo = '';
     this.columnSearch.searchValue = '';
     this.searchAutocompleteListByCol = [];
     this.orderSelectionSearch = false
@@ -996,12 +958,6 @@ export class ReprocessTransactionComponent implements OnInit {
       autoFocus: '__non_existing_element__',
       disableClose:true,
     });
-    dialogRef.afterClosed().subscribe((x) => {
-
-      if (x) {
-        //e.description =  this.dialogDescription!=""?this.dialogDescription:e.description 
-      }
-    })
   }
 
   openReprocessTransactionDialogue(id: any) {

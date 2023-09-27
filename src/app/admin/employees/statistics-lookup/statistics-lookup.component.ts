@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit} from '@angular/core';
+import { HttpClient} from '@angular/common/http';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -9,7 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './statistics-lookup.component.html',
   styleUrls: ['./statistics-lookup.component.scss']
 })
-export class StatisticsLookupComponent implements OnInit, AfterViewInit {
+export class StatisticsLookupComponent implements OnInit {
   people = [
     {
       name: 'John',
@@ -201,9 +201,7 @@ export class StatisticsLookupComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit(): void {
 
-  }
 
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function(data, filter): boolean {

@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-ccsif',
   templateUrl: './ccsif.component.html',
-  styleUrls: ['./ccsif.component.scss']
+  styleUrls: []
 })
 export class CcsifComponent implements OnInit {
   sideBarOpen: boolean = true;

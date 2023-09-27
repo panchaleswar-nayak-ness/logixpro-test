@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-transaction-qty-edit',
   templateUrl: './transaction-qty-edit.component.html',
-  styleUrls: ['./transaction-qty-edit.component.scss']
+  styleUrls: []
 })
 export class TransactionQtyEditComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;

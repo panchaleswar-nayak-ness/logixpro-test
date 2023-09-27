@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { OmCreateOrdersComponent } from '../dialogs/om-create-orders/om-create-orders.component';
-import { MatDialog } from '@angular/material/dialog'; 
 import { AuthService } from '../init/auth.service';
-import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
-import { filter, pairwise } from 'rxjs';
+import { NavigationEnd, Router} from '@angular/router';
 import { ApiFuntions } from '../services/ApiFuntions';
 import { GlobalService } from '../common/services/global.service';
 
 @Component({
   selector: 'app-order-manager',
   templateUrl: './order-manager.component.html',
-  styleUrls: ['./order-manager.component.scss'],
+  styleUrls: [],
 })
 export class OrderManagerComponent implements OnInit {
   userData: any;
@@ -29,31 +26,6 @@ export class OrderManagerComponent implements OnInit {
     private router: Router,
     private global:GlobalService
   ) {
-
-  //   router.events
-  //   .pipe(
-  //     filter((evt: any) => evt instanceof RoutesRecognized),
-  //     pairwise()
-  //   )
-  //   .subscribe((events: RoutesRecognized[]) => {
-  //     const prevRoute= events[0].urlAfterRedirects.split('/');
-  //     const nextRoute = events[1].urlAfterRedirects.split('/');
-
-  // console.log(prevRoute[1],nextRoute[1]);
-   
-  //     // if (events[0].urlAfterRedirects == '/InductionManager' || events[1].urlAfterRedirects == '/InductionManager') {
-  
-  //     if(prevRoute[1]== 'OrderManager' || nextRoute[1] == 'OrderManager'){
-  //       localStorage.setItem('routeFromOrderStatus','true')
-  //     }
-  //     else{
-  //       localStorage.setItem('routeFromOrderStatus','false')
-  //       // this.showReprocess=true;
-  //       // this.showReprocessed=true;
-  //     }
-      
-  //   });
-
         this.router.events.subscribe((event) => {
           if (event instanceof NavigationEnd) {
 

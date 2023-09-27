@@ -4,7 +4,7 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort} from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
@@ -13,7 +13,6 @@ import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.ser
 import { SharedService } from 'src/app/services/shared.service';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { BaseService } from 'src/app/services/base-service.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
@@ -162,7 +161,6 @@ export class DeAllocateOrdersComponent implements OnInit {
   
 
   orderItemTable(e?,isPagination=false){
-// debugger
 
     if(!this.isOrderSelected){
       if(isPagination){
@@ -195,7 +193,6 @@ export class DeAllocateOrdersComponent implements OnInit {
         })
         this.orderItemTransactions.data = res.data.openTransactions
         this.pageLength= res.data.recordsTotal
-        // this.resetpaginationTransaction()
       }))
     }
     else{
@@ -220,7 +217,6 @@ export class DeAllocateOrdersComponent implements OnInit {
       }
       this.Api.OrderItemsTable(payload).subscribe((res=>{
         res.data.openTransactions.forEach((item,i)=>{
-          // debugger
           if(this.orderNumbersList.includes(item.orderNumber)){
             res.data.openTransactions[i].isDeallocate=true
           }else{
@@ -234,7 +230,6 @@ export class DeAllocateOrdersComponent implements OnInit {
         this.dublicateTransaction =  res.data.openTransactions
         this.dublicateRecords = res.data.recordsTotal
 
-        // this.resetpaginationOrder()
         
       }))
     }
@@ -242,7 +237,6 @@ export class DeAllocateOrdersComponent implements OnInit {
   }
 
   check(e){
-    // this.orderNameList.data = []
     this.chooseSearchType = e
     this.searchedItemOrder.length = 0
     this.resetpaginationOrder()
@@ -257,7 +251,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   ordertransaction(row,index){
    this.resetpaginationOrder()
     this.orderNameList.data[index].isRowSelected=!this.orderNameList.data[index].isRowSelected;
-    this.orderNameList.data.filter((item,i)=>{
+    this.orderNameList.data.forEach((item,i)=>{
       if(index===i)return
       item.isRowSelected=false;
     })
@@ -270,7 +264,6 @@ export class DeAllocateOrdersComponent implements OnInit {
       this.pageLength= 0
       this.dublicateTransaction = []
       this.paginator.pageIndex=0;
-      // this.resetpaginationOrder()
     }
 
   }
@@ -307,7 +300,6 @@ export class DeAllocateOrdersComponent implements OnInit {
               this.orderNumbersList.length=0
                 this.getAllOrder()
                 this.orderItemTable()
-                // this.actions = ''
             }
             else{
               this.toastr.error('Order De-Allocation Not Successfull', 'Error!', {
@@ -372,22 +364,20 @@ export class DeAllocateOrdersComponent implements OnInit {
       this.orderNumbersList.splice(index, 1);
     }
     
-    this.orderItemTransactions.data.filter((item,i)=>{
+    this.orderItemTransactions.data.forEach((item,i)=>{
       if(item.orderNumber===order){
-        this.orderItemTransactions.data[i].isDeallocate=event.checked?true:false
+        this.orderItemTransactions.data[i].isDeallocate=event.checked;
       }
     })
 
-    this.orderNameList.data.filter((item,i)=>{
+    this.orderNameList.data.forEach((item,i)=>{
       if(item.name===order){
-        this.orderNameList.data[i].isChecked=event.checked?true:false
+        this.orderNameList.data[i].isChecked=event.checked;
       }
     })
 
     this.orderItemTransactions= new MatTableDataSource<any>(this.orderItemTransactions.data);
     this.orderNameList= new MatTableDataSource<any>(this.orderNameList.data);
-    // this.orderItemTransactions.paginator = this.paginator;
-    // this.orderItemTransactions.sort = this.sort1;
 
 // for disable seleted btn
     if(this.orderNumbersList.length !=0){
@@ -403,7 +393,6 @@ export class DeAllocateOrdersComponent implements OnInit {
       if(this.dublicateTransaction.length!=0){
         this.orderItemTransactions.data = this.dublicateTransaction
         this.pageLength = this.dublicateRecords
-        // console.log(this.dublicateTransaction.length,'page lenghth')
       }
       else{
         this.orderItemTransactions.data = []
@@ -432,7 +421,7 @@ export class DeAllocateOrdersComponent implements OnInit {
         return;
   
       let index;
-      this.displayedColumns.find((x, i) => {
+      this.displayedColumns.forEach((x, i) => {
         if (x === event.active) {
           index = i;
         }
@@ -453,7 +442,7 @@ export class DeAllocateOrdersComponent implements OnInit {
         return;
   
       let index;
-      this.displayedColumns.find((x, i) => {
+      this.displayedColumns.forEach((x, i) => {
         if (x === event.active) {
           index = i;
         }
@@ -465,7 +454,6 @@ export class DeAllocateOrdersComponent implements OnInit {
 
     }
 
-    // this.getMoveItemList('MoveFrom');
   }
 
   handlePageEventTo(e: PageEvent) {
@@ -527,7 +515,6 @@ export class DeAllocateOrdersComponent implements OnInit {
     if(FilterColumnName != "" || Condition == "clear"){
       this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
       this.FilterString = this.FilterString != "" ? this.FilterString : "1=1";
-      // this.resetPagination();
       this.orderItemTable();
     }
   }

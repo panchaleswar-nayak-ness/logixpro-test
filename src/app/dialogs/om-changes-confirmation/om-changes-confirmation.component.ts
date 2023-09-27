@@ -9,7 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-om-changes-confirmation',
   templateUrl: './om-changes-confirmation.component.html',
-  styleUrls: ['./om-changes-confirmation.component.scss']
+  styleUrls: []
 })
 export class OmChangesConfirmationComponent implements OnInit {
 

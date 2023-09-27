@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormControl, FormGroup } from '@angular/forms';
 import labels from '../../../labels/labels.json';
 import { FloatLabelType } from '@angular/material/form-field';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ItemExistGenerateOrderComponent } from '../item-exist-generate-order/item-exist-generate-order.component';
 import { EmptyFieldsComponent } from '../empty-fields/empty-fields.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -62,13 +62,6 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   });
   ngOnInit(): void { 
     this.autocompleteSearchColumn();
-    // if(this.itemNumber==='')return
-    // this.searchByInput
-    // .pipe(debounceTime(400), distinctUntilChanged())
-    // .subscribe((value) => {
-   
-    //   this.autocompleteSearchColumn();
-    // });
     if (this.data.mode === 'edit-transaction') {
       this.itemNumber = this.data.item.itemNumber;
       this.requiredDate =this.data.item.requiredDate? new Date(this.data.item.requiredDate):'' ;
@@ -178,9 +171,6 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   }
   async autocompleteSearchColumn() {
     let searchPayload = {
-      // itemNumber: this.itemNumber,
-      // username: this.data.userName,
-      // wsid: this.data.wsid,
 
       itemNumber: this.itemNumber,
       beginItem:'---',
@@ -194,8 +184,6 @@ export class AddNewTransactionToOrderComponent implements OnInit {
         (res: any) => {
           if(res.data){
             this.searchAutocompleteList=res.data
-            // if( this.searchAutocompleteList.includes(res.data))return 
-            // this.searchAutocompleteList.push(res.data)
           }
      
         },
@@ -203,48 +191,9 @@ export class AddNewTransactionToOrderComponent implements OnInit {
       );
   }
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
 
-  onFocusOutItemNum(event){
-return
-    if(event.target.value==='')return
-    
-    let payload = {
-      itemNumber: this.itemNumber,
-      username: this.data.userName,
-      wsid: this.data.wsid,
-    }
-
-    setTimeout(() => {
-      this.Api.ItemExists(payload)
-      .subscribe(
-        (res: any) => {
-          if(res.isExecuted){
-              if(res.data==''){
-                const dialogRef = this.dialog.open(ItemExistGenerateOrderComponent, {
-                  height: 'auto',
-                  width: '560px',
-                  autoFocus: '__non_existing_element__',
-      disableClose:true,
-                  data: {
-                    itemNumber:this.itemNumber,
-                  },
-                });
-                dialogRef.afterClosed().subscribe((res) => {
-                 this.itemNumber=''
-                });
-              }
-            
-          }
-        },
-        (error) => {
-    
-        }
-      );
-    }, 500);
-   
-  }
   saveTransaction() {
     let payloadItem = {
       itemNumber: this.itemNumber,
@@ -285,7 +234,6 @@ return
                 return
               }
               let payload = {
-                // itemNum: this.data.itemNumber,
                 transQty: this.quantity.toString(),
                 reqDate: this.requiredDate ? this.requiredDate.toISOString() : '',
                 expDate: this.expirationDate ? this.expirationDate.toISOString() : '',
@@ -317,9 +265,9 @@ return
              
               // TransactionForOrderInsert
               if (this.data.mode === 'add-trans') {
-                (payload['orderNumber'] = this.data.orderNumber),
-                  (payload['transType'] = this.data.transactionType),
-                  (payload['itemNum'] = this.itemNumber);
+                  payload['orderNumber'] = this.data.orderNumber;
+                  payload['transType'] = this.data.transactionType;
+                  payload['itemNum'] = this.itemNumber;
               } else {
                 payload['itemNum'] = this.data.item.itemNumber;
                 payload['id'] = this.data.item.id;

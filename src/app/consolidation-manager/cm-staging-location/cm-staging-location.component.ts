@@ -25,7 +25,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './cm-staging-location.component.html',
   styleUrls: ['./cm-staging-location.component.scss']
 })
-export class CmStagingLocationComponent implements OnInit {
+export class CmStagingLocationComponent {
   userData: any = {};
   isInputFocused:any=false;
   displayedColumns: string[] = ['select', 'position', 'action'];
@@ -47,8 +47,6 @@ export class CmStagingLocationComponent implements OnInit {
     this.userData = this.authService.userData();
   }
 
-  ngOnInit(): void {
-  }
   ngAfterViewInit() {
     this.searchBoxField.nativeElement.focus(); 
   }
@@ -57,7 +55,7 @@ export class CmStagingLocationComponent implements OnInit {
       if(!this.Oldstagetables.length) this.Oldstagetables = this.stagetables;
       this.stagetables = [];
       this.stagetables= this.Oldstagetables.filter(x=>x.toteID.indexOf(this.stagingLocation) >-1);
-      var locArray = this.Oldstagetables.filter(x=>x.stagingLocation.indexOf(this.stagingLocation) >-1);
+      let locArray = this.Oldstagetables.filter(x=>x.stagingLocation.indexOf(this.stagingLocation) >-1);
       if(locArray && locArray.length > 0){
         locArray.forEach(item => {
           if(!this.stagetables.includes(item))
@@ -72,13 +70,13 @@ export class CmStagingLocationComponent implements OnInit {
   async StagingLocsOrderNum($event: any) { 
     if ($event.key == "Enter" || $event == 'event') {
       this.IsLoading = true;
-      var obj: any = {
+      let obj: any = {
         type: this.type,
         selValue: this.OrderNumberTote,
         username: this.userData.userName,
         wsid: this.userData.wsid,
       };
-      var inputVal = this.OrderNumberTote;
+      let inputVal = this.OrderNumberTote;
       this.Api.ConsolidationData(obj).subscribe((res: any) => {
         if (typeof res?.data == 'string') { 
           switch (res?.data) {
@@ -100,11 +98,6 @@ export class CmStagingLocationComponent implements OnInit {
                   this.stagetables.push({ toteID: inputVal, stagingLocation:null});
                   }
                 })
-              // var promptResponse = prompt("Order/Tote was not found in the system, enter an order number to correspond to the Tote value scanned")
-              // if (promptResponse != null) {
-              //   this.OrderNumberTote = promptResponse;
-              //   this.stagetables.push({ toteID: inputVal });
-              // }
               break;
             case "Conflict":
                 this.openCmOrderToteConflict(inputVal); 
@@ -127,7 +120,7 @@ export class CmStagingLocationComponent implements OnInit {
     if ($event.key == "Enter" || $event == 'click') {
       this.stagetables[index].stagingLocation = location;
       this.stagetables[index].stagingLocationOld = location;
-    var obj: any = {
+    let obj: any = {
       "orderNumber": this.OrderNumberTote,
       "toteID": toteID,
       "location": location,
@@ -143,10 +136,9 @@ export class CmStagingLocationComponent implements OnInit {
 
       } else if (res.responseMessage == "Redirect") {
         window.location.href = "/#/Logon/";
-      } else {
-        if (typeof this.stagetables != 'undefined') {
-          for (var x = 0; x < this.stagetables.length; x++) {
-            var tote = this.stagetables[x].toteID;
+      } else if (typeof this.stagetables != 'undefined'){
+          for (let x = 0; x < this.stagetables.length; x++) {
+            let tote = this.stagetables[x].toteID;
             if (tote == toteID) {
               this.stagetables[x].location = location; //location
               this.stagetables[x].by = res.data; //by
@@ -154,7 +146,7 @@ export class CmStagingLocationComponent implements OnInit {
               break;
             }
           }
-        }
+        
       }
       if(res.isExecuted && index!=null){ 
         this.stagetables[index].stagingLocation = location;
@@ -165,7 +157,7 @@ export class CmStagingLocationComponent implements OnInit {
   } 
   }
   async UnstageAll(){
-    for (var x = 0; x < this.stagetables.length; x++) {
+    for (let x = 0; x < this.stagetables.length; x++) {
       this.saveToteStagingLocation('click',this.stagetables[x].toteID,'',x,1);
     } 
   }

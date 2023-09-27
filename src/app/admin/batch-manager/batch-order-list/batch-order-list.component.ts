@@ -2,14 +2,11 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
   Component,
   OnInit,
-  AfterViewInit,
   ViewChild,
   Input,
   SimpleChanges,
   EventEmitter,
-  Output,
-  ChangeDetectionStrategy,
-  TemplateRef,
+  Output
 } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -113,17 +110,24 @@ export class BatchOrderListComponent implements OnInit {
 
   addOrders(order: any) {
     order.fixedTote = this.fixedTote >= 10 ? 1 : this.fixedTote++;
-    order.toteNumber =
-      this.toteNumber <= 10 ? this.toteNumber++ : (this.toteNumber = 1); // tote number increment till 10 after 10 restarts to 1
+  
+    if (this.toteNumber <= 10) {
+      this.toteNumber++;
+    } else {
+      this.toteNumber = 1;
+    }
+  
+    order.toteNumber = this.toteNumber;
+  
     this.addOrderEmitter.emit(order);
   }
-
+  
   addRemoveAllOrder() {
     this.addRemoveAll.emit();
   }
 
   openView(element) {
-    let userRights=JSON.parse(localStorage.getItem('userRights') || '');
+    let userRights=JSON.parse(localStorage.getItem('userRights')??'');
     let permissions=userRights.includes('Order Status')
 
     if (permissions) {
@@ -151,7 +155,6 @@ export class BatchOrderListComponent implements OnInit {
         const { data, isExecuted } = res;
         if (isExecuted && data.length > 0) {
           this.openBatchViewDetail(data);
-        } else {
         }
       });
   }

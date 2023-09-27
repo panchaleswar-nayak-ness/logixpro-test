@@ -5,7 +5,7 @@ import { ItemNumUpdateConfirmationComponent } from '../item-num-update-confirmat
 @Component({
   selector: 'app-item-number',
   templateUrl: './item-number.component.html',
-  styleUrls: ['./item-number.component.scss']
+  styleUrls: []
 })
 export class ItemNumberComponent implements OnInit {
   @ViewChild('itm_nmb') itm_nmb: ElementRef;
@@ -22,7 +22,6 @@ export class ItemNumberComponent implements OnInit {
 
     if(this.data.fromPutaways){
       this.addItem = true;
-      this.data.itemNumber=this.data.itemNumber;
       this.data.description="";
     }
     else if(this.data.fromInventoryMaster)

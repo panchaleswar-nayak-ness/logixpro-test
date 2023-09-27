@@ -6,14 +6,13 @@ import {
 } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service';
-import labels from '../../../labels/labels.json'; 
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-hold-reason',
   templateUrl: './hold-reason.component.html',
-  styleUrls: ['./hold-reason.component.scss'],
+  styleUrls: [],
 })
 export class HoldReasonComponent implements OnInit {
   @ViewChild('order_text') order_text: ElementRef;

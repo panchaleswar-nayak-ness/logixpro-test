@@ -19,7 +19,7 @@
                     <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
                         <mat-label>Carton Flow Zone Connected To</mat-label>
 
-                        <mat-select #matRef class="employees-action" [(ngModel)]="selectedCarton" (selectionChange)="updatePref($event)" style="" >
+                        <mat-select #matRef class="employees-action" [(ngModel)]="selectedCarton" (selectionChange)="updatePref($event)" >
                             <h6 class="ctl_name ac-dropdown-label"><span>Zone</span> <span>Location Name</span></h6>
                           <mat-option  *ngFor="let item of cartonFlowList"  [value]="item.zone">
                             <div class="ctl_option ac-dropdown-option">

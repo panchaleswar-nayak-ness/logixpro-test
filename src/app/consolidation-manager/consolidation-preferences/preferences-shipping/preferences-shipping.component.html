@@ -17,20 +17,6 @@
 
             </div>
         </div>
-
-        <!-- <div class="row">
-            <div class="col-6">
-                <p class="text-tertiary-800 bold py-3 mb-0"> Choose the desired Consolidation options for your business.
-                </p>
-            </div>
-            <div class="col-6">
-                <p class="text-tertiary-800 bold py-3 mb-0"> Select from the field list those that you will be collecting data for in Shipping.
-
-                </p>
-            </div>
-        </div> -->
-        <!-- <p class="text-tertiary-800 bold py-3 mb-0"> Choose the desired Consolidation options for your business.
-        </p> -->
     </div>
 
     <form [formGroup]="shippingForm">
@@ -89,14 +75,6 @@
     
                                         <input (ngModelChange)="this.searchByInput.next($event)"
                                             formControlName="contIDText" matInput type="text" #vlname maxlength="50">
-                                        <!-- <mat-select  formControlName="contIDText"  class="employees-action">
-                                    <mat-option>
-                                        123456
-                                    </mat-option>
-                                </mat-select> -->
-                                        <!-- <span class="material-symbols-outlined icon-expand-more">
-                                    expand_more
-                                </span> -->
                                     </mat-form-field>
                                 </div>
                             </ng-container>

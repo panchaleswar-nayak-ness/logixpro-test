@@ -33,7 +33,6 @@
                       <mat-option value="edit" [hidden]="!isLookUp">Edit</mat-option>
                       <mat-option value="delete" [hidden]="!isLookUp" >Delete</mat-option>
                       <mat-option value="print" (click)="printEmpList()">Print Employee List</mat-option>
-                      <!-- <mat-option value="back">Back</mat-option> -->
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">
                       expand_more
@@ -116,9 +115,6 @@
                                       maxlength="2">
                                       <button matSuffix *ngIf="bpSettingInp" class="clear-btn" (click)="clearZones()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
 
-                                      <!-- <button *ngIf="bpSettingInp" matSuffix mat-icon-button aria-label="Clear" (click)="bpSettingInp=''">
-                                        <mat-icon>close</mat-icon>
-                                      </button> -->
                                   </mat-form-field>
                                   <button mat-flat-button color="primary" class=" mat-button-icon"
                                     (click)="addZoneDialog()" [disabled]="!isLookUp">
@@ -149,9 +145,7 @@
                                         <th width="20%" class="text-center" mat-header-cell *matHeaderCellDef>Action
                                         </th>
                                         <td width="20%" class="text-center" mat-cell *matCellDef="let element">
-                                          <!-- <button mat-icon-button aria-label="Delete" (click)="deleteZone(element)" matTooltip="Delete zone" matTooltipPosition="above">
-                                          <mat-icon class="icon-circle-cancel">close</mat-icon>
-                                        </button> -->
+
                                           <button mat-icon-button aria-label="Edit" (click)="editZoneDialog(element)"
                                             matTooltip="Edit zone" matTooltipPosition="above">
                                             <mat-icon class="icon-circle-edit">border_color</mat-icon>
@@ -197,8 +191,6 @@
                                       [(ngModel)]="bpSettingLocInp" matInput (keyup)="applyFilter($event)"
                                       maxlength="50">
 
-                                      <!-- <button *ngIf="bpSettingLocInp" matSuffix mat-icon-button aria-label="Clear" (click)="bpSettingLocInp=''">
-                                        <mat-icon>close</mat-icon> -->
                                         <button matSuffix *ngIf="bpSettingLocInp" class="clear-btn" (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
 
                                       <!-- </button> -->
@@ -244,10 +236,7 @@
                                         <th width="20%" class="text-center" mat-header-cell *matHeaderCellDef>Action
                                         </th>
                                         <td width="20%" mat-cell class="text-center" *matCellDef="let element">
-                                          <!-- <button mat-icon-button aria-label="Delete Location"
-                                          (click)="deleteLocation(element)" >
-                                          <mat-icon class="icon-circle-cancel">close</mat-icon>
-                                        </button> -->
+
                                           <button mat-icon-button aria-label="Edit"
                                             (click)="editLocationDialog(element)" matTooltip="Edit location"
                                             matTooltipPosition="above">
@@ -306,14 +295,12 @@
                     </div>
                   </mat-tab>
                   <mat-tab label="Employee Pick Levels">
-                    <!-- [disabled]="!isLookUp"  // removing this condition because of PLM-2510-->
                     <app-employee-pickup-level [isAdd]="lookUpEvnt" [resetField]="isTabChanged"
                       [pickUplevels]="pickUplevels" (relaodPickUpLvl)="relaodPickUpLvl()"
                       [grp_data]="grp_data"></app-employee-pickup-level>
                   </mat-tab>
 
                   <mat-tab label="Function Allowed" *ngIf="env === 'DB'">
-                    <!-- [disabled]="!isLookUp"  // removing this condition because of PLM-2510-->
                     <div class="groups-allowed-tab g-tab bg-white">
 
                       <div class="g-action-card g-action-card-disabled mb-3">
@@ -375,9 +362,6 @@
                                               matTooltipPosition="above">
                                               <mat-icon class="icon-circle-cancel">close</mat-icon>
                                             </button>
-                                            <!-- <button mat-icon-button aria-label="Edit">
-                                          <mat-icon class="icon-circle-edit">border_color</mat-icon>
-                                        </button> -->
 
                                           </td>
                                         </ng-container>
@@ -400,7 +384,6 @@
                     </div>
                   </mat-tab>
                   <mat-tab label="Groups Allowed" *ngIf="env !== 'DB'">
-                    <!-- [disabled]="!isLookUp"  // removing this condition because of PLM-2510-->
 
                     <div class="groups-allowed-tab g-tab bg-white">
 
@@ -418,9 +401,6 @@
                                     <input type="text" placeholder="Search Groups Allowed" [(ngModel)]="grpAllFilter"
                                       aria-label="Search Groups Allowed" matInput (keyup)="groupAllowedFilter($event)"
                                       maxlength="50">
-                                      <!-- <button *ngIf="grpAllFilter" matSuffix mat-icon-button aria-label="Clear" (click)="grpAllFilter=''">
-                                        <mat-icon>close</mat-icon>
-                                      </button> -->
         <button matSuffix *ngIf="grpAllFilter" class="clear-btn" (click)="clearGrp()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
 
                                   </mat-form-field>
@@ -461,9 +441,6 @@
                                               matTooltipPosition="above">
                                               <mat-icon class="icon-circle-cancel">close</mat-icon>
                                             </button>
-                                            <!-- <button mat-icon-button aria-label="Edit">
-                                          <mat-icon class="icon-circle-edit">border_color</mat-icon>
-                                        </button> -->
 
                                           </td>
                                         </ng-container>
@@ -473,18 +450,6 @@
                                       </table>
                                     </ng-scrollbar>
                                   </div>
-
-                                  <!-- below list is converted to above table -->
-                                  <!-- <mat-list-item role="listitem"
-                                      *ngFor="let grp_allowed of groupAllowedList | custumGrpAllowedSearch:searchGrpAllowed;let i = index">
-                                      <span class="list-label zone-list-label">
-                                        {{grp_allowed.groupName}}
-                                      </span>
-                                      <button mat-icon-button aria-label="Delete Zone"
-                                        (click)="deleteGrpAllowed(grp_allowed)">
-                                        <mat-icon class="icon-circle-cancel">close</mat-icon>
-                                      </button>
-                                    </mat-list-item> -->
 
 
 
@@ -581,7 +546,6 @@
                       </div>
                       <span>Assigned Functions</span>
                     </h2>
-                    <!-- <h4 class="card-header-subtitle mb-0">Assigned Functions</h4> -->
                   </div>
                   <div class="col-6">
                     <button mat-flat-button class="form-button-submit" color="primary" style="float: right;"
@@ -595,7 +559,6 @@
                       [isGroupLookUp]="isGroupLookUp"></app-unassigned-functions>
                   </div>
                   <div class="col-12 col-xl-6">
-                    <!-- <app-assigned-functions ></app-assigned-functions> -->
 
                     <app-assigned-functions (removeFunction)="removePermission($event)"
                       [assignedFunctions]="assignedFunctions" [isGroupLookUp]="isGroupLookUp"></app-assigned-functions>
@@ -610,17 +573,6 @@
     </div>
   </mat-tab>
   
-  <!-- <mat-tab label="Statistics">
-    <div class="statistics-tab g-tab">
-      <div class="container-fluid p-0">
-        <div class="row">
-          <div class="col-12">
-            <app-statistics-lookup></app-statistics-lookup>
-          </div>
-        </div>
-      </div>
-    </div>
-  </mat-tab> -->
  
   <mat-tab label="Button Access" *ngIf="env === 'DB'">
     <div class="groups-tab g-tab">

@@ -7,7 +7,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-om-update-record',
   templateUrl: './om-update-record.component.html',
-  styleUrls: ['./om-update-record.component.scss']
+  styleUrls: []
 })
 export class OmUpdateRecordComponent implements OnInit {
   @ViewChild('ord_focus') ord_focus: ElementRef
@@ -78,23 +78,21 @@ export class OmUpdateRecordComponent implements OnInit {
         order      : { id : this.data.id, ...this.orderForm.value },
         viewType   : this.data.viewType,
         orderType  : this.data.orderType,
-        reqDateDis : (values.reqDate != this.data.requiredDate) ? false : true,
-        notesDis   : (values.notes != this.data.notes) ? false : true,
-        priorityDis: (values.priority != this.data.priority) ? false : true,
-        user1Dis   : (values.user1 != this.data.userField1) ? false : true,
-        user2Dis   : (values.user2 != this.data.userField2) ? false : true,
-        user3Dis   : (values.user3 != this.data.userField3) ? false : true,
-        user4Dis   : (values.user4 != this.data.userField4) ? false : true,
-        user5Dis   : (values.user5 != this.data.userField5) ? false : true,
-        user6Dis   : (values.user6 != this.data.userField6) ? false : true,
-        user7Dis   : (values.user7 != this.data.userField7) ? false : true,
-        user8Dis   : (values.user8 != this.data.userField8) ? false : true,
-        user9Dis   : (values.user9 != this.data.userField9) ? false : true,
-        user10Dis  : (values.user10 != this.data.userField10) ? false : true,        
-        emergencyDis: (values.emergency.toLowerCase() == 'true' && this.data.emergency == false) || (values.emergency.toLowerCase() == 'false' && this.data.emergency == true)
-                      ? false : true,
-        labelDis    : (values.label == 'True' && this.data.label == false) || (values.label == 'False' && this.data.label == true)
-                      ? false : true,        
+        reqDateDis : (values.reqDate == this.data.requiredDate) ,
+        notesDis   : (values.notes == this.data.notes),
+        priorityDis: (values.priority == this.data.priority),
+        user1Dis   : (values.user1 == this.data.userField1),
+        user2Dis   : (values.user2 == this.data.userField2),
+        user3Dis   : (values.user3 == this.data.userField3),
+        user4Dis   : (values.user4 == this.data.userField4),
+        user5Dis   : (values.user5 == this.data.userField5),
+        user6Dis   : (values.user6 == this.data.userField6),
+        user7Dis   : (values.user7 == this.data.userField7),
+        user8Dis   : (values.user8 == this.data.userField8),
+        user9Dis   : (values.user9 == this.data.userField9),
+        user10Dis  : (values.user10 == this.data.userField10),        
+        emergencyDis: (values.emergency.toLowerCase() == 'true' && !this.data.emergency) || (values.emergency.toLowerCase() == 'false' && this.data.emergency ),
+        labelDis    : (values.label == 'True' && !this.data.label ) || (values.label == 'False' && this.data.label ),        
       }
     });
 

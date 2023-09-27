@@ -27,9 +27,9 @@
         <mat-label>From Tote ID</mat-label>
         <input #field_focus type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
           [(ngModel)]='fromTote' [matAutocomplete]="auto"
-          (keyup)="autocompleteSearchColumn()"  (keyup.enter)="searchData()"  >
+          (keyup)="autocompleteSearchColumn()"    >
           <button matSuffix *ngIf="fromTote" class="clear-btn"  (click)="fromTote=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()" #autocompleteInventory>
+        <mat-autocomplete #auto="matAutocomplete"  #autocompleteInventory>
           <h6 class="card-header matAutoCompHeader  "><span style="margin-left:5%;width:  140px;">Tote ID</span><span style="width: 43%;" >Cells</span> </h6>
   
           <mat-option *ngFor="let option of searchAutocompleteList"
@@ -43,11 +43,6 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      
-        <!-- <mat-form-field class="custom-form-field w-100 mb-3 mb-xl-0" appearance="outline">
-          <mat-label>To Tote ID</mat-label>
-          <input matInput type="text" maxlength="255" value="0000000" disabled>
-        </mat-form-field> -->
 
 
 
@@ -56,9 +51,9 @@
         <mat-label>To Tote ID</mat-label>
         <input type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
           [(ngModel)]='toTote' [matAutocomplete]="auto" [disabled]="!fromTote"
-          (keyup)="autocompleteSearchColumn()"  (keyup.enter)="searchData()"  >
+          (keyup)="autocompleteSearchColumn()"   >
           <button matSuffix *ngIf="toTote" class="clear-btn"  (click)="toTote=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()" #autocompleteInventory>
+          <mat-autocomplete #auto="matAutocomplete"  #autocompleteInventory>
             <h6 class="card-header matAutoCompHeader stickyHeader "><span style="margin-left:5%;width:  140px;">Tote ID</span><span style="width: 43%;" >Cells</span> </h6>
     
             <mat-option *ngFor="let option of searchAutocompleteList"
@@ -78,8 +73,6 @@
             Range</button></div>
       </div>
     </div>
-
-    <!-- <mat-radio-group color="primary"> -->
       
     <div class="mb-4 " *ngIf="!data.validateTotes && !isIMPath">
       <b>Unmanaged Tote IDs</b>
@@ -93,7 +86,6 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let row">
               <div class="pe-2">
-              <!-- (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"  -->
                
                 <mat-radio-button (click)="selectTote()" [disabled]="toteID ? false : true" 
                   color="primary"></mat-radio-button>
@@ -126,21 +118,6 @@
               </div>
             </td>
           </ng-container>
-        
-<!-- 
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
-            <td mat-cell *matCellDef="let element">
-              <div class="pe-2">
-                <button mat-flat-button color="primary" class="xsm-icon-button" (click)="selectTote()" [disabled]="toteID ? false : true" >
-                  <mat-icon class="material-symbols-outlined">
-                    check
-                  </mat-icon>
-                </button>
-              </div>
-
-            </td>
-          </ng-container> -->
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></tr>
@@ -170,11 +147,6 @@
             </th>
             <td mat-cell *matCellDef="let row; let i = index;">
               <div class="pe-2">
-                <!-- [checked]="selection.isSelected(row)"
-              (click)="$event.stopPropagation()"
-                          (change)="$event ? selection.toggle(row) : null"
-                         
-                          [aria-label]="checkboxLabel(row)" -->
                 <mat-radio-button  [disabled]="!row.toteID || !row.cells || row.isInserted==0 || row.isEdit" color="primary" (click)="selectTote(row.toteID,row.cells,!row.toteID?false:!row.cells?false:row.isInserted==0?false:row.isEdit?false:true)">
                 </mat-radio-button>
               </div>
@@ -221,11 +193,6 @@
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let element; let i = index">
               <div class="d-flex gap-12">
-                <!-- <button [disabled]="!element.toteID || !element.cells" matTooltip="Check" [hidden]="isIMPath" mat-flat-button color="primary" class="xsm-icon-button" (click)="selectTote(element.toteID,element.cells)">
-                  <mat-icon class="material-symbols-outlined">
-                    check
-                  </mat-icon>
-                </button> -->
                 <button  (click)="printTote('tote',element)"  [disabled]="!element.toteID || !element.cells || element.isInserted==0 || element.isEdit" matTooltip="Print" mat-flat-button color="primary" class="xsm-icon-button">
                   <mat-icon class="material-symbols-outlined">
                     print
@@ -257,4 +224,3 @@
     </div>
   </mat-card-content>
 </mat-card>
-<!-- </mat-radio-group> -->

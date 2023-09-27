@@ -19,7 +19,6 @@
             <div class="row">
                 <div class="col-6 offset-6">
                     <div class="d-flex gap-12 mb-3 justify-content-end">
-                        <!-- (click)="addCatRow($event)" -->
                         <button (click)="addConnString()" mat-flat-button color="primary" class="add-icon-button"  [disabled]="isAddedNewRow">
                             <span class="material-symbols-outlined" matTooltip="Add Connection String" 
                                 matTooltipPosition="above">
@@ -41,7 +40,6 @@
                         <div class="col-4 "></div>
                     </div>
                 </div>
-                <!-- <ng-scrollbar style="height:260px"> -->
                     <ng-scrollbar style="height: 500px;" track="all">
                 <div class="card-body" style="overflow-x: auto;">
                     
@@ -52,7 +50,6 @@
                                 <div class="row align-items-center mb-3">
 
                                     <div class="col-3" >
-                                        <!-- (click)="openAddItemNumDialog(kitItem)" -->
                                         <mat-form-field class="custom-form-field w-100" appearance="outline">
                                             <input matInput type="text" [(ngModel)]="item.connectionName" name="connectionName" (ngModelChange)="onInputValueChange($event,item,index)" #specialFeature maxlength="50"
                                                 [value]="item.connectionName">
@@ -105,7 +102,6 @@
                             </ng-container>
                         </mat-radio-group>
                     </div>
-                    <!-- </ng-scrollbar> -->
                 </div>
                 </ng-scrollbar>
             </div>

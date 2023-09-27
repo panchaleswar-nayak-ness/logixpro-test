@@ -4,7 +4,7 @@ import { SharedService } from '../services/shared.service';
 @Component({
   selector: 'app-import-export',
   templateUrl: './import-export.component.html',
-  styleUrls: ['./import-export.component.scss']
+  styleUrls: []
 })
 export class ImportExportComponent implements OnInit {
 
@@ -13,7 +13,7 @@ export class ImportExportComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    let appd=JSON.parse(localStorage.getItem('availableApps') || '');
+    let appd=JSON.parse(localStorage.getItem('availableApps') ?? '');
     this.sharedService.setMenuData(appd);
   }
 

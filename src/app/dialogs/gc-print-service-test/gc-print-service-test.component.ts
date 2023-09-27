@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { GcPrintServiceTestBeginComponent } from '../gc-print-service-test-begin/gc-print-service-test-begin.component';
 
 @Component({
   selector: 'app-gc-print-service-test',
   templateUrl: './gc-print-service-test.component.html',
-  styleUrls: ['./gc-print-service-test.component.scss']
+  styleUrls: []
 })
-export class GcPrintServiceTestComponent implements OnInit {
+export class GcPrintServiceTestComponent {
   ELEMENT_DATA = [{ select: "Xerox"},
   { select: "Brother Label"}];
   
@@ -23,12 +23,9 @@ export class GcPrintServiceTestComponent implements OnInit {
 
   constructor(private dialog: MatDialog) { }
 
-  ngOnInit(): void {
-  }
-
 
   openGcBeginTest() { 
-    let dialogRef = this.dialog.open(GcPrintServiceTestBeginComponent, { 
+    this.dialog.open(GcPrintServiceTestBeginComponent, { 
       height: 'auto',
       width: '1424px',
       autoFocus: '__non_existing_element__',

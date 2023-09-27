@@ -1,19 +1,18 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-staging-location-order',
   templateUrl: './staging-location-order.component.html',
-  styleUrls: ['./staging-location-order.component.scss']
+  styleUrls: []
 })
-export class StagingLocationOrderComponent implements OnInit {
+export class StagingLocationOrderComponent {
   @ViewChild('field_focus') field_focus: ElementRef;
 
   Order :any;  
   constructor(public dialogRef: MatDialogRef<any>) { }
 
-  ngOnInit(): void {
-  }
+  
 
   ngAfterViewInit(): void {
     this.field_focus.nativeElement.focus();

@@ -5,7 +5,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-location-assignment',
   templateUrl: './location-assignment.component.html',
-  styleUrls: ['./location-assignment.component.scss']
+  styleUrls: []
 })
 export class LocationAssignmentComponent implements OnInit {
 

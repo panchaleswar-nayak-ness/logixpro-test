@@ -1,13 +1,11 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { ItemNumUpdateConfirmationComponent } from 'src/app/admin/dialogs/item-num-update-confirmation/item-num-update-confirmation.component';
-
 @Component({
   selector: 'app-min-reel-qty',
   templateUrl: './min-reel-qty.component.html',
-  styleUrls: ['./min-reel-qty.component.scss']
+  styleUrls: []
 })
-export class MinReelQtyComponent implements OnInit {
+export class MinReelQtyComponent  {
   @ViewChild('min_amount') min_amount: ElementRef;
 
     submit: boolean = false;
@@ -19,8 +17,7 @@ export class MinReelQtyComponent implements OnInit {
     private confirmationdialog: MatDialog
   ) { }
 
-  ngOnInit(): void {
-  }
+ 
   ngAfterViewInit(): void {
     this.min_amount.nativeElement.focus();
   }

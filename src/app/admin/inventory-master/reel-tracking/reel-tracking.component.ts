@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-reel-tracking',
   templateUrl: './reel-tracking.component.html',
-  styleUrls: ['./reel-tracking.component.scss']
+  styleUrls: []
 })
 export class ReelTrackingComponent implements OnInit {
   isChecked = false;
@@ -27,7 +27,7 @@ export class ReelTrackingComponent implements OnInit {
   @ViewChild('addItemAction') addItemTemp: TemplateRef<any>;
   @Input() reelTracking: FormGroup;
   public userData: any;
-  @Input() events: Observable<String>;
+  @Input() events: Observable<string>;
   private eventsSubscription: Subscription;
   ngOnInit(): void {
     this.userData = this.authService.userData(); 
@@ -104,7 +104,6 @@ export class ReelTrackingComponent implements OnInit {
           wsid: this.userData.wsid
         }
         this.api.UpdateReelAll(payload).subscribe((res:any)=>{
-          // console.log(res);
 
           if(res.isExecuted){
 
@@ -115,7 +114,6 @@ export class ReelTrackingComponent implements OnInit {
            }
 
             this.api.RefreshRTS(payload2).subscribe((res:any)=>{
-              // console.log(res)
               if (res.isExecuted) {
                 this.reelTracking.patchValue({
                   'minimumRTSReelQuantity' : res.data[0]

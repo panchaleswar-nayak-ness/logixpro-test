@@ -38,7 +38,7 @@ export class ApiFuntions {
     return  this.ApiBase.Delete("/Admin/employee",payload);
   } 
   public UpdateEmployee(payload:any) {
-    return  this.ApiBase.Update("/Admin/employee",payload);
+    return  this.ApiBase.Put("/Admin/employee",payload);
   } 
   public EmployeeDetails(payload:any) {
     return  this.ApiBase.Get("/Admin/employee/details",payload);
@@ -105,10 +105,10 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Admin/inventorymasterdata", body);
   }
   public UpdateInventoryMaster(body:any):  Observable<any> {
-    return this.ApiBase.Update("/Admin/inventorymaster", body);
+    return this.ApiBase.Put("/Admin/inventorymaster", body);
   }
   public UpdateItemNumber(body:any):  Observable<any> {
-    return this.ApiBase.Update("/Admin/itemnumber", body);
+    return this.ApiBase.Put("/Admin/itemnumber", body);
   }
   public AddNewItem(body:any):  Observable<any> {
     return this.ApiBase.Post("/Admin/item",body);
@@ -123,10 +123,10 @@ export class ApiFuntions {
     return this.ApiBase.Post("/Admin/itemdelete",body);
   }
   public UpdateInventoryMasterOTQuarantine(body:any):  Observable<any> {
-    return this.ApiBase.Update("/Admin/inventorymasterotquarantine",body);
+    return this.ApiBase.Put("/Admin/inventorymasterotquarantine",body);
   }
   public UpdateInventoryMasterOTUnQuarantine(body:any):  Observable<any> {
-    return this.ApiBase.Update("/Admin/inventorymasterotunQuarantine",body);
+    return this.ApiBase.Put("/Admin/inventorymasterotunQuarantine",body);
   }
   public GetLocationTable(body:any):  Observable<any> {
     return this.ApiBase.Get("/Admin/location",body);
@@ -147,7 +147,7 @@ export class ApiFuntions {
     return this.ApiBase.Get("/common/categories");
   }
   public   saveCategory(body:any):  Observable<any> {
-    return this.ApiBase.Update("/common/category",body);
+    return this.ApiBase.Put("/common/category",body);
   }
   public   dltCategory(body:any):  Observable<any> {
     return this.ApiBase.Post("/common/category",body);
@@ -162,16 +162,16 @@ export class ApiFuntions {
     return this.ApiBase.Delete("/common/unitofmeasure",body);
   }
   public  UpdateReelQuantity(body:any):  Observable<any> {
-    return this.ApiBase.Update("/Admin/reelquantity",body);
+    return this.ApiBase.Put("/Admin/reelquantity",body);
   }
   public  UpdateReelAll(body:any):  Observable<any> {
-    return this.ApiBase.Update("/Admin/reelall",body);
+    return this.ApiBase.Put("/Admin/reelall",body);
   }
   public   RefreshRTS(body:any):  Observable<any> {
     return this.ApiBase.Get("/Admin/rts",body);
   }
   public   UpdateScanCodes(body:any):  Observable<any> {
-    return this.ApiBase.Update("/Admin/scancodes",body);
+    return this.ApiBase.Put("/Admin/scancodes",body);
   }
   public  DeleteScanCode(body:any):  Observable<any> {
     return this.ApiBase.Post("/Admin/scancodedelete",body);
@@ -201,7 +201,7 @@ export class ApiFuntions {
     return this.ApiBase.Post("/Admin/batchdelete",body);
   }
   public PickToteIDUpdate(body:any):  Observable<any> {
-    return this.ApiBase.Update("/Admin/picktoteid",body);
+    return this.ApiBase.Put("/Admin/picktoteid",body);
   }
   public BatchInsert(body:any):  Observable<any> {
     return this.ApiBase.Post("/Admin/batch",body);
@@ -324,7 +324,7 @@ export class ApiFuntions {
     return this.ApiBase.Post("/Admin/kit",body);
   }
   public UpdateKit(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Admin/kit",body);
+    return this.ApiBase.Put("/Admin/kit",body);
   }
   public OrderManagerPreferenceIndex(): Observable<any> { 
     return this.ApiBase.Get("/OrderManager/preferences");
@@ -351,7 +351,7 @@ export class ApiFuntions {
     return this.ApiBase.Get("/OrderManager/menuindex");
   }
   public OrderManagerPreferenceUpdate(Body:any): Observable<any> { 
-    return this.ApiBase.Update("/OrderManager/preferences",Body);
+    return this.ApiBase.Put("/OrderManager/preferences",Body);
   }
   public EventLogTable(Body:any): Observable<any> { 
     return this.ApiBase.Post("/Admin/eventlog",Body);
@@ -366,7 +366,7 @@ export class ApiFuntions {
     return this.ApiBase.Get("/OrderManager/userfielddata");
   }
   public UserFieldDataUpdate(Body:any): Observable<any> { 
-    return this.ApiBase.Update("/OrderManager/userfielddata",Body);
+    return this.ApiBase.Put("/OrderManager/userfielddata",Body);
   }
   public SelectedEventDelete(Body:any): Observable<any> { 
     return this.ApiBase.Delete("/Admin/selectedevent",Body);
@@ -381,13 +381,13 @@ export class ApiFuntions {
     return this.ApiBase.Get("/OrderManager/ordersdt",Body);
   }
   public OrderManagerRecordUpdate(Body:any): Observable<any> { 
-    return this.ApiBase.Update("/OrderManager/order",Body);
+    return this.ApiBase.Put("/OrderManager/order",Body);
   }
   public OTTempInsert(Body:any): Observable<any> { 
     return this.ApiBase.Post("/OrderManager/ottemp",Body);
   }
   public OTTempUpdate(Body:any): Observable<any> { 
-    return this.ApiBase.Update("/OrderManager/ottemp",Body);
+    return this.ApiBase.Put("/OrderManager/ottemp",Body);
   }
   public GetWarehouses(): Observable<any> { 
     return this.ApiBase.Get("/common/warehouses");
@@ -411,7 +411,7 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Induction/itemzonedata",body);
   }
   public SuperBatchCreate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/superbatch",body);
+    return this.ApiBase.Put("/Induction/superbatch",body);
   }
   public TotePrintTableInsert(body:any): Observable<any> { 
     return this.ApiBase.Post("/Induction/toteprinttable",body);
@@ -421,10 +421,10 @@ export class ApiFuntions {
   }
 
   public MarkToteFull(Body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/marktotefull",Body);
+    return this.ApiBase.Put("/Induction/marktotefull",Body);
   }
   public CompleteBatch(Body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/completebatch",Body);
+    return this.ApiBase.Put("/Induction/completebatch",Body);
   }
   public TotesTable(body:any): Observable<any> { 
     return this.ApiBase.Get("/Induction/totestable",body);
@@ -433,7 +433,7 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Induction/batchidtypeahead",body);
   }
   public NextToteUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/nexttote",body);
+    return this.ApiBase.Put("/Induction/nexttote",body);
   }
   public NextBatchID(): Observable<any> { 
     return this.ApiBase.Get("/Induction/nextbatchid");
@@ -487,7 +487,7 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Induction/transactionfortote",Body);
   }  
   public NextSerialNumber(Body:any): Observable<any> { 
-    return this.ApiBase.Update("/induction/nextserialnumber",Body);
+    return this.ApiBase.Put("/induction/nextserialnumber",Body);
   }
   public ReelsCreate(body:any): Observable<any> { 
     return this.ApiBase.Post("/Induction/reels",body);
@@ -499,7 +499,7 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Induction/batchbyzone",Body);
   }   
   public DynamicMethod(Payload,BaseUrl): Observable<any> { 
-    return this.ApiBase.Update(BaseUrl,Payload);
+    return this.ApiBase.Put(BaseUrl,Payload);
   }
   
   public TaskComplete(Body:any): Observable<any> { 
@@ -515,7 +515,7 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Induction/checkforwardlocations",Body);
   }  
   public IMUpdate(Body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/im",Body);
+    return this.ApiBase.Put("/Induction/im",Body);
   }  
   public ItemDetails(Body:any): Observable<any> { 
     return this.ApiBase.Get("/Induction/itemdetails",Body);
@@ -542,7 +542,7 @@ export class ApiFuntions {
     return this.ApiBase.Delete("/Induction/allbatch");
   }   
   public TransactionQtyReplenishmentUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Admin/transactionqtyreplenishment",body);
+    return this.ApiBase.Put("/Admin/transactionqtyreplenishment",body);
   }   
   public ReplenishmentsByDelete(body:any): Observable<any> { 
     return this.ApiBase.Post("/Admin/replenishments",body);
@@ -557,10 +557,10 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Admin/systemreplenishnewta",body);
   } 
   public ReplenishmentsIncludeAllUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Admin/replenishmentsincludeall",body);
+    return this.ApiBase.Put("/Admin/replenishmentsincludeall",body);
   } 
   public ReplenishmentsIncludeUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Admin/replenishmentsinclude",body);
+    return this.ApiBase.Put("/Admin/replenishmentsinclude",body);
   } 
   public ProcessReplenishments(body:any): Observable<any> { 
     return this.ApiBase.Post("/Admin/processreplenishments",body);
@@ -584,10 +584,10 @@ export class ApiFuntions {
     return this.ApiBase.Post("/Admin/filtersitemnum",body);
   }   
   public PickBatchFilterRename(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/pickbatchfilterrename",body);
+    return this.ApiBase.Put("/Induction/pickbatchfilterrename",body);
   }   
   public ProcessBlossom(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/processblossom",body);
+    return this.ApiBase.Put("/Induction/processblossom",body);
   }   
   public PickBatchZonesSelect(body:any): Observable<any> { 
     return this.ApiBase.Get("/Induction/pickbatchzones",body);
@@ -596,10 +596,10 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Induction/pickbatchfiltertypeahead",body);
   }
   public PickBatchDefaultFilterMark(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/pickbatchdefaultfiltermark",body);
+    return this.ApiBase.Put("/Induction/pickbatchdefaultfiltermark",body);
   }
   public PickBatchDefaultFilterClear(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/pickbatchdefaultfilterclear",body);
+    return this.ApiBase.Put("/Induction/pickbatchdefaultfilterclear",body);
   }
   public PickBatchDefaultFilterSelect(body:any): Observable<any> { 
     return this.ApiBase.Get("/Induction/pickbatchdefaultfilter",body);
@@ -617,13 +617,13 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Induction/pickbatchfilterorderdata",body);
   }
   public PickBatchFilterUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/pickbatchfilter",body);
+    return this.ApiBase.Put("/Induction/pickbatchfilter",body);
   }
   public PickBatchFilterInsert(body:any): Observable<any> { 
     return this.ApiBase.Post("/Induction/pickbatchfilter",body);
   }
   public PickBatchOrderUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/pickbatchorder",body);
+    return this.ApiBase.Put("/Induction/pickbatchorder",body);
   }
   public PickBatchOrderInsert(body:any): Observable<any> { 
     return this.ApiBase.Post("/Induction/pickbatchorder",body);
@@ -632,7 +632,7 @@ export class ApiFuntions {
     return this.ApiBase.Delete("/Induction/pickbatchorder",body);
   }
   public PickBatchZoneDefaultMark(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/pickbatchzonedefaultmark",body);
+    return this.ApiBase.Put("/Induction/pickbatchzonedefaultmark",body);
   }
   public PickBatchFilterDelete(body:any): Observable<any> { 
     return this.ApiBase.Post("/Induction/pickbatchfilterdelete",body);
@@ -653,10 +653,10 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Induction/validateordernumber",body);
   }
   public InZoneSetupProcess(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/inzonesetupprocess",body);
+    return this.ApiBase.Put("/Induction/inzonesetupprocess",body);
   }
   public PickToteSetupProcess(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Induction/picktotesetupprocess",body);
+    return this.ApiBase.Put("/Induction/picktotesetupprocess",body);
   }
   public LocationZonesSelect(body:any): Observable<any> { 
     return this.ApiBase.Get("/Induction/locationzones",body);
@@ -667,11 +667,14 @@ export class ApiFuntions {
   public WSPickZoneDelete(body:any): Observable<any> { 
     return this.ApiBase.Delete("/Induction/wspickzone",body);
   }
+  public ClrWSPickZone(): Observable<any> { 
+    return this.ApiBase.Delete("/Induction/clrwspickzone");
+  }
   public InZoneTransDT(body:any): Observable<any> { 
     return this.ApiBase.Get("/Induction/inzonetransdt",body);
   }
   public ContIDShipTransUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Consolidation/contidshiptrans",body);
+    return this.ApiBase.Put("/Consolidation/contidshiptrans",body);
   }
   public CarrierSave(body:any): Observable<any> { 
     return this.ApiBase.Post("/Consolidation/carrier",body);
@@ -689,13 +692,13 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Consolidation/datasb",body); 
   }
   public ConsolidationPreferenceUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Consolidation/preference",body); 
+    return this.ApiBase.Put("/Consolidation/preference",body); 
   }
   public SystemPreferenceEmailSlip(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Consolidation/systempreferenceemailslip",body); 
+    return this.ApiBase.Put("/Consolidation/systempreferenceemailslip",body); 
   }
   public ConsolidationPreferenceShipUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Consolidation/preferenceship",body); 
+    return this.ApiBase.Put("/Consolidation/preferenceship",body); 
   }
   public ConsolidationIndex(body:any): Observable<any> { 
     return this.ApiBase.Get("/Consolidation/index",body); 
@@ -719,13 +722,13 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Consolidation/itemstypeahead",body); 
   }
   public CompleteShipment(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Consolidation/completeshipment",body); 
+    return this.ApiBase.Put("/Consolidation/completeshipment",body); 
   }
   public SelCountOfOpenTransactionsTemp(body:any): Observable<any> { 
     return this.ApiBase.Get("/Consolidation/selcountofopentransactionstemp",body); 
   }
   public ShipmentItemUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Consolidation/shipping",body); 
+    return this.ApiBase.Put("/Consolidation/shipping",body); 
   }
   public ShipmentItemDelete(body:any): Observable<any> { 
     return this.ApiBase.Post("/Consolidation/shippingdelete",body); 
@@ -737,7 +740,7 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Consolidation/shippingtransactionindex",body); 
   }
   public CompletePackingUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Consolidation/completepacking",body); 
+    return this.ApiBase.Put("/Consolidation/completepacking",body); 
   } 
   public SplitLineTrans(body:any): Observable<any> { 
     return this.ApiBase.Get("/Consolidation/splitlinetrans",body); 
@@ -746,7 +749,7 @@ export class ApiFuntions {
     return this.ApiBase.Post("/Consolidation/shipqtyshiptrans",body); 
   } 
   public ContainerIdSingleShipTransUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Consolidation/containeridsingleshiptrans",body); 
+    return this.ApiBase.Put("/Consolidation/containeridsingleshiptrans",body); 
   } 
   public ShippingItemAdd(body:any): Observable<any> { 
     return this.ApiBase.Post("/Consolidation/shipping",body); 
@@ -755,7 +758,7 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Consolidation/itemmodel",body); 
   } 
   public ConfPackProcModalUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Consolidation/confpackprocmodal",body); 
+    return this.ApiBase.Put("/Consolidation/confpackprocmodal",body); 
   } 
   public ConfPackProcModal(body:any): Observable<any> { 
     return this.ApiBase.Get("/Consolidation/confpackprocmodal",body); 
@@ -764,13 +767,13 @@ export class ApiFuntions {
     return this.ApiBase.Get("/Consolidation/confpackselectdt",body); 
   } 
   public ConfirmAllConfPack(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Consolidation/confirmallconfpack",body); 
+    return this.ApiBase.Put("/Consolidation/confirmallconfpack",body); 
   } 
   public ConfirmAndPackingIndex(body:any): Observable<any> { 
     return this.ApiBase.Get("/Consolidation/confirmandpackingindex",body); 
   } 
   public ShipTransUnPackUpdate(body:any): Observable<any> { 
-    return this.ApiBase.Update("/Consolidation/shiptransunpack",body); 
+    return this.ApiBase.Put("/Consolidation/shiptransunpack",body); 
   } 
   public SelContIDConfirmPack(body:any): Observable<any> { 
     return this.ApiBase.Get("/Consolidation/selcontidconfirmpack",body); 
@@ -817,7 +820,7 @@ public deleteUserGroup(Body: any ): Observable<any> {
 
 
 public updateAdminEmployee(Body: any ): Observable<any> {
-  return this.ApiBase.Update(`/Admin/employee`, Body);
+  return this.ApiBase.Put(`/Admin/employee`, Body);
 }
 public cloneGroup(Body: any ): Observable<any> {
   return this.ApiBase.Post(`/Admin/clonegroup`, Body);
@@ -832,7 +835,7 @@ public getControlName(Body: any ): Observable<any> {
 }
 
 public updateControlName(Body: any ): Observable<any> {
-  return this.ApiBase.Update(`/Admin/control`, Body);
+  return this.ApiBase.Put(`/Admin/control`, Body);
 }
 public CategoryDelete(Body: any ): Observable<any> {
   return this.ApiBase.Post(`/common/category`, Body);
@@ -856,7 +859,7 @@ return this.ApiBase.Get(`/Admin/zones`);
 }
 
 public updateEmployeeZone(Body: any ): Observable<any> {
-return this.ApiBase.Update(`/Admin/employee/zone`, Body);
+return this.ApiBase.Put(`/Admin/employee/zone`, Body);
 }
 
 //deleteEmployeeZone
@@ -876,7 +879,7 @@ return this.ApiBase.Post(`/Admin/employee/location`, Body);
 }
 
 public updateEmployeeLocation(Body: any ): Observable<any> {
-return this.ApiBase.Update(`/Admin/employee/location`, Body);
+return this.ApiBase.Put(`/Admin/employee/location`, Body);
 }
 
 
@@ -897,7 +900,7 @@ return this.ApiBase.Post(`/Admin/picklevels`, Body);
 }
 
 public updatePickLevels(Body: any ): Observable<any> {
-return this.ApiBase.Update(`/Admin/picklevels`, Body);
+return this.ApiBase.Put(`/Admin/picklevels`, Body);
 }
 
 
@@ -910,7 +913,7 @@ return this.ApiBase.Post(`/Admin/picklevelsdelete`, Body);
 //updateAccessGroup
 
 public updateAccessGroup(Body: any ): Observable<any> {
-return this.ApiBase.Update(`/Admin/accessgroup`, Body);
+return this.ApiBase.Put(`/Admin/accessgroup`, Body);
 }
 
 
@@ -928,7 +931,7 @@ return this.ApiBase.Get(`/Admin/functionbygroup`, Body);
 }
 
 public updateEmployeesInGroup(Body: any ): Observable<any> {
-return this.ApiBase.Update(`/Admin/employeesingroup`, Body);
+return this.ApiBase.Put(`/Admin/employeesingroup`, Body);
 }
 
 public deleteGroup(Body: any ): Observable<any> {
@@ -980,7 +983,7 @@ public LAConnectionStringSet(Body: any ): Observable<any> {
   return this.ApiBase.Post(`/GlobalConfig/laconnectionstring`, Body);
 } 
 public ChangeGlobalAccount(Body: any ): Observable<any> {
-  return this.ApiBase.Update(`/GlobalConfig/globalaccount`, Body);
+  return this.ApiBase.Put(`/GlobalConfig/globalaccount`, Body);
 } 
 public changePassword(Body: any ): Observable<any> {
   return this.ApiBase.Post(`/users/changepassword`, Body);
@@ -1002,20 +1005,19 @@ public getSearchedItem(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Common/searchitem`, Body);
 } 
 public updateInventoryMap(body: any ,mapID?): Observable<any> {
-  body.inventoryMapID=mapID && mapID.invMapID?mapID.invMapID:0;
-  body.masterInventoryMapID=mapID && mapID.masterInvMapID?mapID.masterInvMapID:0; 
+  body.inventoryMapID= mapID?.invMapID ?? 0;
+  body.masterInventoryMapID=mapID?.masterInvMapID ?? 0;
    const asArray = Object.entries(body); 
    const filtered = asArray.filter(([key, value]) =>  value != ''); 
    let payload = Object.fromEntries(filtered); 
    let userData = this.authService.userData(); 
     payload['username'] = userData.userName;
     payload["wsid"] =userData.wsid;
-  return this.ApiBase.Update(`/Admin/inventorymap`, payload);
+  return this.ApiBase.Put(`/Admin/inventorymap`, payload);
 } 
   
 public createInventoryMap(body?:any): Observable<any> {
   const asArray = Object.entries(body); 
-  const filtered = asArray.filter(([key, value]) =>  value != '');  
   let payload = Object.fromEntries(asArray); 
   let userData = this.authService.userData();
   payload['username'] = userData.userName;
@@ -1026,7 +1028,7 @@ public ConnectedUser(): Observable<any> {
   return this.ApiBase.Get(`/GlobalConfig/users`);
 } 
 public itemquantity(body:any): Observable<any> {
-  return this.ApiBase.Update(`/FlowRackReplenish/itemquantity`,body);
+  return this.ApiBase.Put(`/FlowRackReplenish/itemquantity`,body);
 } 
 public verifyitemquantity(body:any): Observable<any> {
   return this.ApiBase.Get(`/FlowRackReplenish/verifyitemquantity`,body);
@@ -1047,13 +1049,13 @@ public wslocation(body:any): Observable<any> {
   return this.ApiBase.Get(`/FlowRackReplenish/wslocation`,body);
 } 
 public ConnectionUserPasswordUpdate(Body: any ): Observable<any> {
-  return this.ApiBase.Update(`/GlobalConfig/connectionuserpassword`, Body);
+  return this.ApiBase.Put(`/GlobalConfig/connectionuserpassword`, Body);
 } 
 public ConnectionDelete(Body: any ): Observable<any> {
   return this.ApiBase.Delete(`/GlobalConfig/connection`, Body);
 } 
 public UpdateOSPriority(Body: any ): Observable<any> {
-  return this.ApiBase.Update(`/Admin/ospriority`, Body);
+  return this.ApiBase.Put(`/Admin/ospriority`, Body);
 } 
 public DeleteOrderStatus(Body: any ): Observable<any> {
   return this.ApiBase.Post(`/Admin/orderstatus`, Body);
@@ -1080,7 +1082,7 @@ public TransactionForOrderInsert(Body: any ): Observable<any> {
   return this.ApiBase.Post(`/Admin/transactionfororder`, Body);
 } 
 public TransactionForOrderUpdate(Body: any ): Observable<any> {
-  return this.ApiBase.Update(`/Admin/transactionfororder`, Body);
+  return this.ApiBase.Put(`/Admin/transactionfororder`, Body);
 } 
 public ItemExists(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Common/itemexists`, Body);
@@ -1095,11 +1097,11 @@ public OrderToPost(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Admin/ordertopost`, Body);
 }  
 public ReprocessIncludeSet(Body: any ): Observable<any> {
-  return this.ApiBase.Update(`/Admin/reprocessincludeset`, Body);
+  return this.ApiBase.Put(`/Admin/reprocessincludeset`, Body);
 } 
 
 public SetAllReprocessColumn(Body: any ): Observable<any> {
-  return this.ApiBase.Update(`/Admin/allreprocesscolumn`, Body);
+  return this.ApiBase.Put(`/Admin/allreprocesscolumn`, Body);
 }  
 public ReprocessTransactionData(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Admin/reprocesstransactiondata`, Body);
@@ -1129,7 +1131,7 @@ public SupplierItemIDInfo(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Common/supplieriteminfo/id`, Body);
 }  
 public UpdateTransaction(Body: any ): Observable<any> {
-  return this.ApiBase.Update(`/Admin/transaction`, Body);
+  return this.ApiBase.Put(`/Admin/transaction`, Body);
 } 
 public LocationData(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Admin/locationdata`, Body);
@@ -1168,7 +1170,7 @@ public UserFieldTypeAhead(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Common/userfieldtypeahead`, Body);
 } 
 public UserFieldMTSave(Body: any ): Observable<any> {
-  return this.ApiBase.Update(`/Common/userfieldmtsave`, Body);
+  return this.ApiBase.Put(`/Common/userfieldmtsave`, Body);
 }  
 public NewTransactionSave(Body: any ): Observable<any> {
   return this.ApiBase.Post(`/Admin/newtransaction`, Body);
@@ -1207,7 +1209,7 @@ public SaveColumns(body:any): Observable<any> {
 
 
 public ClearPickToteInfo(body:any): Observable<any> {
-  return this.ApiBase.Update(`/Induction/picktoteinfo`,body);
+  return this.ApiBase.Put(`/Induction/picktoteinfo`,body);
 }
 public SelectBatchPickTA(body:any): Observable<any> {
   return this.ApiBase.Get(`/Induction/batchpickta`,body);
@@ -1248,7 +1250,7 @@ public ReprocessTransactionDelete(payload:any): Observable<any>{
 
 public updateAppName(userName:any, wsid:any, appName:any = ''): Observable<any> {
   
-    var payLoad = {
+    let payLoad = {
       "userName":userName,
       "wsid": wsid,
       "appName":appName   
@@ -1268,11 +1270,11 @@ public deleteInventoryMap(reqPaylaod:any): Observable<any>{
 }
 
 public quarantineInventoryMap(reqPaylaod:any): Observable<any>{ 
-  return this.ApiBase.Update(`/Admin/inventorymapotquarantine`, reqPaylaod);
+  return this.ApiBase.Put(`/Admin/inventorymapotquarantine`, reqPaylaod);
 }
 
 public unQuarantineInventoryMap(reqPaylaod:any): Observable<any>{ 
-  return this.ApiBase.Update(`/Admin/inventorymapotUnquarantine`, reqPaylaod);
+  return this.ApiBase.Put(`/Admin/inventorymapotUnquarantine`, reqPaylaod);
 } 
 public getVelocityCode(body?: any): Observable<any> { 
   return this.ApiBase.Get(`/Common/velocitycode`);
@@ -1308,7 +1310,7 @@ public DeleteLocationNames(body){
   return this.ApiBase.Delete(`/Admin/locationnames`,body);
 }
 public ZoneDevicePreferencesUpdateAll(body){
-  return this.ApiBase.Update(`/Admin/zonedevicepreferencesall`,body);
+  return this.ApiBase.Put(`/Admin/zonedevicepreferencesall`,body);
 }
 public DeviceInformation(body){
   return this.ApiBase.Get(`/Admin/deviceinformation`,body);
@@ -1334,7 +1336,7 @@ public updateItemQuantity(body){
    payload['username'] = userData.userName;
    payload["wsid"] =userData.wsid;
   
-  return this.ApiBase.Update(`/Admin/itemquantity`,payload);
+  return this.ApiBase.Put(`/Admin/itemquantity`,payload);
 }
 public getAdjustmentReasonsList(){
   let userData = this.authService.userData(); 
@@ -1362,16 +1364,16 @@ public getPickBatchTransactionTable(body:any): Observable<any> {
 }
 
 public completeTransaction(body:any): Observable<any> { 
-  return this.ApiBase.Update("/induction/completetransaction",body);
+  return this.ApiBase.Put("/induction/completetransaction",body);
 }
 public completePickBatch(body:any): Observable<any> { 
-  return this.ApiBase.Update("/induction/completepickbatch",body);
+  return this.ApiBase.Put("/induction/completepickbatch",body);
 }
 public shortTransaction(body:any): Observable<any> { 
-  return this.ApiBase.Update("/induction/shorttransaction",body);
+  return this.ApiBase.Put("/induction/shorttransaction",body);
 }
 public blossomTote(body:any): Observable<any> { 
-  return this.ApiBase.Update("/induction/blossomtote",body);
+  return this.ApiBase.Put("/induction/blossomtote",body);
 } 
 public Getcustomreports(body): Observable<any> { 
   return this.ApiBase.Get("/Admin/customreports/index",body);
@@ -1440,13 +1442,13 @@ public basicreportdetails(body): Observable<any> {
   return this.ApiBase.Get("/Admin/customreports/basicreportdetails",body);
 } 
 public ReportFieldsExps(body): Observable<any> { 
-  return this.ApiBase.Update("/Admin/customreports/ReportFieldsExps",body);
+  return this.ApiBase.Put("/Admin/customreports/ReportFieldsExps",body);
 } 
 public reportfieldvalues(body): Observable<any> { 
-  return this.ApiBase.Update("/Admin/customreports/reportfieldvalues",body);
+  return this.ApiBase.Put("/Admin/customreports/reportfieldvalues",body);
 } 
 public ReportTitles(body): Observable<any> { 
-  return this.ApiBase.Update("/Admin/customreports/ReportTitles",body);
+  return this.ApiBase.Put("/Admin/customreports/ReportTitles",body);
 } 
 public changefilter(body): Observable<any> { 
   return this.ApiBase.Get("/Admin/customreports/changefilter",body);
@@ -1490,6 +1492,9 @@ public async CommonPrint(body)  {
 } 
 public GetWorkStatPrinters(): Observable<any> {
   return this.ApiBase.Get(`/GlobalConfig/WorkStatPrinters`);
+} 
+public SetReprocessIds(Body: any ): Observable<any> {
+  return this.ApiBase.Put(`/Admin/setreprocessids`, Body);
 } 
 
 

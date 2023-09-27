@@ -244,16 +244,16 @@ body {
   // overflow: hidden !important;
 }
 
-.mat-drawer {
-  background: #F2F2FF;
-}
+// .mat-drawer {
+//   background: #F2F2FF;
+// }
 
-:host {
-  .mat-icon {
-    vertical-align: middle;
-    margin-right: 1rem;
-  }
-}
+// :host {
+//   .mat-icon {
+//     vertical-align: middle;
+//     margin-right: 1rem;
+//   }
+// }
 
 .logo {
   text-align: center;
@@ -376,9 +376,9 @@ button {
   background: rgba($tertiary-10, $alpha: 0.25);
 }
 
-mat-toolbar {
-  background: #f7f7f7;
-}
+// mat-toolbar {
+//   background: #f7f7f7;
+// }
 
 .user-image {
   border-radius: 50%;
@@ -413,10 +413,9 @@ mat-toolbar {
   background: rgba($color: #BADBCE, $alpha: 0.4);
   width: 66px;
   height: 66px;
-  font-family: 'Material Symbols Outlined';
+  font-family: 'Material Symbols Outlined',sans-serif;
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
@@ -442,10 +441,9 @@ mat-toolbar {
   background: rgba($color: #F5C4D0, $alpha: 0.4);
   width: 66px;
   height: 66px;
-  font-family: 'Material Symbols Outlined';
+  font-family: 'Material Symbols Outlined',sans-serif;
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
@@ -471,10 +469,9 @@ mat-toolbar {
   background: rgba($color: #F5C4D0, $alpha: 0.4);
   width: 66px;
   height: 66px;
-  font-family: 'Material Symbols Outlined';
+  font-family: 'Material Symbols Outlined',sans-serif;
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
@@ -760,6 +757,7 @@ mat-toolbar {
 }
 
 .mat-drawer {
+  background: #F2F2FF;
   visibility: visible !important;
   display: block !important;
   transform: translate3d(0, 0, 0) !important;
@@ -1027,9 +1025,9 @@ table.g-card-table tr.mat-row td {
 
 }
 
-table.g-card-table th.mat-header-cell {
-  // padding: 0 !important;
-}
+// table.g-card-table th.mat-header-cell {
+//   padding: 0 !important;
+// }
 
 .action-clickable-table .mat-row {
   cursor: pointer;
@@ -1067,9 +1065,14 @@ table.g-card-table th.mat-header-cell {
 
   background: var(--clr-primary-300);
 }
-
+ng-scrollbar{
+  --scrollbar-thumb-color: rgb(200, 200, 200) !important;
+}
+.mat-table-scrollbar{
+  --scrollbar-thumb-color: rgb(200, 200, 200) !important;
+  }
 .mat-table-scrollbar scrollbar-y.scrollbar-control {
-  top: 60px !important;
+  top: 64px !important;
 }
 
 .mat-table-scrollbar scrollbar-x.scrollbar-control {
@@ -1131,6 +1134,8 @@ td.dataTables_empty {
 }
 
 .isDivDisabled {
+  pointer-events: none;
+  cursor: none;
   .main-section-option {
     background: rgba($color: #fff, $alpha: 0.5);
 
@@ -1241,7 +1246,7 @@ h4.main-section-title {
 //-------------- BACKGROUND-COLOR-CLASSES ----END-------------------
 
 //-------------- TEXT-COLOR-CLASSES ----START-------------------
-.text-error {}
+// .text-error {}
 
 //-------------- TEXT-COLOR-CLASSES ----END-------------------
 
@@ -1790,13 +1795,13 @@ button.default-btn {
 }
 
 .clickable-table-style-1 {
-  thead {
-    tr {
-      th {
-        &:first-child {}
-      }
-    }
-  }
+  // thead {
+  //   tr {
+  //     th {
+  //       &:first-child {}
+  //     }
+  //   }
+  // }
 
   tr {
     position: relative;
@@ -1918,7 +1923,6 @@ button.default-btn {
 
 .paginator-left {
   float: left, imp !important;
-  ;
 }
 
 //-------------- PAGINATOR-CLASSES ----START-------------------
@@ -2295,11 +2299,11 @@ button.default-btn {
 
 }
 
-.isDivDisabled {
-  pointer-events: none;
-  cursor: none;
-  // background-color: rgba(0, 0, 0, .38) !important;
-}
+// .isDivDisabled {
+//   pointer-events: none;
+//   cursor: none;
+//   background-color: rgba(0, 0, 0, .38) !important;
+// }
 
 .mat-autocomplete-panel.custom-scroll.mat-autocomplete-hidden {
   display: none;

@@ -9,7 +9,7 @@ export class BrowserCloseService {
   userData
   constructor(private api:ApiFuntions,private beaconService: BeaconService) { }
   handleBrowserClose(): void {
-    this.userData = JSON.parse(localStorage.getItem('user') || '{}');
+    this.userData = JSON.parse(localStorage.getItem('user') ?? '{}');
     localStorage.setItem('unloadTime',JSON.stringify(new Date()))
 
     // let paylaod = {

@@ -2,7 +2,6 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
   Component,
   OnInit,
-  AfterViewInit,
   ViewChild,
   Input,
   SimpleChanges,
@@ -17,8 +16,6 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 
 import labels from '../../../labels/labels.json';
-import { CreateBatchComponent } from '../../dialogs/create-batch/create-batch.component';
-import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { CreateBatchConfirmationComponent } from '../../dialogs/create-batch-confirmation/create-batch-confirmation.component';
@@ -81,8 +78,6 @@ export class BatchSelectedOrdersComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
     this.sharedService.batchManagerObserver.subscribe((obj) => {
       if (obj['isCreate']) {
         this.createBatch();
@@ -144,7 +139,6 @@ export class BatchSelectedOrdersComponent implements OnInit {
       dialogRef.afterClosed().subscribe((res) => {
         if (res==='Yes') {
           let ordersArr:any=[];
-          this.tableData._data._value.orderNumber
           this.tableData._data._value.forEach(element => {
               ordersArr.push(element.orderNumber)
           });
@@ -165,9 +159,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((res) => {
         if (res==='Yes') {
-
           let ordersArr:any=[];
-          this.tableData._data._value.orderNumber
           this.tableData._data._value.forEach(element => {
               ordersArr.push(element.orderNumber)
           });
@@ -183,7 +175,6 @@ export class BatchSelectedOrdersComponent implements OnInit {
   createBatch() {
     let iBactchData: any[] = [];
     this.tableData.data.map((order: any) => {
-      // let result = [ order.orderNumber.toString(), order.countOfOrderNumber.toString()];
       let result = [
         order.orderNumber.toString(),
         this.isAutoBatch
@@ -223,18 +214,6 @@ export class BatchSelectedOrdersComponent implements OnInit {
 
   addRemoveAllOrder() {
     if (this.tableData['_data']['_value'].length == 0) return;
-    // const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-    //   height: 'auto',
-    //   width: '600px',
-    //   autoFocus: '__non_existing_element__',
-    //   data: {
-    //     mode: 'remove-batch-list',
-    //   },
-    // });
-    // dialogRef.afterClosed().subscribe((res) => {
-    //   if (res === 'Yes') {
-    //   }
-    // });
     this.addRemoveAll.emit();
   }
 

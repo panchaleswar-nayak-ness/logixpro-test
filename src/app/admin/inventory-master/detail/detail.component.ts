@@ -1,9 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service';
-import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { ItemCategoryComponent } from '../../dialogs/item-category/item-category.component';
 import { ItemNumberComponent } from '../../dialogs/item-number/item-number.component';
 import { UnitMeasureComponent } from '../../dialogs/unit-measure/unit-measure.component';
@@ -21,7 +20,7 @@ import { CurrentTabDataService } from '../current-tab-data-service';
 })
 export class DetailComponent implements OnInit {
   private eventsSubscription: Subscription;
-  @Input() events: Observable<String>;
+  @Input() events: Observable<string>;
   @Input() fieldNameDetails: any;
   @Input() details: FormGroup;  
   public userData: any;
@@ -101,7 +100,6 @@ export class DetailComponent implements OnInit {
         this.Api.UpdateItemNumber(paylaod).subscribe((res: any) => {
           this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY] = result;
 
-          // console.log(res.data);
           if (res.isExecuted) {
             this.details.patchValue({
               'itemNumber' : res.data.newItemNumber
@@ -151,14 +149,14 @@ export class DetailComponent implements OnInit {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-        if(result.category!='' && result!=true)
-       { 
+      if(result.category!='' && result)
+      { 
         this.details.patchValue({        
           'category': result.category      
         });
       }
-        if(result.subCategory!='' && result!=true)
-        {
+      if(result.subCategory!='' && result)
+      {
         this.details.patchValue({            
           'subCategory': result.subCategory,        
         });
@@ -191,25 +189,7 @@ export class DetailComponent implements OnInit {
 
 
  RedirectInv(type){
-
-// if(this.details.controls['histCount'].value==0 || this.details.controls['openCount'].value==0 ||this.details.controls['procCount'].value==0 ) return
-
-
-//   if( this.spliUrl[1] == 'OrderManager' ){
-//     this.router.navigate([]).then((result) => {
-//       let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-//       window.open(url, '_blank');
-//     });
-//  }
-//  else {
-//   this.router.navigate([]).then((result) => {
-//     let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-//     window.open(url, '_blank');
-//   });
-
-//  }
-
-  if(this.setVal == true){
+  if(this.setVal){
     this.router.navigate([]).then((result) => {
       let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
       window.open(url, '_blank');

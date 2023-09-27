@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json';
 import { ToastrService } from 'ngx-toastr'; 
@@ -22,7 +22,6 @@ export class GroupAllowedComponent implements OnInit {
   form_btn_label: string = 'Add';
   GroupName: any;
   controlNameList: any[] = [];
-  // myControl = new FormControl('');
   options: string[] = [];
   filteredOptions: Observable<any[]>;
   userData: any;
@@ -72,9 +71,7 @@ export class GroupAllowedComponent implements OnInit {
     return result;
   }
   alphaNumberOnly(string:any) {
-    // const regex = "^[a-zA-Z0-9_-]*$";
     const regex = "^[a-zA-Z0-9_//][a-zA-Z0-9_// ]*[a-zA-Z0-9_//]$";
-    //^[a-zA-Z0-9_][a-zA-Z0-9_ ]*[a-zA-Z0-9_]$
     if(string.match(regex)){
       return true;
     }
@@ -99,7 +96,6 @@ export class GroupAllowedComponent implements OnInit {
     let payload = {
       "groupname": form.value.controlName,
       "username": this.data.grp_data,
-      // "wsid": this.userData.wsid,
     }
     this.employeeService.insertUserGroup(payload).subscribe((res: any) => {
       if (res.isExecuted) {
@@ -110,7 +106,6 @@ export class GroupAllowedComponent implements OnInit {
         });
       }
       else {
-        // this.dialog.closeAll();
         this.toastr.error(res.responseMessage, 'Error!', {
           positionClass: 'toast-bottom-right',
           timeOut: 2000

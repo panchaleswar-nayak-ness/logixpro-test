@@ -10,7 +10,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-user-fields-edit',
   templateUrl: './user-fields-edit.component.html',
-  styleUrls: ['./user-fields-edit.component.scss'],
+  styleUrls: [],
 })
 export class UserFieldsEditComponent implements OnInit {
   @ViewChild('ship_via') ship_via: ElementRef;
@@ -105,9 +105,7 @@ export class UserFieldsEditComponent implements OnInit {
   getFloatLabelValueItem(): FloatLabelType {
     return this.floatLabelControlShipName.value || 'shipName';
   }
-  searchData(event) {
-    
-  }
+
 
   async autocompleteSearchColumn() {
     let searchPayload = {
@@ -136,7 +134,7 @@ export class UserFieldsEditComponent implements OnInit {
     this.Api
       .UserFieldGetByID(payload)
       .subscribe((res: any) => {
-        if (res && res.data) {
+        if (res?.data) {
           let item = res.data;
 
           this.shipVia = item.userField1 ?? "";
@@ -168,41 +166,8 @@ export class UserFieldsEditComponent implements OnInit {
         (error) => {}
       );
   }
-  getRow(row) {}
-  onFocusOutEvent(event, type) {
-    // if (type === 'order') {
-    //   if (event.target.value === '') {
-    //     this.orderRequired = true;
-    //   } else {
-    //     this.orderRequired = false;
-    //   }
-    // } else if (type === 'item') {
-    //   // if(this.itemNumber==='')return;
-    //   let payLoad = {
-    //     itemNumber: this.itemNumber,
-    //     username: this.data.userName,
-    //     wsid: this.data.wsid,
-    //   };
-    //   this.transactionService
-    //     .get(payLoad, '/Common/ItemExists', true)
-    //     .subscribe(
-    //       (res: any) => {
-    //         if (res && res.isExecuted) {
-    //           if (res.data === '') {
-    //             this.itemInvalid = true;
-    //           } else {
-    //             this.itemInvalid = false;
-    //           }
-    //         }
-    //         // this.searchAutocompleteItemNum = res.data;
-    //       },
-    //       (error) => {}
-    //     );
-    // }
-  }
   ngOnDestroy() {
     this.searchByShipVia.unsubscribe();
     this.searchByShipName.unsubscribe();
-    // this.searchByItem.unsubscribe();
   }
 }

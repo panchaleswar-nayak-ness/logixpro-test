@@ -1,15 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-sp-bulk-handheld-setting',
   templateUrl: './sp-bulk-handheld-setting.component.html',
-  styleUrls: ['./sp-bulk-handheld-setting.component.scss']
+  styleUrls: []
 })
-export class SpBulkHandheldSettingComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class SpBulkHandheldSettingComponent  {}

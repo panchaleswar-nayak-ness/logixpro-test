@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 @Component({
   selector: 'app-sql-auth-confirmation',
   templateUrl: './sql-auth-confirmation.component.html',
-  styleUrls: ['./sql-auth-confirmation.component.scss'],
+  styleUrls: [],
 })
 export class SqlAuthConfirmationComponent implements OnInit {
   dialog_msg: string = '';

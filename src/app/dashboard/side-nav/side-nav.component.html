@@ -8,7 +8,6 @@
         <span mat-list-icon class="material-symbols-outlined">
           {{menu.icon}}
         </span>
-        <!-- <mat-icon mat-list-icon>{{menu.icon}}</mat-icon> -->
         <div class="sidenav-item" *ngIf="sideBarOpen">{{menu.title}}  </div>
       </mat-list-item>
     </ng-container>
@@ -26,10 +25,8 @@
         <span mat-list-icon class="material-symbols-outlined">
           {{childMenu.icon}}
         </span>
-        <!-- <mat-icon mat-list-icon>{{childMenu.icon}}</mat-icon> -->
         <div class="sidenav-item" *ngIf="sideBarOpen">{{childMenu.title}}</div>
       </mat-list-item>
-      <!-- {{childMenu.route}} -->
       <span *ngIf="i ===4 && childMenu.route === '/admin/transaction'">
         <mat-divider style="margin: 8px;"></mat-divider>
       </span>
@@ -40,16 +37,6 @@
   </mat-nav-list>
 
 </div>
-<!-- <mat-nav-list *ngIf="isParentMenu">
-  <ng-container *ngFor="let menu of menus;">
-    <mat-list-item  routerLinkActive="active" routerLink="{{menu.route}}" (click)="loadMenus(menu)" [disabled]="isAuthorized(menu.permission)">
-      <span mat-list-icon class="material-symbols-outlined">
-        {{menu.icon}}
-      </span>
-      <div class="sidenav-item" *ngIf="sideBarOpen">{{menu.title}}</div>
-    </mat-list-item>
-  </ng-container>
-</mat-nav-list> -->
 <div *ngIf="isConfigUser">
 <mat-nav-list *ngIf="isChildMenu">
   <ng-container *ngFor="let childMenu of childMenus;">
@@ -57,7 +44,6 @@
       <span mat-list-icon class="material-symbols-outlined">
         {{childMenu.icon}}
       </span>
-      <!-- <mat-icon mat-list-icon>{{childMenu.icon}}</mat-icon> -->
       <div class="sidenav-item" *ngIf="sideBarOpen">{{childMenu.title}}</div>
     </mat-list-item>
   </ng-container>

@@ -6,25 +6,18 @@
 </button>
 </div>
 <div>
-    <!-- <div mat-dialog-content> -->
 
         <form [formGroup]="cloneForm" (ngSubmit)="onSend(cloneForm)">
 
             <mat-form-field class="mb-3 w-100" appearance="outline">
                 <mat-label>New Group Name</mat-label>
-                <input #grp_name matInput type="text" maxlength="50" formControlName="group_name" (keyup)="checkIfValid()">
+                <input #grp_name matInput type="text" maxlength="50" formControlName="group_name" >
               </mat-form-field>
             <div class="error" *ngIf="hasError('group_name', 'required')">This field is required.</div>
-            <!-- <mat-hint class="error-message" style="color: red;font-size: 14px;"
-                      *ngIf="hasError('group_name', 'whitespace')">
-                      Please enter valid group
-                    </mat-hint> -->
             <mat-dialog-actions align="end" class="m-0">
-                <!-- <button mat-button matDialogClose="no" color="danger">Cancel</button> -->
                 <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100" color="primary"
                     [disabled]="!cloneForm.valid">Submit</button>
             </mat-dialog-actions>
 
         </form>
-    <!-- </div> -->
 </div>

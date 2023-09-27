@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-im-tote-manager',
   templateUrl: './im-tote-manager.component.html',
-  styleUrls: ['./im-tote-manager.component.scss']
+  styleUrls: []
 })
-export class ImToteManagerComponent implements OnInit {
+export class ImToteManagerComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  
 
 }

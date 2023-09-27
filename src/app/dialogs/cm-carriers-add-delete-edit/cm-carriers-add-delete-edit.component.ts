@@ -20,14 +20,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './cm-carriers-add-delete-edit.component.html',
   styleUrls: ['./cm-carriers-add-delete-edit.component.scss']
 })
-export class CmCarriersAddDeleteEditComponent implements OnInit {
+export class CmCarriersAddDeleteEditComponent{
 
   displayedColumns: string[] = ['select', 'action'];
   tableData = ELEMENT_DATA;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-cr-design-filename-confirmation',
   templateUrl: './cr-design-filename-confirmation.component.html',
-  styleUrls: ['./cr-design-filename-confirmation.component.scss']
+  styleUrls: []
 })
 export class CrDesignFilenameConfirmationComponent implements OnInit {
   restoreAll

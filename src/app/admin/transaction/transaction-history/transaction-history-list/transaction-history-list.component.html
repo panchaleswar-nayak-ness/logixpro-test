@@ -49,7 +49,6 @@
                     <mat-label>Action</mat-label>
                     <mat-select   #matRef class="employees-action" (openedChange)="actionDialog($event)"
                         [(value)]="selectedVariable">
-                        <!-- <mat-option value="pagesNumber">Preview 50 Pages Only</mat-option> -->
                         <mat-option value="set_column_sq">Set Column Sequence</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">
@@ -62,7 +61,6 @@
         </div>
 
         <div class="card br-14 table-responsive my-3">
-            <!-- <ng-scrollbar style="height: 200px;"></ng-scrollbar> -->
             <ng-scrollbar style="height:500px" track="all" class="mat-table-scrollbar">
                 <table  mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort 
                     (matSortChange)="sortChange($event)" fixedLayout="true">
@@ -89,73 +87,11 @@
                             No data available in table.
                         </div>
                     </tr>
-                    <!-- 
-                <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell notify-center-table" [attr.colspan]="displayedColumns.length">
-                        No data available in table.
-                    </td>
-                </tr> -->
 
                     <mat-header-row *matHeaderRowDef="columnValues;sticky: true" style=" border: 0"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: columnValues;"></mat-row>
                 </table>
             </ng-scrollbar>
-            <!-- 
-            <mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort
-            (matSortChange)="announceSortChange($event)">
-
-            <ng-container [matColumnDef]="col.colDef"
-                *ngFor="let col of displayedColumns; let indexOfelement=index;">
-
-                <th class="header" mat-header-cell *cdkHeaderCellDef mat-sort-header
-                    (sortActionDescription)="indexOfelement"
-                    style="width:auto; min-width: 200px!important;  padding: 5px 32px; border: 0;">
-                    {{ col.colDef }}
-
-                </th>
-
-                <td *matCellDef="let element" style="min-width: 250px;  padding: 5px 32px; border: 0;"> {{
-                    element[col.colHeader] }}</td>
-
-            </ng-container>
-
-            <ng-container matColumnDef="actions" stickyEnd>
-
-                <th mat-header-cell *matHeaderCellDef style="border: 0; width: 200px; min-width: 64px;">
-                </th>
-
-                <td mat-cell *matCellDef="let seletedRecord" style="border: 0; width: 64px;">
-
-                    <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
-                        class="circle-icon-o" appearance="outline">
-                        <mat-icon>more_horiz</mat-icon>
-                    </button>
-
-                    <mat-menu #appMenu="matMenu">
-                        <button mat-menu-item >View Item in Inventory
-                            Master</button>
-                        <button mat-menu-item >View Order in Order
-                            Status</button>
-                        <button mat-menu-item
-                           >Delete Transaction</button>
-                        <button mat-menu-item >Send Completed to
-                            History</button>
-            
-                    </mat-menu>
-
-                </td>
-
-            </ng-container>
-            <tr class="mat-row " style="text-align: center;" *matNoDataRow>
-                <td class="mat-cell"  [attr.colspan]="displayedColumns.length">
-                  No data matching the filter.
-                </td>
-              </tr>
-
-            <mat-header-row *matHeaderRowDef="columnValues;sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: columnValues;"></mat-row>
-
-        </mat-table> -->
         </div>
 
         <div class="table-pagination d-flex justify-content-start"

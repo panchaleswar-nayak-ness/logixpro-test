@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 })
 export class BeforeunloadService {
 
-  constructor() { }
 
    // Method to subscribe to the beforeunload event
    beforeUnloadEvent(): Observable<BeforeUnloadEvent> {

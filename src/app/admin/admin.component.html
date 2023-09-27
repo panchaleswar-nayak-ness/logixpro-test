@@ -16,32 +16,6 @@
           </div>
           <div class="row align-items-center mt-3 ">
             <div class="col-12">
-              <!-- <div class="card br-14 table-responsive px-0" style="overflow-x: auto;"> -->
-              <!-- 1 -->
-              <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort #empTbSort="matSort">
-                              <ng-container [matColumnDef]="col.colDef"
-                                  *ngFor="let col of displayedColumns; let indexOfelement=index;">
-                                  <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ col.colDef }}</th>
-                                  <td mat-cell *matCellDef="let emp"> {{ emp[col.colHeader] }}</td>
-                              </ng-container>
-      
-                              <tr mat-header-row *matHeaderRowDef="columnValues"></tr>
-                              <tr mat-row *matRowDef="let emprow; columns: columnValues"></tr>
-                          </table> -->
-      
-              <!-- 2 -->
-              <!-- <mat-table class="custom-table table-fix"  [dataSource]="dataSource" matSort>
-                              <ng-container [matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
-                                  <mat-header-cell   style="width:auto; min-width: 250px;  padding: 5px 32px; border: 0;" *matHeaderCellDef mat-sort-header >  {{ col.colDef }}    
-                                  
-                              </mat-header-cell>
-                                  <mat-cell style="min-width: 250px; padding: 5px 32px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;" *matCellDef="let row"> {{ row[col.colHeader] }}</mat-cell>
-                              </ng-container>
-                              <mat-header-row *matHeaderRowDef="columnValues;sticky: true"></mat-header-row>
-                              <mat-row *matRowDef="let row; columns: columnValues;"></mat-row>
-                          </mat-table> -->
-      
-              <!-- OlD -->
               <div class="card br-14 borderless my-3" style="overflow-x: auto;">
                 <ng-scrollbar track="all" class="mat-table-scrollbar scrollbar-hover-padding " style="height: 900px;">
                   <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort  (matSortChange)="announceSortChange($event)">
@@ -55,20 +29,14 @@
                       </td>
       
                     </ng-container>
-      
-                    <!-- Name Column -->
                     <ng-container matColumnDef="warehouse">
                       <th mat-header-cell mat-sort-header *matHeaderCellDef> Warehouse </th>
                       <td mat-cell *matCellDef="let element"> {{element.warehouse}} </td>
                     </ng-container>
-      
-                    <!-- Weight Column -->
                     <ng-container matColumnDef="locationName">
                       <th mat-header-cell mat-sort-header *matHeaderCellDef> Location </th>
                       <td mat-cell *matCellDef="let element"> {{element.locationName}} </td>
                     </ng-container>
-      
-                    <!-- Symbol Column -->
                     <ng-container matColumnDef="totalPicks">
                       <th mat-header-cell mat-sort-header *matHeaderCellDef> Lines </th>
                       <td mat-cell *matCellDef="let element"> {{element.totalPicks}} </td>
@@ -95,14 +63,6 @@
                 </ng-scrollbar>
               </div>
               <div class="row align-items-center">
-              
-                <!-- <div class="col-xl-6">
-                  <div class="table-pagination d-flex justify-content-start"
-                    *ngIf=" columnValues && columnValues.length>0 && displayedColumns && dataSource">
-                    <mat-paginator [length]="this.customPagination.total" [pageSize]="20" [pageSizeOptions]="[10, 20, 100]"
-                      (page)="handlePageEvent($event)"></mat-paginator>
-                  </div>
-                </div> -->
           
       
               </div>
@@ -163,10 +123,6 @@
                     <p class="counter-count">{{putsPerHour}}</p>
                     <p class="design-p">Per hour</p>
                   </div>
-                  <!-- <div class="design">
-                    <p class="counter-count">{{putsPerHour}}</p>
-                    <p class="design-p">Per hour</p>
-                  </div> -->
               </div>
           </div>
 
@@ -186,10 +142,6 @@
                   <p class="counter-count">{{countPerHour}}</p>
                   <p class="design-p">Per hour</p>
                 </div>
-                <!-- <div class="design">
-                  <p class="counter-count">{{countPerHour}}</p>
-                  <p class="design-p">Per hour</p>
-                </div> -->
             </div>
         </div>
 
@@ -209,10 +161,6 @@
                 <p class="counter-count">{{adjustmentOpen}}</p>
                 <p class="employee-p">Open</p>
               </div>
-              <!-- <div class="design">
-                <p class="counter-count">{{adjustmentPerHour}}</p>
-                <p class="design-p">Per hour</p>
-              </div> -->
           </div>
       </div>
 
@@ -244,7 +192,6 @@
 
  
   
-  <!-- Inventory Detail -->
   <div class="row" *ngIf="isLookUp">
     <div class="col-xl-12">
       <mat-card class="mat-elevation-z g-card">
@@ -272,13 +219,6 @@
 
                 <div class="d-flex g-mini-search-box gap-20 align-items-center w-100">
                   <div class="search-box" style="flex:1">
-                  <!-- <mat-form-field class="w-100 bg-white br-14" appearance="fill">
-                    <span class="material-symbols-outlined icon-search">
-                      search
-                    </span>
-                    <input type="text" placeholder="Item No." aria-label="Search" matInput maxlength="50">
-                    
-                  </mat-form-field> -->
 
 
                   <mat-form-field class="w-100 bg-white br-14" appearance="fill" [floatLabel]="getFloatLabelValue()"
@@ -302,7 +242,6 @@
                 </div>
 
                 <button (click)="clearFields()" mat-stroked-button color="warn" class="button-remove-all bg-white">
-                  <!-- <mat-icon>block</mat-icon> -->
                   Clear
                 </button>
                 </div>

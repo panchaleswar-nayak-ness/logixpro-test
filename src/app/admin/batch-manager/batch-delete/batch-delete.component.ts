@@ -5,8 +5,6 @@ import {
   EventEmitter,
   TemplateRef,
   ViewChild,
-  Optional,
-  Inject,
   Input,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -96,7 +94,7 @@ export class BatchDeleteComponent implements OnInit {
           if (res.isExecuted && res.data.length > 0) {
             this.batchList.push('All Transaction');
             res.data.forEach((i: any) => {
-              i ? this.batchList.push(i) : '';
+              if(i) this.batchList.push(i);
             });
           }
         });
@@ -106,23 +104,21 @@ export class BatchDeleteComponent implements OnInit {
   }
 
   ApplySavedItem() {
-    //console.log('ApplySavedItem');
     if (this.currentTabDataService.savedItem[this.currentTabDataService.BATCH_MANAGER_DELETE])
     {
       let item= this.currentTabDataService.savedItem[this.currentTabDataService.BATCH_MANAGER_DELETE];
       this.transType = item.transType;
       this.batchList = item.batchList;
-      //this.changeTranType(item);
       return true;
     }
     return false;
   }
   RecordSavedItem() {
-    //console.log('RecordSavedItem');
     this.currentTabDataService.savedItem[this.currentTabDataService.BATCH_MANAGER_DELETE]= {
       transType: this.transType,
       batchList: this.batchList 
     }
+    
   }
 
   changeTranType(value: any) {

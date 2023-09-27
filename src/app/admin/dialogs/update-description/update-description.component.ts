@@ -4,9 +4,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-update-description',
   templateUrl: './update-description.component.html',
-  styleUrls: ['./update-description.component.scss']
+  styleUrls: []
 })
-export class UpdateDescriptionComponent implements OnInit {
+export class UpdateDescriptionComponent{
   @ViewChild('des_focus') des_focus: ElementRef;
   // updateItemNumber : boolean = true;
   addItem : boolean = true;
@@ -14,8 +14,7 @@ export class UpdateDescriptionComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<any>,
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  ngOnInit(): void {  
-  }
+ 
 
   onNoClick(): void {
     this.dialogRef.close();

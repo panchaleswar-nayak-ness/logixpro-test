@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../../labels/labels.json';
-import { Router,NavigationEnd  } from '@angular/router';
+import { Router  } from '@angular/router';
 import { FormControl, FormGroup, Validators, } from '@angular/forms';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -11,7 +11,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-user-account',
   templateUrl: './user-account.component.html',
-  styleUrls: ['./user-account.component.scss'],
+  styleUrls: [],
 })
 export class UserAccountComponent implements OnInit {
   constructor(
@@ -29,7 +29,7 @@ export class UserAccountComponent implements OnInit {
   public toggle_password = true;
   ngOnInit(): void {
     let sharedData = this.sharedService.getData();
-    if (sharedData && sharedData.loginInfo) {
+    if (sharedData?.loginInfo) {
       this.username = sharedData.loginInfo[0].user;
       this.password = sharedData.loginInfo[0].password;
       this.passwordCompare = sharedData.loginInfo[0].password;
@@ -50,9 +50,8 @@ export class UserAccountComponent implements OnInit {
       AppName: 'Consolidation Manager',
     };
     this.Api.Menu(payload).subscribe(
-      (res: any) => {
-        res && res.data;
-        if (res && res.data ) {
+      {next: (res: any) => {
+        if (res?.data ) {
           this.sharedService.setData(res.data);
           this.username = res.data.loginInfo[0].user;
           this.password = res.data.loginInfo[0].password;
@@ -61,7 +60,7 @@ export class UserAccountComponent implements OnInit {
           this.constUser=res.data.loginInfo[0].user;
         }
       },
-      (error) => {}
+      error: (error) => {}}
     );
   }
   
@@ -76,8 +75,8 @@ export class UserAccountComponent implements OnInit {
     this.Api
       .ChangeGlobalAccount(payload)
       .subscribe(
-        (res: any) => {
-          if (res.isExecuted) {
+        {next: (res: any) => {
+          if (res?.isExecuted) {
             this.toastr.success(labels.alert.success, 'Success!', {
               positionClass: 'toast-bottom-right',
               timeOut: 2000,
@@ -87,12 +86,12 @@ export class UserAccountComponent implements OnInit {
           localStorage.clear();
           this.router.navigate(['/globalconfig']);
         },
-        (error) => {
+        error: (error) => {
           this.toastr.error(labels.alert.went_worng, 'Error!', {
             positionClass: 'toast-bottom-right',
             timeOut: 2000,
           });
-        }
+        }}
       );
   }
 }

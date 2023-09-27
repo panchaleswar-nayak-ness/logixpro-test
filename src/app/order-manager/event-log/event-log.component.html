@@ -33,7 +33,6 @@
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
                     <mat-label>Message</mat-label>
-                    <!-- <input matInput [(ngModel)]="message" maxlength="255" (keyup)="autocompleteSearchColumn()"> -->
 
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto1"
                         [(ngModel)]="message" maxlength="255" (keyup)="autocompleteSearchColumn('Message',message)"
@@ -55,8 +54,6 @@
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
                     <mat-label>Event Location</mat-label>
-
-                    <!-- <input matInput [(ngModel)]="eventLocation" maxlength="255"> -->
 
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto2"
                         [(ngModel)]="eventLocation" maxlength="255"
@@ -83,8 +80,6 @@
                 <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
                     <mat-label>Event Code</mat-label>
 
-                    <!-- <input matInput [(ngModel)]="eventCode" maxlength="255"> -->
-
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto3"
                         [(ngModel)]="eventCode" maxlength="255"
                         (keyup)="autocompleteSearchColumn('Event Code',eventCode)"
@@ -106,8 +101,6 @@
                 <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
                     <mat-label>Event Type</mat-label>
 
-                    <!-- <input matInput [(ngModel)]="eventType" maxlength="255"> -->
-
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto4"
                         [(ngModel)]="eventType" maxlength="255"
                         (keyup)="autocompleteSearchColumn('Event Type',eventType)"
@@ -128,8 +121,6 @@
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
                     <mat-label>Username</mat-label>
-
-                    <!-- <input matInput [(ngModel)]="userName" maxlength="50"> -->
 
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto5"
                         [(ngModel)]="userName" maxlength="255" (keyup)="autocompleteSearchColumn('Name Stamp',userName)"
@@ -170,15 +161,6 @@
                 </div>
                 <span>Log Table</span>
             </h2>
-            <!-- <div class="d-flex justify-content-end gap-12">
-                <button mat-stroked-button color="primary" class="btn-regular mb-3" (click)="printRange()">
-                    Print Range (By Date)
-                </button>
-                <button mat-stroked-button color="primary" class="btn-regular mb-3" (click)="refresh()">
-                    <mat-icon>cached</mat-icon>
-                    Refresh
-                </button>
-            </div> -->
             
             <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
                 <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
@@ -326,12 +308,6 @@
         </div>
     </mat-card-content>
 </mat-card>
-
-
-<!-- <div class="d-flex gap-12 mb-3">
-    <button *ngIf="isAdmin" mat-stroked-button color="warn" class="bg-white btn-lg button-remove-all-w-stroke" (click)="deleteRange()">Delete Range</button>
-    <button type="submit" mat-flat-button class="form-button-submit btn-lg" color="primary" style="flex:1" (click)="exportRange()">Export Range</button>
-</div> -->
 
 
 

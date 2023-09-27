@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild,Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input,SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms'; 
 import { AuthService } from 'src/app/init/auth.service';
@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import labels from '../../../labels/labels.json'
 import { ScanTypeCodeComponent } from '../../dialogs/scan-type-code/scan-type-code.component';
 import { CustomValidatorService } from '../../../../app/init/custom-validator.service';
-import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -15,9 +15,9 @@ import { catchError, of } from 'rxjs';
 @Component({
   selector: 'app-scan-codes',
   templateUrl: './scan-codes.component.html',
-  styleUrls: ['./scan-codes.component.scss']
+  styleUrls: []
 })
-export class ScanCodesComponent implements OnInit , OnChanges {
+export class ScanCodesComponent{
 
   displayedColumns: string[] = ['ScanCode', 'ScanType', 'ScanRange', 'StartPosition','CodeLength','Actions'];
 
@@ -39,21 +39,9 @@ export class ScanCodesComponent implements OnInit , OnChanges {
     private authService: AuthService, private toastr: ToastrService,  private dialog: MatDialog,private cusValidator: CustomValidatorService) {
 
     this.userData = this.authService.userData();
- //   this.getScanTypeList();
 
   }
 
-  // getScanTypeList(){
-  //   let paylaod = {
-  //     "username": this.userData.userName,
-  //     "wsid": this.userData.wsid,
-  //   }
-  //   this.invMasterService.get(paylaod, '/Common/ScanCodeTypes').subscribe((res: any) => {
-  //     if (res.isExecuted) {
-  //       this.scanTypeList = res.data;
-  //     }
-  //   })
-  // }
   ngOnChanges(changes: SimpleChanges) {
       this.scanCodesList = [...this.scanCodes.controls['scanCode'].value];
       this.OldscanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
@@ -82,12 +70,9 @@ export class ScanCodesComponent implements OnInit , OnChanges {
     this.sharedService.updateInvMasterState(event,true)
   }
 
-  ngOnInit(): void {
-  }
+  
 
-  openPrintRangeDialog(){
 
-  }
   addCatRow(e: any){
     this.isAddRow=true
     this.scanCodesList.unshift({scanCode: '', scanType: '', scanRange: 'No', startPosition:0, codeLength:0,isDisabled:true});
@@ -176,9 +161,9 @@ export class ScanCodesComponent implements OnInit , OnChanges {
       return;
     }
     this.scanCodes.controls['scanCode'].value.forEach(element => {
-      if(element.scanCode== scanCode || (element.startPosition== startPosition && element.scanType== scanType  && element.scanRange== scanRange && element.codeLength== codeLength)){
+      if((element.scanCode== scanCode || (element.startPosition== startPosition && element.scanType== scanType  && element.scanRange== scanRange && element.codeLength== codeLength)) && newRecord){
         newRecord = false;
-        return;
+       
       }
     });
 
@@ -266,9 +251,7 @@ export class ScanCodesComponent implements OnInit , OnChanges {
   }
   }
   
-  changeScanType(e){
-  
-  }
+ 
   changeScanRange(item){
     if(item.scanRange == 'No'){
       item.startPosition = 0

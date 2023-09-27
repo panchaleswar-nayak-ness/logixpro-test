@@ -12,12 +12,6 @@
           <span>Order Selection List</span>
         </h2>
       </div>
-      <!-- <div>
-          <button mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 br-14" (click)="addRemoveAllOrder()">
-            <mat-icon>add</mat-icon>
-            Add All
-          </button>
-        </div>  -->
     </div>
     <ng-container>
 
@@ -84,14 +78,10 @@
           <th class="bg-light-blue" mat-header-cell *matHeaderCellDef mat-sort-header
             sortActionDescription="Sort by detail"> Details </th>
           <td mat-cell *matCellDef="let element">
-            <!-- <button mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 br-14" >
-                  View
-                </button> -->
 
             <div (click)="openView(element)" class="__pointer_cursor custom-add-button-color br-14">
               View
             </div>
-            <!-- <div (click)="openBatchViewDetail()">Option 2</div> -->
           </td>
         </ng-container>
 
@@ -101,7 +91,6 @@
             sortActionDescription="Sort by action"> Actions </th>
           <td mat-cell *matCellDef="let element">
             <div >
-              <!-- class="text-end" -->
               <button mat-flat-button class="bg-white custom-add-button-color" (click)="addOrders(element)">
                 <mat-icon>add_circle</mat-icon>
               </button>
@@ -124,11 +113,6 @@
 
       <div class="d-flex justify-content-between bg-white">
         <mat-paginator [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
-        <!-- <div class="m-3">
-              <button mat-flat-button color="primary" class="br-14" >
-                Selected Orders in Auto Batch Zone
-              </button>
-            </div>                   -->
       </div>
 
     </div>

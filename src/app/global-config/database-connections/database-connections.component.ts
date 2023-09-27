@@ -5,7 +5,7 @@ import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-database-connections',
   templateUrl: './database-connections.component.html',
-  styleUrls: ['./database-connections.component.scss'],
+  styleUrls: [],
 })
 export class DatabaseConnectionsComponent implements OnInit {
   sideBarOpen: boolean = true;
@@ -16,8 +16,13 @@ export class DatabaseConnectionsComponent implements OnInit {
   dbConnectionData = [];
   ngOnInit(): void {
     let sharedData = this.sharedService.getData();
-    if (sharedData && sharedData['connectionString']) {
-      sharedData['connectionString'].map((obj) => {obj.isButtonDisable=true,obj.isSqlButtonDisable=false,obj.isNewConn=false,obj.isDuplicate=false});
+    if (sharedData['connectionString']) {
+      sharedData['connectionString'].map((obj) => {
+        obj.isButtonDisable=true;
+        obj.isSqlButtonDisable=false;
+        obj.isNewConn=false;
+        obj.isDuplicate=false;
+      });
 
       this.dbConnectionData = sharedData;
     } else {
@@ -40,8 +45,13 @@ export class DatabaseConnectionsComponent implements OnInit {
     this.Api.Menu(payload).subscribe(
       (res: any) => {
 
-        this.dbConnectionData = res && res.data;
-        this.dbConnectionData['connectionString'].map((obj) => {obj.isButtonDisable=true,obj.isSqlButtonDisable=false,obj.isNewConn=false,obj.isDuplicate=false});
+        this.dbConnectionData = res?.data;
+        this.dbConnectionData['connectionString'].map((obj) => {
+          obj.isButtonDisable=true;
+          obj.isSqlButtonDisable=false;
+          obj.isNewConn=false;
+          obj.isDuplicate=false;
+        });
         
         this.sharedService.setData(this.dbConnectionData);
       },

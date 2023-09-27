@@ -10,7 +10,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export interface CarouselZone {
   carousel: string;
   zone: string;
@@ -55,7 +54,7 @@ const ELEMENT_DATA: CarouselZone[] = [
 @Component({
   selector: 'app-tran-off-carousel-lzone',
   templateUrl: './tran-off-carousel-lzone.component.html',
-  styleUrls: ['./tran-off-carousel-lzone.component.scss'],
+  styleUrls: [],
 })
 export class TranOffCarouselLzoneComponent implements OnInit, AfterViewInit {
   public columnValues: any = [];
@@ -105,8 +104,6 @@ export class TranOffCarouselLzoneComponent implements OnInit, AfterViewInit {
       endIndex: 20,
     };
 
-    // this.initializeApi();
-    //  this.getContentData();
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

@@ -59,7 +59,6 @@ export class TotesAddEditComponent implements OnInit {
   searchAutocompleteList:any;
   hideRequiredControl = new FormControl(false);
   imPreferences:any;
-  // emptyField:boolean = false
   onDestroy$: Subject<boolean> = new Subject();
   @ViewChild(MatAutocompleteTrigger) autocompleteInventory: MatAutocompleteTrigger;
   /** Whether the number of selected elements matches the total number of rows. */
@@ -92,28 +91,24 @@ export class TotesAddEditComponent implements OnInit {
     let ToteID = element?.toteID;
     if (type.toLowerCase() == "tote") {
       //print single tote id
-      sTote = '';
-      eTote = '';
-      batch = '';
+      sTote = ' ';
+      eTote = ' ';
+      batch = ' ';
   } else if (type.toLowerCase() == 'batch') {
       // print batch
-      ToteID = '';
-      sTote = '';
-      eTote = '';
+      ToteID = ' ';
+      sTote = ' ';
+      eTote = ' ';
   } else {
       //print range tote id
       ident = 1;
-      ToteID = '';
-      batch = '';
-  };
-
-  // ToteID:ToteID,
-  // Ident:ident,
-  // FromTote:sTote,
-  // ToTote:eTote,
-  // PrintDirect: pd,
-  // BatchID: batch
+      ToteID = ' ';
+      batch = ' ';
+  }
  
+
+
+
     this.global.Print(`FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`,'lbl');
 
     }
@@ -131,12 +126,6 @@ export class TotesAddEditComponent implements OnInit {
       window.open(`/#/report-view?file=FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
     }
 
-
-
-    // window.open(`/#/report-view?file=FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`, '_blank', "location=yes");
-
-    // window.open(`/#/report-view?file=IMToteLabel-lbl`, '_blank', "location=yes");
-
   }
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
@@ -148,7 +137,7 @@ export class TotesAddEditComponent implements OnInit {
     this.selection.select(...this.dataSource.data);
   }
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: PeriodicElement): string {
@@ -176,13 +165,11 @@ export class TotesAddEditComponent implements OnInit {
 
     });
   }
-  searchData(){
-
-  }
+  
   saveTote(toteID:any,cells:any,oldToteID:any,isInserted:any,index:any)
   { 
-      var oldTote = "";
-      var updateMessage="Update Successful";
+      let oldTote = "";
+      let updateMessage="Update Successful";
       if(isInserted=="1")
       {
         oldTote = oldToteID;
@@ -267,8 +254,7 @@ export class TotesAddEditComponent implements OnInit {
                 });
                 this.isRowAdded=false;
                 let isUnsavedItem=false
-                // this.dataSourceManagedTotes.data.splice(index,1)
-                this.dataSourceManagedTotes.data.filter(obj=>{
+                this.dataSourceManagedTotes.data.forEach(obj=>{
                   if(obj.isInserted===0){
                     isUnsavedItem=true
                   }else {
@@ -312,7 +298,7 @@ export class TotesAddEditComponent implements OnInit {
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.ELEMENT_DATA_TOTE = res.data;
-          for(var i=0;i<this.ELEMENT_DATA_TOTE.length;i++)
+          for(let i=0;i<this.ELEMENT_DATA_TOTE.length;i++)
           {
           this.ELEMENT_DATA_TOTE[i].isInserted = 1;
           this.ELEMENT_DATA_TOTE[i].isDuplicate = false;
@@ -346,13 +332,13 @@ export class TotesAddEditComponent implements OnInit {
     }
 
   }
-  else 
+  else if(this.ELEMENT_DATA_TOTE[(position)].cells!=$event.target.value) 
   {
     
-    if(this.ELEMENT_DATA_TOTE[(position)].cells!=$event.target.value)
-    {
+    
+    
     this.ELEMENT_DATA_TOTE[(position)].cells = $event.target.value;
-    }
+    
 
   }
   
@@ -364,8 +350,8 @@ export class TotesAddEditComponent implements OnInit {
       if(this.toteID==='')return
     }
   
-    var exists=false;
-    for(var i=0; i < this.alreadySavedTotesList?.length; i++)
+    let exists=false;
+    for(let i=0; i < this.alreadySavedTotesList?.length; i++)
     {
       if(toteIDs==null)
       {
@@ -375,13 +361,13 @@ export class TotesAddEditComponent implements OnInit {
           break;
         }
       }
-      else 
+      else if (this.alreadySavedTotesList[i].toteid==toteIDs)
       {                
-        if(this.alreadySavedTotesList[i].toteid==toteIDs)
-        {
+        
+        
           exists=true;
           break;
-        }
+        
       }
 
     }
@@ -434,7 +420,7 @@ export class TotesAddEditComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data : any,private authService: AuthService,private Api:ApiFuntions,private toastr: ToastrService,private dialog: MatDialog,private global:GlobalService) {
 
       let pathArr= this.location.path().split('/')
-      this.isIMPath=pathArr[pathArr.length-1]==='ImToteManager'?true:false
+      this.isIMPath=pathArr[pathArr.length-1]==='ImToteManager'
 
     
       

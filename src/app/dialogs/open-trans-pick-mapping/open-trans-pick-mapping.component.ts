@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './open-trans-pick-mapping.component.html',
   styleUrls: ['./open-trans-pick-mapping.component.scss']
 })
-export class OpenTransPickMappingComponent implements OnInit {
+export class OpenTransPickMappingComponent {
   @ViewChild('opcol_focus') opcol_focus: ElementRef;
     ELEMENT_DATA: any[] =[
       {open_transaction: ''},
@@ -28,7 +28,6 @@ export class OpenTransPickMappingComponent implements OnInit {
   ngAfterViewInit(): void {
     this.opcol_focus.nativeElement.focus();
   }
-  ngOnInit(): void {
-  }
+  
 
 }

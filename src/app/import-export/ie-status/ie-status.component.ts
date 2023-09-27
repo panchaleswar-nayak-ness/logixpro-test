@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-ie-status',
   templateUrl: './ie-status.component.html',
   styleUrls: ['./ie-status.component.scss']
 })
-export class IeStatusComponent implements OnInit {
+export class IeStatusComponent  {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

@@ -10,7 +10,6 @@
         <div class="row mb-3 mx-1">
             <div class="col-xl-6 col-md-12 col-sm-12 col-xs-12 mb-3 mb-xl-0 ">
                     <div class="container location_detail px-md-3">
-                        <!-- <ng-scrollbar style="height: 500px"> -->
                         <h1 mat-dialog-title>Location Details</h1>
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
@@ -74,20 +73,6 @@
                                 <div class="error" *ngIf="hasError('warehouse', 'required')">This field is required.</div>
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
-                                <!-- <mat-form-field class="d-block w-100" appearance="outline">
-                                    <mat-label>Zone</mat-label>
-                                    <input   placeholder="Zone" aria-label="Zone" matInput
-                                        formControlName="zone" [matAutocomplete]="zoneAuto">
-                                    <mat-autocomplete autoActiveFirstOption #zoneAuto="matAutocomplete" (optionSelected)="loadZones($event)">
-                                        <h6 class="loc_name"><span>Zone</span> <span>Location</span></h6>
-                                        <mat-option *ngFor="let option of zoneList"
-                                            [value]="option.zone" #szone>
-                                            <div class="loc_optionZ">
-                                                <span>{{option.zone}}</span> <span>{{option.locationName}}</span>
-                                            </div>
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field> -->
     
                                 <mat-form-field class="d-block w-100" appearance="outline">
                                     <mat-label>Zone</mat-label>
@@ -188,7 +173,6 @@
                         <mat-form-field class="d-block w-100 mb-3" appearance="outline">
                             <mat-label>{{fieldNames?.userField1}}</mat-label>
                             <input  maxlength="255"  matInput type="text" formControlName="userField1"   name="userField1">
-                            <!-- <mat-hint align="end">{{input.value?.length || 0}}/50</mat-hint> -->
     
                         </mat-form-field>
     
@@ -233,7 +217,6 @@
                             <mat-checkbox formControlName="dateSensitive" class="ld_checkbox col-12 col-xl-4 " color="primary">Date Sensitive
                             </mat-checkbox>
                         </section>
-                    <!-- </ng-scrollbar> -->
                     </div>
                 
             </div>
@@ -272,8 +255,6 @@
                                 <input matInput formControlName="itemQuantity"   name="itemQuantity" readonly>
                                 <span matSuffix>
                                     <mat-icon style="color:#8B8BA3; transform: rotate(45deg);" >unfold_more</mat-icon>
-
-                                    <!-- <mat-icon style="color:#8B8BA3;">open_in_full</mat-icon> -->
                                 </span>
                             </mat-form-field>
                         </div>
@@ -288,7 +269,6 @@
                                 name="maxQuantity" 
                                 (keyup)="onMaxChange($event)"  
                                 type="text">
-                                <!-- <input [NumbersOnly]="true" maxlength="9" matInput formControlName="maxQuantity"   name="maxQuantity" (keydown)="onMaxChange($event)" (keyup)="onMaxChange($event)" (change)="onMaxChange($event)" (keypress)="onMaxChange($event)"  type="text" [NumbersOnly]="true" maxlength="9"> -->
                             </mat-form-field>
                             <div class="error" *ngIf="hasError('maxQuantity', 'maxlength')">Max number allowed is 9.</div>
                         </div>
@@ -303,8 +283,6 @@
                                 name="minQuantity" 
                                 (keyup)="onMinChange($event)" 
                                 type="text">
-                                <!-- <input [NumbersOnly]="true" maxlength="9" matInput formControlName="minQuantity"   name="minQuantity" (keydown)="onMinChange($event)" (keyup)="onMinChange($event)" (change)="onMinChange($event)" (keypress)="onMinChange($event)"  type="text" [NumbersOnly]="true" maxlength="9"> -->
-                                <!-- <mat-hint align="end">{{input.value?.length || 0}}/50</mat-hint> -->
                             </mat-form-field>
                                 <div class="error" *ngIf="hasError('minQuantity', 'maxlength')">Max number allowed is 9.</div>
                         </div>

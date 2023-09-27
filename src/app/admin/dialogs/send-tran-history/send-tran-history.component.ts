@@ -1,16 +1,15 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr'; 
 import labels from '../../../labels/labels.json';
-import { data } from 'jquery';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-send-tran-history',
   templateUrl: './send-tran-history.component.html',
-  styleUrls: ['./send-tran-history.component.scss'],
+  styleUrls: [],
 })
-export class SendTranHistoryComponent implements OnInit {
+export class SendTranHistoryComponent  {
   dialogData;
 
   constructor(
@@ -22,7 +21,7 @@ export class SendTranHistoryComponent implements OnInit {
     this.dialogData = data;
   }
 
-  ngOnInit(): void {}
+  
 
   sendTranHistory() {
     let payload = {
@@ -30,7 +29,7 @@ export class SendTranHistoryComponent implements OnInit {
       wsid: this.dialogData.wsid,
     };
     this.Api.SendCompletedToTH(payload).subscribe(
-      (res: any) => {
+      {next: (res: any) => {
         if (res.isExecuted) {
           this.toastr.success(labels.alert.success, 'Success!', {
             positionClass: 'toast-bottom-right',
@@ -45,13 +44,13 @@ export class SendTranHistoryComponent implements OnInit {
           this.dialogRef.close({ isExecuted: false });
         }
       },
-      (error) => {
+      error: (error) => {
         this.toastr.error(labels.alert.went_worng, 'Error!', {
           positionClass: 'toast-bottom-right',
           timeOut: 2000,
         });
         this.dialogRef.close({ isExecuted: false });
-      }
+      }}
     );
   }
 }

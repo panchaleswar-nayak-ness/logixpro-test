@@ -5,12 +5,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
+import {  } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
 import { AuthService } from 'src/app/init/auth.service'; 
-import { data } from 'jquery';
+import {  } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
-import { left } from '@popperjs/core';
+import {  } from '@popperjs/core';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
@@ -22,9 +22,6 @@ export interface PeriodicElement {
   row: string;
 }
 
-// const ELEMENT_DATA: PeriodicElement[] = [
-//   {location: 10124, warehouse: '0110203C01', zone: '05', carousel: '14-Feb-2022',row:''},
-// ];
 @Component({
   selector: 'app-count',
   templateUrl: './count.component.html',
@@ -37,7 +34,6 @@ export class CountComponent implements OnInit {
   public searchOrder: string = '';
   public searchOrder1: string = '';
 
-  // displayedColumns: string[] = ['location', 'warehouse', 'zone', 'carousel','row'];
   displayedColumns: string[] = ['orderNumber'  , 'itemCount', 'priority', 'requiredDate','actions'];
   displayedColumns1: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate','actions'];
   
@@ -45,15 +41,12 @@ export class CountComponent implements OnInit {
   leftTable:any = new MatTableDataSource([]);
   rightTable:any = new MatTableDataSource([]);
 
-  // dataSource = new MatTableDataSource([]);
   constructor(private _liveAnnouncer: LiveAnnouncer ,
               private dialog: MatDialog ,
               private authservice : AuthService,
               private Api: ApiFuntions,
               private toastr: ToastrService) {}
 
-  // @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild(MatPaginator) paginator1: MatPaginator;
 
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('paginator1') paginator1: MatPaginator;
@@ -70,8 +63,6 @@ export class CountComponent implements OnInit {
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
   ngAfterViewInit() {
-    // this.dataSource.sort = this.sort;
-    // this.dataSource.paginator = this.paginator;
     this.searchBoxField.nativeElement.focus();
   }
 

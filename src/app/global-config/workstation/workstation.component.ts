@@ -43,7 +43,6 @@ export class WorkstationComponent implements OnInit {
   }
   async radioChange(item) {
     this.wsid = item.wsid;
-    // this.filter['property'] = event.value;
     this.selectedItem = item;
 
     await this.getCanAccessList(this.selectedItem.wsid);
@@ -61,22 +60,7 @@ export class WorkstationComponent implements OnInit {
 
   
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row.position + 1
-    }`;
-  }
-  radioLabel(row?: PeriodicElement): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row.position + 1
-    }`;
-  }
+  
 
   constructor(
     private sharedService: SharedService,
@@ -90,9 +74,7 @@ export class WorkstationComponent implements OnInit {
     let appData = this.sharedService.getApp();
 
     if (
-      sharedData &&
-      sharedData.workstations &&
-      sharedData.workstations.length
+      sharedData?.workstations?.length
     ) {
         
       this.workstationData = sharedData.workstations;
@@ -114,14 +96,6 @@ export class WorkstationComponent implements OnInit {
     }
   }
 
-  // convertLicAppToObj(app,canAccess,defApp) {
-  //   const modifiedLicApp= app.map((item) => {
-  //      return { appName: item, canAccess: false, defaultApp: false };
-  //    });
-  //    return modifiedLicApp
-  //  }
-
-
   clearMatSelectList(){
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
@@ -134,9 +108,8 @@ export class WorkstationComponent implements OnInit {
       AppName: 'Consolidation Manager',
     };
     this.api.GlobalMenu(payload).subscribe(
-      (res: any) => {
-        res && res.data;
-        if (res && res.data) {
+      {next: (res: any) => {
+        if (res?.data) {
           this.sharedService.setData(res.data);
           res.data.workstations.map((obj) => ({ ...obj, checked: false }));
           this.workstationData = res.data.workstations;
@@ -148,13 +121,13 @@ export class WorkstationComponent implements OnInit {
           })
         }
       },
-      (error) => {}
+      error: (error) => {}}
     );
   }
   async getAppLicense() {
     this.api.AppLicense().subscribe(
-      (res: any) => {
-        if (res && res.data) {
+      {next: (res: any) => {
+        if(res?.data) {
           this.licAppNames = res.data;
           this.sharedService.setApp(this.licAppNames);
           this.licAppNames = Object.keys(res.data);
@@ -164,7 +137,7 @@ export class WorkstationComponent implements OnInit {
           this.appName_datasource = new MatTableDataSource(this.licAppObj);
         }
       },
-      (error) => {}
+      error: (error) => {}}
     );
   }
 
@@ -189,13 +162,13 @@ export class WorkstationComponent implements OnInit {
     };
     this.api.getWorkstationapp(payload)
       .subscribe(
-        (res: any) => {
-          if (res && res.data) {
+        {next: (res: any) => {
+          if (res?.data) {
             this.canAccessAppList = res.data;
             this.getDefaultAppList(wsid, this.canAccessAppList);
           }
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
 
@@ -210,15 +183,15 @@ export class WorkstationComponent implements OnInit {
     };
     this.api.workstationdefaultapp(payload)
       .subscribe(
-        (res: any) => {
-          this.defaultAccessApp = res && res.data ? res.data : '';
+        {next: (res: any) => {
+          this.defaultAccessApp =  res?.data ? res.data : '';
 
           if (this.licAppObj.length) {
             // reset to default
             this.licAppObj.map((itm) => {
               itm.canAccess = false;
               itm.defaultApp = false;
-              itm.defaultDisable= itm.appName==='Induction' || itm.appName==='ICSAdmin' ?true:false
+              itm.defaultDisable= itm.appName==='Induction' || itm.appName==='ICSAdmin' 
             });
           }
           if (canAccessArr.length) {
@@ -235,7 +208,7 @@ export class WorkstationComponent implements OnInit {
             });
           }
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
 
@@ -261,35 +234,35 @@ export class WorkstationComponent implements OnInit {
   defaultAppAdd(payload) {
     this.api.WorkStationDefaultAppAddDefault(payload)
       .subscribe(
-        (res: any) => {
+        {next: (res: any) => {
 
 
           if(res.isExecuted){
             this.getCanAccessList(this.wsid);
           }
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
 
   removeCanAccess(payload) {
     this.api.WorkStationAppDelete(payload)
       .subscribe(
-        (res: any) => {
+        {next: (res: any) => {
           ;
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
 
   addCanAccess(payload) {
     this.api.workstationapp(payload).subscribe(
-        (res: any) => {
+        {next: (res: any) => {
           if (res.isExecuted) {
             this.getCanAccessList(this.wsid);
           }
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
 
@@ -327,7 +300,7 @@ export class WorkstationComponent implements OnInit {
       WSID: this.wsid,
     };
     this.api.WorkStationDelete(payload).subscribe(
-        (res: any) => {
+        {next: (res: any) => {
           if (res.isExecuted) {
             this.toastr.success(labels.alert.success, 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -337,17 +310,17 @@ export class WorkstationComponent implements OnInit {
           this.getMenuData();
           this.wsid = null;
         },
-        (error) => {
+        error: (error) => {
           this.toastr.error(labels.alert.went_worng, 'Error!', {
             positionClass: 'toast-bottom-right',
             timeOut: 2000,
           });
-        }
+        }}
       );
   }
   clearDefaultApp() {
     this.licAppObj.map((itm) => {
-      if (itm.defaultApp == true) {
+      if (itm.defaultApp) {
         this.appName = itm.appName;
       }
       itm.defaultApp = false;

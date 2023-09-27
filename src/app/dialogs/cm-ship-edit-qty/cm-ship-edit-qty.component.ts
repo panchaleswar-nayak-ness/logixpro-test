@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-cm-ship-edit-qty',
   templateUrl: './cm-ship-edit-qty.component.html',
-  styleUrls: ['./cm-ship-edit-qty.component.scss']
+  styleUrls: []
 })
 export class CmShipEditQtyComponent implements OnInit {
   @ViewChild('matInput') matInput: ElementRef;
@@ -37,14 +37,10 @@ export class CmShipEditQtyComponent implements OnInit {
     this.matInput.nativeElement.focus();
   }
   validate() {
-    if (this.adjustShipQty == '') {
+    if (this.adjustShipQty == '' || this.adjustReason == '') {
       this.saveAdjustShipQtyBtn = false;
     } else {
-      if (this.adjustReason == '') {
-        this.saveAdjustShipQtyBtn = false;
-      } else {
-        this.saveAdjustShipQtyBtn = true;
-      }
+      this.saveAdjustShipQtyBtn = true;
     }
   }
 
@@ -66,7 +62,7 @@ export class CmShipEditQtyComponent implements OnInit {
 
   saveAdjustShipQty() {
     try {
-      var payLoad = {
+      let payLoad = {
         stid : this.data.order.sT_ID,
         shipQTY: this.adjustShipQty,
         reason: this.adjustReason,
@@ -76,7 +72,7 @@ export class CmShipEditQtyComponent implements OnInit {
         if (res.isExecuted) {
 
           let Exists = false;
-          for (var i = 0; i < this.data.reasons.length; i++) {
+          for (let i = 0; i < this.data.reasons.length; i++) {
             if (this.data.reasons[i] == this.adjustReason) {
               Exists = true;
               break;

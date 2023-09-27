@@ -9,7 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-cell-size',
   templateUrl: './cell-size.component.html',
-  styleUrls: ['./cell-size.component.scss']
+  styleUrls: []
 })
 export class CellSizeComponent implements OnInit {
   @ViewChildren('cell_size', { read: ElementRef }) cell_size: QueryList<ElementRef>;
@@ -39,7 +39,7 @@ export class CellSizeComponent implements OnInit {
   getCellSizeList() {
     this.enableButton = [];
     this.api.getCellSize().subscribe((res) => {
-      for(var i=0;i<res.data.length;i++){
+      for(let i=0;i<res.data.length;i++){
         res.data[i].isInserted = 1;
         this.enableButton.push({ index: i, value: true });
       }
@@ -68,9 +68,7 @@ export class CellSizeComponent implements OnInit {
   enableDisableButton(i: any) {
     this.enableButton[i].value = false;
   }
-  handleChange($event) { 
-
-  }
+  
   saveCellSize(cell: any, cellType: any, i,isInserted:any) {
 
     if (cell) {
@@ -78,13 +76,12 @@ export class CellSizeComponent implements OnInit {
       if(isInserted!=1)
       {
         this.cellsize_list.forEach(element => {
-          if (element.cells.toLowerCase() == cell.toLowerCase()) {
+          if (element.cells.toLowerCase() == cell.toLowerCase() && !cond) {
             cond = false;
             this.toastr.error('Cell Size already exists. Ensure any pending changes are saved before attempting to save this entry.', 'Error!', {
               positionClass: 'toast-bottom-right',
               timeOut: 2000
             });
-            return;
           }
         });
       }
@@ -100,7 +97,6 @@ export class CellSizeComponent implements OnInit {
           "wsid": this.userData.wsid,
         }
         this.api.saveCellSize(paylaod).subscribe((res) => {
-          //console.log(res);
           if (res.isExecuted) {
             this.getCellSizeList();
             this.toastr.success(labels.alert.success, 'Success!', {

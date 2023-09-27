@@ -98,7 +98,6 @@
                         <mat-select class="employees-action" [(ngModel)]="actionDropDown" #actionRef1 (selectionChange)="gridAction($event.value)">
                           <mat-option value="assignAll">Assign all IDs</mat-option>
                           <mat-option (click)="printToteLoc()" value="delete">Print Tote/Location Labels</mat-option>
-                          <!-- <mat-option value="back">Back</mat-option> -->
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">
                           expand_more
@@ -274,10 +273,6 @@
                   <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
                     <mat-label>Input Type</mat-label>
                     <mat-select #matRef class="employees-action" [(ngModel)]="inputType" (selectionChange)="selectionChanged($event.value)">
-                      <!-- <mat-option value="0"><b>Any</b></mat-option>
-                      <mat-option value="print">Item No.</mat-option>
-                      <mat-option value="print">Serial No.</mat-option>
-                      <mat-option value="print">Lot No.</mat-option> -->
                       <mat-option value="any">Any</mat-option>
                       <mat-option value="Item Number">{{fieldNames?.itemNumber}}</mat-option>
                       <mat-option value="Serial Number">Serial Number</mat-option>
@@ -366,11 +361,9 @@
             <mat-form-field class="action-dropdown mb-3 w-100"  appearance="outline">
               <mat-label>Actions</mat-label>
               <mat-select class="employees-action" [disabled]="!dataSource2?.filteredData || !dataSource2?.filteredData.length"  [(ngModel)]="selectedOption"   #actionRef (openedChange)="actionDialog($event)">
-                <!-- (click)="openToteTransactionViewDialogue()"> -->
                 <mat-option  value="ViewTote" [disabled]="(toteQuantity > 0) ? false : true" >View Tote Contents</mat-option>
                 <mat-option value="markTote" [disabled]="!rowSelected">Mark Tote as Full</mat-option>
                 <mat-option (click)="printTotePut()" value="print">Print</mat-option>
-                <!-- <mat-option value="back">Back</mat-option> -->
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more

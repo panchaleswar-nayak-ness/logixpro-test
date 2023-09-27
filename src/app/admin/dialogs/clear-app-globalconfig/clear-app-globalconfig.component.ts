@@ -7,7 +7,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-clear-app-globalconfig',
   templateUrl: './clear-app-globalconfig.component.html',
-  styleUrls: ['./clear-app-globalconfig.component.scss']
+  styleUrls: []
 })
 export class ClearAppGlobalconfigComponent implements OnInit {
 
@@ -28,10 +28,6 @@ export class ClearAppGlobalconfigComponent implements OnInit {
    }
 
    
-  onConfirmdelete() {
-    if (this.data) {
-
-    }
-  }
+  
 
 }

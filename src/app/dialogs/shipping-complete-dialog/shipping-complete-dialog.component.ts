@@ -48,10 +48,6 @@ export class ShippingCompleteDialogComponent implements OnInit {
       } else {
         this.tableData1 = new MatTableDataSource([]);
         this.tableData2 = new MatTableDataSource([]);
-        // this.toastr.error(res.responseMessage, 'Error!', {
-        //   positionClass: 'toast-bottom-right',
-        //   timeOut: 2000
-        // });
       }
     });
   }

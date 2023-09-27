@@ -8,7 +8,8 @@ import { CmStagingLocationComponent } from './cm-staging-location/cm-staging-loc
 import { TransactionComponent } from '../admin/transaction/transaction.component';
 import { ReportsComponent } from '../admin/reports/reports.component';
 
-const routes: Routes = [{ path: '', component: ConsolidationManagerComponent },
+const routes: Routes = [{ path: '', component: ConsolidationManagerComponent,
+canActivate: [AuthGuardGuard] },
 {
   path: 'Consolidation',
   component: ConsolidationComponent,

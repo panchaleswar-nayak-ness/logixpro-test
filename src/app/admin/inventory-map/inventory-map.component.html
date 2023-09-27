@@ -18,7 +18,6 @@
             <div class="header-filter-options w-100 d-xl-flex d-lg-block align-items-center justify-content-between" style="gap:12px">
               <div class="d-xl-flex d-lg-block gap-12 align-items-center">
                 <mat-form-field class="action-dropdown d-block mb-3 mb-xl-0" appearance="outline">
-                  <!-- <mat-label>Select</mat-label> -->
                   <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn"
                     (keyup.enter)="searchColumn()" (selectionChange)="searchColumn()" [compareWith]="compareObjects"
                     placeholder="Select">
@@ -55,18 +54,7 @@
                 </div>
               </div>
 
-              <!-- <div>
-<mat-form-field class="filter border-dropdown-0" appearance="fill">
-<input placeholder="Search" #searchInput matInput [(ngModel)]='this.columnSearch.searchValue' (keyup.enter)="searchData()"
-(change)="searchData()">
-</mat-form-field>
-</div> -->
-
               <div class="d-xl-flex d-lg-block align-items-center gap-12">
-                <!-- <button class="br-14" mat-mini-fab color="primary" aria-label="Add New Location"
-                  style="line-height: 20px;" (click)="addLocDialog()" [hidden]="isAuthorized('Inv Map Add Location')">
-                  <mat-icon>add</mat-icon>
-                </button> -->
 
                 <mat-form-field class="action-dropdown d-block mt-3 mt-xl-0 mt-sm-3" appearance="outline">
                   <mat-label>Actions</mat-label>
@@ -147,23 +135,13 @@
 
               <mat-header-row *matHeaderRowDef="columnValues;sticky: true" style=" border: 0"></mat-header-row>
               <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>
-              <!-- <tr mat-header-row *matHeaderRowDef="columnValues; sticky: true;" style=" background-color: #F9F9FF;"></tr>
-              <tr mat-row *matRowDef="let row; columns: columnValues;"></tr> -->
 
             </table>
           </ng-scrollbar>
           </div>
-          <!-- <div class="d-flex justify-content-center p-3" *ngIf="dataSource.data?.length === 0" style="text-align:center;"> 
-            <div >No data found</div>
-          </div> -->
-          <!-- <div *ngIf="dataSource.data?.length === 0" style="text-align:center;">
-            <button  type="submit" mat-flat-button class="form-button-submit"
-            color="primary" (click)="ClearFilters()">Clear FIlters</button>
-          </div> -->
           <div class="table-pagination d-flex justify-content-start align-items-center" *ngIf="columnValues.length> 0 && displayedColumns && dataSource">
             <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"
               (page)="handlePageEvent($event)"></mat-paginator>
-              <!-- <mat-label class="text-14 mat-paginator">Hello world</mat-label> -->
           </div>
 
         </mat-card-content>
@@ -205,19 +183,6 @@ style="visibility: hidden; position: fixed"
   </ng-template>
 </mat-menu>
 <ng-template #viewAllLocation>
-  <!-- <div class="d-flex justify-content-between align-items-center">
-<h2 class="card-header-title mb-0 d-flex align-items-center">
-<span>f</span>
-</h2>
-</div>
-<mat-radio-group
-aria-labelledby="example-radio-group-label"
-class="example-radio-group"
-[(ngModel)]="favoriteSeason">
-<mat-radio-button class="example-radio-button" *ngFor="let season of seasons" [value]="season" color="primary">
-{{season}}
-</mat-radio-button>
-</mat-radio-group> -->
 
   <div class="d-flex justify-content-between mb-4 align-items-center">
     <div style="width:48px"></div>

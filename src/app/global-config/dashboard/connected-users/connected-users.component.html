@@ -41,11 +41,6 @@
 
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-                    <!-- <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-                                No User Connected !.
-                            </td>
-                        </tr> -->
                     <tr mat-row class="table-row" tabindex="1" *matRowDef="let row; columns: displayedColumns;"></tr>
 
                 </table>

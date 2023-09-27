@@ -7,7 +7,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-cm-tote-id-update-modal',
   templateUrl: './cm-tote-id-update-modal.component.html',
-  styleUrls: ['./cm-tote-id-update-modal.component.scss']
+  styleUrls: []
 })
 export class CmToteIdUpdateModalComponent implements OnInit {
 
@@ -48,7 +48,7 @@ export class CmToteIdUpdateModalComponent implements OnInit {
 
   updateToteID() {
     try {
-      var payLoad = {
+      let payLoad = {
         orderNumber : this.data.orderNumber,
         toteID: this.data.toteID,
         contID: this.containerID,
@@ -58,7 +58,7 @@ export class CmToteIdUpdateModalComponent implements OnInit {
 
       this.Api.ContIDShipTransUpdate(payLoad).subscribe(
         (res: any) => {
-          if (res.isExecuted) {
+          if (res?.isExecuted) {
             this.dialogRef.close({
               isExecuted: true,
               toteID: this.data.toteID,

@@ -14,11 +14,11 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
 import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
+import {  } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { Subject } from 'rxjs';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { Router } from '@angular/router';
+import {  } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -121,7 +121,6 @@ export class SrCurrentOrderComponent implements OnInit {
     this.tablePayloadObj.filter = this.FilterString != "" ? this.FilterString : "1 = 1";
     this.resetPagination();
     this.newReplenishmentOrders();
-    // this.tablePayloadObj.filter = "1=1";
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
@@ -162,7 +161,7 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
 
   closeautoMenu() {
@@ -205,8 +204,6 @@ export class SrCurrentOrderComponent implements OnInit {
         });
         this.tableDataTotalCount = res.data.recordsTotal;
         this.filteredTableData = JSON.parse(JSON.stringify(this.tableData));
-        // this.changeSearchOptions();
-        // this.updateCounts();
         this.systemReplenishmentCount(true);
       } else {
         this.toastr.error(res.responseMessage, 'Error!', {
@@ -218,15 +215,6 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   searchAutocompleteList: any;
-  // changeSearchOptions() {
-  //   if (this.tablePayloadObj.searchColumn != "") {
-  //     let key = this.searchColumnOptions.filter((item: any) => item.value == this.tablePayloadObj.searchColumn)[0].key;
-  //     this.searchAutocompleteList = [];
-  //     let duplicates = this.filteredTableData.map((item: any) => item[key]);
-  //     this.searchAutocompleteList = duplicates.filter((item: any, index: any) => duplicates.indexOf(item) === index);
-  //     this.searchAutocompleteList = this.searchAutocompleteList.filter((item: any) => item != "");
-  //   }
-  // }
 
   updateCounts() {
     this.noOfPutAways = this.filteredTableData.filter((item: any) => item.transactionType == 'Put Away').length;
@@ -413,8 +401,7 @@ export class SrCurrentOrderComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
-        if (res) {
-        }
+        
       });
     }
     else {
@@ -426,30 +413,6 @@ export class SrCurrentOrderComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(() => {
       });
-
-      // const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-      //   height: 'auto',
-      //   width: '560px',
-      //   autoFocus: '__non_existing_element__',
-     
-      //   data: {
-      //     mode: 'delete-selected-current-orders',
-      //     ErrorMessage: `Delete All transactions for Order: ${this.selectedOrder.orderNumber}. This will delete all transactions, not just selected one.`,
-      //     action: 'delete'
-      //   },
-      // });
-      // dialogRef.afterClosed().subscribe((result) => {
-      //   if (result === 'Yes') {
-      //     this.repByDeletePayload.identity = "Shown";
-      //     this.repByDeletePayload.filter1 = "";
-      //     this.repByDeletePayload.filter2 = "";
-      //     this.repByDeletePayload.searchString = this.selectedOrder.orderNumber;
-      //     this.repByDeletePayload.searchColumn = "Order Number";
-      //     this.repByDeletePayload.status = "All";
-      //     this.ReplenishmentsByDelete();
-      //     this.selectedOrder = {};
-      //   }
-      // });
     }
   }
 
@@ -486,18 +449,11 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   showChange(event: any) {
-    if (event == 'All') {
+    if (event == 'All' || event == 'Open' || event == 'Completed') {
       this.tablePayloadObj.status = event;
       this.newReplenishmentOrders();
     }
-    else if (event == 'Open') {
-      this.tablePayloadObj.status = event;
-      this.newReplenishmentOrders();
-    }
-    else if (event == 'Completed') {
-      this.tablePayloadObj.status = event;
-      this.newReplenishmentOrders();
-    }
+    
   }
 
   searchChange(event: any) {
@@ -513,7 +469,6 @@ export class SrCurrentOrderComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   resetPagination() {
     this.tablePayloadObj.start = 0;
-    // this.tablePayloadObj.length = 10;
     this.paginator.pageIndex = 0;
   }
 
@@ -541,14 +496,6 @@ export class SrCurrentOrderComponent implements OnInit {
         this.dialog.closeAll();
       }
     });
-  }
-
-  selectOrder(element) {
-    // if (this.selectedOrder.itemNumber && this.selectedOrder.itemNumber == element.itemNumber && this.selectedOrder.transactionType == element.transactionType) {
-    //   this.selectedOrder = {};
-    // } else {
-    //   this.selectedOrder = element;
-    // }
   }
 
   getSearchOptionsSubscribe: any;

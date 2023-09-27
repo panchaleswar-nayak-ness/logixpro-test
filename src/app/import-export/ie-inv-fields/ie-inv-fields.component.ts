@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './ie-inv-fields.component.html',
   styleUrls: ['./ie-inv-fields.component.scss']
 })
-export class IeInvFieldsComponent implements OnInit {
+export class IeInvFieldsComponent {
 
   ELEMENT_DATA: any[] =[
     {table_name: 'Active'},
@@ -38,7 +38,5 @@ export class IeInvFieldsComponent implements OnInit {
     private dialog: MatDialog,
   ) { }
 
-  ngOnInit(): void {
-  }
 
 }

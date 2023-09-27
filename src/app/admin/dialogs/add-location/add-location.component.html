@@ -26,7 +26,6 @@
                       {{option}}
                     </mat-option>
                 </mat-autocomplete>
-                <!-- <input matInput type="text" name="startLocation" required="required" [(ngModel)]="startLocation"> -->
             </mat-form-field>
             <mat-form-field class="mb-3 w-100" appearance="outline">
                 <mat-label>End Location</mat-label>
@@ -43,12 +42,8 @@
                       {{option}}
                     </mat-option>
                 </mat-autocomplete>
-              <!-- //  <input matInput type="text" name="endLocation" required="required" [(ngModel)]="endLocation"> -->
             </mat-form-field>
-            <mat-dialog-actions align="end">
-                <!-- <button mat-button matDialogClose="no" color="danger">Cancel</button> -->
-                
-
+            <mat-dialog-actions align="end">                
                 <button type="submit"  [disabled]="!(startLocation&&endLocation)" mat-flat-button class="form-button-submit w-100 btn-lg"
                     color="primary">{{form_btn_label}}</button>
             </mat-dialog-actions>

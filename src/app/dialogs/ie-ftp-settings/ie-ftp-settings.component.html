@@ -16,14 +16,9 @@
                       <th mat-header-cell *matHeaderCellDef mat-sort-header> Import/Export </th>
                       <td mat-cell *matCellDef="let element">
             
-              <!-- <div class="label label-yellow px-3 mt-3">{{element.import_export}}</div> -->
               <div class="label px-3 mt-3" [ngClass]="{'label-gray': element.import_export === 'Import', 'label-green': element.import_export === 'Export'}">{{element.import_export}}</div>
 
             </td>
-
-              <!-- <td mat-cell *matCellDef="let element" class="m-4 Current-status"
-              #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.dateStamp"
-      >{{element.import_export}}</td> -->
                   </ng-container>
   
             <ng-container matColumnDef="type">

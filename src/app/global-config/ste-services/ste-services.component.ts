@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-ste-services',
   templateUrl: './ste-services.component.html',
-  styleUrls: ['./ste-services.component.scss']
+  styleUrls: []
 })
-export class SteServicesComponent implements OnInit {
+export class SteServicesComponent  {
   sideBarOpen: boolean = true;
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  
   sideBarToggler() {
     this.sideBarOpen = !this.sideBarOpen;
   }

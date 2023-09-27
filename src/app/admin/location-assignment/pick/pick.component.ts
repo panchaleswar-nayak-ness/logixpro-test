@@ -83,10 +83,6 @@ export class PickComponent implements OnInit {
         this.tableData1.paginator = this.paginator1;
       } else { 
         this.tableData1 = new MatTableDataSource([]); 
-        // this.toastr.error(res.responseMessage, 'Error!', {
-        //   positionClass: 'toast-bottom-right',
-        //   timeOut: 2000
-        // });
       }
     });
   }

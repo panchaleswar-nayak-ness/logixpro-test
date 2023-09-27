@@ -7,9 +7,7 @@ import { WrdComponent } from './wrd/wrd.component';
 import { WrvComponent } from './wrv/wrv.component';
 import { WrvFrontendComponent } from './wrv-frontend/wrv-frontend.component';
 import { WrdFrontendComponent } from './wrd-frontend/wrd-frontend.component';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 import { GeneralModule } from '../gen-module';
 
 

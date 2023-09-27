@@ -1,21 +1,20 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-notes',
   templateUrl: './add-notes.component.html',
-  styleUrls: ['./add-notes.component.scss']
+  styleUrls: []
 })
-export class AddNotesComponent implements OnInit {
+export class AddNotesComponent {
   @ViewChild('notes_focus') notes_focus: ElementRef;
   notes:string;
   numberOfLines = 8;
   constructor( @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<any>) { 
-    this.notes=data && data.notes;
+    this.notes=data?.notes && data.notes;
   }
 
-  ngOnInit(): void {
-  }
+ 
 
   submit(){
     this.dialogRef.close(this.notes);

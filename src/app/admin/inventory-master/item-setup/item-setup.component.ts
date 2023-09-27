@@ -1,17 +1,16 @@
-import { Component, Input, OnInit, SimpleChanges, TemplateRef, ViewChild,} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, SimpleChanges} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CellSizeComponent } from '../../dialogs/cell-size/cell-size.component';
-import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { VelocityCodeComponent } from '../../dialogs/velocity-code/velocity-code.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 @Component({
   selector: 'app-item-setup',
   templateUrl: './item-setup.component.html',
-  styleUrls: ['./item-setup.component.scss']
+  styleUrls: []
 })
-export class ItemSetupComponent implements OnInit {
+export class ItemSetupComponent {
 
   disableSecondaryZone=true;
   @Input() itemSetup: FormGroup;
@@ -22,9 +21,7 @@ export class ItemSetupComponent implements OnInit {
     
    }
 
-  ngOnInit(): void {
-   
-  }
+
 
   ngOnChanges(changes: SimpleChanges) {
     this.itemSetup.controls['secondaryPickZone'].disable();
@@ -32,11 +29,9 @@ export class ItemSetupComponent implements OnInit {
     
       if(changes['itemSetup'].currentValue.value.primaryPickZone===''){
         this.itemSetup.controls['secondaryPickZone'].disable();
-        // this.disableSecondaryZone=true;
         
       }else{
         this.itemSetup.controls['secondaryPickZone'].enable();
-        // this.disableSecondaryZone=false;
 
       }
     }
@@ -47,12 +42,10 @@ export class ItemSetupComponent implements OnInit {
   
     if(event.value===''){
       this.itemSetup.controls['secondaryPickZone'].disable();
-      //  this.disableSecondaryZone=true;
       this.itemSetup.controls['secondaryPickZone'].setValue('')
      
     }else{
       this.itemSetup.controls['secondaryPickZone'].enable();
-      // this.disableSecondaryZone=false;
     }
   }
   public openCellSizeDialog(param) {

@@ -1,6 +1,5 @@
 <mat-card class="mat-elevation-z g-card mt-3">
     <mat-card-content>
-
         <div class="d-block d-lg-flex justify-content-between">
         <div class="col d-flex justify-content-between align-items-center mb-3">
             <h2 class="card-header-title mb-0 d-flex align-items-center">
@@ -12,7 +11,6 @@
                 <span>Light Tree Setup</span>
             </h2>
         </div>
-
           <div class="col-xl-3">
             <div class="w-100 d-flex d-lg-block">
             <mat-form-field class="action-dropdown float-end mb-3" appearance="outline" style="flex:1">
@@ -28,14 +26,12 @@
             </div>
         </div>
     </div>
-
         <div class="card p-3">
             <div class="row">
                 <div class="col-xl-3">
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
                         <mat-label>Zone</mat-label>
                         <mat-select formControlName="zone">
-
                             <mat-option value="Order Number">
                                 Order Number
                             </mat-option>
@@ -52,7 +48,6 @@
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
                         <mat-label>Carousel</mat-label>
                         <mat-select formControlName="zone">
-
                             <mat-option value="Order Number">
                                 Order Number
                             </mat-option>
@@ -69,7 +64,6 @@
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
                         <mat-label>Bin Location</mat-label>
                         <mat-select formControlName="zone">
-
                             <mat-option value="Order Number">
                                 Order Number
                             </mat-option>
@@ -82,7 +76,6 @@
                         </span>
                     </mat-form-field>
                 </div>
-
                 <div class="col-xl-3">
                     <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
                         <mat-label>Shelf Direction</mat-label>
@@ -100,12 +93,8 @@
                         </span>
                     </mat-form-field>
                 </div>
-
             </div>
-
         </div>
-
-
         <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
             <h2 class="card-header-title mb-0 d-flex align-items-center">
                  <div class="mat-icon-wrap me-lg-3 me-2">
@@ -116,12 +105,9 @@
                 <span>Alternate Light Settings</span>
             </h2>
         </div>
-
         <div class="card br-14 table-responsive borderless px-0 mb-3">
             <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 620px;">
                 <table mat-table [dataSource]="this.ELEMENT_DATA" class="w-100">
-
-                    <!-- Position Column -->
                     <ng-container matColumnDef="position">
                         <th mat-header-cell *matHeaderCellDef> Position </th>
                         <td mat-cell *matCellDef="let seletedRecord">
@@ -133,8 +119,6 @@
                             </div>
                         </td>
                     </ng-container>
-
-                    <!-- Name Shelf -->
                     <ng-container matColumnDef="shelf">
                         <th mat-header-cell *matHeaderCellDef> Shelf </th>
                         <td mat-cell *matCellDef="let seletedRecord; let i = index;">
@@ -146,8 +130,6 @@
                             </div>
                         </td>
                     </ng-container>
-
-                    <!-- Name Alternate Light Positions -->
                     <ng-container matColumnDef="alternate_light_positions_no">
                         <th mat-header-cell *matHeaderCellDef> Alternate Light Positions No. </th>
                         <td mat-cell *matCellDef="let seletedRecord">
@@ -155,7 +137,6 @@
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                                     <input matInput type="text" #specialFeature maxlength="255"
                                     value="{{seletedRecord.alternate_light_positions_no}}">
-                               
                                 <span class="mat-icon material-symbols-outlined">
                                     <mat-icon> unfold_more </mat-icon>
                                   </span>
@@ -163,7 +144,6 @@
                             </div>
                         </td>
                     </ng-container>
-
                     <ng-container matColumnDef="other" stickyEnd>
                         <th mat-header-cell *matHeaderCellDef class="ps-2"></th>
                         <td mat-cell *matCellDef="let seletedRecord; let i = index;" class="ps-2">
@@ -173,7 +153,6 @@
                                 appearance="outline">
                                     <mat-icon>more_horiz</mat-icon>
                                 </button>
-
                                 <mat-menu #appMenu="matMenu">
                                     <button type="button" mat-menu-item>Update All Shelves In Zone</button>
                                     <button type="button" mat-menu-item>Reset</button>
@@ -181,134 +160,11 @@
                             </div>
                         </td>
                     </ng-container>
-
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)">
                     </tr>
                 </table>
             </ng-scrollbar>
         </div>
-
-
-        <!-- <div class="card p-3 mx-2">
-
-            <div class="row">
-                <div class="col-xl-1">
-
-                </div>
-                <div class="col-xl-5">
-                    <strong> <span>Shelf</span></strong>
-                </div>
-                <div class="col-xl-3">
-                    <strong> <span>Alternate Light Position</span></strong>
-                </div>
-                <div class="col-xl-2">
-
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center mb-3">
-                <mat-radio-button color="primary">
-                </mat-radio-button>
-                <div class="container w-100">
-                    <div class="row">
-                        <div class="col-12">
-
-                            <div class="d-flex justify-content-between align-items-center gap-12">
-                                <mat-form-field class="d-block w-100" appearance="outline">
-                                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #whname
-                                        maxlength="50">
-                                </mat-form-field>
-                                <mat-form-field class="d-block w-100" appearance="outline">
-                                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #whname
-                                        maxlength="50">
-                                </mat-form-field>
-                                <button mat-flat-button color="primary" class=" mat-button-icon h-100 float-end ">
-                                    <span class="material-symbols-outlined" matTooltip="Add New Device"
-                                        matTooltipPosition="above">
-                                        unfold_more
-                                    </span>
-                                </button>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-            <div class="d-flex align-items-center mb-3">
-                <mat-radio-button color="primary">
-                </mat-radio-button>
-                <div class="container w-100">
-                    <div class="row">
-                        <div class="col-12">
-
-                            <div class="d-flex justify-content-between align-items-center gap-12">
-                                <mat-form-field class="d-block w-100" appearance="outline">
-                                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #whname
-                                        maxlength="50">
-                                </mat-form-field>
-                                <mat-form-field class="d-block w-100" appearance="outline">
-                                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #whname
-                                        maxlength="50">
-                                </mat-form-field>
-                                <button mat-flat-button color="primary" class=" mat-button-icon h-100 float-end ">
-                                    <span class="material-symbols-outlined" matTooltip="Add New Device"
-                                        matTooltipPosition="above">
-                                        unfold_more
-                                    </span>
-                                </button>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <div class="d-flex align-items-center mb-3">
-                <mat-radio-button color="primary">
-                </mat-radio-button>
-                <div class="container w-100">
-                    <div class="row">
-                        <div class="col-12">
-
-                            <div class="d-flex justify-content-between align-items-center gap-12">
-                                <mat-form-field class="d-block w-100" appearance="outline">
-                                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #whname
-                                        maxlength="50">
-                                </mat-form-field>
-                                <mat-form-field class="d-block w-100" appearance="outline">
-                                    <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #whname
-                                        maxlength="50">
-                                </mat-form-field>
-                                <button mat-flat-button color="primary" class=" mat-button-icon h-100 float-end ">
-                                    <span class="material-symbols-outlined" matTooltip="Add New Device"
-                                        matTooltipPosition="above">
-                                        unfold_more
-                                    </span>
-                                </button>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-            <div class="row mt-3">
-
-                <div class="d-flex flex-start  justify-content-end gap-12">
-                    <button type="button" mat-stroked-button color="secondary" class=" btn-lg">Reset</button>
-                    <button type="submit" mat-flat-button class="  btn-lg" color="primary">Update Shelf in Zone</button>
-                </div>
-            </div>
-        </div> -->
-
-
-
     </mat-card-content>
-
 </mat-card>

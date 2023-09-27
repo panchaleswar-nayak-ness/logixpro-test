@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-ie-invent-map-export',
   templateUrl: './ie-invent-map-export.component.html',
-  styleUrls: ['./ie-invent-map-export.component.scss']
+  styleUrls: []
 })
-export class IeInventMapExportComponent implements OnInit {
+export class IeInventMapExportComponent  {
 
   ELEMENT_DATA: any[] =[
     {mon: ''},
@@ -26,7 +26,5 @@ export class IeInventMapExportComponent implements OnInit {
     private dialog: MatDialog,
   ) { }
 
-  ngOnInit(): void {
-  }
 
 }

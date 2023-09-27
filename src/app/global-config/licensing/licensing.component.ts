@@ -63,23 +63,7 @@ export class LicensingComponent implements OnInit {
     this.sideBarOpen = !this.sideBarOpen;
   }
 
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row.position + 1
-    }`;
-  }
-  radioLabel(row?: PeriodicElement): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row.position + 1
-    }`;
-  }
+
   constructor(
     private Api: ApiFuntions,
     private sharedService: SharedService,
@@ -99,25 +83,23 @@ export class LicensingComponent implements OnInit {
   async getAppLicense() {
     // get can access
     this.Api.AppLicense().subscribe(
-      (res: any) => {
-        if (res && res.data) {
+      {next: (res: any) => {
+        if (res?.data) {
           this.licAppData = res.data;
           this.convertToObj();
 
           this.sharedService.setApp(this.licAppData);
         }
       },
-      (error) => {}
+      error: (error) => {}}
     );
   }
   onInputValueChange(event, item, index) {
     this.dataSource.filteredData[index]['isButtonDisable'] = false;
-    // this.connectionStringData[index].isSqlButtonDisable = false;
   }
   convertToObj() {
     const arrayOfObjects: any = [];
     for (const key of Object.keys(this.licAppData)) {
-      // arrayOfObjects.push({ key, value: this.licAppData[key] });
       arrayOfObjects.push({
         appname: this.licAppData[key].info.name,
         displayname: this.licAppData[key].info.displayName,
@@ -141,7 +123,7 @@ export class LicensingComponent implements OnInit {
     this.Api
       .ValidateLicenseSave(payload)
       .subscribe(
-        (res: any) => {
+        {next: (res: any) => {
           if (res.isExecuted) {
             this.getAppLicense();
             this.toastr.success(res.responseMessage, 'Success!', {
@@ -170,12 +152,12 @@ export class LicensingComponent implements OnInit {
               });
           }
         },
-        (error) => {
+        error: (error) => {
           this.toastr.error(labels.alert.went_worng, 'Error!!', {
             positionClass: 'toast-bottom-right',
             timeOut: 2000,
           });
-        }
+        }}
       );
   }
   addLincenseRow() {

@@ -55,7 +55,6 @@
         <mat-select [(ngModel)]="NewOutputType" required #serialTemp (ngModelChange)="setExtension()">
             <mat-option value="Report">Report</mat-option>
             <mat-option value="Label">Label</mat-option>
-            <!-- <mat-option value="Label" (click)="openCrDesignFilenameConfirmation()" >3 Button Popup</mat-option> -->
             </mat-select>
         <span class="material-symbols-outlined icon-expand-more">
             expand_more
@@ -88,44 +87,10 @@
                 
                 </div>
                 </div>
-
-    <!-- <div *ngIf="appendstring" >
-       {{appendstring}}.
-      </div> -->
       
       <mat-form-field class="custom-form-field w-100" style="display: none;" appearance="outline">
         <input matInput type="text" [(ngModel)]="CurrentFilename"  [hidden]="true">
     </mat-form-field>
-<!-- Fuzail bhai please add your code here -->
-
-
-
-
-
-
-<!-- Fuzail bhai please add your code here -->
-<!-- {{CurrentFilename}} -->
-<!-- <div *ngIf="AddNewFilePresent">
-    <div >
-        <mat-form-field class="custom-form-field w-100" style="display: none;" appearance="outline">
-            <input matInput type="text" [(ngModel)]="CurrentFilename"  [hidden]="true">
-        </mat-form-field>
-        The specified filename already exists.  Would you like to add the existing design back to the program or overwrite it?  You can also change the filename specified and resubmit.
-    </div>
-<div class="row align-items-center">
-    <div class="w-100">
-        <button type="button" mat-flat-button color="primary" class="button-primary-i btn-lg " (click)="restoreDesign(this.CurrentFilename )">Restore Design for this workstation</button>
-    </div>
-    <div class="w-100" *ngIf="RestoreAll">
-        <button type="button" class="button-primary-i btn-lg " (click)="restoreDesign(this.CurrentFilename,true )" >Restore Design for all workstations</button>
-    </div>
-</div>
-    <div>
-        <button type="button" class="btn btn-danger btn-block" id="DeleteExistingDesign" (click)="DeleteExistingdesign()">Delete Design (PERMANENT!)</button>
-    
-    </div>
-</div> -->
-
 
 </div>
 
@@ -134,31 +99,4 @@
 </div>
 
 
-
-<!-- 3 button which opens up based on condition -->
-
 </mat-dialog-content>
-
-      <!-- <div class="row" *ngIf="AddNewFilePresent">
-        <div class="col-md-12"  style="display:none;">
-            <input style="display:none;" [(ngModel)]="CurrentFilename" />
-            <div class="row">
-                <div class="col-md-12">
-                    The specified filename already exists.  Would you like to add the existing design back to the program or overwrite it?  You can also change the filename specified and resubmit.
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-primary btn-block" id="RestoreWS">Restore Design for this workstation</button>
-                </div>
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-primary btn-block" style="display:none;" *ngIf="RestoreAll">Restore Design for all workstations</button>
-                </div>
-            </div>
-            <div class="row" style="padding-top:15px;">
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-danger btn-block" id="DeleteExistingDesign">Delete Design (PERMANENT!)</button>
-                </div>
-            </div>
-        </div>
-    </div> -->

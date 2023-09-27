@@ -13,7 +13,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-cm-shipping-carrier',
   templateUrl: './cm-shipping-carrier.component.html',
-  styleUrls: ['./cm-shipping-carrier.component.scss'],
+  styleUrls: [],
 })
 export class CmShippingCarrierComponent implements OnInit {
   @ViewChildren('carrier_focus', { read: ElementRef }) carrier_focus: QueryList<ElementRef>;
@@ -51,10 +51,9 @@ export class CmShippingCarrierComponent implements OnInit {
             return { carrier: item, oldCarrier: true };
           });
           this.disableEnable.shift();
-          for (var i = 0; i < this.carrierList.length; i++) {
+          for (let i = 0; i < this.carrierList.length; i++) {
             this.disableEnable.push({ index: i, value: true });
           }
-          // this.carrierList=res.data;
 
           setTimeout(() => {
             const inputElements = this.carrier_focus.toArray();
@@ -79,7 +78,6 @@ export class CmShippingCarrierComponent implements OnInit {
         this.renderer.selectRootElement(inputElement).focus();
       }
     });
-    //this.disableEnable.unshift({index:0,value:false});
   }
 
   saveCarrier(carrer, item) {
@@ -135,8 +133,6 @@ export class CmShippingCarrierComponent implements OnInit {
           this.getCarrier();
         });
     } else {
-      // this.velocity_code_list.shift();
-      // this.getVelocity();
     }
   }
 }

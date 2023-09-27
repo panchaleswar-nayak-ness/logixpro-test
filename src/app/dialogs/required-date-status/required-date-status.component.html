@@ -15,18 +15,6 @@
       <div class="card br-14 table-responsive borderless px-0 mb-3">
         <ng-scrollbar class="mat-table-scrollbar" style="height:500px" track="all">
     <table mat-table [dataSource]="dataSource" matSort>
-        <!-- <ng-container matColumnDef="reqDate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Required Date </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.reqDate}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="zone">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Zone </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.zone}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="countToInduct">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> SB Transactions to Induct</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.countToInduct}} </mat-cell>
-        </ng-container> -->
         <ng-container matColumnDef="reqDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header style="width:200px"> Required Date </th>
             <td mat-cell *matCellDef="let row">
@@ -45,9 +33,6 @@
                 {{row.countToInduct}}
             </td>
         </ng-container>
-
-        <!-- <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"> -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;">
         </tr>

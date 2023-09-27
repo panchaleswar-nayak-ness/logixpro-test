@@ -11,17 +11,6 @@
       </h2>
 
       <div>
-        <!-- <mat-form-field class="action-dropdown w-100" appearance="outline">
-                    <mat-label>Actions</mat-label>
-                    <mat-select #matRef class="employees-action" placeholder="Actions">
-                        <mat-option>Create Cycle Count</mat-option>
-                        <mat-option value="print">Print</mat-option>
-                        <mat-option value="set_column_sq">Set Column Sequence</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                        expand_more
-                    </span>
-                </mat-form-field> -->
         <button type="submit" [disabled]="!noData" mat-stroked-button class="button-remove-all-w-stroke mb-2" color="warn" (click)="deleteCycleCount($event)">Remove All from Queue</button>
       </div>
     </div>

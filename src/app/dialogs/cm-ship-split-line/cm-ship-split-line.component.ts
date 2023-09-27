@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-cm-ship-split-line',
   templateUrl: './cm-ship-split-line.component.html',
-  styleUrls: ['./cm-ship-split-line.component.scss']
+  styleUrls: []
 })
 export class CmShipSplitLineComponent implements OnInit {
 
@@ -50,7 +50,7 @@ export class CmShipSplitLineComponent implements OnInit {
 
   saveSplitScreenQty() {
     try {
-      var payLoad = {
+      let payLoad = {
         id : this.data.order.sT_ID,
         quantity : this.splitScreenQty,
         page: this.data.page,

@@ -7,9 +7,9 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-cm-add-new-item-to-shipment',
   templateUrl: './cm-add-new-item-to-shipment.component.html',
-  styleUrls: ['./cm-add-new-item-to-shipment.component.scss']
+  styleUrls: []
 })
-export class CmAddNewItemToShipmentComponent implements OnInit {
+export class CmAddNewItemToShipmentComponent{
   @ViewChild('cont_id') cont_id: ElementRef;
   OrderNumber:any;
   containerID:any;
@@ -21,20 +21,17 @@ export class CmAddNewItemToShipmentComponent implements OnInit {
       this.OrderNumber = this.data.orderNumber;
       this.userData = this.authService.userData(); 
     }
-
-  ngOnInit(): void {
-  }
   ngAfterViewInit(): void {
     this.cont_id.nativeElement.focus();
   }
   async ShippingItemAdd(){
-    var obj:any = {
+    let obj:any = {
       orderNumber: this.OrderNumber,
       containerID: this.containerID,
       userName: this.userData.userName
     }
     this.Api.ShippingItemAdd(obj).subscribe((res:any) => {
-      if (res && res.isExecuted) {
+      if (res?.isExecuted) {
         this.dialogRef.close(true);
       }
   })

@@ -15,8 +15,6 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./printers.component.scss']
 })
 export class PrintersComponent implements OnInit {
-  // @ViewChildren('printerNameInput', { read: ElementRef }) printerNameInputs: QueryList<ElementRef>;
-  // @ViewChildren('printerNameInput', { read: ElementRef }) printerNameInputs: QueryList<ElementRef>;
   @ViewChildren('printerNameInput', { read: ElementRef }) printerNameInputs: QueryList<ElementRef>;
 
 
@@ -213,7 +211,7 @@ export class PrintersComponent implements OnInit {
       let payload = {
         "printerName": printer.printer,
         "printerString": printer.printerAdd,
-        "label": printer.labelPrinter == 'Yes' ? true : false
+        "label": printer.labelPrinter == 'Yes' 
       };
       this.Api.InsertNewPrinter(payload).subscribe((res: any) => {
         debugger
@@ -240,7 +238,7 @@ export class PrintersComponent implements OnInit {
         "currentPrinter": printer.currentPrinter,
         "newPrinter": printer.printer,
         "printerString": printer.printerAdd,
-        "label": printer.labelPrinter == 'Yes' ? true : false
+        "label": printer.labelPrinter == 'Yes'
       };
       this.Api.UpdateCurrentPrinter(payload).subscribe((res: any) => {
         if (res.isExecuted) {
@@ -280,8 +278,7 @@ export class PrintersComponent implements OnInit {
       });
       dialogRef2.afterClosed().subscribe((result) => {
         if (result == 'Yes') {
-          // window.location.reload();
-          this.global.Print(`FileName:TestPrint|islabel:${printer.labelPrinter == 'Yes' ? true : false}|PrinterName:${printer.printer}|PrinterAddress:${printer.printerAdd}`,'lbl'); 
+          this.global.Print(`FileName:TestPrint|islabel:${printer.labelPrinter == 'Yes'}|PrinterName:${printer.printer}|PrinterAddress:${printer.printerAdd}`,'lbl'); 
         }
       });
     }

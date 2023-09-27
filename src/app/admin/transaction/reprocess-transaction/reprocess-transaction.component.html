@@ -168,15 +168,8 @@
                         </div>
                     </div>
     
-    
-    
-                    <!-- <div class="card br-14 table-responsive my-3"
-                    *ngIf="columnValues?.length>0 && displayedColumns && dataSource?.data?.length>0"> -->
-    
                     <div class="card br-14 table-responsive my-3">
-                        <!-- <ng-scrollbar style="height: 200px;"></ng-scrollbar> -->
                         <ng-scrollbar style="height:600px" track="all" appearance="compact" visibility="always" pointerEventsMethod="scrollbar" class="mat-table-scrollbar scroll-fix">
-<!-- <div class="custom-scrollbar"> -->
                             <table mat-table class="custom-table table-fix custom-action-clickable-table" #table [dataSource]="dataSource" matSort
                                 (matSortChange)="sortChange($event)">
 
@@ -205,10 +198,8 @@
                                 </tr>
                                 <tr mat-header-row *matHeaderRowDef="columnValues; sticky: true"></tr>
                                 <tr mat-row  [class.selected] = "rowClicked == row.id"   *matRowDef="let row; columns: columnValues;" (click)="getTransaction(row);changeTableRowColor(row.id);getTransactionInfo(false)" ></tr>
-                                <!-- <mat-row [style.color]="rowClicked == row.id ? 'white' :''" [style.border-radius]="rowClicked == row.id ? '8px' :''"  [class.mx-2] = "rowClicked == row.id"   *matRowDef="let row; columns: columnValues;" (click)="getTransaction(row);changeTableRowColor(row.id);getTransactionInfo(false)" [style.background-color]="rowClicked == row.id ? 'var(--clr-primary-300)' :'white'"></mat-row> -->
 
                             </table>
-                        <!-- </div> -->
                         </ng-scrollbar>
                     </div>
                     <div class="table-pagination d-flex justify-content-start" *ngIf="columnValues.length>0 && displayedColumns && dataSource">
@@ -224,6 +215,12 @@
             [isReprocessedChecked]="isReprocessedChecked" 
             [isCompleteChecked]="isCompleteChecked" 
             [isHistoryChecked]="isHistoryChecked" 
+
+            [ROrder]="orderNumber"
+            [RItem]="itemNumber"
+            [selection4]="columnSearch.searchColumn.colDef"
+            [searchString4]="columnSearch.searchValue"
+            [hold]="isHold"
             
             ></app-reprocess-choice>
 
@@ -251,8 +248,8 @@
                                 </div>
                                 <div class="card br-14 table-responsive px-0 mt-2">
                                     <ng-scrollbar style="height: 250px;">
-                                        <mat-list class="zones-list g-card-list list-style-1" role="list">
-                                            <ng-scrollbar style="height: 380px">
+                                        <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
+                                            <ng-scrollbar style="height: 380px" pointerEventsMethod="scrollbar">
                                               <mat-list-item   (click)="selectOrder(order)" role="listitem" *ngFor="let order of orders.reprocessOrders">
                                                 <span class="list-label zone-list-label">
                                                   {{order.orderNumber}}
@@ -281,8 +278,8 @@
                                     </button>
                                 </div>
                                 <div class="card br-14 table-responsive px-0 mt-2">
-                                    <ng-scrollbar style="height: 250px;">
-                                        <mat-list class="zones-list g-card-list list-style-1" role="list">
+                                    <ng-scrollbar style="height: 250px;" pointerEventsMethod="scrollbar">
+                                        <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
                                             <ng-scrollbar style="height: 380px">
                                               <mat-list-item (click)="selectOrder(order)"  role="listitem" *ngFor="let order of orders.completeOrders">
                                                 <span class="list-label zone-list-label">
@@ -311,8 +308,8 @@
                                     </button>
                                 </div>
                                 <div class="card br-14 table-responsive px-0 mt-2">
-                                    <ng-scrollbar style="height: 250px;">
-                                        <mat-list class="zones-list g-card-list list-style-1" role="list">
+                                    <ng-scrollbar style="height: 250px;" pointerEventsMethod="scrollbar">
+                                        <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
                                             <ng-scrollbar style="height: 380px">
                                               <mat-list-item (click)="selectOrder(order)"  role="listitem" *ngFor="let order of orders.historyOrders">
                                                 <span class="list-label zone-list-label">
@@ -360,10 +357,6 @@
                         style="min-height:100px"></textarea>
                 </mat-form-field>
             </div>
-            <!-- <div class="d-flex justify-content-end pt-3">
-                <button mat-flat-button color="primary" class="button-primary btn-lg w-100" [mat-dialog-close]="true"
-                    cdkFocusInitial>Submit</button>
-            </div> -->
 
             <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="true">
                 Close

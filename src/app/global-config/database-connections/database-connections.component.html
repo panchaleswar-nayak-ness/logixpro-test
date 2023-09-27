@@ -9,35 +9,6 @@
             <div class="dashboard-section" [ngClass]="{'side-bar-opened' : sideBarOpen}">
                 <div class="breadcrumb-menu">
                     <nav aria-label="breadcrumb" class="breadcrumb">
-                        <!-- <div class="container-fluid p-0" style="height: auto;">
-
-                            <div class="row mb-3">
-                                <div class="col-12">
-                                    <app-config-database
-                                        [connectionStringData]="dbConnectionData"></app-config-database>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <app-connection-strings (connectionUpdateEvent)="updateListEventRec($event)"
-                                        [connectionStringData]="dbConnectionData"></app-connection-strings>
-                                </div>
-                            </div>
-                        </div> -->
-                        <!-- <div *ngFor="let item of breadcrumbList; index as i;">
-              
-                <div *ngIf="i<(breadcrumbList.length-1)">
-                  <li class="breadcrumb-item" [routerLink]="item.value"  style="cursor:pointer;">{{item.name}}
-                    &nbsp; {{"/"}} &nbsp;
-                  </li>
-                </div>
-                <div *ngIf="i>=(breadcrumbList.length-1)">
-                  <li class="breadcrumb-item"  style="cursor:pointer;">{{item.name}}
-                  </li>
-                </div>
-              </div> -->
-                        <!-- <li class="breadcrumb-item active" aria-current="page">Library</li> -->
                     </nav>
                 </div>
                 <div class="container-fluid p-0" style="height: auto;">

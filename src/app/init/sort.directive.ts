@@ -8,8 +8,6 @@ export class SortDirective {
   @Input() sortBy: string;
   @Output() dataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
 
-  constructor() {}
-
   sort(): void {
     this.data.sort((a, b) => {
       if (a[this.sortBy] > b[this.sortBy]) {

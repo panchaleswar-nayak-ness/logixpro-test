@@ -9,7 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-add-pickuplevels',
   templateUrl: './add-pickuplevels.component.html',
-  styleUrls: ['./add-pickuplevels.component.scss']
+  styleUrls: []
 })
 export class AddPickuplevelsComponent implements OnInit {
   @ViewChild('start_shelf') start_shelf: ElementRef;

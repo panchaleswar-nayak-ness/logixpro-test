@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { DeleteRangeComponent } from 'src/app/dialogs/delete-range/delete-range.component';
@@ -10,7 +10,7 @@ import { SrDeleteOrderComponent } from 'src/app/dialogs/sr-delete-order/sr-delet
   templateUrl: './system-replenishment.component.html',
   styleUrls: ['./system-replenishment.component.scss']
 })
-export class SystemReplenishmentComponent implements OnInit {
+export class SystemReplenishmentComponent {
 
   constructor(private dialog: MatDialog,) { }
 
@@ -19,8 +19,7 @@ export class SystemReplenishmentComponent implements OnInit {
   refreshNewOrders:Subject<any> = new Subject();
   replenishmentsDeleted:boolean = false;
 
-  ngOnInit(): void {
-  }
+ 
   deleteRange(): void {
     const dialogRef = this.dialog.open(DeleteRangeComponent, {
       width: '560px',

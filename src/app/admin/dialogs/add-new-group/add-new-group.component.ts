@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json'; 
-import { AccessGroupObject, AdminEmployeeLookupResponse, IEmployee } from 'src/app/Iemployee';
+import { AccessGroupObject, IEmployee } from 'src/app/Iemployee';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 export interface DialogData {
@@ -13,7 +13,7 @@ export interface DialogData {
 @Component({
   selector: 'app-add-new-group',
   templateUrl: './add-new-group.component.html',
-  styleUrls: ['./add-new-group.component.scss']
+  styleUrls: []
 })
 
 export class AddNewGroupComponent implements OnInit {
@@ -37,14 +37,15 @@ export class AddNewGroupComponent implements OnInit {
 
   ngOnInit(): void {
     this.grpData = this.data.grp_data;
-    this.data?.mode === 'edit' ? this.form_heading = 'Edit Group' : 'Add New Group';
-    this.data?.mode === 'edit' ? this.form_btn_label = 'Save' : 'Add';
+    this.form_heading = this.data?.mode === 'edit' ? 'Edit Group' : 'Add New Group';
+    this.form_btn_label = this.data?.mode === 'edit' ? 'Save' : 'Add';
+
     this.groupName = this.grpData.groupName ?? '';
 
   }
 
   checkWhiteSpace(string: any) {
-    const isSpace = string.trim() === '' ? true : false;
+    const isSpace = string.trim() === '';
     if (isSpace) {
       return { 'whitespace': true }
     }
@@ -54,9 +55,6 @@ export class AddNewGroupComponent implements OnInit {
   }
 
   alphaNumberOnly(string: any) {
-
-    //const regex: RegExp = /[!@#$%^&*()+=\[\]{};':"\\|,.<>\/?]/;
-    // const regex = "^[a-zA-Z0-9_]*$";
     if (!string.includes('=') && !string.includes('\'')) {
       return true;
     }
@@ -78,7 +76,6 @@ export class AddNewGroupComponent implements OnInit {
             });
           }
           else {
-            //this.dialog.closeAll(); // Close opened diaglo
             this.toastr.error(response.responseMessage, 'Error!', {
               positionClass: 'toast-bottom-right',
               timeOut: 2000
@@ -96,13 +93,7 @@ export class AddNewGroupComponent implements OnInit {
       this.isValidForm = true;
     }
     else {
-      if (this.alphaNumberOnly(input)) {
-        this.isValidForm = false;
-      }
-      else {
-        this.isValidForm = true;
-      }
-
+      this.isValidForm = !this.alphaNumberOnly(input);
     }
   }
 

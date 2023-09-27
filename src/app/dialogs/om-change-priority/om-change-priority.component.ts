@@ -9,7 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-om-change-priority',
   templateUrl: './om-change-priority.component.html',
-  styleUrls: ['./om-change-priority.component.scss']
+  styleUrls: []
 })
 export class OmChangePriorityComponent implements OnInit {
   @ViewChild('new_pri') new_pri: ElementRef;

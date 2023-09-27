@@ -9,7 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-print-range',
   templateUrl: './print-range.component.html',
-  styleUrls: ['./print-range.component.scss']
+  styleUrls: []
 })
 export class PrintRangeComponent implements OnInit {
   @ViewChild('begin_loc') begin_loc: ElementRef;
@@ -108,8 +108,5 @@ export class PrintRangeComponent implements OnInit {
 
   printRange() {
     this.global.Print(`FileName:printIMReport|invMapID:0|groupLikeLoc:${this.groupLikeLoc}|beginLoc:${this.beginLoc}|endLoc:${this.endLoc}|User:${this.userData.userName}`)
-    // this.dialogRef.close();
-    // window.location.href = `/#/report-view?file=FileName:printIMReport|invMapID:0|groupLikeLoc:${this.groupLikeLoc}|beginLoc:${this.beginLoc}|endLoc:${this.endLoc}|User:${this.userData.userName}`
-    // window.location.reload();
   }
 }

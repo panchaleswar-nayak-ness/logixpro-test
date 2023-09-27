@@ -1,17 +1,17 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, Pipe, PipeTransform, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input,Output, Pipe, PipeTransform} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { map, Observable, startWith } from 'rxjs';
+
 import { AssignService } from 'src/app/assign.service';
-import { FunctionAllocationComponent } from '../../dialogs/function-allocation/function-allocation.component';
-import { AssignedFunctionsComponent } from '../assigned-functions/assigned-functions.component';
+
+
 
 @Component({
   selector: 'app-unassigned-functions',
   templateUrl: './unassigned-functions.component.html',
-  styleUrls: ['./unassigned-functions.component.scss']
+  styleUrls: []
 })
-export class UnassignedFunctionsComponent implements OnInit {
+export class UnassignedFunctionsComponent {
   @Input() unassignedFunctions: [];
   @Input() isGroupLookUp: boolean;
   @Output() addFunction = new EventEmitter();
@@ -25,10 +25,7 @@ export class UnassignedFunctionsComponent implements OnInit {
 
   constructor(private AssignService: AssignService,private dialog: MatDialog) { }
   public searchText: string;
-  ngOnInit(): void {
 
-
-  }
   clearFields(){
     this.filterName='';
   }

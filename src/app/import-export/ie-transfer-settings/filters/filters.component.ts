@@ -1,11 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter,Output } from '@angular/core';
 
 @Component({
   selector: 'app-filters',
   templateUrl: './filters.component.html',
-  styleUrls: ['./filters.component.scss']
+  styleUrls: []
 })
-export class FiltersComponent implements OnInit {
+export class FiltersComponent {
 
   ELEMENT_DATA: any[] =[
     {trans_type: '10A'},
@@ -26,10 +26,6 @@ export class FiltersComponent implements OnInit {
 
   @Output() back = new EventEmitter<string>();
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   retunrToPrev() {
     this.back.emit('back');

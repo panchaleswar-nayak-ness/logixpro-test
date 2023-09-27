@@ -1,12 +1,12 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-br-choose-report-type',
   templateUrl: './br-choose-report-type.component.html',
-  styleUrls: ['./br-choose-report-type.component.scss']
+  styleUrls: []
 })
-export class BrChooseReportTypeComponent implements OnInit {
+export class BrChooseReportTypeComponent{
   @ViewChild('exp_file') exp_file: ElementRef;
   Type:string;
   ExportFileName:string;
@@ -16,9 +16,6 @@ export class BrChooseReportTypeComponent implements OnInit {
     }else{
       this.ExportFileName  = data.ReportName;  
     }
-  }
-
-  ngOnInit(): void {
   }
   ngAfterViewInit(): void {
     this.exp_file.nativeElement.focus();

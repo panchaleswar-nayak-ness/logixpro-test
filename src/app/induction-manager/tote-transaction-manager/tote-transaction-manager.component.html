@@ -16,10 +16,6 @@
             <div class="card p-3 m-2">
                 <div class="row align-items-center">
                     <div class="col-xl-4 p-2">
-                        <!-- <mat-form-field class="custom-form-field w-100" appearance="outline">
-                            <mat-label>Batch ID</mat-label>
-                            <input matInput type="text" value="1235413">
-                        </mat-form-field> -->
 
                         <mat-form-field class="custom-form-field w-100" appearance="outline"
                             [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
@@ -29,8 +25,7 @@
                                 (ngModelChange)="this.batchPickId.next($event)">
                                 <button *ngIf="batchId != ''" matSuffix class="clear-btn" (click)="test()" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
 
-                            <mat-autocomplete class="card custom-scroll" #auto="matAutocomplete"
-                                (optionSelected)="searchData($event)">
+                            <mat-autocomplete class="card custom-scroll" #auto="matAutocomplete">
 
                                 <h6 class="card-header matAutoCompHeader "><span style="width:  140px;">Batch Pick
                                         ID</span> </h6>
@@ -46,8 +41,6 @@
 
                     </div>
                     <div class="col-xl-4 p-2">
-                        <!-- <button mat-stroked-button class="btn-regular button-remove-all-w-stroke"
-                            (click)="clearBatchButt()" color="warn">Clear</button> -->
                     </div>
                     <div class="col-xl-4 p-2">
                         <div class="d-flex d-xl-block justify-content-end">
@@ -110,24 +103,6 @@
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Host Transaction ID</th>
                             <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element.hostTransaction, 'Host Transaction ID')">{{element.hostTransaction}}</td>
                         </ng-container>
-                        <!-- <ng-container matColumnDef="orderNumber">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Number </th>
-                            <td mat-cell *matCellDef="let element">{{element.orderNumber}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="rowNumber">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Row Number </th>
-                            <td mat-cell *matCellDef="let element">{{element.rowNumber}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="totalCount">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Count </th>
-                            <td mat-cell *matCellDef="let element">{{element.totalCount}}</td>
-                        </ng-container>
-
-
-                        <ng-container matColumnDef="toteNumber">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote Number </th>
-                            <td mat-cell *matCellDef="let element">{{element.toteNumber}}</td>
-                        </ng-container> -->
 
                   
              

@@ -1,13 +1,3 @@
-<!-- <mat-dialog-content>
-    <p>
-        Are you sure you want to delete?
-    </p>
-</mat-dialog-content>
-<mat-dialog-actions>
-    <button color="primary" mat-flat-button mat-button (click)="onConfirmdelete()" tabindex="1">Delete</button>
-    <button  mat-button mat-dialog-close tabindex="-1">Close</button>
-</mat-dialog-actions> -->
-
 <div class="mat-modal-wrap text-center">
   <mat-dialog-content>
     <div class="prompt-wrap">
@@ -39,29 +29,3 @@
     </button>
   </mat-dialog-actions>
 </div>
-
-
-<!-- This was initial prompt, I am keeping it only for reference purpose -->
-<!-- <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
-    <div color="warn" class="circle-icon circle-66 circle-danger mb-4">
-        <mat-icon color="warn">delete_outline</mat-icon>
-    </div>
-    <div>
-        <p class="bold text-tritary-900 mb-4">Are you sure you want to delete ?</p>
-        <p class="bold text-danger mb-4">This action can not be redone.</p>
-        <div class="br-14 px-4 py-3 checkbox-background mb-4">
-            <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary">I understand data cannot be recovered</mat-checkbox>
-        </div>
-        <div class="mb-3">
-            <button mat-flat-button color="warn" class="custom-btn button-delete-flat bg-white" [disabled]="isChecked" [ngStyle]="{'opacity': isChecked ? '0.5' : '1' }"
-                (click)="onConfirmdelete()">
-                Delete
-            </button>
-        </div>
-        <div>
-            <button mat-stroked-button color="basic" class="custom-btn bg-white" [mat-dialog-close]="true">
-                Cancel
-            </button>
-        </div>
-    </div>
-</div> -->

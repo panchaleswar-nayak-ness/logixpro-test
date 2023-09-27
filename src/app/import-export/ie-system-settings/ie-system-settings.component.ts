@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { IeFtpSettingsComponent } from 'src/app/dialogs/ie-ftp-settings/ie-ftp-settings.component';
 import { IeInventMapExportComponent } from 'src/app/dialogs/ie-invent-map-export/ie-invent-map-export.component';
@@ -9,20 +9,17 @@ import { TransferFilePathComponent } from 'src/app/dialogs/transfer-file-path/tr
 @Component({
   selector: 'app-ie-system-settings',
   templateUrl: './ie-system-settings.component.html',
-  styleUrls: ['./ie-system-settings.component.scss']
+  styleUrls: []
 })
-export class IeSystemSettingsComponent implements OnInit {
+export class IeSystemSettingsComponent {
 
   constructor(
     private dialog: MatDialog,
   ) { }
 
-  ngOnInit(): void {
-  }
-
-
+ 
   IeTransFieldMappingDialog() {
-    const dialogRef = this.dialog.open(IeTransFieldMappingComponent, {
+     this.dialog.open(IeTransFieldMappingComponent, {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',
@@ -31,7 +28,7 @@ export class IeSystemSettingsComponent implements OnInit {
 
   }
   XMLFieldMappingDialog() {
-    const dialogRef = this.dialog.open(OpenTransPickMappingComponent, {
+     this.dialog.open(OpenTransPickMappingComponent, {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',
@@ -41,7 +38,7 @@ export class IeSystemSettingsComponent implements OnInit {
   }
 
   TransFilePathDialog() {
-    const dialogRef = this.dialog.open(TransferFilePathComponent, {
+     this.dialog.open(TransferFilePathComponent, {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',
@@ -51,7 +48,7 @@ export class IeSystemSettingsComponent implements OnInit {
   }
 
   IeFTPSettingsDialog(){
-    const dialogRef = this.dialog.open(IeFtpSettingsComponent, {
+     this.dialog.open(IeFtpSettingsComponent, {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',
@@ -61,7 +58,7 @@ export class IeSystemSettingsComponent implements OnInit {
   }
 
   IeInventMapExportDialog(){
-    const dialogRef = this.dialog.open(IeInventMapExportComponent, {
+     this.dialog.open(IeInventMapExportComponent, {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',

@@ -5,7 +5,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-sp-general-setup',
   templateUrl: './sp-general-setup.component.html',
-  styleUrls: ['./sp-general-setup.component.scss']
+  styleUrls: []
 })
 export class SpGeneralSetupComponent implements OnInit {
   public userData: any;
@@ -27,18 +27,13 @@ export class SpGeneralSetupComponent implements OnInit {
     })
   }
   public CompanyInfo() {
-    let paylaod = { 
-      "userName": this.userData.userName,
-      "wsid": this.userData.wsid
-    }
     this.Api.AdminCompanyInfo().subscribe((res: any) => {
       this.CompanyObj = res.data;
     })
   }
-  ngOnDestroy(){  
-  }
+  
   payload(no){ 
-    var paylaod1:any = {
+    const paylaod1:any = {
       "preference": [
         this.CompanyObj.companyName,this.CompanyObj.address1,this.CompanyObj.city,this.CompanyObj.state,
         this.CompanyObj.earlyBreakTime,String(this.CompanyObj.earlyBreakDuration),this.CompanyObj.midBreakTime,String(this.CompanyObj.midBreakDuration)
@@ -48,7 +43,7 @@ export class SpGeneralSetupComponent implements OnInit {
       "username": this.userData.userName,
       "wsid": this.userData.wsid
     }; 
-    var paylaod3:any = {
+    const paylaod3:any = {
       "preference": ["true",String(this.CompanyObj.fifoPickAcrossWarehouse),"true",String(this.CompanyObj.replenishDedicatedOnly),"true","true",String(this.CompanyObj.zeroLocationQuantityCheck),"true","true","true","true",
        String(this.CompanyObj.reelTrackingPickLogic) ,"true","true",String(this.CompanyObj.showTransQty),
       String(this.CompanyObj.nextToteID),String(this.CompanyObj.nextSerialNumber),"",String(this.CompanyObj.pickType),String(this.CompanyObj.otTemptoOTPending)
@@ -57,7 +52,7 @@ export class SpGeneralSetupComponent implements OnInit {
       "username": this.userData.userName,
       "wsid": this.userData.wsid
     }; 
-    var paylaod4:any = {
+    const paylaod4:any = {
       "preference": [
         this.CompanyObj.orderSort,this.CompanyObj.cartonFlowDisplay,this.CompanyObj.autoDisplayImage
       ],

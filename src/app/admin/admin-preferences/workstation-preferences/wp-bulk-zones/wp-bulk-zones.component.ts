@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -6,13 +6,12 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './wp-bulk-zones.component.html',
   styleUrls: ['./wp-bulk-zones.component.scss']
 })
-export class WpBulkZonesComponent implements OnInit {
+export class WpBulkZonesComponent  {
 
   constructor(private dialog: MatDialog) { }
   displayedColumns: string[] = ['transType', 'scanSequence','actions'];
   dataSource:any
 
-  ngOnInit(): void {
-  }
+
 
 }

@@ -5,13 +5,6 @@
   <mat-icon class="close-icon">close</mat-icon>
 </button>
 </div>
-<!-- Error message FOR DEV USE-->
-        <!-- <div class="label-red p-3 d-flex br-8 mb-3">
-            <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
-            <span class="ps-2 w-100">Location scan verify failed. Please scan valid location.</span>
-        </div> -->
-<!-- <div mat-dialog-content> -->
-  <!-- <ng-scrollbar style="height: 400px;"> -->
     <div class="px-3">
 
   <form [formGroup]="empForm" (ngSubmit)="onSubmit(empForm)">
@@ -32,22 +25,11 @@
       <mat-label>MI</mat-label>
       <input matInput type="text" formControlName="mi" maxlength="10">
     </mat-form-field>
-
-    
-
-    
-
-    
-
-    
-    <!-- <mat-hint class="error" *ngIf="hasError('lastName', 'required')">This field is required.</mat-hint> -->
-
+ 
     <mat-form-field class="mb-3 w-100" appearance="outline">
       <mat-label>Username</mat-label>
       <input matInput  type="text"  formControlName="username" [maxlength]="50" [readonly]="isDisabledUsername" (keydown.space)="$event.preventDefault()">
     </mat-form-field>
-    <!-- <mat-hint  class="error" *ngIf="hasError('userName', 'required')">This field is required.</mat-hint> -->
-    <!-- <mat-hint align="end"></mat-hint> -->
 
     <mat-form-field class="mb-3 w-100" appearance="outline">
       <mat-label>Access Level</mat-label>
@@ -80,19 +62,10 @@
         <mat-icon>{{toggle_password ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
     </mat-form-field>
-    <!-- <div *ngIf="empForm.get('password')?.invalid && (empForm.get('password')?.dirty || empForm.get('password')?.touched)"
-    style="color: red;
-    font-size: 13px;
-    margin: 0;
-    padding: 0;"
-    >Password must be maximum {{env === 'DB'?'16':'8'}} characters long.</div>  -->
-    <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
 
     <mat-form-field class="mb-1 w-100" appearance="outline" *ngIf="isEmail">
       <mat-label>Email Address</mat-label>
       <input matInput type="email" formControlName="emailAddress" maxlength="255" (keydown.space)="$event.preventDefault();">
-      <!-- <div *ngIf="empForm.get('emailAddress')?.invalid && (empForm.get('emailAddress')?.dirty || empForm.get('emailAddress')?.touched)">Email is invalid</div> -->
-
     </mat-form-field>
 
     <mat-hint class="error-message" style="color: red;font-size: 14px;"
@@ -108,5 +81,3 @@
 
   </form>
 </div>
-<!-- </ng-scrollbar> -->
-<!-- </div> -->

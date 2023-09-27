@@ -4,7 +4,6 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpHeaders,
   HttpErrorResponse
 } from '@angular/common/http';
 import { catchError, Observable, of } from 'rxjs';
@@ -78,7 +77,7 @@ export class HeaderInterceptor implements HttpInterceptor {
               positionClass: 'toast-bottom-right',
               timeOut: 2000
             });  
-            if(!(this.router.url.indexOf('login') > -1)) localStorage.setItem('LastRoute', this.router.url);        
+            if((this.router.url.indexOf('login') <= -1)) localStorage.setItem('LastRoute', this.router.url);        
             this.router.navigate(['/login']);    
           } else {
             this.toastr.error(res.responseMessage, 'Error!', {

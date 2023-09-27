@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-delete-range',
   templateUrl: './delete-range.component.html',
-  styleUrls: ['./delete-range.component.scss']
+  styleUrls: []
 })
 export class DeleteRangeComponent implements OnInit {
   @ViewChild('del_focus') del_focus: ElementRef;
@@ -56,18 +56,19 @@ export class DeleteRangeComponent implements OnInit {
     this.getSearchOptionsEnd();
   }
   ngAfterViewInit(): void {
-    // this.del_focus.nativeElement.focus();
     setTimeout(()=>{
       this.del_focus.nativeElement.focus();  
     }, 200);
   }
+  
   ngOnDestroy() {
     this.getSearchOptionsBeginSubscribe.unsubscribe();
     this.getSearchOptionsEndSubscribe.unsubscribe();
   }
 
   ReplenishmentsByDelete() {
-    if (this.repByDeletePayload.filter2 && this.repByDeletePayload.filter2) {
+    debugger
+    if (this.repByDeletePayload.filter1 && this.repByDeletePayload.filter2) {
       const dialogRef2 = this.dialog.open(DeleteConfirmationComponent, {
         height: 'auto',
         width: '560px',
@@ -110,11 +111,11 @@ export class DeleteRangeComponent implements OnInit {
   }
 
   getFloatLabelValueStart(): FloatLabelType {
-    return this.floatLabelControlStart.value || 'auto';
+    return this.floatLabelControlStart.value ?? 'auto';
   }
 
   getFloatLabelValueEnd(): FloatLabelType {
-    return this.floatLabelControlEnd.value || 'auto';
+    return this.floatLabelControlEnd.value ?? 'auto';
   }
 
   changeBegin(event: any) {

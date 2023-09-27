@@ -7,14 +7,13 @@ import {
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import labels from '../../../labels/labels.json';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-bm-toteid-entry',
   templateUrl: './bm-toteid-entry.component.html',
-  styleUrls: ['./bm-toteid-entry.component.scss'],
+  styleUrls: [],
 })
 export class BmToteidEntryComponent implements OnInit {
   selectedList: any;

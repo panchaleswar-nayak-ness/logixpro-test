@@ -8,52 +8,50 @@ import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map'; 
 import { ToastrService } from 'ngx-toastr';
-import { ConditionalExpr } from '@angular/compiler';
 import { AuthService } from '../../../../app/init/auth.service';
 import { AdjustQuantityComponent } from '../adjust-quantity/adjust-quantity.component';
 import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { event } from 'jquery';
+
 
 export interface InventoryMapDataStructure {
-  invMapID: string | '',
-  locationID: string | '',
-  location: string | '',
-  warehouse: string | '',
-  zone: string | '',
-  carousel: string | '',
-  row: string | '',
-  shelf: string | '',
-  bin: string | '',
-  itemNumber: string | '',
-  revision: string | '',
-  serialNumber: string | '',
-  lotNumber: string | '',
-  expirationDate: string | '',
-  description: string | '',
-  itemQuantity: string | '',
-  unitOfMeasure: string | '',
-  maxQuantity: string | '',
-  cellSize: string | '',
-  goldenZone: string | '',
-  putAwayDate: string | '',
-  userField1: string | '',
-  userField2: string | '',
-  masterLocation: string | '',
-  dateSensitive: boolean | '',
-  dedicated: boolean | '',
-  masterInvMapID: string | '',
-  minQuantity: string | '',
-  quantityAllocatedPick: string | '',
-  quantityAllocatedPutAway: string | '',
-  laserX: string | '',
-  laserY: string | '',
-  locationNumber: string | '',
-  rn: string | '',
-  velocity: string | '' //additional field,
-  altLight: string | ''
+  invMapID: string;
+  locationID: string;
+  location: string;
+  warehouse: string;
+  zone: string;
+  carousel: string;
+  row: string;
+  shelf: string;
+  bin: string;
+  itemNumber: string;
+  revision: string;
+  serialNumber: string;
+  lotNumber: string;
+  expirationDate: string;
+  description: string;
+  itemQuantity: string;
+  unitOfMeasure: string;
+  maxQuantity: string;
+  cellSize: string;
+  goldenZone: string;
+  putAwayDate: string;
+  userField1: string;
+  userField2: string;
+  masterLocation: string;
+  dateSensitive: boolean;
+  dedicated: boolean;
+  masterInvMapID: string;
+  minQuantity: string;
+  quantityAllocatedPick: string;
+  quantityAllocatedPutAway: string;
+  laserX: string;
+  laserY: string;
+  locationNumber: string;
+  rn: string;
+  velocity: string; // additional field
+  altLight: string;
 }
-
 @Component({
   selector: 'app-add-inv-map-location',
   templateUrl: './add-inv-map-location.component.html',
@@ -179,7 +177,6 @@ export class AddInvMapLocationComponent implements OnInit {
     } 
     this.searchItemNumbers = this.getDetailInventoryMapData.itemNumber;
 
-    //  this.itemNumberList = this.data.itemList;
 
     this.Api.getLocZTypeInvMap().subscribe((res) => {
       this.locZoneList = res.data; 
@@ -187,18 +184,10 @@ export class AddInvMapLocationComponent implements OnInit {
         startWith(''),
         map(value => this._filter(value || '')),
       );
-      // this.filteredItemNum = this.addInvMapLocation.controls['item'].valueChanges.pipe(
-      //   startWith(''),
-      //   map(value => this._filterItemNum(value || '')),
-      // );
 
     });
 
 
-    // this.setStorage = localStorage.getItem('routeFromInduction')
-    // this.setStorage = localStorage.getItem('routeFromOrderStatus')
-    // this.routeFromIM = JSON.parse(this.setStorage)
-    // this.routeFromOM = JSON.parse(this.setStorageOM)
 
   }
 
@@ -343,10 +332,9 @@ export class AddInvMapLocationComponent implements OnInit {
       shelf: [this.getDetailInventoryMapData.shelf || '', [Validators.maxLength(2)]],
       bin: [this.getDetailInventoryMapData.bin || '', [Validators.maxLength(3)]],
       item: [this.getDetailInventoryMapData.itemNumber || '', [Validators.maxLength(50)]],
-      itemQuantity: new FormControl({value:this.getDetailInventoryMapData.itemQuantity || '',disabled:this.getDetailInventoryMapData.itemNumber == ''? true: false}),
+      itemQuantity: new FormControl({value:this.getDetailInventoryMapData.itemQuantity || '',disabled:this.getDetailInventoryMapData.itemNumber ===''}),
       description: [this.getDetailInventoryMapData.description || ""],
       
-      // description: new FormControl({ value: this.getDetailInventoryMapData.description ? this.getDetailInventoryMapData.description : "", disabled: true }),
       cell: [this.getDetailInventoryMapData.cellSize || ''],
       velocity: [this.getDetailInventoryMapData.goldenZone || ''],
       maxQuantity: [this.getDetailInventoryMapData.maxQuantity || 0, [Validators.maxLength(9)]],
@@ -384,14 +372,7 @@ export class AddInvMapLocationComponent implements OnInit {
       this.addInvMapLocation.get("minQuantity")?.setValue("");
     }
 
-    // var max = this.addInvMapLocation.get("maxQuantity")?.value;
-    // var min = this.addInvMapLocation.get("minQuantity")?.value;
-    // if (max == "" || max == "0") {
-    //   this.addInvMapLocation.get("minQuantity")?.setValue("0");
-    // }
-    // if (min > max) {
-    //   this.addInvMapLocation.get("minQuantity")?.setValue(this.addInvMapLocation.get("maxQuantity")?.value.toString().charAt(0));
-    // }
+
   }
 
   onMaxChange($event) {
@@ -524,10 +505,9 @@ export class AddInvMapLocationComponent implements OnInit {
 
   }
   loadItemDetails(item: any) {
-    this.itemNumberList.map(val => {
+    this.itemNumberList.forEach(val => {
       if (val.itemNumber === item) {
         this.addInvMapLocation.controls['description'].setValue(val.description ?? '');
-        // this.itemDescription = ;
       }
     })
     let payload = {
@@ -542,8 +522,8 @@ export class AddInvMapLocationComponent implements OnInit {
     this.Api.getItemNumDetail(payload).subscribe((res) => {
       if (res.isExecuted) {
         this.unitOFMeasure =res.data.unitOfMeasure 
-        var match = '';
-        var expected = '';
+        let match = '';
+        let expected = '';
         if (cellSizeVal != res.data.cellSize && res.data.cellSize) {
           match += 'Cell Size';
           expected += ' Expecting Cell Size: ' + res.data.cellSize;

@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CmSplitLineComponent } from '../cm-split-line/cm-split-line.component'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { CmShipSplitLineComponent } from '../cm-ship-split-line/cm-ship-split-line.component';
@@ -11,7 +10,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-cm-confirm-and-packing-process-transaction',
   templateUrl: './cm-confirm-and-packing-process-transaction.component.html',
-  styleUrls: ['./cm-confirm-and-packing-process-transaction.component.scss']
+  styleUrls: []
 })
 export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
 displayedColumns: string[] = ['itemNumber', 'lineNumber', 'transactionQuantity', 'completedQuantity', 'shipQuantity' ];
@@ -61,11 +60,9 @@ async ConfPackProc(){
     this.confPackProcTable = response.data;  
   });
 } 
-async ItemLabelModal(){
-  var  Id = this.confPackProcTable[0].sT_ID;   
-} 
+
  openShipSplitLine() {
-  var index = this.confPackTransTable.findIndex(x=>x.active == true);
+  let index = this.confPackTransTable.findIndex(x=>x.active);
   let dialogRef = this.dialog.open(CmShipSplitLineComponent, {
     height: 'auto',
     width: '30vw',
@@ -78,14 +75,14 @@ async ItemLabelModal(){
   });
 
   dialogRef.afterClosed().subscribe(res => {
-    if (res && res.isExecuted) {
+    if (res?.isExecuted) {
       this.ConfPackProc(); 
     } 
   });
 }
 
 openShipEditQuantity() {
-  var index = this.confPackTransTable.findIndex(x=>x.active == true);
+  let index = this.confPackTransTable.findIndex(x=>x.active);
   let dialogRef = this.dialog.open(CmShipEditQtyComponent, {
     height: 'auto',
     width: '50vw',
@@ -98,7 +95,7 @@ openShipEditQuantity() {
   });
 
   dialogRef.afterClosed().subscribe(res => {
-    if (res && res.isExecuted) {
+    if (res?.isExecuted) {
       this.ConfPackProc(); 
     } 
   });
@@ -112,8 +109,8 @@ openShipEditQuantity() {
 // }
   //will update the desired record(s) and go thorugh confirm proccess
   async DoneModal(){
-    var id = this.confPackProcTable[0].sT_ID;
-    var obj : any = {
+    let id = this.confPackProcTable[0].sT_ID;
+    let obj : any = {
       id: id,
       orderNumber: this.orderNumber,
       containerID: this.contID,
@@ -126,24 +123,24 @@ openShipEditQuantity() {
       this.toast.error(  "An error has occurred",'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});
   } else {
       //edit table 
-      var index = this.confPackTransTable.findIndex(x=>x.active == true);
+      let index = this.confPackTransTable.findIndex(x=>x.active);
       this.confPackTransTable[index].containerID = this.contID;
       this.confPackTransTable[index].complete = true;
       // this.confPackTransTable[index].invalidate() 
-        var emit = '';
+        let emit = '';
       if (this.confPackTransTable.length == 1) {
         emit = 'ConfirmedPacked';
       };
 
-      if(this.preferencesData && this.preferencesData.autoPrintContLabel){
+      if(this.preferencesData?.autoPrintContLabel){
         this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|contID:${this.contID}`);
       
       }
-      if(this.preferencesData && this.preferencesData.autoPrintContPL){
+      if(this.preferencesData?.autoPrintContPL){
         this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
       
       }
-      if(this.preferencesData && this.preferencesData.autoPrintOrderPL){
+      if(this.preferencesData?.autoPrintOrderPL){
         this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
       
       }

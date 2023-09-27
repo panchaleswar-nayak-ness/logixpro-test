@@ -7,22 +7,7 @@
       <input type="search" matTooltip="You must select an employee from the list to continue" matTooltipPosition="above" maxlength="50" placeholder="Search Employee By Last Name" aria-label="Search Employee" matInput
         (keyup)="applyFilter($event)" [(ngModel)]="searchVal" #autoFocusField>
         <button matSuffix *ngIf="searchVal" class="clear-btn" (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-
-        <!-- <button *ngIf="searchVal" matSuffix mat-icon-button aria-label="Clear" (click)="searchVal=''">
-          <mat-icon>close</mat-icon>
-        </button> -->
-
-        <!-- <button *ngIf="searchVal" matSuffix mat-icon-button aria-label="Clear" (click)="clear()">
-          <mat-icon>close</mat-icon>
-        </button> -->
-        <!-- <mat-icon class="material-symbols-outlined icon-search ms-2" matSuffix>search</mat-icon> -->
     </mat-form-field>
-    <!-- <button mat-flat-button color="primary" class=" mat-button-icon" (click)="openDialog()"
-      *ngIf="(env === 'DB' || env === 'ADLDS')">
-      <span class="material-symbols-outlined" matTooltip="Add new employee" matTooltipPosition="above">
-        add
-      </span>
-    </button> -->
   </div>
 </div>
 <div class="card br-14 table-responsive my-3">

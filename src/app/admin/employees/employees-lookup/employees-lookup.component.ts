@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import {MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { AddNewEmployeeComponent } from '../../dialogs/add-new-employee/add-new-employee.component';
-import { NgForm } from '@angular/forms';
-import { AdminEmployeeLookupResponse, IEmployee } from 'src/app/Iemployee'; 
+
+
+import {  IEmployee } from 'src/app/Iemployee'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
@@ -41,7 +41,7 @@ export class EmployeesLookupComponent implements OnInit {
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   ngOnInit(): void {
     this.userData = this.authService.userData();
-    this.env = JSON.parse(localStorage.getItem('env') || '');
+    this.env = JSON.parse(localStorage.getItem('env') ?? '');
     this.EmployeeLookUp();
 
   }

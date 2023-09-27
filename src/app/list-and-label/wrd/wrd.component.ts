@@ -1,14 +1,11 @@
-import { Component, ComponentFactoryResolver, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Route, Router } from 'angular-routing';
 import { map } from 'rxjs';
-import { SharedService } from 'src/app/services/shared.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-wrd',
   templateUrl: './wrd.component.html',
-  styleUrls: ['./wrd.component.scss']
+  styleUrls: []
 })
 export class WrdComponent implements OnInit {
   env:string;
@@ -20,7 +17,7 @@ export class WrdComponent implements OnInit {
  
    }
   ngOnInit(): void {
-    var filename = this.route.queryParamMap.pipe(
+    let filename = this.route.queryParamMap.pipe(
       map((params: ParamMap) => params.get('file')),
     );
     filename.subscribe((param) => { 

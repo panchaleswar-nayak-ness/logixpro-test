@@ -35,7 +35,7 @@ export class CmOrderNumberComponent implements OnInit {
     if(!this.isStandAlone) setTimeout(() => this.searchTote.nativeElement.focus(), 100);
     else setTimeout(() => this.order.nativeElement.focus(), 100);
 
-    if(this.data && this.data.stagingTable) this.tableData = this.data.stagingTable;
+    if(this.data?.stagingTable) this.tableData = this.data.stagingTable;
   }
   ngAfterViewInit(): void {
     this.order_focus.nativeElement.focus();
@@ -54,7 +54,7 @@ export class CmOrderNumberComponent implements OnInit {
   async getStagLoc(event: KeyboardEvent, value : any) { 
     this.tableData = [];
     if (event.key == "Enter") {
-      var obj: any = {
+      let obj: any = {
         type: this.type,
         selValue: value,
         username: this.userData.userName,
@@ -107,7 +107,7 @@ export class CmOrderNumberComponent implements OnInit {
   }
 
   async saveToteStagingLocation(values : any, clear : number = 0) {
-    var obj: any = {
+    let obj: any = {
       "orderNumber": this.order.nativeElement.value,
       "toteID": values.toteID,
       "location": values.stagingLocation,
@@ -121,8 +121,8 @@ export class CmOrderNumberComponent implements OnInit {
         this.toast.error("Error Has Occured", "Consolidation", { positionClass: 'toast-bottom-right', timeOut: 2000 });
       } else {
         if (typeof this.tableData != 'undefined') {
-          for (var x = 0; x < this.tableData.length; x++) {
-            var tote = this.tableData[x].toteID;
+          for (let x = 0; x < this.tableData.length; x++) {
+            let tote = this.tableData[x].toteID;
             if (tote == values.toteID) {
               this.tableData[x].stagingLocation = clear ? '' :  values.stagingLocation;
               this.tableData[x].stagedBy = clear ? '' : this.userData.userName;

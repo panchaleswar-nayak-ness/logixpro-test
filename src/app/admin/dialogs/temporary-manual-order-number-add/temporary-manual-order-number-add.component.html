@@ -27,10 +27,6 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <!-- <mat-form-field class="custom-form-field w-100" appearance="outline">
-                    <mat-label>Order No.</mat-label>
-                    <input matInput type="text">
-                </mat-form-field> -->
 
 
                 <mat-form-field class="custom-form-field  w-100 mb-3" appearance="outline"
@@ -42,17 +38,13 @@
 
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData($event)">
                         <mat-option *ngFor="let option of searchAutocompleteOrderNum" [value]="option.orderNumber">
-                            <div (click)="getRow(option)">{{option.orderNumber}}</div>
+                            <div >{{option.orderNumber}}</div>
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
 
             </div>
             <div class="col-6">
-                <!-- <mat-form-field class="custom-form-field w-100" appearance="outline">
-                    <mat-label>Item No.</mat-label>
-                    <input matInput type="text">
-                </mat-form-field> -->
 
 
 
@@ -62,12 +54,6 @@
                     <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='itemNumber'
                       (focusout)="onFocusOutEvent($event,'item')"    maxlength="50" [matAutocomplete]="item" (ngModelChange)="this.searchByItem.next($event)">
                       <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemNumber=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-<!-- 
-                    <mat-autocomplete #item="matAutocomplete" (optionSelected)="setItem($event)">
-                        <mat-option *ngFor="let option of searchAutocompleteItemNum" [value]="option.itemNumber">
-                            <div (click)="getRow(option)">{{option.itemNumber}}</div>
-                        </mat-option>
-                    </mat-autocomplete> -->
 
 
                     <mat-autocomplete class="card custom-scroll" #item="matAutocomplete" (optionSelected)="searchData($event)">
@@ -75,7 +61,7 @@
                         <h6 class ="card-header matAutoCompHeader "><span style="width:  140px;">Item Number</span> <span  style="width:  140px;">Description</span> </h6>
                       
                         <mat-option *ngFor="let option of searchAutocompleteItemNum" [value]="option.itemNumber" class="matAutoCompTableContent" (click)="$event.stopPropagation()">
-                          <div class="loc_option"  (click)="getRow(option)" >
+                          <div class="loc_option"  >
                             <span   class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span> <span  class="searchColumn" style="width:  140px; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;" #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="option.description" [matTooltipDisabled]="option.description && option.description.length>=20?false:true">{{option.description}}</span> 
                         </div>
                         </mat-option>
@@ -106,14 +92,6 @@
                 <mat-form-field class="custom-form-field  w-100 mb-3"
                     appearance="outline">
                     <mat-label>Set Location by Item Quantity</mat-label>
-                    <!-- <mat-select #matRef class="employees-action" placeholder="Actions">
-                    <mat-option value="Pick">Pick</mat-option>
-                    <mat-option value="Put Away">Put Away</mat-option>
-                    <mat-option value="Count">Count</mat-option>
-                </mat-select> -->
-
-                
-                <!-- [disabled]="setLocationByItemList.length==0"  -->
                     <mat-select #matRef class="employees-action"
                         placeholder="Actions" [(ngModel)]="inventoryMapID">
                         <mat-option *ngFor="let item of setLocationByItemList" [value]="item.invMapID">

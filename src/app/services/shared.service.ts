@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, from } from 'rxjs'; 
+import { Subject } from 'rxjs'; 
 import { ApiFuntions } from './ApiFuntions';
 
 @Injectable({
@@ -168,7 +168,7 @@ export class SharedService {
     if (menu.includes('/globalconfig')) return;
     
     else{
-      var object:any = {
+      let object:any = {
         userName:userName,
         wsid:wsid, appName:appName
       }

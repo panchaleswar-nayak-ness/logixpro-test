@@ -1,10 +1,3 @@
-export interface ITransactions {}
-
-export interface OpenTransactionResponse {
-  //   responseData: any;
-  //   responseMessage: string;
-}
-
 export interface ITransactionModelIndex {
   viewToShow: number;
   location: string;

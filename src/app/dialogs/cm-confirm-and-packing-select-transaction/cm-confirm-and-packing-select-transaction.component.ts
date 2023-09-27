@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject,OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from 'src/app/init/auth.service';
@@ -9,7 +9,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-cm-confirm-and-packing-select-transaction',
   templateUrl: './cm-confirm-and-packing-select-transaction.component.html',
-  styleUrls: ['./cm-confirm-and-packing-select-transaction.component.scss']
+  styleUrls: []
 })
 export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
  
@@ -40,7 +40,7 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
   }
 
   async ConfPackProc(){
-    var Obj:any = { 
+    let Obj:any = { 
         "orderNumber": this.orderNumber,
         "itemNumber":this.itemNumber 
     };
@@ -50,7 +50,7 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
   } 
   
 openScanItem(ItemNumber:any,id: any) {
-  var index= this.confPackTransTable.findIndex(x=>x.sT_ID == id);
+  let index= this.confPackTransTable.findIndex(x=>x.sT_ID == id);
   this.confPackTransTable[index].active = true;
   let dialogRef = this.dialog.open(CmConfirmAndPackingProcessTransactionComponent, {
     height: 'auto',
@@ -66,7 +66,7 @@ openScanItem(ItemNumber:any,id: any) {
   })
  }
   async ConfPackSelectTableClick(id){
-    var obj : any = {
+    let obj : any = {
       id: id,
       orderNumber: this.orderNumber,
       containerID: this.contID,
@@ -84,8 +84,8 @@ openScanItem(ItemNumber:any,id: any) {
      
     }else {
       //edit table
-      for (var x = 0; x < this.confPackTransTable.length; x++) {
-          var tabID = this.confPackTransTable[x].sT_ID;
+      for (let x = 0; x < this.confPackTransTable.length; x++) {
+          let tabID = this.confPackTransTable[x].sT_ID;
           if (id == tabID) {
             // click active 
           };
@@ -93,15 +93,15 @@ openScanItem(ItemNumber:any,id: any) {
 
 
 
-      if(this.preferencesData && this.preferencesData.autoPrintContLabel){
+      if(this.preferencesData?.autoPrintContLabel){
         this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|contID:${this.contID}`);
       
       }
-      if(this.preferencesData && this.preferencesData.autoPrintContPL){
+      if( this.preferencesData?.autoPrintContPL){
         this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
       
       }
-      if(this.preferencesData && this.preferencesData.autoPrintOrderPL){
+      if(this.preferencesData?.autoPrintOrderPL){
         this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
       
       }
@@ -109,7 +109,7 @@ openScanItem(ItemNumber:any,id: any) {
       this.dialogRef.close('true');
   
    
-  };
+  } ;
   });
 
 }

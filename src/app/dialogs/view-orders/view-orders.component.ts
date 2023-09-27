@@ -1,4 +1,3 @@
-// import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
@@ -90,12 +89,6 @@ export class ViewOrdersComponent implements OnInit {
   @ViewChild('paginatorTrans') paginatorTrans: MatPaginator;
   @ViewChild(MatSort) viewTransSort: MatSort;
 
-  // @ViewChild(MatPaginator, {static: false})
-  // set paginatorTrans(value: MatPaginator) {
-  //   if (this.orderTransDataSource){
-  //     this.orderTransDataSource.paginator = value;
-  //   }
-  // }
   constructor(
     private Api: ApiFuntions,
     private toastr: ToastrService,
@@ -117,22 +110,18 @@ export class ViewOrdersComponent implements OnInit {
       "wsid": this.userData.wsid,
     }
     this.Api.OrdersInZone(paylaod).subscribe((res) => {
-      // console.log(res);
       
       if (res.data.length > 0) {
         res.data.map(val => {
           this.allOrders.push({ 'orderNumber': val, isSelected: false });
         });
-        // console.log(this.allOrders);
-        // console.log(this.data.allOrders);
         if (this.data.allOrders.length > 0) {
           const selectedArr = this.allOrders.filter(element => this.data.allOrders.includes(element.orderNumber));
           
-          selectedArr.map(ele => {
+          selectedArr.forEach(ele => {
             ele.isSelected = true
             this.selectedOrders.push(ele.orderNumber);
           });
-          // this.onOrderSelect(selectedArr[selectedArr.length -1]);
         }
 
         this.orderDataSource = new MatTableDataSource<any>(this.allOrders);
@@ -175,7 +164,7 @@ export class ViewOrdersComponent implements OnInit {
     
     
     if (this.selectedOrders.includes(row.orderNumber)) {
-      this.allOrders.filter(val => {
+      this.allOrders.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = false;
           this.orderTransDataSource = [];
@@ -191,7 +180,7 @@ export class ViewOrdersComponent implements OnInit {
     }
     else {
       this.selectedOrders.push(row.orderNumber);
-      this.allOrders.filter(val => {
+      this.allOrders.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = true;
         }

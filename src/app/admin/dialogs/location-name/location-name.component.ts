@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'; 
+import { Component, OnInit} from '@angular/core'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -30,7 +30,7 @@ export class LocationNameComponent implements OnInit {
 
   getLocation(){ 
     this.Api.LocationNames().subscribe((res=>{
-      if(res && res.isExecuted){
+      if(res?.isExecuted){
         
         let tempLocationNames:any = [];
         res.data.forEach((element:any) => {

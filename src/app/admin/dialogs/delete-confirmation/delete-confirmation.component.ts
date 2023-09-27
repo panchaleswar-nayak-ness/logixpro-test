@@ -62,7 +62,6 @@ export class DeleteConfirmationComponent implements OnInit {
                 positionClass: 'toast-bottom-right',
                 timeOut: 2000,
               });
-              // this.reloadCurrentRoute()
             } else {
               this.dialog.closeAll();
               this.toastr.error(labels.alert.went_worng, 'Error!', {
@@ -258,7 +257,6 @@ export class DeleteConfirmationComponent implements OnInit {
               positionClass: 'toast-bottom-right',
               timeOut: 2000,
             });
-            //   this.reloadCurrentRoute();
           } else {
             this.toastr.error(res.responseMessage, 'Error!', {
               positionClass: 'toast-bottom-right',
@@ -274,13 +272,11 @@ export class DeleteConfirmationComponent implements OnInit {
         };
         this.Api.dltWareHouse(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
-            //this.dialog.closeAll();
             this.dialogRef.close('Yes');
             this.toastr.success(labels.alert.delete, 'Success!', {
               positionClass: 'toast-bottom-right',
               timeOut: 2000,
             });
-            //   this.reloadCurrentRoute();
           } else {
             this.toastr.error(res.responseMessage, 'Error!', {
               positionClass: 'toast-bottom-right',
@@ -296,13 +292,11 @@ export class DeleteConfirmationComponent implements OnInit {
         };
         this.Api.dltVelocityCode(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
-            //this.dialog.closeAll();
             this.dialogRef.close('Yes');
             this.toastr.success(labels.alert.delete, 'Success!', {
               positionClass: 'toast-bottom-right',
               timeOut: 2000,
             });
-            //   this.reloadCurrentRoute();
           } else {
             this.toastr.error(res.responseMessage, 'Error!', {
               positionClass: 'toast-bottom-right',
@@ -330,9 +324,6 @@ export class DeleteConfirmationComponent implements OnInit {
               }
             },
             (error) => {}
-            // this.columnValues = res.data?.openTransactionColumns;
-            // this.columnValues.push('actions');
-            // this.displayOrderCols=res.data.openTransactionColumns;
           );
       } else if (this.data.mode === 'delete-carrier') {
         let payload = {
@@ -359,9 +350,6 @@ export class DeleteConfirmationComponent implements OnInit {
               }
             },
             (error) => {}
-            // this.columnValues = res.data?.openTransactionColumns;
-            // this.columnValues.push('actions');
-            // this.displayOrderCols=res.data.openTransactionColumns;
           );
       } else if (this.data.mode === 'delete_workstation') {
         let payload = {
@@ -393,22 +381,6 @@ export class DeleteConfirmationComponent implements OnInit {
               });
             }
           );
-
-        // this.Api.deleteEmployeeLocation(locationData).subscribe((res: any) => {
-        //   // if (res.isExecuted) {
-        //   //   this.dialog.closeAll();
-        //   //   this.toastr.success(labels.alert.delete, 'Success!', {
-        //   //     positionClass: 'toast-bottom-right',
-        //   //     timeOut: 2000
-        //   //   });
-        //   // } else {
-        //   //   this.dialog.closeAll();
-        //   //   this.toastr.error(labels.alert.went_worng, 'Error!', {
-        //   //     positionClass: 'toast-bottom-right',
-        //   //     timeOut: 2000
-        //   //   });
-        //   // }
-        // });
       }else if(this.data.mode == 'delete-category'){
         let payload = {
           WSID: this.userData.wsid,
@@ -446,7 +418,6 @@ export class DeleteConfirmationComponent implements OnInit {
       } 
       else {
         this.dialogRef.close('Yes');
-        // this.dialog.closeAll();
       }
     } else {
       this.dialogRef.close('Yes');

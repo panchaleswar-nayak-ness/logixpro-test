@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { IeFtpSettingsComponent } from 'src/app/dialogs/ie-ftp-settings/ie-ftp-settings.component';
 
@@ -7,12 +7,10 @@ import { IeFtpSettingsComponent } from 'src/app/dialogs/ie-ftp-settings/ie-ftp-s
   templateUrl: './ie-ftp.component.html',
   styleUrls: ['./ie-ftp.component.scss']
 })
-export class IeFtpComponent implements OnInit {
+export class IeFtpComponent {
 
   constructor(private dialog: MatDialog) { }
 
-  ngOnInit(): void {
-  }
 
   openIeFtpSettings() {
     const dialogRef = this.dialog.open(IeFtpSettingsComponent, {

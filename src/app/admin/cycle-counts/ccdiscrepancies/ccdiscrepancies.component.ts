@@ -20,17 +20,16 @@ const ELEMENT_DATA: PeriodicElement[] = [
 @Component({
   selector: 'app-ccdiscrepancies',
   templateUrl: './ccdiscrepancies.component.html',
-  styleUrls: ['./ccdiscrepancies.component.scss']
+  styleUrls: []
 })
-export class CCDiscrepanciesComponent implements OnInit {
+export class CCDiscrepanciesComponent{
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'ex', 'srno', 'action'];
   tableData = ELEMENT_DATA;
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void {
-  }
+ 
 
   createTransaction(){
     this.router.navigate(['/admin/createCounts']);

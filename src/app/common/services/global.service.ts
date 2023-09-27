@@ -1,14 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Api } from 'datatables.net-bs5';
 import { ToastrService } from 'ngx-toastr';
 import { BrChooseReportTypeComponent } from 'src/app/dialogs/br-choose-report-type/br-choose-report-type.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { environment } from 'src/environments/environment';
-// import jsPDF from 'jspdf';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +18,7 @@ export class GlobalService {
     numerics: {
         bigint: {
             min : -9223372036854775808,
-            max: 9223372036854775807
+            max: 9223372036854775807n
         },
         int: {
             min: -2147483648,
@@ -56,15 +54,15 @@ export class GlobalService {
 
     // returns the date from JS in format: mm/dd/yyyy hh:mm
     getCurrentDateTime() {
-        var date = new Date();
+        let date = new Date();
         // JS month is 0 indexed
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-        var year = date.getFullYear();
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let year = date.getFullYear();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
 
-        if (hours > 12) hours = date.getHours() - 12;;
+        if (hours > 12) hours = date.getHours() - 12;
         if (hours < 10) hours = parseInt('0' + hours);
 
         if (minutes < 10 && minutes != 0) minutes = parseInt(`0` + minutes);
@@ -75,7 +73,7 @@ export class GlobalService {
 
     // returns the date from JS as mm/dd/yyyy
     getCurrentDate() {
-        var date = new Date();
+        let date = new Date();
         return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
     }
     capitalizeAndRemoveSpaces(inputString: string): string { 
@@ -88,23 +86,22 @@ export class GlobalService {
         return resultString;
       }
     setToToday() {
-        var date = new Date();
+        let date = new Date();
 
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
 
         if (month < 10) month = parseInt("0" + month);
         if (day < 10) day = parseInt("0" + day);
 
-        var today = month + "/" + day + "/" + year;
+        let today = month + "/" + day + "/" + year;
         return today;
     }
  
     //Allows only numeric strings in an input box
     setNumeric(value : any) {
-        // var value = element.val();
-        var decimalVal = "";
+        let decimalVal = "";
         if (value.indexOf(".") == 0) {
             decimalVal = ".";
             value.substring(1, value.length - 1);
@@ -154,7 +151,7 @@ export class GlobalService {
     Allows only numeric, comma seperated values in input box provided by element
     */
     setNumericCommaSeparated(value : any) {
-        var allowed = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ','], index = 0;
+        let allowed = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ','], index = 0;
         while (index < value.length) {
             if (allowed.indexOf(value[index]) == -1) return value.substring(0, index).trim();
             else index++;
@@ -187,7 +184,7 @@ export class GlobalService {
     };
 
     checkDecimal(n) {
-        var result = (n - Math.floor(n)) !== 0;
+        let result = (n - Math.floor(n)) !== 0;
         if (result)
           return false;
         else
@@ -195,13 +192,13 @@ export class GlobalService {
     }
     async Print(ChooseReport,type = "lst"){ 
      
-        var paylaod:any={
+        let paylaod:any={
           ClientCustomData:ChooseReport,
           repositoryIdOfProject:"BCAEC8B2-9D16-4ACD-94EC-74932157BF82",
           PrinterReportName:localStorage.getItem("SelectedReportPrinter"),
           PrinterLabelName:localStorage.getItem("SelectedLabelPrinter"),
         }
-        var res:any = await this.Api.CommonPrint(paylaod); 
+        let res:any = await this.Api.CommonPrint(paylaod); 
         if(res.isExecuted){
           this.toast.success("print successfully completed", 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -217,7 +214,7 @@ export class GlobalService {
 
         }
       }
-      OpenExportModal(Name:any = null,ReportName) {
+      OpenExportModal(Name:any,ReportName) {
         ReportName = ReportName.replace(".lst","-lst").replace(".lbl","-lbl");
         Name = Name.replace(".lst","").replace(".lbl","");
         const dialogRef = this.dialog.open(BrChooseReportTypeComponent, {
@@ -235,7 +232,7 @@ export class GlobalService {
       
       }
       Export(ChooseReport:any,Type:any,filename:any){
-        var paylaod:any={
+        let paylaod:any={
           ClientCustomData:`${this.capitalizeAndRemoveSpaces(ChooseReport)}`,
           repositoryIdOfProject:"BCAEC8B2-9D16-4ACD-94EC-74932157BF82",
           type:Type,
@@ -317,7 +314,7 @@ export class GlobalService {
       }
  
       getImPreferences(){
-       return JSON.parse(localStorage.getItem('InductionPreference') || '{}');
+       return JSON.parse(localStorage.getItem('InductionPreference') ?? '{}');
       }
 
       updateImPreferences(){

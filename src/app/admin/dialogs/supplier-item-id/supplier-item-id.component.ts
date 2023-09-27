@@ -9,7 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-supplier-item-id',
   templateUrl: './supplier-item-id.component.html',
-  styleUrls: ['./supplier-item-id.component.scss'],
+  styleUrls: [],
 })
 export class SupplierItemIdComponent implements OnInit {
   @ViewChild('supplier_id') supplier_id: ElementRef;
@@ -72,24 +72,6 @@ export class SupplierItemIdComponent implements OnInit {
   getRow(row) {
     this.description=row.description;
     this.itemNumber=row.itemNumber;
-    // let payLoad = {
-    //   id: row.id,
-    //   username: this.data.userName,
-    //   wsid: this.data.wsid,
-    // };
-    // this.transactionService
-    //   .get(payLoad, '/Admin/ManualTransactionTypeAhead', true)
-    //   .subscribe(
-    //     (res: any) => {
-    //       if(res && res.data){
-    //         this.setLocationByItemList=res.data.map((item)=>{
-    //           return {invMapID:item.invMapID,select:`${item.itemQty}@${item.locationNumber}`}
-    //         }) 
-    //       }
-    //       // this.searchAutocompleteItemNum = res.data;
-    //     },
-    //     (error) => {}
-    //   );
   }
   ngOnDestroy() {
     this.searchByItem.unsubscribe();

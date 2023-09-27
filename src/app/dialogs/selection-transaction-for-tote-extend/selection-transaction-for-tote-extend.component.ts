@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common' 
 import {
   MatDialog,
@@ -23,7 +23,7 @@ import { PaPrintLabelConfirmationComponent } from '../pa-print-label-confirmatio
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
   templateUrl: './selection-transaction-for-tote-extend.component.html',
-  styleUrls: ['./selection-transaction-for-tote-extend.component.scss']
+  styleUrls: []
 })
 export class SelectionTransactionForToteExtendComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;
@@ -132,18 +132,17 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     })
   }
   onToteChange(event,type){
-  // event.value
     this.totes.filter(item=>{
       if(type==='toteId'){  // change position on id base
         if(item.toteID===event.value){
           this.selectedTotePosition=item.totesPosition
           return
         }
-      }else{ //change id on position base
-        if(item.totesPosition===event.value){
+      }else if(item.totesPosition===event.value) { //change id on position base
+        
           this.selectedToteID=item.toteID
           return
-        }
+        
       }
     
     });
@@ -151,7 +150,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   getDetails() {
     try {
-      var payload = { 
+      let payload = { 
         "otid": this.data.otid,
         "itemNumber": this.data.itemNumber,
         "username": this.userData.userName,
@@ -165,7 +164,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             this.orderNum = values.orderNumber;
             this.totes = this.data.totes;
 
-            var fil = this.totes.filter((e: any) => e.isSelected == true);
+            let fil = this.totes.filter((e: any) => e.isSelected);
 
             this.toteForm.patchValue({
 
@@ -297,7 +296,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
           const values = this.toteForm.value;
 
-          var payload = { 
+          let payload = { 
             "itemNumber": values.itemNumber,
             "ccell": values.carouselCellSize,
             "bcell": values.bulkCellSize,
@@ -472,7 +471,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         return;
       }
 
-      var payLoad = {
+      let payLoad = {
         "item": values.itemNumber,        
         username: this.userData.userName,
         wsid: this.userData.wsid,
@@ -500,10 +499,6 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
           } else {
             this.findLocation(false, 0);
-            // this.toastr.error('Something went wrong', 'Error!', {
-            //   positionClass: 'toast-bottom-right',
-            //   timeOut: 2000,
-            // });
           }
         },
         (error) => {}
@@ -523,7 +518,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
       const values = this.toteForm.value;
 
-      var payLoad = {
+      let payLoad = {
         "qtyPut": values.quantityAllocatedPutAway ? parseInt(values.quantityAllocatedPutAway) : 0,
         "item": values.itemNumber,
         "ccell": values.carouselCellSize,
@@ -738,7 +733,6 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                   eRow: 5,
                   itemWhse: [
                     values.itemNumber,
-                    // "238562",
                     values.warehouse,
                     "1=1"
                   ],
@@ -825,9 +819,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
           });
         } else {
 
-          var payload2 = {
+          let payload2 = {
             "otid": this.data.otid,
-            "splitQty": 0, // (values.toteQty ? parseInt(values.toteQty) : 0) - (values.quantityAllocatedPutAway ? parseInt(values.quantityAllocatedPutAway) : 0),
+            "splitQty": 0, 
             "qty": values.toteQty,
             "toteID": values.toteID,
             "batchID": this.data.batchID,
@@ -878,7 +872,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
                           }
                           else{
-                            for (var i = 0; i < result; i++) {
+                            for (let i = 0; i < result; i++) {
                               this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`)
                           };
                           }
@@ -887,18 +881,18 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                       })
 
                     }
-                    else{
-                      if(numLabel>0){
+                    else if (numLabel > 0) {
+                      
                         if(!this.imPreferences.printDirectly){
                           window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
                         }
                         else{
-                          for (var i = 0; i < numLabel; i++) {
+                          for (let i = 0; i < numLabel; i++) {
                             this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`)
                         };
                         }
-                      }
+                      
                    
                     }
 

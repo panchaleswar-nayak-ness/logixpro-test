@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
@@ -8,7 +8,7 @@ import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirma
 @Component({
   selector: 'app-reel-detail',
   templateUrl: './reel-detail.component.html',
-  styleUrls: ['./reel-detail.component.scss']
+  styleUrls: []
 })
 export class ReelDetailComponent implements OnInit {
 
@@ -30,9 +30,6 @@ export class ReelDetailComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService) { }
 
   ngOnInit(): void {
-
-    // debugger
-    // console.log(this.data.fromtrans)
     this.fieldNames=this.data.propFields
     if(!this.data.fromtrans){
       this.ReelOrder = this.data.hvObj.order
@@ -78,13 +75,11 @@ export class ReelDetailComponent implements OnInit {
     }
     else{
       this.ReelWarehouse = '';
-      // this.ReelQty = '';
       this.wareHouseSensitivity = false
     }
   }
 
   reelDetailSubmit(){
-    // debugger
     if(this.ReelQty == undefined || this.ReelQty == ""){
       const dialogRef = this.dialog.open(AlertConfirmationComponent, {
         height: 'auto',
@@ -117,7 +112,6 @@ export class ReelDetailComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => {
         if(result){
           this.openWareHouse()
-          // return
         }
       })
    
@@ -155,7 +149,6 @@ export class ReelDetailComponent implements OnInit {
   }
 
   openWareHouse(){
-    // console.log(this.wareHouseSensitivity)
     let dialogRef = this.dialog.open(WarehouseComponent, {
       height: 'auto',
       width: '640px',

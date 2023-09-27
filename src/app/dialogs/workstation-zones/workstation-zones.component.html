@@ -5,15 +5,26 @@
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
-
-<div class="d-flex gap-12 my-4 justify-content-end">
-    <button mat-flat-button color="primary" class="add-icon-button" (click)="addVLRow($event)" [disabled]="allZoneList.length >= 1">
-        <span class="material-symbols-outlined">
-            add
-        </span>
-    </button>
+<div class="row my-2 align-items-center">
+    <div class="col-xl-8">
+        <mat-form-field class="custom-form-field w-100" appearance="outline">
+            <mat-label>Add Zone</mat-label>
+            <input matInput type="text" [(ngModel)]="selectedZone"  [matAutocomplete]="searchauto" (keyup)="searchItem($event)">
+            <button matSuffix *ngIf="selectedZone" class="clear-btn"  (click)="selectedZone = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                    <mat-autocomplete class="card custom-scroll" #searchauto="matAutocomplete"
+                        (optionSelected)="onSearchSelect($event)">
+                        <mat-option *ngFor="let zone of zoneSelectOptions" [value]="zone" class="matAutoCompTableContent">
+                            <div class="loc_option">
+                                <span class="searchColumn" style="width:  140px;">{{zone}}</span>
+                            </div>
+                        </mat-option>
+                    </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div class="col-xl-4">
+        <button [disabled]="velocity_code_list.length == 0" mat-flat-button color="warn" class="btn-regular w-100" (click)="clearAllZones()">Clear All Zones</button>
+    </div>  
 </div>
-
 <div class="warehouse">
     <div class="card w-100">
         <div class="card-header">
@@ -66,10 +77,6 @@
                                                 [disabled]="vlcode.isSaved">
                                         </mat-form-field>
                                         <div class="d-flex gap-12">
-                                            <!-- <button *ngIf="!vlcode.isSaved" mat-flat-button color="primary"
-                                                class="xsm-icon-button" (click)="saveVlCode(vlname.value, vlcode)">
-                                                <mat-icon class="material-symbols-outlined">save</mat-icon>
-                                            </button> -->
                                             <button mat-flat-button color="warn" class="xsm-icon-button"
                                                 (click)="delete(vlname.value);">
                                                 <mat-icon class="material-symbols-outlined">close</mat-icon>

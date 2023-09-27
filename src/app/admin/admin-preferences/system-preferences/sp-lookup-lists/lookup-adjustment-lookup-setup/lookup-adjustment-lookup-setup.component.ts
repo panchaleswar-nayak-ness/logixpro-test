@@ -10,7 +10,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-lookup-adjustment-lookup-setup',
   templateUrl: './lookup-adjustment-lookup-setup.component.html',
-  styleUrls: ['./lookup-adjustment-lookup-setup.component.scss']
+  styleUrls: []
 })
 export class LookupAdjustmentLookupSetupComponent implements OnInit {
   userData

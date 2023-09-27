@@ -7,9 +7,6 @@
 
         <form [formGroup]="controlNameForm" (ngSubmit)="onSend(controlNameForm)" style="height:200px;">
 
-            <!-- <mat-form-field class="d-block w-100" appearance="outline"> -->
-                <!-- <mat-label>Set Control Names</mat-label> -->
-                <!-- <input matInput type="text" name="Control Names"> -->
                 <mat-form-field class="d-block w-100" appearance="outline">
                     <mat-label>Control Name</mat-label>
                     <input  #control_name type="text"
@@ -22,15 +19,6 @@
                            <button matSuffix *ngIf="constrolName" class="clear-btn"  (click)="constrolName = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                   
                   
-                           <!-- <mat-autocomplete class="autocomplete-center" panelWidth="auto" autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="controlNameForm.controls['controlName'].setValue($event.option.value)">
-                        <h6 class="ctl_name ac-dropdown-label"><span>Control Name</span> <span>Function</span></h6>
-                        <mat-option *ngFor="let option of filteredOptions | async"
-                            [value]="option.controlName" style="width:900px !important;">
-                            <div class="ctl_option ac-dropdown-option">
-                                <span>{{option.controlName}}</span> <span>{{option.function}}</span>
-                            </div>
-                        </mat-option>
-                    </mat-autocomplete> -->
 
                     <mat-autocomplete class="card" autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="controlNameForm.controls['controlName'].setValue($event.option.value)">
                         <h6 class="card-header matAutoCompHeader stickyHeader ps-4"><span style="width:  40%;">Control Name</span> <span style="width:  60%;">Function</span></h6>
@@ -47,9 +35,7 @@
 
                   </mat-form-field>
                   <div class="error" *ngIf="hasError('controlName', 'required')">This field is required.</div>
-            <!-- </mat-form-field> -->
             <mat-dialog-actions>
-                <!-- <button mat-button matDialogClose="no" color="danger">Cancel</button> -->
                 <button type="submit" mat-flat-button  class="btn-lg" style="flex: 1;"
                     color="primary" [disabled]="!controlNameForm.valid">{{form_btn_label}}</button>
             </mat-dialog-actions>

@@ -103,29 +103,8 @@
           </mat-form-field>
         </div>
         <div class="col-3">
-          <!-- <mat-form-field class="action-dropdown" appearance="outline">
-            <mat-label>Actions</mat-label>
-            <mat-select  #matRef class="employees-action"  
-              placeholder="Actions">
-              <mat-option>Add Location</mat-option>
-              <mat-option value="print">Print</mat-option>
-              <mat-option value="set_column_sq">Set Column Sequence</mat-option>
-            </mat-select>
-            <span class="material-symbols-outlined icon-expand-more">
-              expand_more
-            </span>
-          </mat-form-field> -->
           <mat-form-field class="custom-form-field w-100 __grab_cursor" appearance="outline" (click)="openCellSizeDialog('cfCellSize')">
             <mat-label>Carton Flow</mat-label>
-            <!-- <mat-select  #matRef class="employees-action"  
-              placeholder="Actions">
-              <mat-option>Add Location</mat-option>
-              <mat-option value="print">Print</mat-option>
-              <mat-option value="set_column_sq">Set Column Sequence</mat-option>
-            </mat-select>
-            <span class="material-symbols-outlined icon-expand-more">
-              expand_more
-            </span> -->
             <input matInput type="text" formControlName="cfCellSize"  maxlength="50">
             <span matSuffix>
               <mat-icon style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>

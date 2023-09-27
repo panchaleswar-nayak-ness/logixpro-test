@@ -7,7 +7,6 @@ import { MaterialModule } from '../material-module';
 import { GeneralModule } from '../gen-module';
 import { CdkTableModule} from '@angular/cdk/table';
 
-//Employees Components
 import { EmployeesComponent } from './employees/employees.component';
 import { EmployeesLookupComponent } from './employees/employees-lookup/employees-lookup.component';
 import { EmployeePickupLevelComponent } from './employees/employee-pickup-level/employee-pickup-level.component';
@@ -17,7 +16,6 @@ import { AssignedFunctionsComponent } from './employees/assigned-functions/assig
 import { UnassignedFunctionsComponent, filterUnassignedFunc } from './employees/unassigned-functions/unassigned-functions.component';
 import { StatisticsLookupComponent } from './employees/statistics-lookup/statistics-lookup.component';
 
-//Dialogs
 import { AddNewEmployeeComponent } from './dialogs/add-new-employee/add-new-employee.component';
 import { AddZoneComponent } from './dialogs/add-zone/add-zone.component';
 import { DeleteConfirmationComponent } from './dialogs/delete-confirmation/delete-confirmation.component';
@@ -31,7 +29,6 @@ import { AddInvMapLocationComponent } from './dialogs/add-inv-map-location/add-i
 import { WarehouseComponent } from './dialogs/warehouse/warehouse.component';
 import { SetColumnSeqComponent } from './dialogs/set-column-seq/set-column-seq.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 import { CellSizeComponent } from './dialogs/cell-size/cell-size.component';
 import { VelocityCodeComponent } from './dialogs/velocity-code/velocity-code.component';
@@ -47,8 +44,6 @@ import { BatchManagerComponent } from './batch-manager/batch-manager.component';
 import { BatchDeleteComponent } from './batch-manager/batch-delete/batch-delete.component';
 import { BatchOrderListComponent } from './batch-manager/batch-order-list/batch-order-list.component';
 import { BatchSelectedOrdersComponent } from './batch-manager/batch-selected-orders/batch-selected-orders.component';
-//import { KitItemsComponent } from './inventory-master/kit-items/kit-items.component';
-//import { InventoryLocationComponent } from './inventory-master/inventory-location/inventory-location.component';
 import { CycleCountsComponent } from './cycle-counts/cycle-counts.component';
 import { CCDiscrepanciesComponent } from './cycle-counts/ccdiscrepancies/ccdiscrepancies.component';
 import { CCCountQueueComponent } from './cycle-counts/cccount-queue/cccount-queue.component';
@@ -62,8 +57,6 @@ import { LocationAssignmentComponent } from './location-assignment/location-assi
 import { CountComponent } from './location-assignment/count/count.component';
 import { PickComponent } from './location-assignment/pick/pick.component';
 import { PutAwayComponent } from './location-assignment/put-away/put-away.component';
-//import { WeighScaleComponent } from './inventory-master/weigh-scale/weigh-scale.component';
-//import { InventoryMasterOtherComponent } from './inventory-master/inventory-master-other/inventory-master-other.component';
 import { DetailComponent } from './inventory-master/detail/detail.component';
 import { KitItemComponent } from './inventory-master/kit-item/kit-item.component';
 import { LocationComponent } from './inventory-master/location/location.component';
@@ -90,9 +83,6 @@ import { TranCarouselLzoneComponent } from './transaction/order-status/tran-caro
 import { TranOffCarouselLzoneComponent } from './transaction/order-status/tran-off-carousel-lzone/tran-off-carousel-lzone.component';
 import { TranOrderListComponent } from './transaction/order-status/tran-order-list/tran-order-list.component';
 import { OpenTransactionOnHoldComponent } from './transaction/open-transaction/open-transaction-on-hold/open-transaction-on-hold.component';
-// import { MatDatepickerModule } from '@angular/material/datepicker';
-// import { MatNativeDateModule } from '@angular/material/core';
-// import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DeleteConfirmationTransactionComponent } from './dialogs/delete-confirmation-transaction/delete-confirmation-transaction.component';
 import { ReprocessedTransactionComponent } from './transaction/reprocessed-transaction/reprocessed-transaction.component';
@@ -211,8 +201,6 @@ import { LookupToteSetupComponent } from './admin-preferences/system-preferences
     BatchDeleteComponent,
     BatchOrderListComponent,
     BatchSelectedOrdersComponent,
-   // KitItemsComponent,
-  //  InventoryLocationComponent,
     CycleCountsComponent,
     CCDiscrepanciesComponent,
     CCCountQueueComponent,
@@ -226,8 +214,6 @@ import { LookupToteSetupComponent } from './admin-preferences/system-preferences
     CountComponent,
     PickComponent,
     PutAwayComponent,
-  //  WeighScaleComponent,
- //   InventoryMasterOtherComponent,
     DetailComponent,
     KitItemComponent,
     LocationComponent,
@@ -340,8 +326,6 @@ import { LookupToteSetupComponent } from './admin-preferences/system-preferences
     CdkTableModule,
     DragDropModule,
     MatInputModule,
-    // MatNativeDateModule,
-    // MatFormFieldModule,
     ToastrModule.forRoot({
       timeOut: 2000,
       extendedTimeOut: 0,

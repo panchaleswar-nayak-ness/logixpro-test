@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-wp-workstation-setup',
   templateUrl: './wp-workstation-setup.component.html',
-  styleUrls: ['./wp-workstation-setup.component.scss']
+  styleUrls: []
 })
-export class WpWorkstationSetupComponent implements OnInit {
+export class WpWorkstationSetupComponent  {
 
-  constructor() { }
+  
 
-  ngOnInit(): void {
-  }
+  
 
 }

@@ -1,5 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { SharedService } from 'src/app/services/shared.service';
 import { AuthService } from '../../../../../app/init/auth.service'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -39,7 +38,6 @@ export class TranInReprocessComponent implements OnInit {
   ngOnInit(): void {
     this.selectedOptionChange.emit(this.selectedOption);
     this.userData = this.authService.userData();
-    // this.OSFieldFilterNames();
     this.getFilteredList();
     this.sharedService.updateReprocessObserver.subscribe(selectedOrder => {
       this.orderNumber='';
@@ -55,11 +53,6 @@ export class TranInReprocessComponent implements OnInit {
        });
   }
 
-  // public OSFieldFilterNames() { 
-  //   this.Api.ColumnAlias().subscribe((res: any) => {
-  //     this.fieldNames = res.data;
-  //   })
-  // }
   radioButtonChange(event) {
 
     this.orderNumber='';
@@ -92,8 +85,6 @@ export class TranInReprocessComponent implements OnInit {
      this.filterCleared.emit('cleared');
      this.getFilteredList();
      this.getItemList();
-    //  this.reprocessSelectionEvent.emit('reprocess');
-    //  this.reasonFilterEvent.emit('none');
     }else{
       this.getFilteredList();
      this.getItemList();
@@ -120,7 +111,6 @@ export class TranInReprocessComponent implements OnInit {
       "wsid": this.userData.wsid
     }
     this.Api.ReprocessTypeahead(payload).subscribe(res => {
-      // console.log(res);
       this.orderList = res.data;
     });
   }
@@ -131,7 +121,6 @@ export class TranInReprocessComponent implements OnInit {
   }
   listSelected(event?){ 
     this.selectedItemNum.emit(this.itemNumber);
-    // this.getItemList();
   }
   getItemList(){
     let payload = {
@@ -142,7 +131,6 @@ export class TranInReprocessComponent implements OnInit {
       "wsid": this.userData.wsid
     }
     this.Api.ReprocessTypeahead(payload).subscribe(res => {
-      // console.log(res.data);
       this.itemNumberList = res.data;
     });
   }

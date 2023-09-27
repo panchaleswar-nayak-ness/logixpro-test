@@ -3,9 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardGuard } from '../guard/auth-guard.guard';
 import { AdminComponent } from './admin.component';
 import { BatchManagerComponent } from './batch-manager/batch-manager.component';
-import { CCDiscrepanciesComponent } from './cycle-counts/ccdiscrepancies/ccdiscrepancies.component';
 import { CreateCountBatchesComponent } from './cycle-counts/create-count-batches/create-count-batches.component';
-import { CreateTransactionComponent } from './cycle-counts/create-transaction/create-transaction.component';
 import { CycleCountsComponent } from './cycle-counts/cycle-counts.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { InventoryMapComponent } from './inventory-map/inventory-map.component';
@@ -22,7 +20,8 @@ import { DeAllocateOrdersComponent } from './de-allocate-orders/de-allocate-orde
 import { ReportsComponent } from './reports/reports.component';
 
 const routes: Routes = [
-  { path: '', component: AdminComponent },
+  { path: '', component: AdminComponent,
+  canActivate: [AuthGuardGuard] },
   {
     path: 'EventLog',
     component: EventLogComponent,
@@ -83,7 +82,7 @@ const routes: Routes = [
   {
     path: 'moveItems',
     component: MoveItemsComponent,
-    // canActivate: [AuthGuardGuard],
+    canActivate: [AuthGuardGuard],
   },
   {
     path: 'systemReplenishment',
@@ -98,17 +97,17 @@ const routes: Routes = [
   {
     path: 'adminPreferences',
     component: AdminPreferencesComponent,
-    // canActivate: [AuthGuardGuard],
+     canActivate: [AuthGuardGuard],
   },
   {
     path: 'DeAllocateOrders',
     component: DeAllocateOrdersComponent,
-    // canActivate: [AuthGuardGuard],
+     canActivate: [AuthGuardGuard],
   },
   {
     path: 'reports',
     component: ReportsComponent,
-    // canActivate: [AuthGuardGuard],
+     canActivate: [AuthGuardGuard],
   },
   
 ];

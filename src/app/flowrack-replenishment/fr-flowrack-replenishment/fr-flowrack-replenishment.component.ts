@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FrNumpadComponent } from '../../dialogs/fr-numpad/fr-numpad.component'; 
 import { AuthService } from '../../init/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete'; 
 import { SharedService } from '../../services/shared.service';
 import { ApiFuntions } from '../../services/ApiFuntions';
@@ -60,9 +60,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
 
 
   values(event) {
-  //  debugger
     this.itemLocation = this.autocompleteTrigger.activeOption?.value.location;
-    // this.itemQty = this.autocompleteTrigger.activeOption?.value.itemQuantity;
  
   }
 
@@ -71,15 +69,12 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
       "WSID": this.userData.wsid,
     }
     this.Api.wslocation(payload).subscribe((res) => {
-      // console.log(res)
       this.zone = res.data == 'No'||res.data == ''||res.data == null ? 'This workstation is not assigned to a zone' : res.data
       
     })
   }
 
   updateQty(val) {
-    // debugger
-    // console.log(val)
     if (val !== 0 &&val !=null) {
       this.submitBtnDisplay = false;
       this.itemQtyFocus.nativeElement.focus()
@@ -107,7 +102,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
     this.itemQtyRow = true;
     this.itemLocation = '';
     this.LocationRow = true;
-    // this.itemnumscan = ''
     this.autoFocusField.nativeElement.focus()
   }
 
@@ -128,11 +122,9 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   }
 
   locationchangeSelect(event: MatAutocompleteSelectedEvent): void {
-    // debugger
     this.itemLocation = '';
     setTimeout(() => { 
       this.itemLocation = event.option.value.location; 
-      // this.itemQty = Number(event.option.value.itemQuantity) 
       this.onLocationSelected(this.itemLocation)
     }, 1);
   }
@@ -160,7 +152,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
                 "wsid": this.userData.wsid
               }
               this.Api.openlocation(payload).subscribe((res => {
-                // console.log(res)
                 if (res.data.length < 1) {
                   this.toastr.error("There are no open locations.", 'Error!', {
                     positionClass: 'toast-bottom-right',
@@ -209,8 +200,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
 
     }
     if(event.keyCode == 8){
-      // debugger
-      // this.itemnumscan = ''; 
       if(!this.LocationRow){
         this.itemnumscan = '';
       }
@@ -224,7 +213,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
       "wsid": this.userData.wsid,
     }
     this.Api.verifyitemlocation( payload).subscribe((res => {
-      // console.log(res)
       if (res.data) {
         this.itemQtyRow = false;
         this.calculator = false
@@ -234,7 +222,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
         this.autocompleteTrigger.closePanel()
         this.clearLocationField()
         this.LocationRow = true;
-        // this.autoFocusField.nativeElement.focus()
         this.toastr.error("Location Unavailable.", 'Error!', {
           positionClass: 'toast-bottom-right',
           timeOut: 2000
@@ -256,7 +243,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => { 
       this.itemQty = !result ? '' : result;
-      this.submitBtnDisplay = !this.itemQty ? true : false;
+      this.submitBtnDisplay = !this.itemQty;
       this.autocompleteTrigger.closePanel()
       setTimeout(() => {
         this.itemQtyFocus.nativeElement.focus();
@@ -324,9 +311,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
         "Quantity": this.itemQty,
         "wsid": this.userData.wsid,
       }
-      // console.log(payload)
       this.Api.verifyitemquantity(payload).subscribe((res => {
-        // console.log(res)
         if (res.data) {
           let payload = {
             "itemNumber": this.itemnumscan,
@@ -337,7 +322,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
 
           this.Api.itemquantity(payload).subscribe((res => {
             if (res.isExecuted) {
-              // console.log('added')
               this.toastr.success('Item Quantity Added', 'Success!', {
                 positionClass: 'toast-bottom-right',
                 timeOut: 2000,
@@ -360,11 +344,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   }
 
   getAppLicense() {
-    
-
-    // moved the logic to login component and added these 2 lines to fetch the apps from localstorage and commented the api below in getAppLicence  .. 
-    // this.applicationData=JSON.parse(localStorage.getItem('availableApps') || '');
-    // this.sharedService.setMenuData(this.applicationData)
     let payload = {
       workstationid: this.userData.wsid,
     };
@@ -372,7 +351,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
       .AppNameByWorkstation(payload)
       .subscribe(
         (res: any) => {
-          if (res && res.data) {
+          if (res?.data) {
             this.convertToObj(res.data);
             localStorage.setItem('availableApps',JSON.stringify(this.applicationData)) 
             this.sharedService.setMenuData(this.applicationData)
@@ -385,7 +364,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   convertToObj(data) {
     data.wsAllAppPermission.forEach((item,i) => {
       for (const key of Object.keys(data.appLicenses)) {
-        // arrayOfObjects.push({ key, value: this.licAppData[key] });
         if (item.includes(key)  && data.appLicenses[key].isLicenseValid) {
           this.applicationData.push({
             appname: data.appLicenses[key].info.name,
@@ -393,7 +371,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
             license: data.appLicenses[key].info.licenseString,
             numlicense: data.appLicenses[key].numLicenses,
             info: this.appNameDictionary(item),
-            // status: data[key].isLicenseValid ? 'Valid' : 'Invalid',
             appurl: data.appLicenses[key].info.url,
             isButtonDisable: true,
           });
@@ -478,7 +455,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
 
   sortAppsData() {
     this.applicationData.sort(function (a, b) {
-      var nameA = a.info.name.toLowerCase(),
+      let nameA = a.info.name.toLowerCase(),
         nameB = b.info.name.toLowerCase();
       if (nameA < nameB)
         //sort string ascending

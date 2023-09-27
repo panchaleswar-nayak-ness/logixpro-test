@@ -15,11 +15,6 @@
                 
                 <div class="row">
                     <div class="col-xl-6">
-                        <!-- <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3"
-                            appearance="outline">
-                            <mat-label>Required Date</mat-label>
-                            <input type="text" placeholder="Search" matInput maxlength="255">
-                        </mat-form-field> -->
 
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                             <mat-label>Required Date</mat-label>
@@ -194,21 +189,11 @@
                 <div class="card bg-light-blue bg-50 br-none px-4 py-4 br-20 mb-3">
                     <div class="d-flex g-mini-search-box gap-20 align-items-center w-100 flex-wrap">
                         <div class="search-box" style="flex:1">
-                            <!-- <mat-form-field class="w-100 bg-white br-14" appearance="fill">
-                          <span class="material-symbols-outlined icon-search">
-                            search
-                          </span>
-                          <input #alertInput type="text" placeholder="Item No."
-                            aria-label="Search" matInput
-                            maxlength="50">
-    
-                        </mat-form-field> -->
 
 
                             <mat-form-field class="w-100 bg-white br-8" appearance="fill"
                                 [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
                                 <span class="material-symbols-outlined icon-search"> search </span>
-                                <!-- <mat-label> Item No.</mat-label> -->
                                 <input type="text" placeholder="Item No." aria-label="Number" matInput autoFocus
                                     [(ngModel)]='itemNo' maxlength="255" [matAutocomplete]="auto"
                                     (ngModelChange)="this.itemNumberSearch.next($event)">
@@ -238,7 +223,7 @@
                     <mat-tab-group (selectedTabChange)="tabChanged($event)" [(selectedIndex)]="tabIndex">
                         <mat-tab label="Move From">
                             <div class="card br-14 borderless px-0 mt-3" style="overflow-x:auto;">
-                                <ng-scrollbar track="all" class="mat-table-scrollbar scrollbar-hover-padding" style="height: 450px">
+                                <ng-scrollbar track="all" class="mat-table-scrollbar scrollbar-hover-padding" pointerEventsMethod="scrollbar" style="height: 450px">
                                     <table class=" g-card-table table1 employee-location-table custom-action-clickable-table" mat-table [dataSource]="dataSource" matSort
                                         (matSortChange)="sortChange($event)">
                                         <ng-container matColumnDef="warehouse">
@@ -400,7 +385,7 @@
                         </mat-tab>
                         <mat-tab label="Move To">
                             <div class="card br-14 borderless px-0 mt-3" style="overflow-x: auto;">
-                                <ng-scrollbar track="all" class="mat-table-scrollbar scrollbar-hover-padding" style="height: 450px">
+                                <ng-scrollbar track="all" class="mat-table-scrollbar scrollbar-hover-padding" pointerEventsMethod="scrollbar" style="height: 450px">
                                     <table class=" g-card-table table1 employee-location-table custom-action-clickable-table" mat-table [dataSource]="moveToDatasource" matSort
                                         (matSortChange)="sortChangeToItems($event)">
                                         <ng-container matColumnDef="warehouse">

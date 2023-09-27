@@ -3,6 +3,7 @@
     "success": "Your details have been added",
     "update": "Your details have been updated",
     "delete": "Your details have been deleted",
+    "remove": "Your details have been removed",
     "quarantine": "Your details have been quarantined",
     "went_worng": "Something went wrong!"
   }

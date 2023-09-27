@@ -49,6 +49,19 @@
         </div>
     </div>
 </div>
+<div>
+    <mat-form-field class="action-dropdown mb-3 w-100" appearance="outline" style="flex:1 auto">
+        <mat-label>Mark Table</mat-label>
+        <mat-select class="employees-action" (selectionChange)="markTableSelection($event)">
+            <mat-option (click)="markTable('reprocess')" >Mark For Reprocess</mat-option>
+            <mat-option (click)="markTable('complete')">Mark For Post as Complete</mat-option>
+            <mat-option (click)="markTable('history')">Mark to Send to History</mat-option>
+        </mat-select>
+        <span class="material-symbols-outlined icon-expand-more">
+            expand_more
+        </span>
+    </mat-form-field>
+</div>
 
         <div>
             <button mat-flat-button color="primary" class="w-100 btn-regular"  color="primary" (click)="postTransaction()">

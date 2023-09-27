@@ -26,7 +26,6 @@
                     </div>
              <div class="mb-3">   
                     <div>
-                        <!-- (change)="isOrderSelected?getAllOrder($event):orderItemTable($event)" -->
                         <mat-radio-group class="d-flex align-items-center gap-12 flex-wrap" aria-label="Select an option" [(ngModel)]="transactionType"   (change)="!isOrderSelected?orderItemTable($event,true):''" (change)="getAllOrder($event)">
                             <mat-radio-button color="primary" value="All" [checked]="true"> 
                                 All Trans. Type
@@ -168,7 +167,6 @@
                         <td mat-cell  *matCellDef="let element; index as i; " [class.selected]="element.isRowSelected" (click)="ordertransaction(element,i)" 
                         > {{element.name}} </td>
                       </ng-container>
-                      <!-- (click)="toggleRowBackgroundColor(i,element)" -->
 
                       <tr class="mat-row" *matNoDataRow>
                         <td class="mat-cell " [attr.colspan]="displayedColumns.length">
@@ -179,7 +177,6 @@
                         <tr mat-header-row *matHeaderRowDef="displayedColumns_1 ;sticky: true" style=" background-color: #F9F9FF;"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns_1; index as i"  
                         ></tr>
-                        <!-- [ngStyle]="{'background-color': isRowSelected(i) ? '#5555ec' : ''}" -->
 </table>
 </ng-scrollbar>
 </div>
@@ -274,8 +271,6 @@
 [pageSizeOptions]="[10, 20, 100]" #paginator  showFirstLastButtons [length]="pageLength" (page)="handlePageEventTansaction($event)"></mat-paginator>
 </ng-template>
 <div class="table-pagination d-flex justify-content-start">
-<!-- <mat-paginator [pageSize]="10"
-[pageSizeOptions]="[10, 20, 100]" #paginator   [length]="pageLength" (page)="handlePageEventTo($event)"></mat-paginator> -->
 
 </div>
 </div>

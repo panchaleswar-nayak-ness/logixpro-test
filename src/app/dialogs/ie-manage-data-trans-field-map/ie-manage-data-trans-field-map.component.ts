@@ -1,12 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-ie-manage-data-trans-field-map',
   templateUrl: './ie-manage-data-trans-field-map.component.html',
-  styleUrls: ['./ie-manage-data-trans-field-map.component.scss']
+  styleUrls: []
 })
-export class IeManageDataTransFieldMapComponent implements OnInit {
+export class IeManageDataTransFieldMapComponent {
   @ViewChild('autoFocusField') autoFocusField: ElementRef;
   ELEMENT_DATA: any[] =[
     {container_id: '1202122'},
@@ -26,8 +26,6 @@ export class IeManageDataTransFieldMapComponent implements OnInit {
     private dialog: MatDialog,
   ) { }
 
-  ngOnInit(): void {
-  }
   ngAfterViewInit(): void {
     this.autoFocusField.nativeElement.focus();
   }

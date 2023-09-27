@@ -17,7 +17,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-preferences-shipping',
   templateUrl: './preferences-shipping.component.html',
-  styleUrls: ['./preferences-shipping.component.scss'],
+  styleUrls: [],
 })
 export class PreferencesShippingComponent implements OnInit {
   shippingForm: FormGroup;
@@ -96,16 +96,6 @@ export class PreferencesShippingComponent implements OnInit {
     this.shippingForm.controls['height'].setValue(item.height);
     this.shippingForm.controls['cube'].setValue(item.cube);
 
-    // if (item.packing) {
-    //   this.selectionPacking = true;
-    // } else {
-    //   this.selectionPacking = false;
-    // }
-    // if (item.confirmAndPacking) {
-    //   this.selectionConfirmPacking = true;
-    // } else {
-    //   this.selectionConfirmPacking = false;
-    // }
 
     if (item.packing && item.confirmAndPacking) {
       this.selectionPacking = true;
@@ -168,13 +158,7 @@ export class PreferencesShippingComponent implements OnInit {
       .ConsolidationPreferenceShipUpdate(payload)
       .subscribe((response: any) => {
         this.shippingEvnt.emit();
-        if (response.isExecuted) {
-          // this.toastr.success(response.responseMessage, 'Success!', {
-          //   positionClass: 'toast-bottom-right',
-          //   timeOut: 2000,
-          // });
-          // this.ngOnInit();
-        } else {
+        if (!response.isExecuted) {
           this.toastr.error('Error', 'An Error Occured while trying to save', {
             positionClass: 'toast-bottom-right',
             timeOut: 2000,

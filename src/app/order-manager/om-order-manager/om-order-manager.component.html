@@ -26,7 +26,6 @@
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                     <mat-label>Find Order(s) By:</mat-label>
                     <mat-select [(ngModel)]="column" (selectionChange)="showHideValues(1)">
-                        <!-- <mat-option value="0">case</mat-option> -->
                         <mat-option value="Category">Category</mat-option>
                         <mat-option value="Description">Description</mat-option>
                         <mat-option value="Host Transaction ID">Host Transaction ID</mat-option>
@@ -166,14 +165,6 @@
         <div class="row">
             <div class="col-xl-5">
                 <div class="d-xl-flex d-block gap-12 align-items-center mb-3">
-                    <!-- <mat-form-field class="action-dropdown d-xl-flex d-block mb-3 mb-xl-0" appearance="outline" >
-                        <mat-select class="employees-action" placeholder="Select" [(ngModel)]="searchCol" (selectionChange)="fillTable()">
-                            <mat-option *ngFor="let col of colList" [value]="col">{{col}}</mat-option>                            
-                        </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
-                            expand_more
-                        </span>
-                    </mat-form-field> -->
                     
                     
                     <mat-form-field class="action-dropdown d-xl-flex d-block mb-3 mb-xl-0" appearance="outline">
@@ -223,8 +214,6 @@
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{col.colDef}} </th>
 
                         <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event,  element[col.colHeader], col.colDef)">
-                            <!-- {{ col.colHeader == 'transactionType' && element.transactionType.toLowerCase() == 'pick' && element.transactionQuantity > element.availableQuantity }} -->
-                            <!-- <div class="label label-red px-2" *ngIf="element.transactionType.toLowerCase() == 'pick' && element.transactionQuantity > element.availableQuantity">{{ element[col.colHeader] }}</div> -->
                             <div *ngIf="col.colDef != 'Transaction Type'"
                             #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element[col.colHeader]" 
                              style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
@@ -235,13 +224,6 @@
                             *ngIf="col.colDef == 'Transaction Type'">{{ element[col.colHeader] }}</div>
                         </td>
                     </ng-container>
-
-                    <!-- <ng-container matColumnDef="status" sticky>
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-                        <td mat-cell *matCellDef="let element">
-                            <div class="label label-red px-2" *ngIf="element.transactionType == 'Pick' && element.transactionQuantity > element.availableQuantity">Danger</div>
-                        </td>
-                    </ng-container> -->
                     
                     <ng-container matColumnDef="actions" stickyEnd>
                         <th mat-header-cell *matHeaderCellDef>Actions</th>        

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
@@ -13,7 +13,7 @@ import labels from '../../labels/labels.json';
   templateUrl: './complete-pick-batch.component.html',
   styleUrls: ['./complete-pick-batch.component.scss']
 })
-export class CompletePickBatchComponent implements OnInit {
+export class CompletePickBatchComponent{
 
   displayedColumns: string[] = ['order_no', 'tote_id', 'item_number', 'description', 'transaction_qty', 'location', 'zone','carousel','row','shelf','bin', 'action'];
   tableData: any = [];
@@ -36,9 +36,6 @@ export class CompletePickBatchComponent implements OnInit {
     private Api: ApiFuntions,
     private toastr: ToastrService,
   ) { }
-
-  ngOnInit(): void {
-  }
 
   ngAfterViewInit() {
     setTimeout(()=>{

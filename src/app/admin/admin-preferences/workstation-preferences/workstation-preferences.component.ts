@@ -3,13 +3,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-workstation-preferences',
   templateUrl: './workstation-preferences.component.html',
-  styleUrls: ['./workstation-preferences.component.scss']
+  styleUrls: []
 })
-export class WorkstationPreferencesComponent implements OnInit {
+export class WorkstationPreferencesComponent  {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+ 
 
 }

@@ -5,7 +5,7 @@ import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-global-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  styleUrls: [],
 })
 export class GlobalDashboardComponent implements OnInit {
   licAppNames: any = [];
@@ -20,7 +20,6 @@ export class GlobalDashboardComponent implements OnInit {
     if (!appData) {
       this.getAppLicense();
     }
-    // this.getAppLicense();
   }
 
   sideBarToggler() {
@@ -31,13 +30,13 @@ export class GlobalDashboardComponent implements OnInit {
     // get can access
 
     this.Api.AppLicense().subscribe(
-      (res: any) => {
-        if (res && res.data) {
+      {next: (res: any) => {
+        if (res?.data) {
           this.licAppNames = res.data;
           this.sharedService.setApp(this.licAppNames);
         }
       },
-      (error) => {}
+      error: (error) => {}}
     );
   }
 }

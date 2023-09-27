@@ -13,7 +13,7 @@ import { AuthService } from '../../../app/init/auth.service';
 import { AddFilterFunction } from '../add-filter-function/add-filter-function.component';
 import labels from '../../labels/labels.json';
 import { DeleteConfirmationComponent } from '../../../app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { MatSelect, MatSelectChange } from '@angular/material/select';
+import { MatSelect } from '@angular/material/select';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatOption } from '@angular/material/core';
@@ -30,15 +30,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
   { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
   { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
   { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  // { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  // { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  // { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  // { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  // { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  // { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  // { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  // { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  // { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
 ];
 
 @Component({
@@ -189,7 +180,6 @@ export class PickToteManagerComponent implements OnInit {
   @ViewChild('filterBatchTrans') filterBatchTrans: MatPaginator;
   @ViewChild('zoneBatchOrder') zoneBatchOrder: MatPaginator;
   @ViewChild('zoneBatchTrans') zoneBatchTrans: MatPaginator;
-  // @ViewChild('batchByZonePaginator', {read: true}) batchByZonePaginator: MatPaginator;
   @ViewChild('batchByZonePaginator', { static: false })
   set paginator(value: MatPaginator) {
     this.batchByZoneSource.paginator = value;
@@ -229,14 +219,11 @@ export class PickToteManagerComponent implements OnInit {
       if (res.data) {
         this.batchByZoneData = res.data
         this.batchByZoneSource = new MatTableDataSource<any>(this.batchByZoneData);
-        // this.batchByZoneSource.paginator = this.batchByZonePaginator;
       }
     });
   }
 
-  ngAfterViewInit() {
-    // this.batchByZoneSource.paginator = this.batchByZonePaginator;
-    
+  ngAfterViewInit() {    
     setTimeout(()=>{
       this.field_focus.nativeElement.focus();  
     }, 500);
@@ -253,7 +240,7 @@ export class PickToteManagerComponent implements OnInit {
         this.savedFilterList = res.data;
         this.filteredOptions = this.savedFilter.valueChanges.pipe(
           startWith(""),
-          map(value => (typeof value === "string" ? value : value)),
+          map(value => (value)),
           map(name => (name ? this._filter(name) : this.savedFilterList.slice()))
         );
       }
@@ -480,12 +467,11 @@ export class PickToteManagerComponent implements OnInit {
           if (this.data.allOrders.length > 0) {
             const selectedArr = this.FILTER_BATCH_DATA.filter(element => this.data.allOrders.includes(element.orderNumber));
             
-            selectedArr.map(ele => {
+            selectedArr.forEach(ele => {
               ele.isSelected = true
               this.selectedOrders.push(ele.orderNumber);
             });
             this.selectedOrders = [...new Set(this.selectedOrders)];
-            // this.onOrderSelect(selectedArr[selectedArr.length -1]);
           }
           this.filterBatchOrders = new MatTableDataSource<any>(this.FILTER_BATCH_DATA);
           this.filterBatchOrders.paginator = this.filterBatchOrder;
@@ -511,11 +497,10 @@ export class PickToteManagerComponent implements OnInit {
           if (this.data.allOrders.length > 0) {
             const selectedArr = this.FILTER_BATCH_DATA_ZONE.filter(element => this.data.allOrders.includes(element.orderNumber));
             
-            selectedArr.map(ele => {
+            selectedArr.forEach(ele => {
               ele.isSelected = true
               this.selectedOrders.push(ele.orderNumber);
             });
-            // this.onOrderSelect(selectedArr[selectedArr.length -1]);
             this.selectedOrders = [...new Set(this.selectedOrders)];
             this.allSelectOrders = this.selectedOrders;
           }
@@ -528,7 +513,7 @@ export class PickToteManagerComponent implements OnInit {
 
   }
 
-  viewReplenishZoneRecord(viewReplenish = "", element: any, rp: any) {
+  viewReplenishZoneRecord(element: any, rp: any, viewReplenish = "") {
     if (viewReplenish == "") {
       this.ordersFilterZoneSelect(element.zone, true, element.type);
 
@@ -541,7 +526,7 @@ export class PickToteManagerComponent implements OnInit {
 
   onOrderSelect(row: any) {
     if (this.selectedOrders.includes(row.orderNumber)) {
-      this.FILTER_BATCH_DATA.filter(val => {
+      this.FILTER_BATCH_DATA.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = false;
           this.filterOrderTransactionSource = [];
@@ -561,7 +546,7 @@ export class PickToteManagerComponent implements OnInit {
       });
     }
     else {
-      this.FILTER_BATCH_DATA.map(v => {
+      this.FILTER_BATCH_DATA.forEach(v => {
         if (this.selectedOrders.includes(v.orderNumber)) {
           v.isSelected = true;
         }
@@ -571,8 +556,7 @@ export class PickToteManagerComponent implements OnInit {
       });
       this.tempHoldEle = row; 
 
-      // this.selectedOrders.push(row.orderNumber);
-      this.FILTER_BATCH_DATA.filter(val => {
+      this.FILTER_BATCH_DATA.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = true;
         }
@@ -590,13 +574,9 @@ export class PickToteManagerComponent implements OnInit {
         "wsid": this.userData.wsid,
       }
       this.Api.PickToteTransDT(paylaod).subscribe((res) => {
-        // if (res.data.length > 0) {
-        ;
-
         this.filterOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
         this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
         this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
-        // }
       });
     }
     
@@ -606,7 +586,7 @@ export class PickToteManagerComponent implements OnInit {
 
   onOrderSelectZone(row: any) {
     if (this.selectedOrders.includes(row.orderNumber)) {
-      this.FILTER_BATCH_DATA_ZONE.filter(val => {
+      this.FILTER_BATCH_DATA_ZONE.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = false;
           this.zoneOrderTransactionSource = [];
@@ -627,7 +607,7 @@ export class PickToteManagerComponent implements OnInit {
       });
     }
     else {
-      this.FILTER_BATCH_DATA_ZONE.map(v => {
+      this.FILTER_BATCH_DATA_ZONE.forEach(v => {
         if (this.selectedOrders.includes(v.orderNumber)) {
           v.isSelected = true;
         }
@@ -637,8 +617,7 @@ export class PickToteManagerComponent implements OnInit {
       });
       this.tempHoldEle = row;
 
-      // this.selectedOrders.push(row.orderNumber);
-      this.FILTER_BATCH_DATA_ZONE.filter(val => {
+      this.FILTER_BATCH_DATA_ZONE.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = true;
         }
@@ -656,11 +635,9 @@ export class PickToteManagerComponent implements OnInit {
         "wsid": this.userData.wsid,
       }
       this.Api.PickToteTransDT(paylaod).subscribe((res) => {
-        // if (res.data) {
         this.zoneOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
         this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
         this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
-        // }
       });
     }
 
@@ -671,7 +648,6 @@ export class PickToteManagerComponent implements OnInit {
       "wsid": this.userData.wsid,
     }
     this.Api.PickBatchFilterOrderData(paylaod).subscribe(res => {
-      // console.log(res.data);
 
       if (res.data) {
         this.FILTER_DATA = [];
@@ -684,9 +660,7 @@ export class PickToteManagerComponent implements OnInit {
           this.onAddFilter(this.pickBatchFilter);
         }
 
-        if (!this.pickBatchOrder) {
-          // this.onAddOrderBy();
-        } else {
+        if (this.pickBatchOrder) {
           this.onAddOrderBy(this.pickBatchOrder);
         }
       }
@@ -715,7 +689,7 @@ export class PickToteManagerComponent implements OnInit {
       this.onCloseAllPickToteManager();
     }
     if (option === 'unselect_all_orders') {
-      this.FILTER_BATCH_DATA.map(ele => {
+      this.FILTER_BATCH_DATA.forEach(ele => {
         ele.isSelected = false;
         ele.priority = '';
         this.selectedOrders = [];
@@ -750,7 +724,7 @@ export class PickToteManagerComponent implements OnInit {
       this.onCloseAllPickToteManager();
     }
     if (option === 'unselect_all_orders') {
-      this.FILTER_BATCH_DATA_ZONE.map(ele => {
+      this.FILTER_BATCH_DATA_ZONE.forEach(ele => {
         ele.isSelected = false;
         ele.priority = '';
         this.selectedOrders = [];
@@ -765,14 +739,13 @@ export class PickToteManagerComponent implements OnInit {
           this.selectedOrders.push(this.tempHoldEle.orderNumber);
         }
       }
-      // this.selectedOrders.push(this.tempHoldEle.orderNumber);
       this.onCloseAllPickToteManager();
     }
     this.orderActionRefreshZone();
   }
   onViewOrderLineZone(event) {
     let orderNum = '';
-    this.FILTER_BATCH_DATA_ZONE.map(val => {
+    this.FILTER_BATCH_DATA_ZONE.forEach(val => {
       orderNum += val.orderNumber + ','
     })
 
@@ -798,7 +771,7 @@ export class PickToteManagerComponent implements OnInit {
     }
     if (event.value === 'vSelectedOrderZone') {
       orderNum = '';
-      this.FILTER_BATCH_DATA_ZONE.map(val => {
+      this.FILTER_BATCH_DATA_ZONE.forEach(val => {
         if (val.isSelected) {
           orderNum += val.orderNumber + ','
         }
@@ -832,14 +805,14 @@ export class PickToteManagerComponent implements OnInit {
   }
   onViewOrderLineFilter(event) {
     let orderNum = '';
-    this.FILTER_BATCH_DATA.map(val => {
+    this.FILTER_BATCH_DATA.forEach(val => {
       orderNum += val.orderNumber + ','
     })
 
     if (event.value === 'vAllOrderFilter') {
       let paylaod = {
         "Draw": 0,
-        "OrderNumber": orderNum ? orderNum : 'EAGLES',
+        "OrderNumber": orderNum ?? 'EAGLES',
         "sRow": 1,
         "eRow": 10,
         "SortColumnNumber": 0,
@@ -858,7 +831,7 @@ export class PickToteManagerComponent implements OnInit {
     }
     if (event.value === 'vSelectedOrderFilter') {
       orderNum = '';
-      this.FILTER_BATCH_DATA.map(val => {
+      this.FILTER_BATCH_DATA.forEach(val => {
         if (val.isSelected) {
           orderNum += val.orderNumber + ','
         }
@@ -908,10 +881,7 @@ export class PickToteManagerComponent implements OnInit {
         "Description": this.savedFilter.value,
         "wsid": this.userData.wsid,
       }
-      this.FILTER_DATA.map(val => {
-
-        // console.log(val);
-        
+      this.FILTER_DATA.forEach(val => {        
         
         if (val.is_db) {
           this.Api.PickBatchFilterUpdate(payload).subscribe(res => {
@@ -990,10 +960,8 @@ export class PickToteManagerComponent implements OnInit {
 
     let res: any = [];
     this.orderBydataSource.filteredData.map( (item) => {
-      var existItem = res.find((x: any) => x.sequence == item.sequence);
+      let existItem = res.find((x: any) => x.sequence == item.sequence);
       if (existItem) {
-        // console.log("item already exist");
-        // console.log(existItem);
         this.toastr.error('Can\'t have conflicting sequences within the order rows. A new sequence has been provided', 'Error!', {
           positionClass: 'toast-bottom-right',
           timeOut: 2000
@@ -1077,18 +1045,15 @@ export class PickToteManagerComponent implements OnInit {
       }
 
     }
-    else {
-      // console.log(this.allSelectOrders);
-      if (this.allSelectOrders.length > 0) {
+    else if (this.allSelectOrders.length > 0) {
+      
         selectedObj = this.FILTER_BATCH_DATA_ZONE.filter(element => this.allSelectOrders.includes(element.orderNumber));
         selectedObj = [...new Map(selectedObj.map(item => [item.orderNumber, item])).values()]
 
         let orderNumbers = new Set(selectedObj.map(d => d.orderNumber));
         currentObjArr = [...selectedObj, ...this.data.resultObj.filter(d => !orderNumbers.has(d.orderNumber))];
-      }
+      
     }
-    // console.log(currentObjArr);
-
     this.dialogRef.close(currentObjArr);
   }
 
@@ -1131,12 +1096,6 @@ export class PickToteManagerComponent implements OnInit {
 
   }
 
-  tabChange(event:any){
-    console.log(event);
-    if(event.index == 1){
-      // this.onViewOrderLineFilter({value:'vSelectedOrderFilter'});
-    }
-  }
 }
 
 

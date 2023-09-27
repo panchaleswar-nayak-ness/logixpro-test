@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-alert-confirmation',
   templateUrl: './alert-confirmation.component.html',
-  styleUrls: ['./alert-confirmation.component.scss'],
+  styleUrls: [],
 })
 export class AlertConfirmationComponent implements OnInit {
   message: any = '';
@@ -21,7 +21,7 @@ export class AlertConfirmationComponent implements OnInit {
     this.message=this.data.message;
     this.heading=this.data.heading;
     this.buttonFields=this.data.buttonField;
-    this.isAlert=this.data && this.data.notificationPrimary;
+    this.isAlert= this.data?.notificationPrimary;
   }
   ngAfterViewInit(){
     this.disableCancel=this.data.disableCancel?this.data.disableCancel:false;

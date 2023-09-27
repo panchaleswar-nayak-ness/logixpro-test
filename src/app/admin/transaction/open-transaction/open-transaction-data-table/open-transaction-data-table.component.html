@@ -10,17 +10,6 @@
       </div>
       <span>Transactions</span>
     </h2>
-    <!-- <div class="row align-items-center mb-3 ">
-
-      <div class="col-md-12 ">
-        <div class="row align-items-center mb-3 mt-3">
-          <div class="col-md-6">
-
-          </div>
-
-        </div>
-      </div>
-    </div> -->
 
 
     <div class="row align-items-center  mt-3 ">
@@ -92,11 +81,6 @@
               </ng-container>
 
 
-              <!-- <ng-container matColumnDef="action">
-                <th width="25%" mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-                <td width="25%" mat-cell *matCellDef="let element"> </td>
-              </ng-container> -->
-
 
 
 
@@ -105,47 +89,16 @@
                 <th mat-header-cell *matHeaderCellDef
                   style="border: 0;height: 67px; padding-left:65px; border-bottom: 1px solid var(--clr-tertiary-50);">
                 </th>
-                <!-- <th width="25%" mat-header-cell *matHeaderCellDef mat-sort-header>Action</th> -->
                 <td  mat-cell *matCellDef="let element">
                   <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline">
                     <mat-icon>more_horiz</mat-icon>
                   </button>
                   <mat-menu #appMenu="matMenu">
-                    <!-- <span mat-menu-item>Hold and deallocate </span> -->
                     <button mat-menu-item (click)="holdDeallocate(element)">Selected Only</button>
                     <button mat-menu-item (click)="holdDeallocate(element)">All by order no.</button>
                   </mat-menu>
                 </td>
               </ng-container>
-
-
-              <!-- <ng-container matColumnDef="actions" stickyEnd>
-
-                <th mat-header-cell *matHeaderCellDef style="border: 0; width: 200px; min-width: 64px;">
-                </th>
-
-                <td mat-cell *matCellDef="let element" style="border: 0; width: 64px;">
-
-                    <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
-                        class="circle-icon-o" appearance="outline">
-                        <mat-icon>more_horiz</mat-icon>
-                    </button>
-
-                    <mat-menu #appMenu="matMenu">
-                        <button mat-menu-item >View Item in Inventory
-                            Master</button>
-                        <button mat-menu-item >View Order in Order
-                            Status</button>
-                        <button mat-menu-item >Delete
-                            Transaction</button>
-                        <button mat-menu-item >Send Completed to
-                            History</button>
-                 
-                    </mat-menu>
-
-                </td>
-
-            </ng-container> -->
 
           
               <tr class="mat-row " *matNoDataRow>

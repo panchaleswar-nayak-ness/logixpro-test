@@ -27,7 +27,6 @@ export class HeaderComponent implements OnInit {
   configUser:any;
 isConfigUser
 statusTab;
-  // public user_data  = JSON.parse(localStorage.getItem('user') || '');
   constructor(
     private dialog: MatDialog,
     private router: Router,
@@ -41,16 +40,9 @@ statusTab;
     private global:GlobalService,
     ) {
       let width=0;
-      let height =0;
       this.breakpointSubscription = this.breakpointObserver.observe([Breakpoints.Small,Breakpoints.Large])
       .subscribe((state: BreakpointState) => {
-        // if (state.matches) {
-          // Small viewport dimensions
-           width = window.innerWidth;
-           height = window.innerHeight;
-          
-        
-        // }
+           width = window.innerWidth;    
       })
       
    this.isConfigUser=  this.authService.isConfigUser()
@@ -58,12 +50,7 @@ statusTab;
       if(!this.global.changesConfirmation){
 
         this.breadcrumbList = [];
-        if(this.authService.isConfigUser()){
-          // this.breadcrumbList.push({
-            //   name:'',
-            //   value:'/globalconfig/dashboard'
-            // })
-          }else{
+        if(!this.authService.isConfigUser()){
             this.breadcrumbList.push({
               name:'LogixPro',
               menu: '',
@@ -122,10 +109,7 @@ statusTab;
         }
       });
       
-      }  
-      // if(this.breadcrumbList[this.breadcrumbList.length-1].name == '/OrderStatus'){
-      //   this.breadcrumbList[this.breadcrumbList.length-1].value = this.statusTab
-      // } 
+      }   
      
   });
 
@@ -158,8 +142,8 @@ statusTab;
   }
   ngOnInit(): void {
     this.loading = false;
-    this.userData = JSON.parse(localStorage.getItem('user') || '{}');
-    this.configUser = JSON.parse(localStorage.getItem('userConfig') || '{}'); 
+    this.userData = JSON.parse(localStorage.getItem('user') ?? '{}');
+    this.configUser = JSON.parse(localStorage.getItem('userConfig') ?? '{}'); 
     if(this.router.url.indexOf('globalconfig') > -1){
       this.ConfigUserLogin =  true;
     }else {
@@ -169,7 +153,6 @@ statusTab;
       this.setImPreferences();
     }
       this.userData = this.authService.userData(); 
-    // 
     
 
   }
@@ -199,7 +182,7 @@ statusTab;
   breadCrumbClick(menu,index:any = null) { 
     debugger
      if(index != null){ 
-      var Url = "";  
+      let Url = "";  
       for (let i = 0; i <= index; i++) {
         if(this.breadcrumbList[i].menu!='') Url += this.breadcrumbList[i].value; 
       }   
@@ -223,13 +206,6 @@ statusTab;
       }
     }    
   }
-  // RouterLinkSet(index){
-  //   var Url = "";
-  //   for (let i = 0; i <= index; i++) {
-  //         if(this.breadcrumbList[i].menu!='') Url += this.breadcrumbList[i].value; 
-  //       }   
-  //       return Url;
-  // }
 
   logout(){    
     let paylaod = {
@@ -251,7 +227,6 @@ statusTab;
           });
         }
       })
-      // this.router.navigate(['/globalconfig']);
      
     }else{
       localStorage.clear();
@@ -270,13 +245,9 @@ statusTab;
       })
     }
   
-    // this.deleteAllCookies();
 
   }
 
-  // deleteAllCookies() {
-  //   document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-  // }
   
   getViewportDimensions(): void {
     this.breakpointObserver.observe([Breakpoints.Small])
@@ -301,7 +272,7 @@ statusTab;
   }
 
   openPrintSetting(){
-    const dialogRef = this.dialog.open(DPrinterSetupComponent, {
+    this.dialog.open(DPrinterSetupComponent, {
       height: 'auto',
       width: '556px',
       autoFocus: '__non_existing_element__',

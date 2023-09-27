@@ -11,7 +11,7 @@ import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-create-batch',
   templateUrl: './create-batch.component.html',
-  styleUrls: ['./create-batch.component.scss'],
+  styleUrls: [],
 })
 export class CreateBatchComponent implements OnInit {
   pickToTotes: any;

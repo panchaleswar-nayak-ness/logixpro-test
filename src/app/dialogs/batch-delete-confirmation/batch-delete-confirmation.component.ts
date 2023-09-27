@@ -8,9 +8,9 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-batch-delete-confirmation',
   templateUrl: './batch-delete-confirmation.component.html',
-  styleUrls: ['./batch-delete-confirmation.component.scss'],
+  styleUrls: [],
 })
-export class BatchDeleteConfirmationComponent implements OnInit {
+export class BatchDeleteConfirmationComponent {
   isChecked = true;
   heading: '';
   message: '';
@@ -24,9 +24,6 @@ export class BatchDeleteConfirmationComponent implements OnInit {
     this.message = data.message;
   }
 
-  ngOnInit(): void {
-    
-  }
   checkOptions(event: MatCheckboxChange): void {
     if (event.checked) {
       this.isChecked = false;
@@ -41,7 +38,7 @@ export class BatchDeleteConfirmationComponent implements OnInit {
         this.Api.BatchTotesDelete(this.data.payload)
           .subscribe(
             (res: any) => {
-              if (res && res.isExecuted) {
+              if (res?.isExecuted) {
                 this.toastr.success(labels.alert.delete, 'Success!', {
                   positionClass: 'toast-bottom-right',
                   timeOut: 2000,
@@ -62,7 +59,7 @@ export class BatchDeleteConfirmationComponent implements OnInit {
         this.Api.AllBatchDelete()
           .subscribe(
             (res: any) => {
-              if (res && res.isExecuted) {
+              if (res?.isExecuted) {
                 this.toastr.success(labels.alert.delete, 'Success!', {
                   positionClass: 'toast-bottom-right',
                   timeOut: 2000,
@@ -80,7 +77,6 @@ export class BatchDeleteConfirmationComponent implements OnInit {
           );
       } else {
         this.dialogRef.close({isExecuted:false});
-        // this.dialog.closeAll();
       }
     }
   }

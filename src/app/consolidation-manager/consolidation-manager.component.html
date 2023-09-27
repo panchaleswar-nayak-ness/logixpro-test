@@ -4,7 +4,6 @@
         <!-- Main Section Option (Import Export) -->
     
         <div class="col-xl-3 col-lg-6">
-          <!-- [ngClass]="isAuthorized('Tote Transactions') ? 'isDivDisabled' : ''" -->
           <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" 
           routerLink="/ConsolidationManager/Consolidation"
           (click)="updateMenu('consolidationManager', '/ConsolidationManager/Consolidation')">
@@ -17,7 +16,6 @@
         </div>
   
         <div class="col-xl-3 col-lg-6"  >
-          <!-- [ngClass]="isAuthorized('Tote Transactions') ? 'isDivDisabled' : ''" -->
           <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" 
           routerLink="/ConsolidationManager/StagingLocations"
           (click)="updateMenu('consolidationManager', '/ConsolidationManager/StagingLocations')">

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder,FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr'; 
 import labels from '../../labels/labels.json'
@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss']
+  styleUrls: []
 })
 export class ChangePasswordComponent implements OnInit {
   old_toggle = true;
@@ -36,8 +36,6 @@ export class ChangePasswordComponent implements OnInit {
   }
   onSend(form: FormGroup) {
 
-    // console.log(form.value);
-
     if (form.value.old_password.toLowerCase() === form.value.new_password.toLowerCase()) {
       this.toastr.error('You aren\'t changing your password. You\'re re-entering your password', 'Error!', {
         positionClass: 'toast-bottom-right',
@@ -64,7 +62,6 @@ export class ChangePasswordComponent implements OnInit {
             positionClass: 'toast-bottom-right',
             timeOut: 2000
           });
-          // this.dialogRef.close();
         }
       })
     }

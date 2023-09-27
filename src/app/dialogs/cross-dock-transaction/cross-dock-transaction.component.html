@@ -31,8 +31,6 @@
                     keyboard_arrow_right
                 </span>
             </button>
-            <!-- <mat-paginator>
-                </mat-paginator> -->
         </div>
     </div>
 
@@ -66,7 +64,6 @@
         <ng-container *ngFor="let t of transactions;let i = index">
         
         <div (click)="selectRow(i,t)"  [class.selection] = "selectedRow==i" class="list-item pt-3 px-3 my-2" >
-            <!-- onmouseover="this.style.background='#5555ec';" onmouseout="this.style.background='white';" -->
             <div class="row">
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
@@ -90,9 +87,7 @@
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
                         <mat-label>Completed Qty</mat-label>
                         <input [NumbersOnly]="true" #complete_focus  (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.completedQuantity}}" #compQty (focusout)="compQtyChange({ i, compQty : compQty.value })">
-                        <!-- <span matSuffix>
-                            <mat-icon style="color: var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
-                        </span> -->
+
                       </mat-form-field>
                 </div>
             </div>

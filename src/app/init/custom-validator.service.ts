@@ -6,7 +6,7 @@ import { FormControl } from '@angular/forms';
 })
 export class CustomValidatorService {
 
-  constructor() { }
+  
 
   specialCharValidator(control: FormControl): any {
     const nameRegexp: RegExp = /[='"]/;
@@ -16,7 +16,7 @@ export class CustomValidatorService {
   }
 
   specialCharValidatorExceptSlash(control: FormControl): any {
-    const nameRegexp: RegExp = /^[a-zA-Z0-9_//][a-zA-Z0-9_// ]*[a-zA-Z0-9_//]$/;
+    const nameRegexp: RegExp = /^[a-zA-Z0-9_\/][a-zA-Z0-9_\/ ]*[a-zA-Z0-9_]$/;
     if (control.value && !nameRegexp.test(control.value)) {
        return { invalidInput: true };
     }
@@ -31,7 +31,7 @@ export class CustomValidatorService {
   }
 
   customTrim(control: FormControl){
-    const isSpace = (control.value || '').trim() === '' ? true : false;
+    const isSpace = (control.value || '').trim() === '' ;
     return isSpace ? { 'whitespace': true } : null
   }
 

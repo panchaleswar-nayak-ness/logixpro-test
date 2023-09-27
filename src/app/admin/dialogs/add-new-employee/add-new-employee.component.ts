@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewChild, TemplateRef, ElementRef } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json'; 
@@ -17,7 +17,7 @@ export interface DialogData {
 @Component({
   selector: 'app-add-new-employee',
   templateUrl: './add-new-employee.component.html',
-  styleUrls: ['./add-new-employee.component.scss']
+  styleUrls: []
 })
 export class AddNewEmployeeComponent implements OnInit {
 
@@ -60,16 +60,15 @@ export class AddNewEmployeeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void { 
-    
     this.empData = this.data?.emp_data;
     
-    this.env =  JSON.parse(localStorage.getItem('env') || ''); 
+    this.env =  JSON.parse(localStorage.getItem('env') ?? ''); 
     this.allGroups  = this.empData?.allGroups;
-    this.data?.mode === 'edit' ? this.form_heading = 'Edit Employee' : 'Add New Employee';
-    this.data?.mode === 'edit' ? this.form_btn_label = 'Save' : 'Add';
-    this.data?.mode === 'edit' ? this.isEmail = true : false;
-    this.data?.mode === 'edit' ? this.isDisabledPassword = true : false;
-    this.data?.mode === 'edit' ? this.isDisabledUsername = true : false;
+    this.form_heading = this.data?.mode === 'edit' ? 'Edit Employee' : 'Add New Employee';
+    this.form_btn_label = this.data?.mode === 'edit' ?'Save' : 'Add';
+    this.isEmail = this.data?.mode === 'edit' ? true : false;
+    this.isDisabledPassword = this.data?.mode === 'edit' ? true : false;
+    this.isDisabledUsername = this.data?.mode === 'edit' ? true : false;
     this.mi = this.empData?.mi ?? '';
     this.firstName = this.empData?.firstName ?? '';
     this.OldPassword = this.empData?.password ?? '';
@@ -105,7 +104,6 @@ export class AddNewEmployeeComponent implements OnInit {
 
   initialzeEmpForm() {
     if (this.env === 'DB') {
-      // this.validatorsArray.push(this.cusValidator.customTrim);
       this.validatorsArray.push(Validators.required, this.cusValidator.customTrim)
     }
 
@@ -113,7 +111,7 @@ export class AddNewEmployeeComponent implements OnInit {
       mi: [this.mi || '', []],
       firstName: [this.firstName || '',[Validators.required, this.cusValidator.customTrim]],
       lastName: [this.lastName || '', [Validators.required, this.cusValidator.customTrim]],
-      username: [{ value: this.username, disabled: this.isDisabledPassword } || '', [Validators.required]], 
+      username: [{ value: this.username, disabled: this.isDisabledPassword } , [Validators.required]], 
       password: [this.password || '',this.validatorsArray],
       emailAddress: [this.emailAddress || '', [Validators.email]],
       accessLevel: [this.accessLevel || '', [Validators.required]],
@@ -123,18 +121,16 @@ export class AddNewEmployeeComponent implements OnInit {
     });
   }
 ChangePassword(data){ 
-  // if(this.OldPassword == this.password) this.OldPassword = -1;
   this.password = data;
 }
   async onSubmit(form: FormGroup) {
     if (form.valid) {
-      // this.isSubmitting = true;
       this.cleanForm(form);
       form.value.active = Boolean(JSON.parse(form.value.active));
       
       if (this.data?.mode === 'edit') {
         form.value.wsid = "TESTWID"; 
-        form.value.username = this.data && this.data.emp_data && this.data.emp_data.username?this.data.emp_data.username:this.data.emp_data.Username;
+        form.value.username = this.data?.emp_data?.username ? this.data.emp_data.username : this.data.emp_data.Username;
         if(this.groupChanged){
           let requpdateAccessGroup = await this.employeeService.updateAccessGroup({"group": this.empForm.value.groupName,"Username" : this.username}).toPromise();
           if(requpdateAccessGroup.isExecuted){
@@ -144,15 +140,6 @@ ChangePassword(data){
             }
           }
 
-          // this.employeeService.updateAccessGroup({"group": this.empForm.value.groupName,"Username" : this.username}).subscribe((res:any) => {
-          //   if(res.isExecuted){
-          //     this.employeeService.getAdminEmployeeDetails({"user": this.username,"wsid": "TESTWSID"}).subscribe((response: any) => { 
-          //       if(response.isExecuted){
-          //         this.functionsAllowedList = response.data.userRights;
-          //       }
-          //     });
-          //   }
-          // });
         }
           this.employeeService.updateAdminEmployee(form.value).subscribe((res: any) => {
             if (res.isExecuted) {
@@ -180,7 +167,6 @@ ChangePassword(data){
                 timeOut: 2000
               });
               
-               // this.reloadCurrentRoute();
             }
             else {
               if(response.responseMessage?.toString() === 'User already exists'){
@@ -188,8 +174,7 @@ ChangePassword(data){
                   positionClass: 'toast-bottom-right',
                   timeOut: 2000
                 });
-              }
-              else{
+              } else{
                 this.toastr.error(response.responseMessage?.toString() + '. User already exists.', 'Error!', {
                   positionClass: 'toast-bottom-right',
                   timeOut: 2000
@@ -243,15 +228,6 @@ ChangePassword(data){
       dialogRef.afterClosed().subscribe((result) => {
         if (result==='Yes') {
           this.groupChanged = true;
-          // this.employeeService.updateAccessGroup({"group": this.empForm.value.groupName,"Username" : this.username}).subscribe((res:any) => {
-          //   if(res.isExecuted){
-          //     this.employeeService.getAdminEmployeeDetails({"user": this.username,"wsid": "TESTWSID"}).subscribe((response: any) => { 
-          //       if(response.isExecuted){
-          //         this.functionsAllowedList = response.data.userRights;
-          //       }
-          //     });
-          //   }
-          // });
         }
         else{
           this.empForm.get('groupName')?.setValue(this.groupName);

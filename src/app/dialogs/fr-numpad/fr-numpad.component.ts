@@ -1,4 +1,3 @@
-import { DialogRef } from '@angular/cdk/dialog';
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -19,7 +18,6 @@ check1:boolean = false
 
   ngOnInit(): void {
    this.itemQuantity = this.data.itemQuantity.toString() 
-  //  console.log(typeof this.itemQuantity)
   }
 
   ngAfterViewInit(): void {

@@ -86,7 +86,7 @@ export class ToteTransactionViewComponent implements OnInit {
   sortChange(event) {
     if (!this.dataSource._data._value || event.direction=='' || event.direction==this.sortOrder) return;
     let index;
-    this.displayedColumns.find((x, i) => {
+    this.displayedColumns.forEach((x, i) => {
       if (x === event.active) {
         index = i;
       }
@@ -95,21 +95,16 @@ export class ToteTransactionViewComponent implements OnInit {
     this.sortCol = index;
     this.sortOrder = event.direction;
     this.getTransactionTable();
-    // this.getContentData();
   }
 
 
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-    // this.customPagination.startIndex =  e.pageIndex
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
 
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
-    // this.length = e.length;
     this.customPagination.recordsPerPage = e.pageSize;
-    // this.pageIndex = e.pageIndex;
 
-    // this.initializeApi();
     this.getTransactionTable();
   }
   getTransactionTable() {
@@ -126,9 +121,8 @@ export class ToteTransactionViewComponent implements OnInit {
 
     this.Api.TransTableView(payLoad).subscribe((res:any)=>{
       
-      if(res && res.data){
+      if(res?.data){
         this.isData=true
-      // this.dataSource = new MatTableDataSource<any>(res.data);
 
       this.dataSource = new MatTableDataSource<any>(res.data);
 
@@ -254,7 +248,7 @@ export class ToteTransactionViewComponent implements OnInit {
         }
         let baseUrl=type==='clear'?'/Induction/ClearItemFromTote':'/Induction/DeAllocateItemFromTote'
         this.Api.DynamicMethod(payLoad,baseUrl).subscribe((res:any)=>{
-          if (res && res.isExecuted) {
+          if (res?.isExecuted) {
             this.toastr.success(labels.alert.success, 'Success!', {
               positionClass: 'toast-bottom-right',
               timeOut: 2000,

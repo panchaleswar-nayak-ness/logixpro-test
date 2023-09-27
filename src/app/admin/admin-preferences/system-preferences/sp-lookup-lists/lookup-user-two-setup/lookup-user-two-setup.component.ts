@@ -11,7 +11,7 @@ import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-lookup-user-two-setup',
   templateUrl: './lookup-user-two-setup.component.html',
-  styleUrls: ['./lookup-user-two-setup.component.scss']
+  styleUrls: []
 })
 export class LookupUserTwoSetupComponent implements OnInit {
 

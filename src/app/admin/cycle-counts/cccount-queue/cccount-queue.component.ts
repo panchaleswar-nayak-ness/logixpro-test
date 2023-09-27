@@ -23,16 +23,13 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './cccount-queue.component.html',
   styleUrls: ['./cccount-queue.component.scss']
 })
-export class CCCountQueueComponent implements OnInit {
+export class CCCountQueueComponent{
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'ex', 'srno', 'action'];
   tableData = ELEMENT_DATA;
 
 
   constructor(private dialog: MatDialog,) { }
-
-  ngOnInit(): void {
-  }
 
   importFieldMapping(){
     let dialogRef = this.dialog.open(ImportFieldMappingComponent, {

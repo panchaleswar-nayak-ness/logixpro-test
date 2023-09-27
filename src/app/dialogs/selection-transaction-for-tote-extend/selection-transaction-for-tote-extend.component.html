@@ -3,7 +3,6 @@
   <h1 class="m-0" mat-dialog-title>Selection Transaction For Tote</h1>
   <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
     <mat-icon class="close-icon">close</mat-icon>
-    <!-- (click)="openCrossDockTransactionDialogue()" -->
   </button>
 </div>
 <div mat-dialog-content>
@@ -71,7 +70,6 @@
         <div class="col-xl-3">
           <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
             <mat-label>{{fieldNames?.userField1}}</mat-label>
-            <!-- #field_focus  -->
             <input formControlName="userField1" (keydown.shift.enter)="$event.preventDefault()" matInput type="text">
           </mat-form-field>
         </div>
@@ -451,7 +449,6 @@
               <mat-select formControlName="totePos" class="employees-action">
                 <mat-option *ngFor="let tote of totes"
                   value="{{tote.totesPosition}}">{{tote.totesPosition}}</mat-option>
-                <!-- <mat-option value="back">Back</mat-option> -->
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more

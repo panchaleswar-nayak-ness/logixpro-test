@@ -8,7 +8,6 @@ import { LoginComponent } from './login/login.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { MatButtonModule } from '@angular/material/button';
-// import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -112,8 +111,6 @@ import { ShippingCompleteDialogComponent } from './dialogs/shipping-complete-dia
 import { CrDesignFilenameConfirmationComponent } from './dialogs/cr-design-filename-confirmation/cr-design-filename-confirmation.component';
 import { DPrinterSetupComponent } from './dialogs/d-printer-setup/d-printer-setup.component';
 import { PaPrintLabelConfirmationComponent } from './dialogs/pa-print-label-confirmation/pa-print-label-confirmation.component';
-//import { InputFilterComponent } from './dialogs/choose-location/choose-location.component';
-// import { ActionDisableDirective } from './init/action-disable.directive';
 
 @NgModule({
   declarations: [
@@ -209,7 +206,6 @@ import { PaPrintLabelConfirmationComponent } from './dialogs/pa-print-label-conf
     CrDesignFilenameConfirmationComponent,
     DPrinterSetupComponent,
     PaPrintLabelConfirmationComponent,
-    // ActionDisableDirective,
   ],
   imports: [
     BrowserModule,
@@ -221,7 +217,6 @@ import { PaPrintLabelConfirmationComponent } from './dialogs/pa-print-label-conf
     AppRoutingModule,
     DashboardModule,
     MatButtonModule,
-    // MatFormFieldModule,
     MatInputModule,
     MatRippleModule,
     MatIconModule,

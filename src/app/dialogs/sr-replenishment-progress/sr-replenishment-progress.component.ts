@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-sr-replenishment-progress',
   templateUrl: './sr-replenishment-progress.component.html',
-  styleUrls: ['./sr-replenishment-progress.component.scss']
+  styleUrls: []
 })
-export class SrReplenishmentProgressComponent implements OnInit {
+export class SrReplenishmentProgressComponent {
 
-  constructor() { }
 
-  ngOnInit(): void {
-  }
 
 }

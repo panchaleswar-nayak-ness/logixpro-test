@@ -1,12 +1,9 @@
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { PrintRangeComponent } from '../print-range/print-range.component';
 import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
-import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -14,7 +11,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-item-category',
   templateUrl: './item-category.component.html',
-  styleUrls: ['./item-category.component.scss']
+  styleUrls: []
 })
 export class  ItemCategoryComponent implements OnInit {
   @ViewChildren('category_category', { read: ElementRef }) category_category: QueryList<ElementRef>;
@@ -43,11 +40,10 @@ export class  ItemCategoryComponent implements OnInit {
   }
 
  getCategoryList(){ 
-    // this.enableButton.shift();
     this.api.getCategory().subscribe((res) => {
       this.category_list = res.data;
       this.enableButton=[];
-      for(var i=0;i<this.category_list.length;i++)
+      for(let i=0;i<this.category_list.length;i++)
       {
         this.category_list.fromDB = true;
         this.enableButton.push({index:i,value:true});
@@ -92,7 +88,7 @@ export class  ItemCategoryComponent implements OnInit {
        });
    
       }  
-      return; 
+
     });
 
   } 
@@ -168,8 +164,5 @@ export class  ItemCategoryComponent implements OnInit {
 
   openPrintRangeDialog(){
     this.global.Print(`FileName:printCategoriesReport`)
-    // this.dialogRef.close();
-    // window.location.href = `/#/report-view?file=FileName:printCategoriesReport`
-    // window.location.reload(); 
   }
 }

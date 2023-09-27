@@ -1,17 +1,16 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { EmployeeObject, IEmployee } from 'src/app/Iemployee';  
+import { EmployeeObject} from 'src/app/Iemployee';  
 import { AuthService } from '../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 
-export interface groups_details {
+export interface GroupsDetails {
   groupName: string;
 }
 
@@ -133,7 +132,7 @@ export class GroupsLookupComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-   this.group_data_source && this.group_data_source.filteredData && this.group_data_source.filteredData.push({groupName:this.updateGrpTable});
+    this.group_data_source?.filteredData?.push({groupName:this.updateGrpTable});
     
   }
 

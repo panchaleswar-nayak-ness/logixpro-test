@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-ie-file-backup',
   templateUrl: './ie-file-backup.component.html',
   styleUrls: ['./ie-file-backup.component.scss']
 })
-export class IeFileBackupComponent implements OnInit {
+export class IeFileBackupComponent  {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

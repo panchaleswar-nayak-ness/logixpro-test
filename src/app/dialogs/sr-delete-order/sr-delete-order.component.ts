@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service';
@@ -6,9 +6,9 @@ import { AuthService } from 'src/app/init/auth.service';
 @Component({
   selector: 'app-sr-delete-order',
   templateUrl: './sr-delete-order.component.html',
-  styleUrls: ['./sr-delete-order.component.scss']
+  styleUrls: []
 })
-export class SrDeleteOrderComponent implements OnInit {
+export class SrDeleteOrderComponent {
 
   confrimDelete: boolean = false;
   constructor(
@@ -19,8 +19,7 @@ export class SrDeleteOrderComponent implements OnInit {
     private authService: AuthService,
   ) { }
 
-  ngOnInit(): void {
-  }
+  
 
   onConfirmdelete(){
     this.dialog.closeAll();

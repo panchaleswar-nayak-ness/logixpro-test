@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-global-config-set-sql',
   templateUrl: './global-config-set-sql.component.html',
-  styleUrls: ['./global-config-set-sql.component.scss'],
+  styleUrls: [],
 })
 export class GlobalConfigSetSqlComponent implements OnInit {
   @ViewChild('user_name') user_name: ElementRef;
@@ -37,32 +37,11 @@ export class GlobalConfigSetSqlComponent implements OnInit {
 
   ngOnInit(): void {
    
-    // this.getConnectionUser();
   }
   ngAfterViewInit() {
     this.user_name.nativeElement.focus();
   }
-  getConnectionUser() {
-    // let payload = {
-    //   ConnectionName: this.data.connectionName,
-    // };
-    // this.globalConfService
-    //   .get(payload, '/GlobalConfig/ConnectionUserPassword')
-    //   .subscribe(
-    //     (res: any) => {
-   
-          
-    //       if (res.isExecuted) {
-         
-    //         this.userName='';
-    //         this.password='';
-    //         this.userName = res.data && res.data.user?res.data.user:'';
-    //         this.password = res.data && res.data.password?res.data.password:'';
-    //       }
-    //     },
-    //     (error) => {}
-    //   );
-  }
+  
   saveLogin() {
 
     if(this.userName===''|| this.password===''){

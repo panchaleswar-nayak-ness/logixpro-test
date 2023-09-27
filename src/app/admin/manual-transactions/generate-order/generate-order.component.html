@@ -16,8 +16,7 @@
           <div class="col-xl-3">
             <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3 mb-xl-0" appearance="outline">
               <mat-label>Transaction Type</mat-label>
-              <mat-select [(ngModel)]="transType" class="employees-action" value="pick"
-                (selectionChange)="onSelectionChange($event)">
+              <mat-select [(ngModel)]="transType" class="employees-action" value="pick">
                 <mat-option value="Pick">Pick</mat-option>
                 <mat-option value="Put Away">Put Away</mat-option>
 
@@ -76,9 +75,6 @@
           </div>
           <span>Transaction</span>
         </h2>
-        <!-- <span class="label label-gray px-2 f-14">Order Number:&nbsp;<b>{{this.selectedOrder}}</b></span>
-        <span class="label label-gray px-2 f-14">Transaction Type:&nbsp;<b>{{this.transType}}</b></span>
-        <span class="label label-gray px-2 f-14">Tote ID for Number:&nbsp;<b>000000</b></span> -->
       </div>
       <div class="row">
         <div class="col-xl-3">

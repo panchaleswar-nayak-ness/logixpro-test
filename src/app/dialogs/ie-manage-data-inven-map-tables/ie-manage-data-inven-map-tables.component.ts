@@ -4,9 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-ie-manage-data-inven-map-tables',
   templateUrl: './ie-manage-data-inven-map-tables.component.html',
-  styleUrls: ['./ie-manage-data-inven-map-tables.component.scss']
+  styleUrls: []
 })
-export class IeManageDataInvenMapTablesComponent implements OnInit {
+export class IeManageDataInvenMapTablesComponent {
   ELEMENT_DATA: any[] =[
     {inv_map_id: '1202122'},
     // {inv_map_id: '1202123'},
@@ -25,7 +25,5 @@ export class IeManageDataInvenMapTablesComponent implements OnInit {
     private dialog: MatDialog,
   ) { }
 
-  ngOnInit(): void {
-  }
 
 }

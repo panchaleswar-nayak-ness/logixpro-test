@@ -100,9 +100,6 @@ export class GenerateTransactionComponent implements OnInit {
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value || 'auto';
   }
-  searchData(event?) {
-    // this.selectedOrder = event.target.value;
-  }
   printLabelMT(){
     this.global.Print(`FileName:printMTLabel|ID:${this.transactionID}|User:${this.userData.userName}`,'lbl')
   
@@ -256,7 +253,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.quantityAllocatedPutAway = '';
     this.orderNumber = '';
     this.emergency = false;
-    this.searchAutocompleteList? this.searchAutocompleteList.length=0:[];
+    this.searchAutocompleteList = [];
     this.item=null;
     this.selectedAction='';
     this.clearMatSelectList();
@@ -298,7 +295,7 @@ export class GenerateTransactionComponent implements OnInit {
     
           if (res) {
             let payload = {
-              deleteTransaction: type === 'save' ? false : true,
+              deleteTransaction: type !== 'save',
               transactionID: this.transactionID,
               username: this.userData.userName,
               wsid: this.userData.wsid,
@@ -382,18 +379,6 @@ export class GenerateTransactionComponent implements OnInit {
       this.Api
         .UpdateTransaction(payload)
         .subscribe((res: any) => {
-          // if (res && res.isExecuted) {
-          //   this.toastr.success(labels.alert.success, 'Success!', {
-          //     positionClass: 'toast-bottom-right',
-          //     timeOut: 2000,
-          //   });
-          //   this.clearMatSelectList();
-          // } else {
-          //   this.toastr.error(res.responseMessage, 'Error!', {
-          //     positionClass: 'toast-bottom-right',
-          //     timeOut: 2000,
-          //   });
-          // }
         });
   }
   deleteTransaction() {
@@ -583,8 +568,6 @@ export class GenerateTransactionComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       if(!res)return
       this.supplierID = res.supplierID;
-      // this.itemNumber=res.itemNumber;
-      // this.description=res.description;
       this.getSupplierItemInfo();
       this.clearMatSelectList();
     });
@@ -652,7 +635,7 @@ export class GenerateTransactionComponent implements OnInit {
 
 
       if (res.isExecuted) {
-        this.isLocation=res.location!=undefined?true:false;
+        this.isLocation= res.location != undefined;
         this.orderNumber = res.orderNumber;
         this.itemNumber = res.itemNumber;
         this.getRow(res);

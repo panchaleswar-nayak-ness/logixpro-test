@@ -52,16 +52,6 @@
         <ng-scrollbar class="mat-table-scrollbar" style="height:300px" track="all"  >
 
             <table class="w-100 table-borderless" mat-table [dataSource]="shippingData" matSort>
-                <!-- <ng-container matColumnDef="select" sticky>
-                    <th mat-header-cell *matHeaderCellDef>
-                        <mat-checkbox color="primary">
-                        </mat-checkbox>
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        <mat-checkbox color="primary" matTooltip="Check" matTooltipPosition="above">
-                        </mat-checkbox>
-                    </td>
-                </ng-container> -->
                 <ng-container matColumnDef="containerID">
                     <th mat-header-cell *matHeaderCellDef> Container ID </th>
                     <td mat-cell *matCellDef="let element"> 
@@ -104,7 +94,6 @@
                     <th mat-header-cell *matHeaderCellDef> Carrier </th>
                     <td mat-cell *matCellDef="let element">
                         <mat-form-field class="action-dropdown  w-100" appearance="outline">
-                            <!-- <mat-label>Carrier</mat-label> -->
                             <mat-select #matRef class="employees-action Carrier-select" [disabled]="shippingComp" [(ngModel)]="element.carrier" placeholder="Carrier">
                                 <mat-option *ngFor="let item of carriers" [value]="item">{{item}} </mat-option>
                             </mat-select>

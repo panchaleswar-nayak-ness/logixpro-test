@@ -1,11 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-// import { ILogin, ILoginInfo } from './Ilogin'; 
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Component, ElementRef,  ViewChild } from '@angular/core';
+import { FormControl} from '@angular/forms';
+import { ActivatedRoute,  Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import labels from '../labels/labels.json';
 import { MatDialog } from '@angular/material/dialog';
-// import { ChangePasswordComponent } from './change-password/change-password.component';
 import { SpinnerService } from '../init/spinner.service';
 import { AuthService } from '../init/auth.service'; 
 import { ILogin } from '../login/Ilogin';
@@ -50,11 +47,11 @@ export class GlobalConfigComponent {
     this.addLoginForm.password = this.addLoginForm.password?.replace(/\s/g, "")||null;
     this.login = this.addLoginForm;
     const workStation: any = JSON.parse(
-      localStorage.getItem('workStation') || ''
+      localStorage.getItem('workStation') ?? ''
     );
     this.login.wsid = workStation.workStationID;
     this.Api.LoginUser(this.login).subscribe(
-      (res: any) => { 
+      {next: (res: any) => { 
         if (res.isExecuted && res.data !=null) { 
           let data = {
             _token: res.data.token,
@@ -63,11 +60,7 @@ export class GlobalConfigComponent {
             wsid: res.data.wsid,
             loginTime: res.data.loginTime,
           };
-          let userRights = res.data.userRights;
-                  // userRights = this.addCustomPermission(userRights);
-                  // this.addLoginForm.reset();
-                  localStorage.setItem('userConfig', JSON.stringify(data));
-                  // localStorage.setItem('global-config-userRights', JSON.stringify(userRights));
+          localStorage.setItem('userConfig', JSON.stringify(data));
           window.location.href =  '/#/globalconfig/home';
           window.location.reload();
         } else {
@@ -78,42 +71,14 @@ export class GlobalConfigComponent {
           });
         }
       },
-      (error) => {
+      error: (error) => {
         const errorMessage = error.responseMessage;
         this.toastr.error(errorMessage?.toString(), 'Error!', {
           positionClass: 'toast-bottom-right',
           timeOut: 2000,
         });
-      }
+      }}
     );
-    //   this.loginService
-    //     .login(this.login)
-    //     .subscribe((response: any) => {
-    //       const exe = response.isExecuted
-    //       if (exe == true) {
-    //         let data = {
-    //           '_token': response.data.token,
-    //           'userName': response.data.userName,
-    //           'accessLevel': response.data.accessLevel,
-    //           'wsid': response.data.wsid,
-    //           'loginTime': response.data.loginTime,
-    //         }
-    //         let userRights = response.data.userRights;
-    //         userRights = this.addCustomPermission(userRights);
-    //         this.addLoginForm.reset();
-    //         localStorage.setItem('user', JSON.stringify(data));
-    //         localStorage.setItem('userRights', JSON.stringify(userRights));
-    // this.router.navigate(['/dashboard']);
-    //       }
-    //       else {
-    //         const errorMessage = response.responseMessage;
-    //         this.toastr.error(errorMessage?.toString(), 'Error!', {
-    //           positionClass: 'toast-bottom-right',
-    //           timeOut: 2000
-    //         });
-    //       }
-
-    // });
   }
   enterUserName(){
     this.passwordInput.nativeElement.focus();
@@ -148,43 +113,5 @@ export class GlobalConfigComponent {
         }
       });
   }
-  }
-
-  changePass() {
-    // let dialogRef = this.dialog.open(ChangePasswordComponent, {
-    //   height: 'auto',
-    //   width: '500px',
-    //   autoFocus: '__non_existing_element__',
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(result);
-    // });
-  }
-  private addCustomPermission(userRights: any) {
-    let customPerm = [
-      'Home',
-      'Import Export',
-      'Induction Manager',
-      'Work Manager',
-      'Consolidation Manager',
-      'Order Manager',
-      'Admin Menu',
-      'FlowRack Replenish',
-      'Markout',
-
-      //Admin Menus
-      'Dashboard',
-      // 'Inventory Map',
-      // 'Batch Manager',
-      // 'Reports',
-      // 'Location Assignment',
-      // 'Cycle Count Manager',
-      // 'Move Items',
-      // 'Transaction Journal',
-      // 'Dashboard',
-      // 'Dashboard',
-      // 'Dashboard',
-    ];
-    return [...userRights, ...customPerm];
   }
 }

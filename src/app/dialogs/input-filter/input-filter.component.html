@@ -8,7 +8,6 @@
   </div>
 <div >
     <div>
-        <!--<form [formGroup]="controlNameForm" (ngSubmit)="onSend(controlNameForm)" style="height:200px;">-->
                 <mat-form-field class="mb-3 w-100" appearance="outline">
                     <mat-label *ngIf="condition != 'is between'">{{this.columnName}} {{this.condition}}</mat-label>
                     <mat-label *ngIf="condition == 'is between'">{{this.columnName}} {{this.condition}} (Start)</mat-label>
@@ -26,7 +25,6 @@
                            matInput [(ngModel)]="text2" name="text2">
                   </mat-form-field>
             <div align="end">
-                <!-- <button mat-button matDialogClose="no" color="danger">Cancel</button> -->
                 <button type="submit" mat-flat-button class="btn-lg w-100 "
                     color="primary" (click)="onSend()">submit</button>
             </div>

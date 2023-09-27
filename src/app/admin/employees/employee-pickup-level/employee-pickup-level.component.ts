@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import {MatSort, Sort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import {LiveAnnouncer} from '@angular/cdk/a11y';
@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 
 
-export interface pickup_level_details {
+export interface PickupLevelDetails {
   pick_level: string;
   start_shelf: string;
   end_shelf: string;
@@ -21,9 +21,9 @@ export interface pickup_level_details {
 @Component({
   selector: 'app-employee-pickup-level',
   templateUrl: './employee-pickup-level.component.html',
-  styleUrls: ['./employee-pickup-level.component.scss']
+  styleUrls: []
 })
-export class EmployeePickupLevelComponent implements OnInit {
+export class EmployeePickupLevelComponent{
   @Input() pickUplevels: any;
   @Input() grp_data: any;
   @Input() resetField: any;
@@ -38,22 +38,16 @@ export class EmployeePickupLevelComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   public nextPickLvl:any;
 
-  ngAfterViewInit() {
-    //this.pickup_level_data_source.sort = this.sort;
-  }
-
    displayedColumns: string[] = ['pickLevel', 'startShelf', 'endShelf', 'edit'];
 
 
-  ngOnInit(): void {
-    
-  }
+
   ngOnChanges(changes: SimpleChanges): void { 
     if(this.pickUplevels){
       let max: number = Math.max(0,...this.pickUplevels.map(o => o.pickLevel));
       this.nextPickLvl = max+1;
     }
-   if(changes['resetField'] && changes['resetField'].currentValue){
+   if(changes['resetField']?.currentValue){
     this.searchPickLvl='';
     this.pickup_level_data_source.filter='';
     this.pickup_level_data_source.length=0;
@@ -63,11 +57,11 @@ export class EmployeePickupLevelComponent implements OnInit {
     this.pickup_level_data = this.pickUplevels;
     this.pickup_level_data_source = new MatTableDataSource(this.pickup_level_data);
 
-    if(changes['isAdd'] && changes['isAdd'].currentValue){
+    if(changes['isAdd']?.currentValue){
   
       this.isLookup=changes['isAdd']['currentValue'];
      }else if(changes['isAdd'] && !changes['isAdd'].currentValue){
-      if(this.pickup_level_data && this.pickup_level_data.length){
+      if(this.pickup_level_data?.length){
         this.pickup_level_data.length=0;
       }
       this.searchPickLvl='';

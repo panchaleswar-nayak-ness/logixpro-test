@@ -1,17 +1,15 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { map, Observable, startWith } from 'rxjs';
 import { AssignService } from 'src/app/assign.service'; 
-import { FunctionAllocationComponent } from '../../dialogs/function-allocation/function-allocation.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-assigned-functions',
   templateUrl: './assigned-functions.component.html',
-  styleUrls: ['./assigned-functions.component.scss']
+  styleUrls: []
 })
-export class AssignedFunctionsComponent implements OnInit {
+export class AssignedFunctionsComponent  {
   // @Input('isAssignedLookUp') isAssignedLookUp: boolean;
   // @Output() updateAssignedLookUp  = new EventEmitter();
   @Input() assignedFunctions: [];
@@ -37,10 +35,7 @@ export class AssignedFunctionsComponent implements OnInit {
   userName:any;
   constructor( private employeeService: ApiFuntions, private assignService:AssignService,private dialog: MatDialog) { }
 
-  ngOnInit(): void {
 
-
-  }
   clearFields(){
       this.filterName='';
   

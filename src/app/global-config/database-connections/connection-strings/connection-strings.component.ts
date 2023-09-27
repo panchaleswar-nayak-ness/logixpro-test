@@ -1,18 +1,17 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input,  SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { IConnectionString } from 'src/app/interface/transaction'; 
-import { Output, EventEmitter } from '@angular/core';
 import { GlobalConfigSetSqlComponent } from 'src/app/admin/dialogs/global-config-set-sql/global-config-set-sql.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-connection-strings',
   templateUrl: './connection-strings.component.html',
-  styleUrls: ['./connection-strings.component.scss'],
+  styleUrls: [],
 })
-export class ConnectionStringsComponent implements OnInit {
+export class ConnectionStringsComponent {
   @Input() connectionStringData: IConnectionString[] = [];
   @Output() connectionUpdateEvent = new EventEmitter<string>();
   isAddedNewRow = false;
@@ -24,11 +23,10 @@ export class ConnectionStringsComponent implements OnInit {
     private dialog: MatDialog,
   ) {}
 
-  ngOnInit(): void {}
+ 
   ngOnChanges(changes: SimpleChanges) {
     if (
-      changes['connectionStringData'] &&
-      changes['connectionStringData']['currentValue'] &&
+      
       changes['connectionStringData']['currentValue']['connectionString']
     )
       this.connectionStringData =
@@ -62,13 +60,11 @@ export class ConnectionStringsComponent implements OnInit {
         this.connectionStringData[index].isButtonDisable = true;
       } else {
         this.connectionStringData[index].isButtonDisable = false;
-        // this.connectionStringData[index].isSqlButtonDisable = false;
       }
     } else if(   item.connectionName == '' ||
     item.databaseName == '' ||
     item.serverName == '')  {
       this.connectionStringData[index].isButtonDisable = true;
-      // this.connectionStringData[index].isSqlButtonDisable = false;
     }else{
       this.connectionStringData[index].isButtonDisable = false;
 
@@ -77,53 +73,18 @@ export class ConnectionStringsComponent implements OnInit {
   saveString(item,index?) {
     let indexesToShow:any = [];
     let indexesToHide:any = [];
-    this.connectionStringData.map((el,i)=>{
+    this.connectionStringData.forEach((el,i)=>{
 
         if(i!=index){
         if(el.connectionName===item.connectionName){
-          // this.connectionStringData[index].isDuplicate=true
           this.duplicateIndex=true
         }else{
           this.duplicateIndex=false
       
         }
-        // else if(el.connectionName!=item.connectionName){
-        //   this.connectionStringData[i].isDuplicate=false;
-      
-        // }
       }
     })
 
-    
-
-
-
-
-    // this.connectionStringData.map((el,i)=>{
-    //   // if(i!=index){
-        
-    //     if(el.connectionName===item.connectionName && i === index && !this.duplicateIndex){
-    //       // this.connectionStringData[index].isDuplicate=true;
-    //       indexesToShow.push(i);
-    //       this.duplicateIndex = i;
-          
-    //     }
-    //     else{
-    //       // this.connectionStringData[index].isDuplicate=false;
-    //       indexesToHide.push(i);
-    //       if(this.duplicateIndex != undefined && this.duplicateIndex === i){
-    //           this.duplicateIndex = undefined;
-    //     }}
-    //   // } else{
-    //   //   indexesToHide.push(i);
-    //   // }
-    // });
-    // indexesToShow.forEach(x => {
-    //   this.connectionStringData[x].isDuplicate = true;      
-    // });
-    // indexesToHide.forEach(x => {
-    //   this.connectionStringData[x].isDuplicate = false;
-    // });
     
     if(!this.duplicateIndex){
     
@@ -215,7 +176,7 @@ export class ConnectionStringsComponent implements OnInit {
               },
             });
             dialogRef.afterClosed().subscribe((res) => {
-              if (res && res.isExecuted) {
+              if (res?.isExecuted) {
                 this.connectionUpdateEvent.emit(res.isExecuted);
               }
             });

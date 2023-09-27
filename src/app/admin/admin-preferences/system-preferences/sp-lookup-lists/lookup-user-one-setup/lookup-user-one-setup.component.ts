@@ -11,7 +11,7 @@ import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-lookup-user-one-setup',
   templateUrl: './lookup-user-one-setup.component.html',
-  styleUrls: ['./lookup-user-one-setup.component.scss']
+  styleUrls: []
 })
 export class LookupUserOneSetupComponent implements OnInit {
   userF1List :any = new MatTableDataSource([]);

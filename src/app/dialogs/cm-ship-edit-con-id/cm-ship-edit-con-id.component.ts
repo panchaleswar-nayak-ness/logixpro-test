@@ -7,7 +7,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-cm-ship-edit-con-id',
   templateUrl: './cm-ship-edit-con-id.component.html',
-  styleUrls: ['./cm-ship-edit-con-id.component.scss']
+  styleUrls: []
 })
 export class CmShipEditConIdComponent implements OnInit {
   @ViewChild('cont_id') cont_id: ElementRef;
@@ -56,7 +56,7 @@ export class CmShipEditConIdComponent implements OnInit {
 
   setContainerID() {
     try {
-      var payLoad = {
+      let payLoad = {
         stid : this.data.order.sT_ID,
         containerID: this.containerID,
         username: this.userData.userName,

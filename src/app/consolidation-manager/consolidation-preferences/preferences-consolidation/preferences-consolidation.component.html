@@ -43,23 +43,6 @@
                     </span>
                 </mat-form-field>
             </div>
-            <!-- <div class="col-xl-6 pb-2">
-                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
-                    <mat-label>Blind Verify</mat-label>
-                    <mat-select formControlName="blindVerify" (selectionChange)="changePreferences()"
-                        class="employees-action">
-                        <mat-option value="Yes">
-                            Yes
-                        </mat-option>
-                        <mat-option value="No">
-                            No
-                        </mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                        expand_more
-                    </span>
-                </mat-form-field>
-            </div> -->
             <div class="col-xl-6 pb-2">
                 <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
                     <mat-label>Verify Each Item</mat-label>
@@ -76,38 +59,6 @@
                     </span>
                 </mat-form-field>
             </div>
-            <!-- <div class="col-xl-6 pb-2">
-                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
-                    <mat-label>Allow Print/View a list of un-verified Line Items</mat-label>
-                    <mat-select formControlName="printUnVerified" class="employees-action" (selectionChange)="changePreferences()">
-                        <mat-option value="Yes">
-                            Yes
-                        </mat-option>
-                        <mat-option value="No">
-                            No
-                        </mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                        expand_more
-                    </span>
-                </mat-form-field>
-            </div> -->
-            <!-- <div class="col-xl-6 pb-2">
-                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
-                    <mat-label>Allow Print/View the packing List when verified Line Items exist?</mat-label>
-                    <mat-select formControlName="printVerified" class="employees-action" (selectionChange)="changePreferences()">
-                        <mat-option value="Yes">
-                            Yes
-                        </mat-option>
-                        <mat-option value="No">
-                            No
-                        </mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                        expand_more
-                    </span>
-                </mat-form-field>
-            </div> -->
             <div class="col-xl-6 pb-2">
                 <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
                     <mat-label>Default Lookup Type</mat-label>
@@ -131,11 +82,6 @@
             <div class="col-xl-6">
                 <div class="d-xl-flex gap-12 mb-2 pb-5">
                     <div class="col-xl-12 text-left admin-prefrences py-2 ps-1">
-                        <!-- <div class="d-flex justify-content-between mb-2 text-tertiary-900">
-                            Email Packing Slip: <mat-slide-toggle  (change)="saveEmailSlip()" checked class="primary"
-                                formControlName="emailPackSlip" color="primary"
-                                matTooltip=""></mat-slide-toggle>
-                        </div> -->
                         <div class="d-flex justify-content-between mb-2 text-tertiary-900">
                             Auto Complete Backorders at "Ship Complete": <mat-slide-toggle (change)="changePreferences()" 
                                 formControlName="backOrders" checked color="primary"
@@ -145,10 +91,6 @@
                             Stage Non Pickpro Orders: <mat-slide-toggle checked color="primary" (change)="changePreferences()" 
                                 formControlName="nonPickpro" matTooltip=""></mat-slide-toggle>
                         </div>
-                        <!-- <div class="d-flex justify-content-between mb-2 text-tertiary-900">
-                            Validate Staging Locations?: <mat-slide-toggle checked color="primary" (change)="changePreferences()" 
-                                formControlName="validateStaingLocs" matTooltip=""></mat-slide-toggle>
-                        </div> -->
 
                     </div>
                 </div>

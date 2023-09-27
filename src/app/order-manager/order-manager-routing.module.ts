@@ -11,7 +11,8 @@ import { InventoryMasterComponent } from '../admin/inventory-master/inventory-ma
 import { InventoryMapComponent } from '../admin/inventory-map/inventory-map.component';
 import { ReportsComponent } from '../admin/reports/reports.component';
 
-const routes: Routes = [{ path: '', component: OrderManagerComponent },
+const routes: Routes = [{ path: '', component: OrderManagerComponent, 
+canActivate: [AuthGuardGuard],  },
 { path: 'EventLog', 
 component: EventLogComponent, 
 canActivate: [AuthGuardGuard],
@@ -32,7 +33,8 @@ canActivate: [AuthGuardGuard],
 },
  
 { path: 'OrderStatus', 
-component: TransactionComponent 
+component: TransactionComponent  ,
+canActivate: [AuthGuardGuard], 
  },
 
 { path: 'InventoryMaster', 

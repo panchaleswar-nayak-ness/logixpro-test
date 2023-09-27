@@ -1,14 +1,13 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import labels from '../../../labels/labels.json';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-filter-item-numbers',
   templateUrl: './filter-item-numbers.component.html',
-  styleUrls: ['./filter-item-numbers.component.scss']
+  styleUrls: []
 })
 export class FilterItemNumbersComponent implements OnInit {
   @ViewChild('filter_text') filter_text: ElementRef;
@@ -34,7 +33,6 @@ export class FilterItemNumbersComponent implements OnInit {
     this.filter_text.nativeElement.focus();
   }
   filterItemNumbers() {
-    // if (this.data.trim() != "") {
       let itemsStr = this.data.trim().replace(/[\n\r]/g, ',');
       let itemsArray = itemsStr.split(',');
       itemsArray = itemsArray.filter((item: any) => item != "");
@@ -46,10 +44,6 @@ export class FilterItemNumbersComponent implements OnInit {
       }
       this.Api.FiltersItemNumInsert(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
-          // this.toastr.success(labels.alert.success, 'Success!', {
-          //   positionClass: 'toast-bottom-right',
-          //   timeOut: 2000
-          // });
           this.dialog.closeAll();
           this.dialogRef.close({ filterItemNumbersText: this.data, filterItemNumbersArray: itemsArray });
         } else {
@@ -60,10 +54,6 @@ export class FilterItemNumbersComponent implements OnInit {
           this.dialog.closeAll();
         }
       });
-    // }
-    // else{
-    //   this.dialog.closeAll();
-    // }
   }
 
 }

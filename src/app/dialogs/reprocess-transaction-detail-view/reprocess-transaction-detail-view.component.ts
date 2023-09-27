@@ -1,14 +1,13 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-reprocess-transaction-detail-view',
   templateUrl: './reprocess-transaction-detail-view.component.html',
-  styleUrls: ['./reprocess-transaction-detail-view.component.scss'],
+  styleUrls: [],
 })
 export class ReprocessTransactionDetailViewComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;
@@ -61,7 +60,6 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
     this.userData=this.userService.userData();
     this.getReprocessData();
     this.OSFieldFilterNames();
-    // this.reprocessInfo.controls.orderNumber.setValue('123213');
   }
   ngAfterViewInit(): void {
     this.field_focus.nativeElement.focus();
@@ -69,7 +67,6 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
   public OSFieldFilterNames() { 
     this.Api.ColumnAlias().subscribe((res: any) => {
       this.fieldNames = res.data;
-      // this.sharedService.updateFieldNames(this.fieldNames)
     })
   }
   getReprocessData() {
@@ -78,7 +75,7 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
     this.Api
       .RPDetails(payLoad)
       .subscribe((res: any) => {
-        if (res && res.isExecuted) {
+        if (res?.isExecuted) {
           let item=res.data;
           this.reprocessInfo.controls.orderNumber.setValue(item.orderNumber);
           this.reprocessInfo.controls.itemNumber.setValue(item.itemNumber);

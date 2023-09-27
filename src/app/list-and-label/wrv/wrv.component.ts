@@ -1,13 +1,12 @@
-import { Component, ComponentFactoryResolver, ElementRef, HostListener, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { map } from 'rxjs';
 import { SharedService } from 'src/app/services/shared.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-wrv',
   templateUrl: './wrv.component.html',
-  styleUrls: ['./wrv.component.scss']
+  styleUrls: []
 })
 export class WrvComponent implements OnInit {
   env:string;
@@ -21,9 +20,9 @@ export class WrvComponent implements OnInit {
  
    } 
   ngOnInit(): void {
-    let appd=JSON.parse(localStorage.getItem('availableApps') || '');
+    let appd=JSON.parse(localStorage.getItem('availableApps') ?? '');
     this.sharedService.setMenuData(appd);
-    var filename = this.route.queryParamMap.pipe(
+    let filename = this.route.queryParamMap.pipe(
       map((params: ParamMap) => params.get('file')),
     );
     filename.subscribe((param) => { 

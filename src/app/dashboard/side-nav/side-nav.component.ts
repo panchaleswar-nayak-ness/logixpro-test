@@ -2,8 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from '../../../app/services/shared.service';
 import { AuthService } from '../../../app/init/auth.service';
-import { of, from } from 'rxjs';
-import { mergeMap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
@@ -16,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class SideNavComponent implements OnInit {
   menuData: any=[];
-  @Input() sideBarOpen: Boolean;
+  @Input() sideBarOpen: boolean;
   isConfigUser:any = false;
   menuRoute;
   public userData: any;
@@ -61,7 +59,6 @@ export class SideNavComponent implements OnInit {
   ];
   inductionMenus: any = [
     { icon: 'arrow_back', title: 'Induction Manager', route: '/dashboard', class: 'back-class' , permission: 'Induction Manager'},
-    // { icon: 'grid_view', title: 'Dashboard', route: '/dashboard' ,permission:'Induction Manager'},
     { icon: 'directions_alt', title: 'Process Picks', route: '/InductionManager/ProcessPicks' ,permission:'Tote Transactions'},
     { icon: 'dashboard', title: 'Process Put Aways', route: '/InductionManager/ProcessPutAways' ,permission:'Tote Transactions'},
     { icon: 'manage_accounts', title: 'Admin', route: '/InductionManager/Admin' ,permission:'Tote Admin Menu'},
@@ -76,7 +73,6 @@ export class SideNavComponent implements OnInit {
     { icon: 'insert_chart', title: 'Consolidation', route: '/ConsolidationManager/Consolidation', class: 'back-class' , permission: 'Consolidation Manager'},
     // Vector
     { icon: 'add_location_alt', title: 'Staging Locations', route: '/ConsolidationManager/StagingLocations' ,permission:'Consolidation Manager'},
-    // { icon: 'grid_view', title: 'Dashboard', route: '/dashboard' ,permission:'Induction Manager'},
     { icon: 'tune', title: ' Preferences ', route: '/ConsolidationManager/Preferences' ,permission:'Consolidation Mgr Admin'},
     // Vector (Stroke)
     { icon: 'analytics', title: 'Reporting ', route: '/ConsolidationManager/Reports' ,permission:'Consolidation Mgr Admin'},
@@ -86,7 +82,6 @@ export class SideNavComponent implements OnInit {
 
   inductionAdminMenus: any = [
     { icon: 'arrow_back', title: 'Admin', route: '/InductionManager', class: 'back-class' , permission: 'Induction Manager'},
-    // { icon: 'grid_view', title: 'Dashboard', route: '/dashboard' ,permission:'Induction Manager'},
     { icon: ' directions_alt', title: 'Inventory Map', route: '/InductionManager/Admin/InventoryMap' ,permission:'Induction Manager'},
     { icon: ' dashboard ', title: 'Inventory ', route: '/InductionManager/Admin/InventoryMaster' ,permission:'Induction Manager'},
     { icon: ' inventory_2 ', title: 'Tote Transaction Manager ', route: '/InductionManager/Admin/ToteTransactionManager' ,permission:'Induction Manager'},
@@ -130,13 +125,8 @@ export class SideNavComponent implements OnInit {
                   this.isMenuHide = menu;   
                 });
                 this.sharedService?.SidebarMenupdate?.subscribe((data: any) => {
-                  var Menuobj = this.menus.find(x=>x.route == data);
-                  if(Menuobj==null&&this.authService.UserPermissonByFuncName('Admin Menu'))Menuobj = this.adminMenus.find(x=>x.route == data);
-                  else if(Menuobj==null) Menuobj = this.globalMenus.find(x=>x.route == data);
-                  else if(Menuobj==null) Menuobj = this.inductionMenus.find(x=>x.route == data);
-                  else if(Menuobj==null) Menuobj = this.inductionAdminMenus.find(x=>x.route == data);
-                  else if(Menuobj==null) Menuobj = this.orderManagerMenus.find(x=>x.route == data);
-                  else if(Menuobj==null) Menuobj = this.flowrackReplenishmentMenus.find(x=>x.route == data);
+                  let Menuobj = this.menus.find(x=>x.route == data);
+                  if(Menuobj==null&&this.authService.UserPermissonByFuncName('Admin Menu')) Menuobj = this.adminMenus.find(x=>x.route == data);
                   this.loadMenus(Menuobj);
                 });
 
@@ -156,7 +146,6 @@ export class SideNavComponent implements OnInit {
         this.isChildMenu = false;
       }
     });
-    // if(this.router.url == '/FlowrackReplenishment') this.dynamicMenu = this.menus
     this.loadMenus({route: this.router.url});
  
     this.sharedService.updateAdminMenuObserver.subscribe(adminMenu => {
@@ -228,7 +217,6 @@ export class SideNavComponent implements OnInit {
     });
     
     this.sharedService.menuData$.subscribe(data => { 
-      //  debugger
        if(this.menuData.length===0){
         this.menuData = data;
         this.menuData.filter((item,i)=>{
@@ -260,65 +248,11 @@ export class SideNavComponent implements OnInit {
     });
 
     this.sharedService.updateMenuFromInside.subscribe((menuOpen)=>{
-          // if(menuOpen.isBackFromReport){
-          //   this.router.navigate([`${menuOpen.route}`]);
-          // }else{
-          //   this.loadMenus(menuOpen)
-          // }
          
          this.loadMenus(menuOpen)
     })
-    // this.sharedService.menuData$.subscribe(data => {
-    //   this.menuData = data;
-    //   let mednuAlter=[{title:'',icon:'',route:'',permission:''}]
-    // this.dynamicMenu= this.menuData.map((item,index)=>{
-      
-    //   mednuAlter[index].title=item.displayname
-    //   mednuAlter[index].icon=item.info.iconName
-    //   mednuAlter[index].route=item.info.route
-    //   mednuAlter[index].permission=item.info.permission
-    //   return mednuAlter
-    //   })
-    //  console.log( this.dynamicMenu);
-     
-    // });
-  }
-  
-  ngAfterViewInit(){
-     // let menuFromStorage=JSON.parse(localStorage.getItem('availableApps')|| '');
-    //   console.log(menuFromStorage);
-    //   menuFromStorage.filter((item,i)=>{
-    //     this.dynamicMenu[0]={icon: 'home', title: 'Home', route: '/dashboard' ,permission: 'Home'}
-    //     this.dynamicMenu.push({icon:item.info.iconName,title:item.displayname,route:item.info.route,permission:item.info.permission})
-    //   })
-
-     
-
   }
 
-  // let menuFromStorage=JSON.parse(localStorage.getItem('availableApps')|| '');
-  //   console.log(menuFromStorage);
-  //   menuFromStorage.filter((item,i)=>{
-  //     this.dynamicMenu[0]={icon: 'home', title: 'Home', route: '/dashboard' ,permission: 'Home'}
-  //     this.dynamicMenu.push({icon:item.info.iconName,title:item.displayname,route:item.info.route,permission:item.info.permission})
-  //   })
-
-// convertToObj(){
-//   const arrayOfObjects: any = [];
-//   for (const key of Object.keys(this.licAppData)) {
-//     // arrayOfObjects.push({ key, value: this.licAppData[key] });
-//     arrayOfObjects.push({
-//       appname: this.licAppData[key].info.name,
-//       displayname: this.licAppData[key].info.displayName,
-//       license: this.licAppData[key].info.licenseString,
-//       numlicense: this.licAppData[key].numLicenses,
-//       status: this.licAppData[key].isLicenseValid ? 'Valid' : 'Invalid',
-//       appurl: this.licAppData[key].info.url,
-//       isButtonDisable: true,
-//     });
-//   }
-//   this.dataSource = new MatTableDataSource(arrayOfObjects);
-// }
 
 redirect(){
   this.router.navigate([`${localStorage.getItem('reportNav')}`]);
@@ -327,12 +261,7 @@ redirect(){
   async getAppLicense() {
 
     this.Api.AppLicense().subscribe(
-      (res: any) => {
-        if (res && res.data) {
-          
-          
-        }
-      },
+      (res: any) => {},
       (error) => {}
     );
   }
@@ -349,10 +278,6 @@ redirect(){
     if(menu.route!='')
     { 
         this.currentTabDataService.ClearItemsExceptCurrentTab(menu.title);
-        // if(menu.route.includes('/FlowrackReplenishment')){
-        //   this.adminMenus[0].route = '/FlowrackReplenishment';
-        //   this.dynamicMenu = this.menus;
-        // }
       if (menu.route.includes('/admin')) {
         
         if (menu.route.includes('/admin/')) {
@@ -386,7 +311,6 @@ redirect(){
         this.isChildMenu = true;
       }    
 
-      //this.userData.username
          
     }
     if (menu.route.includes('/ConsolidationManager')) {
@@ -434,21 +358,11 @@ redirect(){
       return;
     }
 
-    // if (['/dashboard','/FlowrackReplenishment'].indexOf(menu.route) > -1) {
-    //   this.isParentMenu = true;
-    //   this.isChildMenu = false;
-    // }
-
     if (menu.route.includes('/globalconfig')) {
       this.childMenus = this.globalMenus;
       this.isParentMenu = false;
       this.isChildMenu = true;
     }  
-    // if (menu.route.includes('/FlowrackReplenishment')) {
-    //   this.childMenus = this.flowrackReplenishmentMenus;
-    //   this.isParentMenu = false;
-    //   this.isChildMenu = true;
-    // } 
     
     if (menu.route.includes('/FlowrackReplenishment')) {
       let splittedRoute=menu.route.split('/');
@@ -461,7 +375,6 @@ redirect(){
       this.childMenus = this.flowrackReplenishmentMenus;
       this.isParentMenu = false;
       this.isChildMenu = true;
-      return
     } 
   }
 

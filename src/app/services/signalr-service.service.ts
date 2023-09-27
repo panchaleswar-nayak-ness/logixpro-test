@@ -9,12 +9,11 @@ import {environment} from '../../environments/environment';
 })
 export class SignalrServiceService {
   private hubConnection: signalR.HubConnection
-  connectionEstablished = new Subject<Boolean>();
+  connectionEstablished = new Subject<boolean>();
   ConnectedUsers = new Subject<ConnectedUsers>();
   connect() {
     if (!this.hubConnection) {
       this.hubConnection = new signalR.HubConnectionBuilder()
-                              //.configureLogging(signalR.LogLevel.Debug)
                               .withUrl(environment.apiUrl +
                                 '/GlobalConfig/ConnectedUser')
                               .build();
@@ -36,9 +35,7 @@ export class SignalrServiceService {
     disconnect() {
       if (this.hubConnection) {
         this.hubConnection.stop();
-        //this.connection = null;
       }
     }
-    
-  constructor() { }
+
 }

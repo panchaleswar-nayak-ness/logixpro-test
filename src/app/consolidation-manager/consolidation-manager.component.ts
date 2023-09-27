@@ -1,26 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SharedService } from '../services/shared.service';
 import { AuthService } from '../init/auth.service';
 
 @Component({
   selector: 'app-consolidation-manager',
   templateUrl: './consolidation-manager.component.html',
-  styleUrls: ['./consolidation-manager.component.scss']
+  styleUrls: []
 })
-export class ConsolidationManagerComponent implements OnInit {
+export class ConsolidationManagerComponent {
 
   tab_hover_color:string = '#cf9bff3d';
 
   constructor(private sharedService: SharedService,
               public authService: AuthService,) { }
 
-  ngOnInit(): void {
-  }
 
-  updateMenu(menu = '', route = ''){
-    // if (menu == 'transaction-admin') {
-    //   this.sharedService.updateInductionAdminMenu(menu);
-    // }    
+
+  updateMenu(menu = '', route = ''){   
     this.sharedService.updateInductionAdminMenu({menu , route});
 
   }

@@ -9,7 +9,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-short-transaction',
   templateUrl: './short-transaction.component.html',
-  styleUrls: ['./short-transaction.component.scss']
+  styleUrls: []
 })
 export class ShortTransactionComponent implements OnInit {
 

@@ -162,18 +162,9 @@
                                             (change)="reportfieldvalues(i,reportData[22+i])" 
                                             [disabled]="(reportData[10 + i] !== 'BETWEEN' && reportData[10 + i] !== 'NOT BETWEEN')" 
                                                 />
-                                            <!-- <mat-autocomplete #auto="matAutocomplete"  (optionSelected)="ValueSelect($event,i)">
-                                                <mat-option *ngFor="let option of ListFilterValue[i]" [value]="option"
-                                                
-                                                >
-                                                  {{option}}
-                                                </mat-option>
-                                              
-                                              </mat-autocomplete> -->
                                         </mat-form-field>
                                     </td>
                                 </ng-container>
-                                <!-- (click)="reportData[16+i] = option" -->
 
 
                                 <ng-container matColumnDef="actions" stickyEnd>

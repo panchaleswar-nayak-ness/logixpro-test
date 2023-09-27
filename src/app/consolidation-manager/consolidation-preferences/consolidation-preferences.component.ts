@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core'; 
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service';
-import {
-  Subscription,
-  debounceTime,
-  distinctUntilChanged,
-  startWith,
-} from 'rxjs';
+import {Subscription} from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CmCarriersAddDeleteEditComponent } from 'src/app/dialogs/cm-carriers-add-delete-edit/cm-carriers-add-delete-edit.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -14,7 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-consolidation-preferences',
   templateUrl: './consolidation-preferences.component.html',
-  styleUrls: ['./consolidation-preferences.component.scss'],
+  styleUrls: [],
 })
 export class ConsolidationPreferencesComponent implements OnInit {
   userData: any;
@@ -45,26 +40,8 @@ export class ConsolidationPreferencesComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    // this.subscription.add(
-    //   this.shippingForm.valueChanges
-    //     .pipe(startWith(this.shippingForm.getRawValue()))
-    //     .subscribe((value) => {
-    //       console.log(value);
-    //       this.saveShippingPreferences();
-    //       // whatever you want to do here
-    //     })
-    // );
     this.getPreferences();
   }
-
-  ngAfterViewInit() {
-    // this.updatePreferencesValues();
-  }
-
-
-  
-
-
 
   getPreferences() {
     let payload = {

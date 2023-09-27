@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.scss']
+  styleUrls: []
 })
-export class ReportsComponent implements OnInit {
+export class ReportsComponent{
   fromAdmin
   constructor( private dialog: MatDialog,private router: Router) { 
     this.router.events.subscribe((event) => {
@@ -23,8 +23,6 @@ export class ReportsComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
-  }
-
+ 
   
 }

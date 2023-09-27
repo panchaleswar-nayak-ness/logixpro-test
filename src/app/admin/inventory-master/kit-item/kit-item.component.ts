@@ -70,13 +70,10 @@ export class KitItemComponent implements OnInit, OnChanges {
 
   openPrintRangeDialog() {
     this.global.Print(`FileName:printKitReport|ItemNumber:${this.kitItem.value.itemNumber}`)
-    // window.location.href = `/#/report-view?file=FileName:printKitReport|ItemNumber:${this.kitItem.value.itemNumber}`
-    // window.location.reload();
 
   }
 
   addCatRow(e: any) {
-    // this.Ikey =  this.kitItemsList.length;
     this.kitItemsList.unshift({
       itemNumber: '',
       description: '',
@@ -160,7 +157,7 @@ export class KitItemComponent implements OnInit, OnChanges {
     this.kitItem.controls['kitInventories'].value.forEach(element => {
       if (element.itemNumber == newItem) {
         newRecord = false;
-        return;
+       
       }
     });
     if (e.itemNumber && newRecord && e.kitQuantity) {
@@ -200,7 +197,6 @@ export class KitItemComponent implements OnInit, OnChanges {
         "wsid": this.userData.wsid,
       }
       
-      // console.log(paylaod);
       this.Api.UpdateKit(paylaod).subscribe((res: any) => {
 
         if (res.isExecuted) {
@@ -300,7 +296,7 @@ export class KitItemComponent implements OnInit, OnChanges {
       this.kitItem.controls['kitInventories'].value.forEach(element => {
         if (element.itemNumber == e.option.value.itemNumber) {
           alreadyExits = true;
-          return;
+          
         }
       });
       if (!alreadyExits) {
@@ -341,15 +337,10 @@ export class KitItemComponent implements OnInit, OnChanges {
       this.namebutton.nativeElement.classList.remove('mat-button-disabled')
     }
     if(this.namebutton.nativeElement.classList.contains('kit_push_'+index)){ 
-      // const myHtmlEl = document.getElementsByClassName('kit_push_'+index).item(0) as HTMLElement;
-      // myHtmlEl.removeAttribute('disabled');
       
       this.namebutton.nativeElement.disabled = false;
       this.namebutton.nativeElement.classList.remove('mat-button-disabled')
     }
-    // this.namebutton.nativeElement.classList.remove('mat-button-disabled')
-    // let myTag = this.el.nativeElement.querySelector("kit_"+index); 
-    // myTag.classList.remove('mat-button-disabled');
 
     if(input === 'kitQuantity'){
       if(val > 0){ 

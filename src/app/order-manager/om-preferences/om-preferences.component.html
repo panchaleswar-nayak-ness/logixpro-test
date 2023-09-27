@@ -10,11 +10,6 @@
 <span>Preferences</span>
             </h2>
         </div>
-
-
-<!-- <div class="row">
-    <p class="bold"> Select a default Packing List format for printing from the Consolidation window. Press the Reports button to design the desired packing list reports</p>
-</div> -->
 <form [formGroup]="filtersForm">
 <div class="row mt-3">
     <div class="col-xl-6">
@@ -23,27 +18,7 @@
             <input [NumbersOnly]="true" #myInput (keyup)="restrictTo10Digits($event)" type="number"   formControlName="maxOrder" matInput>
         </mat-form-field>
     </div>
-    <!-- <div class="col-xl-6">
-        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-            <mat-label class="pe-2">Enter the location of the custom Reports application:</mat-label>
-            <input type="text"  formControlName="custReportsApp" matInput>
-        </mat-form-field>
-    </div> -->
 </div>
-<!-- <div class="row">
-    <div class="col-xl-6">
-        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-            <mat-label class="pe-2">Enter the location of the custom application to open from the Admin Menu:</mat-label>
-            <input type="text" formControlName="custReportsMenuApp"  matInput>
-        </mat-form-field>
-    </div>
-    <div class="col-xl-6">
-        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-            <mat-label class="pe-2">Enter the text for the custom application button on the Admin Menu:</mat-label>
-            <input type="text"  formControlName="custReportsMenuText" matInput>
-        </mat-form-field>
-    </div>
-</div> -->
 
 <div class="row">
     <div class="col-xl-6">
@@ -55,10 +30,6 @@
             <span>Allow Release of Individual Order Lines:</span>
             <mat-slide-toggle formControlName="allowIndivdOrders"  checked color="primary"></mat-slide-toggle>
         </div>
-        <!-- <div class="d-flex justify-content-between mb-2">
-            <span>Use Default User Fields:</span>
-            <mat-slide-toggle  formControlName="defUserFields" checked color="primary"></mat-slide-toggle>
-        </div> -->
         <div class="d-flex justify-content-between mb-2">
             <span>Print Directly?</span>
             <mat-slide-toggle  formControlName="printDirect" checked color="primary"></mat-slide-toggle>

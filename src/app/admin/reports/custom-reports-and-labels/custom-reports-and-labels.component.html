@@ -73,7 +73,6 @@
                                        (click)="OpenListAndLabel('report')"
                                         >Design</mat-option>
                                     <mat-option   (click)="openDeleteDialogue()" [disabled]="!Detail.testData" >Delete</mat-option>
-                                    <!-- <mat-option value=""  (click)="pushReports()">Push Changes</mat-option> -->
                                     <mat-option  (click)="fileInput.click()"[disabled]="!Detail.testData"  >Import</mat-option>
                                 </mat-select>
                                 <input type="file" style="display: none" accept=".lst,.lbl" id="ImportFileVal" (change)="onFileSelected($event)"  #fileInput>
@@ -87,22 +86,11 @@
                         <div style="flex:1">
                     <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline" (click)="openEditDesign()">
                         <mat-label>Test and Design Data</mat-label>
-                        <!-- <mat-select class="employees-action" [(ngModel)]="Detail.testData" (ngModelChange)="saveInput()"> 
-                            <mat-option [value]="Detail.testData" >{{Detail.testData}}</mat-option>
-                        </mat-select> -->
                         <input type="text" [(ngModel)]="Detail.testData"  matInput >
                         <span class="material-symbols-outlined icon-expand-more">
                             expand_content
                         </span>
                     </mat-form-field>
-
-                    <!-- <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline" (click)="LocationName(i)">
-                        <mat-label>Location Name</mat-label>
-                        <input type="text" [(ngModel)]="i.locationName"  matInput maxlength="255" readonly="true">
-                        <span matSuffix>
-                          <mat-icon style="color:#8B8BA3; transform: rotate(45deg);" >unfold_more</mat-icon>
-                      </span>
-                      </mat-form-field> -->
                     <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-2" appearance="outline">
                         <mat-label>Test/Design Data Type</mat-label>
                         <mat-select class="employees-action"  [(ngModel)]="Detail.testDataType" (ngModelChange)="saveInput()">

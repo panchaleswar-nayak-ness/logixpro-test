@@ -33,8 +33,7 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
     this.userData = this.authService.userData();
   }
 
-  selectOption() {
-  }
+
   onConfirmdelete() {
     let deletePayload = {
       transType: this.data.transType,

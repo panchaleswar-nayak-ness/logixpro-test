@@ -1,7 +1,6 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnInit,
@@ -19,15 +18,12 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import {
   FormGroup,
   FormControl,
-  FormArray,
   FormBuilder,
-  Validators,
 } from '@angular/forms';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { FloatLabelType } from '@angular/material/form-field';
-import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -44,6 +40,8 @@ export class CCBCreateCountsComponent implements OnInit {
   selectedTabIndex: number = 0;
   orderNumber;
   countType: string = '';
+  completeDate: Date;
+  localCompleteDate: string;
   warehouse: string = '';
   subCategory: any;
   math = Math;
@@ -144,10 +142,10 @@ export class CCBCreateCountsComponent implements OnInit {
       toItem: new FormControl(''),
       description: new FormControl(''),
       category: new FormControl(''),
-      // subCategory: new FormControl({ value: '', disabled: true }),
       subCategory: new FormControl({ value: '', disabled: true }),
       notCounted: new FormControl(new Date()),
-      pickedStart: new FormControl(new Date()),
+      pickedStart: new FormControl(new Date())    ,
+      pickedStartTime: new FormControl(new Date()),
       pickedEnd: new FormControl(new Date()),
       putStart: new FormControl(new Date()),
       putEnd: new FormControl(new Date()),
@@ -155,6 +153,32 @@ export class CCBCreateCountsComponent implements OnInit {
       costEnd: new FormControl(''),
       warehouse: new FormControl(''),
     });
+
+    this.completeDate = new Date();
+    const offsetMs = this.completeDate.getTimezoneOffset() * 60 * 1000;
+    const msLocal =  this.completeDate.getTime() - offsetMs;
+    const dateLocal = new Date(msLocal);
+    const iso = dateLocal.toISOString();
+    const isoLocal = iso.slice(0, 19)+".932Z";
+
+    //alert(isoLocal);
+   // this.localCompleteDate = this.completeDate.toISOString();
+
+    //var test = "2023-09-25T19:48:18.932Z" //  2023-09-25T19:39:19.932Z
+    this.localCompleteDate=isoLocal.substring(0, isoLocal.length - 8);
+
+
+    
+    //this.localCompleteDate.substring(0, isoLocal.length - 1)
+    //alert(isoLocal);
+
+
+    //alert(this.localCompleteDate.substring(0, this.localCompleteDate.length - 1));
+
+    //alert(this.localCompleteDate.toLocaleString());
+
+
+    //this.localCompleteDate = this.localCompleteDate.substring(0, this.localCompleteDate.length - 1);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -193,14 +217,6 @@ export class CCBCreateCountsComponent implements OnInit {
         
         if (value === '') return;
         this.fillData();
-
-        // this.columnSearch.searchValue = value;
-        // if (!this.columnSearch.searchColumn.colDef) return;
-
-        // this.autocompleteSearchColumn();
-        // if (!this.searchAutocompleteList.length) {
-        // this.getContentData();
-        // }
       });
 
     this.descriptionTA
@@ -284,14 +300,10 @@ export class CCBCreateCountsComponent implements OnInit {
   }
   searchData() {
 
-    // this.fillData();
   }
   onSelFunc(item, event: any) {
     if (event.isUserInput) {  
-      
-    // this.filtersForm.controls.subCategory.setValue(item.transactionType);
     this.subCategory = item.subCategory;
-    // this.filtersForm.controls['category'].setValue(item.category);
     this.fillData();
     }
   }
@@ -302,7 +314,6 @@ export class CCBCreateCountsComponent implements OnInit {
      }else{
       window.open(`/#/report-view?file=PrintCycleCountReport-lst-prv|OrderNum:${this.orderNumber?this.orderNumber:''}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
-      // this.global.Print(`FileName:PrintCycleCountReport|OrderNum:${this.orderNumber?this.orderNumber:''}`)
 
       }
 
@@ -310,8 +321,6 @@ export class CCBCreateCountsComponent implements OnInit {
   resetVal() {
     this.filtersForm.controls['fromLocation'].setValue('');
     this.filtersForm.controls['toLocation'].setValue('');
-    // this.filtersForm.controls['includeEmpty'].setValue(false);
-    // this.filtersForm.controls['includeOther'].setValue(false);
     this.filtersForm.controls['description'].setValue('');
     this.filtersForm.controls['category'].setValue('');
     this.filtersForm.controls['subCategory'].setValue('');
@@ -327,28 +336,10 @@ export class CCBCreateCountsComponent implements OnInit {
     this.filtersForm.controls['costEnd'].setValue('');
     this.filtersForm.controls['warehouse'].setValue('');
 
-    // this.filtersForm.value.fromLocation = '';
-    // this.filtersForm.value.toLocation = '';
-    // this.filtersForm.value.includeEmpty = false;
-    // this.filtersForm.value.includeOther = false;
-    // this.filtersForm.value.description = '';
-    // this.filtersForm.value.category = '';
-    // this.filtersForm.value.subCategory = '';
-    // this.filtersForm.value.fromItem = '';
-    // this.filtersForm.value.toItem = '';
-    // this.filtersForm.value.notCounted = new Date(1 / 11 / 1111);
-    // this.filtersForm.value.pickedStart = new Date(1 / 11 / 1111);
-    // this.filtersForm.value.pickedEnd = new Date(1 / 11 / 1111);
-    // this.filtersForm.value.putStart = new Date(1 / 11 / 1111);
-    // this.filtersForm.value.putEnd = new Date(1 / 11 / 1111);
-    // this.filtersForm.value.costStart = '';
-    // this.filtersForm.value.costEnd = '';
-    // this.filtersForm.value.warehouse = '';
 
     this.fillData();
   }
   getTypeAheads(type) {
-    // debugger
     if (type === 'Description') {
       let paylaod = {
         description: this.filtersForm.value.description,
@@ -504,24 +495,6 @@ export class CCBCreateCountsComponent implements OnInit {
   // function returns an object with 18 values
   getPayload() {
     return {
-      // "fromLocation": "",
-      // "toLocation": "",
-      // "includeEmpty": true,
-      // "includeOther": true,
-      // "countType": "Description",
-      // "fromItem": "",
-      // "toItem": "",
-      // "description": "Kit Item",
-      // "category": "",
-      // "subCategory": "",
-      // "notCounted": "2023-04-12T10:54:05.127Z",
-      // "pickedStart": "2023-04-12T10:54:05.127Z",
-      // "pickedEnd": "2023-04-12T10:54:05.127Z",
-      // "putStart": "2023-04-12T10:54:05.127Z",
-      // "putEnd": "2023-04-12T10:54:05.127Z",
-      // "costStart": "",
-      // "costEnd": "",
-      // "warehouseFilter": ""
 
       fromLocation: this.filtersForm.value.fromLocation
         ? this.filtersForm.value.fromLocation
@@ -569,7 +542,6 @@ export class CCBCreateCountsComponent implements OnInit {
           : this.filtersForm.value.putEnd,
       costStart: this.filtersForm.value.costStart,
       costEnd: this.filtersForm.value.costEnd,
-      // warehouseFilter: this.filtersForm.value.warehouse,
       warehouseFilter: this.warehouse,
     };
   }
@@ -612,7 +584,7 @@ export class CCBCreateCountsComponent implements OnInit {
         pickEnd:
           this.filtersForm.value.pickedEnd === '' ||
           this.filtersForm.value.pickedEnd === null
-            ? new Date() //'1/11/1111'
+            ? new Date() 
             : this.filtersForm.value.pickedEnd,
         putAwayStart:
           this.filtersForm.value.putStart === '' ||
@@ -626,12 +598,11 @@ export class CCBCreateCountsComponent implements OnInit {
             : this.filtersForm.value.putEnd,
         costStart: this.filtersForm.value.costStart,
         costEnd: this.filtersForm.value.costEnd,
-        // warehouseFilter: this.filtersForm.value.warehouse,
         warehouseFilter: this.warehouse,
       } ;  
     this.Api.BatchResultTable(queryData).subscribe(
       (res: any) => {
-        if (res && res.data && res.isExecuted) {
+        if (res?.data && res.isExecuted) {
           this.dataSource = new MatTableDataSource(res.data);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -677,7 +648,7 @@ export class CCBCreateCountsComponent implements OnInit {
       ;
 
       if (res == 'Yes') {
-        var payLoad = {
+        const payLoad = {
           orderNumber: this.orderNumber,
           ident: ident,
           username: this.userData.userName,
@@ -697,7 +668,6 @@ export class CCBCreateCountsComponent implements OnInit {
 
               this.orderNumber = '';
               // Get the orders again
-              // this.getOrders();
             } else {
               // Display an error message
               this.toastService.error('Something went wrong', 'Error!', {
@@ -718,11 +688,8 @@ export class CCBCreateCountsComponent implements OnInit {
       }
     });
   }
-  ngAfterViewInit() {
-    // this.dataSource.sort = this.sort;
-  }
   insertCCQueue(ids: any) {
-    var payLoad = {
+    const payLoad = {
       InvMapIDs: ids,
       username: this.userData.username,
       wsid: this.userData.wsid,
@@ -764,7 +731,7 @@ export class CCBCreateCountsComponent implements OnInit {
               invMapIDs.push(element.invMapID);
 
               if (invMapIDs.length == 1000) {
-                var payLoad = {
+                const payLoad = {
                   InvMapIDs: invMapIDs,
                   username: this.userData.username,
                   wsid: this.userData.wsid,
@@ -808,27 +775,6 @@ export class CCBCreateCountsComponent implements OnInit {
           return value.invMapID != rowId;
         });
 
-        // let payload = {
-        //   wsid: this.userData.wsid,
-        //   invMapID: rowId.toString(),
-        // };
-        // this.Api.get(payload, `/Admin/RemoveccQueueRow`).subscribe(
-        //   (res: any) => {
-        //     if (res.isExecuted) {
-        //       this.getCountQue();
-        //     } else {
-        //       this.toastr.error(
-        //         'Error',
-        //         'An Error Occured while trying to remove this row, check the event log for more information',
-        //         {
-        //           positionClass: 'toast-bottom-right',
-        //           timeOut: 2000,
-        //         }
-        //       );
-        //     }
-        //   },
-        //   (error) => {}
-        // );
       }
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
@@ -846,7 +792,7 @@ export class CCBCreateCountsComponent implements OnInit {
   }
 
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
 
   ngOnDestroy() {

@@ -103,16 +103,12 @@
                                 <button style="margin-left: auto;" mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" 
                                 [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" 
                                 appearance="outline">
-                                <!-- <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
-                                    class="circle-icon-o" appearance="outline"> -->
                                     <mat-icon>more_horiz</mat-icon>
                                 </button>
 
                                 <mat-menu #appMenu="matMenu">
                                     <button mat-menu-item (click)="addEditNewDevice(seletedRecord,true)">Edit Selected Device</button>
                                     <button mat-menu-item (click)="deleteAllOrders(seletedRecord.deviceID)">Delete Selected Device</button>
-                                    <!-- <button mat-menu-item   *ngIf="!hideDelete" (click)="sendCompletedToHistory()">Send Completed to
-                                                        History</button> -->
                                 </mat-menu>
                         </td>
 

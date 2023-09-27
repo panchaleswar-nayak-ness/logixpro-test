@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { WrdComponent } from './wrd/wrd.component';
-import { WrvComponent } from './wrv/wrv.component';
 import { WrdFrontendComponent } from './wrd-frontend/wrd-frontend.component';
 import { WrvFrontendComponent } from './wrv-frontend/wrv-frontend.component';
 import { ListAndLabelComponent } from './list-and-label.component';

@@ -1,7 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
-import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { RequiredDateStatusComponent } from '../../../app/dialogs/required-date-status/required-date-status.component';
 import { AuthService } from '../../../app/init/auth.service'; 
@@ -58,7 +57,7 @@ export class SuperBatchComponent implements OnInit {
   }
 
   openReqDataStatus() {
-    const dialogRef = this.dialog.open(RequiredDateStatusComponent, {
+    this.dialog.open(RequiredDateStatusComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__'
@@ -88,7 +87,7 @@ export class SuperBatchComponent implements OnInit {
   }
   getSuperBatchBy(type: any, itemNumber?: any) {
     this.type = type;
-    this.itemNum = itemNumber ? itemNumber : '';
+    this.itemNum = itemNumber ??  '';
     let payload = {
       "Type": type,
       "ItemNumber": itemNumber
@@ -100,7 +99,6 @@ export class SuperBatchComponent implements OnInit {
   }
 
   onChangeBatch($event: MatRadioChange) {
-    // console.log($event.source.name, $event.value);
     if ($event.value === 'Item') {
       this.dataSource = [];
       this.isItemNumber = false;
@@ -182,10 +180,8 @@ export class SuperBatchComponent implements OnInit {
       "BatchByOrder": BatchByOrder.toString()
     }
     this.Api.SuperBatchCreate(payload).subscribe(response => {
-      // console.log(response);
       if (response.isExecuted) {
         this.Api.TotePrintTableInsert({ "ToteID": element.newToteID.toString() }).subscribe(res => {
-          // console.log(res);
           if(res.isExecuted){
             this.superBatches.push(element.newToteID);
             this.toastr.success(labels.alert.success, 'Success!', {
@@ -201,10 +197,8 @@ export class SuperBatchComponent implements OnInit {
           }
 
         });
-        // this.dataSource = this.dataSource.filter(item => item.key !== element.key);
         this.getSuperBatchBy(this.type, this.itemNum);
       }
-      // console.log(this.dataSource);
 
     });
   }

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr'; 
 import labels from '../../../labels/labels.json';
@@ -7,9 +7,9 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-manual-trans-post-confirm',
   templateUrl: './manual-trans-post-confirm.component.html',
-  styleUrls: ['./manual-trans-post-confirm.component.scss'],
+  styleUrls: [],
 })
-export class ManualTransPostConfirmComponent implements OnInit {
+export class ManualTransPostConfirmComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
@@ -17,7 +17,7 @@ export class ManualTransPostConfirmComponent implements OnInit {
     private Api: ApiFuntions
   ) {}
 
-  ngOnInit(): void {}
+  
   confirmOK() {
     let payload = {
       orderNumber: this.data.orderNumber,

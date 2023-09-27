@@ -6,7 +6,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
-import { debounceTime, distinctUntilChanged, from, Observable, Subject } from 'rxjs'; 
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import { ApiFuntions } from '../services/ApiFuntions';
 
 @Component({
@@ -168,15 +168,16 @@ export class AdminComponent implements OnInit {
       wsid: this.userData.wsid,
     };
 
-    this.api.location(searchPayload).subscribe(
-        (res: any) => {
-          this.searchAutocompleteList = res.data;
-        },
-        (error) => {}
-      );
+    this.api.location(searchPayload).subscribe({
+      next: (res: any) => {
+        this.searchAutocompleteList = res.data;
+      },
+      error: (error) => {},
+      
+    });
   }
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -193,55 +194,57 @@ export class AdminComponent implements OnInit {
       username: this.userData.userName,
       wsid: this.userData.wsid,
     };
- this.api.Inventorymasterdata(payload).subscribe((res: any) => {
-          if (res.isExecuted) {
-            this.inventoryDetail.get("item")?.setValue(res.data?.itemNumber);
-            this.inventoryDetail.get("description")?.setValue(res.data?.description);
-            this.inventoryDetail.get("supplierNo")?.setValue(res.data?.supplierItemID);
-            this.inventoryDetail.get("minRTSReelQty")?.setValue(res.data?.minimumRTSReelQuantity);
-            this.inventoryDetail.get("primaryPickZone")?.setValue(res.data?.primaryPickZone);
-            this.inventoryDetail.get("secondaryPickZone")?.setValue(res.data?.secondaryPickZone);
-            this.inventoryDetail.get("category")?.setValue(res.data?.category);
-            this.inventoryDetail.get("subCategory")?.setValue(res.data?.subCategory);
-            this.inventoryDetail.get("manufacture")?.setValue(res.data?.manufacturer);
-            this.inventoryDetail.get("model")?.setValue(res.data?.model);
-            this.inventoryDetail.get("supplierItemID")?.setValue(res.data?.supplierItemID);
-            this.inventoryDetail.get("avgPieceWeight")?.setValue(res.data?.avgPieceWeight);
-            this.inventoryDetail.get("um")?.setValue(res.data?.unitOfMeasure);
-            this.inventoryDetail.get("minUseScaleQty")?.setValue(res.data?.minimumUseScaleQuantity);
-            this.inventoryDetail.get("pickSequence")?.setValue(res.data?.pickSequence);
-            this.inventoryDetail.get("unitCost")?.setValue(res.data?.unitCost);
-            this.inventoryDetail.get("caseQty")?.setValue(res.data?.caseQuantity);
-            this.inventoryDetail.get("carouselMaxQty")?.setValue(res.data?.maximumQuantity);
-            this.inventoryDetail.get("carouselCellSize")?.setValue(res.data?.cellSize);
-            this.inventoryDetail.get("carouselVelocity")?.setValue(res.data?.goldenZone);
-            this.inventoryDetail.get("carouselMinQty")?.setValue(res.data?.minimumQuantity);
-            this.inventoryDetail.get("sampleQty")?.setValue(res.data?.sampleQuantity);
-            this.inventoryDetail.get("bulkCellSize")?.setValue(res.data?.bulkCellSize);
-            this.inventoryDetail.get("bulkMinQty")?.setValue(res.data?.bulkMinimumQuantity);
-            this.inventoryDetail.get("bulkMaxQty")?.setValue(res.data?.bulkMaximumQuantity);
-            this.inventoryDetail.get("cfCellSize")?.setValue(res.data?.cfCellSize);
-            this.inventoryDetail.get("cfVelocity")?.setValue(res.data?.cfVelocity);
-            this.inventoryDetail.get("cfMinQty")?.setValue(res.data?.cfMinimumQuantity);
-            this.inventoryDetail.get("cfMaxQty")?.setValue(res.data?.cfMaximumQuantity);
-            this.inventoryDetail.get("reorderPoint")?.setValue(res.data?.reorderPoint);
-            this.inventoryDetail.get("reorderQty")?.setValue(res.data?.reorderQuantity);
-            this.inventoryDetail.get("replenishmentPoint")?.setValue(res.data?.reorderPoint);
-            this.inventoryDetail.get("replenishmentLevel")?.setValue(res.data?.replenishmentLevel);
-            this.inventoryDetail.get("includeRTSUpdate")?.setValue(res.data && res.data.includeInAutoRTSUpdate?'Yes':'No');
-            this.inventoryDetail.get("fifo")?.setValue(res.data && res.data.fifo?'Yes':'No' );
-            this.inventoryDetail.get("dateSensitive")?.setValue(res.data && res.data.dateSensitive?'Yes':'No');
-            this.inventoryDetail.get("wareHouseSensitive")?.setValue(res.data && res.data.warehouseSensitive?'Yes':'No');
-            this.inventoryDetail.get("active")?.setValue( res.data && res.data.active?'Yes':'No' );
-            this.inventoryDetail.get("specialFeatures")?.setValue(res.data?.specialFeatures);
-            this.inventoryDetail.get("bulkVelocity")?.setValue(res.data?.bulkVelocity);
-            this.inventoryDetail.get("useScale")?.setValue( res.data && res.data.useScale?'Yes':'No' );
-            this.inventoryDetail.get("splitCase")?.setValue( res.data && res.data.splitCase?'Yes':'No' );
-   
-          }
-        },
-        (error) => {}
-      );
+    this.api.Inventorymasterdata(payload).subscribe({
+      next: (res: any) => {
+        if (res.isExecuted) {
+          const data = res.data;
+          this.inventoryDetail.get("item")?.setValue(data?.itemNumber);
+          this.inventoryDetail.get("description")?.setValue(data?.description);
+          this.inventoryDetail.get("supplierNo")?.setValue(data?.supplierItemID);
+          this.inventoryDetail.get("minRTSReelQty")?.setValue(data?.minimumRTSReelQuantity);
+          this.inventoryDetail.get("primaryPickZone")?.setValue(data?.primaryPickZone);
+          this.inventoryDetail.get("secondaryPickZone")?.setValue(data?.secondaryPickZone);
+          this.inventoryDetail.get("category")?.setValue(data?.category);
+          this.inventoryDetail.get("subCategory")?.setValue(data?.subCategory);
+          this.inventoryDetail.get("manufacture")?.setValue(data?.manufacturer);
+          this.inventoryDetail.get("model")?.setValue(data?.model);
+          this.inventoryDetail.get("supplierItemID")?.setValue(data?.supplierItemID);
+          this.inventoryDetail.get("avgPieceWeight")?.setValue(data?.avgPieceWeight);
+          this.inventoryDetail.get("um")?.setValue(data?.unitOfMeasure);
+          this.inventoryDetail.get("minUseScaleQty")?.setValue(data?.minimumUseScaleQuantity);
+          this.inventoryDetail.get("pickSequence")?.setValue(data?.pickSequence);
+          this.inventoryDetail.get("unitCost")?.setValue(data?.unitCost);
+          this.inventoryDetail.get("caseQty")?.setValue(data?.caseQuantity);
+          this.inventoryDetail.get("carouselMaxQty")?.setValue(data?.maximumQuantity);
+          this.inventoryDetail.get("carouselCellSize")?.setValue(data?.cellSize);
+          this.inventoryDetail.get("carouselVelocity")?.setValue(data?.goldenZone);
+          this.inventoryDetail.get("carouselMinQty")?.setValue(data?.minimumQuantity);
+          this.inventoryDetail.get("sampleQty")?.setValue(data?.sampleQuantity);
+          this.inventoryDetail.get("bulkCellSize")?.setValue(data?.bulkCellSize);
+          this.inventoryDetail.get("bulkMinQty")?.setValue(data?.bulkMinimumQuantity);
+          this.inventoryDetail.get("bulkMaxQty")?.setValue(data?.bulkMaximumQuantity);
+          this.inventoryDetail.get("cfCellSize")?.setValue(data?.cfCellSize);
+          this.inventoryDetail.get("cfVelocity")?.setValue(data?.cfVelocity);
+          this.inventoryDetail.get("cfMinQty")?.setValue(data?.cfMinimumQuantity);
+          this.inventoryDetail.get("cfMaxQty")?.setValue(data?.cfMaximumQuantity);
+          this.inventoryDetail.get("reorderPoint")?.setValue(data?.reorderPoint);
+          this.inventoryDetail.get("reorderQty")?.setValue(data?.reorderQuantity);
+          this.inventoryDetail.get("replenishmentPoint")?.setValue(data?.reorderPoint);
+          this.inventoryDetail.get("replenishmentLevel")?.setValue(data?.replenishmentLevel);
+          this.inventoryDetail.get("includeRTSUpdate")?.setValue(data?.includeInAutoRTSUpdate ? 'Yes' : 'No');
+          this.inventoryDetail.get("fifo")?.setValue(data && data?.fifo ? 'Yes' : 'No');
+          this.inventoryDetail.get("dateSensitive")?.setValue(data?.dateSensitive ? 'Yes' : 'No');
+          this.inventoryDetail.get("wareHouseSensitive")?.setValue(data?.warehouseSensitive ? 'Yes' : 'No');
+          this.inventoryDetail.get("active")?.setValue(data?.active ? 'Yes' : 'No');
+          this.inventoryDetail.get("specialFeatures")?.setValue(data?.specialFeatures);
+          this.inventoryDetail.get("bulkVelocity")?.setValue(data?.bulkVelocity);
+          this.inventoryDetail.get("useScale")?.setValue(data?.useScale ? 'Yes' : 'No');
+          this.inventoryDetail.get("splitCase")?.setValue(data?.splitCase ? 'Yes' : 'No');
+        }
+      },
+      error: (error) => {},
+      
+    });
   }
   sortChange(event) {
     if (
@@ -252,7 +255,7 @@ export class AdminComponent implements OnInit {
       return;
 
     let index;
-    this.displayedColumns.find((x, i) => {
+    this.displayedColumns.forEach((x, i) => {
       if (x === event.active) {
         index = i;
       }
@@ -260,20 +263,13 @@ export class AdminComponent implements OnInit {
 
     this.sortCol = index;
     this.sortOrder = event.direction;
-    // this.getContentData();
   }
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-    // this.customPagination.startIndex =  e.pageIndex
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
 
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
-    // this.length = e.length;
     this.customPagination.recordsPerPage = e.pageSize;
-    // this.pageIndex = e.pageIndex;
-
-    // this.initializeApi();
-    // this.getContentData();
   }
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
@@ -285,12 +281,12 @@ export class AdminComponent implements OnInit {
   }
   getAdminMenu() { 
     this.api.GetAdminMenu().subscribe((res: any) => {
-        if (res && res?.data?.totalOrders) {
+        if ( res?.data?.totalOrders) {
           this.dataSource = new MatTableDataSource(
             res.data.totalOrders.orderTable
           );
         }
-        if (res && res.data.totalOrders && res.data.totalOrders.adminValues) {
+        if (res?.data?.totalOrders?.adminValues) {
           let item = res.data.totalOrders.adminValues;
           this.picksOpen = item.openPicks;
           this.picksCompleted = item.completedPicksToday;

@@ -9,8 +9,6 @@
             <span>Location Zones</span>
         </h2>
         <div class="d-block d-xl-flex justify-content-end">
-            <!-- <button mat-flat-button color="primary" class="btn-md w-100 mb-3" (click)="addNewLocation()">Add New Location Zone</button>
-             -->
             <button mat-flat-button color="primary" class="add-icon-button mb-3"
             (click)="addNewLocation()">
             <span class="material-symbols-outlined" matTooltip="Add new zone"
@@ -20,7 +18,6 @@
           </button>
         </div>
     </div>
-
     <div *ngIf="newLocation" class="col-xl-12 d-flex  align-items-baseline justify-content-start">
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-1" appearance="outline">
@@ -28,11 +25,9 @@
                 <input type="text" [(ngModel)]="newLocationVal" (ngModelChange)="newLocationValue()"   matInput maxlength="2">
               </mat-form-field>
         </div>
-
         <div class="col-xl-2 ">
             <ng-container >
                       <div class="d-flex gap-12 cl justify-content-center">
-                        
                           <button  matTooltip="Save" [disabled]="locationSaveBtn" (click)="saveNewLocation()" mat-flat-button color="primary" class="xsm-icon-button">
                             <mat-icon class="material-symbols-outlined" >
                               save
@@ -43,13 +38,10 @@
                               close
                             </mat-icon>
                           </button>
-                       
-                        
                       </div>
                   </ng-container>
         </div>
     </div>
-   
     <ng-container >
         <mat-accordion *ngFor="let i of locationzone ; let index = index" >
             <div class="mb-2">
@@ -166,11 +158,6 @@
                                 </mat-form-field>
                           </div>
                           <div class="col-xl-3">
-                              <!-- <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
-                                  <mat-label>Parent Zone</mat-label>
-                                  <input type="text" value="{{i.parentZone}}"   matInput maxlength="255">
-                                </mat-form-field> -->
-
                                 <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
                                     <mat-label>Parent Zone</mat-label>
                                     <mat-select [disabled]="!i.includeCFCarouselPick"  [(ngModel)]="i.parentZone" (ngModelChange)="zoneChange(i,false)"  class="employees-action" >

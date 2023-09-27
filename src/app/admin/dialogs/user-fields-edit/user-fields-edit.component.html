@@ -21,21 +21,17 @@
 
     <div class="row">
         <div class="col-xl-6">
-            <!-- <mat-form-field class="custom-form-field  w-100 mb-3" appearance="outline">
-                <mat-label>Ship VIA</mat-label>
-                <input matInput type="text" maxlength="255" value="Value">
-            </mat-form-field> -->
 
             <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
             [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
             <mat-label>{{fieldNames.userField1}}</mat-label>
-            <input  #ship_via type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipVia' (focusout)="onFocusOutEvent($event,'shipVia')" 
+            <input  #ship_via type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipVia'
                 maxlength="255" [matAutocomplete]="auto" (ngModelChange)="this.searchByShipVia.next($event)">
                 <button matSuffix *ngIf="shipVia" class="clear-btn"  (click)="shipVia=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
 
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData($event)">
+            <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of searchAutocompleteShipVia" [value]="option">
-                    <div (click)="getRow(option)">{{option}}</div>
+                    <div>{{option}}</div>
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
@@ -43,21 +39,17 @@
 
         </div>
         <div class="col-xl-6">
-            <!-- <mat-form-field class="custom-form-field  w-100 mb-3" appearance="outline">
-                <mat-label>Ship To Name</mat-label>
-                <input matInput type="text" maxlength="255" value="Value">
-            </mat-form-field> -->
 
             <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
             [floatLabel]="getFloatLabelValueItem()" [hideRequiredMarker]="hideRequiredControlShipName.value">
             <mat-label>{{fieldNames.userField2}}</mat-label>
-            <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipToName' (focusout)="onFocusOutEvent($event,'shipToName')" 
+            <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipToName' 
                 maxlength="255" [matAutocomplete]="shipName" (ngModelChange)="this.searchByShipName.next($event)">
                 <button matSuffix *ngIf="shipToName" class="clear-btn"  (click)="shipToName=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
 
-            <mat-autocomplete #shipName="matAutocomplete" (optionSelected)="searchData($event)">
+            <mat-autocomplete #shipName="matAutocomplete">
                 <mat-option *ngFor="let option of searchAutocompleteShipName" [value]="option">
-                    <div (click)="getRow(option)">{{option}}</div>
+                    <div>{{option}}</div>
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>

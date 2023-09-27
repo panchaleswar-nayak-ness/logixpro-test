@@ -11,7 +11,7 @@ import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-om-event-log-entry-detail',
   templateUrl: './om-event-log-entry-detail.component.html',
-  styleUrls: ['./om-event-log-entry-detail.component.scss']
+  styleUrls: []
 })
 export class OmEventLogEntryDetailComponent implements OnInit {
 
@@ -73,7 +73,7 @@ export class OmEventLogEntryDetailComponent implements OnInit {
 
   printEvent() {
     if(this.eventLog.eventID == 0) this.eventLog.eventID  = -1; 
-    var curdatetime = this.datepipe.transform(this.eventLog.dateStamp, 'yyyy-MM-dd HH:mm:ss');
+    let curdatetime = this.datepipe.transform(this.eventLog.dateStamp, 'yyyy-MM-dd HH:mm:ss');
     this.global.Print(`FileName:printELReport|sDate:${curdatetime}|eDate:${curdatetime}|eID:${this.eventLog.eventID ? this.eventLog.eventID : ''}|message:${this.eventLog.message ? this.eventLog.message: '' }|eLocation:${this.eventLog.eLocation ? this.eventLog.eLocation: '' }|nStamp:${this.eventLog.nStamp ? this.eventLog.nStamp: '' }`);
   }
 

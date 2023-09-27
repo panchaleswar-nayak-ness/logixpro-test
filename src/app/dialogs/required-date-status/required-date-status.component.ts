@@ -66,13 +66,11 @@ export class RequiredDateStatusComponent implements OnInit {
   getReqDateDataSelect(){
     this.Api.ReqDateDataSelect().subscribe(res => {
       if(res.data.length > 0) {
-        // console.log(res.data)
         this.dataSource = new MatTableDataSource(res.data);
       }
       else {
        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
       }
-      // console.log(this.dataSource.data);
     });
   }
 

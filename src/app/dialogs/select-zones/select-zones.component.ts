@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit , Inject, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit , Inject} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
 import { ToastrService } from 'ngx-toastr';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
@@ -34,7 +34,7 @@ export class SelectZonesComponent implements OnInit {
 
   selectZone(row:any){
 
-    let obj = this.ELEMENT_DATA.find((o, i) => {
+    this.ELEMENT_DATA.find((o, i) => {
       if (o.zone === row.zone) {
         this.ELEMENT_DATA[i].selected = !this.ELEMENT_DATA[i].selected;
         return true; // stop searching
@@ -57,12 +57,12 @@ export class SelectZonesComponent implements OnInit {
 
   AllRecordsChecked()
   {
-    var selected=false;
-    for(var i=0;i<this.ELEMENT_DATA.length;i++)
+    let selected=false;
+    for(let i=0;i<this.ELEMENT_DATA.length;i++)
     {
-      if(!(this.ELEMENT_DATA[i].selected==false&&this.ELEMENT_DATA[i].available==false))
+      if(!(!this.ELEMENT_DATA[i].selected && !this.ELEMENT_DATA[i].available))
       {
-        if(this.ELEMENT_DATA[i].selected==false)
+        if(!this.ELEMENT_DATA[i].selected)
         {
           selected = false;
           break;
@@ -90,20 +90,13 @@ export class SelectZonesComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows($event:any) {
-    for(var i=0;i<this.ELEMENT_DATA.length;i++)
+    for(let i=0;i<this.ELEMENT_DATA.length;i++)
     {
-      if(!(this.ELEMENT_DATA[i].selected==false&&this.ELEMENT_DATA[i].available==false))
+      if(!(!this.ELEMENT_DATA[i].selected && !this.ELEMENT_DATA[i].available))
       {
         this.ELEMENT_DATA[i].selected=$event.checked;
       }
     }
-    
-    // if (this.isAllSelected()) {
-    //   this.selection.clear();
-    //   return;
-    // }
-    // console.log(this.dataSource.data);
-    // this.selection.select(...this.dataSource.data);
     this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
     
 
@@ -123,10 +116,10 @@ export class SelectZonesComponent implements OnInit {
   if(staging=="0")
   {
   //Auto select staging records
-  var recordExists=0;
-  for(var i=0;i<this.ELEMENT_DATA.length;i++)
+  let recordExists=0;
+  for(let i=0;i<this.ELEMENT_DATA.length;i++)
   {
-  if(this.ELEMENT_DATA[i].stagingZone=='False' && !(this.ELEMENT_DATA[i].selected==false&&this.ELEMENT_DATA[i].available==false))
+  if(this.ELEMENT_DATA[i].stagingZone=='False' && !(!this.ELEMENT_DATA[i].selected && !this.ELEMENT_DATA[i].available))
   {
     this.ELEMENT_DATA[i].selected=true;
     recordExists=1;
@@ -144,8 +137,8 @@ export class SelectZonesComponent implements OnInit {
   else 
   {
   //Auto select staging records
-  var recordExists=0;
-  for(var i=0;i<this.ELEMENT_DATA.length;i++)
+  let recordExists=0;
+  for(let i=0;i<this.ELEMENT_DATA.length;i++)
   {
   if(this.ELEMENT_DATA[i].stagingZone!='False')
   {
@@ -170,7 +163,7 @@ export class SelectZonesComponent implements OnInit {
   {
     let selectedRecords=[{zone:'',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
     selectedRecords.shift();
-    for(var i=0;i<this.ELEMENT_DATA.length;i++)
+    for(let i=0;i<this.ELEMENT_DATA.length;i++)
     {
     if(this.ELEMENT_DATA[i].selected)
     {
@@ -188,7 +181,7 @@ export class SelectZonesComponent implements OnInit {
   getAvailableZones()
   {
     this.ELEMENT_DATA.length=0;
-    var payLoad =
+    let payLoad =
     {
       batchID: this.batchID,
       username: this.username,
@@ -198,28 +191,13 @@ export class SelectZonesComponent implements OnInit {
       (res: any) => {
         if (res.data && res.isExecuted) {
         this.zoneDetails = res.data.zoneDetails; 
-        // console.log(this.alreadyAssignedZones);
-        for(var i=0;i<this.zoneDetails.length;i++)
+        for(let i=0;i<this.zoneDetails.length;i++)
         {
-          
-          var isSelected = false;
-          
+                    
           if(this.alreadyAssignedZones!=null && this.alreadyAssignedZones.length>0)
           {
-            let obj = this.alreadyAssignedZones.find((o) => {
-              if (o.zone == this.zoneDetails[i].zone) {
-                if(this.isNewBatch){
-                  isSelected=false
-                }else{
-                  isSelected = true;
-                }
-             
-                return true; // stop searching
-              }
-              else 
-              {
-                return false;
-              }
+            this.alreadyAssignedZones.find((o) => {
+              return o.zone == this.zoneDetails[i].zone;
             });
   
           }

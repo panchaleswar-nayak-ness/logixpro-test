@@ -1,13 +1,12 @@
-import { AfterViewInit, Component, OnInit, ViewChild, Inject, Input, NgZone } from '@angular/core';
-import { MatInputModule } from '@angular/material/input';
+import {Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators'; 
-import { AdminEmployeeLookupResponse, EmployeeObject, IEmployee } from 'src/app/Iemployee';
-import { MatDialog ,MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { IEmployee } from 'src/app/Iemployee';
+import { MatDialog} from '@angular/material/dialog';
 import { AddNewEmployeeComponent } from '../dialogs/add-new-employee/add-new-employee.component';
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
@@ -17,10 +16,9 @@ import { AddGroupAllowedComponent } from '../dialogs/add-group-allowed/add-group
 import { AddNewGroupComponent } from '../dialogs/add-new-group/add-new-group.component';
 import { ToastrService } from 'ngx-toastr';
 import labels from '../../labels/labels.json';
-import { GroupsAllowedComponent } from './groups-allowed/groups-allowed.component';
 import { GroupAllowedComponent } from '../dialogs/group-allowed/group-allowed.component';
 import { CloneGroupComponent } from '../dialogs/clone-group/clone-group.component';
-import { Router,NavigationEnd  } from '@angular/router';
+import { Router} from '@angular/router';
 import { AuthService } from '../../../app/init/auth.service';
 import { SpinnerService } from '../../../app/init/spinner.service';
 import { MatOption } from '@angular/material/core';
@@ -30,7 +28,7 @@ import { GroupsLookupComponent } from './groups-lookup/groups-lookup.component';
 import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 
-export interface location {
+export interface Location {
   start_location: string;
   end_location: string;
   delete_location: string;
@@ -54,7 +52,6 @@ export class EmployeesComponent implements OnInit {
   public isGroupLookUp: boolean = false;
   public env;
   @ViewChild('matRef') matRef: MatSelect;
- // public searchGrpAllowed = '';
   public allGroups:any = [];
   public searchfuncAllowed = '';
   public grpAllFilter='';
@@ -72,11 +69,8 @@ bpSettingLocInp='';
   location_data: any[] = [];
   employee_data_source: any = [];
   grpData: any = {};
-  // max_orders:any;
   userName: any;
   employees_action: boolean = false;
-  // employee_fetched_zones: string[] = [];
-  // employees_action: boolean = false;
   employee_fetched_zones: any;
   location_data_source: any;
   employee_group_allowed: any;
@@ -127,10 +121,7 @@ bpSettingLocInp='';
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('MatSortLocation', { static: true }) sortLocation: MatSort;
-  ngAfterViewInit() {
-    // this.location_data_source.sort = this.sort;
-    // this.employee_fetched_zones.sort = this.sort;
-  }
+
 
   clearMatSelectList(){
     this.matRef.options.forEach((data: MatOption) => data.deselect());
@@ -149,23 +140,18 @@ this.reloadData();
     this.groupAllowedList.filter="";
   }
 getgroupAllowedList(){
-  var payload:any = { 
+  let payload:any = { 
     "user": this.empData.username,
     "WSID": "TESTWSID"
 
   }
 
   this.employeeService.Groupnames(payload).subscribe((res:any) => {
-     
-   // this.groupAllowedList = res.data;
     this.groupAllowedList = new MatTableDataSource(res.data);
-  //   this.groupAllowedList.filterPredicate = (data: any, filter: string) => {
-  //     return data.toLowerCase().includes(filter.trim().toLowerCase());
-  // };
   }) 
 }
 getFuncationAllowedList(){
-  var emp:any = {
+  let emp:any = {
     "username": this.grp_data,
     "access": this.empData.accessLevel,
     "wsid": this.userData.wsid
@@ -334,10 +320,10 @@ initialzeEmpForm() {
     this.userData = this.authService.userData();
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || '')),
+      map(value => this._filter(value ?? '')),
     );
 
-   this.env =  JSON.parse(localStorage.getItem('env') || '');
+   this.env =  JSON.parse(localStorage.getItem('env') ?? '');
    this.initialzeEmpForm();
    this.getEmployeeData();
   }
@@ -425,7 +411,6 @@ initialzeEmpForm() {
       ;
       this.updateGrpTable = result.groupName; 
       this.groupsLookup.loadEmpData();
-      // this.loadEmpData();
     })
 
   }
@@ -527,7 +512,6 @@ initialzeEmpForm() {
         this.employee_fetched_zones.sort=this.sort;
         this.zoneDataRefresh.renderRows()
       }
-      // this.reloadData();
     })
   }
 
@@ -564,8 +548,6 @@ initialzeEmpForm() {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-      // this.reloadData();
-      ;
       
       if (result.mode === 'editZone') {
         const newData = { zones: result.data.zone }; 
@@ -586,7 +568,6 @@ initialzeEmpForm() {
 
   saveMaximumOrders(){
     this.initialzeEmpForm();
-    // this.empForm.removeControl('password');
     this.empForm.value.wsid = "TESTWID";
     this.empForm.value.username = this.empData.username;
     this.empForm.value.groupName = "";
@@ -723,7 +704,7 @@ initialzeEmpForm() {
     })
   }
   async getEmployeeData(){
-    var employeRes:any = {
+    let employeRes:any = {
       "username": this.userData.userName,
       "wsid": this.userData.wsid  
     }
@@ -749,7 +730,7 @@ initialzeEmpForm() {
         let customPermissions:any=[];
           
          existingRights = response.data.userRights; 
-         customPermissions = JSON.parse(localStorage.getItem('customPerm') || '');
+         customPermissions = JSON.parse(localStorage.getItem('customPerm') ?? '');
          userRights = [...existingRights, ...customPermissions];
          
         localStorage.setItem('userRights', JSON.stringify(userRights));
@@ -781,14 +762,12 @@ initialzeEmpForm() {
     };
     this.employeeService.deleteControlName(groupData).subscribe((res: any) => {
       if (res.isExecuted) {
-        // this.dialog.closeAll();
         this.toastr.success('Your details have been deleted', 'Success!', {
           positionClass: 'toast-bottom-right',
           timeOut: 2000,
         });
         this.reloadData();
       } else {
-        // this.dialog.closeAll();
         this.toastr.error('Something went wrong!', 'Error!', {
           positionClass: 'toast-bottom-right',
           timeOut: 2000,
@@ -814,7 +793,6 @@ initialzeEmpForm() {
           timeOut: 2000,
         });
          this.getgroupAllowedList();
-        //   this.reloadCurrentRoute();
       } else {
         this.toastr.error(res.responseMessage, 'Error!', {
           positionClass: 'toast-bottom-right',
@@ -852,15 +830,14 @@ initialzeEmpForm() {
     this.bpSettingLocInp='';
     this.searchfuncAllowed = '';
     this.grpAllFilter='';
-    this.employee_fetched_zones && this.employee_fetched_zones.filter? this.employee_fetched_zones.filter = '' : '';
-    this.location_data_source && this.location_data_source.filter? this.location_data_source!.filter = '':'';
-    this.groupAllowedList && this.groupAllowedList.filter? this.groupAllowedList.filter = '':'';
-    
+    this.employee_fetched_zones.filter = '';
+    this.location_data_source!.filter = '';
+    this.groupAllowedList.filter = '';
   }
   
  
   ChangeAdminLevel(levelresponse:any){
-  var item =  {
+  let item =  {
       "controlName": levelresponse.controlName,
       "newValue": levelresponse.adminLevel
     }
@@ -876,19 +853,13 @@ initialzeEmpForm() {
 
   printEmpList(){
     this.global.Print(`FileName:printEmployees`)
-    // window.location.href = `/#/report-view?file=FileName:printEmployees`;
-    // window.location.reload();
   }
 
   printSelected(){
     this.global.Print(`FileName:printEmployeeGroup|Group:${this.grpData.groupName}`)
-    // window.location.href = `/#/report-view?file=FileName:printEmployeeGroup|Group:${this.grpData.groupName}`;
-    // window.location.reload();
   }
 
   printAll(){
     this.global.Print(`FileName:printEmployeeGroup`)
-    // window.location.href = `/#/report-view?file=FileName:printEmployeeGroup`;
-    // window.location.reload();
   }
 }

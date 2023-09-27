@@ -12,17 +12,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { ToastrService } from 'ngx-toastr';
 import {
-  debounceTime,
-  distinctUntilChanged,
+  
+  
   Subject,
   Subscription,
 } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { BYPASS_LOG } from 'src/app/init/http-interceptor'; 
-import labels from '../../../../labels/labels.json';
 import { SharedService } from 'src/app/services/shared.service';
-import { FilterToteComponent } from 'src/app/admin/dialogs/filter-tote/filter-tote.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { ActivatedRoute } from '@angular/router';
@@ -99,11 +97,7 @@ export class TranSelectOrderComponent implements OnInit {
     }
   }
   @Input()
-  set clearEvent(event: any) {
-
-    if (event) {
-    }
-  }
+  
 
   @Input() set clearFromListEvent(event: Event) {
     if (event) {
@@ -130,7 +124,6 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   selectOrderByTote() {
-    // && this.totalLinesOrder > 0
     if (this.columnSelect === 'Tote ID' && this.totalLinesOrder > 0) {
       // if data populate and tote id selected then filter only
 
@@ -218,21 +211,6 @@ export class TranSelectOrderComponent implements OnInit {
          })
     );
 
-
-    // this.subscription.add(
-    //   this.searchBar
-    //     .pipe(debounceTime(300), distinctUntilChanged())
-    //     .subscribe((value) => {
-    //       if (!value) {
-    //         this.resetLines();
-    //         this.columnSelect = '';
-    //       }
-    //       this.autocompleteSearchColumn();
-    //       this.onOrderNoChange();
-    //     }));
-
-    
-
   }
 
   getNextItemNo(event:any){
@@ -257,7 +235,7 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
   onOrderNoChange() {
     let obj = {
@@ -309,8 +287,6 @@ export class TranSelectOrderComponent implements OnInit {
         mode: 'delete-order-status',
         paylaod: paylaod,
         action:'delete'
-        //itemList : this.itemList,
-        //  detailData : event
       },
 
      
@@ -319,42 +295,12 @@ export class TranSelectOrderComponent implements OnInit {
       if (res.isExecuted) {
         this.deleteEvent.emit(res);
         this.resetLines();
-        // this.deleteEvent.emit(res);
-
-        // this.transactionService
-        //   .get(paylaod, '/Admin/DeleteOrderStatus')
-        //   .subscribe(
-        //     (res: any) => {
-        //       if (res.isExecuted) {
-        //         this.toastr.success(labels.alert.success, 'Success!', {
-        //           positionClass: 'toast-bottom-right',
-        //           timeOut: 2000,
-        //         });
-        //         this.deleteEvent.emit(res.isExecuted);
-        //       } else {
-        //         this.toastr.error(labels.alert.went_worng, 'Error!', {
-        //           positionClass: 'toast-bottom-right',
-        //           timeOut: 2000,
-        //         });
-        //       }
-        //     },
-        //     (error) => {}
-        //     // this.columnValues = res.data?.openTransactionColumns;
-        //     // this.columnValues.push('actions');
-        //     // this.displayOrderCols=res.data.openTransactionColumns;
-        //   );
       }
     });
   }
 
   async autocompleteSearchColumn() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'Basic ',
-      }),
-      context: new HttpContext().set(BYPASS_LOG, true),
-    };
+    
     let searchPayload;
     if (this.columnSelect == 'Order Number') {
       searchPayload = {
@@ -374,35 +320,20 @@ export class TranSelectOrderComponent implements OnInit {
  
    if( this.columnSelect == 'Order Number'){
     this.Api.OrderNumberNext(searchPayload).subscribe(
-      (res: any) => {
+      {next: (res: any) => {
         this.searchAutocompleteList = res.data;
       },
-      (error) => {}
+      error: (error) => {}}
     );
    }else{
     this.Api.NextSuggestedTransactions(searchPayload).subscribe(
-      (res: any) => {
+      {next: (res: any) => {
         this.searchAutocompleteList = res.data;
       },
-      (error) => {}
+      error: (error) => {}}
     );
    }
   }
-  // async autocompleteSearchColumn() {
-  //   let searchPayload = {
-  //     orderNumber: this.orderNumber,
-  //     username: this.userData.userName,
-  //     wsid: this.userData.wsid,
-  //   };
-  //   this.transactionService
-  //     .get(searchPayload, '/Admin/OrderNumberNext')
-  //     .subscribe(
-  //       (res: any) => {
-  //         this.searchAutocompleteList = res.data;
-  //       },
-  //       (error) => {}
-  //     );
-  // }
   actionDialog(event) {
     this.searchField = '';
     this.searchAutocompleteList = [];
@@ -412,7 +343,6 @@ export class TranSelectOrderComponent implements OnInit {
   ngOnDestroy() {
     this.searchByOrderNumber.unsubscribe();
     this.searchByToteId.unsubscribe();
-    // this.searchBar.unsubscribe();
     this.subscription.unsubscribe();
   }
 }

@@ -1,16 +1,13 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-//import { CustomValidatorService } from '../../../../app/init/custom-validator.service';
-//import { EmployeeService } from '../../../../app/employee.service';
-//import labels from '../../../labels/labels.json';
+import { FormGroup } from '@angular/forms';
+import {  MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 
 
 @Component({
   selector: 'app-input-filter',
   templateUrl: './input-filter.component.html',
-  styleUrls: ['./input-filter.component.scss']
+  styleUrls: []
 })
 export class InputFilterComponent implements OnInit {
   @ViewChild('aut_focus') aut_focus: ElementRef;

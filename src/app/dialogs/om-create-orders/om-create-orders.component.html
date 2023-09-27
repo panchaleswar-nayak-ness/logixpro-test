@@ -39,22 +39,6 @@
             <div class="col-xl-3">
                 <button type="submit" mat-stroked-button class="btn-regular w-100 mb-xl-0 mb-md-2" color="primary" (click)="openOmUserFieldData()">Default User Fields</button>
             </div>
-            <!-- <div class="col-xl-3 offset-xl-6">
-                <div class="d-flex justify-content-end">
-                    <mat-form-field class="action-dropdown custom-form-field-bg-white" appearance="outline">
-                        <mat-label>Actions</mat-label>
-                        <mat-select #matRef class="employees-action" placeholder="Actions">
-                            <mat-option value="post_order">Order Status</mat-option>
-                            <mat-option value="delete_order" (click)="openOmAddRecord()">Add New Order</mat-option>
-                            <mat-option value="add_new_transaction">Add Transaction</mat-option>
-                            <mat-option value="add_new_transaction">Default User Fields</mat-option>
-                        </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
-                            expand_more
-                        </span>
-                    </mat-form-field>
-                </div>
-            </div> -->
         </div>
     </div>
 </div>
@@ -124,7 +108,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.transactionType && element.transactionType.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.transactionType, 'Transaction Type')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.transactionType}}</td>
             </ng-container>
             
@@ -135,7 +119,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.orderNumber && element.orderNumber.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.orderNumber, 'Order Number')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.orderNumber}}</td>
             </ng-container>
 
@@ -146,7 +130,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.priority && element.priority.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.priority, 'Priority')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.priority}}</td>
             </ng-container>
 
@@ -157,7 +141,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.requiredDate && element.requiredDate.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.requiredDate, 'Required Date')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.requiredDate}}</td>
             </ng-container>
 
@@ -168,7 +152,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.userField1 && element.userField1.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField1, 'User Field1')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.userField1}}</td>
             </ng-container>
 
@@ -179,7 +163,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.userField2 && element.userField2.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField2, 'User Field2')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.userField2}}</td>
             </ng-container>
 
@@ -190,7 +174,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.userField3 && element.userField3.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField3, 'User Field3')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.userField3}}</td>
             </ng-container>
 
@@ -201,7 +185,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.userField4 && element.userField4.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField4, 'User Field4')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.userField4}}</td>
             </ng-container>
 
@@ -212,7 +196,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.userField5 && element.userField5.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField5, 'User Field5')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.userField5}}</td>
             </ng-container>
 
@@ -223,7 +207,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.userField6 && element.userField6.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField6, 'User Field6')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.userField6}}</td>
             </ng-container>
 
@@ -234,7 +218,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.userField7 && element.userField7.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField7, 'User Field7')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.userField7}}</td>
             </ng-container>
 
@@ -245,7 +229,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.userField8 && element.userField8.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField8, 'User Field8')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.userField8}}</td>
             </ng-container>
 
@@ -256,7 +240,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.userField9 && element.userField9.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField9, 'User Field9')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.userField9}}</td>
             </ng-container>
 
@@ -267,7 +251,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.userField10 && element.userField10.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.userField10, 'User Field10')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.userField10}}</td>
             </ng-container>
 
@@ -278,7 +262,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.itemNumber && element.itemNumber.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.itemNumber}}</td>
             </ng-container>
 
@@ -289,7 +273,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.description && element.description.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.description, 'Description')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.description}}</td>
             </ng-container>
 
@@ -300,7 +284,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.lineNumber && element.lineNumber.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.lineNumber, 'Line Number')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.lineNumber}}</td>
             </ng-container>
 
@@ -311,7 +295,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.transactionQuantity && element.transactionQuantity.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.transactionQuantity, 'Transaction Quantity')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.transactionQuantity}}</td>
             </ng-container>
 
@@ -322,7 +306,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.warehouse && element.warehouse.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.warehouse, 'Warehouse')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.warehouse}}</td>
             </ng-container>
 
@@ -333,7 +317,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.lineSequence && element.lineSequence.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.lineSequence, 'Line Sequence')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.lineSequence}}</td>
             </ng-container>
 
@@ -344,7 +328,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.inProcess && element.inProcess.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.inProcess, 'In Process')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.inProcess}}</td>
             </ng-container>
 
@@ -355,7 +339,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.processingBy && element.processingBy.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.processingBy, 'Processing By')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.processingBy}}</td>
             </ng-container>
 
@@ -366,7 +350,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.unitOfMeasure && element.unitOfMeasure.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.unitOfMeasure}}</td>
             </ng-container>
 
@@ -377,7 +361,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.importBy && element.importBy.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.importBy, 'Import By')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.importBy}}</td>
             </ng-container>
 
@@ -388,7 +372,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.importDate && element.importDate.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.importDate, 'Import Date')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.importDate}}</td>
             </ng-container>
 
@@ -399,7 +383,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.importFilename && element.importFilename.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.importFilename, 'Import Filename')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.importFilename}}</td>
             </ng-container>
 
@@ -410,7 +394,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.expirationDate && element.expirationDate.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.expirationDate, 'Expiration Date')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.expirationDate}}</td>
             </ng-container>
 
@@ -421,7 +405,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.lotNumber && element.lotNumber.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.lotNumber, 'Lot Number')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.lotNumber}}</td>
             </ng-container>
 
@@ -432,7 +416,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.serialNumber && element.serialNumber.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.serialNumber, 'Serial Number')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.serialNumber}}</td>
             </ng-container>
 
@@ -443,7 +427,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.notes && element.notes.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.notes, 'Notes')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.notes}}</td>
             </ng-container>
 
@@ -454,7 +438,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.revision && element.revision.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.revision, 'Revision')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.revision}}</td>
             </ng-container>
 
@@ -465,7 +449,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.id && element.id.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.id, 'ID')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.id}}</td>
             </ng-container>
 
@@ -476,7 +460,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.hostTransactionID && element.hostTransactionID.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.hostTransactionID, 'Host Transaction ID')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.hostTransactionID}}</td>
             </ng-container>
 
@@ -487,7 +471,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.emergency && element.emergency.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.emergency, 'Emergency')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.emergency}}</td>
             </ng-container>
 
@@ -498,7 +482,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.label && element.label.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.label, 'Label')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.label}}</td>
             </ng-container>
 
@@ -509,7 +493,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.batchPickID && element.batchPickID.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.batchPickID, 'Batch Pick ID')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.batchPickID}}</td>
             </ng-container>
 
@@ -520,7 +504,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.toteID && element.toteID.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.toteID, 'Tote ID')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.toteID}}</td>
             </ng-container>
 
@@ -531,7 +515,7 @@
                 style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [matTooltipDisabled]="element.cell && element.cell.length>=20?false:true"
                 (contextmenu)="onContextMenu($event, element.cell, 'Cell')"
-                (click)="selectTransaction(element)" [class.selected]="element.id == selectedTransaction.id"
+                 [class.selected]="element.id == selectedTransaction.id"
                 >{{element.cell}}</td>
             </ng-container>
 
@@ -573,11 +557,6 @@
 
       </div>
     </mat-dialog-content>
-    <!-- <mat-dialog-actions>
-
-        <button type="submit" mat-flat-button class="btn-lg w-100 mb-3" color="primary">Complete Packing</button>
-      
-    </mat-dialog-actions> -->
 
     <div #trigger="matMenuTrigger"
     style="visibility: hidden; position: fixed"

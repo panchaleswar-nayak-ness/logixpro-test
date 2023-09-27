@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-ie-assign-locations',
   templateUrl: './ie-assign-locations.component.html',
-  styleUrls: ['./ie-assign-locations.component.scss']
+  styleUrls: []
 })
-export class IeAssignLocationsComponent implements OnInit {
+export class IeAssignLocationsComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }
