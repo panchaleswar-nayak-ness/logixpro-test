@@ -331,7 +331,7 @@ export class InventoryMasterComponent implements OnInit {
 
       dateSensitive: [this.getInvMasterData?.dateSensitive || false],
       warehouseSensitive: [this.getInvMasterData?.warehouseSensitive || false],
-      splitCase: [this.getInvMasterData?.splitCase || ''],
+      splitCase: [this.getInvMasterData?.splitCase || false],
       active: [this.getInvMasterData?.active || ''],
       fifo: [this.getInvMasterData?.fifo || false],
       fifoDate: [this.getInvMasterData?.fifoDate || ''],
