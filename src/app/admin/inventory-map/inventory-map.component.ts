@@ -477,6 +477,7 @@ export class InventoryMapComponent implements OnInit {
         autoFocus: '__non_existing_element__',
       disableClose:true,
         data: {
+          action: 'delete',
           mode: 'delete-inventory-map',
           id: event.invMapID
         }
