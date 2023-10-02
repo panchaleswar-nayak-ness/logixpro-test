@@ -192,7 +192,6 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.location_name.nativeElement.focus();
     if(this.router.url == '/OrderManager/InventoryMap'){
       this.addInvMapLocation.get('location')?.disable();
       this.addInvMapLocation.get('zone')?.disable();
@@ -219,11 +218,7 @@ export class AddInvMapLocationComponent implements OnInit {
 
     
     }
-
-
-
-    
-
+    this.location_name.nativeElement.focus();
   }
 
   clearFields() {
