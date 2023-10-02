@@ -8,7 +8,7 @@
 
       </div>
       <p class="prompt-message py-4 mb-0" *ngIf="this.Message == ''">
-        Are you sure you want to {{action}} {{data && data.actionMessage}} ? {{data && data.message}}
+        Are you sure you want to {{action}}{{data && data.actionMessage}}? {{data && data.message}}
       </p>
       <p class="prompt-message py-4 mb-0" *ngIf="this.Message != ''">
        {{this.Message}}
