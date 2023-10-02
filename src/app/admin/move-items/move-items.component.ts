@@ -700,7 +700,7 @@ export class MoveItemsComponent implements OnInit {
       moveToItemNumber: this.to_itemNo,
       moveToZone: this.from_zone,
       moveQty: this.from_itemQuantity,
-      reqDate: this.reqDate,
+      requestedDate: this.reqDate,
       priority: this.from_priority,
       dedicateMoveTo: this.dedicateMoveTo,
       unDedicateMoveFrom: this.undedicateMoveFrom,
