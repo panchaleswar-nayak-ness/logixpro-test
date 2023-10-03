@@ -1108,11 +1108,9 @@ export class ProcessPutAwaysComponent implements OnInit {
             });
           }
         } else if (result == "Task Completed") {
-          debugger
           this.inputValue='';
           this.fillToteTable(this.batchId2);
         } else if (result == "New Batch") {
-          debugger
           this.inputValue='';
           this.selectedIndex = 0;
         }
@@ -1494,7 +1492,8 @@ export class ProcessPutAwaysComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if(!result){
+      if(result){
+        console.log(result,'serialnumber')
         this.inputValue = result
         this.openSelectionTransactionDialogue();
       }
