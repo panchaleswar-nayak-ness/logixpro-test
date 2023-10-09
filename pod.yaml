@@ -11,23 +11,23 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: LogixPro-FE-Dev-App
+  name: logixpro-fe-dev-app
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: LogixPro-FE-Dev-App
+      app: logixpro-fe-dev-app
   template:
     metadata:
       labels:
-        app: LogixPro-FE-Dev-App
+        app: logixpro-fe-dev-app
     spec:
       nodeSelector:
         kubernetes.io/os: linux
       containers:
-        - name: LogixPro-FE-Dev-App
-          image: plmmodernization.azurecr.io/LogixPro-FE-Dev-App:latest
+        - name: logixpro-fe-dev-app
+          image: plmmodernization.azurecr.io/logixpro-fe-dev-app:latest
           ports:
             - containerPort: 443
           resources:
@@ -53,4 +53,4 @@ spec:
       port: 443
       protocol: TCP
   selector:
-    app: LogixPro-FE-Dev-App
+    app: logixpro-fe-dev-app
