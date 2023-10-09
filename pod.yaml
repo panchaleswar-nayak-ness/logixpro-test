@@ -43,7 +43,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: logixpro-fe-service
+  name: logixpro-fe-dev-service
   namespace: default
 spec:
   type: LoadBalancer
