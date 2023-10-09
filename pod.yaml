@@ -29,7 +29,7 @@ spec:
         - name: logixpro-fe-dev
           image: plmmodernization.azurecr.io/logixpro-fe-dev:latest
           ports:
-            - containerPort: 443
+            - containerPort: 80
           resources:
             requests:
               cpu: '0'
@@ -48,9 +48,9 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - targetPort: 443
-      name: port443
-      port: 443
+    - targetPort: 80
+      name: port80
+      port: 80
       protocol: TCP
   selector:
     app: logixpro-fe-dev
