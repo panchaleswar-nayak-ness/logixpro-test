@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 
 @Component({
   selector: 'app-om-changes-confirmation',
@@ -17,6 +19,7 @@ export class OmChangesConfirmationComponent implements OnInit {
 
   orderForm   : FormGroup;
 
+  public orderManagerApi :  IOrderManagerAPIService;
   constructor(private dialog          : MatDialog,
               public dialogRef        : MatDialogRef<OmChangesConfirmationComponent>,
               private toastr           : ToastrService,
@@ -24,6 +27,7 @@ export class OmChangesConfirmationComponent implements OnInit {
               private authService     : AuthService,
               public globalService    : GlobalService,
               private Api : ApiFuntions,
+              public OrderManagerApi  : OrderManagerApiService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.orderForm = this.formBuilder.group({
@@ -43,7 +47,8 @@ export class OmChangesConfirmationComponent implements OnInit {
       emergency      : new FormControl({ value: false, disabled : data.emergencyDis }, Validators.compose([])),
       label          : new FormControl({ value: false, disabled : data.labelDis }, Validators.compose([])),
     });
-
+    
+    this.orderManagerApi = OrderManagerApi;
   }
 
   ngOnInit(): void {
@@ -91,7 +96,7 @@ export class OmChangesConfirmationComponent implements OnInit {
         checkLabel: this.orderForm.controls['label'].value,        
       };
   
-      this.Api.OrderManagerRecordUpdate(payload).subscribe((res: any) => {
+      this.orderManagerApi.OrderManagerRecordUpdate(payload).subscribe((res: any) => {
         if (res.isExecuted) {
           this.dialogRef.close({
             isExecuted: true,

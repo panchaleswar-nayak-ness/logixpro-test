@@ -6,6 +6,8 @@ import labels from '../../labels/labels.json';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 
 @Component({
   selector: 'app-om-add-record',
@@ -70,15 +72,19 @@ export class OmAddRecordComponent implements OnInit {
   orderNumberDisabled: boolean = false;
   itemNumberScroll:any = "all";
 
+  public orderManagerApi :  IOrderManagerAPIService;
   constructor(
     private toastr: ToastrService,
     private authService: AuthService,
     private Api: ApiFuntions,
+    public OrderManagerApi  : OrderManagerApiService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<OmAddRecordComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public globalService: GlobalService,
-  ) { }
+  ) {
+    this.orderManagerApi = OrderManagerApi;
+   }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -188,7 +194,7 @@ export class OmAddRecordComponent implements OnInit {
       "wsid": this.userData.wsid,
       "appName": ""
     }
-    this.Api.UserFieldData().subscribe((res: any) => {
+    this.orderManagerApi.UserFieldData().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.userFieldData = res.data[0];
         this.mapDefaultValues();
@@ -230,7 +236,7 @@ export class OmAddRecordComponent implements OnInit {
       this.oTTempUpdatePayload.requiredDate = this.oTTempUpdatePayload.requiredDate ? new Date(this.oTTempUpdatePayload.requiredDate).getMonth()+1 + '/' +  new Date(this.oTTempUpdatePayload.requiredDate).getDate() + '/' + new Date(this.oTTempUpdatePayload.requiredDate).getFullYear() : "";
       this.oTTempUpdatePayload.expirationDate = this.oTTempUpdatePayload.expirationDate ? new Date(this.oTTempUpdatePayload.expirationDate).getMonth()+1 + '/' +  new Date(this.oTTempUpdatePayload.expirationDate).getDate() + '/' + new Date(this.oTTempUpdatePayload.expirationDate).getFullYear() : "";
       if (!this.isEdit) {
-        this.Api.OTTempInsert(this.oTTempUpdatePayload).subscribe((res: any) => {
+        this.orderManagerApi.OTTempInsert(this.oTTempUpdatePayload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.toastr.success(labels.alert.success, 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -246,7 +252,7 @@ export class OmAddRecordComponent implements OnInit {
         })
       }
       else {
-        this.Api.OTTempUpdate(this.oTTempUpdatePayload).subscribe((res: any) => {
+        this.orderManagerApi.OTTempUpdate(this.oTTempUpdatePayload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.toastr.success(labels.alert.update, 'Success!', {
               positionClass: 'toast-bottom-right',

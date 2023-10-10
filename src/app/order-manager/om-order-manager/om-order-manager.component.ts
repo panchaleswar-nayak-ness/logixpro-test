@@ -21,6 +21,8 @@ import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -119,17 +121,21 @@ export class OmOrderManagerComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  public orderManagerApi :  IOrderManagerAPIService;
 
   constructor(private dialog          : MatDialog,
               private _liveAnnouncer  : LiveAnnouncer,
               private toastr          : ToastrService,
-              private Api       : ApiFuntions,
+              private Api             : ApiFuntions,
+              public OrderManagerApi  : OrderManagerApiService,
               public authService      : AuthService,
               public globalService    : GlobalService,
               private filterService   : ContextMenuFiltersService,
               private currentTabDataService: CurrentTabDataService,
               private global:GlobalService,
-              private router: Router) { }
+              private router: Router) {
+                this.orderManagerApi = OrderManagerApi;
+               }
 
   @ViewChild('btnRef') buttonRef: MatButton;
 
@@ -155,7 +161,7 @@ export class OmOrderManagerComponent implements OnInit {
   }  
 
   getOMIndex() { 
-    this.Api.OrderManagerPreferenceIndex().subscribe(
+    this.orderManagerApi.OrderManagerPreferenceIndex().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.OMIndex = res.data;
@@ -236,7 +242,7 @@ export class OmOrderManagerComponent implements OnInit {
       };
       
   
-      this.Api.FillOrderManTempData(payload).pipe(
+      this.orderManagerApi.FillOrderManTempData(payload).pipe(
         catchError((error) => {
           // Handle the error here
           
@@ -268,7 +274,7 @@ export class OmOrderManagerComponent implements OnInit {
       searchString: this.searchTxt,
     }; 
 
-    this.Api.SelectOrderManagerTempDTNew(payload2).subscribe((res: any) => {
+    this.orderManagerApi.SelectOrderManagerTempDTNew(payload2).subscribe((res: any) => {
       this.orderTable = new MatTableDataSource(res.data?.transactions);
       this.customPagination.total = res.data?.recordsFiltered;
       this.totalRecords = res.data?.recordsFiltered;
@@ -353,7 +359,7 @@ export class OmOrderManagerComponent implements OnInit {
             viewType: this.viewType
           };
       
-          this.Api.OMOTPendDelete(payload).subscribe((res: any) => {
+          this.orderManagerApi.OMOTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.getOrders();
             }
@@ -446,7 +452,7 @@ export class OmOrderManagerComponent implements OnInit {
             page: 'Order Manager'
           };
       
-          this.Api.ReleaseOrders(payload).subscribe((res: any) => {
+          this.orderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.getOrders();
               this.clearSearch();
@@ -482,7 +488,7 @@ export class OmOrderManagerComponent implements OnInit {
             page: 'Order Manager'
           };
       
-          this.Api.ReleaseOrders(payload).subscribe((res: any) => {
+          this.orderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.getOrders();
               this.clearSearch();
@@ -617,7 +623,7 @@ export class OmOrderManagerComponent implements OnInit {
       wsid: this.userData.wsid,
       appName: ""
     }
-    await this.Api.OrderManagerTempDelete(payload).toPromise();
+    await this.orderManagerApi.OrderManagerTempDelete(payload).toPromise();
   }
 
   actionDialog(matEvent: MatSelectChange) {

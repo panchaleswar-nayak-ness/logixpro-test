@@ -7,6 +7,8 @@ import { BrChooseReportTypeComponent } from 'src/app/dialogs/br-choose-report-ty
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { environment } from 'src/environments/environment';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -46,9 +48,17 @@ export class GlobalService {
     }
   };
   changesConfirmation = false;
+  public orderManagerApi :  IOrderManagerAPIService;
 
-  constructor(private Api:ApiFuntions,private toast:ToastrService,private dialog: MatDialog, private httpClient : HttpClient
-    ,private authService:AuthService,private sanitizer: DomSanitizer) {
+  constructor(
+    private Api:ApiFuntions,
+    public OrderManagerApi  : OrderManagerApiService,
+    private toast:ToastrService,
+    private dialog: MatDialog, 
+    private httpClient : HttpClient,
+    private authService:AuthService,
+    private sanitizer: DomSanitizer) {
+    this.orderManagerApi = OrderManagerApi;
     this.userData=this.authService.userData();
   }
 
@@ -293,7 +303,7 @@ export class GlobalService {
         if(preferencesString){
           return JSON.parse(preferencesString)
         }else{
-          this.Api.OrderManagerPreferenceIndex().subscribe((response: any) => {
+          this.orderManagerApi.OrderManagerPreferenceIndex().subscribe((response: any) => {
             if (response.isExecuted) {
               localStorage.setItem('OmPreference', JSON.stringify(response.data.preferences[0]));
               const getOm:any = localStorage.getItem('OmPreference');
@@ -304,7 +314,7 @@ export class GlobalService {
       }
 
       updateOmPref(){
-        this.Api.OrderManagerPreferenceIndex().subscribe((response: any) => {
+        this.orderManagerApi.OrderManagerPreferenceIndex().subscribe((response: any) => {
           if (response.isExecuted) {
             localStorage.setItem('OmPreference', JSON.stringify(response.data.preferences[0]));
        

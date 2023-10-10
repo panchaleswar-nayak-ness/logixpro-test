@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 
 @Component({
   selector: 'app-om-preferences',
@@ -15,12 +17,15 @@ export class OmPreferencesComponent implements OnInit {
   userData: any;
   filtersForm: FormGroup;
   @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
+  public orderManagerApi :  IOrderManagerAPIService;
   constructor(
     private Api: ApiFuntions,
+    public OrderManagerApi  : OrderManagerApiService,
     private authService: AuthService,
     private toastr: ToastrService,
     private global:GlobalService
   ) {
+    this.orderManagerApi = OrderManagerApi;
     this.userData = this.authService.userData();
 
     this.filtersForm = new FormGroup({
@@ -73,7 +78,7 @@ export class OmPreferencesComponent implements OnInit {
   }
   getPreferences() {
     
-    this.Api
+    this.orderManagerApi
       .OrderManagerPreferenceIndex()
       .subscribe((response: any) => {
         if (response.isExecuted) {
