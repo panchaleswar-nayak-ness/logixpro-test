@@ -7,6 +7,8 @@ import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete'; 
 import { SharedService } from '../../services/shared.service';
 import { ApiFuntions } from '../../services/ApiFuntions';
+import { IFlowRackReplenishApi } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api-interface';
+import { FlowRackReplenishApiService } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api.service';
 
 @Component({
   selector: 'app-fr-flowrack-replenishment',
@@ -15,6 +17,9 @@ import { ApiFuntions } from '../../services/ApiFuntions';
 })
 
 export class FrFlowrackReplenishmentComponent implements OnInit {
+
+  public Api : IFlowRackReplenishApi;
+
   public userData: any;
   public itemQtyRow: boolean = true;
   public LocationRow: boolean = true;
@@ -44,8 +49,11 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   constructor(private dialog: MatDialog, 
     private authservice: AuthService,
     private sharedService: SharedService,
-    private Api:ApiFuntions,
-    private toastr: ToastrService) { }
+    // private Api:ApiFuntions,
+    private toastr: ToastrService,
+    public api : FlowRackReplenishApiService) {
+      this.Api = api;
+    }
 
   ngOnInit(): void {
     this.userData = this.authservice.userData()
@@ -347,18 +355,21 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
     let payload = {
       workstationid: this.userData.wsid,
     };
-    this.Api
-      .AppNameByWorkstation(payload)
-      .subscribe(
-        (res: any) => {
-          if (res?.data) {
-            this.convertToObj(res.data);
-            localStorage.setItem('availableApps',JSON.stringify(this.applicationData)) 
-            this.sharedService.setMenuData(this.applicationData)
-          }
-        },
-        (error) => {}
-      );
+
+    // Manual 
+
+    // this.Api
+    //   .AppNameByWorkstation(payload)
+    //   .subscribe(
+    //     (res: any) => {
+    //       if (res?.data) {
+    //         this.convertToObj(res.data);
+    //         localStorage.setItem('availableApps',JSON.stringify(this.applicationData)) 
+    //         this.sharedService.setMenuData(this.applicationData)
+    //       }
+    //     },
+    //     (error) => {}
+    //   );
   }
   
   convertToObj(data) {

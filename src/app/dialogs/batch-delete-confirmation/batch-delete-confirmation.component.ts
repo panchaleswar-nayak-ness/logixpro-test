@@ -3,7 +3,9 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr'; 
 import labels from '../../labels/labels.json';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+// import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { InductionApiService } from 'src/app/services/induction-api/induction-api.service';
+import { IInductionServiceApi } from 'src/app/services/induction-api/induction-api-interface';
 
 @Component({
   selector: 'app-batch-delete-confirmation',
@@ -14,12 +16,17 @@ export class BatchDeleteConfirmationComponent {
   isChecked = true;
   heading: '';
   message: '';
+
+  public Api : IInductionServiceApi;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
-    private Api:ApiFuntions,
-    private toastr: ToastrService
+    // private Api:ApiFuntions,
+    private toastr: ToastrService,
+    public api : InductionApiService
   ) {
+    this.Api = api;
     this.heading = data.heading;
     this.message = data.message;
   }
