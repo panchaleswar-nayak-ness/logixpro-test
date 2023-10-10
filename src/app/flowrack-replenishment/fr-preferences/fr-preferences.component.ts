@@ -20,10 +20,10 @@ export class FrPreferencesComponent implements OnInit {
   }
 
   cartonFlow() {
-    let payload = {
-      "WSID": this.userData.wsid,
-    }
-    this.Api.wslocation(payload).subscribe((res) => {
+    // let payload = {
+    //   "WSID": this.userData.wsid,
+    // }
+    this.Api.wslocation({}).subscribe((res) => {
       // console.log(res)
       this.selectedCarton=res.data
     })

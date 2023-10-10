@@ -73,10 +73,10 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   }
 
   cartonFlow() {
-    let payload = {
-      "WSID": this.userData.wsid,
-    }
-    this.Api.wslocation(payload).subscribe((res) => {
+    // let payload = {
+    //   "WSID": this.userData.wsid,
+    // }
+    this.Api.wslocation({}).subscribe((res) => {
       this.zone = res.data == 'No'||res.data == ''||res.data == null ? 'This workstation is not assigned to a zone' : res.data
       
     })
@@ -150,16 +150,13 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
         if (res.data != '') {
           this.itemnumscan = res.data
           let payload = {
-            "itemNumber": this.itemnumscan,
-            "wsid": this.userData.wsid
+            "itemNumber": this.itemnumscan
           }
           this.Api.ItemLocation(payload).subscribe((res => {
             if (res.data.length < 1) {
               this.locationSuggestions = [];
-              let payload = {
-                "wsid": this.userData.wsid
-              }
-              this.Api.openlocation(payload).subscribe((res => {
+              // let payload = {}
+              this.Api.openlocation({}).subscribe((res => {
                 if (res.data.length < 1) {
                   this.toastr.error("There are no open locations.", 'Error!', {
                     positionClass: 'toast-bottom-right',
@@ -217,8 +214,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   onLocationSelected(location) {
     let payload = {
       "itemNumber": this.itemnumscan,
-      "Input": this.itemLocation,
-      "wsid": this.userData.wsid,
+      "Input": this.itemLocation
     }
     this.Api.verifyitemlocation( payload).subscribe((res => {
       if (res.data) {
@@ -316,16 +312,14 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
       let payload = {
         "itemNumber": this.itemnumscan,
         "Input": this.itemLocation,
-        "Quantity": this.itemQty,
-        "wsid": this.userData.wsid,
+        "Quantity": this.itemQty
       }
       this.Api.verifyitemquantity(payload).subscribe((res => {
         if (res.data) {
           let payload = {
             "itemNumber": this.itemnumscan,
             "Input": this.itemLocation,
-            "Quantity": this.itemQty,
-            "wsid": this.userData.wsid,
+            "Quantity": this.itemQty
           }
 
           this.Api.itemquantity(payload).subscribe((res => {
