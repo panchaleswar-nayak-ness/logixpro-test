@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: default
+spec:
+  finalizers:
+    - kubernetes
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logixpro-fe-dev
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logixpro-fe-dev
+  template:
+    metadata:
+      labels:
+        app: logixpro-fe-dev
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+        - name: logixpro-fe-dev
+          image: plmmodernization.azurecr.io/logixpro-fe-dev:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: '0'
+              memory: '0'
+            limits:
+              cpu: '1'
+              memory: 1G
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: logixpro-fe-dev-service
+  namespace: default
+spec:
+  type: LoadBalancer
+  ports:
+    - targetPort: 80
+      name: port80
+      port: 80
+      protocol: TCP
+  selector:
+    app: logixpro-fe-dev

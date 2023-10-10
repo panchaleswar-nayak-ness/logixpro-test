@@ -865,7 +865,7 @@ return this.ApiBase.Put(`/Admin/employee/zone`, Body);
 //deleteEmployeeZone
 
 public deleteEmployeeZone(Body: any ): Observable<any> {
-return this.ApiBase.Delete(`/Admin/employee/zone`, Body);
+return this.ApiBase.Post(`/Admin/employee/zone`, Body);
 }
 
 //AllAccess
