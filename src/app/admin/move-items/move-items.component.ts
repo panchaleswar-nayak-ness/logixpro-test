@@ -230,8 +230,8 @@ export class MoveItemsComponent implements OnInit {
 
     let payload = {
       draw: 1,
-      sRow: tableName === 'MoveFrom' ? this.startRow : this.startRowTo,
-      eRow: tableName === 'MoveFrom' ? this.endRow : this.endRowTo,
+      StartRow: tableName === 'MoveFrom' ? this.startRow : this.startRowTo,
+      EndRow: tableName === 'MoveFrom' ? this.endRow : this.endRowTo,
       searchString: tableName === 'MoveFrom' ? this.itemNo : this.from_itemNo,
       searchColumn: 'Item Number',
       sortColumnIndex: tableName === 'MoveFrom' ? this.sortCol : this.sortColTo,
