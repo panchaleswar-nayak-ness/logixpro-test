@@ -3,6 +3,8 @@ import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IFlowRackReplenishApi } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api-interface';
+import { FlowRackReplenishApiService } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api.service';
 
 @Component({
   selector: 'app-fr-preferences',
@@ -14,8 +16,10 @@ export class FrPreferencesComponent implements OnInit {
   public userData: any;
   selectedCarton:any;
   public iAdminApiService: IAdminApiService;
-  constructor(private Api: ApiFuntions,private adminApiService: AdminApiService,  private authservice: AuthService) {
+  public iFlowRackReplenishApi : IFlowRackReplenishApi;
+  constructor(private Api: ApiFuntions,private adminApiService: AdminApiService,  private authservice: AuthService,public flowRackReplenishApi : FlowRackReplenishApiService) {
     this.iAdminApiService = adminApiService;
+    this.iFlowRackReplenishApi = flowRackReplenishApi;
   }
 
   ngOnInit(): void {
@@ -28,7 +32,7 @@ export class FrPreferencesComponent implements OnInit {
     // let payload = {
     //   "WSID": this.userData.wsid,
     // }
-    this.Api.wslocation({}).subscribe((res) => {
+    this.iFlowRackReplenishApi.wslocation({}).subscribe((res) => {
       // console.log(res)
       this.selectedCarton=res.data
     })

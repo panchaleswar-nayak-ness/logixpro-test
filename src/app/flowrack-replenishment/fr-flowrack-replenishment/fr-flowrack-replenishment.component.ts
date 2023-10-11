@@ -18,7 +18,7 @@ import { FlowRackReplenishApiService } from 'src/app/services/flowrackreplenish-
 
 export class FrFlowrackReplenishmentComponent implements OnInit {
 
-  public Api : IFlowRackReplenishApi;
+  public iFlowRackReplenishApi : IFlowRackReplenishApi;
 
   public userData: any;
   public itemQtyRow: boolean = true;
@@ -51,8 +51,8 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
     private sharedService: SharedService,
     // private Api:ApiFuntions,
     private toastr: ToastrService,
-    public api : FlowRackReplenishApiService) {
-      this.Api = api;
+    public flowRackReplenishApi : FlowRackReplenishApiService) {
+      this.iFlowRackReplenishApi = flowRackReplenishApi;
     }
 
   ngOnInit(): void {
@@ -76,7 +76,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
     // let payload = {
     //   "WSID": this.userData.wsid,
     // }
-    this.Api.wslocation({}).subscribe((res) => {
+    this.iFlowRackReplenishApi.wslocation({}).subscribe((res) => {
       this.zone = res.data == 'No'||res.data == ''||res.data == null ? 'This workstation is not assigned to a zone' : res.data
       
     })
@@ -146,17 +146,17 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
       let payload = {
         "ItemNumber": this.itemnumscan,
       }
-      this.Api.CFData(payload).subscribe((res => {
+      this.iFlowRackReplenishApi.CFData(payload).subscribe((res => {
         if (res.data != '') {
           this.itemnumscan = res.data
           let payload = {
             "itemNumber": this.itemnumscan
           }
-          this.Api.ItemLocation(payload).subscribe((res => {
+          this.iFlowRackReplenishApi.ItemLocation(payload).subscribe((res => {
             if (res.data.length < 1) {
               this.locationSuggestions = [];
               // let payload = {}
-              this.Api.openlocation({}).subscribe((res => {
+              this.iFlowRackReplenishApi.openlocation({}).subscribe((res => {
                 if (res.data.length < 1) {
                   this.toastr.error("There are no open locations.", 'Error!', {
                     positionClass: 'toast-bottom-right',
@@ -216,7 +216,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
       "itemNumber": this.itemnumscan,
       "Input": this.itemLocation
     }
-    this.Api.verifyitemlocation( payload).subscribe((res => {
+    this.iFlowRackReplenishApi.verifyitemlocation( payload).subscribe((res => {
       if (res.data) {
         this.itemQtyRow = false;
         this.calculator = false
@@ -314,7 +314,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
         "Input": this.itemLocation,
         "Quantity": this.itemQty
       }
-      this.Api.verifyitemquantity(payload).subscribe((res => {
+      this.iFlowRackReplenishApi.verifyitemquantity(payload).subscribe((res => {
         if (res.data) {
           let payload = {
             "itemNumber": this.itemnumscan,
@@ -322,7 +322,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
             "Quantity": this.itemQty
           }
 
-          this.Api.itemquantity(payload).subscribe((res => {
+          this.iFlowRackReplenishApi.itemquantity(payload).subscribe((res => {
             if (res.isExecuted) {
               this.toastr.success('Item Quantity Added', 'Success!', {
                 positionClass: 'toast-bottom-right',
