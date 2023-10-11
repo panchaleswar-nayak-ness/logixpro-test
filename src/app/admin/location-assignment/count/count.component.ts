@@ -13,6 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 import {  } from '@popperjs/core';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 export interface PeriodicElement {
   location: number;
@@ -28,7 +30,7 @@ export interface PeriodicElement {
   styleUrls: ['./count.component.scss']
 })
 export class CountComponent implements OnInit {
-
+  public iAdminApiService: IAdminApiService;
   public userData: any;
   public totalCount: any;
   public searchOrder: string = '';
@@ -45,7 +47,10 @@ export class CountComponent implements OnInit {
               private dialog: MatDialog ,
               private authservice : AuthService,
               private Api: ApiFuntions,
-              private toastr: ToastrService) {}
+              private adminApiService: AdminApiService,
+              private toastr: ToastrService) {
+                this.iAdminApiService = adminApiService;
+              }
 
 
   @ViewChild('paginator') paginator: MatPaginator;
@@ -120,11 +125,9 @@ export class CountComponent implements OnInit {
      
     let payload = {
       "transType": "count",
-      "orders": orders,
-      "userName" : this.userData.userName,
-      "wsid": this.userData.wsid
+      "orders": orders, 
     }
-    this.Api.LocationAssignmentOrderInsert(payload).subscribe((res => {
+    this.iAdminApiService.LocationAssignmentOrderInsert(payload).subscribe((res => {
      console.log(res.data.orders,'insertion')
      if(res.isExecuted){
       let testdata = res.data.orders
@@ -158,12 +161,10 @@ export class CountComponent implements OnInit {
   }
   
   openLAQ() {
-    let payload = {
-      "userName" : this.userData.userName,
-      "wsid": this.userData.wsid
+    let payload = { 
     }
 
-    this.Api.GetTransactionTypeCounts(payload).subscribe((res =>{
+    this.iAdminApiService.GetTransactionTypeCounts(payload).subscribe((res =>{
     let dialogRef = this.dialog.open(LaLocationAssignmentQuantitiesComponent, {
       height: 'auto',
       width: '560px',

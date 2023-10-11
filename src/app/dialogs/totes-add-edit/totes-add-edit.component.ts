@@ -13,6 +13,8 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, catchError, of, takeUntil } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 export interface PeriodicElement {
   name: string;
@@ -51,6 +53,7 @@ export class TotesAddEditComponent implements OnInit {
   selection = new SelectionModel<PeriodicElement>(true, []);
   position:any;
   isIMPath=false;
+  public iAdminApiService: IAdminApiService;
   toteID="";
   cellID="";
   fromTote;
@@ -181,7 +184,7 @@ export class TotesAddEditComponent implements OnInit {
         toteID: toteID,
         cells: cells
       }
-      this.Api.ToteSetupInsert(searchPayload).subscribe(
+      this.iAdminApiService.ToteSetupInsert(searchPayload).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
             this.toastr.success(isInserted=="1"?updateMessage:res.responseMessage, 'Success!', {
@@ -245,7 +248,7 @@ export class TotesAddEditComponent implements OnInit {
             wsid: this.userData.wsid,
             toteID: toteID
           }
-          this.Api.ToteSetupDelete(deleteTote).subscribe(
+          this.iAdminApiService.ToteSetupDelete(deleteTote).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
                 this.toastr.success("Deleted successfuly", 'Success!', {
@@ -294,7 +297,7 @@ export class TotesAddEditComponent implements OnInit {
       items=JSON.parse(JSON.stringify(item))
     }
     this.ELEMENT_DATA_TOTE.length=0;
-    this.Api.ToteSetup().subscribe(
+    this.iAdminApiService.ToteSetup().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.ELEMENT_DATA_TOTE = res.data;
@@ -416,9 +419,9 @@ export class TotesAddEditComponent implements OnInit {
   dataSource1 = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection1 = new SelectionModel<PeriodicElement>(true, []);
 
-  constructor(public dialogRef: MatDialogRef<TotesAddEditComponent>,private route: ActivatedRoute,private location: Location,private renderer: Renderer2,
+  constructor(public dialogRef: MatDialogRef<TotesAddEditComponent>,private adminApiService: AdminApiService,private route: ActivatedRoute,private location: Location,private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA) public data : any,private authService: AuthService,private Api:ApiFuntions,private toastr: ToastrService,private dialog: MatDialog,private global:GlobalService) {
-
+      this.iAdminApiService = adminApiService;
       let pathArr= this.location.path().split('/')
       this.isIMPath=pathArr[pathArr.length-1]==='ImToteManager'
 

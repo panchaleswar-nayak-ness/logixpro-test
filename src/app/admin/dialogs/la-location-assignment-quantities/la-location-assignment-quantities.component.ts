@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 @Component({
   selector: 'app-la-location-assignment-quantities',
@@ -20,17 +22,20 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
   public putaway:any = 0
   public listLabel:any;
   public listLabelFPZ:any;
-  
+  public iAdminApiService: IAdminApiService;
 
   constructor(private dialog: MatDialog,
              @Inject(MAT_DIALOG_DATA) public data: any,
              private Api: ApiFuntions,
              private authservice : AuthService,
+             private adminApiService: AdminApiService,
              public dialogRef: MatDialogRef<any>,
              private router: Router,
              private toastr: ToastrService, 
              private global:GlobalService
-             ) { }
+             ) { 
+              this.iAdminApiService = adminApiService;
+             }
 
   ngOnInit(): void {
     this.userData = this.authservice.userData()
@@ -54,7 +59,7 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
 
   viewOrderSelection(event:any,index?){
     
-    this.Api.GetLocAssCountTable().subscribe((res:any)=>{
+    this.iAdminApiService.GetLocAssCountTable().subscribe((res:any)=>{
       if(res.isExecuted){
         res.data.tabIndex = index
         this.dialogRef.close(res.data);  

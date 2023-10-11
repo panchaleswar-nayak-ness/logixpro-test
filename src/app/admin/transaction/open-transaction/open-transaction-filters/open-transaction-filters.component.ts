@@ -6,6 +6,8 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { SharedService } from 'src/app/services/shared.service';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 @Component({
   selector: 'app-open-transaction-filters',
@@ -30,13 +32,14 @@ export class OpenTransactionFiltersComponent implements OnInit {
     selectedCheck:'',
 
   }
+  public iAdminApiService: IAdminApiService;
   constructor(
     private authService: AuthService,
+    private adminApiService: AdminApiService,
     private Api: ApiFuntions,
     private toastr: ToastrService,
     private sharedService:SharedService
-  ) {}
-
+  ) { this.iAdminApiService = adminApiService;} 
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.searchDeb
@@ -83,12 +86,10 @@ export class OpenTransactionFiltersComponent implements OnInit {
     let searchPayload = {
       query: this.searchValue,
       tableName: 2,
-      column: this.selectedOption,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      column: this.selectedOption
     };
 
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {

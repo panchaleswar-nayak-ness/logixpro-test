@@ -23,6 +23,8 @@ import { catchError, of } from 'rxjs';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -122,20 +124,22 @@ export class OmOrderManagerComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public orderManagerApi :  IOrderManagerAPIService;
-
+  public iAdminApiService: IAdminApiService;
   constructor(private dialog          : MatDialog,
               private _liveAnnouncer  : LiveAnnouncer,
               private toastr          : ToastrService,
               private Api             : ApiFuntions,
               public OrderManagerApi  : OrderManagerApiService,
+              private adminApiService: AdminApiService,
               public authService      : AuthService,
               public globalService    : GlobalService,
               private filterService   : ContextMenuFiltersService,
               private currentTabDataService: CurrentTabDataService,
               private global:GlobalService,
               private router: Router) {
-                this.orderManagerApi = OrderManagerApi;
-               }
+                this.orderManagerApi = OrderManagerApi; 
+                this.iAdminApiService = adminApiService; 
+              }
 
   @ViewChild('btnRef') buttonRef: MatButton;
 
@@ -184,7 +188,7 @@ export class OmOrderManagerComponent implements OnInit {
       tableName: 'Order Manager'
     };
 
-    this.Api.GetColumnSequence(payload).subscribe((res: any) => {
+    this.iAdminApiService.GetColumnSequence(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.displayedColumns = res.data;        
         this.displayedColumns.push( 'actions');

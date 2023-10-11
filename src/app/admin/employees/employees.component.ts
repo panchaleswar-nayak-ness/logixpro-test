@@ -27,6 +27,8 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GroupsLookupComponent } from './groups-lookup/groups-lookup.component';
 import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 export interface Location {
   start_location: string;
@@ -79,6 +81,7 @@ bpSettingLocInp='';
   FuncationAllowedList:any = [];
   OldFuncationAllowedList:any = [];
   access:any;
+  public iAdminApiService: IAdminApiService;
   grp_data:any;
   public demo1TabIndex = 0;
   public userData;
@@ -110,6 +113,7 @@ bpSettingLocInp='';
     private _liveAnnouncer: LiveAnnouncer, 
     private employeeService: ApiFuntions, 
     private dialog: MatDialog,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService, 
     private zone: NgZone,
     public router: Router,
@@ -117,6 +121,7 @@ bpSettingLocInp='';
     private global:GlobalService,
     private fb: FormBuilder
     ) {  
+      this.iAdminApiService = adminApiService;
   }
 
   @ViewChild(MatSort) sort: MatSort;
@@ -140,23 +145,17 @@ this.reloadData();
     this.groupAllowedList.filter="";
   }
 getgroupAllowedList(){
-  let payload:any = { 
-    "user": this.empData.username,
-    "WSID": "TESTWSID"
-
-  }
-
-  this.employeeService.Groupnames(payload).subscribe((res:any) => {
+  let payload:any = {}
+  this.iAdminApiService.Groupnames(payload).subscribe((res:any) => {
     this.groupAllowedList = new MatTableDataSource(res.data);
   }) 
 }
 getFuncationAllowedList(){
   let emp:any = {
     "username": this.grp_data,
-    "access": this.empData.accessLevel,
-    "wsid": this.userData.wsid
+    "access": this.empData.accessLevel
   }
-  this.employeeService.getInsertAllAccess(emp).subscribe((res:any) => {
+  this.iAdminApiService.getInsertAllAccess(emp).subscribe((res:any) => {
  
     if(res.isExecuted){
       this.reloadData();
@@ -196,7 +195,7 @@ initialzeEmpForm() {
       "wsid": "TESTWSID"
     };
  
-    this.employeeService.getAdminEmployeeDetails(emp_data)
+    this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => { 
         this.isLookUp = event;
         this.lookUpEvnt=true;
@@ -227,7 +226,7 @@ initialzeEmpForm() {
       "user":  this.grp_data,
       "wsid": "TESTWSID"
     };
-    this.employeeService.getAdminEmployeeDetails(emp_data)
+    this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => {
         this.employee_group_allowed = response.data?.userRights
         this.pickUplevels = response.data?.pickLevels;
@@ -275,7 +274,7 @@ initialzeEmpForm() {
       "GroupName":this.grpData.groupName,
       "controls": this.assignedFunctions
     }
-    this.employeeService.insertGroupFunctions(assignFunc)
+    this.iAdminApiService.insertGroupFunctions(assignFunc)
       .subscribe((res: any) => {
         this.assignedFunctions =[];
         this.unassignedFunctions =[];
@@ -309,7 +308,7 @@ initialzeEmpForm() {
       "groupName":this.grpData.groupName
 
       }; 
-    this.employeeService.getFunctionByGroup(grp_data)
+    this.iAdminApiService.getFunctionByGroup(grp_data)
     .subscribe((response:any) => { 
       this.assignedFunctions = response.data?.groupFunc
       this.unassignedFunctions = response.data?.allFunc
@@ -571,7 +570,7 @@ initialzeEmpForm() {
     this.empForm.value.wsid = "TESTWID";
     this.empForm.value.username = this.empData.username;
     this.empForm.value.groupName = "";
-      this.employeeService.updateAdminEmployee(this.empForm.value).subscribe((res: any) => {
+      this.iAdminApiService.updateAdminEmployee(this.empForm.value).subscribe((res: any) => {
         if (res.isExecuted) 
         {
           this.toastr.success(labels.alert.update, 'Success!', {
@@ -704,11 +703,8 @@ initialzeEmpForm() {
     })
   }
   async getEmployeeData(){
-    let employeRes:any = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid  
-    }
-    this.employeeService.getEmployeeData(employeRes).subscribe((res: any) => {
+    let employeRes:any = {}
+    this.iAdminApiService.getEmployeeData(employeRes).subscribe((res: any) => {
       if(res.isExecuted) {
         this.ButtonAccessList =  new MatTableDataSource(res.data.allAccess);
         this.allGroups = res.data.allGroups;
@@ -718,12 +714,10 @@ initialzeEmpForm() {
     });
   }
   getEmployeeDetails(){
-    const emp_data = {
-      "user":this.userData.userName,
-      "wsid": this.userData.wsid
+    const emp_data = { 
     };
  
-    this.employeeService.getAdminEmployeeDetails(emp_data)
+    this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => {
         let existingRights:any=[];
         let userRights:any=[];
@@ -760,7 +754,7 @@ initialzeEmpForm() {
       controlName: controlName,
       userName: this.grp_data,
     };
-    this.employeeService.deleteControlName(groupData).subscribe((res: any) => {
+    this.iAdminApiService.deleteControlName(groupData).subscribe((res: any) => {
       if (res.isExecuted) {
         this.toastr.success('Your details have been deleted', 'Success!', {
           positionClass: 'toast-bottom-right',
@@ -786,7 +780,7 @@ initialzeEmpForm() {
       groupname: allowedGroup.groupName,
       username: allowedGroup.userName,
     };
-    this.employeeService.deleteUserGroup(emp_data).subscribe((res: any) => {
+    this.iAdminApiService.deleteUserGroup(emp_data).subscribe((res: any) => {
       if (res.isExecuted) {
         this.toastr.success(labels.alert.delete, 'Success!', {
           positionClass: 'toast-bottom-right',
@@ -841,7 +835,7 @@ initialzeEmpForm() {
       "controlName": levelresponse.controlName,
       "newValue": levelresponse.adminLevel
     }
-    this.employeeService.updateControlName(item)
+    this.iAdminApiService.updateControlName(item)
     .subscribe((r) => {
       this.toastr.success(labels.alert.update, 'Success!', {
         positionClass: 'toast-bottom-right',

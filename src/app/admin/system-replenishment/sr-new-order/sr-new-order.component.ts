@@ -20,6 +20,8 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 
 @Component({
@@ -69,7 +71,7 @@ export class SrNewOrderComponent implements OnInit {
   ];
   searchAutocompleteList: any;
   newOrderListCreated:boolean = false;
-
+  public iAdminApiService: IAdminApiService;
   constructor(
     private dialog: MatDialog,
     private Api: ApiFuntions,
@@ -77,8 +79,11 @@ export class SrNewOrderComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private global:GlobalService,
+    private adminApiService: AdminApiService,
     private filterService: ContextMenuFiltersService
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   @Input('refreshNewOrders') refreshNewOrders:Subject<any>;
   @Output() replenishmentsProcessed: EventEmitter<any> = new EventEmitter();
@@ -197,7 +202,7 @@ export class SrNewOrderComponent implements OnInit {
   newReplenishmentOrders(loader:boolean =false) {
     if(this.newOrderListCreated){
       this.tablePayloadObj.searchString = this.tablePayloadObj.searchString.toString();
-      this.newReplenishmentOrdersSubscribe = this.Api.SystemReplenishmentNewTable(this.tablePayloadObj).subscribe((res: any) => {
+      this.newReplenishmentOrdersSubscribe = this.iAdminApiService.SystemReplenishmentNewTable(this.tablePayloadObj).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.tableData = res.data.sysTable;
           this.numberSelectedRep = res.data.selectedOrders;
@@ -225,11 +230,9 @@ export class SrNewOrderComponent implements OnInit {
 
   createNewReplenishments(kanban: boolean) {
     let paylaod = {
-      "kanban": kanban,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "kanban": kanban, 
     }
-    this.Api.ReplenishmentInsert(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.ReplenishmentInsert(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.newOrderListCreated = true;
       }
@@ -368,11 +371,9 @@ export class SrNewOrderComponent implements OnInit {
   processReplenishments() {
 
     let paylaod = {
-      "kanban": this.kanban,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "kanban": this.kanban, 
     }
-    this.Api.ProcessReplenishments(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.ProcessReplenishments(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         if(res.responseMessage == "Update Successful"){
           this.toastr.success(labels.alert.success, 'Success!', {
@@ -423,11 +424,9 @@ export class SrNewOrderComponent implements OnInit {
   ReplenishmentsIncludeUpdate(replenish: boolean, rfid: number) {
     let paylaod = {
       "rfid": rfid,
-      "replenish": replenish,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "replenish": replenish, 
     }
-    this.Api.ReplenishmentsIncludeUpdate(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.ReplenishmentsIncludeUpdate(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.newReplenishmentOrders();
       } else {
@@ -445,11 +444,9 @@ export class SrNewOrderComponent implements OnInit {
       "reorder": this.tablePayloadObj.reOrder,
       "searchString": this.tablePayloadObj.searchString,
       "searchColumn": this.tablePayloadObj.searchColumn,
-      "filter": "1=1",
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "filter": "1=1", 
     }
-    this.Api.ReplenishmentsIncludeAllUpdate(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.ReplenishmentsIncludeAllUpdate(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.newReplenishmentOrders();
       } 
@@ -472,11 +469,9 @@ export class SrNewOrderComponent implements OnInit {
   getSearchOptions(loader:boolean=false){
     let payload = {
       "searchString": this.tablePayloadObj.searchString,
-      "searchColumn": this.tablePayloadObj.searchColumn,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "searchColumn": this.tablePayloadObj.searchColumn 
     }
-    this.getSearchOptionsSubscribe = this.Api.SystemReplenishNewTA(payload).subscribe((res: any) => {
+    this.getSearchOptionsSubscribe = this.iAdminApiService.SystemReplenishNewTA(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.searchAutocompleteList = res.data.sort();
       }

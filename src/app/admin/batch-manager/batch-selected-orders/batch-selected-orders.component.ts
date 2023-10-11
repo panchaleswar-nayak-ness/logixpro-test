@@ -23,6 +23,8 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-batch-selected-orders',
@@ -60,18 +62,22 @@ export class BatchSelectedOrdersComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  public iAdminApiService: IAdminApiService;
   toteValue = 0;
   constructor(
     private dialog: MatDialog,
     private _liveAnnouncer: LiveAnnouncer,
     private authService: AuthService,
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private sharedService: SharedService,
     private router:Router,
     private global:GlobalService
     
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -190,12 +196,10 @@ export class BatchSelectedOrdersComponent implements OnInit {
         this.nextOrderNumber != this.batchID
           ? this.nextOrderNumber
           : this.batchID,
-      transType: this.type,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      transType: this.type, 
     };
     try {
-      this.Api
+      this.iAdminApiService
         .BatchInsert(paylaod)
         .subscribe((res: any) => {
           const { isExecuted } = res;

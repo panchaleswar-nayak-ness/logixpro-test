@@ -10,6 +10,8 @@ import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/a
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-custom-reports-and-labels',
@@ -25,8 +27,11 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   IsSystemReport:boolean = true;
   sysTitles:any = [];
   olddetail
-  currentApp
-  constructor(private api:ApiFuntions,private route:Router,private dialog: MatDialog, private toastr :ToastrService,private router: Router,public global:GlobalService) { 
+  currentApp;
+  public iAdminApiService: IAdminApiService;
+
+  constructor(private api:ApiFuntions,private adminApiService: AdminApiService,private route:Router,private dialog: MatDialog, private toastr :ToastrService,private router: Router,public global:GlobalService) {
+    this.iAdminApiService = adminApiService; 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         let spliUrl=event.url.split('/');
@@ -63,7 +68,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
     let payload = {
       'app':this.currentApp
     }
-    this.api.Getcustomreports(payload).subscribe((res:any)=>{
+    this.iAdminApiService.Getcustomreports(payload).subscribe((res:any)=>{
       this.sysTitles = res?.data?.reportTitles?.sysTitles;
       this.reportTitles = res?.data?.reportTitles?.reportTitles;
       this.sysTitles.forEach((object) => {
@@ -122,7 +127,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
      let obj : any = {
       FileName:file
     }
-    this.api.Getreportdetails(obj).subscribe((res:any)=>{
+    this.iAdminApiService.Getreportdetails(obj).subscribe((res:any)=>{
       this.Detail = res.data[0];
     })
    
@@ -186,7 +191,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
           "username": "",
           "contentRootPath": ""
         }
-        this.api.deleteReport(payload).subscribe(res=>{
+        this.iAdminApiService.deleteReport(payload).subscribe(res=>{
           if (!res.data) {
             this.toastr.error("Unexpected error occurred.  If this persists please contact Scott Tech for support.", 'Error!', {
               positionClass: 'toast-bottom-right',
@@ -220,7 +225,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   
   
       // Replace 'your_upload_endpoint' with the server's API endpoint to handle file upload
-      this.api.importFile(formData).subscribe(
+      this.iAdminApiService.importFile(formData).subscribe(
         (response) => {
           this.toastr.success(`File successfully uploaded`, 'Success!', {
             positionClass: 'toast-bottom-right',
@@ -266,7 +271,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
         let payload = {
           FileName:this.Detail.fileName
         }
-        this.api.pushReportChanges(payload).subscribe(res=>{
+        this.iAdminApiService.pushReportChanges(payload).subscribe(res=>{
           console.log(res)
           if(res.isExecuted){
             this.toastr.success( `Changes have been successfully pushed to the other workstations`, 'Success!', {
@@ -301,7 +306,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       "eFilename":this.Detail.exportFileName ,
     }
 
-    this.api.updatereportDetails(payload).subscribe(res=>{
+    this.iAdminApiService.updatereportDetails(payload).subscribe(res=>{
       if(!res.isExecuted){
         this.toastr.error("Unexpected error occurred. Changes Not Saved", 'Error!', {
           positionClass: 'toast-bottom-right',

@@ -9,6 +9,8 @@ import { AuthService } from 'src/app/init/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-bm-toteid-entry',
@@ -19,16 +21,19 @@ export class BmToteidEntryComponent implements OnInit {
   selectedList: any;
   nextToteID: any;
   userData: any;
+  public iAdminApiService: IAdminApiService;
+
   constructor(
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private authService: AuthService,
     private toastr: ToastrService
   ) {
     this.selectedList = data.selectedOrderList;
-
+    this.iAdminApiService = adminApiService;
     this.nextToteID = data.nextToteID; 
   }
 
@@ -94,7 +99,7 @@ export class BmToteidEntryComponent implements OnInit {
       wsid: this.userData.wsid,
     };
 
-    this.api
+    this.iAdminApiService
       .PickToteIDUpdate(paylaod)
       .subscribe((res: any) => {
         if (res.isExecuted) {

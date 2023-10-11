@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-fr-preferences',
@@ -11,7 +13,10 @@ export class FrPreferencesComponent implements OnInit {
   public cartonFlowList: any;
   public userData: any;
   selectedCarton:any;
-  constructor(private Api: ApiFuntions,  private authservice: AuthService) {}
+  public iAdminApiService: IAdminApiService;
+  constructor(private Api: ApiFuntions,private adminApiService: AdminApiService,  private authservice: AuthService) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authservice.userData()
@@ -42,12 +47,12 @@ export class FrPreferencesComponent implements OnInit {
       defQuickPick: true,
     };
 
-    this.Api.UpdateCartonFlow(payload).subscribe((res) => {
+    this.iAdminApiService.UpdateCartonFlow(payload).subscribe((res) => {
       this.cartonFlowList = [...res.data];
     });
   }
   getCartonFlowList() {
-    this.Api.GetCartonFlow().subscribe((res) => {
+    this.iAdminApiService.GetCartonFlow({}).subscribe((res) => {
       this.cartonFlowList = [...res.data];
     });
   }

@@ -5,6 +5,8 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-add-pickuplevels',
@@ -21,13 +23,17 @@ export class AddPickuplevelsComponent implements OnInit {
   userData: any;
   picklvl: any;
   isValidForm: boolean = true;
+  public iAdminApiService: IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private employeeService: ApiFuntions,
     private toastr: ToastrService,
+    private adminApiService: AdminApiService,
     private authService: AuthService
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void { 
 
@@ -53,13 +59,11 @@ export class AddPickuplevelsComponent implements OnInit {
     }
   }
 
-  onSend(form: NgForm) {
-    form.value.username = this.data.userName;
-    form.value.wsid = this.userData.wsid;
+  onSend(form: NgForm) { 
     if (this.data.mode === 'edit') {
       form.value.levelID = this.levelId;
       
-      this.employeeService.updatePickLevels(form.value).subscribe((res:any) =>{
+      this.iAdminApiService.updatePickLevels(form.value).subscribe((res:any) =>{
         if (res.isExecuted) {
           this.dialog.closeAll();
           this.toastr.success(labels.alert.success, 'Update!', {
@@ -76,7 +80,7 @@ export class AddPickuplevelsComponent implements OnInit {
     }
     else {  
       form.value.levelID = this.picklvl;
-      this.employeeService.insertPickLevels(form.value).subscribe((res: any) => {
+      this.iAdminApiService.insertPickLevels(form.value).subscribe((res: any) => {
         if (res.isExecuted) {
           this.dialog.closeAll();
           this.toastr.success(labels.alert.success, 'Success!', {

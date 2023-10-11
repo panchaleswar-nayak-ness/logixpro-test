@@ -3,6 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-reprocess-transaction-detail-view',
@@ -13,12 +15,16 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;
   itemID:any;
   userData:any;
+  public iAdminApiService: IAdminApiService;
   fieldNames:any;
   constructor(
     private Api: ApiFuntions,
     private userService:AuthService,
+private adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
   reprocessInfo = new FormGroup({
     orderNumber: new FormControl({ value: '', disabled: true }),
     itemNumber: new FormControl({ value: '', disabled: true }),
@@ -65,7 +71,7 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
     this.field_focus.nativeElement.focus();
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.fieldNames = res.data;
     })
   }

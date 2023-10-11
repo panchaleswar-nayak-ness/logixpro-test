@@ -10,6 +10,8 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-pick',
@@ -41,7 +43,7 @@ export class PickComponent implements OnInit {
     { sequence: 'priority', key: 'priority' },
     { sequence: 'requiredDate', key: 'requiredDate' },
   ];
-
+  public iAdminApiService: IAdminApiService;
   @ViewChild('paginator1') paginator1: MatPaginator;
   @ViewChild('paginator2') paginator2: MatPaginator;
 
@@ -52,11 +54,14 @@ export class PickComponent implements OnInit {
   constructor(
     private toastr: ToastrService,
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private authService: AuthService,
     private dialog: MatDialog,
     private _liveAnnouncer1: LiveAnnouncer,
     private _liveAnnouncer2: LiveAnnouncer
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -70,7 +75,7 @@ export class PickComponent implements OnInit {
     let payload:any = {
       orderNumber: this.orderNumberSearch,
     };
-    this.Api.GetLocationAssignmentPickTable(payload).subscribe((res: any) => {
+    this.iAdminApiService.GetLocationAssignmentPickTable(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.allShortList = res.data.allShortList;
         this.fpzList = res.data.fpzList;
@@ -157,11 +162,9 @@ export class PickComponent implements OnInit {
         if (result === 'Yes') {
           let payload: any = {
             "transType": 'pick',
-            "orders": this.tableData2.data.map((item: any) => { return item.orderNumber }),
-            "username": this.userData.userName,
-            "wsid": this.userData.wsid
+            "orders": this.tableData2.data.map((item: any) => { return item.orderNumber }), 
           };
-          this.Api.LocationAssignmentOrderInsert(payload).subscribe((res: any) => {
+          this.iAdminApiService.LocationAssignmentOrderInsert(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
               this.tableData2 = new MatTableDataSource([]);
               this.tableData2.paginator = this.paginator2;
@@ -232,12 +235,10 @@ export class PickComponent implements OnInit {
 
 
   openLAQ() {
-    let payload = {
-      "userName" : this.userData.userName,
-      "wsid": this.userData.wsid
+    let payload = { 
     }
 
-    this.Api.GetTransactionTypeCounts(payload).subscribe((res =>{
+    this.iAdminApiService.GetTransactionTypeCounts(payload).subscribe((res =>{
     let dialogRef = this.dialog.open(LaLocationAssignmentQuantitiesComponent, {
       height: 'auto',
       width: '560px',

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-sp-field-name-mapping',
@@ -12,7 +14,9 @@ export class SpFieldNameMappingComponent implements OnInit {
   public CompanyObj: any={};
   Object=Object;
   public columns :any={};
-  constructor(    public authService: AuthService,private Api:ApiFuntions) {
+  public iAdminApiService: IAdminApiService;
+  constructor(    public authService: AuthService,private adminApiService: AdminApiService,private Api:ApiFuntions) {
+    this.iAdminApiService = adminApiService;
     this.userData = authService.userData();
    }
 
@@ -26,7 +30,7 @@ export class SpFieldNameMappingComponent implements OnInit {
   }
    
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.columns = res.data;
     })
   }
@@ -37,11 +41,9 @@ export class SpFieldNameMappingComponent implements OnInit {
       "ufs": [
        this.columns?.userField1? this.columns.userField1:'',this.columns?.userField2?this.columns?.userField2:'', this.columns?.userField3?this.columns?.userField3:'',this.columns?.userField4?this.columns?.userField4:'',this.columns?.userField5?this.columns?.userField5:'',this.columns?.userField6?this.columns?.userField6:'',this.columns?.userField7?this.columns?.userField7:'',
        this.columns?.userField8?this.columns?.userField8:'',this.columns?.userField9?this.columns?.userField9:'',this.columns?.userField10?this.columns?.userField10:''
-      ],
-      "username":  this.userData.userName,
-      "wsid":this.userData.wsid
+      ]
     };
-    this.Api.FieldNameSave(payload).subscribe((res: any) => {
+    this.iAdminApiService.FieldNameSave(payload).subscribe((res: any) => {
       this.OSFieldFilterNames();
     })
   }

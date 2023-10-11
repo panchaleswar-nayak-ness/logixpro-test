@@ -19,6 +19,8 @@ import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PaPrintLabelConfirmationComponent } from '../pa-print-label-confirmation/pa-print-label-confirmation.component';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -37,10 +39,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   totes             : any = [];
   selectedTotePosition:any='';
   selectedToteID:any='';
+  public iAdminApiService: IAdminApiService;
   fieldNames:any;
   imPreferences:any;
   constructor(public dialogRef                  : MatDialogRef<SelectionTransactionForToteExtendComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
+              private adminApiService: AdminApiService,
               private dialog                    : MatDialog,
               public formBuilder                : FormBuilder,
               private authService               : AuthService,
@@ -50,7 +54,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               public router: Router,
               private global:GlobalService,
               ) {
-
+                this.iAdminApiService = adminApiService;
     this.toteForm = this.formBuilder.group({
 
       // Header
@@ -126,7 +130,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.field_focus.nativeElement.focus();
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.fieldNames = res.data;
 
     })

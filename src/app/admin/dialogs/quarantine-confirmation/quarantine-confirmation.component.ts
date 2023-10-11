@@ -4,18 +4,20 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 @Component({
   selector: 'app-quarantine-confirmation',
   templateUrl: './quarantine-confirmation.component.html',
 })
 export class QuarantineConfirmationComponent implements OnInit {
-
+  public iAdminApiService: IAdminApiService;
   action: any;
   userData: any;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialog, private toastr: ToastrService,private authService: AuthService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private adminApiService: AdminApiService, private dialog: MatDialog, private toastr: ToastrService,private authService: AuthService,
   private Api:ApiFuntions ) {
-
+    this.iAdminApiService = adminApiService;
     if (this.data.mode === 'inventory-map-quarantine') {
     this.action = 'Quarantine'
     } else if(this.data.mode === 'inventory-map-unquarantine') {
@@ -30,11 +32,9 @@ export class QuarantineConfirmationComponent implements OnInit {
   onConfirmQuarantine () { 
     if (this.data.mode === 'inventory-map-quarantine') {
       let payload = {
-        "mapID": this.data.id,
-        "userName": this.userData.userName,
-      "wsid": this.userData.wsid
+        "mapID": this.data.id
     }
-    this.Api.quarantineInventoryMap(payload).subscribe((res: any) => {
+    this.iAdminApiService.quarantineInventoryMap(payload).subscribe((res: any) => {
 
       if (res.isExecuted) {
         
@@ -56,11 +56,9 @@ export class QuarantineConfirmationComponent implements OnInit {
     } else if(this.data.mode === 'inventory-map-unquarantine') {
 
       let payload = {
-        "mapID": this.data.id,
-        "userName": this.userData.userName,
-      "wsid": this.userData.wsid
+        "mapID": this.data.id
     }
-    this.Api.unQuarantineInventoryMap(payload).subscribe((res: any) => {
+    this.iAdminApiService.unQuarantineInventoryMap(payload).subscribe((res: any) => {
 
       if (res.isExecuted) {
         

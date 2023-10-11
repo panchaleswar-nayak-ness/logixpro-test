@@ -8,6 +8,8 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {  IEmployee } from 'src/app/Iemployee'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 // employee_details table data
 
@@ -31,10 +33,15 @@ export class EmployeesLookupComponent implements OnInit {
   highlight(row) {
     this.selectedRowIndex = row.id;
   }
-
+  public iAdminApiService: IAdminApiService;
   // table initialization
   displayedColumns: string[] = ['lastName', 'firstName', 'mi', 'username'];
-  constructor(private _liveAnnouncer: LiveAnnouncer, private dialog: MatDialog, private employeeService: ApiFuntions, private authService: AuthService) { }
+  constructor(private _liveAnnouncer: LiveAnnouncer, private dialog: MatDialog, 
+    private adminApiService: AdminApiService,
+    private employeeService: ApiFuntions, private authService: AuthService) { 
+      this.iAdminApiService = adminApiService;
+
+    }
 
   @ViewChild(MatSort) sort: MatSort;
   employees_details_data: [] = [];
@@ -48,11 +55,9 @@ export class EmployeesLookupComponent implements OnInit {
 EmployeeLookUp(LastName:any = "",IsLoader=true){
   
   this.emp = {
-    "lastName": LastName,
-    "userName": this.userData.userName,
-    "wsid": this.userData.wsid
+    "lastName": LastName, 
   };
-  this.employeeService.getAdminEmployeeLookup(this.emp,false)
+  this.iAdminApiService.getAdminEmployeeLookup(this.emp,false)
     .subscribe((response: any) => { 
       this.employee_data_source = new MatTableDataSource(response.data.employees);
     });

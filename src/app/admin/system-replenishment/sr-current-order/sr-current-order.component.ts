@@ -22,6 +22,8 @@ import {  } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 @Component({
   selector: 'app-sr-current-order',
   templateUrl: './sr-current-order.component.html',
@@ -81,15 +83,18 @@ export class SrCurrentOrderComponent implements OnInit {
     wsid: ""
   };
   selectedOrder: any = {};
-
+  public iAdminApiService: IAdminApiService;
   constructor(
     private dialog: MatDialog,
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private authService: AuthService,
     private filterService: ContextMenuFiltersService,
     private global:GlobalService,
-  ) { }
+  ) {
+    this.iAdminApiService = adminApiService;
+   }
 
 
 
@@ -196,7 +201,7 @@ export class SrCurrentOrderComponent implements OnInit {
   newReplenishmentOrdersSubscribe: any;
 
   newReplenishmentOrders(loader: boolean = false) {
-    this.newReplenishmentOrdersSubscribe = this.Api.SystemReplenishmentTable(this.tablePayloadObj).subscribe((res: any) => {
+    this.newReplenishmentOrdersSubscribe = this.iAdminApiService.SystemReplenishmentTable(this.tablePayloadObj).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.tableData = res.data.sysTable;
         this.tableData.forEach(element => {
@@ -480,7 +485,7 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   ReplenishmentsByDelete() {
-    this.Api.ReplenishmentsByDelete(this.repByDeletePayload).subscribe((res: any) => {
+    this.iAdminApiService.ReplenishmentsByDelete(this.repByDeletePayload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.toastr.success(labels.alert.delete, 'Success!', {
           positionClass: 'toast-bottom-right',
@@ -502,11 +507,9 @@ export class SrCurrentOrderComponent implements OnInit {
   getSearchOptions(loader: boolean = false) {
     let payload = {
       "searchString": this.tablePayloadObj.searchString,
-      "searchColumn": this.tablePayloadObj.searchColumn,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "searchColumn": this.tablePayloadObj.searchColumn, 
     }
-    this.getSearchOptionsSubscribe = this.Api.ReplenishReportSearchTA(payload).subscribe((res: any) => {
+    this.getSearchOptionsSubscribe = this.iAdminApiService.ReplenishReportSearchTA(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.searchAutocompleteList = res.data.sort();
       }
@@ -519,7 +522,7 @@ export class SrCurrentOrderComponent implements OnInit {
 
 
   systemReplenishmentCount(loader: boolean = false) {
-    this.newReplenishmentOrdersSubscribe = this.Api.SystemReplenishmentCount(this.tablePayloadObj).subscribe((res: any) => {
+    this.newReplenishmentOrdersSubscribe = this.iAdminApiService.SystemReplenishmentCount(this.tablePayloadObj).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.noOfPicks = res.data.pickCount;
         this.noOfPutAways = res.data.putCount;

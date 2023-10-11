@@ -26,6 +26,8 @@ import { ReelDetailComponent } from 'src/app/dialogs/reel-detail/reel-detail.com
 import { ReelTransactionsComponent } from 'src/app/dialogs/reel-transactions/reel-transactions.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 
 export interface PeriodicElement {
@@ -125,7 +127,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   upperBound = 5
   lowerBound = 1
   
-
+  public iAdminApiService: IAdminApiService;
 
   constructor(
     private dialog: MatDialog,
@@ -133,8 +135,9 @@ export class ProcessPutAwaysComponent implements OnInit {
     private Api:ApiFuntions,
     private global:GlobalService,
     private authService: AuthService,
+    private adminApiService: AdminApiService,
     private _liveAnnouncer: LiveAnnouncer,
-  ) { }
+  ) { this.iAdminApiService = adminApiService;}
   ngAfterViewInit() {
     setTimeout(() => {
       this.inputVal.nativeElement.focus();
@@ -199,7 +202,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.ifAllowed = true
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.fieldNames = res.data;
     })
   }

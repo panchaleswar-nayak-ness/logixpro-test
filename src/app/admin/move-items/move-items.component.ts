@@ -22,6 +22,8 @@ import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.ser
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { } from 'datatables.net';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
@@ -74,6 +76,7 @@ export class MoveItemsComponent implements OnInit {
   public moveToDatasource: any = new MatTableDataSource();
   @ViewChild('trigger') trigger: MatMenuTrigger;
   tabIndex: any = 0;
+  public iAdminApiService: IAdminApiService;
   isRowSelected = false;
   contextMenuPosition = { x: '0px', y: '0px' };
   moveFromFilter: string = '1 = 1';
@@ -156,12 +159,14 @@ export class MoveItemsComponent implements OnInit {
     private Api: ApiFuntions,
     private authService: AuthService,
     private dialog: MatDialog,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private filterService: ContextMenuFiltersService,
     private renderer: Renderer2,
     private elementRef: ElementRef
   ) {
     this.userData = this.authService.userData();
+    this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
@@ -246,7 +251,7 @@ export class MoveItemsComponent implements OnInit {
         tableName === 'MoveFrom' ? this.moveFromFilter : this.moveToFilter,
       wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .GetMoveItemsTable(payload)
       .subscribe((res: any) => {
         if (res?.data && res.data['moveMapItems'].length === 0) {
@@ -708,7 +713,7 @@ export class MoveItemsComponent implements OnInit {
       wsid: this.userData.wsid,
     };
 
-    this.Api
+    this.iAdminApiService
     .CreateMoveTransactions(payload)
     .subscribe((res: any) => {
       if(res.isExecuted){

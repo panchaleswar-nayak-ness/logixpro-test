@@ -16,6 +16,8 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-de-allocate-orders',
@@ -60,7 +62,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   order;
   deallocateSelectedBtn = true
   onViewOrder=true;
-
+  public iAdminApiService: IAdminApiService;
 // pagination and sorting for orderView
   pageEventOrder: PageEvent;
   startRowOrder = 0;
@@ -89,9 +91,12 @@ export class DeAllocateOrdersComponent implements OnInit {
     private Api:ApiFuntions,
     private _liveAnnouncer: LiveAnnouncer,
     private toastr: ToastrService,
+    private adminApiService: AdminApiService,
     private dialog: MatDialog,
     private sharedService:SharedService,
-    private filterService: ContextMenuFiltersService) { }
+    private filterService: ContextMenuFiltersService) { 
+      this.iAdminApiService = adminApiService;
+    }
 
   ngOnInit(): void {
     this.userData = this.authService.userData()
@@ -109,22 +114,18 @@ export class DeAllocateOrdersComponent implements OnInit {
   async autocompleteSearchColumnItem() {
     if(this.chooseSearchType == 'Order Number'){
       let payload = {
-        "orderNumber": this.TypeValue,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "orderNumber": this.TypeValue, 
       }
   
-      this.Api.AllocatedOrders(payload).subscribe((res: any) => {
+      this.iAdminApiService.AllocatedOrders(payload).subscribe((res: any) => {
         this.searchedItemOrder = res.data
       });
     }
     else if(this.chooseSearchType == 'Item Number'){
       let payload = {
-        "itemNumber": this.TypeValue,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "itemNumber": this.TypeValue, 
       }
-      this.Api.AllocatedItems(payload).subscribe((res: any) => {
+      this.iAdminApiService.AllocatedItems(payload).subscribe((res: any) => {
         this.searchedItemOrder = res.data
       });
     }
@@ -140,11 +141,9 @@ export class DeAllocateOrdersComponent implements OnInit {
       let payload = {
         "orderNumber": this.chooseSearchType == 'Order Number'?this.TypeValue:'',
         "itemNumber": this.chooseSearchType == 'Item Number'?this.TypeValue:'',
-        "transType": this.transactionType, 
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "transType": this.transactionType,  
       }
-      this.Api.AllAllocatedOrders(payload).subscribe((res=>{
+      this.iAdminApiService.AllAllocatedOrders(payload).subscribe((res=>{
 
         const orderNamesResponseObj = res.data.map((value, index) => {
      if(this.orderNumbersList.includes(value)){
@@ -179,11 +178,9 @@ export class DeAllocateOrdersComponent implements OnInit {
         "displayFilter": "All",
         "orderNum": "",
         "warehouse": "",
-        "filter": this.FilterString,
-        "username": "1234",
-        "wsid": "TESTWSID"
+        "filter": this.FilterString 
       }
-      this.Api.OrderItemsTable(payload).subscribe((res=>{
+      this.iAdminApiService.OrderItemsTable(payload).subscribe((res=>{
         res.data.openTransactions.forEach((item,i)=>{
           if(this.orderNumbersList.includes(item.orderNumber)){
             res.data.openTransactions[i].isDeallocate=true
@@ -211,11 +208,9 @@ export class DeAllocateOrdersComponent implements OnInit {
         "displayFilter": "spec",
         "orderNum":  this.order.name,
         "warehouse": "",
-        "filter":  this.FilterString,
-        "username": "1234",
-        "wsid": "TESTWSID"
+        "filter":  this.FilterString, 
       }
-      this.Api.OrderItemsTable(payload).subscribe((res=>{
+      this.iAdminApiService.OrderItemsTable(payload).subscribe((res=>{
         res.data.openTransactions.forEach((item,i)=>{
           if(this.orderNumbersList.includes(item.orderNumber)){
             res.data.openTransactions[i].isDeallocate=true
@@ -285,11 +280,9 @@ export class DeAllocateOrdersComponent implements OnInit {
         if (res === 'Yes') {
           let deallocate = this.orderNumbersList.toString()
           let payload = {
-            "orderNumber": deallocate,
-            "userName": this.userData.userName,
-            "wsid": this.userData.wsid
+            "orderNumber": deallocate, 
           }
-          this.Api.DeAllocateOrder(payload).subscribe((res=>{
+          this.iAdminApiService.DeAllocateOrder(payload).subscribe((res=>{
             if(res.isExecuted){
               this.actions = ''
               this.toastr.success("De-Allocated successfully", 'Success!', {
@@ -326,11 +319,9 @@ export class DeAllocateOrdersComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       if (res === 'Yes') {
         let payload = {
-          "orderNumber": '',
-          "userName": this.userData.userName,
-          "wsid": this.userData.wsid
+          "orderNumber": '', 
         }
-        this.Api.DeAllocateOrder(payload).subscribe((res=>{
+        this.iAdminApiService.DeAllocateOrder(payload).subscribe((res=>{
           if(res.isExecuted){
             this.toastr.success("De-Allocated successfully", 'Success!', {
               positionClass: 'toast-bottom-right',
