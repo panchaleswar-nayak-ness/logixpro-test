@@ -262,7 +262,7 @@ export class WorkstationComponent implements OnInit {
   }
 
   addCanAccess(payload) {
-    this.api.workstationapp(payload).subscribe(
+    this.iGlobalConfigApi.workstationapp(payload).subscribe(
         {next: (res: any) => {
           if (res.isExecuted) {
             this.getCanAccessList(this.wsid);
