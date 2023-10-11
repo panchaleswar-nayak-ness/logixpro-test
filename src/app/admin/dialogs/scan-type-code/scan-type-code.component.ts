@@ -5,6 +5,8 @@ import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-scan-type-code',
@@ -19,12 +21,16 @@ export class ScanTypeCodeComponent implements OnInit {
   public userData: any;
 
 
-  constructor(private dialog: MatDialog,
-    private Api: ApiFuntions, 
-              private authService: AuthService,
-              private toastr: ToastrService,
-              private renderer: Renderer2,
-              public dialogRef: MatDialogRef<any>) { }
+  public iCommonAPI : ICommonApi;
+
+  constructor(
+    public commonAPI : CommonApiService,
+    private dialog: MatDialog,
+    // private Api: ApiFuntions, 
+    private authService: AuthService,
+    private toastr: ToastrService,
+    private renderer: Renderer2,
+    public dialogRef: MatDialogRef<any>) { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -32,7 +38,7 @@ export class ScanTypeCodeComponent implements OnInit {
   }
   getScanCodeType(){
     
-    this.Api.ScanCodeTypes().subscribe((res) => {
+    this.iCommonAPI.ScanCodeTypes().subscribe((res) => {
       if (res.isExecuted) {
         this.scanTypeCode_list_Response = [...res.data];
         this.scanTypeCode_list = res.data;
@@ -75,12 +81,10 @@ export class ScanTypeCodeComponent implements OnInit {
     if(newScanCode && cond){
     let paylaod = {      
       "oldScanCodeType": oldScanCode.toString()  ,
-      "scanCodeType": newScanCode,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "scanCodeType": newScanCode
     }
     
-    this.Api.CodeTypeSave(paylaod).subscribe((res) => {
+    this.iCommonAPI.CodeTypeSave(paylaod).subscribe((res) => {
       if(res.isExecuted){
         this.getScanCodeType();
         this.toastr.success(labels.alert.success, 'Success!', {
@@ -115,12 +119,10 @@ export class ScanTypeCodeComponent implements OnInit {
       if (result == 'Yes') {
         if(newScanTypeCode){
           let paylaod = {
-            "scanCodeType": newScanTypeCode,
-            "username": this.userData.userName,
-            "wsid": this.userData.wsid,
+            "scanCodeType": newScanTypeCode
           }
           
-          this.Api.ScanCodeTypeDelete(paylaod).subscribe((res) => {
+          this.iCommonAPI.ScanCodeTypeDelete(paylaod).subscribe((res) => {
             if(res.isExecuted){
               this.getScanCodeType();
             this.toastr.success(labels.alert.delete, 'Success!', {

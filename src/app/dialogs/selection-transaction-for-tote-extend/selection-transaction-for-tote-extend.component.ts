@@ -19,6 +19,8 @@ import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PaPrintLabelConfirmationComponent } from '../pa-print-label-confirmation/pa-print-label-confirmation.component';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -39,17 +41,20 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   selectedToteID:any='';
   fieldNames:any;
   imPreferences:any;
-  constructor(public dialogRef                  : MatDialogRef<SelectionTransactionForToteExtendComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private dialog                    : MatDialog,
-              public formBuilder                : FormBuilder,
-              private authService               : AuthService,
-              private toast                     : ToastrService, 
-              private Api : ApiFuntions, 
-              private toastr: ToastrService,
-              public router: Router,
-              private global:GlobalService,
-              ) {
+  public iCommonAPI : ICommonApi;
+  constructor(
+    public commonAPI : CommonApiService,
+    public dialogRef                  : MatDialogRef<SelectionTransactionForToteExtendComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialog                    : MatDialog,
+    public formBuilder                : FormBuilder,
+    private authService               : AuthService,
+    private toast                     : ToastrService, 
+    private Api : ApiFuntions, 
+    private toastr: ToastrService,
+    public router: Router,
+    private global:GlobalService,
+    ) {
 
     this.toteForm = this.formBuilder.group({
 
@@ -111,6 +116,8 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       dedicated                         : new FormControl(false, Validators.compose([])),
 
     });
+
+    this.iCommonAPI = commonAPI;
 
   }
 
@@ -267,13 +274,13 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   }
 
   getCellSizeList() {
-    this.Api.getCellSize().subscribe((res) => {
+    this.iCommonAPI.getCellSize().subscribe((res) => {
       this.cellSizeList = res.data;
     });
   }
 
   getVelocityCodeList() {
-    this.Api.getVelocityCode().subscribe((res) => {
+    this.iCommonAPI.getVelocityCode().subscribe((res) => {
       this.velocityCodeList = res.data;
     });
   }

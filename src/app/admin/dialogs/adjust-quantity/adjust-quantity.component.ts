@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
  
 import { ToastrService } from 'ngx-toastr';
 import {ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 
 export interface  AdjustQuantityDataStructure   {
@@ -53,7 +55,10 @@ export class AdjustQuantityComponent implements OnInit {
 
  
 
-  constructor(
+ public iCommonAPI : ICommonApi;
+
+ constructor(
+    public commonAPI : CommonApiService,
     private dialog: MatDialog,
     public fb: FormBuilder,
     private Api: ApiFuntions,
@@ -62,6 +67,7 @@ export class AdjustQuantityComponent implements OnInit {
     public dialogRef: MatDialogRef<any>
   ) {
    this.fieldName=data.fieldNames;
+   this.iCommonAPI = commonAPI;
   }
 
   ngOnInit(): void { 
@@ -88,7 +94,7 @@ export class AdjustQuantityComponent implements OnInit {
   }
 
   getItemQuantity(id: any){
-    this.Api.getItemQuantityDetail(id).subscribe((res) => {
+    this.iCommonAPI.getItemQuantityDetail(id).subscribe((res) => {
       if(res.data && res.isExecuted){
         this.getAdjustQuantityData = res.data;
         this.newQty.nativeElement.focus();
@@ -97,7 +103,7 @@ export class AdjustQuantityComponent implements OnInit {
   }
 
   getAdjustmentReasons(){
-    this.Api.getAdjustmentReasonsList().subscribe((res) => {
+    this.iCommonAPI.getAdjustmentReasonsList().subscribe((res) => {
       if(res.data && res.isExecuted){
         this.getAdjustReasonsList = res.data;
       }

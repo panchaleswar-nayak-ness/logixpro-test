@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-print-range',
@@ -18,13 +20,15 @@ export class PrintRangeComponent implements OnInit {
   endLoc: string = "";
   groupLikeLoc: boolean = false;
   quantitySelected: number = 0;
+  public iCommonAPI : ICommonApi;
   constructor(
+    public commonAPI : CommonApiService,
     private route: Router,
     public dialogRef: MatDialogRef<any>,
     private authService: AuthService,
     private Api: ApiFuntions,
     private global:GlobalService
-  ) { }
+  ) { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -58,7 +62,7 @@ export class PrintRangeComponent implements OnInit {
       "query": this.beginLoc,
       "unique": true
     }
-    this.Api.LocationBegin(payload).subscribe((res: any) => {
+    this.iCommonAPI.LocationBegin(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.beginLocationSearchList = res.data;
         this.getQtySelected();
@@ -74,7 +78,7 @@ export class PrintRangeComponent implements OnInit {
       "beginLocation": this.beginLoc,
       "unique": true
     }
-    this.Api.LocationEnd(payload).subscribe((res: any) => {
+    this.iCommonAPI.LocationEnd(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.endLocationSearchList = res.data;
         this.getQtySelected();

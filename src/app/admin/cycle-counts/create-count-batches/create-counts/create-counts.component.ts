@@ -27,6 +27,8 @@ import { Router } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-ccb-create-counts',
@@ -121,7 +123,10 @@ export class CCBCreateCountsComponent implements OnInit {
   dataSourceList: any;
   fromLocationCrossbtn
   toLocationCrossbtn
-  constructor(
+  public iCommonAPI : ICommonApi;
+
+constructor(
+    public commonAPI : CommonApiService,
     public Api: ApiFuntions,
     public toastService: ToastrService,
     private authService: AuthService,
@@ -132,6 +137,8 @@ export class CCBCreateCountsComponent implements OnInit {
     private global:GlobalService
     
   ) {
+    this.iCommonAPI = commonAPI;
+    
     this.filtersForm = new FormGroup({
       countType: new FormControl(''),
       fromLocation: new FormControl(''),
@@ -400,11 +407,9 @@ export class CCBCreateCountsComponent implements OnInit {
     } else if (type === 'FromLocation') {
       let payload = {
         Query: this.filtersForm.value.fromLocation,
-        Unique: true,
-        Username: this.userData.userName,
-        WSID: this.userData.wsid,
+        Unique: true
       };
-      this.Api
+      this.iCommonAPI
         .LocationBegin(payload)
         .subscribe((res: any) => {
           this.searchAutocompleteFromLocation = res.data;
@@ -413,11 +418,9 @@ export class CCBCreateCountsComponent implements OnInit {
       let payload = {
         Query: this.filtersForm.value.toLocation,
         BeginLocation: this.filtersForm.value.fromLocation,
-        Unique: true,
-        Username: this.userData.userName,
-        WSID: this.userData.wsid,
+        Unique: true
       };
-      this.Api
+      this.iCommonAPI
         .LocationEnd(payload)
         .subscribe((res: any) => {
           this.searchAutocompleteToLocation = res.data;
@@ -429,11 +432,9 @@ export class CCBCreateCountsComponent implements OnInit {
             ? this.filtersForm.value.fromItem
             : this.filtersForm.value.toItem,
         beginItem: '---',
-        isEqual: false,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        isEqual: false
       };
-      this.Api
+      this.iCommonAPI
         .SearchItem(payload)
         .subscribe((res: any) => {
           if (type === 'FromItem') {

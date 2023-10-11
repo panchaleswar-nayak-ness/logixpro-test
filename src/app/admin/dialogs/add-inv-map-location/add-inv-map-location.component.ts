@@ -12,6 +12,8 @@ import { AuthService } from '../../../../app/init/auth.service';
 import { AdjustQuantityComponent } from '../adjust-quantity/adjust-quantity.component';
 import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 
 
 export interface InventoryMapDataStructure {
@@ -132,7 +134,10 @@ export class AddInvMapLocationComponent implements OnInit {
   unitOFMeasure  
   itemNumberScroll:any = "vertical";
 
+  public iCommonAPI : ICommonApi;
+
   constructor(
+    public commonAPI : CommonApiService,
     private dialog: MatDialog,
     private fb: FormBuilder,
     private Api: ApiFuntions,
@@ -152,6 +157,8 @@ export class AddInvMapLocationComponent implements OnInit {
       this.myroute1=false;
       this.myroute2=false;
     }
+
+    this.iCommonAPI = commonAPI;
 
   }
 
@@ -301,11 +308,9 @@ export class AddInvMapLocationComponent implements OnInit {
     let payload = {
       "itemNumber": itemNum.value.toString(),
       "beginItem": "---",
-      "isEqual": false,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "isEqual": false
     }
-    this.Api.getSearchedItem(payload).subscribe(res => {
+    this.iCommonAPI.getSearchedItem(payload).subscribe(res => {
       if (res.data.length > 0) {
         this.itemNumberList = res.data;
       }

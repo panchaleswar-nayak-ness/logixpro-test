@@ -5,7 +5,8 @@ import labels from '../../../labels/labels.json';
 import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-user-fields-edit',
@@ -36,13 +37,16 @@ export class UserFieldsEditComponent implements OnInit {
   shipToZip = '';
   shipToState = '';
 
+  public iCommonAPI : ICommonApi;
+
   constructor(
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
-    private Api: ApiFuntions,
     public dialogRef: MatDialogRef<any>
   ) {
     this.fieldNames=data.fieldNames
+    this.iCommonAPI = commonAPI;
   }
 
   ngOnInit(): void {
@@ -78,12 +82,10 @@ export class UserFieldsEditComponent implements OnInit {
 
     let payload = {
       transaction: this.data.transID,
-      userFields: userFields,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      userFields: userFields
     };
 
-    this.Api.UserFieldMTSave(payload).subscribe((res:any)=>{
+    this.iCommonAPI.UserFieldMTSave(payload).subscribe((res:any)=>{
       if(res.isExecuted){
              this.toastr.success(labels.alert.success, 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -110,12 +112,9 @@ export class UserFieldsEditComponent implements OnInit {
   async autocompleteSearchColumn() {
     let searchPayload = {
       value: this.shipVia,
-      uFs: 1,
-
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      uFs: 1
     };
-    this.Api
+    this.iCommonAPI
       .UserFieldTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
@@ -127,11 +126,9 @@ export class UserFieldsEditComponent implements OnInit {
 
   getUserFields() {
     let payload = {
-      transactionID: this.data.transID,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      transactionID: this.data.transID
     };
-    this.Api
+    this.iCommonAPI
       .UserFieldGetByID(payload)
       .subscribe((res: any) => {
         if (res?.data) {
@@ -153,11 +150,9 @@ export class UserFieldsEditComponent implements OnInit {
   async autocompleteSearchColumnShipName() {
     let searchPayload = {
       value: this.shipToName,
-      uFs: 2,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      uFs: 2
     };
-    this.Api
+    this.iCommonAPI
       .UserFieldTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {

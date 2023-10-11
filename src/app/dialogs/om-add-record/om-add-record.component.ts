@@ -5,9 +5,10 @@ import { AuthService } from 'src/app/init/auth.service';
 import labels from '../../labels/labels.json';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-om-add-record',
@@ -73,10 +74,11 @@ export class OmAddRecordComponent implements OnInit {
   itemNumberScroll:any = "all";
 
   public orderManagerApi :  IOrderManagerAPIService;
+  public iCommonAPI : ICommonApi;
   constructor(
+    public commonAPI : CommonApiService,
     private toastr: ToastrService,
     private authService: AuthService,
-    private Api: ApiFuntions,
     public OrderManagerApi  : OrderManagerApiService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<OmAddRecordComponent>,
@@ -84,6 +86,7 @@ export class OmAddRecordComponent implements OnInit {
     public globalService: GlobalService,
   ) {
     this.orderManagerApi = OrderManagerApi;
+    this.iCommonAPI = commonAPI;
    }
 
   ngOnInit(): void {
@@ -276,11 +279,9 @@ export class OmAddRecordComponent implements OnInit {
         "appName": "",
         "itemNumber": this.oTTempUpdatePayload.itemNumber,
         "beginItem": "---",
-        "isEqual": false,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "isEqual": false
       }
-      this.Api.SearchItem(payload).subscribe((res: any) => {
+      this.iCommonAPI.SearchItem(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.itemNumberSearchList = res.data;
         } 
@@ -302,11 +303,7 @@ export class OmAddRecordComponent implements OnInit {
   }
 
   getWarehouses() {
-    let payload = {
-      "userName": this.userData.userName,
-      "wsid": this.userData.wsid
-    }
-    this.Api.GetWarehouses().subscribe((res: any) => {
+    this.iCommonAPI.GetWarehouses().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.wharehouses = res.data;
         this.wharehouses = res.data.sort();
@@ -334,12 +331,10 @@ export class OmAddRecordComponent implements OnInit {
         "appName": "",
         "itemNumber": this.oTTempUpdatePayload.itemNumber,
         "beginItem": "---",
-        "isEqual": false,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "isEqual": false
       }
       setTimeout(() => {
-        this.Api.SearchItem(payload).subscribe((res: any) => {
+        this.iCommonAPI.SearchItem(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data && res.data.length > 0) {
             if(res.data[0].itemNumber == this.oTTempUpdatePayload.itemNumber){
               this.oTTempUpdatePayload.description = res.data[0].description;
@@ -379,11 +374,9 @@ export class OmAddRecordComponent implements OnInit {
         "appName": "",
         "itemNumber": this.oTTempUpdatePayload.itemNumber,
         "beginItem": "---",
-        "isEqual": false,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "isEqual": false
       }
-      let res: any = await this.Api.SearchItem(payload).toPromise();
+      let res: any = await this.iCommonAPI.SearchItem(payload).toPromise();
       if (res.isExecuted && res.data && res.data.length > 0) {
         let filtered = res.data.filter((item: any) => (item.itemNumber == this.oTTempUpdatePayload.itemNumber));
         if (filtered.length > 0) {

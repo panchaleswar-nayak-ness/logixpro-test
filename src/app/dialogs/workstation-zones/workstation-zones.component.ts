@@ -9,6 +9,8 @@ import { AuthService } from '../../../app/init/auth.service';
 import labels from '../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatAutocomplete } from '@angular/material/autocomplete';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-workstation-zones',
@@ -104,14 +106,17 @@ export class WorkstationZonesComponent implements OnInit {
 
   }
   
+  public iCommonAPI : ICommonApi;
+
   constructor(
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private Api: ApiFuntions,
     private authService: AuthService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>,
     private dialog: MatDialog,
-  ) { }
+  ) { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -204,11 +209,9 @@ export class WorkstationZonesComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result === 'Yes') {
           let paylaod = {
-            "velocity": vlCode,
-            "username": this.userData.userName,
-            "wsid": this.userData.wsid,
+            "velocity": vlCode
           }
-          this.Api.dltVelocityCode(paylaod).subscribe((res) => {
+          this.iCommonAPI.dltVelocityCode(paylaod).subscribe((res) => {
             this.toastr.success(labels.alert.delete, 'Success!', {
               positionClass: 'toast-bottom-right',
               timeOut: 2000

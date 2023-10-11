@@ -12,6 +12,8 @@ import { Subject } from 'rxjs';
 import { ItemExistGenerateOrderComponent } from '../item-exist-generate-order/item-exist-generate-order.component';
 import { EmptyFieldsComponent } from '../empty-fields/empty-fields.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-add-new-transaction-to-order',
@@ -30,13 +32,16 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   searchByInput: any = new Subject<string>();
   searchAutocompleteList: any=[];
 
+  public iCommonAPI : ICommonApi;
+
   constructor(
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
     private Api: ApiFuntions,
     public dialogRef: MatDialogRef<any>
-  ) {}
+  ) { this.iCommonAPI = commonAPI; }
   transactionInfo = new FormGroup({
     lineNumber: new FormControl(''),
     lineSequence: new FormControl(''),
@@ -136,13 +141,11 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   }
   searchData(){
     let payload = {
-      itemNumber: this.itemNumber,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      itemNumber: this.itemNumber
     }
 
   
-      this.Api.ItemExists(payload)
+      this.iCommonAPI.ItemExists(payload)
       .subscribe(
         (res: any) => {
           if(res.isExecuted){
@@ -174,11 +177,9 @@ export class AddNewTransactionToOrderComponent implements OnInit {
 
       itemNumber: this.itemNumber,
       beginItem:'---',
-      isEqual:false,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      isEqual:false
     };
-    this.Api
+    this.iCommonAPI
       .SearchItem(searchPayload)
       .subscribe(
         (res: any) => {
@@ -196,11 +197,9 @@ export class AddNewTransactionToOrderComponent implements OnInit {
 
   saveTransaction() {
     let payloadItem = {
-      itemNumber: this.itemNumber,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      itemNumber: this.itemNumber
     }
-    this.Api.ItemExists(payloadItem)
+    this.iCommonAPI.ItemExists(payloadItem)
     .subscribe(
       (res: any) => {
         if(res.isExecuted){

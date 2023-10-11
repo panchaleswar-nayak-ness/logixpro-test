@@ -5,6 +5,8 @@ import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-cell-size',
@@ -18,15 +20,17 @@ export class CellSizeComponent implements OnInit {
   public userData: any;
   public currentCellValue = "";
   enableButton = [{ index: -1, value: true }];
+  public iCommonAPI : ICommonApi;
   constructor(
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private api: ApiFuntions,
+    // private api: ApiFuntions,
     private authService: AuthService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>,
     private dialog: MatDialog,
     private renderer: Renderer2
-  ) { }
+  ) { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -38,7 +42,7 @@ export class CellSizeComponent implements OnInit {
 
   getCellSizeList() {
     this.enableButton = [];
-    this.api.getCellSize().subscribe((res) => {
+    this.commonAPI.getCellSize().subscribe((res) => {
       for(let i=0;i<res.data.length;i++){
         res.data[i].isInserted = 1;
         this.enableButton.push({ index: i, value: true });
@@ -92,11 +96,9 @@ export class CellSizeComponent implements OnInit {
         let paylaod = {
           "oldCell": oldVal.toString(),
           "newCell": cell,
-          "cellType": cellType,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid,
+          "cellType": cellType
         }
-        this.api.saveCellSize(paylaod).subscribe((res) => {
+        this.iCommonAPI.saveCellSize(paylaod).subscribe((res) => {
           if (res.isExecuted) {
             this.getCellSizeList();
             this.toastr.success(labels.alert.success, 'Success!', {
@@ -131,11 +133,9 @@ export class CellSizeComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
        if(result === 'Yes'){
         let paylaod = {
-        "cell": cell.cells.toString(),
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "cell": cell.cells.toString()
       }
-      this.api.dltCellSize(paylaod).subscribe((res) => {
+      this.iCommonAPI.dltCellSize(paylaod).subscribe((res) => {
         if (res.isExecuted) {
           this.getCellSizeList();
           this.toastr.success(labels.alert.delete, 'Success!', {

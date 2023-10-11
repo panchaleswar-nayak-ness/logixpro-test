@@ -2,9 +2,9 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
-import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-supplier-item-id',
@@ -21,13 +21,15 @@ export class SupplierItemIdComponent implements OnInit {
   searchByItem: any = new Subject<string>();
   searchAutocompleteItemNum: any = [];
   
+  public iCommonAPI : ICommonApi;
+
   constructor(
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private toastr: ToastrService,
-    private Api: ApiFuntions,
     public dialogRef: MatDialogRef<any>
   ) {
     this.supplierID = data.supplierID;
+    this.iCommonAPI = commonAPI;
   }
   getFloatLabelValueItem(): FloatLabelType {
     return this.floatLabelControlItem.value || 'item';
@@ -45,11 +47,9 @@ export class SupplierItemIdComponent implements OnInit {
 
   async autocompleteSearchColumnItem() {
     let searchPayload = {
-      supplierID: this.supplierID,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      supplierID: this.supplierID
     };
-    this.Api
+    this.iCommonAPI
       .SupplierItemTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {

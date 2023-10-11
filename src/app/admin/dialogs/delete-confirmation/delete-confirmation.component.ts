@@ -12,6 +12,8 @@ import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-delete-confirmation',
@@ -24,9 +26,12 @@ export class DeleteConfirmationComponent implements OnInit {
   Message: any;
   public userData;
   public IconsolidationAPI : IConsolidationApi;
+  public iCommonAPI : ICommonApi;
+
 
   constructor(
     public consolidationAPI : ConsolidationApiService,
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -34,7 +39,10 @@ export class DeleteConfirmationComponent implements OnInit {
     public dialogRef: MatDialogRef<DeleteConfirmationComponent>,
     private authService: AuthService,
     private router: Router
-  ) { this.IconsolidationAPI = consolidationAPI; }
+  ) { 
+    this.IconsolidationAPI = consolidationAPI; 
+    this.iCommonAPI = commonAPI;
+  }
 
   ngOnInit(): void {
     this.Message = ''; 
@@ -271,11 +279,9 @@ export class DeleteConfirmationComponent implements OnInit {
         });
       } else if (this.data.mode === 'delete-warehouse') {
         let emp_data = {
-          warehouse: this.data.warehouse,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          warehouse: this.data.warehouse
         };
-        this.Api.dltWareHouse(emp_data).subscribe((res: any) => {
+        this.iCommonAPI.dltWareHouse(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialogRef.close('Yes');
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -291,11 +297,9 @@ export class DeleteConfirmationComponent implements OnInit {
         });
       } else if (this.data.mode === 'delete-velocity') {
         let emp_data = {
-          velocity: this.data.velocity,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          velocity: this.data.velocity
         };
-        this.Api.dltVelocityCode(emp_data).subscribe((res: any) => {
+        this.iCommonAPI.dltVelocityCode(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialogRef.close('Yes');
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -332,11 +336,9 @@ export class DeleteConfirmationComponent implements OnInit {
           );
       } else if (this.data.mode === 'delete-carrier') {
         let payload = {
-          carrier: this.data.carrier,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          carrier: this.data.carrier
         };
-        this.Api
+        this.IconsolidationAPI
           .CarrierDelete(payload)
           .subscribe(
             (res: any) => {
@@ -388,13 +390,11 @@ export class DeleteConfirmationComponent implements OnInit {
           );
       }else if(this.data.mode == 'delete-category'){
         let payload = {
-          WSID: this.userData.wsid,
-          Username:this.userData.userName,
           Category:this.data.category,
           SubCategory:this.data.subCategory,
         };
 
-        this.Api
+        this.iCommonAPI
           .CategoryDelete(payload)
           .subscribe(
             (res: any) => {

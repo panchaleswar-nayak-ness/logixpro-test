@@ -5,8 +5,9 @@ import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { Router } from '@angular/router';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-item-category',
@@ -19,15 +20,18 @@ export class  ItemCategoryComponent implements OnInit {
   public userData: any;
   enableButton=[{index:-1,value:true}];
 
-  constructor(private dialog: MatDialog,
-              private api: ApiFuntions,
-              private authService: AuthService,
-              private toastr: ToastrService,
-              private renderer: Renderer2,
-              public dialogRef: MatDialogRef<any>,
-              private global:GlobalService,
-              public route: Router
-              ) {}
+  public iCommonAPI : ICommonApi;
+
+  constructor(
+    public commonAPI : CommonApiService,
+    private dialog: MatDialog,
+    private authService: AuthService,
+    private toastr: ToastrService,
+    private renderer: Renderer2,
+    public dialogRef: MatDialogRef<any>,
+    private global:GlobalService,
+    public route: Router
+    ) { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -40,7 +44,7 @@ export class  ItemCategoryComponent implements OnInit {
   }
 
  getCategoryList(){ 
-    this.api.getCategory().subscribe((res) => {
+    this.iCommonAPI.getCategory().subscribe((res) => {
       this.category_list = res.data;
       this.enableButton=[];
       for(let i=0;i<this.category_list.length;i++)
@@ -99,12 +103,10 @@ export class  ItemCategoryComponent implements OnInit {
         "category": category,
         "oldCategory": oldCat.toString(),
         "subCategory": subCategory,
-        "oldSubCategory": oldSubCat.toString(),
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "oldSubCategory": oldSubCat.toString()
       } 
       
-      this.api.saveCategory(paylaod).subscribe((res) => {
+      this.iCommonAPI.saveCategory(paylaod).subscribe((res) => {
         if(res.isExecuted){
           this.getCategoryList();
         this.toastr.success(oldCat.toString()==''?labels.alert.success:labels.alert.update, 'Success!', {

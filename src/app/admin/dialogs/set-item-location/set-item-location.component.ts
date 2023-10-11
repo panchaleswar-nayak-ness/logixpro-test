@@ -5,6 +5,8 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-set-item-location',
@@ -27,7 +29,10 @@ export class SetItemLocationComponent implements OnInit {
   location: any;
   itemInvalid=false;
   invMapID;
+  public iCommonAPI : ICommonApi;
+
   constructor(
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
     private Api:ApiFuntions,
@@ -35,6 +40,7 @@ export class SetItemLocationComponent implements OnInit {
 
   ) {
     this.itemNumber = data.itemNumber;
+    this.iCommonAPI = commonAPI;
   }
   getFloatLabelValueLocation(): FloatLabelType {
     return this.floatLabelControlLocation.value || 'autoLocation';
@@ -61,14 +67,12 @@ export class SetItemLocationComponent implements OnInit {
   }
   validateItem(){
     let payLoad = {
-      itemNumber: this.itemNumber,
-        username: this.data.userName,
-        wsid: this.data.wsid,
+      itemNumber: this.itemNumber
       };
       setTimeout(() => {
         
    
-      this.Api
+      this.commonAPI
         .ItemExists(payLoad)
         .subscribe(
           {next:(res: any) => {
@@ -122,11 +126,9 @@ export class SetItemLocationComponent implements OnInit {
     let searchPayload = {
       itemNumber: this.itemNumber,
       beginItem: '---',
-      isEqual: false,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      isEqual: false
     };
-    this.Api
+    this.commonAPI
       .SearchItem(searchPayload)
       .subscribe(
         {next: (res: any) => {

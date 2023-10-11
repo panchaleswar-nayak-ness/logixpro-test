@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-temporary-manual-order-number-add',
@@ -29,13 +31,17 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
   itemNumber;
   orderRequired:boolean=false;
   itemInvalid=false;
+  public iCommonAPI : ICommonApi;
+
   constructor(
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
     private Api: ApiFuntions,
     public dialogRef: MatDialogRef<any>
 
   ) {
+    this.iCommonAPI = commonAPI;
     this.orderNumber = data.orderNumber;
   }
   getFloatLabelValue(): FloatLabelType {
@@ -49,13 +55,11 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
   }
   searchData(event) {
     let payLoad = {
-      itemNumber: this.itemNumber,
-        username: this.data.userName,
-        wsid: this.data.wsid,
+      itemNumber: this.itemNumber
       };
   
      
-        this.Api
+        this.iCommonAPI
         .ItemExists(payLoad)
         .subscribe(
           (res: any) => {
@@ -103,13 +107,11 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
   saveTransaction() {
 
     let payLoadItem = {
-      itemNumber: this.itemNumber,
-        username: this.data.userName,
-        wsid: this.data.wsid,
+      itemNumber: this.itemNumber
       };
   
      
-        this.Api
+        this.iCommonAPI
         .ItemExists(payLoadItem)
         .subscribe(
           (res: any) => {
@@ -174,13 +176,11 @@ this.orderRequired=true
 }else if(type==='item'){
   if(this.itemNumber){
     let payLoad = {
-     itemNumber: this.itemNumber,
-       username: this.data.userName,
-       wsid: this.data.wsid,
+     itemNumber: this.itemNumber
      };
  
    
-       this.Api
+       this.iCommonAPI
        .ItemExists(payLoad)
        .subscribe(
          (res: any) => {
@@ -224,11 +224,9 @@ this.orderRequired=true
     let searchPayload = {
       itemNumber: this.itemNumber,
       beginItem:'---',
-      isEqual:false,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      isEqual:false
     };
-    this.Api
+    this.iCommonAPI
       .SearchItem(searchPayload)
       .subscribe(
         (res: any) => {

@@ -5,8 +5,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component'
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-warehouse',
@@ -24,8 +25,10 @@ export class WarehouseComponent implements OnInit {
   enableButton = [{ index: -1, value: true }];
 
 
+  public iCommonAPI : ICommonApi;
+
   constructor(
-    private Api: ApiFuntions,
+    public commonAPI : CommonApiService,
     private authService: AuthService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>,
@@ -33,11 +36,11 @@ export class WarehouseComponent implements OnInit {
     private router: Router,
     private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) { this.iCommonAPI = commonAPI; }
 
 
   ngOnInit(): void {
-    console.log(this.data)
+    // console.log(this.data)
     this.userData = this.authService.userData();
     this.getWarehouse();
     if( this.data.check == 'fromReelDetail'  ){
@@ -75,7 +78,7 @@ export class WarehouseComponent implements OnInit {
 
   getWarehouse() {
     this.enableButton = [];
-    this.Api.GetWarehouses().subscribe((res) => {
+    this.iCommonAPI.GetWarehouses().subscribe((res) => {
       this.warehouse_list = res.data;
       for (let i = 0; i < this.warehouse_list.length; i++) {
         this.enableButton.push({ index: i, value: true });
@@ -114,12 +117,10 @@ export class WarehouseComponent implements OnInit {
     if (cond) {
       let paylaod = {
         "oldWarehouse": oldWh.toString(),
-        "warehouse": warehosue,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "warehouse": warehosue
       }
 
-      this.Api.saveWareHouse(paylaod).subscribe((res) => {
+      this.iCommonAPI.saveWareHouse(paylaod).subscribe((res) => {
         if(res.isExecuted){
           this.toastr.success(labels.alert.success, 'Success!', {
             positionClass: 'toast-bottom-right',
@@ -132,11 +133,9 @@ export class WarehouseComponent implements OnInit {
   }
   dltWareHouse(warehosue: any) {
     let paylaod = {
-      "warehouse": warehosue,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "warehouse": warehosue
     }
-    this.Api.dltWareHouse(paylaod).subscribe((res) => {
+    this.iCommonAPI.dltWareHouse(paylaod).subscribe((res) => {
       this.toastr.success(labels.alert.delete, 'Success!', {
         positionClass: 'toast-bottom-right',
         timeOut: 2000

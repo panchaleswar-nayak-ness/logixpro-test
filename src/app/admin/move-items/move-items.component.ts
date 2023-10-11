@@ -22,6 +22,8 @@ import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.ser
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { } from 'datatables.net';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
@@ -152,7 +154,9 @@ export class MoveItemsComponent implements OnInit {
   hideRequiredControl = new FormControl(false);
   searchAutocompletItemNo: any = [];
   public itemnumscan: any = '';
+  public iCommonAPI : ICommonApi;
   constructor(
+    public commonAPI : CommonApiService,
     private Api: ApiFuntions,
     private authService: AuthService,
     private dialog: MatDialog,
@@ -162,6 +166,7 @@ export class MoveItemsComponent implements OnInit {
     private elementRef: ElementRef
   ) {
     this.userData = this.authService.userData();
+    this.iCommonAPI = commonAPI;
   }
 
   ngOnInit(): void {
@@ -293,11 +298,9 @@ export class MoveItemsComponent implements OnInit {
     let searchPayload = {
       itemNumber: this.itemNo,
       beginItem: '---',
-      isEqual: false,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      isEqual: false
     };
-    this.Api.SearchItem(searchPayload).subscribe(
+    this.iCommonAPI.SearchItem(searchPayload).subscribe(
       {next: (res: any) => {
         this.searchAutocompletItemNo = res.data;
         this.getMoveItemList('MoveFrom');

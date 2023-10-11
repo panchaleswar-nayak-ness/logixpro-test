@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/init/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 
 
@@ -31,8 +33,15 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   fieldNames:any;
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<any>, 
-  private Api:ApiFuntions, private toastr: ToastrService, private authService: AuthService) { }
+  public iCommonAPI : ICommonApi;
+
+  constructor(
+    public commonAPI : CommonApiService,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    public dialogRef: MatDialogRef<any>, 
+    private Api:ApiFuntions, 
+    private toastr: ToastrService, 
+    private authService: AuthService) { this.iCommonAPI = commonAPI; }
 
   editTransactionForm = new FormGroup({
     transactionQuantity: new FormControl('', [Validators.required]),
@@ -163,7 +172,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   }
 
   getUOM() {
-    this.Api.getUnitOfMeasure().subscribe((res) => {
+    this.iCommonAPI.getUnitOfMeasure().subscribe((res) => {
       if (res.isExecuted) {
         this.unitOfMeasure_list = res.data;
       }
@@ -171,7 +180,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   }
 
   getWarehouse() {
-    this.Api.GetWarehouses().subscribe((res) => {
+    this.iCommonAPI.GetWarehouses().subscribe((res) => {
       this.warehouse_list = res.data;
     });
   }

@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs'; 
 import { ApiFuntions } from './ApiFuntions';
+import { ICommonApi } from './common-api/common-api-interface';
+import { CommonApiService } from './common-api/common-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedService {
-  constructor(private api: ApiFuntions) { }
+  public iCommonAPI : ICommonApi;
+
+  constructor(
+    public commonAPI : CommonApiService,
+    // private api: ApiFuntions
+  ) { this.iCommonAPI = commonAPI; }
   loadMenu: boolean = false;
   private data: any;
   private menuData = new Subject<any>();
@@ -170,10 +177,11 @@ export class SharedService {
     else{
       let object:any = {
         userName:userName,
-        wsid:wsid, appName:appName
+        wsid:wsid, 
+        appName:appName
       }
   
-        this.api.UserAppNameAdd(object).subscribe((res: any) => { },(error: any) => {
+        this.iCommonAPI.UserAppNameAdd(object).subscribe((res: any) => { },(error: any) => {
           console.error('An error occurred:', error);
         }); 
 

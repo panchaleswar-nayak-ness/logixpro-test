@@ -21,6 +21,8 @@ import { MatOption } from '@angular/material/core';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AddNotesComponent } from '../../dialogs/add-notes/add-notes.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 
 @Component({
   selector: 'app-generate-transaction',
@@ -77,7 +79,10 @@ export class GenerateTransactionComponent implements OnInit {
   message = '';
   isLocation=false;
   emergency = false;
+  public iCommonAPI : ICommonApi;
+
   constructor(
+    public commonAPI : CommonApiService,
     private authService: AuthService,
     private Api:ApiFuntions,
     private dialog: MatDialog,
@@ -85,7 +90,7 @@ export class GenerateTransactionComponent implements OnInit {
     private global:GlobalService
   ) {
     this.userData = this.authService.userData();
-    
+    this.iCommonAPI = commonAPI;
   }
 
   ngOnInit(): void {
@@ -576,11 +581,9 @@ export class GenerateTransactionComponent implements OnInit {
 
   getSupplierItemInfo(){
     let payload={
-      ID:  this.supplierID,
-      username: this.userData.userName,
-      wsid: this.userData.wsid
+      ID:  this.supplierID
     }
-    this.Api
+    this.iCommonAPI
     .SupplierItemIDInfo(payload)
     .subscribe(
       (res: any) => {

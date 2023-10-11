@@ -9,6 +9,8 @@ import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-kit-item',
@@ -44,7 +46,11 @@ export class KitItemComponent implements OnInit, OnChanges {
     this.notifyParent.emit(e);
   }
 
-  constructor(private Api: ApiFuntions,
+  public iCommonAPI : ICommonApi;
+
+  constructor(
+    public commonAPI : CommonApiService,
+    private Api: ApiFuntions,
     private toastr: ToastrService,
     private authService: AuthService,
     private dialog: MatDialog,
@@ -52,7 +58,7 @@ export class KitItemComponent implements OnInit, OnChanges {
     private global:GlobalService,
     private sharedService:SharedService,
     private route:Router
-    ) { }
+    ) { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -265,11 +271,9 @@ export class KitItemComponent implements OnInit, OnChanges {
     let paylaod = {
       "itemNumber": e.currentTarget.value,
       "beginItem": "---",
-      "isEqual": false,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "isEqual": false
     }
-    this.Api.SearchItem(paylaod).subscribe((res: any) => {
+    this.iCommonAPI.SearchItem(paylaod).subscribe((res: any) => {
       if (res.data) {
         this.searchList = res.data
         if (this.searchList.length > 0) {
