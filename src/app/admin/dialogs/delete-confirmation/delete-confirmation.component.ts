@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json';  
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-delete-confirmation',
@@ -21,7 +23,10 @@ export class DeleteConfirmationComponent implements OnInit {
   actionMessage = '';
   Message: any;
   public userData;
+  public IconsolidationAPI : IConsolidationApi;
+
   constructor(
+    public consolidationAPI : ConsolidationApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -29,7 +34,7 @@ export class DeleteConfirmationComponent implements OnInit {
     public dialogRef: MatDialogRef<DeleteConfirmationComponent>,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { this.IconsolidationAPI = consolidationAPI; }
 
   ngOnInit(): void {
     this.Message = ''; 

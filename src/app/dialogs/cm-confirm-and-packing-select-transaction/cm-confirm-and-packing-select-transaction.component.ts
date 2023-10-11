@@ -1,10 +1,10 @@
 import { Component, Inject,OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr'; 
-import { AuthService } from 'src/app/init/auth.service';
 import { CmConfirmAndPackingProcessTransactionComponent } from '../cm-confirm-and-packing-process-transaction/cm-confirm-and-packing-process-transaction.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-confirm-and-packing-select-transaction',
@@ -20,20 +20,23 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
 
  displayedColumns: string[] = ['sT_ID','itemNumber', 'lineNumber','completedQuantity',   'transactionQuantity']; 
  dataSourceList:any
- userData:any = {}; 
  confPackTransTable:any;
  contID:any;
  id:any;
- constructor(private Api:ApiFuntions,private authService: AuthService,private global:GlobalService,
-  private toast:ToastrService,private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any,
-  public dialogRef: MatDialogRef<CmConfirmAndPackingSelectTransactionComponent>,) {
-  this.userData = this.authService.userData();
-  this.confPackTransTable = this.data.confPackTransTable;
-  this.orderNumber = this.data.orderNumber;
-  this.contID = this.data.contID;
-  this.id = this.data.id;
-  this.itemNumber = this.data.ItemNumber;
- } 
+ public IconsolidationAPI : IConsolidationApi;
+
+ constructor(
+    public consolidationAPI : ConsolidationApiService,
+    private global:GlobalService,
+    private toast:ToastrService,private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<CmConfirmAndPackingSelectTransactionComponent>,) {
+    this.confPackTransTable = this.data.confPackTransTable;
+    this.orderNumber = this.data.orderNumber;
+    this.contID = this.data.contID;
+    this.id = this.data.id;
+    this.itemNumber = this.data.ItemNumber;
+    this.IconsolidationAPI = consolidationAPI;
+  } 
 
   ngOnInit(): void {
     this.ConfPackProc();
@@ -44,7 +47,7 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
         "orderNumber": this.orderNumber,
         "itemNumber":this.itemNumber 
     };
-    this.Api.ConfPackSelectDT(Obj).subscribe((response:any) => { 
+    this.IconsolidationAPI.ConfPackSelectDT(Obj).subscribe((response:any) => { 
       this.confPackSelectTable = response.data;  
     });
   } 
@@ -70,11 +73,9 @@ openScanItem(ItemNumber:any,id: any) {
       id: id,
       orderNumber: this.orderNumber,
       containerID: this.contID,
-      modal: "",
-      userName: this.userData.userName,
-      wsid: this.userData.wsid
+      modal: ""
     };
-    this.Api.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
+    this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
   
       if (res.data == "Fail") {
         this.toast.error('An error has occurred', 'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});  

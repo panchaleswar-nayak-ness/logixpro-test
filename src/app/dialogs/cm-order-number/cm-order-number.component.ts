@@ -3,7 +3,8 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dial
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service'; 
 import { CmOrderToteConflictComponent } from '../cm-order-tote-conflict/cm-order-tote-conflict.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-order-number',
@@ -23,12 +24,16 @@ export class CmOrderNumberComponent implements OnInit {
   @ViewChild('searchTote') searchTote: ElementRef;
   @ViewChildren('stagLoc') stagLoc: QueryList<HTMLInputElement>;
 
+  public IconsolidationAPI : IConsolidationApi;
+
   constructor(private dialog          : MatDialog,
               public dialogRef        : MatDialogRef<CmOrderNumberComponent>,
               private toast           : ToastrService,
-              private Api: ApiFuntions,
+              public consolidationAPI : ConsolidationApiService,
               private authService     : AuthService,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+                this.IconsolidationAPI = consolidationAPI;
+               }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -56,12 +61,10 @@ export class CmOrderNumberComponent implements OnInit {
     if (event.key == "Enter") {
       let obj: any = {
         type: this.type,
-        selValue: value,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        selValue: value
       };
 
-      this.Api.ConsolidationData(obj).subscribe((res: any) => {
+      this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
         if (typeof res?.data == 'string') {
           switch (res?.data) {
             case "DNE":
@@ -111,12 +114,10 @@ export class CmOrderNumberComponent implements OnInit {
       "orderNumber": this.order.nativeElement.value,
       "toteID": values.toteID,
       "location": values.stagingLocation,
-      "clear": clear,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "clear": clear
     }
 
-    this.Api.StagingLocationsUpdate(obj).subscribe((res: any) => {
+    this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
       if (res.responseMessage == "Fail") {
         this.toast.error("Error Has Occured", "Consolidation", { positionClass: 'toast-bottom-right', timeOut: 2000 });
       } else {
