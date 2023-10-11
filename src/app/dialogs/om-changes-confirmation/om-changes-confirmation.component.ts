@@ -19,7 +19,7 @@ export class OmChangesConfirmationComponent implements OnInit {
 
   orderForm   : FormGroup;
 
-  public orderManagerApi :  IOrderManagerAPIService;
+  public iOrderManagerApi :  IOrderManagerAPIService;
   constructor(private dialog          : MatDialog,
               public dialogRef        : MatDialogRef<OmChangesConfirmationComponent>,
               private toastr           : ToastrService,
@@ -27,7 +27,7 @@ export class OmChangesConfirmationComponent implements OnInit {
               private authService     : AuthService,
               public globalService    : GlobalService,
               private Api : ApiFuntions,
-              public OrderManagerApi  : OrderManagerApiService,
+              public orderManagerApi  : OrderManagerApiService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.orderForm = this.formBuilder.group({
@@ -47,8 +47,8 @@ export class OmChangesConfirmationComponent implements OnInit {
       emergency      : new FormControl({ value: false, disabled : data.emergencyDis }, Validators.compose([])),
       label          : new FormControl({ value: false, disabled : data.labelDis }, Validators.compose([])),
     });
-    
-    this.orderManagerApi = OrderManagerApi;
+    this.iOrderManagerApi = orderManagerApi;
+   
   }
 
   ngOnInit(): void {
@@ -96,7 +96,7 @@ export class OmChangesConfirmationComponent implements OnInit {
         checkLabel: this.orderForm.controls['label'].value,        
       };
   
-      this.orderManagerApi.OrderManagerRecordUpdate(payload).subscribe((res: any) => {
+      this.iOrderManagerApi.OrderManagerRecordUpdate(payload).subscribe((res: any) => {
         if (res.isExecuted) {
           this.dialogRef.close({
             isExecuted: true,

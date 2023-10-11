@@ -48,17 +48,17 @@ export class GlobalService {
     }
   };
   changesConfirmation = false;
-  public orderManagerApi :  IOrderManagerAPIService;
+  public iOrderManagerApi :  IOrderManagerAPIService;
 
   constructor(
     private Api:ApiFuntions,
-    public OrderManagerApi  : OrderManagerApiService,
+    public orderManagerApi  : OrderManagerApiService,
     private toast:ToastrService,
     private dialog: MatDialog, 
     private httpClient : HttpClient,
     private authService:AuthService,
     private sanitizer: DomSanitizer) {
-    this.orderManagerApi = OrderManagerApi;
+    this.iOrderManagerApi = orderManagerApi;
     this.userData=this.authService.userData();
   }
 
@@ -303,7 +303,7 @@ export class GlobalService {
         if(preferencesString){
           return JSON.parse(preferencesString)
         }else{
-          this.orderManagerApi.OrderManagerPreferenceIndex().subscribe((response: any) => {
+          this.iOrderManagerApi.OrderManagerPreferenceIndex().subscribe((response: any) => {
             if (response.isExecuted) {
               localStorage.setItem('OmPreference', JSON.stringify(response.data.preferences[0]));
               const getOm:any = localStorage.getItem('OmPreference');
@@ -314,7 +314,7 @@ export class GlobalService {
       }
 
       updateOmPref(){
-        this.orderManagerApi.OrderManagerPreferenceIndex().subscribe((response: any) => {
+        this.iOrderManagerApi.OrderManagerPreferenceIndex().subscribe((response: any) => {
           if (response.isExecuted) {
             localStorage.setItem('OmPreference', JSON.stringify(response.data.preferences[0]));
        

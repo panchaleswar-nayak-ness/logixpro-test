@@ -16,17 +16,17 @@ export class OmUserFieldDataComponent implements OnInit {
   @ViewChild('user_focus') user_focus: ElementRef;
   userData: any;
   userFieldData: any;
-  public orderManagerApi :  IOrderManagerAPIService; 
+  public iOrderManagerApi :  IOrderManagerAPIService;
 
   constructor(
     private toastr: ToastrService,
     private authService: AuthService,
     private Api: ApiFuntions,
-    public OrderManagerApi  : OrderManagerApiService,
+    public orderManagerApi  : OrderManagerApiService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<OmUserFieldDataComponent>,
   ) {
-    this.orderManagerApi = OrderManagerApi;
+    this.iOrderManagerApi = orderManagerApi;
    }
 
   ngOnInit(): void {
@@ -36,7 +36,7 @@ export class OmUserFieldDataComponent implements OnInit {
 
   getUserFieldData(loader: boolean = false) {
     
-    this.orderManagerApi.UserFieldData().subscribe((res: any) => {
+    this.iOrderManagerApi.UserFieldData().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.userFieldData = res.data[0];
       } else {
@@ -62,7 +62,7 @@ export class OmUserFieldDataComponent implements OnInit {
       userField10: this.userFieldData.userField10,
       wsid: this.userData.wsid
     };
-    this.orderManagerApi.UserFieldDataUpdate(payload).subscribe((res: any) => {
+    this.iOrderManagerApi.UserFieldDataUpdate(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.toastr.success(labels.alert.success, 'Success!', {
           positionClass: 'toast-bottom-right',

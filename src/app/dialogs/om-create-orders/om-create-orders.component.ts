@@ -99,7 +99,7 @@ export class OmCreateOrdersComponent implements OnInit {
   selectedFilterString: string;
   @ViewChild(MatSort) sort1: MatSort;
   @ViewChild('paginator1') paginator1: MatPaginator;
-  public orderManagerApi :  IOrderManagerAPIService;
+  public iOrderManagerApi :  IOrderManagerAPIService;
 
   constructor(
     private dialog: MatDialog,
@@ -108,12 +108,12 @@ export class OmCreateOrdersComponent implements OnInit {
     private router: Router,
     public dialogRef: MatDialogRef<OmCreateOrdersComponent>,
     private Api: ApiFuntions,
-    public OrderManagerApi  : OrderManagerApiService,
+    public orderManagerApi  : OrderManagerApiService,
     private global:GlobalService,
     private filterService: ContextMenuFiltersService,
     private _liveAnnouncer: LiveAnnouncer
   ) { 
-    this.orderManagerApi = OrderManagerApi;
+    this.iOrderManagerApi = orderManagerApi;
   }
 
   ngOnInit(): void {
@@ -214,7 +214,7 @@ export class OmCreateOrdersComponent implements OnInit {
 
   createOrdersDT(loader: boolean = false) {
     if (this.createOrdersDTPayload.orderNumber.trim() != '') {
-      this.orderManagerApi.CreateOrdersDT(this.createOrdersDTPayload).subscribe((res: any) => {
+      this.iOrderManagerApi.CreateOrdersDT(this.createOrdersDTPayload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.tableData = new MatTableDataSource(res.data);  
           this.tableData.paginator = this.paginator1;
@@ -261,7 +261,7 @@ export class OmCreateOrdersComponent implements OnInit {
           "page": "Create Orders",
           "wsid": this.userData.wsid
         };
-        this.orderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
+        this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.toastr.success("Order Released Successfully!", 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -318,7 +318,7 @@ export class OmCreateOrdersComponent implements OnInit {
             "user": this.userData.userName,
             "wsid": this.userData.wsid
           };
-          this.orderManagerApi.OTPendDelete(payload).subscribe((res: any) => {
+          this.iOrderManagerApi.OTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
               this.toastr.success(labels.alert.delete, 'Success!', {
                 positionClass: 'toast-bottom-right',
@@ -365,7 +365,7 @@ export class OmCreateOrdersComponent implements OnInit {
         "userName": this.userData.userName,
         "wsid": this.userData.wsid
       }
-      this.orderManagerApi.CreateOrderTypeahead(payload).subscribe((res: any) => {
+      this.iOrderManagerApi.CreateOrderTypeahead(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.orderNumberSearchList = res.data.sort();
         }
