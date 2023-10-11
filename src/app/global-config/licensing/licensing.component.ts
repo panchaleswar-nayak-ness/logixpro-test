@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { LicensingInvalidComponent } from 'src/app/admin/dialogs/licensing-invalid/licensing-invalid.component';
 import { Subject, takeUntil } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 export interface PeriodicElement {
   position: string;
@@ -63,13 +65,16 @@ export class LicensingComponent implements OnInit {
     this.sideBarOpen = !this.sideBarOpen;
   }
 
-
+  public  iGlobalConfigApi: IGlobalConfigApi
   constructor(
     private Api: ApiFuntions,
     private sharedService: SharedService,
     private toastr: ToastrService,
+    public globalConfigApi: GlobalConfigApiService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
   ngOnInit(): void {
     let appData = this.sharedService.getApp();
@@ -82,7 +87,7 @@ export class LicensingComponent implements OnInit {
   }
   async getAppLicense() {
     // get can access
-    this.Api.AppLicense().subscribe(
+    this.iGlobalConfigApi.AppLicense().subscribe(
       {next: (res: any) => {
         if (res?.data) {
           this.licAppData = res.data;
@@ -120,7 +125,7 @@ export class LicensingComponent implements OnInit {
       DisplayName:item.displayname,
       AppName: item.appname
     };
-    this.Api
+    this.iGlobalConfigApi
       .ValidateLicenseSave(payload)
       .subscribe(
         {next: (res: any) => {

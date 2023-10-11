@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json';  
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 @Component({
   selector: 'app-delete-confirmation',
@@ -21,15 +23,19 @@ export class DeleteConfirmationComponent implements OnInit {
   actionMessage = '';
   Message: any;
   public userData;
+  public  iGlobalConfigApi: IGlobalConfigApi
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
+    public globalConfigApi: GlobalConfigApiService,
     private Api: ApiFuntions, 
     public dialogRef: MatDialogRef<DeleteConfirmationComponent>,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
   ngOnInit(): void {
     this.Message = ''; 
@@ -124,7 +130,7 @@ export class DeleteConfirmationComponent implements OnInit {
         let payload = {
           ConnectionName: this.data.connectionName,
         };
-        this.Api
+        this.iGlobalConfigApi
           .ConnectionDelete(payload)
           .subscribe(
             (res: any) => {
@@ -356,7 +362,7 @@ export class DeleteConfirmationComponent implements OnInit {
           WSID: this.data.wsid,
         };
 
-        this.Api
+        this.iGlobalConfigApi
           .WorkStationDelete(payload)
           .subscribe(
             (res: any) => {

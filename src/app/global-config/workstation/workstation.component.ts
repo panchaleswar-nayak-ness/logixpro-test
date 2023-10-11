@@ -9,6 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 export interface PeriodicElement {
   position: string;
@@ -61,13 +63,17 @@ export class WorkstationComponent implements OnInit {
   
   /** The label for the checkbox on the passed row */
   
-
+  public  iGlobalConfigApi: IGlobalConfigApi
+  
   constructor(
     private sharedService: SharedService,
     private api: ApiFuntions,
     private toastr: ToastrService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    public globalConfigApi: GlobalConfigApiService
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
   ngOnInit(): void {
     let sharedData = this.sharedService.getData();
@@ -107,7 +113,7 @@ export class WorkstationComponent implements OnInit {
       DisplayName: 'Consolidation Manager',
       AppName: 'Consolidation Manager',
     };
-    this.api.GlobalMenu(payload).subscribe(
+    this.iGlobalConfigApi.GlobalMenu(payload).subscribe(
       {next: (res: any) => {
         if (res?.data) {
           this.sharedService.setData(res.data);
@@ -125,7 +131,7 @@ export class WorkstationComponent implements OnInit {
     );
   }
   async getAppLicense() {
-    this.api.AppLicense().subscribe(
+    this.iGlobalConfigApi.AppLicense().subscribe(
       {next: (res: any) => {
         if(res?.data) {
           this.licAppNames = res.data;
@@ -160,7 +166,7 @@ export class WorkstationComponent implements OnInit {
     let payload = {
       workstationid: wsid,
     };
-    this.api.getWorkstationapp(payload)
+    this.iGlobalConfigApi.getWorkstationapp(payload)
       .subscribe(
         {next: (res: any) => {
           if (res?.data) {
@@ -181,7 +187,7 @@ export class WorkstationComponent implements OnInit {
     let payload = {
       workstationid: wsid,
     };
-    this.api.workstationdefaultapp(payload)
+    this.iGlobalConfigApi.workstationdefaultapp(payload)
       .subscribe(
         {next: (res: any) => {
           this.defaultAccessApp =  res?.data ? res.data : '';
@@ -232,7 +238,7 @@ export class WorkstationComponent implements OnInit {
   }
 
   defaultAppAdd(payload) {
-    this.api.WorkStationDefaultAppAddDefault(payload)
+    this.iGlobalConfigApi.WorkStationDefaultAppAddDefault(payload)
       .subscribe(
         {next: (res: any) => {
 
@@ -246,7 +252,7 @@ export class WorkstationComponent implements OnInit {
   }
 
   removeCanAccess(payload) {
-    this.api.WorkStationAppDelete(payload)
+    this.iGlobalConfigApi.WorkStationAppDelete(payload)
       .subscribe(
         {next: (res: any) => {
           ;
@@ -299,7 +305,7 @@ export class WorkstationComponent implements OnInit {
     let payload = {
       WSID: this.wsid,
     };
-    this.api.WorkStationDelete(payload).subscribe(
+    this.iGlobalConfigApi.WorkStationDelete(payload).subscribe(
         {next: (res: any) => {
           if (res.isExecuted) {
             this.toastr.success(labels.alert.success, 'Success!', {

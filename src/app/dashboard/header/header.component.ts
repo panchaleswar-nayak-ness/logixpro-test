@@ -11,6 +11,9 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatDialog } from '@angular/material/dialog';
 import { DPrinterSetupComponent } from 'src/app/dialogs/d-printer-setup/d-printer-setup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+
 
 @Component({
   selector: 'app-header',
@@ -27,18 +30,21 @@ export class HeaderComponent implements OnInit {
   configUser:any;
 isConfigUser
 statusTab;
+public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private dialog: MatDialog,
     private router: Router,
     public spinnerService: SpinnerService, 
     private authService: AuthService,
     private api:ApiFuntions,
+    public globalConfigApi: GlobalConfigApiService,
     private toastr: ToastrService,
     private sharedService: SharedService,
     private titleService: Title,
     private breakpointObserver: BreakpointObserver,
-    private global:GlobalService,
+    private global:GlobalService
     ) {
+      this.iGlobalConfigApi = globalConfigApi;
       let width=0;
       this.breakpointSubscription = this.breakpointObserver.observe([Breakpoints.Small,Breakpoints.Large])
       .subscribe((state: BreakpointState) => {
@@ -158,7 +164,7 @@ statusTab;
   }
 
   GetWorkStatPrinters(){
-    this.api.GetWorkStatPrinters().subscribe((res:any)=>{ 
+    this.iGlobalConfigApi.GetWorkStatPrinters().subscribe((res:any)=>{ 
       localStorage.setItem("SelectedReportPrinter",res.data.reportPrinter);
        localStorage.setItem("SelectedLabelPrinter",res.data.labelPrinter);
     })
@@ -214,7 +220,7 @@ statusTab;
     }
     if(this.authService.isConfigUser()){
       localStorage.clear();
-      this.api.configLogout(paylaod).subscribe((res:any) => {
+      this.iGlobalConfigApi.configLogout(paylaod).subscribe((res:any) => {
         if (res.isExecuted) 
         {
           window.location.href = "/#/globalconfig"; 

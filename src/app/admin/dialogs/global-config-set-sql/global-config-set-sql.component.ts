@@ -8,6 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 import labels from '../../../labels/labels.json';
 import { SqlAuthConfirmationComponent } from '../sql-auth-confirmation/sql-auth-confirmation.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+
 
 @Component({
   selector: 'app-global-config-set-sql',
@@ -22,14 +25,16 @@ export class GlobalConfigSetSqlComponent implements OnInit {
   message:string='';
   connectionName:any;
   public toggle_password = true;
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<any>,
     private toastr: ToastrService,
-    private Api:ApiFuntions
+    private Api:ApiFuntions,
+    public globalConfigApi: GlobalConfigApiService
   ) {
-
+    this.iGlobalConfigApi = globalConfigApi;
     this.userName=data.userName
     this.password=data.password;
     this.connectionName=data.ConnectionName;
@@ -66,7 +71,7 @@ export class GlobalConfigSetSqlComponent implements OnInit {
           UserName: this.userName,
           Password: this.password,
         };
-        this.Api
+        this.iGlobalConfigApi
           .ConnectionUserPasswordUpdate(payload)
           .subscribe(
             (res: any) => {

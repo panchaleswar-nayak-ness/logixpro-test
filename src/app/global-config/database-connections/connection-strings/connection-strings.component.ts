@@ -5,6 +5,9 @@ import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confir
 import { IConnectionString } from 'src/app/interface/transaction'; 
 import { GlobalConfigSetSqlComponent } from 'src/app/admin/dialogs/global-config-set-sql/global-config-set-sql.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+
 
 @Component({
   selector: 'app-connection-strings',
@@ -17,11 +20,15 @@ export class ConnectionStringsComponent {
   isAddedNewRow = false;
   isDuplicateAllow=false;
   duplicateIndex;
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private Api: ApiFuntions,
     private toastr: ToastrService,
     private dialog: MatDialog,
-  ) {}
+    public globalConfigApi: GlobalConfigApiService
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
  
   ngOnChanges(changes: SimpleChanges) {
@@ -98,7 +105,7 @@ export class ConnectionStringsComponent {
       DatabaseName: item.databaseName,
       ServerName: item.serverName,
     };
-    this.Api
+    this.iGlobalConfigApi
       .ConnectionSave(payload)
       .subscribe(
         (res: any) => {
@@ -155,7 +162,7 @@ export class ConnectionStringsComponent {
     let payload = {
       ConnectionName: item.connectionName,
     };
-    this.Api
+    this.iGlobalConfigApi
       .ConnectionUserPassword(payload)
       .subscribe(
         (res: any) => {

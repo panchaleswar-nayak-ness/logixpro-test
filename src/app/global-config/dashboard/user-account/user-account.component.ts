@@ -6,7 +6,8 @@ import { Router  } from '@angular/router';
 import { FormControl, FormGroup, Validators, } from '@angular/forms';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 @Component({
   selector: 'app-user-account',
@@ -14,13 +15,17 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
   styleUrls: [],
 })
 export class UserAccountComponent implements OnInit {
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private sharedService: SharedService,
     private Api:ApiFuntions,
     private toastr: ToastrService,
     private router: Router,
+    public globalConfigApi: GlobalConfigApiService,
     private authService:AuthService
-  ) {}
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
   username: any;
   password: any;
@@ -49,7 +54,7 @@ export class UserAccountComponent implements OnInit {
       DisplayName: 'Consolidation Manager',
       AppName: 'Consolidation Manager',
     };
-    this.Api.Menu(payload).subscribe(
+    this.iGlobalConfigApi.Menu(payload).subscribe(
       {next: (res: any) => {
         if (res?.data ) {
           this.sharedService.setData(res.data);
@@ -72,7 +77,7 @@ export class UserAccountComponent implements OnInit {
       userName:this.authService.userData().userName,
       password: this.password,
     };
-    this.Api
+    this.iGlobalConfigApi
       .ChangeGlobalAccount(payload)
       .subscribe(
         {next: (res: any) => {
