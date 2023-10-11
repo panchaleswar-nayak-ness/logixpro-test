@@ -12,6 +12,8 @@ import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-delete-confirmation',
@@ -24,7 +26,10 @@ export class DeleteConfirmationComponent implements OnInit {
   Message: any;
   public iAdminApiService: IAdminApiService;
   public userData;
+  public IconsolidationAPI : IConsolidationApi;
+
   constructor(
+    public consolidationAPI : ConsolidationApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -33,9 +38,7 @@ export class DeleteConfirmationComponent implements OnInit {
     public dialogRef: MatDialogRef<DeleteConfirmationComponent>,
     private authService: AuthService,
     private router: Router
-  ) {
-    this.iAdminApiService = adminApiService;
-  }
+  ) { this.IconsolidationAPI = consolidationAPI; this.iAdminApiService = adminApiService; }
 
   ngOnInit(): void {
     this.Message = ''; 

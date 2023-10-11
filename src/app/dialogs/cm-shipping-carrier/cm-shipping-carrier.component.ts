@@ -9,6 +9,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-shipping-carrier',
@@ -24,15 +26,19 @@ export class CmShippingCarrierComponent implements OnInit {
   disableAddField: boolean = false;
   disableEnable = [{ index: -1, value: false }];
   onDestroy$: Subject<boolean> = new Subject();
+  public IconsolidationAPI : IConsolidationApi;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private authService: AuthService,
-    private Api: ApiFuntions,
+    // private Api: ApiFuntions,
+    public consolidationAPI : ConsolidationApiService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>,
     private dialog: MatDialog,
     private renderer: Renderer2
-  ) {}
+  ) {
+    this.IconsolidationAPI = consolidationAPI;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -40,7 +46,7 @@ export class CmShippingCarrierComponent implements OnInit {
   }
 
   getCarrier() { 
-    this.Api
+    this.consolidationAPI
       .CarrierSelect()
       .subscribe((res: any) => {
         if (res.isExecuted) {
@@ -85,20 +91,16 @@ export class CmShippingCarrierComponent implements OnInit {
     if (item.oldCarrier) {
       paylaod = {
         carrier: carrer,
-        oldCarrier: item.carrier,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        oldCarrier: item.carrier
       };
     } else {
       paylaod = {
         carrier: carrer,
-        oldCarrier: '',
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        oldCarrier: ''
       };
     }
 
-    this.Api
+    this.IconsolidationAPI
       .CarrierSave(paylaod)
       .subscribe((res: any) => {
         if (res.isExecuted) {

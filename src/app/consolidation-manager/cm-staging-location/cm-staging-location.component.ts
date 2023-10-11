@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/init/auth.service';
 import { CmOrderToteConflictComponent } from 'src/app/dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
 import { StagingLocationOrderComponent } from 'src/app/dialogs/staging-location-order/staging-location-order.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 export interface PeriodicElement {
   name: string;
@@ -39,11 +41,15 @@ export class CmStagingLocationComponent {
 
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
+  public IconsolidationAPI : IConsolidationApi;
+
   constructor(private toast: ToastrService,
-    private Api: ApiFuntions,
+    // private Api: ApiFuntions,
+    public consolidationAPI : ConsolidationApiService,
     private authService: AuthService,
     private dialog: MatDialog,
   ) {
+    this.IconsolidationAPI = consolidationAPI;
     this.userData = this.authService.userData();
   }
 
@@ -72,12 +78,10 @@ export class CmStagingLocationComponent {
       this.IsLoading = true;
       let obj: any = {
         type: this.type,
-        selValue: this.OrderNumberTote,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        selValue: this.OrderNumberTote
       };
       let inputVal = this.OrderNumberTote;
-      this.Api.ConsolidationData(obj).subscribe((res: any) => {
+      this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
         if (typeof res?.data == 'string') { 
           switch (res?.data) {
             case "DNE":
@@ -124,11 +128,9 @@ export class CmStagingLocationComponent {
       "orderNumber": this.OrderNumberTote,
       "toteID": toteID,
       "location": location,
-      "clear": clear,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "clear": clear
     }
-    this.Api.StagingLocationsUpdate(obj).subscribe((res: any) => {
+    this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
       if (res.responseMessage == "Fail") {
         this.toast.error("Error Has Occured", "Consolidation", { positionClass: 'toast-bottom-right', timeOut: 2000 });
       } else if (res.responseMessage == 'INVALID') {

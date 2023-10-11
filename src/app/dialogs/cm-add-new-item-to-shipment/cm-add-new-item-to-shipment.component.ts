@@ -3,6 +3,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-add-new-item-to-shipment',
@@ -15,11 +17,18 @@ export class CmAddNewItemToShipmentComponent{
   containerID:any;
   userData:any = {};
 
-  constructor(private Api:ApiFuntions,private authService: AuthService,private toast:ToastrService,
+  public IconsolidationAPI : IConsolidationApi;
+
+  constructor(
+    public consolidationAPI : ConsolidationApiService,
+    // private Api:ApiFuntions,
+    private authService: AuthService,
+    private toast:ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CmAddNewItemToShipmentComponent>) {
       this.OrderNumber = this.data.orderNumber;
       this.userData = this.authService.userData(); 
+      this.IconsolidationAPI = consolidationAPI;
     }
   ngAfterViewInit(): void {
     this.cont_id.nativeElement.focus();
@@ -27,10 +36,9 @@ export class CmAddNewItemToShipmentComponent{
   async ShippingItemAdd(){
     let obj:any = {
       orderNumber: this.OrderNumber,
-      containerID: this.containerID,
-      userName: this.userData.userName
+      containerID: this.containerID
     }
-    this.Api.ShippingItemAdd(obj).subscribe((res:any) => {
+    this.IconsolidationAPI.ShippingItemAdd(obj).subscribe((res:any) => {
       if (res?.isExecuted) {
         this.dialogRef.close(true);
       }

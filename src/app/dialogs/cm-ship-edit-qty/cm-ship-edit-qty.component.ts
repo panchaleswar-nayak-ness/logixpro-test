@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { GlobalService } from 'src/app/common/services/global.service'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-ship-edit-qty',
@@ -22,13 +24,17 @@ export class CmShipEditQtyComponent implements OnInit {
 
   @ViewChild('adjReason') adjReason : ElementRef;
 
-  constructor(private dialog: MatDialog,
-              public dialogRef: MatDialogRef<CmShipEditQtyComponent>,
-              private toast: ToastrService,
-              private Api: ApiFuntions,
-              private authService: AuthService,
-              public globalService: GlobalService,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+  public IconsolidationAPI : IConsolidationApi;
+
+  constructor(
+    public consolidationAPI : ConsolidationApiService,
+    private dialog: MatDialog,
+    public dialogRef: MatDialogRef<CmShipEditQtyComponent>,
+    private toast: ToastrService,
+    // private Api: ApiFuntions,
+    private authService: AuthService,
+    public globalService: GlobalService,
+    @Inject(MAT_DIALOG_DATA) public data: any) { this.IconsolidationAPI = consolidationAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -65,10 +71,9 @@ export class CmShipEditQtyComponent implements OnInit {
       let payLoad = {
         stid : this.data.order.sT_ID,
         shipQTY: this.adjustShipQty,
-        reason: this.adjustReason,
-        username: this.userData.userName,
+        reason: this.adjustReason
       }
-      this.Api.ShipQTYShipTransUpdate(payLoad).subscribe((res:any)=>{
+      this.IconsolidationAPI.ShipQTYShipTransUpdate(payLoad).subscribe((res:any)=>{
         if (res.isExecuted) {
 
           let Exists = false;

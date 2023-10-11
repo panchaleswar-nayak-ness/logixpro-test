@@ -6,6 +6,8 @@ import { CmShipSplitLineComponent } from '../cm-ship-split-line/cm-ship-split-li
 import { CmShipEditQtyComponent } from '../cm-ship-edit-qty/cm-ship-edit-qty.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-confirm-and-packing-process-transaction',
@@ -23,7 +25,13 @@ contID: any;
 id:  any;
 userData:any = {};
 IsSelectModal: boolean = false;
-constructor(private dialog: MatDialog,private Api:ApiFuntions,private authService: AuthService,private toast:ToastrService,private global:GlobalService,
+public IconsolidationAPI : IConsolidationApi;
+constructor(
+  private dialog: MatDialog,
+  // private Api:ApiFuntions,
+  public consolidationAPI : ConsolidationApiService,
+  private authService: AuthService,
+  private toast:ToastrService,private global:GlobalService,
   @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<CmConfirmAndPackingProcessTransactionComponent>,) {
   this.userData = this.authService.userData();
   this.confPackTransTable = this.data.confPackTransTable;
@@ -31,6 +39,7 @@ constructor(private dialog: MatDialog,private Api:ApiFuntions,private authServic
   this.contID = this.data.contID;
   this.id = this.data.id;
   this.itemNumber = this.data.ItemNumber;
+  this.IconsolidationAPI = consolidationAPI;
  }
 
 ngOnInit(): void {
@@ -40,12 +49,10 @@ ngOnInit(): void {
 getPreferences() {
   let payload = {
     type: '',
-    value: '',
-    username: this.userData.userName,
-    wsid: this.userData.wsid,
+    value: ''
   };
 
-  this.Api
+  this.IconsolidationAPI
     .ConsoleDataSB(payload)
     .subscribe((res) => {
       if (res.isExecuted) {
@@ -56,7 +63,7 @@ getPreferences() {
     });
 }
 async ConfPackProc(){
-  this.Api.ConfPackProcModal({id:this.id}).subscribe((response:any) => { 
+  this.IconsolidationAPI.ConfPackProcModal({id:this.id}).subscribe((response:any) => { 
     this.confPackProcTable = response.data;  
   });
 } 
@@ -114,11 +121,9 @@ openShipEditQuantity() {
       id: id,
       orderNumber: this.orderNumber,
       containerID: this.contID,
-      modal: "From_Modal",
-      userName: this.userData.userName,
-      wsid: this.userData.wsid
+      modal: "From_Modal"
     };
-   this.Api.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
+   this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
     if (res.data == "Fail") {
       this.toast.error(  "An error has occurred",'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});
   } else {

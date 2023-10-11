@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { GlobalService } from 'src/app/common/services/global.service'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-ship-split-line',
@@ -19,13 +21,17 @@ export class CmShipSplitLineComponent implements OnInit {
 
   @ViewChild('ssQty') ssQty : ElementRef;
 
-  constructor(private dialog: MatDialog,
-              public dialogRef: MatDialogRef<CmShipSplitLineComponent>,
-              private toast: ToastrService,
-              private Api: ApiFuntions,
-              private authService: AuthService,
-              public globalService: GlobalService,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+  public IconsolidationAPI : IConsolidationApi;
+
+  constructor(
+    public consolidationAPI : ConsolidationApiService,
+    private dialog: MatDialog,
+    public dialogRef: MatDialogRef<CmShipSplitLineComponent>,
+    private toast: ToastrService,
+    // private Api: ApiFuntions,
+    private authService: AuthService,
+    public globalService: GlobalService,
+    @Inject(MAT_DIALOG_DATA) public data: any) { this.IconsolidationAPI = consolidationAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -53,12 +59,10 @@ export class CmShipSplitLineComponent implements OnInit {
       let payLoad = {
         id : this.data.order.sT_ID,
         quantity : this.splitScreenQty,
-        page: this.data.page,
-        username: this.userData.userName,
-        wsid: this.userData.wsid
+        page: this.data.page
       };
 
-      this.Api.SplitLineTrans(payLoad).subscribe(
+      this.IconsolidationAPI.SplitLineTrans(payLoad).subscribe(
         (res: any) => {
           if (res.isExecuted) {            
             let orderQty = parseInt(this.data.order.transactionQuantity) - parseInt(this.splitScreenQty);

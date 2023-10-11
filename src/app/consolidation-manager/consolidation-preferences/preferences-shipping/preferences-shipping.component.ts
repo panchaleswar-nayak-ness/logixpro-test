@@ -13,6 +13,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-preferences-shipping',
@@ -29,8 +31,12 @@ export class PreferencesShippingComponent implements OnInit {
   @Input() shippingData: any;
   @Output() shippingEvnt = new EventEmitter<void>();
   userData: any;
+
+  public IconsolidationAPI : IConsolidationApi;
+
   constructor(
-    private Api: ApiFuntions,
+    public consolidationAPI : ConsolidationApiService,
+    // private Api: ApiFuntions,
     private toastr: ToastrService,
     private authService: AuthService,
     public dialog: MatDialog
@@ -150,11 +156,9 @@ export class PreferencesShippingComponent implements OnInit {
       width: this.shippingForm.controls['width'].value,
       height: this.shippingForm.controls['height'].value,
       cube: this.shippingForm.controls['cube'].value,
-      shipping: this.shippingForm.controls['allowShip']?.value,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      shipping: this.shippingForm.controls['allowShip']?.value
     };
-    this.Api
+    this.IconsolidationAPI
       .ConsolidationPreferenceShipUpdate(payload)
       .subscribe((response: any) => {
         this.shippingEvnt.emit();

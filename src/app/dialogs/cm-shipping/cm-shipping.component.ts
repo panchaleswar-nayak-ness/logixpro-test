@@ -7,6 +7,8 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 export interface PeriodicElement {
   name: string;
@@ -38,14 +40,18 @@ export class CmShippingComponent implements OnInit {
   carriers: any[] = [];
   shippingComp: any = false;
   shippingPreferences: any = {};
-  constructor(private Api: ApiFuntions, private authService: AuthService, private toast: ToastrService, private dialog: MatDialog,
+  public IconsolidationAPI : IConsolidationApi;
+  constructor(
+    public consolidationAPI : ConsolidationApiService,
+    // private Api: ApiFuntions, 
+    private authService: AuthService, private toast: ToastrService, private dialog: MatDialog,
     private global:GlobalService,
     private route: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CmShippingComponent>,) {
     this.orderNumber = this.data.orderNumber;
     this.userData = this.authService.userData();
-   
+    this.IconsolidationAPI = consolidationAPI;
   }
 
   ngOnInit(): void { 
@@ -62,12 +68,10 @@ export class CmShippingComponent implements OnInit {
   async ShippingIndex() {  
     if (this.orderNumber != "") {
       let obj: any = {
-        orderNumber: this.orderNumber,
-        userName: this.userData.userName,
-        wsid: this.userData.wsid
+        orderNumber: this.orderNumber
       }
       this.IsLoading = true;
-      this.Api.ShippingIndex(obj).subscribe((res: any) => {
+      this.IconsolidationAPI.ShippingIndex(obj).subscribe((res: any) => {
         if (res?.isExecuted) {
           this.shippingData = res.data.shippingData;
           this.carriers = res.data.carriers;
@@ -106,11 +110,9 @@ export class CmShippingComponent implements OnInit {
       orderNumber: this.orderNumber,
       contId: element.containerID,
       carrier: element.carrier,
-      trackingNum: element.trackingNum,
-      user: this.userData.userName,
-      wsid: this.userData.wsid
+      trackingNum: element.trackingNum
     }
-    this.Api.ShipmentItemDelete(obj).subscribe((res: any) => {
+    this.IconsolidationAPI.ShipmentItemDelete(obj).subscribe((res: any) => {
       if (res?.isExecuted) {
         this.shippingData = this.shippingData.slice(0,i);
       }
@@ -130,7 +132,7 @@ export class CmShippingComponent implements OnInit {
       "height": element.height ? element.height : 0,
       "cube": element.cube
     }
-    this.Api.ShipmentItemUpdate(obj).subscribe((res: any) => {
+    this.IconsolidationAPI.ShipmentItemUpdate(obj).subscribe((res: any) => {
     });
   }
   async ShippingCompShip() {
@@ -149,7 +151,7 @@ export class CmShippingComponent implements OnInit {
       let obj: any = {
         orderNumber: this.orderNumber
       }
-      this.Api.SelCountOfOpenTransactionsTemp(obj).subscribe((res: any) => {
+      this.IconsolidationAPI.SelCountOfOpenTransactionsTemp(obj).subscribe((res: any) => {
         if (res) {
           if (res.data == -1) {
             this.toast.error("An error has occurred", "Error", { positionClass: 'toast-bottom-right', timeOut: 2000 });
@@ -183,11 +185,9 @@ export class CmShippingComponent implements OnInit {
   async completeShipment() {
 
     let obj: any = {
-      orderNumber: this.orderNumber,
-      userName: this.userData.userName,
-      wsid: this.userData.wsid
+      orderNumber: this.orderNumber
     }
-    this.Api.CompleteShipment(obj).subscribe((res: any) => {
+    this.IconsolidationAPI.CompleteShipment(obj).subscribe((res: any) => {
       if (res?.isExecuted) {
         this.toast.success(`Order Number: ${this.orderNumber} is marked as Shipping Complete`, "Success", { positionClass: 'toast-bottom-right', timeOut: 2000 });
       } else {
