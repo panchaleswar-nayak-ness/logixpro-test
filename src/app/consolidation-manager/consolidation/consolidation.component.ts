@@ -2,7 +2,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import { AuthService } from '../../../app/init/auth.service';
 import { CmConfirmAndPackingSelectTransactionComponent } from 'src/app/dialogs/cm-confirm-and-packing-select-transaction/cm-confirm-and-packing-select-transaction.component';
 import { CmConfirmAndPackingComponent } from 'src/app/dialogs/cm-confirm-and-packing/cm-confirm-and-packing.component';
@@ -17,11 +16,12 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CmOrderToteConflictComponent } from 'src/app/dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-consolidation',
@@ -91,14 +91,17 @@ export class ConsolidationComponent implements OnInit {
     { key: '9', value: 'User Field 1' },
   ];
 
+  public IconsolidationAPI : IConsolidationApi;
+
   constructor(private dialog: MatDialog,
     private toastr: ToastrService,
-    private router: Router,
-    private Api: ApiFuntions,
+    public consolidationAPI : ConsolidationApiService,
     private global:GlobalService,
     public authService: AuthService,
     private currentTabDataService: CurrentTabDataService,
-    private _liveAnnouncer: LiveAnnouncer,) { }
+    private _liveAnnouncer: LiveAnnouncer) {
+      this.IconsolidationAPI = consolidationAPI;
+     }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -196,12 +199,10 @@ export class ConsolidationComponent implements OnInit {
 
   ConsolidationIndex() {
     let payload = {
-      "username": this.userData.username,
-      "wsid": this.userData.wsid,
       "orderNumber": this.TypeValue
     }
 
-    this.Api.ConsolidationIndex(payload).subscribe((res: any) => {
+    this.IconsolidationAPI.ConsolidationIndex(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.consolidationIndex = res.data;
         this.startSelectFilterLabel = this.consolidationIndex.cmPreferences.defaultLookupType;
@@ -235,12 +236,10 @@ export class ConsolidationComponent implements OnInit {
     let curValue = TypeValue;
     let payload = {
       "type": this.type,
-      "selValue": curValue,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "selValue": curValue
     }
 
-    this.Api.ConsolidationData(payload).subscribe((res: any) => {
+    this.IconsolidationAPI.ConsolidationData(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         if ((typeof res.data == 'string')) {
           switch (res.data) {
@@ -297,12 +296,10 @@ export class ConsolidationComponent implements OnInit {
           this.stageTable.paginator = this.paginator3;
 
           let payload = {
-            "orderNumber": curValue,
-            "username": this.userData.username,
-            "wsid": this.userData.wsid
+            "orderNumber": curValue
           }
 
-          this.Api.ShippingButtSet(payload).subscribe((res: any) => {
+          this.IconsolidationAPI.ShippingButtSet(payload).subscribe((res: any) => {
             if (res.data == 1) {
               this.enableConButts()
               this.shippingbtb = false;
@@ -343,11 +340,8 @@ export class ConsolidationComponent implements OnInit {
     let payload = {
       "iDs":
         IDS
-      ,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
     }
-    this.Api.VerifyAllItemPost(payload).subscribe((res: any) => {
+    this.IconsolidationAPI.VerifyAllItemPost(payload).subscribe((res: any) => {
       if (!res.isExecuted) {
         this.toastr.error(res.responseMessage, 'Error!', {
           positionClass: 'toast-bottom-right',
@@ -391,11 +385,9 @@ export class ConsolidationComponent implements OnInit {
     }
     )
     let payload = {
-      "iDs": IDS,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "iDs": IDS
     }
-    this.Api.UnVerifyAll(payload).subscribe((res: any) => {
+    this.IconsolidationAPI.UnVerifyAll(payload).subscribe((res: any) => {
 
       if (!res.isExecuted) {
         this.toastr.error(res.responseMessage, 'Error!', {
@@ -440,12 +432,10 @@ export class ConsolidationComponent implements OnInit {
     }
     else {
       let payload = {
-        "id": id,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid
+        "id": id
       }
 
-      this.Api.VerifyItemPost(payload).subscribe((res: any) => {
+      this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
         if (res.isExecuted) {
           if (Index != undefined) {
             let data = this.tableData_2.data;
@@ -493,11 +483,9 @@ export class ConsolidationComponent implements OnInit {
     }
     else {
       let payload = {
-        "id": id,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid
+        "id": id
       }
-      this.Api.DeleteVerified(payload).subscribe((res: any) => {
+      this.IconsolidationAPI.DeleteVerified(payload).subscribe((res: any) => {
         if (res.isExecuted) {
           let data2 = this.tableData_1.data;
           data2.push({ ...this.tableData_2.data[index] });
@@ -667,12 +655,10 @@ export class ConsolidationComponent implements OnInit {
     let payload = {
       "column": this.startSelectFilter,
       "value": this.filterValue ? this.filterValue : '',
-      "orderNumber": this.TypeValue,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "orderNumber": this.TypeValue
     }
 
-    this.Api.ConsoleItemsTypeAhead(payload).pipe(
+    this.IconsolidationAPI.ConsoleItemsTypeAhead(payload).pipe(
 
       catchError((error) => {
 
@@ -879,7 +865,7 @@ export class ConsolidationComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result === 'Yes') {
-          this.Api.ShowCMPackPrintModal({ orderNumber: this.TypeValue }).subscribe((res: any) => {
+          this.IconsolidationAPI.ShowCMPackPrintModal({ orderNumber: this.TypeValue }).subscribe((res: any) => {
             if (res.isExecuted && res.data == "all") {
               if(print){
                 this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.TypeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
@@ -897,7 +883,7 @@ export class ConsolidationComponent implements OnInit {
       });
     }
     else {
-      this.Api.ShowCMPackPrintModal({ orderNumber: this.TypeValue }).subscribe((res: any) => {
+      this.IconsolidationAPI.ShowCMPackPrintModal({ orderNumber: this.TypeValue }).subscribe((res: any) => {
         if (res.isExecuted && res.data == "all") {
           if(print){
             this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.TypeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)

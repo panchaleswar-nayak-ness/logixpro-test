@@ -8,6 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-hold-reason',
@@ -20,6 +22,7 @@ export class HoldReasonComponent implements OnInit {
   payload;
   userData;
   reason;
+  public iAdminApiService: IAdminApiService;
   reasonTextForm = new FormGroup({
     reason: new FormControl('' ,[Validators.pattern(/\s/), Validators.required])
   
@@ -27,11 +30,15 @@ export class HoldReasonComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<HoldReasonComponent>,
     private authService: AuthService,
     private Api: ApiFuntions,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -55,7 +62,7 @@ export class HoldReasonComponent implements OnInit {
       UserName: this.data.reel,
     };
     
-    this.Api
+    this.iAdminApiService
       .DeallocateTransactions(this.payload)
       .subscribe((res: any) => {
         if (res.isExecuted) {

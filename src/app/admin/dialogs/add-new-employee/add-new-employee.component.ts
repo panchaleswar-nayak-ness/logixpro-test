@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { CustomValidatorService } from '../../../../app/init/custom-validator.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 export interface DialogData {
   animal: 'panda' | 'unicorn' | 'lion';
@@ -46,18 +48,21 @@ export class AddNewEmployeeComponent implements OnInit {
   OldPassword:any;
   IsEdit:any=false;
   @ViewChild('focusFeild') focusFeild: ElementRef;
-
+  public iAdminApiService: IAdminApiService;
    validatorsArray:any = []
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
+    private adminApiService: AdminApiService,
     private employeeService: ApiFuntions,
     private router: Router,
     private fb: FormBuilder,
     private cusValidator: CustomValidatorService,
     public dialogRef: MatDialogRef<any>
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void { 
     this.empData = this.data?.emp_data;
@@ -132,16 +137,16 @@ ChangePassword(data){
         form.value.wsid = "TESTWID"; 
         form.value.username = this.data?.emp_data?.username ? this.data.emp_data.username : this.data.emp_data.Username;
         if(this.groupChanged){
-          let requpdateAccessGroup = await this.employeeService.updateAccessGroup({"group": this.empForm.value.groupName,"Username" : this.username}).toPromise();
+          let requpdateAccessGroup = await this.iAdminApiService.updateAccessGroup({"group": this.empForm.value.groupName,"Username" : this.username}).toPromise();
           if(requpdateAccessGroup.isExecuted){
-            let reqgetAdminEmployeeDetails = await this.employeeService.getAdminEmployeeDetails({"user": this.username,"wsid": "TESTWSID"}).toPromise();
+            let reqgetAdminEmployeeDetails = await this.iAdminApiService.getAdminEmployeeDetails({"user": this.username,"wsid": "TESTWSID"}).toPromise();
             if(reqgetAdminEmployeeDetails.isExecuted){
               this.functionsAllowedList = reqgetAdminEmployeeDetails.data.userRights;
             }
           }
 
         }
-          this.employeeService.updateAdminEmployee(form.value).subscribe((res: any) => {
+          this.iAdminApiService.updateAdminEmployee(form.value).subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialogRef.close({mode: 'edit-employee', data:{empData: form.value,functionsAllowedList:this.functionsAllowedList,groupChanged:this.groupChanged}});
               this.toastr.success(labels.alert.update, 'Success!', {
@@ -158,7 +163,7 @@ ChangePassword(data){
           });
       }
       else {
-        this.employeeService.saveAdminEmployee(form.value)
+        this.iAdminApiService.saveAdminEmployee(form.value)
           .subscribe((response: AdminEmployeeLookupResponse) => {
             if (response.isExecuted) {
               this.dialogRef.close(true);

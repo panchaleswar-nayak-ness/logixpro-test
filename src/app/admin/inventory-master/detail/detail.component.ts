@@ -12,6 +12,8 @@ import { SharedService } from 'src/app/services/shared.service';
 import { Observable, Subscription } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../current-tab-data-service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-detail',
@@ -22,6 +24,7 @@ export class DetailComponent implements OnInit {
   private eventsSubscription: Subscription;
   @Input() events: Observable<string>;
   @Input() fieldNameDetails: any;
+  public iAdminApiService: IAdminApiService;
   @Input() details: FormGroup;  
   public userData: any;
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
@@ -38,9 +41,12 @@ export class DetailComponent implements OnInit {
     private router: Router,
     private sharedService:SharedService,
     private authService: AuthService, 
+    private adminApiService: AdminApiService,
     private dialog: MatDialog,    
     private currentTabDataService: CurrentTabDataService,
-    private toastr: ToastrService,) { }
+    private toastr: ToastrService,) {
+      this.iAdminApiService = adminApiService;
+     }
   
     ngOnChanges(changes: SimpleChanges) {
       if(changes['fieldNameDetails']){
@@ -93,11 +99,9 @@ export class DetailComponent implements OnInit {
       if (result) { 
         let paylaod = {
           "oldItemNumber": this.details.controls['itemNumber'].value,
-          "newItemNumber": result,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "newItemNumber": result, 
         }
-        this.Api.UpdateItemNumber(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.UpdateItemNumber(paylaod).subscribe((res: any) => {
           this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY] = result;
 
           if (res.isExecuted) {

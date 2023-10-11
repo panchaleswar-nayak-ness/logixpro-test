@@ -24,6 +24,8 @@ import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.ser
 import { MatMenuTrigger } from '@angular/material/menu';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 const TRNSC_DATA = [
   { colHeader: 'tH_ID', colDef: 'TH_ID' },
@@ -109,6 +111,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public sortOrder: any = 'asc';
   selectedVariable: any;
   selectedDropdown='';
+  public iAdminApiService: IAdminApiService;
+
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
   searchBar = new Subject<string>();
@@ -175,11 +179,13 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     private Api:ApiFuntions,
     private authService: AuthService,
     private toastr: ToastrService,
+    private adminApiService: AdminApiService,
     private dialog: MatDialog,
     private sharedService:SharedService,
     private filterService: ContextMenuFiltersService
   ) {
     this.userData = this.authService.userData();
+    this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
@@ -272,7 +278,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       username: this.userData.userName,
       wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {
@@ -287,7 +293,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       wsid: this.userData.wsid,
       tableName: 'Transaction History',
     };
-    this.Api
+    this.iAdminApiService
       .GetColumnSequence(payload)
       .subscribe(
         {next: (res: any) => {
@@ -319,7 +325,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       username: this.userData?.userName,
       wsid:this.userData?.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .TransactionModelIndex(paylaod)
       .subscribe(
         {next: (res: any) => {
@@ -346,7 +352,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       wsid: this.userData?.wsid,
     }; 
     
-    this.Api
+    this.iAdminApiService
       .TransactionHistoryTable(payload)
       .subscribe(
         {next: (res: any) => {

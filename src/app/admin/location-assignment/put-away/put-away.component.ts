@@ -9,6 +9,8 @@ import { AuthService } from 'src/app/init/auth.service';
 import labels from '../../../labels/labels.json';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-put-away',
@@ -45,15 +47,18 @@ export class PutAwayComponent implements OnInit {
 
   filterValue1:string = '';
   filterValue2:string = '';
-
+  public iAdminApiService: IAdminApiService;
   constructor(
     private toastr: ToastrService,
     private Api: ApiFuntions,
     private authService: AuthService,
     private dialog: MatDialog,
+    private adminApiService: AdminApiService,
     private _liveAnnouncer1: LiveAnnouncer,
     private _liveAnnouncer2: LiveAnnouncer
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -61,7 +66,7 @@ export class PutAwayComponent implements OnInit {
   }
 
   GetLocAssPutAwayTable(loader: boolean = false) {
-    this.Api.GetLocAssPutAwayTable().subscribe((res: any) => {
+    this.iAdminApiService.GetLocAssPutAwayTable().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.tableData1 = new MatTableDataSource(res.data);
         this.tableData1.paginator = this.paginator1;
@@ -149,7 +154,7 @@ export class PutAwayComponent implements OnInit {
             "username": this.userData.userName,
             "wsid": this.userData.wsid
           };
-          this.Api.LocationAssignmentOrderInsert(payload).subscribe((res: any) => {
+          this.iAdminApiService.LocationAssignmentOrderInsert(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
               this.tableData2 = new MatTableDataSource([]);
               this.tableData2.paginator = this.paginator2;

@@ -9,6 +9,8 @@ import { map } from 'rxjs/internal/operators/map';
 import { AuthService } from '../../../../app/init/auth.service';
 import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-add-group-allowed',
@@ -20,6 +22,7 @@ export class AddGroupAllowedComponent implements OnInit {
   form_heading: string = 'Add Group Allowed';
   form_btn_label: string = 'Add';
   GroupName: any;
+  public iAdminApiService: IAdminApiService;
   controlNameList: any[] = [];
   options: string[] = [];
   filteredOptions: Observable<any[]>;
@@ -33,20 +36,20 @@ export class AddGroupAllowedComponent implements OnInit {
     private toastr: ToastrService,
     private authService: AuthService,
     private fb: FormBuilder,
+    private adminApiService: AdminApiService,
     private router: Router
-  ) { }
+  ) {this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.controlNameForm = this.fb.group({
       controlName: [ '', [Validators.required]]
     })
     this.userData = this.authService.userData();
-    let payload = {
-      "username": this.data.userName,
-      "wsid": this.data.wsid,
+    let payload = { 
       "filter": "%"
     }
-    this.employeeService.getControlName(payload).subscribe((res: any) => {
+    this.iAdminApiService.getControlName(payload).subscribe((res: any) => {
       
       this.controlNameList = res.data;
       this.filteredOptions = this.controlNameForm.controls['controlName'].valueChanges.pipe(
@@ -72,11 +75,9 @@ export class AddGroupAllowedComponent implements OnInit {
   }
   onSend(form: any) {
     let payload = {
-      "controlName": form.value.controlName,
-      "username": this.data.userName,
-      "wsid": this.data.wsid,
+      "controlName": form.value.controlName, 
     }
-    this.employeeService.submitControlResponse(payload).subscribe((res: any) => {
+    this.iAdminApiService.submitControlResponse(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialog.closeAll();
         this.toastr.success(labels.alert.success, 'Success!', {

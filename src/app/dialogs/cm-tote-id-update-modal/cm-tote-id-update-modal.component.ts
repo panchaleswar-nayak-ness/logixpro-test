@@ -3,6 +3,8 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dial
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-tote-id-update-modal',
@@ -20,12 +22,17 @@ export class CmToteIdUpdateModalComponent implements OnInit {
 
   @ViewChild('conID') conID : ElementRef;
 
+  public IconsolidationAPI : IConsolidationApi;
+
   constructor(private dialog: MatDialog,
               public dialogRef: MatDialogRef<CmToteIdUpdateModalComponent>,
               private toast: ToastrService,
-              private Api: ApiFuntions,
+              // private Api: ApiFuntions,
+              public consolidationAPI : ConsolidationApiService,
               private authService: AuthService,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+                this.IconsolidationAPI = consolidationAPI;
+               }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -51,12 +58,10 @@ export class CmToteIdUpdateModalComponent implements OnInit {
       let payLoad = {
         orderNumber : this.data.orderNumber,
         toteID: this.data.toteID,
-        contID: this.containerID,
-        username: this.userData.userName,
-        wsid: this.userData.wsid
+        contID: this.containerID
       };
 
-      this.Api.ContIDShipTransUpdate(payLoad).subscribe(
+      this.IconsolidationAPI.ContIDShipTransUpdate(payLoad).subscribe(
         (res: any) => {
           if (res?.isExecuted) {
             this.dialogRef.close({

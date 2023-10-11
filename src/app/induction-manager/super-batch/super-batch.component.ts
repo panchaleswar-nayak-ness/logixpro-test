@@ -7,6 +7,8 @@ import { AuthService } from '../../../app/init/auth.service';
 import labels from '../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-super-batch',
@@ -14,7 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./super-batch.component.scss']
 })
 export class SuperBatchComponent implements OnInit {
-
+  public iinductionManagerApi:IInductionManagerApiService;
   displayedColumns: string[] = ['zone', 'totalTransactions', 'orderToBatch', 'newToteID', 'actions'];
   dataSource: any;
   user_data: any;
@@ -36,15 +38,18 @@ export class SuperBatchComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private inductionManagerApi: InductionManagerApiService,
     private dialog: MatDialog,
     private global:GlobalService,
     private toastr: ToastrService,
     private Api: ApiFuntions
-  ) { }
+  ) {
+    this.iinductionManagerApi = inductionManagerApi;
+   }
 
   ngOnInit(): void {
     this.user_data = this.authService.userData(); 
-    this.Api.SuperBatchIndex().subscribe(res => {
+    this.iinductionManagerApi.SuperBatchIndex().subscribe(res => {
       const { preferences } = res.data;
       
       this.itemNumbers = res.data.itemNums;
@@ -92,7 +97,7 @@ export class SuperBatchComponent implements OnInit {
       "Type": type,
       "ItemNumber": itemNumber
     }
-    this.Api.ItemZoneDataSelect(payload).subscribe(res => {
+    this.iinductionManagerApi.ItemZoneDataSelect(payload).subscribe(res => {
       const batchTableData = res.data.map((v, key) => ({ ...v, 'key': key, 'orderToBatch': this.defaultSuperBatchSize, 'newToteID': '' }))
       this.dataSource = batchTableData;
     });
@@ -179,9 +184,9 @@ export class SuperBatchComponent implements OnInit {
       "ItemNum": this.itemNum.toString(),
       "BatchByOrder": BatchByOrder.toString()
     }
-    this.Api.SuperBatchCreate(payload).subscribe(response => {
+    this.iinductionManagerApi.SuperBatchCreate(payload).subscribe(response => {
       if (response.isExecuted) {
-        this.Api.TotePrintTableInsert({ "ToteID": element.newToteID.toString() }).subscribe(res => {
+        this.iinductionManagerApi.TotePrintTableInsert({ "ToteID": element.newToteID.toString() }).subscribe(res => {
           if(res.isExecuted){
             this.superBatches.push(element.newToteID);
             this.toastr.success(labels.alert.success, 'Success!', {

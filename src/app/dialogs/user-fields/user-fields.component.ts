@@ -8,6 +8,8 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-user-fields',
@@ -18,6 +20,7 @@ export class UserFieldsComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;
 
   public userData: any;
+  public iAdminApiService: IAdminApiService;
   userForm: FormGroup;
   fieldNames:any;
   constructor(public dialogRef: MatDialogRef<any>,
@@ -26,8 +29,9 @@ export class UserFieldsComponent implements OnInit {
     public formBuilder: FormBuilder,
     private authService: AuthService,
     private toast: ToastrService,
+    private adminApiService: AdminApiService,
     private Api: ApiFuntions) {
-
+      this.iAdminApiService = adminApiService;
     this.userForm = this.formBuilder.group({
       userField1: new FormControl('', Validators.compose([])),
       userField2: new FormControl('', Validators.compose([])),
@@ -54,7 +58,7 @@ export class UserFieldsComponent implements OnInit {
   }
 
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.fieldNames = res.data;
       this.setValues();
     })

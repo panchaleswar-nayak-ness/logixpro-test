@@ -12,6 +12,8 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',
@@ -42,14 +44,24 @@ userData:any={};
 @ViewChild('paginator2') paginator2: MatPaginator;
 displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transactionQuantity', 'completedQuantity', 'containerID',
  'shipQuantity', 'complete']; 
-  constructor(private Api:ApiFuntions,public authService: AuthService,private toast:ToastrService,private dialog: MatDialog,
+
+ public IconsolidationAPI : IConsolidationApi;
+ 
+ constructor(
+    // private Api:ApiFuntions,
+    public consolidationAPI : ConsolidationApiService,
+    public authService: AuthService,
+    private toast:ToastrService,
+    private dialog: MatDialog,
     private global:GlobalService,
     public route: Router,
-    @Inject(MAT_DIALOG_DATA) public data: any,private _liveAnnouncer: LiveAnnouncer,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _liveAnnouncer: LiveAnnouncer,
     public dialogRef: MatDialogRef<any>) { 
+
     this.userData = this.authService.userData();
-   
     this.orderNumber = this.data.orderNumber;
+    this.IconsolidationAPI = consolidationAPI;
   }
 
   ngOnInit(): void {
@@ -70,11 +82,9 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
   }
   async NextContID(){ 
     let obj : any = {
-      orderNumber: this.orderNumber,
-      username: this.userData.userName,
-      wsid: this.userData.wsid, 
+      orderNumber: this.orderNumber
     };
-   this.Api.SelContIDConfirmPack(obj).subscribe((res:any) => { 
+   this.IconsolidationAPI.SelContIDConfirmPack(obj).subscribe((res:any) => { 
     if(res.data == ''){
       this.toast.error("An error has occurred",'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});
     }else{
@@ -90,7 +100,7 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
 
 
 async UnPack(id:any){  
-  this.Api.ShipTransUnPackUpdate({id:id}).subscribe((res:any) => {
+  this.IconsolidationAPI.ShipTransUnPackUpdate({id:id}).subscribe((res:any) => {
     if (res.data == "Fail") {
       this.toast.error("An error has occurred", 'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});  
   } else {  
@@ -104,12 +114,10 @@ async UnPack(id:any){
 getPreferences() {
   let payload = {
     type: '',
-    value: '',
-    username: this.userData.userName,
-    wsid: this.userData.wsid,
+    value: ''
   };
 
-  this.Api
+  this.IconsolidationAPI
     .ConsoleDataSB(payload)
     .subscribe((res) => {
       if (res.isExecuted) {
@@ -125,11 +133,9 @@ ConfirmAndPackingIndex(){
 
 if(this.orderNumber != ""){
   let obj : any = {
-    orderNumber: this.orderNumber,
-    username: this.userData.userName,
-    wsid: this.userData.wsid, 
+    orderNumber: this.orderNumber
   };
- this.Api.ConfirmAndPackingIndex(obj).subscribe((res:any) => { 
+ this.IconsolidationAPI.ConfirmAndPackingIndex(obj).subscribe((res:any) => { 
   
   this.orderNumber = res.data.orderNumber;
 
@@ -164,11 +170,9 @@ async ClickConfirmAll(){
     if (result == 'Yes') { 
     let obj : any = {
       orderNumber:this.orderNumber,
-      containerID: this.contID,
-      username: this.userData.userName,
-      wsid: this.userData.wsid, 
+      containerID: this.contID
     };
-   this.Api.ConfirmAllConfPack(obj).subscribe((res:any) => {
+   this.IconsolidationAPI.ConfirmAllConfPack(obj).subscribe((res:any) => {
     if (res.data == "Fail") {
       this.toast.error('An error has occurred', 'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000}); 
   } else { 
@@ -282,11 +286,9 @@ if(searchCount == 0){
     id: id,
     orderNumber: this.orderNumber,
     containerID: this.contID,
-    modal: "",
-    userName: this.userData.userName,
-    wsid: this.userData.wsid
+    modal: ""
   };
- this.Api.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
+ this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
    
   if (res.data == "Fail") {
     this.toast.error('An error has occurred', 'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});  

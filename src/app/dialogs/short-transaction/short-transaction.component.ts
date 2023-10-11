@@ -5,6 +5,8 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import labels from '../../labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-short-transaction',
@@ -12,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: []
 })
 export class ShortTransactionComponent implements OnInit {
-
+  public iinductionManagerApi:IInductionManagerApiService;
   selectedTransaction: any;
   toteQuantity: any;
   @ViewChild('toteQty') toteQty: ElementRef;
@@ -21,10 +23,13 @@ export class ShortTransactionComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
     private dialog: MatDialog,
+    private inductionManagerApi: InductionManagerApiService,
     private Api: ApiFuntions,
     public dialogRef: MatDialogRef<ShortTransactionComponent>,
     private globalService: GlobalService
-  ) { }
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   restrictKeyboard(event: KeyboardEvent) {
     const isNumericInput = event.key.match(/^[0-9]+$/);
@@ -69,7 +74,7 @@ export class ShortTransactionComponent implements OnInit {
             "shortQuantity": this.toteQuantity,
             "shortMethod": "Complete"
           }
-          this.Api.shortTransaction(payload).subscribe((res: any) => {
+          this.iinductionManagerApi.shortTransaction(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialogRef.close(res);
               this.toastr.success(labels.alert.update, 'Success!', {

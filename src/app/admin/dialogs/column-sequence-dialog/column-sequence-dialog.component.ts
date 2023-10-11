@@ -14,6 +14,8 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-column-sequence-dialog',
@@ -23,6 +25,8 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class ColumnSequenceDialogComponent implements OnInit {
   dialogData;
   payload;
+  public iAdminApiService: IAdminApiService;
+
   userData;
   unorderedCol: any = [];
   defaultCol: any = [];
@@ -31,12 +35,13 @@ export class ColumnSequenceDialogComponent implements OnInit {
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
     private toastr: ToastrService,
+    private adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) data,
     private dialog: MatDialog,
     
   ) {
     this.dialogData = data;
-   
+    this.iAdminApiService = adminApiService;
   }
   @ViewChild('table') table: MatTable<any>;
 
@@ -86,7 +91,7 @@ export class ColumnSequenceDialogComponent implements OnInit {
 
     
     
-    this.Api
+    this.iAdminApiService
       .DeleteColumns(this.payload)
       .subscribe({
         next: (res: any) => {
@@ -102,15 +107,13 @@ export class ColumnSequenceDialogComponent implements OnInit {
   }
   initializePayload(tableName) {
     let userData = this.authService.userData();
-    this.payload = {
-      username: userData.userName,
-      wsid: userData.wsid,
+    this.payload = { 
       viewName: tableName,
     };
   }
 
   saveColumnsSeq() {
-    this.Api.SaveColumns(this.payload).subscribe(
+    this.iAdminApiService.SaveColumns(this.payload).subscribe(
       {next: (res: any) => {
         if (res.isExecuted) {
           this.toastr.success(labels.alert.success, 'Success!', {
@@ -133,7 +136,7 @@ export class ColumnSequenceDialogComponent implements OnInit {
   }
 
   getColumnsSeqDetail() {
-    this.Api
+    this.iAdminApiService
       .GetColumnSequenceDetail(this.payload)
       .subscribe((res: any) => {
         this.unorderedCol = res.data?.allColumnSequence;

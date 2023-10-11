@@ -7,6 +7,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Sort, MatSort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-mark-empty-reels',
@@ -18,6 +20,7 @@ export class MarkEmptyReelsComponent implements OnInit {
   lastScanned;
   lastScannedList: any = [];
   notifyMessage = '';
+  public iinductionManagerApi:IInductionManagerApiService;
   itemInvalid = false;
   itemEmpty = false;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
@@ -31,10 +34,12 @@ export class MarkEmptyReelsComponent implements OnInit {
     private dialog: MatDialog,
     public Api:ApiFuntions,
     public toastService: ToastrService,
+    private inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     private _liveAnnouncer: LiveAnnouncer,
   ) {
     this.scannedSerialList = new MatTableDataSource();
+    this.iinductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -52,11 +57,9 @@ export class MarkEmptyReelsComponent implements OnInit {
     } else {
       // validate serial
       let payload = {
-        serialNumber: this.scanSerial,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        serialNumber: this.scanSerial, 
       };
-      this.Api
+      this.iinductionManagerApi
         .ValidateSerialNumber(payload) //validate tote
         .subscribe(
           (response: any) => {
@@ -159,11 +162,9 @@ export class MarkEmptyReelsComponent implements OnInit {
           //  Renmoves all serial numbers from list
 
           let payload = {
-            serialNumbers: serialNumbersArr,
-            username: this.userData.userName,
-            wsid: this.userData.wsid,
+            serialNumbers: serialNumbersArr, 
           };
-          this.Api
+          this.iinductionManagerApi
             .DeleteSerialNumber(payload) //validate tote
             .subscribe((response: any) => {
               if (response.isExecuted) {

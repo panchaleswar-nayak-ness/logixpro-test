@@ -6,6 +6,8 @@ import { catchError, of } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-lookup-adjustment-lookup-setup',
@@ -15,12 +17,16 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class LookupAdjustmentLookupSetupComponent implements OnInit {
   userData
 adjustmentLookUp :any = new MatTableDataSource([]);
+public iAdminApiService: IAdminApiService;
 AdjustLookupInput
 AddBtn = false
   constructor(private Api:ApiFuntions,
               private dialog: MatDialog,
+              private adminApiService: AdminApiService,
               private toastr: ToastrService,
-              public authService: AuthService,) { }
+              public authService: AuthService,) { 
+                this.iAdminApiService = adminApiService;
+              }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -28,7 +34,7 @@ AddBtn = false
   }
 
   getadjustmentlookup(){
-    this.Api.adjustmentlookup().subscribe(res=>{
+    this.iAdminApiService.adjustmentlookup().subscribe(res=>{
       
       if(res.isExecuted){
         this.adjustmentLookUp = res.data
@@ -52,7 +58,7 @@ AddBtn = false
       "oldValue":ele.oldVal,
       "newValue":ele.currentVal
     }
-    this.Api.updateAdjustlookup(payload).pipe(
+    this.iAdminApiService.updateAdjustlookup(payload).pipe(
     
       catchError((error) => {
         return of({ isExecuted: false });
@@ -111,7 +117,7 @@ AddBtn = false
         let payload = {
           "reason": ele.currentVal
         }
-        this.Api.deleteAdjustmentLookup(payload).subscribe((res=>{ 
+        this.iAdminApiService.deleteAdjustmentLookup(payload).subscribe((res=>{ 
           if(res.isExecuted){
             this.getadjustmentlookup()
           }

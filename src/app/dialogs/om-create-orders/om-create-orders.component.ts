@@ -24,6 +24,8 @@ import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-om-create-orders',
@@ -34,7 +36,7 @@ export class OmCreateOrdersComponent implements OnInit {
   omPreferences:any;
   @ViewChild('ord_focus') ord_focus: ElementRef;
   displayedColumns: any[] = [];
-
+  public iAdminApiService: IAdminApiService;
   sequenceKeyMapping:any = [
     {sequence: 'Transaction Type',key:'transactionType'},
     {sequence: 'Order Number',key:'orderNumber'},
@@ -108,12 +110,14 @@ export class OmCreateOrdersComponent implements OnInit {
     private router: Router,
     public dialogRef: MatDialogRef<OmCreateOrdersComponent>,
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     public orderManagerApi  : OrderManagerApiService,
     private global:GlobalService,
     private filterService: ContextMenuFiltersService,
     private _liveAnnouncer: LiveAnnouncer
   ) { 
     this.iOrderManagerApi = orderManagerApi;
+   this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
@@ -428,11 +432,9 @@ export class OmCreateOrdersComponent implements OnInit {
 
   getColumnSequence(refresh: boolean = false) {
     let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
       tableName: 'Order Manager Create'
     };
-    this.Api.GetColumnSequence(payload).subscribe((res: any) => {
+    this.iAdminApiService.GetColumnSequence(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.filterColumnNames = JSON.parse(JSON.stringify(res.data));
         this.sortedFilterColumnNames = [...this.filterColumnNames.sort()];

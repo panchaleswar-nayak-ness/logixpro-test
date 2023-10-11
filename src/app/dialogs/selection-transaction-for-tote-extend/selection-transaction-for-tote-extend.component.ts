@@ -19,6 +19,10 @@ import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PaPrintLabelConfirmationComponent } from '../pa-print-label-confirmation/pa-print-label-confirmation.component';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -27,7 +31,7 @@ import { PaPrintLabelConfirmationComponent } from '../pa-print-label-confirmatio
 })
 export class SelectionTransactionForToteExtendComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;
-
+  public iinductionManagerApi:IInductionManagerApiService;
   public userData   : any;
   isWarehouseSensitive:boolean=false;
   toteForm          : FormGroup;
@@ -37,20 +41,24 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   totes             : any = [];
   selectedTotePosition:any='';
   selectedToteID:any='';
+  public iAdminApiService: IAdminApiService;
   fieldNames:any;
   imPreferences:any;
   constructor(public dialogRef                  : MatDialogRef<SelectionTransactionForToteExtendComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
+              private adminApiService: AdminApiService,
               private dialog                    : MatDialog,
               public formBuilder                : FormBuilder,
               private authService               : AuthService,
               private toast                     : ToastrService, 
+              private inductionManagerApi: InductionManagerApiService,
               private Api : ApiFuntions, 
               private toastr: ToastrService,
               public router: Router,
               private global:GlobalService,
               ) {
-
+                this.iinductionManagerApi = inductionManagerApi;
+                this.iAdminApiService = adminApiService;
     this.toteForm = this.formBuilder.group({
 
       // Header
@@ -126,7 +134,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.field_focus.nativeElement.focus();
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.fieldNames = res.data;
 
     })
@@ -152,11 +160,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     try {
       let payload = { 
         "otid": this.data.otid,
-        "itemNumber": this.data.itemNumber,
-        "username": this.userData.userName,
-        wsid: this.userData.wsid 
+        "itemNumber": this.data.itemNumber, 
       }
-      this.Api.ItemDetails(payload).subscribe(
+      this.iinductionManagerApi.ItemDetails(payload).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
             const values = res.data[0];  
@@ -305,12 +311,10 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             "bvel": values.bulkVelocity,
             "cFvel": values.cfVelocity,
             "pzone": values.primaryPickZone,
-            "szone": values.secondaryPickZone,
-            username: this.userData.userName,
-            wsid: this.userData.wsid 
+            "szone": values.secondaryPickZone, 
           }
           
-          this.Api.IMUpdate(payload).subscribe(
+          this.iinductionManagerApi.IMUpdate(payload).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
                 this.toast.success(labels.alert.update, 'Success!',{
@@ -472,12 +476,10 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       }
 
       let payLoad = {
-        "item": values.itemNumber,        
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        "item": values.itemNumber,       
       };
 
-      this.Api.CheckForwardLocations(payLoad).subscribe(
+      this.iinductionManagerApi.CheckForwardLocations(payLoad).subscribe(
         (res: any) => {
           if (res.data > 0 && res.isExecuted && this.data.autoForwardReplenish) {
             
@@ -539,11 +541,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         "rts": false,
         "expDate": values.expirationDate,
         "primaryZone": values.primaryPickZone,
-        "secondaryZone": values.secondaryPickZone,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        "secondaryZone": values.secondaryPickZone, 
       };
-      this.Api.FindLocation(payLoad).subscribe(
+      this.iinductionManagerApi.FindLocation(payLoad).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
 
@@ -701,12 +701,10 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       }
 
         let payload = {
-        zone: this.toteForm.value.zone,      
-        username: this.userData.userName,
-        wsid: this.userData.wsid
+        zone: this.toteForm.value.zone,   
       };
       
-      this.Api
+      this.iinductionManagerApi
         .BatchByZone(payload)
         .subscribe(
           (res: any) => {
@@ -735,12 +733,10 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                     values.itemNumber,
                     values.warehouse,
                     "1=1"
-                  ],
-                  username: this.userData.userName,
-                  wsid: this.userData.wsid 
+                  ], 
                 };
           
-                this.Api
+                this.iinductionManagerApi
                   .CrossDock(payLoad)
                   .subscribe(
                     (res: any) => {
@@ -844,12 +840,10 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             "locMaxQty": values.maximumQuantity ? parseInt(values.maximumQuantity) : 0,
             "reel": false,
             "dedicate": values.dedicated,
-            "orderNumber": values.orderNumber,
-            "username": this.userData.userName,
-            wsid: this.userData.wsid 
+            "orderNumber": values.orderNumber
           }
           
-          this.Api.TaskComplete(payload2).subscribe(
+          this.iinductionManagerApi.TaskComplete(payload2).subscribe(
             (res: any) => {
               
               if (res.data && res.isExecuted) {

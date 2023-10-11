@@ -14,6 +14,8 @@ import { AddNewTransactionToOrderComponent } from '../../dialogs/add-new-transac
 import { DeleteConfirmationManualTransactionComponent } from '../../dialogs/delete-confirmation-manual-transaction/delete-confirmation-manual-transaction.component';
 import { ManualTransPostConfirmComponent } from '../../dialogs/manual-trans-post-confirm/manual-trans-post-confirm.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
  
 
 @Component({
@@ -54,13 +56,16 @@ export class GenerateOrderComponent implements OnInit {
       }, 500);
     }
   }
+  public iAdminApiService: IAdminApiService;
 
   constructor(
     private authService: AuthService,
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private dialog: MatDialog
   ) {
     this.userData = this.authService.userData();
+    this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
@@ -120,7 +125,7 @@ export class GenerateOrderComponent implements OnInit {
       username: this.userData.userName,
       wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .ManualOrderTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
@@ -308,7 +313,7 @@ export class GenerateOrderComponent implements OnInit {
       username: this.userData.userName,
       wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .GernerateOrderTable(payload)
       .subscribe(
         (res: any) => {

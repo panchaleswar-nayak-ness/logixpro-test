@@ -34,6 +34,8 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ShippingCompleteDialogComponent } from 'src/app/dialogs/shipping-complete-dialog/shipping-complete-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-tran-order-list',
@@ -235,17 +237,19 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
   public priority = false;
   shippingComplete = false;
-
+  public iAdminApiService: IAdminApiService;
   constructor(
     private Api:ApiFuntions,
     private authService: AuthService,
     private _liveAnnouncer: LiveAnnouncer,
     private sharedService: SharedService,
     private dialog: MatDialog,
+    private adminApiService: AdminApiService,
     private global:GlobalService,
     private router: Router,
     private filterService: ContextMenuFiltersService
   ) {
+    this.iAdminApiService = adminApiService;
     this.setVal = localStorage.getItem('routeFromOrderStatus')
     if(router.url == '/OrderManager/OrderStatus' || router.url == '/OrderManager/OrderStatus?type=TransactionHistory'|| this.setVal == 'true'){
       this.priority = true;
@@ -274,11 +278,9 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       toteID: this.toteId,
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
-      filter: this.FilterString,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      filter: this.FilterString
     };
-    this.Api
+    this.iAdminApiService
       .OrderStatusData(this.payload)
       .subscribe(
         {next: (res: any) => {
@@ -337,7 +339,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
   selShipComp(event:any){
     if(event.searchField != "" && event.columnFIeld == "Order Number"){
-      this.Api.selShipComp({ orderNumber: event.searchField }).subscribe((res: any) => {
+      this.iAdminApiService.selShipComp({ orderNumber: event.searchField }).subscribe((res: any) => {
         if (res.isExecuted) {
           if (res.data == "") {
             this.shippingComplete = false;
@@ -361,12 +363,10 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       orderNumber: '',
       id: 0,
       itemNumber: '',
-      lineNumber: '',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      lineNumber: '', 
     };
 
-    this.Api
+    this.iAdminApiService
       .DeleteOrder(this.payload)
       .subscribe(
         {next: (res: any) => { 
@@ -409,11 +409,9 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       itemNumber: '',
       holds: false,
       orderStatusOrder: '',
-      app: 'Admin',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      app: 'Admin'
     };
-    this.Api
+    this.iAdminApiService
       .TransactionModelIndex(paylaod)
       .subscribe(
         {next: (res: any) => {
@@ -490,14 +488,12 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     let searchPayload = {
       query: this.searchString,
       tableName: 1,
-      column: this.searchCol,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      column: this.searchCol
     };
 
     // NextSuggestedTransactions
     // OrderNumberNext
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {
@@ -582,11 +578,9 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
           this.toteId = '';
           this.getContentData();
           let payload = {
-            orderNumber: this.getOrderForTote, // 1974869 //this.getOrderForTote
-            username: this.userData.userName,
-            wsid: this.userData.wsid,
+            orderNumber: this.getOrderForTote
           };
-          this.Api
+          this.iAdminApiService
             .ScanValidateOrder(payload)
             .subscribe(
               {next: (res: any) => {

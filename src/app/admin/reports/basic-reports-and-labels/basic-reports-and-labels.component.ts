@@ -9,6 +9,8 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { } from 'src/app/dialogs/br-choose-report-type/br-choose-report-type.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions'; 
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-basic-reports-and-labels',
@@ -41,9 +43,10 @@ export class BasicReportsAndLabelsComponent implements OnInit {
     dataSourceList:any
     currentApp
 
-      
-  constructor(private dialog: MatDialog,private api:ApiFuntions,private authService:AuthService,private route:Router,public global:GlobalService) {
-     
+    public iAdminApiService: IAdminApiService;
+
+  constructor(private dialog: MatDialog,private api:ApiFuntions,private adminApiService: AdminApiService,private authService:AuthService,private route:Router,public global:GlobalService) {
+    this.iAdminApiService = adminApiService;    
     this.userData = this.authService.userData(); 
     this.route.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -95,17 +98,16 @@ export class BasicReportsAndLabelsComponent implements OnInit {
     let payload = {
       'app':this.currentApp
     }
-    this.api.Getcustomreports(payload).subscribe((res:any)=>{
+    this.iAdminApiService.Getcustomreports(payload).subscribe((res:any)=>{
       this.reports = res?.data?.reports;
       this.reports.unshift('');
     })
   }
   basicreportdetails(Report){
    let payload:any = {
-    report:Report,
-    WSID:this.userData.wsid
+    report:Report, 
     }
-    this.api.basicreportdetails(payload).subscribe((res:any)=>{
+    this.iAdminApiService.basicreportdetails(payload).subscribe((res:any)=>{
       this.reportData = res?.data?.reportData; 
       this.fields = res?.data?.fields; 
       this.fields.unshift('');
@@ -117,7 +119,7 @@ export class BasicReportsAndLabelsComponent implements OnInit {
       reportName:this.BasicReportModel.ChooseReport,
       column:column
     };
-    this.api.changefilter(payload).subscribe((res:any)=>{
+    this.iAdminApiService.changefilter(payload).subscribe((res:any)=>{
       console.log(res)  
         this.ListFilterValue[index] = res.data;
         this.oldFilterValue[index] = res.data;
@@ -131,9 +133,7 @@ export class BasicReportsAndLabelsComponent implements OnInit {
       this.reportData[22+index] = "";
     }
     let payload:any = {
-     report:this.BasicReportModel.ChooseReport,
-     wsid:this.userData.wsid,
-     username:this.userData.userName,
+     report:this.BasicReportModel.ChooseReport, 
      fields:[],
      exps:[]
     };
@@ -143,7 +143,7 @@ export class BasicReportsAndLabelsComponent implements OnInit {
      for(let i = 0;i<6;i++){
       payload.exps.push(this.reportData[10+i]);
      }  
-     this.api.ReportFieldsExps(payload).subscribe((res:any)=>{  
+     this.iAdminApiService.ReportFieldsExps(payload).subscribe((res:any)=>{  
        
      })
    }
@@ -164,9 +164,7 @@ reportfieldvalues(selectedIndex,selectedValue,IsRemove=false){
     this.selectedIndex = selectedIndex;
     this.selectedValue =selectedValue;
   let payload:any = {
-    report:this.BasicReportModel.ChooseReport,
-    wsid:this.userData.wsid,
-    username:this.userData.userName,
+    report:this.BasicReportModel.ChooseReport, 
     V1:[] ,
     V2:[]
    };
@@ -176,7 +174,7 @@ reportfieldvalues(selectedIndex,selectedValue,IsRemove=false){
       payload.V2.push(["NOT BETWEEN","BETWEEN"].indexOf(this.reportData[10 + i]) > -1 && this.reportData[22+i].toString() ? this.reportData[22+i].toString():"");
       
      } 
-     this.api.reportfieldvalues(payload).subscribe((res:any)=>{ 
+     this.iAdminApiService.reportfieldvalues(payload).subscribe((res:any)=>{ 
        console.log('resss')
        
      })
@@ -185,15 +183,13 @@ reportfieldvalues(selectedIndex,selectedValue,IsRemove=false){
   }
 ReportTitles(){
   let payload:any = {
-    report:this.BasicReportModel.ChooseReport,
-    wsid:this.userData.wsid,
-    username:this.userData.userName,
+    report:this.BasicReportModel.ChooseReport, 
     title:[]  
    };
     for(let i = 0;i<4;i++){
      payload.title.push(this.reportData[i]);
     }    
-     this.api.ReportTitles(payload).subscribe((res:any)=>{  
+     this.iAdminApiService.ReportTitles(payload).subscribe((res:any)=>{  
        
      })
    } 

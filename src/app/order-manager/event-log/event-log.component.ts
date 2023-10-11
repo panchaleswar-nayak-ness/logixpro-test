@@ -14,6 +14,8 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 @Component({
   selector: 'app-event-log',
@@ -24,7 +26,7 @@ export class EventLogComponent implements OnInit {
 
   displayedColumns: string[] = ['dateStamp', 'message', 'eventCode', 'nameStamp', 'eventType', 'eventLocation', 'notes', 'transactionID','actions'];
   dataSourceList: any;
-
+  public iAdminApiService: IAdminApiService;
   ignoreDateRange: boolean = false;
   startDate:any = "";
   endDate:any = "";
@@ -72,9 +74,12 @@ export class EventLogComponent implements OnInit {
     private toastr: ToastrService,
     private global:GlobalService,
     private filterService: ContextMenuFiltersService,
+    private adminApiService: AdminApiService,
     private datepipe: DatePipe,
     private router: Router
-  ) { }
+  ) {
+    this.iAdminApiService = adminApiService;
+   }
 
   event(e:any){
     this.resetPagination();
@@ -142,7 +147,7 @@ export class EventLogComponent implements OnInit {
       "username": this.userData.userName,
       "wsid": this.userData.wsid
     };
-    this.eventLogTableSubscribe = this.Api.EventLogTable(payload).subscribe((res: any) => {
+    this.eventLogTableSubscribe = this.iAdminApiService.EventLogTable(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.tableData = res.data.openEvents;
         this.recordsTotal = res.data.recordsTotal;
@@ -185,7 +190,7 @@ export class EventLogComponent implements OnInit {
       "username": this.userData.userName,
       "wsid": this.userData.wsid
     }
-    this.eventLogTypeAheadSubscribe = this.Api.EventLogTypeAhead(payload).subscribe((res: any) => {
+    this.eventLogTypeAheadSubscribe = this.iAdminApiService.EventLogTypeAhead(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data && message != "") {
         this.searchAutocompleteList = res.data.sort();
       }
@@ -227,7 +232,7 @@ export class EventLogComponent implements OnInit {
           "username": this.userData.userName,
           "wsid": this.userData.wsid
         }
-        this.Api.EventRangeDelete(payload).subscribe((res: any) => {
+        this.iAdminApiService.EventRangeDelete(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.resetPagination();
             this.eventLogTable(true);

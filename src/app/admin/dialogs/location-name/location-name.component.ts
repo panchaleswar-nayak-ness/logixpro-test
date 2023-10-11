@@ -5,6 +5,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-location-name',
@@ -15,13 +17,17 @@ export class LocationNameComponent implements OnInit {
   displayedColumns: string[] = ['check','locationName','actions'];
   userData;
   LocationName;
+  public iAdminApiService: IAdminApiService;
     locationNames :any = new MatTableDataSource([]);
   save
   constructor(private Api: ApiFuntions,
             public authService: AuthService,
+            private adminApiService: AdminApiService,
             private toastr: ToastrService,
             public dialogRef: MatDialogRef<any>,
-            private dialog: MatDialog,) { }
+            private dialog: MatDialog,) {
+              this.iAdminApiService = adminApiService;
+             }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -29,7 +35,7 @@ export class LocationNameComponent implements OnInit {
   }
 
   getLocation(){ 
-    this.Api.LocationNames().subscribe((res=>{
+    this.iAdminApiService.LocationNames().subscribe((res=>{
       if(res?.isExecuted){
         
         let tempLocationNames:any = [];
@@ -62,12 +68,10 @@ export class LocationNameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       if (res === 'Yes'){
 
-        let payload = {
-          'username': this.userData.userName,
-          "wsid": this.userData.wsid,
+        let payload = { 
           "name": ele.currentVal,
         }
-        this.Api.DeleteLocationNames(payload).subscribe((res=>{ 
+        this.iAdminApiService.DeleteLocationNames(payload).subscribe((res=>{ 
           if(res.isExecuted){
             this.getLocation()
           }
@@ -85,13 +89,11 @@ export class LocationNameComponent implements OnInit {
   }
 
   saveLocation(ele){
-    let payload = {
-      'username': this.userData.userName,
-      "wsid": this.userData.wsid,
+    let payload = { 
       "oldName":ele.oldVal,
       "newName":ele.currentVal
     }
-    this.Api.LocationNamesSave(payload).subscribe((res=>{
+    this.iAdminApiService.LocationNamesSave(payload).subscribe((res=>{
       if(res.isExecuted){
         this.toastr.success("Location Name Updated Succesfully", 'Success!', {
           positionClass: 'toast-bottom-right',

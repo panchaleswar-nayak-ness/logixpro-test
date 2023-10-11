@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/init/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 @Component({
   selector: 'app-pallet-receiving',
   templateUrl: './pallet-receiving.component.html',
@@ -15,6 +16,7 @@ export class PalletReceivingComponent implements OnInit {
   userData;
   toteIDCrossBtn;
   itemNoCrossBtn;
+  public iinductionManagerApi:IInductionManagerApiService;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   constructor(
     public Api: ApiFuntions,
@@ -52,19 +54,15 @@ export class PalletReceivingComponent implements OnInit {
       // validate Tote
       let payloadTote = {
         toteID: this.processForm.value.toteID,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
       };
-      this.Api
+      this.iinductionManagerApi
         .ValidateTote(payloadTote) //validate tote
         .subscribe((response: any) => {
           if (response.data) {
             let payloadItem = {
-              item: this.processForm.value.itemNo,
-              username: this.userData.userName,
-              wsid: this.userData.wsid,
+              item: this.processForm.value.itemNo
             };
-            this.Api
+            this.iinductionManagerApi
               .ValidateItem(payloadItem) //validate item number
               .subscribe((response: any) => {
                 if (response.data) {
@@ -72,10 +70,9 @@ export class PalletReceivingComponent implements OnInit {
                   let payload = {
                     toteId: this.processForm.value.toteID,
                     itemNumber: this.processForm.value.itemNo,
-                    quantity: this.processForm.value.quantity,
-                    username: this.userData.userName,
+                    quantity: this.processForm.value.quantity, 
                   };
-                  this.Api
+                  this.iinductionManagerApi
                     .ProcessPallet(payload)
                     .subscribe((response: any) => {
                       if (response.isExecuted) {

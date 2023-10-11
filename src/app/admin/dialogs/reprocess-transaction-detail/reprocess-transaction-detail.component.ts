@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/init/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 
 
@@ -30,9 +32,11 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   reqDate: any;
   fieldNames:any;
 
-
+  public iAdminApiService: IAdminApiService;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<any>, 
-  private Api:ApiFuntions, private toastr: ToastrService, private authService: AuthService) { }
+  private Api:ApiFuntions, private toastr: ToastrService, private authService: AuthService,private adminApiService: AdminApiService) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   editTransactionForm = new FormGroup({
     transactionQuantity: new FormControl('', [Validators.required]),
@@ -77,7 +81,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
     this.trans_qty.nativeElement.focus();
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.fieldNames = res.data;
 
     })
@@ -120,12 +124,10 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get("label")?.value?.toString(),
         this.editTransactionForm.get("emergency")?.value?.toString(),
         this.editTransactionForm.get("wareHouse")?.value
-      ],
-      "username": this.userData.username,
-      "wsid": this.userData.wsid
+      ]
     }
 
-    this.Api.SaveTransaction(payload).subscribe((res: any) => {
+    this.iAdminApiService.SaveTransaction(payload).subscribe((res: any) => {
       if (res.isExecuted){
         this.dialogRef.close('add');
         this.toastr.success(labels.alert.update, 'Success!', {
@@ -189,11 +191,9 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   getTransactionDetail() {
     let payload = {
       id: '' + this.transactionID + '',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
       history: false,
     }
-    this.Api.TransactionByID(payload).subscribe(
+    this.iAdminApiService.TransactionByID(payload).subscribe(
       {next: (res: any) => {
         if (res.data && res.isExecuted) {
           let finalExpiryDate, finalReqDate;

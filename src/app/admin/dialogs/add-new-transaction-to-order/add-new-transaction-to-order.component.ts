@@ -12,6 +12,8 @@ import { Subject } from 'rxjs';
 import { ItemExistGenerateOrderComponent } from '../item-exist-generate-order/item-exist-generate-order.component';
 import { EmptyFieldsComponent } from '../empty-fields/empty-fields.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-add-new-transaction-to-order',
@@ -29,14 +31,18 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   hideRequiredControl = new FormControl(false);
   searchByInput: any = new Subject<string>();
   searchAutocompleteList: any=[];
+  public iAdminApiService: IAdminApiService;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
+    private adminApiService: AdminApiService,
     private Api: ApiFuntions,
     public dialogRef: MatDialogRef<any>
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
   transactionInfo = new FormGroup({
     lineNumber: new FormControl(''),
     lineSequence: new FormControl(''),
@@ -257,9 +263,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                 userField7: this.transactionInfo.value.userField7,
                 userField8: this.transactionInfo.value.userField8,
                 userField9: this.transactionInfo.value.userField9,
-                userField10: this.transactionInfo.value.userField10,
-                username: this.data.userName,
-                wsid: this.data.wsid,
+                userField10: this.transactionInfo.value.userField10, 
               };
           
              
@@ -273,7 +277,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                 payload['id'] = this.data.item.id;
               }
               if(this.data && this.data.mode === 'add-trans'){
-                this.Api.TransactionForOrderInsert(payload).subscribe(
+                this.iAdminApiService.TransactionForOrderInsert(payload).subscribe(
                   (res: any) => {
                     if (res.isExecuted) {
                       this.toastr.success(labels.alert.success, 'Success!', {
@@ -298,7 +302,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                   }
                 );
               } else{
-                this.Api.TransactionForOrderUpdate(payload).subscribe(
+                this.iAdminApiService.TransactionForOrderUpdate(payload).subscribe(
                   (res: any) => {
                     if (res.isExecuted) {
                       this.toastr.success(labels.alert.success, 'Success!', {

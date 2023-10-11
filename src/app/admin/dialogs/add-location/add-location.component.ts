@@ -6,6 +6,8 @@ import { SpinnerService } from '../../../../app/init/spinner.service';
 import labels from '../../../labels/labels.json';
 import {  } from 'datatables.net';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-add-location',
@@ -23,17 +25,18 @@ export class AddLocationComponent implements OnInit {
   startLocationList: any;
   endLocationList: any;
   isValid: boolean = false;
-
+  public iAdminApiService: IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private dialog: MatDialog, 
     private employeeService: ApiFuntions, 
     private toastr: ToastrService,
     private loader: SpinnerService,
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
-    
-    
-    ) {}
+    ) {
+      this.iAdminApiService = adminApiService;
+    }
 
   ngOnInit(): void {
     if(this.data.locationData){
@@ -106,12 +109,10 @@ export class AddLocationComponent implements OnInit {
       "startLocation": this.startLocation,
       "endLocation": this.endLocation,   
       "oldStartLocation":  this.data.locationData?.startLocation ?? '',    
-      "oldEndLocation": this.data.locationData?.endLocation ?? '',
-      "username": this.data.userName,
-      "wsid": "TESTWSID"
+      "oldEndLocation": this.data.locationData?.endLocation ?? '' 
     }
     if(this.data.locationData){
-      this.employeeService.updateEmployeeLocation(payload).subscribe((res:any) => {
+      this.iAdminApiService.updateEmployeeLocation(payload).subscribe((res:any) => {
         if(res.isExecuted){
           this.dialogRef.close('update');
           this.toastr.success(labels.alert.update, 'Success!',{
@@ -126,7 +127,7 @@ export class AddLocationComponent implements OnInit {
         }
    });
     }else{
-      this.employeeService.insertEmployeeLocation(payload).subscribe((res:any) => {
+      this.iAdminApiService.insertEmployeeLocation(payload).subscribe((res:any) => {
         if(res.isExecuted){
           this.dialogRef.close('add');
           this.toastr.success(labels.alert.success, 'Success!',{

@@ -7,6 +7,8 @@ import { CpbBlossomToteComponent } from 'src/app/dialogs/cpb-blossom-tote/cpb-bl
 import { ShortTransactionComponent } from 'src/app/dialogs/short-transaction/short-transaction.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import labels from '../../labels/labels.json';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-complete-pick-batch',
@@ -19,6 +21,7 @@ export class CompletePickBatchComponent{
   tableData: any = [];
   dataSourceList: any;
   batchId: string = "";
+  public iinductionManagerApi:IInductionManagerApiService;
   toteId: string = "";
   showToteCol: boolean = false;
   completeBatchEnable: boolean = false;
@@ -34,8 +37,11 @@ export class CompletePickBatchComponent{
   constructor(
     private dialog: MatDialog,
     private Api: ApiFuntions,
+    private inductionManagerApi: InductionManagerApiService,
     private toastr: ToastrService,
-  ) { }
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngAfterViewInit() {
     setTimeout(()=>{
@@ -70,7 +76,7 @@ export class CompletePickBatchComponent{
     if(this.batchId != ""){
       payload.BatchID = this.batchId;
     }
-    this.Api.getPickBatchTransactionTable(payload).subscribe((res: any) => {
+    this.iinductionManagerApi.getPickBatchTransactionTable(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.tableData = res.data;
         this.blossomToteEnable = false;
@@ -170,7 +176,7 @@ export class CompletePickBatchComponent{
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'Yes') {
-        this.Api.completeTransaction({Id:element.id}).subscribe((res: any) => {
+        this.iinductionManagerApi.completeTransaction({Id:element.id}).subscribe((res: any) => {
           if(res.isExecuted){
             this.pickBatchTransactionTable();
             this.toastr.success(labels.alert.update, 'Success!', {
@@ -202,7 +208,7 @@ export class CompletePickBatchComponent{
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'Yes') {
-        this.Api.completePickBatch({batchId:this.batchId}).subscribe((res: any) => {
+        this.iinductionManagerApi.completePickBatch({batchId:this.batchId}).subscribe((res: any) => {
           if(res.isExecuted){
             this.clearScreen();
             this.toastr.success(labels.alert.update, 'Success!', {

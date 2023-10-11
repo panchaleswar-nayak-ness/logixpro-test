@@ -9,6 +9,8 @@ import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-kit-item',
@@ -30,7 +32,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   oldNumber="";
   @ViewChild('namebutton', { read: ElementRef, static:false }) namebutton: ElementRef;
 
-
+ public iAdminApiService: IAdminApiService;
 
   searchValue: any = '';
   searchList: any;
@@ -44,15 +46,18 @@ export class KitItemComponent implements OnInit, OnChanges {
     this.notifyParent.emit(e);
   }
 
-  constructor(private Api: ApiFuntions,
+  constructor(private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private authService: AuthService,
     private dialog: MatDialog,
     private el: ElementRef,
     private global:GlobalService,
     private sharedService:SharedService,
-    private route:Router
-    ) { }
+    private route:Router,
+    private Api:ApiFuntions
+    ) { 
+      this.iAdminApiService = adminApiService;
+    }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -107,11 +112,9 @@ export class KitItemComponent implements OnInit, OnChanges {
           "itemNumber": this.kitItem.controls['itemNumber'].value,
           "kitItem": e.itemNumber,
           "kitQuantity": e.kitQuantity,
-          "specialFeatures": e.specialFeatures,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid,
+          "specialFeatures": e.specialFeatures
         }
-        this.Api.DeleteKit(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.DeleteKit(paylaod).subscribe((res: any) => {
   
           if (res.isExecuted) {
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -165,11 +168,9 @@ export class KitItemComponent implements OnInit, OnChanges {
         "itemNumber": this.kitItem.controls['itemNumber'].value,
         "kitItem": newItem,
         "kitQuantity": e.kitQuantity,
-        "specialFeatures": e.specialFeatures,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "specialFeatures": e.specialFeatures
       }
-      this.Api.InsertKit(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.InsertKit(paylaod).subscribe((res: any) => {
 
         if (res.isExecuted) {
           this.toastr.success(labels.alert.success, 'Success!', {
@@ -192,12 +193,10 @@ export class KitItemComponent implements OnInit, OnChanges {
         "oldKitItem": this.oldNumber!=""?this.oldNumber:newItem,
         "newKitItem": newItem,
         "kitQuantity": e.kitQuantity,
-        "specialFeatures": e.specialFeatures,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "specialFeatures": e.specialFeatures
       }
       
-      this.Api.UpdateKit(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.UpdateKit(paylaod).subscribe((res: any) => {
 
         if (res.isExecuted) {
           this.toastr.success(labels.alert.success, 'Success!', {

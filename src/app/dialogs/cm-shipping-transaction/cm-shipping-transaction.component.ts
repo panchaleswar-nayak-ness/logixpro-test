@@ -14,6 +14,8 @@ import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 
 @Component({
   selector: 'app-cm-shipping-transaction',
@@ -33,16 +35,20 @@ export class CmShippingTransactionComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
-  constructor(private dialog          : MatDialog,
-              public dialogRef        : MatDialogRef<CmShippingTransactionComponent>,
-              private toast           : ToastrService,
-              private Api: ApiFuntions,
-              private authService     : AuthService,
-              private _liveAnnouncer  : LiveAnnouncer,
-              private global:GlobalService,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private route: Router
-              ) { }
+  public IconsolidationAPI : IConsolidationApi;
+
+  constructor(
+      public consolidationAPI : ConsolidationApiService,
+      private dialog          : MatDialog,
+      public dialogRef        : MatDialogRef<CmShippingTransactionComponent>,
+      private toast           : ToastrService,
+      // private Api: ApiFuntions,
+      private authService     : AuthService,
+      private _liveAnnouncer  : LiveAnnouncer,
+      private global:GlobalService,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      private route: Router
+      ) { this.IconsolidationAPI = consolidationAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -56,13 +62,11 @@ export class CmShippingTransactionComponent implements OnInit {
     try {
       // Set the parameters for the API call
       let payLoad = {
-        orderNumber : this.data?.orderNum ? this.data.orderNum : '2909782A',
-        username: this.userData.userName,
-        wsid: this.userData.wsid
+        orderNumber : this.data?.orderNum ? this.data.orderNum : '2909782A'
       };
 
       // Call the GET API
-      this.Api.ShippingTransactionIndex(payLoad).subscribe(
+      this.IconsolidationAPI.ShippingTransactionIndex(payLoad).subscribe(
         (res: any) => {
           if (res.isExecuted) {
             this.STIndex = res.data;
@@ -140,12 +144,10 @@ export class CmShippingTransactionComponent implements OnInit {
     try {
 
       let payLoad = {
-        orderNumber: this.data?.orderNum ? this.data.orderNum : '2909782A',
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        orderNumber: this.data?.orderNum ? this.data.orderNum : '2909782A'
       };
 
-      this.Api.SelCountOfOpenTransactionsTemp(payLoad).subscribe(
+      this.IconsolidationAPI.SelCountOfOpenTransactionsTemp(payLoad).subscribe(
         (res: any) => {
           if (res.isExecuted) {
 
@@ -167,7 +169,7 @@ export class CmShippingTransactionComponent implements OnInit {
       
               dialogRef.afterClosed().subscribe((result) => {
                 if (result == 'Yes') {
-                  this.Api.CompletePackingUpdate(payLoad).subscribe(
+                  this.IconsolidationAPI.CompletePackingUpdate(payLoad).subscribe(
                     (res: any) => {
                       if (res.isExecuted) {
                         this.toast.success('Packing Completed Successfully', 'Success!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
@@ -209,7 +211,7 @@ export class CmShippingTransactionComponent implements OnInit {
 
                   dialogRef2.afterClosed().subscribe((result) => {
                     if (result == 'Yes') {
-                      this.Api.CompletePackingUpdate(payLoad).subscribe(
+                      this.IconsolidationAPI.CompletePackingUpdate(payLoad).subscribe(
                         (res: any) => {
                           if (res.isExecuted) {
                             this.toast.success('Packing Completed Successfully', 'Success!', { positionClass: 'toast-bottom-right', timeOut: 2000 });

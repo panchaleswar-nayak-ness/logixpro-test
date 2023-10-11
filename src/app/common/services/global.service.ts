@@ -9,6 +9,10 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { environment } from 'src/environments/environment';
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +20,7 @@ import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order
 export class GlobalService {
   safeUrl: SafeUrl;
   userData:any;
+  public iinductionManagerApi:IInductionManagerApiService;
   sqlLimits : any = {
     numerics: {
         bigint: {
@@ -49,17 +54,22 @@ export class GlobalService {
   };
   changesConfirmation = false;
   public iOrderManagerApi :  IOrderManagerAPIService;
-
+  public iAdminApiService: IAdminApiService;
   constructor(
     private Api:ApiFuntions,
     public orderManagerApi  : OrderManagerApiService,
     private toast:ToastrService,
+    private inductionManagerApi: InductionManagerApiService,
+    private adminApiService: AdminApiService,
     private dialog: MatDialog, 
     private httpClient : HttpClient,
     private authService:AuthService,
     private sanitizer: DomSanitizer) {
     this.iOrderManagerApi = orderManagerApi;
     this.userData=this.authService.userData();
+    this.iAdminApiService = adminApiService;
+    this.iinductionManagerApi = inductionManagerApi;
+
   }
 
     // returns the date from JS in format: mm/dd/yyyy hh:mm
@@ -208,7 +218,7 @@ export class GlobalService {
           PrinterReportName:localStorage.getItem("SelectedReportPrinter"),
           PrinterLabelName:localStorage.getItem("SelectedLabelPrinter"),
         }
-        let res:any = await this.Api.CommonPrint(paylaod); 
+        let res:any = await this.iAdminApiService.CommonPrint(paylaod); 
         if(res.isExecuted){
           this.toast.success("print successfully completed", 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -248,7 +258,7 @@ export class GlobalService {
           type:Type,
           FileName:`${this.capitalizeAndRemoveSpaces(filename)}`
         }
-        this.Api.CommonExport(paylaod).subscribe((res:any)=>{
+        this.iAdminApiService.CommonExport(paylaod).subscribe((res:any)=>{
             if(res.isExecuted){
                 this.toast.success("Export successfully completed", 'Success!', {
                     positionClass: 'toast-bottom-right',
@@ -328,11 +338,9 @@ export class GlobalService {
       }
 
       updateImPreferences(){
-        let paylaod = {
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid,
+        let paylaod = { 
         }
-        this.Api.PickToteSetupIndex(paylaod).subscribe(res => {
+        this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
           localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
     
     

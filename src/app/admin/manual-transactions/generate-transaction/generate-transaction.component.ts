@@ -21,6 +21,8 @@ import { MatOption } from '@angular/material/core';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AddNotesComponent } from '../../dialogs/add-notes/add-notes.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-generate-transaction',
@@ -77,13 +79,16 @@ export class GenerateTransactionComponent implements OnInit {
   message = '';
   isLocation=false;
   emergency = false;
+  public iAdminApiService: IAdminApiService;
   constructor(
     private authService: AuthService,
     private Api:ApiFuntions,
     private dialog: MatDialog,
     private toastr: ToastrService,
+    private adminApiService: AdminApiService,
     private global:GlobalService
   ) {
+    this.iAdminApiService = adminApiService;
     this.userData = this.authService.userData();
     
   }
@@ -112,7 +117,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.clearMatSelectList();
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.columns = res.data;
     })
   }
@@ -124,11 +129,9 @@ export class GenerateTransactionComponent implements OnInit {
     this.transactionID = row.id;
     
     let payLoad = {
-      id: row.id,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      id: row.id, 
     };
-    this.Api
+    this.iAdminApiService
       .TransactionInfo(payLoad)
       .subscribe(
         (res: any) => {
@@ -206,11 +209,9 @@ export class GenerateTransactionComponent implements OnInit {
   }
   async autocompleteSearchColumn() {
     let searchPayload = {
-      transaction: this.orderNumber,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      transaction: this.orderNumber, 
     };
-    this.Api
+    this.iAdminApiService
       .ManualTransactionTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
@@ -296,12 +297,10 @@ export class GenerateTransactionComponent implements OnInit {
           if (res) {
             let payload = {
               deleteTransaction: type !== 'save',
-              transactionID: this.transactionID,
-              username: this.userData.userName,
-              wsid: this.userData.wsid,
+              transactionID: this.transactionID, 
             };
     
-            this.Api
+            this.iAdminApiService
               .PostTransaction(payload)
               .subscribe(
                 (res: any) => {
@@ -371,12 +370,10 @@ export class GenerateTransactionComponent implements OnInit {
 
       let payload = {
         newValues: updateValsequence,
-        transID: this.transactionID,
-        userName: this.userData.userName,
-        wsid: this.userData.wsid,
+        transID: this.transactionID, 
       };
 
-      this.Api
+      this.iAdminApiService
         .UpdateTransaction(payload)
         .subscribe((res: any) => {
         });
@@ -410,11 +407,9 @@ export class GenerateTransactionComponent implements OnInit {
   }
   getLocationData() {
     let payload = {
-      invMapID: this.invMapIDget,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      invMapID: this.invMapIDget, 
     };
-    this.Api.LocationData(payload).subscribe(
+    this.iAdminApiService.LocationData(payload).subscribe(
       (res: any) => {
         if (res && res.isExecuted) {
           let items = res.data.locationTables[0];
@@ -529,12 +524,10 @@ export class GenerateTransactionComponent implements OnInit {
 
       let payload = {
         newValues: updateValsequence,
-        transID: this.transactionID,
-        userName: this.userData.userName,
-        wsid: this.userData.wsid,
+        transID: this.transactionID, 
       };
 
-      this.Api
+      this.iAdminApiService
         .UpdateTransaction(payload)
         .subscribe((res: any) => {
           if (res && res.isExecuted) {

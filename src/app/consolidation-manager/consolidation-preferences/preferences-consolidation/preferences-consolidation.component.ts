@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 
 @Component({
   selector: 'app-preferences-consolidation',
@@ -16,8 +18,11 @@ export class PreferencesConsolidationComponent {
   userData: any;
   @Output() consolidationEvnt= new EventEmitter<void>();
 
+  public IconsolidationAPI : IConsolidationApi;
+
   constructor(
-    private Api: ApiFuntions,
+    public consolidationAPI : ConsolidationApiService,
+    // private Api: ApiFuntions,
     private toastr: ToastrService,
     private authService: AuthService,
     public dialog: MatDialog
@@ -36,6 +41,7 @@ export class PreferencesConsolidationComponent {
       emailPackSlip: new FormControl(''),
       validateStaingLocs: new FormControl(''),
     });
+    this.IconsolidationAPI = consolidationAPI;
   }
 
 
@@ -67,12 +73,10 @@ export class PreferencesConsolidationComponent {
     let payload = {
       emailPickSlip: this.filtersForm.controls['emailPackSlip'].value
         ? this.filtersForm.controls['emailPackSlip'].value
-        : false,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+        : false
     };
     // Get the email slip data from the server
-this.Api
+this.IconsolidationAPI
   .SystemPreferenceEmailSlip(payload)
   .subscribe(
     // When the request has completed
@@ -111,11 +115,9 @@ this.Api
       printUnVerified: this.filtersForm.controls['printUnVerified'].value,
       packingListSort: this.filtersForm.controls['packingList'].value,
       nonPickpro: this.filtersForm.controls['nonPickpro'].value.toString(),
-      validateStaingLocs: this.filtersForm.controls['validateStaingLocs'].value.toString(),
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      validateStaingLocs: this.filtersForm.controls['validateStaingLocs'].value.toString()
     };
-    this.Api
+    this.IconsolidationAPI
       .ConsolidationPreferenceUpdate(payload)
       .subscribe(
         (response: any) => {

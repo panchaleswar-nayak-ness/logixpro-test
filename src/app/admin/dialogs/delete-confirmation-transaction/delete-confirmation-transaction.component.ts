@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../../app/init/auth.service'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-delete-confirmation-transaction',
@@ -18,16 +20,20 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class DeleteConfirmationTransactionComponent implements OnInit {
   isChecked: boolean = true;
   public userData;
+  public iAdminApiService: IAdminApiService;
   accessLevel = 'Selected Only';
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService, 
     public dialogRef: MatDialogRef<DeleteConfirmationTransactionComponent>,
     private authService: AuthService,
     private Api: ApiFuntions,
     private router: Router
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -40,12 +46,10 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
       orderNumber: this.data.orderNo,
       id: this.data.id,
       itemNumber: '',
-      lineNumber: '',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      lineNumber: ''
     };
 
-    this.Api.DeleteOrder(deletePayload).subscribe(
+    this.iAdminApiService.DeleteOrder(deletePayload).subscribe(
       (res: any) => {
         if(res.isExecuted){
           this.dialogRef.close("Yes");

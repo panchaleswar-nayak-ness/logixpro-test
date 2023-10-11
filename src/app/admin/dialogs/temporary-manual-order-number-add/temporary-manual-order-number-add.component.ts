@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-temporary-manual-order-number-add',
@@ -28,14 +30,17 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
   transType = 'Pick';
   itemNumber;
   orderRequired:boolean=false;
+  public iAdminApiService: IAdminApiService;
   itemInvalid=false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
 
   ) {
+    this.iAdminApiService = adminApiService;
     this.orderNumber = data.orderNumber;
   }
   getFloatLabelValue(): FloatLabelType {
@@ -78,11 +83,9 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
   setItem(event?) {
   
     let payLoad = {
-      itemNumber: this.itemNumber,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      itemNumber: this.itemNumber, 
     };
-    this.Api.GetLocations(payLoad).subscribe(
+    this.iAdminApiService.GetLocations(payLoad).subscribe(
       (res: any) => {
         if (res?.data) {
           this.setLocationByItemList = res.data.map((item) => {
@@ -125,12 +128,10 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
       orderNumber: this.orderNumber,
       itemNumber: this.itemNumber,
       transactionType: this.transType,
-      invMapID: this.inventoryMapID,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      invMapID: this.inventoryMapID 
     };
 
-    this.Api
+    this.iAdminApiService
       .NewTransactionSave(payLoad)
       .subscribe(
         (res: any) => {
@@ -204,11 +205,9 @@ this.orderRequired=true
 
   async autocompleteSearchColumn() {
     let searchPayload = {
-      transaction: this.orderNumber,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      transaction: this.orderNumber
     };
-    this.Api
+    this.iAdminApiService
       .ManualTransactionTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {

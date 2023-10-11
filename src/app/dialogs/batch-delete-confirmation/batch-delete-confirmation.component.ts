@@ -2,10 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr'; 
-import labels from '../../labels/labels.json';
-// import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { InductionApiService } from 'src/app/services/induction-api/induction-api.service';
-import { IInductionServiceApi } from 'src/app/services/induction-api/induction-api-interface';
+import labels from '../../labels/labels.json'; 
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-batch-delete-confirmation',
@@ -16,19 +15,17 @@ export class BatchDeleteConfirmationComponent {
   isChecked = true;
   heading: '';
   message: '';
-
-  public Api : IInductionServiceApi;
+  public iinductionManagerApi:IInductionManagerApiService;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
-    // private Api:ApiFuntions,
-    private toastr: ToastrService,
-    public api : InductionApiService
-  ) {
-    this.Api = api;
+    private inductionManagerApi: InductionManagerApiService,
+    private toastr: ToastrService
+  ) { 
     this.heading = data.heading;
     this.message = data.message;
+    this.iinductionManagerApi = inductionManagerApi;
   }
 
   checkOptions(event: MatCheckboxChange): void {
@@ -42,7 +39,7 @@ export class BatchDeleteConfirmationComponent {
   onConfirmdelete() {
     if (this.data) {
       if (this.data.mode === 'deallocate_clear_batch') {
-        this.Api.BatchTotesDelete(this.data.payload)
+        this.iinductionManagerApi.BatchTotesDelete(this.data.payload)
           .subscribe(
             (res: any) => {
               if (res?.isExecuted) {
@@ -63,7 +60,7 @@ export class BatchDeleteConfirmationComponent {
           );
       } else if (this.data.mode === 'delete_all_batch') {
      
-        this.Api.AllBatchDelete()
+        this.iinductionManagerApi.AllBatchDelete()
           .subscribe(
             (res: any) => {
               if (res?.isExecuted) {

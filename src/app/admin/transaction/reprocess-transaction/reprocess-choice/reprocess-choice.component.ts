@@ -5,6 +5,8 @@ import labels from '../../../../labels/labels.json';
 import { SharedService } from '../../../../services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-reprocess-choice',
@@ -21,7 +23,7 @@ export class ReprocessChoiceComponent  {
   @Input() isCompleteChecked: any;
   @Input() isHistoryChecked: any;
   @Output() itemUpdatedEvent = new EventEmitter<boolean>();
-
+  public iAdminApiService: IAdminApiService;
   @Input() ROrder: any = '';
   @Input() RItem: any = '';
   @Input() selection4: any = '';
@@ -29,7 +31,7 @@ export class ReprocessChoiceComponent  {
   @Input() hold: boolean = false;
 
 
-  constructor(private Api: ApiFuntions, private toastr: ToastrService, private sharedService: SharedService) { }
+  constructor(private Api: ApiFuntions, private toastr: ToastrService, private sharedService: SharedService,private adminApiService: AdminApiService) { }
 
   
 
@@ -53,11 +55,8 @@ export class ReprocessChoiceComponent  {
   }
 
   postTransaction() {
-    let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
-    }
-    this.Api.PostReprocessTransaction(payload).subscribe(
+    let payload = {  }
+    this.iAdminApiService.PostReprocessTransaction(payload).subscribe(
       {next: (res: any) => {
         if (res.data && res.isExecuted) {
           this.isEnabled = true;
@@ -99,11 +98,9 @@ export class ReprocessChoiceComponent  {
       reprocess: (this.isReprocessedChecked.flag) ? 1 : 0,
       postComplete: (this.isCompleteChecked.flag) ? 1 : 0,
       sendHistory: (this.isHistoryChecked.flag) ? 1 : 0,
-      field: "",
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      field: "", 
     }
-    this.Api.ReprocessIncludeSet(payload).subscribe(
+    this.iAdminApiService.ReprocessIncludeSet(payload).subscribe(
       {next: (res: any) => {
         if (res.data && res.isExecuted) {
           this.toastr.success(labels.alert.update, 'Success!', {
@@ -139,7 +136,7 @@ export class ReprocessChoiceComponent  {
       "searchString": this.searchString4,
       "field": type
     }
-    this.Api.SetReprocessIds(payload).subscribe(
+    this.iAdminApiService.SetReprocessIds(payload).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.toastr.success(labels.alert.update, 'Success!', {

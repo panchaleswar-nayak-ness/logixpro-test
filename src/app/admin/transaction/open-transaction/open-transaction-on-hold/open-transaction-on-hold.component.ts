@@ -31,6 +31,8 @@ import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.ser
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 const TRNSC_DATA = [
   { colHeader: 'id', colDef: 'ID' },
@@ -176,7 +178,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   statusType: string = 'All Transactions';
   orderNumber: string = '';
   toteId: string = '';
-
+  public iAdminApiService: IAdminApiService;
   sdate: any = backDate.toISOString();
   edate: any = new Date().toISOString();
   public transType: any = [
@@ -237,6 +239,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
 
   constructor(
     private router: Router, 
+    private adminApiService: AdminApiService,
     private Api: ApiFuntions,
     public authService: AuthService,
     private global:GlobalService,
@@ -246,6 +249,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     private filterService: ContextMenuFiltersService,
     private currentTabDataService: CurrentTabDataService
   ) {
+    this.iAdminApiService = adminApiService;
     if (this.router.getCurrentNavigation()?.extras?.state?.['searchValue']) {
       this.columnSearch.searchValue =
         this.router.getCurrentNavigation()?.extras?.state?.['searchValue'];
@@ -395,13 +399,11 @@ this.router.navigate([]).then((result) => {
       searchPayload = {
         query: this.columnSearch.searchValue,
         tableName: 2,
-        column: this.columnSearch.searchColumn.colDef,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        column: this.columnSearch.searchColumn.colDef, 
       };
     }
 
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {
@@ -496,12 +498,10 @@ this.router.navigate([]).then((result) => {
   }
 
   getColumnsData(isInit : boolean = false) {
-    let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+    let payload = { 
       tableName: 'Open Transactions',
     };
-    this.Api.GetColumnSequence(payload).subscribe(
+    this.iAdminApiService.GetColumnSequence(payload).subscribe(
       {next: (res: any) => {
         this.displayedColumns = TRNSC_DATA;
         if (res.data) {
@@ -553,11 +553,9 @@ this.router.navigate([]).then((result) => {
       toteID: this.toteId,
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
-      filter: this.FilterString,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      filter: this.FilterString, 
     };
-    this.Api
+    this.iAdminApiService
       .OpenTransactionTable(this.payload)
       .subscribe(
         {next: (res: any) => {
@@ -616,11 +614,9 @@ this.router.navigate([]).then((result) => {
       itemNumber: '',
       holds: false,
       orderStatusOrder: '',
-      app: 'Admin',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      app: 'Admin', 
     };
-    this.Api
+    this.iAdminApiService
       .TransactionModelIndex(paylaod)
       .subscribe(
         {next: (res: any) => {

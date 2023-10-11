@@ -14,6 +14,8 @@ import { ToastrService } from 'ngx-toastr';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-batch-delete',
@@ -36,6 +38,7 @@ export class BatchDeleteComponent implements OnInit {
     },
   ];
   _batchList: any = [];
+  public iAdminApiService: IAdminApiService;
   get batchList(): any {
     return this._batchList;
   }
@@ -64,9 +67,10 @@ export class BatchDeleteComponent implements OnInit {
     private dialog: MatDialog,
     private api: ApiFuntions,
     public authService: AuthService,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private currentTabDataService : CurrentTabDataService,
-  ) {}
+  ) { this.iAdminApiService = adminApiService;}
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -83,11 +87,9 @@ export class BatchDeleteComponent implements OnInit {
   getBatch(type: any) {
     try {
       let paylaod = {
-        transType: type,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        transType: type
       };
-      this.api
+      this.iAdminApiService
         .SelectBatchesDeleteDrop(paylaod)
         .subscribe((res: any) => {
           this.batchList = [];
@@ -131,9 +133,7 @@ export class BatchDeleteComponent implements OnInit {
     let payload = {
       batchID: id,
       identity: 2,
-      transType: type,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      transType: type
     };
     if (this.batchID !== 'All Transaction') {
       let dialogRef = this.dialog.open(this.dltActionTemplate, {
@@ -149,7 +149,7 @@ export class BatchDeleteComponent implements OnInit {
           } else {
             payload.identity = 1;
           }
-          this.api
+          this.iAdminApiService
             .BatchDeleteAll(payload)
             .subscribe((res: any) => {
               if (res.isExecuted) {
@@ -175,7 +175,7 @@ export class BatchDeleteComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((res) => {
         if (this.dltType === 'batch_tote_trans') {
-          this.api
+          this.iAdminApiService
             .BatchDeleteAll(payload)
             .subscribe((res: any) => {
               if (res.isExecuted) {

@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 import { EmployeeObject} from 'src/app/Iemployee';  
 import { AuthService } from '../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 
 export interface GroupsDetails {
@@ -56,8 +58,10 @@ export class GroupsLookupComponent implements OnInit {
       }, 500);
     }
   }
-
-  constructor(private _liveAnnouncer: LiveAnnouncer, private dialog: MatDialog, private employeeService: ApiFuntions, private authService: AuthService) { }
+  public iAdminApiService: IAdminApiService;
+  constructor(private _liveAnnouncer: LiveAnnouncer,private adminApiService: AdminApiService, private dialog: MatDialog, private employeeService: ApiFuntions, private authService: AuthService) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   @ViewChild(MatSort) sort: MatSort;
   groups_details_data: any = [];
@@ -118,11 +122,9 @@ export class GroupsLookupComponent implements OnInit {
   }
 
   public loadEmpData(){
-    this.emp = {
-      "userName": this.userData.userName,
-      "wsid": this.userData.wsid
+    this.emp = { 
     };
-    this.employeeService.getEmployeeData(this.emp)
+    this.iAdminApiService.getEmployeeData(this.emp)
       .subscribe((response: EmployeeObject) => {
         this.employees_res = response
         this.groups_details_data = this.employees_res.data.allGroups

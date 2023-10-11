@@ -9,6 +9,8 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort, Sort } from "@angular/material/sort";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { ApiFuntions } from "src/app/services/ApiFuntions";
+import { IConsolidationApi } from "src/app/services/consolidation-api/consolidation-api-interface";
+import { ConsolidationApiService } from "src/app/services/consolidation-api/consolidation-api.service";
 
 @Component({
   selector: 'app-cm-item-selected',
@@ -43,8 +45,19 @@ export class CmItemSelectedComponent implements OnInit {
 
  @ViewChild('paginator') paginator: MatPaginator;
  
-  constructor(private dialog: MatDialog, private toastr: ToastrService, private Api:ApiFuntions, private authService: AuthService, 
-     @Inject(MAT_DIALOG_DATA) public data: any,public dialogRef: MatDialogRef<CmItemSelectedComponent> ,private _liveAnnouncer: LiveAnnouncer) { }
+ public IconsolidationAPI : IConsolidationApi;
+
+ constructor(
+    public consolidationAPI : ConsolidationApiService,
+    private dialog: MatDialog, 
+    private toastr: ToastrService, 
+    // private Api:ApiFuntions, 
+    private authService: AuthService, 
+     @Inject(MAT_DIALOG_DATA) public data: any,
+     public dialogRef: MatDialogRef<CmItemSelectedComponent>,
+     private _liveAnnouncer: LiveAnnouncer) {
+      this.IconsolidationAPI = consolidationAPI;
+      }
 
   ngOnInit(): void {
         this.userData = this.authService.userData();
@@ -74,13 +87,11 @@ export class CmItemSelectedComponent implements OnInit {
     let payload = {
         "orderNumber": this.IdentModal ,
         "column": this.ColLabel,
-        "columnValue":  this.ColumnModal,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid
+        "columnValue":  this.ColumnModal
     }
 
 
-    this.Api.ItemModelData(payload).subscribe((res=>{
+    this.IconsolidationAPI.ItemModelData(payload).subscribe((res=>{
         
         this.itemSelectTable= new MatTableDataSource(res.data);
         this.itemSelectTable.paginator = this.paginator;
@@ -104,13 +115,11 @@ verifyLine(index) {
 
 
     let payload = {
-        "id": id,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid
+        "id": id
     }
 
 
-    this.Api.VerifyItemPost(payload).subscribe((res: any) => {
+    this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
 
         if(res.isExecuted){
             
@@ -143,11 +152,9 @@ verifyAll(){
                                .map((row) => row.id.toString());
     
     let payload = {
-        "iDs": tabID,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid
+        "iDs": tabID
     };
-      this.Api.VerifyAllItemPost(payload).subscribe((res: any) => {
+      this.IconsolidationAPI.VerifyAllItemPost(payload).subscribe((res: any) => {
         if(res.isExecuted){
             this.dialogRef.close({ isExecuted : true});
   
