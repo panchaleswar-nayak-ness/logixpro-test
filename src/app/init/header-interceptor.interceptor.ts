@@ -13,18 +13,23 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth.service';
 import { ApiFuntions } from '../services/ApiFuntions';
 import { SpinnerService } from './spinner.service';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
-
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private router: Router,
     private toastr: ToastrService,
     private dialog: MatDialog,
     private authService: AuthService,
     private api:ApiFuntions,
+    public globalConfigApi: GlobalConfigApiService,
     private spinnerService: SpinnerService
-    ) {}
+    ) {
+      this.iGlobalConfigApi = globalConfigApi;
+    }  
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
       
       return next.handle(request).pipe(
@@ -46,7 +51,7 @@ export class HeaderInterceptor implements HttpInterceptor {
       
       if(this.router.url.split('?')[0] != '/report-view'){
       if(this.authService.isConfigUser()){
-          this.api.configLogout(paylaod).subscribe((res:any) => {
+          this.iGlobalConfigApi.configLogout(paylaod).subscribe((res:any) => {
             if (res.isExecuted) {       
               this.dialog.closeAll();
               this.toastr.error('Token Expire', 'Error!', {

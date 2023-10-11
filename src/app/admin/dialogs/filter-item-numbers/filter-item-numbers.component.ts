@@ -3,6 +3,8 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-filter-item-numbers',
@@ -12,15 +14,18 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class FilterItemNumbersComponent implements OnInit {
   @ViewChild('filter_text') filter_text: ElementRef;
   public userData: any;
-
+  public iAdminApiService: IAdminApiService;
   constructor(
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private Api: ApiFuntions,
     private toastr: ToastrService,
+    private adminApiService: AdminApiService,
     private authService: AuthService,
-  ) { }
+  ) {
+    this.iAdminApiService = adminApiService;
+   }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -42,7 +47,7 @@ export class FilterItemNumbersComponent implements OnInit {
         "username": this.userData.userName,
         "wsid": this.userData.wsid
       }
-      this.Api.FiltersItemNumInsert(payload).subscribe((res: any) => {
+      this.iAdminApiService.FiltersItemNumInsert(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.dialog.closeAll();
           this.dialogRef.close({ filterItemNumbersText: this.data, filterItemNumbersArray: itemsArray });

@@ -8,6 +8,8 @@ import { map } from 'rxjs/internal/operators/map';
 import { startWith } from 'rxjs/internal/operators/startWith'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-add-zone',
@@ -26,17 +28,20 @@ export class AddZoneComponent implements OnInit {
   addZoneForm: FormGroup;
   isValid = false;
   public editZoneName: any;
-
+  public iAdminApiService: IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
     private employeeService: ApiFuntions,
     private router: Router,
+    private adminApiService: AdminApiService,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<any>
 
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     const isEditMode = this.data?.mode === 'edit-zone';
@@ -107,7 +112,7 @@ export class AddZoneComponent implements OnInit {
 
         let fetchedIndex=this.fetchedZones.findIndex(item => item.zones === form.value.zoneList )
         if(fetchedIndex===-1){
-          this.employeeService.deleteEmployeeZone(zoneData).subscribe((res: any) => {
+          this.iAdminApiService.deleteEmployeeZone(zoneData).subscribe((res: any) => {
             if (res.isExecuted) {
               this.addUpdateZone(addZoneData, oldZone, mode)
             }
@@ -131,7 +136,7 @@ export class AddZoneComponent implements OnInit {
   }
 
   private addUpdateZone(addZoneData: any, oldZone: any, mode: string) {
-    this.employeeService.updateEmployeeZone(addZoneData).subscribe((res: any) => {
+    this.iAdminApiService.updateEmployeeZone(addZoneData).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialogRef.close({ data: addZoneData, mode: mode, oldZone: oldZone });
         this.toastr.success(labels.alert.success, 'Success!', {

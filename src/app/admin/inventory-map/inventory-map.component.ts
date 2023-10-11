@@ -29,6 +29,8 @@ import { RouteHistoryService } from 'src/app/services/route-history.service';
 import { PrintRangeComponent } from '../dialogs/print-range/print-range.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from '../inventory-master/current-tab-data-service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 
 const INVMAP_DATA = [
@@ -110,7 +112,7 @@ export class InventoryMapComponent implements OnInit {
   payload: any;
 
   searchAutocompleteList: any;
-
+  public iAdminApiService: IAdminApiService;
   public columnValues: any = [];
   public itemList: any;
   public filterLoc:any = 'Nothing';
@@ -146,7 +148,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.fieldNames = res.data;
     })
   }
@@ -199,6 +201,7 @@ export class InventoryMapComponent implements OnInit {
     private dialog: MatDialog,
     private authService: AuthService,
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService, 
     private global:GlobalService,
     private router: Router,
@@ -210,7 +213,7 @@ export class InventoryMapComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.previousUrl = this.routeHistoryService.getPreviousUrl();
- 
+    this.iAdminApiService = adminApiService;
     
     if(this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ){
       this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ;
@@ -299,9 +302,7 @@ export class InventoryMapComponent implements OnInit {
     {
       this.FilterString = "1 = 1"
     }
-    this.payload = {
-     "username": this.userData.userName,
-     "wsid": this.userData.wsid,
+    this.payload = { 
      "oqa": this.filterLoc,
      "searchString": this.columnSearch.searchValue,
      "searchColumn": this.columnSearch.searchColumn.colDef,
@@ -313,12 +314,10 @@ export class InventoryMapComponent implements OnInit {
    }
   }
   getColumnsData(isInit: boolean=false) {
-    let payload = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+    let payload = { 
       "tableName": "Inventory Map"
     }
-    this.Api.getSetColumnSeq(payload).pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
+    this.iAdminApiService.getSetColumnSeq(payload).pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
       this.displayedColumns = INVMAP_DATA;
 
       if(res.data){
@@ -349,7 +348,7 @@ export class InventoryMapComponent implements OnInit {
     };
   }
   getContentData(isInit: boolean = false){
-    this.Api.getInventoryMap(this.payload).pipe(takeUntil(this.onDestroy$)).subscribe((res: any) => {
+    this.iAdminApiService.getInventoryMap(this.payload).pipe(takeUntil(this.onDestroy$)).subscribe((res: any) => {
       this.itemList =  res.data?.inventoryMaps?.map((arr => {
         return {'itemNumber': arr.itemNumber, 'desc': arr.description}
       }))
@@ -549,12 +548,10 @@ export class InventoryMapComponent implements OnInit {
   }
 
   duplicate(event){
-    let obj:any = {
-      userName:this.userData.userName,
-      wsid:this.userData.wsid,
+    let obj:any = { 
       inventoryMapID:event.invMapID
     }
-  this.Api.duplicate(obj).pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
+  this.iAdminApiService.duplicate(obj).pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
     this.displayedColumns = INVMAP_DATA;
 
     if(res.data){
@@ -624,11 +621,9 @@ export class InventoryMapComponent implements OnInit {
   autocompleteSearchColumn(){
     let searchPayload = {
       "columnName": this.columnSearch.searchColumn.colDef,
-      "value": this.columnSearch.searchValue,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "value": this.columnSearch.searchValue
     }
-    this.Api.getSearchData(searchPayload).pipe(takeUntil(this.onDestroy$)).subscribe((res: any) => {
+    this.iAdminApiService.getSearchData(searchPayload).pipe(takeUntil(this.onDestroy$)).subscribe((res: any) => {
       if(res.data){
         this.searchAutocompleteList = res.data;
         }

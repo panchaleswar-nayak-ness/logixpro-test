@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DatePipe } from '@angular/common';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-om-event-log-entry-detail',
@@ -17,16 +19,20 @@ export class OmEventLogEntryDetailComponent implements OnInit {
 
   eventLog: any;
   userData: any;
+  public iAdminApiService: IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<OmEventLogEntryDetailComponent>,
     private authService: AuthService,
     private global:GlobalService,
     private datepipe: DatePipe,
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.eventLog = this.data.data;
@@ -52,7 +58,7 @@ export class OmEventLogEntryDetailComponent implements OnInit {
           "username": this.userData.userName,
           "wsid": this.userData.wsid
         }
-        this.Api.SelectedEventDelete(payload).subscribe((res: any) => {
+        this.iAdminApiService.SelectedEventDelete(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.toastr.success(labels.alert.delete, 'Success!', {
               positionClass: 'toast-bottom-right',

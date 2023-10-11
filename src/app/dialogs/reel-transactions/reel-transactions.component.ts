@@ -7,6 +7,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-reel-transactions',
@@ -40,13 +42,16 @@ fieldNames:any;
   fromReelCheck:any
   reel:any
   oldIncluded:any
-
+  public iinductionManagerApi:IInductionManagerApiService;
   @ViewChild('noOfReeltemp') noOfReeltemp: ElementRef
   @ViewChild('serialTemp') serialTemp: ElementRef
   @ViewChildren('serialTemp') serialInputs: QueryList<any>;
   
   constructor(private dialog: MatDialog,public dialogRef: MatDialogRef<ReelTransactionsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService,private global:GlobalService) { }
+    private inductionManagerApi: InductionManagerApiService,
+    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService,private global:GlobalService) {
+      this.iinductionManagerApi = inductionManagerApi;
+     }
 
   ngOnInit(): void {
     this.itemNumber = this.data.itemObj.number
@@ -121,7 +126,7 @@ fieldNames:any;
     let payload = {
       "numReels": this.noOfReels
     }
-    this.Api.NextSerialNumber(payload).subscribe({next: (res: any)=>{
+    this.iinductionManagerApi.NextSerialNumber(payload).subscribe({next: (res: any)=>{
       if (res.data && res.isExecuted){
         const dataArray: any[] = [];
         for (let x = 0; x < this.noOfReels; x++){
@@ -290,7 +295,7 @@ CreateReels(){
                 let payload = {
                   SerialNumbers:SNs
                 }
-                this.Api.ValidateSn(payload).subscribe((res:any)=>{
+                this.iinductionManagerApi.ValidateSn(payload).subscribe((res:any)=>{
                   if (res.data && res.isExecuted){
                     let errs = '';
                     for (let x = 0; x < res.data.length; x++) {
@@ -324,10 +329,9 @@ CreateReels(){
                      let payload = {
                       "item": this.itemNumber,
                       "reels":reels
-                    }
-                    console.log(payload)
+                    } 
                     
-                      this.Api.ReelsCreate(payload).subscribe((res=>{
+                      this.iinductionManagerApi.ReelsCreate(payload).subscribe((res=>{
                         if(res.data && res.isExecuted){
                             if(res.data.lenghth<=0){
                               this.toastr.error('There was an error while attempting to save the new reels.  See the error log for details.', 'Error!', {
@@ -419,7 +423,7 @@ let res:any =   this.global.Print(`FileName:PrintReelLabels|OTID:${this.createdR
     let payload = {
       "numReels": 1
     }
-    this.Api.NextSerialNumber(payload).subscribe({next: (res: any)=>{
+    this.iinductionManagerApi.NextSerialNumber(payload).subscribe({next: (res: any)=>{
       if (res.data && res.isExecuted){
         this.generateReelAndSerial.data[index].reel_serial_number=res.data+ '-RT';
       }

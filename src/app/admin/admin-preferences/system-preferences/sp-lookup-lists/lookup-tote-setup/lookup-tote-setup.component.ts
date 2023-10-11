@@ -6,6 +6,8 @@ import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confir
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-lookup-tote-setup',
@@ -18,7 +20,7 @@ export class LookupToteSetupComponent implements OnInit {
   ELEMENT_DATA: any[] =[
     {tote_id: '125874', cells: '120' },
   ];
-
+  public iAdminApiService: IAdminApiService;
   displayedColumns: string[] = ['tote_id', 'cells', 'actions'];
   tableData : any = [];
   OldtableData : any = [];
@@ -29,8 +31,11 @@ export class LookupToteSetupComponent implements OnInit {
 
   constructor(private Api:ApiFuntions,
     private dialog: MatDialog,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService,
-    public authService: AuthService,) { }
+    public authService: AuthService,) { 
+      this.iAdminApiService = adminApiService;
+    }
 
   ngOnInit(): void {
     this.getToteTable()
@@ -38,7 +43,7 @@ export class LookupToteSetupComponent implements OnInit {
 
   getToteTable(){
 
-    this.Api.getToteCell().subscribe(res => {
+    this.iAdminApiService.getToteCell().subscribe(res => {
       if (res.isExecuted) {
         this.OldtableData =res.data;   
         this.tableData = JSON.parse(JSON.stringify(res.data));   
@@ -80,7 +85,7 @@ export class LookupToteSetupComponent implements OnInit {
       "toteID": ele.toteID,
       "cells": ele.cells.toString()
     }
-    this.Api.totesetup(payload).pipe(
+    this.iAdminApiService.totesetup(payload).pipe(
     
       catchError((error) => {
         return of({ isExecuted: false });
@@ -118,7 +123,7 @@ export class LookupToteSetupComponent implements OnInit {
         let payload = {
           "toteID": ele.toteID
         }
-        this.Api.deleteTote(payload).subscribe((res=>{ 
+        this.iAdminApiService.deleteTote(payload).subscribe((res=>{ 
           if(res.isExecuted){
             this.getToteTable()
           }
@@ -142,7 +147,7 @@ export class LookupToteSetupComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result)
       if(result){
-        this.Api.cleartote({}).subscribe((res=>{
+        this.iAdminApiService.cleartote({}).subscribe((res=>{
           console.log(res)
           if(res.isExecuted){
             this.toastr.success(`Tote Clear Successfully`, 'Error!', {

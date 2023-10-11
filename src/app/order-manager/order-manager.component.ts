@@ -3,6 +3,8 @@ import { AuthService } from '../init/auth.service';
 import { NavigationEnd, Router} from '@angular/router';
 import { ApiFuntions } from '../services/ApiFuntions';
 import { GlobalService } from '../common/services/global.service';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 
 @Component({
   selector: 'app-order-manager',
@@ -20,12 +22,15 @@ export class OrderManagerComponent implements OnInit {
   compAdjust=0;
   compLocChange=0;
   reprocCount=0;
+  public iOrderManagerApi :  IOrderManagerAPIService;
   constructor(
     private Api:ApiFuntions,
     private authService: AuthService,
+    public orderManagerApi  : OrderManagerApiService,
     private router: Router,
     private global:GlobalService
   ) {
+        this.iOrderManagerApi = orderManagerApi;
         this.router.events.subscribe((event) => {
           if (event instanceof NavigationEnd) {
 
@@ -48,7 +53,7 @@ export class OrderManagerComponent implements OnInit {
 
   getInvDetailsList() {
 
-    this.Api
+    this.iOrderManagerApi
       .OrderManagerMenuIndex()
       .subscribe(
         (res: any) => {

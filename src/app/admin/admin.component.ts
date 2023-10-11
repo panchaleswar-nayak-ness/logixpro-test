@@ -8,6 +8,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import { ApiFuntions } from '../services/ApiFuntions';
+import { IAdminApiService } from '../services/admin-api/admin-api-interface';
+import { AdminApiService } from '../services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-admin',
@@ -75,7 +77,7 @@ export class AdminComponent implements OnInit {
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
   ];
 
-
+  public iAdminApiService: IAdminApiService;
 
   public displayedColumns: string[] = [
     'zone',
@@ -89,9 +91,12 @@ export class AdminComponent implements OnInit {
   constructor(
     public authService: AuthService, 
     private api:ApiFuntions,
+    private adminApiService: AdminApiService,
     private _liveAnnouncer: LiveAnnouncer,
    
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
   inventoryDetail = new FormGroup({
     item: new FormControl({ value: '', disabled: true }),
     description: new FormControl({ value: '', disabled: true }),
@@ -156,19 +161,17 @@ export class AdminComponent implements OnInit {
     }
   }
   public OSFieldFilterNames() { 
-    this.api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.fieldNames = res.data;
     })
   }
   async autocompleteSearchColumn() {
     let searchPayload = {
      
-      stockCode:this.searchValue,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      stockCode:this.searchValue, 
     };
 
-    this.api.location(searchPayload).subscribe({
+    this.iAdminApiService.location(searchPayload).subscribe({
       next: (res: any) => {
         this.searchAutocompleteList = res.data;
       },
@@ -190,11 +193,9 @@ export class AdminComponent implements OnInit {
 
   getInvDetailsList() {
     let payload = {
-      itemNumber: this.searchValue,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      itemNumber: this.searchValue, 
     };
-    this.api.Inventorymasterdata(payload).subscribe({
+    this.iAdminApiService.Inventorymasterdata(payload).subscribe({
       next: (res: any) => {
         if (res.isExecuted) {
           const data = res.data;
@@ -280,7 +281,7 @@ export class AdminComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
   getAdminMenu() { 
-    this.api.GetAdminMenu().subscribe((res: any) => {
+    this.iAdminApiService.GetAdminMenu().subscribe((res: any) => {
         if ( res?.data?.totalOrders) {
           this.dataSource = new MatTableDataSource(
             res.data.totalOrders.orderTable

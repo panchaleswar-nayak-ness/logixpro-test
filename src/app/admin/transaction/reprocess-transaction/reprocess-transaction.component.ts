@@ -24,6 +24,8 @@ import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/c
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 const TRNSC_DATA = [
   { colHeader: 'id', colDef: 'ID' },
   { colHeader: 'importDate', colDef: 'Import Date' },
@@ -196,7 +198,7 @@ export class ReprocessTransactionComponent implements OnInit {
   hideRequiredFormControl = new FormControl(false);
   searchByColumn = new Subject<string>();
 
-
+  public iAdminApiService: IAdminApiService;
   /*for data col. */
 
   constructor( 
@@ -205,9 +207,12 @@ export class ReprocessTransactionComponent implements OnInit {
     private toastr: ToastrService, 
     private dialog: MatDialog,
     private sharedService: SharedService,
+    private adminApiService: AdminApiService,
     private router: Router,
     private global:GlobalService,
-  ) { }
+  ) {
+    this.iAdminApiService = adminApiService;
+   }
 
   ngOnInit(): void {
     this.customPagination = {
@@ -299,11 +304,9 @@ export class ReprocessTransactionComponent implements OnInit {
   getTransactionInfo(completeInfo: boolean) {
     if (!completeInfo) {
       let payload = {
-        id: '' + this.transactionID + '',
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        id: '' + this.transactionID + '', 
       }
-      this.Api.ReprocessTransactionData(payload).subscribe(
+      this.iAdminApiService.ReprocessTransactionData(payload).subscribe(
         {next: (res: any) => {
           if (res.data && res.isExecuted) {
             this.createdBy = res.data[0].nameStamp;
@@ -356,12 +359,10 @@ export class ReprocessTransactionComponent implements OnInit {
       searchPayload = {
         query: this.queryString!=''?this.queryString:this.columnSearch.searchValue,
         tableName: 4,
-        column: this.columnSearch.searchColumn.colDef,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        column: this.columnSearch.searchColumn.colDef, 
       };
     }
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {
@@ -453,9 +454,7 @@ export class ReprocessTransactionComponent implements OnInit {
             "dateStamp": "",
             "itemNumber": "",
             "orderNumber": "",
-            "replenishments": true,
-            "username": this.userData.userName,
-            "wsid": this.userData.wsid
+            "replenishments": true, 
           }
           }
           else if (!opened && this.selectedVariable && this.selectedVariable =='deleteSelected') 
@@ -469,9 +468,7 @@ export class ReprocessTransactionComponent implements OnInit {
               "dateStamp": "",
               "itemNumber": "",
               "orderNumber": "",
-              "replenishments": false,
-              "username": this.userData.userName,
-              "wsid": this.userData.wsid
+              "replenishments": false, 
             }
           }
           else if (!opened && this.selectedVariable && this.selectedVariable =='deleteBySelectedReason') 
@@ -485,9 +482,7 @@ export class ReprocessTransactionComponent implements OnInit {
               "dateStamp": "",
               "itemNumber": "",
               "orderNumber": "",
-              "replenishments": false,
-              "username": this.userData.userName,
-              "wsid": this.userData.wsid
+              "replenishments": false, 
             }
           }
           else if (!opened && this.selectedVariable && this.selectedVariable =='deleteBySelectedMessage') 
@@ -501,9 +496,7 @@ export class ReprocessTransactionComponent implements OnInit {
               "dateStamp": "",
               "itemNumber": "",
               "orderNumber": "",
-              "replenishments": false,
-              "username": this.userData.userName,
-              "wsid": this.userData.wsid
+              "replenishments": false, 
             }
           }
           else if (!opened && this.selectedVariable && this.selectedVariable =='deleteByDateTime') 
@@ -533,9 +526,7 @@ export class ReprocessTransactionComponent implements OnInit {
               "dateStamp": "",
               "itemNumber": this.itemNumber,
               "orderNumber": "",
-              "replenishments": false,
-              "username": this.userData.userName,
-              "wsid": this.userData.wsid
+              "replenishments": false, 
             }
           }
           else if (!opened && this.selectedVariable && this.selectedVariable =='deleteByOrderNumber') 
@@ -550,9 +541,7 @@ export class ReprocessTransactionComponent implements OnInit {
               "dateStamp": "",
               "itemNumber": "",
               "orderNumber": this.orderNumber,
-              "replenishments": false,
-              "username": this.userData.userName,
-              "wsid": this.userData.wsid
+              "replenishments": false, 
             }
           }
           const dialogRef =  this.dialog.open(DeleteConfirmationComponent, {
@@ -567,7 +556,7 @@ export class ReprocessTransactionComponent implements OnInit {
           dialogRef.afterClosed().subscribe(result => {
             if(result=='Yes')
             {
-              this.Api.ReprocessTransactionDelete(deletePayload).subscribe((res: any) => {
+              this.iAdminApiService.ReprocessTransactionDelete(deletePayload).subscribe((res: any) => {
                 if (res.isExecuted){
                   this.selectedVariable = "";
                   this.toastr.success(labels.alert.update, 'Success!',{
@@ -705,11 +694,9 @@ export class ReprocessTransactionComponent implements OnInit {
           }
           let payload = {
             Column: column,
-            MarkAsTrue: MarkAsTrue,
-            username: this.userData.userName,
-            wsid: this.userData.wsid,
+            MarkAsTrue: MarkAsTrue, 
           }
-          this.Api.SetAllReprocessColumn(payload).subscribe(
+          this.iAdminApiService.SetAllReprocessColumn(payload).subscribe(
             {next: (res: any) => {
               if (res.data && res.isExecuted) { 
                 this.getContentData();
@@ -755,11 +742,9 @@ export class ReprocessTransactionComponent implements OnInit {
               reprocess: 0,
               postComplete: 0,
               sendHistory: 0,
-              field: "",
-              username: this.userData.userName,
-              wsid: this.userData.wsid,
+              field: "", 
             }
-            this.Api.ReprocessIncludeSet(payloadForReprocess).subscribe(
+            this.iAdminApiService.ReprocessIncludeSet(payloadForReprocess).subscribe(
               {next: (res: any) => {
                 if (res.data && res.isExecuted) {
                   this.getContentData();
@@ -792,11 +777,9 @@ export class ReprocessTransactionComponent implements OnInit {
 
   }
   getOrdersWithStatus() {
-    let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid
+    let payload = { 
     };
-    this.Api.OrderToPost(payload).subscribe(
+    this.iAdminApiService.OrderToPost(payload).subscribe(
       {next: (res: any) => {
         if (res.data) {
           this.orders.reprocess = res.data.reprocessCount;
@@ -840,12 +823,10 @@ export class ReprocessTransactionComponent implements OnInit {
     this.sharedService.updateReprocess(this.selectedOrderObj)
   }
   getColumnsData() {
-    let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+    let payload = { 
       tableName: 'Open Transactions Temp',
     };
-    this.Api.GetColumnSequence(payload).subscribe(
+    this.iAdminApiService.GetColumnSequence(payload).subscribe(
       {next: (res: any) => {
         this.displayedColumns = TRNSC_DATA;
         if (res.data) {
@@ -876,11 +857,9 @@ export class ReprocessTransactionComponent implements OnInit {
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
       itemNumber: clear==""?this.itemNumber:"" ,
-      hold: this.isHold,
-      username: this.userData.userName,
-      wsid: this.userData.wsid
+      hold: this.isHold, 
     };
-    this.Api
+    this.iAdminApiService
       .ReprocessTransactionTable(payload)
       .subscribe(
         {next: (res: any) => { 
@@ -910,11 +889,9 @@ export class ReprocessTransactionComponent implements OnInit {
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
       orderNumber: "",
-      itemNumber: this.itemNumber,
-      username: this.userData.userName,
-      wsid: this.userData.wsid
+      itemNumber: this.itemNumber, 
     };
-    this.Api
+    this.iAdminApiService
       .ReprocessedTransactionHistoryTable(payload)
       .subscribe(
         {next: (res: any) => {

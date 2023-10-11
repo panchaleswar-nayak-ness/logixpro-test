@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { CrDesignFilenameConfirmationComponent } from '../cr-design-filename-confirmation/cr-design-filename-confirmation.component';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-cr-add-new-custom-report',
@@ -24,7 +26,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
   appendstring
   AddNewColumns
   AddNewColumnscheck = false
-  
+  public iAdminApiService: IAdminApiService;
   AddNewFilePresent = false
   RestoreAll = false
   CurrentFilename
@@ -34,7 +36,10 @@ export class CrAddNewCustomReportComponent implements OnInit {
               private dialog: MatDialog,
                private api:ApiFuntions,
               private toastr :ToastrService,
-              public dialogRef: MatDialogRef<any>) { }
+              private adminApiService: AdminApiService,
+              public dialogRef: MatDialogRef<any>) { 
+                this.iAdminApiService = adminApiService;
+              }
 
   ngOnInit(): void {
      this.listOfFileName = this.data.ListReports
@@ -102,7 +107,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
 
     if(valid){
       
-      this.api.validateNewDesign(newParams).subscribe((res=>{
+      this.iAdminApiService.validateNewDesign(newParams).subscribe((res=>{
         if(!res.data){
           this.toastr.error(`Validation for adding a new report failed with an unknown error.  Please contact Scott Tech for support if this persists.`, 'Error!', {
             positionClass: 'toast-bottom-right',
@@ -159,7 +164,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
               // appName: $('#AppName').val()
           };
 
-          this.api.getLLDesignerNewDesign(obj).pipe(
+          this.iAdminApiService.getLLDesignerNewDesign(obj).pipe(
             catchError((error) => {
               // Handle the error here
               this.toastr.error("An error occured while retrieving data.", 'Error!', {
@@ -198,7 +203,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       exportFilename: this.NewExportFilename,
       all: all ? all : false
   };
-  this.api.restoreDesign(obj).subscribe(res=>{
+  this.iAdminApiService.restoreDesign(obj).subscribe(res=>{
     if(!res.data){
       this.toastr.error("Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!', {
         positionClass: 'toast-bottom-right',
@@ -232,7 +237,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
           "keepFile": false,
           "contentRootPath": ""
         }
-        this.api.deleteReport(payload).subscribe(res=>{
+        this.iAdminApiService.deleteReport(payload).subscribe(res=>{
           if (!res.data) {
             this.toastr.error("Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!', {
               positionClass: 'toast-bottom-right',

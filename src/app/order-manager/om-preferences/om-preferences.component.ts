@@ -17,15 +17,15 @@ export class OmPreferencesComponent implements OnInit {
   userData: any;
   filtersForm: FormGroup;
   @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
-  public orderManagerApi :  IOrderManagerAPIService;
+  public iOrderManagerApi :  IOrderManagerAPIService;
   constructor(
     private Api: ApiFuntions,
-    public OrderManagerApi  : OrderManagerApiService,
+    public orderManagerApi  : OrderManagerApiService,
     private authService: AuthService,
     private toastr: ToastrService,
     private global:GlobalService
   ) {
-    this.orderManagerApi = OrderManagerApi;
+    this.iOrderManagerApi = orderManagerApi;
     this.userData = this.authService.userData();
 
     this.filtersForm = new FormGroup({
@@ -78,7 +78,7 @@ export class OmPreferencesComponent implements OnInit {
   }
   getPreferences() {
     
-    this.orderManagerApi
+    this.iOrderManagerApi
       .OrderManagerPreferenceIndex()
       .subscribe((response: any) => {
         if (response.isExecuted) {

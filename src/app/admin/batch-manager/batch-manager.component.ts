@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../inventory-master/current-tab-data-service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 const ELEMENT_DATA: any = [
   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', action: ''},
@@ -72,7 +74,7 @@ export class BatchManagerComponent implements OnInit {
   batchUpdater: Event;
 
   public userData : any;
-  
+  public iAdminApiService: IAdminApiService;
   orderList : any;
   transTypeEvent: Event;
   displayOrderCols : string[] = ["orderNumber", "countOfOrderNumber", "minOfPriority", "detail", "action"];
@@ -87,9 +89,11 @@ export class BatchManagerComponent implements OnInit {
   extraField:any="";
   constructor(private Api : ApiFuntions, 
               private authService: AuthService,
+              private adminApiService: AdminApiService,
               private currentTabDataService: CurrentTabDataService
               ) { 
                 this.permissions= JSON.parse(localStorage.getItem('userRights') ?? '');
+                this.iAdminApiService = adminApiService;
               }
 
   ngOnInit(): void {
@@ -128,12 +132,10 @@ export class BatchManagerComponent implements OnInit {
     this.transTypeEvent = type;
     this.type = type;
     let paylaod = {
-      "transType": type,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "transType": type
     }
     try {
-      this.Api.BatchManagerOrder(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.BatchManagerOrder(paylaod).subscribe((res: any) => {
         
         const { data, isExecuted } = res
         if (isExecuted && data.length > 0) {
@@ -143,7 +145,7 @@ export class BatchManagerComponent implements OnInit {
       
       
       });
-      this.Api.GetBatchManager(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.GetBatchManager(paylaod).subscribe((res: any) => {
         const { data, isExecuted } = res
         if (isExecuted) {
           this.batchManagerSettings = data.batchManagerSettings;

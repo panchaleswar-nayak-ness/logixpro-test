@@ -10,6 +10,8 @@ import { AuthService } from '../init/auth.service';
 import packJSON from '../../../package.json'
 import { SharedService } from '../services/shared.service';
 import { ApiFuntions } from '../services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 @Component({
   selector: 'login',
@@ -28,6 +30,7 @@ export class LoginComponent {
   applicationData: any = [];
   isAppAccess=false;
   info:any=  {};
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     public api: ApiFuntions,
     private router: Router,
@@ -35,9 +38,11 @@ export class LoginComponent {
     private toastr: ToastrService,
     private dialog: MatDialog,
     public loader: SpinnerService,
+    public globalConfigApi: GlobalConfigApiService,
     private auth: AuthService, 
     private sharedService: SharedService,
   ) { 
+    this.iGlobalConfigApi = globalConfigApi;
     this.url = this.router.url;
   }
 
@@ -156,7 +161,7 @@ enterUserName(){
     let payload = {
       workstationid: userData.wsid,
     };
-    this.api.AppNameByWorkstation(payload)
+    this.iGlobalConfigApi.AppNameByWorkstation(payload)
       .subscribe(
         (res: any) => {
           if (res?.data) {
@@ -275,7 +280,7 @@ enterUserName(){
     let paylaod={
       workstationid: wsid
     }
-     this.api.workstationdefaultapp(paylaod).subscribe(
+     this.iGlobalConfigApi.workstationdefaultapp(paylaod).subscribe(
   (res: any) => {
   
     if (res?.data) {

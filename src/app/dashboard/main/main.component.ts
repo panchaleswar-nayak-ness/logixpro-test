@@ -6,6 +6,9 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -22,15 +25,18 @@ export class MainComponent implements OnInit {
   isDefaultAppVerify: any;
   private subscription: Subscription = new Subscription();
 
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private sharedService: SharedService,
     private Api: ApiFuntions,
+    public globalConfigApi: GlobalConfigApiService,
     private authService: AuthService,
     private currentTabDataService: CurrentTabDataService,
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute
   ) {
+    this.iGlobalConfigApi = globalConfigApi;
     window.addEventListener('beforeunload', () => {
       this.currentTabDataService.RemoveTabOnRoute(this.router.url);
     });
@@ -70,7 +76,7 @@ export class MainComponent implements OnInit {
     let payload = {
       workstationid: this.userData.wsid,
     };
-    this.Api.AppNameByWorkstation(payload).subscribe(
+    this.iGlobalConfigApi.AppNameByWorkstation(payload).subscribe(
       (res: any) => {
         if (res?.data) {
           this.convertToObj(res.data);

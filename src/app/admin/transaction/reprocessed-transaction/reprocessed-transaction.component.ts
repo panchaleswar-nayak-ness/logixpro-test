@@ -12,6 +12,8 @@ import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/init/auth.service';
 import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 const TRNSC_DATA = [
   { colHeader: 'importDate', colDef: 'Import Date' },
@@ -51,6 +53,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   hideRequiredControl = new FormControl(false);
   searchBar = new Subject<string>();
   searchAutocompleteList: any;
+  public iAdminApiService: IAdminApiService;
   public sortCol:any=5;
   public sortOrder:any='asc';
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -79,9 +82,12 @@ export class ReprocessedTransactionComponent implements OnInit {
   constructor(
     private Api: ApiFuntions,
     private authService: AuthService,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.searchBar
@@ -104,12 +110,10 @@ export class ReprocessedTransactionComponent implements OnInit {
   }
 
   getColumnsData() {
-    let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+    let payload = { 
       tableName: 'ReProcessed',
     };
-    this.Api.GetColumnSequence(payload).subscribe(
+    this.iAdminApiService.GetColumnSequence(payload).subscribe(
       {next: (res: any) => {
         this.displayedColumns = TRNSC_DATA;
         if (res.data) {
@@ -135,11 +139,9 @@ export class ReprocessedTransactionComponent implements OnInit {
       itemNumber: '',
       holds: false,
       orderStatusOrder: '',
-      app: 'Admin',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      app: 'Admin', 
     };
-    this.Api
+    this.iAdminApiService
       .TransactionModelIndex(paylaod)
       .subscribe(
         {next: (res: any) => {
@@ -156,11 +158,9 @@ export class ReprocessedTransactionComponent implements OnInit {
       start: this.customPagination.startIndex,
       length: this.customPagination.endIndex,
       sortColumnNumber: this.sortCol,
-      sortOrder: this.sortOrder,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      sortOrder: this.sortOrder, 
     };
-    this.Api
+    this.iAdminApiService
       .ReprocessedTransactionTable(this.payload)
       .subscribe(
         {next: (res: any) => {
@@ -189,11 +189,9 @@ export class ReprocessedTransactionComponent implements OnInit {
     let searchPayload = {
       query: this.columnSearch.searchValue,
       tableName: 6,
-      column: this.columnSearch.searchColumn.colDef,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      column: this.columnSearch.searchColumn.colDef, 
     };
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
        { next: (res: any) => {

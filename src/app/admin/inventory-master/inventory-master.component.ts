@@ -22,6 +22,8 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { CurrentTabDataService } from './current-tab-data-service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 
 
@@ -41,6 +43,7 @@ export class InventoryMasterComponent implements OnInit {
   public invData: any;
   public getInvMasterData: any;
   public invMasterLocations: any;
+  public iAdminApiService: IAdminApiService;
   public isDialogOpen = false;
   public fieldNames:any;
   public isParameter=false;
@@ -86,6 +89,7 @@ export class InventoryMasterComponent implements OnInit {
   constructor(
     private api: ApiFuntions,
     private authService: AuthService,
+    private adminApiService: AdminApiService,
     private dialog: MatDialog,
     private fb: FormBuilder,
     private toastr: ToastrService,
@@ -96,6 +100,7 @@ export class InventoryMasterComponent implements OnInit {
     private sharedService: SharedService,
     private currentTabDataService: CurrentTabDataService
   ) {
+    this.iAdminApiService = adminApiService;
   }
   @ViewChild('quarantineAction') quarantineTemp: TemplateRef<any>;
   @ViewChild('UNquarantineAction') unquarantineTemp: TemplateRef<any>;
@@ -401,7 +406,7 @@ export class InventoryMasterComponent implements OnInit {
       "itemNumber": param??this.currentPageItemNo,
     }
 
-    this.api.GetInventoryItemNumber(paylaod1).subscribe((res:any)=>{
+    this.iAdminApiService.GetInventoryItemNumber(paylaod1).subscribe((res:any)=>{
       
       this.RecordSavedItem();
       if(res.isExecuted){
@@ -434,11 +439,9 @@ export class InventoryMasterComponent implements OnInit {
     let paylaod = {
       "itemNumber": currentPageItemNumber,
       "app": "",
-      "newItem": false,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "newItem": false
     }
-    this.api.GetInventory(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.GetInventory(paylaod).subscribe((res: any) => {
       
       if (currentPageItemNumber == '') {
         currentPageItemNumber = res.data?.firstItemNumber;
@@ -458,19 +461,17 @@ export class InventoryMasterComponent implements OnInit {
   async getInvMasterDetail(itemNum: any,shouldExecute = true): Promise<void> {
     if(!shouldExecute) return;
     let paylaod = {
-      "itemNumber": itemNum,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "itemNumber": itemNum
     };
 
     try {
-      const res: any = await this.api.GetInventoryMasterData(paylaod).toPromise();
+      const res: any = await this.iAdminApiService.GetInventoryMasterData(paylaod).toPromise();
       this.getInvMasterData = res.data;
  
       await this.initialzeIMFeilds();
     } catch (error) {
     }
-    this.api.GetInventoryMasterData(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.GetInventoryMasterData(paylaod).subscribe((res: any) => {
       res.data['scanCode'] = res.data['scanCode'].map(item => {
         return { ...item, isDisabled: true };
       })
@@ -494,7 +495,7 @@ export class InventoryMasterComponent implements OnInit {
     return changedProperties;
   }
   public OSFieldFilterNames() { 
-    this.api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.columns = res.data;
       this.fieldNames=this.columns
     })
@@ -507,11 +508,9 @@ export class InventoryMasterComponent implements OnInit {
       "start": startIndex ?? 0,
       "length": pageSize ??5,
       "sortColumnNumber": sortingColumnName ?? 0,
-      "sortOrder": sortingOrder ?? "",
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "sortOrder": sortingOrder ?? ""
     }
-    this.api.GetInventoryMasterLocation(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.GetInventoryMasterLocation(paylaod).subscribe((res: any) => {
       // this.invMasterLocations ='asdsad';
       this.invMaster.get('inventoryTable')?.setValue(res.data.inventoryTable);
       this.count = res.data.count 
@@ -521,11 +520,9 @@ export class InventoryMasterComponent implements OnInit {
 
   public getLocationTable(stockCode: any) {
     let paylaod = {
-      "stockCode": stockCode,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "stockCode": stockCode
     }
-    this.api.GetLocationTable(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.GetLocationTable(paylaod).subscribe((res: any) => {
       this.locationTable = res.data;
     })
   }
@@ -535,11 +532,9 @@ export class InventoryMasterComponent implements OnInit {
       let paylaod = {
         "itemNumber": this.currentPageItemNo,
         "filter": "1=1",
-        "firstItem": 1,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "firstItem": 1
       }
-      this.api.NextItemNumber(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.NextItemNumber(paylaod).subscribe((res: any) => {
         this.currentPageItemNo = res.data;
         this.searchValue = this.currentPageItemNo;
         this.getInventory();
@@ -556,11 +551,9 @@ export class InventoryMasterComponent implements OnInit {
       let paylaod = {
         "itemNumber": this.currentPageItemNo,
         "filter": "1=1",
-        "firstItem":init?0:1,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "firstItem":init?0:1
       }
-      this.api.PreviousItemNumber(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.PreviousItemNumber(paylaod).subscribe((res: any) => {
         this.currentPageItemNo = res.data;
         this.searchValue = this.currentPageItemNo;
 
@@ -581,12 +574,10 @@ export class InventoryMasterComponent implements OnInit {
     let paylaod = {
       "itemNumber": this.currentPageItemNo,
       "filter": "1=1",
-      "firstItem":0,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "firstItem":0
     }
 
-    this.api.PreviousItemNumber(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.PreviousItemNumber(paylaod).subscribe((res: any) => {
 
    
       this.currentPageItemNo = res.data;
@@ -625,7 +616,7 @@ export class InventoryMasterComponent implements OnInit {
       if(!this.invMaster.value.secondaryPickZone){
         this.invMaster.value['secondaryPickZone'] = '';
       }
-      this.api.UpdateInventoryMaster(this.invMaster.value).subscribe((res: any) => {
+      this.iAdminApiService.UpdateInventoryMaster(this.invMaster.value).subscribe((res: any) => {
         if (res.isExecuted) {
           this.saveDisabled = true;
           this.ifAllowed = false;
@@ -649,11 +640,9 @@ export class InventoryMasterComponent implements OnInit {
   public updateItemNumber(form: any) {
     let paylaod = {
       "oldItemNumber": form.oldItemNumber,
-      "newItemNumber": form.newItemNumber,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "newItemNumber": form.newItemNumber 
     }
-    this.api.UpdateItemNumber(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.UpdateItemNumber(paylaod).subscribe((res: any) => {
     })
   }
 
@@ -680,11 +669,9 @@ export class InventoryMasterComponent implements OnInit {
         const { itemNumber, description } = result;
         let paylaod = {
           "itemNumber": itemNumber,
-          "description": description,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "description": description
         }
-        this.api.AddNewItem(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.AddNewItem(paylaod).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.toastr.success(labels.alert.success, 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -728,11 +715,9 @@ export class InventoryMasterComponent implements OnInit {
 
         let paylaod = {
           "itemNumber": itemToDelete,
-          "append": true,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "append": true
         }
-        this.api.DeleteItem(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.DeleteItem(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
             this.toastr.success(labels.alert.delete, 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -741,11 +726,9 @@ export class InventoryMasterComponent implements OnInit {
             let paylaodNextItemNumber = {
               "itemNumber": this.currentPageItemNo,
               "filter": "1=1",
-              "firstItem": 1,
-              "username": this.userData.userName,
-              "wsid": this.userData.wsid,
+              "firstItem": 1
             }
-            this.api.NextItemNumber(paylaodNextItemNumber).subscribe((res: any) => {
+            this.iAdminApiService.NextItemNumber(paylaodNextItemNumber).subscribe((res: any) => {
               this.currentPageItemNo = res.data;
               this.searchValue = this.currentPageItemNo;
               this.getInventory();
@@ -774,11 +757,9 @@ export class InventoryMasterComponent implements OnInit {
       if (x) {
         let paylaod = {
           "itemNumber": this.currentPageItemNo,
-          "append": true,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "append": true
         }
-        this.api.UpdateInventoryMasterOTQuarantine(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.UpdateInventoryMasterOTQuarantine(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
             this.toastr.success(res.responseMessage, 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -812,11 +793,9 @@ export class InventoryMasterComponent implements OnInit {
       if (x) {
         let paylaod = {
           "itemNumber": this.currentPageItemNo,
-          "append": this.append,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "append": this.append
         }
-        this.api.UpdateInventoryMasterOTUnQuarantine(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.UpdateInventoryMasterOTUnQuarantine(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
             this.toastr.success(res.responseMessage, 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -872,11 +851,9 @@ export class InventoryMasterComponent implements OnInit {
 
     this.searchValue = e.currentTarget.value;
     let paylaod = {
-      "stockCode": e.currentTarget.value,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "stockCode": e.currentTarget.value
     }
-    this.api.GetLocationTable(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.GetLocationTable(paylaod).subscribe((res: any) => {
       if (res.data?.length) {
 
         this.searchList = res.data;

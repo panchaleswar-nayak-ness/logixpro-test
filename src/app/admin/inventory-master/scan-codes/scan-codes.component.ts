@@ -11,6 +11,8 @@ import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/d
 import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { catchError, of } from 'rxjs';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 @Component({
   selector: 'app-scan-codes',
@@ -33,11 +35,11 @@ export class ScanCodesComponent{
   sendNotification(e?) {
     this.notifyParent.emit(e);
   }
-  
+  public iAdminApiService: IAdminApiService;
 
   constructor( private api:ApiFuntions, private sharedService:SharedService,
-    private authService: AuthService, private toastr: ToastrService,  private dialog: MatDialog,private cusValidator: CustomValidatorService) {
-
+    private authService: AuthService, private toastr: ToastrService,  private adminApiService: AdminApiService,private dialog: MatDialog,private cusValidator: CustomValidatorService) {
+      this.iAdminApiService = adminApiService;
     this.userData = this.authService.userData();
 
   }
@@ -100,11 +102,9 @@ export class ScanCodesComponent{
           "scanType": item.scanType,
           "scanRange": item.scanRange,
           "startPosition": item.startPosition,
-          "codeLength": item.codeLength,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid,
+          "codeLength": item.codeLength, 
         }
-        this.api.DeleteScanCode(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.DeleteScanCode(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
             this.isAddRow=false
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -182,11 +182,9 @@ export class ScanCodesComponent{
       "scanType": scanType,
       "scanRange": scanRange,
       "startPosition": startPosition,
-      "codeLength": codeLength,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "codeLength": codeLength, 
     }
-    this.api.InsertScanCodes(paylaod).pipe(
+    this.iAdminApiService.InsertScanCodes(paylaod).pipe(
       catchError((error) => {
         // Handle the error here
         console.error('An error occurred while making the API call:', error);
@@ -229,11 +227,9 @@ export class ScanCodesComponent{
       "oldStartPosition": this.OldscanCodesList[index].startPosition,
       "newStartPosition": startPosition,
       "oldCodeLength": this.OldscanCodesList[index].codeLength,
-      "newCodeLength": codeLength,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "newCodeLength": codeLength, 
     }
-    this.api.UpdateScanCodes(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.UpdateScanCodes(paylaod).subscribe((res: any) => {
       if (res.isExecuted) {
         this.isAddRow=false
         this.toastr.success(labels.alert.success, 'Success!', {
@@ -262,11 +258,9 @@ export class ScanCodesComponent{
 
   refreshScanCodeList(){
     let paylaod = {
-      "itemNumber": this.scanCodes.controls['itemNumber'].value,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "itemNumber": this.scanCodes.controls['itemNumber'].value, 
     }
-    this.api.RefreshScanCodes(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.RefreshScanCodes(paylaod).subscribe((res: any) => {
       if (res.isExecuted) {
 
         this.scanCodes.controls['scanCode'].setValue([...res.data]);

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 @Component({
   selector: 'app-ste',
@@ -11,7 +13,15 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class SteComponent implements OnInit {
   sideBarOpen: boolean = true;
   Status:any = 'Offline';
-  constructor( public dialog: MatDialog,    public Api: ApiFuntions,private toastr:ToastrService) { }
+  public  iGlobalConfigApi: IGlobalConfigApi;
+  constructor( 
+    public globalConfigApi: GlobalConfigApiService,
+    public dialog: MatDialog,    
+    public Api: ApiFuntions,
+    private toastr:ToastrService) 
+    { 
+      this.iGlobalConfigApi = globalConfigApi;
+    }
 
   ngOnInit(): void {
     this.CheckStatus();
@@ -69,11 +79,11 @@ export class SteComponent implements OnInit {
   async STEToggle(){  
     try{ 
       if(this.Status != 'Online'){
-      this.Api.startSTEService().subscribe((res: any) => {
+      this.iGlobalConfigApi.startSTEService().subscribe((res: any) => {
         if(res.data) this.ServiceStatus('start',res.data);
       }) 
     }else  {
-      this.Api.stopSTEService().subscribe((res: any) => {
+      this.iGlobalConfigApi.stopSTEService().subscribe((res: any) => {
         if(res.data) this.ServiceStatus('stop',res.data);
       })
     }
@@ -84,7 +94,7 @@ export class SteComponent implements OnInit {
 async STERestart(){  
   try{
     this.Status = 'Pending'; 
-    this.Api.RestartSTEService().subscribe((res: any) => {
+    this.iGlobalConfigApi.RestartSTEService().subscribe((res: any) => {
       if(res.data) this.ServiceStatus('restart',res.data);
     })
    
@@ -93,7 +103,7 @@ async STERestart(){
   }
 }
 async CheckStatus(){
-  this.Api.ServiceStatusSTE().subscribe((res: any) => {
+  this.iGlobalConfigApi.ServiceStatusSTE().subscribe((res: any) => {
     if(res.data) this.Status = 'Online';
     else this.Status = 'Offline';
   })

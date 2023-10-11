@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 @Component({
   selector: 'app-ccsif',
@@ -11,7 +13,14 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class CcsifComponent implements OnInit {
   sideBarOpen: boolean = true;
   Status:any = 'Offline';
-  constructor( public dialog: MatDialog,    public api: ApiFuntions,private toastr:ToastrService) { }
+  public  iGlobalConfigApi: IGlobalConfigApi
+  constructor( 
+    public dialog: MatDialog,   
+     public api: ApiFuntions,
+     public globalConfigApi: GlobalConfigApiService,
+     private toastr:ToastrService) {
+      this.iGlobalConfigApi = globalConfigApi;
+      }
 
   ngOnInit(): void {
     this.CheckStatus(); 
@@ -68,17 +77,17 @@ export class CcsifComponent implements OnInit {
   // }
   async CCSIFToggle(){     
     if(this.Status != 'Online'){
-    this.api.startCCSIF().subscribe((res: any) => {
+    this.iGlobalConfigApi.startCCSIF().subscribe((res: any) => {
       if(res.data) this.ServiceStatus('start',res.data);
     }) 
   }else  {
-    this.api.stopCCSIF().subscribe((res: any) => {
+    this.iGlobalConfigApi.stopCCSIF().subscribe((res: any) => {
       if(res.data) this.ServiceStatus('stop',res.data);
     })
   }
 }
 async CheckStatus(){
-  this.api.ServiceStatusCCSIF().subscribe((res: any) => {
+  this.iGlobalConfigApi.ServiceStatusCCSIF().subscribe((res: any) => {
     if(res.data)   this.Status = 'Online';
     else    this.Status = 'Offline';
   })

@@ -12,6 +12,8 @@ import { AuthService } from '../../../../app/init/auth.service';
 import { AdjustQuantityComponent } from '../adjust-quantity/adjust-quantity.component';
 import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 
@@ -128,7 +130,7 @@ export class AddInvMapLocationComponent implements OnInit {
   headerLable: any;
   userData: any;
   FromOm:boolean=false;
-
+  public iAdminApiService: IAdminApiService;
   myroute1:boolean=true;
   myroute2:boolean=true;
   unitOFMeasure  
@@ -144,9 +146,11 @@ export class AddInvMapLocationComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private authService: AuthService,
     private toastr: ToastrService,
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>,
     private router: Router
   ) {
+    this.iAdminApiService = adminApiService;
     if (data.mode == "addInvMapLocation") {
       this.headerLable = 'Add Location';
     } else if (data.mode == "editInvMapLocation") {
@@ -185,7 +189,7 @@ export class AddInvMapLocationComponent implements OnInit {
     this.searchItemNumbers = this.getDetailInventoryMapData.itemNumber;
 
 
-    this.Api.getLocZTypeInvMap().subscribe((res) => {
+    this.iAdminApiService.getLocZTypeInvMap({}).subscribe((res) => {
       this.locZoneList = res.data; 
       this.filteredOptions = this.addInvMapLocation.controls['location'].valueChanges.pipe(
         startWith(''),
@@ -392,7 +396,7 @@ export class AddInvMapLocationComponent implements OnInit {
         if (this.clickSubmit) {
           if (this.data.detailData) {
             this.clickSubmit = false;
-            this.Api.updateInventoryMap(form.value,invMapIDs).subscribe((res) => {
+            this.iAdminApiService.updateInventoryMap(form.value,invMapIDs).subscribe((res) => {
               this.clickSubmit = true;
               
               if (res.isExecuted) {
@@ -406,7 +410,7 @@ export class AddInvMapLocationComponent implements OnInit {
             });
           } else {
             this.clickSubmit = false;
-            this.Api.createInventoryMap(form.value).subscribe((res) => {
+            this.iAdminApiService.createInventoryMap(form.value).subscribe((res) => {
               this.clickSubmit = true;
               
               if (res.isExecuted) {
@@ -519,7 +523,7 @@ export class AddInvMapLocationComponent implements OnInit {
     const velCodeVal = this.velCodeVal.nativeElement.value
     
 
-    this.Api.getItemNumDetail(payload).subscribe((res) => {
+    this.iAdminApiService.getItemNumDetail(payload).subscribe((res) => {
       if (res.isExecuted) {
         this.unitOFMeasure =res.data.unitOfMeasure 
         let match = '';

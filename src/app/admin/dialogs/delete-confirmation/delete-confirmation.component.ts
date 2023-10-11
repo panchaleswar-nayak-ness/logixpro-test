@@ -10,8 +10,12 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json';  
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
@@ -24,23 +28,29 @@ export class DeleteConfirmationComponent implements OnInit {
   action = 'remove';
   actionMessage = '';
   Message: any;
+  public iAdminApiService: IAdminApiService;
   public userData;
   public IconsolidationAPI : IConsolidationApi;
   public iCommonAPI : ICommonApi;
 
 
+  public  iGlobalConfigApi: IGlobalConfigApi
   constructor(
     public consolidationAPI : ConsolidationApiService,
     public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private toastr: ToastrService,
+    public globalConfigApi: GlobalConfigApiService,
     private Api: ApiFuntions, 
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<DeleteConfirmationComponent>,
     private authService: AuthService,
     private router: Router
   ) { 
-    this.IconsolidationAPI = consolidationAPI; 
+    this.IconsolidationAPI = consolidationAPI; this.iAdminApiService = adminApiService; 
+    this.iGlobalConfigApi = globalConfigApi;
+  
     this.iCommonAPI = commonAPI;
   }
 
@@ -66,7 +76,7 @@ export class DeleteConfirmationComponent implements OnInit {
           zone: this.data.zone,
           username: this.data.userName,
         };
-        this.Api
+        this.iAdminApiService
           .deleteEmployeeZone(zoneData)
           .subscribe((res: any) => {
             if (res.isExecuted) {
@@ -91,7 +101,7 @@ export class DeleteConfirmationComponent implements OnInit {
           endShelf: this.data.picklevel.endCarousel.toString(),
           userName: this.data.userName,
         };
-        this.Api
+        this.iAdminApiService
           .deletePickLevels(pickLevelData)
           .subscribe((res: any) => {
             if (res.isExecuted) {
@@ -116,7 +126,7 @@ export class DeleteConfirmationComponent implements OnInit {
           endLocation: this.data.location.endLocation,
           username: this.data.userName,
         };
-        this.Api
+        this.iAdminApiService
           .deleteEmployeeLocation(locationData)
           .subscribe((res: any) => {
             if (res.isExecuted) {
@@ -137,7 +147,7 @@ export class DeleteConfirmationComponent implements OnInit {
         let payload = {
           ConnectionName: this.data.connectionName,
         };
-        this.Api
+        this.iGlobalConfigApi
           .ConnectionDelete(payload)
           .subscribe(
             (res: any) => {
@@ -162,7 +172,7 @@ export class DeleteConfirmationComponent implements OnInit {
           GroupName: this.data.grp_data.groupName,
           userName: this.data.userName,
         };
-        this.Api.deleteGroup(groupData).subscribe((res: any) => {
+        this.iAdminApiService.deleteGroup(groupData).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -183,7 +193,7 @@ export class DeleteConfirmationComponent implements OnInit {
           GroupName: this.data.allowedGroup,
           userName: this.data.userName,
         };
-        this.Api.deleteGroup(groupData).subscribe((res: any) => {
+        this.iAdminApiService.deleteGroup(groupData).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -204,7 +214,7 @@ export class DeleteConfirmationComponent implements OnInit {
           controlName: this.data.controlName,
           userName: this.data.userName,
         };
-        this.Api.deleteControlName(groupData).subscribe((res: any) => {
+        this.iAdminApiService.deleteControlName(groupData).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -222,11 +232,9 @@ export class DeleteConfirmationComponent implements OnInit {
       }
        else if (this.data.mode === 'delete-inventory-map') {
         let payload = {
-          inventoryMapID: this.data.id,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          inventoryMapID: this.data.id, 
         };
-        this.Api.deleteInventoryMap(payload).subscribe((res: any) => {
+        this.iAdminApiService.deleteInventoryMap(payload).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -247,7 +255,7 @@ export class DeleteConfirmationComponent implements OnInit {
           deleteBy: this.userData.userName,
           wsid: 'TESTWSID',
         };
-        this.Api
+        this.iAdminApiService
           .deleteAdminEmployee(emp_data)
           .subscribe((res: any) => {
             if (res.isExecuted) {
@@ -263,7 +271,7 @@ export class DeleteConfirmationComponent implements OnInit {
           groupname: this.data.allowedGroup.groupName,
           username: this.data.allowedGroup.userName,
         };
-        this.Api.deleteUserGroup(emp_data).subscribe((res: any) => {
+        this.iAdminApiService.deleteUserGroup(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -314,7 +322,7 @@ export class DeleteConfirmationComponent implements OnInit {
           }
         });
       } else if (this.data.mode === 'delete-order-status') {
-        this.Api
+        this.iAdminApiService
           .DeleteOrderStatus(this.data.paylaod)
           .subscribe(
             (res: any) => {
@@ -363,7 +371,7 @@ export class DeleteConfirmationComponent implements OnInit {
           WSID: this.data.wsid,
         };
 
-        this.Api
+        this.iGlobalConfigApi
           .WorkStationDelete(payload)
           .subscribe(
             (res: any) => {

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-sp-general-setup',
@@ -12,7 +14,9 @@ export class SpGeneralSetupComponent implements OnInit {
   public CompanyObj: any={};
   orderosrts:any = [];
   public FieldNames :any={};
-  constructor(    public authService: AuthService,private Api:ApiFuntions) {
+  public iAdminApiService: IAdminApiService;
+  constructor(    public authService: AuthService,private adminApiService: AdminApiService,private Api:ApiFuntions) {
+    this.iAdminApiService = adminApiService;
     this.userData = authService.userData();
    }
 
@@ -22,12 +26,12 @@ export class SpGeneralSetupComponent implements OnInit {
     this.GetOrderSort();
   }
   public OSFieldFilterNames() { 
-    this.Api.OSFieldFilterNames().subscribe((res: any) => {
+    this.iAdminApiService.OSFieldFilterNames().subscribe((res: any) => {
       this.FieldNames = res.data;
     })
   }
   public CompanyInfo() {
-    this.Api.AdminCompanyInfo().subscribe((res: any) => {
+    this.iAdminApiService.AdminCompanyInfo().subscribe((res: any) => {
       this.CompanyObj = res.data;
     })
   }
@@ -57,19 +61,17 @@ export class SpGeneralSetupComponent implements OnInit {
         this.CompanyObj.orderSort,this.CompanyObj.cartonFlowDisplay,this.CompanyObj.autoDisplayImage
       ],
       "panel": 4,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
     }; 
     if(no==1) this.SaveForm(paylaod1);
     if(no==3)  this.SaveForm(paylaod3);
     if(no==4)  this.SaveForm(paylaod4);
   }
     async SaveForm(paylaod){ 
-      this.Api.GeneralPreferenceSave(paylaod).subscribe((res: any) => { 
+      this.iAdminApiService.GeneralPreferenceSave(paylaod).subscribe((res: any) => { 
       })
     }
     async GetOrderSort(){
-      this.Api.ordersort().subscribe((res:any)=>{
+      this.iAdminApiService.ordersort().subscribe((res:any)=>{
         this.orderosrts = res.data;
       })
     }

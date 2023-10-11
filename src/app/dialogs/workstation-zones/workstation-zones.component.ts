@@ -9,6 +9,8 @@ import { AuthService } from '../../../app/init/auth.service';
 import labels from '../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatAutocomplete } from '@angular/material/autocomplete';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
@@ -29,6 +31,7 @@ export class WorkstationZonesComponent implements OnInit {
   public allZoneList: any[] = [];
   public zones: any[] = [];
   @ViewChild('btnSave') button;
+  public iinductionManagerApi:IInductionManagerApiService;
 
   @ViewChild("searchauto", { static: false }) autocompleteOpened: MatAutocomplete;
   zoneSelectOptions: any[] = [];
@@ -86,7 +89,7 @@ export class WorkstationZonesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
-        this.Api.ClrWSPickZone().subscribe((res) => {
+        this.iinductionManagerApi.ClrWSPickZone().subscribe((res) => {
           if (res.isExecuted && res.data) {
             this.getVelocity();
             this.toastr.success(labels.alert.remove, 'Success!', {
@@ -113,10 +116,12 @@ export class WorkstationZonesComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private Api: ApiFuntions,
     private authService: AuthService,
-    private toastr: ToastrService,
+    private toastr: ToastrService,private inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<any>,
     private dialog: MatDialog,
-  ) { this.iCommonAPI = commonAPI; }
+  ) { this.iCommonAPI = commonAPI; 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -128,12 +133,10 @@ export class WorkstationZonesComponent implements OnInit {
     this.field_focus.nativeElement.focus();
   }
   getVelocity() {
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+    let paylaod = { 
     }
     this.velocity_code_list = [];
-    this.Api.WSPickZoneSelect(paylaod).subscribe((res) => {
+    this.iinductionManagerApi.WSPickZoneSelect(paylaod).subscribe((res) => {
       if (res.data) {
         res.data.map(val => {
           this.velocity_code_list.push({ 'zone': val, isSaved: true })
@@ -142,12 +145,10 @@ export class WorkstationZonesComponent implements OnInit {
     });
   }
   getAllZoneList() {
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+    let paylaod = { 
     }
     this.velocity_code_list = [];
-    this.Api.LocationZonesSelect(paylaod).subscribe((res) => {
+    this.iinductionManagerApi.LocationZonesSelect(paylaod).subscribe((res) => {
       if (res.data) {
         this.zones = res.data;
       }
@@ -167,10 +168,9 @@ export class WorkstationZonesComponent implements OnInit {
   saveVlCode() {
     if(this.selectedZone){
       let paylaod = {
-        "zone": this.selectedZone,
-        "wsid": this.userData.wsid,
+        "zone": this.selectedZone, 
       }
-      this.Api.WSPickZoneInsert(paylaod).subscribe((res) => {
+      this.iinductionManagerApi.WSPickZoneInsert(paylaod).subscribe((res) => {
         if (res.data) {
           this.toastr.success(labels.alert.success, 'Success!', {
             positionClass: 'toast-bottom-right',
@@ -241,10 +241,9 @@ export class WorkstationZonesComponent implements OnInit {
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
       if (result === 'Yes') {
         let paylaod = {
-          "Zone": event,
-          "wsid": this.userData.wsid,
+          "Zone": event
         }
-        this.Api.WSPickZoneDelete(paylaod).subscribe((res) => {
+        this.iinductionManagerApi.WSPickZoneDelete(paylaod).subscribe((res) => {
           if (res.isExecuted) {
             this.toastr.success(labels.alert.delete, 'Success!', {
               positionClass: 'toast-bottom-right',

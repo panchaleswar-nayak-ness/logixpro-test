@@ -24,6 +24,8 @@ import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-om-create-orders',
@@ -34,7 +36,7 @@ export class OmCreateOrdersComponent implements OnInit {
   omPreferences:any;
   @ViewChild('ord_focus') ord_focus: ElementRef;
   displayedColumns: any[] = [];
-
+  public iAdminApiService: IAdminApiService;
   sequenceKeyMapping:any = [
     {sequence: 'Transaction Type',key:'transactionType'},
     {sequence: 'Order Number',key:'orderNumber'},
@@ -99,7 +101,7 @@ export class OmCreateOrdersComponent implements OnInit {
   selectedFilterString: string;
   @ViewChild(MatSort) sort1: MatSort;
   @ViewChild('paginator1') paginator1: MatPaginator;
-  public orderManagerApi :  IOrderManagerAPIService;
+  public iOrderManagerApi :  IOrderManagerAPIService;
 
   constructor(
     private dialog: MatDialog,
@@ -108,12 +110,14 @@ export class OmCreateOrdersComponent implements OnInit {
     private router: Router,
     public dialogRef: MatDialogRef<OmCreateOrdersComponent>,
     private Api: ApiFuntions,
-    public OrderManagerApi  : OrderManagerApiService,
+    private adminApiService: AdminApiService,
+    public orderManagerApi  : OrderManagerApiService,
     private global:GlobalService,
     private filterService: ContextMenuFiltersService,
     private _liveAnnouncer: LiveAnnouncer
   ) { 
-    this.orderManagerApi = OrderManagerApi;
+    this.iOrderManagerApi = orderManagerApi;
+   this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
@@ -214,7 +218,7 @@ export class OmCreateOrdersComponent implements OnInit {
 
   createOrdersDT(loader: boolean = false) {
     if (this.createOrdersDTPayload.orderNumber.trim() != '') {
-      this.orderManagerApi.CreateOrdersDT(this.createOrdersDTPayload).subscribe((res: any) => {
+      this.iOrderManagerApi.CreateOrdersDT(this.createOrdersDTPayload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.tableData = new MatTableDataSource(res.data);  
           this.tableData.paginator = this.paginator1;
@@ -261,7 +265,7 @@ export class OmCreateOrdersComponent implements OnInit {
           "page": "Create Orders",
           "wsid": this.userData.wsid
         };
-        this.orderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
+        this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.toastr.success("Order Released Successfully!", 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -318,7 +322,7 @@ export class OmCreateOrdersComponent implements OnInit {
             "user": this.userData.userName,
             "wsid": this.userData.wsid
           };
-          this.orderManagerApi.OTPendDelete(payload).subscribe((res: any) => {
+          this.iOrderManagerApi.OTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
               this.toastr.success(labels.alert.delete, 'Success!', {
                 positionClass: 'toast-bottom-right',
@@ -365,7 +369,7 @@ export class OmCreateOrdersComponent implements OnInit {
         "userName": this.userData.userName,
         "wsid": this.userData.wsid
       }
-      this.orderManagerApi.CreateOrderTypeahead(payload).subscribe((res: any) => {
+      this.iOrderManagerApi.CreateOrderTypeahead(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.orderNumberSearchList = res.data.sort();
         }
@@ -428,11 +432,9 @@ export class OmCreateOrdersComponent implements OnInit {
 
   getColumnSequence(refresh: boolean = false) {
     let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
       tableName: 'Order Manager Create'
     };
-    this.Api.GetColumnSequence(payload).subscribe((res: any) => {
+    this.iAdminApiService.GetColumnSequence(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.filterColumnNames = JSON.parse(JSON.stringify(res.data));
         this.sortedFilterColumnNames = [...this.filterColumnNames.sort()];

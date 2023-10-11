@@ -12,6 +12,8 @@ import { ToastrService } from 'ngx-toastr';
 import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { catchError, of } from 'rxjs';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-add-new-device',
@@ -24,6 +26,7 @@ export class AddNewDeviceComponent implements OnInit {
   newDeviceForm: FormGroup;
   newDeviceID=0;
   isEdit: boolean = false;
+  public iAdminApiService: IAdminApiService;
   item: any;
   interFaceType = 'Other';
   zoneList = [];
@@ -59,11 +62,13 @@ export class AddNewDeviceComponent implements OnInit {
     private fb: FormBuilder,
     private Api: ApiFuntions,
     public authService: AuthService,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.isEdit = data?.isEdit;
+    this.iAdminApiService = adminApiService;
     this.item = data?.item;
   }
 
@@ -151,7 +156,7 @@ export class AddNewDeviceComponent implements OnInit {
           Preference: preferences,
       };
       
-      this.Api
+      this.iAdminApiService
         .DevicePreference(paylaod)
         .subscribe((res: any) => {
           if (res.isExecuted) {
@@ -276,11 +281,9 @@ export class AddNewDeviceComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
         let payload = {
-          deviceID: this.data?.item  ? this.data.item.deviceID : this.newDeviceID > 0? this.newDeviceID:0,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          deviceID: this.data?.item  ? this.data.item.deviceID : this.newDeviceID > 0? this.newDeviceID:0
         };
-        this.Api
+        this.iAdminApiService
           .DevicePreferencesDelete(payload)
           .subscribe((res: any) => {
             if (res.isExecuted) {
@@ -303,12 +306,10 @@ export class AddNewDeviceComponent implements OnInit {
   getDeviceInformation(deviceID?) {
     let con = this.data?.item ? this.data.item.deviceID : 0;
     let payload = {
-      deviceID: deviceID ? deviceID : con,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      deviceID: deviceID ? deviceID : con
     };
 
-    this.Api
+    this.iAdminApiService
       .DeviceInformation(payload).pipe(
         catchError((error) => {
           // Handle the error here
@@ -427,7 +428,7 @@ export class AddNewDeviceComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.Api
+        this.iAdminApiService
           .ZoneDevicePreferencesUpdateAll(payload)
           .subscribe((res: any) => {
             if (res.isExecuted) {

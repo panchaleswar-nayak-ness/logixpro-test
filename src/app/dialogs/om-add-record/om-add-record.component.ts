@@ -73,19 +73,19 @@ export class OmAddRecordComponent implements OnInit {
   orderNumberDisabled: boolean = false;
   itemNumberScroll:any = "all";
 
-  public orderManagerApi :  IOrderManagerAPIService;
+  public iOrderManagerApi :  IOrderManagerAPIService;
   public iCommonAPI : ICommonApi;
   constructor(
     public commonAPI : CommonApiService,
     private toastr: ToastrService,
     private authService: AuthService,
-    public OrderManagerApi  : OrderManagerApiService,
+    public orderManagerApi  : OrderManagerApiService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<OmAddRecordComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public globalService: GlobalService,
   ) {
-    this.orderManagerApi = OrderManagerApi;
+    this.iOrderManagerApi = orderManagerApi;
     this.iCommonAPI = commonAPI;
    }
 
@@ -197,7 +197,7 @@ export class OmAddRecordComponent implements OnInit {
       "wsid": this.userData.wsid,
       "appName": ""
     }
-    this.orderManagerApi.UserFieldData().subscribe((res: any) => {
+    this.iOrderManagerApi.UserFieldData().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.userFieldData = res.data[0];
         this.mapDefaultValues();
@@ -239,7 +239,7 @@ export class OmAddRecordComponent implements OnInit {
       this.oTTempUpdatePayload.requiredDate = this.oTTempUpdatePayload.requiredDate ? new Date(this.oTTempUpdatePayload.requiredDate).getMonth()+1 + '/' +  new Date(this.oTTempUpdatePayload.requiredDate).getDate() + '/' + new Date(this.oTTempUpdatePayload.requiredDate).getFullYear() : "";
       this.oTTempUpdatePayload.expirationDate = this.oTTempUpdatePayload.expirationDate ? new Date(this.oTTempUpdatePayload.expirationDate).getMonth()+1 + '/' +  new Date(this.oTTempUpdatePayload.expirationDate).getDate() + '/' + new Date(this.oTTempUpdatePayload.expirationDate).getFullYear() : "";
       if (!this.isEdit) {
-        this.orderManagerApi.OTTempInsert(this.oTTempUpdatePayload).subscribe((res: any) => {
+        this.iOrderManagerApi.OTTempInsert(this.oTTempUpdatePayload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.toastr.success(labels.alert.success, 'Success!', {
               positionClass: 'toast-bottom-right',
@@ -255,7 +255,7 @@ export class OmAddRecordComponent implements OnInit {
         })
       }
       else {
-        this.orderManagerApi.OTTempUpdate(this.oTTempUpdatePayload).subscribe((res: any) => {
+        this.iOrderManagerApi.OTTempUpdate(this.oTTempUpdatePayload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.toastr.success(labels.alert.update, 'Success!', {
               positionClass: 'toast-bottom-right',

@@ -7,6 +7,8 @@ import { AddNewDeviceComponent } from 'src/app/admin/dialogs/add-new-device/add-
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
@@ -19,6 +21,7 @@ export class SpDevicePreferenceComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public userData: any;
   pageEvent: PageEvent;
+  public iAdminApiService: IAdminApiService;
   sortCol = 0;
   sortDir = 'asc';
   customPagination: any = {
@@ -47,9 +50,12 @@ export class SpDevicePreferenceComponent implements OnInit {
     private Api: ApiFuntions,
     public authService: AuthService,
     private dialog: MatDialog,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private sharedService: SharedService
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -72,13 +78,11 @@ export class SpDevicePreferenceComponent implements OnInit {
       length: this.customPagination.recordsPerPage,
       column: this.sortCol,
       sortDir: this.sortDir,
-      zone: '',
-      userName: this.userData.userName,
-      wsid: this.userData.wsid,
+      zone: '', 
     };
 
 
-    this.Api.DevicePreferencesTable(payload)
+    this.iAdminApiService.DevicePreferencesTable(payload)
     .subscribe((res: any) => {
       console.log(res);
 
@@ -126,11 +130,9 @@ export class SpDevicePreferenceComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
         let payload = {
-          deviceID: deviceID,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          deviceID: deviceID, 
         };
-        this.Api
+        this.iAdminApiService
           .DevicePreferencesDelete(payload)
           .subscribe((res: any) => {
             if (res.isExecuted) {

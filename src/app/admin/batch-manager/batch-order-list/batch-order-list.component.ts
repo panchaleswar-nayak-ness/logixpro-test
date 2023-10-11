@@ -18,6 +18,8 @@ import { BatchManagerDetailViewComponent } from '../../dialogs/batch-manager-det
 import { Subscription } from 'rxjs';
 import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-batch-order-list',
@@ -45,7 +47,7 @@ export class BatchOrderListComponent implements OnInit {
       this.transType = event;
     }
   }
-
+  public iAdminApiService: IAdminApiService;
   @Input() displayedColumns: any;
   @Input() orderStatus: any;
   @Input() extraField: any;
@@ -59,10 +61,14 @@ export class BatchOrderListComponent implements OnInit {
     private sharedService: SharedService,
     private _liveAnnouncer: LiveAnnouncer,
     private router: Router,
+    private adminApiService: AdminApiService,
     private Api: ApiFuntions,
     private authService: AuthService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    
+   this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -145,11 +151,9 @@ export class BatchOrderListComponent implements OnInit {
   switchToOS(order, transType) {
     let payload = {
       order: order,
-      transType: transType,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      transType: transType
     };
-    this.Api
+    this.iAdminApiService
       .DetailView(payload)
       .subscribe((res: any) => {
         const { data, isExecuted } = res;

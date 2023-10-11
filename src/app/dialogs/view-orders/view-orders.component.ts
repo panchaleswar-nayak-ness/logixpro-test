@@ -6,6 +6,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-view-orders',
@@ -88,14 +90,18 @@ export class ViewOrdersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('paginatorTrans') paginatorTrans: MatPaginator;
   @ViewChild(MatSort) viewTransSort: MatSort;
+  public iinductionManagerApi:IInductionManagerApiService;
 
   constructor(
     private Api: ApiFuntions,
     private toastr: ToastrService,
     private authService: AuthService,
+    private inductionManagerApi: InductionManagerApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>
-  ) { }
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -106,10 +112,9 @@ export class ViewOrdersComponent implements OnInit {
 
   getAllOrders() {
     let paylaod = {
-      "OrderView": this.data.viewType,
-      "wsid": this.userData.wsid,
+      "OrderView": this.data.viewType, 
     }
-    this.Api.OrdersInZone(paylaod).subscribe((res) => {
+    this.iinductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
       
       if (res.data.length > 0) {
         res.data.map(val => {
@@ -192,11 +197,9 @@ export class ViewOrdersComponent implements OnInit {
         "eRow": 10,
         "SortColumnNumber": 0,
         "SortOrder": "asc",
-        "Filter": "1=1",
-        "Username": this.userData.username,
-        "wsid": this.userData.wsid,
+        "Filter": "1=1", 
       }
-      this.Api.InZoneTransDT(paylaod).subscribe((res) => {
+      this.iinductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
         if (res.data) {
           this.transData = res.data.pickToteManTrans;
           this.orderTransDataSource = new MatTableDataSource<any>(this.transData);

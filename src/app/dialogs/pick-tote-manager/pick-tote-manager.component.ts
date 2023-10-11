@@ -19,6 +19,8 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { MatOption } from '@angular/material/core';
 import { MatSort } from '@angular/material/sort';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 export interface PeriodicElement {
   name: string;
@@ -184,14 +186,18 @@ export class PickToteManagerComponent implements OnInit {
   set paginator(value: MatPaginator) {
     this.batchByZoneSource.paginator = value;
   }
+  public iinductionManagerApi:IInductionManagerApiService;
   constructor(
     private dialog: MatDialog,
     private Api: ApiFuntions,
     private toastr: ToastrService,
+    private inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { }
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
     this.savedFilterList = [];
@@ -212,10 +218,9 @@ export class PickToteManagerComponent implements OnInit {
 
 
   pickBatchZonesSelect() {
-    let paylaod = {
-      "wsid": this.userData.wsid,
+    let paylaod = { 
     }
-    this.Api.PickBatchZonesSelect(paylaod).subscribe(res => {
+    this.iinductionManagerApi.PickBatchZonesSelect(paylaod).subscribe(res => {
       if (res.data) {
         this.batchByZoneData = res.data
         this.batchByZoneSource = new MatTableDataSource<any>(this.batchByZoneData);
@@ -231,10 +236,9 @@ export class PickToteManagerComponent implements OnInit {
 
   getSavedFilters() {
     let paylaod = {
-      "filter": "",
-      "wsid": this.userData.wsid,
+      "filter": "", 
     }
-    this.Api.PickBatchFilterTypeAhead(paylaod).subscribe((res) => {
+    this.iinductionManagerApi.PickBatchFilterTypeAhead(paylaod).subscribe((res) => {
       if (res.data) {
         
         this.savedFilterList = res.data;
@@ -345,10 +349,9 @@ export class PickToteManagerComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result === 'Yes') {
           let paylaod = {
-            "Description": this.savedFilter.value,
-            "wsid": this.userData.wsid
+            "Description": this.savedFilter.value, 
           }
-          this.Api.PickBatchDefaultFilterMark(paylaod).subscribe(res => {
+          this.iinductionManagerApi.PickBatchDefaultFilterMark(paylaod).subscribe(res => {
             if (res.isExecuted) {
               this.toastr.success(labels.alert.update, 'Success!', {
                 positionClass: 'toast-bottom-right',
@@ -363,10 +366,9 @@ export class PickToteManagerComponent implements OnInit {
      
     }
     if (option.value === 'clear_default') {
-      let paylaod = {
-        "wsid": this.userData.wsid
+      let paylaod = { 
       }
-      this.Api.PickBatchDefaultFilterClear(paylaod).subscribe(res => {
+      this.iinductionManagerApi.PickBatchDefaultFilterClear(paylaod).subscribe(res => {
         if (res.isExecuted) {
           this.toastr.success(labels.alert.update, 'Success!', {
             positionClass: 'toast-bottom-right',
@@ -378,10 +380,9 @@ export class PickToteManagerComponent implements OnInit {
       });
     }
     if (option.value === 'view_default') {
-      let paylaod = {
-        "wsid": this.userData.wsid
+      let paylaod = { 
       }
-      this.Api.PickBatchDefaultFilterSelect(paylaod).subscribe(res => {
+      this.iinductionManagerApi.PickBatchDefaultFilterSelect(paylaod).subscribe(res => {
         if (res.data) {
           
           this.savedFilter.setValue(res.data);
@@ -412,10 +413,9 @@ export class PickToteManagerComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result === 'Yes') {
           let paylaod = {
-            "Description": this.savedFilter.value,
-            "wsid": this.userData.wsid
+            "Description": this.savedFilter.value, 
           }
-          this.Api.PickBatchFilterBatchDelete(paylaod).subscribe(res => {
+          this.iinductionManagerApi.PickBatchFilterBatchDelete(paylaod).subscribe(res => {
             if (res.isExecuted) {
               this.toastr.success(labels.alert.delete, 'Success!', {
                 positionClass: 'toast-bottom-right',
@@ -456,10 +456,9 @@ export class PickToteManagerComponent implements OnInit {
         "BatchType": "",
         "UseDefFilter": 0,
         "UseDefZone": 0,
-        "RP": false,
-        "WSID": "TESTWSID"
+        "RP": false, 
       }
-      this.Api.OrdersFilterZoneSelect(payload).subscribe(res => {
+      this.iinductionManagerApi.OrdersFilterZoneSelect(payload).subscribe(res => {
         if (res.data) {
           res.data.map(val => {
             this.FILTER_BATCH_DATA.push({ 'orderNumber': val.orderNumber, 'reqDate': val.reqDate, 'priority': val.priority, isSelected: false });
@@ -485,10 +484,9 @@ export class PickToteManagerComponent implements OnInit {
         "BatchType": type,
         "UseDefFilter": 0,
         "UseDefZone": 0,
-        "RP": rp,
-        "WSID": "TESTWSID"
+        "RP": rp, 
       }
-      this.Api.OrdersFilterZoneSelect(payload).subscribe(res => {
+      this.iinductionManagerApi.OrdersFilterZoneSelect(payload).subscribe(res => {
         if (res.data) {
           ;
           res.data.map(val => {
@@ -569,11 +567,9 @@ export class PickToteManagerComponent implements OnInit {
         "eRow": 10,
         "SortColumnNumber": 0,
         "SortOrder": "asc",
-        "Filter": "1=1",
-        "Username": this.userData.username,
-        "wsid": this.userData.wsid,
+        "Filter": "1=1", 
       }
-      this.Api.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         this.filterOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
         this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
         this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
@@ -630,11 +626,9 @@ export class PickToteManagerComponent implements OnInit {
         "eRow": 10,
         "SortColumnNumber": 0,
         "SortOrder": "asc",
-        "Filter": "1=1",
-        "Username": this.userData.username,
-        "wsid": this.userData.wsid,
+        "Filter": "1=1", 
       }
-      this.Api.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         this.zoneOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
         this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
         this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
@@ -644,10 +638,9 @@ export class PickToteManagerComponent implements OnInit {
   }
   pickBatchFilterOrderData(filter: string | null) {
     let paylaod = {
-      "filter": filter,
-      "wsid": this.userData.wsid,
+      "filter": filter, 
     }
-    this.Api.PickBatchFilterOrderData(paylaod).subscribe(res => {
+    this.iinductionManagerApi.PickBatchFilterOrderData(paylaod).subscribe(res => {
 
       if (res.data) {
         this.FILTER_DATA = [];
@@ -757,11 +750,9 @@ export class PickToteManagerComponent implements OnInit {
         "eRow": 10,
         "SortColumnNumber": 0,
         "SortOrder": "asc",
-        "Filter": "1=1",
-        "Username": this.userData.username,
-        "wsid": this.userData.wsid,
+        "Filter": "1=1", 
       }
-      this.Api.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
           this.zoneOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
           this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
@@ -784,11 +775,9 @@ export class PickToteManagerComponent implements OnInit {
           "eRow": 10,
           "SortColumnNumber": 0,
           "SortOrder": "asc",
-          "Filter": "1=1",
-          "Username": this.userData.username,
-          "wsid": this.userData.wsid,
+          "Filter": "1=1", 
         }
-        this.Api.PickToteTransDT(paylaod).subscribe((res) => {
+        this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
             this.zoneOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
             this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
@@ -817,11 +806,9 @@ export class PickToteManagerComponent implements OnInit {
         "eRow": 10,
         "SortColumnNumber": 0,
         "SortOrder": "asc",
-        "Filter": "1=1",
-        "Username": this.userData.username,
-        "wsid": this.userData.wsid,
+        "Filter": "1=1", 
       }
-      this.Api.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
           this.filterOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
           this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
@@ -844,11 +831,9 @@ export class PickToteManagerComponent implements OnInit {
           "eRow": 10,
           "SortColumnNumber": 0,
           "SortOrder": "asc",
-          "Filter": "1=1",
-          "Username": this.userData.username,
-          "wsid": this.userData.wsid,
+          "Filter": "1=1", 
         }
-        this.Api.PickToteTransDT(paylaod).subscribe((res) => {
+        this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
             this.filterOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
             this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
@@ -878,13 +863,12 @@ export class PickToteManagerComponent implements OnInit {
         "Criteria": element.criteria,
         "Value": element.value,
         "AndOr": element.andOr,
-        "Description": this.savedFilter.value,
-        "wsid": this.userData.wsid,
+        "Description": this.savedFilter.value, 
       }
       this.FILTER_DATA.forEach(val => {        
         
         if (val.is_db) {
-          this.Api.PickBatchFilterUpdate(payload).subscribe(res => {
+          this.iinductionManagerApi.PickBatchFilterUpdate(payload).subscribe(res => {
             if (res.isExecuted) {
               this.isFilterAdd = true;
               this.toastr.success(labels.alert.update, 'Success!', {
@@ -897,7 +881,7 @@ export class PickToteManagerComponent implements OnInit {
           });
         }
         else {
-          this.Api.PickBatchFilterInsert(payload).subscribe(res => {
+          this.iinductionManagerApi.PickBatchFilterInsert(payload).subscribe(res => {
             if (res.isExecuted) {
               this.isFilterAdd = true;
               this.toastr.success(labels.alert.success, 'Success!', {
@@ -920,10 +904,9 @@ export class PickToteManagerComponent implements OnInit {
         "Sequence": element.sequence,
         "Field": element.field,
         "Order": element.sortOrder,
-        "Description": this.savedFilter.value,
-        "wsid": this.userData.wsid,
+        "Description": this.savedFilter.value, 
       }
-      this.Api.PickBatchOrderUpdate(payload).subscribe(res => {
+      this.iinductionManagerApi.PickBatchOrderUpdate(payload).subscribe(res => {
         if (res.isExecuted) {
           this.isOrderByAdd = true;
           this.toastr.success(labels.alert.update, 'Success!', {
@@ -938,10 +921,9 @@ export class PickToteManagerComponent implements OnInit {
         "Sequence": element.sequence,
         "Field": element.field,
         "Order": element.sortOrder,
-        "Description": this.savedFilter.value,
-        "wsid": this.userData.wsid,
+        "Description": this.savedFilter.value, 
       }
-      this.Api.PickBatchOrderInsert(payload).subscribe(res => {
+      this.iinductionManagerApi.PickBatchOrderInsert(payload).subscribe(res => {
         if (res.isExecuted) {
           this.isOrderByAdd = true;
           this.toastr.success(labels.alert.success, 'Success!', {
@@ -985,10 +967,9 @@ export class PickToteManagerComponent implements OnInit {
       if (result === 'Yes') {
         let payload = {
           "Sequence": element.sequence,
-          "Description": this.savedFilter.value,
-          "wsid": this.userData.wsid,
+          "Description": this.savedFilter.value, 
         }
-        this.Api.PickBatchFilterDelete(payload).subscribe(res => {
+        this.iinductionManagerApi.PickBatchFilterDelete(payload).subscribe(res => {
           if (res.isExecuted) {
             this.isFilterAdd = true;
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -1014,10 +995,9 @@ export class PickToteManagerComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'Yes') {
         let payload = {
-          "id": element.id,
-          "wsid": this.userData.wsid,
+          "id": element.id, 
         }
-        this.Api.PickBatchOrderDelete(payload).subscribe(res => {
+        this.iinductionManagerApi.PickBatchOrderDelete(payload).subscribe(res => {
           if (res.isExecuted) {
             this.isFilterAdd = true;
             this.toastr.success(labels.alert.delete, 'Success!', {
@@ -1075,10 +1055,9 @@ export class PickToteManagerComponent implements OnInit {
       if (result === 'Yes') {
         let payload = {
           "zone": row.zone,
-          "type": row.type,
-          "wsid": this.userData.wsid,
+          "type": row.type, 
         }
-        this.Api.PickBatchZoneDefaultMark(payload).subscribe(res => {
+        this.iinductionManagerApi.PickBatchZoneDefaultMark(payload).subscribe(res => {
           if (res.isExecuted) {
             this.toastr.success(labels.alert.update, 'Success!', {
               positionClass: 'toast-bottom-right',

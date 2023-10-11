@@ -7,6 +7,8 @@ import { SpinnerService } from '../init/spinner.service';
 import { AuthService } from '../init/auth.service'; 
 import { ILogin } from '../login/Ilogin';
 import { ApiFuntions } from '../services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 @Component({
   selector: 'global-config',
@@ -21,9 +23,10 @@ export class GlobalConfigComponent {
   public env;
   public toggle_password = true;
   url = '';
-
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     public Api: ApiFuntions,
+    public globalConfigApi: GlobalConfigApiService,
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
@@ -31,6 +34,7 @@ export class GlobalConfigComponent {
     public loader: SpinnerService,
     private auth: AuthService 
   ) {
+    this.iGlobalConfigApi = globalConfigApi;
     this.url = this.router.url;
   }
 

@@ -23,6 +23,8 @@ import { catchError, of } from 'rxjs';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -121,21 +123,23 @@ export class OmOrderManagerComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  public orderManagerApi :  IOrderManagerAPIService;
-
+  public iOrderManagerApi :  IOrderManagerAPIService;
+  public iAdminApiService: IAdminApiService;
   constructor(private dialog          : MatDialog,
               private _liveAnnouncer  : LiveAnnouncer,
               private toastr          : ToastrService,
               private Api             : ApiFuntions,
-              public OrderManagerApi  : OrderManagerApiService,
+              public orderManagerApi  : OrderManagerApiService,
+              private adminApiService: AdminApiService,
               public authService      : AuthService,
               public globalService    : GlobalService,
               private filterService   : ContextMenuFiltersService,
               private currentTabDataService: CurrentTabDataService,
               private global:GlobalService,
               private router: Router) {
-                this.orderManagerApi = OrderManagerApi;
-               }
+                this.iOrderManagerApi = orderManagerApi; 
+                this.iAdminApiService = adminApiService; 
+              }
 
   @ViewChild('btnRef') buttonRef: MatButton;
 
@@ -161,7 +165,7 @@ export class OmOrderManagerComponent implements OnInit {
   }  
 
   getOMIndex() { 
-    this.orderManagerApi.OrderManagerPreferenceIndex().subscribe(
+    this.iOrderManagerApi.OrderManagerPreferenceIndex().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.OMIndex = res.data;
@@ -184,7 +188,7 @@ export class OmOrderManagerComponent implements OnInit {
       tableName: 'Order Manager'
     };
 
-    this.Api.GetColumnSequence(payload).subscribe((res: any) => {
+    this.iAdminApiService.GetColumnSequence(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.displayedColumns = res.data;        
         this.displayedColumns.push( 'actions');
@@ -242,7 +246,7 @@ export class OmOrderManagerComponent implements OnInit {
       };
       
   
-      this.orderManagerApi.FillOrderManTempData(payload).pipe(
+      this.iOrderManagerApi.FillOrderManTempData(payload).pipe(
         catchError((error) => {
           // Handle the error here
           
@@ -274,7 +278,7 @@ export class OmOrderManagerComponent implements OnInit {
       searchString: this.searchTxt,
     }; 
 
-    this.orderManagerApi.SelectOrderManagerTempDTNew(payload2).subscribe((res: any) => {
+    this.iOrderManagerApi.SelectOrderManagerTempDTNew(payload2).subscribe((res: any) => {
       this.orderTable = new MatTableDataSource(res.data?.transactions);
       this.customPagination.total = res.data?.recordsFiltered;
       this.totalRecords = res.data?.recordsFiltered;
@@ -359,7 +363,7 @@ export class OmOrderManagerComponent implements OnInit {
             viewType: this.viewType
           };
       
-          this.orderManagerApi.OMOTPendDelete(payload).subscribe((res: any) => {
+          this.iOrderManagerApi.OMOTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.getOrders();
             }
@@ -452,7 +456,7 @@ export class OmOrderManagerComponent implements OnInit {
             page: 'Order Manager'
           };
       
-          this.orderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
+          this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.getOrders();
               this.clearSearch();
@@ -488,7 +492,7 @@ export class OmOrderManagerComponent implements OnInit {
             page: 'Order Manager'
           };
       
-          this.orderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
+          this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.getOrders();
               this.clearSearch();
@@ -623,7 +627,7 @@ export class OmOrderManagerComponent implements OnInit {
       wsid: this.userData.wsid,
       appName: ""
     }
-    await this.orderManagerApi.OrderManagerTempDelete(payload).toPromise();
+    await this.iOrderManagerApi.OrderManagerTempDelete(payload).toPromise();
   }
 
   actionDialog(matEvent: MatSelectChange) {

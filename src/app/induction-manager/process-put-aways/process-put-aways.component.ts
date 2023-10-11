@@ -26,6 +26,10 @@ import { ReelDetailComponent } from 'src/app/dialogs/reel-detail/reel-detail.com
 import { ReelTransactionsComponent } from 'src/app/dialogs/reel-transactions/reel-transactions.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 
 export interface PeriodicElement {
@@ -113,8 +117,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     return numSelected === numRows;
   }
 
-
-  // // arbash variables
+  public iinductionManagerApi:IInductionManagerApiService;
   applyStrip:any;
   stripLength:any;
   stripSide:any;
@@ -125,7 +128,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   upperBound = 5
   lowerBound = 1
   
-
+  public iAdminApiService: IAdminApiService;
 
   constructor(
     private dialog: MatDialog,
@@ -133,8 +136,11 @@ export class ProcessPutAwaysComponent implements OnInit {
     private Api:ApiFuntions,
     private global:GlobalService,
     private authService: AuthService,
+    private inductionManagerApi: InductionManagerApiService,
+    private adminApiService: AdminApiService,
     private _liveAnnouncer: LiveAnnouncer,
-  ) { }
+  ) { this.iAdminApiService = adminApiService;
+    this.iinductionManagerApi = inductionManagerApi;}
   ngAfterViewInit() {
     setTimeout(() => {
       this.inputVal.nativeElement.focus();
@@ -199,7 +205,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.ifAllowed = true
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.fieldNames = res.data;
     })
   }
@@ -239,7 +245,7 @@ export class ProcessPutAwaysComponent implements OnInit {
      this.global.Print(`FileName:PrintOffCarList|BatchID:${this.batchId}`);
   }
   getCurrentToteID() {
-    this.Api.NextTote().subscribe(
+    this.iinductionManagerApi.NextTote().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.currentToteID = res.data;
@@ -276,11 +282,9 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   getRow(batchID) {
     let payLoad = {
-      batchID: batchID,
-      username: this.userData.username,
-      wsid: this.userData.wsid,
+      batchID: batchID, 
     };    
-    this.Api.BatchTotes(payLoad).subscribe(
+    this.iinductionManagerApi.BatchTotes(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           if (res.data.length > 0) {
@@ -395,12 +399,10 @@ export class ProcessPutAwaysComponent implements OnInit {
       try {
         setTimeout(() => {
           let payload = {
-            batchID: this.batchId2,
-            username: this.userData.userName,
-            wsid: this.userData.wsid
+            batchID: this.batchId2, 
           }
 
-          this.Api.BatchExist(payload).subscribe((res: any) => {
+          this.iinductionManagerApi.BatchExist(payload).subscribe((res: any) => {
             if (res && !res.data) {
               const dialogRef = this.dialog.open(AlertConfirmationComponent, {
                 height: 'auto',
@@ -509,11 +511,9 @@ export class ProcessPutAwaysComponent implements OnInit {
             }
           }
           const totePaylaod = {
-            "ToteID": toteID,
-            userName: this.userData.userName,
-            wsid: this.userData.wsid,
+            "ToteID": toteID, 
           }
-          this.Api.ValidateTotesForPutAways(totePaylaod).subscribe(res => {
+          this.iinductionManagerApi.ValidateTotesForPutAways(totePaylaod).subscribe(res => {
             if (res.data != '') {
               this.toastr.error(`The tote id ${res.data} already exists in Open Transactions. Please select another tote`, 'Error!', {
                 positionClass: 'toast-bottom-right',
@@ -530,11 +530,9 @@ export class ProcessPutAwaysComponent implements OnInit {
               let payLoad = {
                 batchID: this.batchId,
                 zoneLabel: this.assignedZones,
-                totes: [toteID, cells, position],
-                username: this.userData.userName,
-                wsid: this.userData.wsid,
+                totes: [toteID, cells, position], 
               };
-              this.Api.ProcessBatch(payLoad).subscribe(
+              this.iinductionManagerApi.ProcessBatch(payLoad).subscribe(
                 (res: any) => {
                   if (res.data && res.isExecuted) {
                     if(this.imPreferences.autoPrintPutAwayToteLabels){
@@ -588,7 +586,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
    IMPreferences:any;
   getProcessPutAwayIndex() {
-    this.Api.ProcessPutAwayIndex().subscribe(
+    this.iinductionManagerApi.ProcessPutAwayIndex().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.IMPreferences =  res.data.imPreference;
@@ -624,7 +622,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   getNextBatchID() { 
-    this.Api.NextBatchID().subscribe(
+    this.iinductionManagerApi.NextBatchID().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.batchId = res.data;
@@ -642,11 +640,9 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   updateNxtTote() {
     let updatePayload = {
-      "tote": this.currentToteID,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "tote": this.currentToteID, 
     }
-    this.Api.NextToteUpdate(updatePayload).subscribe(res => {
+    this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
         this.toastr.error('Something is wrong.', 'Error!', {
           positionClass: 'toast-bottom-right',
@@ -794,11 +790,9 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   async autocompleteSearchColumnItem() {
     let searchPayload = {
-      batchID: this.batchId,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      batchID: this.batchId, 
     };
-    this.Api
+    this.iinductionManagerApi
       .BatchIDTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
@@ -817,11 +811,9 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   async autocompleteSearchColumnItem2() {
     let searchPayload = {
-      batchID: this.batchId2,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      batchID: this.batchId2, 
     };
-    this.Api.BatchIDTypeAhead(searchPayload).subscribe(
+    this.iinductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
       (res: any) => {
         if (res.data) {
           this.searchAutocompleteItemNum2 = res.data;
@@ -1172,12 +1164,10 @@ export class ProcessPutAwaysComponent implements OnInit {
       let payLoad = {
         batchID: batchID ? batchID : this.batchId2,
         sortOrder: 'asc',
-        sortColumn: 0,
-        username: this.userData.username,
-        wsid: this.userData.wsid,
+        sortColumn: 0, 
       };
 
-      this.Api.TotesTable(payLoad).subscribe(
+      this.iinductionManagerApi.TotesTable(payLoad).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
             for (const iterator of res.data.totesTable) {
@@ -1228,12 +1218,10 @@ export class ProcessPutAwaysComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result) => {
           if (result == 'Yes') {
             let payLoad = {
-              batchID: this.batchId2,
-              username: this.userData.userName,
-              wsid: this.userData.wsid,
+              batchID: this.batchId2, 
             };
 
-            this.Api.CompleteBatch(payLoad).subscribe(
+            this.iinductionManagerApi.CompleteBatch(payLoad).subscribe(
               (res: any) => {
                 if (res.isExecuted) {
 
@@ -1393,12 +1381,10 @@ export class ProcessPutAwaysComponent implements OnInit {
           let payLoad = {
             toteNumber: this.postion,
             cell: this.toteQuantity,
-            batchID: this.batchId2,
-            username: this.userData.userName,
-            wsid: this.userData.wsid,
+            batchID: this.batchId2, 
           };
 
-          this.Api.MarkToteFull(payLoad).subscribe(
+          this.iinductionManagerApi.MarkToteFull(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
                 this.toastr.success(

@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
@@ -20,15 +22,19 @@ export class PrintRangeComponent implements OnInit {
   endLoc: string = "";
   groupLikeLoc: boolean = false;
   quantitySelected: number = 0;
+  public iAdminApiService: IAdminApiService;
   public iCommonAPI : ICommonApi;
   constructor(
     public commonAPI : CommonApiService,
     private route: Router,
     public dialogRef: MatDialogRef<any>,
     private authService: AuthService,
+    private adminApiService: AdminApiService,
     private Api: ApiFuntions,
     private global:GlobalService
-  ) { this.iCommonAPI = commonAPI; }
+  ) { this.iCommonAPI = commonAPI; 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -95,7 +101,7 @@ export class PrintRangeComponent implements OnInit {
       "endLocation": this.endLoc ? this.endLoc : 0,
       "unique": this.groupLikeLoc
     }
-    this.Api.QuantitySelected(payload).subscribe((res: any) => {
+    this.iAdminApiService.QuantitySelected(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         if (res.data == -1) {
           this.quantitySelected = 0;

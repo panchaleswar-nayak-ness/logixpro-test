@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import {ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 
 export interface  AdjustQuantityDataStructure   {
@@ -34,7 +36,7 @@ export class AdjustQuantityComponent implements OnInit {
   @ViewChild('newQty') newQty: ElementRef;
   fieldName="";
  adjustInventoryMapForm: FormGroup;
-
+ public iAdminApiService: IAdminApiService;
  getAdjustQuantityData  :    AdjustQuantityDataStructure = {
 
   itemNumber : '',
@@ -62,12 +64,14 @@ export class AdjustQuantityComponent implements OnInit {
     private dialog: MatDialog,
     public fb: FormBuilder,
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>
   ) {
    this.fieldName=data.fieldNames;
    this.iCommonAPI = commonAPI;
+   this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void { 
@@ -112,7 +116,7 @@ export class AdjustQuantityComponent implements OnInit {
   onSubmit(form: FormGroup) { 
 
     if(form.valid){
-      this.Api.updateItemQuantity(form.value).subscribe((res) => {
+      this.iAdminApiService.updateItemQuantity(form.value).subscribe((res) => {
         if(res.isExecuted){
           this.toastr.success(res.responseMessage, 'Success!',{
             positionClass: 'toast-bottom-right',

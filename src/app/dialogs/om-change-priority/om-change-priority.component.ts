@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/init/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; 
 import { ToastrService } from "ngx-toastr";
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-om-change-priority',
@@ -15,17 +17,21 @@ export class OmChangePriorityComponent implements OnInit {
   @ViewChild('new_pri') new_pri: ElementRef;
   public orderNumber: any;
   public Oldpriority:number;
+  public iAdminApiService: IAdminApiService;
   public Newpriority:number;
   userData: any;
   constructor(
     private sharedService: SharedService,
+    private adminApiService: AdminApiService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<OmChangePriorityComponent>,
     private authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private Api: ApiFuntions,
     private toastr: ToastrService
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -36,13 +42,11 @@ export class OmChangePriorityComponent implements OnInit {
   updatepriority(){
 
     let payload = {
-      "orderNumber": this.orderNumber,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "orderNumber": this.orderNumber, 
       "priority": this.Newpriority
     }
 
-    this.Api.UpdateOSPriority(payload).subscribe((res: any) => {
+    this.iAdminApiService.UpdateOSPriority(payload).subscribe((res: any) => {
       if(res.isExecuted){
         this.dialogRef.close(res);
       }

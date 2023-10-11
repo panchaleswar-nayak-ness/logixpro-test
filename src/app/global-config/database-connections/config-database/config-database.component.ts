@@ -6,6 +6,9 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+
 
 @Component({
   selector: 'app-config-database',
@@ -17,7 +20,13 @@ export class ConfigDatabaseComponent {
   @Output() configdbUpdateEvent = new EventEmitter<string>();
 
   connectionNameSelect: any = '';
-  constructor(private Api:ApiFuntions) {}
+  public  iGlobalConfigApi: IGlobalConfigApi;
+  constructor(
+    private Api:ApiFuntions,
+    public globalConfigApi: GlobalConfigApiService
+    ) {
+      this.iGlobalConfigApi = globalConfigApi;
+    }
 
   ngOnChanges(changes: SimpleChanges) {
     if (
@@ -44,7 +53,7 @@ export class ConfigDatabaseComponent {
     let payload = {
       ConnectionName: item,
     };
-    this.Api
+    this.iGlobalConfigApi
       .LAConnectionStringSet(payload)
       .subscribe(
         {next: (res: any) => {

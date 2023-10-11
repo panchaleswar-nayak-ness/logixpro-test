@@ -3,6 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-send-tran-history',
@@ -11,13 +13,15 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 })
 export class SendTranHistoryComponent  {
   dialogData;
-
+  public iAdminApiService: IAdminApiService;
   constructor(
     public dialogRef: MatDialogRef<SendTranHistoryComponent>,
     private toastr: ToastrService,
+    private adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) data,
     private Api: ApiFuntions
   ) {
+    this.iAdminApiService = adminApiService;
     this.dialogData = data;
   }
 
@@ -28,7 +32,7 @@ export class SendTranHistoryComponent  {
       userName: this.dialogData.user,
       wsid: this.dialogData.wsid,
     };
-    this.Api.SendCompletedToTH(payload).subscribe(
+    this.iAdminApiService.SendCompletedToTH(payload).subscribe(
       {next: (res: any) => {
         if (res.isExecuted) {
           this.toastr.success(labels.alert.success, 'Success!', {

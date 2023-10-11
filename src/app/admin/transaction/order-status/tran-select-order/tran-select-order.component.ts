@@ -24,6 +24,8 @@ import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { ActivatedRoute } from '@angular/router';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-tran-select-order',
@@ -104,15 +106,19 @@ export class TranSelectOrderComponent implements OnInit {
       this.clear();
     }
   }
+  public iAdminApiService: IAdminApiService;
   constructor(
     public authService: AuthService,
     private Api:ApiFuntions,
     private dialog: MatDialog,
+    private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private sharedService: SharedService,
     private currentTabDataService: CurrentTabDataService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['orderStatNextData']) {
       this.searchAutocompleteListOrderNumber =
@@ -304,29 +310,25 @@ export class TranSelectOrderComponent implements OnInit {
     let searchPayload;
     if (this.columnSelect == 'Order Number') {
       searchPayload = {
-        orderNumber: this.searchField,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        orderNumber: this.searchField
       };
     } else {
       searchPayload = {
         query: this.searchField,
         tableName: 1,
-        column: this.columnSelect,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        column: this.columnSelect
       };
     }
  
    if( this.columnSelect == 'Order Number'){
-    this.Api.OrderNumberNext(searchPayload).subscribe(
+    this.iAdminApiService.OrderNumberNext(searchPayload).subscribe(
       {next: (res: any) => {
         this.searchAutocompleteList = res.data;
       },
       error: (error) => {}}
     );
    }else{
-    this.Api.NextSuggestedTransactions(searchPayload).subscribe(
+    this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe(
       {next: (res: any) => {
         this.searchAutocompleteList = res.data;
       },

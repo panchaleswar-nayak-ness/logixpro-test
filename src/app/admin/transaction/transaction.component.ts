@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { SharedService } from 'src/app/services/shared.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-transaction',
@@ -27,16 +29,17 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   tabIndex$: Observable<any>;
   location$: Observable<any>;
   location: any;
+  public iAdminApiService: IAdminApiService;
   constructor(
     router: Router,
     private route: ActivatedRoute,
+    private adminApiService: AdminApiService,
     private sharedService: SharedService,
     public authService: AuthService,
     private Api: ApiFuntions,
   ) { 
-
-    //get absolute url 
-   if(router.url == '/OrderManager/OrderStatus'){
+    this.iAdminApiService = adminApiService;
+    if(router.url == '/OrderManager/OrderStatus'){
     this.TabIndex = 0;
    }
    else if(router.url == '/admin/transaction'){
@@ -134,7 +137,7 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     this.TabIndex = (this.TabIndex + 1) % tabCount;
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       this.fieldNames = res.data;
       this.sharedService.updateFieldNames(this.fieldNames)
     })

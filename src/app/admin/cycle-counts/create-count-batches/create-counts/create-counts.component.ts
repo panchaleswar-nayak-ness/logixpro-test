@@ -27,6 +27,8 @@ import { Router } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
@@ -89,6 +91,7 @@ export class CCBCreateCountsComponent implements OnInit {
   toLocationTA = new Subject<string>();
   fromItemTA = new Subject<string>();
   toItemTA = new Subject<string>();
+  public iAdminApiService: IAdminApiService;
   @Output() eventChange = new EventEmitter<Event>();
 
   categoryTA = new Subject<string>();
@@ -133,10 +136,12 @@ constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
     private liveAnnouncer: LiveAnnouncer,
+    private adminApiService: AdminApiService,
     private router: Router,
     private global:GlobalService
     
   ) {
+    this.iAdminApiService = adminApiService;
     this.iCommonAPI = commonAPI;
     
     this.filtersForm = new FormGroup({
@@ -349,11 +354,9 @@ constructor(
   getTypeAheads(type) {
     if (type === 'Description') {
       let paylaod = {
-        description: this.filtersForm.value.description,
-        userName: this.userData.userName,
-        wsid: this.userData.wsid,
+        description: this.filtersForm.value.description 
       };
-      this.Api
+      this.iAdminApiService
         .GetCCDescriptionTypeAhead(paylaod)
         .subscribe((res: any) => {
           this.searchAutocompleteDescription = res.data;
@@ -364,11 +367,9 @@ constructor(
       // and display it
     } else if (type === 'Category') {
       let paylaod = {
-        category: this.filtersForm.value.category,
-        userName: this.userData.userName,
-        wsid: this.userData.wsid,
+        category: this.filtersForm.value.category 
       };
-      this.Api
+      this.iAdminApiService
         .GetCCCategoryTypeAhead(paylaod)
         .subscribe((res: any) => {
           this.searchAutocompletCategory = res.data;
@@ -389,13 +390,11 @@ constructor(
           beginCost:'',
           endCost: this.filtersForm.value.costEnd
             ? this.filtersForm.value.costEnd
-            : '',
-          userName: this.userData.userName,
-          wsid: this.userData.wsId,
+            : '', 
         };
       }
    
-      this.Api
+      this.iAdminApiService
         .GetCCCountToCostTypeAhead(payload)
         .subscribe((res: any) => {
           if (type === 'BeginCost') {
@@ -454,7 +453,7 @@ constructor(
       // Create a payload to send to the server
        
       // Run the service to get the list of warehouses and the list of current count orders.
-      this.Api.GetCountBatches().subscribe(
+      this.iAdminApiService.GetCountBatches().subscribe(
         // If the request is successful, get the data
         (res: any) => {
           // If the data is returned, set the list of warehouses and the list of current count orders
@@ -601,7 +600,7 @@ constructor(
         costEnd: this.filtersForm.value.costEnd,
         warehouseFilter: this.warehouse,
       } ;  
-    this.Api.BatchResultTable(queryData).subscribe(
+    this.iAdminApiService.BatchResultTable(queryData).subscribe(
       (res: any) => {
         if (res?.data && res.isExecuted) {
           this.dataSource = new MatTableDataSource(res.data);
@@ -651,12 +650,10 @@ constructor(
       if (res == 'Yes') {
         const payLoad = {
           orderNumber: this.orderNumber,
-          ident: ident,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          ident: ident, 
         };
         // Call the API
-        this.Api.CountOrdersDelete(payLoad).subscribe(
+        this.iAdminApiService.CountOrdersDelete(payLoad).subscribe(
           (res: any) => {
             // Check if the response is a success
             if (res.data && res.isExecuted) {
@@ -691,11 +688,9 @@ constructor(
   }
   insertCCQueue(ids: any) {
     const payLoad = {
-      InvMapIDs: ids,
-      username: this.userData.username,
-      wsid: this.userData.wsid,
+      InvMapIDs: ids, 
     };
-    this.Api.CycleCountQueueInsert(payLoad).subscribe(
+    this.iAdminApiService.CycleCountQueueInsert(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.dataSource = [];
@@ -733,11 +728,9 @@ constructor(
 
               if (invMapIDs.length == 1000) {
                 const payLoad = {
-                  InvMapIDs: invMapIDs,
-                  username: this.userData.username,
-                  wsid: this.userData.wsid,
+                  InvMapIDs: invMapIDs, 
                 };
-                this.Api
+                this.iAdminApiService
                   .CycleCountQueueInsert(payLoad)
                   .subscribe(
                     (res: any) => {

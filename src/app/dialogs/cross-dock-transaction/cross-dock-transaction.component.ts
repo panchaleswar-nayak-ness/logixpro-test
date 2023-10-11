@@ -10,6 +10,8 @@ import { MatOption } from '@angular/material/core';
 import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -22,7 +24,7 @@ export class CrossDockTransactionComponent implements OnInit {
   public userId;
   public wsid;
   public warehouse;
-
+  public iinductionManagerApi:IInductionManagerApiService;
   crossDock: any;
   transactions: any;
   qtyToSubtract: number = 0;
@@ -50,10 +52,13 @@ export class CrossDockTransactionComponent implements OnInit {
   constructor(public router: Router, 
               public dialogRef: MatDialogRef<CrossDockTransactionComponent>, 
               private dialog: MatDialog, 
+              private inductionManagerApi: InductionManagerApiService,
               @Inject(MAT_DIALOG_DATA) public data: any, 
               private Api:ApiFuntions, 
               private toastr: ToastrService,
-              private global:GlobalService) { }
+              private global:GlobalService) {
+                this.iinductionManagerApi = inductionManagerApi;
+               }
 
   ngOnInit(): void {
     
@@ -141,7 +146,7 @@ export class CrossDockTransactionComponent implements OnInit {
       wsid: this.wsid
     };
 
-    this.Api
+    this.iinductionManagerApi
       .CrossDock(payLoad)
       .subscribe(
         (res: any) => {
@@ -197,7 +202,7 @@ export class CrossDockTransactionComponent implements OnInit {
 
   getNxtToteIds() { 
     if (this.loopIndex >= 0) {
-      this.Api.NextTote().subscribe(res => {
+      this.iinductionManagerApi.NextTote().subscribe(res => {
         this.transactions[this.loopIndex].toteID = res.data  + '-RT';
         this.nxtToteID = ++res.data;
         this.updateNxtTote();
@@ -220,7 +225,7 @@ export class CrossDockTransactionComponent implements OnInit {
       username: this.userId,
       wsid: this.wsid
     }
-    this.Api.NextToteUpdate(updatePayload).subscribe(res => {
+    this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
         this.toastr.error('Something is wrong.', 'Error!', {
           positionClass: 'toast-bottom-right',
@@ -297,7 +302,7 @@ export class CrossDockTransactionComponent implements OnInit {
             "wsid": this.wsid
           };
     
-          this.Api.CompletePick(payLoad).subscribe(
+          this.iinductionManagerApi.CompletePick(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
                this.OTRecID = res.data

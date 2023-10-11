@@ -5,6 +5,8 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
@@ -29,6 +31,7 @@ export class SetItemLocationComponent implements OnInit {
   location: any;
   itemInvalid=false;
   invMapID;
+  public iAdminApiService: IAdminApiService;
   public iCommonAPI : ICommonApi;
 
   constructor(
@@ -36,9 +39,11 @@ export class SetItemLocationComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
     private Api:ApiFuntions,
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
 
   ) {
+    this.iAdminApiService = adminApiService;
     this.itemNumber = data.itemNumber;
     this.iCommonAPI = commonAPI;
   }
@@ -112,7 +117,7 @@ export class SetItemLocationComponent implements OnInit {
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .GetLocations(searchPayload)
       .subscribe(
         {next: (res: any) => {

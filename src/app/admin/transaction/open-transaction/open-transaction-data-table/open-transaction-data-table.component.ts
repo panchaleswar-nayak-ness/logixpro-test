@@ -21,6 +21,8 @@ import {  } from 'src/app/admin/dialogs/quarantine-confirmation/quarantine-confi
 import {  } from 'src/app/admin/dialogs/adjust-quantity/adjust-quantity.component';
 import { HoldReasonComponent } from 'src/app/admin/dialogs/hold-reason/hold-reason.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 const TRNSC_DATA = [
   { colHeader: 'orderNumber', colDef: 'Order Number' },
@@ -75,14 +77,15 @@ export class OpenTransactionDataTableComponent
   public sortCol: any = 5;
   public sortOrder: any = 'asc';
   public columnValues: any = [];
-  
+  public iAdminApiService: IAdminApiService;
   pageEvent: PageEvent;
   constructor(
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private authService: AuthService,
     private dialog: MatDialog
 
-  ) {}
+  ) {this.iAdminApiService = adminApiService;}
   @Input()
   set event(event: any) {
     if (event) {
@@ -116,7 +119,7 @@ export class OpenTransactionDataTableComponent
       orderItem: this.orderItem,
       wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .HoldTransactionsData(this.payload)
       .subscribe(
         (res: any) => {
