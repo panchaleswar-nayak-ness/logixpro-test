@@ -15,6 +15,8 @@ import labels from '../../labels/labels.json';
 import { PageEvent } from '@angular/material/paginator';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 
 @Component({
@@ -45,7 +47,7 @@ export class ToteTransactionViewComponent implements OnInit {
   IMPreferences:any;
   zoneLabels:any;
   imPreferences:any;
- 
+  public iinductionManagerApi:IInductionManagerApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
@@ -53,7 +55,10 @@ export class ToteTransactionViewComponent implements OnInit {
     private Api: ApiFuntions,
     private global:GlobalService,
     private toastr: ToastrService,
-  ) {}
+    private inductionManagerApi: InductionManagerApiService,
+  ) {
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
     this.batchID = this.data.batchID;
@@ -115,11 +120,9 @@ export class ToteTransactionViewComponent implements OnInit {
       eRow: this.customPagination.endIndex,
       sortColumn: this.sortCol,
       sortOrder: this.sortOrder,
-      username: this.data.userName,
-      wsid: this.data.wsid,
     };
 
-    this.Api.TransTableView(payLoad).subscribe((res:any)=>{
+    this.iinductionManagerApi.TransTableView(payLoad).subscribe((res:any)=>{
       
       if(res?.data){
         this.isData=true
@@ -175,12 +178,10 @@ export class ToteTransactionViewComponent implements OnInit {
           let payLoad = {
             toteNumber: this.tote,
             cell: this.cell,
-            batchID: this.batchID,
-            username: this.data.userName,
-            wsid: this.data.wsid,
+            batchID: this.batchID, 
           };
 
-          this.Api.MarkToteFull(payLoad).subscribe(
+          this.iinductionManagerApi.MarkToteFull(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
                 this.toastr.success(labels.alert.success, 'Success!', {

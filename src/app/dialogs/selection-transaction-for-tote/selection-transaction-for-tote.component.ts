@@ -4,6 +4,8 @@ import { SelectionTransactionForToteExtendComponent } from '../selection-transac
 import { ToastrService } from 'ngx-toastr'; 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
@@ -26,11 +28,13 @@ export class SelectionTransactionForToteComponent implements OnInit {
 
   public lowerBound=1;
   public upperBound=2;
+  public iinductionManagerApi:IInductionManagerApiService;
 
 
-
-  constructor(private dialog: MatDialog,public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService) { }
+  constructor(private dialog: MatDialog,private inductionManagerApi: InductionManagerApiService,public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService) { 
+      this.iinductionManagerApi = inductionManagerApi;
+    }
 
   ngOnInit(): void {
     this.inputType  =  this.data.inputType;
@@ -54,12 +58,10 @@ export class SelectionTransactionForToteComponent implements OnInit {
     if (val.zone) {
 
       let payload = {
-        zone: val.zone,      
-        username: this.userName,
-        wsid: this.wsid
+        zone: val.zone,    
       };
       
-      this.Api
+      this.iinductionManagerApi
         .BatchByZone(payload)
         .subscribe(
           (res: any) => {
@@ -171,7 +173,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
         "1=1"
       ],
     };
-    this.Api
+    this.iinductionManagerApi
       .TransactionForTote(getTransaction)
       .subscribe(
         (res: any) => {

@@ -2,6 +2,8 @@ import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog'; 
 import { AuthService } from '../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 
 @Component({
@@ -15,14 +17,18 @@ export class AddFilterFunction implements OnInit {
   submit: boolean = false;
   filter_name:any
   userData;
+  public iinductionManagerApi:IInductionManagerApiService;
 
   constructor(
               public dialogRef: MatDialogRef<any>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private confirmationdialog: MatDialog,
               private Api: ApiFuntions,
+              private inductionManagerApi: InductionManagerApiService,
               private authService: AuthService
-              ) { }
+              ) {
+                this.iinductionManagerApi = inductionManagerApi;
+               }
 
   ngOnInit(): void {  
     this.userData = this.authService.userData();
@@ -42,7 +48,7 @@ export class AddFilterFunction implements OnInit {
           "wsid": this.userData.wsid,
      
       }
-      this.Api.PickBatchFilterRename(paylaod).subscribe(res => {
+      this.iinductionManagerApi.PickBatchFilterRename(paylaod).subscribe(res => {
         if(res.isExecuted){
           this.dialogRef.close({"oldFilter": this.data.savedFilter,"newFilter":this.filter_name,})
         }

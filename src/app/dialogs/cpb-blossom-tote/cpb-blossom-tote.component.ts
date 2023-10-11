@@ -5,6 +5,8 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import labels from '../../labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-cpb-blossom-tote',
@@ -12,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./cpb-blossom-tote.component.scss']
 })
 export class CpbBlossomToteComponent implements OnInit {
-
+  public iinductionManagerApi:IInductionManagerApiService;
   displayedColumns: string[] = ['item_number', 'transaction_qty', 'qty_in_old_date'];
   toteId: any;
   transactions: any = [];
@@ -26,9 +28,13 @@ export class CpbBlossomToteComponent implements OnInit {
     private toastr: ToastrService,
     private dialog: MatDialog,
     private Api: ApiFuntions,
+    private inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<CpbBlossomToteComponent>,
     private globalService: GlobalService
-  ) { }
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+
+  }
 
   restrictKeyboard(event: KeyboardEvent) {
     const isNumericInput = event.key.match(/^[0-9]+$/);
@@ -59,7 +65,7 @@ export class CpbBlossomToteComponent implements OnInit {
 
   newToteIdFocusOut() {
     if (this.newToteID != "") {
-      this.Api.ValidateTote({ toteID: this.newToteID }).subscribe((res: any) => {
+      this.iinductionManagerApi.ValidateTote({ toteID: this.newToteID }).subscribe((res: any) => {
         if (res.isExecuted && res.data != "") {
           this.submitBlossomEnable = true;
         }
@@ -123,7 +129,7 @@ export class CpbBlossomToteComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'Yes') {
-        this.Api.blossomTote(payload).subscribe((res: any) => {
+        this.iinductionManagerApi.blossomTote(payload).subscribe((res: any) => {
           if(res.isExecuted){
             this.dialogRef.close({newToteID:this.newToteID});
             this.toastr.success(labels.alert.update, 'Success!', {

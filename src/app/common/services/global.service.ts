@@ -11,6 +11,8 @@ import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 export class GlobalService {
   safeUrl: SafeUrl;
   userData:any;
+  public iinductionManagerApi:IInductionManagerApiService;
   sqlLimits : any = {
     numerics: {
         bigint: {
@@ -56,6 +59,7 @@ export class GlobalService {
     private Api:ApiFuntions,
     public OrderManagerApi  : OrderManagerApiService,
     private toast:ToastrService,
+    private inductionManagerApi: InductionManagerApiService,
     private adminApiService: AdminApiService,
     private dialog: MatDialog, 
     private httpClient : HttpClient,
@@ -64,6 +68,8 @@ export class GlobalService {
     this.orderManagerApi = OrderManagerApi;
     this.userData=this.authService.userData();
     this.iAdminApiService = adminApiService;
+    this.iinductionManagerApi = inductionManagerApi;
+
   }
 
     // returns the date from JS in format: mm/dd/yyyy hh:mm
@@ -332,11 +338,9 @@ export class GlobalService {
       }
 
       updateImPreferences(){
-        let paylaod = {
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid,
+        let paylaod = { 
         }
-        this.Api.PickToteSetupIndex(paylaod).subscribe(res => {
+        this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
           localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
     
     

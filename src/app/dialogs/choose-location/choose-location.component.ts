@@ -8,6 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-choose-location',
@@ -16,6 +18,8 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 })
 export class ChooseLocationComponent implements OnInit {
   @ViewChild('loc_focus') loc_focus: ElementRef;
+  public iinductionManagerApi:IInductionManagerApiService;
+
   public userData: any;
   searchByItem: any = new Subject<string>();
   searchAutocompleteItemNum: any = [];
@@ -24,10 +28,13 @@ export class ChooseLocationComponent implements OnInit {
 
   constructor(private toastr: ToastrService,
               private Api:ApiFuntions,
+              private inductionManagerApi: InductionManagerApiService,
               private authService: AuthService,
               public dialogRef                  : MatDialogRef<ChooseLocationComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private dialog                    : MatDialog,) { }
+              private dialog                    : MatDialog,) {
+                this.iinductionManagerApi = inductionManagerApi;
+               }
 
   ngOnInit(): void {    
     this.userData = this.authService.userData();
@@ -60,12 +67,10 @@ export class ChooseLocationComponent implements OnInit {
         "bVel": this.data.bulkVelocity,
         "cfCell": this.data.cfCellSize,
         "cfVel": this.data.cfVelocity,
-        "item": this.data.itemNumber,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        "item": this.data.itemNumber, 
       };
 
-      this.Api.BatchLocationTypeAhead(searchPayload).subscribe(
+      this.iinductionManagerApi.BatchLocationTypeAhead(searchPayload).subscribe(
         (res: any) => {
           if (res.data) {
             this.searchAutocompleteItemNum = res.data;
@@ -87,11 +92,9 @@ export class ChooseLocationComponent implements OnInit {
       let payLoad = {
         "invMapID": this.selectedLocation.invMapID,
         "previousZone": this.data.zones.replace("Zones:",""),
-        "dedicated": this.data.dedicated,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        "dedicated": this.data.dedicated, 
       };
-      this.Api.ReserveLocation(payLoad).subscribe(
+      this.iinductionManagerApi.ReserveLocation(payLoad).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
             this.dialogRef.close({responseMessage : res.responseMessage, ...this.selectedLocation});

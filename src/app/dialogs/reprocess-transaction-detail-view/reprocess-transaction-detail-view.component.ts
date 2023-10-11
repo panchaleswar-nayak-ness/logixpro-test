@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-reprocess-transaction-detail-view',
@@ -16,14 +18,17 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
   itemID:any;
   userData:any;
   public iAdminApiService: IAdminApiService;
+  public iinductionManagerApi:IInductionManagerApiService;
   fieldNames:any;
   constructor(
     private Api: ApiFuntions,
     private userService:AuthService,
+    private inductionManagerApi: InductionManagerApiService,
 private adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.iAdminApiService = adminApiService;
+    this.iinductionManagerApi = inductionManagerApi;
   }
   reprocessInfo = new FormGroup({
     orderNumber: new FormControl({ value: '', disabled: true }),
@@ -76,9 +81,9 @@ private adminApiService: AdminApiService,
     })
   }
   getReprocessData() {
-    let payLoad = { id: this.itemID, username: this.userData.userName, wsid: this.userData.wsid};
+    let payLoad = { id: this.itemID};
 
-    this.Api
+    this.iinductionManagerApi
       .RPDetails(payLoad)
       .subscribe((res: any) => {
         if (res?.isExecuted) {

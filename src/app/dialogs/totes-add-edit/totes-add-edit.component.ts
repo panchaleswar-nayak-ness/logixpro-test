@@ -15,6 +15,8 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 export interface PeriodicElement {
   name: string;
@@ -54,6 +56,7 @@ export class TotesAddEditComponent implements OnInit {
   position:any;
   isIMPath=false;
   public iAdminApiService: IAdminApiService;
+  public iinductionManagerApi:IInductionManagerApiService;
   toteID="";
   cellID="";
   fromTote;
@@ -151,7 +154,7 @@ export class TotesAddEditComponent implements OnInit {
   }
   autocompleteSearchColumn(){
     
-    this.Api.GetFromToteTypeAhead().pipe(takeUntil(this.onDestroy$)).pipe(
+    this.iinductionManagerApi.GetFromToteTypeAhead().pipe(takeUntil(this.onDestroy$)).pipe(
       catchError((error) => {
         // Handle the error here
         this.toastr.error("An Error occured while retrieving data.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
@@ -419,12 +422,13 @@ export class TotesAddEditComponent implements OnInit {
   dataSource1 = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection1 = new SelectionModel<PeriodicElement>(true, []);
 
-  constructor(public dialogRef: MatDialogRef<TotesAddEditComponent>,private adminApiService: AdminApiService,private route: ActivatedRoute,private location: Location,private renderer: Renderer2,
+  constructor(public dialogRef: MatDialogRef<TotesAddEditComponent>,
+    private inductionManagerApi: InductionManagerApiService,private adminApiService: AdminApiService,private route: ActivatedRoute,private location: Location,private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA) public data : any,private authService: AuthService,private Api:ApiFuntions,private toastr: ToastrService,private dialog: MatDialog,private global:GlobalService) {
       this.iAdminApiService = adminApiService;
       let pathArr= this.location.path().split('/')
       this.isIMPath=pathArr[pathArr.length-1]==='ImToteManager'
-
+      this.iinductionManagerApi = inductionManagerApi;
     
       
       

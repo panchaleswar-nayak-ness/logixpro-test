@@ -10,6 +10,8 @@ import { AuthService } from 'src/app/init/auth.service';
 import labels from '../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-admin-prefrences',
@@ -120,14 +122,16 @@ export class AdminPrefrencesComponent implements OnInit {
   ];
 
   superBatchFilterList: any;
-
+  public iinductionManagerApi:IInductionManagerApiService;
   constructor(
     private authService: AuthService,
     private Api: ApiFuntions,
+    private inductionManagerApi: InductionManagerApiService,
     public formBuilder: FormBuilder,
     private toast: ToastrService,
     private global:GlobalService
   ) {
+    this.iinductionManagerApi = inductionManagerApi;
     this.preferencesForm = this.formBuilder.group({
       // System Settings
       useDefault: new FormControl('', Validators.compose([])),
@@ -224,7 +228,7 @@ export class AdminPrefrencesComponent implements OnInit {
   getPreferences() {
     try {
       
-      this.Api
+      this.iinductionManagerApi
         .PreferenceIndex()
         .subscribe(
           (res: any) => {
@@ -472,7 +476,7 @@ export class AdminPrefrencesComponent implements OnInit {
   }
   getCompName() {
     
-    this.Api.CompName().subscribe(
+    this.iinductionManagerApi.CompName().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
 

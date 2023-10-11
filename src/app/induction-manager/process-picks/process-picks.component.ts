@@ -19,6 +19,8 @@ import { SharedService } from 'src/app/services/shared.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-process-picks',
@@ -53,6 +55,7 @@ export class ProcessPicksComponent implements OnInit {
   filteredOrderNum: Observable<any[]>;
   displayedColumns: string[] = ['position', 'toteid', 'orderno', 'priority', 'other'];
   dataSource: any;
+  public iinductionManagerApi:IInductionManagerApiService;
   nxtToteID: any;
   selection = new SelectionModel<any>(true, []);
   onDestroy$: Subject<boolean> = new Subject();
@@ -71,9 +74,12 @@ export class ProcessPicksComponent implements OnInit {
     private toastr: ToastrService,
     private authService: AuthService,
     private router: Router,
+    private inductionManagerApi: InductionManagerApiService,
     private global: GlobalService,
     private sharedService: SharedService
-  ) { }
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -311,10 +317,9 @@ async  printPickLabels(row) {
   }
   getAllOrders() {
     let paylaod = {
-      "OrderView": 'All',
-      "wsid": this.userData.wsid,
+      "OrderView": 'All', 
     }
-    this.Api.OrdersInZone(paylaod).subscribe((res) => {
+    this.iinductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
       if (res.data) {
         this.orderNumberList = res.data
       }
@@ -401,11 +406,9 @@ async  printPickLabels(row) {
   }
 
   getAllZones() {
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+    let paylaod = { 
     }
-    this.Api.WSPickZoneSelect(paylaod).subscribe((res) => {
+    this.iinductionManagerApi.WSPickZoneSelect(paylaod).subscribe((res) => {
       if (res.data) {
         this.allZones = res.data;
       }
@@ -414,11 +417,9 @@ async  printPickLabels(row) {
 
   pickToteSetupIndex() {
     return new Promise((resolve, reject) => {
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+    let paylaod = { 
     }
-    this.Api.PickToteSetupIndex(paylaod).subscribe(res => {
+    this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
       this.countInfo = res.data.countInfo;
       this.pickBatchesList = res.data.pickBatches;
       this.pickBatchQuantity = res.data.imPreference.pickBatchQuantity;
@@ -505,16 +506,15 @@ async  printPickLabels(row) {
     dialogRef.afterClosed().subscribe(() => {
       if (this.dialogClose) {
         if (val === 'batchWithID') {
-          this.Api.NextBatchID().subscribe(res => {
+          this.iinductionManagerApi.NextBatchID().subscribe(res => {
             this.batchID = res.data;
-            let payload = {
-              "wsid": this.userData.wsid,
+            let payload = { 
               "type": this.pickType
             }
             if (!this.useInZonePickScreen) {
               if (!this.usePickBatchManager) {
                 if (this.autoPickOrderSelection) {
-                  this.Api.FillOrderNumber(payload).subscribe(res => {
+                  this.iinductionManagerApi.FillOrderNumber(payload).subscribe(res => {
                     this.TOTE_SETUP.forEach((element, key) => {
                       element.orderNumber = res.data[key];
                     });
@@ -554,14 +554,13 @@ async  printPickLabels(row) {
             });
           }
           else {
-            let payload = {
-              "wsid": this.userData.wsid,
+            let payload = { 
               "type": this.pickType
             }
             if (!this.useInZonePickScreen) {
               if (!this.usePickBatchManager) {
                 if (this.autoPickOrderSelection) {
-                  this.Api.FillOrderNumber(payload).subscribe(res => {
+                  this.iinductionManagerApi.FillOrderNumber(payload).subscribe(res => {
                     this.TOTE_SETUP.forEach((element, key) => {
                       element.orderNumber = res.data[key];
                     });
@@ -718,7 +717,7 @@ async  printPickLabels(row) {
     let payload = {
       "OrderNumber": element.orderNumber
     }
-    this.Api.ValidateOrderNumber(payload).subscribe(res => {
+    this.iinductionManagerApi.ValidateOrderNumber(payload).subscribe(res => {
       if (res.data === 'Invalid') {
         this.toastr.error('This is not a vaild order number for this pick batch.', 'Error!', {
           positionClass: 'toast-bottom-right',
@@ -748,7 +747,7 @@ async  printPickLabels(row) {
   }
 
   getAllToteIds(autoToteIds: boolean = false) {
-    this.Api.NextTote().subscribe(res => {
+    this.iinductionManagerApi.NextTote().subscribe(res => {
       this.nxtToteID = res.data;
       this.TOTE_SETUP.forEach((element, key) => {
         if (!element.toteID) {
@@ -767,11 +766,9 @@ async  printPickLabels(row) {
 
   updateNxtTote() {
     let updatePayload = {
-      "tote": this.nxtToteID,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "tote": this.nxtToteID, 
     }
-    this.Api.NextToteUpdate(updatePayload).subscribe(res => {
+    this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
         this.toastr.error('Something is wrong.', 'Error!', {
           positionClass: 'toast-bottom-right',
@@ -782,7 +779,7 @@ async  printPickLabels(row) {
     });
   }
   getNextToteId() {
-    this.Api.NextTote().subscribe(res => {
+    this.iinductionManagerApi.NextTote().subscribe(res => {
       this.nxtToteID = res.data;
       for (let element of this.TOTE_SETUP) {
         if (element.toteID === '') {
@@ -848,7 +845,7 @@ async  printPickLabels(row) {
 
 
   fillNextToteID(i: any) {
-    this.Api.NextTote().subscribe(res => {
+    this.iinductionManagerApi.NextTote().subscribe(res => {
       this.nxtToteID = res.data;
       this.TOTE_SETUP[i].toteID = this.nxtToteID;
       this.nxtToteID = this.nxtToteID + 1;
@@ -920,12 +917,10 @@ async  printPickLabels(row) {
         Positions,
         ToteIDs,
         OrderNumbers,
-        "BatchID": this.batchID,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "BatchID": this.batchID
       }
 
-      this.Api.InZoneSetupProcess(paylaod).subscribe(res => {
+      this.iinductionManagerApi.InZoneSetupProcess(paylaod).subscribe(res => {
         if (res.isExecuted) {
           let btId = this.batchID
           this.dialog.closeAll();
@@ -961,12 +956,10 @@ async  printPickLabels(row) {
         Positions,
         ToteIDs,
         OrderNumbers,
-        "BatchID": this.batchID,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "BatchID": this.batchID, 
         'Count': 0
       }
-      this.Api.PickToteSetupProcess(paylaod).subscribe(res => {
+      this.iinductionManagerApi.PickToteSetupProcess(paylaod).subscribe(res => {
         if (res.isExecuted) {
           let batId = this.batchID
           this.dialog.closeAll();

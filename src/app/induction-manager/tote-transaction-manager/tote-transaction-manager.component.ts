@@ -15,6 +15,8 @@ import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.ser
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 @Component({
   selector: 'app-tote-transaction-manager',
   templateUrl: './tote-transaction-manager.component.html',
@@ -47,7 +49,7 @@ export class ToteTransactionManagerComponent implements OnInit {
       host_trans_id: '123641',
     },
   ];
-
+public iinductionManagerApi:IInductionManagerApiService;
   pageEvent: PageEvent;
   public dataSource: any = new MatTableDataSource();
   batchId: any = '';
@@ -86,10 +88,12 @@ export class ToteTransactionManagerComponent implements OnInit {
     private toastr: ToastrService,
     private Api: ApiFuntions,
     private authService: AuthService,
+    private inductionManagerApi: InductionManagerApiService,
     private filterService: ContextMenuFiltersService,
     private global:GlobalService
   ) {
     this.userData = this.authService.userData();
+    this.iinductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -177,7 +181,7 @@ export class ToteTransactionManagerComponent implements OnInit {
       SortOrder:this.sortOrder,
       Filter: this.FilterString,
     };
-    this.Api
+    this.iinductionManagerApi
       .SelectToteTransManTable(payload)
       .subscribe((res: any) => {
         this.totalRecords=  res?.data[0]?.totalCount? res.data[0].totalCount:0;
@@ -189,7 +193,7 @@ export class ToteTransactionManagerComponent implements OnInit {
    let searchPayload = {
       batchID:this.batchId
     };
-    this.Api
+    this.iinductionManagerApi
     .SelectBatchPickTA(this.batchId?searchPayload:null)
       .subscribe(
         (res: any) => {
@@ -200,12 +204,10 @@ export class ToteTransactionManagerComponent implements OnInit {
       );
   }
   clearToteInfo() {
-    let payload = {
-      userName: this.userData.userName,
-      wsid: this.userData.wsid,
+    let payload = { 
       appName: '',
     };
-    this.Api
+    this.iinductionManagerApi
       .ClearPickToteInfo(payload)
       .subscribe((res: any) => {
         if (res.isExecuted) {

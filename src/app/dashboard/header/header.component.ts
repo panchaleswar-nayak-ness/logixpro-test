@@ -11,6 +11,8 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatDialog } from '@angular/material/dialog';
 import { DPrinterSetupComponent } from 'src/app/dialogs/d-printer-setup/d-printer-setup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-header',
@@ -25,11 +27,13 @@ export class HeaderComponent implements OnInit {
   breadcrumbList: any = [];
   userData: any;
   configUser:any;
+  public iinductionManagerApi:IInductionManagerApiService;
 isConfigUser
 statusTab;
   constructor(
     private dialog: MatDialog,
     private router: Router,
+    private inductionManagerApi: InductionManagerApiService,
     public spinnerService: SpinnerService, 
     private authService: AuthService,
     private api:ApiFuntions,
@@ -40,6 +44,8 @@ statusTab;
     private global:GlobalService,
     ) {
       let width=0;
+      this.iinductionManagerApi = inductionManagerApi;
+
       this.breakpointSubscription = this.breakpointObserver.observe([Breakpoints.Small,Breakpoints.Large])
       .subscribe((state: BreakpointState) => {
            width = window.innerWidth;    
@@ -128,11 +134,9 @@ statusTab;
 
     } else {
 
- let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+ let paylaod = { 
     }
-    this.api.PickToteSetupIndex(paylaod).subscribe(res => {
+    this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
       localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
 
 
