@@ -1,6 +1,4 @@
-import { InductionManagerApiService } from "./induction-manager-api.service"
-
-export interface IInductionManagerApiService extends InductionManagerApiService
+export interface IInductionManagerApiService
 {
   getPickBatchTransactionTable(body);
    AllBatchDelete();    

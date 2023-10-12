@@ -1,6 +1,4 @@
-import { OrderManagerApiService } from "./order-manager-api.service"
-
-export interface IOrderManagerAPIService extends OrderManagerApiService
+export interface IOrderManagerAPIService
 {
     SelectOrderManagerTempDTNew(payload: any);
     OrderManagerPreferenceIndex ();

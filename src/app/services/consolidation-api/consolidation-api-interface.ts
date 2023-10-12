@@ -1,6 +1,4 @@
-import { ConsolidationApiService } from "./consolidation-api.service"
-
-export interface IConsolidationApi extends ConsolidationApiService
+export interface IConsolidationApi
 {
 	ContIDShipTransUpdate(payload: any)
 	CarrierSave(payload: any)

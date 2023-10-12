@@ -1,6 +1,4 @@
-import { AdminApiService } from "./admin-api.service"
-
-export interface IAdminApiService extends AdminApiService
+export interface IAdminApiService
 {
     TransactionQtyReplenishmentUpdate(body);
       ReplenishmentsByDelete(body);

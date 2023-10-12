@@ -9,9 +9,10 @@ import { SpinnerService } from '../init/spinner.service';
 import { AuthService } from '../init/auth.service'; 
 import packJSON from '../../../package.json'
 import { SharedService } from '../services/shared.service';
-import { ApiFuntions } from '../services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IUserAPIService } from '../services/user-api/user-api-interface';
+import { UserApiService } from '../services/user-api/user-api.service';
 
 @Component({
   selector: 'login',
@@ -31,8 +32,9 @@ export class LoginComponent {
   isAppAccess=false;
   info:any=  {};
   public  iGlobalConfigApi: IGlobalConfigApi;
+  public iUserApi : IUserAPIService;
   constructor(
-    public api: ApiFuntions,
+    public userApi : UserApiService,
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
@@ -43,6 +45,7 @@ export class LoginComponent {
     private sharedService: SharedService,
   ) { 
     this.iGlobalConfigApi = globalConfigApi;
+    this.iUserApi = userApi;
     this.url = this.router.url;
   }
 
@@ -52,9 +55,10 @@ export class LoginComponent {
 
   addLoginForm:any = {};
 
-enterUserName(){
-  this.passwordInput.nativeElement.focus();
-}
+  enterUserName(){
+    this.passwordInput.nativeElement.focus();
+  }
+
   public noWhitespaceValidator(control: FormControl) {
     const isSpace = (control.value || '').match(/\s/g);
     return isSpace ? { 'whitespace': true } : null;
@@ -66,7 +70,7 @@ enterUserName(){
     this.addLoginForm.password = this.addLoginForm.password?.replace(/\s/g, "")||null;
     this.login = this.addLoginForm;
     this.login.wsid = "TESTWSID";
-    this.api
+    this.iUserApi
       .login(this.login)
       .subscribe((response: any) => {
         const exe = response.isExecuted
@@ -107,22 +111,12 @@ enterUserName(){
 
       });
   }
-
-
  
   CompanyInfo(){
-    let obj:any = { 
-    }
-    this.api
-    .CompanyInfo()
-    .subscribe((response: any) => {
-      this.info = response.data;
-    });
+    this.iUserApi.CompanyInfo().subscribe((response: any) => this.info = response.data);
   }
 
-
   ngOnInit() {
-
     this.version = packJSON.version;
     let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : "";
     localStorage.clear();
@@ -133,7 +127,7 @@ enterUserName(){
       this.router.navigate(['/dashboard']);
     }
     else{
-      this.api.getSecurityEnvironment().subscribe((res:any) => {
+      this.iUserApi.getSecurityEnvironment().subscribe((res:any) => {
         this.env = res.data.securityEnvironment;
         if(this.env){
           const { workStation } = res.data;
@@ -149,8 +143,6 @@ enterUserName(){
       });
     }
    this.CompanyInfo();
-    
-
   }
 
 
@@ -174,6 +166,7 @@ enterUserName(){
         (error) => {}
       );
   }
+
   convertToObj(data) {
     data.wsAllAppPermission.forEach((item,i) => {
       for (const key of Object.keys(data.appLicenses)) {

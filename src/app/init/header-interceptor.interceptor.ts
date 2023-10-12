@@ -11,24 +11,28 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth.service';
-import { ApiFuntions } from '../services/ApiFuntions';
 import { SpinnerService } from './spinner.service';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IUserAPIService } from '../services/user-api/user-api-interface';
+import { UserApiService } from '../services/user-api/user-api.service';
 
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
   public  iGlobalConfigApi: IGlobalConfigApi;
+  public iUserApi : IUserAPIService;
+
   constructor(
+	  public userApi : UserApiService,
     private router: Router,
     private toastr: ToastrService,
     private dialog: MatDialog,
     private authService: AuthService,
-    private api:ApiFuntions,
     public globalConfigApi: GlobalConfigApiService,
     private spinnerService: SpinnerService
     ) {
       this.iGlobalConfigApi = globalConfigApi;
+      this.iUserApi = userApi;
     }  
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
       
@@ -67,7 +71,7 @@ export class HeaderInterceptor implements HttpInterceptor {
             }
           });    
       } else {
-        this.api.Logout(paylaod).subscribe((res:any) => {
+        this.iUserApi.Logout().subscribe((res:any) => {
           if (res.isExecuted) {  
             let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : "";
             localStorage.clear();     

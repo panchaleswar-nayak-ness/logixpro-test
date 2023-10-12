@@ -15,6 +15,8 @@ import { IInductionManagerApiService } from 'src/app/services/induction-manager-
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IUserAPIService } from 'src/app/services/user-api/user-api-interface';
+import { UserApiService } from 'src/app/services/user-api/user-api.service';
 
 
 @Component({
@@ -30,17 +32,19 @@ export class HeaderComponent implements OnInit {
   breadcrumbList: any = [];
   userData: any;
   configUser:any;
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi : IInductionManagerApiService;
 isConfigUser
 statusTab;
 public  iGlobalConfigApi: IGlobalConfigApi;
-  constructor(
+public iUserApi : IUserAPIService;
+constructor(
+	  public userApi : UserApiService,
     private dialog: MatDialog,
     private router: Router,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
     public spinnerService: SpinnerService, 
     private authService: AuthService,
-    private api:ApiFuntions,
+    // private api:ApiFuntions,
     public globalConfigApi: GlobalConfigApiService,
     private toastr: ToastrService,
     private sharedService: SharedService,
@@ -50,7 +54,8 @@ public  iGlobalConfigApi: IGlobalConfigApi;
     ) {
       this.iGlobalConfigApi = globalConfigApi;
       let width=0;
-      this.iinductionManagerApi = inductionManagerApi;
+      this.iInductionManagerApi = inductionManagerApi;
+      this.iUserApi = userApi;
 
       this.breakpointSubscription = this.breakpointObserver.observe([Breakpoints.Small,Breakpoints.Large])
       .subscribe((state: BreakpointState) => {
@@ -142,7 +147,7 @@ public  iGlobalConfigApi: IGlobalConfigApi;
 
  let paylaod = { 
     }
-    this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
+    this.iInductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
       localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
 
 
@@ -240,7 +245,7 @@ public  iGlobalConfigApi: IGlobalConfigApi;
      
     }else{
       localStorage.clear();
-      this.api.Logout(paylaod).subscribe((res:any) => {
+      this.iUserApi.Logout().subscribe((res:any) => {
         if (res.isExecuted) 
         { 
           window.location.href = "/#/login";

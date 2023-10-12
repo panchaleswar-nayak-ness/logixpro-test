@@ -1,6 +1,4 @@
-import { GlobalConfigApiService } from "./global-config-api.service";
-
-export interface IGlobalConfigApi extends GlobalConfigApiService
+export interface IGlobalConfigApi
 {
     workstationdefaultapp(payload: any); 
     GlobalMenu(paylaod: any); 

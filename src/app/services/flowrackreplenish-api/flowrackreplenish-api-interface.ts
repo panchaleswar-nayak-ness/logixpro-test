@@ -1,6 +1,4 @@
-import { FlowRackReplenishApiService } from "./flowrackreplenish-api.service"
-
-export interface IFlowRackReplenishApi extends FlowRackReplenishApiService
+export interface IFlowRackReplenishApi
 {
 	itemquantity(payload: any)
 	verifyitemquantity(payload: any)

@@ -6,9 +6,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { SpinnerService } from '../init/spinner.service';
 import { AuthService } from '../init/auth.service'; 
 import { ILogin } from '../login/Ilogin';
-import { ApiFuntions } from '../services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IUserAPIService } from '../services/user-api/user-api-interface';
+import { UserApiService } from '../services/user-api/user-api.service';
 
 @Component({
   selector: 'global-config',
@@ -24,8 +25,9 @@ export class GlobalConfigComponent {
   public toggle_password = true;
   url = '';
   public  iGlobalConfigApi: IGlobalConfigApi;
+  public iUserApi : IUserAPIService;
   constructor(
-    public Api: ApiFuntions,
+	  public userApi : UserApiService,
     public globalConfigApi: GlobalConfigApiService,
     private router: Router,
     private route: ActivatedRoute,
@@ -35,10 +37,9 @@ export class GlobalConfigComponent {
     private auth: AuthService 
   ) {
     this.iGlobalConfigApi = globalConfigApi;
+    this.iUserApi = userApi;
     this.url = this.router.url;
   }
-
- 
 
   public noWhitespaceValidator(control: FormControl) {
     const isSpace = (control.value || '').match(/\s/g);
@@ -54,7 +55,7 @@ export class GlobalConfigComponent {
       localStorage.getItem('workStation') ?? ''
     );
     this.login.wsid = workStation.workStationID;
-    this.Api.LoginUser(this.login).subscribe(
+    this.iGlobalConfigApi.LoginUser(this.login).subscribe(
       {next: (res: any) => { 
         if (res.isExecuted && res.data !=null) { 
           let data = {
@@ -88,34 +89,20 @@ export class GlobalConfigComponent {
     this.passwordInput.nativeElement.focus();
   }
   ngOnInit() {
-    debugger
-    if (this.auth.IsloggedIn()) { 
-        window.location.href = '/#/dashboard'; 
-       
-    }
-      else{
-    this.route.url.forEach((res) => {
-      if(res[0].path.includes('globalconfig')){
-          localStorage.setItem('isConfigUser', JSON.stringify(true))
-      }
-    })
-      this.Api.getSecurityEnvironment().subscribe((res:any) => {
+    if (this.auth.IsloggedIn()) window.location.href = '/#/dashboard'; 
+    else {
+      this.route.url.forEach((res) => {
+        if(res[0].path.includes('globalconfig')) localStorage.setItem('isConfigUser', JSON.stringify(true));
+      });
+      this.iUserApi.getSecurityEnvironment().subscribe((res:any) => {
         this.env = res.data.securityEnvironment;
         if (this.env) {
           const { workStation } = res.data;
           localStorage.setItem('env', JSON.stringify(this.env));
           localStorage.setItem('workStation', JSON.stringify(workStation));
-        } else {
-          this.toastr.error(
-            'Kindly contact to administrator',
-            'Workstation is not set!',
-            {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            }
-          );
-        }
+        } 
+        else this.toastr.error('Kindly contact to administrator', 'Workstation is not set!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
       });
-  }
+    }
   }
 }
