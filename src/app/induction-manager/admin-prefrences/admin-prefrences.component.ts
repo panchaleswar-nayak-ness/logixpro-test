@@ -122,16 +122,16 @@ export class AdminPrefrencesComponent implements OnInit {
   ];
 
   superBatchFilterList: any;
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi:IInductionManagerApiService;
   constructor(
     private authService: AuthService,
     private Api: ApiFuntions,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
     public formBuilder: FormBuilder,
     private toast: ToastrService,
     private global:GlobalService
   ) {
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
     this.preferencesForm = this.formBuilder.group({
       // System Settings
       useDefault: new FormControl('', Validators.compose([])),
@@ -228,7 +228,7 @@ export class AdminPrefrencesComponent implements OnInit {
   getPreferences() {
     try {
       
-      this.iinductionManagerApi
+      this.iInductionManagerApi
         .PreferenceIndex()
         .subscribe(
           (res: any) => {
@@ -454,7 +454,7 @@ export class AdminPrefrencesComponent implements OnInit {
         endPoint = '/Induction/imprintsettings';
       }
 
-      this.Api.DynamicMethod(payLoad, endPoint).subscribe(
+      this.iInductionManagerApi.DynamicMethod(payLoad, endPoint).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
               this.global.updateImPreferences()
@@ -476,7 +476,7 @@ export class AdminPrefrencesComponent implements OnInit {
   }
   getCompName() {
     
-    this.iinductionManagerApi.CompName().subscribe(
+    this.iInductionManagerApi.CompName().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
 

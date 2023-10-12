@@ -47,7 +47,7 @@ export class ToteTransactionViewComponent implements OnInit {
   IMPreferences:any;
   zoneLabels:any;
   imPreferences:any;
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi:IInductionManagerApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
@@ -55,9 +55,9 @@ export class ToteTransactionViewComponent implements OnInit {
     private Api: ApiFuntions,
     private global:GlobalService,
     private toastr: ToastrService,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
   ) {
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -122,7 +122,7 @@ export class ToteTransactionViewComponent implements OnInit {
       sortOrder: this.sortOrder,
     };
 
-    this.iinductionManagerApi.TransTableView(payLoad).subscribe((res:any)=>{
+    this.iInductionManagerApi.TransTableView(payLoad).subscribe((res:any)=>{
       
       if(res?.data){
         this.isData=true
@@ -181,7 +181,7 @@ export class ToteTransactionViewComponent implements OnInit {
             batchID: this.batchID, 
           };
 
-          this.iinductionManagerApi.MarkToteFull(payLoad).subscribe(
+          this.iInductionManagerApi.MarkToteFull(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
                 this.toastr.success(labels.alert.success, 'Success!', {
@@ -248,7 +248,7 @@ export class ToteTransactionViewComponent implements OnInit {
           wsid: this.data.wsid,
         }
         let baseUrl=type==='clear'?'/Induction/ClearItemFromTote':'/Induction/DeAllocateItemFromTote'
-        this.Api.DynamicMethod(payLoad,baseUrl).subscribe((res:any)=>{
+        this.iInductionManagerApi.DynamicMethod(payLoad,baseUrl).subscribe((res:any)=>{
           if (res?.isExecuted) {
             this.toastr.success(labels.alert.success, 'Success!', {
               positionClass: 'toast-bottom-right',
