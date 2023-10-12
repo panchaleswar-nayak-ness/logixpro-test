@@ -1,4 +1,4 @@
-export interface IUserAPIService
+export interface IUserAPIService 
 {
     Logout();
     getSecurityEnvironment();
