@@ -54,9 +54,7 @@ export class OmEventLogEntryDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
         let payload: any = {
-          "EventID": this.eventLog.eventID,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "EventID": this.eventLog.eventID
         }
         this.iAdminApiService.SelectedEventDelete(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {

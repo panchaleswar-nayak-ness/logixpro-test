@@ -151,8 +151,6 @@ export class PutAwayComponent implements OnInit {
           let payload: any = {
             "transType": 'putaway',
             "orders": this.tableData2.data.map((item: any) => { return item.orderNumber }),
-            "username": this.userData.userName,
-            "wsid": this.userData.wsid
           };
           this.iAdminApiService.LocationAssignmentOrderInsert(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {

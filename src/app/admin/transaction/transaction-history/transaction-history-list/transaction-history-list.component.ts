@@ -275,8 +275,6 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       query: this.columnSearch.searchValue,
       tableName: 3,
       column: this.selectedDropdown,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
     this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
@@ -289,8 +287,6 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   }
   getColumnsData() {
     let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
       tableName: 'Transaction History',
     };
     this.iAdminApiService

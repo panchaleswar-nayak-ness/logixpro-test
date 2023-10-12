@@ -113,11 +113,9 @@ export class OpenTransactionDataTableComponent
       eRow: this.customPagination.endIndex,
       sortColumnNumber:  this.sortCol,
       sortOrder: this.sortOrder,
-      username: this.userData.userName,
       identify: this.identify,
       reels: this.reels,
       orderItem: this.orderItem,
-      wsid: this.userData.wsid,
     };
     this.iAdminApiService
       .HoldTransactionsData(this.payload)

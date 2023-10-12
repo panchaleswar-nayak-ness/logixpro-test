@@ -36,11 +36,7 @@ ClosePopup(){
   this.dialog.closeAll();
 }
 getAllPrinters(){
-  let payload = {
-      UserName:   this.userData.userName,
-      WSID:this.userData.wsid
-  }
-  this.iGlobalConfigApi.GetAllPrinters(payload).subscribe((res:any)=>{ 
+  this.iGlobalConfigApi.GetAllPrinters().subscribe((res:any)=>{ 
       this.ListLabelPrinter = res.data.filter(x=>x.label == "Able to Print Labels");
       this.ListReportPrinter = res.data.filter(x=>x.label == "Not Able to Print Labels");
   });
@@ -49,7 +45,6 @@ UpdWSPrefsPrinters(ReportPrinter,LabelPrinter){
   let payload = {
       ReportPrinter:ReportPrinter,
       LabelPrinter:LabelPrinter,
-      WSID:this.userData.wsid
   }
   this.iGlobalConfigApi.UpdWSPrefsPrinters(payload).subscribe((res:any)=>{ 
     localStorage.setItem("SelectedReportPrinter",ReportPrinter);

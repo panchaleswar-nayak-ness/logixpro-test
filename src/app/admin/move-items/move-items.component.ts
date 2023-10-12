@@ -246,7 +246,6 @@ export class MoveItemsComponent implements OnInit {
       searchColumn: 'Item Number',
       sortColumnIndex: tableName === 'MoveFrom' ? this.sortCol : this.sortColTo,
       sortOrder: tableName === 'MoveFrom' ? this.sortOrder : this.sortOrderTo,
-      username: this.userData.userName,
       tableName: tableName,
       cellSize: this.from_cellSize,
       warehouse: this.from_warehouse,
@@ -254,7 +253,6 @@ export class MoveItemsComponent implements OnInit {
       viewMode: tableName === 'MoveFrom' ? this.viewMode : this.viewModeTo,
       filter:
         tableName === 'MoveFrom' ? this.moveFromFilter : this.moveToFilter,
-      wsid: this.userData.wsid,
     };
     this.iAdminApiService
       .GetMoveItemsTable(payload)
@@ -712,8 +710,6 @@ export class MoveItemsComponent implements OnInit {
       priority: this.from_priority,
       dedicateMoveTo: this.dedicateMoveTo,
       unDedicateMoveFrom: this.undedicateMoveFrom,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
 
     this.iAdminApiService

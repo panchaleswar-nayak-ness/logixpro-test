@@ -223,13 +223,9 @@ constructor(
   }
 
   logout(){    
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
-    }
     if(this.authService.isConfigUser()){
       localStorage.clear();
-      this.iGlobalConfigApi.configLogout(paylaod).subscribe((res:any) => {
+      this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
         if (res.isExecuted) 
         {
           window.location.href = "/#/globalconfig"; 

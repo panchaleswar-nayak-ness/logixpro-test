@@ -181,8 +181,6 @@ export class TotesAddEditComponent implements OnInit {
         oldTote = oldToteID;
       }
       let searchPayload = {
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
         oldToteID: oldTote,
         toteID: toteID,
         cells: cells
@@ -247,8 +245,6 @@ export class TotesAddEditComponent implements OnInit {
           this.isRowAdded=false
         }else{
           let deleteTote = {
-            username: this.userData.userName,
-            wsid: this.userData.wsid,
             toteID: toteID
           }
           this.iAdminApiService.ToteSetupDelete(deleteTote).subscribe(

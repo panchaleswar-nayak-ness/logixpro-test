@@ -122,8 +122,6 @@ export class GenerateOrderComponent implements OnInit {
     let searchPayload = {
       orderNumber: this.orderNumber,
       transType: this.transType,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
     this.iAdminApiService
       .ManualOrderTypeAhead(searchPayload)
@@ -151,8 +149,6 @@ export class GenerateOrderComponent implements OnInit {
           itemNumber:this.itemNumberForInsertion,
           orderNumber: this.orderNumber,
           transactionType: this.transType,
-          userName: this.userData.userName,
-          wsid: this.userData.wsid,
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
@@ -178,8 +174,6 @@ export class GenerateOrderComponent implements OnInit {
             mode: 'delete-order',
             heading: 'Delete Order',
             message: `Are you sure you want to remove order: ${this.orderNumber} ? This will  remove all manual transaction for this order`,
-            userName: this.userData.userName,
-            wsid: this.userData.wsid,
             orderNumber:this.orderNumber
           },
         }
@@ -241,8 +235,6 @@ export class GenerateOrderComponent implements OnInit {
         data: {
           mode:'edit-transaction',
           item:element,
-          userName: this.userData.userName,
-          wsid: this.userData.wsid,
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
@@ -290,8 +282,6 @@ export class GenerateOrderComponent implements OnInit {
           mode: 'delete-trans',
           heading: 'Delete Selected Transaction',
           message: 'Delete this transaction',
-          userName: this.userData.userName,
-          wsid: this.userData.wsid,
           element: element,
         },
       }
@@ -310,8 +300,6 @@ export class GenerateOrderComponent implements OnInit {
       length: this.customPagination.recordsPerPage,
       orderColumn: this.sortCol,
       sortOrder: this.sortOrder,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
     this.iAdminApiService
       .GernerateOrderTable(payload)

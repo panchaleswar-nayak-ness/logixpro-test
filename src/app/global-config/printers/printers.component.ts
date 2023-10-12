@@ -48,12 +48,7 @@ export class PrintersComponent implements OnInit {
   }
 
   GetAllPrinters() {
-    let payload = {
-      "userName": this.userData.userName,
-      "wsid": this.userData.wsid,
-      "appName": ""
-    };
-    this.iGlobalConfigApi.GetAllPrinters(payload).subscribe((res: any) => {
+    this.iGlobalConfigApi.GetAllPrinters().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.allPinters = res.data;
         this.allPinters.forEach((element: any) => {

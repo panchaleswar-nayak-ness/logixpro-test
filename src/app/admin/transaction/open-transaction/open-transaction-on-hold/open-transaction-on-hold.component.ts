@@ -392,8 +392,6 @@ this.router.navigate([]).then((result) => {
         query: this.orderNumber,
         tableName: 2,
         column: 'Order Number',
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
       };
     } else {
       searchPayload = {

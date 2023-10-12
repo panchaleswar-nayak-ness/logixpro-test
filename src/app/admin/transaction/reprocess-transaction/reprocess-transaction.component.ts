@@ -352,8 +352,6 @@ export class ReprocessTransactionComponent implements OnInit {
         query: this.orderNumber,
         tableName: 2,
         column: 'Order Number',
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
       };
     } else {
       searchPayload = {
@@ -511,8 +509,6 @@ export class ReprocessTransactionComponent implements OnInit {
               "itemNumber": "",
               "orderNumber": "",
               "replenishments": false,
-              "username": this.userData.userName,
-              "wsid": this.userData.wsid
             }
           }
           else if (!opened && this.selectedVariable && this.selectedVariable =='deleteByItemNumber') 

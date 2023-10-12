@@ -144,8 +144,6 @@ export class EventLogComponent implements OnInit {
       "eDate": !this.ignoreDateRange ? this.endDate : new Date(),
       "nameStamp": this.userName,
       "filter": this.filterString,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
     };
     this.eventLogTableSubscribe = this.iAdminApiService.EventLogTable(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
@@ -187,8 +185,6 @@ export class EventLogComponent implements OnInit {
       "columnName": columnName,
       "sDate": "2022-06-04T00:00:00.597Z",
       "eDate": "2023-06-05T00:00:00.597Z",
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
     }
     this.eventLogTypeAheadSubscribe = this.iAdminApiService.EventLogTypeAhead(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data && message != "") {
@@ -228,9 +224,7 @@ export class EventLogComponent implements OnInit {
           "endDate": this.endDate,
           "message": this.message,
           "eLocation": this.eventLocation,
-          "nStamp": this.userName,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "nStamp": this.userName
         }
         this.iAdminApiService.EventRangeDelete(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {

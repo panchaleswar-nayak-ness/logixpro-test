@@ -94,9 +94,7 @@ export class BmToteidEntryComponent implements OnInit {
     });
 
     let paylaod = {
-      orders: orders,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      orders: orders
     };
 
     this.iAdminApiService
