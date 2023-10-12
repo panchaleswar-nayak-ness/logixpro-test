@@ -183,8 +183,6 @@ export class OmOrderManagerComponent implements OnInit {
 
   getColumnSequence() {
     let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
       tableName: 'Order Manager'
     };
 
@@ -232,8 +230,6 @@ export class OmOrderManagerComponent implements OnInit {
       if(this.FilterString == "") this.FilterString = "1 = 1";
   
       let payload = {
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
         col: this.column,
         whereClause: this.case,
         colVal1: val1 ,
@@ -267,9 +263,7 @@ export class OmOrderManagerComponent implements OnInit {
 
   fillTable(loader : boolean = false) {
     let payload2 = {
-      username: this.userData.userName,
       user: this.userData.userName,
-      wsid: this.userData.wsid,
       startRow: this.customPagination.startIndex == 0 ? this.customPagination.startIndex.toString() : (this.customPagination.startIndex + 1).toString(),
       endRow: this.customPagination.endIndex.toString(),
       sortCol: this.sortColumn.columnName,
@@ -357,9 +351,7 @@ export class OmOrderManagerComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => {
         if (result == 'Yes') {
           let payload = {
-            username: this.userData.userName,
             user: this.userData.userName,
-            wsid: this.userData.wsid,
             viewType: this.viewType
           };
       
@@ -450,8 +442,6 @@ export class OmOrderManagerComponent implements OnInit {
         if (result == 'Yes') {
 
           let payload = {
-            username: this.userData.userName,
-            wsid: this.userData.wsid,
             val: this.viewType,
             page: 'Order Manager'
           };
@@ -486,8 +476,6 @@ export class OmOrderManagerComponent implements OnInit {
         if (result == 'Yes') {
 
           let payload = {
-            username: this.userData.userName,
-            wsid: this.userData.wsid,
             val: this.viewType,
             page: 'Order Manager'
           };
@@ -623,8 +611,6 @@ export class OmOrderManagerComponent implements OnInit {
 
   async deleteTemp(){
     let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
       appName: ""
     }
     await this.iOrderManagerApi.OrderManagerTempDelete(payload).toPromise();

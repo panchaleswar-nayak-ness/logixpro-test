@@ -367,12 +367,8 @@ export class DeleteConfirmationComponent implements OnInit {
             (error) => {}
           );
       } else if (this.data.mode === 'delete_workstation') {
-        let payload = {
-          WSID: this.data.wsid,
-        };
-
         this.iGlobalConfigApi
-          .WorkStationDelete(payload)
+          .WorkStationDelete()
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {

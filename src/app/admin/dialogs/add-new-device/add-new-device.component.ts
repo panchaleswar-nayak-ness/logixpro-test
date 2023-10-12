@@ -399,8 +399,6 @@ export class AddNewDeviceComponent implements OnInit {
       parity: this.newDeviceForm.controls['Parity'].value,
       word: this.newDeviceForm.controls['WordLength'].value,
       stopbit: this.newDeviceForm.controls['StopBit'].value,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
 
     let message = '';

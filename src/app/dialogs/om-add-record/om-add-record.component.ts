@@ -57,7 +57,6 @@ export class OmAddRecordComponent implements OnInit {
     "importBy": "",
     "importDate": "",
     "importFileName": "",
-    "wsid": ""
   };
   transactionTypes: any = [
     { value: 'Pick', title: 'Pick' },
@@ -192,11 +191,6 @@ export class OmAddRecordComponent implements OnInit {
   }
 
   getUserFieldData(loader: boolean = false) {
-    let payload = {
-      "userName": this.userData.userName,
-      "wsid": this.userData.wsid,
-      "appName": ""
-    }
     this.iOrderManagerApi.UserFieldData().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.userFieldData = res.data[0];

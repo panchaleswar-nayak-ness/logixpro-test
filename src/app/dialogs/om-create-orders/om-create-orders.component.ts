@@ -263,7 +263,6 @@ export class OmCreateOrdersComponent implements OnInit {
         let payload = {
           "val": this.createOrdersDTPayload.orderNumber,
           "page": "Create Orders",
-          "wsid": this.userData.wsid
         };
         this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
@@ -320,7 +319,6 @@ export class OmCreateOrdersComponent implements OnInit {
           let payload = {
             "ids": ids,
             "user": this.userData.userName,
-            "wsid": this.userData.wsid
           };
           this.iOrderManagerApi.OTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
@@ -366,8 +364,6 @@ export class OmCreateOrdersComponent implements OnInit {
     if (this.createOrdersDTPayload.orderNumber.trim() != '') {
       let payload = {
         "orderNumber": this.createOrdersDTPayload.orderNumber,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
       }
       this.iOrderManagerApi.CreateOrderTypeahead(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {

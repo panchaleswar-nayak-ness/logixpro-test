@@ -218,13 +218,9 @@ public  iGlobalConfigApi: IGlobalConfigApi;
   }
 
   logout(){    
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
-    }
     if(this.authService.isConfigUser()){
       localStorage.clear();
-      this.iGlobalConfigApi.configLogout(paylaod).subscribe((res:any) => {
+      this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
         if (res.isExecuted) 
         {
           window.location.href = "/#/globalconfig"; 
@@ -240,7 +236,7 @@ public  iGlobalConfigApi: IGlobalConfigApi;
      
     }else{
       localStorage.clear();
-      this.api.Logout(paylaod).subscribe((res:any) => {
+      this.api.Logout({}).subscribe((res:any) => {
         if (res.isExecuted) 
         { 
           window.location.href = "/#/login";

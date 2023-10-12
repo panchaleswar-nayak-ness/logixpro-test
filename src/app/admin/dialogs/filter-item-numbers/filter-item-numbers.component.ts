@@ -44,8 +44,6 @@ export class FilterItemNumbersComponent implements OnInit {
       let commaSeparatedItems = itemsArray.join(',');
       let payload: any = {
         "items": commaSeparatedItems,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid
       }
       this.iAdminApiService.FiltersItemNumInsert(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {

@@ -7,12 +7,12 @@ export interface IGlobalConfigApi extends GlobalConfigApiService
     AppLicense();
     getWorkstationapp (paylaod: any);
     workstationapp (paylaod: any);
-    WorkStationDelete(paylaod :any);
+    WorkStationDelete();
     WorkStationDefaultAppAdd(paylaod :any);
     WorkStationDefaultAppAddDefault(paylaod :any);
     WorkStationAppDelete(paylaod :any); 
     AppNameByWorkstation(paylaod :any);
-    configLogout(paylaod :any);
+    configLogout();
     startSTEService();
     stopSTEService();
     RestartSTEService();
@@ -20,7 +20,7 @@ export interface IGlobalConfigApi extends GlobalConfigApiService
     ServiceStatusCCSIF();
     stopCCSIF();
     startCCSIF();
-    GetAllPrinters(paylaod :any);
+    GetAllPrinters();
     UpdWSPrefsPrinters(payload: any);
     StatusPrintService(payload: any);
     StartPrintService(paylaod: any);

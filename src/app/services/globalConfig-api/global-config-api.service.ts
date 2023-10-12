@@ -53,21 +53,18 @@ export class GlobalConfigApiService implements IGlobalConfigApi {
     this.userData = this.authService.userData();
 		const payload = {
 			username: this.userData.username,
-      wsid: this.userData.wsid,
+      		wsid: this.userData.wsid,
 			...payloadParams 
 		}
-
 		return this.Api.workstationapp(payload);
 	}
 
-  WorkStationDelete(payloadParams : any) {
+  WorkStationDelete() {
     this.userData = this.authService.userData();
 		const payload = {
 			username: this.userData.username,
-      wsid: this.userData.wsid,
-			...payloadParams 
+      		wsid: this.userData.wsid,
 		}
-
 		return this.Api.WorkStationDelete(payload);
 	}
 
@@ -115,14 +112,12 @@ export class GlobalConfigApiService implements IGlobalConfigApi {
 		return this.Api.AppNameByWorkstation(payload);
 	}
 
-  configLogout(payloadParams : any) {
+  configLogout() {
     this.userData = this.authService.userData();
 		const payload = {
 			username: this.userData.username,
-      wsid: this.userData.wsid,
-			...payloadParams 
+      		wsid: this.userData.wsid
 		}
-
 		return this.Api.configLogout(payload);
 	}
 
@@ -154,14 +149,12 @@ export class GlobalConfigApiService implements IGlobalConfigApi {
     return this.Api.startCCSIF();
   }
 
-  GetAllPrinters(payloadParams : any) {
+  GetAllPrinters() {
     this.userData = this.authService.userData();
 		const payload = {
 			username: this.userData.username,
-      wsid: this.userData.wsid,
-			...payloadParams 
+      		wsid: this.userData.wsid,
 		}
-
 		return this.Api.GetAllPrinters(payload);
 	}
 
@@ -169,10 +162,9 @@ export class GlobalConfigApiService implements IGlobalConfigApi {
     this.userData = this.authService.userData();
 		const payload = {
 			username: this.userData.username,
-      wsid: this.userData.wsid,
+      		wsid: this.userData.wsid,
 			...payloadParams 
 		}
-
 		return this.Api.UpdWSPrefsPrinters(payload);
 	}
 
@@ -279,7 +271,7 @@ export class GlobalConfigApiService implements IGlobalConfigApi {
     this.userData = this.authService.userData();
 		const payload = {
 			username: this.userData.username,
-      wsid: this.userData.wsid,
+      		wsid: this.userData.wsid,
 			...payloadParams 
 		}
 
@@ -322,7 +314,7 @@ export class GlobalConfigApiService implements IGlobalConfigApi {
   ChangeGlobalAccount(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			userName:this.authService.userData().userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -337,8 +329,8 @@ export class GlobalConfigApiService implements IGlobalConfigApi {
   ConnectionUserPasswordUpdate(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
-      wsid: this.userData.wsid,
+			// username: this.userData.username,
+      		wsid: this.userData.wsid,
 			...payloadParams 
 		}
 

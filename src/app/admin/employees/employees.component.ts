@@ -269,8 +269,6 @@ initialzeEmpForm() {
   saveAssignedFunc(){
 
     let assignFunc = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
       "GroupName":this.grpData.groupName,
       "controls": this.assignedFunctions
     }

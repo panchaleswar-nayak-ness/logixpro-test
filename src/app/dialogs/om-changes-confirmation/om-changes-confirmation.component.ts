@@ -59,8 +59,6 @@ export class OmChangesConfirmationComponent implements OnInit {
     try {
 
       let payload = {
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
         viewType: this.data.viewType,
         orderType: this.data.orderType,
         id: this.data.order.id.toString(),

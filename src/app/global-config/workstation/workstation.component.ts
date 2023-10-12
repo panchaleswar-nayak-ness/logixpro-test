@@ -303,9 +303,9 @@ export class WorkstationComponent implements OnInit {
   deleteWorkStation() {
     if (!this.wsid) return;
     let payload = {
-      WSID: this.wsid,
+     
     };
-    this.iGlobalConfigApi.WorkStationDelete(payload).subscribe(
+    this.iGlobalConfigApi.WorkStationDelete().subscribe(
         {next: (res: any) => {
           if (res.isExecuted) {
             this.toastr.success(labels.alert.success, 'Success!', {

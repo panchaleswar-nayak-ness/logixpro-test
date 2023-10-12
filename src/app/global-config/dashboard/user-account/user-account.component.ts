@@ -73,8 +73,6 @@ export class UserAccountComponent implements OnInit {
  
   changeGlobalAcc() {
     let payload = {
-      // userName: this.constUser,
-      userName:this.authService.userData().userName,
       password: this.password,
     };
     this.iGlobalConfigApi

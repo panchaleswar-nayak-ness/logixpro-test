@@ -60,7 +60,6 @@ export class OmUserFieldDataComponent implements OnInit {
       userField8: this.userFieldData.userField8,
       userField9: this.userFieldData.userField9,
       userField10: this.userFieldData.userField10,
-      wsid: this.userData.wsid
     };
     this.iOrderManagerApi.UserFieldDataUpdate(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {

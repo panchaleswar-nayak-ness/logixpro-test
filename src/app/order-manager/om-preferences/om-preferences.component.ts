@@ -132,10 +132,8 @@ export class OmPreferencesComponent implements OnInit {
       customAdmin: this.filtersForm.controls['custReportsMenuApp']?.value,
       customAdminText: this.filtersForm.controls['custReportsMenuText'].value,
       printDirectly: this.filtersForm.controls['printDirect'].value,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
-    this.Api
+    this.iOrderManagerApi
       .OrderManagerPreferenceUpdate(payload)
       .subscribe((response: any) => {
         if (response.isExecuted) {

@@ -2,232 +2,232 @@ import { AdminApiService } from "./admin-api.service"
 
 export interface IAdminApiService extends AdminApiService
 {
-    TransactionQtyReplenishmentUpdate(body);
-      ReplenishmentsByDelete(body);
-      DeleteRangeBegin(body);
-      DeleteRangeEnd(body);
-      SystemReplenishNewTA(body);
-      ReplenishmentsIncludeAllUpdate(body);
-      ReplenishmentsIncludeUpdate(body);
-      ProcessReplenishments(body);
-      ReplenishmentInsert(body);
-      SystemReplenishmentNewTable(body);
-      SystemReplenishmentTable(body);
-      ReplenishReportSearchTA(body);
-      SystemReplenishmentCount(body);
-      FiltersItemNumInsert(body);
+    TransactionQtyReplenishmentUpdate(payload : any);
+      ReplenishmentsByDelete(payload : any);
+      DeleteRangeBegin(payload : any);
+      DeleteRangeEnd(payload : any);
+      SystemReplenishNewTA(payload : any);
+      ReplenishmentsIncludeAllUpdate(payload : any);
+      ReplenishmentsIncludeUpdate(payload : any);
+      ProcessReplenishments(payload : any);
+      ReplenishmentInsert(payload : any);
+      SystemReplenishmentNewTable(payload : any);
+      SystemReplenishmentTable(payload : any);
+      ReplenishReportSearchTA(payload : any);
+      SystemReplenishmentCount(payload : any);
+      FiltersItemNumInsert(payload : any);
       GetLocAssPutAwayTable() ;
-      LocationAssignmentOrderInsert(body);
-      GetLocationAssignmentPickTable(body);
-      GetTransactionTypeCounts(body);
-      EventLogTable(body);
-      EventLogTypeAhead(body);
-      EventRangeDelete(body);
-      SelectedEventDelete(body);
-      DeleteKit(body);
-      InsertKit(body);
-      UpdateKit(body);
-      GetColumnSequence(body);
-      GeneralPreferenceSave(body);
+      LocationAssignmentOrderInsert(payload : any);
+      GetLocationAssignmentPickTable(payload : any);
+      GetTransactionTypeCounts(payload : any);
+      EventLogTable(payload : any);
+      EventLogTypeAhead(payload : any);
+      EventRangeDelete(payload : any);
+      SelectedEventDelete(payload : any);
+      DeleteKit(payload : any);
+      InsertKit(payload : any);
+      UpdateKit(payload : any);
+      GetColumnSequence(payload : any);
+      GeneralPreferenceSave(payload : any);
       ordersort() ;
       OSFieldFilterNames();
       AdminCompanyInfo();
       ColumnAlias() ;
-      FieldNameSave(body);
-      RemoveccQueueRow(body);
+      FieldNameSave(payload : any);
+      RemoveccQueueRow(payload : any);
       RemoveccQueueAll() ;
       CreateCountRecords() ;
-      GetCCQueue(body);
-      GetMoveItemsTable(body);
-      CreateMoveTransactions(body);
-      CycleCountQueueInsert(body);
-      BatchResultTable(body);
+      GetCCQueue(payload : any);
+      GetMoveItemsTable(payload : any);
+      CreateMoveTransactions(payload : any);
+      CycleCountQueueInsert(payload : any);
+      BatchResultTable(payload : any);
       GetCountBatches();
-      QuantitySelected(body);
-      GetCCCountToCostTypeAhead(body);
-      GetCCCategoryTypeAhead(body);
-      GetCCDescriptionTypeAhead(body);
-      CountOrdersDelete(body);
-      UpdateReelQuantity(body);
-      UpdateReelAll(body);
-      RefreshRTS(body);
-      UpdateScanCodes(body);
-      DeleteScanCode(body);
-      InsertScanCodes(body);
-      RefreshScanCodes(body);
-      getSearchData(body);
-      duplicate(body);
-      getInventoryMap(body);
-      getSetColumnSeq(body);
-      SelectBatchesDeleteDrop(body);
-      BatchDeleteAll(body);
-      PickToteIDUpdate(body);
-      BatchInsert(body);
-      DetailView(body);
-      BatchManagerOrder(body);
-      GetBatchManager(body);
+      QuantitySelected(payload : any);
+      GetCCCountToCostTypeAhead(payload : any);
+      GetCCCategoryTypeAhead(payload : any);
+      GetCCDescriptionTypeAhead(payload : any);
+      CountOrdersDelete(payload : any);
+      UpdateReelQuantity(payload : any);
+      UpdateReelAll(payload : any);
+      RefreshRTS(payload : any);
+      UpdateScanCodes(payload : any);
+      DeleteScanCode(payload : any);
+      InsertScanCodes(payload : any);
+      RefreshScanCodes(payload : any);
+      getSearchData(payload : any);
+      duplicate(payload : any);
+      getInventoryMap(payload : any);
+      getSetColumnSeq(payload : any);
+      SelectBatchesDeleteDrop(payload : any);
+      BatchDeleteAll(payload : any);
+      PickToteIDUpdate(payload : any);
+      BatchInsert(payload : any);
+      DetailView(payload : any);
+      BatchManagerOrder(payload : any);
+      GetBatchManager(payload : any);
       GetAdminMenu() ;
       EmployeeData() ;
-      Stats(body);
-      Lookup(body);
-      Controlname(body);
-      Groupname(body);
-      Groupnames(body);
-      Employee(body);
-      DeleteEmployee(body);
-      UpdateEmployee(body);
-      EmployeeDetails(body);
-      Inventorymasterdata(body);
-      location(body);
-      GetInventory(body);
-      GetInventoryItemNumber(body);
-      GetInventoryMasterData(body);
-      UpdateInventoryMaster(body);
-      UpdateItemNumber(body);
-      AddNewItem(body);
-      NextItemNumber(body);
-      GetInventoryMasterLocation(body);
-      DeleteItem(body);
-      UpdateInventoryMasterOTQuarantine(body);
-      UpdateInventoryMasterOTUnQuarantine(body);
-      GetLocationTable(body);
-      PreviousItemNumber(body);
-      getEmployeeData(body);
-      getInsertAllAccess(body);
-      getUserRights(body);
-      getAdminEmployeeLookup(body, isLoader);
-      employeeStatsInfo(body);
-      saveAdminEmployee(body);
-      deleteAdminEmployee(body);
-      deleteUserGroup(body); 
-      updateAdminEmployee(body);
-      cloneGroup(body); 
-      getAdminEmployeeDetails(body); 
-      getControlName(body); 
-      updateControlName(body);
-      deleteControlName(body); 
-      submitControlResponse(body);
-      insertUserGroup(body);   
+      Stats(payload : any);
+      Lookup(payload : any);
+      Controlname(payload : any);
+      Groupname(payload : any);
+      Groupnames(payload : any);
+      Employee(payload : any);
+      DeleteEmployee(payload : any);
+      UpdateEmployee(payload : any);
+      EmployeeDetails(payload : any);
+      Inventorymasterdata(payload : any);
+      location(payload : any);
+      GetInventory(payload : any);
+      GetInventoryItemNumber(payload : any);
+      GetInventoryMasterData(payload : any);
+      UpdateInventoryMaster(payload : any);
+      UpdateItemNumber(payload : any);
+      AddNewItem(payload : any);
+      NextItemNumber(payload : any);
+      GetInventoryMasterLocation(payload : any);
+      DeleteItem(payload : any);
+      UpdateInventoryMasterOTQuarantine(payload : any);
+      UpdateInventoryMasterOTUnQuarantine(payload : any);
+      GetLocationTable(payload : any);
+      PreviousItemNumber(payload : any);
+      getEmployeeData(payload : any);
+      getInsertAllAccess(payload : any);
+      getUserRights(payload : any);
+      getAdminEmployeeLookup(payload : any, isLoader);
+      employeeStatsInfo(payload : any);
+      saveAdminEmployee(payload : any);
+      deleteAdminEmployee(payload : any);
+      deleteUserGroup(payload : any); 
+      updateAdminEmployee(payload : any);
+      cloneGroup(payload : any); 
+      getAdminEmployeeDetails(payload : any); 
+      getControlName(payload : any); 
+      updateControlName(payload : any);
+      deleteControlName(payload : any); 
+      submitControlResponse(payload : any);
+      insertUserGroup(payload : any);   
       getZones() 
-      updateEmployeeZone(body); 
-      deleteEmployeeZone(body); 
-      insertAllAccess(body);  
-      insertEmployeeLocation(body); 
-      updateEmployeeLocation(body);
-      deleteEmployeeLocation(body); 
-      insertPickLevels(body); 
-      updatePickLevels(body);
-      deletePickLevels(body);
-      updateAccessGroup(body)
-      insertGroup(body);
-      insertGroupFunctions(body);
-      getFunctionByGroup(body);
-      updateEmployeesInGroup(body);
-      deleteGroup(body);
-      getItemNumDetail(body);
-      getLocZTypeInvMap(body);
-      updateInventoryMap(body,mapID)
+      updateEmployeeZone(payload : any); 
+      deleteEmployeeZone(payload : any); 
+      insertAllAccess(payload : any);  
+      insertEmployeeLocation(payload : any); 
+      updateEmployeeLocation(payload : any);
+      deleteEmployeeLocation(payload : any); 
+      insertPickLevels(payload : any); 
+      updatePickLevels(payload : any);
+      deletePickLevels(payload : any);
+      updateAccessGroup(payload : any)
+      insertGroup(payload : any);
+      insertGroupFunctions(payload : any);
+      getFunctionByGroup(payload : any);
+      updateEmployeesInGroup(payload : any);
+      deleteGroup(payload : any);
+      getItemNumDetail(payload : any);
+      getLocZTypeInvMap(payload : any);
+      updateInventoryMap(payload : any,mapID)
        // check api call 
-      createInventoryMap(body)
+      createInventoryMap(payload : any)
       GetLocAssCountTable();
       PreviewLocAssignmentPickShortFPZ();
       PreviewLocAssignmentPickShort(); 
-    TransactionHistoryTable(body); 
-    TransactionModelIndex(body); 
-    NextSuggestedTransactions(body); 
-    ReprocessTypeahead(body); 
-    ReprocessedTransactionTable(body); 
-    TransactionForOrderInsert(body); 
-    TransactionForOrderUpdate(body);  
-    ReprocessedTransactionHistoryTable(body);  
-    ReprocessTransactionTable(body); 
-    OrderToPost(body);  
-    ReprocessIncludeSet(body); 
+    TransactionHistoryTable(payload : any); 
+    TransactionModelIndex(payload : any); 
+    NextSuggestedTransactions(payload : any); 
+    ReprocessTypeahead(payload : any); 
+    ReprocessedTransactionTable(payload : any); 
+    TransactionForOrderInsert(payload : any); 
+    TransactionForOrderUpdate(payload : any);  
+    ReprocessedTransactionHistoryTable(payload : any);  
+    ReprocessTransactionTable(payload : any); 
+    OrderToPost(payload : any);  
+    ReprocessIncludeSet(payload : any); 
     
-    SetAllReprocessColumn(body);  
-    ReprocessTransactionData(body); 
-    PostReprocessTransaction(body); 
-    OrderNumberNext(body); 
-    ScanValidateOrder(body); 
-    DeleteOrder(body); 
-    OrderStatusData(body); 
-    OpenTransactionTable(body); 
-    HoldTransactionsData(body);  
-    UpdateTransaction(body); 
-    LocationData(body); 
-    PostTransaction(body); 
-    ManualTransactionTypeAhead(body);  
-    TransactionInfo(body); 
-    TransactionDelete(body); 
-    TransactionForOrderDelete(body); 
-    DeallocateTransactions(body); 
-    TransactionByID(body); 
-    GernerateOrderTable(body); 
-    ManualOrderTypeAhead(body); 
+    SetAllReprocessColumn(payload : any);  
+    ReprocessTransactionData(payload : any); 
+    PostReprocessTransaction(payload : any); 
+    OrderNumberNext(payload : any); 
+    ScanValidateOrder(payload : any); 
+    DeleteOrder(payload : any); 
+    OrderStatusData(payload : any); 
+    OpenTransactionTable(payload : any); 
+    HoldTransactionsData(payload : any);  
+    UpdateTransaction(payload : any); 
+    LocationData(payload : any); 
+    PostTransaction(payload : any); 
+    ManualTransactionTypeAhead(payload : any);  
+    TransactionInfo(payload : any); 
+    TransactionDelete(payload : any); 
+    TransactionForOrderDelete(payload : any); 
+    DeallocateTransactions(payload : any); 
+    TransactionByID(payload : any); 
+    GernerateOrderTable(payload : any); 
+    ManualOrderTypeAhead(payload : any); 
      
-    NewTransactionSave(body);
-    GetLocations(body);
-    ManualOrdersPost(body);
-    SendCompletedToTH(body);    
-    GetColumnSequenceDetail(body);
-    DeleteColumns(body);
-    SaveColumns(body);
-    AllocatedOrders(body);
-    AllocatedItems(body);
-    AllAllocatedOrders(body);
-    OrderItemsTable(body);
-    DeAllocateOrder(body) ; 
-    SaveTransaction(body); 
-    ReprocessTransactionDelete(body);
-    deleteInventoryMap(body); 
-    quarantineInventoryMap(body); 
-    unQuarantineInventoryMap(body); 
-    DevicePreferencesDelete(body);
-    GetCartonFlow(body)
-    UpdateCartonFlow(body);
-    DevicePreferencesTable(body);
-    LocationNamesSave(body);
-    DeleteLocationNames(body);
-    ZoneDevicePreferencesUpdateAll(body);
-    DeviceInformation(body);
-    DevicePreference(body);
-    LocationZoneSave(body);
-      LocationZoneDelete(body);
-    LocationZoneNewSave(body);
-    updateItemQuantity(body);
+    NewTransactionSave(payload : any);
+    GetLocations(payload : any);
+    ManualOrdersPost(payload : any);
+    SendCompletedToTH(payload : any);    
+    GetColumnSequenceDetail(payload : any);
+    DeleteColumns(payload : any);
+    SaveColumns(payload : any);
+    AllocatedOrders(payload : any);
+    AllocatedItems(payload : any);
+    AllAllocatedOrders(payload : any);
+    OrderItemsTable(payload : any);
+    DeAllocateOrder(payload : any) ; 
+    SaveTransaction(payload : any); 
+    ReprocessTransactionDelete(payload : any);
+    deleteInventoryMap(payload : any); 
+    quarantineInventoryMap(payload : any); 
+    unQuarantineInventoryMap(payload : any); 
+    DevicePreferencesDelete(payload : any);
+    GetCartonFlow(payload : any)
+    UpdateCartonFlow(payload : any);
+    DevicePreferencesTable(payload : any);
+    LocationNamesSave(payload : any);
+    DeleteLocationNames(payload : any);
+    ZoneDevicePreferencesUpdateAll(payload : any);
+    DeviceInformation(payload : any);
+    DevicePreference(payload : any);
+    LocationZoneSave(payload : any);
+      LocationZoneDelete(payload : any);
+    LocationZoneNewSave(payload : any);
+    updateItemQuantity(payload : any);
     LocationZone();
     LocationNames();
     adjustmentlookup();
     getToteCell();
-    Getcustomreports(body)
-    Getreportdetails(body); 
-    selShipComp(body);   
-    updateAdjustlookup(body);
-    deleteAdjustmentLookup(body);
-    userfieldlookup(body);
-    updateuserfieldlookup(body);
-    deleteUserfieldLookUp(body);
-    totesetup(body);    
-    deleteTote(body);
-    cleartote(body)  
-    basicreportdetails(body); 
-    ReportFieldsExps(body); 
-    reportfieldvalues(body); 
-    ReportTitles(body); 
-    changefilter(body);
-    importFile(body); 
-    validateNewDesign(body)
-    getLLDesignerNewDesign(body)
-    restoreDesign(body) 
-    deleteReport(body) 
-    pushReportChanges(body);  
-    updatereportDetails(body) 
-    CommonExport(body);    
-    CommonPrint(body) 
-    SetReprocessIds(body)
-    ToteSetupInsert(body)
-    ToteSetupDelete(body)
+    Getcustomreports(payload : any)
+    Getreportdetails(payload : any); 
+    selShipComp(payload : any);   
+    updateAdjustlookup(payload : any);
+    deleteAdjustmentLookup(payload : any);
+    userfieldlookup(payload : any);
+    updateuserfieldlookup(payload : any);
+    deleteUserfieldLookUp(payload : any);
+    totesetup(payload : any);    
+    deleteTote(payload : any);
+    cleartote(payload : any)  
+    basicreportdetails(payload : any); 
+    ReportFieldsExps(payload : any); 
+    reportfieldvalues(payload : any); 
+    ReportTitles(payload : any); 
+    changefilter(payload : any);
+    importFile(payload : any); 
+    validateNewDesign(payload : any)
+    getLLDesignerNewDesign(payload : any)
+    restoreDesign(payload : any) 
+    deleteReport(payload : any) 
+    pushReportChanges(payload : any);  
+    updatereportDetails(payload : any) 
+    CommonExport(payload : any);    
+    CommonPrint(payload : any) 
+    SetReprocessIds(payload : any)
+    ToteSetupInsert(payload : any)
+    ToteSetupDelete(payload : any)
     ToteSetup();
-    UpdateOSPriority(body)
-    DeleteOrderStatus(body) 
+    UpdateOSPriority(payload : any)
+    DeleteOrderStatus(payload : any) 
 }

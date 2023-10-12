@@ -282,8 +282,6 @@ export class TranSelectOrderComponent implements OnInit {
     let paylaod = {
       OrderNumber: this.searchField,
       TotalLines: JSON.stringify(this.totalLinesOrder),
-      UserName: this.userData.userName,
-      WSID: this.userData.wsid,
     };
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       width: '560px',

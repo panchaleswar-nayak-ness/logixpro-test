@@ -382,8 +382,6 @@ constructor(
             ? this.filtersForm.value.costStart
             : '',
           endCost: '',
-          userName: this.userData.userName,
-          wsid: this.userData.wsId,
         };
       }else if(type === 'EndCost'){
          payload = {

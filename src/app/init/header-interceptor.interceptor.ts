@@ -43,15 +43,9 @@ export class HeaderInterceptor implements HttpInterceptor {
   private handleAuthError(err: HttpErrorResponse): Observable<any> { 
     if (err.status === 401) {
       
-      let userData = this.authService.userData();
-      let paylaod = {
-        "username": userData.userName,
-        "wsid": userData.wsid,
-      }      
-      
       if(this.router.url.split('?')[0] != '/report-view'){
       if(this.authService.isConfigUser()){
-          this.iGlobalConfigApi.configLogout(paylaod).subscribe((res:any) => {
+          this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
             if (res.isExecuted) {       
               this.dialog.closeAll();
               this.toastr.error('Token Expire', 'Error!', {
@@ -67,7 +61,7 @@ export class HeaderInterceptor implements HttpInterceptor {
             }
           });    
       } else {
-        this.api.Logout(paylaod).subscribe((res:any) => {
+        this.api.Logout({}).subscribe((res:any) => {
           if (res.isExecuted) {  
             let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : "";
             localStorage.clear();     
