@@ -8,7 +8,7 @@ import { MatSelect} from '@angular/material/select';
 import { MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router} from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject';
 import { SpinnerService } from '../../../app/init/spinner.service';
@@ -202,7 +202,7 @@ export class InventoryMapComponent implements OnInit {
     private authService: AuthService,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService, 
+     
     private dialog:MatDialog,
     private router: Router,
     private loader: SpinnerService,
@@ -326,10 +326,7 @@ export class InventoryMapComponent implements OnInit {
         this.columnValues.push('actions');
         this.getContentData(isInit);
       } else {
-        this.toastr.error('Something went wrong', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Something went wrong', 'Error!');
       }
     });
   }
@@ -556,15 +553,9 @@ export class InventoryMapComponent implements OnInit {
 
     if(res.data){
       this.getContentData();
-      this.toastr.success(res.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+      this.global.ShowToastr('success',res.responseMessage, 'Success!');
     } else {
-      this.toastr.error('Something went wrong', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Something went wrong', 'Error!');
     }
   });
 

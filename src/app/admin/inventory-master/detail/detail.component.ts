@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import { ItemCategoryComponent } from '../../dialogs/item-category/item-category.component';
 import { ItemNumberComponent } from '../../dialogs/item-number/item-number.component';
@@ -45,7 +45,7 @@ export class DetailComponent implements OnInit {
     private adminApiService: AdminApiService,
     private global:GlobalService,    
     private currentTabDataService: CurrentTabDataService,
-    private toastr: ToastrService,) {
+    ) {
       this.iAdminApiService = adminApiService;
      }
   
@@ -111,10 +111,7 @@ export class DetailComponent implements OnInit {
             }); 
             this.sendNotification({newItemNumber: res.data.newItemNumber});
           } else {
-            this.toastr.error("Item Number Already Exists.", 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"Item Number Already Exists.", 'Error!');
           }
         })
       }

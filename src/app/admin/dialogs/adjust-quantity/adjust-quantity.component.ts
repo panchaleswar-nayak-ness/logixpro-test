@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
  
-import { ToastrService } from 'ngx-toastr';
+
 import {ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
@@ -67,7 +67,7 @@ export class AdjustQuantityComponent implements OnInit {
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private toastr: ToastrService,
+    
     public dialogRef: MatDialogRef<any>
   ) {
    this.fieldName=data.fieldNames;
@@ -119,10 +119,7 @@ export class AdjustQuantityComponent implements OnInit {
     if(form.valid){
       this.iAdminApiService.updateItemQuantity(form.value).subscribe((res) => {
         if(res.isExecuted){
-          this.toastr.success(res.responseMessage, 'Success!',{
-            positionClass: 'toast-bottom-right',
-            timeOut:2000
-         }); 
+          this.global.ShowToastr('success',res.responseMessage, 'Success!'); 
           this.dialogRef.close(form.value.quantity);   
         }
       });

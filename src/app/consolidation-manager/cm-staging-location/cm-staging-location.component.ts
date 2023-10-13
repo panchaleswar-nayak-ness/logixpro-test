@@ -1,6 +1,6 @@
 import { Component , ElementRef, OnInit, ViewChild } from '@angular/core';
 import {  MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from 'src/app/init/auth.service';
 import { CmOrderToteConflictComponent } from 'src/app/dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
 import { StagingLocationOrderComponent } from 'src/app/dialogs/staging-location-order/staging-location-order.component';
@@ -44,7 +44,7 @@ export class CmStagingLocationComponent {
 
   public IconsolidationAPI : IConsolidationApi;
 
-  constructor(private toast: ToastrService,
+  constructor(
     // private Api: ApiFuntions,
     public consolidationAPI : ConsolidationApiService,
     private authService: AuthService,
@@ -86,7 +86,7 @@ export class CmStagingLocationComponent {
         if (typeof res?.data == 'string') { 
           switch (res?.data) {
             case "DNE":
-              this.toast.error("The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+              this.global.ShowToastr('error',"The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!');
               this.OrderNumberTote = null;
               break;
             case "DNENP":
@@ -108,7 +108,7 @@ export class CmStagingLocationComponent {
                 this.openCmOrderToteConflict(inputVal); 
               break;
             case "Error":
-              this.toast.error("An Error occured while retrieving data", "Consolidation Error", { positionClass: 'toast-bottom-right', timeOut: 2000 });
+              this.global.ShowToastr('error',"An Error occured while retrieving data", "Consolidation Error");
               break;
           }
         }
@@ -133,9 +133,9 @@ export class CmStagingLocationComponent {
     }
     this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
       if (res.responseMessage == "Fail") {
-        this.toast.error("Error Has Occured", "Consolidation", { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        this.global.ShowToastr('error',"Error Has Occured", "Consolidation");
       } else if (res.responseMessage == 'INVALID') {
-        this.toast.error("The Location entered was not valid", "Staging", { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        this.global.ShowToastr('error',"The Location entered was not valid", "Staging");
 
       } else if (res.responseMessage == "Redirect") {
         window.location.href = "/#/Logon/";

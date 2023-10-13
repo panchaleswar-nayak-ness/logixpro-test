@@ -6,7 +6,7 @@ import {
 } from '@angular/material/dialog';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -31,8 +31,7 @@ export class BmToteidEntryComponent implements OnInit {
     private api: ApiFuntions,
     private adminApiService: AdminApiService,
     private authService: AuthService,
-    private toastr: ToastrService
-  ) {
+   ) {
     this.selectedList = data.selectedOrderList;
     this.iAdminApiService = adminApiService;
     this.nextToteID = data.nextToteID; 
@@ -102,16 +101,10 @@ export class BmToteidEntryComponent implements OnInit {
       .PickToteIDUpdate(paylaod)
       .subscribe((res: any) => {
         if (res.isExecuted) {
-          this.toastr.success(res.responseMessage, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success',res.responseMessage, 'Success!');
           this.dialogRef.close(true);
         } else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
       });
   }

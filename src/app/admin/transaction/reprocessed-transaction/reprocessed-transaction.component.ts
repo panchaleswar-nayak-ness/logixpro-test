@@ -7,7 +7,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/init/auth.service';
 import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dialog/column-sequence-dialog.component';
@@ -84,7 +84,7 @@ export class ReprocessedTransactionComponent implements OnInit {
     private Api: ApiFuntions,
     private authService: AuthService,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     private global:GlobalService
   ) {
     this.iAdminApiService = adminApiService;
@@ -121,10 +121,7 @@ export class ReprocessedTransactionComponent implements OnInit {
           this.columnValues = res.data;
           this.getContentData();
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       error: (error) => {}}

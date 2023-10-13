@@ -5,7 +5,7 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import labels from '../../../labels/labels.json';
 import {
@@ -35,7 +35,7 @@ export class ColumnSequenceDialogComponent implements OnInit {
     private Api: ApiFuntions,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
-    private toastr: ToastrService,
+    
     private adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) data,
     private global:GlobalService,
@@ -117,20 +117,14 @@ export class ColumnSequenceDialogComponent implements OnInit {
     this.iAdminApiService.SaveColumns(this.payload).subscribe(
       {next: (res: any) => {
         if (res.isExecuted) {
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.dialogRef.close({ isExecuted: true });
         } else {
           this.dialogRef.close('');
         }
       },
       error: (error) => {
-        this.toastr.error(labels.alert.went_worng, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
         this.dialogRef.close({ isExecuted: false });
       }}
     );

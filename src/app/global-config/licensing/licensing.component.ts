@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../labels/labels.json';
 import { MatDialog } from '@angular/material/dialog';
@@ -70,7 +70,7 @@ export class LicensingComponent implements OnInit {
   constructor(
     private Api: ApiFuntions,
     private sharedService: SharedService,
-    private toastr: ToastrService,
+    
     public globalConfigApi: GlobalConfigApiService,
     private global:GlobalService
   ) {
@@ -132,10 +132,7 @@ export class LicensingComponent implements OnInit {
         {next: (res: any) => {
           if (res.isExecuted) {
             this.getAppLicense();
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
           }else if(!res.isExecuted){
            
 
@@ -159,10 +156,7 @@ export class LicensingComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.toastr.error(labels.alert.went_worng, 'Error!!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',labels.alert.went_worng, 'Error!!');
         }}
       );
   }

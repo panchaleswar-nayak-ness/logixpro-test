@@ -10,7 +10,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
-import { ToastrService } from 'ngx-toastr';
+
 import {
   
   
@@ -113,7 +113,7 @@ export class TranSelectOrderComponent implements OnInit {
     private Api:ApiFuntions,
     private global:GlobalService,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     private sharedService: SharedService,
     private currentTabDataService: CurrentTabDataService,
     private route: ActivatedRoute

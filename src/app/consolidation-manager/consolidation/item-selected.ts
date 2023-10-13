@@ -6,6 +6,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { ApiFuntions } from "src/app/services/ApiFuntions";
 import { IConsolidationApi } from "src/app/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/services/consolidation-api/consolidation-api.service";
+import { GlobalService } from "src/app/common/services/global.service";
 
 @Component({
     template: ''
@@ -38,7 +39,7 @@ export class ItemSelected implements OnInit {
       constructor(
         public consolidationAPI : ConsolidationApiService,
         private global:GlobalService, 
-        private toastr: ToastrService,
+        
         private router: Router,   
         private authService: AuthService,
         @Inject(MAT_DIALOG_DATA) public data: any) { this.IconsolidationAPI = consolidationAPI; }
@@ -85,10 +86,7 @@ export class ItemSelected implements OnInit {
             }
             this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
                 if (!res.isExecuted) {
-                    this.toastr.error(res.responseMessage, 'Error!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000
-                    });
+                    this.global.ShowToastr('error',res.responseMessage, 'Error!');
 
                 }
 
@@ -119,10 +117,7 @@ export class ItemSelected implements OnInit {
 
                 this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
                     if (!res.isExecuted) {
-                        this.toastr.error(res.responseMessage, 'Error!', {
-                            positionClass: 'toast-bottom-right',
-                            timeOut: 2000
-                        });
+                        this.global.ShowToastr('error',res.responseMessage, 'Error!');
 
                     }
 

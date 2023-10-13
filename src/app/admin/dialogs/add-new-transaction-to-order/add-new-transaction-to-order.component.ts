@@ -4,7 +4,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { FormControl, FormGroup } from '@angular/forms';
 import labels from '../../../labels/labels.json';
 import { FloatLabelType } from '@angular/material/form-field';
@@ -42,7 +42,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
     public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global:GlobalService,
-    private toastr: ToastrService,
+    
     private adminApiService: AdminApiService,
     private Api: ApiFuntions,
     public dialogRef: MatDialogRef<any>
@@ -280,24 +280,15 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                 this.iAdminApiService.TransactionForOrderInsert(payload).subscribe(
                   (res: any) => {
                     if (res.isExecuted) {
-                      this.toastr.success(labels.alert.success, 'Success!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000,
-                      });
+                      this.global.ShowToastr('success',labels.alert.success, 'Success!');
                       this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
                     } else {
-                      this.toastr.error(res.responseMessage, 'Error!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000,
-                      });
+                      this.global.ShowToastr('error',res.responseMessage, 'Error!');
                       this.dialogRef.close({ isExecuted: false });
                     }
                   },
                   (error) => {
-                    this.toastr.error('something went wrong!', 'Error!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
+                    this.global.ShowToastr('error','something went wrong!', 'Error!');
                     this.dialogRef.close({ isExecuted: false });
                   }
                 );
@@ -305,24 +296,15 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                 this.iAdminApiService.TransactionForOrderUpdate(payload).subscribe(
                   (res: any) => {
                     if (res.isExecuted) {
-                      this.toastr.success(labels.alert.success, 'Success!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000,
-                      });
+                      this.global.ShowToastr('success',labels.alert.success, 'Success!');
                       this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
                     } else {
-                      this.toastr.error(res.responseMessage, 'Error!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000,
-                      });
+                      this.global.ShowToastr('error',res.responseMessage, 'Error!');
                       this.dialogRef.close({ isExecuted: false });
                     }
                   },
                   (error) => {
-                    this.toastr.error('something went wrong!', 'Error!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
+                    this.global.ShowToastr('error','something went wrong!', 'Error!');
                     this.dialogRef.close({ isExecuted: false });
                   }
                 );

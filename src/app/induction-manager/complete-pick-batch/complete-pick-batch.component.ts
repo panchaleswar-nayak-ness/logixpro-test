@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { ToastrService } from 'ngx-toastr';
+
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { CpbBlossomToteComponent } from 'src/app/dialogs/cpb-blossom-tote/cpb-blossom-tote.component';
 import { ShortTransactionComponent } from 'src/app/dialogs/short-transaction/short-transaction.component';
@@ -39,7 +39,7 @@ export class CompletePickBatchComponent{
     private global:GlobalService,
     private Api: ApiFuntions,
     private inductionManagerApi: InductionManagerApiService,
-    private toastr: ToastrService,
+    
   ) { 
     this.iinductionManagerApi = inductionManagerApi;
   }
@@ -97,16 +97,10 @@ export class CompletePickBatchComponent{
         }
         else {
           if (this.batchId != "" && this.toteId == "") {
-            this.toastr.error("No open transactions for the entered batch", 'No Rows', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"No open transactions for the entered batch", 'No Rows');
           }
           else if (this.batchId != "" && this.toteId != "") {
-            this.toastr.error("No open transaction for that tote in the batch", 'No Rows', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"No open transaction for that tote in the batch", 'No Rows');
             this.toteId = "";
             this.BatchPickIDKeyup({ keyCode: 13 });
           }
@@ -180,16 +174,10 @@ export class CompletePickBatchComponent{
         this.iinductionManagerApi.completeTransaction({Id:element.id}).subscribe((res: any) => {
           if(res.isExecuted){
             this.pickBatchTransactionTable();
-            this.toastr.success(labels.alert.update, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.update, 'Success!');
           }
           else{
-            this.toastr.error("An error occured completing this transaction", 'Error', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"An error occured completing this transaction", 'Error');
           }
         });
       }
@@ -212,16 +200,10 @@ export class CompletePickBatchComponent{
         this.iinductionManagerApi.completePickBatch({batchId:this.batchId}).subscribe((res: any) => {
           if(res.isExecuted){
             this.clearScreen();
-            this.toastr.success(labels.alert.update, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.update, 'Success!');
           }
           else{
-            this.toastr.error("An error occured completing this transaction", 'Error', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"An error occured completing this transaction", 'Error');
           }
         });
       }

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from 'src/app/init/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CmConfirmAndPackingProcessTransactionComponent } from '../cm-confirm-and-packing-process-transaction/cm-confirm-and-packing-process-transaction.component';
@@ -51,7 +51,7 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
     // private Api:ApiFuntions,
     public consolidationAPI : ConsolidationApiService,
     public authService: AuthService,
-    private toast:ToastrService,
+    
     private global:GlobalService, 
     public route: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -85,7 +85,7 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
     };
    this.IconsolidationAPI.SelContIDConfirmPack(obj).subscribe((res:any) => { 
     if(res.data == ''){
-      this.toast.error("An error has occurred",'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});
+      this.global.ShowToastr('error',"An error has occurred",'Error!');
     }else{
       this.getPreferences();
       if(this.preferencesData?.autoPrintContPL){
@@ -101,7 +101,7 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
 async UnPack(id:any){  
   this.IconsolidationAPI.ShipTransUnPackUpdate({id:id}).subscribe((res:any) => {
     if (res.data == "Fail") {
-      this.toast.error("An error has occurred", 'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});  
+      this.global.ShowToastr('error',"An error has occurred", 'Error!');  
   } else {  
      let index =  this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
      this.transTable.filteredData[index].containerID = '';
@@ -173,7 +173,7 @@ async ClickConfirmAll(){
     };
    this.IconsolidationAPI.ConfirmAllConfPack(obj).subscribe((res:any) => {
     if (res.data == "Fail") {
-      this.toast.error('An error has occurred', 'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000}); 
+      this.global.ShowToastr('error','An error has occurred', 'Error!'); 
   } else { 
 
    
@@ -279,7 +279,7 @@ for (let x = 0; x < this.transTable.filteredData.length; x++) {
 };
  
 if(searchCount == 0){ 
-  this.toast.error("The desired item number was not found or is already confirmed and packed",'Item Number Issue', { positionClass: 'toast-bottom-right',timeOut: 2000}); 
+  this.global.ShowToastr('error',"The desired item number was not found or is already confirmed and packed",'Item Number Issue'); 
 } else if (searchCount == 1) {
   let obj : any = {
     id: id,
@@ -290,7 +290,7 @@ if(searchCount == 0){
  this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
    
   if (res.data == "Fail") {
-    this.toast.error('An error has occurred', 'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});  
+    this.global.ShowToastr('error','An error has occurred', 'Error!');  
 } else if (res.data == "Modal") {
     //show modal here
   this.openScanItem($event.target.value,id);  

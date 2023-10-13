@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from '../../../app/init/auth.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,6 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-view-orders',
@@ -94,10 +95,11 @@ export class ViewOrdersComponent implements OnInit {
 
   constructor(
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    
     private authService: AuthService,
     private inductionManagerApi: InductionManagerApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private global: GlobalService,
     public dialogRef: MatDialogRef<any>
   ) { 
     this.iinductionManagerApi = inductionManagerApi;
@@ -135,10 +137,7 @@ export class ViewOrdersComponent implements OnInit {
 
       }
       else{
-        this.toastr.error('There are no orders for your zone', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','There are no orders for your zone', 'Error!');
         this.isDisableSubmit = true
       }
     });
@@ -178,10 +177,7 @@ export class ViewOrdersComponent implements OnInit {
       this.selectedOrders = this.selectedOrders.filter(item => item !== row.orderNumber)
     }
     else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
-      this.toastr.error('No open totes in batch', 'Batch is Filled.', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','No open totes in batch', 'Batch is Filled.');
     }
     else {
       this.selectedOrders.push(row.orderNumber);

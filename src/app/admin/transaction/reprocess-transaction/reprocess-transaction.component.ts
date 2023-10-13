@@ -12,7 +12,7 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged, Subject, Subscription,takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/init/auth.service';
 import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dialog/column-sequence-dialog.component';
@@ -204,7 +204,7 @@ export class ReprocessTransactionComponent implements OnInit {
   constructor( 
     private Api: ApiFuntions,
     private authService: AuthService,
-    private toastr: ToastrService, 
+     
     private global:GlobalService,
     private sharedService: SharedService,
     private adminApiService: AdminApiService,
@@ -313,10 +313,7 @@ export class ReprocessTransactionComponent implements OnInit {
             this.reason = res.data[0].reason;
             this.reasonMessage = res.data[0].reasonMessage;
           } else {
-            this.toastr.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         error: (error) => { }}
@@ -554,19 +551,13 @@ export class ReprocessTransactionComponent implements OnInit {
               this.iAdminApiService.ReprocessTransactionDelete(deletePayload).subscribe((res: any) => {
                 if (res.isExecuted){
                   this.selectedVariable = "";
-                  this.toastr.success(labels.alert.update, 'Success!',{
-                    positionClass: 'toast-bottom-right',
-                    timeOut:2000
-                 });
+                  this.global.ShowToastr('success',labels.alert.update, 'Success!');
     
                  this.getContentData("1");
                  this.getOrdersWithStatus();
                 }
                 else{
-                  this.toastr.error('Something went wrong', 'Error!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000,
-                  });
+                  this.global.ShowToastr('error','Something went wrong', 'Error!');
                 }
         });
             }
@@ -696,15 +687,9 @@ export class ReprocessTransactionComponent implements OnInit {
               if (res.data && res.isExecuted) { 
                 this.getContentData();
                 this.getOrdersWithStatus();
-                this.toastr.success(labels.alert.update, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+                this.global.ShowToastr('success',labels.alert.update, 'Success!');
               } else {
-                this.toastr.error('Something went wrong', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error','Something went wrong', 'Error!');
               }
             },
             error: (error) => { }}
@@ -744,15 +729,9 @@ export class ReprocessTransactionComponent implements OnInit {
                 if (res.data && res.isExecuted) {
                   this.getContentData();
                   this.getOrdersWithStatus();
-                  this.toastr.success(labels.alert.update, 'Success!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000
-                  });
+                  this.global.ShowToastr('success',labels.alert.update, 'Success!');
                 } else {
-                  this.toastr.error('Something went wrong', 'Error!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000,
-                  });
+                  this.global.ShowToastr('error','Something went wrong', 'Error!');
                 }
               },
               error: (error) => { }}
@@ -787,10 +766,7 @@ export class ReprocessTransactionComponent implements OnInit {
           this.orders.historyOrders = res.data.history;
 
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       error: (error) => { }}
@@ -829,10 +805,7 @@ export class ReprocessTransactionComponent implements OnInit {
 
           this.getContentData();
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       error: (error) => { }}

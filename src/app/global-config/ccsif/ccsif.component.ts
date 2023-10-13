@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
@@ -18,8 +18,7 @@ export class CcsifComponent implements OnInit {
   constructor( 
     public global:GlobalService,   
      public api: ApiFuntions,
-     public globalConfigApi: GlobalConfigApiService,
-     private toastr:ToastrService) {
+     public globalConfigApi: GlobalConfigApiService) {
       this.iGlobalConfigApi = globalConfigApi;
       }
 
@@ -34,29 +33,17 @@ export class CcsifComponent implements OnInit {
     if (changeType == 'start' || changeType == 'restart') {
         if (success) {
             this.Status = 'Online';
-            this.toastr.success('Service ' + changeType + ' was successful.','Success', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success','Service ' + changeType + ' was successful.','Success');
         } else {
           this.Status = 'Offline'; 
-          this.toastr.error('Service ' + changeType + ' was unsuccessful.  Please try again or contact Scott Tech for support.','Error', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Service ' + changeType + ' was unsuccessful.  Please try again or contact Scott Tech for support.','Error');
         };
     } else {
       this.Status = 'Offline'; 
         if (success) {
-          this.toastr.success('Service stop was successful.','Success', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success','Service stop was successful.','Success');
         } else {
-          this.toastr.error('Service stop encountered an error.  Please try again or contact Scott Tech for support.','Error', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Service stop encountered an error.  Please try again or contact Scott Tech for support.','Error');
         };
     };
 };

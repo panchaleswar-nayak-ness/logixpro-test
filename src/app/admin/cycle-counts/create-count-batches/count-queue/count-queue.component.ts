@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
@@ -50,8 +50,7 @@ export class CCBCountQueueComponent implements OnInit {
     private _liveAnnouncer: LiveAnnouncer,
     public Api: ApiFuntions,
     private authService: AuthService,
-    public global:GlobalService,
-    public toastr: ToastrService
+    public global:GlobalService, 
   ) {
     this.iAdminApiService = adminApiService;
     this.userData = this.authService.userData();
@@ -152,22 +151,15 @@ this.customPagination.total = 0;
         this.iAdminApiService.CreateCountRecords().subscribe(
           (response: any) => {
             if (response.isExecuted) {
-              this.toastr.success(response.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',response.responseMessage, 'Success!');
               this.getCountQue();
               this.getCount(0);
               this.ngOnInit();
               this.insertEvent.emit('insert');
             } else {
-              this.toastr.error(
+              this.global.ShowToastr('error',
                 'Error',
-                'Error Occured while creating Count records, check event log for more information',
-                {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                }
+                'Error Occured while creating Count records, check event log for more information'
               );
             }
           },
@@ -184,22 +176,15 @@ this.customPagination.total = 0;
         this.iAdminApiService.RemoveccQueueAll().subscribe(
           (response: any) => {
             if (response.isExecuted) {
-              this.toastr.success(response.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',response.responseMessage, 'Success!');
               this.getCount(0);
               this.getCountQue();
               this.ngOnInit();
 
             } else {
-              this.toastr.error(
+              this.global.ShowToastr('error',
                 'Error',
-                'An Error Occured while trying to remove all data, check the event log for more information',
-                {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                }
+                'An Error Occured while trying to remove all data, check the event log for more information'
               );
             }
           },
@@ -217,13 +202,9 @@ this.customPagination.total = 0;
         if (res.isExecuted) {
           this.getCountQue();
         } else {
-          this.toastr.error(
+          this.global.ShowToastr('error',
             'Error',
-            'An Error Occured while trying to remove this row, check the event log for more information',
-            {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            }
+            'An Error Occured while trying to remove this row, check the event log for more information'
           );
         }
       },

@@ -2,7 +2,7 @@ import { Component, Input,SimpleChanges, Output, EventEmitter } from '@angular/c
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import labels from '../../../labels/labels.json'
 import { ScanTypeCodeComponent } from '../../dialogs/scan-type-code/scan-type-code.component';
 import { CustomValidatorService } from '../../../../app/init/custom-validator.service';
@@ -39,7 +39,7 @@ export class ScanCodesComponent{
   public iAdminApiService: IAdminApiService;
 
   constructor( private api:ApiFuntions, private sharedService:SharedService,
-    private authService: AuthService, private toastr: ToastrService,  private adminApiService: AdminApiService,private global:GlobalService,private dialog:MatDialog,private cusValidator: CustomValidatorService) {
+    private authService: AuthService,   private adminApiService: AdminApiService,private global:GlobalService,private dialog:MatDialog,private cusValidator: CustomValidatorService) {
       this.iAdminApiService = adminApiService;
     this.userData = this.authService.userData();
 
@@ -108,17 +108,11 @@ export class ScanCodesComponent{
         this.iAdminApiService.DeleteScanCode(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
             this.isAddRow=false
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.refreshScanCodeList();
           } else{
             
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         })
       } else{
@@ -141,24 +135,15 @@ export class ScanCodesComponent{
   saveCategory(item, scanCode, startPosition, codeLength, scanRange, scanType,index:any){ 
     let newRecord = true;
     if(scanCode=='') {
-      this.toastr.error('Scan code not saved, scan code field must not be empty.', 'Alert!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Scan code not saved, scan code field must not be empty.', 'Alert!');
       return;
     }
     if(startPosition=='') {
-      this.toastr.error('Scan code not saved,Start position field must be an integer.', 'Alert!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Scan code not saved,Start position field must be an integer.', 'Alert!');
       return;
     }
     if(codeLength=='') {
-      this.toastr.error('Scan code not saved, Scan code field must not be empty..', 'Alert!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Scan code not saved, Scan code field must not be empty..', 'Alert!');
       return;
     }
     this.scanCodes.controls['scanCode'].value.forEach(element => {
@@ -169,10 +154,7 @@ export class ScanCodesComponent{
     });
 
     if(!newRecord || item.scanCode=='' ){
-      this.toastr.error('Already Exists', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Already Exists', 'Error!');
       return;
     }
 
@@ -195,25 +177,16 @@ export class ScanCodesComponent{
     ).subscribe((res: any) => {
       if (res.isExecuted) {
         this.isAddRow=false
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
         this.refreshScanCodeList();
         this.sendNotification();
       } 
       else if(res.isDuplicate){
-        this.toastr.error('New Scan Code not saved!  Ensure that the scan code being added is not a duplicate and try again.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','New Scan Code not saved!  Ensure that the scan code being added is not a duplicate and try again.', 'Error!');
         
       }
       else{
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     })
   } else if (item.scanCode!='') {
@@ -233,16 +206,10 @@ export class ScanCodesComponent{
     this.iAdminApiService.UpdateScanCodes(paylaod).subscribe((res: any) => {
       if (res.isExecuted) {
         this.isAddRow=false
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
         this.refreshScanCodeList();
       }else{
-        this.toastr.error('Already Exists', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Already Exists', 'Error!');
       }
     })
   }

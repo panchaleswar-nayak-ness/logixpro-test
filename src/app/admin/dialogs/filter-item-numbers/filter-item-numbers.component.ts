@@ -1,6 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -20,7 +21,7 @@ export class FilterItemNumbersComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog:MatDialog,
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    private global: GlobalService,
     private adminApiService: AdminApiService,
     private authService: AuthService,
   ) {
@@ -50,10 +51,7 @@ export class FilterItemNumbersComponent implements OnInit {
           this.dialog.closeAll();
           this.dialogRef.close({ filterItemNumbersText: this.data, filterItemNumbersArray: itemsArray });
         } else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
           this.dialog.closeAll();
         }
       });

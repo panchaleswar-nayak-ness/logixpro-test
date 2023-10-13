@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -29,7 +29,7 @@ export class ScanTypeCodeComponent implements OnInit {
     private global:GlobalService,
     // private Api: ApiFuntions, 
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     private renderer: Renderer2,
     public dialogRef: MatDialogRef<any>) { this.iCommonAPI = commonAPI; }
 
@@ -72,10 +72,7 @@ export class ScanTypeCodeComponent implements OnInit {
     this.scanTypeCode_list_Response.forEach(element => {
       if(element.toLowerCase() == newScanCode.toLowerCase() && cond) {
         cond = false;
-       this.toastr.error('Already Exists', 'Error!', {
-         positionClass: 'toast-bottom-right',
-         timeOut: 2000
-       });
+       this.global.ShowToastr('error','Already Exists', 'Error!');
       }   
     });
 
@@ -88,18 +85,12 @@ export class ScanTypeCodeComponent implements OnInit {
     this.iCommonAPI.CodeTypeSave(paylaod).subscribe((res) => {
       if(res.isExecuted){
         this.getScanCodeType();
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
       }
   
     });
   } else {
-    this.toastr.error('Scan Codes cannot be empty', 'Error!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000
-    });
+    this.global.ShowToastr('error','Scan Codes cannot be empty', 'Error!');
   }
   }
 
@@ -126,10 +117,7 @@ export class ScanTypeCodeComponent implements OnInit {
           this.iCommonAPI.ScanCodeTypeDelete(paylaod).subscribe((res) => {
             if(res.isExecuted){
               this.getScanCodeType();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           }
           });
         } else {
@@ -151,10 +139,7 @@ export class ScanTypeCodeComponent implements OnInit {
       }   
     });
     if(notselected){
-      this.toastr.error('Please save the record first.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Please save the record first.', 'Error!');
     }
 
   }

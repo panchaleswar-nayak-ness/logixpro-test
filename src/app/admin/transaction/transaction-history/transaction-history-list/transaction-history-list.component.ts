@@ -12,7 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { ToastrService } from 'ngx-toastr';
+
 import { Subject, takeUntil, Subscription } from 'rxjs'; 
 import { AuthService } from 'src/app/init/auth.service'; 
 import { FloatLabelType } from '@angular/material/form-field';
@@ -179,7 +179,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     private router: Router, 
     private Api:ApiFuntions,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     private adminApiService: AdminApiService,
     private global:GlobalService,
     private sharedService:SharedService,
@@ -299,10 +299,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
             this.columnValues = res.data;
             this.getContentData();
           } else {
-            this.toastr.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         error: (error) => {}}

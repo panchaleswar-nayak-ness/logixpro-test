@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -10,6 +10,7 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-temporary-manual-order-number-add',
@@ -39,7 +40,8 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
   constructor(
     public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private toastr: ToastrService,
+    
+    private global: GlobalService,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
@@ -138,16 +140,10 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
       .subscribe(
         (res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
             this.dialogRef.close({ isExecuted: true,id:res.data,orderNumber:this.orderNumber,itemNumber:this.itemNumber,location:this.inventoryMapID});
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
             this.dialogRef.close({ isExecuted: true,id:res.data,orderNumber:this.orderNumber,itemNumber:this.itemNumber  });
           }
         },

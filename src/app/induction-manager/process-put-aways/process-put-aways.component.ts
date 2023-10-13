@@ -6,7 +6,7 @@ import { BatchDeleteComponent } from 'src/app/dialogs/batch-delete/batch-delete.
 import { SelectZonesComponent } from 'src/app/dialogs/select-zones/select-zones.component';
 import { SelectionTransactionForToteComponent } from 'src/app/dialogs/selection-transaction-for-tote/selection-transaction-for-tote.component';
 import { TotesAddEditComponent } from 'src/app/dialogs/totes-add-edit/totes-add-edit.component';
-import { ToastrService } from 'ngx-toastr';
+
  
 import { AuthService } from 'src/app/init/auth.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -131,7 +131,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
 
   constructor( 
-    private toastr: ToastrService, 
+     
     private Api:ApiFuntions,
     private global:GlobalService, 
     private authService: AuthService,
@@ -249,10 +249,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         if (res.data && res.isExecuted) {
           this.currentToteID = res.data;
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       (error) => { }
@@ -316,10 +313,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
 
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       (error) => { }
@@ -514,10 +508,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           }
           this.iinductionManagerApi.ValidateTotesForPutAways(totePaylaod).subscribe(res => {
             if (res.data != '') {
-              this.toastr.error(`The tote id ${res.data} already exists in Open Transactions. Please select another tote`, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',`The tote id ${res.data} already exists in Open Transactions. Please select another tote`, 'Error!');
               for (let i = 0; i < this.ELEMENT_DATA.length; i++) {
                 if (this.ELEMENT_DATA[i].toteid == res.data) {
                   this.ELEMENT_DATA[i].toteid = '';
@@ -541,10 +532,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                         window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
                       }
                     }
-                    this.toastr.success(res.responseMessage, 'Success!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
+                    this.global.ShowToastr('success',res.responseMessage, 'Success!');
                     this.status = 'Processed';
                     this.selectedIndex = 1;
                     this.batchId2 = this.batchId;
@@ -553,10 +541,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                     }, 500);
                     this.fillToteTable(this.batchId);
                   } else {
-                    this.toastr.error('Something went wrong', 'Error!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
+                    this.global.ShowToastr('error','Something went wrong', 'Error!');
                   }
                 },
                 (error) => { }
@@ -571,15 +556,9 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   showMessage(message: any, timeout: any, type: any) {
     if (type == 'error') {
-      this.toastr.error(message, 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: timeout,
-      });
+      this.global.ShowToastr('error',message, 'Error!');
     } else {
-      this.toastr.success(message, 'Success!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: timeout,
-      });
+      this.global.ShowToastr('success',message, 'Success!');
     }
   }
 
@@ -610,10 +589,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           }
 
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       (error) => { }
@@ -627,10 +603,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           this.batchId = res.data;
           this.openSelectZonesDialogue();
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       (error) => { }
@@ -643,10 +616,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     }
     this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
-        this.toastr.error('Something is wrong.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Something is wrong.', 'Error!');
       }
 
     });
@@ -798,10 +768,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           if (res.data) {
             this.searchAutocompleteItemNum = res.data;
           } else {
-            this.toastr.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         (error) => { }
@@ -817,10 +784,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         if (res.data) {
           this.searchAutocompleteItemNum2 = res.data;
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       (error) => { }
@@ -902,10 +866,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   openSelectionTransactionDialogue() {
     if (this.batchId2 == "") {
-      this.toastr.error('No batch ID present. Please select a batch vlaue form the typeahead to ensure you are inducting against the correct batch', 'Empty Batch ID Value', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      });
+      this.global.ShowToastr('error','No batch ID present. Please select a batch vlaue form the typeahead to ensure you are inducting against the correct batch', 'Empty Batch ID Value');
       return;
     };
 
@@ -926,10 +887,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => {
         if (!result) return
         if (this.inputValue == "") {
-          this.toastr.error('Please enter input value', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Please enter input value', 'Error!');
         }
         else {
           const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteComponent, {
@@ -979,15 +937,9 @@ export class ProcessPutAwaysComponent implements OnInit {
                 return
               }
               if (this.inputType == 'Any') {
-                this.toastr.error('The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error','The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.', 'Error!');
               } else {
-                this.toastr.error(`The input code provided was not recognized as a ${this.inputType}.`, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',`The input code provided was not recognized as a ${this.inputType}.`, 'Error!');
               }
             } else if (result == "Task Completed") {
               
@@ -1031,10 +983,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       });
     }
     else if (this.inputValue == "") {
-      this.toastr.error('Please enter input value', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      });
+      this.global.ShowToastr('error','Please enter input value', 'Error!');
     }
     else {
       const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteComponent, {
@@ -1088,15 +1037,9 @@ export class ProcessPutAwaysComponent implements OnInit {
             return
           }
           if (this.inputType == 'Any') {
-            this.toastr.error('The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.', 'Error!');
           } else {
-            this.toastr.error(`The input code provided was not recognized as a ${this.inputType}.`, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',`The input code provided was not recognized as a ${this.inputType}.`, 'Error!');
           }
         } else if (result == "Task Completed") {
           this.inputValue='';
@@ -1187,10 +1130,7 @@ export class ProcessPutAwaysComponent implements OnInit {
             this.getRow(batchID ?? this.batchId2);
             this.inputValue = "";
           } else {
-            this.toastr.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         (error) => { }
@@ -1257,13 +1197,9 @@ export class ProcessPutAwaysComponent implements OnInit {
                           }
                           this.clearFormAndTable();
                       }else{
-                        this.toastr.success(
+                        this.global.ShowToastr('success',
                           'Batch Completed Successfully',
-                          'Success!',
-                          {
-                            positionClass: 'toast-bottom-right',
-                            timeOut: 2000,
-                          }
+                          'Success!'
                         );
                         this.clearFormAndTable();
                         this.selectedIndex = 0;
@@ -1278,10 +1214,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                  
                 
                 } else {
-                  this.toastr.error('Something went wrong', 'Error!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000,
-                  });
+                  this.global.ShowToastr('error','Something went wrong', 'Error!');
                 }
               },
               (error) => { }
@@ -1386,22 +1319,15 @@ export class ProcessPutAwaysComponent implements OnInit {
           this.iinductionManagerApi.MarkToteFull(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
-                this.toastr.success(
+                this.global.ShowToastr('success',
                   'Marked Successfully',
-                  'Success!',
-                  {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000,
-                  }
+                  'Success!'
                 );
                 this.fillToteTable();
           this.clearMatSelectList();
 
               } else {
-                this.toastr.error('Something went wrong', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error','Something went wrong', 'Error!');
               }
             },
             (error) => { }

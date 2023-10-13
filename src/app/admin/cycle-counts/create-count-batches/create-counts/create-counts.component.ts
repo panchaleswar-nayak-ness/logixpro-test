@@ -12,7 +12,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table'; 
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import {
@@ -131,7 +131,7 @@ export class CCBCreateCountsComponent implements OnInit {
 constructor(
     public commonAPI : CommonApiService,
     public Api: ApiFuntions,
-    public toastService: ToastrService,
+    
     private authService: AuthService,
     private fb: FormBuilder,
     public global:GlobalService,
@@ -466,26 +466,17 @@ constructor(
           }
           // If the data is not returned, show an error message
           else {
-            this.toastService.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         // If the request is not successful, show an error message
         (error) => {
-          this.toastService.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       );
     } catch (error) {
       // If the code cannot be run, show an error message
-      this.toastService.error('Something went wrong', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      });
+      this.global.ShowToastr('error','Something went wrong', 'Error!');
     }
   }
 
@@ -609,17 +600,11 @@ constructor(
             this.isDataAvailable = false;
           }
         } else {
-          this.toastService.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       (err) => {
-        this.toastService.error('Something went wrong', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','Something went wrong', 'Error!');
       }
     );
   }
@@ -655,29 +640,20 @@ constructor(
             // Check if the response is a success
             if (res.data && res.isExecuted) {
               // Display a success message
-              this.toastService.success('Order Deleted', 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success','Order Deleted', 'Success!');
               this.getWareAndCurOrd();
 
               this.orderNumber = '';
               // Get the orders again
             } else {
               // Display an error message
-              this.toastService.error('Something went wrong', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error','Something went wrong', 'Error!');
             }
           },
           // This function will be called if there is an error
           (error: any) => {
             // Display an error message
-            this.toastService.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         );
       }
@@ -695,10 +671,7 @@ constructor(
           this.nextStep();
           this.updateQueCountEvent(res.data);
         } else {
-          this.toastService.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       (error) => {}
@@ -742,13 +715,9 @@ constructor(
                           }
                         }
                       } else {
-                        this.toastService.error(
+                        this.global.ShowToastr('error',
                           'Something went wrong',
-                          'Error!',
-                          {
-                            positionClass: 'toast-bottom-right',
-                            timeOut: 2000,
-                          }
+                          'Error!' 
                         );
                       }
                     },

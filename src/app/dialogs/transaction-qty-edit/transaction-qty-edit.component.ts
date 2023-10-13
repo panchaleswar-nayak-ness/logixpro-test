@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import labels from '../../labels/labels.json'
 import { AuthService } from 'src/app/init/auth.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -21,7 +21,7 @@ export class TransactionQtyEditComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     private dialog:MatDialog,
     public dialogRef: MatDialogRef<TransactionQtyEditComponent>,
     private authService: AuthService,
@@ -58,17 +58,11 @@ export class TransactionQtyEditComponent implements OnInit {
     }
     this.iAdminApiService.TransactionQtyReplenishmentUpdate(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.globalService.ShowToastr('success',labels.alert.success, 'Success!');
         this.dialog.closeAll();
         this.dialogRef.close(this.data);
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.globalService.ShowToastr('error',res.responseMessage, 'Error!');
         this.dialog.closeAll();
       }
     });

@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component'; 
 import labels from '../../labels/labels.json';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -25,7 +25,7 @@ export class OmEventLogEntryDetailComponent implements OnInit {
     private global:GlobalService,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     private dialog:MatDialog,
     public dialogRef: MatDialogRef<OmEventLogEntryDetailComponent>,
     private authService: AuthService, 
@@ -58,17 +58,11 @@ export class OmEventLogEntryDetailComponent implements OnInit {
         }
         this.iAdminApiService.SelectedEventDelete(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.dialog.closeAll();
             this.dialogRef.close(this.data);
           } else {
-            this.toastr.error(labels.alert.went_worng, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
           }
         });
       }

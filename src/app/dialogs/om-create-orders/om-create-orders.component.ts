@@ -4,7 +4,7 @@ import { OmAddRecordComponent } from '../om-add-record/om-add-record.component';
 import {  } from '../om-add-transaction/om-add-transaction.component';
 import {  } from '../om-edit-transaction/om-edit-transaction.component';
 import { OmUserFieldDataComponent } from '../om-user-field-data/om-user-field-data.component';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import { Router } from '@angular/router'; 
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
@@ -105,7 +105,7 @@ export class OmCreateOrdersComponent implements OnInit {
 
   constructor(
     private global:GlobalService,
-    private toastr: ToastrService,
+    
     private authService: AuthService,
     private router: Router,
     public dialogRef: MatDialogRef<OmCreateOrdersComponent>,
@@ -240,10 +240,7 @@ export class OmCreateOrdersComponent implements OnInit {
 
   releaseOrders() {
     if (this.AllowInProc == "False" && this.otcreatecount > 0) {
-      this.toastr.error('"You may not release an Order that is already in progress', 'Release Transactions', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','"You may not release an Order that is already in progress', 'Release Transactions');
       return;
     }
     
@@ -265,10 +262,7 @@ export class OmCreateOrdersComponent implements OnInit {
         };
         this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.toastr.success("Order Released Successfully!", 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',"Order Released Successfully!", 'Success!');
           } 
           this.createOrdersDTPayload.orderNumber = '';
           this.createOrdersDT();
@@ -294,10 +288,7 @@ export class OmCreateOrdersComponent implements OnInit {
 
   deleteViewed() {
     if (this.tableData.length == 0) {
-      this.toastr.error('There are currently no records within the table', 'Warning', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','There are currently no records within the table', 'Warning');
     }
     else {
       let ids = [];
@@ -321,20 +312,14 @@ export class OmCreateOrdersComponent implements OnInit {
           };
           this.iOrderManagerApi.OTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
               this.createOrdersDTPayload.filter = "1 = 1";
               this.selectedFilterColumn = '';
               this.selectedFilterString = '';
               this.createOrdersDT();
               dialogRef.close();
             } else {
-              this.toastr.error("An error has occurred while deleting the viewed records", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"An error has occurred while deleting the viewed records", 'Error!');
             }
           });
         }

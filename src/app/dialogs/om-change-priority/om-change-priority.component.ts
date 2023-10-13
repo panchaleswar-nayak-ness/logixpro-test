@@ -29,8 +29,7 @@ export class OmChangePriorityComponent implements OnInit {
     private authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private Api: ApiFuntions,
-    private toastr: ToastrService
-  ) { 
+   ) { 
     this.iAdminApiService = adminApiService;
   }
 
@@ -52,10 +51,7 @@ export class OmChangePriorityComponent implements OnInit {
         this.dialogRef.close(res);
       }
       else{
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     })
    

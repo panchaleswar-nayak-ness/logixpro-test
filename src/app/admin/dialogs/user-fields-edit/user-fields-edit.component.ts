@@ -1,12 +1,13 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import labels from '../../../labels/labels.json';
 import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-user-fields-edit',
@@ -42,7 +43,8 @@ export class UserFieldsEditComponent implements OnInit {
   constructor(
     public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private toastr: ToastrService,
+    private global:GlobalService,
+    
     public dialogRef: MatDialogRef<any>
   ) {
     this.fieldNames=data.fieldNames
@@ -87,16 +89,10 @@ export class UserFieldsEditComponent implements OnInit {
 
     this.iCommonAPI.UserFieldMTSave(payload).subscribe((res:any)=>{
       if(res.isExecuted){
-             this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+             this.global.ShowToastr('success',labels.alert.success, 'Success!');
             this.dialogRef.close({isExecuted:true})
       }else{
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
         this.dialogRef.close({isExecuted:false})
       }
     })

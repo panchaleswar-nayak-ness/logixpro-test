@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -21,9 +21,8 @@ export class OmChangesConfirmationComponent implements OnInit {
 
   public iOrderManagerApi :  IOrderManagerAPIService;
   constructor(private dialog          : MatDialog,
-              public dialogRef        : MatDialogRef<OmChangesConfirmationComponent>,
-              private toastr           : ToastrService,
-              public formBuilder      : FormBuilder,
+              public dialogRef        : MatDialogRef<OmChangesConfirmationComponent>, 
+              public formBuilder      : FormBuilder, 
               private authService     : AuthService,
               public globalService    : GlobalService,
               private Api : ApiFuntions,
@@ -101,7 +100,7 @@ export class OmChangesConfirmationComponent implements OnInit {
             clickDisplayRecord: true,
           });
         }
-        else this.toastr.error("An Error occured while retrieving data.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        else this.globalService.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
       });
 
     } catch (error) {    

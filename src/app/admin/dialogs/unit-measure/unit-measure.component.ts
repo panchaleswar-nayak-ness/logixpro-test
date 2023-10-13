@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
@@ -23,7 +23,7 @@ export class UnitMeasureComponent implements OnInit {
   constructor(
     public commonAPI : CommonApiService,
     private global:GlobalService,
-    private toastr: ToastrService,
+    
     private renderer: Renderer2,
     public dialogRef: MatDialogRef<any>) 
     { this.iCommonAPI = commonAPI; }
@@ -71,10 +71,7 @@ export class UnitMeasureComponent implements OnInit {
     this.unitOfMeasure_list.forEach(element => {
       if(element.toLowerCase() == um.toLowerCase() && cond) {
         cond = false;
-       this.toastr.error('Already Exists', 'Error!', {
-         positionClass: 'toast-bottom-right',
-         timeOut: 2000
-       });
+       this.global.ShowToastr('error','Already Exists', 'Error!');
        
       }   
     });
@@ -88,10 +85,7 @@ export class UnitMeasureComponent implements OnInit {
     this.iCommonAPI.saveUnitOfMeasure(paylaod).subscribe((res) => {
       if(res.isExecuted){
         this.getUOM();
-        this.toastr.success( oldUM.toString()==''?labels.alert.success:labels.alert.update, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success', oldUM.toString()==''?labels.alert.success:labels.alert.update, 'Success!');
       }
   
     });
@@ -123,10 +117,7 @@ export class UnitMeasureComponent implements OnInit {
           
           if(res.isExecuted){
             this.getUOM();
-          this.toastr.success(labels.alert.delete, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.delete, 'Success!');
         }
         });
       } else {

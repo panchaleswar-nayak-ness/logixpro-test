@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, TemplateRef, ElementRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json'; 
 import { AdminEmployeeLookupResponse } from 'src/app/Iemployee';
@@ -54,7 +54,7 @@ export class AddNewEmployeeComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global:GlobalService,
-    private toastr: ToastrService,
+    
     private adminApiService: AdminApiService,
     private employeeService: ApiFuntions,
     private router: Router,
@@ -150,16 +150,10 @@ ChangePassword(data){
           this.iAdminApiService.updateAdminEmployee(form.value).subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialogRef.close({mode: 'edit-employee', data:{empData: form.value,functionsAllowedList:this.functionsAllowedList,groupChanged:this.groupChanged}});
-              this.toastr.success(labels.alert.update, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.update, 'Success!');
             }
             else {
-              this.toastr.error(res.responseMessage?.toString() + '. User already exists.', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',res.responseMessage?.toString() + '. User already exists.', 'Error!');
             }
           });
       }
@@ -168,23 +162,14 @@ ChangePassword(data){
           .subscribe((response: AdminEmployeeLookupResponse) => {
             if (response.isExecuted) {
               this.dialogRef.close(true);
-              this.toastr.success(labels.alert.success, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.success, 'Success!');
               
             }
             else {
               if(response.responseMessage?.toString() === 'User already exists'){
-                this.toastr.error(response.responseMessage, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+                this.global.ShowToastr('error',response.responseMessage, 'Error!');
               } else{
-                this.toastr.error(response.responseMessage?.toString() + '. User already exists.', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+                this.global.ShowToastr('error',response.responseMessage?.toString() + '. User already exists.', 'Error!');
               }
             }
           });

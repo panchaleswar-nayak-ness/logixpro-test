@@ -1,6 +1,6 @@
 import { Component, Input,  SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { IConnectionString } from 'src/app/interface/transaction'; 
 import { GlobalConfigSetSqlComponent } from 'src/app/admin/dialogs/global-config-set-sql/global-config-set-sql.component';
@@ -24,7 +24,7 @@ export class ConnectionStringsComponent {
   public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    
     private global:GlobalService,
     public globalConfigApi: GlobalConfigApiService
   ) {
@@ -111,32 +111,20 @@ export class ConnectionStringsComponent {
       .subscribe(
         (res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
         this.connectionStringData[index].isSqlButtonDisable = false;
         this.connectionStringData[index].isButtonDisable = true;
 
           }else{
-            this.toastr.error('A connection by this name already exists', 'Error!!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','A connection by this name already exists', 'Error!!');
           }
         },
         (error) => {
-          this.toastr.error('something went wrong!', 'Error!!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','something went wrong!', 'Error!!');
         }
       );
     }else{
-      this.toastr.error('A connection by this name already exists', 'Error!!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      });
+      this.global.ShowToastr('error','A connection by this name already exists', 'Error!!');
     }
   }
   deleteString(item) {

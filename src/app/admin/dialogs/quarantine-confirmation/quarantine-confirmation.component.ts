@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-quarantine-confirmation',
@@ -15,7 +16,9 @@ export class QuarantineConfirmationComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   action: any;
   userData: any;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private adminApiService: AdminApiService, private dialog:MatDialog, private toastr: ToastrService,private authService: AuthService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private adminApiService: AdminApiService, 
+  private global:GlobalService,
+  private dialog:MatDialog, private authService: AuthService,
   private Api:ApiFuntions ) {
     this.iAdminApiService = adminApiService;
     if (this.data.mode === 'inventory-map-quarantine') {
@@ -39,17 +42,11 @@ export class QuarantineConfirmationComponent implements OnInit {
       if (res.isExecuted) {
         
         this.dialog.closeAll();
-        this.toastr.success(labels.alert.quarantine, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.quarantine, 'Success!');
       } else {
         
         this.dialog.closeAll();
-        this.toastr.error(labels.alert.went_worng, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
       }
     });
       
@@ -63,17 +60,11 @@ export class QuarantineConfirmationComponent implements OnInit {
       if (res.isExecuted) {
         
         this.dialog.closeAll();
-        this.toastr.success(labels.alert.quarantine.replace("quarantine","unquarantined"), 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.quarantine.replace("quarantine","unquarantined"), 'Success!');
       } else {
         
         this.dialog.closeAll();
-        this.toastr.error(labels.alert.went_worng, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
       }
     });
 

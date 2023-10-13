@@ -7,7 +7,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { CmShippingCarrierComponent } from 'src/app/dialogs/cm-shipping-carrier/cm-shipping-carrier.component'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -38,7 +38,7 @@ export class PreferencesShippingComponent implements OnInit {
   constructor(
     public consolidationAPI : ConsolidationApiService,
     // private Api: ApiFuntions,
-    private toastr: ToastrService,
+    
     private authService: AuthService,
     public global:GlobalService
   ) {
@@ -166,10 +166,7 @@ export class PreferencesShippingComponent implements OnInit {
       .subscribe((response: any) => {
         this.shippingEvnt.emit();
         if (!response.isExecuted) {
-          this.toastr.error('Error', 'An Error Occured while trying to save', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Error', 'An Error Occured while trying to save');
         }
       });
   }

@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { startWith } from 'rxjs/internal/operators/startWith'; 
@@ -10,6 +10,7 @@ import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-add-zone',
@@ -31,9 +32,10 @@ export class AddZoneComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, 
-    private toastr: ToastrService,
+    
     private employeeService: ApiFuntions,
     private router: Router,
+    private global:GlobalService,
     private adminApiService: AdminApiService,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<any>
@@ -117,10 +119,7 @@ export class AddZoneComponent implements OnInit {
             }
           });
         }else{
-          this.toastr.error('Zone Already Exists!', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error','Zone Already Exists!', 'Error!');
         }
      
     
@@ -138,15 +137,9 @@ export class AddZoneComponent implements OnInit {
     this.iAdminApiService.updateEmployeeZone(addZoneData).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialogRef.close({ data: addZoneData, mode: mode, oldZone: oldZone });
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     });
   }

@@ -14,7 +14,7 @@ import { AddZoneComponent } from '../dialogs/add-zone/add-zone.component';
 import { AddLocationComponent } from '../dialogs/add-location/add-location.component';
 import { AddGroupAllowedComponent } from '../dialogs/add-group-allowed/add-group-allowed.component';
 import { AddNewGroupComponent } from '../dialogs/add-new-group/add-new-group.component';
-import { ToastrService } from 'ngx-toastr';
+
 import labels from '../../labels/labels.json';
 import { GroupAllowedComponent } from '../dialogs/group-allowed/group-allowed.component';
 import { CloneGroupComponent } from '../dialogs/clone-group/clone-group.component';
@@ -114,7 +114,7 @@ bpSettingLocInp='';
     private employeeService: ApiFuntions, 
     private global:GlobalService,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService, 
+     
     private zone: NgZone,
     public router: Router,
     public laoder: SpinnerService,
@@ -278,17 +278,11 @@ initialzeEmpForm() {
         this.unassignedFunctions =[];
         this.isGroupLookUp = false;
         if(res.isExecuted){
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
           this.updateGrpLookUp();
         }
         else{
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
 
       });
@@ -571,17 +565,11 @@ initialzeEmpForm() {
       this.iAdminApiService.updateAdminEmployee(this.empForm.value).subscribe((res: any) => {
         if (res.isExecuted) 
         {
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
         }
         else 
         {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
       });
 
@@ -754,16 +742,10 @@ initialzeEmpForm() {
     };
     this.iAdminApiService.deleteControlName(groupData).subscribe((res: any) => {
       if (res.isExecuted) {
-        this.toastr.success('Your details have been deleted', 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('success','Your details have been deleted', 'Success!');
         this.reloadData();
       } else {
-        this.toastr.error('Something went wrong!', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','Something went wrong!', 'Error!');
       }
     });
   
@@ -780,16 +762,10 @@ initialzeEmpForm() {
     };
     this.iAdminApiService.deleteUserGroup(emp_data).subscribe((res: any) => {
       if (res.isExecuted) {
-        this.toastr.success(labels.alert.delete, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('success',labels.alert.delete, 'Success!');
          this.getgroupAllowedList();
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     });
 
@@ -835,10 +811,7 @@ initialzeEmpForm() {
     }
     this.iAdminApiService.updateControlName(item)
     .subscribe((r) => {
-      this.toastr.success(labels.alert.update, 'Success!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('success',labels.alert.update, 'Success!');
     });
   }
 

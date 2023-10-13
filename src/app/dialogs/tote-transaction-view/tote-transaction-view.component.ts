@@ -7,7 +7,7 @@ import {
 } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { BatchDeleteComponent } from '../batch-delete/batch-delete.component';
 import { MarkToteFullComponent } from '../mark-tote-full/mark-tote-full.component';
@@ -53,7 +53,7 @@ export class ToteTransactionViewComponent implements OnInit {
     public dialogRef: MatDialogRef<any>, 
     private Api: ApiFuntions,
     private global:GlobalService,
-    private toastr: ToastrService,
+    
     public inductionManagerApi: InductionManagerApiService,
   ) {
     this.iInductionManagerApi = inductionManagerApi;
@@ -183,15 +183,9 @@ export class ToteTransactionViewComponent implements OnInit {
           this.iInductionManagerApi.MarkToteFull(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
               }
             },
             (error) => {}
@@ -249,16 +243,10 @@ export class ToteTransactionViewComponent implements OnInit {
         let baseUrl=type==='clear'?'/Induction/ClearItemFromTote':'/Induction/DeAllocateItemFromTote'
         this.iInductionManagerApi.DynamicMethod(payLoad,baseUrl).subscribe((res:any)=>{
           if (res?.isExecuted) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
             this.getTransactionTable();
           } else {
-            this.toastr.error(labels.alert.went_worng, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
           }
         })
       }

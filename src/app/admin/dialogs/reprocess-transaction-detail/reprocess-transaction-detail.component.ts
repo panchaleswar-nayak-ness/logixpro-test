@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import { FormControl, FormGroup, Validators } from '@angular/forms'; 
 import labels from '../../../labels/labels.json';
@@ -9,6 +9,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 
@@ -40,9 +41,10 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   constructor(
     public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any, 
+    private global: GlobalService,
     public dialogRef: MatDialogRef<any>, 
     private Api:ApiFuntions, 
-    private toastr: ToastrService, 
+     
     private authService: AuthService,private adminApiService: AdminApiService) { this.iCommonAPI = commonAPI; 
     this.iAdminApiService = adminApiService;
   }
@@ -139,16 +141,10 @@ export class ReprocessTransactionDetailComponent implements OnInit {
     this.iAdminApiService.SaveTransaction(payload).subscribe((res: any) => {
       if (res.isExecuted){
         this.dialogRef.close('add');
-        this.toastr.success(labels.alert.update, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.update, 'Success!');
       }
       else{
-        this.toastr.error('Something went wrong', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','Something went wrong', 'Error!');
       }
     });
   }
@@ -266,10 +262,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
 
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       error: (error) => { }}

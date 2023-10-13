@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
@@ -28,7 +28,7 @@ export class ReelDetailComponent implements OnInit {
   @ViewChild('reelQuantitytemp') reelQuantitytemp: ElementRef
 
   constructor(private global:GlobalService,public dialogRef: MatDialogRef<ReelDetailComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,) { }
 
   ngOnInit(): void {
     this.fieldNames=this.data.propFields

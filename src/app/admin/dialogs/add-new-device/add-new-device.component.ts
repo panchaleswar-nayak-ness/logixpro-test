@@ -8,7 +8,7 @@ import {
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
-import { ToastrService } from 'ngx-toastr';
+
 import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { catchError, of } from 'rxjs';
@@ -65,7 +65,7 @@ export class AddNewDeviceComponent implements OnInit {
     private Api: ApiFuntions,
     public authService: AuthService,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     private sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -162,10 +162,7 @@ export class AddNewDeviceComponent implements OnInit {
         .DevicePreference(paylaod)
         .subscribe((res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
 
             if (res.data != 0) {
               this.newDeviceID=res.data;
@@ -177,10 +174,7 @@ export class AddNewDeviceComponent implements OnInit {
             }
             this.sharedService.updateDevicePref({ response: true });
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         });
     }
@@ -289,16 +283,10 @@ export class AddNewDeviceComponent implements OnInit {
           .DevicePreferencesDelete(payload)
           .subscribe((res: any) => {
             if (res.isExecuted) {
-              this.toastr.success(res.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',res.responseMessage, 'Success!');
               this.dialogRef.close('Yes');
             } else {
-              this.toastr.error(res.responseMessage, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',res.responseMessage, 'Error!');
             }
           });
       }
@@ -339,10 +327,7 @@ export class AddNewDeviceComponent implements OnInit {
         this.newDeviceForm.controls['StopBit'].setValue(res.data.stopBit);
         this.newDeviceForm.controls['Parity'].setValue(res.data.parity);
       }else{
-        this.toastr.error('An Error occured while retrieving data.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','An Error occured while retrieving data.', 'Error!');
       }
       });
   }
@@ -433,16 +418,10 @@ export class AddNewDeviceComponent implements OnInit {
           .subscribe((res: any) => {
             if (res.isExecuted) {
               
-              this.toastr.success(res.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',res.responseMessage, 'Success!');
               this.sharedService.updateDevicePref({ response: true });
             } else {
-              this.toastr.error(res.responseMessage, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',res.responseMessage, 'Error!');
             }
           });
       }

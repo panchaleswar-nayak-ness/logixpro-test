@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import labels from '../../../labels/labels.json'
 import { AuthService } from 'src/app/init/auth.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -53,7 +53,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   constructor(
     public commonAPI : CommonApiService,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     private authService: AuthService,
     private global:GlobalService,
     private el: ElementRef, 
@@ -122,10 +122,7 @@ export class KitItemComponent implements OnInit, OnChanges {
         this.iAdminApiService.DeleteKit(paylaod).subscribe((res: any) => {
   
           if (res.isExecuted) {
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.sendNotification();
           }
   
@@ -146,18 +143,12 @@ export class KitItemComponent implements OnInit, OnChanges {
   saveKit(newItem: any, e: any) {
 
     if (!e.itemNumber || !e.kitQuantity) {            
-      this.toastr.error("Please fill required fields", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Please fill required fields", 'Error!');
       return;
     }
 
     if (parseInt(e.kitQuantity) <= 0) {
-      this.toastr.error("Qty must be greater than 0", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Qty must be greater than 0", 'Error!');
       return;        
     }
 
@@ -178,16 +169,10 @@ export class KitItemComponent implements OnInit, OnChanges {
       this.iAdminApiService.InsertKit(paylaod).subscribe((res: any) => {
 
         if (res.isExecuted) {
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.sendNotification();
         } else {
-          this.toastr.error("Invalid Input", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"Invalid Input", 'Error!');
         }
 
       })
@@ -204,16 +189,10 @@ export class KitItemComponent implements OnInit, OnChanges {
       this.iAdminApiService.UpdateKit(paylaod).subscribe((res: any) => {
 
         if (res.isExecuted) {
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.sendNotification();
         } else {
-          this.toastr.error("Invalid Input", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"Invalid Input", 'Error!');
         }
 
       })
@@ -286,10 +265,7 @@ export class KitItemComponent implements OnInit, OnChanges {
     if (this.kitItem.controls['itemNumber'].value == e.option.value.itemNumber) {
       this.dialogitemNumber = '';
       this.dialogDescription = '';
-      this.toastr.error("Item " + e.option.value.itemNumber + " cannot belong to itself in a kit.", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Item " + e.option.value.itemNumber + " cannot belong to itself in a kit.", 'Error!');
       this.isValidForm = false
       return;
     } else {
@@ -306,10 +282,7 @@ export class KitItemComponent implements OnInit, OnChanges {
         this.dialogDescription = e.option.value.description;
       } else {
         this.isValidForm = false
-        this.toastr.error("Item " + this.dialogitemNumber + " already exists in kit.", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',"Item " + this.dialogitemNumber + " already exists in kit.", 'Error!');
         this.dialogitemNumber = '';
         this.dialogDescription = '';
         return;

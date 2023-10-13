@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { SpinnerService } from '../../../../app/init/spinner.service';
 import labels from '../../../labels/labels.json';
 import {  } from 'datatables.net';
@@ -31,7 +31,7 @@ export class AddLocationComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private global:GlobalService, 
     private employeeService: ApiFuntions, 
-    private toastr: ToastrService,
+    
     private loader: SpinnerService,
     private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
@@ -116,30 +116,18 @@ export class AddLocationComponent implements OnInit {
       this.iAdminApiService.updateEmployeeLocation(payload).subscribe((res:any) => {
         if(res.isExecuted){
           this.dialogRef.close('update');
-          this.toastr.success(labels.alert.update, 'Success!',{
-            positionClass: 'toast-bottom-right',
-            timeOut:2000
-         });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
         }else{
-          this.toastr.error(res.responseMessage, 'Error!',{
-            positionClass: 'toast-bottom-right',
-            timeOut:2000
-         });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
    });
     }else{
       this.iAdminApiService.insertEmployeeLocation(payload).subscribe((res:any) => {
         if(res.isExecuted){
           this.dialogRef.close('add');
-          this.toastr.success(labels.alert.success, 'Success!',{
-            positionClass: 'toast-bottom-right',
-            timeOut:2000
-         });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
         }else{
-          this.toastr.error(res.responseMessage, 'Error!',{
-            positionClass: 'toast-bottom-right',
-            timeOut:2000
-         });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
    });
     }

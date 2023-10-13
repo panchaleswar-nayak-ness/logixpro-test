@@ -1,6 +1,6 @@
 import { Component, OnInit , Inject, ViewChild, ElementRef, ViewChildren, QueryList, Renderer2 } from '@angular/core';
 import { MatDialog, MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { Subject, takeUntil } from 'rxjs'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
@@ -30,7 +30,7 @@ export class VelocityCodeComponent implements OnInit {
     public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     public dialogRef: MatDialogRef<any>,
     private global:GlobalService,
     private renderer: Renderer2,
@@ -84,10 +84,7 @@ export class VelocityCodeComponent implements OnInit {
     this.velocity_code_list_Res.forEach(element => {
       if(element == vlcode && cond) { 
         cond = false;
-       this.toastr.error('Velocity cannot be saved! Another velocity code matches the current. Please save any pending changes before attempting to save this entry.', 'Error!', {
-         positionClass: 'toast-bottom-right',
-         timeOut: 2000
-       });
+       this.global.ShowToastr('error','Velocity cannot be saved! Another velocity code matches the current. Please save any pending changes before attempting to save this entry.', 'Error!');
        
       }   
     });
@@ -99,18 +96,12 @@ export class VelocityCodeComponent implements OnInit {
       "velocity": vlcode
     } 
     this.iCommonAPI.saveVelocityCode(paylaod).subscribe((res) => {
-      this.toastr.success(labels.alert.success, 'Success!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('success',labels.alert.success, 'Success!');
       this.getVelocity()
     });
     } 
   } else {
-    this.toastr.error('Velocity cannot be empty!.', 'Error!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000
-    });
+    this.global.ShowToastr('error','Velocity cannot be empty!.', 'Error!');
   }
   }
   dltVlCode(vlCode:any){
@@ -127,10 +118,7 @@ export class VelocityCodeComponent implements OnInit {
               "velocity": vlCode
             }
             this.iCommonAPI.dltVelocityCode(paylaod).subscribe((res) => {
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
         
               this.getVelocity();
               

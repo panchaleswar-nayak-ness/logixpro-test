@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { AuthService } from 'src/app/init/auth.service';
 import { SetItemLocationComponent } from '../../dialogs/set-item-location/set-item-location.component';
@@ -89,7 +89,7 @@ export class GenerateTransactionComponent implements OnInit {
     private authService: AuthService,
     private Api:ApiFuntions,
     private global:GlobalService,
-    private toastr: ToastrService,
+    
     private adminApiService: AdminApiService, 
   ) {
     this.iAdminApiService = adminApiService;
@@ -309,10 +309,7 @@ export class GenerateTransactionComponent implements OnInit {
               .subscribe(
                 (res: any) => {
                   if (res && res.isExecuted) {
-                    this.toastr.success(labels.alert.success, 'Success!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
+                    this.global.ShowToastr('success',labels.alert.success, 'Success!');
                     this.updateTrans();
                     if( type != 'save'){
                       this.clearFields();
@@ -322,10 +319,7 @@ export class GenerateTransactionComponent implements OnInit {
                     this.getRow({id:this.transactionID},type);
 
                   } else {
-                    this.toastr.error(res.responseMessage, 'Error!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
+                    this.global.ShowToastr('error',res.responseMessage, 'Error!');
                     if( type != 'save'){
                       this.clearFields();
                     }
@@ -535,16 +529,10 @@ export class GenerateTransactionComponent implements OnInit {
         .UpdateTransaction(payload)
         .subscribe((res: any) => {
           if (res && res.isExecuted) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
             this.clearMatSelectList();
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         });
     }

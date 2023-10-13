@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { CmShipSplitLineComponent } from '../cm-ship-split-line/cm-ship-split-line.component';
 import { CmShipEditQtyComponent } from '../cm-ship-edit-qty/cm-ship-edit-qty.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -30,8 +30,7 @@ constructor(
   private global:GlobalService,
   // private Api:ApiFuntions,
   public consolidationAPI : ConsolidationApiService,
-  private authService: AuthService,
-  private toast:ToastrService ,
+  private authService: AuthService, 
   @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<CmConfirmAndPackingProcessTransactionComponent>,) {
   this.userData = this.authService.userData();
   this.confPackTransTable = this.data.confPackTransTable;
@@ -125,7 +124,7 @@ openShipEditQuantity() {
     };
    this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
     if (res.data == "Fail") {
-      this.toast.error(  "An error has occurred",'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});
+      this.global.ShowToastr('error',  "An error has occurred",'Error!');
   } else {
       //edit table 
       let index = this.confPackTransTable.findIndex(x=>x.active);

@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
@@ -26,7 +26,7 @@ export class  ItemCategoryComponent implements OnInit {
     public commonAPI : CommonApiService,
     private global:GlobalService,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     private renderer: Renderer2,
     public dialogRef: MatDialogRef<any>, 
     public route: Router
@@ -85,10 +85,7 @@ export class  ItemCategoryComponent implements OnInit {
     this.category_list.forEach(element => {
       if(element.category?.toLowerCase() == category?.toLowerCase() && element.subCategory?.toLowerCase() == subCategory?.toLowerCase() ) {
         cond = false;
-       this.toastr.error('Category cannot be saved. Category matches another entry. Save any pending changes before attempting to save this entry.', 'Error!', {
-         positionClass: 'toast-bottom-right',
-         timeOut: 2000
-       });
+       this.global.ShowToastr('error','Category cannot be saved. Category matches another entry. Save any pending changes before attempting to save this entry.', 'Error!');
    
       }  
 
@@ -108,10 +105,7 @@ export class  ItemCategoryComponent implements OnInit {
       this.iCommonAPI.saveCategory(paylaod).subscribe((res) => {
         if(res.isExecuted){
           this.getCategoryList();
-        this.toastr.success(oldCat.toString()==''?labels.alert.success:labels.alert.update, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',oldCat.toString()==''?labels.alert.success:labels.alert.update, 'Success!');
       }
       });
     }

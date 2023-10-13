@@ -1,7 +1,7 @@
 import { Component, ElementRef,  ViewChild } from '@angular/core';
 import { FormControl} from '@angular/forms';
 import { ActivatedRoute,  Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+
 import { MatDialog } from '@angular/material/dialog';
 import { SpinnerService } from '../init/spinner.service';
 import { AuthService } from '../init/auth.service'; 
@@ -32,7 +32,7 @@ export class GlobalConfigComponent {
     public globalConfigApi: GlobalConfigApiService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr: ToastrService,
+    
     private global:GlobalService,
     public loader: SpinnerService,
     private auth: AuthService 
@@ -71,18 +71,12 @@ export class GlobalConfigComponent {
           window.location.reload();
         } else {
           const errorMessage = res.responseMessage;
-          this.toastr.error(errorMessage?.toString(), 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',errorMessage?.toString(), 'Error!');
         }
       },
       error: (error) => {
         const errorMessage = error.responseMessage;
-        this.toastr.error(errorMessage?.toString(), 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',errorMessage?.toString(), 'Error!');
       }}
     );
   }
@@ -102,7 +96,7 @@ export class GlobalConfigComponent {
           localStorage.setItem('env', JSON.stringify(this.env));
           localStorage.setItem('workStation', JSON.stringify(workStation));
         } 
-        else this.toastr.error('Kindly contact to administrator', 'Workstation is not set!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        else this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
       });
     }
   }

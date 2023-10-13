@@ -4,7 +4,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import labels from '../../../labels/labels.json';
 import { SqlAuthConfirmationComponent } from '../sql-auth-confirmation/sql-auth-confirmation.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -31,7 +31,7 @@ export class GlobalConfigSetSqlComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global:GlobalService,
     public dialogRef: MatDialogRef<any>,
-    private toastr: ToastrService,
+    
     private Api:ApiFuntions,
     public globalConfigApi: GlobalConfigApiService
   ) {
@@ -77,19 +77,13 @@ export class GlobalConfigSetSqlComponent implements OnInit {
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
                 this.dialogRef.close({isExecuted:true})
     
               }
             },
             (error) => {
-              this.toastr.success(labels.alert.went_worng, 'Errpr!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.went_worng, 'Errpr!');
               this.dialogRef.close({isExecuted:true})
     
             }

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
@@ -13,7 +13,7 @@ export class FunctionAllocationComponent implements OnInit {
   btn_label = '';
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, 
-    private toastr: ToastrService, 
+     
     private employeeService: ApiFuntions,
     public dialogRef: MatDialogRef<FunctionAllocationComponent>
     ) { }

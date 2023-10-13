@@ -7,7 +7,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from '../../../../app/init/auth.service';
 import { AdjustQuantityComponent } from '../adjust-quantity/adjust-quantity.component';
 import { Router } from '@angular/router';
@@ -147,7 +147,7 @@ export class AddInvMapLocationComponent implements OnInit {
     private Api: ApiFuntions,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>,
     private router: Router
@@ -274,10 +274,7 @@ export class AddInvMapLocationComponent implements OnInit {
   adjustQuantity() {
     if(this.addInvMapLocation.value.item == '') return;
     if(this.getDetailInventoryMapData.itemNumber == ''){
-      this.toastr.error('No item found at the location specified.  Ensure that the entry selected has been saved since an item was assigned to it.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','No item found at the location specified.  Ensure that the entry selected has been saved since an item was assigned to it.', 'Error!');
       return;
     }
     let dialogRef:any = this.global.OpenDialog(AdjustQuantityComponent, {
@@ -402,10 +399,7 @@ export class AddInvMapLocationComponent implements OnInit {
               this.clickSubmit = true;
               
               if (res.isExecuted) {
-                this.toastr.success("Your details have been updated", 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+                this.global.ShowToastr('success',"Your details have been updated", 'Success!');
 
                 this.dialog.closeAll()
               }
@@ -416,10 +410,7 @@ export class AddInvMapLocationComponent implements OnInit {
               this.clickSubmit = true;
               
               if (res.isExecuted) {
-                this.toastr.success("Your details have been added", 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+                this.global.ShowToastr('success',"Your details have been added", 'Success!');
 
                 this.dialog.closeAll()
               }
@@ -538,10 +529,7 @@ export class AddInvMapLocationComponent implements OnInit {
           if (match != '') { match += ', Velocity Code'; expected += ' and Velocity Code: ' + res.data.velocityCode } else { match += 'Velocity Code'; expected += 'Velocity Code: ' + res.data.velocityCode };
         };
         if (match != '') {
-          this.toastr.info('Provided ' + match + ' do not match Inventory Master.' + expected + ' for specified Item and Zone', 'Info!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('info','Provided ' + match + ' do not match Inventory Master.' + expected + ' for specified Item and Zone', 'Info!');
         }
       }
 

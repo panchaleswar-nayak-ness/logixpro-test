@@ -6,12 +6,13 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from '../../../../app/init/auth.service'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-delete-confirmation-transaction',
@@ -25,7 +26,8 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private adminApiService: AdminApiService,
-    private toastr: ToastrService, 
+     
+    private global:GlobalService,
     public dialogRef: MatDialogRef<DeleteConfirmationTransactionComponent>,
     private authService: AuthService,
     private Api: ApiFuntions,
@@ -52,18 +54,12 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
       (res: any) => {
         if(res.isExecuted){
           this.dialogRef.close("Yes");
-          this.toastr.success(labels.alert.delete, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.delete, 'Success!');
         }
       },
       (error) => {
         this.dialogRef.close("No");
-        this.toastr.error(labels.alert.went_worng, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
       }
     );
   }

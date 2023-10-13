@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { AddNewDeviceComponent } from 'src/app/admin/dialogs/add-new-device/add-new-device.component';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -52,7 +52,7 @@ export class SpDevicePreferenceComponent implements OnInit {
     public authService: AuthService,
     private global:GlobalService,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     private sharedService: SharedService
   ) {
     this.iAdminApiService = adminApiService;
@@ -137,16 +137,10 @@ export class SpDevicePreferenceComponent implements OnInit {
           .DevicePreferencesDelete(payload)
           .subscribe((res: any) => {
             if (res.isExecuted) {
-              this.toastr.success(res.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',res.responseMessage, 'Success!');
               this.getDevicePrefTable();
             } else {
-              this.toastr.error(res.responseMessage, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',res.responseMessage, 'Error!');
             }
           });
       }

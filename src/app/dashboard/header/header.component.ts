@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { SpinnerService } from '../../../app/init/spinner.service'; 
 import { Router,NavigationEnd  } from '@angular/router';
 import { AuthService } from '../../../app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { SharedService } from 'src/app/services/shared.service'; 
 import { Title } from '@angular/platform-browser';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
@@ -46,7 +46,7 @@ constructor(
     private authService: AuthService,
     // private api:ApiFuntions,
     public globalConfigApi: GlobalConfigApiService,
-    private toastr: ToastrService,
+    
     private sharedService: SharedService,
     private titleService: Title,
     private breakpointObserver: BreakpointObserver, 
@@ -228,10 +228,7 @@ constructor(
         }
         else 
         {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
       })
      
@@ -243,10 +240,7 @@ constructor(
         }
         else 
         {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
       })
     }

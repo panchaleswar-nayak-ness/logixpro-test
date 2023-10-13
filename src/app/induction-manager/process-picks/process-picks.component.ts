@@ -3,7 +3,7 @@ import { Component, ElementRef, HostListener,OnInit, TemplateRef, ViewChild } fr
 import { MatDialog} from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BlossomToteComponent } from 'src/app/dialogs/blossom-tote/blossom-tote.component';
-import { ToastrService } from 'ngx-toastr';
+
 import { Observable } from 'rxjs/internal/Observable';
 import { AuthService } from '../../../app/init/auth.service';
 import { FormControl } from '@angular/forms';
@@ -71,7 +71,7 @@ export class ProcessPicksComponent implements OnInit {
   constructor(
     private global:GlobalService,
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    
     private dialog:MatDialog,
     private authService: AuthService,
     private router: Router,
@@ -101,10 +101,7 @@ export class ProcessPicksComponent implements OnInit {
     });
     
     if (!this.pickBatchesCrossbtn) {
-      this.toastr.error('Please select a Batch ID to print', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      })
+      this.global.ShowToastr('error','Please select a Batch ID to print', 'Error!')
     } else {
 
       if (type === 'PrintTote') {
@@ -174,10 +171,7 @@ export class ProcessPicksComponent implements OnInit {
     let orderNumberList: any = [];
 
     if (row.toteID === "" || row.orderNumber === "") {
-      this.toastr.error('Missing data from the desired print row', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      })
+      this.global.ShowToastr('error','Missing data from the desired print row', 'Error!')
     } else {
 
       positionList.push(row.position)
@@ -199,10 +193,7 @@ async  printPickLabels(row) {
     let toteList: any = [];
     let orderNumberList: any = [];
     if (row.toteID === "" || row.orderNumber === "") {
-      this.toastr.error('Missing data from the desired print row', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      })
+      this.global.ShowToastr('error','Missing data from the desired print row', 'Error!')
     } else {
       positionList.push(row.position)
       toteList.push(row.toteID)
@@ -238,16 +229,10 @@ async  printPickLabels(row) {
     this.orderEmpty = this.dataSource?._data?._value.some(element => element.orderNumber != "");
     if (type === 'PrintTote') {
       if (!this.toteEmpty) {
-        this.toastr.error('Please enter in at least 1 tote id', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in at least 1 tote id', 'Error!')
       }
       else if (!this.orderEmpty) {
-        this.toastr.error('Please enter in at least 1 order number', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in at least 1 order number', 'Error!')
       }
       else {
         if (this.imPreferences.printDirectly) {
@@ -264,20 +249,11 @@ async  printPickLabels(row) {
     }
     if (type === 'PrintPickLabel') {
       if (this.batchID === '') {
-        this.toastr.error('Please enter in a batch id', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in a batch id', 'Error!')
       } else if (!this.toteEmpty) {
-        this.toastr.error('Please enter in at least 1 tote id', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in at least 1 tote id', 'Error!')
       } else if (!this.orderEmpty) {
-        this.toastr.error('Please enter in at least 1 order number', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in at least 1 order number', 'Error!')
       } else {
         if (this.imPreferences.printDirectly) {
           await  this.global.Print(`FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`);
@@ -292,16 +268,10 @@ async  printPickLabels(row) {
     }
     if (type === 'PrintPickList') {
       if (!this.toteEmpty) {
-        this.toastr.error('Please enter in at least 1 tote id', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in at least 1 tote id', 'Error!')
       }
       else if (!this.orderEmpty) {
-        this.toastr.error('Please enter in at least 1 order number', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in at least 1 order number', 'Error!')
       } else {
         if (this.imPreferences.printDirectly) {
           await  this.global.Print(`FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`);
@@ -340,10 +310,7 @@ async  printPickLabels(row) {
       }
     });
     if (isBatchFull) {
-      this.toastr.error('No open totes in batch', 'Batch is Filled.', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','No open totes in batch', 'Batch is Filled.');
       this.orderNumber.setValue('');
       return;
     }
@@ -354,10 +321,7 @@ async  printPickLabels(row) {
         this.allZones.map(i => {
           zone += i + ' ';
         })
-        this.toastr.error(`Order ${orderNum} does not have a line go to Zones: ${zone} `, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',`Order ${orderNum} does not have a line go to Zones: ${zone} `, 'Error!');
         this.orderNumber.setValue('');
         return;
       }
@@ -548,10 +512,7 @@ async  printPickLabels(row) {
         }
         else {
           if (this.batchID === '') {
-            this.toastr.error('Batch id is required.', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error','Batch id is required.', 'Error!');
           }
           else {
             let payload = { 
@@ -594,10 +555,7 @@ async  printPickLabels(row) {
       });
     }
     else {
-      this.toastr.error('Please enter in an order number.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Please enter in an order number.', 'Error!');
     }
   }
 
@@ -613,10 +571,7 @@ async  printPickLabels(row) {
 
   openPickToteDialogue() {
     if (!this.batchID) {
-      this.toastr.error('Batch ID cannot be empty when opening the pick batch manager.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Batch ID cannot be empty when opening the pick batch manager.', 'Error!');
     }
     else {
       const dialogRef:any = this.global.OpenDialog(PickToteManagerComponent, {
@@ -719,10 +674,7 @@ async  printPickLabels(row) {
     }
     this.iinductionManagerApi.ValidateOrderNumber(payload).subscribe(res => {
       if (res.data === 'Invalid') {
-        this.toastr.error('This is not a vaild order number for this pick batch.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','This is not a vaild order number for this pick batch.', 'Error!');
         element.orderNumber = ''
       }
     });
@@ -770,10 +722,7 @@ async  printPickLabels(row) {
     }
     this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
-        this.toastr.error('Something is wrong.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Something is wrong.', 'Error!');
       }
 
     });
@@ -812,10 +761,7 @@ async  printPickLabels(row) {
       if (val.toteID !== '') {
         if (element.toteID == val.toteID && index != i) {
           this.TOTE_SETUP[i].toteID = "";
-          this.toastr.error('This tote id is already in this batch. Enter a new one', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error','This tote id is already in this batch. Enter a new one', 'Error!');
           break;
         }
       }
@@ -877,10 +823,7 @@ async  printPickLabels(row) {
   }
  async onPrcessBatch() {
     if (!this.batchID) {
-      this.toastr.error('Please enter in a batch id to proccess.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Please enter in a batch id to proccess.', 'Error!');
       this.dialog.closeAll();
       return
     }
@@ -894,18 +837,12 @@ async  printPickLabels(row) {
       OrderNumbers.push(obj.orderNumber?.toString() ?? '');
     });
     if (this.TOTE_SETUP.filter(e => e.toteID).length == 0) {
-      this.toastr.error('Please enter in at least 1 tote id to process.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Please enter in at least 1 tote id to process.', 'Error!');
       this.dialog.closeAll();
       return
     }
     if (this.TOTE_SETUP.filter(e => e.orderNumber).length == 0) {
-      this.toastr.error('Please enter in at least 1 order number to process.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Please enter in at least 1 order number to process.', 'Error!');
       this.dialog.closeAll();
       return
     }
@@ -938,16 +875,10 @@ async  printPickLabels(row) {
           this.InZoneProcessPrintPref(btId);
 
 
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
         }
         else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
       });
     }
@@ -970,10 +901,7 @@ async  printPickLabels(row) {
           });
           this.batchID = '';
 
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
 
           // AUTO PRINT PREFERENCES CONDITIONS ON PICK TOTE SETUP 
 
@@ -985,10 +913,7 @@ async  printPickLabels(row) {
 
         }
         else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
       });
     }

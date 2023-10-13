@@ -22,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 describe('CCBCreateCountsComponent', () => {
   let component: CCBCreateCountsComponent;
@@ -49,11 +50,7 @@ describe('CCBCreateCountsComponent', () => {
 
     fixture = TestBed.createComponent(CCBCreateCountsComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-
-    dialog = TestBed.inject(MatDialog);
-    dialogRef = jasmine.createSpyObj('MatDialogRef', ['afterClosed']);
-    dialog.open = jasmine.createSpy('open').and.returnValue(dialogRef); 
+    fixture.detectChanges();  
 
     // spyOn(dialog, 'open').and.returnValue(dialogRef);
   });
@@ -321,14 +318,13 @@ describe('CCBCreateCountsComponent', () => {
 
     expect(component.warehouses).toEqual(warehouses);
     expect(component.curCountOrders).toEqual(countOrders);
-    expect(component.toastService.error).not.toHaveBeenCalled();
+    expect(global.ShowToastr).not.toHaveBeenCalled();
   }));
 
   it('should show error message on unsuccessful request', fakeAsync(() => {
     const errorMessage = 'Something went wrong';
 
      
-    spyOn(component.toastService, 'error');
 
     component.getWareAndCurOrd();
 
@@ -336,19 +332,15 @@ describe('CCBCreateCountsComponent', () => {
  
     expect(component.warehouses).toEqual([]);
     expect(component.curCountOrders).toEqual([]);
-    expect(component.toastService.error).toHaveBeenCalledWith(
+    expect(global.ShowToastr).toHaveBeenCalledWith(
       errorMessage,
-      'Error!',
-      {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      }
+      'Error!'
     );
   }));
 
   it('should show error message on exception', fakeAsync(() => {
     const errorMessage = 'Something went wrong'; 
-    spyOn(component.toastService, 'error');
+   
 
     component.getWareAndCurOrd();
 
@@ -356,13 +348,9 @@ describe('CCBCreateCountsComponent', () => {
  
     expect(component.warehouses).toEqual([]);
     expect(component.curCountOrders).toEqual([]);
-    expect(component.toastService.error).toHaveBeenCalledWith(
+    expect(global.ShowToastr).toHaveBeenCalledWith(
       errorMessage,
-      'Error!',
-      {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      }
+      'Error!'
     );
   }));
 
@@ -394,7 +382,7 @@ describe('CCBCreateCountsComponent', () => {
     component.insertQueue();
 
     // Expectations
-    expect(dialog.open).toHaveBeenCalledWith(ConfirmationDialogComponent, {
+    expect(global.OpenDialog).toHaveBeenCalledWith(ConfirmationDialogComponent, {
       height: 'auto',
       width: '786px',
       autoFocus: jasmine.any(String),

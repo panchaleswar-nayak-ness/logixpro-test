@@ -1,6 +1,6 @@
 import { Component, Inject,OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { CmConfirmAndPackingProcessTransactionComponent } from '../cm-confirm-and-packing-process-transaction/cm-confirm-and-packing-process-transaction.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
@@ -27,7 +27,7 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
 
  constructor(
     public consolidationAPI : ConsolidationApiService, 
-    private toast:ToastrService,private global:GlobalService, @Inject(MAT_DIALOG_DATA) public data: any,
+    private global:GlobalService, @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CmConfirmAndPackingSelectTransactionComponent>,) {
     this.confPackTransTable = this.data.confPackTransTable;
     this.orderNumber = this.data.orderNumber;
@@ -77,7 +77,7 @@ openScanItem(ItemNumber:any,id: any) {
     this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
   
       if (res.data == "Fail") {
-        this.toast.error('An error has occurred', 'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});  
+        this.global.ShowToastr('error','An error has occurred', 'Error!');  
     } else if (res.data == "Modal") {
        this.openScanItem(this.itemNumber,id);
        

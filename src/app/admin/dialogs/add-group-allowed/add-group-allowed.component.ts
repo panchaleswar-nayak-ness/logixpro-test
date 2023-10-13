@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map';
@@ -34,7 +34,7 @@ export class AddGroupAllowedComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog:MatDialog,
     private employeeService: ApiFuntions,
-    private toastr: ToastrService,
+    private global: GlobalService,
     private authService: AuthService,
     private fb: FormBuilder,
     private adminApiService: AdminApiService,
@@ -81,16 +81,10 @@ export class AddGroupAllowedComponent implements OnInit {
     this.iAdminApiService.submitControlResponse(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialog.closeAll();
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        }); 
+        this.global.ShowToastr('success',labels.alert.success, 'Success!'); 
       }
       else{
-        this.toastr.success(res.responseMessage, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',res.responseMessage, 'Success!');
       }
     });
   }

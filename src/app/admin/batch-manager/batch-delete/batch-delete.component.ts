@@ -10,7 +10,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
  
 import { AuthService } from '../../../../app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';
@@ -70,7 +70,7 @@ export class BatchDeleteComponent implements OnInit {
     private dialog:MatDialog,
     public authService: AuthService,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     private currentTabDataService : CurrentTabDataService,
   ) { this.iAdminApiService = adminApiService;}
 
@@ -157,10 +157,7 @@ export class BatchDeleteComponent implements OnInit {
               if (res.isExecuted) {
                 this.currentTabDataService.savedItem[this.currentTabDataService.BATCH_MANAGER_DELETE] = undefined; 
                 this.ngOnInit();
-                this.toastr.success(res.responseMessage, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',res.responseMessage, 'Success!');
                 this.deleteEmitter.emit(res);
                 this.batchID = "";
                 this.dltType = "";
@@ -183,10 +180,7 @@ export class BatchDeleteComponent implements OnInit {
               if (res.isExecuted) {
                 this.currentTabDataService.savedItem[this.currentTabDataService.BATCH_MANAGER_DELETE] = undefined; 
                 this.ngOnInit();
-                this.toastr.success(res.responseMessage, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',res.responseMessage, 'Success!');
                 this.deleteEmitter.emit(res.data);
                 this.batchID = "";
                 this.dltType = "";

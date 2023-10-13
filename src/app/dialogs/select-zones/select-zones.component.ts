@@ -2,10 +2,11 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit , Inject} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {
   zone: string
@@ -131,10 +132,7 @@ export class SelectZonesComponent implements OnInit {
   }
   if(recordExists==0)
   {
-    this.toastr.error('No non staging zones', 'Error!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000,
-    });
+    this.global.ShowToastr('error','No non staging zones', 'Error!' );
   }
   }
   else 
@@ -153,10 +151,7 @@ export class SelectZonesComponent implements OnInit {
 
   if(recordExists==0)
   {
-    this.toastr.error('No staging zones', 'Error!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000,
-    });
+    this.global.ShowToastr('error','No staging zones', 'Error!' );
   }
   
   }
@@ -218,10 +213,7 @@ export class SelectZonesComponent implements OnInit {
         this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
 
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       (error) => { }
@@ -230,7 +222,7 @@ export class SelectZonesComponent implements OnInit {
   }
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,private Api: ApiFuntions 
-  ,  private inductionManagerApi: InductionManagerApiService, private toastr: ToastrService , public dialogRef: MatDialogRef<SelectZonesComponent>) {
+  ,  private inductionManagerApi: InductionManagerApiService, private global: GlobalService,public dialogRef: MatDialogRef<SelectZonesComponent>) {
     this.iinductionManagerApi = inductionManagerApi;
    }
 

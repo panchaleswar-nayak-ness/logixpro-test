@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
@@ -28,7 +28,7 @@ export class CmShipEditConIdComponent implements OnInit {
     public consolidationAPI : ConsolidationApiService,
     private global:GlobalService,
     public dialogRef: MatDialogRef<CmShipEditConIdComponent>,
-    private toast: ToastrService,
+    
     private authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any) { this.IconsolidationAPI = consolidationAPI; }
 
@@ -74,7 +74,7 @@ export class CmShipEditConIdComponent implements OnInit {
               containerID: this.containerID
             });
           } else {
-            this.toast.error('Something went wrong', 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         (error) => { }

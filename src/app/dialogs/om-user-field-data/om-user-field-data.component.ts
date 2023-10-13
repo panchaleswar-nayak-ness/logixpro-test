@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import labels from '../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -20,7 +20,7 @@ export class OmUserFieldDataComponent implements OnInit {
   public iOrderManagerApi :  IOrderManagerAPIService;
 
   constructor(
-    private toastr: ToastrService,
+    
     private authService: AuthService,
     private Api: ApiFuntions,
     public orderManagerApi  : OrderManagerApiService,
@@ -41,10 +41,7 @@ export class OmUserFieldDataComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.userFieldData = res.data[0];
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     });
   }
@@ -64,16 +61,10 @@ export class OmUserFieldDataComponent implements OnInit {
     };
     this.iOrderManagerApi.UserFieldDataUpdate(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
         this.dialogRef.close(res.data);
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     });
   }

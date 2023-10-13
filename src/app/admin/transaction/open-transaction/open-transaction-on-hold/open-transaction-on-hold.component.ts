@@ -15,7 +15,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { ToastrService } from 'ngx-toastr';
+
 import { Subject, takeUntil, Subscription } from 'rxjs';
 import { AdjustQuantityComponent } from 'src/app/admin/dialogs/adjust-quantity/adjust-quantity.component';
 import { AuthService } from 'src/app/init/auth.service'; 
@@ -243,7 +243,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     private Api: ApiFuntions,
     public authService: AuthService,
     private global:GlobalService,
-    private toastr: ToastrService,
+    
     private sharedService:SharedService,
     private filterService: ContextMenuFiltersService,
     private currentTabDataService: CurrentTabDataService
@@ -506,10 +506,7 @@ this.router.navigate([]).then((result) => {
           this.columnValues.push('actions');
           this.getContentData(isInit);
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       error: (error) => {}}

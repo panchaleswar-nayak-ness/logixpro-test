@@ -5,11 +5,12 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-delete-confirmation-manual-transaction',
@@ -23,8 +24,9 @@ export class DeleteConfirmationManualTransactionComponent {
   public iAdminApiService: IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, 
-    private toastr: ToastrService,
+    
     private Api: ApiFuntions,
+    private global: GlobalService,
     private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
   ) {
@@ -52,16 +54,10 @@ export class DeleteConfirmationManualTransactionComponent {
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.delete, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.delete, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
               }
             },
@@ -78,16 +74,10 @@ export class DeleteConfirmationManualTransactionComponent {
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.delete, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.delete, 'Success!');
                 this.dialogRef.close({isExecuted:true})
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({isExecuted:false})
               }
             },
@@ -101,16 +91,10 @@ export class DeleteConfirmationManualTransactionComponent {
         this.iAdminApiService.TransactionDelete(payload).subscribe(
           (res: any) => {
             if (res?.isExecuted) {
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
               this.dialogRef.close({ isExecuted: true });
             }else{
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
               this.dialogRef.close({ isExecuted: false });
             }
           },

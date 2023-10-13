@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -25,7 +25,7 @@ export class BlossomToteComponent implements OnInit {
   imPreferences:any;
 
   constructor(private dialog:MatDialog,
-    private toastr: ToastrService,
+    
     private Api: ApiFuntions,
     private inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
@@ -47,10 +47,7 @@ export class BlossomToteComponent implements OnInit {
     }
     this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
-        this.toastr.error('Something is wrong.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Something is wrong.', 'Error!');
       }
 
     });
@@ -69,10 +66,7 @@ export class BlossomToteComponent implements OnInit {
 
   submitBlosom() {
     if(!this.oldToteID || !this.nxtToteID){
-      this.toastr.error('Either the Old or New Tote ID was not supplied.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Either the Old or New Tote ID was not supplied.', 'Error!');
     }
     else{
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
@@ -110,16 +104,10 @@ export class BlossomToteComponent implements OnInit {
                 }
                 
               }
-              this.toastr.success('Updated Successfully', 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success','Updated Successfully', 'Success!');
               this.dialog.closeAll();
             } else {
-              this.toastr.error('Old tote ID does not exist', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error','Old tote ID does not exist', 'Error!');
             }
           });
         }

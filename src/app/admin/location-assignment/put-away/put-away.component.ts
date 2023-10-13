@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import labels from '../../../labels/labels.json';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -50,7 +50,7 @@ export class PutAwayComponent implements OnInit {
   filterValue2:string = '';
   public iAdminApiService: IAdminApiService;
   constructor(
-    private toastr: ToastrService,
+    
     private Api: ApiFuntions,
     private authService: AuthService,
     private global:GlobalService,
@@ -131,10 +131,7 @@ export class PutAwayComponent implements OnInit {
 
   locationAssignment() {
     if (this.tableData2.data.length == 0) {
-      this.toastr.error("There were no orders selected for location assignment marking", 'No Orders Selected', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"There were no orders selected for location assignment marking", 'No Orders Selected');
     }
     else {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -157,15 +154,9 @@ export class PutAwayComponent implements OnInit {
             if (res.isExecuted && res.data) {
               this.tableData2 = new MatTableDataSource([]);
               this.tableData2.paginator = this.paginator2;
-              this.toastr.success(labels.alert.success, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.success, 'Success!');
             } else {
-              this.toastr.error("There was an error marking these orders for location assignment", 'Error', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"There was an error marking these orders for location assignment", 'Error');
             }
           });
         }

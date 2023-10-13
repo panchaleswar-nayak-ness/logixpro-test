@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { OmCreateOrdersComponent } from 'src/app/dialogs/om-create-orders/om-create-orders.component';
 import { OmUpdateRecordComponent } from 'src/app/dialogs/om-update-record/om-update-record.component'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -126,8 +126,7 @@ export class OmOrderManagerComponent implements OnInit {
   public iOrderManagerApi :  IOrderManagerAPIService;
   public iAdminApiService: IAdminApiService;
   constructor(private dialog          : MatDialog,
-              private _liveAnnouncer  : LiveAnnouncer,
-              private toastr          : ToastrService,
+              private _liveAnnouncer  : LiveAnnouncer, 
               private Api             : ApiFuntions,
               public orderManagerApi  : OrderManagerApiService,
               private adminApiService: AdminApiService,
@@ -171,10 +170,7 @@ export class OmOrderManagerComponent implements OnInit {
           this.OMIndex = res.data;
           if ( res.data?.preferences) this.maxOrders = res.data.preferences[0].maxOrders;
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
         }
       },
       (error) => { }
@@ -246,17 +242,17 @@ export class OmOrderManagerComponent implements OnInit {
         catchError((error) => {
           // Handle the error here
           
-  this.toastr.error("Something went wrong" ,'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+  this.global.ShowToastr('error',"Something went wrong" ,'Error!');
           // Return a fallback value or trigger further error handling if needed
           return of({ isExecuted: false });
         })
       ).subscribe((res: any) => {
         if (res.isExecuted) this.fillTable();
-        else this.toastr.error("An Error occured while retrieving data.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        else this.global.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
       });
     }catch(ex){
 
-      this.toastr.error("Something went wrong" ,'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"Something went wrong" ,'Error!');
     }
     
   }
@@ -335,7 +331,7 @@ export class OmOrderManagerComponent implements OnInit {
   deleteViewed() {
     
     if (this.orderType == "Open") {
-      this.toastr.error("You can only delete pending transactions.", 'Warning!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"You can only delete pending transactions.", 'Warning!');
     } else {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
@@ -372,7 +368,7 @@ export class OmOrderManagerComponent implements OnInit {
 
   displayRecords() {
     if ((this.column == "Import Date" || this.column == "Required Date" || this.column == "Priority") && this.case == "Like") 
-      this.toastr.error("Cannot use the 'Like' option with Required Date, Import Date, or Priority column options", 'Warning!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"Cannot use the 'Like' option with Required Date, Import Date, or Priority column options", 'Warning!');
     else this.getOrders();
     this.RecordSavedItem();
   }
@@ -399,7 +395,7 @@ export class OmOrderManagerComponent implements OnInit {
 
   openOrderStatus(ele : any, fromTable : boolean) {
     if((this.value1 == "" || this.column != "Order Number") && !fromTable){
-      this.toastr.error("You must select an Order Number to view the order status.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"You must select an Order Number to view the order status.", 'Error!');
     }
     else{
       if (!fromTable){
@@ -414,15 +410,15 @@ export class OmOrderManagerComponent implements OnInit {
 
   releaseViewed() {
     if (this.orderTable.data.length == 0) {
-      this.toastr.error("No Transactions match your current filters to release.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"No Transactions match your current filters to release.", 'Error!');
       return
     }
     if (this.orderType == 'Open') {
-      this.toastr.error("This orders you are viewing have already been released.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"This orders you are viewing have already been released.", 'Error!');
       return
     }
     if (!this.OMIndex.preferences[0].allowInProc) {
-      this.toastr.error("You may not release an Order that is already in progress.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"You may not release an Order that is already in progress.", 'Error!');
       return
     }
 

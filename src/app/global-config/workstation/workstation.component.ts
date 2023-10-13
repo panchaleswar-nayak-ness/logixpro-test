@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../labels/labels.json';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
@@ -69,7 +69,7 @@ export class WorkstationComponent implements OnInit {
   constructor(
     private sharedService: SharedService,
     private api: ApiFuntions,
-    private toastr: ToastrService,
+    
     private global:GlobalService,
     public globalConfigApi: GlobalConfigApiService
   ) {
@@ -309,19 +309,13 @@ export class WorkstationComponent implements OnInit {
     this.iGlobalConfigApi.WorkStationDelete().subscribe(
         {next: (res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
           }
           this.getMenuData();
           this.wsid = null;
         },
         error: (error) => {
-          this.toastr.error(labels.alert.went_worng, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
         }}
       );
   }

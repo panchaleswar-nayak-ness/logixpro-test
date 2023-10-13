@@ -1,7 +1,7 @@
 import { Component, OnInit , Inject } from '@angular/core';
 import { MatDialog , MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SelectionTransactionForToteExtendComponent } from '../selection-transaction-for-tote-extend/selection-transaction-for-tote-extend.component';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
@@ -33,7 +33,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
 
 
   constructor(private global:GlobalService,private inductionManagerApi: InductionManagerApiService,public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService) { 
+    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,) { 
       this.iinductionManagerApi = inductionManagerApi;
     }
 
@@ -110,10 +110,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
                 });
               }
             } else {
-              this.toastr.error('Something went wrong', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error','Something went wrong', 'Error!');
             }
           },
           (error) => {}
@@ -200,10 +197,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
             this.itemNumber = this.apiResponse.itemNumber;
             this.description = this.apiResponse.description;
           } else {
-            this.toastr.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         (error) => {}

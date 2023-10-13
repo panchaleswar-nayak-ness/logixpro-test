@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/init/auth.service';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
@@ -31,7 +31,7 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
              private adminApiService: AdminApiService,
              public dialogRef: MatDialogRef<any>,
              private router: Router,
-             private toastr: ToastrService, 
+              
              private global:GlobalService
              ) { 
               this.iAdminApiService = adminApiService;
@@ -65,10 +65,7 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
         this.dialogRef.close(res.data);  
       }
       else{
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error',res.responseMessage, 'Error!')
       }
       
     })

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ToastrService } from 'ngx-toastr';
+
 import { BrChooseReportTypeComponent } from 'src/app/dialogs/br-choose-report-type/br-choose-report-type.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -14,6 +14,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { components } from 'angular-routing';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -58,12 +59,12 @@ export class GlobalService {
   public iAdminApiService: IAdminApiService;
   constructor(
     private Api:ApiFuntions,
-    public orderManagerApi  : OrderManagerApiService,
-    private toast:ToastrService,
+    public orderManagerApi  : OrderManagerApiService, 
     private dialog:MatDialog,
+    private toastr:ToastrService,
     private inductionManagerApi: InductionManagerApiService,
     private adminApiService: AdminApiService, 
-    private httpClient : HttpClient,
+    
     private authService:AuthService,
     private sanitizer: DomSanitizer) {
     this.iOrderManagerApi = orderManagerApi;
@@ -72,7 +73,12 @@ export class GlobalService {
     this.iinductionManagerApi = inductionManagerApi;
 
   }
-
+ShowToastr(type?:any,msg?:any,title?:any,timeOut?:any,positionClass?:any){
+  this.toastr[type](msg, title?title:'Success!', {
+    positionClass: positionClass?positionClass:'toast-bottom-right',
+    timeOut: timeOut?timeOut:2000,
+  });
+}
     // returns the date from JS in format: mm/dd/yyyy hh:mm
     getCurrentDateTime() {
         let date = new Date();
@@ -221,16 +227,10 @@ export class GlobalService {
         }
         let res:any = await this.iAdminApiService.CommonPrint(paylaod); 
         if(res.isExecuted){
-          this.toast.success("print successfully completed", 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+          this.ShowToastr('success',"print successfully completed", 'Success!');
             return true;
         }else{
-          this.toast.error("print unsuccessfully complete", 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+          this.ShowToastr('error',"print unsuccessfully complete", 'Error!');
             return false;
 
         }
@@ -269,10 +269,7 @@ export class GlobalService {
         }
         this.iAdminApiService.CommonExport(paylaod).subscribe((res:any)=>{
             if(res.isExecuted){
-                this.toast.success("Export successfully completed", 'Success!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000,
-                  });  
+                this.ShowToastr('success',"Export successfully completed", 'Success!');  
                    debugger
                   if(res.data.fileName.indexOf("txt") > -1){
                     this.downloadTextFile(res.data.fileName, res.data.fileContent);
@@ -290,10 +287,7 @@ export class GlobalService {
                      
                   
               }else{
-                this.toast.error("Export unsuccessfully complete", 'Error!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000,
-                  });
+                this.ShowToastr('error',"Export unsuccessfully complete", 'Error!');
               }
         })
       }

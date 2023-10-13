@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionQtyEditComponent } from 'src/app/dialogs/transaction-qty-edit/transaction-qty-edit.component'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -75,7 +75,7 @@ export class SrNewOrderComponent implements OnInit {
   constructor(
     private global:GlobalService,
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    
     private authService: AuthService,
     private router: Router, 
     private adminApiService: AdminApiService,
@@ -375,10 +375,7 @@ export class SrNewOrderComponent implements OnInit {
     this.iAdminApiService.ProcessReplenishments(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         if(res.responseMessage == "Update Successful"){
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
         }
         if(res.responseMessage == "Reprocess"){
           let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -399,10 +396,7 @@ export class SrNewOrderComponent implements OnInit {
         this.newReplenishmentOrders();
         this.replenishmentsProcessed.emit();
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     });
   }
@@ -429,10 +423,7 @@ export class SrNewOrderComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.newReplenishmentOrders();
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     });
   }
@@ -450,15 +441,9 @@ export class SrNewOrderComponent implements OnInit {
         this.newReplenishmentOrders();
       } 
         else if (replenish){
-          this.toastr.error("No items available to replenish.", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"No items available to replenish.", 'Error!');
         }else{
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
       
     });

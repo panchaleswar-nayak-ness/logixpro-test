@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { NgForm } from '@angular/forms';
 import labels from '../../../labels/labels.json';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from '../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -29,7 +29,8 @@ export class AddPickuplevelsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog:MatDialog,
     private employeeService: ApiFuntions,
-    private toastr: ToastrService,
+    private global: GlobalService,
+    
     private adminApiService: AdminApiService,
     private authService: AuthService
   ) { 
@@ -67,15 +68,9 @@ export class AddPickuplevelsComponent implements OnInit {
       this.iAdminApiService.updatePickLevels(form.value).subscribe((res:any) =>{
         if (res.isExecuted) {
           this.dialog.closeAll();
-          this.toastr.success(labels.alert.success, 'Update!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Update!');
         } else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
       });
     }
@@ -84,15 +79,9 @@ export class AddPickuplevelsComponent implements OnInit {
       this.iAdminApiService.insertPickLevels(form.value).subscribe((res: any) => {
         if (res.isExecuted) {
           this.dialog.closeAll();
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
         } else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
       });
     }

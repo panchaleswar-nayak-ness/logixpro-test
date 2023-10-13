@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -27,7 +27,7 @@ export class CmToteIdUpdateModalComponent implements OnInit {
 
   constructor(private global:GlobalService,
               public dialogRef: MatDialogRef<CmToteIdUpdateModalComponent>,
-              private toast: ToastrService,
+              
               // private Api: ApiFuntions,
               public consolidationAPI : ConsolidationApiService,
               private authService: AuthService,
@@ -71,7 +71,7 @@ export class CmToteIdUpdateModalComponent implements OnInit {
               containerID: this.containerID
             });
           } else {
-            this.toast.error('Something went wrong', 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         (error) => { }

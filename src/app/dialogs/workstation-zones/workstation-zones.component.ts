@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Inject, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject'; 
 import { DeleteConfirmationComponent } from '../../../app/admin/dialogs/delete-confirmation/delete-confirmation.component';
@@ -45,17 +45,11 @@ export class WorkstationZonesComponent implements OnInit {
 
   validateZone(){
     if(this.velocity_code_list.filter((x:any) => x.zone.toLowerCase() == this.selectedZone.trim().toLowerCase()).length > 0){
-      this.toastr.error("This Zone is already selected for this workstation", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"This Zone is already selected for this workstation", 'Error!');
       return false;
     }
     if(this.zones.filter((x:any) => x == this.selectedZone).length == 0){
-      this.toastr.error("This zone does not exist", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"This zone does not exist", 'Error!');
       return false;
     }
     return true;
@@ -93,16 +87,10 @@ export class WorkstationZonesComponent implements OnInit {
         this.iinductionManagerApi.ClrWSPickZone().subscribe((res) => {
           if (res.isExecuted && res.data) {
             this.getVelocity();
-            this.toastr.success(labels.alert.remove, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.remove, 'Success!');
           }
           else {
-            this.toastr.error("Failed to remove Zones from workstation", 'Remove Failed', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"Failed to remove Zones from workstation", 'Remove Failed');
           }
         });
       }
@@ -117,7 +105,7 @@ export class WorkstationZonesComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private Api: ApiFuntions,
     private authService: AuthService,
-    private toastr: ToastrService,private inductionManagerApi: InductionManagerApiService,
+    private inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<any>,
     private global:GlobalService,
   ) { this.iCommonAPI = commonAPI; 
@@ -173,29 +161,20 @@ export class WorkstationZonesComponent implements OnInit {
       }
       this.iinductionManagerApi.WSPickZoneInsert(paylaod).subscribe((res) => {
         if (res.data) {
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.getVelocity();
           this.allZoneList = [];
           this.selectedZone = "";
           this.zoneSelectOptions = [];
         }
         else {
-          this.toastr.error("This Zone is already selected for this workstation.", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"This Zone is already selected for this workstation.", 'Error!');
         }
 
       });
     }
     else{
-      this.toastr.error("Please select any zone,", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Please select any zone,", 'Error!');
     }
      
   }
@@ -213,10 +192,7 @@ export class WorkstationZonesComponent implements OnInit {
             "velocity": vlCode
           }
           this.iCommonAPI.dltVelocityCode(paylaod).subscribe((res) => {
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
 
             this.getVelocity();
 
@@ -246,17 +222,11 @@ export class WorkstationZonesComponent implements OnInit {
         }
         this.iinductionManagerApi.WSPickZoneDelete(paylaod).subscribe((res) => {
           if (res.isExecuted) {
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.getVelocity();
           }
           else{
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
 
         });

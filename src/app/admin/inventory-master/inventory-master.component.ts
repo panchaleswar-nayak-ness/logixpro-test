@@ -5,7 +5,7 @@ import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/dele
 import { ItemNumberComponent } from '../dialogs/item-number/item-number.component';
 import { FormBuilder,  FormGroup, Validators } from '@angular/forms';
 import labels from '../../labels/labels.json'
-import { ToastrService } from 'ngx-toastr';
+
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
@@ -93,7 +93,7 @@ export class InventoryMasterComponent implements OnInit {
     private adminApiService: AdminApiService,
     private global:GlobalService,
     private fb: FormBuilder,
-    private toastr: ToastrService,
+    
     private router: Router,
     private spinnerService: SpinnerService,
     private route: ActivatedRoute,
@@ -415,10 +415,7 @@ export class InventoryMasterComponent implements OnInit {
         this.getInsertedItemNumber(res.data, init)
       }
       else{
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     })
 
@@ -622,16 +619,10 @@ export class InventoryMasterComponent implements OnInit {
           this.saveDisabled = true;
           this.ifAllowed = false;
           this.getInventory();
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
         } else {
           this.saveDisabled = false
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
       })
       this.OldinvMaster = { ...this.invMaster.value };
@@ -674,17 +665,11 @@ export class InventoryMasterComponent implements OnInit {
         }
         this.iAdminApiService.AddNewItem(paylaod).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
             this.currentPageItemNo = itemNumber;
             this.getInventory();
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         })
       } 
@@ -720,10 +705,7 @@ export class InventoryMasterComponent implements OnInit {
         }
         this.iAdminApiService.DeleteItem(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             let paylaodNextItemNumber = {
               "itemNumber": this.currentPageItemNo,
               "filter": "1=1",
@@ -736,10 +718,7 @@ export class InventoryMasterComponent implements OnInit {
             })
             
           } else {
-            this.toastr.error('Delete failed!  Item exists in Inventory Map.  Please deallocate item from Inventory Map location(s) before deleting.', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error','Delete failed!  Item exists in Inventory Map.  Please deallocate item from Inventory Map location(s) before deleting.', 'Error!');
           }
         })
       }
@@ -762,16 +741,10 @@ export class InventoryMasterComponent implements OnInit {
         }
         this.iAdminApiService.UpdateInventoryMasterOTQuarantine(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
             this.getInventory();
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         })
       }
@@ -798,16 +771,10 @@ export class InventoryMasterComponent implements OnInit {
         }
         this.iAdminApiService.UpdateInventoryMasterOTUnQuarantine(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
             this.getInventory();
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         })
       }
@@ -834,10 +801,7 @@ export class InventoryMasterComponent implements OnInit {
   handleFocusOut() {
     if (!this.isDataFound && this.isDataFoundCounter > 0) {
       this.isDataFoundCounter = 0;
-      this.toastr.error('Value undefined Does not exist!', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Value undefined Does not exist!', 'Error!');
     }
   }
   getSearchList(e: any):void {

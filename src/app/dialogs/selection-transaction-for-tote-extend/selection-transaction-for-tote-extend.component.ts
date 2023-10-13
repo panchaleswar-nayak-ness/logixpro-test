@@ -6,7 +6,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { CrossDockTransactionComponent } from '../cross-dock-transaction/cross-dock-transaction.component';
@@ -54,11 +54,10 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               private adminApiService: AdminApiService,
     private dialog                    : MatDialog,
     public formBuilder                : FormBuilder,
-    private authService               : AuthService,
-    private toast                     : ToastrService, 
+    private authService               : AuthService, 
               private inductionManagerApi: InductionManagerApiService,
     private Api : ApiFuntions, 
-    private toastr: ToastrService,
+    
     public router: Router,
     private global:GlobalService,
     ) {
@@ -240,10 +239,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
             this.checkRepenishment();
           } else {
-            this.toast.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         (error) => { }
@@ -324,15 +320,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
           this.iinductionManagerApi.IMUpdate(payload).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
-                this.toast.success(labels.alert.update, 'Success!',{
-                  positionClass: 'toast-bottom-right',
-                  timeOut:2000
-               });            
+                this.global.ShowToastr('success',labels.alert.update, 'Success!');            
               } else {
-                this.toast.error('Something went wrong', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error','Something went wrong', 'Error!');
               }
             },
             (error) => { }
@@ -570,17 +560,11 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                 invMapID                          : res.data.invMapID
               }); 
             } else {
-              this.toastr.error('No available locations were found for this item.', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error','No available locations were found for this item.', 'Error!');
             }
 
           } else {
-            this.toastr.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         (error) => {}
@@ -655,44 +639,29 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   validationPopups(val : any) {
     if (val.type == 1) {
       if (val.invMapID <= 0 || !val.invMapID || val.zone == "") {
-        this.toast.error('You must select a location for this transaction before it can be processed.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','You must select a location for this transaction before it can be processed.', 'Error!');
         return false;
       } 
 
       if (this.toteForm.getRawValue().dateSensitive && !val.expirationDate) {
-        this.toast.error('This item is date sensitive. You must provide an expiration date.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','This item is date sensitive. You must provide an expiration date.', 'Error!');
         return false;
       }
 
     }    
 
     if (this.toteForm.getRawValue().fifo && val.fifoDate.toLowerCase() == 'expiration date' && !val.expirationDate) {
-      this.toast.error('This item is marked as FIFO with Expiration Date and its FIFO Date.You must provide an Expiration Date.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','This item is marked as FIFO with Expiration Date and its FIFO Date.You must provide an Expiration Date.', 'Error!');
       return false;
     }
 
     if (this.toteForm.getRawValue().warehouseSensitive && !val.warehouse) {
-      this.toast.error('This item is warehouse sensitive and must be assigned a warehouse before process can continue.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','This item is warehouse sensitive and must be assigned a warehouse before process can continue.', 'Error!');
       return false;
     }    
 
     if (val.toteQty <= 0) {
-      this.toast.error('Quantity should be greater 0', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      });
+      this.global.ShowToastr('error','Quantity should be greater 0', 'Error!');
       return false;
     }
 
@@ -775,10 +744,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                           this.complete(values);              
                         }
                       } else {
-                        this.toastr.error('Something went wrong', 'Error!', {
-                          positionClass: 'toast-bottom-right',
-                          timeOut: 2000,
-                        });
+                        this.global.ShowToastr('error','Something went wrong', 'Error!' );
                       }
                     },
                     (error) => {}
@@ -816,10 +782,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       if (result == 'Yes') {                                                              
 
         if (values.toteQty <= 0) {
-          this.toast.error('Quantity should be greater 0', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Quantity should be greater 0', 'Error!');
         } else {
 
           let payload2 = {
@@ -903,15 +866,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
 
                 this.dialogRef.close("Task Completed");
-                this.toast.success(labels.alert.update, 'Success!',{
-                  positionClass: 'toast-bottom-right',
-                  timeOut:2000
-                });            
+                this.global.ShowToastr('success',labels.alert.update, 'Success!' );            
               } else {
-                this.toast.error('Something went wrong', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error','Something went wrong', 'Error!');
               }
             },
             (error) => { }

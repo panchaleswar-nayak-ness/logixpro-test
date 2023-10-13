@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef,MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { Subject, takeUntil } from 'rxjs'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
@@ -31,7 +31,7 @@ export class WarehouseComponent implements OnInit {
   constructor(
     public commonAPI : CommonApiService,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     public dialogRef: MatDialogRef<any>,
     private global:GlobalService,
     private router: Router,
@@ -108,10 +108,7 @@ export class WarehouseComponent implements OnInit {
     this.warehouse_list.forEach(element => {
       if (element == warehosue && cond) {
         cond = false
-        this.toastr.error('Conflict: Warehouse cannot be saved! Another warehouse matches the current. Please save any pending changes before attempting to save this entry.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Conflict: Warehouse cannot be saved! Another warehouse matches the current. Please save any pending changes before attempting to save this entry.', 'Error!');
        
       }
     });
@@ -123,10 +120,7 @@ export class WarehouseComponent implements OnInit {
 
       this.iCommonAPI.saveWareHouse(paylaod).subscribe((res) => {
         if(res.isExecuted){
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.getWarehouse();
         }
       });
@@ -137,10 +131,7 @@ export class WarehouseComponent implements OnInit {
       "warehouse": warehosue
     }
     this.iCommonAPI.dltWareHouse(paylaod).subscribe((res) => {
-      this.toastr.success(labels.alert.delete, 'Success!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('success',labels.alert.delete, 'Success!');
 
       this.getWarehouse();
 

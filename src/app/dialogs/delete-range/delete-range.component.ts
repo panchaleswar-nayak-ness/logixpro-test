@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from 'src/app/init/auth.service';
 import labels from '../../labels/labels.json';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
@@ -46,7 +46,7 @@ export class DeleteRangeComponent implements OnInit {
     private adminApiService: AdminApiService,
     private Api: ApiFuntions,
     private dialog:MatDialog,
-    private toastr: ToastrService,
+    
     private global:GlobalService,
     public dialogRef: MatDialogRef<DeleteRangeComponent>,
     private authService: AuthService,
@@ -90,17 +90,11 @@ export class DeleteRangeComponent implements OnInit {
         if (result === 'Yes') {
           this.iAdminApiService.ReplenishmentsByDelete(this.repByDeletePayload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
               this.dialog.closeAll();
               this.dialogRef.close(this.data);
             } else {
-              this.toastr.error("Deleting by range has failed", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"Deleting by range has failed", 'Error!');
               this.dialog.closeAll();
             }
           });

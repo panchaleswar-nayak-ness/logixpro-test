@@ -5,7 +5,7 @@ import { OmEventLogEntryDetailComponent } from 'src/app/dialogs/om-event-log-ent
 import { AuthService } from 'src/app/init/auth.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { ToastrService } from 'ngx-toastr';
+
 import labels from '../../labels/labels.json';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
@@ -71,7 +71,7 @@ export class EventLogComponent implements OnInit {
     private global:GlobalService,
     private Api: ApiFuntions,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     private dialog:MatDialog,
     private filterService: ContextMenuFiltersService,
     private adminApiService: AdminApiService,
@@ -200,10 +200,7 @@ export class EventLogComponent implements OnInit {
 
   deleteRange() { 
     if(this.startDate > this.endDate){
-      this.toastr.error('Start date must be before end date!', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Start date must be before end date!', 'Error!');
       return;
     }
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
@@ -230,15 +227,9 @@ export class EventLogComponent implements OnInit {
           if (res.isExecuted && res.data) {
             this.resetPagination();
             this.eventLogTable(true);
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         });
       }

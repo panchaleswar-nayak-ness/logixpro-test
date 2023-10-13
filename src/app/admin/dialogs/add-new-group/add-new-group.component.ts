@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, TemplateRef, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json'; 
 import { AccessGroupObject, IEmployee } from 'src/app/Iemployee';
@@ -31,7 +31,7 @@ export class AddNewGroupComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global:GlobalService,
-    private toastr: ToastrService,
+    
     private employeeService: ApiFuntions,
     private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
@@ -77,16 +77,10 @@ export class AddNewGroupComponent implements OnInit {
         .subscribe((response: AccessGroupObject) => {
           if (response.isExecuted) {
             this.dialogRef.close(form.value); // Close opened diaglo
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
           }
           else {
-            this.toastr.error(response.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',response.responseMessage, 'Error!');
           }
         });
 

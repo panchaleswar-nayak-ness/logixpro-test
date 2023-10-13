@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ReelDetailComponent } from '../reel-detail/reel-detail.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -49,7 +49,7 @@ fieldNames:any;
   
   constructor(private global:GlobalService,public dialogRef: MatDialogRef<ReelTransactionsComponent>,
     private inductionManagerApi: InductionManagerApiService,
-    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService) {
+    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,) {
       this.iinductionManagerApi = inductionManagerApi;
      }
 
@@ -141,10 +141,7 @@ fieldNames:any;
 
       }
       else {
-        this.toastr.error('Something went wrong', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','Something went wrong', 'Error!');
       }
     },
     error: (error) => {}}
@@ -203,10 +200,7 @@ fieldNames:any;
     dialogRef.afterClosed().subscribe((result) => {
       if(result){
         if(this.generateReelAndSerial.data.length == 0){
-          this.toastr.error("You must provide at least one reel transaction in order to create reels.", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"You must provide at least one reel transaction in order to create reels.", 'Error!');
         }
         else{
           let numUnassigned =this.partsNotAssigned;
@@ -274,10 +268,7 @@ CreateReels(){
                 if(SNs.includes('')){
                   this.validateInputs();
                   this.serialTemp.nativeElement.blur()
-                  this.toastr.error("You must provide a serial number for each reel transaction.", 'Error!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000
-                  });
+                  this.global.ShowToastr('error',"You must provide a serial number for each reel transaction.", 'Error!');
                   return
                 }
                 
@@ -286,10 +277,7 @@ CreateReels(){
             
                    const hasDuplicatesFlag = this.findDuplicateValue( SNs);
                    if(hasDuplicatesFlag){
-                    this.toastr.error('You must provide a unique serial number for each reel transaction.  Serial ' + hasDuplicatesFlag + ' is duplicated.', 'Error!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000
-                    });
+                    this.global.ShowToastr('error','You must provide a unique serial number for each reel transaction.  Serial ' + hasDuplicatesFlag + ' is duplicated.', 'Error!' );
                     return
                    }
                 let payload = {
@@ -320,10 +308,7 @@ CreateReels(){
                           };
                     };
                     if(errs != ''){
-                      this.toastr.error('The following serial numbers have problems and could not be assigned' , 'Error!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000,
-                      });
+                      this.global.ShowToastr('error','The following serial numbers have problems and could not be assigned' , 'Error!');
                     }
                     else{
                      let payload = {
@@ -334,10 +319,7 @@ CreateReels(){
                       this.iinductionManagerApi.ReelsCreate(payload).subscribe((res=>{
                         if(res.data && res.isExecuted){
                             if(res.data.lenghth<=0){
-                              this.toastr.error('There was an error while attempting to save the new reels.  See the error log for details.', 'Error!', {
-                                positionClass: 'toast-bottom-right',
-                                timeOut: 2000,
-                              });
+                              this.global.ShowToastr('error','There was an error while attempting to save the new reels.  See the error log for details.', 'Error!' );
                             }
                             else  {
                               this.createdReel = res.data
@@ -366,20 +348,14 @@ CreateReels(){
                             }
                         }
                         else{
-                          this.toastr.error(res.responseMessage, 'Error!', {
-                            positionClass: 'toast-bottom-right',
-                            timeOut: 2000,
-                          });
+                          this.global.ShowToastr('error',res.responseMessage, 'Error!');
                         }
                       }));
                     }
             
                   }
                   else {
-                    this.toastr.error('Something went wrong', 'Error!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
+                    this.global.ShowToastr('error','Something went wrong', 'Error!');
                   }
                 });
 
@@ -428,10 +404,7 @@ let res:any =   this.global.Print(`FileName:PrintReelLabels|OTID:${this.createdR
         this.generateReelAndSerial.data[index].reel_serial_number=res.data+ '-RT';
       }
       else {
-        this.toastr.error('Something went wrong', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','Something went wrong', 'Error!');
       }
     },
     error: (error) => {}}

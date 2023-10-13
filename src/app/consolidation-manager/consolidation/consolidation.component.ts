@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from '../../../app/init/auth.service';
 import { CmConfirmAndPackingSelectTransactionComponent } from 'src/app/dialogs/cm-confirm-and-packing-select-transaction/cm-confirm-and-packing-select-transaction.component';
 import { CmConfirmAndPackingComponent } from 'src/app/dialogs/cm-confirm-and-packing/cm-confirm-and-packing.component';
@@ -94,7 +94,7 @@ export class ConsolidationComponent implements OnInit {
   public IconsolidationAPI : IConsolidationApi;
 
   constructor(private global:GlobalService,
-    private toastr: ToastrService,
+    
     public consolidationAPI : ConsolidationApiService, 
     public authService: AuthService,
     private currentTabDataService: CurrentTabDataService,
@@ -243,26 +243,17 @@ export class ConsolidationComponent implements OnInit {
         if ((typeof res.data == 'string')) {
           switch (res.data) {
             case "DNE":
-              this.toastr.error("Consolidation The Order/Tote that you entered is invalid or no longer exists in the system.", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"Consolidation The Order/Tote that you entered is invalid or no longer exists in the system.", 'Error!');
               this.searchBoxField.nativeElement.focus();
               break;
 
             case "Conflict":
               this.openCmOrderToteConflict()
-              this.toastr.error("The Value you Entered matched a Tote and Order Number, select one to Continue.", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"The Value you Entered matched a Tote and Order Number, select one to Continue.", 'Error!');
               break;
 
             case "Error":
-              this.toastr.error("An Error occured while retrieving data.", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
               break;
           }
 
@@ -308,20 +299,14 @@ export class ConsolidationComponent implements OnInit {
               this.shippingbtb = true;
             }
             else {
-              this.toastr.error('Error has occured', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error','Error has occured', 'Error!');
             }
 
           })
         }
       }
       else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
       
       this.RecordSavedItem();
@@ -342,10 +327,7 @@ export class ConsolidationComponent implements OnInit {
     }
     this.IconsolidationAPI.VerifyAllItemPost(payload).subscribe((res: any) => {
       if (!res.isExecuted) {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
       else {
         let z: any[] = [];
@@ -365,10 +347,7 @@ export class ConsolidationComponent implements OnInit {
         })
 
         if (this.tableData_1.data.length == 0) {
-          this.toastr.info('You have consolidated all items in this order', 'Alert!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('info','You have consolidated all items in this order', 'Alert!');
         }
       }
     })
@@ -389,10 +368,7 @@ export class ConsolidationComponent implements OnInit {
     this.IconsolidationAPI.UnVerifyAll(payload).subscribe((res: any) => {
 
       if (!res.isExecuted) {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
 
       }
       else {
@@ -424,10 +400,7 @@ export class ConsolidationComponent implements OnInit {
     }
 
     if (status == "Not Completed" || status == "Not Assigned") {
-      this.toastr.error("The selected item has not yet been completed and can't be verified at this time", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"The selected item has not yet been completed and can't be verified at this time", 'Error!');
     }
     else {
       let payload = {
@@ -459,10 +432,7 @@ export class ConsolidationComponent implements OnInit {
 
         }
         else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          })
+          this.global.ShowToastr('error',res.responseMessage, 'Error!')
         }
 
       })
@@ -496,10 +466,7 @@ export class ConsolidationComponent implements OnInit {
           this.tableData_2.paginator = this.paginator2;
         }
         else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
       })
     }
@@ -575,10 +542,7 @@ export class ConsolidationComponent implements OnInit {
       this.verifyLine(val, result.index)
     }
     else {
-      this.toastr.error('Item not in order or has already been consolidated', 'error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Item not in order or has already been consolidated', 'error!');
     }
   }
 
@@ -663,10 +627,7 @@ export class ConsolidationComponent implements OnInit {
 
         // Handle the error here
 
-        this.toastr.error("An error occured while retrieving data.", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',"An error occured while retrieving data.", 'Error!');
 
 
         // Return a fallback value or trigger further error handling if needed
@@ -844,10 +805,7 @@ export class ConsolidationComponent implements OnInit {
       }
     }
     else {
-      this.toastr.error("There are no unverfied items", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"There are no unverfied items", 'Error!');
     }
   }
 
@@ -875,7 +833,7 @@ export class ConsolidationComponent implements OnInit {
             } else if (res.isExecuted && res.data == "modal") {
               this.showCmPackPrintModal(true, this.TypeValue,print);
             } else {
-              this.toastr.error("Error has occured","Error");
+              this.global.ShowToastr('error',"Error has occured","Error");
             }
           });
         }
@@ -893,7 +851,7 @@ export class ConsolidationComponent implements OnInit {
         } else if (res.isExecuted && res.data == "modal") {
           this.showCmPackPrintModal(true, this.TypeValue,print);
         } else {
-          this.toastr.error("Error has occured","Error");
+          this.global.ShowToastr('error',"Error has occured","Error");
         }
       });
     }

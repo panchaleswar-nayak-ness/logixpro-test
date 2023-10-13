@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild, Inject, ViewChildren, QueryList } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import { CmOrderToteConflictComponent } from '../cm-order-tote-conflict/cm-order-tote-conflict.component';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
@@ -29,7 +29,7 @@ export class CmOrderNumberComponent implements OnInit {
 
   constructor(private global          : GlobalService,
               public dialogRef        : MatDialogRef<CmOrderNumberComponent>,
-              private toast           : ToastrService,
+              
               public consolidationAPI : ConsolidationApiService,
               private authService     : AuthService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -69,16 +69,16 @@ export class CmOrderNumberComponent implements OnInit {
         if (typeof res?.data == 'string') {
           switch (res?.data) {
             case "DNE":
-              this.toast.error("The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+              this.global.ShowToastr('error',"The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!');
               this.order.nativeElement.value = '';
               this.order.nativeElement.focus();
               break;
             case "Conflict":
-              this.toast.warning("You have a conflicting Tote ID and Order Number.", 'Staging Locations', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+              this.global.ShowToastr('warning',"You have a conflicting Tote ID and Order Number.", 'Staging Locations');
                 this.openCmOrderToteConflict(value); 
               break;
             case "Error":
-              this.toast.error("An Error occured while retrieving data", "Consolidation Error", { positionClass: 'toast-bottom-right', timeOut: 2000 });
+              this.global.ShowToastr('error',"An Error occured while retrieving data", "Consolidation Error");
               break;
           }
         }
@@ -120,7 +120,7 @@ export class CmOrderNumberComponent implements OnInit {
 
     this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
       if (res.responseMessage == "Fail") {
-        this.toast.error("Error Has Occured", "Consolidation", { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        this.global.ShowToastr('error',"Error Has Occured", "Consolidation");
       } else {
         if (typeof this.tableData != 'undefined') {
           for (let x = 0; x < this.tableData.length; x++) {

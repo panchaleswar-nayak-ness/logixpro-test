@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { catchError, of } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -24,7 +24,7 @@ AddBtn = false
   constructor(private Api:ApiFuntions,
               private global:GlobalService,
               private adminApiService: AdminApiService,
-              private toastr: ToastrService,
+              
               public authService: AuthService,) { 
                 this.iAdminApiService = adminApiService;
               }
@@ -70,16 +70,10 @@ AddBtn = false
       if(res.isExecuted){
         this.AddBtn = false
         ele.oldVal = ele.currentVal
-        this.toastr.success(`Saved Successfully`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('success',`Saved Successfully`, 'Error!');
       }
       else{
-        this.toastr.error(`Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',`Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!');
       }
     }))
   }

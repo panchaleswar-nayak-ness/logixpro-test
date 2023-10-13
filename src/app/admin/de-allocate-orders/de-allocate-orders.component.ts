@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort} from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ToastrService } from 'ngx-toastr';
+
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
@@ -91,7 +91,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   constructor(public authService: AuthService,
     private Api:ApiFuntions,
     private _liveAnnouncer: LiveAnnouncer,
-    private toastr: ToastrService,
+    
     private adminApiService: AdminApiService,
     private global:GlobalService,
     private sharedService:SharedService,
@@ -286,20 +286,14 @@ export class DeAllocateOrdersComponent implements OnInit {
           this.iAdminApiService.DeAllocateOrder(payload).subscribe((res=>{
             if(res.isExecuted){
               this.actions = ''
-              this.toastr.success("De-Allocated successfully", 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',"De-Allocated successfully", 'Success!' );
               this.deallocateSelectedBtn = true
               this.orderNumbersList.length=0
                 this.getAllOrder()
                 this.orderItemTable()
             }
             else{
-              this.toastr.error('Order De-Allocation Not Successfull', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error','Order De-Allocation Not Successfull', 'Error!');
             }
           }))
         }
@@ -324,20 +318,14 @@ export class DeAllocateOrdersComponent implements OnInit {
         }
         this.iAdminApiService.DeAllocateOrder(payload).subscribe((res=>{
           if(res.isExecuted){
-            this.toastr.success("De-Allocated successfully", 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',"De-Allocated successfully", 'Success!');
             this.deallocateSelectedBtn = true
               this.getAllOrder()
               this.orderItemTable()
               this.actions = ''
           }
           else{
-            this.toastr.error('Order De-Allocation Not Successfull', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Order De-Allocation Not Successfull', 'Error!');
           }
         }))
       }

@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { FormControl, FormGroup} from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -22,7 +22,7 @@ export class OmPreferencesComponent implements OnInit {
     private Api: ApiFuntions,
     public orderManagerApi  : OrderManagerApiService,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     private global:GlobalService
   ) {
     this.iOrderManagerApi = orderManagerApi;
@@ -139,13 +139,9 @@ export class OmPreferencesComponent implements OnInit {
         if (response.isExecuted) {
           this.global.updateOmPref();
         } else {
-          this.toastr.error(
+          this.global.ShowToastr('error',
             'Error',
-            'An Error Occured while trying to update',
-            {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            }
+            'An Error Occured while trying to update'
           );
         }
       });

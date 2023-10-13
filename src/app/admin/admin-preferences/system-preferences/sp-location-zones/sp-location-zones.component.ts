@@ -3,7 +3,7 @@ import { AuthService } from 'src/app/init/auth.service';
 import { LocationNameComponent } from 'src/app/admin/dialogs/location-name/location-name.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { ToastrService } from 'ngx-toastr';
+
 import { KanbanZoneAllocationConflictComponent } from 'src/app/admin/dialogs/kanban-zone-allocation-conflict/kanban-zone-allocation-conflict.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -32,7 +32,7 @@ export class SpLocationZonesComponent implements OnInit {
     public authService: AuthService,
     private global:GlobalService,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService) { 
+    ) { 
       this.iAdminApiService = adminApiService;
     }
 
@@ -110,20 +110,14 @@ export class SpLocationZonesComponent implements OnInit {
     let newZone:any = zone.zone;
     let seq = zone.sequence;
     if (newZone == '') {
-      this.toastr.error('Zone may not be left blank.  Zone will not be saved until this is fixed.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      });
+      this.global.ShowToastr('error','Zone may not be left blank.  Zone will not be saved until this is fixed.', 'Error!');
       zone.zone = oldZone
       return
       
     }
     else if (seq < 0 || seq == '') {
       if (seq < 0) {
-        this.toastr.error('Sequence must be an integer greater than or equal to 0.  Zone will not be saved until this is fixed.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','Sequence must be an integer greater than or equal to 0.  Zone will not be saved until this is fixed.', 'Error!');
         return
       }
     }
@@ -134,10 +128,7 @@ export class SpLocationZonesComponent implements OnInit {
     if(check){
       let test = this.duplicatelocationzone.find((x:any)=>x.zone == newZone) 
       if(test){
-        this.toastr.error(`Zone is currently set to be a duplicate. Zone will not be saved until this is fixed.`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',`Zone is currently set to be a duplicate. Zone will not be saved until this is fixed.`, 'Error!');
       }
     } 
     let locationzone = JSON.parse(JSON.stringify(zone));
@@ -228,16 +219,10 @@ export class SpLocationZonesComponent implements OnInit {
           
           if (res.isExecuted) {
             this.getLocationZones()
-            this.toastr.success("Deleted successfully", 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',"Deleted successfully", 'Success!');
           }
           else{
-            this.toastr.error(`Location Zone ${zone} cannot be deleted because there are allocated quantities in an Inventory Map location matching the zone`, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',`Location Zone ${zone} cannot be deleted because there are allocated quantities in an Inventory Map location matching the zone`, 'Error!');
           }
         }))
       }
@@ -275,10 +260,7 @@ export class SpLocationZonesComponent implements OnInit {
       this.locationSaveBtn = false
       let test = this.duplicatelocationzone.find((x:any)=>x.zone == this.newLocationVal)
       if(test){
-        this.toastr.error('Zone would be a duplicate and cannot be added.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','Zone would be a duplicate and cannot be added.', 'Error!');
       }
     }
     else{
@@ -294,17 +276,11 @@ export class SpLocationZonesComponent implements OnInit {
     }
     this.iAdminApiService.LocationZoneNewSave(payload).subscribe((res => {
       if (res.isExecuted) {
-        this.toastr.success(`Location Zone: ${this.newLocationVal} added succesfully`, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',`Location Zone: ${this.newLocationVal} added succesfully`, 'Success!');
         this.getLocationZones()
       }
       else {
-        this.toastr.error('Cannot insert duplicate Zone', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','Cannot insert duplicate Zone', 'Error!');
       }
     }))
   }

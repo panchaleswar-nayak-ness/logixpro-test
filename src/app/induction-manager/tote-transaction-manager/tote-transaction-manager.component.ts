@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
-import { ToastrService } from 'ngx-toastr';
+
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';  
 import { MatTableDataSource } from '@angular/material/table';
@@ -85,7 +85,7 @@ public iinductionManagerApi:IInductionManagerApiService;
 
   constructor(
     private global:GlobalService,
-    private toastr: ToastrService,
+    
     private Api: ApiFuntions,
     private authService: AuthService,
     private inductionManagerApi: InductionManagerApiService,
@@ -211,10 +211,7 @@ public iinductionManagerApi:IInductionManagerApiService;
       .subscribe((res: any) => {
         if (res.isExecuted) {
           this.getToteTrans();
-          this.toastr.success(labels.alert.delete, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.delete, 'Success!');
         }
       });
   }

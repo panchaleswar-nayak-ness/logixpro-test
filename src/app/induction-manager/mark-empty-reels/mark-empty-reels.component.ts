@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -34,7 +34,7 @@ export class MarkEmptyReelsComponent implements OnInit {
   constructor(
     private global:GlobalService,
     public Api:ApiFuntions,
-    public toastService: ToastrService,
+    
     private inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     private _liveAnnouncer: LiveAnnouncer,
@@ -169,23 +169,16 @@ export class MarkEmptyReelsComponent implements OnInit {
             .DeleteSerialNumber(payload) //validate tote
             .subscribe((response: any) => {
               if (response.isExecuted) {
-                this.toastService.success(
+                this.global.ShowToastr('success',
                   response.responseMessage,
-                  'Success!',
-                  {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000,
-                  }
+                  'Success!' 
                 );
                 this.itemInvalid = false;
                 this.itemEmpty = false;
                 this.scannedSerialList = new MatTableDataSource();
                 this.lastScannedList.length = 0;
               } else {
-                this.toastService.error(response.responseMessage, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',response.responseMessage, 'Error!');
               }
             });
         }

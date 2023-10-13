@@ -6,7 +6,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';  
+  
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json';  
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -18,6 +18,7 @@ import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-confi
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-delete-confirmation',
@@ -40,9 +41,10 @@ export class DeleteConfirmationComponent implements OnInit {
     public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog:MatDialog,
-    private toastr: ToastrService,
+    
     public globalConfigApi: GlobalConfigApiService,
     private Api: ApiFuntions, 
+    private global: GlobalService,
     private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<DeleteConfirmationComponent>,
     private authService: AuthService,
@@ -81,16 +83,10 @@ export class DeleteConfirmationComponent implements OnInit {
           .subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialog.closeAll();
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             } else {
               this.dialog.closeAll();
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
             }
           });
       } else if (this.data.mode === 'delete-picklevel') {
@@ -106,16 +102,10 @@ export class DeleteConfirmationComponent implements OnInit {
           .subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialog.closeAll();
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             } else {
               this.dialog.closeAll();
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
             }
           });
       }
@@ -131,16 +121,10 @@ export class DeleteConfirmationComponent implements OnInit {
           .subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialog.closeAll();
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             } else {
               this.dialog.closeAll();
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
             }
           });
       } else if (this.data.mode === 'delete-connection-string') {
@@ -152,18 +136,12 @@ export class DeleteConfirmationComponent implements OnInit {
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(res.responseMessage, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',res.responseMessage, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               }
             },
             (error) => {
-              this.toastr.error(labels.alert.went_worng, 'Error!!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!!');
             }
           );
       } else if (this.data.mode === 'delete-group') {
@@ -175,16 +153,10 @@ export class DeleteConfirmationComponent implements OnInit {
         this.iAdminApiService.deleteGroup(groupData).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.dialog.closeAll();
-            this.toastr.error(labels.alert.went_worng, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
           }
         });
       } else if (this.data.mode === 'delete-allowed-group') {
@@ -196,16 +168,10 @@ export class DeleteConfirmationComponent implements OnInit {
         this.iAdminApiService.deleteGroup(groupData).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.dialog.closeAll();
-            this.toastr.error(labels.alert.went_worng, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
           }
         });
       } else if (this.data.mode === 'delete-allowed-funcation') {
@@ -217,16 +183,10 @@ export class DeleteConfirmationComponent implements OnInit {
         this.iAdminApiService.deleteControlName(groupData).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.dialog.closeAll();
-            this.toastr.error(labels.alert.went_worng, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
           }
         });
       }
@@ -237,16 +197,10 @@ export class DeleteConfirmationComponent implements OnInit {
         this.iAdminApiService.deleteInventoryMap(payload).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.dialog.closeAll();
-            this.toastr.error(labels.alert.went_worng, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
           }
         });
       } else if (this.data.mode === 'delete-emp') {
@@ -260,10 +214,7 @@ export class DeleteConfirmationComponent implements OnInit {
           .subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialogRef.close('deleted');
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             }
           });
       } else if (this.data.mode === 'delete-grpallowed') {
@@ -274,15 +225,9 @@ export class DeleteConfirmationComponent implements OnInit {
         this.iAdminApiService.deleteUserGroup(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         });
       } else if (this.data.mode === 'delete-warehouse') {
@@ -292,15 +237,9 @@ export class DeleteConfirmationComponent implements OnInit {
         this.iCommonAPI.dltWareHouse(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialogRef.close('Yes');
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         });
       } else if (this.data.mode === 'delete-velocity') {
@@ -310,15 +249,9 @@ export class DeleteConfirmationComponent implements OnInit {
         this.iCommonAPI.dltVelocityCode(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialogRef.close('Yes');
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         });
       } else if (this.data.mode === 'delete-order-status') {
@@ -327,16 +260,10 @@ export class DeleteConfirmationComponent implements OnInit {
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
               }
             },
@@ -351,16 +278,10 @@ export class DeleteConfirmationComponent implements OnInit {
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
               }
             },
@@ -372,24 +293,15 @@ export class DeleteConfirmationComponent implements OnInit {
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
               }
               this.dialogRef.close({ isExecuted: false });
             },
             (err) => {
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
             }
           );
       }else if(this.data.mode == 'delete-category'){
@@ -403,25 +315,16 @@ export class DeleteConfirmationComponent implements OnInit {
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
                 this.dialogRef.close('Yes');
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
               }
         
             },
             (err) => {
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
             }
           );
       } 

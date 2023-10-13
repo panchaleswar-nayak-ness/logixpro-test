@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { catchError, of } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -33,7 +33,7 @@ export class LookupToteSetupComponent implements OnInit {
   constructor(private Api:ApiFuntions,
     private global:GlobalService,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     public authService: AuthService,) { 
       this.iAdminApiService = adminApiService;
     }
@@ -69,10 +69,7 @@ export class LookupToteSetupComponent implements OnInit {
     for(let i = 0; i < this.OldtableData.length; i++) {
       if(this.OldtableData[i].toteID == toteID) {
         this.tableData[ind].IsDisabled = true;
-        this.toastr.error(`Tote must be unique. Another entry matches it. Please save any pending totes and try again.`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',`Tote must be unique. Another entry matches it. Please save any pending totes and try again.`, 'Error!');
         break;
       }else  this.tableData[ind].IsDisabled = false;
        
@@ -98,10 +95,7 @@ export class LookupToteSetupComponent implements OnInit {
         console.log(res)
         this.AddBtn = false
         ele.IsDisabled = true
-        this.toastr.success(`Saved Successfully`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('success',`Saved Successfully`, 'Error!');
       }
     }))
 
@@ -151,10 +145,7 @@ export class LookupToteSetupComponent implements OnInit {
         this.iAdminApiService.cleartote({}).subscribe((res=>{
           console.log(res)
           if(res.isExecuted){
-            this.toastr.success(`Tote Clear Successfully`, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',`Tote Clear Successfully`, 'Error!');
           }
         }))
       }

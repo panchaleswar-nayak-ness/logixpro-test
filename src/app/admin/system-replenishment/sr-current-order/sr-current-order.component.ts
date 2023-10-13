@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { PrintReplenLabelsComponent } from 'src/app/dialogs/print-replen-labels/print-replen-labels.component';
@@ -87,7 +87,7 @@ export class SrCurrentOrderComponent implements OnInit {
   constructor( 
     private dialog: MatDialog,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     private authService: AuthService,
     private filterService: ContextMenuFiltersService,
     private global:GlobalService,
@@ -210,10 +210,7 @@ export class SrCurrentOrderComponent implements OnInit {
         this.filteredTableData = JSON.parse(JSON.stringify(this.tableData));
         this.systemReplenishmentCount(true);
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     });
   }
@@ -486,17 +483,11 @@ export class SrCurrentOrderComponent implements OnInit {
   ReplenishmentsByDelete() {
     this.iAdminApiService.ReplenishmentsByDelete(this.repByDeletePayload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-        this.toastr.success(labels.alert.delete, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.delete, 'Success!');
         this.newReplenishmentOrders();
         this.replenishmentsDeleted.emit();
       } else {
-        this.toastr.error(labels.alert.went_worng, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
         this.dialog.closeAll();
       }
     });

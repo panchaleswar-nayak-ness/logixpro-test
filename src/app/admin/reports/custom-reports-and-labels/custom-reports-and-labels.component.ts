@@ -5,7 +5,7 @@ import { CrAddNewCustomReportComponent } from 'src/app/dialogs/cr-add-new-custom
 import { CrDeleteConfirmationComponent } from 'src/app/dialogs/cr-delete-confirmation/cr-delete-confirmation.component';
 import { CrEditDesignTestDataComponent } from 'src/app/dialogs/cr-edit-design-test-data/cr-edit-design-test-data.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { ToastrService } from 'ngx-toastr';
+
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
@@ -30,7 +30,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   currentApp;
   public iAdminApiService: IAdminApiService;
 
-  constructor(private api:ApiFuntions,private adminApiService: AdminApiService,private route:Router,private dialog:MatDialog, private toastr :ToastrService,private router: Router,public global:GlobalService) {
+  constructor(private api:ApiFuntions,private adminApiService: AdminApiService,private route:Router,private dialog:MatDialog, private router: Router,public global:GlobalService) {
     this.iAdminApiService = adminApiService; 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -193,17 +193,11 @@ export class CustomReportsAndLabelsComponent implements OnInit {
         }
         this.iAdminApiService.deleteReport(payload).subscribe(res=>{
           if (!res.data) {
-            this.toastr.error("Unexpected error occurred.  If this persists please contact Scott Tech for support.", 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"Unexpected error occurred.  If this persists please contact Scott Tech for support.", 'Error!');
         } else {
           this.Getcustomreports()
           this.Detail= {}
-          this.toastr.success(`File Deleted Successfully`, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success',`File Deleted Successfully`, 'Success!');
 
         };
         })
@@ -227,28 +221,19 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       // Replace 'your_upload_endpoint' with the server's API endpoint to handle file upload
       this.iAdminApiService.importFile(formData).subscribe(
         (response) => {
-          this.toastr.success(`File successfully uploaded`, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success',`File successfully uploaded`, 'Success!');
           // Handle the response from the server after file upload, if needed
           console.log(response);
         },
         (error) => {
-          this.toastr.error(error, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',error, 'Error!');
           // Handle error if the file upload fails
           console.error(error);
         }
       );
     }
     else{
-      this.toastr.error(`Uploaded filename ${file.name} must match report filename ${this.Detail.fileName}`, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+      this.global.ShowToastr('error',`Uploaded filename ${file.name} must match report filename ${this.Detail.fileName}`, 'Error!');
     }
 
 
@@ -274,16 +259,10 @@ export class CustomReportsAndLabelsComponent implements OnInit {
         this.iAdminApiService.pushReportChanges(payload).subscribe(res=>{
           console.log(res)
           if(res.isExecuted){
-            this.toastr.success( `Changes have been successfully pushed to the other workstations`, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success', `Changes have been successfully pushed to the other workstations`, 'Success!');
           }
           else{
-            this.toastr.error( `Error has occured while pushing changes to the other worksations`, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error', `Error has occured while pushing changes to the other worksations`, 'Error!');
           }
         })
       }
@@ -308,10 +287,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
 
     this.iAdminApiService.updatereportDetails(payload).subscribe(res=>{
       if(!res.isExecuted){
-        this.toastr.error("Unexpected error occurred. Changes Not Saved", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',"Unexpected error occurred. Changes Not Saved", 'Error!');
       }
     })
   }

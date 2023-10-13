@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FrNumpadComponent } from '../../dialogs/fr-numpad/fr-numpad.component'; 
 import { AuthService } from '../../init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete'; 
 import { SharedService } from '../../services/shared.service';
@@ -51,7 +51,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
     private authservice: AuthService,
     private sharedService: SharedService,
     // private Api:ApiFuntions,
-    private toastr: ToastrService,
+    
     public flowRackReplenishApi : FlowRackReplenishApiService) {
       this.iFlowRackReplenishApi = flowRackReplenishApi;
     }
@@ -159,18 +159,12 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
               // let payload = {}
               this.iFlowRackReplenishApi.openlocation({}).subscribe((res => {
                 if (res.data.length < 1) {
-                  this.toastr.error("There are no open locations.", 'Error!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000
-                  });
+                  this.global.ShowToastr('error',"There are no open locations.", 'Error!');
                   this.LocationRow = true;
                   this.itemLocation = ''
                 }
                 else {
-                  this.toastr.error("No Locations found for Item Number, Scan or Select an open Location.", 'Error!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000
-                  });
+                  this.global.ShowToastr('error',"No Locations found for Item Number, Scan or Select an open Location.", 'Error!');
                   this.locationSuggestions = res.data
                   this.LocationRow = false;
 
@@ -196,10 +190,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
         }
         else {
           this.itemnumscan = '';
-          this.toastr.error("This item does not exist in Inventory Master for this carton flow zone.", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"This item does not exist in Inventory Master for this carton flow zone.", 'Error!');
           this.clearAllFields()
         }
       }))
@@ -227,10 +218,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
         this.autocompleteTrigger.closePanel()
         this.clearLocationField()
         this.LocationRow = true;
-        this.toastr.error("Location Unavailable.", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',"Location Unavailable.", 'Error!');
       }
     }))
   }
@@ -295,17 +283,11 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
 
   updateItemQuantity() {
     if (this.itemQty <= 0) {
-      this.toastr.error("Quantity must be greater than zero.", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Quantity must be greater than zero.", 'Error!');
     }
 
     else if (this.itemQty == '') { 
-      this.toastr.error("Please enter a quantity.", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Please enter a quantity.", 'Error!');
     }
 
     else {
@@ -325,10 +307,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
 
           this.iFlowRackReplenishApi.itemquantity(payload).subscribe((res => {
             if (res.isExecuted) {
-              this.toastr.success('Item Quantity Added', 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success','Item Quantity Added', 'Success!');
               this.resetForm()
             }
           }))
@@ -336,10 +315,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
         else {
           this.itemQty = '';
           this.itemQtyFocus.nativeElement.select()
-          this.toastr.error("The quantity was not entered due to an error in the Inventory Map", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"The quantity was not entered due to an error in the Inventory Map", 'Error!');
         }
 
       }))

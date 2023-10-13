@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
-import { ToastrService } from 'ngx-toastr';
+
 import { RequiredDateStatusComponent } from '../../../app/dialogs/required-date-status/required-date-status.component';
 import { AuthService } from '../../../app/init/auth.service'; 
 import labels from '../../labels/labels.json';
@@ -40,7 +40,7 @@ export class SuperBatchComponent implements OnInit {
     private authService: AuthService,
     private inductionManagerApi: InductionManagerApiService,
     private global:GlobalService, 
-    private toastr: ToastrService,
+    
     private Api: ApiFuntions
   ) {
     this.iinductionManagerApi = inductionManagerApi;
@@ -69,10 +69,7 @@ export class SuperBatchComponent implements OnInit {
   }
   printBatchLabel(type){
     if(!this.printBatchLabels){
-      this.toastr.error('Please Select a Batch ID to Print', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Please Select a Batch ID to Print', 'Error!');
     }else{
       if(type=='printBatchLabels'){
     this.global.Print(`FileName:PrintSuperBatchLabel|ToteID:${this.printBatchLabels}`,'lbl');
@@ -128,24 +125,15 @@ export class SuperBatchComponent implements OnInit {
       
       
     if (element.newToteID <= 1) {
-      this.toastr.error('Must enter a tote id to batch orders', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Must enter a tote id to batch orders', 'Error!');
       return;
     }
     if (element.orderToBatch <= 1) {
-      this.toastr.error('Orders to Batch must be greater than 1 ', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Orders to Batch must be greater than 1 ', 'Error!');
       return;
     }
     if (!element.newToteID) {
-      this.toastr.error('Must enter a tote id to batch orders', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Must enter a tote id to batch orders', 'Error!');
       return;
     }
 
@@ -188,16 +176,10 @@ export class SuperBatchComponent implements OnInit {
         this.iinductionManagerApi.TotePrintTableInsert({ "ToteID": element.newToteID.toString() }).subscribe(res => {
           if(res.isExecuted){
             this.superBatches.push(element.newToteID);
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
           }
           else{
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
 
         });
@@ -214,10 +196,7 @@ export class SuperBatchComponent implements OnInit {
   checkOTB(element: any, i : any) {
     if (element.orderToBatch <= 1) {
       this.dataSource[i].orderToBatch = 2;
-      this.toastr.error('Orders to Batch must be greater than 1 ', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Orders to Batch must be greater than 1 ', 'Error!');
     }
   }
 

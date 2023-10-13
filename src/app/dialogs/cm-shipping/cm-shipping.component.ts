@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from 'src/app/init/auth.service';
 import { CmAddNewItemToShipmentComponent } from '../cm-add-new-item-to-shipment/cm-add-new-item-to-shipment.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -44,7 +44,7 @@ export class CmShippingComponent implements OnInit {
   constructor(
     public consolidationAPI : ConsolidationApiService,
     // private Api: ApiFuntions, 
-    private authService: AuthService, private toast: ToastrService,
+    private authService: AuthService, 
     private global:GlobalService,
     private route: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -154,7 +154,7 @@ export class CmShippingComponent implements OnInit {
       this.IconsolidationAPI.SelCountOfOpenTransactionsTemp(obj).subscribe((res: any) => {
         if (res) {
           if (res.data == -1) {
-            this.toast.error("An error has occurred", "Error", { positionClass: 'toast-bottom-right', timeOut: 2000 });
+            this.global.ShowToastr('error',"An error has occurred", "Error");
           } else if (res.data == 0) {
             //call function to complete shipment
             this.completeShipment();
@@ -189,9 +189,9 @@ export class CmShippingComponent implements OnInit {
     }
     this.IconsolidationAPI.CompleteShipment(obj).subscribe((res: any) => {
       if (res?.isExecuted) {
-        this.toast.success(`Order Number: ${this.orderNumber} is marked as Shipping Complete`, "Success", { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        this.global.ShowToastr('success',`Order Number: ${this.orderNumber} is marked as Shipping Complete`, "Success");
       } else {
-        this.toast.error("An error has occurred", "Error", { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        this.global.ShowToastr('error',"An error has occurred", "Error");
       }
     });
   }

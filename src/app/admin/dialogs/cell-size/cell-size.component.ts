@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChildren, ElementRef, QueryList, Renderer2 } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
@@ -27,7 +27,7 @@ export class CellSizeComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     // private api: ApiFuntions,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     public dialogRef: MatDialogRef<any>,
     private global:GlobalService,
     private renderer: Renderer2
@@ -83,10 +83,7 @@ export class CellSizeComponent implements OnInit {
         this.cellsize_list.forEach(element => {
           if (element.cells.toLowerCase() == cell.toLowerCase() && !cond) {
             cond = false;
-            this.toastr.error('Cell Size already exists. Ensure any pending changes are saved before attempting to save this entry.', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error','Cell Size already exists. Ensure any pending changes are saved before attempting to save this entry.', 'Error!');
           }
         });
       }
@@ -102,24 +99,15 @@ export class CellSizeComponent implements OnInit {
         this.iCommonAPI.saveCellSize(paylaod).subscribe((res) => {
           if (res.isExecuted) {
             this.getCellSizeList();
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
           }
           else {
-            this.toastr.error('Cell Size already exists. Ensure any pending changes are saved before attempting to save this entry.', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error','Cell Size already exists. Ensure any pending changes are saved before attempting to save this entry.', 'Error!');
           }
         });
       }
     } else {
-      this.toastr.error('Cell Size cannot be empty', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Cell Size cannot be empty', 'Error!');
     }
   }
   dltCellSize(cell: any, i) { 
@@ -139,10 +127,7 @@ export class CellSizeComponent implements OnInit {
       this.iCommonAPI.dltCellSize(paylaod).subscribe((res) => {
         if (res.isExecuted) {
           this.getCellSizeList();
-          this.toastr.success(labels.alert.delete, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.delete, 'Success!');
         }
       });
        }

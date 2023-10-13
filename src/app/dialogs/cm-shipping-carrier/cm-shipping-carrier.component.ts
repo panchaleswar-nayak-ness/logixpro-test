@@ -4,7 +4,7 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { Subject, takeUntil } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component'; 
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -33,7 +33,7 @@ export class CmShippingCarrierComponent implements OnInit {
     private authService: AuthService,
     // private Api: ApiFuntions,
     public consolidationAPI : ConsolidationApiService,
-    private toastr: ToastrService,
+    
     public dialogRef: MatDialogRef<any>,
     private global:GlobalService,
     private renderer: Renderer2
@@ -105,10 +105,10 @@ export class CmShippingCarrierComponent implements OnInit {
       .CarrierSave(paylaod)
       .subscribe((res: any) => {
         if (res.isExecuted) {
-          this.toastr.success(res.message);
+          this.global.ShowToastr('success',res.message,"Success!");
           this.getCarrier();
         } else {
-          this.toastr.error(res.message);
+          this.global.ShowToastr('error',res.message);
         }
       });
   }

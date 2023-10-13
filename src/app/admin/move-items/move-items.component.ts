@@ -16,7 +16,7 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
-import { ToastrService } from 'ngx-toastr';
+
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
@@ -165,7 +165,7 @@ export class MoveItemsComponent implements OnInit {
     private authService: AuthService,
     private global:GlobalService,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     private filterService: ContextMenuFiltersService,
     private renderer: Renderer2,
     private elementRef: ElementRef
@@ -717,10 +717,7 @@ export class MoveItemsComponent implements OnInit {
     .CreateMoveTransactions(payload)
     .subscribe((res: any) => {
       if(res.isExecuted){
-        this.toastr.success('Item moved successfully', 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success','Item moved successfully', 'Success!');
         this.resetPagination();
         this.moveToFilter='1 = 1';
         this.moveFromFilter='1 = 1';
@@ -731,10 +728,7 @@ export class MoveItemsComponent implements OnInit {
         this.clearFields('MoveFrom')
         this.clearFields('MoveTo')
       }else{
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     });
   }

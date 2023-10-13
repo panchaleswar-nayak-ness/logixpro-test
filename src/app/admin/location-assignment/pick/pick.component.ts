@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+
 import labels from '../../../labels/labels.json'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -53,7 +53,7 @@ export class PickComponent implements OnInit {
   shortList: any = [];
 
   constructor(
-    private toastr: ToastrService,
+    
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     private authService: AuthService,
@@ -143,10 +143,7 @@ export class PickComponent implements OnInit {
 
   locationAssignment() {
     if (this.tableData2.data.length == 0) {
-      this.toastr.error("There were no orders selected for location assignment marking", 'No Orders Selected', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"There were no orders selected for location assignment marking", 'No Orders Selected');
     }
     else {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -169,15 +166,9 @@ export class PickComponent implements OnInit {
             if (res.isExecuted && res.data) {
               this.tableData2 = new MatTableDataSource([]);
               this.tableData2.paginator = this.paginator2;
-              this.toastr.success(labels.alert.success, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.success, 'Success!');
             } else {
-              this.toastr.error("There was an error marking these orders for location assignment", 'Error', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"There was an error marking these orders for location assignment", 'Error');
             }
           });
         }

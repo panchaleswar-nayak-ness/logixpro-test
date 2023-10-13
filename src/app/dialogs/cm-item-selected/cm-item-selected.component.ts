@@ -51,7 +51,7 @@ export class CmItemSelectedComponent implements OnInit {
  constructor(
     public consolidationAPI : ConsolidationApiService,
     private global:GlobalService, 
-    private toastr: ToastrService, 
+     
     // private Api:ApiFuntions, 
     private authService: AuthService, 
      @Inject(MAT_DIALOG_DATA) public data: any,
@@ -128,10 +128,7 @@ verifyLine(index) {
             
         }
         else{
-            this.toastr.error(res.responseMessage, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
   
 
@@ -161,10 +158,7 @@ verifyAll(){
   
         }
         else{
-            this.toastr.error(res.responseMessage, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
         }
 
       })

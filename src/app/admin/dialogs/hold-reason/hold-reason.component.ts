@@ -4,12 +4,13 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-hold-reason',
@@ -30,11 +31,11 @@ export class HoldReasonComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private adminApiService: AdminApiService,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<HoldReasonComponent>,
     private authService: AuthService,
     private Api: ApiFuntions,
-    private toastr: ToastrService
-  ) {
+   ) {
     this.iAdminApiService = adminApiService;
 
   }
@@ -65,16 +66,10 @@ export class HoldReasonComponent implements OnInit {
       .DeallocateTransactions(this.payload)
       .subscribe((res: any) => {
         if (res.isExecuted) {
-          this.toastr.success(res.responseMessage, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success',res.responseMessage, 'Success!');
           this.dialogRef.close({ isExecuted: true });
         } else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
           this.dialogRef.close({ isExecuted: false });
         }
       });

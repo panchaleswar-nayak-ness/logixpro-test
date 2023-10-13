@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import labels from '../../labels/labels.json'
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { UserApiService } from 'src/app/services/user-api/user-api.service';
 import { IUserAPIService } from 'src/app/services/user-api/user-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-change-password',
@@ -23,8 +24,8 @@ export class ChangePasswordComponent implements OnInit {
   constructor(
     public userApi : UserApiService,
     private fb: FormBuilder,
-    // public api: ApiFuntions,
-    private toastr: ToastrService,
+    private global: GlobalService,
+    
     public dialogRef: MatDialogRef<any>
   ) { this.iUserApi = userApi; }
 
@@ -42,10 +43,7 @@ export class ChangePasswordComponent implements OnInit {
   onSend(form: FormGroup) {
 
     if (form.value.old_password.toLowerCase() === form.value.new_password.toLowerCase()) {
-      this.toastr.error('You aren\'t changing your password. You\'re re-entering your password', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','You aren\'t changing your password. You\'re re-entering your password', 'Error!');
     }
     else {
       let payload = {
@@ -56,17 +54,11 @@ export class ChangePasswordComponent implements OnInit {
       this.iUserApi.changePassword(payload).subscribe((res) => {
         const { isExecuted, responseMessage } = res;
         if (isExecuted) {
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
           this.dialogRef.close();
         }
         else {
-          this.toastr.error(responseMessage?.toString(), 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',responseMessage?.toString(), 'Error!');
         }
       })
     }

@@ -5,9 +5,10 @@ import { Subscription } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-main',
@@ -29,10 +30,11 @@ export class MainComponent implements OnInit {
   constructor(
     private sharedService: SharedService,
     private Api: ApiFuntions,
+    private global: GlobalService,
     public globalConfigApi: GlobalConfigApiService,
     private authService: AuthService,
     private currentTabDataService: CurrentTabDataService,
-    private toastr: ToastrService,
+    
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -55,10 +57,7 @@ export class MainComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       const error = params['error'];
       if (error === "multipletab") {
-        this.toastr.error("Same Tab cannot be opened twice!", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-       });
+        this.global.ShowToastr('error',"Same Tab cannot be opened twice!", 'Error!');
       }
   });
   }

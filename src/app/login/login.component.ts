@@ -2,7 +2,7 @@ import { Component, ElementRef,  ViewChild } from '@angular/core';
 import { ILogin} from './Ilogin'; 
 import { FormControl} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { SpinnerService } from '../init/spinner.service';
@@ -38,7 +38,7 @@ export class LoginComponent {
     public userApi : UserApiService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr: ToastrService,
+    
     private global:GlobalService,
     public loader: SpinnerService,
     public globalConfigApi: GlobalConfigApiService,
@@ -103,10 +103,7 @@ export class LoginComponent {
         }
         else {
           const errorMessage = response.responseMessage;
-          this.toastr.error(errorMessage?.toString(), 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',errorMessage?.toString(), 'Error!');
         }
 
 
@@ -136,10 +133,7 @@ export class LoginComponent {
           localStorage.setItem('workStation', JSON.stringify(workStation));
         }
         else{
-          this.toastr.error('Kindly contact to administrator', 'Workstation is not set!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
         }
       });
     }

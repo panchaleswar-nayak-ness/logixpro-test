@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import labels from '../../labels/labels.json'; 
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-batch-delete-confirmation',
@@ -20,9 +21,9 @@ export class BatchDeleteConfirmationComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
+    private global:GlobalService,
     private inductionManagerApi: InductionManagerApiService,
-    private toastr: ToastrService
-  ) { 
+   ) { 
     this.heading = data.heading;
     this.message = data.message;
     this.iinductionManagerApi = inductionManagerApi;
@@ -43,16 +44,10 @@ export class BatchDeleteConfirmationComponent {
           .subscribe(
             (res: any) => {
               if (res?.isExecuted) {
-                this.toastr.success(labels.alert.delete, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.delete, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.toastr.error('Something went wrong', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error','Something went wrong', 'Error!');
                 this.dialogRef.close({isExecuted:false});
               }
             },
@@ -64,16 +59,10 @@ export class BatchDeleteConfirmationComponent {
           .subscribe(
             (res: any) => {
               if (res?.isExecuted) {
-                this.toastr.success(labels.alert.delete, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.delete, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.toastr.error('Something went wrong', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error','Something went wrong', 'Error!');
                 this.dialogRef.close({isExecuted:false});
               }
             },

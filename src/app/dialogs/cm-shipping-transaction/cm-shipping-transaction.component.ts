@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { CmShipSplitLineComponent } from '../cm-ship-split-line/cm-ship-split-line.component';
@@ -41,7 +41,7 @@ export class CmShippingTransactionComponent implements OnInit {
       public consolidationAPI : ConsolidationApiService,
       private dialog          : MatDialog,
       public dialogRef        : MatDialogRef<CmShippingTransactionComponent>,
-      private toast           : ToastrService,
+      
       // private Api: ApiFuntions,
       private authService     : AuthService,
       private _liveAnnouncer  : LiveAnnouncer,
@@ -73,7 +73,7 @@ export class CmShippingTransactionComponent implements OnInit {
             this.tableData = new MatTableDataSource(this.STIndex.tableData);
             this.tableData.paginator = this.paginator;
           } else {
-            this.toast.error('Something went wrong', 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         (error) => { }
@@ -103,10 +103,7 @@ export class CmShippingTransactionComponent implements OnInit {
         }
     };
     if (noExists) { // this is a conditional statement that will check the flag to see if the toteID does not exist in the data
-      this.toast.error('The given Tote ID is not contained within this order number', 'Error!', { // we will display a toast message to the user to let them know the toteID does not exist
-        positionClass: 'toast-bottom-right', // this is the position of where the toast message will be displayed
-        timeOut: 2000 // this is the amount of time the toast message will be displayed on the screen
-      });
+      this.global.ShowToastr('error','The given Tote ID is not contained within this order number', 'Error!' );
     };
   }
 
@@ -153,7 +150,7 @@ export class CmShippingTransactionComponent implements OnInit {
 
             if (res.data == -1) 
             {
-              this.toast.error('An error has occurred', 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+              this.global.ShowToastr('error','An error has occurred', 'Error!');
             } 
             else if (res.data == 0) 
             {
@@ -172,12 +169,12 @@ export class CmShippingTransactionComponent implements OnInit {
                   this.IconsolidationAPI.CompletePackingUpdate(payLoad).subscribe(
                     (res: any) => {
                       if (res.isExecuted) {
-                        this.toast.success('Packing Completed Successfully', 'Success!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+                        this.global.ShowToastr('success','Packing Completed Successfully', 'Success!');
                         this.dialogRef.close({
                           isExecuted: true,
                         });
                       } else {
-                        this.toast.error('Something went wrong', 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+                        this.global.ShowToastr('error','Something went wrong', 'Error!');
                       }
                     },
                     (error) => { }
@@ -214,12 +211,12 @@ export class CmShippingTransactionComponent implements OnInit {
                       this.IconsolidationAPI.CompletePackingUpdate(payLoad).subscribe(
                         (res: any) => {
                           if (res.isExecuted) {
-                            this.toast.success('Packing Completed Successfully', 'Success!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+                            this.global.ShowToastr('success','Packing Completed Successfully', 'Success!');
                             this.dialogRef.close({
                               isExecuted: true,
                             });
                           } else {
-                            this.toast.error('Something went wrong', 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+                            this.global.ShowToastr('error','Something went wrong', 'Error!');
                           }
                         },
                         (error) => { }
@@ -230,7 +227,7 @@ export class CmShippingTransactionComponent implements OnInit {
               });
             }
           } else {
-            this.toast.error('Something went wrong', 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         (error) => { }

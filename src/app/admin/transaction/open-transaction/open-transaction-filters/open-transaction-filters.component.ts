@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { AuthService } from 'src/app/init/auth.service'; 
 import { FloatLabelType } from '@angular/material/form-field';
@@ -37,7 +37,7 @@ export class OpenTransactionFiltersComponent implements OnInit {
     private authService: AuthService,
     private adminApiService: AdminApiService,
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    
     private sharedService:SharedService
   ) { this.iAdminApiService = adminApiService;} 
   ngOnInit(): void {

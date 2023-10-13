@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from 'src/app/init/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -24,7 +24,7 @@ export class PreferencesConsolidationComponent {
   constructor(
     public consolidationAPI : ConsolidationApiService,
     // private Api: ApiFuntions,
-    private toastr: ToastrService,
+    
     private authService: AuthService,
     public global:GlobalService
   ) {
@@ -85,20 +85,13 @@ this.IconsolidationAPI
       // If the request was successful
       if (response.isExecuted) {
         // Show a success message
-        this.toastr.success(response.responseMessage, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('success',response.responseMessage, 'Success!');
 
       } else {
         // Show an error message
-        this.toastr.error(
+        this.global.ShowToastr('error',
           'Error',
-          'An Error Occured while trying to remove all data, check the event log for more information',
-          {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          }
+          'An Error Occured while trying to remove all data, check the event log for more information'
         );
       }
     },
@@ -125,13 +118,9 @@ this.IconsolidationAPI
           if (response.isExecuted) {
             this.consolidationEvnt.emit();
           } else {
-            this.toastr.error(
+            this.global.ShowToastr('error',
               'Error',
-              'An Error Occured while trying to remove all data, check the event log for more information',
-              {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              }
+              'An Error Occured while trying to remove all data, check the event log for more information'
             );
           }
         },

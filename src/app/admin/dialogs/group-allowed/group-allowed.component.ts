@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map';
@@ -12,6 +12,7 @@ import { CustomValidatorService } from '../../../../app/init/custom-validator.se
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'group-allowed',
@@ -35,9 +36,10 @@ export class GroupAllowedComponent implements OnInit {
     private dialog:MatDialog,
     private adminApiService: AdminApiService,
     private employeeService: ApiFuntions,
-    private toastr: ToastrService,
+    
     private authService: AuthService,
     private fb: FormBuilder,
+    private global:GlobalService,
     private router: Router,
     private cusValidator: CustomValidatorService
   ) { 
@@ -106,16 +108,10 @@ export class GroupAllowedComponent implements OnInit {
     this.iAdminApiService.insertUserGroup(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialog.closeAll();
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
       }
       else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     });
   }

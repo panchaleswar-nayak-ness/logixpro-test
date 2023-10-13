@@ -9,7 +9,7 @@ import {  } from '../../dialogs/delete-confirmation/delete-confirmation.componen
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
 import { AuthService } from 'src/app/init/auth.service'; 
 import {  } from 'jquery';
-import { ToastrService } from 'ngx-toastr';
+
 import {  } from '@popperjs/core';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -49,7 +49,7 @@ export class CountComponent implements OnInit {
               private authservice : AuthService,
               private Api: ApiFuntions,
               private adminApiService: AdminApiService,
-              private toastr: ToastrService) {
+              ) {
                 this.iAdminApiService = adminApiService;
               }
 
@@ -113,10 +113,7 @@ export class CountComponent implements OnInit {
       })
     }
     else{
-      this.toastr.error("There were no orders selected for location assignment marking", 'No Orders Selected', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"There were no orders selected for location assignment marking", 'No Orders Selected');
     }
   }
 
@@ -133,16 +130,10 @@ export class CountComponent implements OnInit {
      if(res.isExecuted){
       let testdata = res.data.orders
      this.rightTable.data = this.rightTable.data.filter((data) => !testdata.includes(data.orderNumber)) 
-     this.toastr.success(labels.alert.success, 'Success!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000
-    });
+     this.global.ShowToastr('success',labels.alert.success, 'Success!');
      }
      else{
-      this.toastr.success(res.responseMessage, 'Success!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('success',res.responseMessage, 'Success!');
      }
     }))
   }

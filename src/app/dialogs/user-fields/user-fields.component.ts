@@ -5,7 +5,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -29,7 +29,7 @@ export class UserFieldsComponent implements OnInit {
     private global:GlobalService,
     public formBuilder: FormBuilder,
     private authService: AuthService,
-    private toast: ToastrService,
+    
     private adminApiService: AdminApiService,
     private Api: ApiFuntions) {
       this.iAdminApiService = adminApiService;

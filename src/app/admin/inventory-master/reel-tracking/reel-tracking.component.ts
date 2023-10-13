@@ -2,7 +2,7 @@ import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core'
 import { FormGroup} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { MinReelQtyComponent } from 'src/app/dialogs/min-reel-qty/min-reel-qty.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { Observable, Subscription } from 'rxjs';
@@ -27,7 +27,7 @@ export class ReelTrackingComponent implements OnInit {
     private authService: AuthService,
     private sharedService:SharedService,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService) { 
+    ) { 
       this.iAdminApiService = adminApiService;
     }
 
@@ -68,20 +68,14 @@ export class ReelTrackingComponent implements OnInit {
       this.sharedService.updateInvMasterState(event,true)
        
       if(event.checked){
-        this.toastr.success(res.responseMessage, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',res.responseMessage, 'Success!');
         
       }
       this.btnDisabled = false;
   }
   else if (res.responseMessage != 'Update Successful'){
     
-    this.toastr.error("Changes not saved!  Please reenter the information.", 'Error!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000
-    });
+    this.global.ShowToastr('error',"Changes not saved!  Please reenter the information.", 'Error!');
   }
   })
 
@@ -120,18 +114,12 @@ export class ReelTrackingComponent implements OnInit {
                   'minimumRTSReelQuantity' : res.data[0]
                 });
               } else {
-                this.toastr.error(res.responseMessage, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+                this.global.ShowToastr('error',res.responseMessage, 'Error!');
               }              
             });            
             
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
 
           

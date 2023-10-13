@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from 'src/app/init/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
@@ -21,7 +21,7 @@ export class PalletReceivingComponent implements OnInit {
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   constructor(
     public Api: ApiFuntions,
-    public toastService: ToastrService,
+    
     private authService: AuthService,
     public global:GlobalService,
     
@@ -78,24 +78,16 @@ export class PalletReceivingComponent implements OnInit {
                     .ProcessPallet(payload)
                     .subscribe((response: any) => {
                       if (response.isExecuted) {
-                        this.toastService.success(
+                        this.global.ShowToastr('success',
                           'Pallet was processed',
-                          'Success!',
-                          {
-                            positionClass: 'toast-bottom-right',
-                            timeOut: 2000,
-                          }
+                          'Success!' 
                         );
 
                         this.resetForm();
                       } else {
-                        this.toastService.error(
+                        this.global.ShowToastr('error',
                           'An error occurred processing this pallet setup',
-                          'Error!',
-                          {
-                            positionClass: 'toast-bottom-right',
-                            timeOut: 2000,
-                          }
+                          'Error!' 
                         );
                       }
                     });

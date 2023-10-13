@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+
 import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../../labels/labels.json';
 import { Router  } from '@angular/router';
@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-user-account',
@@ -19,10 +20,10 @@ export class UserAccountComponent implements OnInit {
   constructor(
     private sharedService: SharedService,
     private Api:ApiFuntions,
-    private toastr: ToastrService,
+    
     private router: Router,
     public globalConfigApi: GlobalConfigApiService,
-    private authService:AuthService
+    private global: GlobalService
   ) {
     this.iGlobalConfigApi = globalConfigApi;
   }
@@ -80,20 +81,14 @@ export class UserAccountComponent implements OnInit {
       .subscribe(
         {next: (res: any) => {
           if (res?.isExecuted) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
           }
           this.getMenuData();
           localStorage.clear();
           this.router.navigate(['/globalconfig']);
         },
         error: (error) => {
-          this.toastr.error(labels.alert.went_worng, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
         }}
       );
   }

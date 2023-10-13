@@ -2,12 +2,13 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from '../../../../app/init/auth.service'; 
 import labels from '../../../labels/labels.json'
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -25,8 +26,8 @@ export class SetColumnSeqComponent implements OnInit {
     private Api: ApiFuntions, 
     private authService: AuthService,
     private adminApiService: AdminApiService,
-    public dialogRef: MatDialogRef<any>,
-    private toastr: ToastrService
+    private global:GlobalService,
+    public dialogRef: MatDialogRef<any> 
     ) { 
       this.iAdminApiService = adminApiService;
 
@@ -70,10 +71,7 @@ export class SetColumnSeqComponent implements OnInit {
     }
     this.iAdminApiService.SaveColumns(payload).subscribe((res:any) => {
       if(res.isExecuted){
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
       }
       this.dialogRef.close('');
     });

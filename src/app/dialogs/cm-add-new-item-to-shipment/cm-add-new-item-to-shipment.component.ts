@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
@@ -23,7 +23,7 @@ export class CmAddNewItemToShipmentComponent{
     public consolidationAPI : ConsolidationApiService,
     // private Api:ApiFuntions,
     private authService: AuthService,
-    private toast:ToastrService,
+    
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CmAddNewItemToShipmentComponent>) {
       this.OrderNumber = this.data.orderNumber;

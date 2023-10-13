@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import labels from '../../labels/labels.json';
 import { MatAutocomplete } from '@angular/material/autocomplete';
@@ -76,7 +76,7 @@ export class OmAddRecordComponent implements OnInit {
   public iCommonAPI : ICommonApi;
   constructor(
     public commonAPI : CommonApiService,
-    private toastr: ToastrService,
+    
     private authService: AuthService,
     public orderManagerApi  : OrderManagerApiService,
     private global:GlobalService,
@@ -197,32 +197,20 @@ export class OmAddRecordComponent implements OnInit {
         this.mapDefaultValues();
         this.getWarehouses();
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
       }
     });
   }
 
   async save(loader: boolean = false) { 
     if (this.oTTempUpdatePayload.orderNumber.trim() == '' || this.oTTempUpdatePayload.itemNumber.trim() == '' || this.oTTempUpdatePayload.transType.trim() == '') {
-      this.toastr.error("Order Number, Item Number and Transaction Type must be completed in order to continue.", 'Warning!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Order Number, Item Number and Transaction Type must be completed in order to continue.", 'Warning!');
     }
     else if (this.wharehouseRequired && this.oTTempUpdatePayload.warehouse == '') {
-      this.toastr.error("The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
     }
     else if (this.oTTempUpdatePayload.transQty <= 0) {
-      this.toastr.error("The transaction quantity for this transaction must be greater than 0.", 'Warning!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"The transaction quantity for this transaction must be greater than 0.", 'Warning!');
     }
     else {
       let check: any = await this.checkItemNumberBeforeSave();
@@ -235,32 +223,20 @@ export class OmAddRecordComponent implements OnInit {
       if (!this.isEdit) {
         this.iOrderManagerApi.OTTempInsert(this.oTTempUpdatePayload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
             this.dialogRef.close(res.data);
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         })
       }
       else {
         this.iOrderManagerApi.OTTempUpdate(this.oTTempUpdatePayload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.toastr.success(labels.alert.update, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.update, 'Success!');
             this.dialogRef.close(res.data);
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         })
       }
@@ -336,10 +312,7 @@ export class OmAddRecordComponent implements OnInit {
               this.wharehouseRequired = res.data[0].warehouseSensitive;
             }
             else{
-              this.toastr.error(`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory');
               this.oTTempUpdatePayload.itemNumber = "";
               this.oTTempUpdatePayload.description = "";
               this.oTTempUpdatePayload.unitofMeasure = ""; 
@@ -347,10 +320,7 @@ export class OmAddRecordComponent implements OnInit {
             }
           }
           else {
-            this.toastr.error(`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory');
             this.oTTempUpdatePayload.itemNumber = "";
             this.oTTempUpdatePayload.description = "";
             this.oTTempUpdatePayload.unitofMeasure = ""; 
@@ -378,10 +348,7 @@ export class OmAddRecordComponent implements OnInit {
           this.oTTempUpdatePayload.unitofMeasure = filtered[0].unitOfMeasure;
           this.wharehouseRequired = filtered[0].warehouseSensitive;
           if(this.wharehouseRequired == true && this.oTTempUpdatePayload.warehouse == ""){
-            this.toastr.error("The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
             return false;
           }
           else{

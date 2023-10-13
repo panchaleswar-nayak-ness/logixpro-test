@@ -18,7 +18,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrModule } from 'ngx-toastr';
-import { ToastrService } from 'ngx-toastr';
+
 import { PageEvent } from '@angular/material/paginator';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -327,10 +327,7 @@ describe('CCBCountQueueComponent', () => {
     //   '/Admin/RemoveccQueueAll'
     // );
 
-    // expect(component.toastr.success).toHaveBeenCalledWith('Success!', 'Success!', {
-    //   positionClass: 'toast-bottom-right',
-    //   timeOut: 2000,
-    // });
+    // expect(component.toastr.success).toHaveBeenCalledWith('Success!', 'Success!' );
 
     expect(component.getCount).toHaveBeenCalledWith(0);
     expect(component.getCountQue).toHaveBeenCalled();

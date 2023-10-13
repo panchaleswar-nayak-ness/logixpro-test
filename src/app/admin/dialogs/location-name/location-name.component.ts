@@ -1,6 +1,6 @@
 import { Component, OnInit} from '@angular/core'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -24,7 +24,7 @@ export class LocationNameComponent implements OnInit {
   constructor(private Api: ApiFuntions,
             public authService: AuthService,
             private adminApiService: AdminApiService,
-            private toastr: ToastrService,
+            
             public dialogRef: MatDialogRef<any>,
             private global:GlobalService) {
               this.iAdminApiService = adminApiService;
@@ -96,18 +96,12 @@ export class LocationNameComponent implements OnInit {
     }
     this.iAdminApiService.LocationNamesSave(payload).subscribe((res=>{
       if(res.isExecuted){
-        this.toastr.success("Location Name Updated Succesfully", 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',"Location Name Updated Succesfully", 'Success!');
           
         ele.oldVal = ele.currentVal
       }
       else{
-        this.toastr.error(`Location Name Not Updated`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',`Location Name Not Updated`, 'Error!');
       }
     }))
   }

@@ -12,7 +12,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '../../../../app/init/auth.service'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { MatDialog } from '@angular/material/dialog';
 
 import labels from '../../../labels/labels.json';
@@ -70,7 +70,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
     private authService: AuthService,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
-    private toastr: ToastrService,
+    
     private sharedService: SharedService,
     private router:Router, 
     
@@ -205,10 +205,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
           if (isExecuted) {
             this.batchCreated.emit(true);
             this.batchIdUpdateEmit.emit(true);
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
           }
         });
     } catch (error) { 

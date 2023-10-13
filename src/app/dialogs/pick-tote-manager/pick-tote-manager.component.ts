@@ -3,7 +3,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { startWith } from 'rxjs/internal/operators/startWith';
@@ -191,7 +191,7 @@ export class PickToteManagerComponent implements OnInit {
   constructor(
     private global:GlobalService,
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    
     private inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
@@ -354,10 +354,7 @@ export class PickToteManagerComponent implements OnInit {
           }
           this.iinductionManagerApi.PickBatchDefaultFilterMark(paylaod).subscribe(res => {
             if (res.isExecuted) {
-              this.toastr.success(labels.alert.update, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              }); 
+              this.global.ShowToastr('success',labels.alert.update, 'Success!'); 
             }
           });
         }
@@ -371,10 +368,7 @@ export class PickToteManagerComponent implements OnInit {
       }
       this.iinductionManagerApi.PickBatchDefaultFilterClear(paylaod).subscribe(res => {
         if (res.isExecuted) {
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
           const matSelect: MatSelect = option.source;
           matSelect.writeValue(null);
         }
@@ -394,10 +388,7 @@ export class PickToteManagerComponent implements OnInit {
           this.pickBatchFilterOrderData(res.data);
         }
         else {
-          this.toastr.error('No filter is marked as default.', 'Warning!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error','No filter is marked as default.', 'Warning!');
         }
         const matSelect: MatSelect = option.source;
         matSelect.writeValue(null);
@@ -418,10 +409,7 @@ export class PickToteManagerComponent implements OnInit {
           }
           this.iinductionManagerApi.PickBatchFilterBatchDelete(paylaod).subscribe(res => {
             if (res.isExecuted) {
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
               this.savedFilterList = this.savedFilterList.filter(item => item !== this.savedFilter.value);
               this.savedFilter.setValue('');
               this.savedFilClosed();
@@ -539,10 +527,7 @@ export class PickToteManagerComponent implements OnInit {
       }
     }
     else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
-      this.toastr.error('No open totes in batch', 'Batch is Filled.', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','No open totes in batch', 'Batch is Filled.');
     }
     else {
       this.FILTER_BATCH_DATA.forEach(v => {
@@ -598,10 +583,7 @@ export class PickToteManagerComponent implements OnInit {
       }
     }
     else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
-      this.toastr.error('No open totes in batch', 'Batch is Filled.', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','No open totes in batch', 'Batch is Filled.');
     }
     else {
       this.FILTER_BATCH_DATA_ZONE.forEach(v => {
@@ -852,10 +834,7 @@ export class PickToteManagerComponent implements OnInit {
 
   onSaveSingleFilter(element: any) {
     if (element.value === '') {
-      this.toastr.error('Some of the inputs are missing values. Cannot add row to filter.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Some of the inputs are missing values. Cannot add row to filter.', 'Error!');
     }
     else {
       let payload = {
@@ -872,10 +851,7 @@ export class PickToteManagerComponent implements OnInit {
           this.iinductionManagerApi.PickBatchFilterUpdate(payload).subscribe(res => {
             if (res.isExecuted) {
               this.isFilterAdd = true;
-              this.toastr.success(labels.alert.update, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.update, 'Success!');
               this.filterSeq = element.sequence;
               this.pickBatchFilterOrderData(this.savedFilter.value);
             }
@@ -885,10 +861,7 @@ export class PickToteManagerComponent implements OnInit {
           this.iinductionManagerApi.PickBatchFilterInsert(payload).subscribe(res => {
             if (res.isExecuted) {
               this.isFilterAdd = true;
-              this.toastr.success(labels.alert.success, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.success, 'Success!');
               this.filterSeq = element.sequence;
               this.pickBatchFilterOrderData(this.savedFilter.value);
             }
@@ -910,10 +883,7 @@ export class PickToteManagerComponent implements OnInit {
       this.iinductionManagerApi.PickBatchOrderUpdate(payload).subscribe(res => {
         if (res.isExecuted) {
           this.isOrderByAdd = true;
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
         }
       });
     }
@@ -927,10 +897,7 @@ export class PickToteManagerComponent implements OnInit {
       this.iinductionManagerApi.PickBatchOrderInsert(payload).subscribe(res => {
         if (res.isExecuted) {
           this.isOrderByAdd = true;
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           element.id = res.data;
           this.orderBySeq = element.sequence;
         }
@@ -945,10 +912,7 @@ export class PickToteManagerComponent implements OnInit {
     this.orderBydataSource.filteredData.map( (item) => {
       let existItem = res.find((x: any) => x.sequence == item.sequence);
       if (existItem) {
-        this.toastr.error('Can\'t have conflicting sequences within the order rows. A new sequence has been provided', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Can\'t have conflicting sequences within the order rows. A new sequence has been provided', 'Error!');
         element.sequence = +existItem.sequence + 1;
       }
       else {
@@ -973,10 +937,7 @@ export class PickToteManagerComponent implements OnInit {
         this.iinductionManagerApi.PickBatchFilterDelete(payload).subscribe(res => {
           if (res.isExecuted) {
             this.isFilterAdd = true;
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.pickBatchFilterOrderData(this.savedFilter.value);
           }
         });
@@ -1001,10 +962,7 @@ export class PickToteManagerComponent implements OnInit {
         this.iinductionManagerApi.PickBatchOrderDelete(payload).subscribe(res => {
           if (res.isExecuted) {
             this.isFilterAdd = true;
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.pickBatchFilterOrderData(this.savedFilter.value);
           }
         });
@@ -1060,15 +1018,9 @@ export class PickToteManagerComponent implements OnInit {
         }
         this.iinductionManagerApi.PickBatchZoneDefaultMark(payload).subscribe(res => {
           if (res.isExecuted) {
-            this.toastr.success(labels.alert.update, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.update, 'Success!');
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
           }
         });
       }

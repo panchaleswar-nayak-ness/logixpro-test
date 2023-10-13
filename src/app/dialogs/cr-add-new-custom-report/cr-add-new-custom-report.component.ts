@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, QueryList, ViewChild, ViewChildr
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CrEditDesignTestDataComponent } from '../cr-edit-design-test-data/cr-edit-design-test-data.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { ToastrService } from 'ngx-toastr';
+
 import { catchError, of } from 'rxjs';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { CrDesignFilenameConfirmationComponent } from '../cr-design-filename-confirmation/cr-design-filename-confirmation.component';
@@ -36,7 +36,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
               private global:GlobalService,
                private api:ApiFuntions,
-              private toastr :ToastrService,
+              
               private adminApiService: AdminApiService,
               public dialogRef: MatDialogRef<any>) { 
                 this.iAdminApiService = adminApiService;
@@ -83,10 +83,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
   let valid = true;
   for (let x = 0; x < newParams.length - 1; x++) {
       if (newParams[x] == ''||newParams[x] == undefined) {
-        this.toastr.error(`${fields[x]} must not be left blank!`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',`${fields[x]} must not be left blank!`, 'Error!');
         valid = false;
         break;
       }
@@ -95,10 +92,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       const exists = this.isFileNameAlreadyExists(newParams[1]);
      
       if (exists) {
-        this.toastr.error(`Filename must be unique!`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',`Filename must be unique!`, 'Error!');
         valid = false;
     };
 
@@ -110,10 +104,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       
       this.iAdminApiService.validateNewDesign(newParams).subscribe((res=>{
         if(!res.data){
-          this.toastr.error(`Validation for adding a new report failed with an unknown error.  Please contact Scott Tech for support if this persists.`, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',`Validation for adding a new report failed with an unknown error.  Please contact Scott Tech for support if this persists.`, 'Error!');
         }
         else{
           this.appendstring = this.buildAppendString('File warnings:', res.data.fileObj.errs)
@@ -168,19 +159,13 @@ export class CrAddNewCustomReportComponent implements OnInit {
           this.iAdminApiService.getLLDesignerNewDesign(obj).pipe(
             catchError((error) => {
               // Handle the error here
-              this.toastr.error("An error occured while retrieving data.", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"An error occured while retrieving data.", 'Error!');
               // Return a fallback value or trigger further error handling if needed
               return of({ isExecuted: false });
             })
           ).subscribe((res=>{
             this.dialogRef.close(obj);
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
           }))
           }
         }
@@ -206,10 +191,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
   };
   this.iAdminApiService.restoreDesign(obj).subscribe(res=>{
     if(!res.data){
-      this.toastr.error("Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!');
     }
     else{
       // remaining
@@ -240,10 +222,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
         }
         this.iAdminApiService.deleteReport(payload).subscribe(res=>{
           if (!res.data) {
-            this.toastr.error("Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!');
         } else {
           this.saveNew()
         };

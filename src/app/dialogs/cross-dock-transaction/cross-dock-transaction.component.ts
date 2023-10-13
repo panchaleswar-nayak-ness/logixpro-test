@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ReprocessTransactionDetailViewComponent } from '../reprocess-transaction-detail-view/reprocess-transaction-detail-view.component';
-import { ToastrService } from 'ngx-toastr';
+
 import { UserFieldsComponent } from '../user-fields/user-fields.component';
 import { TotesAddEditComponent } from '../totes-add-edit/totes-add-edit.component';
 import { Router } from '@angular/router';
@@ -54,7 +54,7 @@ export class CrossDockTransactionComponent implements OnInit {
               private inductionManagerApi: InductionManagerApiService,
               @Inject(MAT_DIALOG_DATA) public data: any, 
               private Api:ApiFuntions, 
-              private toastr: ToastrService,
+              
               private global:GlobalService) {
                 this.iinductionManagerApi = inductionManagerApi;
                }
@@ -157,10 +157,7 @@ export class CrossDockTransactionComponent implements OnInit {
             this.numberRecords = res.data.numberRecords;
             this.upperBound = res.data.transaction.length < 5 ? res.data.numberRecords : 5; 
           } else {
-            this.toastr.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
           }
         },
         (error) => { }
@@ -209,10 +206,7 @@ export class CrossDockTransactionComponent implements OnInit {
       });
     }
     else{
-      this.toastr.error('Order must be selected.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Order must be selected.', 'Error!');
       this.clearMatSelectList()
     }
 
@@ -226,10 +220,7 @@ export class CrossDockTransactionComponent implements OnInit {
     }
     this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
-        this.toastr.error('Something is wrong.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Something is wrong.', 'Error!');
       }
 
     });
@@ -314,23 +305,14 @@ export class CrossDockTransactionComponent implements OnInit {
                   }
                   else{
                     window.open(`/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-                    this.toastr.success('Pick Completed Successfully', 'Success!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
+                    this.global.ShowToastr('success','Pick Completed Successfully', 'Success!');
                   }
                 }
                 else{
-                  this.toastr.success('Pick Completed Successfully', 'Success!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000,
-                  });
+                  this.global.ShowToastr('success','Pick Completed Successfully', 'Success!');
                 }
               } else {
-                this.toastr.error('Something went wrong', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error','Something went wrong', 'Error!');
               }
             },
             (error) => {}
@@ -364,10 +346,7 @@ export class CrossDockTransactionComponent implements OnInit {
       if(!open){
         this.PrintCrossDockForLbl();
       }else{
-        this.toastr.success('Pick Completed Successfully', 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('success','Pick Completed Successfully', 'Success!');
       }
       });
     } 
