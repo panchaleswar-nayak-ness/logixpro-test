@@ -25,7 +25,7 @@ export class CmShipSplitLineComponent implements OnInit {
 
   constructor(
     public consolidationAPI : ConsolidationApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<CmShipSplitLineComponent>,
     private toast: ToastrService,
     // private Api: ApiFuntions,

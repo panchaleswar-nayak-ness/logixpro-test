@@ -9,9 +9,8 @@ import { GlobalService } from '../common/services/global.service';
 })
 export class ConfirmationGuard implements CanDeactivate<any> {
   constructor( 
-    private dialog: MatDialog,
-    private router: Router,
     private global:GlobalService,
+    private router: Router, 
     // public quarantineDialogRef: MatDialogRef<'quarantineAction'>,
   ) { }
   async  canDeactivate(component: any,route:ActivatedRouteSnapshot):Promise<boolean> { 
@@ -22,7 +21,7 @@ export class ConfirmationGuard implements CanDeactivate<any> {
   }
   async OpenConfirmationDialog(title:string): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         data: {

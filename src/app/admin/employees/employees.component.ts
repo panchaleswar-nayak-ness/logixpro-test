@@ -112,13 +112,13 @@ bpSettingLocInp='';
     private authService: AuthService,
     private _liveAnnouncer: LiveAnnouncer, 
     private employeeService: ApiFuntions, 
-    private dialog: MatDialog,
+    private global:GlobalService,
     private adminApiService: AdminApiService,
     private toastr: ToastrService, 
     private zone: NgZone,
     public router: Router,
     public laoder: SpinnerService,
-    private global:GlobalService,
+    private dialog:MatDialog,
     private fb: FormBuilder
     ) {  
       this.iAdminApiService = adminApiService;
@@ -348,7 +348,7 @@ initialzeEmpForm() {
     emp_data.env = this.env;
     emp_data.allGroups = this.allGroups;
     if (event === 'edit') {
-      let dialogRef = this.dialog.open(AddNewEmployeeComponent, {
+      let dialogRef:any = this.global.OpenDialog(AddNewEmployeeComponent, {
         height: 'auto',
         width: '520px',
         autoFocus: '__non_existing_element__',
@@ -370,7 +370,7 @@ initialzeEmpForm() {
       })
     }
     if (event === 'delete') {
-      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -398,7 +398,7 @@ initialzeEmpForm() {
   }
 
   openGroupDialog() {
-    let dialogRef = this.dialog.open(AddNewGroupComponent, {
+    let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -427,7 +427,7 @@ initialzeEmpForm() {
   }
   actionGroupDialog(event: any, grp_data: any, matEvent: MatSelectChange) { 
     if (event === 'edit') {
-      let dialogRef = this.dialog.open(AddNewGroupComponent, {
+      let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -446,7 +446,7 @@ initialzeEmpForm() {
       })
     }
     if (event === 'delete') {
-      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -464,7 +464,7 @@ initialzeEmpForm() {
       })
     }
     if (event === 'clone') { 
-      let dialogRef = this.dialog.open(CloneGroupComponent, {
+      let dialogRef:any = this.global.OpenDialog(CloneGroupComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -493,7 +493,7 @@ initialzeEmpForm() {
   }
 
   addZoneDialog() {
-    const dialogRef = this.dialog.open(AddZoneComponent, {
+    const dialogRef:any = this.global.OpenDialog(AddZoneComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -513,7 +513,7 @@ initialzeEmpForm() {
   }
 
   deleteZone(zone: any) {
-   const dialogRef =  this.dialog.open(DeleteConfirmationComponent, {
+   const dialogRef:any =  this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -531,7 +531,7 @@ initialzeEmpForm() {
 
   }
   editZoneDialog(zone: any) {
-   const dialogRef =  this.dialog.open(AddZoneComponent, {
+   const dialogRef:any =  this.global.OpenDialog(AddZoneComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -590,7 +590,7 @@ initialzeEmpForm() {
   }
 
   openDialog() {
-    let dialogRef = this.dialog.open(AddNewEmployeeComponent, {
+    let dialogRef:any = this.global.OpenDialog(AddNewEmployeeComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -612,7 +612,7 @@ initialzeEmpForm() {
 
   addLocationDialog() {
     let dialogRef;
-    dialogRef = this.dialog.open(AddLocationComponent, {
+    dialogRef = this.global.OpenDialog(AddLocationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -630,7 +630,7 @@ initialzeEmpForm() {
 
   editLocationDialog(element) {
     let dialogRef;
-    dialogRef = this.dialog.open(AddLocationComponent, {
+    dialogRef = this.global.OpenDialog(AddLocationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -649,7 +649,7 @@ initialzeEmpForm() {
 
   deleteLocation(location:any){
     let dialogRef;
-    dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    dialogRef = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -667,7 +667,7 @@ initialzeEmpForm() {
 
   AddFunctionAllowedDialog() {
     let dialogRef;
-    dialogRef = this.dialog.open(AddGroupAllowedComponent, {
+    dialogRef = this.global.OpenDialog(AddGroupAllowedComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -682,7 +682,7 @@ initialzeEmpForm() {
     })
   }
   grpAllowedDialog() {
-   const  dialogRef = this.dialog.open(GroupAllowedComponent, {
+   const  dialogRef:any = this.global.OpenDialog(GroupAllowedComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -729,7 +729,7 @@ initialzeEmpForm() {
       })
   }
   deleteGroupAllowed(allowedGroup: any) {
-    const dialogRef =  this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any =  this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',

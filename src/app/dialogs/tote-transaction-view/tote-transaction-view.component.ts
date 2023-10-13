@@ -50,8 +50,7 @@ export class ToteTransactionViewComponent implements OnInit {
   public iInductionManagerApi:IInductionManagerApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<any>,
-    private dialog: MatDialog,
+    public dialogRef: MatDialogRef<any>, 
     private Api: ApiFuntions,
     private global:GlobalService,
     private toastr: ToastrService,
@@ -136,7 +135,7 @@ export class ToteTransactionViewComponent implements OnInit {
   }
   actionDialog(opened: boolean) {
     if (!opened && this.selectedOption && this.selectedOption === 'clearTote') {
-      const dialogRef = this.dialog.open(BatchDeleteComponent, {
+      const dialogRef:any = this.global.OpenDialog(BatchDeleteComponent, {
         height: 'auto',
         width: '50vw',
         autoFocus: '__non_existing_element__',
@@ -161,7 +160,7 @@ export class ToteTransactionViewComponent implements OnInit {
       this.selectedOption === 'fullTote'
     ) {
       this.clearMatSelectList();
-      const dialogRef = this.dialog.open(MarkToteFullComponent, {
+      const dialogRef:any = this.global.OpenDialog(MarkToteFullComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -224,7 +223,7 @@ export class ToteTransactionViewComponent implements OnInit {
   clear(type,item) {
    
     let itemId=item.id
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',

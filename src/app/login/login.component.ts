@@ -13,6 +13,7 @@ import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-confi
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 import { IUserAPIService } from '../services/user-api/user-api-interface';
 import { UserApiService } from '../services/user-api/user-api.service';
+import { GlobalService } from '../common/services/global.service';
 
 @Component({
   selector: 'login',
@@ -38,7 +39,7 @@ export class LoginComponent {
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public loader: SpinnerService,
     public globalConfigApi: GlobalConfigApiService,
     private auth: AuthService, 
@@ -352,7 +353,7 @@ export class LoginComponent {
   }
 
   changePass() {
-    let dialogRef = this.dialog.open(ChangePasswordComponent, {
+    let dialogRef:any = this.global.OpenDialog(ChangePasswordComponent, {
       height: 'auto',
       width: '500px',
       autoFocus: '__non_existing_element__',

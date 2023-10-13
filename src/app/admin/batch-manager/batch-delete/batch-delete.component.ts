@@ -16,6 +16,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-batch-delete',
@@ -64,8 +65,9 @@ export class BatchDeleteComponent implements OnInit {
   }
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private api: ApiFuntions,
+    private dialog:MatDialog,
     public authService: AuthService,
     private adminApiService: AdminApiService,
     private toastr: ToastrService,
@@ -136,7 +138,7 @@ export class BatchDeleteComponent implements OnInit {
       transType: type
     };
     if (this.batchID !== 'All Transaction') {
-      let dialogRef = this.dialog.open(this.dltActionTemplate, {
+      let dialogRef:any = this.global.OpenDialog(this.dltActionTemplate, {
         width: '550px',
         autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -168,7 +170,7 @@ export class BatchDeleteComponent implements OnInit {
       });
     } else {
       payload.identity = 2;
-      const dialogRef = this.dialog.open(this.dltByTransactionTemplate, {
+      const dialogRef:any = this.global.OpenDialog(this.dltByTransactionTemplate, {
         width: '550px',
         autoFocus: '__non_existing_element__',
       disableClose:true,

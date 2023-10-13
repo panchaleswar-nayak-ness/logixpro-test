@@ -73,12 +73,11 @@ export class SrNewOrderComponent implements OnInit {
   newOrderListCreated:boolean = false;
   public iAdminApiService: IAdminApiService;
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
     private toastr: ToastrService,
     private authService: AuthService,
-    private router: Router,
-    private global:GlobalService,
+    private router: Router, 
     private adminApiService: AdminApiService,
     private filterService: ContextMenuFiltersService
   ) { 
@@ -132,7 +131,7 @@ export class SrNewOrderComponent implements OnInit {
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
+    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data: {
@@ -176,7 +175,7 @@ export class SrNewOrderComponent implements OnInit {
   }
 
   editTransDialog(element: any): void {
-    const dialogRef = this.dialog.open(TransactionQtyEditComponent, {
+    const dialogRef:any = this.global.OpenDialog(TransactionQtyEditComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -293,7 +292,7 @@ export class SrNewOrderComponent implements OnInit {
   print() {
 
   
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -343,7 +342,7 @@ export class SrNewOrderComponent implements OnInit {
   }
 
   filterItemNo() {
-    const dialogRef = this.dialog.open(FilterItemNumbersComponent, {
+    const dialogRef:any = this.global.OpenDialog(FilterItemNumbersComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -382,7 +381,7 @@ export class SrNewOrderComponent implements OnInit {
           });
         }
         if(res.responseMessage == "Reprocess"){
-          let dialogRef2 = this.dialog.open(ConfirmationDialogComponent, {
+          let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
             height: 'auto',
             width: '560px',
             autoFocus: '__non_existing_element__',

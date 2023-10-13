@@ -26,7 +26,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 describe('CCBCreateCountsComponent', () => {
   let component: CCBCreateCountsComponent;
   let fixture: ComponentFixture<CCBCreateCountsComponent>;
-  let dialog: MatDialog;
+  let global:GlobalService;
   let dialogRef: any; 
 
   let formBuilder: FormBuilder;

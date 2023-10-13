@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-pallet-receiving',
   templateUrl: './pallet-receiving.component.html',
@@ -22,7 +23,8 @@ export class PalletReceivingComponent implements OnInit {
     public Api: ApiFuntions,
     public toastService: ToastrService,
     private authService: AuthService,
-    public dialog: MatDialog
+    public global:GlobalService,
+    
   ) {
     this.processForm = new FormGroup({
       toteID: new FormControl('', Validators.required),
@@ -125,7 +127,7 @@ export class PalletReceivingComponent implements OnInit {
   }
 
   showNotification(heading, message) {
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '786px',
       data: {

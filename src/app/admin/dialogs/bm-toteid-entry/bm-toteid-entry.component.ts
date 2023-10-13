@@ -11,6 +11,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-bm-toteid-entry',
@@ -26,7 +27,7 @@ export class BmToteidEntryComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private api: ApiFuntions,
     private adminApiService: AdminApiService,
     private authService: AuthService,
@@ -49,7 +50,7 @@ export class BmToteidEntryComponent implements OnInit {
     this.selectedList[index]['createNextToteID'] = undefined;
   }
   createNextTote() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '786px',
       data: {
@@ -71,7 +72,7 @@ export class BmToteidEntryComponent implements OnInit {
 
   submitOrder() {
     if (this.selectedList.find((o) => o.createNextToteID === undefined)) {
-      const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '786px',
         data: {

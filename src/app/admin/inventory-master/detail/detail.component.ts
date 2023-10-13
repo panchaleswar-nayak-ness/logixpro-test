@@ -14,6 +14,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../current-tab-data-service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-detail',
@@ -42,7 +43,7 @@ export class DetailComponent implements OnInit {
     private sharedService:SharedService,
     private authService: AuthService, 
     private adminApiService: AdminApiService,
-    private dialog: MatDialog,    
+    private global:GlobalService,    
     private currentTabDataService: CurrentTabDataService,
     private toastr: ToastrService,) {
       this.iAdminApiService = adminApiService;
@@ -84,7 +85,7 @@ export class DetailComponent implements OnInit {
   }
   public openItemNumDialog() {
 
-    let dialogRef = this.dialog.open(ItemNumberComponent, {
+    let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -122,7 +123,7 @@ export class DetailComponent implements OnInit {
   }
 
   public openDescriptionDialog() {
-    let dialogRef = this.dialog.open(UpdateDescriptionComponent, {
+    let dialogRef:any = this.global.OpenDialog(UpdateDescriptionComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -143,7 +144,7 @@ export class DetailComponent implements OnInit {
   }
 
   public opencategoryDialog() {
-    let dialogRef = this.dialog.open(ItemCategoryComponent, {
+    let dialogRef:any = this.global.OpenDialog(ItemCategoryComponent, {
       height: 'auto',
       width: '860px',
       autoFocus: '__non_existing_element__',
@@ -170,7 +171,7 @@ export class DetailComponent implements OnInit {
     })
   }
   public openUmDialog() { 
-    let dialogRef = this.dialog.open(UnitMeasureComponent, {
+    let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',

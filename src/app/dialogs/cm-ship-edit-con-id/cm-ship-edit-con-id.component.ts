@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr'; 
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
@@ -25,7 +26,7 @@ export class CmShipEditConIdComponent implements OnInit {
 
   constructor(
     public consolidationAPI : ConsolidationApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<CmShipEditConIdComponent>,
     private toast: ToastrService,
     private authService: AuthService,

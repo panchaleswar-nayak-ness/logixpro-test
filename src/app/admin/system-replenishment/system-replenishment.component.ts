@@ -1,6 +1,7 @@
 import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { DeleteRangeComponent } from 'src/app/dialogs/delete-range/delete-range.component';
 import { PrintReplenLabelsComponent } from 'src/app/dialogs/print-replen-labels/print-replen-labels.component';
 import { SrDeleteOrderComponent } from 'src/app/dialogs/sr-delete-order/sr-delete-order.component';
@@ -12,7 +13,7 @@ import { SrDeleteOrderComponent } from 'src/app/dialogs/sr-delete-order/sr-delet
 })
 export class SystemReplenishmentComponent {
 
-  constructor(private dialog: MatDialog,) { }
+  constructor(private global:GlobalService) { }
 
   refreshCurrentOrders:Subject<any> = new Subject();
   replenishmentsProcessed:boolean = false;
@@ -21,7 +22,7 @@ export class SystemReplenishmentComponent {
 
  
   deleteRange(): void {
-    const dialogRef = this.dialog.open(DeleteRangeComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteRangeComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -31,7 +32,7 @@ export class SystemReplenishmentComponent {
     });
   }
   printLabels(): void {
-    const dialogRef = this.dialog.open(PrintReplenLabelsComponent, {
+    const dialogRef:any = this.global.OpenDialog(PrintReplenLabelsComponent, {
       width: '1132px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -42,7 +43,7 @@ export class SystemReplenishmentComponent {
   }
 
   deleteSelectedOrder(): void {
-    const dialogRef = this.dialog.open(SrDeleteOrderComponent, {
+    const dialogRef:any = this.global.OpenDialog(SrDeleteOrderComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,

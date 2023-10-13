@@ -7,6 +7,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component'; 
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
@@ -34,7 +35,7 @@ export class CmShippingCarrierComponent implements OnInit {
     public consolidationAPI : ConsolidationApiService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private renderer: Renderer2
   ) {
     this.IconsolidationAPI = consolidationAPI;
@@ -117,7 +118,7 @@ export class CmShippingCarrierComponent implements OnInit {
   }
   deleteCarrier(event: any) {
     if (event != '') {
-      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',

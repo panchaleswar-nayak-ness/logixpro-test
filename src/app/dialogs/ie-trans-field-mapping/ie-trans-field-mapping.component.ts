@@ -1,6 +1,7 @@
 import { Component,  ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort} from '@angular/material/sort';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-ie-trans-field-mapping',
@@ -27,7 +28,7 @@ export class IeTransFieldMappingComponent{
 
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) { }
   @ViewChild(MatSort) sort: MatSort;
 

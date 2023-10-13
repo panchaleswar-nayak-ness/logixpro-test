@@ -243,8 +243,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     private Api: ApiFuntions,
     public authService: AuthService,
     private global:GlobalService,
-    private toastr: ToastrService, 
-    private dialog: MatDialog,
+    private toastr: ToastrService,
     private sharedService:SharedService,
     private filterService: ContextMenuFiltersService,
     private currentTabDataService: CurrentTabDataService
@@ -438,7 +437,7 @@ this.router.navigate([]).then((result) => {
 
   }
   sendComp(event) {
-    let dialogRef = this.dialog.open(FunctionAllocationComponent, {
+    let dialogRef:any = this.global.OpenDialog(FunctionAllocationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -451,7 +450,7 @@ this.router.navigate([]).then((result) => {
     dialogRef.afterClosed().subscribe((result) => {});
   }
   adjustQuantity(event) {
-    let dialogRef = this.dialog.open(AdjustQuantityComponent, {
+    let dialogRef:any = this.global.OpenDialog(AdjustQuantityComponent, {
       height: 'auto',
       width: '800px',
       data: {
@@ -467,7 +466,7 @@ this.router.navigate([]).then((result) => {
   }
 
   deleteItem(event) {
-    const dialogRef = this.dialog.open(DeleteConfirmationTransactionComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationTransactionComponent, {
       height: 'auto',
       width: '600px',
       data: {
@@ -627,7 +626,7 @@ this.router.navigate([]).then((result) => {
   /*End of table functions */
   actionDialog(opened: boolean) {
     if (!opened && this.selectedVariable && this.selectedVariable==='set_column_sq') {
-      let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
         height: 'auto',
         width: '960',
         disableClose: true,
@@ -685,7 +684,7 @@ this.router.navigate([]).then((result) => {
     this.getContentData();
   }
   sendCompletedToHistory() {
-    let dialogRef = this.dialog.open(SendTranHistoryComponent, {
+    let dialogRef:any = this.global.OpenDialog(SendTranHistoryComponent, {
       height: 'auto',
       width: '580px',
       autoFocus: '__non_existing_element__',
@@ -746,7 +745,7 @@ this.router.navigate([]).then((result) => {
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
+    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data: {

@@ -12,6 +12,7 @@ import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-locati
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-pick',
@@ -56,7 +57,7 @@ export class PickComponent implements OnInit {
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     private authService: AuthService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private _liveAnnouncer1: LiveAnnouncer,
     private _liveAnnouncer2: LiveAnnouncer
   ) { 
@@ -148,7 +149,7 @@ export class PickComponent implements OnInit {
       });
     }
     else {
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -239,7 +240,7 @@ export class PickComponent implements OnInit {
     }
 
     this.iAdminApiService.GetTransactionTypeCounts(payload).subscribe((res =>{
-    let dialogRef = this.dialog.open(LaLocationAssignmentQuantitiesComponent, {
+    let dialogRef:any = this.global.OpenDialog(LaLocationAssignmentQuantitiesComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',

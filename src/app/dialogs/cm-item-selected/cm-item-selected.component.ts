@@ -11,6 +11,7 @@ import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { ApiFuntions } from "src/app/services/ApiFuntions";
 import { IConsolidationApi } from "src/app/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/services/consolidation-api/consolidation-api.service";
+import { GlobalService } from "src/app/common/services/global.service";
 
 @Component({
   selector: 'app-cm-item-selected',
@@ -49,7 +50,7 @@ export class CmItemSelectedComponent implements OnInit {
 
  constructor(
     public consolidationAPI : ConsolidationApiService,
-    private dialog: MatDialog, 
+    private global:GlobalService, 
     private toastr: ToastrService, 
     // private Api:ApiFuntions, 
     private authService: AuthService, 

@@ -7,6 +7,7 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-cell-size',
@@ -28,7 +29,7 @@ export class CellSizeComponent implements OnInit {
     private authService: AuthService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private renderer: Renderer2
   ) { this.iCommonAPI = commonAPI; }
 
@@ -124,7 +125,7 @@ export class CellSizeComponent implements OnInit {
   dltCellSize(cell: any, i) { 
     
     if (cell.cells != '') {
-      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',

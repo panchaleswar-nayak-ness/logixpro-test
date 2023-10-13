@@ -24,12 +24,11 @@ export class  ItemCategoryComponent implements OnInit {
 
   constructor(
     public commonAPI : CommonApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private authService: AuthService,
     private toastr: ToastrService,
     private renderer: Renderer2,
-    public dialogRef: MatDialogRef<any>,
-    private global:GlobalService,
+    public dialogRef: MatDialogRef<any>, 
     public route: Router
     ) { this.iCommonAPI = commonAPI; }
 
@@ -121,7 +120,7 @@ export class  ItemCategoryComponent implements OnInit {
 
   dltCategory(category : any, subCategory : any){
 
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',

@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-open-trans-pick-mapping',
@@ -22,7 +23,7 @@ export class OpenTransPickMappingComponent {
   
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) { }
  
   ngAfterViewInit(): void {

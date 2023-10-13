@@ -9,6 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import labels from '../../labels/labels.json';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-complete-pick-batch',
@@ -35,7 +36,7 @@ export class CompletePickBatchComponent{
   totalTransactions: number = 0;
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
     private inductionManagerApi: InductionManagerApiService,
     private toastr: ToastrService,
@@ -128,7 +129,7 @@ export class CompletePickBatchComponent{
   }
 
   ShortTransactionDialogue(element:any) {
-    const dialogRef = this.dialog.open(ShortTransactionComponent, {
+    const dialogRef:any = this.global.OpenDialog(ShortTransactionComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -145,7 +146,7 @@ export class CompletePickBatchComponent{
   }
 
   CpbBlossomToteDialogue() {
-    const dialogRef = this.dialog.open(CpbBlossomToteComponent, {
+    const dialogRef:any = this.global.OpenDialog(CpbBlossomToteComponent, {
       height: '640px',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -164,7 +165,7 @@ export class CompletePickBatchComponent{
   }
 
   CompleteTransaction(element:any){
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -196,7 +197,7 @@ export class CompletePickBatchComponent{
   }
 
   CompleteBatch(){
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',

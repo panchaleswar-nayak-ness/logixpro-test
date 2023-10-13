@@ -7,6 +7,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-scan-type-code',
@@ -25,7 +26,7 @@ export class ScanTypeCodeComponent implements OnInit {
 
   constructor(
     public commonAPI : CommonApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     // private Api: ApiFuntions, 
     private authService: AuthService,
     private toastr: ToastrService,
@@ -104,7 +105,7 @@ export class ScanTypeCodeComponent implements OnInit {
 
   dltScanTypeCode(newScanTypeCode : any) {
 
-    let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',

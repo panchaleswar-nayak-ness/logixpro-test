@@ -28,13 +28,12 @@ export class PrintersComponent implements OnInit {
   addingNew = false;
   public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
     public globalConfigApi: GlobalConfigApiService,
     private authService: AuthService,
     private toastr: ToastrService,
-    private renderer: Renderer2,
-    private global:GlobalService,
+    private renderer: Renderer2, 
     private router: Router
     
   ) { 
@@ -140,7 +139,7 @@ export class PrintersComponent implements OnInit {
   }
 
   RemovePrinter(printer: any) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -267,7 +266,7 @@ export class PrintersComponent implements OnInit {
       });
     } 
     else {
-      let dialogRef2 = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',

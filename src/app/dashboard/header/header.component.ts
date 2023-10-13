@@ -39,7 +39,7 @@ public  iGlobalConfigApi: IGlobalConfigApi;
 public iUserApi : IUserAPIService;
 constructor(
 	  public userApi : UserApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private router: Router,
     public inductionManagerApi: InductionManagerApiService,
     public spinnerService: SpinnerService, 
@@ -49,8 +49,7 @@ constructor(
     private toastr: ToastrService,
     private sharedService: SharedService,
     private titleService: Title,
-    private breakpointObserver: BreakpointObserver,
-    private global:GlobalService
+    private breakpointObserver: BreakpointObserver, 
     ) {
       this.iGlobalConfigApi = globalConfigApi;
       let width=0;
@@ -283,7 +282,7 @@ constructor(
   }
 
   openPrintSetting(){
-    this.dialog.open(DPrinterSetupComponent, {
+    this.global.OpenDialog(DPrinterSetupComponent, {
       height: 'auto',
       width: '556px',
       autoFocus: '__non_existing_element__',

@@ -18,6 +18,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-de-allocate-orders',
@@ -92,7 +93,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     private _liveAnnouncer: LiveAnnouncer,
     private toastr: ToastrService,
     private adminApiService: AdminApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private sharedService:SharedService,
     private filterService: ContextMenuFiltersService) { 
       this.iAdminApiService = adminApiService;
@@ -266,7 +267,7 @@ export class DeAllocateOrdersComponent implements OnInit {
 
   deAllocateOrder(){
     if(this.orderNumbersList.length != 0){
-      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '600px',
         autoFocus: '__non_existing_element__',
@@ -307,7 +308,7 @@ export class DeAllocateOrdersComponent implements OnInit {
 
   }
   deAllocateAll(){
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
@@ -517,7 +518,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
+    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data: {

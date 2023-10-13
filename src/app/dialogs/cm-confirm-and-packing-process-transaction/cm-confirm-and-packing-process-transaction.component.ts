@@ -27,11 +27,11 @@ userData:any = {};
 IsSelectModal: boolean = false;
 public IconsolidationAPI : IConsolidationApi;
 constructor(
-  private dialog: MatDialog,
+  private global:GlobalService,
   // private Api:ApiFuntions,
   public consolidationAPI : ConsolidationApiService,
   private authService: AuthService,
-  private toast:ToastrService,private global:GlobalService,
+  private toast:ToastrService ,
   @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<CmConfirmAndPackingProcessTransactionComponent>,) {
   this.userData = this.authService.userData();
   this.confPackTransTable = this.data.confPackTransTable;
@@ -70,7 +70,7 @@ async ConfPackProc(){
 
  openShipSplitLine() {
   let index = this.confPackTransTable.findIndex(x=>x.active);
-  let dialogRef = this.dialog.open(CmShipSplitLineComponent, {
+  let dialogRef:any = this.global.OpenDialog(CmShipSplitLineComponent, {
     height: 'auto',
     width: '30vw',
     autoFocus: '__non_existing_element__',
@@ -90,7 +90,7 @@ async ConfPackProc(){
 
 openShipEditQuantity() {
   let index = this.confPackTransTable.findIndex(x=>x.active);
-  let dialogRef = this.dialog.open(CmShipEditQtyComponent, {
+  let dialogRef:any = this.global.OpenDialog(CmShipEditQtyComponent, {
     height: 'auto',
     width: '50vw',
     autoFocus: '__non_existing_element__',

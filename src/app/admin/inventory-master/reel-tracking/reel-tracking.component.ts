@@ -9,6 +9,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class ReelTrackingComponent implements OnInit {
   btnDisabled : boolean = false;
   public iAdminApiService: IAdminApiService;
 
-  constructor(private dialog: MatDialog,
+  constructor(private global:GlobalService,
     private api: ApiFuntions,
     private authService: AuthService,
     private sharedService:SharedService,
@@ -87,7 +88,7 @@ export class ReelTrackingComponent implements OnInit {
   
  }
  updateReelQty(): void {
-    const dialogRef = this.dialog.open(MinReelQtyComponent, {
+    const dialogRef:any = this.global.OpenDialog(MinReelQtyComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',

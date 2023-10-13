@@ -10,6 +10,7 @@ import { SqlAuthConfirmationComponent } from '../sql-auth-confirmation/sql-auth-
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class GlobalConfigSetSqlComponent implements OnInit {
   public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<any>,
     private toastr: ToastrService,
     private Api:ApiFuntions,
@@ -55,7 +56,7 @@ export class GlobalConfigSetSqlComponent implements OnInit {
       this.message='Username and Password are set. This will set this connection for SQL Authentication. Press OK to set this';
 
     }
-    const dialogRef = this.dialog.open(SqlAuthConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(SqlAuthConfirmationComponent, {
       height: 'auto',
       width: '560px',
       data:{

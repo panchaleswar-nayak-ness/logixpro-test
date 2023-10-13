@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-preferences-consolidation',
@@ -25,7 +26,7 @@ export class PreferencesConsolidationComponent {
     // private Api: ApiFuntions,
     private toastr: ToastrService,
     private authService: AuthService,
-    public dialog: MatDialog
+    public global:GlobalService
   ) {
     this.userData = this.authService.userData();
     this.filtersForm = new FormGroup({

@@ -11,6 +11,7 @@ import { MatOption } from '@angular/material/core';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {
   position: string;
@@ -69,7 +70,7 @@ export class WorkstationComponent implements OnInit {
     private sharedService: SharedService,
     private api: ApiFuntions,
     private toastr: ToastrService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public globalConfigApi: GlobalConfigApiService
   ) {
     this.iGlobalConfigApi = globalConfigApi;
@@ -275,7 +276,7 @@ export class WorkstationComponent implements OnInit {
   actionDialog(opened: boolean) {
     if (!opened && this.selectedVariable) {
       if (this.selectedVariable === 'delete_workstation') {
-        const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+        const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
           height: 'auto',
           width: '480px',
           autoFocus: '__non_existing_element__',

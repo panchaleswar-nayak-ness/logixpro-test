@@ -1,5 +1,6 @@
 import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-sp-light-tree-setup',
@@ -8,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class SpLightTreeSetupComponent{
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private global:GlobalService) { }
 
 
 

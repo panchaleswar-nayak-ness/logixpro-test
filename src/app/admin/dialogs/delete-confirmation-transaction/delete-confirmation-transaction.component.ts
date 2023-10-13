@@ -23,8 +23,7 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   accessLevel = 'Selected Only';
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
     private adminApiService: AdminApiService,
     private toastr: ToastrService, 
     public dialogRef: MatDialogRef<DeleteConfirmationTransactionComponent>,

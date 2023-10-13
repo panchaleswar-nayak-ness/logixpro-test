@@ -24,7 +24,7 @@ export class BlossomToteComponent implements OnInit {
   
   imPreferences:any;
 
-  constructor(private dialog: MatDialog,
+  constructor(private dialog:MatDialog,
     private toastr: ToastrService,
     private Api: ApiFuntions,
     private inductionManagerApi: InductionManagerApiService,
@@ -75,7 +75,7 @@ export class BlossomToteComponent implements OnInit {
       });
     }
     else{
-      const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '786px',
         data: {

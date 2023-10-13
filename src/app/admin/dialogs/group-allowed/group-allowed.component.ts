@@ -32,7 +32,7 @@ export class GroupAllowedComponent implements OnInit {
   controlNameForm: FormGroup;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private dialog:MatDialog,
     private adminApiService: AdminApiService,
     private employeeService: ApiFuntions,
     private toastr: ToastrService,

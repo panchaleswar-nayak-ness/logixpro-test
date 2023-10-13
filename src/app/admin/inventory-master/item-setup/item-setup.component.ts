@@ -5,6 +5,7 @@ import { CellSizeComponent } from '../../dialogs/cell-size/cell-size.component';
 import { VelocityCodeComponent } from '../../dialogs/velocity-code/velocity-code.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-item-setup',
   templateUrl: './item-setup.component.html',
@@ -17,7 +18,7 @@ export class ItemSetupComponent {
   
   public userData: any;
   
-  constructor(private dialog: MatDialog, private sharedService:SharedService,    private fb: FormBuilder) {
+  constructor(private global:GlobalService, private sharedService:SharedService,    private fb: FormBuilder) {
     
    }
 
@@ -57,7 +58,7 @@ export class ItemSetupComponent {
     } else if(param == 'cfCellSize'){
       currentValue  = this.itemSetup.controls['cfCellSize'].value
     }
-    let dialogRef = this.dialog.open(CellSizeComponent, {
+    let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',
@@ -99,7 +100,7 @@ export class ItemSetupComponent {
       currentValue  = this.itemSetup.controls['cfVelocity'].value
     }
     
-    let dialogRef = this.dialog.open(VelocityCodeComponent, {
+    let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',

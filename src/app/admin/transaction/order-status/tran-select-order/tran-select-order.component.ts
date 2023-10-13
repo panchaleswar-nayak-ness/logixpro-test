@@ -26,6 +26,7 @@ import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-ta
 import { ActivatedRoute } from '@angular/router';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-tran-select-order',
@@ -110,7 +111,7 @@ export class TranSelectOrderComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private Api:ApiFuntions,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private sharedService: SharedService,
@@ -283,7 +284,7 @@ export class TranSelectOrderComponent implements OnInit {
       OrderNumber: this.searchField,
       TotalLines: JSON.stringify(this.totalLinesOrder),
     };
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,

@@ -6,6 +6,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -25,7 +26,7 @@ export class UserFieldsComponent implements OnInit {
   fieldNames:any;
   constructor(public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public formBuilder: FormBuilder,
     private authService: AuthService,
     private toast: ToastrService,

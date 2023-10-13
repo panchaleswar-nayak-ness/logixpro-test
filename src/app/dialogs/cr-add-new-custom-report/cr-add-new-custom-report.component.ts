@@ -8,6 +8,7 @@ import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirma
 import { CrDesignFilenameConfirmationComponent } from '../cr-design-filename-confirmation/cr-design-filename-confirmation.component';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-cr-add-new-custom-report',
@@ -33,7 +34,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
   @ViewChildren('serialTemp') serialInputs: QueryList<any>;
   constructor( 
     @Inject(MAT_DIALOG_DATA) public data: any,
-              private dialog: MatDialog,
+              private global:GlobalService,
                private api:ApiFuntions,
               private toastr :ToastrService,
               private adminApiService: AdminApiService,
@@ -48,7 +49,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
     this.desc_focus.nativeElement.focus();
   }
   openEditDesign() {
-    const dialogRef = this.dialog.open(CrEditDesignTestDataComponent, {
+    const dialogRef:any = this.global.OpenDialog(CrEditDesignTestDataComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -219,7 +220,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
   }
 
   DeleteExistingdesign(){
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '560px',
       data: {
@@ -291,7 +292,7 @@ validateInputs() {
 
 
   openCrDesignFilenameConfirmation() {
-    const dialogRef = this.dialog.open(CrDesignFilenameConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(CrDesignFilenameConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',

@@ -14,6 +14,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr'; 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -49,7 +50,7 @@ export class CCBCountQueueComponent implements OnInit {
     private _liveAnnouncer: LiveAnnouncer,
     public Api: ApiFuntions,
     private authService: AuthService,
-    public dialog: MatDialog,
+    public global:GlobalService,
     public toastr: ToastrService
   ) {
     this.iAdminApiService = adminApiService;
@@ -132,7 +133,7 @@ this.customPagination.total = 0;
   }
 
   createCycleCount() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '786px',
       autoFocus: '__non_existing_element__',

@@ -9,6 +9,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-mark-empty-reels',
@@ -31,7 +32,7 @@ export class MarkEmptyReelsComponent implements OnInit {
   userData;
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     public Api:ApiFuntions,
     public toastService: ToastrService,
     private inductionManagerApi: InductionManagerApiService,
@@ -104,7 +105,7 @@ export class MarkEmptyReelsComponent implements OnInit {
     }
   }
   removeRow(index: number, el) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
@@ -139,7 +140,7 @@ export class MarkEmptyReelsComponent implements OnInit {
     );
   }
   markReelAsEmpty() {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',

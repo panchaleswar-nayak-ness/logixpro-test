@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-ie-manage-data-trans-field-map',
@@ -23,7 +24,7 @@ export class IeManageDataTransFieldMapComponent {
     dataSourceList:any
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) { }
 
   ngAfterViewInit(): void {

@@ -14,6 +14,7 @@ import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dia
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 const TRNSC_DATA = [
   { colHeader: 'importDate', colDef: 'Import Date' },
@@ -84,7 +85,7 @@ export class ReprocessedTransactionComponent implements OnInit {
     private authService: AuthService,
     private adminApiService: AdminApiService,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private global:GlobalService
   ) {
     this.iAdminApiService = adminApiService;
   }
@@ -219,7 +220,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   actionDialog(opened: boolean) {
     if (!opened && this.selectedVariable) {
       this.sortCol=0;
-      let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
         height: 'auto',
         width: '960px',
         disableClose: true,

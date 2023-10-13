@@ -93,10 +93,9 @@ export class ConsolidationComponent implements OnInit {
 
   public IconsolidationAPI : IConsolidationApi;
 
-  constructor(private dialog: MatDialog,
+  constructor(private global:GlobalService,
     private toastr: ToastrService,
-    public consolidationAPI : ConsolidationApiService,
-    private global:GlobalService,
+    public consolidationAPI : ConsolidationApiService, 
     public authService: AuthService,
     private currentTabDataService: CurrentTabDataService,
     private _liveAnnouncer: LiveAnnouncer) {
@@ -551,7 +550,7 @@ export class ConsolidationComponent implements OnInit {
     // desturcturing
     const { verifyItems, blindVerifyItems } = this.consolidationIndex.cmPreferences;
     if (result.valueCount >= 1 && verifyItems == 'No' && blindVerifyItems == 'No') {
-      const dialogRef = this.dialog.open(CmItemSelectedComponent, {
+      const dialogRef:any = this.global.OpenDialog(CmItemSelectedComponent, {
         height: 'auto',
         width: '899px',
         autoFocus: '__non_existing_element__',
@@ -688,7 +687,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmShipping() {
-    let dialogRef = this.dialog.open(CmShippingComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmShippingComponent, {
       height: 'auto',
       width: '96vw',
       autoFocus: '__non_existing_element__',
@@ -703,7 +702,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmShippingTransaction() {
-    let dialogRef = this.dialog.open(CmShippingTransactionComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmShippingTransactionComponent, {
       height: 'auto',
       width: '96vw',
       autoFocus: '__non_existing_element__',
@@ -721,7 +720,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmConfirmPacking() {
-    let dialogRef = this.dialog.open(CmConfirmAndPackingComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingComponent, {
       height: 'auto',
       width: '96vw',
       autoFocus: '__non_existing_element__',
@@ -745,7 +744,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmOrderNumber() {
-    let dialogRef = this.dialog.open(CmOrderNumberComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmOrderNumberComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -762,7 +761,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmItemSelected() {
-    let dialogRef = this.dialog.open(CmItemSelectedComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmItemSelectedComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -776,7 +775,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmSelectTransaction() {
-    let dialogRef = this.dialog.open(CmConfirmAndPackingSelectTransactionComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingSelectTransactionComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -790,7 +789,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmPrintOptions() {
-    let dialogRef = this.dialog.open(CmPrintOptionsComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmPrintOptionsComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -812,7 +811,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmOrderToteConflict() {
-    let dialogRef = this.dialog.open(CmOrderToteConflictComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmOrderToteConflictComponent, {
       height: 'auto',
       width: '620px',
       autoFocus: '__non_existing_element__',
@@ -854,7 +853,7 @@ export class ConsolidationComponent implements OnInit {
 
   printPreviewPackList(print = true) {
     if (this.tableData_1?.filteredData && this.tableData_1.filteredData.length > 0) {
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '786px',
         data: {
@@ -901,7 +900,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   showCmPackPrintModal(preview:boolean,orderNumber:any,print:any){
-     this.dialog.open(CmPrintOptionsComponent, {
+     this.global.OpenDialog(CmPrintOptionsComponent, {
       height: 'auto',
       width: '786px',
       data: {

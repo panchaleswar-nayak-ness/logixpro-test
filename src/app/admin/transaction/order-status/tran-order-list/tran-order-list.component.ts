@@ -242,8 +242,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     private Api:ApiFuntions,
     private authService: AuthService,
     private _liveAnnouncer: LiveAnnouncer,
-    private sharedService: SharedService,
-    private dialog: MatDialog,
+    private sharedService: SharedService, 
     private adminApiService: AdminApiService,
     private global:GlobalService,
     private router: Router,
@@ -592,7 +591,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                   res.data[0] = 'Entire Order';
                   // add default check for tote id
                   this.sharedService.updateToteFilterCheck(true);
-                  const dialogRef = this.dialog.open(FilterToteComponent, {
+                  const dialogRef:any = this.global.OpenDialog(FilterToteComponent, {
                     width: '650px',
                     autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -640,7 +639,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   }
 
   openGcBeginTest() { 
-    let dialogRef = this.dialog.open(OmChangePriorityComponent, { 
+    let dialogRef:any = this.global.OpenDialog(OmChangePriorityComponent, { 
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -698,7 +697,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
+    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data: {
@@ -717,7 +716,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
 
   ShippingCompleteDialog() {
-    const dialogRef = this.dialog.open(ShippingCompleteDialogComponent,{
+    const dialogRef:any = this.global.OpenDialog(ShippingCompleteDialogComponent,{
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',

@@ -14,6 +14,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { catchError, of } from 'rxjs';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-add-new-device',
@@ -58,8 +59,9 @@ export class AddNewDeviceComponent implements OnInit {
   public userData: any;
   constructor(
     public dialogRef: MatDialogRef<AddNewDeviceComponent>,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private fb: FormBuilder,
+    private dialog:MatDialog,
     private Api: ApiFuntions,
     public authService: AuthService,
     private adminApiService: AdminApiService,
@@ -269,7 +271,7 @@ export class AddNewDeviceComponent implements OnInit {
       this.dialog.closeAll();
       return;
     }
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -346,7 +348,7 @@ export class AddNewDeviceComponent implements OnInit {
   }
 
   openAlertDialog(message) {
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '786px',
       data: {
@@ -413,7 +415,7 @@ export class AddNewDeviceComponent implements OnInit {
         ' and Zone: ' +
         this.newDeviceForm.controls['zone'].value;
     }
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '786px',
       data: {

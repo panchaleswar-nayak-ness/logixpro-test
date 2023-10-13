@@ -24,6 +24,7 @@ import { MatOption } from '@angular/material/core';
 import { CurrentTabDataService } from './current-tab-data-service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 
@@ -90,7 +91,7 @@ export class InventoryMasterComponent implements OnInit {
     private api: ApiFuntions,
     private authService: AuthService,
     private adminApiService: AdminApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private fb: FormBuilder,
     private toastr: ToastrService,
     private router: Router,
@@ -648,7 +649,7 @@ export class InventoryMasterComponent implements OnInit {
 
   public openAddItemDialog() {
     this.isDialogOpen = true
-    let dialogRef = this.dialog.open(ItemNumberComponent, {
+    let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -698,7 +699,7 @@ export class InventoryMasterComponent implements OnInit {
     this.isDialogOpen = true
     let itemToDelete = this.currentPageItemNo
 
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -747,7 +748,7 @@ export class InventoryMasterComponent implements OnInit {
 
   quarantineDialog(): void {
     this.isDialogOpen = true
-    const dialogRef = this.dialog.open(this.quarantineTemp, {
+    const dialogRef:any = this.global.OpenDialog(this.quarantineTemp, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -783,7 +784,7 @@ export class InventoryMasterComponent implements OnInit {
 
   unquarantineDialog(): void {
     this.isDialogOpen = false
-    const dialogRef = this.dialog.open(this.unquarantineTemp, {
+    const dialogRef:any = this.global.OpenDialog(this.unquarantineTemp, {
       width: '450px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -981,7 +982,7 @@ export class InventoryMasterComponent implements OnInit {
   }
 
   async ConfirmationDialog(tabIndex) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       data: {

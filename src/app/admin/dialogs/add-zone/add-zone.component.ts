@@ -30,8 +30,7 @@ export class AddZoneComponent implements OnInit {
   public editZoneName: any;
   public iAdminApiService: IAdminApiService;
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
     private toastr: ToastrService,
     private employeeService: ApiFuntions,
     private router: Router,

@@ -1,6 +1,7 @@
 import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ScanVerificationDefaultsComponent } from 'src/app/admin/dialogs/scan-verification-defaults/scan-verification-defaults.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-sp-scan-verification-setup',
@@ -9,14 +10,14 @@ import { ScanVerificationDefaultsComponent } from 'src/app/admin/dialogs/scan-ve
 })
 export class SpScanVerificationSetupComponent  {
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private global:GlobalService) { }
   displayedColumns: string[] = ['transType', 'scanSequence', 'field', 'verifyType', 'verifyStringStart','verifyStringLength','actions'];
   dataSource:any
   dataSource1: string[] = ['location', 'locationName', 'zone', 'carousel', 'row','shelf','bin','warehouse','cellSize','velocityCode','carouselLocation','cartonLocation','itemNumber','description','serialNo','lotNo','expriationDate','UM','maxQty','qtyAllocatedPick','itemQty','putAwayDate','dateSensitive','shipVia','shipToName','dedicated','masterLocation','InvMapID'];
  
 
   openScanVerification(){
-    let dialogRef = this.dialog.open(ScanVerificationDefaultsComponent, {
+    let dialogRef:any = this.global.OpenDialog(ScanVerificationDefaultsComponent, {
       height: 'auto',
       width: '96vw',
       autoFocus: '__non_existing_element__',

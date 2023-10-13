@@ -130,11 +130,10 @@ export class ProcessPutAwaysComponent implements OnInit {
   
   public iAdminApiService: IAdminApiService;
 
-  constructor(
-    private dialog: MatDialog,
+  constructor( 
     private toastr: ToastrService, 
     private Api:ApiFuntions,
-    private global:GlobalService,
+    private global:GlobalService, 
     private authService: AuthService,
     private inductionManagerApi: InductionManagerApiService,
     private adminApiService: AdminApiService,
@@ -329,7 +328,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   openSelectZonesDialogue() {
     if (this.batchId != '') {
-      const dialogRef = this.dialog.open(SelectZonesComponent, {
+      const dialogRef:any = this.global.OpenDialog(SelectZonesComponent, {
         height: 'auto',
         width: '60%',
         autoFocus: '__non_existing_element__',
@@ -359,7 +358,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   openTotesDialogue(position: any,index?) {
-    const dialogRef = this.dialog.open(TotesAddEditComponent, {
+    const dialogRef:any = this.global.OpenDialog(TotesAddEditComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -404,7 +403,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
           this.iinductionManagerApi.BatchExist(payload).subscribe((res: any) => {
             if (res && !res.data) {
-              const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+              const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
                 height: 'auto',
                 width: '50vw',
                 autoFocus: '__non_existing_element__',
@@ -431,7 +430,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   openDeleteBatchDialogue() {
-    const dialogRef = this.dialog.open(BatchDeleteComponent, {
+    const dialogRef:any = this.global.OpenDialog(BatchDeleteComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -463,7 +462,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   processIfZoneSelected() {
     if (this.assignedZonesArray.length <= 0) {
-      this.dialog.open(AlertConfirmationComponent, {
+      this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '50vw',
         autoFocus: '__non_existing_element__',
@@ -484,7 +483,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     if (this.batchId == '') {
       this.showMessage('You must provide a Batch ID.', 2000, 'error');
     } else {
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -665,7 +664,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           'error'
         );
       } else {
-        const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+        const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
           width: '560px',
           data: {
@@ -706,7 +705,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
  
         if( this.ELEMENT_DATA.length != 0){
-        const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+        const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
           width: '560px',
           data: {
@@ -855,7 +854,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       this.showMessage('You must provide a Batch ID.', 2000, 'error');
     } else {
 
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -913,7 +912,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.applyStripIfApplicable();
 
     if (this.cell == this.toteQuantity) {
-      const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '50vw',
         autoFocus: '__non_existing_element__',
@@ -933,7 +932,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           });
         }
         else {
-          const dialogRef = this.dialog.open(SelectionTransactionForToteComponent, {
+          const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteComponent, {
             height: 'auto',
             width: '1100px',
             autoFocus: '__non_existing_element__',
@@ -957,7 +956,7 @@ export class ProcessPutAwaysComponent implements OnInit {
               if(this.inputType !='Serial Number' && this.processPutAwayIndex.imPreference.createItemMaster ){
                 this.ifAllowed=false;
     
-                const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+                const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
                   height: 'auto',
                   width: '50vw',
                   autoFocus: '__non_existing_element__',
@@ -1038,7 +1037,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       });
     }
     else {
-      const dialogRef = this.dialog.open(SelectionTransactionForToteComponent, {
+      const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteComponent, {
         height: 'auto',
         width: '1100px',
         autoFocus: '__non_existing_element__',
@@ -1066,7 +1065,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           if(this.inputType !='Serial Number' && this.processPutAwayIndex.imPreference.createItemMaster ){
             this.ifAllowed=false;
 
-            const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+            const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
               height: 'auto',
               width: '50vw',
               autoFocus: '__non_existing_element__',
@@ -1205,7 +1204,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       if (this.batchId2 == '') {
         this.showMessage('You must provide a Batch ID.', 2000, 'error');
       } else {
-        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
           height: 'auto',
           width: '560px',
           autoFocus: '__non_existing_element__',
@@ -1237,7 +1236,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                   }
                   else if(!this.imPreferences.autoPrintOffCarouselPutAwayList) {
 
-                    let dialogRef2 = this.dialog.open(ConfirmationDialogComponent, {
+                    let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                       height: 'auto',
                       width: '560px',
                       autoFocus: '__non_existing_element__',
@@ -1362,7 +1361,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   actionDialog(opened: boolean) {
     if (!opened && this.selectedOption && this.selectedOption === 'markTote') {
 
-      const dialogRef = this.dialog.open(MarkToteFullComponent, {
+      const dialogRef:any = this.global.OpenDialog(MarkToteFullComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -1416,7 +1415,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       this.selectedOption === 'ViewTote'
     ) {
       this.clearMatSelectList();
-      const dialogRef = this.dialog.open(ToteTransactionViewComponent, {
+      const dialogRef:any = this.global.OpenDialog(ToteTransactionViewComponent, {
         height: 'auto',
         width: '80vw',
         autoFocus: '__non_existing_element__',
@@ -1445,7 +1444,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   reelQty
   ReelDetailDialogue(hv,item) {
     
-    const dialogRef = this.dialog.open(ReelDetailComponent, {
+    const dialogRef:any = this.global.OpenDialog(ReelDetailComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -1465,7 +1464,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   ReelTransactionsDialogue(hv,item,fieldNames?) {
-    const dialogRef = this.dialog.open(ReelTransactionsComponent, {
+    const dialogRef:any = this.global.OpenDialog(ReelTransactionsComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',

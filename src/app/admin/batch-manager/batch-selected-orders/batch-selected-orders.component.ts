@@ -65,15 +65,14 @@ export class BatchSelectedOrdersComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   toteValue = 0;
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private _liveAnnouncer: LiveAnnouncer,
     private authService: AuthService,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private sharedService: SharedService,
-    private router:Router,
-    private global:GlobalService
+    private router:Router, 
     
   ) {
     this.iAdminApiService = adminApiService;
@@ -132,7 +131,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
   }
   printReport(type){
     if(type==='Batch'){
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '786px',
         autoFocus: '__non_existing_element__',
@@ -153,7 +152,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
          }
       });
     }else{
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '786px',
         autoFocus: '__non_existing_element__',
@@ -227,7 +226,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
   */
   createBatchDialog() {
     if (this.nextOrderNumber === '') {
-      const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '786px',
         data: {
@@ -239,7 +238,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((result) => {});
     } else if (this.tableData.data.length == 0) {
-      const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '786px',
         data: {
@@ -252,7 +251,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => {});
     } else {
       let dialogRef;
-      dialogRef = this.dialog.open(CreateBatchConfirmationComponent, {
+      dialogRef = this.global.OpenDialog(CreateBatchConfirmationComponent, {
         height: 'auto',
         width: '550px',
         autoFocus: '__non_existing_element__',

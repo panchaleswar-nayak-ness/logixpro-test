@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-reel-detail',
@@ -26,7 +27,7 @@ export class ReelDetailComponent implements OnInit {
   fieldNames:any
   @ViewChild('reelQuantitytemp') reelQuantitytemp: ElementRef
 
-  constructor(private dialog: MatDialog,public dialogRef: MatDialogRef<ReelDetailComponent>,
+  constructor(private global:GlobalService,public dialogRef: MatDialogRef<ReelDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -81,7 +82,7 @@ export class ReelDetailComponent implements OnInit {
 
   reelDetailSubmit(){
     if(this.ReelQty == undefined || this.ReelQty == ""){
-      const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '560px',
         data: {
@@ -100,7 +101,7 @@ export class ReelDetailComponent implements OnInit {
       this.ReelLot = 0
     }
      if(this.wareHouseSensitivity &&(this.ReelWarehouse == '') && this.ReelQty != undefined){
-      const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '560px',
         data: {
@@ -149,7 +150,7 @@ export class ReelDetailComponent implements OnInit {
   }
 
   openWareHouse(){
-    let dialogRef = this.dialog.open(WarehouseComponent, {
+    let dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
       height: 'auto',
       width: '640px',
       autoFocus: '__non_existing_element__',

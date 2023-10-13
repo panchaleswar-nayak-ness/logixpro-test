@@ -11,8 +11,7 @@ export class SqlAuthConfirmationComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
-
-    private dialog: MatDialog,
+ 
   ) {}
 
   ngOnInit(): void {

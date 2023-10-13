@@ -33,7 +33,7 @@ export class AssignedFunctionsComponent  {
   employee_fetched_zones: string[] = [];
   group_fetched_unassigned_function:string[] = [];
   userName:any;
-  constructor( private employeeService: ApiFuntions, private assignService:AssignService,private dialog: MatDialog) { }
+  constructor( private employeeService: ApiFuntions, private assignService:AssignService) { }
 
 
   clearFields(){
@@ -53,7 +53,7 @@ export class AssignedFunctionsComponent  {
   
   unassignFunction(permData: any){ 
     // if(permData){
-    //   let dialogRef = this.dialog.open(FunctionAllocationComponent, {
+    //   let dialogRef:any = this.global.OpenDialog(FunctionAllocationComponent, {
     //     height: 'auto',
     //     width: '560px',
     //     autoFocus: '__non_existing_element__',

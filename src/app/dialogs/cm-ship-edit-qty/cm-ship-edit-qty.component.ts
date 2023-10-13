@@ -28,7 +28,7 @@ export class CmShipEditQtyComponent implements OnInit {
 
   constructor(
     public consolidationAPI : ConsolidationApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<CmShipEditQtyComponent>,
     private toast: ToastrService,
     // private Api: ApiFuntions,

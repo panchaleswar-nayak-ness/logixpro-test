@@ -255,7 +255,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   clearTransInfo() {
 
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -294,7 +294,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   updateItemInfo() {
     try {
 
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -358,7 +358,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       currentValue  = this.toteForm.controls['cfCellSize'].value
     }
     
-    let dialogRef = this.dialog.open(CellSizeComponent, {
+    let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',
@@ -406,7 +406,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       currentValue  = this.toteForm.controls['cfVelocity'].value
     }
     
-    let dialogRef = this.dialog.open(VelocityCodeComponent, {
+    let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',
@@ -444,7 +444,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   openChooseLocation() {
     const values = this.toteForm.value;
-    const dialogRef = this.dialog.open(ChooseLocationComponent, {
+    const dialogRef:any = this.global.OpenDialog(ChooseLocationComponent, {
       height: 'auto',
       width: '70vw',
       autoFocus: '__non_existing_element__',
@@ -490,7 +490,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         (res: any) => {
           if (res.data > 0 && res.isExecuted && this.data.autoForwardReplenish) {
             
-            let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
               height: 'auto',
               width: '560px',
               autoFocus: '__non_existing_element__',
@@ -594,7 +594,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   openCrossDockTransactionDialogue() {
     const values = this.toteForm.value;
     
-    const dialogRef = this.dialog.open(CrossDockTransactionComponent, {
+    const dialogRef:any = this.global.OpenDialog(CrossDockTransactionComponent, {
       height: 'auto',
       width: '70vw',
       autoFocus: '__non_existing_element__',
@@ -627,7 +627,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   openWareHouse() {
     if(!this.isWarehouseSensitive)return
     const values = this.toteForm.value;
-    const dialogRef = this.dialog.open(WarehouseComponent, {
+    const dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
       height: 'auto',
       width: '640px',
       autoFocus: '__non_existing_element__',
@@ -717,7 +717,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
           (res: any) => {
             if (res.isExecuted) {
               if (!res.data) {
-                let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+                let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                   height: 'auto',
                   width: '560px',
                   autoFocus: '__non_existing_element__',
@@ -751,7 +751,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                       {
                         if(res.data.transaction.length > 0)
                         {
-                          let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+                          let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                             height: 'auto',
                             width: '560px',
                             autoFocus: '__non_existing_element__',
@@ -802,7 +802,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       return;
     }
 
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -859,7 +859,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                   let numLabel = 1
                     if(this.imPreferences.requestNumberOfPutAwayLabels && this.imPreferences.printDirectly){
                       // here pop up will be implemented which will ask for number of labels
-                      let dialogRef = this.dialog.open(PaPrintLabelConfirmationComponent, {
+                      let dialogRef:any = this.global.OpenDialog(PaPrintLabelConfirmationComponent, {
                         height: 'auto',
                         width: '560px',
                         autoFocus: '__non_existing_element__',

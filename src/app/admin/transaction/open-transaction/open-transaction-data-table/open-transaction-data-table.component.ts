@@ -23,6 +23,7 @@ import { HoldReasonComponent } from 'src/app/admin/dialogs/hold-reason/hold-reas
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 const TRNSC_DATA = [
   { colHeader: 'orderNumber', colDef: 'Order Number' },
@@ -83,7 +84,7 @@ export class OpenTransactionDataTableComponent
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     private authService: AuthService,
-    private dialog: MatDialog
+    private global:GlobalService
 
   ) {this.iAdminApiService = adminApiService;}
   @Input()
@@ -156,7 +157,7 @@ export class OpenTransactionDataTableComponent
   }
   holdDeallocate(row){
 
-    const dialogRef = this.dialog.open(HoldReasonComponent, {
+    const dialogRef:any = this.global.OpenDialog(HoldReasonComponent, {
       height: 'auto',
       width: '480px',
       data: {

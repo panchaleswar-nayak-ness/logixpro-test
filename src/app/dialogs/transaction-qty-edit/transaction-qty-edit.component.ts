@@ -22,7 +22,7 @@ export class TransactionQtyEditComponent implements OnInit {
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     private toastr: ToastrService,
-    private dialog: MatDialog,
+    private dialog:MatDialog,
     public dialogRef: MatDialogRef<TransactionQtyEditComponent>,
     private authService: AuthService,
     private globalService: GlobalService

@@ -69,13 +69,13 @@ export class ProcessPicksComponent implements OnInit {
   public ifAllowed: boolean = false
   orderInput: any;
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
     private toastr: ToastrService,
+    private dialog:MatDialog,
     private authService: AuthService,
     private router: Router,
-    private inductionManagerApi: InductionManagerApiService,
-    private global: GlobalService,
+    private inductionManagerApi: InductionManagerApiService, 
     private sharedService: SharedService
   ) { 
     this.iinductionManagerApi = inductionManagerApi;
@@ -469,7 +469,7 @@ async  printPickLabels(row) {
     });
 
     if (filledTote) {
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -498,7 +498,7 @@ async  printPickLabels(row) {
     else {
       this.batchWithID = false;
     }
-    const dialogRef = this.dialog.open(this.batchPickID, {
+    const dialogRef:any = this.global.OpenDialog(this.batchPickID, {
       width: 'auto',
       autoFocus: '__non_existing_element__',
       disableClose: true,
@@ -619,7 +619,7 @@ async  printPickLabels(row) {
       });
     }
     else {
-      const dialogRef = this.dialog.open(PickToteManagerComponent, {
+      const dialogRef:any = this.global.OpenDialog(PickToteManagerComponent, {
         height: 'auto',
         maxWidth: '95vw',
         width: '95vw',
@@ -658,7 +658,7 @@ async  printPickLabels(row) {
   }
 
   openViewOrdersDialogue(viewType: any) {
-    const dialogRef = this.dialog.open(ViewOrdersComponent, {
+    const dialogRef:any = this.global.OpenDialog(ViewOrdersComponent, {
       height: 'auto',
       width: '100vw',
       data: {
@@ -691,7 +691,7 @@ async  printPickLabels(row) {
   }
 
   openBlossomToteDialogue() {
-    this.dialog.open(BlossomToteComponent, {
+    this.global.OpenDialog(BlossomToteComponent, {
       height: 'auto',
       width: '786px',
       autoFocus: '__non_existing_element__'
@@ -699,7 +699,7 @@ async  printPickLabels(row) {
   }
 
   openWorkstationZone() {
-    let dialogRef = this.dialog.open(WorkstationZonesComponent, {
+    let dialogRef:any = this.global.OpenDialog(WorkstationZonesComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',
@@ -860,14 +860,14 @@ async  printPickLabels(row) {
   }
 
   confirmProcessSetup() {
-    this.dialog.open(this.processSetup, {
+    this.global.OpenDialog(this.processSetup, {
       width: '450px',
       autoFocus: '__non_existing_element__',
       disableClose: true,
     });
   }
   alertPopUpBlocked() {
-    this.dialog.open(this.popupBlocked, {
+    this.global.OpenDialog(this.popupBlocked, {
       width: '450px',
       height: 'auto',
       minHeight: 'auto',

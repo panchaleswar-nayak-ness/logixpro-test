@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CmCarriersAddDeleteEditComponent } from 'src/app/dialogs/cm-carriers-add-delete-edit/cm-carriers-add-delete-edit.component';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-consolidation-preferences',
@@ -19,14 +20,14 @@ export class ConsolidationPreferencesComponent implements OnInit {
   constructor(
     public consolidationAPI : ConsolidationApiService,
     private authService: AuthService,
-    public dialog: MatDialog
+    public global:GlobalService
   ) {
     this.userData = this.authService.userData();
     this.IconsolidationAPI = consolidationAPI;
    
   }
   openCmCarriers() {
-    let dialogRef = this.dialog.open(CmCarriersAddDeleteEditComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmCarriersAddDeleteEditComponent, {
       height: 'auto',
       width: '720px',
       autoFocus: '__non_existing_element__',

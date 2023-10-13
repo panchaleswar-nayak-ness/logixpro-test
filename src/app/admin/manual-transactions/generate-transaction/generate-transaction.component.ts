@@ -88,10 +88,9 @@ export class GenerateTransactionComponent implements OnInit {
     public commonAPI : CommonApiService,
     private authService: AuthService,
     private Api:ApiFuntions,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private toastr: ToastrService,
-    private adminApiService: AdminApiService,
-    private global:GlobalService
+    private adminApiService: AdminApiService, 
   ) {
     this.iAdminApiService = adminApiService;
     this.userData = this.authService.userData();
@@ -227,7 +226,7 @@ export class GenerateTransactionComponent implements OnInit {
   }
   openSetItemLocationDialogue() {
     if (this.orderNumber == '' || !this.item) return;
-    const dialogRef = this.dialog.open(SetItemLocationComponent, {
+    const dialogRef:any = this.global.OpenDialog(SetItemLocationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -285,7 +284,7 @@ export class GenerateTransactionComponent implements OnInit {
 
       else{
         this.transactionQtyInvalid = false;
-        const dialogRef = this.dialog.open(PostManualTransactionComponent, {
+        const dialogRef:any = this.global.OpenDialog(PostManualTransactionComponent, {
           height: 'auto',
           width: '560px',
           autoFocus: '__non_existing_element__',
@@ -384,7 +383,7 @@ export class GenerateTransactionComponent implements OnInit {
         });
   }
   deleteTransaction() {
-    const dialogRef = this.dialog.open(
+    const dialogRef:any = this.global.OpenDialog(
       DeleteConfirmationManualTransactionComponent,
       {
         height: 'auto',
@@ -433,7 +432,7 @@ export class GenerateTransactionComponent implements OnInit {
   }
   openWareHouse() {
     if (this.orderNumber == '' || !this.item) return;
-    const dialogRef = this.dialog.open(WarehouseComponent, {
+    const dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
       height: 'auto',
       width: '640px',
       autoFocus: '__non_existing_element__',
@@ -456,7 +455,7 @@ export class GenerateTransactionComponent implements OnInit {
     });
   }
   openNotes(){
-    const dialogRef = this.dialog.open(AddNotesComponent, {
+    const dialogRef:any = this.global.OpenDialog(AddNotesComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -475,7 +474,7 @@ export class GenerateTransactionComponent implements OnInit {
   updateTransaction() { 
     
     if(this.isLocation && this.transQuantity>this.totalQuantity){
-      const dialogRef = this.dialog.open(InvalidQuantityComponent, {
+      const dialogRef:any = this.global.OpenDialog(InvalidQuantityComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -552,7 +551,7 @@ export class GenerateTransactionComponent implements OnInit {
   }
   openSupplierItemDialogue() {
     if (this.orderNumber == '' || !this.item) return;
-    const dialogRef = this.dialog.open(SupplierItemIdComponent, {
+    const dialogRef:any = this.global.OpenDialog(SupplierItemIdComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -604,7 +603,7 @@ export class GenerateTransactionComponent implements OnInit {
   }
   openUnitOfMeasureDialogue() {
     if (this.orderNumber == '' || !this.item) return;
-    const dialogRef = this.dialog.open(UnitMeasureComponent, {
+    const dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
       height: 'auto',
       width: '800px',
       autoFocus: '__non_existing_element__',
@@ -616,7 +615,7 @@ export class GenerateTransactionComponent implements OnInit {
     });
   }
   openTemporaryManualOrderDialogue() {
-    const dialogRef = this.dialog.open(TemporaryManualOrderNumberAddComponent, {
+    const dialogRef:any = this.global.OpenDialog(TemporaryManualOrderNumberAddComponent, {
       height: 'auto',
       width: '1000px',
       autoFocus: '__non_existing_element__',
@@ -663,7 +662,7 @@ export class GenerateTransactionComponent implements OnInit {
     
   }
   openUserFieldsEditDialogue() {
-    const dialogRef = this.dialog.open(UserFieldsEditComponent, {
+    const dialogRef:any = this.global.OpenDialog(UserFieldsEditComponent, {
       height: 'auto',
       width: '800px',
       autoFocus: '__non_existing_element__',

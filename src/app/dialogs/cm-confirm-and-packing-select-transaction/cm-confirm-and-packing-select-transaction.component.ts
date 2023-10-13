@@ -26,9 +26,8 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
  public IconsolidationAPI : IConsolidationApi;
 
  constructor(
-    public consolidationAPI : ConsolidationApiService,
-    private global:GlobalService,
-    private toast:ToastrService,private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any,
+    public consolidationAPI : ConsolidationApiService, 
+    private toast:ToastrService,private global:GlobalService, @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CmConfirmAndPackingSelectTransactionComponent>,) {
     this.confPackTransTable = this.data.confPackTransTable;
     this.orderNumber = this.data.orderNumber;
@@ -55,7 +54,7 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
 openScanItem(ItemNumber:any,id: any) {
   let index= this.confPackTransTable.findIndex(x=>x.sT_ID == id);
   this.confPackTransTable[index].active = true;
-  let dialogRef = this.dialog.open(CmConfirmAndPackingProcessTransactionComponent, {
+  let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingProcessTransactionComponent, {
     height: 'auto',
     width: '96vw',
     autoFocus: '__non_existing_element__',

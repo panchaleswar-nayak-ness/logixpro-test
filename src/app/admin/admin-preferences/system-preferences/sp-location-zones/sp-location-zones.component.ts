@@ -8,6 +8,7 @@ import { KanbanZoneAllocationConflictComponent } from 'src/app/admin/dialogs/kan
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-sp-location-zones',
@@ -29,7 +30,7 @@ export class SpLocationZonesComponent implements OnInit {
   duplicatelocationzone: any = [];
   constructor(private Api:ApiFuntions,
     public authService: AuthService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private adminApiService: AdminApiService,
     private toastr: ToastrService) { 
       this.iAdminApiService = adminApiService;
@@ -42,7 +43,7 @@ export class SpLocationZonesComponent implements OnInit {
   
   test(zone:any){
     if(zone.allocable  && zone.kanbanZone ){
-      let dialogRef = this.dialog.open(KanbanZoneAllocationConflictComponent, {
+      let dialogRef:any = this.global.OpenDialog(KanbanZoneAllocationConflictComponent, {
         height: 'auto',
         width: '56vw',
         autoFocus: '__non_existing_element__',
@@ -187,7 +188,7 @@ export class SpLocationZonesComponent implements OnInit {
   }
 
   LocationName(item:any) {
-    let dialogRef = this.dialog.open(LocationNameComponent, {
+    let dialogRef:any = this.global.OpenDialog(LocationNameComponent, {
       height: 'auto',
       width: '786px',
       autoFocus: '__non_existing_element__',
@@ -208,7 +209,7 @@ export class SpLocationZonesComponent implements OnInit {
 
 
   DelLocationZone(zone){
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',

@@ -8,6 +8,7 @@ import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/d
 import { Router } from '@angular/router';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-warehouse',
@@ -32,7 +33,7 @@ export class WarehouseComponent implements OnInit {
     private authService: AuthService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private router: Router,
     private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -53,7 +54,7 @@ export class WarehouseComponent implements OnInit {
 
   deleteWH(warehosue: any) { 
     if(warehosue != ''){
-      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',

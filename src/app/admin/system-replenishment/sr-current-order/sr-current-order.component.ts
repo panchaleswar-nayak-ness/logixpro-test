@@ -84,9 +84,8 @@ export class SrCurrentOrderComponent implements OnInit {
   };
   selectedOrder: any = {};
   public iAdminApiService: IAdminApiService;
-  constructor(
+  constructor( 
     private dialog: MatDialog,
-    private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private authService: AuthService,
@@ -129,7 +128,7 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
+    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data: {
@@ -296,7 +295,7 @@ export class SrCurrentOrderComponent implements OnInit {
   }
   printLabels() {
  
-    const dialogRef = this.dialog.open(PrintReplenLabelsComponent, {
+    const dialogRef:any = this.global.OpenDialog(PrintReplenLabelsComponent, {
       width: '1100px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -331,7 +330,7 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   deleteAllOrders() {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -356,7 +355,7 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   deleteShownOrders() {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -381,7 +380,7 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   deleteRange() {
-    const dialogRef = this.dialog.open(DeleteRangeComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteRangeComponent, {
       width: '900px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -396,7 +395,7 @@ export class SrCurrentOrderComponent implements OnInit {
 
   deleteSelectedOrder() {
     if (this.selectedOrder.rowNumber == undefined) {
-      const dialogRef = this.dialog.open(SrDeleteOrderComponent, {
+      const dialogRef:any = this.global.OpenDialog(SrDeleteOrderComponent, {
         height: 'auto',
         width: '600px',
         autoFocus: '__non_existing_element__',
@@ -410,7 +409,7 @@ export class SrCurrentOrderComponent implements OnInit {
       });
     }
     else {
-      const dialogRef = this.dialog.open(this.deleteSelectedConfirm, {
+      const dialogRef:any = this.global.OpenDialog(this.deleteSelectedConfirm, {
         width: '550px',
         autoFocus: '__non_existing_element__',
       disableClose:true,

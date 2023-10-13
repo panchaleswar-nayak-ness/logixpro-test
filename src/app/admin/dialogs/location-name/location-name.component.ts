@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-location-name',
@@ -25,7 +26,7 @@ export class LocationNameComponent implements OnInit {
             private adminApiService: AdminApiService,
             private toastr: ToastrService,
             public dialogRef: MatDialogRef<any>,
-            private dialog: MatDialog,) {
+            private global:GlobalService) {
               this.iAdminApiService = adminApiService;
              }
 
@@ -55,7 +56,7 @@ export class LocationNameComponent implements OnInit {
 
 
  delLocation(ele){
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',

@@ -113,7 +113,7 @@ export class CmShippingTransactionComponent implements OnInit {
   // openToteIDUpdate() is called when the user clicks the Tote ID Update button
   openToteIDUpdate() {    
     // open the dialog
-    let dialogRef = this.dialog.open(CmToteIdUpdateModalComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmToteIdUpdateModalComponent, {
       height: 'auto',
       width: '40vw',
       autoFocus: '__non_existing_element__',
@@ -157,7 +157,7 @@ export class CmShippingTransactionComponent implements OnInit {
             } 
             else if (res.data == 0) 
             {
-              let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+              let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                 height: 'auto',
                 width: '560px',
                 autoFocus: '__non_existing_element__',
@@ -187,7 +187,7 @@ export class CmShippingTransactionComponent implements OnInit {
             } 
             else 
             {
-              let dialogRef1 = this.dialog.open(ConfirmationDialogComponent, {
+              let dialogRef1:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                 height: 'auto',
                 width: '560px',
                 autoFocus: '__non_existing_element__',
@@ -199,7 +199,7 @@ export class CmShippingTransactionComponent implements OnInit {
       
               dialogRef1.afterClosed().subscribe((result) => {
                 if (result == 'Yes') {
-                  let dialogRef2 = this.dialog.open(ConfirmationDialogComponent, {
+                  let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                     height: 'auto',
                     width: '560px',
                     autoFocus: '__non_existing_element__',
@@ -241,7 +241,7 @@ export class CmShippingTransactionComponent implements OnInit {
 
   // Open the ship split line dialog
   openShipSplitLine(order : any, i : any) {
-    let dialogRef = this.dialog.open(CmShipSplitLineComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmShipSplitLineComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -272,7 +272,7 @@ export class CmShippingTransactionComponent implements OnInit {
 
   // Open the dialog component, pass in the data to be modified
   openShipEditQuantity(order : any, i : any) {
-    let dialogRef = this.dialog.open(CmShipEditQtyComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmShipEditQtyComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -293,7 +293,7 @@ export class CmShippingTransactionComponent implements OnInit {
 
   openShipEditContainerID(order : any, i : any) {
     // Open the dialog
-    let dialogRef = this.dialog.open(CmShipEditConIdComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmShipEditConIdComponent, {
       height: 'auto',
       width: '40vw',
       autoFocus: '__non_existing_element__',

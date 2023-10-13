@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/init/auth.service';
 import { CmOrderToteConflictComponent } from '../cm-order-tote-conflict/cm-order-tote-conflict.component';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-cm-order-number',
@@ -26,7 +27,7 @@ export class CmOrderNumberComponent implements OnInit {
 
   public IconsolidationAPI : IConsolidationApi;
 
-  constructor(private dialog          : MatDialog,
+  constructor(private global          : GlobalService,
               public dialogRef        : MatDialogRef<CmOrderNumberComponent>,
               private toast           : ToastrService,
               public consolidationAPI : ConsolidationApiService,
@@ -90,7 +91,7 @@ export class CmOrderNumberComponent implements OnInit {
   }
 
   openCmOrderToteConflict(order : any) { 
-    let dialogRef = this.dialog.open(CmOrderToteConflictComponent, { 
+    let dialogRef:any = this.global.OpenDialog(CmOrderToteConflictComponent, { 
       height: 'auto',
       width: '620px',
       autoFocus: '__non_existing_element__',

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { IeFtpSettingsComponent } from 'src/app/dialogs/ie-ftp-settings/ie-ftp-settings.component';
 
 @Component({
@@ -9,11 +10,11 @@ import { IeFtpSettingsComponent } from 'src/app/dialogs/ie-ftp-settings/ie-ftp-s
 })
 export class IeFtpComponent {
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private global:GlobalService) { }
 
 
   openIeFtpSettings() {
-    const dialogRef = this.dialog.open(IeFtpSettingsComponent, {
+    const dialogRef:any = this.global.OpenDialog(IeFtpSettingsComponent, {
       height: 'auto',
       width: '1424px',
       autoFocus: '__non_existing_element__',

@@ -7,6 +7,7 @@ import { StagingLocationOrderComponent } from 'src/app/dialogs/staging-location-
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {
   name: string;
@@ -47,7 +48,7 @@ export class CmStagingLocationComponent {
     // private Api: ApiFuntions,
     public consolidationAPI : ConsolidationApiService,
     private authService: AuthService,
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) {
     this.IconsolidationAPI = consolidationAPI;
     this.userData = this.authService.userData();
@@ -90,7 +91,7 @@ export class CmStagingLocationComponent {
               break;
             case "DNENP":
               this.OrderNumberTote = null; 
-              let dialogRef = this.dialog.open(StagingLocationOrderComponent, { 
+              let dialogRef:any = this.global.OpenDialog(StagingLocationOrderComponent, { 
                 height: 'auto',
                 width: '620px',
                 autoFocus: '__non_existing_element__',
@@ -169,7 +170,7 @@ export class CmStagingLocationComponent {
   }
   
   openCmOrderToteConflict(order:any) { 
-    let dialogRef = this.dialog.open(CmOrderToteConflictComponent, { 
+    let dialogRef:any = this.global.OpenDialog(CmOrderToteConflictComponent, { 
       height: 'auto',
       width: '620px',
       autoFocus: '__non_existing_element__',

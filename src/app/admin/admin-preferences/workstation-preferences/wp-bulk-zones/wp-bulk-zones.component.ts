@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class WpBulkZonesComponent  {
 
-  constructor(private dialog: MatDialog) { }
+  constructor() { }
   displayedColumns: string[] = ['transType', 'scanSequence','actions'];
   dataSource:any
 

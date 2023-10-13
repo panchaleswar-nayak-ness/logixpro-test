@@ -10,6 +10,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface DialogData {
   animal: 'panda' | 'unicorn' | 'lion';
@@ -52,7 +53,7 @@ export class AddNewEmployeeComponent implements OnInit {
    validatorsArray:any = []
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private toastr: ToastrService,
     private adminApiService: AdminApiService,
     private employeeService: ApiFuntions,
@@ -220,7 +221,7 @@ ChangePassword(data){
   groupChanged: boolean = false;
   groupChange($event:any){
     if (this.data?.mode === 'edit') {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '786px',
         data: {

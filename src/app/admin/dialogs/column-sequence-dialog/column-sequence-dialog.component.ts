@@ -16,6 +16,7 @@ import {
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-column-sequence-dialog',
@@ -37,7 +38,7 @@ export class ColumnSequenceDialogComponent implements OnInit {
     private toastr: ToastrService,
     private adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) data,
-    private dialog: MatDialog,
+    private global:GlobalService,
     
   ) {
     this.dialogData = data;

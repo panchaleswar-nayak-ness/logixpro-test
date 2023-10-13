@@ -10,6 +10,7 @@ import { FormControl } from '@angular/forms';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-delete-range',
@@ -44,8 +45,9 @@ export class DeleteRangeComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private adminApiService: AdminApiService,
     private Api: ApiFuntions,
+    private dialog:MatDialog,
     private toastr: ToastrService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<DeleteRangeComponent>,
     private authService: AuthService,
   ) { 
@@ -74,7 +76,7 @@ export class DeleteRangeComponent implements OnInit {
   ReplenishmentsByDelete() {
     debugger
     if (this.repByDeletePayload.filter1 && this.repByDeletePayload.filter2) {
-      const dialogRef2 = this.dialog.open(DeleteConfirmationComponent, {
+      const dialogRef2:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',

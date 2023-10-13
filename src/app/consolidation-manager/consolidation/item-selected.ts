@@ -37,7 +37,7 @@ export class ItemSelected implements OnInit {
 
       constructor(
         public consolidationAPI : ConsolidationApiService,
-        private dialog: MatDialog, 
+        private global:GlobalService, 
         private toastr: ToastrService,
         private router: Router,   
         private authService: AuthService,

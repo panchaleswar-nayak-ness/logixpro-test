@@ -160,7 +160,7 @@ export class InventoryMapComponent implements OnInit {
   }
   
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef =  this.dialog.open(InputFilterComponent, {
+    const dialogRef:any =  this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data:{
@@ -198,12 +198,12 @@ export class InventoryMapComponent implements OnInit {
  //---------------------for mat menu End ----------------------------
  previousUrl: string;
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private authService: AuthService,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     private toastr: ToastrService, 
-    private global:GlobalService,
+    private dialog:MatDialog,
     private router: Router,
     private loader: SpinnerService,
     private _liveAnnouncer: LiveAnnouncer,
@@ -364,7 +364,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   addLocDialog() { 
-    let dialogRef = this.dialog.open(AddInvMapLocationComponent, {
+    let dialogRef:any = this.global.OpenDialog(AddInvMapLocationComponent, {
       height: 'auto',
       width: '100%',
       autoFocus: '__non_existing_element__',
@@ -386,7 +386,7 @@ export class InventoryMapComponent implements OnInit {
   inventoryMapAction(actionEvent: any) {
     if (actionEvent.value === 'set_column_sq') {
 
-      let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
         height: 'auto',
         width: '960px',
         disableClose: true,
@@ -417,7 +417,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   viewAllLocDialog(): void {
-    const dialogRef = this.dialog.open(this.customTemplate, {
+    const dialogRef:any = this.global.OpenDialog(this.customTemplate, {
        width: '560px',
        autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -434,7 +434,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   edit(event: any){
-    let dialogRef = this.dialog.open(AddInvMapLocationComponent, {
+    let dialogRef:any = this.global.OpenDialog(AddInvMapLocationComponent, {
       height: 'auto',
       width: '100%',
       autoFocus: '__non_existing_element__',
@@ -460,7 +460,7 @@ export class InventoryMapComponent implements OnInit {
   delete(event: any){
     
     if(event.itemQuantity > 0){
-      this.dialog.open(ConfirmationDialogComponent, {
+      this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '786px',
         data: {
@@ -470,7 +470,7 @@ export class InventoryMapComponent implements OnInit {
       });
     }
     else{
-      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -491,7 +491,7 @@ export class InventoryMapComponent implements OnInit {
 
 
   quarantine(event){
-    let dialogRef = this.dialog.open(QuarantineConfirmationComponent, {
+    let dialogRef:any = this.global.OpenDialog(QuarantineConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -509,7 +509,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   unQuarantine(event){
-    let dialogRef = this.dialog.open(QuarantineConfirmationComponent, {
+    let dialogRef:any = this.global.OpenDialog(QuarantineConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -531,7 +531,7 @@ export class InventoryMapComponent implements OnInit {
     if(event.itemNumber == ""){
       return;
     }
-    let dialogRef = this.dialog.open(AdjustQuantityComponent, {
+    let dialogRef:any = this.global.OpenDialog(AdjustQuantityComponent, {
       height: 'auto',
       width: '800px',
       autoFocus: '__non_existing_element__',
@@ -710,7 +710,7 @@ export class InventoryMapComponent implements OnInit {
  }
 
  printRange(){
-  this.dialog.open(PrintRangeComponent, {
+  this.global.OpenDialog(PrintRangeComponent, {
     height: 'auto',
     width: '932px',
     autoFocus: '__non_existing_element__'

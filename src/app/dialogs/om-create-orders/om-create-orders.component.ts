@@ -104,15 +104,14 @@ export class OmCreateOrdersComponent implements OnInit {
   public iOrderManagerApi :  IOrderManagerAPIService;
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private toastr: ToastrService,
     private authService: AuthService,
     private router: Router,
     public dialogRef: MatDialogRef<OmCreateOrdersComponent>,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
-    public orderManagerApi  : OrderManagerApiService,
-    private global:GlobalService,
+    public orderManagerApi  : OrderManagerApiService, 
     private filterService: ContextMenuFiltersService,
     private _liveAnnouncer: LiveAnnouncer
   ) { 
@@ -127,7 +126,7 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   openOmAddRecord() {
-    let dialogRef = this.dialog.open(OmAddRecordComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
       autoFocus: '__non_existing_element__',
@@ -146,7 +145,7 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   openOmEditTransaction(element: any) {
-    let dialogRef = this.dialog.open(OmAddRecordComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
       autoFocus: '__non_existing_element__',
@@ -183,7 +182,7 @@ export class OmCreateOrdersComponent implements OnInit {
     if(!element.orderNumber && this.tableData.filteredData.length == 1){
       element = this.tableData.filteredData[0];
     }
-    let dialogRef = this.dialog.open(OmAddRecordComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
       autoFocus: '__non_existing_element__',
@@ -204,7 +203,7 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   openOmUserFieldData() {
-    let dialogRef = this.dialog.open(OmUserFieldDataComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmUserFieldDataComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -248,7 +247,7 @@ export class OmCreateOrdersComponent implements OnInit {
       return;
     }
     
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -303,7 +302,7 @@ export class OmCreateOrdersComponent implements OnInit {
     else {
       let ids = [];
       ids = this.tableData.filteredData.map(x => x.id.toString());
-      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -344,7 +343,7 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   selectColumnSequence() {
-    let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
       height: 'auto',
       width: '960px',
       disableClose: true,
@@ -409,7 +408,7 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
+    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data: {

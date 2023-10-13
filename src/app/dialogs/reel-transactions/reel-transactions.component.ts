@@ -47,9 +47,9 @@ fieldNames:any;
   @ViewChild('serialTemp') serialTemp: ElementRef
   @ViewChildren('serialTemp') serialInputs: QueryList<any>;
   
-  constructor(private dialog: MatDialog,public dialogRef: MatDialogRef<ReelTransactionsComponent>,
+  constructor(private global:GlobalService,public dialogRef: MatDialogRef<ReelTransactionsComponent>,
     private inductionManagerApi: InductionManagerApiService,
-    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService,private global:GlobalService) {
+    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService) {
       this.iinductionManagerApi = inductionManagerApi;
      }
 
@@ -84,7 +84,7 @@ fieldNames:any;
 
   ReelDetailDialogue() {
     
-    const dialogRef = this.dialog.open(ReelDetailComponent, {
+    const dialogRef:any = this.global.OpenDialog(ReelDetailComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -191,7 +191,7 @@ fieldNames:any;
   }
 
   reeloverviewsubmit(){
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '560px',
       data: {
@@ -221,7 +221,7 @@ fieldNames:any;
     })
   }
 ConfirmNoOFReel(numUnassigned){
-  const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+  const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
     height: 'auto',
     width: '560px',
     data: {
@@ -303,7 +303,7 @@ CreateReels(){
                             errs += (SNs[x] + ' is invalid because it is already allocated ' + (res.data[x].reason == 'OT' ? 'to a Put Away in Open Transactions.' : 'in Inventory Map') );
                            
 
-                            const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+                            const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
                               height: 'auto',
                               width: '560px',
                               data: {
@@ -342,7 +342,7 @@ CreateReels(){
                             else  {
                               this.createdReel = res.data
                               // print functionality will be implemented here
-                              const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+                              const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
                                 height: 'auto',
                                 width: '560px',
                                 data: {
@@ -402,7 +402,7 @@ let res:any =   this.global.Print(`FileName:PrintReelLabels|OTID:${this.createdR
 }
 
  async showConfirmationDialog(message,callback) {
-  const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+  const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
     height: 'auto',
     width: '560px',
     autoFocus: '__non_existing_element__',

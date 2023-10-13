@@ -7,6 +7,7 @@ import { GlobalConfigSetSqlComponent } from 'src/app/admin/dialogs/global-config
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class ConnectionStringsComponent {
   constructor(
     private Api: ApiFuntions,
     private toastr: ToastrService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public globalConfigApi: GlobalConfigApiService
   ) {
     this.iGlobalConfigApi = globalConfigApi;
@@ -139,7 +140,7 @@ export class ConnectionStringsComponent {
     }
   }
   deleteString(item) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       data: {
@@ -170,7 +171,7 @@ export class ConnectionStringsComponent {
           
           if (res.isExecuted) {
          
-            const dialogRef = this.dialog.open(GlobalConfigSetSqlComponent, {
+            const dialogRef:any = this.global.OpenDialog(GlobalConfigSetSqlComponent, {
               height: 'auto',
               width: '600px',
               autoFocus: '__non_existing_element__',

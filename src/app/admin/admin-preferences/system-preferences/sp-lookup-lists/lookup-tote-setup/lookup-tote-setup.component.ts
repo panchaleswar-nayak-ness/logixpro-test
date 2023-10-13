@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -30,7 +31,7 @@ export class LookupToteSetupComponent implements OnInit {
   saveCheck = false
 
   constructor(private Api:ApiFuntions,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private adminApiService: AdminApiService,
     private toastr: ToastrService,
     public authService: AuthService,) { 
@@ -107,7 +108,7 @@ export class LookupToteSetupComponent implements OnInit {
   }
 
   deleteTote(ele){
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
@@ -134,7 +135,7 @@ export class LookupToteSetupComponent implements OnInit {
 
   clearAllTotes(){
 
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '786px',
       data: {

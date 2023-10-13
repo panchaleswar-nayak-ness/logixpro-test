@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { ItemNumUpdateConfirmationComponent } from '../item-num-update-confirmation/item-num-update-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-item-number',
@@ -16,7 +17,7 @@ export class ItemNumberComponent implements OnInit {
   constructor(
               public dialogRef: MatDialogRef<any>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private confirmationdialog: MatDialog) { }
+              private dialog:GlobalService) { }
 
   ngOnInit(): void { 
 
@@ -62,7 +63,7 @@ export class ItemNumberComponent implements OnInit {
     }
     } else if ( status == 'update'){
       if(this.data.newItemNumber){
-      const confirmationdialogRef = this.confirmationdialog.open(ItemNumUpdateConfirmationComponent, {
+      const confirmationdialogRef:any = this.dialog.OpenDialog(ItemNumUpdateConfirmationComponent, {
         width: '560px'
       });
       confirmationdialogRef.afterClosed().subscribe((res) => {

@@ -44,7 +44,7 @@ export class CmShippingComponent implements OnInit {
   constructor(
     public consolidationAPI : ConsolidationApiService,
     // private Api: ApiFuntions, 
-    private authService: AuthService, private toast: ToastrService, private dialog: MatDialog,
+    private authService: AuthService, private toast: ToastrService,
     private global:GlobalService,
     private route: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -136,7 +136,7 @@ export class CmShippingComponent implements OnInit {
     });
   }
   async ShippingCompShip() {
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -160,7 +160,7 @@ export class CmShippingComponent implements OnInit {
             this.completeShipment();
           } else {
             //for temp
-            let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
               height: 'auto',
               width: '560px',
               autoFocus: '__non_existing_element__',
@@ -196,7 +196,7 @@ export class CmShippingComponent implements OnInit {
     });
   }
   openCmAddNewItem() {
-    let dialogRef = this.dialog.open(CmAddNewItemToShipmentComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmAddNewItemToShipmentComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',

@@ -223,7 +223,7 @@ export class TotesAddEditComponent implements OnInit {
 
   deleteTote(toteID:any,index)
   {  //jhgjhgfhgfh
-    const dialogRef =  this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any =  this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -420,7 +420,7 @@ export class TotesAddEditComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<TotesAddEditComponent>,
     private inductionManagerApi: InductionManagerApiService,private adminApiService: AdminApiService,private route: ActivatedRoute,private location: Location,private renderer: Renderer2,
-    @Inject(MAT_DIALOG_DATA) public data : any,private authService: AuthService,private Api:ApiFuntions,private toastr: ToastrService,private dialog: MatDialog,private global:GlobalService) {
+    @Inject(MAT_DIALOG_DATA) public data : any,private authService: AuthService,private Api:ApiFuntions,private toastr: ToastrService,private global:GlobalService) {
       this.iAdminApiService = adminApiService;
       let pathArr= this.location.path().split('/')
       this.isIMPath=pathArr[pathArr.length-1]==='ImToteManager'

@@ -4,6 +4,7 @@ import { AuthService } from '../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class AddFilterFunction implements OnInit {
   constructor(
               public dialogRef: MatDialogRef<any>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private confirmationdialog: MatDialog,
+              private confirmationglobal:GlobalService,
               private Api: ApiFuntions,
               private inductionManagerApi: InductionManagerApiService,
               private authService: AuthService

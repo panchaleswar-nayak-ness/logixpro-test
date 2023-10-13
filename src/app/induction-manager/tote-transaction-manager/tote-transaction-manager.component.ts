@@ -84,13 +84,12 @@ public iinductionManagerApi:IInductionManagerApiService;
 
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private toastr: ToastrService,
     private Api: ApiFuntions,
     private authService: AuthService,
     private inductionManagerApi: InductionManagerApiService,
-    private filterService: ContextMenuFiltersService,
-    private global:GlobalService
+    private filterService: ContextMenuFiltersService, 
   ) {
     this.userData = this.authService.userData();
     this.iinductionManagerApi = inductionManagerApi;
@@ -127,7 +126,7 @@ public iinductionManagerApi:IInductionManagerApiService;
     enablebatch = true
   }
         if (type != 'pickTote') {
-          const dialogRef = this.dialog.open(BatchDeleteComponent, {
+          const dialogRef:any = this.global.OpenDialog(BatchDeleteComponent, {
             height: 'auto',
             width: '60vw',
             autoFocus: '__non_existing_element__',
@@ -148,7 +147,7 @@ public iinductionManagerApi:IInductionManagerApiService;
             }
           });
         } else {
-          const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+          const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
             height: 'auto',
             width: '600px',
             autoFocus: '__non_existing_element__',
@@ -304,7 +303,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
+    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data: {

@@ -68,11 +68,11 @@ export class EventLogComponent implements OnInit {
   isAdmin: boolean = false;
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
     private authService: AuthService,
     private toastr: ToastrService,
-    private global:GlobalService,
+    private dialog:MatDialog,
     private filterService: ContextMenuFiltersService,
     private adminApiService: AdminApiService,
     private datepipe: DatePipe,
@@ -115,7 +115,7 @@ export class EventLogComponent implements OnInit {
   }
 
   openOmEventLogEntryDetail(element: any) {
-    let dialogRef = this.dialog.open(OmEventLogEntryDetailComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmEventLogEntryDetailComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -206,7 +206,7 @@ export class EventLogComponent implements OnInit {
       });
       return;
     }
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -285,7 +285,7 @@ export class EventLogComponent implements OnInit {
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
+    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data: {

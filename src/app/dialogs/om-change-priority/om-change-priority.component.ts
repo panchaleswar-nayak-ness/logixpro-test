@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-om-change-priority',
@@ -23,7 +24,7 @@ export class OmChangePriorityComponent implements OnInit {
   constructor(
     private sharedService: SharedService,
     private adminApiService: AdminApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<OmChangePriorityComponent>,
     private authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any,

@@ -15,6 +15,7 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-preferences-shipping',
@@ -39,7 +40,7 @@ export class PreferencesShippingComponent implements OnInit {
     // private Api: ApiFuntions,
     private toastr: ToastrService,
     private authService: AuthService,
-    public dialog: MatDialog
+    public global:GlobalService
   ) {
     this.userData = this.authService.userData();
 
@@ -125,7 +126,7 @@ export class PreferencesShippingComponent implements OnInit {
   }
 
   openCarrier() {
-    const dialogRef = this.dialog.open(CmShippingCarrierComponent, {
+    const dialogRef:any = this.global.OpenDialog(CmShippingCarrierComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',

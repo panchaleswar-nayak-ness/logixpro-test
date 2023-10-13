@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-add-group-allowed',
@@ -31,7 +32,7 @@ export class AddGroupAllowedComponent implements OnInit {
   constrolName
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private dialog:MatDialog,
     private employeeService: ApiFuntions,
     private toastr: ToastrService,
     private authService: AuthService,

@@ -199,7 +199,7 @@ export class OmOrderManagerComponent implements OnInit {
   }
 
   selectColumnSequence() {
-    let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
       height: 'auto',
       width: '960px',
       disableClose: true,
@@ -337,7 +337,7 @@ export class OmOrderManagerComponent implements OnInit {
     if (this.orderType == "Open") {
       this.toastr.error("You can only delete pending transactions.", 'Warning!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
     } else {
-      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -378,7 +378,7 @@ export class OmOrderManagerComponent implements OnInit {
   }
 
   updateRecord(ele : any) {
-    let dialogRef = this.dialog.open(OmUpdateRecordComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmUpdateRecordComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -428,7 +428,7 @@ export class OmOrderManagerComponent implements OnInit {
 
     if (!this.OMIndex.preferences[0].allowPartRel && this.totalRecords > -1 || this.FilterString != '1 = 1') {      
 
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -462,7 +462,7 @@ export class OmOrderManagerComponent implements OnInit {
 
     } else {
 
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -542,7 +542,7 @@ export class OmOrderManagerComponent implements OnInit {
   }
 
   openOmCreateOrders() { 
-    let dialogRef = this.dialog.open(OmCreateOrdersComponent, { 
+    let dialogRef:any = this.global.OpenDialog(OmCreateOrdersComponent, { 
       height: 'auto',
       width: '1424px',
       autoFocus: '__non_existing_element__',
@@ -575,7 +575,7 @@ export class OmOrderManagerComponent implements OnInit {
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef =  this.dialog.open(InputFilterComponent, {
+    const dialogRef:any =  this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data:{

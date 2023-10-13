@@ -13,6 +13,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { catchError, of } from 'rxjs';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-scan-codes',
@@ -38,7 +39,7 @@ export class ScanCodesComponent{
   public iAdminApiService: IAdminApiService;
 
   constructor( private api:ApiFuntions, private sharedService:SharedService,
-    private authService: AuthService, private toastr: ToastrService,  private adminApiService: AdminApiService,private dialog: MatDialog,private cusValidator: CustomValidatorService) {
+    private authService: AuthService, private toastr: ToastrService,  private adminApiService: AdminApiService,private global:GlobalService,private dialog:MatDialog,private cusValidator: CustomValidatorService) {
       this.iAdminApiService = adminApiService;
     this.userData = this.authService.userData();
 
@@ -87,7 +88,7 @@ export class ScanCodesComponent{
   dltCategory(item){
 
 
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -277,7 +278,7 @@ export class ScanCodesComponent{
 
 
   openScanTypePopup(item){
-    let dialogRef = this.dialog.open(ScanTypeCodeComponent, {
+    let dialogRef:any = this.global.OpenDialog(ScanTypeCodeComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',

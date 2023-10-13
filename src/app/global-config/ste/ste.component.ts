@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
@@ -16,7 +17,7 @@ export class SteComponent implements OnInit {
   public  iGlobalConfigApi: IGlobalConfigApi;
   constructor( 
     public globalConfigApi: GlobalConfigApiService,
-    public dialog: MatDialog,    
+    public global:GlobalService,    
     public Api: ApiFuntions,
     private toastr:ToastrService) 
     { 
@@ -61,7 +62,7 @@ export class SteComponent implements OnInit {
     };
 };
   // ConfirmationPopup(msg:any) {
-  //   const dialogRef  = this.dialog.open(ConfirmationDialogComponent, {
+  //   const dialogRef  = this.global.OpenDialog(ConfirmationDialogComponent, {
   //     height: 'auto',
   //     width: '560px',
   //     autoFocus: '__non_existing_element__',

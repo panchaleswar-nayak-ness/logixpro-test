@@ -30,7 +30,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   currentApp;
   public iAdminApiService: IAdminApiService;
 
-  constructor(private api:ApiFuntions,private adminApiService: AdminApiService,private route:Router,private dialog: MatDialog, private toastr :ToastrService,private router: Router,public global:GlobalService) {
+  constructor(private api:ApiFuntions,private adminApiService: AdminApiService,private route:Router,private dialog:MatDialog, private toastr :ToastrService,private router: Router,public global:GlobalService) {
     this.iAdminApiService = adminApiService; 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -135,7 +135,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   }
 
   openEditDesign() {
-    const dialogRef = this.dialog.open(CrEditDesignTestDataComponent, {
+    const dialogRef:any = this.global.OpenDialog(CrEditDesignTestDataComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -151,7 +151,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
     );
   }
   CrAddNewCustomReportDialogue() {
-    const dialogRef = this.dialog.open(CrAddNewCustomReportComponent, {
+    const dialogRef:any = this.global.OpenDialog(CrAddNewCustomReportComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -174,7 +174,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
     );
   }
   openDeleteDialogue() {
-    const dialogRef = this.dialog.open(CrDeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(CrDeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -255,7 +255,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   }
 
   pushReports(){
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '500px',
       data: {

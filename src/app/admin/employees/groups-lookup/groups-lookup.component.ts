@@ -59,7 +59,7 @@ export class GroupsLookupComponent implements OnInit {
     }
   }
   public iAdminApiService: IAdminApiService;
-  constructor(private _liveAnnouncer: LiveAnnouncer,private adminApiService: AdminApiService, private dialog: MatDialog, private employeeService: ApiFuntions, private authService: AuthService) { 
+  constructor(private _liveAnnouncer: LiveAnnouncer,private adminApiService: AdminApiService, private employeeService: ApiFuntions, private authService: AuthService) { 
     this.iAdminApiService = adminApiService;
   }
 
@@ -104,7 +104,7 @@ export class GroupsLookupComponent implements OnInit {
 
 
   // openGroupDialog() {
-  //   let dialogRef = this.dialog.open(AddNewGroupComponent, {
+  //   let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
   //     height: 'auto',
   //     width: '560px',
   //     autoFocus: '__non_existing_element__',

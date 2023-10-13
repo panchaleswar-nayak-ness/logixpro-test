@@ -1,5 +1,6 @@
 import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { IeFtpSettingsComponent } from 'src/app/dialogs/ie-ftp-settings/ie-ftp-settings.component';
 import { IeInventMapExportComponent } from 'src/app/dialogs/ie-invent-map-export/ie-invent-map-export.component';
 import { IeTransFieldMappingComponent } from 'src/app/dialogs/ie-trans-field-mapping/ie-trans-field-mapping.component';
@@ -14,12 +15,12 @@ import { TransferFilePathComponent } from 'src/app/dialogs/transfer-file-path/tr
 export class IeSystemSettingsComponent {
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) { }
 
  
   IeTransFieldMappingDialog() {
-     this.dialog.open(IeTransFieldMappingComponent, {
+     this.global.OpenDialog(IeTransFieldMappingComponent, {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',
@@ -28,7 +29,7 @@ export class IeSystemSettingsComponent {
 
   }
   XMLFieldMappingDialog() {
-     this.dialog.open(OpenTransPickMappingComponent, {
+     this.global.OpenDialog(OpenTransPickMappingComponent, {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',
@@ -38,7 +39,7 @@ export class IeSystemSettingsComponent {
   }
 
   TransFilePathDialog() {
-     this.dialog.open(TransferFilePathComponent, {
+     this.global.OpenDialog(TransferFilePathComponent, {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',
@@ -48,7 +49,7 @@ export class IeSystemSettingsComponent {
   }
 
   IeFTPSettingsDialog(){
-     this.dialog.open(IeFtpSettingsComponent, {
+     this.global.OpenDialog(IeFtpSettingsComponent, {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',
@@ -58,7 +59,7 @@ export class IeSystemSettingsComponent {
   }
 
   IeInventMapExportDialog(){
-     this.dialog.open(IeInventMapExportComponent, {
+     this.global.OpenDialog(IeInventMapExportComponent, {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',

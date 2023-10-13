@@ -55,11 +55,10 @@ export class KitItemComponent implements OnInit, OnChanges {
     private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private authService: AuthService,
-    private dialog: MatDialog,
-    private el: ElementRef,
     private global:GlobalService,
+    private el: ElementRef, 
     private sharedService:SharedService,
-    private route:Router,
+    private dialog:MatDialog,
     private Api:ApiFuntions
     ) { this.iCommonAPI = commonAPI; 
       this.iAdminApiService = adminApiService;
@@ -105,7 +104,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   }
 
   dltCategory(e: any) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -230,7 +229,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   }
 
   openAddItemNumDialog(e): void {
-    const dialogRef = this.dialog.open(this.additemNumber, {
+    const dialogRef:any = this.global.OpenDialog(this.additemNumber, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -248,7 +247,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   }
 
   openDescriptionDialog(e): void {
-    const dialogRef = this.dialog.open(this.description, {
+    const dialogRef:any = this.global.OpenDialog(this.description, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,

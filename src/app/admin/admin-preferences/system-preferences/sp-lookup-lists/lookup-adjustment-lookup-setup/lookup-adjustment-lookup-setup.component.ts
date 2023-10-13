@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -21,7 +22,7 @@ public iAdminApiService: IAdminApiService;
 AdjustLookupInput
 AddBtn = false
   constructor(private Api:ApiFuntions,
-              private dialog: MatDialog,
+              private global:GlobalService,
               private adminApiService: AdminApiService,
               private toastr: ToastrService,
               public authService: AuthService,) { 
@@ -101,7 +102,7 @@ AddBtn = false
 
 
   deleteAdjust(ele){
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',

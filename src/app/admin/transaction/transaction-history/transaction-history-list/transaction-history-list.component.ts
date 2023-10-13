@@ -26,6 +26,7 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 const TRNSC_DATA = [
   { colHeader: 'tH_ID', colDef: 'TH_ID' },
@@ -180,7 +181,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private toastr: ToastrService,
     private adminApiService: AdminApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private sharedService:SharedService,
     private filterService: ContextMenuFiltersService
   ) {
@@ -249,7 +250,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   actionDialog(opened: boolean) {
     if (!opened && this.selectedVariable === 'set_column_sq') {
       this.sortCol=0;
-      let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
         height: 'auto',
         width: '960px',
         disableClose: true,
@@ -458,7 +459,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
+    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data: {

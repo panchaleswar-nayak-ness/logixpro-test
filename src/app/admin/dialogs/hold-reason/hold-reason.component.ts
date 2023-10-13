@@ -28,8 +28,7 @@ export class HoldReasonComponent implements OnInit {
   
   });
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
     private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<HoldReasonComponent>,
     private authService: AuthService,

@@ -1,6 +1,7 @@
 import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-reports',
@@ -9,7 +10,7 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class ReportsComponent{
   fromAdmin
-  constructor( private dialog: MatDialog,private router: Router) { 
+  constructor( private global:GlobalService,private router: Router) { 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         let spliUrl=event.url.split('/');

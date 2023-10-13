@@ -16,6 +16,7 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-add-new-transaction-to-order',
@@ -40,7 +41,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   constructor(
     public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private toastr: ToastrService,
     private adminApiService: AdminApiService,
     private Api: ApiFuntions,
@@ -156,7 +157,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
         (res: any) => {
           if(res.isExecuted){
               if(res.data==''){
-                const dialogRef = this.dialog.open(ItemExistGenerateOrderComponent, {
+                const dialogRef:any = this.global.OpenDialog(ItemExistGenerateOrderComponent, {
                   height: 'auto',
                   width: '560px',
                   autoFocus: '__non_existing_element__',
@@ -210,7 +211,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
       (res: any) => {
         if(res.isExecuted){
             if(res.data==''){
-              const dialogRef = this.dialog.open(ItemExistGenerateOrderComponent, {
+              const dialogRef:any = this.global.OpenDialog(ItemExistGenerateOrderComponent, {
                 height: 'auto',
                 width: '560px',
                 autoFocus: '__non_existing_element__',
@@ -224,7 +225,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
               });
             }else{
               if(this.itemNumber===''  || this.quantity===0 || this.quantity<0){
-                const dialogRef = this.dialog.open(EmptyFieldsComponent, {
+                const dialogRef:any = this.global.OpenDialog(EmptyFieldsComponent, {
                   height: 'auto',
                   width: '560px',
                   autoFocus: '__non_existing_element__',

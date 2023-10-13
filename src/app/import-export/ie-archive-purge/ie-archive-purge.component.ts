@@ -1,6 +1,7 @@
 import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-ie-archive-purge',
@@ -29,13 +30,13 @@ export class IeArchivePurgeComponent  {
     dataSourceList:any
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) { }
 
 
 
   IeImportAllDialog(){
-     this.dialog.open(ConfirmationDialogComponent, {
+     this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '550px',
       autoFocus: '__non_existing_element__',

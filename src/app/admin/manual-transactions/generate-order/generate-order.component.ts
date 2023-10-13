@@ -16,6 +16,7 @@ import { ManualTransPostConfirmComponent } from '../../dialogs/manual-trans-post
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
  
 
 @Component({
@@ -62,7 +63,7 @@ export class GenerateOrderComponent implements OnInit {
     private authService: AuthService,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
-    private dialog: MatDialog
+    private global:GlobalService
   ) {
     this.userData = this.authService.userData();
     this.iAdminApiService = adminApiService;
@@ -139,7 +140,7 @@ export class GenerateOrderComponent implements OnInit {
       this.selectedOption &&
       this.selectedOption === 'add_new_transaction'
     ) {
-      const dialogRef = this.dialog.open(AddNewTransactionToOrderComponent, {
+      const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
         height: 'auto',
         width: '100vw',
         autoFocus: '__non_existing_element__',
@@ -163,7 +164,7 @@ export class GenerateOrderComponent implements OnInit {
       this.selectedOption &&
       this.selectedOption === 'delete_order'
     ) {
-      const dialogRef = this.dialog.open(
+      const dialogRef:any = this.global.OpenDialog(
         DeleteConfirmationManualTransactionComponent,
         {
           height: 'auto',
@@ -193,7 +194,7 @@ export class GenerateOrderComponent implements OnInit {
       this.selectedOption &&
       this.selectedOption === 'post_order'
     ) {
-      const dialogRef = this.dialog.open(ManualTransPostConfirmComponent, {
+      const dialogRef:any = this.global.OpenDialog(ManualTransPostConfirmComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -227,7 +228,7 @@ export class GenerateOrderComponent implements OnInit {
   }
   editTransaction(element){
 
-  const dialogRef = this.dialog.open(AddNewTransactionToOrderComponent, {
+  const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
         height: 'auto',
         width: '100vw',
         autoFocus: '__non_existing_element__',
@@ -271,7 +272,7 @@ export class GenerateOrderComponent implements OnInit {
     this.getOrderTableData();
   }
   deleteTransaction(element?) {
-    const dialogRef = this.dialog.open(
+    const dialogRef:any = this.global.OpenDialog(
       DeleteConfirmationManualTransactionComponent,
       {
         height: 'auto',

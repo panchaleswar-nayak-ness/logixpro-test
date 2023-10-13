@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-ie-manage-data-inven-map-tables',
@@ -22,7 +23,7 @@ export class IeManageDataInvenMapTablesComponent {
     dataSourceList:any
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) { }
 
 

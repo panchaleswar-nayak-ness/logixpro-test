@@ -9,6 +9,7 @@ import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 export interface  AdjustQuantityDataStructure   {
@@ -61,7 +62,7 @@ export class AdjustQuantityComponent implements OnInit {
 
  constructor(
     public commonAPI : CommonApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public fb: FormBuilder,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,

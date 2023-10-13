@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { AddNewDeviceComponent } from 'src/app/admin/dialogs/add-new-device/add-new-device.component';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -49,7 +50,7 @@ export class SpDevicePreferenceComponent implements OnInit {
   constructor(
     private Api: ApiFuntions,
     public authService: AuthService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private sharedService: SharedService
@@ -94,7 +95,7 @@ export class SpDevicePreferenceComponent implements OnInit {
   }
 
   addEditNewDevice(item?, isEdit = false) {
-    let dialogRef = this.dialog.open(AddNewDeviceComponent, {
+    let dialogRef:any = this.global.OpenDialog(AddNewDeviceComponent, {
       height: 'auto',
       width: '960px',
       autoFocus: '__non_existing_element__',
@@ -118,7 +119,7 @@ export class SpDevicePreferenceComponent implements OnInit {
     this.getDevicePrefTable();
   }
   deleteAllOrders(deviceID) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',

@@ -12,8 +12,7 @@ export class FunctionAllocationComponent implements OnInit {
   dialog_msg: string = '';
   btn_label = '';
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog, 
+    @Inject(MAT_DIALOG_DATA) public data: any, 
     private toastr: ToastrService, 
     private employeeService: ApiFuntions,
     public dialogRef: MatDialogRef<FunctionAllocationComponent>

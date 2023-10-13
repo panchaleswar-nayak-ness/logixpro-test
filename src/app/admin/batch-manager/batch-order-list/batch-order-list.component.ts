@@ -20,6 +20,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-batch-order-list',
@@ -64,7 +65,7 @@ export class BatchOrderListComponent implements OnInit {
     private adminApiService: AdminApiService,
     private Api: ApiFuntions,
     private authService: AuthService,
-    private dialog: MatDialog
+    private global:GlobalService
   ) {
     
    this.iAdminApiService = adminApiService;
@@ -164,7 +165,7 @@ export class BatchOrderListComponent implements OnInit {
   }
 
   openBatchViewDetail(detailData?): void {
-    const dialogRef = this.dialog.open(BatchManagerDetailViewComponent, {
+    const dialogRef:any = this.global.OpenDialog(BatchManagerDetailViewComponent, {
       width: '1100px',
       autoFocus: '__non_existing_element__',
       disableClose:true,

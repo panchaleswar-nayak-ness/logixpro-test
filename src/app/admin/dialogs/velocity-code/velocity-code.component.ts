@@ -7,6 +7,7 @@ import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-velocity-code',
@@ -31,7 +32,7 @@ export class VelocityCodeComponent implements OnInit {
     private authService: AuthService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<any>,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private renderer: Renderer2,
     ) { this.iCommonAPI = commonAPI; }
 
@@ -114,7 +115,7 @@ export class VelocityCodeComponent implements OnInit {
   }
   dltVlCode(vlCode:any){
     if(vlCode){
-      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -146,7 +147,7 @@ export class VelocityCodeComponent implements OnInit {
     
     
     if(event != ''){
-      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',

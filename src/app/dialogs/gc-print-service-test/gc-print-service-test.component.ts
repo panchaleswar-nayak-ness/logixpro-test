@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { GcPrintServiceTestBeginComponent } from '../gc-print-service-test-begin/gc-print-service-test-begin.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-gc-print-service-test',
@@ -21,11 +22,11 @@ export class GcPrintServiceTestComponent {
   dataSource_1 = (this.ELEMENT_DATA);
 
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private global:GlobalService) { }
 
 
   openGcBeginTest() { 
-    this.dialog.open(GcPrintServiceTestBeginComponent, { 
+    this.global.OpenDialog(GcPrintServiceTestBeginComponent, { 
       height: 'auto',
       width: '1424px',
       autoFocus: '__non_existing_element__',

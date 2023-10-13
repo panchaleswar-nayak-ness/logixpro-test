@@ -18,7 +18,7 @@ export class FilterItemNumbersComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private dialog:MatDialog,
     private Api: ApiFuntions,
     private toastr: ToastrService,
     private adminApiService: AdminApiService,

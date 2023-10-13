@@ -52,8 +52,7 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
     public consolidationAPI : ConsolidationApiService,
     public authService: AuthService,
     private toast:ToastrService,
-    private dialog: MatDialog,
-    private global:GlobalService,
+    private global:GlobalService, 
     public route: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _liveAnnouncer: LiveAnnouncer,
@@ -156,7 +155,7 @@ if(this.orderNumber != ""){
 }
 async ClickConfirmAll(){
   this.getPreferences();
-  let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+  let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
     height: 'auto',
     width: '560px',
     autoFocus: '__non_existing_element__',
@@ -205,7 +204,7 @@ async ClickConfirmAll(){
 openScanItem(ItemNumber:any,id: any) {
   let index= this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
   this.transTable.filteredData[index].active = true; 
-  let dialogRef = this.dialog.open(CmConfirmAndPackingProcessTransactionComponent, {
+  let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingProcessTransactionComponent, {
     height: 'auto',
     width: '96vw',
     autoFocus: '__non_existing_element__',
@@ -241,7 +240,7 @@ announceSortChange2(sortState: Sort) {
  openSelectTransaction(ItemNumber:any,id: any) {
   let index= this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
   this.transTable.filteredData[index].active = true;
-  let dialogRef = this.dialog.open(CmConfirmAndPackingSelectTransactionComponent, {
+  let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingSelectTransactionComponent, {
     height: 'auto',
     width: '96vw',
     autoFocus: '__non_existing_element__',

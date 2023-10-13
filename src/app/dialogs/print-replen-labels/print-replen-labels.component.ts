@@ -9,7 +9,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 export class PrintReplenLabelsComponent {
 
   constructor(
-    private dialog: MatDialog,
+    private dialog:MatDialog,
     public dialogRef: MatDialogRef<PrintReplenLabelsComponent>,
   ) { }
 

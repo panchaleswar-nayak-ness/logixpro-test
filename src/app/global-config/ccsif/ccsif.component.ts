@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
@@ -15,7 +16,7 @@ export class CcsifComponent implements OnInit {
   Status:any = 'Offline';
   public  iGlobalConfigApi: IGlobalConfigApi
   constructor( 
-    public dialog: MatDialog,   
+    public global:GlobalService,   
      public api: ApiFuntions,
      public globalConfigApi: GlobalConfigApiService,
      private toastr:ToastrService) {
@@ -60,7 +61,7 @@ export class CcsifComponent implements OnInit {
     };
 };
   // ConfirmationPopup(msg:any) {
-  //   const dialogRef  = this.dialog.open(ConfirmationDialogComponent, {
+  //   const dialogRef  = this.global.OpenDialog(ConfirmationDialogComponent, {
   //     height: 'auto',
   //     width: '560px',
   //     autoFocus: '__non_existing_element__',

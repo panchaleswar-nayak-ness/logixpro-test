@@ -10,6 +10,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {
   position: string;
@@ -71,7 +72,7 @@ export class LicensingComponent implements OnInit {
     private sharedService: SharedService,
     private toastr: ToastrService,
     public globalConfigApi: GlobalConfigApiService,
-    private dialog: MatDialog
+    private global:GlobalService
   ) {
     this.iGlobalConfigApi = globalConfigApi;
   }
@@ -138,7 +139,7 @@ export class LicensingComponent implements OnInit {
           }else if(!res.isExecuted){
            
 
-            let dialogRef = this.dialog.open(LicensingInvalidComponent, {
+            let dialogRef:any = this.global.OpenDialog(LicensingInvalidComponent, {
               width: '550px',
               autoFocus: '__non_existing_element__',
       disableClose:true,

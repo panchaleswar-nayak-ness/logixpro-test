@@ -1,5 +1,6 @@
 import { Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-wp-pod-setup',
@@ -8,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class WpPodSetupComponent{
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private global:GlobalService) { }
   displayedColumns: string[] = ['transType', 'scanSequence','actions'];
   dataSource:any
 

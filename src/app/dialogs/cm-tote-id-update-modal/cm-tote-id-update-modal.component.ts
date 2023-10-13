@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
@@ -24,7 +25,7 @@ export class CmToteIdUpdateModalComponent implements OnInit {
 
   public IconsolidationAPI : IConsolidationApi;
 
-  constructor(private dialog: MatDialog,
+  constructor(private global:GlobalService,
               public dialogRef: MatDialogRef<CmToteIdUpdateModalComponent>,
               private toast: ToastrService,
               // private Api: ApiFuntions,

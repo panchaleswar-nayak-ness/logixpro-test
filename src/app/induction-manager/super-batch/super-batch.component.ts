@@ -39,8 +39,7 @@ export class SuperBatchComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private inductionManagerApi: InductionManagerApiService,
-    private dialog: MatDialog,
-    private global:GlobalService,
+    private global:GlobalService, 
     private toastr: ToastrService,
     private Api: ApiFuntions
   ) {
@@ -62,7 +61,7 @@ export class SuperBatchComponent implements OnInit {
   }
 
   openReqDataStatus() {
-    this.dialog.open(RequiredDateStatusComponent, {
+    this.global.OpenDialog(RequiredDateStatusComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__'
@@ -151,7 +150,7 @@ export class SuperBatchComponent implements OnInit {
     }
 
     if(this.isConfirmSuperBatch){
-    const dialogRef = this.dialog.open(this.batchOrderConfirmation, {
+    const dialogRef:any = this.global.OpenDialog(this.batchOrderConfirmation, {
       width: 'auto',
       autoFocus: '__non_existing_element__',
       disableClose:true,

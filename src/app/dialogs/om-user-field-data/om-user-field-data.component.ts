@@ -6,6 +6,7 @@ import labels from '../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-om-user-field-data',
@@ -23,7 +24,7 @@ export class OmUserFieldDataComponent implements OnInit {
     private authService: AuthService,
     private Api: ApiFuntions,
     public orderManagerApi  : OrderManagerApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<OmUserFieldDataComponent>,
   ) {
     this.iOrderManagerApi = orderManagerApi;

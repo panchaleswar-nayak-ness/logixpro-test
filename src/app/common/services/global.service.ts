@@ -13,6 +13,7 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { components } from 'angular-routing';
 
 @Injectable({
   providedIn: 'root'
@@ -59,9 +60,9 @@ export class GlobalService {
     private Api:ApiFuntions,
     public orderManagerApi  : OrderManagerApiService,
     private toast:ToastrService,
+    private dialog:MatDialog,
     private inductionManagerApi: InductionManagerApiService,
-    private adminApiService: AdminApiService,
-    private dialog: MatDialog, 
+    private adminApiService: AdminApiService, 
     private httpClient : HttpClient,
     private authService:AuthService,
     private sanitizer: DomSanitizer) {
@@ -234,10 +235,18 @@ export class GlobalService {
 
         }
       }
+      OpenDialog(component:any,item:any){
+      return  this.dialog.open(component, {
+          height: item.height?item.height:'auto',
+          width: item.width ? item.width:'600px',
+        disableClose:item.disableClose != null?item.disableClose:true,
+          data: item.data,
+        });
+      }
       OpenExportModal(Name:any,ReportName) {
         ReportName = ReportName.replace(".lst","-lst").replace(".lbl","-lbl");
         Name = Name.replace(".lst","").replace(".lbl","");
-        const dialogRef = this.dialog.open(BrChooseReportTypeComponent, {
+        const dialogRef:any = this.OpenDialog(BrChooseReportTypeComponent, {
           height: 'auto',
           width: '560px',
           autoFocus: '__non_existing_element__',

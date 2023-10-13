@@ -26,7 +26,7 @@ export class HeaderInterceptor implements HttpInterceptor {
 	  public userApi : UserApiService,
     private router: Router,
     private toastr: ToastrService,
-    private dialog: MatDialog,
+    private dialog:MatDialog,
     private authService: AuthService,
     public globalConfigApi: GlobalConfigApiService,
     private spinnerService: SpinnerService

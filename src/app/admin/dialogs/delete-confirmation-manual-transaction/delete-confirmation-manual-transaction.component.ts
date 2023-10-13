@@ -22,8 +22,7 @@ export class DeleteConfirmationManualTransactionComponent {
   message: '';
   public iAdminApiService: IAdminApiService;
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
     private toastr: ToastrService,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,

@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { Router } from '@angular/router';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-ie-transfer-settings',
@@ -19,7 +20,7 @@ export class IeTransferSettingsComponent implements OnInit {
   showFilter: boolean =false;
   constructor(
     private router: Router, 
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) { }
 
 
@@ -37,7 +38,7 @@ export class IeTransferSettingsComponent implements OnInit {
 
   }
   IeImportAllDialog(){
-    this.dialog.open(ConfirmationDialogComponent, {
+    this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '550px',
       autoFocus: '__non_existing_element__',

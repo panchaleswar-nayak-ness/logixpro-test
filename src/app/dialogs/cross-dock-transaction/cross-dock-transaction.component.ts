@@ -50,8 +50,7 @@ export class CrossDockTransactionComponent implements OnInit {
 
 
   constructor(public router: Router, 
-              public dialogRef: MatDialogRef<CrossDockTransactionComponent>, 
-              private dialog: MatDialog, 
+              public dialogRef: MatDialogRef<CrossDockTransactionComponent>,  
               private inductionManagerApi: InductionManagerApiService,
               @Inject(MAT_DIALOG_DATA) public data: any, 
               private Api:ApiFuntions, 
@@ -88,7 +87,7 @@ export class CrossDockTransactionComponent implements OnInit {
   }
 
   openTotesDialogue(position: any) {
-    const dialogRef = this.dialog.open(TotesAddEditComponent, {
+    const dialogRef:any = this.global.OpenDialog(TotesAddEditComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -174,7 +173,7 @@ export class CrossDockTransactionComponent implements OnInit {
 
   openUserFieldsDialogue() { 
     if (this.selectedRowObj) {
-      const dialogRef = this.dialog.open(UserFieldsComponent, {
+      const dialogRef:any = this.global.OpenDialog(UserFieldsComponent, {
         height: 'auto',
         width: '70vw',
         autoFocus: '__non_existing_element__',
@@ -237,7 +236,7 @@ export class CrossDockTransactionComponent implements OnInit {
   }
 
   openReprocessTransactionViewDialogue() {
-    const dialogRef = this.dialog.open(ReprocessTransactionDetailViewComponent, {
+    const dialogRef:any = this.global.OpenDialog(ReprocessTransactionDetailViewComponent, {
       height: 'auto',
       width: '70vw',
       autoFocus: '__non_existing_element__',
@@ -270,7 +269,7 @@ export class CrossDockTransactionComponent implements OnInit {
    
   compPick() {
     try {
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -375,7 +374,7 @@ export class CrossDockTransactionComponent implements OnInit {
   }
 
   async showConfirmationDialog(message,callback) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -397,7 +396,7 @@ export class CrossDockTransactionComponent implements OnInit {
     try {
       
       if (!this.selectedRowObj.toteID) {
-        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
           height: 'auto',
           width: '560px',
           autoFocus: '__non_existing_element__',

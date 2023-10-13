@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class SrDeleteOrderComponent {
   confrimDelete: boolean = false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private dialog:MatDialog,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<SrDeleteOrderComponent>,
     private authService: AuthService,

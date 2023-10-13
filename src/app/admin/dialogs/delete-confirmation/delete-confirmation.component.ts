@@ -39,7 +39,7 @@ export class DeleteConfirmationComponent implements OnInit {
     public consolidationAPI : ConsolidationApiService,
     public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private dialog:MatDialog,
     private toastr: ToastrService,
     public globalConfigApi: GlobalConfigApiService,
     private Api: ApiFuntions, 

@@ -10,6 +10,7 @@ import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-confi
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 import { IUserAPIService } from '../services/user-api/user-api-interface';
 import { UserApiService } from '../services/user-api/user-api.service';
+import { GlobalService } from '../common/services/global.service';
 
 @Component({
   selector: 'global-config',
@@ -32,7 +33,7 @@ export class GlobalConfigComponent {
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public loader: SpinnerService,
     private auth: AuthService 
   ) {

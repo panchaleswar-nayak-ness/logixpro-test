@@ -134,11 +134,10 @@ constructor(
     public toastService: ToastrService,
     private authService: AuthService,
     private fb: FormBuilder,
-    public dialog: MatDialog,
+    public global:GlobalService,
     private liveAnnouncer: LiveAnnouncer,
     private adminApiService: AdminApiService,
-    private router: Router,
-    private global:GlobalService
+    private router: Router 
     
   ) {
     this.iAdminApiService = adminApiService;
@@ -629,7 +628,7 @@ constructor(
   }
   deleteCycleCount(ident: any) {
     if (this.orderNumber === '' || this.orderNumber == undefined) return;
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',

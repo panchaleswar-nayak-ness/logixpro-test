@@ -24,7 +24,7 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
   public listLabelFPZ:any;
   public iAdminApiService: IAdminApiService;
 
-  constructor(private dialog: MatDialog,
+  constructor( 
              @Inject(MAT_DIALOG_DATA) public data: any,
              private Api: ApiFuntions,
              private authservice : AuthService,

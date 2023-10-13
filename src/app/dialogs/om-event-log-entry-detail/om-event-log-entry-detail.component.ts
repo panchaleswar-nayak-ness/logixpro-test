@@ -22,13 +22,13 @@ export class OmEventLogEntryDetailComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     private toastr: ToastrService,
+    private dialog:MatDialog,
     public dialogRef: MatDialogRef<OmEventLogEntryDetailComponent>,
-    private authService: AuthService,
-    private global:GlobalService,
+    private authService: AuthService, 
     private datepipe: DatePipe,
   ) { 
     this.iAdminApiService = adminApiService;
@@ -40,7 +40,7 @@ export class OmEventLogEntryDetailComponent implements OnInit {
   }
 
   deleteEvent() {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',

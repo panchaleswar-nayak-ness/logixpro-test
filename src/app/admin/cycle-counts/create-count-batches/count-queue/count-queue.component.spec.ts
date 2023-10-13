@@ -29,7 +29,7 @@ describe('CCBCountQueueComponent', () => {
   let component: CCBCountQueueComponent;
   let fixture: ComponentFixture<CCBCountQueueComponent>;
   let liveAnnouncer: LiveAnnouncer;
-  let dialog: MatDialog;
+  let global:GlobalService;
   let dialogRef: any;
 
   beforeEach(async () => {

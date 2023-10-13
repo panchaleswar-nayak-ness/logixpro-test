@@ -21,6 +21,7 @@ import { MatSort } from '@angular/material/sort';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {
   name: string;
@@ -188,7 +189,7 @@ export class PickToteManagerComponent implements OnInit {
   }
   public iinductionManagerApi:IInductionManagerApiService;
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
     private toastr: ToastrService,
     private inductionManagerApi: InductionManagerApiService,
@@ -301,7 +302,7 @@ export class PickToteManagerComponent implements OnInit {
   }
   onFilterAction(option: any) {
     if (option.value === 'add_new_filter') {
-      const dialogRef = this.dialog.open(AddFilterFunction, {
+      const dialogRef:any = this.global.OpenDialog(AddFilterFunction, {
         height: 'auto',
         width: '500px',
         autoFocus: '__non_existing_element__'
@@ -320,7 +321,7 @@ export class PickToteManagerComponent implements OnInit {
       });
     }
     if (option.value === 'rename') {
-      const dialogRef = this.dialog.open(AddFilterFunction, {
+      const dialogRef:any = this.global.OpenDialog(AddFilterFunction, {
         height: 'auto',
         width: '500px',
         data: {
@@ -337,7 +338,7 @@ export class PickToteManagerComponent implements OnInit {
       });
     }
     if (option.value === 'set_default') {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '480px',
         data: {
@@ -404,7 +405,7 @@ export class PickToteManagerComponent implements OnInit {
 
     }
     if (option.value === 'delete_selected_filter') {
-      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -957,7 +958,7 @@ export class PickToteManagerComponent implements OnInit {
 
   }
   onDeleteSingleFilter(element: any) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -983,7 +984,7 @@ export class PickToteManagerComponent implements OnInit {
     });
   }
   onDeleteSingleOrder(element: any) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -1042,7 +1043,7 @@ export class PickToteManagerComponent implements OnInit {
   }
 
   onSelectBatchZone(row) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '480px',
       data: {

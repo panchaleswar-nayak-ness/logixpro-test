@@ -205,11 +205,10 @@ export class ReprocessTransactionComponent implements OnInit {
     private Api: ApiFuntions,
     private authService: AuthService,
     private toastr: ToastrService, 
-    private dialog: MatDialog,
+    private global:GlobalService,
     private sharedService: SharedService,
     private adminApiService: AdminApiService,
-    private router: Router,
-    private global:GlobalService,
+    private router: Router, 
   ) {
     this.iAdminApiService = adminApiService;
    }
@@ -418,7 +417,7 @@ export class ReprocessTransactionComponent implements OnInit {
     if(this.selectedVariable!=undefined)
     {
       if (!opened && this.selectedVariable && this.selectedVariable === 'set_column_sq') {
-        let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+        let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
           height: 'auto',
           width: '960px',
           disableClose: true,
@@ -540,7 +539,7 @@ export class ReprocessTransactionComponent implements OnInit {
               "replenishments": false, 
             }
           }
-          const dialogRef =  this.dialog.open(DeleteConfirmationComponent, {
+          const dialogRef:any =  this.global.OpenDialog(DeleteConfirmationComponent, {
             height: 'auto',
             width: '480px',
             autoFocus: '__non_existing_element__',
@@ -664,7 +663,7 @@ export class ReprocessTransactionComponent implements OnInit {
       }
 
 
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -722,7 +721,7 @@ export class ReprocessTransactionComponent implements OnInit {
     {
 
 
-      let dialogRef = this.dialog.open(FunctionAllocationComponent, {
+      let dialogRef:any = this.global.OpenDialog(FunctionAllocationComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -926,7 +925,7 @@ export class ReprocessTransactionComponent implements OnInit {
 
   openReasonDialog(reasonMessage:any)
   {
-    const dialogRef = this.dialog.open(this.description, {
+    const dialogRef:any = this.global.OpenDialog(this.description, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -934,7 +933,7 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   openReprocessTransactionDialogue(id: any) {
-    const dialogRef = this.dialog.open(ReprocessTransactionDetailComponent, {
+    const dialogRef:any = this.global.OpenDialog(ReprocessTransactionDetailComponent, {
       height: 'auto',
       width: '100%',
       autoFocus: '__non_existing_element__',

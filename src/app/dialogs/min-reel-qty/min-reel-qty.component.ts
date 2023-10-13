@@ -1,5 +1,6 @@
 import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-min-reel-qty',
   templateUrl: './min-reel-qty.component.html',
@@ -14,7 +15,7 @@ export class MinReelQtyComponent  {
   constructor(
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private confirmationdialog: MatDialog
+    private confirmationglobal:GlobalService
   ) { }
 
  

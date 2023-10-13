@@ -5,6 +5,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog'; 
 import { BatchDeleteConfirmationComponent } from '../batch-delete-confirmation/batch-delete-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-batch-delete',
@@ -23,7 +24,7 @@ export class BatchDeleteComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<BatchDeleteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog
+    private global:GlobalService
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +52,7 @@ export class BatchDeleteComponent implements OnInit {
     };
 
     let clearBatchTote = this.clearBatchTote === 'clearBatch';
-    const dialogRef = this.dialog.open(BatchDeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(BatchDeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -84,7 +85,7 @@ export class BatchDeleteComponent implements OnInit {
       wsid: this.data.wsid,
       username: this.data.userName,
     };
-    const dialogRef = this.dialog.open(BatchDeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(BatchDeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',

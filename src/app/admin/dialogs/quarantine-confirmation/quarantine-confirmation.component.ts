@@ -15,7 +15,7 @@ export class QuarantineConfirmationComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   action: any;
   userData: any;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private adminApiService: AdminApiService, private dialog: MatDialog, private toastr: ToastrService,private authService: AuthService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private adminApiService: AdminApiService, private dialog:MatDialog, private toastr: ToastrService,private authService: AuthService,
   private Api:ApiFuntions ) {
     this.iAdminApiService = adminApiService;
     if (this.data.mode === 'inventory-map-quarantine') {

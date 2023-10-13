@@ -16,6 +16,7 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 export interface InventoryMapDataStructure {
@@ -140,7 +141,8 @@ export class AddInvMapLocationComponent implements OnInit {
 
   constructor(
     public commonAPI : CommonApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
+    private dialog:MatDialog,
     private fb: FormBuilder,
     private Api: ApiFuntions,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -278,7 +280,7 @@ export class AddInvMapLocationComponent implements OnInit {
       });
       return;
     }
-    let dialogRef = this.dialog.open(AdjustQuantityComponent, {
+    let dialogRef:any = this.global.OpenDialog(AdjustQuantityComponent, {
       height: 'auto',
       width: '800px',
       autoFocus: '__non_existing_element__',
@@ -438,7 +440,7 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   loadWarehouse() {
-    let dialogRef = this.dialog.open(WarehouseComponent, {
+    let dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
       height: 'auto',
       width: '640px',
       autoFocus: '__non_existing_element__',
@@ -460,7 +462,7 @@ export class AddInvMapLocationComponent implements OnInit {
   }
   loadCellSize() {
 
-    let dialogRef = this.dialog.open(CellSizeComponent, {
+    let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
       height: 'auto',
       width: '660px',
       autoFocus: '__non_existing_element__',
@@ -476,7 +478,7 @@ export class AddInvMapLocationComponent implements OnInit {
     })
   }
   loadVelocityCode() {
-    let dialogRef = this.dialog.open(VelocityCodeComponent, {
+    let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
       height: 'auto',
       width: '660px',
       autoFocus: '__non_existing_element__',

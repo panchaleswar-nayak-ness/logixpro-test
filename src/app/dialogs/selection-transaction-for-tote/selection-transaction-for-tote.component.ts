@@ -6,6 +6,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
@@ -31,7 +32,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
   public iinductionManagerApi:IInductionManagerApiService;
 
 
-  constructor(private dialog: MatDialog,private inductionManagerApi: InductionManagerApiService,public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
+  constructor(private global:GlobalService,private inductionManagerApi: InductionManagerApiService,public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService) { 
       this.iinductionManagerApi = inductionManagerApi;
     }
@@ -67,7 +68,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
           (res: any) => {
             if (res.isExecuted) {
               if (!res.data) {
-                let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+                let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                   height: 'auto',
                   width: '560px',
                   autoFocus: '__non_existing_element__',
@@ -85,7 +86,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
   
   
               } else {
-                const dialogRef = this.dialog.open(SelectionTransactionForToteExtendComponent, {
+                const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
                   height: 'auto',
                   width: '100vw',
                   autoFocus: '__non_existing_element__',
@@ -119,7 +120,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
         );    
       
     } else {
-      const dialogRef = this.dialog.open(SelectionTransactionForToteExtendComponent, {
+      const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
         height: 'auto',
         width: '100vw',
         autoFocus: '__non_existing_element__',
@@ -210,7 +211,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
   }
 
   openSelectionExtendDialogue() {
-    const dialogRef = this.dialog.open(SelectionTransactionForToteExtendComponent, {
+    const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',

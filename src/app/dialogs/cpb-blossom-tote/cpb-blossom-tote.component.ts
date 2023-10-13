@@ -26,7 +26,7 @@ export class CpbBlossomToteComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
     private inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<CpbBlossomToteComponent>,
@@ -117,7 +117,7 @@ export class CpbBlossomToteComponent implements OnInit {
       });
       return;
     }
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',

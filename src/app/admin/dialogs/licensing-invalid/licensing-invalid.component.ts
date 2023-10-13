@@ -8,7 +8,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class LicensingInvalidComponent{
 
-  constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(  @Inject(MAT_DIALOG_DATA) public data: any) { }
 
 
 

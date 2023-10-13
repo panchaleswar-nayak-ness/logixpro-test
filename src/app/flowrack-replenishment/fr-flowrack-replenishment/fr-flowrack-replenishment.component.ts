@@ -9,6 +9,7 @@ import { SharedService } from '../../services/shared.service';
 import { ApiFuntions } from '../../services/ApiFuntions';
 import { IFlowRackReplenishApi } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api-interface';
 import { FlowRackReplenishApiService } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-fr-flowrack-replenishment',
@@ -46,7 +47,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   @ViewChild('ord_focus') ord_focus: ElementRef;
 
 
-  constructor(private dialog: MatDialog, 
+  constructor(private global:GlobalService, 
     private authservice: AuthService,
     private sharedService: SharedService,
     // private Api:ApiFuntions,
@@ -235,7 +236,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   }
   
   openCal() { 
-    const dialogRef = this.dialog.open(FrNumpadComponent, {
+    const dialogRef:any = this.global.OpenDialog(FrNumpadComponent, {
       width: '480px',
       minWidth: '480px',
       autoFocus: '__non_existing_element__',

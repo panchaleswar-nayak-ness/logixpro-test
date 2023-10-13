@@ -7,6 +7,7 @@ import { AccessGroupObject, IEmployee } from 'src/app/Iemployee';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface DialogData {
   animal: 'panda' | 'unicorn' | 'lion';
@@ -29,7 +30,7 @@ export class AddNewGroupComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private toastr: ToastrService,
     private employeeService: ApiFuntions,
     private adminApiService: AdminApiService,

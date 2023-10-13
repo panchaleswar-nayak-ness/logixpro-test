@@ -36,7 +36,7 @@ export class EmployeesLookupComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   // table initialization
   displayedColumns: string[] = ['lastName', 'firstName', 'mi', 'username'];
-  constructor(private _liveAnnouncer: LiveAnnouncer, private dialog: MatDialog, 
+  constructor(private _liveAnnouncer: LiveAnnouncer,  
     private adminApiService: AdminApiService,
     private employeeService: ApiFuntions, private authService: AuthService) { 
       this.iAdminApiService = adminApiService;

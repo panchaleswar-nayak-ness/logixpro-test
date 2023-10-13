@@ -5,6 +5,7 @@ import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-unit-measure',
@@ -21,7 +22,7 @@ export class UnitMeasureComponent implements OnInit {
 
   constructor(
     public commonAPI : CommonApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private toastr: ToastrService,
     private renderer: Renderer2,
     public dialogRef: MatDialogRef<any>) 
@@ -105,7 +106,7 @@ export class UnitMeasureComponent implements OnInit {
   dltUnitMeasure(um : any,fromDB:any) {
  
     
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',

@@ -26,6 +26,7 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
@@ -162,7 +163,7 @@ export class MoveItemsComponent implements OnInit {
     public commonAPI : CommonApiService,
     private Api: ApiFuntions,
     private authService: AuthService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private adminApiService: AdminApiService,
     private toastr: ToastrService,
     private filterService: ContextMenuFiltersService,
@@ -559,7 +560,7 @@ export class MoveItemsComponent implements OnInit {
         break;
     }
 
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '560px',
       data: {
@@ -811,7 +812,7 @@ export class MoveItemsComponent implements OnInit {
   }
 
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
+    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
       height: 'auto',
       width: '480px',
       data: {

@@ -79,7 +79,7 @@ export class OmAddRecordComponent implements OnInit {
     private toastr: ToastrService,
     private authService: AuthService,
     public orderManagerApi  : OrderManagerApiService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<OmAddRecordComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public globalService: GlobalService,

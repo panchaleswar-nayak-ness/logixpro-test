@@ -13,6 +13,7 @@ import { IInductionManagerApiService } from 'src/app/services/induction-manager-
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-workstation-zones',
@@ -76,7 +77,7 @@ export class WorkstationZonesComponent implements OnInit {
     }
   }
   clearAllZones(){
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -118,7 +119,7 @@ export class WorkstationZonesComponent implements OnInit {
     private authService: AuthService,
     private toastr: ToastrService,private inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<any>,
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) { this.iCommonAPI = commonAPI; 
     this.iinductionManagerApi = inductionManagerApi;
   }
@@ -200,7 +201,7 @@ export class WorkstationZonesComponent implements OnInit {
   }
   dltVlCode(vlCode: any) {
     if (vlCode) {
-      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -229,7 +230,7 @@ export class WorkstationZonesComponent implements OnInit {
   }
 
   delete(event: any) {
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
