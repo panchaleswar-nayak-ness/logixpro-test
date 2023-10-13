@@ -18,9 +18,10 @@ export class UserApiService implements IUserAPIService {
   Logout() {
     this.userData = this.authService.userData();
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid
     }
+    localStorage.clear();
     return this.Api.Logout(payload);
   }
 

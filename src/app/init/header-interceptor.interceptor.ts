@@ -67,8 +67,7 @@ export class HeaderInterceptor implements HttpInterceptor {
       } else {
         this.iUserApi.Logout().subscribe((res:any) => {
           if (res.isExecuted) {  
-            let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : "";
-            localStorage.clear();     
+            let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : ""; 
             if(lastRoute != ""){
               localStorage.setItem('LastRoute', lastRoute);
             } 

@@ -64,6 +64,8 @@ export class PreferencesShippingComponent implements OnInit {
       confirmQTY: new FormControl(''),
       contIDText: new FormControl(''),
     });
+    
+    this.IconsolidationAPI = consolidationAPI;
   }
 
   ngOnInit(): void {

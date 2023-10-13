@@ -182,14 +182,12 @@ constructor(
       this.statusTab = res.tab.textLabel;
       this.breadcrumbList[this.breadcrumbList.length-1].name = this.statusTab
     } )
- 
   }
 
   toggleSidebar() {
     this.toggleSidebarForMe.emit();
   }
   routeToLogin(){
-    localStorage.clear();
     this.router.navigate(['/login']);
   }
 
@@ -223,7 +221,6 @@ constructor(
 
   logout(){    
     if(this.authService.isConfigUser()){
-      localStorage.clear();
       this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
         if (res.isExecuted) 
         {
@@ -239,7 +236,6 @@ constructor(
       })
      
     }else{
-      localStorage.clear();
       this.iUserApi.Logout().subscribe((res:any) => {
         if (res.isExecuted) 
         { 
