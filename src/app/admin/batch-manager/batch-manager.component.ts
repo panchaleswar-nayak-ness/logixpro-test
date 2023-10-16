@@ -4,6 +4,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../inventory-master/current-tab-data-service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 const ELEMENT_DATA: any = [
   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', action: ''},
@@ -90,7 +91,8 @@ export class BatchManagerComponent implements OnInit {
   constructor(private Api : ApiFuntions, 
               private authService: AuthService,
               private adminApiService: AdminApiService,
-              private currentTabDataService: CurrentTabDataService
+              private currentTabDataService: CurrentTabDataService,
+              private global:GlobalService
               ) { 
                 this.permissions= JSON.parse(localStorage.getItem('userRights') ?? '');
                 this.iAdminApiService = adminApiService;
@@ -141,7 +143,10 @@ export class BatchManagerComponent implements OnInit {
         if (isExecuted && data.length > 0) {
           this.orderList = data;
           this.RecordSavedItem();
-        } 
+        } else {
+          console.log("BatchManagerOrder", res);
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        }
       
       
       });
@@ -153,7 +158,11 @@ export class BatchManagerComponent implements OnInit {
           this.pickToTotes=JSON.parse(this.batchManagerSettings[0].pickToTotes.toLowerCase())
           this.extraField=this.batchManagerSettings[0].extraField1;
           
+        } else {
+          console.log("GetBatchManager", res);
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         }
+      
        
       });
     } catch (error) { 
