@@ -79,6 +79,10 @@ ShowToastr(type?:any,msg?:any,title?:any,timeOut?:any,positionClass?:any){
     timeOut: timeOut?timeOut:2000,
   });
 }
+
+globalErrorMsg() {
+  return "This is the error msg";
+}
     // returns the date from JS in format: mm/dd/yyyy hh:mm
     getCurrentDateTime() {
         let date = new Date();
