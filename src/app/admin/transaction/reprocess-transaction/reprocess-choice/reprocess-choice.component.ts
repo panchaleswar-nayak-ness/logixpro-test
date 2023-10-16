@@ -32,7 +32,7 @@ export class ReprocessChoiceComponent  {
   @Input() hold: boolean = false;
 
 
-  constructor(private Api: ApiFuntions,  private global: GlobalService, private sharedService: SharedService,private adminApiService: AdminApiService) { }
+  constructor(private Api: ApiFuntions,  private global: GlobalService, private sharedService: SharedService,public adminApiService: AdminApiService) { this.iAdminApiService = adminApiService }
 
   
 
