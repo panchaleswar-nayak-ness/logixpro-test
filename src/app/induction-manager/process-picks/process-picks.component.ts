@@ -681,19 +681,22 @@ async  printPickLabels(row) {
   }
 
   onToteAction(val: any) {
-    if (val.value === 'fill_all_tote') {
-      this.getAllToteIds();
+    switch (val.value) {
+      case 'fill_all_tote':
+        this.getAllToteIds();
+        break;
+      case 'fill_next_tote':
+        this.getNextToteId();
+        break;
+      case 'clear_all_totes':
+        this.clearAllTotes();
+        break;
+      case 'clear_all_orders':
+        this.clearAllOrders();
+        break;
+      default:
+          break;
     }
-    else if (val.value === 'fill_next_tote') {
-      this.getNextToteId();
-    }
-    else if (val.value === 'clear_all_totes') {
-      this.clearAllTotes();
-    }
-    else if (val.value === 'clear_all_orders') {
-      this.clearAllOrders();
-    }
-
     const matSelect: MatSelect = val.source;
     matSelect.writeValue(null);
   }

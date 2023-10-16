@@ -74,7 +74,6 @@ export class DeleteRangeComponent implements OnInit {
   }
 
   ReplenishmentsByDelete() {
-    debugger
     if (this.repByDeletePayload.filter1 && this.repByDeletePayload.filter2) {
       const dialogRef2:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',

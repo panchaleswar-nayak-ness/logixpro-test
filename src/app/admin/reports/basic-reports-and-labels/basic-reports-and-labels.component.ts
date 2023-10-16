@@ -49,20 +49,23 @@ export class BasicReportsAndLabelsComponent implements OnInit {
     this.iAdminApiService = adminApiService;    
     this.userData = this.authService.userData(); 
     this.route.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
+    if (event instanceof NavigationEnd) {
         let spliUrl=event.url.split('/');
-
-        if(spliUrl[1]=='admin'){
-          this.currentApp = 'Admin'
-        }
-        else if(spliUrl[1]=='OrderManager'){
-          this.currentApp = 'OM'
-        }
-        else if(spliUrl[1]=='InductionManager'){
-          this.currentApp = 'IM'
-        }
-        else if(spliUrl[1]=='ConsolidationManager'){
-          this.currentApp = 'CM'
+        switch (spliUrl[1]) {
+          case 'admin':
+            this.currentApp = 'Admin';
+            break;
+          case 'OrderManager':
+            this.currentApp = 'OM';
+            break;
+          case 'InductionManager':
+            this.currentApp = 'IM';
+            break;
+          case 'ConsolidationManager':
+            this.currentApp = 'CM';
+            break;
+          default:
+            break;
         }
      }
       });

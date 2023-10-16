@@ -54,7 +54,6 @@ export class OmPreferencesComponent implements OnInit {
       );
   }
   restrictTo10Digits(event: KeyboardEvent): void {
-    debugger
     const inputElement = this.myInput.nativeElement;
     let value = inputElement.value.replace(/\D/g, ''); // Remove non-digit characters 
     if (parseInt(value) > 2147483647) {

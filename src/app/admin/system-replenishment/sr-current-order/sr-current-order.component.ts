@@ -230,23 +230,21 @@ export class SrCurrentOrderComponent implements OnInit {
 
   actionChange(event: any) {
     if (this.tableData.length != 0) {
-      if (event == 'Delete All Orders') {
-        this.deleteAllOrders();
-      }
-      else if (event == 'Delete Shown Orders') {
-        this.deleteShownOrders();
-      }
-      else if (event == 'Delete Range') {
-        this.deleteRange();
-      }
-      else if (event == 'Delete Selected Order') {
-        this.deleteSelectedOrder();
-      }
-      else if (event == 'View All Orders') {
-        this.viewAllOrders();
-      }
-      else if (event == 'View Unprinted Orders') {
-        this.viewUnprintedOrders();
+      switch(event){
+        case 'Delete All Orders': this.deleteAllOrders();
+          break;
+        case 'Delete Shown Orders':  this.deleteShownOrders();
+          break;
+        case 'Delete Range': this.deleteRange();
+          break;
+        case 'Delete Selected Order':  this.deleteSelectedOrder();
+          break;
+        case  'View All Orders': this.viewAllOrders();
+          break;
+        case 'View Unprinted Orders' : this.viewUnprintedOrders();
+          break;
+        default:
+          break;
       }
     }
     if (event == 'Print Orders') {
@@ -259,22 +257,22 @@ export class SrCurrentOrderComponent implements OnInit {
 
   printOrders() {
 
-    switch ( this.tablePayloadObj.searchColumn) {
+    switch (this.tablePayloadObj.searchColumn) {
       case 'Trans Type':
-        this.tablePayloadObj.searchColumn='Transaction Type'
+        this.tablePayloadObj.searchColumn = 'Transaction Type';
         break;
-        case 'Carsl':
-          this.tablePayloadObj.searchColumn='Carousel'
-          break;
-          case 'Trans Qty':
-            this.tablePayloadObj.searchColumn='Transaction Quantity'
-            break;
-            case 'UofM':
-              this.tablePayloadObj.searchColumn='Unit of Measure'
-              break;
-              case 'Comp Date':
-                this.tablePayloadObj.searchColumn='Completed Date'
-                break;
+      case 'Carsl':
+        this.tablePayloadObj.searchColumn = 'Carousel';
+        break;
+      case 'Trans Qty':
+        this.tablePayloadObj.searchColumn = 'Transaction Quantity';
+        break;
+      case 'UofM':
+        this.tablePayloadObj.searchColumn = 'Unit of Measure';
+        break;
+      case 'Comp Date':
+        this.tablePayloadObj.searchColumn = 'Completed Date';
+        break;
       default:
         break;
     }

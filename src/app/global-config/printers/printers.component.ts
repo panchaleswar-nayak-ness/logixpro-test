@@ -189,7 +189,6 @@ export class PrintersComponent implements OnInit {
         "label": printer.labelPrinter == 'Yes' 
       };
       this.iGlobalConfigApi.InsertNewPrinter(payload).subscribe((res: any) => {
-        debugger
         if (res.isExecuted) {
           this.global.ShowToastr('success',labels.alert.success, 'Success!');
           printer.isNew = false;

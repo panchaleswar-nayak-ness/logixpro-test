@@ -44,21 +44,25 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
 
   getTotalValues(){
     this.totalCount = this.data.totalCount;
-
     this.totalCount.forEach(item => {
-      if (item.transactionType === "Count") {
-        this.count = item.count;
-      } else if (item.transactionType === "Pick") {
-        this.pick = item.count;
-      } else if (item.transactionType === "Put Away") {
-        this.putaway = item.count;
+      switch (item.transactionType) {
+        case "Count":
+          this.count = item.count;
+          break;
+        case "Pick":
+          this.pick = item.count;
+          break;
+        case "Put Away":
+          this.putaway = item.count;
+          break;
+        default:
+          break;
       }
     });
 
   }
 
   viewOrderSelection(event:any,index?){
-    
     this.iAdminApiService.GetLocAssCountTable().subscribe((res:any)=>{
       if(res.isExecuted){
         res.data.tabIndex = index
@@ -67,7 +71,6 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
       else{
         this.global.ShowToastr('error',res.responseMessage, 'Error!')
       }
-      
     })
   }
 
