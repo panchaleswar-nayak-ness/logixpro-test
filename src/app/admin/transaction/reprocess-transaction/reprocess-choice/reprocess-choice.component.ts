@@ -52,12 +52,8 @@ export class ReprocessChoiceComponent  {
     }
   }
 
-  postTransaction() {
-    let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
-    }
-    this.Api.PostReprocessTransaction(payload).subscribe(
+  postTransaction() { 
+    this.Api.PostReprocessTransaction().subscribe(
       {next: (res: any) => {
         if (res.data && res.isExecuted) {
           this.isEnabled = true;

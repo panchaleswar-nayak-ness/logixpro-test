@@ -458,8 +458,7 @@ export class InventoryMapComponent implements OnInit {
     })
   }
 
-  delete(event: any){
-    
+  delete(event: any){ 
     if(event.itemQuantity > 0){
       this.dialog.open(ConfirmationDialogComponent, {
         height: 'auto',
@@ -470,7 +469,7 @@ export class InventoryMapComponent implements OnInit {
         autoFocus: '__non_existing_element__'
       });
     }
-    else{
+    else{ 
       let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
@@ -482,6 +481,7 @@ export class InventoryMapComponent implements OnInit {
           id: event.invMapID
         }
       })
+      debugger
       dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
   
         this.getContentData();
