@@ -171,6 +171,7 @@ export class OmOrderManagerComponent implements OnInit {
           if ( res.data?.preferences) this.maxOrders = res.data.preferences[0].maxOrders;
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("getOMIndex",res.responseMessage);
         }
       },
       (error) => { }
@@ -190,6 +191,10 @@ export class OmOrderManagerComponent implements OnInit {
         this.colList = res.data.filter(x => x != 'actions');
         this.colList = this.colList.sort();
         this.searchCol = this.colList[0];
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getColumnSequence",res.responseMessage);
       }
     });
   }
@@ -355,6 +360,10 @@ export class OmOrderManagerComponent implements OnInit {
             if (res.isExecuted) {
               this.getOrders();
             }
+            else{
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("deleteViewed",res.responseMessage)
+            }
           });
         }
       });
@@ -453,6 +462,7 @@ export class OmOrderManagerComponent implements OnInit {
           this.clearSearch();
           this.FilterString = "";
           this.fillTable();
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         }
       });
 
@@ -480,6 +490,10 @@ export class OmOrderManagerComponent implements OnInit {
             if (res.isExecuted) {
               this.getOrders();
               this.clearSearch();
+            }
+            else{
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("releaseViewed",res.responseMessage);
             }
           });
           
