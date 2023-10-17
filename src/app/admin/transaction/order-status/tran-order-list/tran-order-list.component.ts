@@ -36,6 +36,7 @@ import { ShippingCompleteDialogComponent } from 'src/app/dialogs/shipping-comple
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 @Component({
   selector: 'app-tran-order-list',
@@ -58,7 +59,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'toteID', colDef: 'Tote ID' },
     { colHeader: 'priority', colDef: 'Priority' },
     { colHeader: 'completedBy', colDef: 'Completed By' },
-    { colHeader: 'unitOfMeasure', colDef: 'Unit of Meure' },
+    { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
     { colHeader: 'lotNumber', colDef: 'Lot Number' },
     { colHeader: 'expirationDate', colDef: 'Expiration Date' },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
@@ -246,7 +247,8 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     private adminApiService: AdminApiService,
     private global:GlobalService,
     private router: Router,
-    private filterService: ContextMenuFiltersService
+    private filterService: ContextMenuFiltersService,
+    private contextMenuService : TableContextMenuService
   ) {
     this.iAdminApiService = adminApiService;
     this.setVal = localStorage.getItem('routeFromOrderStatus')
@@ -665,32 +667,20 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     })
     }
 
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
-  FilterString: string = "1 = 1";
-
   getColDef(colHeader:any){
     return this.Order_Table_Config.filter((item) => item.colHeader == colHeader)[0]?.colDef ?? '';
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
+  FilterString : string = "1 = 1";
 
-    this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-    if(FilterColumnName != "" || Condition == "clear"){
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-      this.FilterString = this.FilterString != "" ? this.FilterString : "1=1";
-      this.resetPagination();
-      this.getContentData();
-    }
+  optionSelected(filter : string) {
+    this.FilterString = filter;
+    this.resetPagination();
+    this.getContentData();    
   }
 
   resetPagination(){
@@ -698,29 +688,6 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.customPagination.endIndex = 20;
     this.paginator.pageIndex = 0;
   }
-
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => {
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
-    }
-    );
-  }
-
 
   ShippingCompleteDialog() {
     const dialogRef:any = this.global.OpenDialog(ShippingCompleteDialogComponent,{

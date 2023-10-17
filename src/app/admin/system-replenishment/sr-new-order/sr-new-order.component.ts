@@ -1,27 +1,21 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatDialog } from '@angular/material/dialog';
 import { TransactionQtyEditComponent } from 'src/app/dialogs/transaction-qty-edit/transaction-qty-edit.component'; 
-
 import { AuthService } from 'src/app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
 import { FilterItemNumbersComponent } from '../../dialogs/filter-item-numbers/filter-item-numbers.component';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { FloatLabelType } from '@angular/material/form-field';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { Subject } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 
 @Component({
@@ -74,12 +68,9 @@ export class SrNewOrderComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   constructor(
     private global:GlobalService,
-    private Api: ApiFuntions,
-    
+    private contextMenuService : TableContextMenuService,
     private authService: AuthService,
-    private router: Router, 
-    private adminApiService: AdminApiService,
-    private filterService: ContextMenuFiltersService
+    public adminApiService: AdminApiService
   ) { 
     this.iAdminApiService = adminApiService;
   }
@@ -100,57 +91,14 @@ export class SrNewOrderComponent implements OnInit {
     this.refreshNewOrders.unsubscribe();
   }
 
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  onClick() {
-    this.trigger.closeMenu();
-  }
-
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-
-  FilterString: string = "1 = 1";
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
-    if ((SelectedItem != undefined && FilterColumnName != "") || Condition == "clear") {
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-    }
-    this.tablePayloadObj.filter = this.FilterString != "" ? this.FilterString : "1 = 1";
+  optionSelected(filter : string) {
+    this.tablePayloadObj.filter = filter;
     this.resetPagination();
-    this.newReplenishmentOrders();
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => {
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
-    }
-    );
-  }
-
-  ClearFilters() {
-    this.tablePayloadObj.filter = "1=1";
-    this.newReplenishmentOrders();
+    this.newReplenishmentOrders(); 
   }
 
   hideRequiredControl = new FormControl(false);

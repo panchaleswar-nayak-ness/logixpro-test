@@ -24,6 +24,7 @@ import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 @Component({
   selector: 'app-sr-current-order',
   templateUrl: './sr-current-order.component.html',
@@ -186,11 +187,10 @@ export class SrCurrentOrderComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   constructor(
     private dialog: MatDialog,
-    private adminApiService: AdminApiService,
-
+    public adminApiService: AdminApiService,
+    private contextMenuService : TableContextMenuService,
     private authService: AuthService,
-    private filterService: ContextMenuFiltersService,
-    private global: GlobalService
+    private global:GlobalService,
   ) {
     this.iAdminApiService = adminApiService;
   }
@@ -198,93 +198,16 @@ export class SrCurrentOrderComponent implements OnInit {
     return `column_${column}`;
   }
 
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
-  onContextMenu(
-    event: MouseEvent,
-    SelectedItem: any,
-    FilterColumnName?: any,
-    FilterConditon?: any,
-    FilterItemType?: any
-  ) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = {
-      item: {
-        SelectedItem: SelectedItem,
-        FilterColumnName: FilterColumnName,
-        FilterConditon: FilterConditon,
-        FilterItemType: FilterItemType,
-      },
-    };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  onClick() {
-    this.trigger.closeMenu();
-  }
+  FilterString : string = "1 = 1";
 
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-
-  FilterString: string = '1 = 1';
-  onContextMenuCommand(
-    SelectedItem: any,
-    FilterColumnName: any,
-    Condition: any,
-    Type: any
-  ) {
-    if (
-      (SelectedItem != undefined && FilterColumnName != '') ||
-      Condition == 'clear'
-    ) {
-      this.FilterString = this.filterService.onContextMenuCommand(
-        SelectedItem,
-        FilterColumnName,
-        'clear',
-        Type
-      );
-      this.FilterString = this.filterService.onContextMenuCommand(
-        SelectedItem,
-        FilterColumnName,
-        Condition,
-        Type
-      );
-    }
-    this.tablePayloadObj.filter =
-      this.FilterString != '' ? this.FilterString : '1 = 1';
+  optionSelected(filter : string) {
+    this.tablePayloadObj.filter = filter;
     this.resetPagination();
-    this.newReplenishmentOrders();
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef: any = this.global.OpenDialog(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement,
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.onContextMenuCommand(
-        result.SelectedItem,
-        result.SelectedColumn,
-        result.Condition,
-        result.Type
-      );
-    });
-  }
-
-  ClearFilters() {
-    this.tablePayloadObj.filter = '1=1';
-    this.newReplenishmentOrders();
+    this.newReplenishmentOrders();    
   }
 
   hideRequiredControl = new FormControl(false);

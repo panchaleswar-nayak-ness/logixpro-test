@@ -25,6 +25,7 @@ import { CurrentTabDataService } from './current-tab-data-service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { data } from 'jquery';
 
 
 
@@ -495,8 +496,17 @@ export class InventoryMasterComponent implements OnInit {
   }
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      this.columns = res.data;
+      if (res.isExecuted && res.data)
+      {
+        this.columns = res.data;
       this.fieldNames=this.columns
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
+      
     })
   }
   public getInvMasterLocations(itemNum: any, pageSize?, startIndex?, sortingColumnName?, sortingOrder?) {
@@ -510,10 +520,17 @@ export class InventoryMasterComponent implements OnInit {
       "sortOrder": sortingOrder ?? ""
     }
     this.iAdminApiService.GetInventoryMasterLocation(paylaod).subscribe((res: any) => {
-      // this.invMasterLocations ='asdsad';
+      if(res.isExecuted && res.data)
+      {
+         // this.invMasterLocations ='asdsad';
       this.invMaster.get('inventoryTable')?.setValue(res.data.inventoryTable);
       this.count = res.data.count 
       this.initialzeIMFeilds();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetInventoryMasterLocation",res.responseMessage);
+      }
     })
   }
 
@@ -522,7 +539,15 @@ export class InventoryMasterComponent implements OnInit {
       "stockCode": stockCode
     }
     this.iAdminApiService.GetLocationTable(paylaod).subscribe((res: any) => {
-      this.locationTable = res.data;
+      if (res.isExecuted && res.data)
+      {this.locationTable = res.data;
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetLocationTable",res.responseMessage);
+
+      }
     })
   }
 
@@ -534,9 +559,17 @@ export class InventoryMasterComponent implements OnInit {
         "firstItem": 1
       }
       this.iAdminApiService.NextItemNumber(paylaod).subscribe((res: any) => {
+        if (res.isExecuted && res.data)
+        {
         this.currentPageItemNo = res.data;
         this.searchValue = this.currentPageItemNo;
         this.getInventory();
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("NextItemNumber",res.responseMessage);
+          
+        }
       })
     }
 
@@ -553,10 +586,18 @@ export class InventoryMasterComponent implements OnInit {
         "firstItem":init?0:1
       }
       this.iAdminApiService.PreviousItemNumber(paylaod).subscribe((res: any) => {
+        if(res.isExecuted && res.data)
+        {
         this.currentPageItemNo = res.data;
         this.searchValue = this.currentPageItemNo;
 
         this.getInventory(init);
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PreviousItemNumber",res.responseMessage);
+
+        }
       })
     }
     else{
@@ -582,11 +623,18 @@ export class InventoryMasterComponent implements OnInit {
     }
 
     this.iAdminApiService.PreviousItemNumber(paylaod).subscribe((res: any) => {
-
-   
+      if(res.isExecuted && res.data)
+      {
       this.currentPageItemNo = res.data;
       this.searchValue = this.currentPageItemNo;
       resolve(this.currentPageItemNo)
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PreviousItemNumber",res.responseMessage);
+
+
+      }
 
     })
    
