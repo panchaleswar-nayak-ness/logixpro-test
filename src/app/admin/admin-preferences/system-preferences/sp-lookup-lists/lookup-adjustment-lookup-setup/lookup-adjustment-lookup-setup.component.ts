@@ -49,7 +49,14 @@ AddBtn = false
           tempAdjustLookUp.push(obj)
         });
         this.adjustmentLookUp = new MatTableDataSource(tempAdjustLookUp);
+        
       }
+      else 
+      {
+        
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("LocationZone", res.responseMessage);
+      } 
     })
   }
 
@@ -73,7 +80,9 @@ AddBtn = false
         this.global.ShowToastr('success',`Saved Successfully`, 'Error!');
       }
       else{
+        
         this.global.ShowToastr('error',`Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!');
+        console.log("LocationZone", res.responseMessage);
       }
     }))
   }

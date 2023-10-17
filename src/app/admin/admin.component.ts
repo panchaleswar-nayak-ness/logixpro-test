@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ApiFuntions } from '../services/ApiFuntions';
 import { IAdminApiService } from '../services/admin-api/admin-api-interface';
 import { AdminApiService } from '../services/admin-api/admin-api.service';
+import { GlobalService } from '../common/services/global.service';
 
 @Component({
   selector: 'app-admin',
@@ -91,6 +92,7 @@ export class AdminComponent implements OnInit {
   constructor(
     public authService: AuthService, 
     private api:ApiFuntions,
+    private global : GlobalService,
     private adminApiService: AdminApiService,
     private _liveAnnouncer: LiveAnnouncer,
    
@@ -162,8 +164,13 @@ export class AdminComponent implements OnInit {
   }
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
-    })
+      if (res.data) {
+        this.fieldNames = res.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
+    });
   }
   async autocompleteSearchColumn() {
     let searchPayload = {
@@ -173,10 +180,15 @@ export class AdminComponent implements OnInit {
 
     this.iAdminApiService.location(searchPayload).subscribe({
       next: (res: any) => {
-        this.searchAutocompleteList = res.data;
+        if (res.data) {
+          this.searchAutocompleteList = res.data;
+        } else {
+          
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("location",res.responseMessage);
+          
+        }
       },
-      error: (error) => {},
-      
     });
   }
   getFloatLabelValue(): FloatLabelType {
@@ -242,6 +254,11 @@ export class AdminComponent implements OnInit {
           this.inventoryDetail.get("useScale")?.setValue(data?.useScale ? 'Yes' : 'No');
           this.inventoryDetail.get("splitCase")?.setValue(data?.splitCase ? 'Yes' : 'No');
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("Inventorymasterdata",res.responseMessage);
+
+        }
       },
       error: (error) => {},
       
@@ -287,6 +304,10 @@ export class AdminComponent implements OnInit {
             res.data.totalOrders.orderTable
           );
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GetAdminMenu : totalOrders data is not available",res.responseMessage);
+        }
         if (res?.data?.totalOrders?.adminValues) {
           let item = res.data.totalOrders.adminValues;
           this.picksOpen = item.openPicks;
@@ -302,6 +323,12 @@ export class AdminComponent implements OnInit {
           this.adjustmentOpen = item.adjustmentsToday;
 
           this.reprocessOpen = item.reprocess;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GetAdminMenu : adminValues data is not available",res.responseMessage);
+
+          
         }
       });
   }

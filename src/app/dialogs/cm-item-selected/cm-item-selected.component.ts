@@ -129,6 +129,7 @@ verifyLine(index) {
         }
         else{
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("VerifyItemPost",res.responseMessage);
         }
   
 
@@ -159,6 +160,7 @@ verifyAll(){
         }
         else{
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("VerifyAllItemPost",res.responseMessage);
         }
 
       })

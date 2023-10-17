@@ -48,6 +48,11 @@ export class UnitMeasureComponent implements OnInit {
           this.renderer.selectRootElement(inputElement).focus();
       }, 100)
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getUnitOfMeasure",res.responseMessage);
+
+      }
     });
   }
   addUMRow(row : any){
@@ -87,6 +92,10 @@ export class UnitMeasureComponent implements OnInit {
         this.getUOM();
         this.global.ShowToastr('success', oldUM.toString()==''?labels.alert.success:labels.alert.update, 'Success!');
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("saveUnitOfMeasure",res.responseMessage);
+      }
   
     });
   }
@@ -118,6 +127,10 @@ export class UnitMeasureComponent implements OnInit {
           if(res.isExecuted){
             this.getUOM();
           this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+        }
+        else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("BatchManagerOrder:", res);
         }
         });
       } else {

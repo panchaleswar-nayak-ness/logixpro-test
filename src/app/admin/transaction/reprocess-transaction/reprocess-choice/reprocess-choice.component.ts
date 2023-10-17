@@ -66,6 +66,7 @@ export class ReprocessChoiceComponent  {
           this.clearControls();
           this.global.ShowToastr('error','Something went wrong', 'Error!');
           this.itemUpdatedEvent.emit(true);
+          console.log("PostReprocessTransaction",res.responseMessage);
         }
       },
       error: (error) => { }}
@@ -100,6 +101,7 @@ export class ReprocessChoiceComponent  {
           this.itemUpdatedEvent.emit(true);
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("ReprocessIncludeSet",res.responseMessage);
         }
       },
       error: (error) => { }}

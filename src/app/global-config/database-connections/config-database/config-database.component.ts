@@ -8,6 +8,7 @@ import {
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class ConfigDatabaseComponent {
   connectionNameSelect: any = '';
   public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
+    private global: GlobalService,
     private Api:ApiFuntions,
     public globalConfigApi: GlobalConfigApiService
     ) {
@@ -60,6 +62,10 @@ export class ConfigDatabaseComponent {
           if (res.isExecuted) {
             this.connectionNameSelect = res.data.connectionName;
             this.configdbUpdateEvent.emit(res.isExecuted);
+          }
+          else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("getConnectionStringSet",res.responseMessage);
           }
         },
         error: (error) => {}}

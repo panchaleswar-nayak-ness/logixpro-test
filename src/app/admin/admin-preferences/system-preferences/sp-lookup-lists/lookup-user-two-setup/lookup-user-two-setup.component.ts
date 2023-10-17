@@ -57,6 +57,12 @@ export class LookupUserTwoSetupComponent implements OnInit {
         this.userF2List = new MatTableDataSource(tempuserF2);
     
       }
+
+      else {
+        
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("userfieldlookup",res.responseMessage);
+      }
     })
   }
 
@@ -84,7 +90,9 @@ export class LookupUserTwoSetupComponent implements OnInit {
         this.global.ShowToastr('success',`Saved Successfully`, 'Error!');
       }
       else{
+        
         this.global.ShowToastr('error',`Field is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!');
+        console.log("userfieldlookup",res.responseMessage);
       }
     }))
   }
@@ -114,6 +122,12 @@ export class LookupUserTwoSetupComponent implements OnInit {
         this.iAdminApiService.deleteUserfieldLookUp(payload).subscribe((res=>{ 
           if(res.isExecuted){
             this.getUserFeild2()
+          }
+          else {
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("userfieldlookup",res.responseMessage);
+
           }
         }))
       }

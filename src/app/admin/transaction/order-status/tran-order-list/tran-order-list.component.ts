@@ -317,6 +317,11 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
               totalRecords: res.data?.totalRecords,
             });
           }
+          else{ // MY ELSE CONDITION
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("OrderStatusData",res.responseMessage);
+
+          }
 
           if (res.data?.onCar.length) {
             res.data.onCar.filter((item) => {
@@ -615,7 +620,9 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                     }
                   });
                 } else {
+                  this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
                   this.compDate = '';
+                  console.log("ScanValidateOrder",res.responseMessage);
                 }
               },
               error: (error) => {}}

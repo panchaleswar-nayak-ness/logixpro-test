@@ -403,6 +403,14 @@ export class AddInvMapLocationComponent implements OnInit {
 
                 this.dialog.closeAll()
               }
+
+              else {
+
+                
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("updateInventoryMap",res.responseMessage);
+
+              }
             });
           } else {
             this.clickSubmit = false;
@@ -413,6 +421,13 @@ export class AddInvMapLocationComponent implements OnInit {
                 this.global.ShowToastr('success',"Your details have been added", 'Success!');
 
                 this.dialog.closeAll()
+              }
+
+              else {
+                
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("createInventoryMap",res.responseMessage);
+
               }
             });
           }

@@ -112,6 +112,7 @@ export class GroupAllowedComponent implements OnInit {
       }
       else {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("insertUserGroup",res.responseMessage);
       }
     });
   }

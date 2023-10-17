@@ -41,7 +41,10 @@ export class SendTranHistoryComponent  {
           this.dialogRef.close({ isExecuted: true });
         } else { 
           this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+          console.log("SendCompletedToTH",res.responseMessage);
           this.dialogRef.close({ isExecuted: false });
+          
+          
         }
       },
       error: (error) => {

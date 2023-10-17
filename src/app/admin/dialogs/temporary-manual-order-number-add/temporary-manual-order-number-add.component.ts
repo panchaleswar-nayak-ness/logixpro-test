@@ -80,6 +80,11 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
               }
        
             }
+            else{
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("ItemExists",res.responseMessage);
+
+            }
           },
           (error) => {}
         );
@@ -101,6 +106,10 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
             };
           });
  
+        }
+        else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GetLocations:", res.responseMessage);
         }
 
       },
@@ -152,6 +161,10 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
               }
        
             }
+            else{
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("ItemExists:", res.responseMessage);
+            }
           },
           (error) => {}
         );
@@ -189,6 +202,10 @@ this.orderRequired=true
  
              }
       
+           }
+           else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ItemExists",res.responseMessage);
            }
          },
          (error) => {}
@@ -232,6 +249,9 @@ this.orderRequired=true
           }else{
             
             this.searchAutocompleteItemNum.length=0;
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("SearchItem",res.responseMessage);
+
           }
         
         },

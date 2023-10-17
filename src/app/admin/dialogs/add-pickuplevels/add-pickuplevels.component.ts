@@ -70,7 +70,9 @@ export class AddPickuplevelsComponent implements OnInit {
           this.dialog.closeAll();
           this.global.ShowToastr('success',labels.alert.success, 'Update!');
         } else {
+          
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("updatePickLevels",res.responseMessage);
         }
       });
     }
@@ -81,7 +83,9 @@ export class AddPickuplevelsComponent implements OnInit {
           this.dialog.closeAll();
           this.global.ShowToastr('success',labels.alert.success, 'Success!');
         } else {
+          
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("insertPickLevels",res.responseMessage);
         }
       });
     }

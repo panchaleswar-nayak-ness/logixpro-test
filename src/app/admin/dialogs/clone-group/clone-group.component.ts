@@ -61,6 +61,7 @@ private adminApiService: AdminApiService,
       }
       else{
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("cloneGroup",res.responseMessage);
 
       }
  }); 

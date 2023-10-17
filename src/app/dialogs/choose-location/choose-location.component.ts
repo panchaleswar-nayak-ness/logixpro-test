@@ -78,6 +78,7 @@ export class ChooseLocationComponent implements OnInit {
             this.searchAutocompleteItemNum = res.data;
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("BatchLocationTypeAhead",res.responseMessage);
           }
         },
         (error) => {}
@@ -99,6 +100,7 @@ export class ChooseLocationComponent implements OnInit {
             this.dialogRef.close({responseMessage : res.responseMessage, ...this.selectedLocation});
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("ReserveLocation",res.responseMessage);
           }
         },
         (error) => {}

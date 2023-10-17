@@ -8,6 +8,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { SharedService } from 'src/app/services/shared.service';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-open-transaction-filters',
@@ -37,6 +38,7 @@ export class OpenTransactionFiltersComponent implements OnInit {
     private authService: AuthService,
     private adminApiService: AdminApiService,
     private Api: ApiFuntions,
+    private global : GlobalService,
     
     private sharedService:SharedService
   ) { this.iAdminApiService = adminApiService;} 
@@ -95,6 +97,11 @@ export class OpenTransactionFiltersComponent implements OnInit {
         {next: (res: any) => {
           if (res?.isExecuted) {
             this.autoCompleteSearchResult = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+            
           }
         },
         error: (error) => {}}

@@ -50,6 +50,11 @@ export class LocationNameComponent implements OnInit {
         this.locationNames = new MatTableDataSource(tempLocationNames);
         
       }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("LocationNames",res.responseMessage);
+
+      }
     }))
   }
 
@@ -75,6 +80,12 @@ export class LocationNameComponent implements OnInit {
         this.iAdminApiService.DeleteLocationNames(payload).subscribe((res=>{ 
           if(res.isExecuted){
             this.getLocation()
+          }
+          else
+          {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("DeleteLocationNames:", res.responseMessage);
+
           }
         }))
       }

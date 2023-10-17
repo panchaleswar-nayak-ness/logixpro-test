@@ -73,7 +73,12 @@ export class SetColumnSeqComponent implements OnInit {
       if(res.isExecuted){
         this.global.ShowToastr('success',labels.alert.success, 'Success!');
       }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SaveColumns",res.responseMessage);
+      }
       this.dialogRef.close('');
+      
     });
       
   }

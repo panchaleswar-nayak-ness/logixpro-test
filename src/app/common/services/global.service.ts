@@ -81,7 +81,7 @@ ShowToastr(type?:any,msg?:any,title?:any,timeOut?:any,positionClass?:any){
 }
 
 globalErrorMsg() {
-  return "This is the error msg";
+  return "Error Response from Server";
 }
     // returns the date from JS in format: mm/dd/yyyy hh:mm
     getCurrentDateTime() {

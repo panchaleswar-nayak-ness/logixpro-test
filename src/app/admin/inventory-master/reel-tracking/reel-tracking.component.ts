@@ -76,6 +76,7 @@ export class ReelTrackingComponent implements OnInit {
   else if (res.responseMessage != 'Update Successful'){
     
     this.global.ShowToastr('error',"Changes not saved!  Please reenter the information.", 'Error!');
+    console.log("UpdateReelQuantity",res.responseMessage);
   }
   })
 
@@ -115,11 +116,13 @@ export class ReelTrackingComponent implements OnInit {
                 });
               } else {
                 this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                console.log("RefreshRTS",res.responseMessage);
               }              
             });            
             
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("RefreshRTS",res.responseMessage);
           }
 
           

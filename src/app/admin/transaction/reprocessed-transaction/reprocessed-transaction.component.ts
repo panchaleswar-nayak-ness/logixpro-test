@@ -122,6 +122,7 @@ export class ReprocessedTransactionComponent implements OnInit {
           this.getContentData();
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("GetColumnSequence",res.responseMessage);
         }
       },
       error: (error) => {}}

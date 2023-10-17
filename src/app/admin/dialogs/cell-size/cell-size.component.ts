@@ -102,12 +102,16 @@ export class CellSizeComponent implements OnInit {
             this.global.ShowToastr('success',labels.alert.success, 'Success!');
           }
           else {
+            
             this.global.ShowToastr('error','Cell Size already exists. Ensure any pending changes are saved before attempting to save this entry.', 'Error!');
+            console.log("saveCellSize",res.responseMessage);
           }
         });
       }
     } else {
+      
       this.global.ShowToastr('error','Cell Size cannot be empty', 'Error!');
+      console.log("saveCellSize");
     }
   }
   dltCellSize(cell: any, i) { 
@@ -128,6 +132,10 @@ export class CellSizeComponent implements OnInit {
         if (res.isExecuted) {
           this.getCellSizeList();
           this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("dltCellSize",res.responseMessage);
         }
       });
        }

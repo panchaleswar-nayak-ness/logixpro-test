@@ -123,6 +123,10 @@ export class WarehouseComponent implements OnInit {
           this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.getWarehouse();
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("saveWareHouse:", res.responseMessage);
+        }
       });
     }
   }

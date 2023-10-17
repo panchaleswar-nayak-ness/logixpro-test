@@ -77,6 +77,7 @@ export class CmShipSplitLineComponent implements OnInit {
             });
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("SplitLineTrans",res.responseMessage);
           }
         },
         (error) => { }

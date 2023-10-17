@@ -210,23 +210,17 @@ export class CustomReportsAndLabelsComponent implements OnInit {
         };
         this.iAdminApiService.deleteReport(payload).subscribe((res) => {
           if (!res.data) {
-            this.global.ShowToastr(
-              'error',
-              'Unexpected error occurred.  If this persists please contact Scott Tech for support.',
-              'Error!'
-            );
-          } else {
-            this.Getcustomreports();
-            this.Detail = {};
-            this.global.ShowToastr(
-              'success',
-              `File Deleted Successfully`,
-              'Success!'
-            );
-          }
-        });
-      }
-    });
+            this.global.ShowToastr('error',"Unexpected error occurred.  If this persists please contact Scott Tech for support.", 'Error!');
+        } else {
+          this.Getcustomreports()
+          this.Detail= {}
+          this.global.ShowToastr('success',`File Deleted Successfully`, 'Success!');
+
+        };
+        })
+      } 
+    }
+    );
   }
 
   onFileSelected(event: any) {

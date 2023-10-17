@@ -161,6 +161,12 @@ export class BatchOrderListComponent implements OnInit {
         if (isExecuted && data.length > 0) {
           this.openBatchViewDetail(data);
         }
+        else {
+          
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("userfieldlookup",res.responseMessage);
+
+        }
       });
   }
 

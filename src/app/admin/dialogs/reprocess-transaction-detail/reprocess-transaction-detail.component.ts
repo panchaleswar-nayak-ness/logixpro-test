@@ -145,6 +145,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
       }
       else{
         this.global.ShowToastr('error','Something went wrong', 'Error!');
+        console.log("SaveTransaction",res.responseMessage);
       }
     });
   }
@@ -173,6 +174,11 @@ export class ReprocessTransactionDetailComponent implements OnInit {
     this.iCommonAPI.getUnitOfMeasure().subscribe((res) => {
       if (res.isExecuted) {
         this.unitOfMeasure_list = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getUnitOfMeasure:", res.responseMessage);
+
       }
     });
   }
@@ -263,6 +269,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("TransactionByID",res.responseMessage);
         }
       },
       error: (error) => { }}

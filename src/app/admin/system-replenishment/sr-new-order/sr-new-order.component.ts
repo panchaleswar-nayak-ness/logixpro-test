@@ -207,8 +207,19 @@ export class SrNewOrderComponent implements OnInit {
           this.numberSelectedRep = res.data.selectedOrders;
           this.tableDataTotalCount = res.data.recordsFiltered;
           this.filteredTableData = JSON.parse(JSON.stringify(this.tableData));
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SystemReplenishmentNewTable",res.responseMessage);
+
         } 
       });
+    }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("(Outer If) --> SystemReplenishmentNewTable");
+
+
     }
   }
 
@@ -234,6 +245,12 @@ export class SrNewOrderComponent implements OnInit {
     this.iAdminApiService.ReplenishmentInsert(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.newOrderListCreated = true;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ReplenishmentInsert",res.responseMessage);
+
+
       }
       this.newReplenishmentOrders();
     });
@@ -397,6 +414,7 @@ export class SrNewOrderComponent implements OnInit {
         this.replenishmentsProcessed.emit();
       } else {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("ProcessReplenishments",res.responseMessage);
       }
     });
   }
@@ -424,6 +442,7 @@ export class SrNewOrderComponent implements OnInit {
         this.newReplenishmentOrders();
       } else {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("ReplenishmentsIncludeUpdate",res.responseMessage);
       }
     });
   }
@@ -444,6 +463,7 @@ export class SrNewOrderComponent implements OnInit {
           this.global.ShowToastr('error',"No items available to replenish.", 'Error!');
         }else{
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("ReplenishmentsIncludeAllUpdate",res.responseMessage);
         }
       
     });
@@ -458,6 +478,11 @@ export class SrNewOrderComponent implements OnInit {
     this.getSearchOptionsSubscribe = this.iAdminApiService.SystemReplenishNewTA(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.searchAutocompleteList = res.data.sort();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SystemReplenishNewTA",res.responseMessage);
+
       }
     });
   }

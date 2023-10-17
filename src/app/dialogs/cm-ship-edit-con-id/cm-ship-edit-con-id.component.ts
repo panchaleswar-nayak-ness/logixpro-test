@@ -75,6 +75,7 @@ export class CmShipEditConIdComponent implements OnInit {
             });
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("ContainerIdSingleShipTransUpdate",res.responseMessage);
           }
         },
         (error) => { }

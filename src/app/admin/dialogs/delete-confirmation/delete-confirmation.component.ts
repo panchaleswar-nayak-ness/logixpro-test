@@ -87,6 +87,7 @@ export class DeleteConfirmationComponent implements OnInit {
             } else {
               this.dialog.closeAll();
               this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+              console.log("deleteEmployeeZone",res.responseMessage);
             }
           });
       } else if (this.data.mode === 'delete-picklevel') {
@@ -106,6 +107,7 @@ export class DeleteConfirmationComponent implements OnInit {
             } else {
               this.dialog.closeAll();
               this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+              console.log("deletePickLevels",res.responseMessage);
             }
           });
       }
@@ -125,6 +127,7 @@ export class DeleteConfirmationComponent implements OnInit {
             } else {
               this.dialog.closeAll();
               this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+              console.log("deleteEmployeeLocation",res.responseMessage);
             }
           });
       } else if (this.data.mode === 'delete-connection-string') {
@@ -142,6 +145,7 @@ export class DeleteConfirmationComponent implements OnInit {
             },
             (error) => {
               this.global.ShowToastr('error',labels.alert.went_worng, 'Error!!');
+              console.log("ConnectionDelete");
             }
           );
       } else if (this.data.mode === 'delete-group') {
@@ -157,6 +161,7 @@ export class DeleteConfirmationComponent implements OnInit {
           } else {
             this.dialog.closeAll();
             this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+            console.log("deleteGroup",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-allowed-group') {
@@ -172,6 +177,7 @@ export class DeleteConfirmationComponent implements OnInit {
           } else {
             this.dialog.closeAll();
             this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+            console.log("deleteGroup",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-allowed-funcation') {
@@ -187,6 +193,7 @@ export class DeleteConfirmationComponent implements OnInit {
           } else {
             this.dialog.closeAll();
             this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+            console.log("deleteControlName",res.responseMessage);
           }
         });
       }
@@ -201,6 +208,7 @@ export class DeleteConfirmationComponent implements OnInit {
           } else {
             this.dialog.closeAll();
             this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+            console.log("deleteInventoryMap",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-emp') {
@@ -228,6 +236,7 @@ export class DeleteConfirmationComponent implements OnInit {
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("deleteUserGroup",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-warehouse') {
@@ -240,6 +249,7 @@ export class DeleteConfirmationComponent implements OnInit {
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("dltWareHouse",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-velocity') {
@@ -252,6 +262,7 @@ export class DeleteConfirmationComponent implements OnInit {
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("dltVelocityCode",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-order-status') {
@@ -265,6 +276,9 @@ export class DeleteConfirmationComponent implements OnInit {
               } else {
                 this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
+                console.log("DeleteOrderStatus",res.responseMessage);
+                
+                
               }
             },
             (error) => {}
@@ -283,6 +297,7 @@ export class DeleteConfirmationComponent implements OnInit {
               } else {
                 this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
+                console.log("CarrierDelete",res.responseMessage);
               }
             },
             (error) => {}
@@ -297,11 +312,13 @@ export class DeleteConfirmationComponent implements OnInit {
                 this.dialogRef.close({ isExecuted: true });
               } else {
                 this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+                console.log("WorkStationDelete",res.responseMessage);
               }
               this.dialogRef.close({ isExecuted: false });
             },
             (err) => {
               this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+              
             }
           );
       }else if(this.data.mode == 'delete-category'){
@@ -320,6 +337,7 @@ export class DeleteConfirmationComponent implements OnInit {
               } else {
                 this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
+                console.log("CategoryDelete",res.responseMessage);
               }
         
             },

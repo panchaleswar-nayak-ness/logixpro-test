@@ -48,6 +48,7 @@ export class BlossomToteComponent implements OnInit {
     this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
         this.global.ShowToastr('error','Something is wrong.', 'Error!');
+        console.log("NextToteUpdate",res.responseMessage);
       }
 
     });
@@ -108,6 +109,7 @@ export class BlossomToteComponent implements OnInit {
               this.dialog.closeAll();
             } else {
               this.global.ShowToastr('error','Old tote ID does not exist', 'Error!');
+              console.log("ProcessBlossom",res.responseMessage);
             }
           });
         }

@@ -72,11 +72,13 @@ export class GlobalConfigComponent {
         } else {
           const errorMessage = res.responseMessage;
           this.global.ShowToastr('error',errorMessage?.toString(), 'Error!');
+          console.log("loginUser",res.responseMessage);
         }
       },
       error: (error) => {
         const errorMessage = error.responseMessage;
         this.global.ShowToastr('error',errorMessage?.toString(), 'Error!');
+        console.log("loginUser",errorMessage);
       }}
     );
   }
@@ -96,7 +98,10 @@ export class GlobalConfigComponent {
           localStorage.setItem('env', JSON.stringify(this.env));
           localStorage.setItem('workStation', JSON.stringify(workStation));
         } 
-        else this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
+        else {
+          this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
+          console.log("ngOnInit",res.responseMessage);
+      }|
       });
     }
   }

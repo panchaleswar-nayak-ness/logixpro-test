@@ -206,6 +206,12 @@ export class BatchSelectedOrdersComponent implements OnInit {
             this.batchCreated.emit(true);
             this.batchIdUpdateEmit.emit(true);
             this.global.ShowToastr('success',labels.alert.success, 'Success!');
+            
+          }
+          else {
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("userfieldlookup",res.responseMessage);
           }
         });
     } catch (error) { 

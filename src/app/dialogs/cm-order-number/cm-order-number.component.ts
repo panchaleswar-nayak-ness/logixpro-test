@@ -66,26 +66,36 @@ export class CmOrderNumberComponent implements OnInit {
       };
 
       this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
-        if (typeof res?.data == 'string') {
-          switch (res?.data) {
-            case "DNE":
-              this.global.ShowToastr('error',"The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!');
-              this.order.nativeElement.value = '';
-              this.order.nativeElement.focus();
-              break;
-            case "Conflict":
-              this.global.ShowToastr('warning',"You have a conflicting Tote ID and Order Number.", 'Staging Locations');
-                this.openCmOrderToteConflict(value); 
-              break;
-            case "Error":
-              this.global.ShowToastr('error',"An Error occured while retrieving data", "Consolidation Error");
-              break;
+        if (res)
+        {
+          if (typeof res?.data == 'string') {
+            switch (res?.data) {
+              case "DNE":
+                this.global.ShowToastr('error',"The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!');
+                this.order.nativeElement.value = '';
+                this.order.nativeElement.focus();
+                break;
+              case "Conflict":
+                this.global.ShowToastr('warning',"You have a conflicting Tote ID and Order Number.", 'Staging Locations');
+                  this.openCmOrderToteConflict(value); 
+                break;
+              case "Error":
+                this.global.ShowToastr('error',"An Error occured while retrieving data", "Consolidation Error");
+                break;
+            }
           }
+          else { 
+            this.findTote({key: 'Enter'} as KeyboardEvent, value);
+            this.tableData = res.data.stageTable;
+          }
+
         }
-        else { 
-          this.findTote({key: 'Enter'} as KeyboardEvent, value);
-          this.tableData = res.data.stageTable;
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("LocationAssignmentOrderInsert",res.responseMessage);
+
         }
+        
       });
     }
   }
@@ -121,6 +131,7 @@ export class CmOrderNumberComponent implements OnInit {
     this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
       if (res.responseMessage == "Fail") {
         this.global.ShowToastr('error',"Error Has Occured", "Consolidation");
+        console.log("StagingLocationsUpdate",res.responseMessage);
       } else {
         if (typeof this.tableData != 'undefined') {
           for (let x = 0; x < this.tableData.length; x++) {

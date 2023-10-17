@@ -350,6 +350,7 @@ export class SrCurrentOrderComponent implements OnInit {
           this.systemReplenishmentCount(true);
         } else {
           this.global.ShowToastr('error', res.responseMessage, 'Error!');
+        console.log("SystemReplenishmentTable",res.responseMessage);
         }
       });
   }
@@ -650,33 +651,29 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   ReplenishmentsByDelete() {
-    this.iAdminApiService
-      .ReplenishmentsByDelete(this.repByDeletePayload)
-      .subscribe((res: any) => {
-        if (res.isExecuted && res.data) {
-          this.global.ShowToastr('success', labels.alert.delete, 'Success!');
-          this.newReplenishmentOrders();
-          this.replenishmentsDeleted.emit();
-        } else {
-          this.global.ShowToastr('error', labels.alert.went_worng, 'Error!');
-          this.dialog.closeAll();
-        }
-      });
+    this.iAdminApiService.ReplenishmentsByDelete(this.repByDeletePayload).subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+        this.newReplenishmentOrders();
+        this.replenishmentsDeleted.emit();
+      } else {
+        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+        this.dialog.closeAll();
+      }
+    });
   }
 
   getSearchOptionsSubscribe: any;
   getSearchOptions(loader: boolean = false) {
     let payload = {
-      searchString: this.tablePayloadObj.searchString,
-      searchColumn: this.tablePayloadObj.searchColumn,
-    };
-    this.getSearchOptionsSubscribe = this.iAdminApiService
-      .ReplenishReportSearchTA(payload)
-      .subscribe((res: any) => {
-        if (res.isExecuted && res.data) {
-          this.searchAutocompleteList = res.data.sort();
-        }
-      });
+      "searchString": this.tablePayloadObj.searchString,
+      "searchColumn": this.tablePayloadObj.searchColumn, 
+    }
+    this.getSearchOptionsSubscribe = this.iAdminApiService.ReplenishReportSearchTA(payload).subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.searchAutocompleteList = res.data.sort();
+      }
+    });
   }
 
   viewItemInInventoryMaster(element: any) {
@@ -688,14 +685,12 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   systemReplenishmentCount(loader: boolean = false) {
-    this.newReplenishmentOrdersSubscribe = this.iAdminApiService
-      .SystemReplenishmentCount(this.tablePayloadObj)
-      .subscribe((res: any) => {
-        if (res.isExecuted && res.data) {
-          this.noOfPicks = res.data.pickCount;
-          this.noOfPutAways = res.data.putCount;
-        }
-      });
+    this.newReplenishmentOrdersSubscribe = this.iAdminApiService.SystemReplenishmentCount(this.tablePayloadObj).subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.noOfPicks = res.data.pickCount;
+        this.noOfPutAways = res.data.putCount;
+      }
+    });
   }
 
   selectRow(row: any) {

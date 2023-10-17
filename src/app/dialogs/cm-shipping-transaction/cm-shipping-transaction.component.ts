@@ -74,6 +74,7 @@ export class CmShippingTransactionComponent implements OnInit {
             this.tableData.paginator = this.paginator;
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("ShippingTransactionIndex",res.responseMessage);
           }
         },
         (error) => { }
@@ -175,6 +176,7 @@ export class CmShippingTransactionComponent implements OnInit {
                         });
                       } else {
                         this.global.ShowToastr('error','Something went wrong', 'Error!');
+                        console.log("CompletePackingUpdate",res.responseMessage);
                       }
                     },
                     (error) => { }
@@ -217,6 +219,7 @@ export class CmShippingTransactionComponent implements OnInit {
                             });
                           } else {
                             this.global.ShowToastr('error','Something went wrong', 'Error!');
+                            console.log("CompletePackingUpdate",res.responseMessage);
                           }
                         },
                         (error) => { }
@@ -228,6 +231,7 @@ export class CmShippingTransactionComponent implements OnInit {
             }
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("SelCountOfOpenTransactionsTemp",res.responseMessage);
           }
         },
         (error) => { }
