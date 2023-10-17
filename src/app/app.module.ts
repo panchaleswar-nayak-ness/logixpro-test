@@ -111,6 +111,7 @@ import { ShippingCompleteDialogComponent } from './dialogs/shipping-complete-dia
 import { CrDesignFilenameConfirmationComponent } from './dialogs/cr-design-filename-confirmation/cr-design-filename-confirmation.component';
 import { DPrinterSetupComponent } from './dialogs/d-printer-setup/d-printer-setup.component';
 import { PaPrintLabelConfirmationComponent } from './dialogs/pa-print-label-confirmation/pa-print-label-confirmation.component';
+import { SharedComponentsModule } from './common/globalComponents/shared-components.module';
 
 @NgModule({
   declarations: [
@@ -205,7 +206,7 @@ import { PaPrintLabelConfirmationComponent } from './dialogs/pa-print-label-conf
     ShippingCompleteDialogComponent,
     CrDesignFilenameConfirmationComponent,
     DPrinterSetupComponent,
-    PaPrintLabelConfirmationComponent,
+    PaPrintLabelConfirmationComponent
   ],
   imports: [
     BrowserModule,
@@ -223,8 +224,8 @@ import { PaPrintLabelConfirmationComponent } from './dialogs/pa-print-label-conf
     MatCheckboxModule,
     MaterialModule,
     MatTableModule,
-    GlobalConfigModule
-    
+    GlobalConfigModule,
+    SharedComponentsModule
   ],
   providers: [
     Title, 
@@ -241,7 +242,8 @@ import { PaPrintLabelConfirmationComponent } from './dialogs/pa-print-label-conf
       provide: HTTP_INTERCEPTORS,
       useClass: HeaderInterceptor,
       multi: true
-    },AuthGuard,
+    },
+    AuthGuard,
     ApiFuntions,
     BaseService,
     DatePipe
