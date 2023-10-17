@@ -34,8 +34,6 @@ export class ReprocessChoiceComponent  {
 
   constructor(private Api: ApiFuntions,  private global: GlobalService, private sharedService: SharedService,public adminApiService: AdminApiService) { this.iAdminApiService = adminApiService }
 
-  
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['ROrder']?.currentValue) {
       this.ROrder = changes['ROrder'].currentValue;

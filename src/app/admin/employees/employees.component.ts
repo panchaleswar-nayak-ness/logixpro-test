@@ -377,7 +377,6 @@ initialzeEmpForm() {
         }
       })
       dialogRef.afterClosed().subscribe(result => {
-        debugger
         if(!result){
           return
         }

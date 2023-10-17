@@ -274,22 +274,13 @@ globalErrorMsg() {
         this.iAdminApiService.CommonExport(paylaod).subscribe((res:any)=>{
             if(res.isExecuted){
                 this.ShowToastr('success',"Export successfully completed", 'Success!');  
-                   debugger
                   if(res.data.fileName.indexOf("txt") > -1){
                     this.downloadTextFile(res.data.fileName, res.data.fileContent);
                   }else{
                 document.getElementById('CurrentDownload')?.setAttribute("href",`${environment.apiUrl.replace("/api","")}/pdf/`+res.data.fileName);
                   document.getElementById('CurrentDownload')?.setAttribute("download",res.data.fileName);
                     document.getElementById('CurrentDownload')?.click();
-                  }
-                    
-                 
-                   
-
-               
-                   
-                     
-                  
+                  }   
               }else{
                 this.ShowToastr('error',"Export unsuccessfully complete", 'Error!');
               }
