@@ -16,28 +16,30 @@ import { MarkEmptyReelsComponent } from './mark-empty-reels/mark-empty-reels.com
 import { ToteTransactionManagerComponent } from './tote-transaction-manager/tote-transaction-manager.component';
 import { ImToteManagerComponent } from './im-tote-manager/im-tote-manager.component';
 import { CompletePickBatchComponent } from './complete-pick-batch/complete-pick-batch.component';
+import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
 
 
 @NgModule({
-  declarations: [
-    InductionManagerComponent,
-    SuperBatchComponent,
-    RequiredDateStatusComponent,
-    ProcessPutAwaysComponent,
-    ProcessPicksComponent,
-    AdminComponent,
-    AdminPrefrencesComponent,
-    PalletReceivingComponent,
-    MarkEmptyReelsComponent,
-    ToteTransactionManagerComponent,
-    ImToteManagerComponent,
-    CompletePickBatchComponent
-  ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    GeneralModule,
-    InductionManagerRoutingModule
-  ]
+    declarations: [
+        InductionManagerComponent,
+        SuperBatchComponent,
+        RequiredDateStatusComponent,
+        ProcessPutAwaysComponent,
+        ProcessPicksComponent,
+        AdminComponent,
+        AdminPrefrencesComponent,
+        PalletReceivingComponent,
+        MarkEmptyReelsComponent,
+        ToteTransactionManagerComponent,
+        ImToteManagerComponent,
+        CompletePickBatchComponent
+    ],
+    imports: [
+        CommonModule,
+        MaterialModule,
+        GeneralModule,
+        InductionManagerRoutingModule,
+        SharedComponentsModule
+    ]
 })
 export class InductionManagerModule { }

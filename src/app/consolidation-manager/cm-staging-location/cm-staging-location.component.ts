@@ -9,6 +9,7 @@ import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidat
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
+
 export interface PeriodicElement {
   name: string;
   position: number;

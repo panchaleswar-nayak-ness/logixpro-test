@@ -1,15 +1,8 @@
 <mat-card class="mat-elevation-z g-card mt-2 mb-3">
     <div class="mb-0">
         <div class="col-xl-12 d-xl-flex justify-content-between">
-            <h2 class="card-header-title mb-0 d-flex align-items-center">
-                <div class="mat-icon-wrap me-1 me-lg-3">
-                    <span class="material-symbols-outlined">
-                        stacked_bar_chart
-                    </span>
-                </div>
-                <span>Preferences</span>
-            </h2>
-
+            <app-icon-heading-component heading="Preferences" icon="stacked_bar_chart">
+            </app-icon-heading-component>
             <div class="d-flex d-xl-block gap-12 justify-content-end">
                 <button style="flex: 1 auto;" mat-flat-button color="primary" class="float-end btn-md" (click)="openCarrier()">
                     Carriers

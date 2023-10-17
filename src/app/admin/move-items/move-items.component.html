@@ -3,14 +3,8 @@
         <mat-card class="mat-elevation-z g-card mb-4">
             <mat-card-content>
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="card-header-title mb-0 d-flex align-items-center">
-                        <div class="mat-icon-wrap me-lg-3 me-2">
-                            <span class="material-symbols-outlined">
-                                analytics
-                            </span>
-                        </div>
-                        <span>Location Details</span>
-                    </h2>
+                    <app-icon-heading-component heading="Location Details" icon="analytics">
+                    </app-icon-heading-component>
                 </div>
                 
                 <div class="row">
@@ -172,14 +166,8 @@
         <mat-card class="mat-elevation-z g-card mb-4" style="height: 97%">
             <mat-card-content>
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="card-header-title mb-0 d-flex align-items-center">
-                        <div class="mat-icon-wrap me-lg-3 me-2">
-                            <span class="material-symbols-outlined">
-                                blur_short
-                            </span>
-                        </div>
-                        <span>Move Locations</span>
-                    </h2>
+                    <app-icon-heading-component heading="Move Locations" icon="blur_short">
+                    </app-icon-heading-component>
                 </div>
                 <div class="label-yellow p-3 d-flex br-8 mb-3" *ngIf="!itemSelected">
                     <mat-icon class="material-symbols-outlined">info</mat-icon>

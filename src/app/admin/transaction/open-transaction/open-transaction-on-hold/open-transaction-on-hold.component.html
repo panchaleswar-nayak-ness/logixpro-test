@@ -3,18 +3,12 @@
     <!-- Filter Component to be separate-->
     <mat-card class="mat-elevation-z g-card mb-4">
         <mat-card-content>
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h2 class="card-header-title mb-0 d-flex align-items-center">
-                            <div class="mat-icon-wrap me-lg-3 me-2">
-                                <span class="material-symbols-outlined">
-                                    filter_list
-                                </span>
-                            </div>
-                            <span>Filters</span>
-                        </h2>
-                    </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <app-icon-heading-component heading="Filters" icon="filter_list">
+                    </app-icon-heading-component>
                 </div>
+            </div>
 
             <div class="row">
 
@@ -65,7 +59,8 @@
                         <mat-label>Order Number</mat-label>
                         <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='orderNumber'
                             [matAutocomplete]="auto" (ngModelChange)="this.searchByOrderNumber.next($event)">
-                            <button matSuffix *ngIf="orderNumber" class="clear-btn"  (click)="orderNumber = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <button matSuffix *ngIf="orderNumber" class="clear-btn" (click)="orderNumber = ''"><mat-icon
+                                class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
                             <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
                                 {{option}}
@@ -85,7 +80,8 @@
                         <input [(ngModel)]="toteId" matInput class="" value="" type="text" name="searchByToteId"
                             id="searchByToteId" (ngModelChange)="this.searchByToteId.next($event)">
 
-                            <button matSuffix *ngIf="toteId" class="clear-btn"  (click)="toteId = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <button matSuffix *ngIf="toteId" class="clear-btn" (click)="toteId = ''"><mat-icon
+                                class="text-20 text-chrome-600">cancel</mat-icon></button>
                     </mat-form-field>
                 </div>
 
@@ -105,119 +101,110 @@
                 <div class=" col-6"></div>
             </div>
 
-            
-            <div class="row" *ngIf="hideDelete " >
+
+            <div class="row" *ngIf="hideDelete ">
                 <div class="col-xl-3 offset-xl-6">
-                    
+
                 </div>
-                <div class="col-xl-3" >
-                    <button mat-flat-button color="primary" class="btn-regular w-100 mb-3" (click)="resetToTodaysDate()">
+                <div class="col-xl-3">
+                    <button mat-flat-button color="primary" class="btn-regular w-100 mb-3"
+                        (click)="resetToTodaysDate()">
                         Reset to Today's Date
                     </button>
                 </div>
             </div>
 
-        <div *ngIf="throughOrderManager" >
-            <div class="row" >
-                <div class="col-xl-3 offset-xl-6">
-                    
-                </div>
-                <div class="col-xl-3" >
-                    <button mat-flat-button color="primary" class="btn-regular w-100 mb-3" (click)="resetToTodaysDate()">
-                        Reset to Today's Date
-                    </button>
-                </div>
-            </div>
-        </div>
-
-                
-            <div *ngIf="directAdmin ">
-                <div class="row" *ngIf="!hideDelete">
+            <div *ngIf="throughOrderManager">
+                <div class="row">
                     <div class="col-xl-3 offset-xl-6">
-                        <button  mat-flat-button color="primary"  class="btn-regular w-100 mb-3" (click)="resetToTodaysDate()">
+
+                    </div>
+                    <div class="col-xl-3">
+                        <button mat-flat-button color="primary" class="btn-regular w-100 mb-3"
+                            (click)="resetToTodaysDate()">
                             Reset to Today's Date
                         </button>
                     </div>
-                    <div class="col-xl-3"  >
-                        <button (click)="retunrToPrev()" mat-stroked-button color="primary" class="btn-regular w-100 mb-3">
+                </div>
+            </div>
+
+
+            <div *ngIf="directAdmin ">
+                <div class="row" *ngIf="!hideDelete">
+                    <div class="col-xl-3 offset-xl-6">
+                        <button mat-flat-button color="primary" class="btn-regular w-100 mb-3"
+                            (click)="resetToTodaysDate()">
+                            Reset to Today's Date
+                        </button>
+                    </div>
+                    <div class="col-xl-3">
+                        <button (click)="retunrToPrev()" mat-stroked-button color="primary"
+                            class="btn-regular w-100 mb-3">
                             Place Trans. on Hold
                         </button>
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
         </mat-card-content>
-
     </mat-card>
     <!-- Filter Component End -->
 </div>
+<div class="container-fluid p-0">
+    <!-- DatTable Component to be separate-->
+    <mat-card class="mat-elevation-z g-card  mb-4 h-100">
+        <mat-card-content>
 
-
-    <div class="container-fluid p-0">
-
-        <!-- DatTable Component to be separate-->
-        <mat-card class="mat-elevation-z g-card  mb-4 h-100">
-            <mat-card-content>
-
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h2 class="card-header-title mb-0 d-flex align-items-center">
-                            <div class="mat-icon-wrap me-lg-3 me-2">
-                                <span class="material-symbols-outlined">
-                                    list_alt
-                                </span>
-                            </div>
-                            <span>Order Selection List</span>
-                        </h2>
-                    </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <app-icon-heading-component heading="Order Selection List" icon="list_alt">
+                    </app-icon-heading-component>
                 </div>
-                <div class="row">
-                    <div class="col-xl-5">
-                        <div class="d-block d-xl-flex gap-12 align-items-center ">
-                            <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline" style="flex:1">
-                                <mat-label>Search</mat-label>
-                                <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn.colDef"
-                                    (selectionChange)="resetFields($event.value)">
-                                    <mat-option (click)="this.orderSelectionSearch = true"></mat-option>
-                                    <mat-option *ngFor="let item of displayedColumns | sort:'colDef':false" [value]="item.colDef">
-                                        {{item.colDef}}
-                                    </mat-option>
-                                </mat-select>
-                                <span class="material-symbols-outlined icon-expand-more">
-                                    expand_more
+            </div>
+            <div class="row">
+                <div class="col-xl-5">
+                    <div class="d-block d-xl-flex gap-12 align-items-center ">
+                        <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline" style="flex:1">
+                            <mat-label>Search</mat-label>
+                            <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn.colDef"
+                                (selectionChange)="resetFields($event.value)">
+                                <mat-option (click)="this.orderSelectionSearch = true"></mat-option>
+                                <mat-option *ngFor="let item of displayedColumns | sort:'colDef':false"
+                                    [value]="item.colDef">
+                                    {{item.colDef}}
+                                </mat-option>
+                            </mat-select>
+                            <span class="material-symbols-outlined icon-expand-more">
+                                expand_more
+                            </span>
+                        </mat-form-field>
+
+                        <span class="v-br d-none d-xl-flex mb-3">-</span>
+                        <div class="d-flex g-mini-search-box w-100 mb-3">
+                            <mat-form-field class="w-100 bg-white br-8" appearance="fill"
+                                [floatLabel]="getFloatFormabelValue()"
+                                [hideRequiredMarker]="hideRequiredFormControl.value">
+                                <span class="material-symbols-outlined icon-search">
+                                    Search
                                 </span>
+                                <input type="text" placeholder="Search" aria-label="Search" matInput
+                                    [disabled]="orderSelectionSearch" [(ngModel)]='this.columnSearch.searchValue'
+                                    [matAutocomplete]="search" (ngModelChange)="this.searchByColumn.next($event)">
+                                <button matSuffix *ngIf="this.columnSearch.searchValue" class="clear-btn"
+                                    (click)="clear()"><mat-icon
+                                        class="text-20 text-chrome-600">cancel</mat-icon></button>
+                                <mat-autocomplete #search="matAutocomplete" (optionSelected)="searchData()">
+                                    <mat-option *ngFor="let option of searchAutocompleteListByCol" [value]="option">
+                                        {{option}}
+                                    </mat-option>
+                                </mat-autocomplete>
                             </mat-form-field>
 
-                            <span class="v-br d-none d-xl-flex mb-3">-</span>
-                            <div class="d-flex g-mini-search-box w-100 mb-3">
-                                <mat-form-field class="w-100 bg-white br-8" appearance="fill"
-                                    [floatLabel]="getFloatFormabelValue()"
-                                    [hideRequiredMarker]="hideRequiredFormControl.value">
-                                    <span class="material-symbols-outlined icon-search">
-                                        Search
-                                    </span>
-                                    <input type="text" placeholder="Search" aria-label="Search" matInput  [disabled]="orderSelectionSearch"
-                                        [(ngModel)]='this.columnSearch.searchValue' [matAutocomplete]="search"
-                                        (ngModelChange)="this.searchByColumn.next($event)">
-                                        <button matSuffix *ngIf="this.columnSearch.searchValue" class="clear-btn"  (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                                    <mat-autocomplete #search="matAutocomplete" (optionSelected)="searchData()">
-                                        <mat-option *ngFor="let option of searchAutocompleteListByCol" [value]="option">
-                                            {{option}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
 
-
-                            </div>
                         </div>
                     </div>
-                    <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
-                        <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
+                </div>
+                <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
+                    <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
                         <mat-form-field class="action-dropdown mb-3" appearance="outline" style="flex:1 auto">
                             <mat-label>Action</mat-label>
                             <mat-select [(value)]="selectedVariable" class="employees-action"
@@ -225,132 +212,177 @@
                                 <mat-option value="set_column_sq">Set Column Sequence</mat-option>
                                 <mat-option (click)="printCycleCountReport()">Print Cycle Count Report</mat-option>
                                 <mat-option (click)="previewFiftyPagesOnly()">Preview 50 Pages Only</mat-option>
-                                <mat-option (click)="sendCompletedToHistory()" *ngIf="authService.UserPermissonByFuncName('Transaction Journal Send To History')&& !throughOrderManager" value="send_completed_history">Send Completed to History</mat-option>
+                                <mat-option (click)="sendCompletedToHistory()"
+                                    *ngIf="authService.UserPermissonByFuncName('Transaction Journal Send To History')&& !throughOrderManager"
+                                    value="send_completed_history">Send Completed to History</mat-option>
                             </mat-select>
                             <span class="material-symbols-outlined icon-expand-more">
                                 expand_more
                             </span>
                         </mat-form-field>
                     </div>
-
-
-
-                    </div>
                 </div>
+            </div>
+            <div class="card br-14 table-responsive mb-3">
+                <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 400px;"
+                    pointerEventsMethod="scrollbar">
+
+                    <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort
+                        (matSortChange)="sortChange($event)">
+
+                        <ng-container style="display: table-row;" [matColumnDef]="col.colDef"
+                            *ngFor="let col of displayedColumns; let indexOfelement=index;">
+
+                            <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header
+                                (sortActionDescription)="indexOfelement"
+                                style="width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);">
+                                {{ col.colDef }}
+                            </th>
+
+                            <td *matCellDef="let element"
+                                (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)" mat-cell
+                                style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
+                                [ngClass]="'w-100'" #tooltip="matTooltip" matTooltipPosition="above"
+                                [matTooltip]="element[col.colHeader] "
+                                [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true">
+                                {{ element[col.colHeader] }}</td>
 
 
-                <div class="card br-14 table-responsive mb-3">
-                    <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 400px;" pointerEventsMethod="scrollbar">
-
-                        <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort
-                            (matSortChange)="sortChange($event)">
-
-                                    <ng-container style="display: table-row;" [matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
-
-                                <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header
-                                    (sortActionDescription)="indexOfelement"
-                                    style="width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);">
-                                    {{ col.colDef }}
-                                </th>
-
-                                <td *matCellDef="let element" 
-                                (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)"
-                                mat-cell style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;" 
-                                [ngClass]="'w-100'" 
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element[col.colHeader] " [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true" > {{ element[col.colHeader] }}</td>
-                     
-
-                            </ng-container>
+                        </ng-container>
 
 
-                            <ng-container matColumnDef="actions" stickyEnd>
+                        <ng-container matColumnDef="actions" stickyEnd>
 
-                                <th mat-header-cell *matHeaderCellDef style="border: 0;height: 67px; padding-left:65px; border-bottom: 1px solid var(--clr-tertiary-50);">
-                                </th>
+                            <th mat-header-cell *matHeaderCellDef
+                                style="border: 0;height: 67px; padding-left:65px; border-bottom: 1px solid var(--clr-tertiary-50);">
+                            </th>
 
-                                <td mat-cell *matCellDef="let seletedRecord" style="border: 0; padding-left: 24px; background: #fff;">
+                            <td mat-cell *matCellDef="let seletedRecord"
+                                style="border: 0; padding-left: 24px; background: #fff;">
 
-                                        <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" 
-                                    [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" 
+                                <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
+                                    [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn"
                                     appearance="outline">
-                                        <mat-icon>more_horiz</mat-icon>
-                                    </button>
+                                    <mat-icon>more_horiz</mat-icon>
+                                </button>
 
-                                    <mat-menu #appMenu="matMenu">
-                                        <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)">View Item in Inventory
-                                            Master</button>
-                                        <button mat-menu-item (click)="viewOrderInOrder(seletedRecord)">View Order in Order
-                                            Status</button>
-                                        <button mat-menu-item  *ngIf="!hideDelete && !throughOrderManager && authService.UserPermissonByFuncName('Transaction Journal Delete') "  (click)="deleteItem(seletedRecord)">Delete
-                                            Transaction</button>
-                              
-                                    </mat-menu>
+                                <mat-menu #appMenu="matMenu">
+                                    <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)">View Item in
+                                        Inventory
+                                        Master</button>
+                                    <button mat-menu-item (click)="viewOrderInOrder(seletedRecord)">View Order in Order
+                                        Status</button>
+                                    <button mat-menu-item
+                                        *ngIf="!hideDelete && !throughOrderManager && authService.UserPermissonByFuncName('Transaction Journal Delete') "
+                                        (click)="deleteItem(seletedRecord)">Delete
+                                        Transaction</button>
 
-                                </td>
-                            
-                            </ng-container>
-                            
-                            <tr class="mat-row d-flex w-100 justify-content-center position-absolute " 
-                            (contextmenu)="onContextMenu($event, undefined, '')"
-                            *matNoDataRow  [attr.colspan]="displayedColumns && displayedColumns.length">
-                              <div class="p-3">
-                                    No data available in table.
-                                </div>
-                            </tr>
-                            <mat-header-row *matHeaderRowDef="columnValues; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>
-                           
-                       
+                                </mat-menu>
 
-                        </table>
-                    </ng-scrollbar>
-                </div>
-                <div class="table-pagination d-flex justify-content-start" *ngIf="columnValues.length>0 && displayedColumns && dataSource">
-                    <mat-paginator [length]="this.customPagination.total" [pageSize]="20"
-                    showFirstLastButtons  [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
+                            </td>
 
+                        </ng-container>
 
-                </div>
+                        <tr class="mat-row d-flex w-100 justify-content-center position-absolute "
+                            (contextmenu)="onContextMenu($event, undefined, '')" *matNoDataRow
+                            [attr.colspan]="displayedColumns && displayedColumns.length">
+                            <div class="p-3">
+                                No data available in table.
+                            </div>
+                        </tr>
+                        <mat-header-row *matHeaderRowDef="columnValues; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>
 
 
 
+                    </table>
+                </ng-scrollbar>
+            </div>
+            <div class="table-pagination d-flex justify-content-start"
+                *ngIf="columnValues.length>0 && displayedColumns && dataSource">
+                <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons
+                    [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
 
-            </mat-card-content>
-        </mat-card>
-        <!-- Datatable End -->
-    </div>
 
-    <div #trigger="matMenuTrigger"
-    style="visibility: hidden; position: fixed"
-    [style.left]="contextMenuPosition.x"
-    [style.top]="contextMenuPosition.y"
-    [matMenuTriggerFor]="contextMenuFilter"
-    ></div>
-    <mat-menu #contextMenuFilter="matMenu">
+            </div>
+
+
+
+
+        </mat-card-content>
+    </mat-card>
+    <!-- Datatable End -->
+</div>
+
+<div #trigger="matMenuTrigger" style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
+    [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenuFilter"></div>
+<mat-menu #contextMenuFilter="matMenu">
     <ng-template matMenuContent let-item="item">
-      <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'equals to',getType(item.SelectedItem))"> Equals</button>
-      <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not equals to', getType(item.SelectedItem))">Not Equals</button>
-      <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is greater than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Greater than or Equal</button>
-      <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is less than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Less than or Equal</button>
-      <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Like</button>
-      <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Not Like</button>
-      <button mat-menu-item [matMenuTriggerFor]="InputFiltersList" [matMenuTriggerData]="{category: item}" *ngIf="getType(item.SelectedItem) != 'boolean'" >Input FIlters</button>
-      <button mat-menu-item (click)="onContextMenuCommand('', '', 'clear', '')">Clear Filters</button>
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'equals to',getType(item.SelectedItem))">
+            Equals</button>
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not equals to', getType(item.SelectedItem))">Not
+            Equals</button>
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is greater than or equal to', getType(item.SelectedItem))"
+            *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'">Greater than or
+            Equal</button>
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is less than or equal to', getType(item.SelectedItem))"
+            *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'">Less than or
+            Equal</button>
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is like', getType(item.SelectedItem))"
+            *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'">Like</button>
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not like', getType(item.SelectedItem))"
+            *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'">Not Like</button>
+        <button mat-menu-item [matMenuTriggerFor]="InputFiltersList" [matMenuTriggerData]="{category: item}"
+            *ngIf="getType(item.SelectedItem) != 'boolean'">Input FIlters</button>
+        <button mat-menu-item (click)="onContextMenuCommand('', '', 'clear', '')">Clear Filters</button>
     </ng-template>
-    </mat-menu>
-    
-    <mat-menu #InputFiltersList="matMenu">
-        <ng-template matMenuContent let-category="category">
-          <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'equals to', getType(category.SelectedItem))">Equals</button>
-          <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is not equals to', getType(category.SelectedItem))">Not Equals</button>
-          <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Begins</button>
-          <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Begin</button>
-          <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Ends With</button>
-          <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not End With</button>
-          <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Contains</button>
-          <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Contain</button>
-          <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is less than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Less Than</button>
-          <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is greater than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Greater Than</button>
-          <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is between', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Between</button>
-        </ng-template>
-    </mat-menu>    
+</mat-menu>
+
+<mat-menu #InputFiltersList="matMenu">
+    <ng-template matMenuContent let-category="category">
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'equals to', getType(category.SelectedItem))">Equals</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'is not equals to', getType(category.SelectedItem))">Not
+            Equals</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'begins with', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Begins</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'does not begins with', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not
+            Begin</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'ends with', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Ends
+            With</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'does not ends with', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not
+            End With</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'contains', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Contains</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'does not contains', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not
+            Contain</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'is less than', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Less
+            Than</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'is greater than', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Greater
+            Than</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'is between', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Between</button>
+    </ng-template>
+</mat-menu>

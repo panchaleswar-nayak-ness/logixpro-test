@@ -19,33 +19,34 @@ import { GeneralModule } from '../gen-module';
 import { CcsifComponent } from './ccsif/ccsif.component';
 import { SteComponent } from './ste/ste.component';
 import { SteServicesComponent } from './ste-services/ste-services.component';
+import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
 
 @NgModule({
-  declarations: [
-    GlobalConfigComponent,
-    GlobalDashboardComponent,
-    DatabaseConnectionsComponent,
-    PrintersComponent,
-    WorkstationComponent,
-    UserAccountComponent,
-    ConnectedUsersComponent,
-    ConfigDatabaseComponent,
-    ConnectionStringsComponent,
-    LicensingComponent,
-    CcsifComponent,
-    SteComponent,
-    SteServicesComponent,
-    
-  ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    GlobalConfigRoutingModule,
-    DashboardModule,
-    FormsModule,
-    CdkTableModule,
-    GeneralModule
-  ],
+    declarations: [
+        GlobalConfigComponent,
+        GlobalDashboardComponent,
+        DatabaseConnectionsComponent,
+        PrintersComponent,
+        WorkstationComponent,
+        UserAccountComponent,
+        ConnectedUsersComponent,
+        ConfigDatabaseComponent,
+        ConnectionStringsComponent,
+        LicensingComponent,
+        CcsifComponent,
+        SteComponent,
+        SteServicesComponent,
+    ],
+    imports: [
+        CommonModule,
+        MaterialModule,
+        ReactiveFormsModule,
+        GlobalConfigRoutingModule,
+        DashboardModule,
+        FormsModule,
+        CdkTableModule,
+        GeneralModule,
+        SharedComponentsModule
+    ]
 })
 export class GlobalConfigModule {}

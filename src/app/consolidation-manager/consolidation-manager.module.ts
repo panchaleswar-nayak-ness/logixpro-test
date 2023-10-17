@@ -10,22 +10,24 @@ import { ConsolidationComponent } from './consolidation/consolidation.component'
 import { CmStagingLocationComponent } from './cm-staging-location/cm-staging-location.component';
 import { PreferencesShippingComponent } from './consolidation-preferences/preferences-shipping/preferences-shipping.component';
 import { PreferencesConsolidationComponent } from './consolidation-preferences/preferences-consolidation/preferences-consolidation.component';
+import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
 
 
 @NgModule({
-  declarations: [
-    ConsolidationManagerComponent,
-    ConsolidationPreferencesComponent,
-    ConsolidationComponent,
-    CmStagingLocationComponent,
-    PreferencesShippingComponent,
-    PreferencesConsolidationComponent
-  ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    GeneralModule,
-    ConsolidationManagerRoutingModule
-  ]
+    declarations: [
+        ConsolidationManagerComponent,
+        ConsolidationPreferencesComponent,
+        ConsolidationComponent,
+        CmStagingLocationComponent,
+        PreferencesShippingComponent,
+        PreferencesConsolidationComponent
+    ],
+    imports: [
+        CommonModule,
+        MaterialModule,
+        GeneralModule,
+        ConsolidationManagerRoutingModule,
+        SharedComponentsModule
+    ]
 })
 export class ConsolidationManagerModule { }

@@ -8,9 +8,7 @@ import {
   Input,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
- 
 import { AuthService } from '../../../../app/init/auth.service';
-
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';

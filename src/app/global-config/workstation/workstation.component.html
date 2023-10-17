@@ -19,15 +19,8 @@
                             <mat-card class="mat-elevation-z g-card mb-4 h-100">
                                 <mat-card-content>
                                     <div class="d-xl-flex justify-content-between align-items-center mb-3">
-                                        <h2 class="card-header-title mb-0 d-flex align-items-center">
-                                            <div class="mat-icon-wrap me-1 me-lg-3">
-                                                <span class="material-symbols-outlined">
-                                                    online_prediction
-                                                </span>
-                                            </div>
-                                            <span>Workstation App</span>
-                                        </h2>
-
+                                        <app-icon-heading-component heading="Workstation App" icon="online_prediction">
+                                        </app-icon-heading-component>
                                         <mat-form-field class="action-dropdown d-block" appearance="outline">
                                             <mat-label>Actions</mat-label>
                                             <mat-select  #matRef class="employees-action" (openedChange)="actionDialog($event)"   [(value)]="selectedVariable">

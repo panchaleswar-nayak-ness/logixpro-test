@@ -4,14 +4,8 @@
       <mat-card class="mat-elevation-z g-card">
         <mat-card-content>
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="card-header-title mb-0 d-flex align-items-center">
-              <div class="mat-icon-wrap me-lg-3 me-2">
-                <span class="mat-icon material-symbols-outlined">
-                  widgets
-                </span>
-              </div>
-              <span>Orders</span>
-            </h2>
+            <app-icon-heading-component heading="Orders" icon="widgets" >
+            </app-icon-heading-component>
             <button mat-flat-button class="form-button-submit" *ngIf="authService.UserPermissonByFuncName('Order Status')" routerLink="transaction" [queryParams]="{tabIndex: 0}" color="primary">Order Status</button>
           </div>
           <div class="row align-items-center mt-3 ">
@@ -78,14 +72,8 @@
       <mat-card class="mat-elevation-z g-card">
         <mat-card-content>
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="card-header-title mb-0 d-flex align-items-center">
-              <div class="mat-icon-wrap me-lg-3 me-2">
-                <span class="mat-icon material-symbols-outlined">
-                  analytics
-                </span>
-              </div>
-              <span>Reports</span>
-            </h2>
+            <app-icon-heading-component heading="Reports" icon="analytics">
+            </app-icon-heading-component>
             <button mat-stroked-button class="form-button-submit" color="primary" (click)="backAdminAction()">Inventory Detail</button>
           </div>
           <div class="counter-widget side-widget main-widget">
