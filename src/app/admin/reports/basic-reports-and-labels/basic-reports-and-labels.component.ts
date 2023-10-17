@@ -20,7 +20,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 export class BasicReportsAndLabelsComponent implements OnInit {
   reports:any = [];
   @ViewChild('matRef') matRef: MatSelect;
-
+  reportTitles: any = [1,2,3,4]; 
   searchByInput: any = new Subject<string>();
   ListFilterValue:any = [];
   oldFilterValue:any = [];
@@ -36,6 +36,23 @@ export class BasicReportsAndLabelsComponent implements OnInit {
     {order_no: '1202122'},
     {order_no: '1202122'}
   ]
+  comparisonOperators = [
+    { label: '', value: '' },
+    { label: '= (Equals)', value: "=" },
+    { label: '> (Greater Than)', value: ">" },
+    { label: '< (Less Than)', value: "<" },
+    { label: '>= (Greater Than or Equal)', value: ">=" },
+    { label: '<= (Less Than or Equal)', value: "<=" },
+    { label: '<> (Not Equal)', value: "<>" },
+    { label: 'LIKE (Matches value with wildcards)', value: "LIKE" },
+    { label: 'NOT LIKE (Matches value with wildcards)', value: "NOT LIKE" },
+    { label: 'NULL (Empty/Blank)', value: "NULL" },
+    { label: 'NOT NULL', value: "NOT NULL" },
+    { label: 'BETWEEN', value:  "BETWEEN"},
+    { label: 'NOT BETWEEN', value: "NOT BETWEEN" },
+    { label: 'IN (In list like 1, 2, 3, 4)', value: "IN" },
+    { label: 'NOT IN (Not in list like 1, 2, 3, 4)', value: "NOT IN" }
+  ];
   
 
     displayedColumns: string[] = ['fields','expression_type','value_to_test','between','actions'];
@@ -195,8 +212,8 @@ ReportTitles(){
      this.iAdminApiService.ReportTitles(payload).subscribe((res:any)=>{  
        
      })
-   } 
- 
+   }
+
   OpenListAndLabel(){ 
     window.open(`/#/report-view?file=${this.global.capitalizeAndRemoveSpaces(this.BasicReportModel.ChooseReport)+'-lst'}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
   }

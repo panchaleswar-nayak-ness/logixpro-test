@@ -41,26 +41,15 @@
                             expand_more
                         </span>
                     </mat-form-field>
-                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Report Title #1</mat-label>
-                        <input matInput type="text" [(ngModel)]="reportData[0]" (change)="ReportTitles()" maxlength="50">
-                    </mat-form-field>
-                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Report Title #2</mat-label>
-                        <input matInput type="text" [(ngModel)]="reportData[1]" (change)="ReportTitles()" maxlength="50">
-                    </mat-form-field>
-                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Report Title #3</mat-label>
-                        <input matInput type="text" [(ngModel)]="reportData[2]" (change)="ReportTitles()" maxlength="50">
-                    </mat-form-field>
-                    <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
-                        <mat-label>Report Title #4</mat-label>
-                        <input matInput type="text" [(ngModel)]="reportData[3]" (change)="ReportTitles()" maxlength="50">
-                    </mat-form-field>  
+                    <ng-container *ngFor="let title of reportTitles; let i = index">
+                        <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
+                          <mat-label>Report Title #{{ i + 1 }}</mat-label>
+                          <input matInput type="text" [(ngModel)]="reportData[i]" (change)="ReportTitles()" maxlength="50">
+                        </mat-form-field>
+                    </ng-container>                      
                 </mat-card-content>
             </mat-card>
         </div>
-
         <div class="col-xl-8">
             <mat-card class="mat-elevation-z g-card mb-4 mb-xl-0">
                 <mat-card-content>
@@ -111,21 +100,7 @@
                                             appearance="outline">
                                             <mat-label>Expression Type</mat-label>
                                             <mat-select class="employees-action"  [(ngModel)]="reportData[10+i]" (ngModelChange)="ReportFieldsExps();reportfieldvaluesChange(i,reportData[16+i]);" placeholder="Actions" [disabled]="BasicReportModel.ChooseReport == ''">
-                                                <mat-option value=""> </mat-option>
-                                                <mat-option value="=">= (Equals)</mat-option>
-                                                <mat-option value=">">> (Greater Than)</mat-option>
-                                                <mat-option value="<">< (Less Than)</mat-option>
-                                                <mat-option value=">=">>= (Greater Than or Equal)</mat-option>
-                                                <mat-option value="<="><= (Less Than or Equal)</mat-option>
-                                                <mat-option value="<>"><> (Not Equal)</mat-option>
-                                                <mat-option value="LIKE">LIKE (Matches value with wildcards)</mat-option>
-                                                <mat-option value="NOT LIKE">NOT LIKE (Matches value with wildcards)</mat-option>
-                                                <mat-option value="NULL">NULL (Empty/Blank)</mat-option>
-                                                <mat-option value="NOT NULL">NOT NULL (Not Empty/Blank)</mat-option>
-                                                <mat-option value="BETWEEN">BETWEEN</mat-option>
-                                                <mat-option value="NOT BETWEEN">NOT BETWEEN</mat-option>
-                                                <mat-option value="IN">IN (In list like 1, 2, 3, 4)</mat-option>
-                                                <mat-option value="NOT IN">NOT IN (Not in list like 1, 2, 3, 4)</mat-option>
+                                                <mat-option *ngFor="let operator of comparisonOperators" [value]="operator.value">{{ operator.label }}</mat-option>
                                             </mat-select>
                                             <span class="material-symbols-outlined icon-expand-more">
                                                 expand_more
@@ -133,7 +108,6 @@
                                         </mat-form-field>
                                     </td>
                                 </ng-container>
-
                                 <ng-container matColumnDef="value_to_test">
                                     <th mat-header-cell *matHeaderCellDef>Value To Test</th>
                                     <td mat-cell *matCellDef="let element;let i =index">

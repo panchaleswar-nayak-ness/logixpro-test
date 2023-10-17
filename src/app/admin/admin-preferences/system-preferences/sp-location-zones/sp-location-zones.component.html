@@ -1,219 +1,205 @@
 <div class="row w-100 mt-2 mx-0">
-    <div class="d-block d-xl-flex justify-content-between align-items-center">
-        <h2 class="card-header-title mb-3 d-flex align-items-center">
-            <div class="mat-icon-wrap me-lg-3 me-2">
-                <span class="mat-icon material-symbols-outlined">
-                    location_on
-                </span>
-            </div>
-            <span>Location Zones</span>
-        </h2>
-        <div class="d-block d-xl-flex justify-content-end">
-            <button mat-flat-button color="primary" class="add-icon-button mb-3"
-            (click)="addNewLocation()">
-            <span class="material-symbols-outlined" matTooltip="Add new zone"
-              matTooltipPosition="above">
-              add
-            </span>
+  <div class="d-block d-xl-flex justify-content-between align-items-center">
+    <h2 class="card-header-title mb-3 d-flex align-items-center">
+      <div class="mat-icon-wrap me-lg-3 me-2">
+        <span class="mat-icon material-symbols-outlined"> location_on </span>
+      </div>
+      <span>Location Zones</span>
+    </h2>
+    <div class="d-block d-xl-flex justify-content-end">
+      <button
+        mat-flat-button
+        color="primary"
+        class="add-icon-button mb-3"
+        (click)="addNewLocation()"
+      >
+        <span
+          class="material-symbols-outlined"
+          matTooltip="Add new zone"
+          matTooltipPosition="above"
+        >
+          add
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    *ngIf="newLocation"
+    class="col-xl-12 d-flex align-items-baseline justify-content-start"
+  >
+    <div class="col-xl-6">
+      <mat-form-field
+        class="custom-form-field custom-form-field-bg-white w-100 mb-1"
+        appearance="outline"
+      >
+        <mat-label>New Zone Name</mat-label>
+        <input
+          type="text"
+          [(ngModel)]="newLocationVal"
+          (ngModelChange)="newLocationValue()"
+          matInput
+          maxlength="2"
+        />
+      </mat-form-field>
+    </div>
+    <div class="col-xl-2">
+      <ng-container>
+        <div class="d-flex gap-12 cl justify-content-center">
+          <button
+            matTooltip="Save"
+            [disabled]="locationSaveBtn"
+            (click)="saveNewLocation()"
+            mat-flat-button
+            color="primary"
+            class="xsm-icon-button"
+          >
+            <mat-icon class="material-symbols-outlined"> save </mat-icon>
+          </button>
+          <button
+            (click)="closeNewLocation()"
+            matTooltip="Delete"
+            mat-flat-button
+            color="warn"
+            class="xsm-icon-button"
+          >
+            <mat-icon class="material-symbols-outlined"> close </mat-icon>
           </button>
         </div>
+      </ng-container>
     </div>
-    <div *ngIf="newLocation" class="col-xl-12 d-flex  align-items-baseline justify-content-start">
-        <div class="col-xl-6">
-            <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-1" appearance="outline">
-                <mat-label>New Zone Name</mat-label>
-                <input type="text" [(ngModel)]="newLocationVal" (ngModelChange)="newLocationValue()"   matInput maxlength="2">
-              </mat-form-field>
-        </div>
-        <div class="col-xl-2 ">
-            <ng-container >
-                      <div class="d-flex gap-12 cl justify-content-center">
-                          <button  matTooltip="Save" [disabled]="locationSaveBtn" (click)="saveNewLocation()" mat-flat-button color="primary" class="xsm-icon-button">
-                            <mat-icon class="material-symbols-outlined" >
-                              save
-                            </mat-icon>
-                          </button>
-                          <button  (click)="closeNewLocation()" matTooltip="Delete" mat-flat-button color="warn" class="xsm-icon-button" >
-                            <mat-icon class="material-symbols-outlined">
-                              close
-                            </mat-icon>
-                          </button>
-                      </div>
-                  </ng-container>
-        </div>
-    </div>
-    <ng-container >
-        <mat-accordion *ngFor="let i of locationzone ; let index = index" >
-            <div class="mb-2">
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                      <mat-panel-title>
-                      Zone: {{i.zone}}
-                      </mat-panel-title>
-                      <mat-panel-description>
-                      </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="row">
-                            <div class="col-xl-3">
-                                <div class="d-flex justify-content-between mb-3">
-                                    Carousel <mat-slide-toggle  name="carousel" [(ngModel)]="i.carousel" (ngModelChange)="zoneChange(i,false,'carousel')" [checked]="i.carousel"
-                                       color="primary"
-                                      ></mat-slide-toggle>
-                                     
-                                  </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="d-flex justify-content-between mb-3">
-                                    Staging Zone <mat-slide-toggle  name="stagingZone" [(ngModel)]="i.stagingZone" (ngModelChange)="zoneChange(i,false)" [checked]="i.stagingZone"
-                                       color="primary"
-                                      ></mat-slide-toggle>
-                                  </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="d-flex justify-content-between mb-3">
-                                    CCS Auto Induct <mat-slide-toggle name="includeInTransactions" [(ngModel)]="i.includeInTransactions" (ngModelChange)="zoneChange(i,false)" [checked]="i.includeInTransactions"
-                                       color="primary"
-                                      ></mat-slide-toggle>
-                                  </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="d-flex justify-content-between mb-3">
-                                    Kanban Zone <mat-slide-toggle name="kanbanZone" (change)="test(i)"  [(ngModel)]="i.kanbanZone" (ngModelChange)="zoneChange(i,true)" [checked]="i.kanbanZone"
-                                       color="primary" 
-                                      ></mat-slide-toggle>
-                                  </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="d-flex justify-content-between mb-3">
-                                    Carton Flow <mat-slide-toggle    name="cartonFlow" [(ngModel)]="i.cartonFlow" (ngModelChange)="zoneChange(i,false,'cartonFlow')" [checked]="i.cartonFlow"
-                                       color="primary"
-                                      ></mat-slide-toggle>
-                                     
-                                  </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="d-flex justify-content-between mb-3">
-                                    Include Zone in Auto Batch <mat-slide-toggle name="includeInAutoBatch" [(ngModel)]="i.includeInAutoBatch" (ngModelChange)="zoneChange(i,false)" [checked]="i.includeInAutoBatch"
-                                       color="primary"
-                                      ></mat-slide-toggle>
-                                  </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="d-flex justify-content-between mb-3">
-                                    Dynamic Warehouse <mat-slide-toggle name="dynamicWarehouse" [(ngModel)]="i.dynamicWarehouse" (ngModelChange)="zoneChange(i,false)" [checked]="i.dynamicWarehouse"
-                                       color="primary"
-                                      ></mat-slide-toggle>
-                                  </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="d-flex justify-content-between mb-3"> 
-                                    Kanban Replenishment Zone <mat-slide-toggle name="kanbanReplenishmentZone" [(ngModel)]="i.kanbanReplenishmentZone"  (ngModelChange)="zoneChange(i,false)" [checked]="i.kanbanReplenishmentZone"
-                                       color="primary"
-                                      ></mat-slide-toggle>
-                                  </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="d-flex justify-content-between mb-3">
-                                    Replenishment Source <mat-slide-toggle name="replenishmentZone" [(ngModel)]="i.replenishmentZone" (ngModelChange)="zoneChange(i,false)" [checked]="i.replenishmentZone"
-                                       color="primary"
-                                      ></mat-slide-toggle>
-                                  </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="d-flex justify-content-between mb-3">
-                                    Include CF Carousel Pick<mat-slide-toggle    name="includeCFCarouselPick" [(ngModel)]="i.includeCFCarouselPick" (ngModelChange)="zoneChange(i,false,'includePick')" [checked]="i.includeCFCarouselPick"
-                                       color="primary"
-                                      ></mat-slide-toggle>
-                                      
-                                  </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="d-flex justify-content-between mb-3">
-                                    Allow Pick Allocation <mat-slide-toggle (change)="test(i)" name="allocable" [(ngModel)]="i.allocable"  (ngModelChange)="zoneChange(i,true)" [checked]="i.allocable"
-                                       color="primary"
-                                      ></mat-slide-toggle>
-                                  </div>
-                            </div>
-                            
-                            </div>
-                        </div>
-                         <div class="col-xl-12">
-                         <div class="row">
-                         
-                          <div class="col-xl-3">
-                              <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
-                                  <mat-label>Zone</mat-label>
-                                  <input type="text" [(ngModel)]="i.zone" (ngModelChange)="zoneChange(i,false)"  matInput maxlength="2">
-                                </mat-form-field>
-                          </div>
-                          <div class="col-xl-3">
-                              <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline" (click)="LocationName(i)">
-                                  <mat-label>Location Name</mat-label>
-                                  <input type="text" [(ngModel)]="i.locationName"  matInput maxlength="255" readonly="true">
-                                  <span matSuffix>
-                                    <mat-icon style="color:#8B8BA3; transform: rotate(45deg);" >unfold_more</mat-icon>
-                                </span>
-                                </mat-form-field>
-                          </div>
-                          <div class="col-xl-3">
-                                <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
-                                    <mat-label>Parent Zone</mat-label>
-                                    <mat-select [disabled]="!i.includeCFCarouselPick"  [(ngModel)]="i.parentZone" (ngModelChange)="zoneChange(i,false)"  class="employees-action" >
-                                      <mat-option *ngFor="let s of parentZones" value={{s}}>{{s}}</mat-option> 
-                                     
-                                    </mat-select>
-                                    <span class="material-symbols-outlined icon-expand-more">
-                                      expand_more
-                                    </span>
-                                  </mat-form-field>
-                          </div>
-                          <div class="col-xl-3">
-                              <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
-                                  <mat-label>Sequence</mat-label>
-                                  <input type="number" [(ngModel)]="i.sequence" (ngModelChange)="zoneChange(i,false)"   matInput maxlength="6">
-                                </mat-form-field>
-                          </div>
-                          <div class="col-xl-3">
-                              <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
-                                  <mat-label>Label1</mat-label>
-                                  <input type="text"   [(ngModel)]="i.label1" (ngModelChange)="zoneChange(i,false)"  matInput maxlength="10">
-                                </mat-form-field>
-                          </div>
-                          <div class="col-xl-3">
-                              <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
-                                  <mat-label>Label2</mat-label>
-                                  <input type="text"   [(ngModel)]="i.label2" (ngModelChange)="zoneChange(i,false)"  matInput maxlength="10">
-                                </mat-form-field>
-                          </div>
-                          <div class="col-xl-3">
-                              <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
-                                  <mat-label>Label3</mat-label>
-                                  <input type="text"  [(ngModel)]="i.label3" (ngModelChange)="zoneChange(i,false)"  matInput maxlength="10">
-                                </mat-form-field>
-                          </div>
-                          <div class="col-xl-3">
-                              <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3" appearance="outline">
-                                  <mat-label>Label4</mat-label>
-                                  <input type="text"  [(ngModel)]="i.label4" (ngModelChange)="zoneChange(i,false)"  matInput maxlength="10">
-                                </mat-form-field>
-                          </div>
-                          <div class="col-xl-3 offset-xl-9 text-end">
-                            <div>
-                                <button mat-button class="w-100 btn-regular" color="warn" (click)="DelLocationZone(i.zone)">Delete Location Zone</button>
-                            </div>
-                          </div>
-                      </div>
-                        </div>
-                     
-                        
-                    </div>
-                </mat-expansion-panel>
+  </div>
+  <ng-container>
+    <mat-accordion *ngFor="let i of locationzone; let index = index">
+      <div class="mb-2">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Zone: {{ i.zone }} </mat-panel-title>
+            <mat-panel-description> </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="row">
+                <div
+                  class="col-xl-3"
+                  *ngFor="let feature of toggleSwitches; let j = index"
+                >
+                  <div class="d-flex justify-content-between mb-3">
+                    {{ feature.label }}
+                    <mat-slide-toggle
+                      [name]="feature.name"
+                      [(ngModel)]="i[feature.property]"
+                      (ngModelChange)="zoneChange(i, false, feature.property)"
+                      [checked]="i[feature.property]"
+                      color="primary"
+                    ></mat-slide-toggle>
+                  </div>
+                </div>
+                <div class="col-xl-3">
+                  <mat-form-field
+                    class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                    appearance="outline"
+                  >
+                    <mat-label>Zone</mat-label>
+                    <input
+                      type="text"
+                      [(ngModel)]="i.zone"
+                      (ngModelChange)="zoneChange(i, false)"
+                      matInput
+                      maxlength="2"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-3">
+                  <mat-form-field
+                    class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                    appearance="outline"
+                    (click)="LocationName(i)"
+                  >
+                    <mat-label>Location Name</mat-label>
+                    <input
+                      type="text"
+                      [(ngModel)]="i.locationName"
+                      matInput
+                      maxlength="255"
+                      readonly="true"
+                    />
+                    <span matSuffix>
+                      <mat-icon style="color: #8b8ba3; transform: rotate(45deg)"
+                        >unfold_more</mat-icon
+                      >
+                    </span>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-3">
+                  <mat-form-field
+                    class="action-dropdown custom-form-field-bg-white w-100 mb-3"
+                    appearance="outline"
+                  >
+                    <mat-label>Parent Zone</mat-label>
+                    <mat-select
+                      [disabled]="!i.includeCFCarouselPick"
+                      [(ngModel)]="i.parentZone"
+                      (ngModelChange)="zoneChange(i, false)"
+                      class="employees-action"
+                    >
+                      <mat-option
+                        *ngFor="let s of parentZones"
+                        value="{{ s }}"
+                        >{{ s }}</mat-option
+                      >
+                    </mat-select>
+                    <span class="material-symbols-outlined icon-expand-more">
+                      expand_more
+                    </span>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-3">
+                  <mat-form-field
+                    class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                    appearance="outline"
+                  >
+                    <mat-label>Sequence</mat-label>
+                    <input
+                      type="number"
+                      [(ngModel)]="i.sequence"
+                      (ngModelChange)="zoneChange(i, false)"
+                      matInput
+                      maxlength="6"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-3" *ngFor="let field of formFields">
+                  <mat-form-field
+                    class="custom-form-field custom-form-field-bg-white w-100 mb-3"
+                    appearance="outline"
+                  >
+                    <mat-label>{{ field.label }}</mat-label>
+                    <input
+                      type="text"
+                      [(ngModel)]="i[field.label]"
+                      (ngModelChange)="zoneChange(i, false)"
+                      matInput
+                      maxlength="10"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-3 offset-xl-9 text-end">
+                  <div>
+                    <button
+                      mat-button
+                      class="w-100 btn-regular"
+                      color="warn"
+                      (click)="DelLocationZone(i.zone)"
+                    >
+                      Delete Location Zone
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-           
-            
-        </mat-accordion>
-    </ng-container>
-    
+          </div>
+        </mat-expansion-panel>
+      </div>
+    </mat-accordion>
+  </ng-container>
 </div>
