@@ -1,0 +1,30 @@
+<div #trigger="matMenuTrigger" style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x" [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenuFilter"></div>
+
+<mat-menu #contextMenuFilter="matMenu">
+  <ng-template matMenuContent let-item="item">
+    <ng-container *ngFor="let con of matMenuContentItem">
+      <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, con.condition, getType(item.SelectedItem))" 
+        *ngIf="con.type === OperationTypes.EQUALS || 
+        (con.type === OperationTypes.STRING && getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date') ||
+        (con.type === OperationTypes.NUMERIC && getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date')" >
+        {{con.title}}
+      </button>
+    </ng-container>
+    
+    <button mat-menu-item [matMenuTriggerFor]="InputFiltersList" [matMenuTriggerData]="{category: item}" *ngIf="getType(item.SelectedItem) != 'boolean'" >Input FIlters</button>
+    <button mat-menu-item (click)="onContextMenuCommand('', '', 'clear', '')">Clear Filters</button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #InputFiltersList="matMenu">
+  <ng-template matMenuContent let-category="category">
+    <ng-container *ngFor="let item of matMenuContentCategory">
+        <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, item.condition, getType(category.SelectedItem))" 
+          *ngIf="item.type === OperationTypes.EQUALS || 
+          (item.type === OperationTypes.STRING && getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date') ||
+          (item.type === OperationTypes.NUMERIC && getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date')">
+          {{item.title}}
+        </button>
+    </ng-container>
+  </ng-template>
+</mat-menu>  
