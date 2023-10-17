@@ -75,7 +75,7 @@ bpSettingLocInp='';
   location_data_source: any;
   employee_group_allowed: any;
   emp_all_zones:any;
-  groupAllowedList:any = {};
+  groupAllowedList:any;
   FuncationAllowedList:any = [];
   OldFuncationAllowedList:any = [];
   access:any;
