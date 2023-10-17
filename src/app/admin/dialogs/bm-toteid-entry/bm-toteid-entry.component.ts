@@ -104,7 +104,9 @@ export class BmToteidEntryComponent implements OnInit {
           this.global.ShowToastr('success',res.responseMessage, 'Success!');
           this.dialogRef.close(true);
         } else {
+          
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("PickToteIDUpdate",res.responseMessage);
         }
       });
   }

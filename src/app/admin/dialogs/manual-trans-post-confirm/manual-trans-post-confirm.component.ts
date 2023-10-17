@@ -39,6 +39,7 @@ export class ManualTransPostConfirmComponent {
         } else {
           this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
           this.dialogRef.close({ isExecuted: false });
+          console.log("ManualOrdersPost",res.responseMessage);
         }
       },
       (error) => {}

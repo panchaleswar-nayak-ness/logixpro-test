@@ -80,7 +80,9 @@ export class AddNewGroupComponent implements OnInit {
             this.global.ShowToastr('success',labels.alert.success, 'Success!');
           }
           else {
+            
             this.global.ShowToastr('error',response.responseMessage, 'Error!');
+            console.log("insertGroup",response.responseMessage);
           }
         });
 

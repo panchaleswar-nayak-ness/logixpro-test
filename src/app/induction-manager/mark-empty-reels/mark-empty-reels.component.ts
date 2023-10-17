@@ -94,6 +94,10 @@ export class MarkEmptyReelsComponent implements OnInit {
                   break;
               }
             }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("ValidateSerialNumber");
+            }
           },
           (error) => {
             console.error('An error occurred:', error);
@@ -179,6 +183,7 @@ export class MarkEmptyReelsComponent implements OnInit {
                 this.lastScannedList.length = 0;
               } else {
                 this.global.ShowToastr('error',response.responseMessage, 'Error!');
+                console.log("DeleteSerialNumber");
               }
             });
         }

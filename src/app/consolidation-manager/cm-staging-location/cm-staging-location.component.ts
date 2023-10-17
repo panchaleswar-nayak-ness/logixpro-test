@@ -120,6 +120,10 @@ export class CmStagingLocationComponent {
         this.IsLoading = false;
       });
     }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("ConsolidationData");
+    }
   }
   async saveToteStagingLocation($event:any,toteID: any, location: any,index:any=null,clear = 0) {
     if ($event.key == "Enter" || $event == 'click') {
@@ -157,6 +161,11 @@ export class CmStagingLocationComponent {
 
       }
     })
+  }
+  else {
+    this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+    console.log("StagingLocationsUpdate");
+
   } 
   }
   async UnstageAll(){

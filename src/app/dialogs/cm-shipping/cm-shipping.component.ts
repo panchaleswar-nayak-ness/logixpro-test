@@ -86,7 +86,11 @@ export class CmShippingComponent implements OnInit {
          this.shippingComp = res.data.shippingComp;
           this.orderNumber = res.data.orderNumber;
           this.IsLoading = false; 
-        }else  this.IsLoading = false; 
+        }else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');  
+          this.IsLoading = false;
+          console.log("ShippingIndex",res.responseMessage);
+        } 
       });
     }
    
@@ -115,6 +119,11 @@ export class CmShippingComponent implements OnInit {
     this.IconsolidationAPI.ShipmentItemDelete(obj).subscribe((res: any) => {
       if (res?.isExecuted) {
         this.shippingData = this.shippingData.slice(0,i);
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ShipmentItemDelete",res.responseMessage);
+
       }
     });
   }
@@ -176,6 +185,11 @@ export class CmShippingComponent implements OnInit {
             }})
           }
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SelCountOfOpenTransactionsTemp",res.responseMessage);
+
+        }
       });
     
     }});
@@ -192,6 +206,7 @@ export class CmShippingComponent implements OnInit {
         this.global.ShowToastr('success',`Order Number: ${this.orderNumber} is marked as Shipping Complete`, "Success");
       } else {
         this.global.ShowToastr('error',"An error has occurred", "Error");
+        console.log("CompleteShipment",res.responseMessage);
       }
     });
   }

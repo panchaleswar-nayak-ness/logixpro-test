@@ -81,10 +81,15 @@ export class GlobalConfigSetSqlComponent implements OnInit {
                 this.dialogRef.close({isExecuted:true})
     
               }
+              else {
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("ConnectionUserPasswordUpdate",res.responseMessage);
+              }
             },
             (error) => {
               this.global.ShowToastr('success',labels.alert.went_worng, 'Errpr!');
               this.dialogRef.close({isExecuted:true})
+              console.log("(error) => ConnectionUserPasswordUpdate");
     
             }
           );

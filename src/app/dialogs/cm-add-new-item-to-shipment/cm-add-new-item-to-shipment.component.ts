@@ -1,5 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
  
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -23,6 +24,7 @@ export class CmAddNewItemToShipmentComponent{
     public consolidationAPI : ConsolidationApiService,
     // private Api:ApiFuntions,
     private authService: AuthService,
+    private global : GlobalService,
     
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CmAddNewItemToShipmentComponent>) {
@@ -41,6 +43,11 @@ export class CmAddNewItemToShipmentComponent{
     this.IconsolidationAPI.ShippingItemAdd(obj).subscribe((res:any) => {
       if (res?.isExecuted) {
         this.dialogRef.close(true);
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ShippingItemAdd",res.responseMessage);
+
       }
   })
 }

@@ -69,6 +69,10 @@ export class OrderManagerComponent implements OnInit {
             this.compLocChange=item.compLocChange;
             this.reprocCount=item.reprocCount;
           }
+          else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("getInvDetailsList",res.responseMessage);
+          }
         },
         (error) => {}
       );

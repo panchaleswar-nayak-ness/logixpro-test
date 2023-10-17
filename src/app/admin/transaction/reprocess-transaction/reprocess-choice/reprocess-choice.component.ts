@@ -34,8 +34,6 @@ export class ReprocessChoiceComponent  {
 
   constructor(private Api: ApiFuntions,  private global: GlobalService, private sharedService: SharedService,public adminApiService: AdminApiService) { this.iAdminApiService = adminApiService }
 
-  
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['ROrder']?.currentValue) {
       this.ROrder = changes['ROrder'].currentValue;
@@ -68,6 +66,7 @@ export class ReprocessChoiceComponent  {
           this.clearControls();
           this.global.ShowToastr('error','Something went wrong', 'Error!');
           this.itemUpdatedEvent.emit(true);
+          console.log("PostReprocessTransaction",res.responseMessage);
         }
       },
       error: (error) => { }}
@@ -102,6 +101,7 @@ export class ReprocessChoiceComponent  {
           this.itemUpdatedEvent.emit(true);
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("ReprocessIncludeSet",res.responseMessage);
         }
       },
       error: (error) => { }}

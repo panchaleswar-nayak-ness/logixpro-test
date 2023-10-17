@@ -105,6 +105,7 @@ export class PalletReceivingComponent implements OnInit {
               'Invalid Tote Entered',
               'This tote id already exists in Open Transactions'
             );
+            console.log("ValidateTote");
           }
         });
     }

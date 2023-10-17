@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class ConnectedUsersComponent implements OnInit,AfterViewInit {
     private _liveAnnouncer: LiveAnnouncer,
     public globalConfigApi: GlobalConfigApiService,
     public signalRService: SignalrServiceService, 
-    private http: HttpClient
+    private http: HttpClient,
+    private global:GlobalService
   ) {
     this.iGlobalConfigApi = globalConfigApi;
   }
@@ -55,6 +57,10 @@ export class ConnectedUsersComponent implements OnInit,AfterViewInit {
           this.user_connected_datasource = new MatTableDataSource(res.data);
           this.user_connected_datasource.paginator = this.paginator;
 
+        }
+        else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("getConnectedUsers",res.responseMessage);
         }
       },
       (error) => {}

@@ -56,10 +56,15 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
           this.dialogRef.close("Yes");
           this.global.ShowToastr('success',labels.alert.delete, 'Success!');
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("DeleteOrder",res.responseMessage);
+        }
       },
       (error) => {
         this.dialogRef.close("No");
         this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+        console.log("(error) => : DeleteOrder");
       }
     );
   }

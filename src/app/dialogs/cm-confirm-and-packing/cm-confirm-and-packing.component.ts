@@ -86,6 +86,7 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
    this.IconsolidationAPI.SelContIDConfirmPack(obj).subscribe((res:any) => { 
     if(res.data == ''){
       this.global.ShowToastr('error',"An error has occurred",'Error!');
+      console.log("SelContIDConfirmPack",res.responseMessage);
     }else{
       this.getPreferences();
       if(this.preferencesData?.autoPrintContPL){
@@ -101,7 +102,8 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
 async UnPack(id:any){  
   this.IconsolidationAPI.ShipTransUnPackUpdate({id:id}).subscribe((res:any) => {
     if (res.data == "Fail") {
-      this.global.ShowToastr('error',"An error has occurred", 'Error!');  
+      this.global.ShowToastr('error',"An error has occurred", 'Error!');
+      console.log("ShipTransUnPackUpdate",res.responseMessage);  
   } else {  
      let index =  this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
      this.transTable.filteredData[index].containerID = '';
@@ -122,6 +124,11 @@ getPreferences() {
       if (res.isExecuted) {
         this.preferencesData = res.data.cmPreferences;
  
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ConsoleDataSB",res.responseMessage);
+
       }
       
     });
@@ -173,7 +180,8 @@ async ClickConfirmAll(){
     };
    this.IconsolidationAPI.ConfirmAllConfPack(obj).subscribe((res:any) => {
     if (res.data == "Fail") {
-      this.global.ShowToastr('error','An error has occurred', 'Error!'); 
+      this.global.ShowToastr('error','An error has occurred', 'Error!');
+      console.log("ConfirmAllConfPack",res.responseMessage); 
   } else { 
 
    
@@ -290,7 +298,8 @@ if(searchCount == 0){
  this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
    
   if (res.data == "Fail") {
-    this.global.ShowToastr('error','An error has occurred', 'Error!');  
+    this.global.ShowToastr('error','An error has occurred', 'Error!');
+    console.log("ConfPackProcModalUpdate",res.responseMessage);  
 } else if (res.data == "Modal") {
     //show modal here
   this.openScanItem($event.target.value,id);  

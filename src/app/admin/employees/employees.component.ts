@@ -283,6 +283,7 @@ initialzeEmpForm() {
         }
         else{
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("insertGroupFunctions",res.responseMessage);
         }
 
       });
@@ -376,7 +377,6 @@ initialzeEmpForm() {
         }
       })
       dialogRef.afterClosed().subscribe(result => {
-        debugger
         if(!result){
           return
         }
@@ -570,6 +570,7 @@ initialzeEmpForm() {
         else 
         {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("updateAdminEmployee",res.responseMessage);
         }
       });
 
@@ -696,7 +697,11 @@ initialzeEmpForm() {
         this.allGroups = res.data.allGroups;
         this.ButtonAccessList.paginator = this.paginator1;
       }
-      else this.ButtonAccessList = [];
+      else {
+        this.ButtonAccessList = [];
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getEmployeeData",res.responseMessage);
+      }
     });
   }
   getEmployeeDetails(){
@@ -746,6 +751,7 @@ initialzeEmpForm() {
         this.reloadData();
       } else {
         this.global.ShowToastr('error','Something went wrong!', 'Error!');
+        console.log("deleteControlName",res.responseMessage);
       }
     });
   
@@ -766,6 +772,7 @@ initialzeEmpForm() {
          this.getgroupAllowedList();
       } else {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("deleteUserGroup",res.responseMessage);
       }
     });
 

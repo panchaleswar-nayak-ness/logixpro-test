@@ -72,7 +72,11 @@ export class PutAwayComponent implements OnInit {
         this.tableData1 = new MatTableDataSource(res.data);
         this.tableData1.paginator = this.paginator1;
       } else { 
-        this.tableData1 = new MatTableDataSource([]); 
+        this.tableData1 = new MatTableDataSource([]);
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetLocAssPutAwayTable",res.responseMessage);
+
+
       }
     });
   }
@@ -157,6 +161,7 @@ export class PutAwayComponent implements OnInit {
               this.global.ShowToastr('success',labels.alert.success, 'Success!');
             } else {
               this.global.ShowToastr('error',"There was an error marking these orders for location assignment", 'Error');
+              console.log("LocationAssignmentOrderInsert",res.responseMessage);
             }
           });
         }

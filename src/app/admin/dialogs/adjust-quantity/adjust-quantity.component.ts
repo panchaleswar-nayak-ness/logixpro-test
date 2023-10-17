@@ -104,6 +104,12 @@ export class AdjustQuantityComponent implements OnInit {
         this.getAdjustQuantityData = res.data;
         this.newQty.nativeElement.focus();
       }
+      else {
+        
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getItemQuantityDetail",res.responseMessage);
+
+      }
     });
   }
 
@@ -111,6 +117,12 @@ export class AdjustQuantityComponent implements OnInit {
     this.iCommonAPI.getAdjustmentReasonsList().subscribe((res) => {
       if(res.data && res.isExecuted){
         this.getAdjustReasonsList = res.data;
+      }
+      else {
+        
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getAdjustmentReasonsList",res.responseMessage);
+
       }
     });
   }
@@ -121,6 +133,12 @@ export class AdjustQuantityComponent implements OnInit {
         if(res.isExecuted){
           this.global.ShowToastr('success',res.responseMessage, 'Success!'); 
           this.dialogRef.close(form.value.quantity);   
+        }
+        else {
+          
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("updateItemQuantity",res.responseMessage);
+          
         }
       });
     }

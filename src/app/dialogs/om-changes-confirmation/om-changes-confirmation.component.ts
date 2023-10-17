@@ -101,6 +101,7 @@ export class OmChangesConfirmationComponent implements OnInit {
           });
         }
         else this.globalService.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
+        console.log("OrderManagerRecordUpdate",res.responseMessage);
       });
 
     } catch (error) {    

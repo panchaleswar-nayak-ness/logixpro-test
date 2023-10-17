@@ -78,8 +78,12 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
     //   "WSID": this.userData.wsid,
     // }
     this.iFlowRackReplenishApi.wslocation({}).subscribe((res) => {
-      this.zone = res.data == 'No'||res.data == ''||res.data == null ? 'This workstation is not assigned to a zone' : res.data
-      
+      if (res.data == 'No'||res.data == ''||res.data == null){
+        this.zone='This workstation is not assigned to a zone';
+      }
+      else{
+        this.zone=res.data;
+      }
     })
   }
 
@@ -165,6 +169,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
                 }
                 else {
                   this.global.ShowToastr('error',"No Locations found for Item Number, Scan or Select an open Location.", 'Error!');
+                  console.log("findItemLocation",res.responseMessage);
                   this.locationSuggestions = res.data
                   this.LocationRow = false;
 
@@ -178,6 +183,8 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
             }
             else {
               this.locationSuggestions = res.data
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("findItemLocation",res.responseMessage);
             }
             this.LocationRow = false;
             this.itemLocation = res.data[0].location;
@@ -219,6 +226,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
         this.clearLocationField()
         this.LocationRow = true;
         this.global.ShowToastr('error',"Location Unavailable.", 'Error!');
+        console.log("onLocationSelected",res.responseMessage);
       }
     }))
   }
@@ -316,6 +324,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
           this.itemQty = '';
           this.itemQtyFocus.nativeElement.select()
           this.global.ShowToastr('error',"The quantity was not entered due to an error in the Inventory Map", 'Error!');
+          console.log("updateItemQuantity",res.responseMessage);
         }
 
       }))

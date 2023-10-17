@@ -174,7 +174,9 @@ export class AddNewDeviceComponent implements OnInit {
             }
             this.sharedService.updateDevicePref({ response: true });
           } else {
+            
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("DevicePreference",res.responseMessage);
           }
         });
     }
@@ -286,7 +288,9 @@ export class AddNewDeviceComponent implements OnInit {
               this.global.ShowToastr('success',res.responseMessage, 'Success!');
               this.dialogRef.close('Yes');
             } else {
+              
               this.global.ShowToastr('error',res.responseMessage, 'Error!');
+              console.log("DevicePreferencesDelete",res.responseMessage);
             }
           });
       }
@@ -327,7 +331,9 @@ export class AddNewDeviceComponent implements OnInit {
         this.newDeviceForm.controls['StopBit'].setValue(res.data.stopBit);
         this.newDeviceForm.controls['Parity'].setValue(res.data.parity);
       }else{
+       
         this.global.ShowToastr('error','An Error occured while retrieving data.', 'Error!');
+        console.log("DeviceInformation",res.responseMessage);
       }
       });
   }
@@ -421,7 +427,9 @@ export class AddNewDeviceComponent implements OnInit {
               this.global.ShowToastr('success',res.responseMessage, 'Success!');
               this.sharedService.updateDevicePref({ response: true });
             } else {
+              
               this.global.ShowToastr('error',res.responseMessage, 'Error!');
+              console.log("ZoneDevicePreferencesUpdateAll",res.responseMessage);
             }
           });
       }

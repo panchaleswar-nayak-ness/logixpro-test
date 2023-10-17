@@ -192,7 +192,6 @@ constructor(
   }
 
   breadCrumbClick(menu,index:any = null) { 
-    debugger
      if(index != null){ 
       let Url = "";  
       for (let i = 0; i <= index; i++) {
@@ -229,6 +228,7 @@ constructor(
         else 
         {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("configLogout",res.responseMessage);
         }
       })
      
@@ -241,6 +241,7 @@ constructor(
         else 
         {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("Logout",res.responseMessage);
         }
       })
     }

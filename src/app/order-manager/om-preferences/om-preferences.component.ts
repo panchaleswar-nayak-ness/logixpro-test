@@ -54,7 +54,6 @@ export class OmPreferencesComponent implements OnInit {
       );
   }
   restrictTo10Digits(event: KeyboardEvent): void {
-    debugger
     const inputElement = this.myInput.nativeElement;
     let value = inputElement.value.replace(/\D/g, ''); // Remove non-digit characters 
     if (parseInt(value) > 2147483647) {
@@ -108,7 +107,10 @@ export class OmPreferencesComponent implements OnInit {
             response.data.customAdminText ? response.data.customAdminText : ''
           );      
         }
-        
+        else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("getPreferences",response.responseMessage);
+        }
       });
   }
   setPreferences() {
@@ -143,6 +145,7 @@ export class OmPreferencesComponent implements OnInit {
             'Error',
             'An Error Occured while trying to update'
           );
+          console.log("setPreferences",response.responseMessage);
         }
       });
   }

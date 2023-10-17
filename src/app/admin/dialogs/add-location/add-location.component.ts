@@ -118,7 +118,9 @@ export class AddLocationComponent implements OnInit {
           this.dialogRef.close('update');
           this.global.ShowToastr('success',labels.alert.update, 'Success!');
         }else{
+          
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("updateEmployeeLocation",res.responseMessage);
         }
    });
     }else{
@@ -127,7 +129,9 @@ export class AddLocationComponent implements OnInit {
           this.dialogRef.close('add');
           this.global.ShowToastr('success',labels.alert.success, 'Success!');
         }else{
+          
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("insertEmployeeLocation",res.responseMessage);
         }
    });
     }

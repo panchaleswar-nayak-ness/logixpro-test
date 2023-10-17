@@ -91,6 +91,7 @@ export class WorkstationZonesComponent implements OnInit {
           }
           else {
             this.global.ShowToastr('error',"Failed to remove Zones from workstation", 'Remove Failed');
+            console.log("ClrWSPickZone",res.responseMessage);
           }
         });
       }
@@ -130,6 +131,11 @@ export class WorkstationZonesComponent implements OnInit {
         res.data.map(val => {
           this.velocity_code_list.push({ 'zone': val, isSaved: true })
         })
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("WSPickZoneSelect",res.responseMessage);
+
       } 
     });
   }
@@ -140,6 +146,11 @@ export class WorkstationZonesComponent implements OnInit {
     this.iinductionManagerApi.LocationZonesSelect(paylaod).subscribe((res) => {
       if (res.data) {
         this.zones = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("LocationZonesSelect",res.responseMessage);
+
       }
     });
   }
@@ -169,6 +180,7 @@ export class WorkstationZonesComponent implements OnInit {
         }
         else {
           this.global.ShowToastr('error',"This Zone is already selected for this workstation.", 'Error!');
+          console.log("WSPickZoneInsert",res.responseMessage);
         }
 
       });
@@ -227,6 +239,7 @@ export class WorkstationZonesComponent implements OnInit {
           }
           else{
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("ShowToastr",res.responseMessage);
           }
 
         });

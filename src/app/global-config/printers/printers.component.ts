@@ -58,6 +58,10 @@ export class PrintersComponent implements OnInit {
           element.currentlabelPrinter = element.labelPrinter;
         });
       }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetAllPrinters",res.responseMessage);
+      }
     });
   }
 
@@ -73,6 +77,10 @@ export class PrintersComponent implements OnInit {
     this.iGlobalConfigApi.StatusPrintService(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.running = res.data;
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getServiceStatus",res.responseMessage);
       }
     });
   }
@@ -99,6 +107,7 @@ export class PrintersComponent implements OnInit {
       }
       else {
         this.global.ShowToastr('error',"Service stop encountered an error. Please try again or contact Scott Tech for support.", 'Error!');
+        console.log("stopService",res.responseMessage);
       }
     });
   }
@@ -112,6 +121,7 @@ export class PrintersComponent implements OnInit {
       }
       else {
         this.global.ShowToastr('error',"Service restart was unsuccessful. Please try again or contact Scott Tech for support.", 'Error!');
+        console.log("restartService",res.responseMessage);
       }
     });
   }
@@ -148,6 +158,7 @@ export class PrintersComponent implements OnInit {
               this.allPinters = this.allPinters.filter((item: any) => item.currentPrinter != printer.currentPrinter);
             } else {
               this.global.ShowToastr('error',"Delete Failed", 'Error!');
+              console.log("RemovePrinter",res.responseMessage);
             }
           });
         }
@@ -189,7 +200,6 @@ export class PrintersComponent implements OnInit {
         "label": printer.labelPrinter == 'Yes' 
       };
       this.iGlobalConfigApi.InsertNewPrinter(payload).subscribe((res: any) => {
-        debugger
         if (res.isExecuted) {
           this.global.ShowToastr('success',labels.alert.success, 'Success!');
           printer.isNew = false;
@@ -199,6 +209,7 @@ export class PrintersComponent implements OnInit {
           this.addingNew = false;
         } else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("SavePrinter",res.responseMessage);
         }
       });
     }
@@ -217,6 +228,7 @@ export class PrintersComponent implements OnInit {
           printer.currentlabelPrinter = printer.labelPrinter;
         } else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("SavePrinter",res.responseMessage);
         }
       });
     }

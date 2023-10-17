@@ -324,6 +324,11 @@ export class GenerateOrderComponent implements OnInit {
             this.dataSource = new MatTableDataSource(res?.data?.orderTable);
             this.itemNumberForInsertion= res?.data?.orderTable[0]?.itemNumber
           }
+          else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("GernerateOrderTable",res.responseMessage);
+
+          }
         },
         (error) => {}
       );

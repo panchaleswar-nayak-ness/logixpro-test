@@ -16,9 +16,26 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: []
 })
 export class SpLocationZonesComponent implements OnInit {
-
+    toggleSwitches = [
+    { label: 'Carousel', name: 'carousel', property: 'carousel' },
+    { label: 'Staging Zone', name: 'stagingZone', property: 'stagingZone' },
+    { label: 'CCS Auto Induct', name: 'includeInTransactions', property: 'includeInTransactions' },
+    { label: 'Kanban Zone', name: 'kanbanZone', property: 'kanbanZone' },
+    { label: 'Carton Flow', name: 'cartonFlow', property: 'cartonFlow' },
+    { label: 'Include Zone in Auto Batch', name: 'includeInAutoBatch', property: 'includeInAutoBatch' },
+    { label: 'Dynamic Warehouse', name: 'dynamicWarehouse', property: 'dynamicWarehouse' },
+    { label: 'Kanban Replenishment Zone ', name: 'kanbanReplenishmentZone', property: 'kanbanReplenishmentZone' },
+    { label: 'Include CF Carousel Pick', name: 'includeCFCarouselPick', property: 'includeCFCarouselPick' },
+    { label: 'Allow Pick Allocation', name: 'allocable', property: 'allocable' }
+  ];
+  formFields = [
+    { label: 'Label1', ngModel: 'i.label1' },
+    { label: 'Label2', ngModel: 'i.label2' },
+    { label: 'Label3', ngModel: 'i.label3' },
+    { label: 'Label4', ngModel: 'i.label4' },
+  ]
   public userData: any;
-  arbash = true
+  // arbash = true
   public zone: any;
   public newLocationVal = ''
   public newLocation = false;
@@ -87,7 +104,6 @@ export class SpLocationZonesComponent implements OnInit {
           zone.carousel=false
         }
       }
-     
     }
     if(type==='includePick'){
         if(zone.includeCFCarouselPick){
@@ -151,6 +167,14 @@ export class SpLocationZonesComponent implements OnInit {
           if(res.isExecuted){
             
           }
+
+          else
+          {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("LocationZoneSave", res.responseMessage);
+
+      
+          }
         }))
   }
   else{
@@ -171,7 +195,14 @@ export class SpLocationZonesComponent implements OnInit {
         if(zone.carousel && zone.zone!=''){
           this.parentZones.push(zone.zone);
         }
+        else{
+          
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("LocationZone", res.responseMessage);
+        }
         this.locationzone.push(zone);
+        
+        
       });
       this.duplicatelocationzone = JSON.parse(JSON.stringify(this.locationzone));
 
@@ -222,7 +253,9 @@ export class SpLocationZonesComponent implements OnInit {
             this.global.ShowToastr('success',"Deleted successfully", 'Success!');
           }
           else{
+            
             this.global.ShowToastr('error',`Location Zone ${zone} cannot be deleted because there are allocated quantities in an Inventory Map location matching the zone`, 'Error!');
+            console.log("LocationZone", res.responseMessage);
           }
         }))
       }
@@ -280,7 +313,9 @@ export class SpLocationZonesComponent implements OnInit {
         this.getLocationZones()
       }
       else {
+        
         this.global.ShowToastr('error','Cannot insert duplicate Zone', 'Error!');
+        console.log("LocationZone", res.responseMessage);
       }
     }))
   }

@@ -93,6 +93,7 @@ this.IconsolidationAPI
           'Error',
           'An Error Occured while trying to remove all data, check the event log for more information'
         );
+        console.log("SystemPreferenceEmailSlip");
       }
     },
         (error) => {}
@@ -122,6 +123,7 @@ this.IconsolidationAPI
               'Error',
               'An Error Occured while trying to remove all data, check the event log for more information'
             );
+            console.log("ConsolidationPreferenceUpdate");
           }
         },
         (error) => {}

@@ -111,6 +111,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
               }
             } else {
               this.global.ShowToastr('error','Something went wrong', 'Error!');
+              console.log("BatchByZone");
             }
           },
           (error) => {}
@@ -198,6 +199,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
             this.description = this.apiResponse.description;
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("TransactionForTote",res)
           }
         },
         (error) => {}

@@ -183,8 +183,19 @@ public iinductionManagerApi:IInductionManagerApiService;
     this.iinductionManagerApi
       .SelectToteTransManTable(payload)
       .subscribe((res: any) => {
+        if(res.isExecuted && res.data)
+        {
+
         this.totalRecords=  res?.data[0]?.totalCount? res.data[0].totalCount:0;
         this.dataSource = new MatTableDataSource(res?.data);
+
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SelectToteTransManTable",res.responseMessage)
+
+        }
+        
       });
   }
 
@@ -196,8 +207,19 @@ public iinductionManagerApi:IInductionManagerApiService;
     .SelectBatchPickTA(this.batchId?searchPayload:null)
       .subscribe(
         (res: any) => {
-          this.searchAutocompletBatchPick = res.data;
+          if (res.isExecuted && res.data)
+          {
+            this.searchAutocompletBatchPick = res.data;
           this.getToteTrans();
+
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("SelectBatchPickTA",res.responseMessage);
+
+          }
+
+         
         },
         (error) => {}
       );
@@ -212,6 +234,11 @@ public iinductionManagerApi:IInductionManagerApiService;
         if (res.isExecuted) {
           this.getToteTrans();
           this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("ClearPickToteInfo",res.responseMessage);
+
         }
       });
   }

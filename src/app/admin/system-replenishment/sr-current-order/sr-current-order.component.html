@@ -41,7 +41,8 @@
                         <mat-label>Search</mat-label>
                         <mat-select class="employees-action" (selectionChange)="searchChange($event.value)">
                             <mat-option value=""></mat-option>
-                            <mat-option *ngFor="let option of searchColumnOptions" [value]="option.value">{{option.viewValue}}</mat-option>
+                            <mat-option *ngFor="let option of searchColumnOptions"
+                                [value]="option.value">{{option.viewValue}}</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">
                             expand_more
@@ -50,30 +51,26 @@
 
                     <span class="v-br d-none d-xl-block">-</span>
                     <div class="d-xl-flex g-mini-search-box mb-3 mb-xl-0 col-xl-3" style="flex:1">
-                        <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()"
-                        [hideRequiredMarker]="hideRequiredControl.value" (keyup.enter)="closeautoMenu()">
+                        <mat-form-field class="w-100 bg-white br-8" appearance="fill"
+                            [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value"
+                            (keyup.enter)="closeautoMenu()">
                             <span class="material-symbols-outlined icon-search">
                                 Search
                             </span>
-                            <input 
-                            type="text" 
-                            placeholder="Search" 
-                            aria-label="Search" 
-                            matInput 
-                            [disabled]="tablePayloadObj.searchColumn.length < 1" 
-                            [matAutocomplete]="auto"
-                            [(ngModel)]="tablePayloadObj.searchString" 
-                            (keyup.enter)="search(); getSearchOptions()"
-                            (keyup)="autocompleteSearchColumn()"
-                            (focus)="getSearchOptions(true)"
-                            >
-                            <button matSuffix *ngIf="tablePayloadObj.searchString" class="clear-btn"  (click)=" tablePayloadObj.searchString = '';newReplenishmentOrders();"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="search()" #autocompleteInventory>
+                            <input type="text" placeholder="Search" aria-label="Search" matInput
+                                [disabled]="tablePayloadObj.searchColumn.length < 1" [matAutocomplete]="auto"
+                                [(ngModel)]="tablePayloadObj.searchString" (keyup.enter)="search(); getSearchOptions()"
+                                (keyup)="autocompleteSearchColumn()" (focus)="getSearchOptions(true)">
+                            <button matSuffix *ngIf="tablePayloadObj.searchString" class="clear-btn"
+                                (click)=" tablePayloadObj.searchString = '';newReplenishmentOrders();"><mat-icon
+                                    class="text-20 text-chrome-600">cancel</mat-icon></button>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="search()"
+                                #autocompleteInventory>
                                 <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                                  {{option}}
+                                    {{option}}
                                 </mat-option>
                                 <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
-                                  No data found
+                                    No data found
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
@@ -94,14 +91,21 @@
             <div class="col-xl-5 d-xl-flex flex-row-reverse">
                 <mat-form-field class="action-dropdown d-xl-flex d-block w-30" appearance="outline">
                     <mat-label>Actions</mat-label>
-                    <mat-select  #openActionDropDown  class="employees-action" (selectionChange)="openAction($event)">
-                        <mat-option value="Print Orders" (click)="actionChange('Print Orders')">Print Orders</mat-option>
-                        <mat-option value="Print Labels" (click)="actionChange('Print Labels')">Print Labels</mat-option>
-                        <mat-option value="Delete All Orders" [disabled]="tableData.length == 0" (click)="actionChange('Delete All Orders')">Delete All Orders</mat-option>
-                        <mat-option value="Delete Shown Orders" [disabled]="tableData.length == 0" (click)="actionChange('Delete Shown Orders')">Delete Shown Orders</mat-option>
-                        <mat-option value="Delete Range" [disabled]="tableData.length == 0" (click)="actionChange('Delete Range')">Delete Range</mat-option>
-                        <mat-option value="View All Orders" [disabled]="tableData.length == 0" (click)="actionChange('View All Orders')">View All Orders</mat-option>
-                        <mat-option value="View Unprinted Orders" [disabled]="tableData.length == 0" (click)="actionChange('View Unprinted Orders')">View Unprinted Orders</mat-option>
+                    <mat-select #openActionDropDown class="employees-action" (selectionChange)="openAction($event)">
+                        <mat-option value="Print Orders" (click)="actionChange('Print Orders')">Print
+                            Orders</mat-option>
+                        <mat-option value="Print Labels" (click)="actionChange('Print Labels')">Print
+                            Labels</mat-option>
+                        <mat-option value="Delete All Orders" [disabled]="tableData.length == 0"
+                            (click)="actionChange('Delete All Orders')">Delete All Orders</mat-option>
+                        <mat-option value="Delete Shown Orders" [disabled]="tableData.length == 0"
+                            (click)="actionChange('Delete Shown Orders')">Delete Shown Orders</mat-option>
+                        <mat-option value="Delete Range" [disabled]="tableData.length == 0"
+                            (click)="actionChange('Delete Range')">Delete Range</mat-option>
+                        <mat-option value="View All Orders" [disabled]="tableData.length == 0"
+                            (click)="actionChange('View All Orders')">View All Orders</mat-option>
+                        <mat-option value="View Unprinted Orders" [disabled]="tableData.length == 0"
+                            (click)="actionChange('View Unprinted Orders')">View Unprinted Orders</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">
                         expand_more
@@ -113,193 +117,42 @@
         <div class="card br-14 table-responsive borderless">
             <ng-scrollbar class="mat-table-scrollbar" style="height:550px" track="all">
 
-                <table class="w-100 table-borderless" mat-table [dataSource]="filteredTableData" matSort (matSortChange)="announceSortChange($event)">
-
-                    <ng-container matColumnDef="Item Number">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Num </th>
+                <table class="w-100 table-borderless" mat-table [dataSource]="filteredTableData" matSort
+                    (matSortChange)="announceSortChange($event)">
+                    
+                    <ng-container matColumnDef={{coloumn.defination}}  *ngFor="let coloumn of coloumnTable">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{coloumn.label}}</th>
                         <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.itemNumber, 'Item Number')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        > {{seletedRecord.itemNumber}} </td>
+                        (contextmenu)="onContextMenu($event, seletedRecord[coloumn.value], coloumn.filterProperty)"
+                        [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
+                        > {{seletedRecord[coloumn.value]}}
+                        </td>
                     </ng-container>
-
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="Trans Type">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Trans Type </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.transactionType, 'Transaction Type')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        > {{seletedRecord.transactionType}} </td>
-                    </ng-container>
-
-                    <!-- Weight Column -->
-                    <ng-container matColumnDef="warehouse">
-                        <th class="px-3" mat-header-cell *matHeaderCellDef mat-sort-header> Warehouse </th>
-                        <td class="px-3" mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.warehouse, 'Warehouse')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.warehouse}}</td>
-                    </ng-container>
-
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="zone">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Zone </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.zone, 'Zone')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.zone}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="carousel">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Carsl </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.carousel, 'Carousel')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        > {{seletedRecord.carousel}}</td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="row">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Row </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.row, 'Row')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        > {{seletedRecord.row}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="shelf">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Shelf </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.shelf, 'Shelf')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.shelf}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="bin">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Bin </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.bin, 'Bin')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.bin}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="cell">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cell </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.cell, 'Cell')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.cell}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="lotNumber">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Lot Number </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.lotNumber, 'lot Number')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.lotNumber}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Trans Qty">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Trans Qty </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.transactionQuantity, 'Trans Qty')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.transactionQuantity}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="description">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.description, 'Description')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.description}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Order Number">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Number </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.orderNumber, 'Order Number')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.orderNumber}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="UofM">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> UofM </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.unitOfMeasure, 'UofM')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.unitOfMeasure}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Batch Pick ID">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch Pick ID </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.batchPickID, 'Batch Pick ID')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.batchPickID}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Serial Number">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Serial Number </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.serialNumber, 'Serial Number')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.serialNumber}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Completed Date">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Comp Date </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.completedDate, 'Comp Date')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.completedDate}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Print Date">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Print Date </th>
-                        <td mat-cell *matCellDef="let seletedRecord"
-                        (dblclick)="viewItemInInventoryMaster(seletedRecord)"
-                        (contextmenu)="onContextMenu($event, seletedRecord.printDate, 'Print Date')"
-                         [class.selected]="seletedRecord.rowNumber == selectedOrder.rowNumber"
-                        >{{seletedRecord.printDate}} </td>
-                    </ng-container>
-
 
                     <!-- Action Column -->
                     <ng-container matColumnDef="action" stickyEnd>
                         <th mat-header-cell *matHeaderCellDef style="border: 0;height: 66px; padding-left:65px;"></th>
-                        <td mat-cell *matCellDef="let seletedRecord" style="border: 0; padding-left: 24px; background: #fff;">
-                            <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline">
+                        <td mat-cell *matCellDef="let seletedRecord"
+                            style="border: 0; padding-left: 24px; background: #fff;">
+                            <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
+                                [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn"
+                                appearance="outline">
                                 <mat-icon>more_horiz</mat-icon>
                             </button>
                             <mat-menu #appMenu="matMenu">
-                                <button mat-menu-item (click)="this.selectedOrder = seletedRecord;deleteSelectedOrder();">Delete Orders</button>
+                                <button mat-menu-item
+                                    (click)="this.selectedOrder = seletedRecord;deleteSelectedOrder();">Delete
+                                    Orders</button>
                             </mat-menu>
                         </td>
                     </ng-container>
 
-                    <tr class="mat-row"  *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
+                    <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
                         <td class="mat-cell " [attr.colspan]="displayedColumns2.length">
-                          No data available in table.
+                            No data available in table.
                         </td>
                     </tr>
-                    
+
 
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true"
@@ -312,45 +165,83 @@
         </div>
         <div class="d-flex justify-content-between bg-white">
             <mat-paginator [length]="tableDataTotalCount" showFirstLastButtons [pageSize]="tablePayloadObj.length"
-            [pageSizeOptions]="[10,15,20,25,50,100]" (page)="paginatorChange($event)"></mat-paginator>
+                [pageSizeOptions]="[10,15,20,25,50,100]" (page)="paginatorChange($event)"></mat-paginator>
 
         </div>
     </mat-card-content>
 </mat-card>
 
 
-<div #trigger="matMenuTrigger"
-style="visibility: hidden; position: fixed"
-[style.left]="contextMenuPosition.x"
-[style.top]="contextMenuPosition.y"
-[matMenuTriggerFor]="contextMenuFilter"
-></div>
+<div #trigger="matMenuTrigger" style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
+    [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenuFilter"></div>
 <mat-menu #contextMenuFilter="matMenu">
-<ng-template matMenuContent let-item="item">
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'equals to',getType(item.SelectedItem))"> Equals</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not equals to', getType(item.SelectedItem))">Not Equals</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is greater than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Greater than or Equal</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is less than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Less than or Equal</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Like</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Not Like</button>
-  <button mat-menu-item [matMenuTriggerFor]="InputFiltersList" [matMenuTriggerData]="{category: item}" *ngIf="getType(item.SelectedItem) != 'boolean'" >Input FIlters</button>
-  <button mat-menu-item (click)="onContextMenuCommand('', '', 'clear', '')">Clear Filters</button>
-</ng-template>
+    <ng-template matMenuContent let-item="item">
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'equals to',getType(item.SelectedItem))">
+            Equals</button>
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not equals to', getType(item.SelectedItem))">Not
+            Equals</button>
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is greater than or equal to', getType(item.SelectedItem))"
+            *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'">Greater than or
+            Equal</button>
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is less than or equal to', getType(item.SelectedItem))"
+            *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'">Less than or
+            Equal</button>
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is like', getType(item.SelectedItem))"
+            *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'">Like</button>
+        <button mat-menu-item
+            (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not like', getType(item.SelectedItem))"
+            *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'">Not Like</button>
+        <button mat-menu-item [matMenuTriggerFor]="InputFiltersList" [matMenuTriggerData]="{category: item}"
+            *ngIf="getType(item.SelectedItem) != 'boolean'">Input FIlters</button>
+        <button mat-menu-item (click)="onContextMenuCommand('', '', 'clear', '')">Clear Filters</button>
+    </ng-template>
 </mat-menu>
 
 <mat-menu #InputFiltersList="matMenu">
     <ng-template matMenuContent let-category="category">
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'equals to', getType(category.SelectedItem))">Equals</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is not equals to', getType(category.SelectedItem))">Not Equals</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Begins</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Begin</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Ends With</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not End With</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Contains</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Contain</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is less than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Less Than</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is greater than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Greater Than</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is between', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Between</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'equals to', getType(category.SelectedItem))">Equals</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'is not equals to', getType(category.SelectedItem))">Not
+            Equals</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'begins with', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Begins</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'does not begins with', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not
+            Begin</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'ends with', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Ends
+            With</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'does not ends with', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not
+            End With</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'contains', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Contains</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'does not contains', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not
+            Contain</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'is less than', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Less
+            Than</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'is greater than', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Greater
+            Than</button>
+        <button mat-menu-item
+            (click)="InputFilterSearch(category.FilterColumnName, 'is between', getType(category.SelectedItem))"
+            *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Between</button>
     </ng-template>
 </mat-menu>
 
@@ -358,27 +249,30 @@ style="visibility: hidden; position: fixed"
 
 <ng-template #deleteSelectedConfirm>
     <div class="mat-modal-wrap text-center">
-      <mat-dialog-content>
-        <div class="prompt-wrap">
-          <div class="d-flex justify-content-center prompt-icon-wrap">
-              <span #cancel class="material-symbols-outlined prompt-icon-delete mb-4">
-                 delete
-              </span>
-          </div>
-          <p class="prompt-message py-1 mb-0 text-error ">
-            <b style="font-size: 22px;">Delete Order: {{this.selectedOrder.orderNumber}}</b>
-        </p>
-          <p class="prompt-message py-3 mb-2 " >
-              Delete All transactions for Order: {{this.selectedOrder.orderNumber}}. This will delete all transactions, not just selected one.
-          </p>
-          <div class="br-14 px-4 py-3 checkbox-background mb-4">
-            <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary">I understand data cannot be recovered</mat-checkbox>
-          </div>
-        </div>
-      </mat-dialog-content>
-      <mat-dialog-actions class="d-flex flex-column justify-content-center">
-        <button  class=" prompt-action-danger-button mb-3 w-100 btn-lg" [disabled]="isChecked" mat-stroked-button  mat-dialog-close (click)="deleteSelected()">Delete</button>
-        <button  class=" mb-3 w-100 btn-lg" mat-stroked-button  mat-dialog-close>Cancel</button>
-      </mat-dialog-actions>
+        <mat-dialog-content>
+            <div class="prompt-wrap">
+                <div class="d-flex justify-content-center prompt-icon-wrap">
+                    <span #cancel class="material-symbols-outlined prompt-icon-delete mb-4">
+                        delete
+                    </span>
+                </div>
+                <p class="prompt-message py-1 mb-0 text-error ">
+                    <b style="font-size: 22px;">Delete Order: {{this.selectedOrder.orderNumber}}</b>
+                </p>
+                <p class="prompt-message py-3 mb-2 ">
+                    Delete All transactions for Order: {{this.selectedOrder.orderNumber}}. This will delete all
+                    transactions, not just selected one.
+                </p>
+                <div class="br-14 px-4 py-3 checkbox-background mb-4">
+                    <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary">I understand
+                        data cannot be recovered</mat-checkbox>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions class="d-flex flex-column justify-content-center">
+            <button class=" prompt-action-danger-button mb-3 w-100 btn-lg" [disabled]="isChecked" mat-stroked-button
+                mat-dialog-close (click)="deleteSelected()">Delete</button>
+            <button class=" mb-3 w-100 btn-lg" mat-stroked-button mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
     </div>
-  </ng-template>
+</ng-template>

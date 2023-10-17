@@ -49,14 +49,25 @@ export class SuperBatchComponent implements OnInit {
   ngOnInit(): void {
     this.user_data = this.authService.userData(); 
     this.iinductionManagerApi.SuperBatchIndex().subscribe(res => {
-      const { preferences } = res.data;
+      if (res.isExecuted && res.data)
+      {
+        const { preferences } = res.data;
       
-      this.itemNumbers = res.data.itemNums;
-      this.defaultSuperBatchSize = preferences.defaultSuperBatchSize;
-      this.superBatches = res.data.superBatches;
-      this.selectedOption=preferences.superBatchByToteID?'Tote':'Order'
-      this.isConfirmSuperBatch=preferences.confirmSuperBatch
-      this.getSuperBatchBy(this.selectedOption);
+        this.itemNumbers = res.data.itemNums;
+        this.defaultSuperBatchSize = preferences.defaultSuperBatchSize;
+        this.superBatches = res.data.superBatches;
+        this.selectedOption=preferences.superBatchByToteID?'Tote':'Order'
+        this.isConfirmSuperBatch=preferences.confirmSuperBatch
+        this.getSuperBatchBy(this.selectedOption);
+        
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SuperBatchIndex",res.responseMessage);
+
+      }
+
+   
     })
   }
 
@@ -78,7 +89,6 @@ export class SuperBatchComponent implements OnInit {
     this.global.Print(`FileName:PrintSuperBatchOrderLabel|ToteID:${this.printBatchLabels}`,'lbl');
         }
       if(type=='printCaseLabels'){
-        debugger
     this.global.Print(`FileName:PrintPrevInZoneCaseLabelToteID|ToteID:${this.printBatchLabels}`,'lbl');
 
        }
@@ -94,8 +104,18 @@ export class SuperBatchComponent implements OnInit {
       "ItemNumber": itemNumber
     }
     this.iinductionManagerApi.ItemZoneDataSelect(payload).subscribe(res => {
-      const batchTableData = res.data.map((v, key) => ({ ...v, 'key': key, 'orderToBatch': this.defaultSuperBatchSize, 'newToteID': '' }))
+      if (res.isExecuted && res.data)
+      {
+        const batchTableData = res.data.map((v, key) => ({ ...v, 'key': key, 'orderToBatch': this.defaultSuperBatchSize, 'newToteID': '' }))
       this.dataSource = batchTableData;
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ItemZoneDataSelect",res.responseMessage);
+
+      }
+      
     });
   }
 
@@ -184,6 +204,10 @@ export class SuperBatchComponent implements OnInit {
 
         });
         this.getSuperBatchBy(this.type, this.itemNum);
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SuperBatchCreate");
       }
 
     });

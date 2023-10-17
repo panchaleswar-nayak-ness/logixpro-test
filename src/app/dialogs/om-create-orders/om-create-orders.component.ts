@@ -221,8 +221,10 @@ export class OmCreateOrdersComponent implements OnInit {
         if (res.isExecuted && res.data) {
           this.tableData = new MatTableDataSource(res.data);  
           this.tableData.paginator = this.paginator1;
-        } else { 
-          this.tableData = new MatTableDataSource(); 
+        } else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!'); 
+          this.tableData = new MatTableDataSource();
+          console.log("CreateOrdersDT",res.responseMessage); 
         }
       });
     }
@@ -263,6 +265,11 @@ export class OmCreateOrdersComponent implements OnInit {
         this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.global.ShowToastr('success',"Order Released Successfully!", 'Success!');
+          }
+          else {
+            this.global.ShowToastr('success',"Order Released Successfully!", 'Success!');
+            console.log("ReleaseOrders",res.responseMessage);
+
           } 
           this.createOrdersDTPayload.orderNumber = '';
           this.createOrdersDT();
@@ -320,6 +327,7 @@ export class OmCreateOrdersComponent implements OnInit {
               dialogRef.close();
             } else {
               this.global.ShowToastr('error',"An error has occurred while deleting the viewed records", 'Error!');
+              console.log("OTPendDelete",res.responseMessage);
             }
           });
         }
@@ -352,6 +360,11 @@ export class OmCreateOrdersComponent implements OnInit {
       this.iOrderManagerApi.CreateOrderTypeahead(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.orderNumberSearchList = res.data.sort();
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("CreateOrderTypeahead",res.responseMessage);
+
         }
       });
       if(searchData){
@@ -425,6 +438,11 @@ export class OmCreateOrdersComponent implements OnInit {
         }});
         this.displayedColumns.push('actions');
         if(refresh) this.createOrdersDT();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetColumnSequence",res.responseMessage);
+
       }
     });
   }

@@ -4,6 +4,7 @@ import { AuthService } from '../../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-tran-in-reprocess',
@@ -33,6 +34,7 @@ export class TranInReprocessComponent implements OnInit {
 
   constructor(
     private Api: ApiFuntions,
+    private global : GlobalService,
     private authService: AuthService,
     private adminApiService: AdminApiService,
     private sharedService:SharedService
@@ -112,7 +114,12 @@ export class TranInReprocessComponent implements OnInit {
       "History": this.history, 
     }
     this.iAdminApiService.ReprocessTypeahead(payload).subscribe(res => {
-      this.orderList = res.data;
+      if (res.data) {
+        this.orderList = res.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ReprocessTypeahead",res.responseMessage);
+      }
     });
   }
 
@@ -130,7 +137,13 @@ export class TranInReprocessComponent implements OnInit {
       "History": this.history, 
     }
     this.iAdminApiService.ReprocessTypeahead(payload).subscribe(res => {
-      this.itemNumberList = res.data;
+      if (res.data) {
+        this.itemNumberList = res.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ReprocessTypeahead",res.responseMessage);
+        
+      }
     });
   }
 

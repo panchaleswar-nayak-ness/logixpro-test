@@ -416,6 +416,7 @@ export class InventoryMasterComponent implements OnInit {
       }
       else{
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("GetInventoryItemNumber",res.responseMessage);
       }
     })
 
@@ -558,6 +559,11 @@ export class InventoryMasterComponent implements OnInit {
         this.getInventory(init);
       })
     }
+    else{
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("PreviousItemNumber");
+
+    }
 
   }
 
@@ -623,6 +629,7 @@ export class InventoryMasterComponent implements OnInit {
         } else {
           this.saveDisabled = false
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("UpdateInventoryMaster",res.responseMessage);
         }
       })
       this.OldinvMaster = { ...this.invMaster.value };
@@ -670,6 +677,7 @@ export class InventoryMasterComponent implements OnInit {
             this.getInventory();
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("AddNewItem",res.responseMessage);
           }
         })
       } 
@@ -719,6 +727,7 @@ export class InventoryMasterComponent implements OnInit {
             
           } else {
             this.global.ShowToastr('error','Delete failed!  Item exists in Inventory Map.  Please deallocate item from Inventory Map location(s) before deleting.', 'Error!');
+            console.log("NextItemNumber",res.responseMessage);
           }
         })
       }
@@ -745,6 +754,7 @@ export class InventoryMasterComponent implements OnInit {
             this.getInventory();
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("UpdateInventoryMasterOTQuarantine",res.responseMessage);
           }
         })
       }
@@ -775,6 +785,7 @@ export class InventoryMasterComponent implements OnInit {
             this.getInventory();
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("UpdateInventoryMasterOTUnQuarantine",res.responseMessage);
           }
         })
       }

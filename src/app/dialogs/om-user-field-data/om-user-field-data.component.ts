@@ -42,6 +42,7 @@ export class OmUserFieldDataComponent implements OnInit {
         this.userFieldData = res.data[0];
       } else {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("UserFieldData",res.responseMessage);
       }
     });
   }
@@ -65,6 +66,7 @@ export class OmUserFieldDataComponent implements OnInit {
         this.dialogRef.close(res.data);
       } else {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("UserFieldDataUpdate",res.responseMessage);
       }
     });
   }

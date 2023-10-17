@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -23,6 +24,7 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
   constructor(
     private Api: ApiFuntions,
     private userService:AuthService,
+    private global : GlobalService,
     private inductionManagerApi: InductionManagerApiService,
 private adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -77,8 +79,15 @@ private adminApiService: AdminApiService,
   }
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
-    })
+      if (res.data) {
+        this.fieldNames = res.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+        
+      }
+    });
+
   }
   getReprocessData() {
     let payLoad = { id: this.itemID};
@@ -122,6 +131,11 @@ private adminApiService: AdminApiService,
           this.reprocessInfo.controls.userField10.setValue(item.userField10);
           this.reprocessInfo.controls.reason.setValue(item.reason);
           this.reprocessInfo.controls.reasonMessage.setValue(item.reasonMessage);
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("RPDetails",res.responseMessage);
+
         }
       });
   }

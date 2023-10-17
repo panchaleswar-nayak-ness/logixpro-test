@@ -94,6 +94,7 @@ export class UserFieldsEditComponent implements OnInit {
       }else{
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
         this.dialogRef.close({isExecuted:false})
+        console.log("UserFieldMTSave",res.responseMessage);
       }
     })
   }
@@ -141,7 +142,13 @@ export class UserFieldsEditComponent implements OnInit {
           this.isCancel = item.userField9 ?? "";
           this.userField10 = item.userField10 ?? "";
         }
-      });
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("UserFieldGetByID",res.responseMessage);
+          
+        }
+      }
+      );
   }
   async autocompleteSearchColumnShipName() {
     let searchPayload = {

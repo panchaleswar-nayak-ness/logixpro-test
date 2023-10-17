@@ -63,9 +63,14 @@ export class ItemSelected implements OnInit {
         }
 
         this.IconsolidationAPI.ItemModelData(payload).subscribe((res=>{
-
-            this.itemSelectTable = res;
-        }))
+            if (res) {
+                this.itemSelectTable = res;
+              }
+              else {
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("ItemModelData",res.responseMessage);
+              }
+            }));
     }
 
     filterOption() {
@@ -87,6 +92,7 @@ export class ItemSelected implements OnInit {
             this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
                 if (!res.isExecuted) {
                     this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                    console.log("VerifyItemPost",res.responseMessage);
 
                 }
 
@@ -118,6 +124,7 @@ export class ItemSelected implements OnInit {
                 this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
                     if (!res.isExecuted) {
                         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                        console.log("VerifyItemPost",res.responseMessage);
 
                     }
 

@@ -64,6 +64,7 @@ export class TransactionQtyEditComponent implements OnInit {
       } else {
         this.globalService.ShowToastr('error',res.responseMessage, 'Error!');
         this.dialog.closeAll();
+        console.log("TransactionQtyReplenishmentUpdate",res.responseMessage);
       }
     });
   }

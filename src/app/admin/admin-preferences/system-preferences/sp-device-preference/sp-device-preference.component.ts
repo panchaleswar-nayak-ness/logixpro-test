@@ -85,11 +85,18 @@ export class SpDevicePreferenceComponent implements OnInit {
 
     this.iAdminApiService.DevicePreferencesTable(payload)
     .subscribe((res: any) => {
-      console.log(res);
+      
 
       if (res?.data?.devicePreferences) {
         this.dataSource = new MatTableDataSource(res.data.devicePreferences);
         this.customPagination.total = res.data?.recordsFiltered;
+      }
+
+      else
+      {
+        
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("LocationZone", res.responseMessage);
       }
     });
   }

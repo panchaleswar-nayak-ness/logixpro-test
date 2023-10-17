@@ -74,7 +74,6 @@ export class DeleteRangeComponent implements OnInit {
   }
 
   ReplenishmentsByDelete() {
-    debugger
     if (this.repByDeletePayload.filter1 && this.repByDeletePayload.filter2) {
       const dialogRef2:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
@@ -96,6 +95,7 @@ export class DeleteRangeComponent implements OnInit {
             } else {
               this.global.ShowToastr('error',"Deleting by range has failed", 'Error!');
               this.dialog.closeAll();
+              console.log("ReplenishmentsByDelete",res.responseMessage);
             }
           });
         }
@@ -146,6 +146,11 @@ export class DeleteRangeComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.beginAutoCompleteList = res.data.sort();
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("DeleteRangeBegin",res.responseMessage);
+
+      }
     });
   }
 
@@ -159,6 +164,10 @@ export class DeleteRangeComponent implements OnInit {
     this.getSearchOptionsEndSubscribe = this.iAdminApiService.DeleteRangeEnd(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.endAutoCompleteList = res.data.sort();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("DeleteRangeEnd",res.responseMessage);
       }
     });
   }

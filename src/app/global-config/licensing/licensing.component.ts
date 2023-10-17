@@ -96,6 +96,10 @@ export class LicensingComponent implements OnInit {
 
           this.sharedService.setApp(this.licAppData);
         }
+        else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("getAppLicense",res.responseMessage);
+        }
       },
       error: (error) => {}}
     );
@@ -153,6 +157,10 @@ export class LicensingComponent implements OnInit {
               .subscribe((result) => {
                 this.getAppLicense();
               });
+          }
+          else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("saveLicense",res.responseMessage);
           }
         },
         error: (error) => {

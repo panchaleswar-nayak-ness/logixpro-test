@@ -394,10 +394,17 @@ constructor(
       this.iAdminApiService
         .GetCCCountToCostTypeAhead(payload)
         .subscribe((res: any) => {
-          if (type === 'BeginCost') {
-            this.searchAutocompletBeginCost = res.data;
+          
+          if (res.data) {
+            if (type === 'BeginCost') {
+              this.searchAutocompletBeginCost = res.data;
+            } else {
+              this.searchAutocompletEndCost = res.data;
+            }
           } else {
-            this.searchAutocompletEndCost = res.data;
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("GetCCCountToCostTypeAhead");
           }
         });
     } else if (type === 'FromLocation') {
@@ -466,7 +473,9 @@ constructor(
           }
           // If the data is not returned, show an error message
           else {
+            
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("GetCountBatches",res.responseMessage);
           }
         },
         // If the request is not successful, show an error message
@@ -600,7 +609,9 @@ constructor(
             this.isDataAvailable = false;
           }
         } else {
+          
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("BatchResultTable",res.responseMessage);
         }
       },
       (err) => {
@@ -671,7 +682,9 @@ constructor(
           this.nextStep();
           this.updateQueCountEvent(res.data);
         } else {
+          
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("CycleCountQueueInsert",res.responseMessage);
         }
       },
       (error) => {}
@@ -715,10 +728,12 @@ constructor(
                           }
                         }
                       } else {
+                        
                         this.global.ShowToastr('error',
                           'Something went wrong',
                           'Error!' 
                         );
+                        console.log("CycleCountQueueInsert",res.responseMessage);
                       }
                     },
                     (error) => {}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'; 
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -21,6 +22,7 @@ export class LocationAssignmentComponent implements OnInit {
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     private authservice : AuthService,
+    private global : GlobalService
   ) {
     this.iAdminApiService = adminApiService;
   }
@@ -46,6 +48,10 @@ export class LocationAssignmentComponent implements OnInit {
             this.putAwayLabel = `Put Away (${item.count})`;
           }
         });
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetTransactionTypeCounts",res.responseMessage);
       } 
     }));
   }

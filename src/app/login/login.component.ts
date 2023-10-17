@@ -104,6 +104,7 @@ export class LoginComponent {
         else {
           const errorMessage = response.responseMessage;
           this.global.ShowToastr('error',errorMessage?.toString(), 'Error!');
+          console.log("login",response.responseMessage);
         }
 
 
@@ -111,7 +112,14 @@ export class LoginComponent {
   }
  
   CompanyInfo(){
-    this.iUserApi.CompanyInfo().subscribe((response: any) => this.info = response.data);
+    this.iUserApi.CompanyInfo().subscribe((response: any) => {
+      if (response.isExecuted && response.data) {
+        this.info = response.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.error('Error: CompanyInfo request failed');
+      }
+    });
   }
 
   ngOnInit() {
@@ -134,6 +142,7 @@ export class LoginComponent {
         }
         else{
           this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
+          console.log("getSecurityEnvironment",res.responseMessage);
         }
       });
     }
@@ -156,6 +165,11 @@ export class LoginComponent {
             localStorage.setItem('availableApps',JSON.stringify(this.applicationData))
             this.sharedService.setMenuData(this.applicationData)
             this.getDefaultApp(wsid);
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("AppNameByWorkstation",res.responseMessage);
+
           }
         },
         (error) => {}

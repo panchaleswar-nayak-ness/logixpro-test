@@ -52,6 +52,7 @@ export class OmChangePriorityComponent implements OnInit {
       }
       else{
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("UpdateOSPriority",res.responseMessage);
       }
     })
    

@@ -107,6 +107,11 @@ export class  ItemCategoryComponent implements OnInit {
           this.getCategoryList();
         this.global.ShowToastr('success',oldCat.toString()==''?labels.alert.success:labels.alert.update, 'Success!');
       }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("saveCategory",res.responseMessage);
+
+      }
       });
     }
   }

@@ -96,6 +96,7 @@ export class CmShipEditQtyComponent implements OnInit {
 
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("ShipQTYShipTransUpdate",res.responseMessage);
         }
       });
     } catch (error) { 

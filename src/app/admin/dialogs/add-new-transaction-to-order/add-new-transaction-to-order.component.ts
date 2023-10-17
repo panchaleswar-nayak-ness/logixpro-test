@@ -172,6 +172,12 @@ export class AddNewTransactionToOrderComponent implements OnInit {
               }
             
           }
+          else {
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ItemExists",res.responseMessage);
+
+          }
         },
         (error) => {
     
@@ -192,6 +198,11 @@ export class AddNewTransactionToOrderComponent implements OnInit {
         (res: any) => {
           if(res.data){
             this.searchAutocompleteList=res.data
+          }
+          else {
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("SearchItem",res.responseMessage);
           }
      
         },
@@ -283,8 +294,10 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                       this.global.ShowToastr('success',labels.alert.success, 'Success!');
                       this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
                     } else {
+                      
                       this.global.ShowToastr('error',res.responseMessage, 'Error!');
                       this.dialogRef.close({ isExecuted: false });
+                      console.log("TransactionForOrderInsert",res.responseMessage);
                     }
                   },
                   (error) => {
@@ -299,8 +312,10 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                       this.global.ShowToastr('success',labels.alert.success, 'Success!');
                       this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
                     } else {
+                      
                       this.global.ShowToastr('error',res.responseMessage, 'Error!');
                       this.dialogRef.close({ isExecuted: false });
+                      console.log("TransactionForOrderUpdate",res.responseMessage);
                     }
                   },
                   (error) => {

@@ -102,6 +102,7 @@ export class VelocityCodeComponent implements OnInit {
     } 
   } else {
     this.global.ShowToastr('error','Velocity cannot be empty!.', 'Error!');
+    console.log("saveVelocityCode");
   }
   }
   dltVlCode(vlCode:any){
@@ -123,6 +124,11 @@ export class VelocityCodeComponent implements OnInit {
               this.getVelocity();
               
             });
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("dltVelocityCode");
+
           }
       })
     

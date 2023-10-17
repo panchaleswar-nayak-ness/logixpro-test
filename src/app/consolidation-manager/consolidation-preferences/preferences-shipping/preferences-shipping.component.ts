@@ -167,6 +167,7 @@ export class PreferencesShippingComponent implements OnInit {
         this.shippingEvnt.emit();
         if (!response.isExecuted) {
           this.global.ShowToastr('error','Error', 'An Error Occured while trying to save');
+          console.log("ConsolidationPreferenceShipUpdate",response.responseMessage);
         }
       });
   }

@@ -205,7 +205,16 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
+      if (res.isExecuted && res.data)
+      {
+        this.fieldNames = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+
+      }
+      
     })
   }
   clearFormAndTable() {
@@ -250,6 +259,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           this.currentToteID = res.data;
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("NextTote",res.responseMessage);
         }
       },
       (error) => { }
@@ -314,6 +324,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("BatchTotes",res.responseMessage);
         }
       },
       (error) => { }
@@ -411,7 +422,9 @@ export class ProcessPutAwaysComponent implements OnInit {
                 this.clearFormAndTable();
               });
             } else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
               this.fillToteTable();
+              console.log("BatchExist",res.responseMessage);
             }
           });
           this.inputVal.nativeElement.blur();
@@ -509,6 +522,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           this.iinductionManagerApi.ValidateTotesForPutAways(totePaylaod).subscribe(res => {
             if (res.data != '') {
               this.global.ShowToastr('error',`The tote id ${res.data} already exists in Open Transactions. Please select another tote`, 'Error!');
+              console.log("ValidateTotesForPutAways",res.responseMessage);
               for (let i = 0; i < this.ELEMENT_DATA.length; i++) {
                 if (this.ELEMENT_DATA[i].toteid == res.data) {
                   this.ELEMENT_DATA[i].toteid = '';
@@ -590,6 +604,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("ProcessPutAwayIndex",res.responseMessage);
         }
       },
       (error) => { }
@@ -604,6 +619,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           this.openSelectZonesDialogue();
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("NextBatchID",res.responseMessage);
         }
       },
       (error) => { }
@@ -617,6 +633,11 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
         this.global.ShowToastr('error','Something is wrong.', 'Error!');
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("NextToteUpdate",res.responseMessage);
+
       }
 
     });
@@ -769,6 +790,7 @@ export class ProcessPutAwaysComponent implements OnInit {
             this.searchAutocompleteItemNum = res.data;
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("BatchIDTypeAhead",res.responseMessage);
           }
         },
         (error) => { }
@@ -785,6 +807,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           this.searchAutocompleteItemNum2 = res.data;
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("BatchIDTypeAhead",res.responseMessage);
         }
       },
       (error) => { }
@@ -888,6 +911,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         if (!result) return
         if (this.inputValue == "") {
           this.global.ShowToastr('error','Please enter input value', 'Error!');
+          
         }
         else {
           const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteComponent, {
@@ -1215,6 +1239,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                 
                 } else {
                   this.global.ShowToastr('error','Something went wrong', 'Error!');
+                  console.log("CompleteBatch",res.responseMessage);
                 }
               },
               (error) => { }
@@ -1328,6 +1353,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
               } else {
                 this.global.ShowToastr('error','Something went wrong', 'Error!');
+                console.log("MarkToteFull",res.responseMessage);
               }
             },
             (error) => { }

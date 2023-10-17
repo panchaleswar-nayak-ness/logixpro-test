@@ -133,7 +133,8 @@ export class CountComponent implements OnInit {
      this.global.ShowToastr('success',labels.alert.success, 'Success!');
      }
      else{
-      this.global.ShowToastr('success',res.responseMessage, 'Success!');
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("LocationAssignmentOrderInsert",res.responseMessage);
      }
     }))
   }

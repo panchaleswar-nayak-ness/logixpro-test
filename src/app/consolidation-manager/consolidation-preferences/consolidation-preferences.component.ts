@@ -57,6 +57,11 @@ export class ConsolidationPreferencesComponent implements OnInit {
           this.preferencesData = res.data.cmPreferences;
    
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("ConsoleDataSB",res.responseMessage);
+
+        }
         
       });
   }

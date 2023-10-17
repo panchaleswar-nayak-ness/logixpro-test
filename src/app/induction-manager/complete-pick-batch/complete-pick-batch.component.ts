@@ -107,6 +107,11 @@ export class CompletePickBatchComponent{
           this.completeBatchEnable = false;
         }
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getPickBatchTransactionTable",res.responseMessage);
+
+      }
     });
   }
 
@@ -178,6 +183,7 @@ export class CompletePickBatchComponent{
           }
           else{
             this.global.ShowToastr('error',"An error occured completing this transaction", 'Error');
+            console.log("completeTransaction",res.responseMessage);
           }
         });
       }
@@ -204,6 +210,7 @@ export class CompletePickBatchComponent{
           }
           else{
             this.global.ShowToastr('error',"An error occured completing this transaction", 'Error');
+            console.log("completePickBatch",res.responseMessage);
           }
         });
       }

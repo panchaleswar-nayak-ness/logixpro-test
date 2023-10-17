@@ -59,6 +59,7 @@ export class DeleteConfirmationManualTransactionComponent {
               } else {
                 this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
+                console.log("TransactionDelete",res.responseMessage);
               }
             },
             (error) => {}
@@ -79,6 +80,8 @@ export class DeleteConfirmationManualTransactionComponent {
               } else {
                 this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({isExecuted:false})
+                console.log("TransactionForOrderDelete",res.responseMessage);
+                
               }
             },
             (error) => {}
@@ -96,6 +99,7 @@ export class DeleteConfirmationManualTransactionComponent {
             }else{
               this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
               this.dialogRef.close({ isExecuted: false });
+              console.log("TransactionDelete",res.responseMessage);
             }
           },
           (error) => {}

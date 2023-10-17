@@ -190,6 +190,10 @@ export class EventLogComponent implements OnInit {
       if (res.isExecuted && res.data && message != "") {
         this.searchAutocompleteList = res.data.sort();
       }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("eventLogTypeAhead",res.responseMessage);
+      }
     });
   }
 
@@ -230,6 +234,7 @@ export class EventLogComponent implements OnInit {
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("deleteRange",res.responseMessage);
           }
         });
       }

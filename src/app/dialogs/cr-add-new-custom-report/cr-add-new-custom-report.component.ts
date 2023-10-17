@@ -192,6 +192,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
   this.iAdminApiService.restoreDesign(obj).subscribe(res=>{
     if(!res.data){
       this.global.ShowToastr('error',"Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!');
+      console.log("restoreDesign",res.responseMessage);
     }
     else{
       // remaining
@@ -223,6 +224,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
         this.iAdminApiService.deleteReport(payload).subscribe(res=>{
           if (!res.data) {
             this.global.ShowToastr('error',"Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!');
+            console.log("deleteReport",res.responseMessage);
         } else {
           this.saveNew()
         };

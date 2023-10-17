@@ -100,6 +100,11 @@ export class ColumnSequenceDialogComponent implements OnInit {
               this.defaultCol.length=0;
               this.getColumnsSeqDetail();
            
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("DeleteColumns",res.responseMessage);
+
           } 
         },
         error: (error)=>{}
@@ -120,6 +125,8 @@ export class ColumnSequenceDialogComponent implements OnInit {
           this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.dialogRef.close({ isExecuted: true });
         } else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SaveColumns",res.responseMessage);
           this.dialogRef.close('');
         }
       },
@@ -143,6 +150,10 @@ export class ColumnSequenceDialogComponent implements OnInit {
             return !namesToDeleteSet.has(name);
           });
           this.unorderedCol = newArr;
+        }
+        else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GetColumnSequenceDetail",res.responseMessage);
         }
       });
   }

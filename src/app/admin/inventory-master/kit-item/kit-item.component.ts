@@ -125,6 +125,12 @@ export class KitItemComponent implements OnInit, OnChanges {
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.sendNotification();
           }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("DeleteKit", res.responseMessage);
+
+
+          }
   
         })
       } else {
@@ -173,6 +179,7 @@ export class KitItemComponent implements OnInit, OnChanges {
           this.sendNotification();
         } else {
           this.global.ShowToastr('error',"Invalid Input", 'Error!');
+          console.log("InsertKit",res.responseMessage);
         }
 
       })
@@ -193,6 +200,7 @@ export class KitItemComponent implements OnInit, OnChanges {
           this.sendNotification();
         } else {
           this.global.ShowToastr('error',"Invalid Input", 'Error!');
+          console.log("UpdateKit",res.responseMessage);
         }
 
       })
@@ -255,6 +263,12 @@ export class KitItemComponent implements OnInit, OnChanges {
         this.searchList = res.data
         if (this.searchList.length > 0) {
           this.isValidForm = false;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SearchItem", res.responseMessage);
+
+
         }
       }
     });

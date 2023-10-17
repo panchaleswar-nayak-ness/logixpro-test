@@ -117,6 +117,7 @@ export class ConnectionStringsComponent {
 
           }else{
             this.global.ShowToastr('error','A connection by this name already exists', 'Error!!');
+            console.log("saveString",res.responseMessage);
           }
         },
         (error) => {
