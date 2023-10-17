@@ -19,6 +19,7 @@ import { MatOption } from '@angular/material/core';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 @Component({
   selector: 'app-de-allocate-orders',
@@ -38,7 +39,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     isChecked: boolean = false;
     orderNumbersList:any=[];
     
-    ELEMENT_DATA: any[] =[
+    ELEMENT_DATA: any[] = [
       {trans_type: 'Count', order_no: '1202122', priority: '36', required_date: '11/02/2022 11:58 AM', user_field_1: 'Treat with care'},
       {trans_type: 'Count', order_no: '1202122', priority: '36', required_date: '11/02/2022 11:58 AM', user_field_1: 'Treat with care'},
       {trans_type: 'Count', order_no: '1202122', priority: '36', required_date: '11/02/2022 11:58 AM', user_field_1: 'Treat with care'},
@@ -88,14 +89,12 @@ export class DeAllocateOrdersComponent implements OnInit {
   searchByItem: any = new Subject<string>();
   public searchedItemOrder: any = [];
 
-  constructor(public authService: AuthService,
-    private Api:ApiFuntions,
-    private _liveAnnouncer: LiveAnnouncer,
-    
-    private adminApiService: AdminApiService,
+  constructor(
+    public authService: AuthService,
+    public adminApiService: AdminApiService,
     private global:GlobalService,
-    private sharedService:SharedService,
-    private filterService: ContextMenuFiltersService) { 
+    private contextMenuService : TableContextMenuService
+    ) { 
       this.iAdminApiService = adminApiService;
     }
 
@@ -493,53 +492,15 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.pageLength=0
   }
 
-
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
-  FilterString: string = "1 = 1";
-
-
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
+  FilterString : string = "1 = 1";
 
-    this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-    if(FilterColumnName != "" || Condition == "clear"){
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-      this.FilterString = this.FilterString != "" ? this.FilterString : "1=1";
-      this.orderItemTable();
-    }
-  }
-
-
-
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => {
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
-    }
-    );
+  optionSelected(filter : string) {
+    this.FilterString = filter;
+    this.orderItemTable();    
   }
 
   clear(){

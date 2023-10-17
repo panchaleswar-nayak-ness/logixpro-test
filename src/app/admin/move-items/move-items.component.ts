@@ -14,19 +14,14 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
-
 import { MatMenuTrigger } from '@angular/material/menu';
-import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { } from 'datatables.net';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
@@ -161,14 +156,11 @@ export class MoveItemsComponent implements OnInit {
   public iCommonAPI : ICommonApi;
   constructor(
     public commonAPI : CommonApiService,
-    private Api: ApiFuntions,
     private authService: AuthService,
     private global:GlobalService,
-    private adminApiService: AdminApiService,
-    
-    private filterService: ContextMenuFiltersService,
+    public adminApiService: AdminApiService,
     private renderer: Renderer2,
-    private elementRef: ElementRef
+    private contextMenuService : TableContextMenuService
   ) {
     this.userData = this.authService.userData();
     this.iAdminApiService = adminApiService;
@@ -734,99 +726,21 @@ export class MoveItemsComponent implements OnInit {
     });
   }
 
-  getType(val): string {
-    return this.filterService.getType(val);
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
-  onContextMenu(
-    event: MouseEvent,
-    SelectedItem: any,
-    FilterColumnName?: any,
-    FilterConditon?: any,
-    FilterItemType?: any
-  ) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = {
-      item: {
-        SelectedItem: SelectedItem,
-        FilterColumnName: FilterColumnName,
-        FilterConditon: FilterConditon,
-        FilterItemType: FilterItemType,
-      },
-    };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
-  }
-  onContextMenuCommand(
-    SelectedItem: any,
-    FilterColumnName: any,
-    Condition: any,
-    Type: any
-  ) {
+
+  optionSelected(filter : string) {
     if (this.tableType === 'MoveFrom') {
-      if (SelectedItem != undefined) {
-        this.moveFromFilter = this.filterService.onContextMenuCommand(
-          SelectedItem,
-          FilterColumnName,
-          'clear',
-          Type
-        );
-        this.moveFromFilter = this.filterService.onContextMenuCommand(
-          SelectedItem,
-          FilterColumnName,
-          Condition,
-          Type
-        );
-        this.resetFromFilters();
-        this.resetPaginationFrom();
-      }
-      this.moveFromFilter =
-        this.moveFromFilter != '' ? this.moveFromFilter : '1 = 1';
-    } else if (this.tableType === 'MoveTo') {
-      if (SelectedItem != undefined) {
-        this.moveToFilter = this.filterService.onContextMenuCommand(
-          SelectedItem,
-          FilterColumnName,
-          'clear',
-          Type
-        );
-        this.moveToFilter = this.filterService.onContextMenuCommand(
-          SelectedItem,
-          FilterColumnName,
-          Condition,
-          Type
-        );
-        this.resetToFilters();
-        this.resetPaginationTo();
-      }
-      this.moveToFilter = this.moveToFilter != '' ? this.moveToFilter : '1 = 1';
+      this.moveFromFilter = filter;
+    } else if(this.tableType === 'MoveTo') {
+      this.moveToFilter = filter;
     }
-
-    this.getMoveItemList(this.tableType);
+    this.resetFromFilters();
+    this.resetPaginationFrom();
+    this.getMoveItemList(this.tableType);  
   }
 
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement,
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.onContextMenuCommand(
-        result.SelectedItem,
-        result.SelectedColumn,
-        result.Condition,
-        result.Type
-      );
-    });
-  }
   onChangeLocation(event: any) {
     this.getMoveItemList('MoveTo');
   }

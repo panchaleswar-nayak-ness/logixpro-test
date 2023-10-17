@@ -10,9 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-
 import { Subject, takeUntil, Subscription } from 'rxjs'; 
 import { AuthService } from 'src/app/init/auth.service'; 
 import { FloatLabelType } from '@angular/material/form-field';
@@ -22,11 +20,10 @@ import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 const TRNSC_DATA = [
   { colHeader: 'tH_ID', colDef: 'TH_ID' },
@@ -176,11 +173,9 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     sortOrder: 'asc',
   };
   constructor(
-    private router: Router, 
-    private Api:ApiFuntions,
     private authService: AuthService,
-    
-    private adminApiService: AdminApiService,
+    private contextMenuService : TableContextMenuService,
+    public adminApiService: AdminApiService,
     private global:GlobalService,
     private sharedService:SharedService,
     private filterService: ContextMenuFiltersService
@@ -423,17 +418,6 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
 
 
   @ViewChild('trigger') trigger: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
-  FilterString: string = "1 = 1";
-
-  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
-  }
 
   onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) { 
     this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
@@ -445,32 +429,22 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+  }
+
+  FilterString : string = "1 = 1";
+
+  optionSelected(filter : string) {
+    this.FilterString = filter;
+    this.resetPagination();
+    this.getContentData();   
+  }
+
   resetPagination(){
     this.customPagination.startIndex = 0;
     this.customPagination.endIndex = 20;
     this.paginator.pageIndex = 0;
-  }
-
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef:any = this.global.OpenDialog(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => {
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
-    }
-    );
   }
 
   clear(){

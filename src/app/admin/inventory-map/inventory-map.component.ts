@@ -7,30 +7,24 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSelect} from '@angular/material/select';
 import { MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router} from '@angular/router';
-
+import { Router} from '@angular/router';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject';
-import { SpinnerService } from '../../../app/init/spinner.service';
 import { AuthService } from '../../init/auth.service';
 import { AddInvMapLocationComponent } from '../dialogs/add-inv-map-location/add-inv-map-location.component';
 import { AdjustQuantityComponent } from '../dialogs/adjust-quantity/adjust-quantity.component';
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
 import { QuarantineConfirmationComponent } from '../dialogs/quarantine-confirmation/quarantine-confirmation.component';
 import { ColumnSequenceDialogComponent } from '../dialogs/column-sequence-dialog/column-sequence-dialog.component';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ContextMenuFiltersService } from '../../../app/init/context-menu-filters.service';
-import { MatMenuTrigger} from '@angular/material/menu';
-import { InputFilterComponent } from '../../dialogs/input-filter/input-filter.component';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { RouteHistoryService } from 'src/app/services/route-history.service';
 import { PrintRangeComponent } from '../dialogs/print-range/print-range.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from '../inventory-master/current-tab-data-service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 
 const INVMAP_DATA = [
@@ -73,10 +67,7 @@ const INVMAP_DATA = [
 @Component({
   selector: 'app-inventory-map',
   templateUrl: './inventory-map.component.html',
-  styleUrls: ['./inventory-map.component.scss'],
-  host: {
-    "(window:click)": "onClick()"
-  }
+  styleUrls: ['./inventory-map.component.scss']
 })
 
 export class InventoryMapComponent implements OnInit {
@@ -131,68 +122,16 @@ export class InventoryMapComponent implements OnInit {
 
   //---------------------for mat menu start ----------------------------
 
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-
-  contextMenuPosition = { x: '0px', y: '0px' };
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: {SelectedItem: SelectedItem, FilterColumnName : FilterColumnName, FilterConditon: FilterConditon, FilterItemType : FilterItemType }};
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  onClick() {
-    this.trigger.closeMenu();
-  }
-
-  public OSFieldFilterNames() { 
-    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
-    })
-  }
-  ClearFilters()
-  {
-    this.FilterString = "";
-    this.initializeApi();
-    this.getContentData();
-  }
-  
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef:any =  this.global.OpenDialog(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data:{
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement:TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => { 
-      if(result.SelectedColumn){
-        this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition,result.Type)
-      }
-    }
-    );
-  }
-
-  getType(val) : string
-  {
-     return this.filterService.getType(val);
-  }
- 
   FilterString : string = "1 = 1";
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
-    if (SelectedItem != undefined) {
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-    }
-    this.FilterString = this.FilterString != "" ? this.FilterString : "1 = 1";
+
+  optionSelected(filter : string) {
+    this.FilterString = filter;
     this.initializeApi();
-    this.getContentData();
+    this.getContentData();    
   }
 
  //---------------------for mat menu End ----------------------------
@@ -200,17 +139,12 @@ export class InventoryMapComponent implements OnInit {
   constructor(
     private global:GlobalService,
     private authService: AuthService,
-    private Api: ApiFuntions,
-    private adminApiService: AdminApiService,
-     
+    public adminApiService: AdminApiService,
     private dialog:MatDialog,
     private router: Router,
-    private loader: SpinnerService,
-    private _liveAnnouncer: LiveAnnouncer,
-    private filterService:ContextMenuFiltersService,
     private routeHistoryService: RouteHistoryService,
     private currentTabDataService: CurrentTabDataService,
-    private route: ActivatedRoute
+    private contextMenuService : TableContextMenuService
   ) {
     this.previousUrl = this.routeHistoryService.getPreviousUrl();
     this.iAdminApiService = adminApiService;
@@ -261,6 +195,11 @@ export class InventoryMapComponent implements OnInit {
 
   }
 
+  public OSFieldFilterNames() { 
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
+      this.fieldNames = res.data;
+    })
+  }
 
   ngAfterViewInit() {
     this.setStorage =localStorage.getItem('routeFromInduction')

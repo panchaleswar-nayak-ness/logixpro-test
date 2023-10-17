@@ -25,6 +25,7 @@ import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -135,6 +136,7 @@ export class OmOrderManagerComponent implements OnInit {
               private filterService   : ContextMenuFiltersService,
               private currentTabDataService: CurrentTabDataService,
               private global:GlobalService,
+              private contextMenuService : TableContextMenuService,
               private router: Router) {
                 this.iOrderManagerApi = orderManagerApi; 
                 this.iAdminApiService = adminApiService; 
@@ -572,50 +574,16 @@ export class OmOrderManagerComponent implements OnInit {
     this.fillTable();
   }
 
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
-
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: {SelectedItem: SelectedItem, FilterColumnName : FilterColumnName, FilterConditon: FilterConditon, FilterItemType : FilterItemType }};
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef:any =  this.global.OpenDialog(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data:{
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement:TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => { 
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition,result.Type)
-    }
-    );
-  }
+  FilterString : string = "1 = 1";
 
-  getType(val) : string {
-     return this.filterService.getType(val);
-  }
-
-  FilterString : string = "";
-
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
-    if (SelectedItem != undefined) {
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem,FilterColumnName,Condition,Type);
-    }
+  optionSelected(filter : string) {
     this.customPagination.startIndex = 0;
     this.paginator.pageIndex = 0;
-    this.FilterString = this.FilterString != "" ? this.FilterString : "1 = 1";
+    this.FilterString = filter;
     this.getOrders();
   }
 

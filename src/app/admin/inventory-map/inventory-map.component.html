@@ -92,7 +92,7 @@
 
                 </th>
 
-                <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event,  element[col.colHeader], col.colDef)" 
+                <td mat-cell *matCellDef="let element" (contextmenu)=" onContextMenu($event,  element[col.colHeader], col.colDef)" 
                 style=" padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
                 [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" > {{ element[col.colHeader] }}</td>
 
@@ -149,60 +149,27 @@
     </div>
   </div>
 </div>
-<div #trigger="matMenuTrigger"
-style="visibility: hidden; position: fixed"
-[style.left]="contextMenuPosition.x"
-[style.top]="contextMenuPosition.y"
-[matMenuTriggerFor]="contextMenuFilter"
-></div>
-<mat-menu #contextMenuFilter="matMenu">
-<ng-template matMenuContent let-item="item">
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'equals to',getType(item.SelectedItem))"> Equals</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not equals to', getType(item.SelectedItem))">Not Equals</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is greater than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Greater than or Equal</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is less than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Less than or Equal</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Like</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Not Like</button>
-  <button mat-menu-item [matMenuTriggerFor]="InputFiltersList" [matMenuTriggerData]="{category: item}" *ngIf="getType(item.SelectedItem) != 'boolean'" >Input FIlters</button>
-  <button mat-menu-item (click)="onContextMenuCommand('', '', 'clear', '')">Clear Filters</button>
-</ng-template>
-</mat-menu>
-<mat-menu #InputFiltersList="matMenu">
-  <ng-template matMenuContent let-category="category">
-    <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'equals to', getType(category.SelectedItem))">Equals</button>
-    <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is not equals to', getType(category.SelectedItem))">Not Equals</button>
-    <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Begins</button>
-    <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Begin</button>
-    <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Ends With</button>
-    <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not End With</button>
-    <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Contains</button>
-    <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Contain</button>
-    <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is less than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Less Than</button>
-    <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is greater than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Greater Than</button>
-    <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is between', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Between</button>
-  </ng-template>
-</mat-menu>
-<ng-template #viewAllLocation>
 
+<app-table-context-menu-component (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>
+
+<ng-template #viewAllLocation>
   <div class="d-flex justify-content-between mb-4 align-items-center">
     <div style="width:48px"></div>
     <h1 class="m-0" mat-dialog-title>View All Locations</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
-</div>
+  </div>
 
-      <div class="outside mb-3">
-          <mat-radio-group color="primary" aria-labelledby="example-radio-group-label" class="example-radio-group d-flex flex-column"
-            [(ngModel)]="filterLoc">
-            <mat-radio-button class="mb-2" value="Nothing">All Location</mat-radio-button>
-            <mat-radio-button class="mb-2" value="Open">Open Location</mat-radio-button>
-            <mat-radio-button class="mb-2" value="Quarantine">Quarantined location</mat-radio-button>
-          </mat-radio-group>
-      </div>
+  <div class="outside mb-3">
+      <mat-radio-group color="primary" aria-labelledby="example-radio-group-label" class="example-radio-group d-flex flex-column" [(ngModel)]="filterLoc">
+        <mat-radio-button class="mb-2" value="Nothing">All Location</mat-radio-button>
+        <mat-radio-button class="mb-2" value="Open">Open Location</mat-radio-button>
+        <mat-radio-button class="mb-2" value="Quarantine">Quarantined location</mat-radio-button>
+      </mat-radio-group>
+  </div>
 
   <mat-dialog-actions>
-    <button style="flex: 1;"  type="submit" mat-flat-button class="button-primary btn-lg" color="primary"
-      (click)="viewLocFilter()">Submit</button>
+    <button style="flex: 1;" type="submit" mat-flat-button class="button-primary btn-lg" color="primary" (click)="viewLocFilter()">Submit</button>
   </mat-dialog-actions>
 </ng-template>

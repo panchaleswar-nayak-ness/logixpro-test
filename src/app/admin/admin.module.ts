@@ -160,6 +160,7 @@ import { LookupUserTwoSetupComponent } from './admin-preferences/system-preferen
 import { LookupUserOneSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-user-one-setup/lookup-user-one-setup.component';
 import { LookupAdjustmentLookupSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-adjustment-lookup-setup/lookup-adjustment-lookup-setup.component';
 import { LookupToteSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-tote-setup/lookup-tote-setup.component';
+import { SharedComponentsModule } from '../common/globalComponents/shared-components.module';
 
 
 
@@ -326,6 +327,7 @@ import { LookupToteSetupComponent } from './admin-preferences/system-preferences
     CdkTableModule,
     DragDropModule,
     MatInputModule,
+    SharedComponentsModule,
     ToastrModule.forRoot({
       timeOut: 2000,
       extendedTimeOut: 0,
