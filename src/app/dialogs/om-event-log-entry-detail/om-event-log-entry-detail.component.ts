@@ -63,6 +63,7 @@ export class OmEventLogEntryDetailComponent implements OnInit {
             this.dialogRef.close(this.data);
           } else {
             this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+            console.log("SelectedEventDelete",res.responseMessage);
           }
         });
       }

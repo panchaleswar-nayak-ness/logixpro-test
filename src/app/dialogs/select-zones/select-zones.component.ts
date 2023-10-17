@@ -214,6 +214,7 @@ export class SelectZonesComponent implements OnInit {
 
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("AvailableZone",res.responseMessage);
         }
       },
       (error) => { }

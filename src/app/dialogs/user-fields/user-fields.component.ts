@@ -60,8 +60,15 @@ export class UserFieldsComponent implements OnInit {
 
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
-      this.setValues();
+      if(res.isExecuted && res.data)
+      {
+        this.fieldNames = res.data;
+        this.setValues();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
     })
   }
   setValues() {

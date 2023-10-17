@@ -78,6 +78,7 @@ export class ShortTransactionComponent implements OnInit {
             }
             else {
               this.global.ShowToastr('error',"An error occured when shorting this transaction", 'Error');
+              console.log("shortTransaction",res.responseMessage);
             }
           });
         }

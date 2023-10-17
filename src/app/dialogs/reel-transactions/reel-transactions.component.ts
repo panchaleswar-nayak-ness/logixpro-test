@@ -142,6 +142,7 @@ fieldNames:any;
       }
       else {
         this.global.ShowToastr('error','Something went wrong', 'Error!');
+        console.log("NextSerialNumber",res.responseMessage);
       }
     },
     error: (error) => {}}
@@ -356,6 +357,7 @@ CreateReels(){
                   }
                   else {
                     this.global.ShowToastr('error','Something went wrong', 'Error!');
+                    console.log("ValidateSn",res.responseMessage);
                   }
                 });
 
@@ -405,6 +407,7 @@ let res:any =   this.global.Print(`FileName:PrintReelLabels|OTID:${this.createdR
       }
       else {
         this.global.ShowToastr('error','Something went wrong', 'Error!');
+        console.log("NextSerialNumber",res.responseMessage);
       }
     },
     error: (error) => {}}

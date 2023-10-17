@@ -70,12 +70,17 @@ export class RequiredDateStatusComponent implements OnInit {
 
   getReqDateDataSelect(){
     this.iinductionManagerApi.ReqDateDataSelect().subscribe(res => {
-      if(res.data.length > 0) {
-        this.dataSource = new MatTableDataSource(res.data);
+      if (res && res.isExecuted)
+      {
+        if(res.data.length > 0) {
+          this.dataSource = new MatTableDataSource(res.data);
+        }
+        else {
+         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+        }
+
       }
-      else {
-       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-      }
+      
     });
   }
 

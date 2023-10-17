@@ -335,6 +335,7 @@ export class AdminPrefrencesComponent implements OnInit {
               });
             } else {
               this.global.ShowToastr('error','Something went wrong', 'Error!');
+              console.log("PreferenceIndex",res.responseMessage);
             }
           },
           (error) => {}
@@ -455,6 +456,7 @@ export class AdminPrefrencesComponent implements OnInit {
             this.global.ShowToastr('success',labels.alert.update, 'Success!');
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("DynamicMethod",res.responseMessage);
           }
         },
         (error) => {}
@@ -473,6 +475,7 @@ export class AdminPrefrencesComponent implements OnInit {
           this.global.ShowToastr('success',labels.alert.update, 'Success!');
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("CompName",res.responseMessage);
         }
       },
       (error) => {}

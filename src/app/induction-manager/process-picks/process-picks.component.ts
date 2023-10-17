@@ -293,6 +293,11 @@ async  printPickLabels(row) {
       if (res.data) {
         this.orderNumberList = res.data
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("OrdersInZone",res.responseMessage);
+
+      }
       this.filteredOrderNum = this.orderNumber.valueChanges.pipe(
         startWith(""),
         map(value => (value)),
@@ -376,6 +381,10 @@ async  printPickLabels(row) {
       if (res.data) {
         this.allZones = res.data;
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("WSPickZoneSelect",res.responseMessage);
+      }
     });
   }
 
@@ -384,6 +393,10 @@ async  printPickLabels(row) {
     let paylaod = { 
     }
     this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
+
+      if (res.isExecuted && res.data)
+      {
+
       this.countInfo = res.data.countInfo;
       this.pickBatchesList = res.data.pickBatches;
       this.pickBatchQuantity = res.data.imPreference.pickBatchQuantity;
@@ -402,6 +415,12 @@ async  printPickLabels(row) {
         
       );
       resolve(res?.data?.imPreference);
+
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PickToteSetupIndex",res.responseMessage);
+
+      }
     });
 
   });
@@ -513,6 +532,7 @@ async  printPickLabels(row) {
         else {
           if (this.batchID === '') {
             this.global.ShowToastr('error','Batch id is required.', 'Error!');
+            console.log("NextBatchID");
           }
           else {
             let payload = { 
@@ -676,6 +696,7 @@ async  printPickLabels(row) {
       if (res.data === 'Invalid') {
         this.global.ShowToastr('error','This is not a vaild order number for this pick batch.', 'Error!');
         element.orderNumber = ''
+        console.log("ValidateOrderNumber",res.responseMessage);
       }
     });
   }
@@ -726,6 +747,7 @@ async  printPickLabels(row) {
     this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
         this.global.ShowToastr('error','Something is wrong.', 'Error!');
+        console.log("NextToteUpdate",res.responseMessage);
       }
 
     });
@@ -795,10 +817,18 @@ async  printPickLabels(row) {
 
   fillNextToteID(i: any) {
     this.iinductionManagerApi.NextTote().subscribe(res => {
-      this.nxtToteID = res.data;
-      this.TOTE_SETUP[i].toteID = this.nxtToteID;
-      this.nxtToteID = this.nxtToteID + 1;
-      this.updateNxtTote();
+      if (res.isExecuted && res.data)
+      {
+        this.nxtToteID = res.data;
+        this.TOTE_SETUP[i].toteID = this.nxtToteID;
+        this.nxtToteID = this.nxtToteID + 1;
+        this.updateNxtTote();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("NextTote",res.responseMessage);
+      }
+     
     });
   }
 
@@ -882,6 +912,7 @@ async  printPickLabels(row) {
         }
         else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("InZoneSetupProcess",res.responseMessage);
         }
       });
     }
@@ -917,6 +948,7 @@ async  printPickLabels(row) {
         }
         else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("PickToteSetupProcess",res.responseMessage);
         }
       });
     }

@@ -159,6 +159,7 @@ export class TotesAddEditComponent implements OnInit {
         // Handle the error here
         this.global.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
         // Return a fallback value or trigger further error handling if needed
+        console.log("GetFromToteTypeAhead");
         return of({ isExecuted: false });
       })
     ).subscribe((res: any) => {
@@ -197,6 +198,7 @@ export class TotesAddEditComponent implements OnInit {
        
         
             this.global.ShowToastr('error',"Cannot set the selected tote because it is already set in the batch.", 'Error!');
+            console.log("ToteSetupInsert",res.responseMessage);
           }
         },
         (error) => { 
@@ -260,6 +262,7 @@ export class TotesAddEditComponent implements OnInit {
         
               } else {
                 this.global.ShowToastr('error',"Already exists", 'Error!');
+                console.log("ToteSetupDelete",res.responseMessage);
               }
             },
             (error) => { }
@@ -299,6 +302,7 @@ export class TotesAddEditComponent implements OnInit {
           this.dataSourceManagedTotes = new MatTableDataSource<any>(this.ELEMENT_DATA_TOTE);
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("ToteSetup",res.responseMessage);
         }
       },
       (error) => { }

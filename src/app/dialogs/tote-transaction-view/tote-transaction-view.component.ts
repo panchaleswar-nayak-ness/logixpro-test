@@ -122,14 +122,22 @@ export class ToteTransactionViewComponent implements OnInit {
     };
 
     this.iInductionManagerApi.TransTableView(payLoad).subscribe((res:any)=>{
-      
-      if(res?.data){
-        this.isData=true
+      if (res.isExecuted)
+      {
+        if(res?.data){
+          this.isData=true
+  
+        this.dataSource = new MatTableDataSource<any>(res.data);
+  
+        }else{
+          this.isData=false
+        }
 
-      this.dataSource = new MatTableDataSource<any>(res.data);
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("TransTableView",res.responseMessage);
 
-      }else{
-        this.isData=false
       }
     }, (error) => {})
   }
@@ -186,6 +194,7 @@ export class ToteTransactionViewComponent implements OnInit {
                 this.global.ShowToastr('success',labels.alert.success, 'Success!');
               } else {
                 this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+                console.log("MarkToteFull",res.responseMessage);
               }
             },
             (error) => {}
@@ -247,6 +256,7 @@ export class ToteTransactionViewComponent implements OnInit {
             this.getTransactionTable();
           } else {
             this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+            console.log("DynamicMethod",res.responseMessage);
           }
         })
       }

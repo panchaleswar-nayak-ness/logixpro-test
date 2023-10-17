@@ -139,6 +139,7 @@ export class ViewOrdersComponent implements OnInit {
       else{
         this.global.ShowToastr('error','There are no orders for your zone', 'Error!');
         this.isDisableSubmit = true
+        console.log("OrdersInZone",res.responseMessage);
       }
     });
   }
@@ -201,6 +202,11 @@ export class ViewOrdersComponent implements OnInit {
           this.orderTransDataSource = new MatTableDataSource<any>(this.transData);
           this.orderTransDataSource.paginator = this.paginatorTrans;
           this.orderTransDataSource.sort = this.viewTransSort;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("InZoneTransDT",res.responseMessage);
+
         }
       });
     }

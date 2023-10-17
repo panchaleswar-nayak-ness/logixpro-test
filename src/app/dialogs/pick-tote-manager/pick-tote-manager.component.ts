@@ -226,6 +226,11 @@ export class PickToteManagerComponent implements OnInit {
         this.batchByZoneData = res.data
         this.batchByZoneSource = new MatTableDataSource<any>(this.batchByZoneData);
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PickBatchZonesSelect",res.responseMessage);
+
+      }
     });
   }
 
@@ -248,6 +253,11 @@ export class PickToteManagerComponent implements OnInit {
           map(value => (value)),
           map(name => (name ? this._filter(name) : this.savedFilterList.slice()))
         );
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PickBatchFilterTypeAhead",res.responseMessage);
+
       }
     });
   }
@@ -356,6 +366,11 @@ export class PickToteManagerComponent implements OnInit {
             if (res.isExecuted) {
               this.global.ShowToastr('success',labels.alert.update, 'Success!'); 
             }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("PickBatchDefaultFilterMark",res.responseMessage);
+
+            }
           });
         }
         const matSelect: MatSelect = option.source;
@@ -371,6 +386,12 @@ export class PickToteManagerComponent implements OnInit {
           this.global.ShowToastr('success',labels.alert.update, 'Success!');
           const matSelect: MatSelect = option.source;
           matSelect.writeValue(null);
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickBatchDefaultFilterClear",res.responseMessage);
+
+
         }
       });
     }
@@ -389,6 +410,7 @@ export class PickToteManagerComponent implements OnInit {
         }
         else {
           this.global.ShowToastr('error','No filter is marked as default.', 'Warning!');
+          console.log("PickBatchDefaultFilterSelect",res.responseMessage);
         }
         const matSelect: MatSelect = option.source;
         matSelect.writeValue(null);
@@ -415,6 +437,11 @@ export class PickToteManagerComponent implements OnInit {
               this.savedFilClosed();
               const matSelect: MatSelect = option.source;
               matSelect.writeValue(null);
+            }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("PickBatchFilterBatchDelete",res.responseMessage);
+
             }
 
           });
@@ -464,6 +491,11 @@ export class PickToteManagerComponent implements OnInit {
           this.filterBatchOrders = new MatTableDataSource<any>(this.FILTER_BATCH_DATA);
           this.filterBatchOrders.paginator = this.filterBatchOrder;
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("OrdersFilterZoneSelect",res.responseMessage);
+
+        }
       });
     }
     else {
@@ -494,6 +526,12 @@ export class PickToteManagerComponent implements OnInit {
           this.filterBatchOrdersZone = new MatTableDataSource<any>(this.FILTER_BATCH_DATA_ZONE);
           this.filterBatchOrdersZone.paginator = this.zoneBatchOrder;
           this.TabIndex = 1;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("OrdersFilterZoneSelect",res.responseMessage);
+
+
         }
       });
     }
@@ -528,6 +566,7 @@ export class PickToteManagerComponent implements OnInit {
     }
     else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
       this.global.ShowToastr('error','No open totes in batch', 'Batch is Filled.');
+      console.log("includes");
     }
     else {
       this.FILTER_BATCH_DATA.forEach(v => {
@@ -640,6 +679,11 @@ export class PickToteManagerComponent implements OnInit {
           this.onAddOrderBy(this.pickBatchOrder);
         }
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PickBatchFilterOrderData",res.responseMessage);
+
+      }
     });
   }
   savedFilClosed() {
@@ -741,6 +785,10 @@ export class PickToteManagerComponent implements OnInit {
           this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
           this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickToteTransDT",res.responseMessage);
+        }
       });
     }
     if (event.value === 'vSelectedOrderZone') {
@@ -765,6 +813,11 @@ export class PickToteManagerComponent implements OnInit {
             this.zoneOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
             this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
             this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("PickToteTransDT",res.responseMessage);
+
           }
         });
       }
@@ -797,6 +850,11 @@ export class PickToteManagerComponent implements OnInit {
           this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
           this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickToteTransDT",res.responseMessage);
+
+        }
       });
     }
     if (event.value === 'vSelectedOrderFilter') {
@@ -821,6 +879,11 @@ export class PickToteManagerComponent implements OnInit {
             this.filterOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
             this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
             this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("PickToteTransDT",res.responseMessage);
+
           }
         });
       }
@@ -855,6 +918,11 @@ export class PickToteManagerComponent implements OnInit {
               this.filterSeq = element.sequence;
               this.pickBatchFilterOrderData(this.savedFilter.value);
             }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("PickBatchFilterUpdate",res.responseMessage);
+
+            }
           });
         }
         else {
@@ -864,6 +932,11 @@ export class PickToteManagerComponent implements OnInit {
               this.global.ShowToastr('success',labels.alert.success, 'Success!');
               this.filterSeq = element.sequence;
               this.pickBatchFilterOrderData(this.savedFilter.value);
+            }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("PickBatchFilterInsert",res.responseMessage);
+
             }
           });
         }
@@ -885,6 +958,11 @@ export class PickToteManagerComponent implements OnInit {
           this.isOrderByAdd = true;
           this.global.ShowToastr('success',labels.alert.update, 'Success!');
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickBatchOrderUpdate",res.responseMessage);
+
+        }
       });
     }
     else {
@@ -900,6 +978,11 @@ export class PickToteManagerComponent implements OnInit {
           this.global.ShowToastr('success',labels.alert.success, 'Success!');
           element.id = res.data;
           this.orderBySeq = element.sequence;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickBatchOrderInsert",res.responseMessage);
+
         }
       });
     }
@@ -940,6 +1023,11 @@ export class PickToteManagerComponent implements OnInit {
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.pickBatchFilterOrderData(this.savedFilter.value);
           }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("PickBatchFilterDelete",res.responseMessage);
+
+          }
         });
       }
     });
@@ -964,6 +1052,11 @@ export class PickToteManagerComponent implements OnInit {
             this.isFilterAdd = true;
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.pickBatchFilterOrderData(this.savedFilter.value);
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("PickBatchOrderDelete",res.responseMessage);
+
           }
         });
       }
@@ -1021,6 +1114,7 @@ export class PickToteManagerComponent implements OnInit {
             this.global.ShowToastr('success',labels.alert.update, 'Success!');
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("PickBatchZoneDefaultMark",res.responseMessage);
           }
         });
       }

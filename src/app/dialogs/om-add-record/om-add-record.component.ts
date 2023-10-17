@@ -228,6 +228,7 @@ export class OmAddRecordComponent implements OnInit {
             this.dialogRef.close(res.data);
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("OTTempInsert",res.responseMessage);
           }
         })
       }
@@ -238,6 +239,7 @@ export class OmAddRecordComponent implements OnInit {
             this.dialogRef.close(res.data);
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("OTTempUpdate",res.responseMessage);
           }
         })
       }

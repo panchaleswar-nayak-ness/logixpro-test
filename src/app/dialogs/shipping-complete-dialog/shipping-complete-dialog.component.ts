@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
@@ -31,6 +32,7 @@ export class ShippingCompleteDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _liveAnnouncer1: LiveAnnouncer,
+    private global : GlobalService,
     private _liveAnnouncer2: LiveAnnouncer
   ) { this.IconsolidationAPI = consolidationAPI; }
 
@@ -40,14 +42,25 @@ export class ShippingCompleteDialogComponent implements OnInit {
 
   viewShipping(orderNumber: any, loader: boolean = false) {
     this.IconsolidationAPI.viewShipping({ orderNum: orderNumber }).subscribe((res: any) => {
-      if (res.isExecuted && res.data) {
-        this.tableData1 = new MatTableDataSource(res.data.packTable);
-        this.tableData1.paginator = this.paginator1;
-        this.tableData2 = new MatTableDataSource(res.data.shipTable);
-        this.tableData2.paginator = this.paginator2;
-      } else {
-        this.tableData1 = new MatTableDataSource([]);
-        this.tableData2 = new MatTableDataSource([]);
+      if (res.isExecuted )
+      {
+        if (res.data) {
+          this.tableData1 = new MatTableDataSource(res.data.packTable);
+          this.tableData1.paginator = this.paginator1;
+          this.tableData2 = new MatTableDataSource(res.data.shipTable);
+          this.tableData2.paginator = this.paginator2;
+        } else {
+          this.tableData1 = new MatTableDataSource([]);
+          this.tableData2 = new MatTableDataSource([]);
+        }
+
+
+      }
+
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("viewShipping",res.responseMessage);
+
       }
     });
   }

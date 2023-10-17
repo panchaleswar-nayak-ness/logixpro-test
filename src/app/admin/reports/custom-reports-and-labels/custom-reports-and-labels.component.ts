@@ -77,21 +77,36 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       app: this.currentApp,
     };
     this.iAdminApiService.Getcustomreports(payload).subscribe((res: any) => {
-      this.sysTitles = res?.data?.reportTitles?.sysTitles;
-      this.reportTitles = res?.data?.reportTitles?.reportTitles;
-      this.sysTitles.forEach((object) => {
-        object.isSelected = false;
-      });
-      this.reportTitles.forEach((object) => {
-        object.isSelected = false;
-      });
+      if(res.isExecuted && res.data)
+      {
+        this.sysTitles = res?.data?.reportTitles?.sysTitles;
+        this.reportTitles = res?.data?.reportTitles?.reportTitles;
+        this.sysTitles.forEach((object) => {
+          object.isSelected = false;
+        });
+        this.reportTitles.forEach((object) => {
+          object.isSelected = false;
+        });
+  
+        console.log(this.sysTitles);
+        console.log(this.reportTitles);
+  
+        if (this.IsSystemReport || this.IsSystemReport == undefined)
+        {
+          this.ListReports = this.sysTitles;
+        }
+        else {
+          this.ListReports = this.reportTitles;
+        }
 
-      console.log(this.sysTitles);
-      console.log(this.reportTitles);
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("Getcustomreports",res.responseMessage);
 
-      if (this.IsSystemReport || this.IsSystemReport == undefined)
-        this.ListReports = this.sysTitles;
-      else this.ListReports = this.reportTitles;
+      }
+      
+     
     });
   }
   OpenListAndLabel(route) {
@@ -140,7 +155,18 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       FileName: file,
     };
     this.iAdminApiService.Getreportdetails(obj).subscribe((res: any) => {
-      this.Detail = res.data[0];
+      if(res.isExecuted && res.data)
+      {
+        this.Detail = res.data[0];
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("Getreportdetails",res.responseMessage);
+
+      }
+
+      
     });
 
     return 1;
@@ -211,6 +237,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
         this.iAdminApiService.deleteReport(payload).subscribe((res) => {
           if (!res.data) {
             this.global.ShowToastr('error',"Unexpected error occurred.  If this persists please contact Scott Tech for support.", 'Error!');
+            console.log("deleteReport",res.responseMessage);
         } else {
           this.Getcustomreports()
           this.Detail= {}
@@ -292,6 +319,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
               `Error has occured while pushing changes to the other worksations`,
               'Error!'
             );
+            console.log("pushReportChanges",res.responseMessage);
           }
         });
       } else {
@@ -319,6 +347,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
           'Unexpected error occurred. Changes Not Saved',
           'Error!'
         );
+        console.log("updatereportDetails",res.responseMessage);
       }
     });
   }

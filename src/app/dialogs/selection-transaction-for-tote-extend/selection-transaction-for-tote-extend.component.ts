@@ -141,7 +141,17 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   }
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
+      
+      if (res.data && res.isExecuted)
+      {
       this.fieldNames = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+
+
+      }
 
     })
   }
@@ -240,6 +250,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             this.checkRepenishment();
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("ItemDetails",res.responseMessage);
           }
         },
         (error) => { }
@@ -277,13 +288,28 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   getCellSizeList() {
     this.iCommonAPI.getCellSize().subscribe((res) => {
+      if (res.data && res.isExecuted)
+      {
       this.cellSizeList = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getCellSize",res.responseMessage);
+
+      }
     });
   }
 
   getVelocityCodeList() {
     this.iCommonAPI.getVelocityCode().subscribe((res) => {
+      if (res.data && res.isExecuted) {
       this.velocityCodeList = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getVelocityCode",res.responseMessage);
+
+      }
     });
   }
 
@@ -323,6 +349,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                 this.global.ShowToastr('success',labels.alert.update, 'Success!');            
               } else {
                 this.global.ShowToastr('error','Something went wrong', 'Error!');
+                console.log("IMUpdate",res.responseMessage);
               }
             },
             (error) => { }
@@ -497,7 +524,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             });
 
           } else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
             this.findLocation(false, 0);
+            console.log("CheckForwardLocations",res.responseMessage);
           }
         },
         (error) => {}
@@ -565,6 +594,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("FindLocation",res.responseMessage);
           }
         },
         (error) => {}
@@ -751,6 +781,10 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                   );   
               }
             }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("BatchByZone",res.responseMessage);
+            }
           });
    
               
@@ -869,6 +903,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                 this.global.ShowToastr('success',labels.alert.update, 'Success!' );            
               } else {
                 this.global.ShowToastr('error','Something went wrong', 'Error!');
+                console.log("TaskComplete",res.responseMessage);
               }
             },
             (error) => { }
