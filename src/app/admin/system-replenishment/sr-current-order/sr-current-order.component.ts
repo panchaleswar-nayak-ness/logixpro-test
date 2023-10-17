@@ -337,22 +337,20 @@ export class SrCurrentOrderComponent implements OnInit {
   newReplenishmentOrdersSubscribe: any;
 
   newReplenishmentOrders(loader: boolean = false) {
-    this.newReplenishmentOrdersSubscribe = this.iAdminApiService
-      .SystemReplenishmentTable(this.tablePayloadObj)
-      .subscribe((res: any) => {
-        if (res.isExecuted && res.data) {
-          this.tableData = res.data.sysTable;
-          this.tableData.forEach((element) => {
-            element.isSelected = false;
-          });
-          this.tableDataTotalCount = res.data.recordsTotal;
-          this.filteredTableData = JSON.parse(JSON.stringify(this.tableData));
-          this.systemReplenishmentCount(true);
-        } else {
-          this.global.ShowToastr('error', res.responseMessage, 'Error!');
+    this.newReplenishmentOrdersSubscribe = this.iAdminApiService.SystemReplenishmentTable(this.tablePayloadObj).subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.tableData = res.data.sysTable;
+        this.tableData.forEach(element => {
+          element.isSelected = false;
+        });
+        this.tableDataTotalCount = res.data.recordsTotal;
+        this.filteredTableData = JSON.parse(JSON.stringify(this.tableData));
+        this.systemReplenishmentCount(true);
+      } else {
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
         console.log("SystemReplenishmentTable",res.responseMessage);
-        }
-      });
+      }
+    });
   }
 
   searchAutocompleteList: any;
@@ -659,6 +657,7 @@ export class SrCurrentOrderComponent implements OnInit {
       } else {
         this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
         this.dialog.closeAll();
+        console.log("ReplenishmentsByDelete",res.responseMessage);
       }
     });
   }
@@ -672,6 +671,11 @@ export class SrCurrentOrderComponent implements OnInit {
     this.getSearchOptionsSubscribe = this.iAdminApiService.ReplenishReportSearchTA(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.searchAutocompleteList = res.data.sort();
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ReplenishReportSearchTA",res.responseMessage);
+
       }
     });
   }
@@ -689,6 +693,11 @@ export class SrCurrentOrderComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.noOfPicks = res.data.pickCount;
         this.noOfPutAways = res.data.putCount;
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SystemReplenishmentCount",res.responseMessage);
+
       }
     });
   }
