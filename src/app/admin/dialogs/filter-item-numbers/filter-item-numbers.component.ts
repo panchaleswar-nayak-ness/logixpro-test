@@ -53,6 +53,7 @@ export class FilterItemNumbersComponent implements OnInit {
         } else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
           this.dialog.closeAll();
+          console.log("FiltersItemNumInsert",res.responseMessage);
         }
       });
   }

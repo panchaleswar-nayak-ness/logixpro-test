@@ -157,10 +157,12 @@ this.customPagination.total = 0;
               this.ngOnInit();
               this.insertEvent.emit('insert');
             } else {
+              
               this.global.ShowToastr('error',
                 'Error',
                 'Error Occured while creating Count records, check event log for more information'
               );
+              console.log("CreateCountRecords",res.responseMessage);
             }
           },
           (error) => {}
@@ -182,10 +184,12 @@ this.customPagination.total = 0;
               this.ngOnInit();
 
             } else {
+              
               this.global.ShowToastr('error',
                 'Error',
                 'An Error Occured while trying to remove all data, check the event log for more information'
               );
+              console.log("RemoveccQueueAll",response.responseMessage);
             }
           },
           (error) => {}
@@ -202,10 +206,12 @@ this.customPagination.total = 0;
         if (res.isExecuted) {
           this.getCountQue();
         } else {
+          
           this.global.ShowToastr('error',
             'Error',
             'An Error Occured while trying to remove this row, check the event log for more information'
           );
+          console.log("RemoveccQueueRow",res.responseMessage);
         }
       },
       (error) => {}

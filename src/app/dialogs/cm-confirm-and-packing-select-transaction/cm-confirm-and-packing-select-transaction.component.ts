@@ -77,7 +77,8 @@ openScanItem(ItemNumber:any,id: any) {
     this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
   
       if (res.data == "Fail") {
-        this.global.ShowToastr('error','An error has occurred', 'Error!');  
+        this.global.ShowToastr('error','An error has occurred', 'Error!');
+        console.log("ConfPackProcModalUpdate",res.responseMessage);  
     } else if (res.data == "Modal") {
        this.openScanItem(this.itemNumber,id);
        

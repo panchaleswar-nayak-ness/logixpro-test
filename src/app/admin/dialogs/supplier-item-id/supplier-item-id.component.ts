@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
+import { GlobalService } from 'src/app/common/services/global.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
@@ -25,6 +26,7 @@ export class SupplierItemIdComponent implements OnInit {
 
   constructor(
     public commonAPI : CommonApiService,
+    private global:GlobalService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>
   ) {
@@ -55,6 +57,10 @@ export class SupplierItemIdComponent implements OnInit {
         (res: any) => {
           if (res.data) {
             this.searchAutocompleteItemNum = res.data;
+          }
+          else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("SupplierItemTypeAhead",res.responseMessage);
           }
         },
         (error) => {}

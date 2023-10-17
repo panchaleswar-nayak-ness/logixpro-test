@@ -72,6 +72,7 @@ export class CmToteIdUpdateModalComponent implements OnInit {
             });
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("ContIDShipTransUpdate",res.responseMessage);
           }
         },
         (error) => { }

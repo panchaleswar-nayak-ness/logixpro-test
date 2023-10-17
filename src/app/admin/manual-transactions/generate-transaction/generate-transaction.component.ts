@@ -183,6 +183,8 @@ export class GenerateTransactionComponent implements OnInit {
               res.data.quantityAllocated.length &&
               res.data.quantityAllocated[0].quantityAllocatedPutAway;
           } else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("TransactionInfo",res.responseMessage);
             this.item = '';
           }
         },
@@ -320,6 +322,7 @@ export class GenerateTransactionComponent implements OnInit {
 
                   } else {
                     this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                    console.log("PostTransaction",res.responseMessage);
                     if( type != 'save'){
                       this.clearFields();
                     }
@@ -419,6 +422,11 @@ export class GenerateTransactionComponent implements OnInit {
           this.totalQuantity = res.data.totalQuantity;
           this.quantityAllocatedPick = res.data.pickQuantity;
           this.quantityAllocatedPutAway = res.data.putQuantity;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("LocationData",res.responseMessage);
+
         }
       },
       (error) => {}
@@ -533,6 +541,7 @@ export class GenerateTransactionComponent implements OnInit {
             this.clearMatSelectList();
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("UpdateTransaction",res.responseMessage);
           }
         });
     }
@@ -583,6 +592,11 @@ export class GenerateTransactionComponent implements OnInit {
         }else{
           this.transactionQtyInvalid = false;
         }
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SupplierItemIDInfo",res.responseMessage);
+
       }
         
       })

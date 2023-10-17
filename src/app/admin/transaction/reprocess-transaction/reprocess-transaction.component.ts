@@ -314,6 +314,7 @@ export class ReprocessTransactionComponent implements OnInit {
             this.reasonMessage = res.data[0].reasonMessage;
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("ReprocessTransactionData",res.responseMessage);
           }
         },
         error: (error) => { }}
@@ -360,11 +361,21 @@ export class ReprocessTransactionComponent implements OnInit {
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {
-          if (isSearchByOrder) {
-            this.searchAutocompleteList = res.data;
-          } else {
-            this.searchAutocompleteListByCol = res.data;
+          if(res.data) {
+
+            if (isSearchByOrder) {
+              this.searchAutocompleteList = res.data;
+            } else {
+              this.searchAutocompleteListByCol = res.data;
+            }
+
           }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+
+          }
+          
         },
         error: (error) => { }}
       );
@@ -558,6 +569,7 @@ export class ReprocessTransactionComponent implements OnInit {
                 }
                 else{
                   this.global.ShowToastr('error','Something went wrong', 'Error!');
+                  console.log("ReprocessTransactionDelete",res.responseMessage);
                 }
         });
             }
@@ -690,6 +702,7 @@ export class ReprocessTransactionComponent implements OnInit {
                 this.global.ShowToastr('success',labels.alert.update, 'Success!');
               } else {
                 this.global.ShowToastr('error','Something went wrong', 'Error!');
+                console.log("SetAllReprocessColumn",res.responseMessage);
               }
             },
             error: (error) => { }}
@@ -732,6 +745,7 @@ export class ReprocessTransactionComponent implements OnInit {
                   this.global.ShowToastr('success',labels.alert.update, 'Success!');
                 } else {
                   this.global.ShowToastr('error','Something went wrong', 'Error!');
+                  console.log("ReprocessIncludeSet",res.responseMessage);
                 }
               },
               error: (error) => { }}
@@ -767,6 +781,7 @@ export class ReprocessTransactionComponent implements OnInit {
 
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("OrderToPost",res.responseMessage);
         }
       },
       error: (error) => { }}
@@ -806,6 +821,7 @@ export class ReprocessTransactionComponent implements OnInit {
           this.getContentData();
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("GetColumnSequence",res.responseMessage);
         }
       },
       error: (error) => { }}

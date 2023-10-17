@@ -122,6 +122,13 @@ export class LookupToteSetupComponent implements OnInit {
           if(res.isExecuted){
             this.getToteTable()
           }
+
+          else {
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("LocationZone", res.responseMessage);
+
+          }
         }))
       }
     })
@@ -146,6 +153,12 @@ export class LookupToteSetupComponent implements OnInit {
           console.log(res)
           if(res.isExecuted){
             this.global.ShowToastr('success',`Tote Clear Successfully`, 'Error!');
+          }
+
+          else {
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("LocationZone", res.responseMessage);
           }
         }))
       }

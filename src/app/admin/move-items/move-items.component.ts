@@ -729,6 +729,7 @@ export class MoveItemsComponent implements OnInit {
         this.clearFields('MoveTo')
       }else{
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("CreateMoveTransactions",res.responseMessage);
       }
     });
   }

@@ -47,6 +47,7 @@ export class QuarantineConfirmationComponent implements OnInit {
         
         this.dialog.closeAll();
         this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+        console.log("quarantineInventoryMap",res.responseMessage);
       }
     });
       
@@ -65,6 +66,7 @@ export class QuarantineConfirmationComponent implements OnInit {
         
         this.dialog.closeAll();
         this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+        console.log("unQuarantineInventoryMap",res.responseMessage);
       }
     });
 

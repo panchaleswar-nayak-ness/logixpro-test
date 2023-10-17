@@ -85,6 +85,11 @@ export class MainComponent implements OnInit {
           );
           this.sharedService.setMenuData(this.applicationData);
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("AppNameByWorkstation",res.responseMessage);
+
+        }
       },
       (error) => {}
     );

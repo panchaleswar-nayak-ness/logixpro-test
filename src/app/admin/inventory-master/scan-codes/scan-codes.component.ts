@@ -113,6 +113,7 @@ export class ScanCodesComponent{
           } else{
             
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("DeleteScanCode",res.responseMessage);
           }
         })
       } else{
@@ -187,6 +188,7 @@ export class ScanCodesComponent{
       }
       else{
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("InsertScanCodes",res.responseMessage);
       }
     })
   } else if (item.scanCode!='') {
@@ -210,6 +212,7 @@ export class ScanCodesComponent{
         this.refreshScanCodeList();
       }else{
         this.global.ShowToastr('error','Already Exists', 'Error!');
+        console.log("UpdateScanCodes",res.responseMessage);
       }
     })
   }
@@ -238,6 +241,11 @@ export class ScanCodesComponent{
         this.scanCodesList = res.data;
         this.OldscanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
         
+
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("RefreshScanCodes",res.responseMessage);
 
       }
     })

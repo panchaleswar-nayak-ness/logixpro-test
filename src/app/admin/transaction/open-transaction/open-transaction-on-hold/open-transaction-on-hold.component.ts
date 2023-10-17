@@ -404,10 +404,18 @@ this.router.navigate([]).then((result) => {
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {
-          if (isSearchByOrder) {
-            this.searchAutocompleteList = res.data;
-          } else {
-            this.searchAutocompleteListByCol = res.data;
+          if (res.data) {
+            if (isSearchByOrder) {
+              this.searchAutocompleteList = res.data;
+            } else {
+              this.searchAutocompleteListByCol = res.data;
+            }
+
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+
           }
         },
         error: (error) => {}}
@@ -507,6 +515,7 @@ this.router.navigate([]).then((result) => {
           this.getContentData(isInit);
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("GetColumnSequence",res.responseMessage);
         }
       },
       error: (error) => {}}

@@ -71,6 +71,7 @@ export class HoldReasonComponent implements OnInit {
         } else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
           this.dialogRef.close({ isExecuted: false });
+          console.log("DeallocateTransactions",res.responseMessage);
         }
       });
   }

@@ -229,6 +229,7 @@ constructor(
         else 
         {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("configLogout",res.responseMessage);
         }
       })
      
@@ -241,6 +242,7 @@ constructor(
         else 
         {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("Logout",res.responseMessage);
         }
       })
     }

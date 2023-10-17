@@ -198,6 +198,7 @@ export class OmAddRecordComponent implements OnInit {
         this.getWarehouses();
       } else {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("UserFieldData",res.responseMessage);
       }
     });
   }
@@ -254,6 +255,11 @@ export class OmAddRecordComponent implements OnInit {
       this.iCommonAPI.SearchItem(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.itemNumberSearchList = res.data;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SearchItem",res.responseMessage);
+
         } 
       });
     }
@@ -278,6 +284,11 @@ export class OmAddRecordComponent implements OnInit {
         this.wharehouses = res.data;
         this.wharehouses = res.data.sort();
         this.wharehouses.unshift("")
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetWarehouses",res.responseMessage);
+
       } 
     });
   }
@@ -325,6 +336,7 @@ export class OmAddRecordComponent implements OnInit {
             this.oTTempUpdatePayload.description = "";
             this.oTTempUpdatePayload.unitofMeasure = ""; 
             this.wharehouseRequired = false;
+            console.log("SearchItem",res.responseMessage);
           }
         });
       }, 500);
@@ -361,7 +373,9 @@ export class OmAddRecordComponent implements OnInit {
         }
       }
       else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         this.oTTempUpdatePayload.itemNumber = "";
+        console.log("SearchItem",res.responseMessage);
         return false;
       }
     }

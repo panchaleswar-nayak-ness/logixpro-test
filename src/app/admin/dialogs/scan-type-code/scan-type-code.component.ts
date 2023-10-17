@@ -50,6 +50,11 @@ export class ScanTypeCodeComponent implements OnInit {
         }, 100);
   
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ScanCodeTypes:", res);
+        
+      }
 
     });
   }
@@ -87,10 +92,15 @@ export class ScanTypeCodeComponent implements OnInit {
         this.getScanCodeType();
         this.global.ShowToastr('success',labels.alert.success, 'Success!');
       }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("CodeTypeSave:", res.responseMessage);
+      }
   
     });
   } else {
     this.global.ShowToastr('error','Scan Codes cannot be empty', 'Error!');
+    console.log("CodeTypeSave");
   }
   }
 
@@ -118,6 +128,10 @@ export class ScanTypeCodeComponent implements OnInit {
             if(res.isExecuted){
               this.getScanCodeType();
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ScanCodeTypeDelete:", res.responseMessage);
           }
           });
         } else {

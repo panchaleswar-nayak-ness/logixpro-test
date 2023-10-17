@@ -58,6 +58,12 @@ getPreferences() {
         this.preferencesData = res.data.cmPreferences;
  
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ConsoleDataSB",res.responseMessage);
+
+
+      }
       
     });
 }
@@ -125,6 +131,7 @@ openShipEditQuantity() {
    this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
     if (res.data == "Fail") {
       this.global.ShowToastr('error',  "An error has occurred",'Error!');
+      console.log("ConfPackProcModalUpdate",res.responseMessage);
   } else {
       //edit table 
       let index = this.confPackTransTable.findIndex(x=>x.active);

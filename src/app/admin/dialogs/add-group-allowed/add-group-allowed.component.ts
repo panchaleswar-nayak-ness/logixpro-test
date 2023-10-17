@@ -84,7 +84,9 @@ export class AddGroupAllowedComponent implements OnInit {
         this.global.ShowToastr('success',labels.alert.success, 'Success!'); 
       }
       else{
+        
         this.global.ShowToastr('success',res.responseMessage, 'Success!');
+        console.log("submitControlResponse",res.responseMessage);
       }
     });
   }

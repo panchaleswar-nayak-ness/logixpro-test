@@ -101,6 +101,12 @@ export class BatchDeleteComponent implements OnInit {
               if(i) this.batchList.push(i);
             });
           }
+          else{
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("userfieldlookup",res.responseMessage);
+
+          }
         });
       this.RecordSavedItem();
     } catch (error) { 
@@ -162,6 +168,11 @@ export class BatchDeleteComponent implements OnInit {
                 this.batchID = "";
                 this.dltType = "";
               }
+              else{
+                
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("userfieldlookup",res.responseMessage);
+              }
             });
         }
       });
@@ -186,6 +197,12 @@ export class BatchDeleteComponent implements OnInit {
                 this.dltType = "";
               }
             });
+        }
+        else {
+          
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("userfieldlookup",res.responseMessage);
+
         }
       });
     }

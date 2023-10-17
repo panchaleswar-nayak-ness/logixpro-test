@@ -119,7 +119,9 @@ export class AddZoneComponent implements OnInit {
             }
           });
         }else{
+          
           this.global.ShowToastr('error','Zone Already Exists!', 'Error!');
+          console.log("deleteEmployeeZone");
         }
      
     
@@ -139,7 +141,9 @@ export class AddZoneComponent implements OnInit {
         this.dialogRef.close({ data: addZoneData, mode: mode, oldZone: oldZone });
         this.global.ShowToastr('success',labels.alert.success, 'Success!');
       } else {
+        
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("updateEmployeeZone",res.responseMessage);
       }
     });
   }

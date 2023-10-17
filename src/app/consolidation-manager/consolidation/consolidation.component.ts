@@ -226,6 +226,11 @@ export class ConsolidationComponent implements OnInit {
           this.displayedColumns_1.unshift('itemNumber')
         }
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ConsolidationIndex",res.responseMessage);
+
+      }
     }
     )
   }
@@ -307,6 +312,7 @@ export class ConsolidationComponent implements OnInit {
       }
       else {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("ConsolidationData",res.responseMessage);
       }
       
       this.RecordSavedItem();
@@ -328,6 +334,7 @@ export class ConsolidationComponent implements OnInit {
     this.IconsolidationAPI.VerifyAllItemPost(payload).subscribe((res: any) => {
       if (!res.isExecuted) {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("VerifyAllItemPost",res.responseMessage);
       }
       else {
         let z: any[] = [];
@@ -369,6 +376,7 @@ export class ConsolidationComponent implements OnInit {
 
       if (!res.isExecuted) {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("UnVerifyAll",res.responseMessage);
 
       }
       else {
@@ -433,6 +441,7 @@ export class ConsolidationComponent implements OnInit {
         }
         else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!')
+          console.log("VerifyItemPost",res.responseMessage);
         }
 
       })
@@ -467,6 +476,7 @@ export class ConsolidationComponent implements OnInit {
         }
         else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("DeleteVerified",res.responseMessage);
         }
       })
     }
@@ -628,6 +638,7 @@ export class ConsolidationComponent implements OnInit {
         // Handle the error here
 
         this.global.ShowToastr('error',"An error occured while retrieving data.", 'Error!');
+        console.log("ConsoleItemsTypeAhead");
 
 
         // Return a fallback value or trigger further error handling if needed
@@ -834,6 +845,7 @@ export class ConsolidationComponent implements OnInit {
               this.showCmPackPrintModal(true, this.TypeValue,print);
             } else {
               this.global.ShowToastr('error',"Error has occured","Error");
+              console.log("ShowCMPackPrintModal",res.responseMessage);
             }
           });
         }
@@ -852,6 +864,7 @@ export class ConsolidationComponent implements OnInit {
           this.showCmPackPrintModal(true, this.TypeValue,print);
         } else {
           this.global.ShowToastr('error',"Error has occured","Error");
+          console.log("ShowCMPackPrintModal",res.responseMessage);
         }
       });
     }

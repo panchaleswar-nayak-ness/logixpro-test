@@ -327,6 +327,7 @@ export class InventoryMapComponent implements OnInit {
         this.getContentData(isInit);
       } else {
         this.global.ShowToastr('error','Something went wrong', 'Error!');
+        console.log("getSetColumnSeq",res.responseMessage);
       }
     });
   }
@@ -556,6 +557,7 @@ export class InventoryMapComponent implements OnInit {
       this.global.ShowToastr('success',res.responseMessage, 'Success!');
     } else {
       this.global.ShowToastr('error','Something went wrong', 'Error!');
+      console.log("duplicate",res.responseMessage);
     }
   });
 
@@ -618,6 +620,11 @@ export class InventoryMapComponent implements OnInit {
       if(res.data){
         this.searchAutocompleteList = res.data;
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("getSearchData",res.responseMessage);
+
+        }
 
     });
   }
@@ -631,6 +638,7 @@ export class InventoryMapComponent implements OnInit {
     }else{
       this.isSearchColumn = true;
     }
+    
     this.searchAutocompleteList = [];
     if(this.columnSearch.searchValue){
       this.columnSearch.searchValue = '';

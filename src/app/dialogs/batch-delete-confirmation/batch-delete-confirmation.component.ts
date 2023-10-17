@@ -48,6 +48,7 @@ export class BatchDeleteConfirmationComponent {
                 this.dialogRef.close({ isExecuted: true });
               } else {
                 this.global.ShowToastr('error','Something went wrong', 'Error!');
+                console.log("BatchTotesDelete",res.responseMessage);
                 this.dialogRef.close({isExecuted:false});
               }
             },
@@ -63,6 +64,7 @@ export class BatchDeleteConfirmationComponent {
                 this.dialogRef.close({ isExecuted: true });
               } else {
                 this.global.ShowToastr('error','Something went wrong', 'Error!');
+                console.log("AllBatchDelete",res.responseMessage);
                 this.dialogRef.close({isExecuted:false});
               }
             },
@@ -71,6 +73,11 @@ export class BatchDeleteConfirmationComponent {
       } else {
         this.dialogRef.close({isExecuted:false});
       }
+    }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("onConfirmdelete");
+
     }
   }
   CancelPopup(){

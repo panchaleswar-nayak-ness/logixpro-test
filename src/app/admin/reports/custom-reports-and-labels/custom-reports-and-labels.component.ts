@@ -194,6 +194,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
         this.iAdminApiService.deleteReport(payload).subscribe(res=>{
           if (!res.data) {
             this.global.ShowToastr('error',"Unexpected error occurred.  If this persists please contact Scott Tech for support.", 'Error!');
+            console.log("deleteReport",res.responseMessage);
         } else {
           this.Getcustomreports()
           this.Detail= {}
@@ -263,6 +264,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
           }
           else{
             this.global.ShowToastr('error', `Error has occured while pushing changes to the other worksations`, 'Error!');
+            console.log("pushReportChanges",res.responseMessage);
           }
         })
       }
@@ -288,6 +290,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
     this.iAdminApiService.updatereportDetails(payload).subscribe(res=>{
       if(!res.isExecuted){
         this.global.ShowToastr('error',"Unexpected error occurred. Changes Not Saved", 'Error!');
+        console.log("updatereportDetails",res.responseMessage);
       }
     })
   }

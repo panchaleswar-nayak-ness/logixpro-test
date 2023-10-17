@@ -211,6 +211,7 @@ export class SrCurrentOrderComponent implements OnInit {
         this.systemReplenishmentCount(true);
       } else {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("SystemReplenishmentTable",res.responseMessage);
       }
     });
   }
@@ -489,6 +490,7 @@ export class SrCurrentOrderComponent implements OnInit {
       } else {
         this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
         this.dialog.closeAll();
+        console.log("ReplenishmentsByDelete",res.responseMessage);
       }
     });
   }
@@ -503,6 +505,11 @@ export class SrCurrentOrderComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.searchAutocompleteList = res.data.sort();
       }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ReplenishReportSearchTA",res.responseMessage);
+
+      }
     });
   }
 
@@ -516,6 +523,11 @@ export class SrCurrentOrderComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.noOfPicks = res.data.pickCount;
         this.noOfPutAways = res.data.putCount;
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SystemReplenishmentCount",res.responseMessage);
+
       }
     });
   }

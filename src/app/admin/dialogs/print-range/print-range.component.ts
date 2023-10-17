@@ -75,6 +75,10 @@ export class PrintRangeComponent implements OnInit {
       }
       else {
         this.beginLocationSearchList = [];
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("LocationBegin",res.responseMessage);
+        
+
       }
     });
   }
@@ -91,6 +95,9 @@ export class PrintRangeComponent implements OnInit {
       }
       else {
         this.endLocationSearchList = [];
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("LocationEnd",res.responseMessage);
+
       }
     });
   }
@@ -112,6 +119,8 @@ export class PrintRangeComponent implements OnInit {
       }
       else {
         this.quantitySelected = 0;
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("QuantitySelected",res.responseMessage);
       }
     });
   }

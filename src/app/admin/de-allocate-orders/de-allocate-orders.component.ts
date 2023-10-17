@@ -147,9 +147,15 @@ export class DeAllocateOrdersComponent implements OnInit {
       this.iAdminApiService.AllAllocatedOrders(payload).subscribe((res=>{
 
         const orderNamesResponseObj = res.data.map((value, index) => {
+          
      if(this.orderNumbersList.includes(value)){
       return {  name: value,isChecked:true ,isRowSelected:false};
-          }else{
+          }
+          
+          else
+          
+          {
+
             return {  name: value,isChecked:false ,isRowSelected:false};
           }
          
@@ -182,11 +188,17 @@ export class DeAllocateOrdersComponent implements OnInit {
         "filter": this.FilterString 
       }
       this.iAdminApiService.OrderItemsTable(payload).subscribe((res=>{
-        res.data.openTransactions.forEach((item,i)=>{
-          if(this.orderNumbersList.includes(item.orderNumber)){
+        res.data.openTransactions.forEach((item,i)=>
+        {
+          if(this.orderNumbersList.includes(item.orderNumber))
+          {
             res.data.openTransactions[i].isDeallocate=true
           }else{
             res.data.openTransactions[i].isDeallocate=false
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("OrderItemsTable",res.responseMessage);
+
           }
         })
         this.orderItemTransactions.data = res.data.openTransactions
@@ -217,6 +229,9 @@ export class DeAllocateOrdersComponent implements OnInit {
             res.data.openTransactions[i].isDeallocate=true
           }else{
             res.data.openTransactions[i].isDeallocate=false
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("OrderItemsTable",res.responseMessage);
           }
         })
 
@@ -293,7 +308,9 @@ export class DeAllocateOrdersComponent implements OnInit {
                 this.orderItemTable()
             }
             else{
+              
               this.global.ShowToastr('error','Order De-Allocation Not Successfull', 'Error!');
+              console.log("DeAllocateOrder",res.responseMessage);
             }
           }))
         }
@@ -325,7 +342,9 @@ export class DeAllocateOrdersComponent implements OnInit {
               this.actions = ''
           }
           else{
+            
             this.global.ShowToastr('error','Order De-Allocation Not Successfull', 'Error!');
+            console.log("DeAllocateOrder",res.responseMessage);
           }
         }))
       }

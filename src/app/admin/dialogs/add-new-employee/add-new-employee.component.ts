@@ -153,7 +153,9 @@ ChangePassword(data){
               this.global.ShowToastr('success',labels.alert.update, 'Success!');
             }
             else {
+              
               this.global.ShowToastr('error',res.responseMessage?.toString() + '. User already exists.', 'Error!');
+              console.log("updateAdminEmployee",res.responseMessage);
             }
           });
       }
@@ -169,7 +171,9 @@ ChangePassword(data){
               if(response.responseMessage?.toString() === 'User already exists'){
                 this.global.ShowToastr('error',response.responseMessage, 'Error!');
               } else{
+                
                 this.global.ShowToastr('error',response.responseMessage?.toString() + '. User already exists.', 'Error!');
+                console.log("saveAdminEmployee",response.responseMessage);
               }
             }
           });
