@@ -3,66 +3,62 @@
 
     <div class="row">
       <div class="col-xl-5">
-        <div class="d-xl-flex gap-12 align-items-center ">
+        
 
-          <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
+          <!-- <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
             <mat-label>Select</mat-label>
-            <mat-select class="employees-action" [(ngModel)]="this.searchCol"
-              (selectionChange)="actionDialog($event.value)">
+            <mat-select class="employees-action" [(ngModel)]="this.searchCol" (selectionChange)="actionDialog($event.value)">
               <mat-option value=""></mat-option>
               <mat-option *ngFor="let item of Order_Table_Config | sort:'colDef':false" [value]="item.colDef">
                 {{item.colDef}}
               </mat-option>
             </mat-select>
-            <span class="material-symbols-outlined icon-expand-more">
-              expand_more
-            </span>
+            <span class="material-symbols-outlined icon-expand-more">expand_more</span>
           </mat-form-field>
+          
           <span class="v-br d-xl-block d-none mb-3">-</span>
+
           <div class="d-flex g-mini-search-box w-100 mb-3">
-
-
-            <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()"
-              [hideRequiredMarker]="hideRequiredControl.value">
-              <span class="material-symbols-outlined icon-search">
-                Search
-              </span>
-              <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='searchString' [disabled]="!searchCol"
-                [matAutocomplete]="auto" (ngModelChange)="this.searchByInput.next($event)">
-                <button matSuffix *ngIf="searchString" class="clear-btn"  (click)="searchString = '';this.searchByInput.next('')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+            <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
+              <span class="material-symbols-outlined icon-search">Search</span>
+              <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='searchString' [disabled]="!searchCol" [matAutocomplete]="auto" (ngModelChange)="this.searchByInput.next($event)">
+              <button matSuffix *ngIf="searchString" class="clear-btn" (click)="searchString = '';this.searchByInput.next('')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
               <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                  {{option}}
-                </mat-option>
+                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
               </mat-autocomplete>
             </mat-form-field>
-
-
           </div>
+
           <div class="d-block d-lg-flex">
-          <button  (click)="clearData($event)" mat-stroked-button appearance="outline" color="warn"
-            class="button-remove-all-w-stroke mb-3 w-100" style="flex:1">
-            Clear
-          </button>
-          </div>
-        </div>
+            <button (click)="clearData($event)" mat-stroked-button appearance="outline" color="warn" class="button-remove-all-w-stroke mb-3 w-100" style="flex:1">Clear</button>
+          </div> -->
+
+          <app-column-filter-component 
+            [tableColumns]="this.Order_Table_Config" 
+            [searchCol]="this.searchCol"
+            (selectionChangeEvent)="actionDialog($event)"
+            [searchString]="this.searchString"
+            [searchByInput]="this.searchByInput"
+            [searchAutocompleteList]="this.searchAutocompleteList"
+            (autoCompleteEvent)="this.searchString = $event; this.searchByInput.next($event)"
+            [showClearBtn]="true"
+            (clearBtnEvent)="clearData($event)">
+          </app-column-filter-component>
+
       </div>
+
       <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
         <div class="d-block d-lg-flex w-100 justify-content-end">
-        <mat-form-field class="action-dropdown" appearance="outline" style="flex:1 auto">
-          <mat-label>Action</mat-label>
-          <mat-select class="employees-action">
-            <mat-option (click)="previewReport()">Preview 50 Pages Only</mat-option>
-            <mat-option (click)="printReport()">Print Report</mat-option>
-          </mat-select>
-          <span class="material-symbols-outlined icon-expand-more">
-            expand_more
-          </span>
-        </mat-form-field>
+          <mat-form-field class="action-dropdown" appearance="outline" style="flex:1 auto">
+            <mat-label>Action</mat-label>
+            <mat-select class="employees-action">
+              <mat-option (click)="previewReport()">Preview 50 Pages Only</mat-option>
+              <mat-option (click)="printReport()">Print Report</mat-option>
+            </mat-select>
+            <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+          </mat-form-field>
         </div>
-
       </div>
-   
     </div>
 
 

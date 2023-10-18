@@ -283,7 +283,6 @@ import { SharedComponentsModule } from "../common/globalComponents/shared-compon
         SrNewOrderComponent,
         FilterItemNumbersComponent,
         SrCurrentOrderComponent,
-        SortPipe,
         LaLocationAssignmentQuantitiesComponent,
         MoveItemsComponent,
         AdminPreferencesComponent,
