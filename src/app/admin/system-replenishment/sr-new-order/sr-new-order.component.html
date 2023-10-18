@@ -1,38 +1,9 @@
-<mat-card class="mat-elevation-z g-card mt-2 mb-3">
-    <div class="mb-3">
-        <app-icon-heading-component heading="Create New Replenishment Orders" icon="ads_click">
-        </app-icon-heading-component>
-    </div>
-    <div class="card bg-light-blue bg-50 br-none px-4 py-4 br-14">
-        <div class="row">
-            <div class="col-xl-6">
-                <div class="row align-items-center">
-                    <div class="col-xl-7">
-                        <mat-form-field class="w-100 custom-form-field custom-form-field-bg-white" appearance="outline">
-                            <mat-label>No. of Selected Replenishments</mat-label>
-                            <input type="text" aria-label="Search" matInput disabled [(ngModel)]="numberSelectedRep">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-xl-5 mb-3 mb-lg-0">
-                        <div class="d-flex gap-20 mb-0">
-                            <mat-checkbox [checked]="kanban" color="primary" (change)="onChangeKanban($event)" [(ngModel)]="kanban">
-                                Kanban
-                            </mat-checkbox>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-xl-4 offset-xl-2">
-                <div class="d-flex d-xl-block justify-content-end">
-                    <button style="flex:1 auto" mat-flat-button color="primary" class="btn-md float-end" (click)="createNewOrdersList()">
-                        Create New Order List
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</mat-card>
+<app-sr-new-input-fields
+[numberSelectedRep]="numberSelectedRep"
+[kanban]="kanban"
+(onChangeKanbanEmit)="onChangeKanban($event)"
+(createNewOrdersListEmit)="kanban = $event; createNewOrdersList()">
+</app-sr-new-input-fields>
 <mat-card class="mat-elevation-z g-card mb-3">
     <mat-card-content>
         <div class="row mb-3">
