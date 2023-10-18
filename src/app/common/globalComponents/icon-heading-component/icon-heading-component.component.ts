@@ -7,6 +7,7 @@ import { Component,Input, OnInit } from '@angular/core';
 })
 export class IconHeadingComponentComponent implements OnInit {
 
+  @Input() headingClass : string = 'card-header-title mb-0 d-flex align-items-center';
   @Input() icon: string;
   @Input() heading: string;
   constructor() { }
