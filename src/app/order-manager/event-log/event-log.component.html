@@ -1,14 +1,8 @@
 <mat-card class="mat-elevation-z g-card mb-3 mt-2" style="height: 100%;">
     <mat-card-content>
         <div class="d-flex align-items-center flex-wrap mb-3">
-            <h2 class="card-header-title mb-3 me-4 d-flex align-items-center">
-                <div class="mat-icon-wrap me-lg-3 me-2">
-                    <span class="material-symbols-outlined">
-                        event_note
-                    </span>
-                </div>
-                <span>Event Log</span>
-            </h2>
+            
+            <app-icon-heading-component class="card-header-title mb-3 me-4 d-flex align-items-center" heading="Event Log" icon="event_note"></app-icon-heading-component>
             <mat-checkbox class="example-margin custom-checkbox mb-3" color="primary" [(ngModel)]="ignoreDateRange"
                 (change)="onIgnoreDateRange($event)">Ignore Date Range</mat-checkbox>
         </div>
@@ -153,14 +147,8 @@
 <mat-card class="mat-elevation-z g-card mb-3 mt-2" style="height: 100%;">
     <mat-card-content>
             <div class="row">
-            <h2 class="col card-header-title mb-3 me-4 d-flex align-items-center flex-wrap">
-                <div class="mat-icon-wrap me-lg-3 me-2">
-                    <span class="material-symbols-outlined">
-                        insert_chart
-                    </span>
-                </div>
-                <span>Log Table</span>
-            </h2>
+            
+            <app-icon-heading-component class="col card-header-title mb-3 me-4 d-flex align-items-center flex-wrap" heading="Log Table" icon="insert_chart"></app-icon-heading-component>
             
             <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
                 <div class="d-block d-lg-flex d-flex w-100 justify-content-end">

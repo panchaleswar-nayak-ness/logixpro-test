@@ -11,14 +11,8 @@
         <div class="col-xl-4">
             <mat-card class="mat-elevation-z g-card mb-4">
                 <mat-card-content>
-                    <h2 class="card-header-title mb-4 d-flex align-items-center">
-                        <div class="mat-icon-wrap me-lg-3 me-2">
-                            <span class="mat-icon material-symbols-outlined">
-                                backup_table
-                            </span>
-                        </div>
-                        <span>Selected Transaction Info</span>
-                    </h2>
+                    
+                    <app-icon-heading-component class="card-header-title mb-4 d-flex align-items-center" heading="Selected Transaction Info" icon="backup_table"></app-icon-heading-component>
                     <div>
                         <mat-form-field class="d-block w-100 mb-3" appearance="outline">
                             <mat-label>Record Created By</mat-label>
@@ -240,14 +234,8 @@
 
             <mat-card class="mat-elevation-z g-card mt-4">
                 <mat-card-content>
-                    <h2 class="card-header-title mb-4 d-flex align-items-center">
-                        <div class="mat-icon-wrap me-lg-3 me-2">
-                            <span class="mat-icon material-symbols-outlined">
-                                filter_frames
-                            </span>
-                        </div>
-                        <span>Selected Orders</span>
-                    </h2>
+                    
+                    <app-icon-heading-component class="card-header-title mb-4 d-flex align-items-center" heading="Selected Orders" icon="filter_frames"></app-icon-heading-component>
                     <div class="pb-5 mb-3">
                         <mat-tab-group dynamicHeight>
                             <mat-tab label="Reprocess ({{orders.reprocess}})">
