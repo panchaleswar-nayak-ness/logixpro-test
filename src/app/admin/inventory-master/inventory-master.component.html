@@ -154,30 +154,6 @@
   </form>
 </div>
 
-<ng-template #quarantineAction>
-  <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
-    <div color="warn" class="circle-icon circle-66 circle-danger mb-4">
-      <mat-icon color="warn">vpn_lock</mat-icon>
-    </div>
-    <div>
-      <p class="bold text-tritary-900 mb-4">Click submit to quarantine item {{this.currentPageItemNo}}. This will cause
-        any allocated
-        orders and locations with this item to be deallocated.</p>
-      <div class="mb-3">
-        <button mat-flat-button color="warn" class="custom-btn button-delete-flat bg-white w-100 btn-lg"
-          [mat-dialog-close]="true">
-          Submit
-        </button>
-      </div>
-      <div>
-        <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false">
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
 <ng-template #UNquarantineAction>
   <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
     <div color="warn" class="circle-icon circle-66 circle-danger mb-4">
@@ -203,7 +179,7 @@
   </div>
 </ng-template>
 
-<ng-template #propertiesChanged>
+<!-- <ng-template #propertiesChanged>
 
   <div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
     <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
@@ -227,4 +203,4 @@
 </ng-template>
 
 
-<div class="confirmation-dialog" style="display: none;">h1</div>
+<div class="confirmation-dialog" style="display: none;">h1</div> -->

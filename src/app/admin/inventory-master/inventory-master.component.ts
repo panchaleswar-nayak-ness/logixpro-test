@@ -1,6 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../../app/init/auth.service'; 
-import { MatDialog} from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
 import { ItemNumberComponent } from '../dialogs/item-number/item-number.component';
 import { FormBuilder,  FormGroup, Validators } from '@angular/forms';
@@ -25,7 +24,9 @@ import { CurrentTabDataService } from './current-tab-data-service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { data } from 'jquery';
+import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
+import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
+
 
 
 
@@ -104,7 +105,6 @@ export class InventoryMasterComponent implements OnInit {
   ) {
     this.iAdminApiService = adminApiService;
   }
-  @ViewChild('quarantineAction') quarantineTemp: TemplateRef<any>;
   @ViewChild('UNquarantineAction') unquarantineTemp: TemplateRef<any>;
   @ViewChild('propertiesChanged') propertiesChanged: TemplateRef<any>;
   @ViewChild(KitItemComponent) kititemcom: KitItemComponent;
@@ -784,7 +784,7 @@ export class InventoryMasterComponent implements OnInit {
 
   quarantineDialog(): void {
     this.isDialogOpen = true
-    const dialogRef:any = this.global.OpenDialog(this.quarantineTemp, {
+    const dialogRef:any = this.global.OpenDialog(QuarantineDialogComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -815,7 +815,7 @@ export class InventoryMasterComponent implements OnInit {
 
   unquarantineDialog(): void {
     this.isDialogOpen = false
-    const dialogRef:any = this.global.OpenDialog(this.unquarantineTemp, {
+    const dialogRef:any = this.global.OpenDialog(UnquarantineDialogComponent, {
       width: '450px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -824,7 +824,7 @@ export class InventoryMasterComponent implements OnInit {
       this.isDialogOpen = true
       if (x) {
         let paylaod = {
-          "itemNumber": this.currentPageItemNo,
+          "itemNumber": this?.currentPageItemNo,
           "append": this.append
         }
         this.iAdminApiService.UpdateInventoryMasterOTUnQuarantine(paylaod).subscribe((res: any) => {

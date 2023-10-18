@@ -10,7 +10,7 @@ import { IconHeadingComponentComponent } from './icon-heading-component/icon-hea
 @NgModule({
   declarations: [
     TableContextMenuComponentComponent,
-    IconHeadingComponentComponent
+    IconHeadingComponentComponent,
   ],
   exports: [
     TableContextMenuComponentComponent,
