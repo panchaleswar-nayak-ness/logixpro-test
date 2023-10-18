@@ -285,7 +285,6 @@ import { UnquarantineDialogComponent } from './dialogs/unquarantine-dialog/unqua
         SrNewOrderComponent,
         FilterItemNumbersComponent,
         SrCurrentOrderComponent,
-        SortPipe,
         LaLocationAssignmentQuantitiesComponent,
         MoveItemsComponent,
         AdminPreferencesComponent,

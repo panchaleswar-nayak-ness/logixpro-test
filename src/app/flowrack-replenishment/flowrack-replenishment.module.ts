@@ -7,7 +7,8 @@ import { FrPreferencesComponent } from './fr-preferences/fr-preferences.componen
 import { MaterialModule } from '../material-module';
 import { GeneralModule } from '../gen-module';
 import { FrFlowrackReplenishmentComponent } from './fr-flowrack-replenishment/fr-flowrack-replenishment.component';
-
+import { IconHeadingComponentComponent } from '../common/globalComponents/icon-heading-component/icon-heading-component.component';
+import { SharedComponentsModule } from '../common/globalComponents/shared-components.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { FrFlowrackReplenishmentComponent } from './fr-flowrack-replenishment/fr
     CommonModule,
     MaterialModule,
     GeneralModule,
-    FlowrackReplenishmentRoutingModule
+    FlowrackReplenishmentRoutingModule,
+    SharedComponentsModule
   ]
 })
 export class FlowrackReplenishmentModule { }

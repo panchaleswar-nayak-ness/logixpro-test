@@ -89,14 +89,11 @@
     <mat-card class="mat-elevation-z g-card mb-4">
         <mat-card-content>
             <div class="row">
-                <h2 class="col card-header-title mb-3 d-flex align-items-center">
-                    <div class="mat-icon-wrap me-lg-3 me-2">
-                        <span class="material-symbols-outlined">
-                            category
-                        </span>
-                    </div>
-                    <span>Item Details</span>
-                </h2>
+            
+                 <app-icon-heading-component class="col card-header-title mb-3 d-flex align-items-center" heading="Item Details" icon="category">
+
+                </app-icon-heading-component> 
+                
                 <div class="col-xl-6">
                 <div class="d-xl-block d-flex mb-3 w-100">
                 <button [disabled]="!item || this.orderNumber==''" mat-flat-button color="primary" class="btn-regular float-end" color="primary" (click)="openUserFieldsEditDialogue()" style="flex:1">
@@ -198,14 +195,8 @@
     <mat-card class="mat-elevation-z g-card mb-4">
         <mat-card-content>
             <div class="d-flex align-items-center mb-3 flex-wrap">
-                <h2 class="card-header-title mb-3 d-flex align-items-center me-4">
-                    <div class="mat-icon-wrap me-lg-3 me-2">
-                        <span class="material-symbols-outlined">
-                            dvr
-                        </span>
-                    </div>
-                    <span>Transaction Details</span>
-                </h2>
+            
+                <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center me-4" heading="Transaction Details" icon="dvr"></app-icon-heading-component>
                 <mat-checkbox [disabled]="!item" [(ngModel)]="emergency" color="primary" class="example-margin custom-checkbox mb-3">Emergency</mat-checkbox>
             </div>
             <div class="row">

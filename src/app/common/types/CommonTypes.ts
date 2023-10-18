@@ -5,4 +5,8 @@ export interface Operations {
     title: string;
     type: OperationTypes;
 }
-  
+
+export interface TableHeaderDefinitions {
+    colHeader: string,
+    colDef: string
+} 
