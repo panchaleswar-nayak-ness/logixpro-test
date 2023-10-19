@@ -1,12 +1,8 @@
 <div class="container-fluid p-0 mt-3">
     <mat-card class="mat-elevation-z g-card">
       <mat-card-content>
-        <div
-          class="d-xl-flex justify-content-between align-items-center mb-3"
-        >
-          
+        <div class="d-xl-flex justify-content-between align-items-center mb-3">
           <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3 mb-xl-0" heading="System Settings" icon="settings_applications"></app-icon-heading-component>
-
           <div class="d-flex d-xl-block">
             <mat-form-field
               class="action-dropdown custom-form-field-bg-white float-end"
@@ -53,205 +49,19 @@
         
         <div class="row mt-4 mx-0 align-items-end">
           <div class="col-xl-6">
-            <h2 class="f-16 bold mb-3 d-flex align-items-center">
-              <span>Transactions</span>
-            </h2>
-
-            <div class="card p-3 mb-4" style="padding-bottom: 1px !important">
-              <div class="row align-items-center">
-                <div class="col-xl-12">
-                  <mat-form-field
-                    class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                    appearance="outline"
-                  >
-                    <mat-label>Import Transactions To</mat-label>
-                    <mat-select class="employees-action">
-                      <mat-option value="123456">123456789cc</mat-option>
-                      <mat-option value="987654">987654789cc</mat-option>
-                      <mat-option value="147852">147852789cc</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-12">
-                  <mat-form-field
-                    class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                    appearance="outline"
-                  >
-                    <mat-label>Import File Type</mat-label>
-                    <mat-select class="employees-action">
-                      <mat-option value="123456">123456789cc</mat-option>
-                      <mat-option value="987654">987654789cc</mat-option>
-                      <mat-option value="147852">147852789cc</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-12">
-                  <mat-form-field
-                    class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                    appearance="outline"
-                  >
-                    <mat-label>Export File Type</mat-label>
-                    <mat-select class="employees-action">
-                      <mat-option value="123456">123456789cc</mat-option>
-                      <mat-option value="987654">987654789cc</mat-option>
-                      <mat-option value="147852">147852789cc</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-                <div class="d-flex justify-content-between mb-3">
-                  Automatic Import of Inventory refresh files<mat-slide-toggle color="primary">
-                  </mat-slide-toggle>
-                </div>
-              </div>
-            </div>
+            <app-ie-ss-transactions></app-ie-ss-transactions>
           </div>
-          <div class="col-xl-6">
 
-            <div class="card p-3 mb-4" style="padding-bottom: 1px !important">
-              <div class="row align-items-center">
-                <div class="col-xl-12">
-                  <mat-form-field
-                    class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                    appearance="outline"
-                  >
-                    <mat-label>Days Back To Check For Duplicates</mat-label>
-                    <mat-select class="employees-action">
-                      <mat-option value="123456">123456789cc</mat-option>
-                      <mat-option value="987654">987654789cc</mat-option>
-                      <mat-option value="147852">147852789cc</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                  Create Files for Completed Transactions<mat-slide-toggle
-                    color="primary"
-                  >
-                  </mat-slide-toggle>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                  No Carriage Return<mat-slide-toggle color="primary">
-                  </mat-slide-toggle>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                  Block Import Duplicates<mat-slide-toggle color="primary">
-                  </mat-slide-toggle>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                  Trim User Fields<mat-slide-toggle color="primary">
-                  </mat-slide-toggle>
-                </div>
-                <div class="d-flex justify-content-between mb-3">
-                  Trim Item Number<mat-slide-toggle color="primary">
-                  </mat-slide-toggle>
-                </div>
-              </div>
-            </div>
+          <div class="col-xl-6">
+            <app-ie-ss-check-for-duplicates></app-ie-ss-check-for-duplicates>
           </div>
+
           <div class="col-xl-6">
-            <h2 class="f-16 bold mb-3 d-flex align-items-center">
-              <span>Import</span>
-            </h2>
-
-            <div class="card p-3 mb-4" style="padding-bottom: 1px !important">
-              <div class="row align-items-center">
-                <div class="col-xl-12">
-                  <mat-form-field
-                    class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                    appearance="outline"
-                  >
-                    <mat-label>Import Process Interval Minutes</mat-label>
-                    <mat-select class="employees-action">
-                      <mat-option value="123456">123456789cc</mat-option>
-                      <mat-option value="987654">987654789cc</mat-option>
-                      <mat-option value="147852">147852789cc</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-12">
-                  <mat-form-field
-                    class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                    appearance="outline"
-                  >
-                    <mat-label>Last Import </mat-label>
-                    <mat-select class="employees-action">
-                      <mat-option value="123456">123456789cc</mat-option>
-                      <mat-option value="987654">987654789cc</mat-option>
-                      <mat-option value="147852">147852789cc</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-
-                <div class="d-flex justify-content-between mb-3">
-                  Automatic Import<mat-slide-toggle color="primary">
-                  </mat-slide-toggle>
-                </div>
-              </div>
-            </div>
+            <app-ie-ss-import></app-ie-ss-import>
           </div>
+
           <div class="col-xl-6">
-            <h2 class="f-16 bold mb-3 d-flex align-items-center">
-              <span>Export</span>
-            </h2>
-
-            <div class="card p-3 mb-4" style="padding-bottom: 1px !important">
-              <div class="row align-items-center">
-                <div class="col-xl-12">
-                  <mat-form-field
-                    class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                    appearance="outline"
-                  >
-                    <mat-label>Export Process Interval Minutes</mat-label>
-                    <mat-select class="employees-action">
-                      <mat-option value="123456">123456789cc</mat-option>
-                      <mat-option value="987654">987654789cc</mat-option>
-                      <mat-option value="147852">147852789cc</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-12">
-                  <mat-form-field
-                    class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                    appearance="outline"
-                  >
-                    <mat-label>Last Export </mat-label>
-                    <mat-select class="employees-action">
-                      <mat-option value="123456">123456789cc</mat-option>
-                      <mat-option value="987654">987654789cc</mat-option>
-                      <mat-option value="147852">147852789cc</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-
-                <div class="d-flex justify-content-between mb-3">
-                  Automatic Exports<mat-slide-toggle color="primary">
-                  </mat-slide-toggle>
-                </div>
-              </div>
-            </div>
+            <app-ie-ss-export></app-ie-ss-export>
           </div>
         </div>
       </mat-card-content>

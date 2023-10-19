@@ -1,221 +1,32 @@
 <div class="container-fluid p-0 mt-3" *ngIf="!showFilter">
     <mat-card class="mat-elevation-z g-card mb-3">
       <mat-card-content>
-        <div
-          class="d-xl-flex justify-content-between align-items-center mb-3"
-        >
-          
+        <div class="d-xl-flex justify-content-between align-items-center mb-3">
           <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3 mb-xl-0" heading="Transfer Settings" icon="settings_applications"></app-icon-heading-component>
         </div>
-        <div class="row mt-4 mx-0">
-          <div class="col-xl-6">
-            <div class="card p-3 mb-4" style="padding-bottom: 1px !important">
-              <div class="row align-items-center">
-                <div class="col-xl-6">
-                  <mat-form-field
-                    class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                    appearance="outline"
-                  >
-                    <mat-label>Import Job Type</mat-label>
-                    <mat-select class="employees-action">
-                      <mat-option value="123456">123456789cc</mat-option>
-                      <mat-option value="987654">987654789cc</mat-option>
-                      <mat-option value="147852">147852789cc</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-6">
-                  <mat-form-field
-                    class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                    appearance="outline"
-                  >
-                    <mat-label>Export Job Type</mat-label>
-                    <mat-select class="employees-action">
-                      <mat-option value="123456">123456789cc</mat-option>
-                      <mat-option value="987654">987654789cc</mat-option>
-                      <mat-option value="147852">147852789cc</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-6 mt-1">
-                  <button
-                    mat-flat-button
-                    class="btn-regular w-100 mb-3"
-                    color="primary"
-                    (click)="IeImportAllDialog()"
-                  >
-                    <mat-label>Import All</mat-label>
-                  </button>
-                </div>
-                <div class="col-xl-6 mt-1">
-                  <button
-                    mat-flat-button
-                    class="btn-regular w-100 mb-3"
-                    color="primary"
-                  >
-                    <mat-label> Export All</mat-label>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-6">
-            <div class="card p-3 mb-3" style="padding-bottom: 1px !important">
-              <div class="row align-items-center">
-                
-                <div class="col-xl-6">
-                  <mat-form-field
-                    class="custom-form-field w-100 mb-3"
-                    appearance="outline"
-                  >
-                    <mat-label>From</mat-label>
-                    <input matInput type="text" />
-                  </mat-form-field>
-                </div>
-
-               
-                <div class="col-xl-6">
-                  <mat-form-field
-                    class="custom-form-field w-100 mb-3"
-                    appearance="outline"
-                  >
-                    <mat-label>To</mat-label>
-                    <input matInput type="text" />
-                  </mat-form-field>
-                </div>
-
-
-
-                <div class="col-xl-6">
-                  <mat-form-field
-                    class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                    appearance="outline"
-                  >
-                    <mat-label>Export Type</mat-label>
-                    <mat-select class="employees-action">
-                      <mat-option value="123456">123456789cc</mat-option>
-                      <mat-option value="987654">987654789cc</mat-option>
-                      <mat-option value="147852">147852789cc</mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-
-
-                <div class="col-xl-6">
-                  <div class="d-flex justify-content-between mb-2">
-                    Export Data Range<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
+        <app-ie-ts-import-export-job-type></app-ie-ts-import-export-job-type>
 
       </mat-card-content>
     </mat-card>
-
 
     <mat-card class="mat-elevation-z g-card">
       <mat-card-content>
 
         <div class="row">
           <div class="col-xl-12">
-            <div
-          class="d-xl-flex justify-content-between align-items-center mb-3"
-        >
-        
-          <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3 mb-xl-0" heading="Transaction Type to Export" icon="summarize"></app-icon-heading-component>
-
-          <div class="d-flex justify-content-end col-xl-4" *ngIf="directAdmin ">
-            <button
-              mat-flat-button
-              class="btn-regular w-100 my-3"
-              color="primary"
-              (click)="retunrToPrev()"
-            >
-              <mat-label> Import / Export Transactions</mat-label>
-            </button>
-          </div>
-        </div>
-            <div class="card p-3 mb-4" style="padding-bottom: 1px !important">
-              <div class="row align-items-center">
-                <div class="col-xl-6">
-                  <div class="d-flex justify-content-between mb-2">
-                    Hot Picks<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    Adjustments<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    Hot Put Aways<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    Moves<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    Complete<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    Shipping Complete<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    Shipping<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  
-                </div>
-                <div class="col-xl-6">
-                  <div class="d-flex justify-content-between mb-2">
-                    Shipping Transactions<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    Wait for Split Transactions<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    Recombine Split Transactions<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    Hold Pick Until Ship Complete<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    Hold Pick Until Tote Complete<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-5">
-                    Hold Pick Until Order Complete<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                
-                </div>
+            <div class="d-xl-flex justify-content-between align-items-center mb-3">
+              <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3 mb-xl-0" heading="Transaction Type to Export" icon="summarize"></app-icon-heading-component>
+              <div class="d-flex justify-content-end col-xl-4" *ngIf="directAdmin">
+                <button mat-flat-button class="btn-regular w-100 my-3" color="primary" (click)="retunrToPrev()">
+                  <mat-label> Import / Export Transactions</mat-label>
+                </button>
               </div>
             </div>
+            <app-ie-ts-transaction-type-to-export></app-ie-ts-transaction-type-to-export>
           </div>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
-
 
   <app-filters *ngIf="showFilter" (back)="retunrToPrev()"></app-filters>

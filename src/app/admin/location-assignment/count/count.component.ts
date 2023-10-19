@@ -36,7 +36,7 @@ export class CountComponent implements OnInit {
   public totalCount: any;
   public searchOrder: string = '';
   public searchOrder1: string = '';
-
+  settime:any =false;
   displayedColumns: string[] = ['orderNumber'  , 'itemCount', 'priority', 'requiredDate','actions'];
   displayedColumns1: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate','actions'];
   
@@ -65,11 +65,10 @@ export class CountComponent implements OnInit {
   @ViewChild('deleteAction') quarantineTemp: TemplateRef<any>;
 
   @ViewChild('addOrder') addOrderTemp: TemplateRef<any>;
-  @Output() newItemEvent = new EventEmitter<Event>();
-  @ViewChild('autoFocusField') searchBoxField: ElementRef;
+  @Output() newItemEvent = new EventEmitter<Event>(); 
 
-  ngAfterViewInit() {
-    this.searchBoxField.nativeElement.focus();
+  ngAfterViewInit() { 
+    
   }
 
   ngOnInit(): void {
@@ -172,7 +171,7 @@ export class CountComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.leftTable = new MatTableDataSource(result);
       this.leftTable.paginator = this.paginator
-      this.newItemEvent.emit(result.tabIndex);
+      this.newItemEvent.emit(result.tabIndex); 
       
     })
   }))

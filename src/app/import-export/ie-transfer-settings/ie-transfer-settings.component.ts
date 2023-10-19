@@ -19,10 +19,8 @@ export class IeTransferSettingsComponent implements OnInit {
 
   showFilter: boolean =false;
   constructor(
-    private router: Router, 
-    private global:GlobalService,
+    private router: Router
   ) { }
-
 
   ngOnInit(): void {
     this.setVal = localStorage.getItem('routeFromOrderStatus') 
@@ -35,16 +33,6 @@ export class IeTransferSettingsComponent implements OnInit {
       this.directAdmin = true;
     }
     this.hideDelete=JSON.parse(this.isDeleteVisible);
-
-  }
-  IeImportAllDialog(){
-    this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
-      width: '550px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    });
-
   }
 
   retunrToPrev() {

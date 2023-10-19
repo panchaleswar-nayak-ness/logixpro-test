@@ -1,0 +1,153 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <app-icon-heading-component heading="Location Details" icon="analytics"></app-icon-heading-component>
+</div>
+
+<div class="row">
+    <div class="col-xl-6">
+        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+            <mat-label>Required Date</mat-label>
+            <input matInput [value]="reqDate" [(ngModel)]="reqDate" [matDatepicker]="requiredDate">
+            <mat-datepicker-toggle matSuffix [for]="requiredDate" ngDefaultControl></mat-datepicker-toggle>
+            <mat-datepicker #requiredDate></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="col-xl-6">
+        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+            <mat-label>Priority</mat-label>
+            <input [disabled]="isMoveQty" [NumbersOnly]="true" #myInput (input)="restrictTo4Digits()" (focusout)="onBlurPriority()" [(ngModel)]="from_priority" type="number" placeholder="Search" matInput maxlength="4">
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="row row-flex align-items-center">
+    <div class="col-xl-6">
+        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+            <mat-label>Move Qty</mat-label>
+            <input [disabled]="isMoveQty" [NumbersOnly]="true" [(ngModel)]="from_itemQuantity" type="number" placeholder="Search" matInput maxlength="255">
+        </mat-form-field>
+    </div>
+    <div class="col-xl-6">
+        <div class="mb-3">
+            <mat-checkbox class="px-2" [(ngModel)]="isDedicated" color="primary">Dedicated?</mat-checkbox>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-6 mb-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <mat-label class="bold mb-2">Move From</mat-label>
+            <div class="label label-yellow px-2 mb-2"  *ngIf="MoveFromDedicated!=''">{{MoveFromDedicated}} </div>
+        </div>
+        <div class="card p-2">
+            <mat-form-field class="custom-form-field w-100 mb-2"
+                appearance="outline">
+                <mat-label>Warehouse</mat-label>
+                <input disabled [(ngModel)]="from_warehouse" type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field w-100 mb-2"
+                appearance="outline">
+                <mat-label>Location</mat-label>
+                <input disabled [(ngModel)]="from_locationShow"  type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Item Number</mat-label>
+                <input disabled [(ngModel)]="from_itemNo"  type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Description</mat-label>
+                <input disabled [(ngModel)]="from_description"  type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Item Quantity</mat-label>
+                <input disabled [(ngModel)]="from_itemQtyShow"  type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Cell Size</mat-label>
+                <input disabled [(ngModel)]="from_cellSize"  type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Lot Number</mat-label>
+                <input disabled [(ngModel)]="from_lotNo"  type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100"
+                appearance="outline">
+                <mat-label>Serial Number</mat-label>
+                <input disabled [(ngModel)]="from_serialNo"  type="text" matInput maxlength="255">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="col-xl-6 mb-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap" >
+            <mat-label class="bold mb-2">Move To</mat-label>
+            <div class="label label-yellow px-2 mb-2"  *ngIf="MoveToDedicated!=''" >{{MoveToDedicated}}</div>
+        </div>
+        <div class="card p-2">
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Warehouse</mat-label>
+                <input disabled [(ngModel)]="to_warehouse"  type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Location</mat-label>
+                <input disabled [(ngModel)]="to_locationShow"  type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Item Number</mat-label>
+                <input disabled [(ngModel)]="to_itemNo" type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Description</mat-label>
+                <input disabled [(ngModel)]="to_description" type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Item Quantity</mat-label>
+                <input disabled [(ngModel)]="to_itemQtyShow" type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Cell Size</mat-label>
+                <input disabled [(ngModel)]="to_cellSize" type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100 mb-2"
+                appearance="outline">
+                <mat-label>Lot Number</mat-label>
+                <input disabled [(ngModel)]="to_lotNo" type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field mb-2  w-100"
+                appearance="outline">
+                <mat-label>Serial Number</mat-label>
+                <input disabled [(ngModel)]="to_serialNo" type="text" matInput maxlength="255">
+            </mat-form-field>
+
+            <mat-form-field class="custom-form-field  w-100"
+                appearance="outline">
+                <mat-label>Qty to Fill Location</mat-label>
+                <input [(ngModel)]="fillQtytoShow" disabled type="text" matInput maxlength="255">
+            </mat-form-field>
+        </div>
+    </div>
+</div>
