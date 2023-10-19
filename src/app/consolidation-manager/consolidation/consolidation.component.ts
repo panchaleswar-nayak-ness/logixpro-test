@@ -69,7 +69,6 @@ export class ConsolidationComponent implements OnInit {
   public isitemVisible: boolean = true;
   public issupplyVisible: boolean = false;
 
-  searchByItem: any = new Subject<string>();
   searchAutocompleteItemNum: any = [];
 
   displayedColumns: string[] = ['toteID', 'complete', 'stagingLocation', 'stagedBy', 'stagedDate'];
@@ -105,11 +104,7 @@ export class ConsolidationComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.ConsolidationIndex()
-    this.searchByItem
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        this.autocompleteSearchColumnItem()
-      });
+    
 
   }
 
@@ -623,8 +618,8 @@ export class ConsolidationComponent implements OnInit {
     this.paginator3.pageIndex = 0;
   }
 
-  async autocompleteSearchColumnItem() {
-
+  async autocompleteSearchColumnItem(val:any = null) {
+    if(val) this.filterValue = val;
     let payload = {
       "column": this.startSelectFilter,
       "value": this.filterValue ? this.filterValue : '',

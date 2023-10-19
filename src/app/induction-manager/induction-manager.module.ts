@@ -17,6 +17,8 @@ import { ToteTransactionManagerComponent } from './tote-transaction-manager/tote
 import { ImToteManagerComponent } from './im-tote-manager/im-tote-manager.component';
 import { CompletePickBatchComponent } from './complete-pick-batch/complete-pick-batch.component';
 import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
+import { ProcessPickBatchesComponent } from './process-picks/process-pick-batches/process-pick-batches.component';
+import { ProcessPickTotesComponent } from './process-picks/process-pick-totes/process-pick-totes.component';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { SharedComponentsModule } from "../common/globalComponents/shared-compon
         MarkEmptyReelsComponent,
         ToteTransactionManagerComponent,
         ImToteManagerComponent,
-        CompletePickBatchComponent
+        CompletePickBatchComponent,
+        ProcessPickBatchesComponent,
+        ProcessPickTotesComponent
     ],
     imports: [
         CommonModule,
