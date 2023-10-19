@@ -173,6 +173,7 @@ import { CountSelectOrdersComponentComponent } from './location-assignment/count
 import { CompanyInfoComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/company-info-component/company-info-component.component';
 import { SystemLogicPreferencesComponent } from './admin-preferences/system-preferences/sp-general-setup/system-logic-preferences/system-logic-preferences.component';
 import { PodSetupComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/pod-setup-component/pod-setup-component.component';
+import { RtSelectedTransactionInfoComponent } from './transaction/reprocess-transaction/rt-selected-transaction-info/rt-selected-transaction-info.component';
 
 
 @NgModule({
@@ -338,6 +339,7 @@ import { PodSetupComponentComponent } from './admin-preferences/system-preferenc
         CompanyInfoComponentComponent,
         SystemLogicPreferencesComponent,
         PodSetupComponentComponent,
+        RtSelectedTransactionInfoComponent,
 
     ],
     imports: [

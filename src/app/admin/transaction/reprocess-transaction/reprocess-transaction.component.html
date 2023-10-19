@@ -9,46 +9,16 @@
         </div>
 
         <div class="col-xl-4">
-            <mat-card class="mat-elevation-z g-card mb-4">
-                <mat-card-content>
-                    
-                    <app-icon-heading-component class="card-header-title mb-4 d-flex align-items-center" heading="Selected Transaction Info" icon="backup_table"></app-icon-heading-component>
-                    <div>
-                        <mat-form-field class="d-block w-100 mb-3" appearance="outline">
-                            <mat-label>Record Created By</mat-label>
-                            <input matInput name="maximumQuantity" type="text" value="{{createdBy}}" [disabled]='true'>
-                        </mat-form-field>
-
-                        <mat-form-field class="d-block w-100 mb-3" appearance="outline">
-                            <mat-label>Transaction Date/Time</mat-label>
-                            <input matInput name="maximumQuantity" type="text" value="{{transactionDateTime}}"
-                                [disabled]='true'>
-                        </mat-form-field>
-
-                        <mat-form-field class="d-block w-100 mb-3" appearance="outline">
-                            <mat-label>Reason</mat-label>
-                            <input matInput value="{{reason}}" type="text" [disabled]='true'>
-                        </mat-form-field>
-
-                        <mat-form-field class="d-block w-100 mb-3" appearance="outline"
-                            (click)="openReasonDialog(reasonMessage)">
-                            <mat-label>Reason Message</mat-label>
-                            <span matSuffix>
-                                <mat-icon style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
-                            </span>
-                            <input matInput value="{{reasonMessage}}" type="text" readonly [disabled]='isEnabled'>
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <button mat-flat-button color="primary" class="w-100 btn-regular" [disabled]='isEnabled'
-                            (click)="openReprocessTransactionDialogue(transactionID)">
-                            <ng-container *ngIf="!isHistory">Edit This Transaction</ng-container>
-                            <ng-container *ngIf="isHistory">View This Transaction</ng-container>
-                            <mat-icon style="color:#fff; transform: rotate(45deg);">unfold_more</mat-icon>
-                        </button>
-                    </div>
-                </mat-card-content>
-            </mat-card>
+            <app-rt-selected-transaction-info 
+            (openReprocessTransactionDialogueEmitter)="openReprocessTransactionDialogue(transactionID)"
+            (openReasonDialogEmitter)="openReasonDialog(reasonMessage)"
+            [createdBy]="createdBy"
+            [transactionDateTime]="transactionDateTime"
+            [reason]="reason"
+            [reasonMessage]="reasonMessage"
+            [isEnabled]="isEnabled"
+            [isHistory]="isHistory"
+            ></app-rt-selected-transaction-info>
         </div>
     </div>
     <div class="row">
