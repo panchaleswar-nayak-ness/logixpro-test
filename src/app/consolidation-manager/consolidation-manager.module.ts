@@ -11,6 +11,7 @@ import { CmStagingLocationComponent } from './cm-staging-location/cm-staging-loc
 import { PreferencesShippingComponent } from './consolidation-preferences/preferences-shipping/preferences-shipping.component';
 import { PreferencesConsolidationComponent } from './consolidation-preferences/preferences-consolidation/preferences-consolidation.component';
 import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
+import { SLSearchOrderNumberToteComponent } from './cm-staging-location/sl-search-order-number-tote/sl-search-order-number-tote.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { SharedComponentsModule } from "../common/globalComponents/shared-compon
         ConsolidationComponent,
         CmStagingLocationComponent,
         PreferencesShippingComponent,
-        PreferencesConsolidationComponent
+        PreferencesConsolidationComponent,
+        SLSearchOrderNumberToteComponent
     ],
     imports: [
         CommonModule,

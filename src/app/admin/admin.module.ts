@@ -163,7 +163,9 @@ import { LookupToteSetupComponent } from './admin-preferences/system-preferences
 import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
 import { QuarantineDialogComponent } from './dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from './dialogs/unquarantine-dialog/unquarantine-dialog.component';
-
+import { CompanyInfoComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/company-info-component/company-info-component.component';
+import { SystemLogicPreferencesComponent } from './admin-preferences/system-preferences/sp-general-setup/system-logic-preferences/system-logic-preferences.component';
+import { PodSetupComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/pod-setup-component/pod-setup-component.component';
 
 
 @NgModule({
@@ -319,7 +321,11 @@ import { UnquarantineDialogComponent } from './dialogs/unquarantine-dialog/unqua
         LookupAdjustmentLookupSetupComponent,
         LookupToteSetupComponent,
         QuarantineDialogComponent,
-        UnquarantineDialogComponent
+        UnquarantineDialogComponent,
+        CompanyInfoComponentComponent,
+        SystemLogicPreferencesComponent,
+        PodSetupComponentComponent,
+
     ],
     imports: [
         CommonModule,
