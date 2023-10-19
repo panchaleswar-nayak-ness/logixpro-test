@@ -468,7 +468,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                 this.clearFormAndTable();
               });
             } else {
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              
               this.fillToteTable();
               console.log("BatchExist",res.responseMessage);
             }

@@ -51,24 +51,22 @@
         <div class="row d-flex justify-content-between align-items-top" *ngIf="hideRow">
             <div class="col-lg-2">
                 <div class="">
-                    <mat-card class="mat-card mat-focus-indicator mat-elevation-z g-card br-14 label-yellow w-100 mb-2">
-                        <mat-card-content>
-                            <div >Open Lines</div>
-                            <div ><strong>{{open}}</strong></div>
-                        </mat-card-content>
-                    </mat-card>
-                    <mat-card class="mat-card mat-focus-indicator mat-elevation-z g-card br-14 label-green w-100 mb-2">
-                        <mat-card-content>
-                            <div >Completed Lines</div>
-                            <div><strong>{{completed}}</strong></div>
-                        </mat-card-content>
-                    </mat-card>
-                    <mat-card class="mat-card mat-focus-indicator mat-elevation-z g-card br-14 label-red w-100 mb-2">
-                        <mat-card-content>
-                            <div>Backorder Lines</div>
-                            <div><strong>{{backOrder}}</strong></div>
-                        </mat-card-content>
-                    </mat-card>
+                    <app-info-card-component 
+                    value="{{open}}"
+                    title="Open Lines"
+                    colorClass="label-yellow"
+                    ></app-info-card-component>
+                    <app-info-card-component 
+                    value="{{completed}}"
+                    title="Completed Lines"
+                    colorClass="label-green"
+                    ></app-info-card-component>
+                    <app-info-card-component 
+                    value="{{backOrder}}"
+                    title="Backorder Lines"
+                    colorClass="label-red"
+                    ></app-info-card-component>
+                   
 
                 </div>
             </div>
@@ -124,216 +122,33 @@
 
 <div class="row">
     <div class="col-lg-6">
-    <mat-card class="mat-elevation-z g-card mb-3">
-        <mat-card-content>
-            <div class="d-flex justify-content-between">
-                
-                <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Unverified Items" icon="gpp_maybe"></app-icon-heading-component>
-            </div>
-
-            <div class="row align-items-center">
-                <div class="col-xxl-7">
-                    <div class="d-block d-xl-flex gap-12 align-items-center">
-                        <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
-                            <mat-label>{{startSelectFilterLabel}}</mat-label>
-                            <mat-select id="SelectFilter" class="employees-action" [value]="startSelectFilter" (selectionChange)="getSelected($event)">
-                                <mat-option *ngFor="let s of filterOption" value={{s.key}}>{{s.value}}</mat-option>
-                            </mat-select>
-                            <span class="material-symbols-outlined icon-expand-more">
-                                expand_more
-                            </span>
-                        </mat-form-field>
-
-                        <span class="v-br d-none d-xl-flex mb-3">-</span>
-                        <div class="d-flex g-mini-search-box w-100 mb-3 ">
-                            <mat-form-field class="w-100 bg-white br-8 " appearance="fill">
-                                <span class="material-symbols-outlined icon-search">
-                                    Search
-                                </span>
-                                <input type="text" placeholder="Search" aria-label="Search" matInput (keydown)="filtervalue($event)" [(ngModel)]="filterValue"[matAutocomplete]="item" (ngModelChange)="this.searchByItem.next($event)">
-                                <button matSuffix *ngIf="filterValue" class="clear-btn"  (click)="filterValue = '';this.autocompleteSearchColumnItem()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                                <mat-autocomplete  class="card custom-scroll"  #item="matAutocomplete"  > 
-                                    <h6 class ="card-header matAutoCompHeader ">
-                                      <span style="width:  140px;">Value</span> 
-                                      <span style="width:  140px;">Line Number</span> 
-                                      <span style="width:  140px;">Line Status</span> 
-                                    </h6> 
-                                    <ng-scrollbar style="height:350px">
-                                      <mat-option *ngFor="let option of searchAutocompleteItemNum"  class="matAutoCompTableContent" style="line-height: 24px; height:auto; min-height: auto!important; padding: 12px 16px; overflow: unset;">
-                                        <div class="loc_option"  (click)="getRow(option.value)" >
-                                          <span  class="searchColumn" style="width:  140px;">{{option.value}}</span> 
-                                          <span  class="searchColumn" style="width:  140px; white-space: normal;">{{option.lineNumber}}</span> 
-                                          <span  class="searchColumn" style="width:  140px; white-space: normal;">{{option.lineStatus}}</span> 
-                                        </div>
-                                      </mat-option>
-                                    </ng-scrollbar>
-                                  </mat-autocomplete>  
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xxl-3 offset-xxl-2">
-                    <div class="d-xxl-block d-flex justify-content-end">
-                    <button mat-stroked-button color="primary" style="flex:1"
-                        class="mat-focus-indicator btn-regular w-80 mb-3 mat-stroked-button mat-button-base mat-primary float-end" (click)="verifyAll()" [disabled]="verifybtn">
-                        Verify All
-                    </button>
-                </div>
-                </div>
-            </div>
-
-
-            <div class="card br-14 borderless px-0" style="overflow-x: auto;">
-                <ng-scrollbar track="all" class="mat-table-scrollbar " style="height: 400px">
-                    <table class="w-100 table-borderless" mat-table #matSort1="matSort" matSort [dataSource]="tableData_1" (matSortChange)="announceSortChange($event)">
-                        <ng-container matColumnDef="itemNumber"   [style.visibility]="isitemVisible ? 'visible' : 'hidden'"  >
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header > Item No. </th>
-                            <td mat-cell *matCellDef="let element" >{{element.itemNumber}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="supplierItemID" [style.visibility]="issupplyVisible ? 'visible' : 'hidden'">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header > Supplier Item ID  </th>
-                            <td mat-cell *matCellDef="let element" >{{element.supplierItemID}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="lineNumber">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Line No. </th>
-                            <td mat-cell *matCellDef="let element">{{element.lineNumber}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="completedQuantity">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Completed Qty </th>
-                            <td mat-cell *matCellDef="let element">{{element.completedQuantity}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="toteID">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote ID </th>
-                            <td mat-cell *matCellDef="let element">{{element.toteID}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="serialNumber">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Serial No. </th>
-                            <td mat-cell *matCellDef="let element">{{element.serialNumber}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="userField1">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 1 </th>
-                            <td mat-cell *matCellDef="let element; ">{{element.userField1}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="lineStatus" sticky>
-                            <th class="" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-                            <td mat-cell *matCellDef="let element" class="text-right">
-                                <div class="label label-green px-2" *ngIf="element.lineStatus == 'Line Completed'">{{element.lineStatus}}</div>
-                                <div class="label label-yellow px-2" *ngIf="element.lineStatus == 'Waiting Reprocess'">{{element.lineStatus}}</div>
-                                <div class="label label px-2" *ngIf="element.lineStatus != 'Line Completed' && element.lineStatus != 'Waiting Reprocess'">{{element.lineStatus}}</div>
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="actions" stickyEnd>
-                            <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef>Action</th>
-                            <td class="pe-0" mat-cell *matCellDef="let element; let i = index" width="10%">
-                                <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete"
-                                    matTooltip="Verify" matTooltipPosition="above" color="primary" (click)="verifyLine(element)">
-                                    <mat-icon>add</mat-icon>
-                                </button>
-                            </td>
-                        </ng-container>
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell " [attr.colspan]="displayedColumns_1.length">
-                              No data available in table.
-                            </td>
-                        </tr>
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns_1" style=" background-color: #F9F9FF;"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns_1;"></tr>
-                    </table>
-                </ng-scrollbar>
-            </div>
-            <div class="d-flex justify-content-between bg-white">
-                <mat-paginator #paginator showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>
-            </div>
-        </mat-card-content>
-    </mat-card>
+    <app-unverified-item
+    [startSelectFilterLabel]="startSelectFilterLabel"
+[startSelectFilter]="startSelectFilter"
+[filterOption]="filterOption" 
+[filterValue]="filterValue" 
+[tableData_1]="tableData_1" 
+[isitemVisible]="isitemVisible" 
+[issupplyVisible]="issupplyVisible" 
+[verifybtn]="verifybtn"  
+[searchAutocompleteItemNum]="searchAutocompleteItemNum" 
+[displayedColumns_1]="displayedColumns_1"  
+(selected)="getSelected($event)" 
+(filterVal)="filtervalue($event)" 
+(verify)="verifyLine($event)"  
+(verifyal)="verifyAll()" 
+(autocomplete)="autocompleteSearchColumnItem($event)" 
+(Row)="getRow($event)"  
+    ></app-unverified-item>
 </div>
 
 <div class="col-lg-6">
-    <mat-card class="mat-elevation-z g-card mb-3">
-        <mat-card-content>
-            <div class="d-flex justify-content-between">
-               
-             <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Verified Items" icon="verified_user"></app-icon-heading-component>
-            </div>
-
-            <div class="row">
-                <div class="col-xl-12 d-flex d-xl-block">
-                    <div class="float-end" style="flex:1">
-                    <button mat-stroked-button color="warn"
-                        class="mat-focus-indicator button-remove-all-w-stroke w-100 mb-3 mat-stroked-button mat-button-base mat-warn" (click)=" unVerifyAll()" [disabled]="unverifybtn">
-                        Unverify All
-                    </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card br-14 borderless px-0 mt-2" style="overflow-x: auto;">
-                <ng-scrollbar track="all" class="mat-table-scrollbar " style="height: 400px">
-                    <table class="w-100 table-borderless" mat-table #matSort2="matSort" matSort [dataSource]="tableData_2" (matSortChange)="announceSortChange2($event)">
-                        <ng-container matColumnDef="itemNumber">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Item No. </th>
-                            <td mat-cell *matCellDef="let element">{{element.itemNumber}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="supplierItemID">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Supplier Item ID </th>
-                            <td mat-cell *matCellDef="let element">{{element.supplierItemID}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="lineNumber">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Line No. </th>
-                            <td mat-cell *matCellDef="let element">{{element.lineNumber}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="completedQuantity">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Completed Qty </th>
-                            <td mat-cell *matCellDef="let element">{{element.completedQuantity}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="toteID">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote ID </th>
-                            <td mat-cell *matCellDef="let element">{{element.toteID}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="serialNumber">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Serial No. </th>
-                            <td mat-cell *matCellDef="let element">{{element.serialNumber}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="userField1">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 1 </th>
-                            <td mat-cell *matCellDef="let element">{{element.userField1}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="lineStatus" sticky>
-                            <th class="" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-                            <td mat-cell *matCellDef="let element" class="text-right">
-                                <div class="label label-green px-2" *ngIf="element.lineStatus == 'Line Completed'">{{element.lineStatus}}</div>
-                                <div class="label label-blue px-2" *ngIf="element.lineStatus == 'Waiting Reprocess'">{{element.lineStatus}}</div>
-                                <div class="label label px-2" *ngIf="element.lineStatus != 'Line Completed' && element.lineStatus != 'Waiting Reprocess'">{{element.lineStatus}}</div>
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="actions" stickyEnd>
-                            <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef>Action</th>
-                            <td class="pe-0" mat-cell  *matCellDef="let element; let i = index" width="10%">
-                                <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete"
-                                    matTooltip="Unverify" matTooltipPosition="above" color="warn" (click)="unverifyLine(element)">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </td>
-                        </ng-container>
-                        
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell " [attr.colspan]="displayedColumns_2.length">
-                              No data available in table.
-                            </td>
-                        </tr>
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns_2" style=" background-color: #F9F9FF;"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns_2;"></tr>
-                    </table>
-                </ng-scrollbar>
-            </div>
-
-            <div class="d-flex justify-content-between bg-white">
-                <mat-paginator #paginator2 showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons > </mat-paginator>
-            </div>
-        </mat-card-content>
-    </mat-card>
+  <app-verified-item
+  [displayedColumns_2]="displayedColumns_2"  
+  [tableData_2]="tableData_2"  
+  [unverifybtn]="unverifybtn"
+  (unverifyal)="unVerifyAll()"
+  (unverify)="unverifyLine($event)"
+  ></app-verified-item>
 </div>
 </div>

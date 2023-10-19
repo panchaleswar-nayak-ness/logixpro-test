@@ -174,6 +174,8 @@ import { CompanyInfoComponentComponent } from './admin-preferences/system-prefer
 import { SystemLogicPreferencesComponent } from './admin-preferences/system-preferences/sp-general-setup/system-logic-preferences/system-logic-preferences.component';
 import { PodSetupComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/pod-setup-component/pod-setup-component.component';
 import { RtSelectedTransactionInfoComponent } from './transaction/reprocess-transaction/rt-selected-transaction-info/rt-selected-transaction-info.component';
+import { PickSelectOrdersComponentComponent } from './location-assignment/pick/pick-select-orders-component/pick-select-orders-component.component';
+import { PutAwaySelectOrdersComponentComponent } from './location-assignment/put-away/put-away-select-orders-component/put-away-select-orders-component.component';
 
 
 @NgModule({
@@ -340,6 +342,8 @@ import { RtSelectedTransactionInfoComponent } from './transaction/reprocess-tran
         SystemLogicPreferencesComponent,
         PodSetupComponentComponent,
         RtSelectedTransactionInfoComponent,
+        PickSelectOrdersComponentComponent,
+        PutAwaySelectOrdersComponentComponent,
 
     ],
     imports: [

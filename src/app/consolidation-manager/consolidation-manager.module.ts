@@ -12,6 +12,8 @@ import { PreferencesShippingComponent } from './consolidation-preferences/prefer
 import { PreferencesConsolidationComponent } from './consolidation-preferences/preferences-consolidation/preferences-consolidation.component';
 import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
 import { SLSearchOrderNumberToteComponent } from './cm-staging-location/sl-search-order-number-tote/sl-search-order-number-tote.component';
+import { UnverifiedItemComponent } from './consolidation/unverified-item/unverified-item.component';
+import { VerifiedItemComponent } from './consolidation/verified-item/verified-item.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { SLSearchOrderNumberToteComponent } from './cm-staging-location/sl-searc
         CmStagingLocationComponent,
         PreferencesShippingComponent,
         PreferencesConsolidationComponent,
-        SLSearchOrderNumberToteComponent
+        SLSearchOrderNumberToteComponent,
+        UnverifiedItemComponent,
+        VerifiedItemComponent
     ],
     imports: [
         CommonModule,

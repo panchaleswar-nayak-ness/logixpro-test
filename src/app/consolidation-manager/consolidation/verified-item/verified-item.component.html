@@ -1,0 +1,84 @@
+<mat-card class="mat-elevation-z g-card mb-3">
+    <mat-card-content>
+        <div class="d-flex justify-content-between">
+           
+         <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Verified Items" icon="verified_user"></app-icon-heading-component>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 d-flex d-xl-block">
+                <div class="float-end" style="flex:1">
+                <button mat-stroked-button color="warn"
+                    class="mat-focus-indicator button-remove-all-w-stroke w-100 mb-3 mat-stroked-button mat-button-base mat-warn" (click)=" unVerifyAll()" [disabled]="unverifybtn">
+                    Unverify All
+                </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card br-14 borderless px-0 mt-2" style="overflow-x: auto;">
+            <ng-scrollbar track="all" class="mat-table-scrollbar " style="height: 400px">
+                <table class="w-100 table-borderless" mat-table #matSort2="matSort" matSort [dataSource]="tableData_2" (matSortChange)="announceSortChange2($event)">
+                    <ng-container matColumnDef="itemNumber">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Item No. </th>
+                        <td mat-cell *matCellDef="let element">{{element.itemNumber}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="supplierItemID">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Supplier Item ID </th>
+                        <td mat-cell *matCellDef="let element">{{element.supplierItemID}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="lineNumber">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Line No. </th>
+                        <td mat-cell *matCellDef="let element">{{element.lineNumber}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="completedQuantity">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Completed Qty </th>
+                        <td mat-cell *matCellDef="let element">{{element.completedQuantity}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="toteID">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote ID </th>
+                        <td mat-cell *matCellDef="let element">{{element.toteID}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="serialNumber">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Serial No. </th>
+                        <td mat-cell *matCellDef="let element">{{element.serialNumber}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="userField1">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> User Field 1 </th>
+                        <td mat-cell *matCellDef="let element">{{element.userField1}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="lineStatus" sticky>
+                        <th class="" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                        <td mat-cell *matCellDef="let element" class="text-right">
+                            <div class="label label-green px-2" *ngIf="element.lineStatus == 'Line Completed'">{{element.lineStatus}}</div>
+                            <div class="label label-blue px-2" *ngIf="element.lineStatus == 'Waiting Reprocess'">{{element.lineStatus}}</div>
+                            <div class="label label px-2" *ngIf="element.lineStatus != 'Line Completed' && element.lineStatus != 'Waiting Reprocess'">{{element.lineStatus}}</div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="actions" stickyEnd>
+                        <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef>Action</th>
+                        <td class="pe-0" mat-cell  *matCellDef="let element; let i = index" width="10%">
+                            <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete"
+                                matTooltip="Unverify" matTooltipPosition="above" color="warn" (click)="unverifyLine(element)">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell " [attr.colspan]="displayedColumns_2.length">
+                          No data available in table.
+                        </td>
+                    </tr>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns_2" style=" background-color: #F9F9FF;"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns_2;"></tr>
+                </table>
+            </ng-scrollbar>
+        </div>
+
+        <div class="d-flex justify-content-between bg-white">
+            <mat-paginator #paginator2 showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons > </mat-paginator>
+        </div>
+    </mat-card-content>
+</mat-card>

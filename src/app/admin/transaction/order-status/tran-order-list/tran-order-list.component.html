@@ -371,4 +371,4 @@
 </mat-card>
 
 
-<app-table-context-menu-component (optionSelected)="optionSelected($event)" [componentName]="'transOrders'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="TabIndex==0" (optionSelected)="optionSelected($event)" [componentName]="'transOrders'"></app-table-context-menu-component>

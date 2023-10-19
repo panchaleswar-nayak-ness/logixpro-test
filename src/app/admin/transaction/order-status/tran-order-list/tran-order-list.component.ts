@@ -45,6 +45,7 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 })
 export class TranOrderListComponent implements OnInit, AfterViewInit {
   public columnValues: any = [];
+  @Input() TabIndex:any;
   public Order_Table_Config = [
     { colHeader: 'status', colDef: 'Status' },
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
