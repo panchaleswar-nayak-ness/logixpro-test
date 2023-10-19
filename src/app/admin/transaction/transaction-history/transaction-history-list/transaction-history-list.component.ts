@@ -100,6 +100,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public userData: any;
   public displayedColumns: any;
   public dataSource: any = new MatTableDataSource();
+  @Input() TabIndex:any;
   public detailDataTransHistory: any;
   public startDate: any = backDate.toISOString();
   public endDate: any = new Date().toISOString();

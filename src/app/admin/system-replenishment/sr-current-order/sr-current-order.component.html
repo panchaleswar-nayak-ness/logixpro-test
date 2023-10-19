@@ -148,7 +148,7 @@
     </mat-card-content>
 </mat-card>
 
-<app-table-context-menu-component (optionSelected)="optionSelected($event)" [componentName]="'sysRepCurOrd'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="TabIndex == 1" (optionSelected)="optionSelected($event)" [componentName]="'sysRepCurOrd'"></app-table-context-menu-component>
 
 <ng-template #deleteSelectedConfirm>
     <div class="mat-modal-wrap text-center">

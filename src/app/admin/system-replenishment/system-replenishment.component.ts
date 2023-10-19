@@ -14,7 +14,7 @@ import { SrInputFieldsComponent } from './sr-current-order/sr-input-fields/sr-in
   styleUrls: ['./system-replenishment.component.scss']
 })
 export class SystemReplenishmentComponent {
-
+  TabIndex:any;
   constructor(private global:GlobalService) { }
 
   refreshCurrentOrders:Subject<any> = new Subject();
