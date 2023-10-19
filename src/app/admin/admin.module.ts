@@ -173,6 +173,8 @@ import { CountSelectOrdersComponentComponent } from './location-assignment/count
 import { CompanyInfoComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/company-info-component/company-info-component.component';
 import { SystemLogicPreferencesComponent } from './admin-preferences/system-preferences/sp-general-setup/system-logic-preferences/system-logic-preferences.component';
 import { PodSetupComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/pod-setup-component/pod-setup-component.component';
+import { PickSelectOrdersComponentComponent } from './location-assignment/pick/pick-select-orders-component/pick-select-orders-component.component';
+import { PutAwaySelectOrdersComponentComponent } from './location-assignment/put-away/put-away-select-orders-component/put-away-select-orders-component.component';
 
 
 @NgModule({
@@ -338,6 +340,8 @@ import { PodSetupComponentComponent } from './admin-preferences/system-preferenc
         CompanyInfoComponentComponent,
         SystemLogicPreferencesComponent,
         PodSetupComponentComponent,
+        PickSelectOrdersComponentComponent,
+        PutAwaySelectOrdersComponentComponent,
 
     ],
     imports: [
