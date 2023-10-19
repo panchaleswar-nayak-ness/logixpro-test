@@ -1,13 +1,10 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BatchDeleteComponent } from 'src/app/dialogs/batch-delete/batch-delete.component';
 import { SelectZonesComponent } from 'src/app/dialogs/select-zones/select-zones.component';
 import { SelectionTransactionForToteComponent } from 'src/app/dialogs/selection-transaction-for-tote/selection-transaction-for-tote.component';
 import { TotesAddEditComponent } from 'src/app/dialogs/totes-add-edit/totes-add-edit.component';
-
- 
 import { AuthService } from 'src/app/init/auth.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
@@ -21,7 +18,6 @@ import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { MarkToteFullComponent } from 'src/app/dialogs/mark-tote-full/mark-tote-full.component';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ReelDetailComponent } from 'src/app/dialogs/reel-detail/reel-detail.component';
 import { ReelTransactionsComponent } from 'src/app/dialogs/reel-transactions/reel-transactions.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -117,7 +113,6 @@ export class ProcessPutAwaysComponent implements OnInit {
     return numSelected === numRows;
   }
 
-  public iinductionManagerApi:IInductionManagerApiService;
   applyStrip:any;
   stripLength:any;
   stripSide:any;
@@ -128,15 +123,14 @@ export class ProcessPutAwaysComponent implements OnInit {
   upperBound = 5
   lowerBound = 1
   
+  public iinductionManagerApi:IInductionManagerApiService;
   public iAdminApiService: IAdminApiService;
 
   constructor( 
-     
-    private Api:ApiFuntions,
     private global:GlobalService, 
     private authService: AuthService,
-    private inductionManagerApi: InductionManagerApiService,
-    private adminApiService: AdminApiService,
+    public inductionManagerApi: InductionManagerApiService,
+    public adminApiService: AdminApiService,
     private _liveAnnouncer: LiveAnnouncer,
   ) { this.iAdminApiService = adminApiService;
     this.iinductionManagerApi = inductionManagerApi;}
@@ -168,6 +162,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     }
 
   }
+
   ngOnInit(): void {
     this.ELEMENT_DATA.length = 0;
     this.userData = this.authService.userData();
@@ -184,6 +179,57 @@ export class ProcessPutAwaysComponent implements OnInit {
           this.autocompleteSearchColumnItem();
         }
       });
+  }
+
+  callFunBatchSetup(event:any){
+    if(event.funName == "batchIdKeyup"){
+      this.batchIdKeyup();
+    }
+    else if (event.funName == "clear"){
+      this.clear();
+    }
+    else if (event.funName == "getRow"){
+      this.getRow(event.funParam);
+    }
+    else if (event.funName == "createNewBatch"){
+      this.createNewBatch(event.funParam);
+    }
+    else if (event.funName == "openSelectZonesDialogue"){
+      this.openSelectZonesDialogue();
+    }
+    else if (event.funName == "setToDefaultQuantity"){
+      this.setToDefaultQuantity();
+    }
+  }
+
+  callFunTotes(event:any){
+    debugger;
+    if(event.funName == "gridAction"){
+      this.gridAction(event.funParam1);
+    }
+    else if (event.funName == "printToteLoc"){
+      this.printToteLoc();
+    }
+    else if (event.funName == "updateToteID"){
+      this.updateToteID(event.funParam1);
+    }
+    else if (event.funName == "onToteChange"){
+      if(event.funParam3){
+        this.onToteChange(event.funParam1,event.funParam2,event.funParam3);
+      }
+      else{
+        this.onToteChange(event.funParam1,event.funParam2);
+      }
+    }
+    else if (event.funName == "openTotesDialogue"){
+      this.openTotesDialogue(event.funParam1,event.funParam2);
+    }
+    else if (event.funName == "print"){
+      this.print(event.funParam1);
+    }
+    else if (event.funName == "assignToteAtPosition"){
+      this.assignToteAtPosition(event.funParam1,event.funParam2,event.funParam3);
+    }
   }
 
   batchIdKeyup(){
