@@ -4,41 +4,22 @@
         </app-icon-heading-component>
     </div>
     <div class="card bg-light-blue bg-50 br-none px-4 py-4 br-14 mb-3">
-        <div class="row align-items-center">
-            <div class="col-xl-6">
-                <div class="row align-items-center">
-                    <div class="col-xl-7">
-                        <mat-form-field class="w-100 custom-form-field custom-form-field-bg-white" appearance="outline">
-                            <mat-label>Order Number/Tote</mat-label>
-                            <input type="text" aria-label="Search" [(ngModel)]="OrderNumberTote" (keypress)="StagingLocsOrderNum($event)" matInput #autoFocusField>
-                            <button matSuffix *ngIf="OrderNumberTote" class="clear-btn"  (click)="OrderNumberTote= ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                        </mat-form-field>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-xl-4 offset-xl-2">
-                <div class="d-flex d-xl-block gap-12 justify-content-end">
-                    <button style="flex: 1 auto;" mat-stroked-button color="warn" class="mt-2 mt-xl-0 float-end btn-regular button-remove-all-w-stroke  bg-white" (click)="clearAll()">
-                        Clear
-                    </button>
-                </div>
-            </div>
-        </div>
+        <app-SLSearchOrderNumberTote
+            [OrderNumberTote]="this.OrderNumberTote"
+            (clearAllEvent)="clearAll()"
+            (stagingOrderNumEvent)="OrderNumberTote = $event.ordTote; StagingLocsOrderNum($event.event)"
+        ></app-SLSearchOrderNumberTote>
     </div>
     <div class="card br-14 p-4">
         <div class="row align-items-center">
             <div class="col-xl-4">
                 <div class="d-flex g-mini-search-box w-100 mb-3">
-                    <!--  -->
                     <mat-form-field class="w-100 bg-white br-8" appearance="fill"  >
                         <span class="material-symbols-outlined icon-search">
                             Search
                         </span>
                         <input type="text" placeholder="Search" aria-label="Search" (input)="SearchToteAndLocation()" matInput  [(ngModel)]="stagingLocation">
                         <button matSuffix *ngIf="stagingLocation" class="clear-btn"  (click)="stagingLocation= '';SearchToteAndLocation()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                        
-                      
                         <mat-autocomplete>
                             <mat-option>
                             </mat-option>
@@ -81,8 +62,6 @@
                         </td>
                     </ng-container>
 
-                    
-                    
                     <!-- Action Column -->
                     <ng-container matColumnDef="action" stickyEnd>
 

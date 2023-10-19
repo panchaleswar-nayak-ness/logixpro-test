@@ -165,7 +165,14 @@ import { QuarantineDialogComponent } from './dialogs/quarantine-dialog/quarantin
 import { UnquarantineDialogComponent } from './dialogs/unquarantine-dialog/unquarantine-dialog.component';
 import { LocationDetailsComponent } from './move-items/location-details/location-details.component';
 import { MoveLocationsComponent } from './move-items/move-locations/move-locations.component';
+import { SrInputFieldsComponent } from './system-replenishment/sr-current-order/sr-input-fields/sr-input-fields.component';
+import { SrNewInputFieldsComponent } from './system-replenishment/sr-new-order/sr-new-input-fields/sr-new-input-fields.component';
+import { CountOrderSelectionComponentComponent } from './location-assignment/count/count-order-selection-component/count-order-selection-component.component';
+import { CountSelectOrdersComponentComponent } from './location-assignment/count/count-select-orders-component/count-select-orders-component.component';
 
+import { CompanyInfoComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/company-info-component/company-info-component.component';
+import { SystemLogicPreferencesComponent } from './admin-preferences/system-preferences/sp-general-setup/system-logic-preferences/system-logic-preferences.component';
+import { PodSetupComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/pod-setup-component/pod-setup-component.component';
 
 
 @NgModule({
@@ -323,7 +330,15 @@ import { MoveLocationsComponent } from './move-items/move-locations/move-locatio
         QuarantineDialogComponent,
         UnquarantineDialogComponent,
         LocationDetailsComponent,
-        MoveLocationsComponent
+        MoveLocationsComponent,
+        SrInputFieldsComponent,
+        SrNewInputFieldsComponent,
+        CountOrderSelectionComponentComponent,
+        CountSelectOrdersComponentComponent,
+        CompanyInfoComponentComponent,
+        SystemLogicPreferencesComponent,
+        PodSetupComponentComponent,
+
     ],
     imports: [
         CommonModule,

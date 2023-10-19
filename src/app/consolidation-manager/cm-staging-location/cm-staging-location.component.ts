@@ -8,6 +8,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { event } from 'jquery';
 
 
 export interface PeriodicElement {
@@ -56,8 +57,9 @@ export class CmStagingLocationComponent {
   }
 
   ngAfterViewInit() {
-    this.searchBoxField.nativeElement.focus(); 
+    this.searchBoxField.nativeElement.focus();
   }
+  
   async SearchToteAndLocation(){ 
     if(this.stagingLocation != ""){
       if(!this.Oldstagetables.length) this.Oldstagetables = this.stagetables;
@@ -76,7 +78,7 @@ export class CmStagingLocationComponent {
   }
   }
   async StagingLocsOrderNum($event: any) { 
-    if ($event.key == "Enter" || $event == 'event') {
+    if ($event.key == "Enter"|| $event == 'event') {
       this.IsLoading = true;
       let obj: any = {
         type: this.type,
@@ -96,7 +98,7 @@ export class CmStagingLocationComponent {
                 height: 'auto',
                 width: '620px',
                 autoFocus: '__non_existing_element__',
-      disableClose:true, 
+                disableClose:true, 
               })
               dialogRef.afterClosed().subscribe(result => { 
                 this.stagetables = [];
@@ -120,10 +122,6 @@ export class CmStagingLocationComponent {
         if(!res.data.stageTable) this.stagetables  = [];
         this.IsLoading = false;
       });
-    }
-    else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-      console.log("ConsolidationData");
     }
   }
   async saveToteStagingLocation($event:any,toteID: any, location: any,index:any=null,clear = 0) {
@@ -159,15 +157,9 @@ export class CmStagingLocationComponent {
       if(res.isExecuted && index!=null){ 
         this.stagetables[index].stagingLocation = location;
         this.stagetables[index].location = location; 
-
       }
     })
   }
-  else {
-    this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-    console.log("StagingLocationsUpdate");
-
-  } 
   }
   async UnstageAll(){
     for (let x = 0; x < this.stagetables.length; x++) {
