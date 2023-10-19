@@ -314,4 +314,4 @@
     <!-- Datatable End -->
 </div>
 
-<app-table-context-menu-component (optionSelected)="optionSelected($event)" [componentName]="'openTransOnHold'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="TabIndex==1" (optionSelected)="optionSelected($event)" [componentName]="'openTransOnHold'"></app-table-context-menu-component>

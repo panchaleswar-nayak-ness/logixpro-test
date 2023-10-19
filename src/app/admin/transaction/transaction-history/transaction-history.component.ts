@@ -1,5 +1,5 @@
 import {
-  Component,
+  Component, Input,
 } from '@angular/core';
 
 
@@ -13,7 +13,7 @@ export class TransactionHistoryComponent {
   endDateEvent: Event;
   orderNoEvent:Event;
   resetDateEvent:Event;
-
+ @Input() TabIndex:any;
   clearEvent: Event;
 
   

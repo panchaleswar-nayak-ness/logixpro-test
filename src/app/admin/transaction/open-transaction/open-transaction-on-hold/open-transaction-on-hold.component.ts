@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   TemplateRef,
@@ -106,6 +107,7 @@ let backDate = new Date(year - 50, month, day);
 export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   @Output() back = new EventEmitter<string>();
   @Output() returnToOrder = new EventEmitter<string>();
+  @Input() TabIndex:any;
   @Output() startdateChange: EventEmitter<MatDatepickerInputEvent<any>> =
     new EventEmitter();
   @Output() enddateChange: EventEmitter<MatDatepickerInputEvent<any>> =

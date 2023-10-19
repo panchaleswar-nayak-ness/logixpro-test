@@ -33,7 +33,7 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 })
 export class SrCurrentOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
-
+  @Input() TabIndex:any;
   displayedColumns2: string[] = [
     'Item Number',
     'Trans Type',

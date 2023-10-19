@@ -226,4 +226,4 @@
     </button>
 </div>
 
-<app-table-context-menu-component (optionSelected)="optionSelected($event)" [componentName]="'sysRepNewOrd'"></app-table-context-menu-component>
+<app-table-context-menu-component (optionSelected)="optionSelected($event)" *ngIf="TabIndex == 0" [componentName]="'sysRepNewOrd'"></app-table-context-menu-component>
