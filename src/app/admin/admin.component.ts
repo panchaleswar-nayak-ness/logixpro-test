@@ -327,8 +327,6 @@ export class AdminComponent implements OnInit {
         else {
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
           console.log("GetAdminMenu : adminValues data is not available",res.responseMessage);
-
-          
         }
       });
   }
