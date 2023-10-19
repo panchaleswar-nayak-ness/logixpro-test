@@ -322,7 +322,7 @@ import { SrNewInputFieldsComponent } from './system-replenishment/sr-new-order/s
         LookupAdjustmentLookupSetupComponent,
         LookupToteSetupComponent,
         QuarantineDialogComponent,
-        UnquarantineDialogComponent
+        UnquarantineDialogComponent,
         SrInputFieldsComponent,
         SrNewInputFieldsComponent
     ],
