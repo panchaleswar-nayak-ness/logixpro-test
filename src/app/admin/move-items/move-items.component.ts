@@ -64,10 +64,10 @@ const TRNSC_DATA = [
   styleUrls: ['./move-items.component.scss'],
 })
 export class MoveItemsComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatPaginator) paginatorTo: MatPaginator;
-  @ViewChildren(MatPaginator) paginators: QueryList<MatPaginator>;
-  @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
+  paginator: MatPaginator;
+  paginatorTo: MatPaginator;
+  paginators: QueryList<MatPaginator>;
+  // @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   @ViewChild('matToolbar') matToolbar: ElementRef;
   public dataSource: any = new MatTableDataSource();
@@ -309,9 +309,7 @@ export class MoveItemsComponent implements OnInit {
       this.tabIndex = 0;
     }
   }
-  isQuantityGreater(quantity: number): boolean {
-    return quantity >= 2;
-  }
+  
   sortChange(event) {
     if (
       !this.dataSource._data._value ||
@@ -333,8 +331,6 @@ export class MoveItemsComponent implements OnInit {
   }
 
   sortChangeToItems(event) {
-    console.log(this.itemSelected);
-
     if (
       !this.moveToDatasource._data._value ||
       event.direction == '' ||
@@ -726,9 +722,9 @@ export class MoveItemsComponent implements OnInit {
     });
   }
 
-  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
-  }
+  // onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+  //   this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+  // }
 
   optionSelected(filter : string) {
     if (this.tableType === 'MoveFrom') {
@@ -739,10 +735,6 @@ export class MoveItemsComponent implements OnInit {
     this.resetFromFilters();
     this.resetPaginationFrom();
     this.getMoveItemList(this.tableType);  
-  }
-
-  onChangeLocation(event: any) {
-    this.getMoveItemList('MoveTo');
   }
 
   resetPagination() {
@@ -760,8 +752,8 @@ export class MoveItemsComponent implements OnInit {
     this.endRowTo = 10;
     this.recordsPerPageTo = 10;
     this.recordsFilteredTo = 0;
-    this.paginator.pageIndex = 0;
-    this.paginatorTo.pageIndex = 0;
+    // this.paginator.pageIndex = 0;
+    // this.paginatorTo.pageIndex = 0;
   }
   resetPaginationTo() {
     this.sortOrderTo = 'asc';
@@ -771,7 +763,7 @@ export class MoveItemsComponent implements OnInit {
     this.endRowTo = 10;
     this.recordsPerPageTo = 10;
     this.recordsFilteredTo = 0;
-    this.paginatorTo.pageIndex = 0;
+    // this.paginatorTo.pageIndex = 0;
   }
   resetPaginationFrom() {
     this.sortOrder = 'asc';
@@ -781,7 +773,7 @@ export class MoveItemsComponent implements OnInit {
     this.endRow = 10;
     this.recordsPerPage = 10;
     this.recordsFiltered = 0;
-    this.paginator.pageIndex = 0;
+    // this.paginator.pageIndex = 0;
   }
   resetFromFilters() {
     this.startRow = 0;
@@ -789,15 +781,15 @@ export class MoveItemsComponent implements OnInit {
   resetToFilters() {
     this.startRowTo = 0;
     this.viewModeTo = 'All';
-    this.paginatorTo.pageIndex = 0;
+    // this.paginatorTo.pageIndex = 0;
   }
 
   clearItemNum() {
     this.itemNo = '';
     this.invMapIDToItem = -1;
-    this.paginators.forEach((paginator) => {
-      paginator.pageIndex = 0;
-    });
+    // this.paginators.forEach((paginator) => {
+    //   paginator.pageIndex = 0;
+    // });
 
     this.clearFields('MoveFrom');
     this.clearFields('MoveTo');
@@ -814,20 +806,5 @@ export class MoveItemsComponent implements OnInit {
     if (this.tabIndex === 1) {
       this.tabIndex = 0;
     }
-  }
-  restrictTo4Digits(): void {
-    const inputElement = this.myInput.nativeElement;
-    let value = inputElement.value.replace(/\D/g, ''); // Remove non-digit characters
-    if (parseInt(value) > 2147483647) {
-      value = value.slice(0, 3);
-    } else {
-      value = value.slice(0, 4);
-    }
-    inputElement.value = value;
-  }
-  onBlurPriority(){
-  if(this.from_priority=== undefined || this.from_priority=== null){
-    this.from_priority=0;
-  }
   }
 }

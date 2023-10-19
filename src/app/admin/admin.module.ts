@@ -163,6 +163,8 @@ import { LookupToteSetupComponent } from './admin-preferences/system-preferences
 import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
 import { QuarantineDialogComponent } from './dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from './dialogs/unquarantine-dialog/unquarantine-dialog.component';
+import { LocationDetailsComponent } from './move-items/location-details/location-details.component';
+import { MoveLocationsComponent } from './move-items/move-locations/move-locations.component';
 
 
 
@@ -319,7 +321,9 @@ import { UnquarantineDialogComponent } from './dialogs/unquarantine-dialog/unqua
         LookupAdjustmentLookupSetupComponent,
         LookupToteSetupComponent,
         QuarantineDialogComponent,
-        UnquarantineDialogComponent
+        UnquarantineDialogComponent,
+        LocationDetailsComponent,
+        MoveLocationsComponent
     ],
     imports: [
         CommonModule,

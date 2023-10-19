@@ -1,125 +1,26 @@
 <div class="row p-0 mt-3">
     <div class="col-xl-8">
-    <mat-card class="mat-elevation-z g-card mb-3">
-      <mat-card-content>
-        <div
-          class="d-xl-flex justify-content-between align-items-center mb-3"
-        >
-          
-          <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3 mb-xl-0" heading="Auto Location Assignment" icon="where_to_vote"></app-icon-heading-component>
-
-        </div>
-        
-        <div class="row mt-4 mx-0">
-                
-                
-                <div class="d-flex justify-content-between mb-3">
-                  Pick<mat-slide-toggle color="primary">
-                  </mat-slide-toggle>
-                </div>
-                <div class="d-flex justify-content-between mb-3">
-                    Put Aways<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-3">
-                    Counts<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="col-xl-12 mt-2 mb-3">
-                    <mat-form-field
-                      class="action-dropdown custom-form-field-bg-white w-100 mb-2"
-                      appearance="outline"
-                    >
-                      <mat-label>Pick Locations Assigned By</mat-label>
-                      <mat-select class="employees-action">
-                        <mat-option value="123456">123</mat-option>
-                        <mat-option value="987654">987</mat-option>
-                        <mat-option value="147852">147</mat-option>
-                      </mat-select>
-                      <span class="material-symbols-outlined icon-expand-more">
-                        expand_more
-                      </span>
-                    </mat-form-field>
-                  </div>
-                  <div class="d-flex justify-content-between mb-3">
-                    Dynamic Warehouse Locations<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-3">
-                    Auto Complete Back Order<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-                  <div class="d-flex justify-content-between mb-3">
-                    Print Reprocess Report After Location Assignment<mat-slide-toggle color="primary">
-                    </mat-slide-toggle>
-                  </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="mat-elevation-z g-card mb-3">
+        <mat-card-content>
+          <div class="d-xl-flex justify-content-between align-items-center mb-3">
+            <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3 mb-xl-0" heading="Auto Location Assignment" icon="where_to_vote"></app-icon-heading-component>
+          </div>
+          <app-ie-al-auto-location-assignment></app-ie-al-auto-location-assignment>
+        </mat-card-content>
+      </mat-card>
     </div>
 
     <div class="col-xl-4">
-    <mat-card class="mat-elevation-z g-card mb-3">
-        <mat-card-content>
-          <div
-            class="d-xl-flex justify-content-between align-items-center mb-3"
-          >
-            
-            <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3 mb-xl-0" heading="Unallocated Transactions" icon="tab"></app-icon-heading-component>
-  
-          </div>
-          
-          <div class="row mt-4 mx-0">
-                  <div class="col-xl-12">
-                    <div class="custom bg-white bg-50 br-14 mb-3">
-                        <div class="counter bg-transparent mt-0 pt-0">
-                          <div>
-                            <div class="d-flex gap-20 justify-content-center">
-                              <div class="employees text-center">
-                                <p class="counter-count mb-1 bg-primary-900">567</p>
-                                <p class="employee-p text-tertiary-900 mb-1">
-                                    Picks
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="counter bg-transparent mt-0 pt-0">
-                            <div>
-                              <div class="d-flex gap-20 justify-content-center">
-                                <div class="employees text-center">
-                                  <p class="counter-count mb-1 bg-primary-900">567</p>
-                                  <p class="employee-p text-tertiary-900 mb-1">
-                                      Put Aways
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="counter bg-transparent mt-0 pt-0">
-                            <div>
-                              <div class="d-flex gap-20 justify-content-center">
-                                <div class="employees text-center">
-                                  <p class="counter-count mb-1 bg-primary-900">567</p>
-                                  <p class="employee-p text-tertiary-900 mb-1">
-                                      Counts
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                      </div>
-                    
-                  </div>
-                  
-                  
-          </div>
-        </mat-card-content>
-    </mat-card>
+      <mat-card class="mat-elevation-z g-card mb-3">
+          <mat-card-content>
+            <div class="d-xl-flex justify-content-between align-items-center mb-3">
+              <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3 mb-xl-0" heading="Unallocated Transactions" icon="tab"></app-icon-heading-component>
+            </div>
+            <app-ie-al-unallocated-transactions></app-ie-al-unallocated-transactions>
+          </mat-card-content>
+      </mat-card>
     </div>
-
-
-  </div>
+</div>
 
   <div class="row">
     <div class="col-xl-4">
