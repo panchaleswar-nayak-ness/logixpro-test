@@ -163,6 +163,9 @@ import { LookupToteSetupComponent } from './admin-preferences/system-preferences
 import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
 import { QuarantineDialogComponent } from './dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from './dialogs/unquarantine-dialog/unquarantine-dialog.component';
+import { SrInputFieldsComponent } from './system-replenishment/sr-current-order/sr-input-fields/sr-input-fields.component';
+import { SrNewInputFieldsComponent } from './system-replenishment/sr-new-order/sr-new-input-fields/sr-new-input-fields.component';
+
 import { CompanyInfoComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/company-info-component/company-info-component.component';
 import { SystemLogicPreferencesComponent } from './admin-preferences/system-preferences/sp-general-setup/system-logic-preferences/system-logic-preferences.component';
 import { PodSetupComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/pod-setup-component/pod-setup-component.component';
@@ -322,6 +325,8 @@ import { PodSetupComponentComponent } from './admin-preferences/system-preferenc
         LookupToteSetupComponent,
         QuarantineDialogComponent,
         UnquarantineDialogComponent,
+        SrInputFieldsComponent,
+        SrNewInputFieldsComponent,
         CompanyInfoComponentComponent,
         SystemLogicPreferencesComponent,
         PodSetupComponentComponent,

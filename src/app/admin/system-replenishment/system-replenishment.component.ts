@@ -5,6 +5,8 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { DeleteRangeComponent } from 'src/app/dialogs/delete-range/delete-range.component';
 import { PrintReplenLabelsComponent } from 'src/app/dialogs/print-replen-labels/print-replen-labels.component';
 import { SrDeleteOrderComponent } from 'src/app/dialogs/sr-delete-order/sr-delete-order.component';
+import { SrInputFieldsComponent } from './sr-current-order/sr-input-fields/sr-input-fields.component';
+
 
 @Component({
   selector: 'app-system-replenishment',

@@ -27,7 +27,11 @@ import { ActivatedRoute } from '@angular/router';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-
+class info {
+  title: string;
+  value: string;
+  colorClass: string;
+}
 @Component({
   selector: 'app-tran-select-order',
   templateUrl: './tran-select-order.component.html',
@@ -64,39 +68,55 @@ export class TranSelectOrderComponent implements OnInit {
   searchAutocompleteListOrderNumber: any = [];
   public userData: any;
 
+  info: info[] =  [
+    { title: 'Complete', value: this.completeOrder, colorClass: 'Compete-cart' },
+    { title: 'Re-process', value: this.reprocessOrder, colorClass: 'Reprocess-card' },
+    { title: 'Open', value: this.openOrder, colorClass: 'Open-card' },
+    { title: 'Order type', value: this.orderTypeOrder, colorClass: 'Order-type' },
+    { title: 'Total-lines', value: this.totalLinesOrder, colorClass: 'Total-lines' },
+    { title: 'Current Status', value: this.currentStatusOrder, colorClass: 'Current-status' }
+  ];
+
+
   @Output() deleteEvent = new EventEmitter<Event>();
 
   @Input() set openOrderEvent(event: Event) {
     if (event) {
       this.openOrder = event;
+      this.info[2].value = this.openOrder;
     }
   }
 
   @Input() set completeOrderEvent(event: Event) {
     if (event) {
       this.completeOrder = event;
+      this.info[0].value = this.completeOrder;
     }
   }
   @Input() set reprocessOrderEvent(event: Event) {
     if (event) {
       this.reprocessOrder = event;
+      this.info[1].value = this.reprocessOrder;
     }
   }
 
   @Input() set orderTypeOrderEvent(event: Event) {
     if (event) {
       this.orderTypeOrder = event;
+      this.info[3].value = this.orderTypeOrder;
     }
   }
 
   @Input() set totalLinesOrderEvent(event: Event) {
     if (event) {
       // this.totalLinesOrder = event;   // getting it from shared service
+      this.info[4].value = this.totalLinesOrder;
     }
   }
   @Input() set currentStatusOrderEvent(event: Event) {
     if (event) {
       this.currentStatusOrder = event;
+      this.info[5].value = this.currentStatusOrder;
     }
   }
   @Input()
@@ -217,6 +237,8 @@ export class TranSelectOrderComponent implements OnInit {
           this.totalLinesOrder=obj.totalRecords?obj.totalRecords:0
          })
     );
+
+    
 
   }
 

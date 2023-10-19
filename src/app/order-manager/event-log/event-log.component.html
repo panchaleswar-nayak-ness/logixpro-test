@@ -1,148 +1,21 @@
-<mat-card class="mat-elevation-z g-card mb-3 mt-2" style="height: 100%;">
-    <mat-card-content>
-        <div class="d-flex align-items-center flex-wrap mb-3">
-            
-            <app-icon-heading-component class="card-header-title mb-3 me-4 d-flex align-items-center" heading="Event Log" icon="event_note"></app-icon-heading-component>
-            <mat-checkbox class="example-margin custom-checkbox mb-3" color="primary" [(ngModel)]="ignoreDateRange"
-                (change)="onIgnoreDateRange($event)">Ignore Date Range</mat-checkbox>
-        </div>
-
-        <div class="row">
-
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Start Date</mat-label>
-                    <input matInput [(ngModel)]="startDate" type="date" (change)="event($event)" [disabled]="ignoreDateRange" style="cursor: text;">
-                    
-                </mat-form-field>
-            </div>
-
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>End Date</mat-label>
-                    <input matInput [(ngModel)]="endDate" type="date" (change)="event($event)" [disabled]="ignoreDateRange" style="cursor: text;">
-                </mat-form-field>
-            </div>
-
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
-                    <mat-label>Message</mat-label>
-
-                    <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto1"
-                        [(ngModel)]="message" maxlength="255" (keyup)="autocompleteSearchColumn('Message',message)"
-                        (focus)="eventLogTypeAhead('Message',message,true)">
-                        <button matSuffix *ngIf="message" class="clear-btn"  (click)=" message = '';clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                    <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="search($event,'message')"
-                        #autocompleteMesaage>
-                        <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                            {{option}}
-                        </mat-option>
-                        <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
-                            No data found
-                        </mat-option>
-                    </mat-autocomplete>
-
-                </mat-form-field>
-            </div>
-
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
-                    <mat-label>Event Location</mat-label>
-
-                    <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto2"
-                        [(ngModel)]="eventLocation" maxlength="255"
-                        (keyup)="autocompleteSearchColumn('Event Location',eventLocation)"
-                        (focus)="eventLogTypeAhead('Event Location',eventLocation,true)">
-                        <button matSuffix *ngIf="eventLocation" class="clear-btn"  (click)=" eventLocation = '';clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                    <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="search($event,'eventLocation')"
-                        #autocompleteEventLocation>
-                        <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                            {{option}}
-                        </mat-option>
-                        <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
-                            No data found
-                        </mat-option>
-                    </mat-autocomplete>
-
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="row">
-
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
-                    <mat-label>Event Code</mat-label>
-
-                    <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto3"
-                        [(ngModel)]="eventCode" maxlength="255"
-                        (keyup)="autocompleteSearchColumn('Event Code',eventCode)"
-                        (focus)="eventLogTypeAhead('Event Code',eventCode,true)">
-                        <button matSuffix *ngIf="eventCode" class="clear-btn"  (click)=" eventCode = '';clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                    <mat-autocomplete #auto3="matAutocomplete" (optionSelected)="search($event,'eventCode')"
-                        #autocompleteEventCode>
-                        <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                            {{option}}
-                        </mat-option>
-                        <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
-                            No data found
-                        </mat-option>
-                    </mat-autocomplete>
-
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
-                    <mat-label>Event Type</mat-label>
-
-                    <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto4"
-                        [(ngModel)]="eventType" maxlength="255"
-                        (keyup)="autocompleteSearchColumn('Event Type',eventType)"
-                        (focus)="eventLogTypeAhead('Event Type',eventType,true)">
-                        <button matSuffix *ngIf="eventType" class="clear-btn"  (click)=" eventType = '';clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                    <mat-autocomplete #auto4="matAutocomplete" (optionSelected)="search($event,'eventType')"
-                        #autocompleteEventType>
-                        <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                            {{option}}
-                        </mat-option>
-                        <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
-                            No data found
-                        </mat-option>
-                    </mat-autocomplete>
-
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
-                    <mat-label>Username</mat-label>
-
-                    <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto5"
-                        [(ngModel)]="userName" maxlength="255" (keyup)="autocompleteSearchColumn('Name Stamp',userName)"
-                        (focus)="eventLogTypeAhead('Name Stamp',userName,true)">
-
-                        <button matSuffix *ngIf="userName" class="clear-btn"  (click)=" userName = '';clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                    <mat-autocomplete #auto5="matAutocomplete" (optionSelected)="search($event,'userName')"
-                        #autocompleteUsername>
-                        <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                            {{option}}
-                        </mat-option>
-                        <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
-                            No data found
-                        </mat-option>
-                    </mat-autocomplete>
-
-                </mat-form-field>
-            </div>
-
-            <div class="col-xl-3">
-                <button mat-flat-button color="primary" class="btn-regular w-100 mb-3" (click)="clearFilters()">
-                    Clear Filters
-                </button>
-            </div>
-        </div>
-
-    </mat-card-content>
-</mat-card>
+<app-event-log-panel-component 
+[ignoreDateRange]="ignoreDateRange"
+[startDate]="startDate"
+[endDate]="endDate"
+[message]="message"
+[eventLocation]="eventLocation"
+[searchAutocompleteList]="searchAutocompleteList"
+[eventCode]="eventCode"
+[eventType]="eventType"
+[userName]="userName"
+(dateEmit)="startDate = $event.startDate; endDate = $event.endDate; event($event)"
+(ignoreDateRangeEmit)="onIgnoreDateRange($event)"
+(autocompleteSearchColumnEmit)="autocompleteSearchColumn($event.colName, $event.msg)"
+(eventLogTypeAheadEmit)="eventLogTypeAhead($event.colName, $event.msg,$event.loader)"
+(searchEmit)="search($event.event, $event.msg)"
+(clearEmit)="clear()"
+(clearFiltersEmit)="clearFilters()">
+</app-event-log-panel-component>
 
 <mat-card class="mat-elevation-z g-card mb-3 mt-2" style="height: 100%;">
     <mat-card-content>
@@ -296,7 +169,5 @@
         </div>
     </mat-card-content>
 </mat-card>
-
-
 
 <app-table-context-menu-component (optionSelected)="optionSelected($event)" [componentName]="'eventLog'"></app-table-context-menu-component>

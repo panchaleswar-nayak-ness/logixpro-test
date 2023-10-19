@@ -25,6 +25,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+
 @Component({
   selector: 'app-sr-current-order',
   templateUrl: './sr-current-order.component.html',
@@ -637,3 +638,4 @@ export class SrCurrentOrderComponent implements OnInit {
     }
   }
 }
+
