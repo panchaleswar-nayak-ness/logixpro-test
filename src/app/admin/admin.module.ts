@@ -161,6 +161,8 @@ import { LookupUserOneSetupComponent } from './admin-preferences/system-preferen
 import { LookupAdjustmentLookupSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-adjustment-lookup-setup/lookup-adjustment-lookup-setup.component';
 import { LookupToteSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-tote-setup/lookup-tote-setup.component';
 import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
+import { QuarantineDialogComponent } from './dialogs/quarantine-dialog/quarantine-dialog.component';
+import { UnquarantineDialogComponent } from './dialogs/unquarantine-dialog/unquarantine-dialog.component';
 import { SrInputFieldsComponent } from './system-replenishment/sr-current-order/sr-input-fields/sr-input-fields.component';
 import { SrNewInputFieldsComponent } from './system-replenishment/sr-new-order/sr-new-input-fields/sr-new-input-fields.component';
 
@@ -319,6 +321,8 @@ import { SrNewInputFieldsComponent } from './system-replenishment/sr-new-order/s
         LookupUserOneSetupComponent,
         LookupAdjustmentLookupSetupComponent,
         LookupToteSetupComponent,
+        QuarantineDialogComponent,
+        UnquarantineDialogComponent
         SrInputFieldsComponent,
         SrNewInputFieldsComponent
     ],
