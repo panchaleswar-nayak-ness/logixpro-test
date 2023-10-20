@@ -290,18 +290,25 @@ export class ConsolidationComponent implements OnInit {
           }
 
           this.IconsolidationAPI.ShippingButtSet(payload).subscribe((res: any) => {
-            if (res.data == 1) {
-              this.enableConButts()
-              this.shippingbtb = false;
-            }
-            else if (res.data == 0) {
-              this.enableConButts()
-              this.shippingbtb = true;
+            if(res.isExecuted)
+            {
+              if (res.data == 1) {
+                this.enableConButts()
+                this.shippingbtb = false;
+              }
+              else if (res.data == 0) {
+                this.enableConButts()
+                this.shippingbtb = true;
+              }
+              else {
+                this.global.ShowToastr('error','Error has occured', 'Error!');
+              }
             }
             else {
-              this.global.ShowToastr('error','Error has occured', 'Error!');
-            }
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("ShippingButtSet",res.responseMessage);
 
+            }
           })
         }
       }

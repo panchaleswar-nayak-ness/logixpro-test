@@ -74,7 +74,7 @@ export class ChooseLocationComponent implements OnInit {
 
       this.iinductionManagerApi.BatchLocationTypeAhead(searchPayload).subscribe(
         (res: any) => {
-          if (res.data) {
+          if (res.isExecuted && res.data) {
             this.searchAutocompleteItemNum = res.data;
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
@@ -96,7 +96,7 @@ export class ChooseLocationComponent implements OnInit {
       };
       this.iinductionManagerApi.ReserveLocation(payLoad).subscribe(
         (res: any) => {
-          if (res.data && res.isExecuted) {
+          if (res.isExecuted && res) {
             this.dialogRef.close({responseMessage : res.responseMessage, ...this.selectedLocation});
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');

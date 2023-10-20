@@ -54,7 +54,7 @@ getPreferences() {
   this.IconsolidationAPI
     .ConsoleDataSB(payload)
     .subscribe((res) => {
-      if (res.isExecuted) {
+      if (res.isExecuted && res.data) {
         this.preferencesData = res.data.cmPreferences;
  
       }
@@ -69,7 +69,15 @@ getPreferences() {
 }
 async ConfPackProc(){
   this.IconsolidationAPI.ConfPackProcModal({id:this.id}).subscribe((response:any) => { 
-    this.confPackProcTable = response.data;  
+    if (response.isExecuted && response.data)
+    {
+      this.confPackProcTable = response.data;
+    }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("ConfPackProcModal",response.responseMessage);
+    }
+      
   });
 } 
 

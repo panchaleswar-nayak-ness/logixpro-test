@@ -152,12 +152,15 @@ export class CmStagingLocationComponent {
               break;
             }
           }
-        
       }
-      if(res.isExecuted && index!=null){ 
+      if(res && res.isExecuted && index!=null){ 
         this.stagetables[index].stagingLocation = location;
         this.stagetables[index].location = location; 
+      }else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("StagingLocationsUpdate",res.responseMessage)
       }
+      
     })
   }
   }

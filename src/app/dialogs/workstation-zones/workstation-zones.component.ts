@@ -127,7 +127,7 @@ export class WorkstationZonesComponent implements OnInit {
     }
     this.velocity_code_list = [];
     this.iinductionManagerApi.WSPickZoneSelect(paylaod).subscribe((res) => {
-      if (res.data) {
+      if (res.isExecuted && res.data) {
         res.data.map(val => {
           this.velocity_code_list.push({ 'zone': val, isSaved: true })
         })
@@ -144,7 +144,7 @@ export class WorkstationZonesComponent implements OnInit {
     }
     this.velocity_code_list = [];
     this.iinductionManagerApi.LocationZonesSelect(paylaod).subscribe((res) => {
-      if (res.data) {
+      if (res.isExecuted && res.data) {
         this.zones = res.data;
       }
       else {
@@ -171,7 +171,7 @@ export class WorkstationZonesComponent implements OnInit {
         "zone": this.selectedZone, 
       }
       this.iinductionManagerApi.WSPickZoneInsert(paylaod).subscribe((res) => {
-        if (res.data) {
+        if (res.isExecuted && res.data) {
           this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.getVelocity();
           this.allZoneList = [];
@@ -239,7 +239,7 @@ export class WorkstationZonesComponent implements OnInit {
           }
           else{
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
-            console.log("ShowToastr",res.responseMessage);
+            console.log("WSPickZoneDelete",res.responseMessage);
           }
 
         });

@@ -55,8 +55,8 @@ export class InductionManagerComponent implements OnInit {
     let paylaod = { 
     }
     this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
-      this.useInZonePickScreen = res.data.imPreference.useInZonePickScreen;
-      this.sharedService.BroadCastInductionMenuUpdate(this.useInZonePickScreen);
+        this.useInZonePickScreen = res.data.imPreference.useInZonePickScreen;
+        this.sharedService.BroadCastInductionMenuUpdate(this.useInZonePickScreen);   
     });
   }
 

@@ -145,7 +145,7 @@ export class OmPreferencesComponent implements OnInit {
             'Error',
             'An Error Occured while trying to update'
           );
-          console.log("setPreferences",response.responseMessage);
+          console.log("OrderManagerPreferenceUpdate",response.responseMessage);
         }
       });
   }

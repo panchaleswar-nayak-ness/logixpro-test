@@ -107,7 +107,7 @@ export class PrintersComponent implements OnInit {
       }
       else {
         this.global.ShowToastr('error',"Service stop encountered an error. Please try again or contact Scott Tech for support.", 'Error!');
-        console.log("stopService",res.responseMessage);
+        console.log("StopPrintService",res.responseMessage);
       }
     });
   }
@@ -121,7 +121,7 @@ export class PrintersComponent implements OnInit {
       }
       else {
         this.global.ShowToastr('error',"Service restart was unsuccessful. Please try again or contact Scott Tech for support.", 'Error!');
-        console.log("restartService",res.responseMessage);
+        console.log("RestartPrintService",res.responseMessage);
       }
     });
   }
@@ -158,7 +158,7 @@ export class PrintersComponent implements OnInit {
               this.allPinters = this.allPinters.filter((item: any) => item.currentPrinter != printer.currentPrinter);
             } else {
               this.global.ShowToastr('error',"Delete Failed", 'Error!');
-              console.log("RemovePrinter",res.responseMessage);
+              console.log("deletePrinter",res.responseMessage);
             }
           });
         }
@@ -209,7 +209,7 @@ export class PrintersComponent implements OnInit {
           this.addingNew = false;
         } else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
-          console.log("SavePrinter",res.responseMessage);
+          console.log("InsertNewPrinter",res.responseMessage);
         }
       });
     }
@@ -228,7 +228,7 @@ export class PrintersComponent implements OnInit {
           printer.currentlabelPrinter = printer.labelPrinter;
         } else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
-          console.log("SavePrinter",res.responseMessage);
+          console.log("UpdateCurrentPrinter",res.responseMessage);
         }
       });
     }

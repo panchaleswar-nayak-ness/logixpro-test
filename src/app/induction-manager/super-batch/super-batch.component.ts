@@ -200,6 +200,7 @@ export class SuperBatchComponent implements OnInit {
           }
           else{
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("TotePrintTableInsert",res.responseMessage);
           }
 
         });

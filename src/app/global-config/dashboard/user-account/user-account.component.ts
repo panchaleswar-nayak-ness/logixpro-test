@@ -57,7 +57,7 @@ export class UserAccountComponent implements OnInit {
     };
     this.iGlobalConfigApi.Menu(payload).subscribe(
       {next: (res: any) => {
-        if (res?.data ) {
+        if (res.isExecuted && res.data ) {
           this.sharedService.setData(res.data);
           this.username = res.data.loginInfo[0].user;
           this.password = res.data.loginInfo[0].password;

@@ -216,13 +216,18 @@ export class OmCreateOrdersComponent implements OnInit {
   createOrdersDT(loader: boolean = false) {
     if (this.createOrdersDTPayload.orderNumber.trim() != '') {
       this.iOrderManagerApi.CreateOrdersDT(this.createOrdersDTPayload).subscribe((res: any) => {
-        if (res.isExecuted && res.data) {
-          this.tableData = new MatTableDataSource(res.data);  
-          this.tableData.paginator = this.paginator1;
-        } else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!'); 
-          this.tableData = new MatTableDataSource();
-          console.log("CreateOrdersDT",res.responseMessage); 
+        if(res.isExecuted)
+        {
+          if (res.data) {
+            this.tableData = new MatTableDataSource(res.data);  
+            this.tableData.paginator = this.paginator1;
+          } else { 
+            this.tableData = new MatTableDataSource();
+          }
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("CreateOrdersDT",res.responseMessage);
         }
       });
     }

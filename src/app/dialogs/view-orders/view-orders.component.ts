@@ -117,30 +117,38 @@ export class ViewOrdersComponent implements OnInit {
       "OrderView": this.data.viewType, 
     }
     this.iinductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
-      
-      if (res.data.length > 0) {
-        res.data.map(val => {
-          this.allOrders.push({ 'orderNumber': val, isSelected: false });
-        });
-        if (this.data.allOrders.length > 0) {
-          const selectedArr = this.allOrders.filter(element => this.data.allOrders.includes(element.orderNumber));
-          
-          selectedArr.forEach(ele => {
-            ele.isSelected = true
-            this.selectedOrders.push(ele.orderNumber);
+      if (res.isExecuted && res.data)
+      {
+        if (res.data.length > 0) {
+          res.data.map(val => {
+            this.allOrders.push({ 'orderNumber': val, isSelected: false });
           });
+          if (this.data.allOrders.length > 0) {
+            const selectedArr = this.allOrders.filter(element => this.data.allOrders.includes(element.orderNumber));
+            
+            selectedArr.forEach(ele => {
+              ele.isSelected = true
+              this.selectedOrders.push(ele.orderNumber);
+            });
+          }
+  
+          this.orderDataSource = new MatTableDataSource<any>(this.allOrders);
+          this.orderDataSource.paginator = this.paginator;
+          this.isDisableSubmit = false;
+  
         }
-
-        this.orderDataSource = new MatTableDataSource<any>(this.allOrders);
-        this.orderDataSource.paginator = this.paginator;
-        this.isDisableSubmit = false;
-
+        else{
+          this.global.ShowToastr('error','There are no orders for your zone', 'Error!');
+          this.isDisableSubmit = true
+          
+        }
       }
-      else{
-        this.global.ShowToastr('error','There are no orders for your zone', 'Error!');
-        this.isDisableSubmit = true
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         console.log("OrdersInZone",res.responseMessage);
       }
+      
+      
     });
   }
   onChangeOrderAction(option: any) {
@@ -197,7 +205,7 @@ export class ViewOrdersComponent implements OnInit {
         "Filter": "1=1", 
       }
       this.iinductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
-        if (res.data) {
+        if (res.isExecuted && res.data) {
           this.transData = res.data.pickToteManTrans;
           this.orderTransDataSource = new MatTableDataSource<any>(this.transData);
           this.orderTransDataSource.paginator = this.paginatorTrans;

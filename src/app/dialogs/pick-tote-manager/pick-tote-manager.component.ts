@@ -595,9 +595,18 @@ export class PickToteManagerComponent implements OnInit {
         "Filter": "1=1", 
       }
       this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
-        this.filterOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
-        this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
-        this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
+        if(res)
+        {
+          this.filterOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
+          this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
+          this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickToteTransDT",res.responseMessage);
+
+        }
+        
       });
     }
     
@@ -651,9 +660,17 @@ export class PickToteManagerComponent implements OnInit {
         "Filter": "1=1", 
       }
       this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
-        this.zoneOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
-        this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
-        this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
+        if(res)
+        {
+          this.zoneOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
+          this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
+          this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickToteTransDT",res.responseMessage);
+        }
+        
       });
     }
 

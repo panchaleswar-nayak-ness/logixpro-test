@@ -57,7 +57,7 @@ export class HeaderInterceptor implements HttpInterceptor {
               this.router.navigate(['/globalconfig']);
             } else {
               this.global.ShowToastr('error',res.responseMessage, 'Error!');
-              console.log("handleAuthError",res.responseMessage);
+              console.log("configLogout",res.responseMessage);
             }
           });    
       } else {
@@ -76,7 +76,7 @@ export class HeaderInterceptor implements HttpInterceptor {
             this.router.navigate(['/login']);    
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
-            console.log("handleAuthError",res.responseMessage);
+            console.log("Logout",res.responseMessage);
           }
         })
       }

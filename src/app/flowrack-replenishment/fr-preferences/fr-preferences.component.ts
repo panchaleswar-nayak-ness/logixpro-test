@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -17,7 +18,7 @@ export class FrPreferencesComponent implements OnInit {
   selectedCarton:any;
   public iAdminApiService: IAdminApiService;
   public iFlowRackReplenishApi : IFlowRackReplenishApi;
-  constructor(private Api: ApiFuntions,private adminApiService: AdminApiService,  private authservice: AuthService,public flowRackReplenishApi : FlowRackReplenishApiService) {
+  constructor(private Api: ApiFuntions,private adminApiService: AdminApiService, private global : GlobalService,  private authservice: AuthService,public flowRackReplenishApi : FlowRackReplenishApiService) {
     this.iAdminApiService = adminApiService;
     this.iFlowRackReplenishApi = flowRackReplenishApi;
   }
@@ -33,8 +34,16 @@ export class FrPreferencesComponent implements OnInit {
     //   "WSID": this.userData.wsid,
     // }
     this.iFlowRackReplenishApi.wslocation({}).subscribe((res) => {
-      // console.log(res)
-      this.selectedCarton=res.data
+      if(res.isExecuted && res.data)
+      {
+        this.selectedCarton=res.data
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("wslocation",res.responseMessage);
+      }
+      
+      
     })
   }
   updatePref(item) {

@@ -490,18 +490,26 @@ export class ProcessPicksComponent implements OnInit {
 
   getAllToteIds(autoToteIds: boolean = false) {
     this.iinductionManagerApi.NextTote().subscribe(res => {
-      this.nxtToteID = res.data;
-      this.TOTE_SETUP.forEach((element, key) => {
-        if (!element.toteID) {
-          element.toteID = this.nxtToteID;
-          this.nxtToteID = this.nxtToteID + 1;
-        }
-        if (autoToteIds) {
-          element.toteID = this.nxtToteID;
-          this.nxtToteID = this.nxtToteID + 1;
-        }
-      });
-      this.updateNxtTote();
+      if(res.isExecuted && res.data)
+      {
+        this.nxtToteID = res.data;
+        this.TOTE_SETUP.forEach((element, key) => {
+          if (!element.toteID) {
+            element.toteID = this.nxtToteID;
+            this.nxtToteID = this.nxtToteID + 1;
+          }
+          if (autoToteIds) {
+            element.toteID = this.nxtToteID;
+            this.nxtToteID = this.nxtToteID + 1;
+          }
+        });
+        this.updateNxtTote();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("NextTote",res.responseMessage);
+      }
+     
     });
 
   }
@@ -520,7 +528,9 @@ export class ProcessPicksComponent implements OnInit {
   }
   getNextToteId() {
     this.iinductionManagerApi.NextTote().subscribe(res => {
-      this.nxtToteID = res.data;
+      if(res.isExecuted && res.data)
+      {
+        this.nxtToteID = res.data;
       for (let element of this.TOTE_SETUP) {
         if (element.toteID === '') {
           element.toteID = this.nxtToteID;
@@ -529,6 +539,11 @@ export class ProcessPicksComponent implements OnInit {
         }
       }
       this.updateNxtTote();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("NextTote",res.responseMessage);
+      }
     });
   }
 

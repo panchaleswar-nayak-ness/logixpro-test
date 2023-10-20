@@ -199,7 +199,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
             this.description = this.apiResponse.description;
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
-            console.log("TransactionForTote",res)
+            console.log("TransactionForTote",res.ResponseMessage);
           }
         },
         (error) => {}
