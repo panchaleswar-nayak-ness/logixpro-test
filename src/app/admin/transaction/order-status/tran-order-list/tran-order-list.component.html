@@ -4,7 +4,6 @@
     <div class="row">
       <div class="col-xl-5">
         
-
           <!-- <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
             <mat-label>Select</mat-label>
             <mat-select class="employees-action" [(ngModel)]="this.searchCol" (selectionChange)="actionDialog($event.value)">
@@ -33,6 +32,22 @@
             <button (click)="clearData($event)" mat-stroked-button appearance="outline" color="warn" class="button-remove-all-w-stroke mb-3 w-100" style="flex:1">Clear</button>
           </div> -->
 
+          <!--
+            This component provides a filter interface for table columns. 
+            It allows users to select a column, search within the selected column, 
+            and clear the filter settings.
+
+            Properties:
+            - [tableColumns]: Array of table header definitions.
+            - [searchCol]: Currently selected column for filtering.
+            - (selectionChangeEvent): Event emitted when a column is selected.
+            - [searchString]: String to filter records within the selected column.
+            - [searchByInput]: Subject to handle search input changes.
+            - [searchAutocompleteList]: List of options for autocomplete functionality.
+            - (autoCompleteEvent): Event emitted when search string changes.
+            - [showClearBtn]: Boolean to toggle visibility of the clear button.
+            - (clearBtnEvent): Event emitted when the clear button is clicked.
+          -->
           <app-column-filter-component 
             [tableColumns]="this.Order_Table_Config" 
             [searchCol]="this.searchCol"

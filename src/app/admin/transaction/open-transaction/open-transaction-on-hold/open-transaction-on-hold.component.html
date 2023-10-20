@@ -156,51 +156,44 @@
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <app-icon-heading-component heading="Order Selection List" icon="list_alt">
-                    </app-icon-heading-component>
+                    <app-icon-heading-component heading="Order Selection List" icon="list_alt"></app-icon-heading-component>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xl-5">
                     <div class="d-block d-xl-flex gap-12 align-items-center ">
-                        <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline" style="flex:1">
+                        
+                        <!-- <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline" style="flex:1">
                             <mat-label>Search</mat-label>
-                            <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn.colDef"
-                                (selectionChange)="resetFields($event.value)">
+                            <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn.colDef" (selectionChange)="resetFields($event.value)">
                                 <mat-option (click)="this.orderSelectionSearch = true"></mat-option>
-                                <mat-option *ngFor="let item of displayedColumns | sort:'colDef':false"
-                                    [value]="item.colDef">
-                                    {{item.colDef}}
-                                </mat-option>
+                                <mat-option *ngFor="let item of displayedColumns | sort:'colDef':false" [value]="item.colDef">{{item.colDef}}</mat-option>
                             </mat-select>
-                            <span class="material-symbols-outlined icon-expand-more">
-                                expand_more
-                            </span>
+                            <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                         </mat-form-field>
 
                         <span class="v-br d-none d-xl-flex mb-3">-</span>
+
                         <div class="d-flex g-mini-search-box w-100 mb-3">
-                            <mat-form-field class="w-100 bg-white br-8" appearance="fill"
-                                [floatLabel]="getFloatFormabelValue()"
-                                [hideRequiredMarker]="hideRequiredFormControl.value">
-                                <span class="material-symbols-outlined icon-search">
-                                    Search
-                                </span>
-                                <input type="text" placeholder="Search" aria-label="Search" matInput
-                                    [disabled]="orderSelectionSearch" [(ngModel)]='this.columnSearch.searchValue'
-                                    [matAutocomplete]="search" (ngModelChange)="this.searchByColumn.next($event)">
-                                <button matSuffix *ngIf="this.columnSearch.searchValue" class="clear-btn"
-                                    (click)="clear()"><mat-icon
-                                        class="text-20 text-chrome-600">cancel</mat-icon></button>
+                            <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatFormabelValue()" [hideRequiredMarker]="hideRequiredFormControl.value">
+                                <span class="material-symbols-outlined icon-search">Search</span>
+                                <input type="text" placeholder="Search" aria-label="Search" matInput [disabled]="orderSelectionSearch" [(ngModel)]='this.columnSearch.searchValue' [matAutocomplete]="search" (ngModelChange)="this.searchByColumn.next($event)">
+                                <button matSuffix *ngIf="this.columnSearch.searchValue" class="clear-btn" (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                                 <mat-autocomplete #search="matAutocomplete" (optionSelected)="searchData()">
-                                    <mat-option *ngFor="let option of searchAutocompleteListByCol" [value]="option">
-                                        {{option}}
-                                    </mat-option>
+                                    <mat-option *ngFor="let option of searchAutocompleteListByCol" [value]="option">{{option}}</mat-option>
                                 </mat-autocomplete>
                             </mat-form-field>
+                        </div> -->
 
-
-                        </div>
+                        <app-column-filter-component 
+                            [tableColumns]="this.displayedColumns" 
+                            [searchCol]="this.columnSearch.searchColumn.colDef"
+                            (selectionChangeEvent)="resetFields($event)"
+                            [searchString]="this.columnSearch.searchValue"
+                            [searchByInput]="this.searchByColumn"
+                            [searchAutocompleteList]="this.searchAutocompleteListByCol"
+                            (autoCompleteEvent)="this.columnSearch.searchValue = $event; this.searchByColumn.next($event)">
+                        </app-column-filter-component>
                     </div>
                 </div>
                 <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
