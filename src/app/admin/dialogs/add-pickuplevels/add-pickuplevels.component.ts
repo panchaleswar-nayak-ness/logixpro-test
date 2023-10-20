@@ -65,7 +65,7 @@ export class AddPickuplevelsComponent implements OnInit {
     if (this.data.mode === 'edit') {
       form.value.levelID = this.levelId;
       
-      this.iAdminApiService.updatePickLevels(form.value).subscribe((res:any) =>{
+      this.iAdminApiService.updatePickLevels({ userName : this.data.userName, ...form.value }).subscribe((res:any) =>{
         if (res.isExecuted) {
           this.dialog.closeAll();
           this.global.ShowToastr('success',labels.alert.success, 'Update!');
@@ -78,7 +78,7 @@ export class AddPickuplevelsComponent implements OnInit {
     }
     else {  
       form.value.levelID = this.picklvl;
-      this.iAdminApiService.insertPickLevels(form.value).subscribe((res: any) => {
+      this.iAdminApiService.insertPickLevels({ userName : this.data.userName, ...form.value }).subscribe((res: any) => {
         if (res.isExecuted) {
           this.dialog.closeAll();
           this.global.ShowToastr('success',labels.alert.success, 'Success!');

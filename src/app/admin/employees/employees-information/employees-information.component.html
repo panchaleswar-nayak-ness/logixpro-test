@@ -1,0 +1,74 @@
+<div class="d-xl-flex justify-content-between align-items-center">
+    <h2 class="card-header-title mb-0 mb-sm-3 mb-md-3 mb-lg-0 d-flex align-items-center">
+      <div
+        class="dialog-close-button-fix close-button d-flex justify-content-center align-items-center me-lg-3"
+        *ngIf="isLookUp">
+        <span class="material-symbols-outlined" style="cursor:pointer;" (click)="backEmpAction()"
+          matTooltip="Back to employee list" matTooltipPosition="above">
+          arrow_back
+        </span>
+      </div>
+      <div class="mat-icon-wrap mx-1 me-lg-3">
+        <span class="material-symbols-outlined">
+          assignment_ind
+        </span>
+      </div>
+      <span>Employees Information</span>
+    </h2>
+    <mat-form-field class="action-dropdown d-block" appearance="outline">
+      <mat-label>Actions</mat-label>
+      <mat-select #matRef class="employees-action"
+        (selectionChange)="actionDialog($event.value, empData, $event)">
+        <mat-option (click)="openDialog()" [hidden]="isLookUp" *ngIf="(env !== 'AD' && env !== 'AZUREAD')">Add Employee</mat-option>
+        <mat-option value="edit" [hidden]="!isLookUp">Edit</mat-option>
+        <mat-option value="delete" [hidden]="!isLookUp" >Delete</mat-option>
+        <mat-option value="print" (click)="printEmpList()">Print Employee List</mat-option>
+      </mat-select>
+      <span class="material-symbols-outlined icon-expand-more">
+        expand_more
+      </span>
+    </mat-form-field>
+  </div>
+  <div class="emp-details-table mt-3 {{!isLookUp ? 'box-border' : ''}}" *ngIf="!isLookUp">
+
+    <!-- employee lookup here -->
+    <app-employees-lookup [childLookUp]="isLookUp" (updateIsLookUp)="updateIsLookUp($event)">
+    </app-employees-lookup>
+
+  </div>
+  <div class="employee-details details-wrap g-details-wrap" *ngIf="isLookUp">
+    <div class="g-detail">
+      <label class="g-field-label">Employee Lookup</label>
+      <div class="g-field-content">{{empData.firstName }} {{empData.lastName }}</div>
+    </div>
+    <div class="g-detail">
+      <label class="g-field-label">MI</label>
+      <div class="g-field-content">{{empData.mi }}</div>
+    </div>
+    <div class="g-detail">
+      <label class="g-field-label">First Name</label>
+      <div class="g-field-content">{{empData.firstName }}</div>
+    </div>
+    <div class="g-detail">
+      <label class="g-field-label">Last Name</label>
+      <div class="g-field-content">{{empData.lastName }}</div>
+    </div>
+    <div class="g-detail">
+      <label class="g-field-label">Username</label>
+      <div class="g-field-content">{{empData.username }}</div>
+    </div>
+    <div class="g-detail">
+      <label class="g-field-label">Email Address</label>
+      <div class="g-field-content">{{empData.emailAddress }}</div>
+    </div>
+    <div class="g-detail">
+      <label class="g-field-label">Access Level</label>
+      <div class="g-field-content">
+        {{empData.accessLevel==='administrator'?'Administrator':empData.accessLevel==='staff_member'?'Staff  Member':'' }}</div>
+    </div>
+    <div class="g-detail" *ngIf="(env  != 'AD' && env  != 'AZUREAD') ">
+      <label class="g-field-label">Group</label>
+      <div class="g-field-content">
+        {{empData.groupName}}</div>
+    </div>
+  </div>

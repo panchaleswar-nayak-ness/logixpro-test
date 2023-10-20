@@ -1,0 +1,363 @@
+<mat-tab-group dynamicHeight class="mini-tab-labels" [(selectedIndex)]="demo1TabIndex"
+                  (selectedTabChange)="tabChanged($event)">
+                  <mat-tab label="BulkPro Settings">
+                    <div class="bulkpro-settings-tab g-tab bg-white">
+
+                      <!-- Zones Card -->
+                      <div class="g-action-card g-action-card-disabled mb-3">
+                        <div class="card w-100">
+                          <div class="card-header text-center">
+                            Zones
+                          </div>
+
+                          <div class="card-body">
+                            <div class="p-2">
+                              <div class="search-box zone-search-box">
+                                <div class="d-flex g-mini-search-box">
+                                  <mat-form-field class="w-100" appearance="fill">
+                                    <span class="material-symbols-outlined icon-search">
+                                      search
+                                    </span>
+                                    <input type="text" [(ngModel)]="bpSettingInp" placeholder="Search Zones"
+                                      aria-label="Search zone-search-box" matInput (keyup)="zoneFilter($event)"
+                                      maxlength="2">
+                                      <button matSuffix *ngIf="bpSettingInp" class="clear-btn" (click)="clearZones()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+
+                                  </mat-form-field>
+                                  <button mat-flat-button color="primary" class=" mat-button-icon"
+                                    (click)="addZoneDialog()" [disabled]="!isLookUp">
+                                    <span class="material-symbols-outlined" matTooltip="Add new zone"
+                                      matTooltipPosition="above">
+                                      add
+                                    </span>
+                                  </button>
+                                </div>
+                                <div class="card br-14 table-responsive my-3">
+                                  <ng-scrollbar class="mat-table-scrollbar" style="height: 200px">
+                                    <table  mat-table [dataSource]="employee_fetched_zones" matSort #zoneDataRefresh
+                                      (matSortChange)="announceSortChange($event)"
+                                      class="g-card-table table-minimal-action-buttons">
+
+                                      <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell" [attr.colspan]="displayedColumns.length"
+                                          style="text-align: center;">
+                                          No data matching the filter.
+                                        </td>
+                                      </tr>
+                                      <!-- Start Location Column -->
+                                      <ng-container matColumnDef="zones">
+                                        <th width="80%" mat-header-cell *matHeaderCellDef mat-sort-header>Zone</th>
+                                        <td width="80%" mat-cell *matCellDef="let element ; let i = index"> {{element.zones}} </td>
+                                      </ng-container>
+                                      <ng-container matColumnDef="actions">
+                                        <th width="20%" class="text-center" mat-header-cell *matHeaderCellDef>Action
+                                        </th>
+                                        <td width="20%" class="text-center" mat-cell *matCellDef="let element">
+
+                                          <button mat-icon-button aria-label="Edit" (click)="editZoneDialog(element)"
+                                            matTooltip="Edit zone" matTooltipPosition="above">
+                                            <mat-icon class="icon-circle-edit">border_color</mat-icon>
+                                          </button>
+                                          <button class="me-0" mat-icon-button aria-label="Delete"
+                                            (click)="deleteZone(element)" matTooltip="Remove zone"
+                                            matTooltipPosition="above">
+                                            <mat-icon class="icon-circle-cancel">close</mat-icon>
+                                          </button>
+
+
+                                        </td>
+                                      </ng-container>
+
+                                      <tr mat-header-row *matHeaderRowDef="zoneColumns; sticky:true"></tr>
+                                      <tr mat-row *matRowDef="let row; columns: zoneColumns;"></tr>
+                                    </table>
+                                  </ng-scrollbar>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <!-- Location Card -->
+                      <div class="g-action-card g-action-card-disabled mb-3">
+                        <div class="card w-100 overflow-hidden">
+                          <div class="card-header text-center">
+                            Locations
+                          </div>
+
+                          <div class="card-body">
+                            <div class="p-2">
+                              <div class="search-box zone-search-box">
+                                <div class="d-flex g-mini-search-box">
+                                  <mat-form-field class="w-100" appearance="fill">
+                                    <span class="material-symbols-outlined icon-search">
+                                      search
+                                    </span>
+                                    <input type="text" placeholder="Search Locations" aria-label="Search Locations"
+                                      [(ngModel)]="bpSettingLocInp" matInput (keyup)="applyFilter($event)"
+                                      maxlength="50">
+
+                                        <button matSuffix *ngIf="bpSettingLocInp" class="clear-btn" (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+
+                                      <!-- </button> -->
+                                  </mat-form-field>
+                                  <button mat-flat-button color="primary" class=" mat-button-icon"
+                                    (click)="addLocationDialog()" [disabled]="!isLookUp" matTooltip="Add new location"
+                                    matTooltipPosition="above">
+                                    <span class="material-symbols-outlined">
+                                      add
+                                    </span>
+                                  </button>
+                                </div>
+                                <div class="card br-14 table-responsive my-3">
+                                  <ng-scrollbar class="mat-table-scrollbar " style="height: 200px">
+                                    <table mat-table [dataSource]="location_data_source" matSort #MatSortLocation="matSort"
+                                      (matSortChange)="announceSortChange($event)"
+                                      class="g-card-table employee-location-table table-minimal-action-buttons">
+                                      <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell" [attr.colspan]="displayedColumns.length"
+                                          style="text-align: center;">
+                                          No data matching the filter.
+                                        </td>
+                                      </tr>
+
+                                      <!-- Start Location Column -->
+                                      <ng-container matColumnDef="startLocation">
+                                        <th width="40%" mat-header-cell *matHeaderCellDef mat-sort-header>Start Location
+                                        </th>
+                                        <td width="40%" mat-cell *matCellDef="let element"> {{element.startLocation}}
+                                        </td>
+                                      </ng-container>
+
+                                      <!-- End Location Column -->
+                                      <ng-container matColumnDef="endLocation">
+                                        <th width="40%" mat-header-cell *matHeaderCellDef mat-sort-header>End Location
+                                        </th>
+                                        <td width="40%" mat-cell *matCellDef="let element"> {{element.endLocation}}
+                                        </td>
+                                      </ng-container>
+
+                                      <!-- Delete Location Column -->
+                                      <ng-container matColumnDef="delete_location">
+                                        <th width="20%" class="text-center" mat-header-cell *matHeaderCellDef>Action
+                                        </th>
+                                        <td width="20%" mat-cell class="text-center" *matCellDef="let element">
+
+                                          <button mat-icon-button aria-label="Edit"
+                                            (click)="editLocationDialog(element)" matTooltip="Edit location"
+                                            matTooltipPosition="above">
+                                            <mat-icon class="icon-circle-edit">border_color</mat-icon>
+                                          </button>
+                                          <button class="me-0" mat-icon-button aria-label="Remove Location"
+                                            (click)="deleteLocation(element)" matTooltip="Remove location"
+                                            matTooltipPosition="above">
+                                            <mat-icon class="icon-circle-cancel">close</mat-icon>
+                                          </button>
+                                        </td>
+
+                                      </ng-container>
+
+                                      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+                                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                    </table>
+                                  </ng-scrollbar>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+
+
+                      <!-- Orders Card -->
+                      <div class="g-action-card g-action-card-disabled mb-3">
+                        <div class="card w-100">
+                          <div class="card-header text-center">
+                            Orders
+                          </div>
+
+                          <div class="card-body">
+                            <div class="p-2">
+                              <div class="g-details-wrap my-3" *ngIf="isLookUp">
+                                <div class="d-flex align-items-center gap-12">
+                                  <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Maximum Handheld Orders</mat-label>
+                                    <input matInput type="text" [NumbersOnly]="true" [(ngModel)]="max_orders">
+                                  </mat-form-field>
+                                  <button mat-flat-button color="primary" class="xsm-icon-button"
+                                    matTooltip="Save Max Handheld Orders" matTooltipPosition="above"
+                                    (click)="saveMaximumOrders()">
+                                    <mat-icon class="material-symbols-outlined">save</mat-icon>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="Employee Pick Levels">
+                    <app-employee-pickup-level [isAdd]="lookUpEvnt" [resetField]="isTabChanged"
+                      [pickUplevels]="pickUplevels" (relaodPickUpLvl)="relaodPickUpLvl()"
+                      [grp_data]="grp_data"></app-employee-pickup-level>
+                  </mat-tab>
+                  <mat-tab label="Function Allowed" *ngIf="env === 'DB'">
+                    <div class="groups-allowed-tab g-tab bg-white">
+                      <div class="g-action-card g-action-card-disabled mb-3">
+                        <div class="card w-100 text-center">
+
+                          <div class="card-body">
+                            <div class="p-2">
+                              <div class="search-box zone-search-box">
+                                <div class="d-flex g-mini-search-box pb-2">
+                                  <mat-form-field class="w-100" appearance="fill">
+                                    <span class="material-symbols-outlined icon-search">
+                                      search
+                                    </span>
+                                    <input type="text" placeholder="Search Functions allowed"
+                                      aria-label="Search Group Allowed" matInput [(ngModel)]="searchfuncAllowed"  (keyup)="applyFunctionAllowedFilter($event)">
+                                      <button matSuffix *ngIf="searchfuncAllowed" class="clear-btn" (click)="searchfuncAllowed='';getFuncationAllowedList()" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
+                                  </mat-form-field>
+                                  <button mat-flat-button color="primary" class=" mat-button-icon" [disabled]="!isLookUp"
+                                    (click)="AddFunctionAllowedDialog()">
+                                    <span class="material-symbols-outlined">
+                                      add
+                                    </span>
+                                  </button>  
+                                </div>
+                                <div class="row mt-1 mb-2">
+                                  <div class="col-md-12">
+                                    <button mat-stroked-button color="primary" class="button-add-all w-100 mb-3"  [disabled]="!isLookUp"
+                                    (click)="getFuncationAllowedList()" >
+                                      Add All
+                                    </button>
+                                  </div>
+                                </div>
+                                <mat-list class="zones-list g-card-list" role="list">
+                         
+                                  <div class="card table-responsive" *ngIf="FuncationAllowedList">
+                                    <ng-scrollbar class="mat-table-scrollbar" style="height: 500px">
+                                      <table mat-table [dataSource]="FuncationAllowedList" matSort
+                                        (matSortChange)="announceSortChange($event)"
+                                        class="g-card-table table-minimal-action-buttons">
+
+                                        <tr class="mat-row" *matNoDataRow>
+                                          <td class="mat-cell" [attr.colspan]="funcationsColumns.length"
+                                            style="text-align: center;">
+                                            No data matching the filter.
+                                          </td>
+                                        </tr>
+                                        <!-- Start Location Column -->
+                                        <ng-container matColumnDef="Function">
+                                          <th width="80%" mat-header-cell *matHeaderCellDef>Function</th>
+                                          <td width="80%" mat-cell *matCellDef="let element"> {{element}}
+                                          </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="actions">
+                                          <th width="20%" class="text-center" mat-header-cell *matHeaderCellDef>Action
+                                          </th>
+                                          <td width="20%" class="text-center" mat-cell *matCellDef="let element">
+                                            <button mat-icon-button aria-label="Delete"
+                                              (click)="deleteFuncationAllowed(element)" matTooltip="delete function allowed"
+                                              matTooltipPosition="above">
+                                              <mat-icon class="icon-circle-cancel">close</mat-icon>
+                                            </button>
+
+                                          </td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="funcationsColumns; sticky:true"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: funcationsColumns;"></tr>
+                                      </table>
+                                    </ng-scrollbar>
+                                  </div>
+                                </mat-list>
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="Groups Allowed" *ngIf="env !== 'DB'">
+
+                    <div class="groups-allowed-tab g-tab bg-white">
+
+                      <div class="g-action-card g-action-card-disabled mb-3">
+                        <div class="card w-100 text-center">
+
+                          <div class="card-body">
+                            <div class="p-2">
+                              <div class="search-box zone-search-box">
+                                <div class="d-flex g-mini-search-box">
+                                  <mat-form-field class="w-100" appearance="fill">
+                                    <span class="material-symbols-outlined icon-search">search</span>
+                                    <input type="text" placeholder="Search Groups Allowed" [(ngModel)]="grpAllFilter" aria-label="Search Groups Allowed" matInput (keyup)="groupAllowedFilter($event)" maxlength="50">
+                                    <button matSuffix *ngIf="grpAllFilter" class="clear-btn" (click)="clearGrp()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                                  </mat-form-field>
+                                  <button mat-flat-button color="primary" class=" mat-button-icon" [disabled]="!isLookUp" (click)="grpAllowedDialog()">
+                                    <span class="material-symbols-outlined" matTooltip="Add group allowed" matTooltipPosition="above">add</span>
+                                  </button>
+                                </div>
+                                <mat-list class="zones-list g-card-list" role="list">
+
+                                  <div class="card table-responsive">
+                                    <ng-scrollbar class="mat-table-scrollbar" style="height: 500px">
+                                      <table mat-table [dataSource]="groupAllowedList" matSort
+                                        (matSortChange)="announceSortChange($event)"
+                                        class="g-card-table table-minimal-action-buttons">
+
+                                        <tr class="mat-row" *matNoDataRow>
+                                          <td class="mat-cell" [attr.colspan]="groupsColumns.length"
+                                            style="text-align: center;">
+                                            No data matching the filter.
+                                          </td>
+                                        </tr>
+                                        <!-- Start Location Column -->
+                                        <ng-container matColumnDef="groups">
+                                          <th width="80%" mat-header-cell *matHeaderCellDef>Group</th>
+                                          <td width="80%" mat-cell *matCellDef="let element"> {{element.groupName}}
+                                          </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="actions">
+                                          <th width="20%" class="text-center" mat-header-cell *matHeaderCellDef>Action
+                                          </th>
+                                          <td width="20%" class="text-center" mat-cell *matCellDef="let element">
+                                            <button mat-icon-button aria-label="Delete"
+                                              (click)="deleteGrpAllowed(element)" matTooltip="Remove group allowed"
+                                              matTooltipPosition="above">
+                                              <mat-icon class="icon-circle-cancel">close</mat-icon>
+                                            </button>
+
+                                          </td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="groupsColumns; sticky:true"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: groupsColumns;"></tr>
+                                      </table>
+                                    </ng-scrollbar>
+                                  </div>
+
+
+
+                                </mat-list>
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </mat-tab>
+                </mat-tab-group>

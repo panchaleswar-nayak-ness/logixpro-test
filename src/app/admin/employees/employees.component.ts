@@ -14,7 +14,6 @@ import { AddZoneComponent } from '../dialogs/add-zone/add-zone.component';
 import { AddLocationComponent } from '../dialogs/add-location/add-location.component';
 import { AddGroupAllowedComponent } from '../dialogs/add-group-allowed/add-group-allowed.component';
 import { AddNewGroupComponent } from '../dialogs/add-new-group/add-new-group.component';
-
 import labels from '../../labels/labels.json';
 import { GroupAllowedComponent } from '../dialogs/group-allowed/group-allowed.component';
 import { CloneGroupComponent } from '../dialogs/clone-group/clone-group.component';
@@ -36,10 +35,6 @@ export interface Location {
   delete_location: string;
 }
 
-// location table data
-
-
-
 @Component({
   selector: 'app-employees',
   templateUrl: './employees.component.html',
@@ -57,8 +52,8 @@ export class EmployeesComponent implements OnInit {
   public allGroups:any = [];
   public searchfuncAllowed = '';
   public grpAllFilter='';
-bpSettingInp='';
-bpSettingLocInp='';
+  bpSettingInp='';
+  bpSettingLocInp='';
   myControl = new FormControl('');
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
@@ -88,7 +83,7 @@ bpSettingLocInp='';
   public updateGrpTable;
   isTabChanged:any;
   empForm: FormGroup;
-  @ViewChild('zoneDataRefresh', { static: true,read:MatTable }) zoneDataRefresh;
+  
   public ButtonAccessList: any = [];
   @ViewChild('paginator1') paginator1: MatPaginator;
 
@@ -101,93 +96,53 @@ bpSettingLocInp='';
   ELEMENT_DATA_1: any[] = [
     { controlname: '11/02/2022 11:58 AM', function: 'deleted Item Number 123'},
     { controlname: '11/02/2022 11:58 AM', function: 'deleted Item Number 123'}
-   
   ];
 
   displayedColumns_1: string[] = ['controlName', 'function', 'adminLevel'];
   tableData_1 = this.ELEMENT_DATA_1
   dataSourceList_1: any
-  selectedIndex:number = 0
+  selectedIndex:number = 0;
+
   constructor(
     private authService: AuthService,
-    private _liveAnnouncer: LiveAnnouncer, 
     private employeeService: ApiFuntions, 
     private global:GlobalService,
     private adminApiService: AdminApiService,
-     
     private zone: NgZone,
     public router: Router,
     public laoder: SpinnerService,
-    private dialog:MatDialog,
-    private fb: FormBuilder
+    private dialog:MatDialog
     ) {  
       this.iAdminApiService = adminApiService;
-  }
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('MatSortLocation', { static: true }) sortLocation: MatSort;
-
+    }
 
   clearMatSelectList(){
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
-
-  clear(){
-    this.bpSettingLocInp='';
-this.reloadData();
-  }
-  clearZones(){
-    this.bpSettingInp='';
-    this.employee_fetched_zones.filter="";
-  }
-  clearGrp(){
-    this.grpAllFilter='';
-    this.groupAllowedList.filter="";
-  }
-getgroupAllowedList(){
-  let payload:any = {}
-  this.iAdminApiService.Groupnames(payload).subscribe((res:any) => {
-    this.groupAllowedList = new MatTableDataSource(res.data);
-  }) 
-}
-getFuncationAllowedList(){
-  let emp:any = {
-    "username": this.grp_data,
-    "access": this.empData.accessLevel
-  }
-  this.iAdminApiService.getInsertAllAccess(emp).subscribe((res:any) => {
- 
-    if(res.isExecuted){
-      this.reloadData();
+  
+  getFuncationAllowedList(){
+    let emp:any = {
+      "username": this.grp_data,
+      "access": this.empData.accessLevel
     }
-  }) 
-}
-applyFunctionAllowedFilter(event: any) { 
-  if(!this.OldFuncationAllowedList?.length && this.FuncationAllowedList.filteredData?.length) {
-    this.OldFuncationAllowedList = this.FuncationAllowedList.filteredData;
+    this.iAdminApiService.getInsertAllAccess(emp).subscribe((res:any) => {
+      if(res.isExecuted) this.reloadData();
+    }) 
   }
-  if(this.OldFuncationAllowedList.length) this.FuncationAllowedList = new MatTableDataSource(this.OldFuncationAllowedList.filter(x=> x?.toLowerCase()?.indexOf(event?.target?.value.toLowerCase()) > -1));
-}
-initialzeEmpForm() {
-  this.empForm = this.fb.group({
-    mi: this.empData.mi,
-    firstName: this.empData.firstName,
-    lastName: this.empData.lastName,
-    username: this.empData.username,
-    password: this.empData.password,
-    emailAddress: this.empData.emailAddress,
-    accessLevel: this.empData.accessLevel,
-    active:this.empData.active,
-    maximumOrders:this.max_orders
-  });
-}
+  
+  applyFunctionAllowedFilter(event: any) { 
+    if(!this.OldFuncationAllowedList?.length && this.FuncationAllowedList.filteredData?.length) {
+      this.OldFuncationAllowedList = this.FuncationAllowedList.filteredData;
+    }
+    if(this.OldFuncationAllowedList.length) this.FuncationAllowedList = new MatTableDataSource(this.OldFuncationAllowedList.filter(x=> x?.toLowerCase()?.indexOf(event?.target?.value.toLowerCase()) > -1));
+  }
+
   updateIsLookUp(event: any) {
-   
     this.empData = {};
     this.empData = event.userData;
     this.isLookUp = event;
     this.lookUpEvnt=true; 
-    this.grp_data = event.userData?.username
+    this.grp_data = event.userData?.username;
 
     this.max_orders = event.userData.maximumOrders;
     const emp_data = {
@@ -316,20 +271,11 @@ initialzeEmpForm() {
     );
 
    this.env =  JSON.parse(localStorage.getItem('env') ?? '');
-   this.initialzeEmpForm();
+  //  this.initialzeEmpForm();
    this.getEmployeeData();
   }
 
-  /** Announce the change in sort state for assistive technology. */
-  announceSortChange(sortState: Sort) {
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-      this._liveAnnouncer.announce('Sorting cleared');
-    }
-    this.employee_fetched_zones.sort = this.sort;
-    this.location_data_source.sort=this.sortLocation;
-  }
+  
 
 
   private _filter(value: string): string[] {
@@ -473,9 +419,7 @@ initialzeEmpForm() {
         const matSelect: MatSelect = matEvent.source;
         matSelect.writeValue(null);
       })
-
     }
-
 
   }
 
@@ -484,98 +428,6 @@ initialzeEmpForm() {
     this.assignedFunctions = [];
     this.unassignedFunctions = [];
     this.max_orders = '';
-  }
-
-  addZoneDialog() {
-    const dialogRef:any = this.global.OpenDialog(AddZoneComponent, {
-      height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        allZones: this.emp_all_zones,
-        userName: this.grp_data
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if(result.mode === 'addZone'){
-        this.employee_fetched_zones.filteredData.push({zones:result.data.zone})
-        this.employee_fetched_zones.sort=this.sort;
-        this.zoneDataRefresh.renderRows()
-      }
-    })
-  }
-
-  deleteZone(zone: any) {
-   const dialogRef:any =  this.global.OpenDialog(DeleteConfirmationComponent, {
-      height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'delete-zone',
-        zone: zone.zones,
-        userName:this.grp_data
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      this.reloadData();
-
-    })
-
-  }
-  editZoneDialog(zone: any) {
-   const dialogRef:any =  this.global.OpenDialog(AddZoneComponent, {
-      height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'edit-zone',
-        zone: zone.zones,
-        allZones: this.emp_all_zones,
-        fetchedZones:this.employee_fetched_zones.filteredData,
-        userName:this.grp_data
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      
-      if (result.mode === 'editZone') {
-        const newData = { zones: result.data.zone }; 
-        const index = this.employee_fetched_zones.filteredData.findIndex(item => item.zones === result.oldZone);
-      
-        if (index > -1) { 
-          this.employee_fetched_zones.filteredData.splice(index, 1, newData);
-        } else { 
-          this.employee_fetched_zones.filteredData.push(newData);
-        }
-      
-        this.employee_fetched_zones = new MatTableDataSource(this.employee_fetched_zones.filteredData);
-      }
-
-    })
-
-  }
-
-  saveMaximumOrders(){
-    this.initialzeEmpForm();
-    this.empForm.value.wsid = "TESTWID";
-    this.empForm.value.username = this.empData.username;
-    this.empForm.value.groupName = "";
-      this.iAdminApiService.updateAdminEmployee(this.empForm.value).subscribe((res: any) => {
-        if (res.isExecuted) 
-        {
-          this.global.ShowToastr('success',labels.alert.update, 'Success!');
-        }
-        else 
-        {
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
-          console.log("updateAdminEmployee",res.responseMessage);
-        }
-      });
-
-
-
   }
 
   openDialog() {
@@ -589,106 +441,11 @@ initialzeEmpForm() {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      
-        if (result !== undefined) {
-          if(result == true){
-            this.employeesLookup.EmployeeLookUp();
-          }
-            
-        }
-    })
-}
-
-  addLocationDialog() {
-    let dialogRef;
-    dialogRef = this.global.OpenDialog(AddLocationComponent, {
-      height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        userName:this.grp_data
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if(result === 'add'){
-        this.reloadData();
-      }
-    })
-  }
-
-  editLocationDialog(element) {
-    let dialogRef;
-    dialogRef = this.global.OpenDialog(AddLocationComponent, {
-      height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        userName:this.grp_data,
-        locationData: element
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if(result === 'update'){
-        this.reloadData();
-      }
-    })
-  }
-
-  deleteLocation(location:any){
-    let dialogRef;
-    dialogRef = this.global.OpenDialog(DeleteConfirmationComponent, {
-      height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'delete-location',
-        location: location,
-        userName:this.grp_data
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      this.reloadData();
-    })
-  }
-
-  AddFunctionAllowedDialog() {
-    let dialogRef;
-    dialogRef = this.global.OpenDialog(AddGroupAllowedComponent, {
-      height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data:{
-        userName:this.grp_data,
-        wsid:"TESTWSID"
-      }
+        if (result !== undefined)
+          if(result == true) this.employeesLookup.EmployeeLookUp();
     });
-    dialogRef.afterClosed().subscribe(result => {
-      this.reloadData();
-    })
   }
-  grpAllowedDialog() {
-   const  dialogRef:any = this.global.OpenDialog(GroupAllowedComponent, {
-      height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data:{
-        grp_data:this.grp_data
-      }
-    })
 
-    dialogRef.afterClosed().subscribe(result => {
-     
-    this.getgroupAllowedList();
-      this.reloadData();
-
-
-    })
-  }
   async getEmployeeData(){
     let employeRes:any = {}
     this.iAdminApiService.getEmployeeData(employeRes).subscribe((res: any) => {
@@ -705,99 +462,28 @@ initialzeEmpForm() {
     });
   }
   getEmployeeDetails(){
-    const emp_data = { 
-    };
- 
+    const emp_data = {};
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => {
         let existingRights:any=[];
         let userRights:any=[];
         let customPermissions:any=[];
           
-         existingRights = response.data.userRights; 
-         customPermissions = JSON.parse(localStorage.getItem('customPerm') ?? '');
-         userRights = [...existingRights, ...customPermissions];
+        existingRights = response.data.userRights; 
+        customPermissions = JSON.parse(localStorage.getItem('customPerm') ?? '');
+        userRights = [...existingRights, ...customPermissions];
          
         localStorage.setItem('userRights', JSON.stringify(userRights));
       })
   }
-  deleteGroupAllowed(allowedGroup: any) {
-    const dialogRef:any =  this.global.OpenDialog(DeleteConfirmationComponent, {
-      height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'delete-allowed-group',
-        allowedGroup: allowedGroup,
-        userName :this.grp_data
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      this.getgroupAllowedList();
-    })
 
-  }
-  deleteFuncationAllowed(controlName: any) {
-
-    let groupData = {
-      
-      controlName: controlName,
-      userName: this.grp_data,
-    };
-    this.iAdminApiService.deleteControlName(groupData).subscribe((res: any) => {
-      if (res.isExecuted) {
-        this.global.ShowToastr('success','Your details have been deleted', 'Success!');
-        this.reloadData();
-      } else {
-        this.global.ShowToastr('error','Something went wrong!', 'Error!');
-        console.log("deleteControlName",res.responseMessage);
-      }
-    });
-  
-
-  }
-  deleteGrpAllowed(allowedGroup: any) {
-    allowedGroup.userName = this.grp_data;
-
-
-
-    let emp_data = {
-      groupname: allowedGroup.groupName,
-      username: allowedGroup.userName,
-    };
-    this.iAdminApiService.deleteUserGroup(emp_data).subscribe((res: any) => {
-      if (res.isExecuted) {
-        this.global.ShowToastr('success',labels.alert.delete, 'Success!');
-         this.getgroupAllowedList();
-      } else {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
-        console.log("deleteUserGroup",res.responseMessage);
-      }
-    });
-
-
-  }
-
-  groupAllowedFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.groupAllowedList.filter = filterValue.trim().toLowerCase();
-  }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.location_data_source.filter = filterValue.trim().toLowerCase();
-  }
-  zoneFilter(event: Event) {
-     const filterValue = (event.target as HTMLInputElement).value;
-     this.employee_fetched_zones.filter = filterValue;
-  }
-  relaodPickUpLvl(){
-    this.reloadData();
-  }
-
-  tabChanged(event){
-    this.isTabChanged=event;
-   this.clearInput();
+  getgroupAllowedList(){
+    let payload:any = {
+      user : this.grp_data
+    }
+    this.iAdminApiService.Groupnames(payload).subscribe((res:any) => {
+      this.groupAllowedList = new MatTableDataSource(res.data);
+    }) 
   }
 
   clearInput(){
@@ -809,7 +495,6 @@ initialzeEmpForm() {
     this.location_data_source!.filter = '';
     this.groupAllowedList.filter = '';
   }
-  
  
   ChangeAdminLevel(levelresponse:any){
   let item =  {
@@ -821,7 +506,6 @@ initialzeEmpForm() {
       this.global.ShowToastr('success',labels.alert.update, 'Success!');
     });
   }
-
 
   printEmpList(){
     this.global.Print(`FileName:printEmployees`)

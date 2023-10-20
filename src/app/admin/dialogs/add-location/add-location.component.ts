@@ -110,7 +110,9 @@ export class AddLocationComponent implements OnInit {
       "startLocation": this.startLocation,
       "endLocation": this.endLocation,   
       "oldStartLocation":  this.data.locationData?.startLocation ?? '',    
-      "oldEndLocation": this.data.locationData?.endLocation ?? '' 
+      "oldEndLocation": this.data.locationData?.endLocation ?? '' ,
+      "username": this.data.userName,
+      "wsid": "TESTWSID"
     }
     if(this.data.locationData){
       this.iAdminApiService.updateEmployeeLocation(payload).subscribe((res:any) => {

@@ -173,6 +173,10 @@ import { CountSelectOrdersComponentComponent } from './location-assignment/count
 import { CompanyInfoComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/company-info-component/company-info-component.component';
 import { SystemLogicPreferencesComponent } from './admin-preferences/system-preferences/sp-general-setup/system-logic-preferences/system-logic-preferences.component';
 import { PodSetupComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/pod-setup-component/pod-setup-component.component';
+import { EmployeesInformationComponent } from './employees/employees-information/employees-information.component';
+import { EmployeesSettingsComponent } from './employees/employees-settings/employees-settings.component';
+import { GroupsAssignedFunctionsCompComponent } from './employees/groups-assigned-functions-comp/groups-assigned-functions-comp.component';
+import { GroupsEmployeesGroupManagementComponent } from './employees/groups-employees-group-management/groups-employees-group-management.component';
 
 
 @NgModule({
@@ -338,6 +342,10 @@ import { PodSetupComponentComponent } from './admin-preferences/system-preferenc
         CompanyInfoComponentComponent,
         SystemLogicPreferencesComponent,
         PodSetupComponentComponent,
+        EmployeesInformationComponent,
+        EmployeesSettingsComponent,
+        GroupsAssignedFunctionsCompComponent,
+        GroupsEmployeesGroupManagementComponent,
 
     ],
     imports: [
