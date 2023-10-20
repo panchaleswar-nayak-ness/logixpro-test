@@ -9,6 +9,7 @@ export class StatsCircleComponent implements OnInit {
 
   @Input() value = "";
   @Input() title = "";
+  @Input() divClass = "div1";
 
   constructor() { }
 

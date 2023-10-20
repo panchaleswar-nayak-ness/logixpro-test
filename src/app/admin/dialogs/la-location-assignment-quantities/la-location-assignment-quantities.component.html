@@ -11,7 +11,7 @@
         <div class="row mb-4">
          <div class="col text-center">
           <div class="employees text-center">
-            <p class="counter-count mb-1 bg-primary-900">{{count}}</p>
+            <app-stats-circle value="{{count}}" ></app-stats-circle>
           </div>
           <button  mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 btn-sm backgroundColor " (click)="viewOrderSelection($event,0)" >
             Count
@@ -19,7 +19,7 @@
         </div>
          <div class="col text-center">
           <div class="employees text-center">
-            <p class="counter-count mb-1 bg-primary-900">{{pick}}</p>
+            <app-stats-circle value="{{pick}}" ></app-stats-circle>
           </div>
           <button  mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 btn-sm backgroundColor " (click)="viewOrderSelection($event,1)" >
             Pick
@@ -27,7 +27,7 @@
         </div>
          <div class="col text-center">
           <div class="employees text-center">
-            <p class="counter-count mb-1 bg-primary-900">{{putaway}}</p>
+            <app-stats-circle value="{{putaway}}" ></app-stats-circle>
           </div>
           <button  mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 btn-sm backgroundColor " (click)="viewOrderSelection($event,2)">
             Put Away

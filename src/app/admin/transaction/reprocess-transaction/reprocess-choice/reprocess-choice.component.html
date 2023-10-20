@@ -13,7 +13,7 @@
                 <div>
                     <div class="row">
                         <div class="col-xl-4 employees text-center mb-2">
-                            <app-stats-circle [value]="reprocessCount.reprocess" [title]="'Reprocess'"></app-stats-circle>
+                            <app-stats-circle [value]="reprocessCount.reprocess" [title]="'Reprocess'" divClass="div2"></app-stats-circle>
                             <span>
                                 <mat-checkbox color="primary" [(ngModel)]="isReprocessedChecked.flag"
                                     [disabled]="isEnabled" (change)="changeOrderStatus($event,'Reprocess')">
@@ -21,7 +21,7 @@
                             </span>
                         </div>
                         <div class="col-xl-4 customer text-center  mb-2">
-                            <app-stats-circle [value]="reprocessCount.complete" [title]="'Post as Complete'"></app-stats-circle>
+                            <app-stats-circle [value]="reprocessCount.complete" [title]="'Post as Complete'" divClass="div2"></app-stats-circle>
                             <span>
                                 <mat-checkbox color="primary" [(ngModel)]="isCompleteChecked.flag"
                                     [disabled]="isEnabled" (change)="changeOrderStatus($event,'Complete')">
@@ -29,7 +29,7 @@
                             </span>
                         </div>
                         <div class="col-xl-4 customer text-center  mb-2">
-                            <app-stats-circle [value]="reprocessCount.history" [title]="'Send to Reprocess History'"></app-stats-circle>
+                            <app-stats-circle [value]="reprocessCount.history" [title]="'Send to Reprocess History'" divClass="div2"></app-stats-circle>
                             <span>
                                 <mat-checkbox color="primary" [(ngModel)]="isHistoryChecked.flag" [disabled]="isEnabled"
                                     (change)="changeOrderStatus($event,'History')">

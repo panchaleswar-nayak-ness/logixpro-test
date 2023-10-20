@@ -76,42 +76,36 @@
             </app-icon-heading-component>
             <button mat-stroked-button class="form-button-submit" color="primary" (click)="backAdminAction()">Inventory Detail</button>
           </div>
-          <div class="counter-widget side-widget main-widget">
+          <div class="custom counter-widget side-widget main-widget">
             <div class="counter mt-0">
                 <p class="counter-text"><strong>Picks</strong></p>
                 <div class="d-flex align-items-center justify-content-center">
                     <div class="employees">
-                      <p class="counter-count">{{picksOpen}}</p>
-                      <p class="employee-p">Open</p>
+                      <app-stats-circle value="{{picksOpen}}" title="Open"></app-stats-circle>
                     </div>
                     <div class="customer">
-                      <p class="counter-count">{{picksCompleted}}</p>
-                      <p class="customer-p">Completed</p>
+                      <app-stats-circle value="{{picksCompleted}}" title="Completed"></app-stats-circle>
                     </div>
                     <div class="design">
-                      <p class="counter-count">{{picksPerHour}}</p>
-                      <p class="design-p">Per hour</p>
+                      <app-stats-circle value="{{picksPerHour}}" title="Per hour"></app-stats-circle>
                     </div>
                 </div>
-            </div>
+          </div>
 
-            <div class="counter">
-              <p class="counter-text"><strong>Put Aways</strong></p>
-              <div class="d-flex  align-items-right justify-content-center">
-              
-                  <div class="employees">
-                    <p class="counter-count">{{putsOpen}}</p>
-                    <p class="employee-p">Open</p>
-                  </div>
-                  <div class="customer">
-                    <p class="counter-count">{{putsCompleted}}</p>
-                    <p class="customer-p">Completed</p>
-                  </div>
-                  <div class="design"  style="visibility:hidden;">
-                    <p class="counter-count">{{putsPerHour}}</p>
-                    <p class="design-p">Per hour</p>
-                  </div>
-              </div>
+          <div class="counter">
+            <p class="counter-text"><strong>Put Aways</strong></p>
+            <div class="d-flex  align-items-right justify-content-center">
+            
+                <div class="employees">
+                  <app-stats-circle value="{{putsOpen}}" title="Open"></app-stats-circle>
+                </div>
+                <div class="customer">
+                  <app-stats-circle value="{{putsCompleted}}" title="Completed"></app-stats-circle>
+                </div>
+                <div class="design"  style="visibility:hidden;">
+                  <app-stats-circle value="{{putsPerHour}}" title="Per hour"></app-stats-circle>
+                </div>
+            </div>
           </div>
 
           <div class="counter">
@@ -119,61 +113,52 @@
             <div class="d-flex align-items-center justify-content-center">
            
                 <div class="employees">
-                  <p class="counter-count">{{countOpen}}</p>
-                  <p class="employee-p">Open</p>
+                  <app-stats-circle value="{{countOpen}}" title="Open"></app-stats-circle>
                 </div>
                 <div class="customer">
-                  <p class="counter-count">{{countCompleted}}</p>
-                  <p class="customer-p">Completed</p>
+                  <app-stats-circle value="{{countCompleted}}" title="Completed"></app-stats-circle>
                 </div>
                 <div class="design" style="visibility:hidden;">
-                  <p class="counter-count">{{countPerHour}}</p>
-                  <p class="design-p">Per hour</p>
+                  <app-stats-circle value="{{countPerHour}}" title="Per hour"></app-stats-circle>
                 </div>
             </div>
-        </div>
+          </div>
+
+          <div class="counter">
+            <p class="counter-text"><strong>Adjustments</strong></p>
+            <div class="d-flex align-items-center justify-content-center">
+          
+                <div class="customer">
+                  <app-stats-circle value="{{adjustmentOpen}}" title="Completed"></app-stats-circle>
+                </div>
+                <div class="employees" style="visibility: hidden;">
+                  <app-stats-circle value="{{adjustmentOpen}}" title="Open"></app-stats-circle>
+                </div>
+                <div class="employees" style="visibility: hidden;">
+                  <app-stats-circle value="{{adjustmentOpen}}" title="Open"></app-stats-circle>
+                </div>
+            </div>
+          </div>
 
         <div class="counter">
-          <p class="counter-text"><strong>Adjustments</strong></p>
+          <p class="counter-text"><strong>Reprocess</strong></p>
           <div class="d-flex align-items-center justify-content-center">
-         
-              <div class="customer">
-                <p class="counter-count">{{adjustmentOpen}}</p>
-                <p class="customer-p">Completed</p>
+            
+              <div class="employees">
+                <app-stats-circle value="{{reprocessOpen}}" title="Open"></app-stats-circle>
               </div>
-              <div class="employees" style="visibility: hidden;">
-                <p class="counter-count">{{adjustmentOpen}}</p>
-                <p class="employee-p">Open</p>
+              <div class="customer" style="visibility:hidden">
+                <app-stats-circle value="{{reprocessCompleted}}" title="Completed"></app-stats-circle>
               </div>
-              <div class="employees" style="visibility: hidden;">
-                <p class="counter-count">{{adjustmentOpen}}</p>
-                <p class="employee-p">Open</p>
+              <div class="design"  style="visibility:hidden">
+                <app-stats-circle value="{{reprocessPerHour}}" title="Per hour"></app-stats-circle>
               </div>
           </div>
-      </div>
-
-      <div class="counter">
-        <p class="counter-text"><strong>Reprocess</strong></p>
-        <div class="d-flex align-items-center justify-content-center">
-          
-            <div class="employees">
-              <p class="counter-count">{{reprocessOpen}}</p>
-              <p class="employee-p">Open</p>
-            </div>
-            <div class="customer" style="visibility:hidden">
-              <p class="counter-count">{{reprocessCompleted}}</p>
-              <p class="customer-p">Completed</p>
-            </div>
-            <div class="design"  style="visibility:hidden">
-              <p class="counter-count">{{reprocessPerHour}}</p>
-              <p class="design-p">Per hour</p>
-            </div>
+          </div>
         </div>
-    </div>
-          </div>
 
 
-        </mat-card-content>
+       </mat-card-content>
       </mat-card>
     </div>
   </div>
