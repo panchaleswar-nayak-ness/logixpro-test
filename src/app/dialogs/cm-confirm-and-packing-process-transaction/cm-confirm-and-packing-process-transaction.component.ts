@@ -137,34 +137,42 @@ openShipEditQuantity() {
       modal: "From_Modal"
     };
    this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
-    if (res.data == "Fail") {
-      this.global.ShowToastr('error',  "An error has occurred",'Error!');
+    if(res)
+    {
+      if (res.data == "Fail") {
+        this.global.ShowToastr('error',  "An error has occurred",'Error!');
+        
+    } else {
+        //edit table 
+        let index = this.confPackTransTable.findIndex(x=>x.active);
+        this.confPackTransTable[index].containerID = this.contID;
+        this.confPackTransTable[index].complete = true;
+        // this.confPackTransTable[index].invalidate() 
+          let emit = '';
+        if (this.confPackTransTable.length == 1) {
+          emit = 'ConfirmedPacked';
+        };
+  
+        if(this.preferencesData?.autoPrintContLabel){
+          this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|contID:${this.contID}`);
+        
+        }
+        if(this.preferencesData?.autoPrintContPL){
+          this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
+        
+        }
+        if(this.preferencesData?.autoPrintOrderPL){
+          this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
+        
+        }
+        this.dialogRef.close(emit);
+    }
+    }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
       console.log("ConfPackProcModalUpdate",res.responseMessage);
-  } else {
-      //edit table 
-      let index = this.confPackTransTable.findIndex(x=>x.active);
-      this.confPackTransTable[index].containerID = this.contID;
-      this.confPackTransTable[index].complete = true;
-      // this.confPackTransTable[index].invalidate() 
-        let emit = '';
-      if (this.confPackTransTable.length == 1) {
-        emit = 'ConfirmedPacked';
-      };
 
-      if(this.preferencesData?.autoPrintContLabel){
-        this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|contID:${this.contID}`);
-      
-      }
-      if(this.preferencesData?.autoPrintContPL){
-        this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
-      
-      }
-      if(this.preferencesData?.autoPrintOrderPL){
-        this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
-      
-      }
-      this.dialogRef.close(emit);
-  };
+    };
    });
   }
   

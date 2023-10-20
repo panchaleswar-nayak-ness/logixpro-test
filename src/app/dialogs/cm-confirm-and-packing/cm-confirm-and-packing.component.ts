@@ -110,14 +110,23 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
 
 async UnPack(id:any){  
   this.IconsolidationAPI.ShipTransUnPackUpdate({id:id}).subscribe((res:any) => {
-    if (res.data == "Fail") {
-      this.global.ShowToastr('error',"An error has occurred", 'Error!');
-      console.log("ShipTransUnPackUpdate",res.responseMessage);  
-  } else {  
-     let index =  this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
-     this.transTable.filteredData[index].containerID = '';
-     this.transTable.filteredData[index].complete = false; 
-  };
+    if(res)
+    {
+      if (res.data == "Fail") {
+        this.global.ShowToastr('error',"An error has occurred", 'Error!');
+        console.log("ShipTransUnPackUpdate",res.responseMessage);  
+    } else {  
+       let index =  this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
+       this.transTable.filteredData[index].containerID = '';
+       this.transTable.filteredData[index].complete = false; 
+    }
+    }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("ShipTransUnPackUpdate",res.responseMessage);
+    }
+  
+  ;
   });
  
 }
@@ -196,7 +205,7 @@ async ClickConfirmAll(){
       containerID: this.contID
     };
    this.IconsolidationAPI.ConfirmAllConfPack(obj).subscribe((res:any) => {
-    if(res.isExecuted && res.data)
+    if(res)
     {
       if (res.data == "Fail") {
         this.global.ShowToastr('error','An error has occurred', 'Error!');
