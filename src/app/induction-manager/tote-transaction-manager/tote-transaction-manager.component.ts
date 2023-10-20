@@ -209,7 +209,7 @@ public iinductionManagerApi:IInductionManagerApiService;
           if (res.isExecuted && res.data)
           {
             this.searchAutocompletBatchPick = res.data;
-          this.getToteTrans();
+            this.getToteTrans();
 
           }
           else {

@@ -104,4 +104,4 @@
     </mat-card-content>
 </mat-card>
 
-<app-table-context-menu-component (optionSelected)="optionSelected($event)" [componentName]="'transHistory'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="TabIndex==2" (optionSelected)="optionSelected($event)" [componentName]="'transHistory'"></app-table-context-menu-component>

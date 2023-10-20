@@ -177,6 +177,9 @@ import { EmployeesInformationComponent } from './employees/employees-information
 import { EmployeesSettingsComponent } from './employees/employees-settings/employees-settings.component';
 import { GroupsAssignedFunctionsCompComponent } from './employees/groups-assigned-functions-comp/groups-assigned-functions-comp.component';
 import { GroupsEmployeesGroupManagementComponent } from './employees/groups-employees-group-management/groups-employees-group-management.component';
+import { RtSelectedTransactionInfoComponent } from './transaction/reprocess-transaction/rt-selected-transaction-info/rt-selected-transaction-info.component';
+import { PickSelectOrdersComponentComponent } from './location-assignment/pick/pick-select-orders-component/pick-select-orders-component.component';
+import { PutAwaySelectOrdersComponentComponent } from './location-assignment/put-away/put-away-select-orders-component/put-away-select-orders-component.component';
 
 
 @NgModule({
@@ -346,6 +349,9 @@ import { GroupsEmployeesGroupManagementComponent } from './employees/groups-empl
         EmployeesSettingsComponent,
         GroupsAssignedFunctionsCompComponent,
         GroupsEmployeesGroupManagementComponent,
+        RtSelectedTransactionInfoComponent,
+        PickSelectOrdersComponentComponent,
+        PutAwaySelectOrdersComponentComponent,
 
     ],
     imports: [

@@ -134,7 +134,9 @@ export class LoginComponent {
     }
     else{
       this.iUserApi.getSecurityEnvironment().subscribe((res:any) => {
-        this.env = res.data.securityEnvironment;
+        if(res && res.isExecuted)
+        {
+          this.env = res.data.securityEnvironment;
         if(this.env){
           const { workStation } = res.data;
           localStorage.setItem('env', JSON.stringify(this.env));
@@ -142,8 +144,14 @@ export class LoginComponent {
         }
         else{
           this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
+          
+        }
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
           console.log("getSecurityEnvironment",res.responseMessage);
         }
+        
       });
     }
    this.CompanyInfo();
@@ -284,20 +292,28 @@ export class LoginComponent {
     }
      this.iGlobalConfigApi.workstationdefaultapp(paylaod).subscribe(
   (res: any) => {
-  
-    if (res?.data) {
-     this.checkAppAcess(res.data)
-
-     }
-    else{
-      localStorage.setItem('isAppVerified',JSON.stringify({appName:'',isVerified:true}))
-      if(localStorage.getItem('LastRoute')){
-        localStorage.removeItem('LastRoute');
-      }
-      else{
-        this.router.navigate(['/dashboard']);
-      }	
+    if(res)
+    {
+      if (res.data) {
+        this.checkAppAcess(res.data)
+   
+        }
+       else{
+         localStorage.setItem('isAppVerified',JSON.stringify({appName:'',isVerified:true}))
+         if(localStorage.getItem('LastRoute')){
+           localStorage.removeItem('LastRoute');
+         }
+         else{
+           this.router.navigate(['/dashboard']);
+         }	
+       }
     }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("workstationdefaultapp",res.responseMessage);
+    }
+  
+   
   },
   (error) => {}
 );

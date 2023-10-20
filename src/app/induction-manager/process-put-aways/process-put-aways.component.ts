@@ -453,25 +453,35 @@ export class ProcessPutAwaysComponent implements OnInit {
           }
 
           this.iinductionManagerApi.BatchExist(payload).subscribe((res: any) => {
-            if (res && !res.data) {
-              const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
-                height: 'auto',
-                width: '50vw',
-                autoFocus: '__non_existing_element__',
-                 disableClose:true,
-                data: {
-                  message: "This Batch ID either does not exists or is assigned to a different workstation.Use the Tote Setup tab to create a new batch or choose an existing batch for this workstation.",
-                  heading: 'Invalid Batch ID'
-                },
-              });
-              dialogRef.afterClosed().subscribe(result => {
-                this.clearFormAndTable();
-              });
-            } else {
+            if(res && res.isExecuted)
+            {
+              if (!res.data) {
+                const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
+                  height: 'auto',
+                  width: '50vw',
+                  autoFocus: '__non_existing_element__',
+                   disableClose:true,
+                  data: {
+                    message: "This Batch ID either does not exists or is assigned to a different workstation.Use the Tote Setup tab to create a new batch or choose an existing batch for this workstation.",
+                    heading: 'Invalid Batch ID'
+                  },
+                });
+                dialogRef.afterClosed().subscribe(result => {
+                  this.clearFormAndTable();
+                });
+              } else {
+                
+                this.fillToteTable();
+                
+              }
+
+            }
+            else {
               this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-              this.fillToteTable();
               console.log("BatchExist",res.responseMessage);
             }
+            
+            
           });
           this.inputVal.nativeElement.blur();
 
@@ -602,6 +612,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                     this.fillToteTable(this.batchId);
                   } else {
                     this.global.ShowToastr('error','Something went wrong', 'Error!');
+                    console.log("ProcessBatch",res.responseMessage);
                   }
                 },
                 (error) => { }
@@ -679,13 +690,8 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
         this.global.ShowToastr('error','Something is wrong.', 'Error!');
-      }
-      else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         console.log("NextToteUpdate",res.responseMessage);
-
       }
-
     });
   }
 
@@ -832,7 +838,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       .BatchIDTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
-          if (res.data) {
+          if (res.isExecuted &&  res.data) {
             this.searchAutocompleteItemNum = res.data;
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
@@ -849,7 +855,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     };
     this.iinductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
       (res: any) => {
-        if (res.data) {
+        if (res.isExecuted &&  res.data) {
           this.searchAutocompleteItemNum2 = res.data;
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
@@ -1201,6 +1207,7 @@ export class ProcessPutAwaysComponent implements OnInit {
             this.inputValue = "";
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("TotesTable",res.responseMessage);
           }
         },
         (error) => { }

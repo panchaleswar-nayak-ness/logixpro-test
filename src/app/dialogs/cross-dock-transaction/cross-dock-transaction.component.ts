@@ -200,16 +200,25 @@ export class CrossDockTransactionComponent implements OnInit {
   getNxtToteIds() { 
     if (this.loopIndex >= 0) {
       this.iinductionManagerApi.NextTote().subscribe(res => {
-        this.transactions[this.loopIndex].toteID = res.data  + '-RT';
-        this.nxtToteID = ++res.data;
-        this.updateNxtTote();
-        this.clearMatSelectList()
+        if(res.isExecuted && res.data)
+        {
+          this.transactions[this.loopIndex].toteID = res.data  + '-RT';
+          this.nxtToteID = ++res.data;
+          this.updateNxtTote();
+          this.clearMatSelectList()
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("NextTote",res.responseMessage);
+        }
+        
       });
     }
     else{
       this.global.ShowToastr('error','Order must be selected.', 'Error!');
       this.clearMatSelectList()
-      console.log("NextTote");
+      console.log("getNxtToteIds");
+      
     }
 
   }

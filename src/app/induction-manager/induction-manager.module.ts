@@ -17,6 +17,8 @@ import { ToteTransactionManagerComponent } from './tote-transaction-manager/tote
 import { ImToteManagerComponent } from './im-tote-manager/im-tote-manager.component';
 import { CompletePickBatchComponent } from './complete-pick-batch/complete-pick-batch.component';
 import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
+import { ProcessPickBatchesComponent } from './process-picks/process-pick-batches/process-pick-batches.component';
+import { ProcessPickTotesComponent } from './process-picks/process-pick-totes/process-pick-totes.component';
 import { PpaTsBatchSetupComponent } from './process-put-aways/ppa-ts-batch-setup/ppa-ts-batch-setup.component';
 import { PpaTsTotesComponent } from './process-put-aways/ppa-ts-totes/ppa-ts-totes.component';
 
@@ -35,6 +37,8 @@ import { PpaTsTotesComponent } from './process-put-aways/ppa-ts-totes/ppa-ts-tot
         ToteTransactionManagerComponent,
         ImToteManagerComponent,
         CompletePickBatchComponent,
+        ProcessPickBatchesComponent,
+        ProcessPickTotesComponent,
         PpaTsBatchSetupComponent,
         PpaTsTotesComponent
     ],

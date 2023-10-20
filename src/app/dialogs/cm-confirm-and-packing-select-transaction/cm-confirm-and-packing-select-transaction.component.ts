@@ -46,8 +46,18 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
         "orderNumber": this.orderNumber,
         "itemNumber":this.itemNumber 
     };
-    this.IconsolidationAPI.ConfPackSelectDT(Obj).subscribe((response:any) => { 
-      this.confPackSelectTable = response.data;  
+    this.IconsolidationAPI.ConfPackSelectDT(Obj).subscribe((response:any) => {
+      if(response.isExecuted && response.data)
+      {
+        this.confPackSelectTable = response.data;
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ConfPackSelectDT",response.responseMessage);
+
+      }
+        
     });
   } 
   
@@ -75,7 +85,6 @@ openScanItem(ItemNumber:any,id: any) {
       modal: ""
     };
     this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
-  
       if (res.data == "Fail") {
         this.global.ShowToastr('error','An error has occurred', 'Error!');
         console.log("ConfPackProcModalUpdate",res.responseMessage);  

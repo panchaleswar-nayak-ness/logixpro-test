@@ -83,18 +83,27 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
     let obj : any = {
       orderNumber: this.orderNumber
     };
-   this.IconsolidationAPI.SelContIDConfirmPack(obj).subscribe((res:any) => { 
-    if(res.data == ''){
-      this.global.ShowToastr('error',"An error has occurred",'Error!');
-      console.log("SelContIDConfirmPack",res.responseMessage);
-    }else{
-      this.getPreferences();
-      if(this.preferencesData?.autoPrintContPL){
-        this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
+   this.IconsolidationAPI.SelContIDConfirmPack(obj).subscribe((res:any) => {
+    if(res.isExecuted)
+    {
+      if(res.data == ''){
+        this.global.ShowToastr('error',"An error has occurred",'Error!');
+        console.log("SelContIDConfirmPack",res.responseMessage);
+      }else{
+        this.getPreferences();
+        if(this.preferencesData?.autoPrintContPL){
+          this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
+        }
+        this.contID = res.data;
+  
       }
-      this.contID = res.data;
-
     }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("SelContIDConfirmPack",res.responseMessage);
+    }
+
+    
    });
 }
 
@@ -121,7 +130,7 @@ getPreferences() {
   this.IconsolidationAPI
     .ConsoleDataSB(payload)
     .subscribe((res) => {
-      if (res.isExecuted) {
+      if (res.isExecuted && res.data) {
         this.preferencesData = res.data.cmPreferences;
  
       }
@@ -141,22 +150,30 @@ if(this.orderNumber != ""){
   let obj : any = {
     orderNumber: this.orderNumber
   };
- this.IconsolidationAPI.ConfirmAndPackingIndex(obj).subscribe((res:any) => { 
-  
-  this.orderNumber = res.data.orderNumber;
+ this.IconsolidationAPI.ConfirmAndPackingIndex(obj).subscribe((res:any) => {
+  if (res.isExecuted && res.data)
+  {
+    this.orderNumber = res.data.orderNumber;
 
-  this.contIDDrop = res.data.confPackContIDDrop;
-  this.confPackEnable = res.data.confPackEnable;
-  this.contID = res.data.contIDConfirmPack;
- 
-  this.reasons = res.data.adjustmentReason;
-  this.shipComp = res.data.confPackShipComp;
-  this.PrintPrefs = res.data.confPackPrintPrefs; 
-  this.IsLoading = false; 
-  this.toteTable =  new MatTableDataSource(res.data.confPackToteTable);
-  this.transTable =  new MatTableDataSource(res.data.confPackShipTransTable);
-  this.toteTable.paginator = this.paginator1;
-  this.transTable.paginator = this.paginator2;
+    this.contIDDrop = res.data.confPackContIDDrop;
+    this.confPackEnable = res.data.confPackEnable;
+    this.contID = res.data.contIDConfirmPack;
+   
+    this.reasons = res.data.adjustmentReason;
+    this.shipComp = res.data.confPackShipComp;
+    this.PrintPrefs = res.data.confPackPrintPrefs; 
+    this.IsLoading = false; 
+    this.toteTable =  new MatTableDataSource(res.data.confPackToteTable);
+    this.transTable =  new MatTableDataSource(res.data.confPackShipTransTable);
+    this.toteTable.paginator = this.paginator1;
+    this.transTable.paginator = this.paginator2;
+  }
+  else {
+    this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+    console.log("ConfirmAndPackingIndex",res.responseMessage);
+  } 
+  
+
 });
 }
 }
@@ -179,31 +196,36 @@ async ClickConfirmAll(){
       containerID: this.contID
     };
    this.IconsolidationAPI.ConfirmAllConfPack(obj).subscribe((res:any) => {
-    if (res.data == "Fail") {
-      this.global.ShowToastr('error','An error has occurred', 'Error!');
-      console.log("ConfirmAllConfPack",res.responseMessage); 
-  } else { 
-
-   
-
-    if(this.preferencesData?.autoPrintContLabel){
-      this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
-    }
-    if(this.preferencesData?.autoPrintContPL){
-      setTimeout(() => {
+    if(res.isExecuted && res.data)
+    {
+      if (res.data == "Fail") {
+        this.global.ShowToastr('error','An error has occurred', 'Error!');
+        console.log("ConfirmAllConfPack",res.responseMessage); 
+    } else { 
+      if(this.preferencesData?.autoPrintContLabel){
         this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
-      }, 2000); 
-      
+      }
+      if(this.preferencesData?.autoPrintContPL){
+        setTimeout(() => {
+          this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
+        }, 2000); 
+        
+      }
+      if(this.preferencesData?.autoPrintOrderPL){
+        setTimeout(() => {
+          this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
+        }, 3500); 
+        
+      }
+  
+      this.ConfirmAndPackingIndex(); 
+      }
     }
-    if(this.preferencesData?.autoPrintOrderPL){
-      setTimeout(() => {
-        this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
-      }, 3500); 
-      
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("ConfirmAllConfPack",res.responseMessage);
     }
-
-    this.ConfirmAndPackingIndex(); 
-    }
+   
   });
 }
 });

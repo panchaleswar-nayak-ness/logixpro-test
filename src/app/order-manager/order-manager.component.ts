@@ -71,7 +71,7 @@ export class OrderManagerComponent implements OnInit {
           }
           else{
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("getInvDetailsList",res.responseMessage);
+            console.log("OrderManagerMenuIndex",res.responseMessage);
           }
         },
         (error) => {}

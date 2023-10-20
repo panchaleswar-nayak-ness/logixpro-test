@@ -318,28 +318,36 @@ export class OmAddRecordComponent implements OnInit {
       }
       setTimeout(() => {
         this.iCommonAPI.SearchItem(payload).subscribe((res: any) => {
-          if (res.isExecuted && res.data && res.data.length > 0) {
-            if(res.data[0].itemNumber == this.oTTempUpdatePayload.itemNumber){
-              this.oTTempUpdatePayload.description = res.data[0].description;
-              this.oTTempUpdatePayload.unitofMeasure = res.data[0].unitOfMeasure;
-              this.wharehouseRequired = res.data[0].warehouseSensitive;
+          if(res.isExecuted)
+          {
+            if (res.data && res.data.length > 0) {
+              if(res.data[0].itemNumber == this.oTTempUpdatePayload.itemNumber){
+                this.oTTempUpdatePayload.description = res.data[0].description;
+                this.oTTempUpdatePayload.unitofMeasure = res.data[0].unitOfMeasure;
+                this.wharehouseRequired = res.data[0].warehouseSensitive;
+              }
+              else{
+                this.global.ShowToastr('error',`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory');
+                this.oTTempUpdatePayload.itemNumber = "";
+                this.oTTempUpdatePayload.description = "";
+                this.oTTempUpdatePayload.unitofMeasure = ""; 
+                this.wharehouseRequired = false;
+              }
             }
-            else{
+            else {
               this.global.ShowToastr('error',`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory');
               this.oTTempUpdatePayload.itemNumber = "";
               this.oTTempUpdatePayload.description = "";
               this.oTTempUpdatePayload.unitofMeasure = ""; 
               this.wharehouseRequired = false;
+              console.log("SearchItem",res.responseMessage);
             }
           }
           else {
-            this.global.ShowToastr('error',`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory');
-            this.oTTempUpdatePayload.itemNumber = "";
-            this.oTTempUpdatePayload.description = "";
-            this.oTTempUpdatePayload.unitofMeasure = ""; 
-            this.wharehouseRequired = false;
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
             console.log("SearchItem",res.responseMessage);
           }
+          
         });
       }, 500);
 
@@ -375,9 +383,9 @@ export class OmAddRecordComponent implements OnInit {
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        
         this.oTTempUpdatePayload.itemNumber = "";
-        console.log("SearchItem",res.responseMessage);
+        
         return false;
       }
     }

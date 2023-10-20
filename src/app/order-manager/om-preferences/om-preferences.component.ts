@@ -109,7 +109,7 @@ export class OmPreferencesComponent implements OnInit {
         }
         else{
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("getPreferences",response.responseMessage);
+          console.log("OrderManagerPreferenceIndex",response.responseMessage);
         }
       });
   }
@@ -145,7 +145,7 @@ export class OmPreferencesComponent implements OnInit {
             'Error',
             'An Error Occured while trying to update'
           );
-          console.log("setPreferences",response.responseMessage);
+          console.log("OrderManagerPreferenceUpdate",response.responseMessage);
         }
       });
   }

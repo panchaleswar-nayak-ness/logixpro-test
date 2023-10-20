@@ -24,7 +24,7 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 })
 export class SrNewOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
-
+ @Input() TabIndex:any;
   displayedColumns: string[] = ['Item Number', 'Description', 'Warehouse', 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', 'action'];
   tableData: any = [];
   filteredTableData: any = [];

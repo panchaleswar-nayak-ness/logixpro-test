@@ -395,7 +395,7 @@ constructor(
         .GetCCCountToCostTypeAhead(payload)
         .subscribe((res: any) => {
           
-          if (res.data) {
+          if (res.isExecuted && res.data) {
             if (type === 'BeginCost') {
               this.searchAutocompletBeginCost = res.data;
             } else {

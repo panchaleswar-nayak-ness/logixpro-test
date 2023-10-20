@@ -63,7 +63,7 @@ export class ItemSelected implements OnInit {
         }
 
         this.IconsolidationAPI.ItemModelData(payload).subscribe((res=>{
-            if (res) {
+            if (res.isExecuted && res) {
                 this.itemSelectTable = res;
               }
               else {

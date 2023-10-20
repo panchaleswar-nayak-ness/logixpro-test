@@ -134,113 +134,15 @@
 
 
     <div class="col-xl-6">
-
-        <mat-card class="mat-elevation-z g-card mb-2">
-            <mat-card-content>
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <app-icon-heading-component heading="Pick Select Orders" icon="task_alt">
-                    </app-icon-heading-component>
-                </div>
-                <div class="row">
-                    <div class="col-xl-6">
-                        <div class="g-mini-search-box  mb-3">
-                            <div class="search-box">
-                                <mat-form-field class="w-100 bg-white br-14" appearance="fill">
-                                    <span class="material-symbols-outlined icon-search">
-                                        search
-                                    </span>
-                                    <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50" (keyup)="applyFilter($event)" [(ngModel)]="filterValue">
-                                    <button *ngIf="filterValue != ''" matSuffix class="clear-btn" (click)="filterValue = ''; this.tableData2.filter = filterValue;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-6">
-                        <div class="d-xxl-block d-flex justify-content-end">
-                            <button mat-stroked-button color="warn" class="button-add-all mb-3 float-end" (click)="removeAll()" style="flex:1">
-                                Remove All
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card br-14 borderless px-0 mb-3" style="overflow-x: auto;">
-                    <ng-scrollbar track="all" class="mat-table-scrollbar  scrollbar-hover-padding" style="height: 550px;">
-                        <table mat-table #table2 [dataSource]="tableData2" class="w-100" matSort #MatSort2="matSort" (matSortChange)="announceSortChange2($event)">
-
-                            <ng-container matColumnDef="orderNumber">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header
-                                    sortActionDescription="Sort by number"> Order No.
-                                </th>
-                                <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.orderNumber" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
-                [matTooltipDisabled]="element.orderNumber && element.orderNumber.length>=20?false:true"
-                                > {{element.orderNumber}} </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="itemCount">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header
-                                    sortActionDescription="Sort by number"> Quantity
-                                </th>
-                                <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.itemCount" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
-                [matTooltipDisabled]="element.itemCount && element.itemCount.length>=20?false:true"
-                                > {{element.itemCount}} </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="priority">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header
-                                    sortActionDescription="Sort by number"> Priority
-                                </th>
-                                <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.priority" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
-                [matTooltipDisabled]="element.priority && element.priority.length>=20?false:true"
-                                > {{element.priority}} </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="requiredDate">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header
-                                    sortActionDescription="Sort by number"> Required Date
-                                </th>
-                                <td mat-cell *matCellDef="let element"
-                                #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.requiredDate" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
-                [matTooltipDisabled]="element.requiredDate && element.requiredDate.length>=20?false:true"
-                                > {{element.requiredDate}} </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="action" stickyEnd>
-                                <th mat-header-cell *matHeaderCellDef> </th>
-                                <td mat-cell *matCellDef="let element" class="text-end">
-                                    <button mat-icon-button aria-label="Delete" matTooltip="Remove"
-                                        matTooltipPosition="above" (click)="remove(element)">
-                                        <mat-icon class="icon-circle-cancel">close</mat-icon>
-                                    </button>
-                                </td>
-                            </ng-container>
-
-                            <tr class="mat-row" *matNoDataRow >
-                                <td class="mat-cell " [attr.colspan]="displayedColumns2.length">
-                                    No data available in table.
-                                </td>
-                            </tr>
-
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true;"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
-                        </table>
-                    </ng-scrollbar>
-                </div>
-
-                <mat-paginator class="d-flex justify-content-start" showFirstLastButtons [pageSizeOptions]="[10, 20]" [pageSize]="10" #paginator2
-                    aria-label="Select page of periodic elements">
-                </mat-paginator>
-
-            </mat-card-content>
-        </mat-card>
+        <app-pick-select-orders-component
+        [filterValue]="filterValue"
+        [tableData2]="tableData2"
+        [displayedColumns2]="displayedColumns2"
+        (announceSortChange2Emit)="announceSortChange2($event.sortState)"
+        (applyFilterEmit)="applyFilter($event)"
+        (removeAllEmit)="removeAll()"
+        (removeEmit)="remove($event)"
+        ></app-pick-select-orders-component>
     </div>
 
 </div>

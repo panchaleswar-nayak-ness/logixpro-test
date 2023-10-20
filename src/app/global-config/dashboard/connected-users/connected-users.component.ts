@@ -60,7 +60,7 @@ export class ConnectedUsersComponent implements OnInit,AfterViewInit {
         }
         else{
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("getConnectedUsers",res.responseMessage);
+          console.log("ConnectedUser",res.responseMessage);
         }
       },
       (error) => {}

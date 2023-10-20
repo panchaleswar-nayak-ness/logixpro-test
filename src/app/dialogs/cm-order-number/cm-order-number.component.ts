@@ -66,7 +66,7 @@ export class CmOrderNumberComponent implements OnInit {
       };
 
       this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
-        if (res)
+        if (res.isExecuted)
         {
           if (typeof res?.data == 'string') {
             switch (res?.data) {
@@ -92,7 +92,7 @@ export class CmOrderNumberComponent implements OnInit {
         }
         else {
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("LocationAssignmentOrderInsert",res.responseMessage);
+          console.log("ConsolidationData",res.responseMessage);
 
         }
         
@@ -129,7 +129,7 @@ export class CmOrderNumberComponent implements OnInit {
     }
 
     this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
-      if (res.responseMessage == "Fail") {
+      if (res && res.responseMessage == "Fail") {
         this.global.ShowToastr('error',"Error Has Occured", "Consolidation");
         console.log("StagingLocationsUpdate",res.responseMessage);
       } else {
