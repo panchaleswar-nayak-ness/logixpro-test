@@ -184,7 +184,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
             else {
               this.locationSuggestions = res.data
               this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-              console.log("findItemLocation",res.responseMessage);
+              console.log("ItemLocation",res.responseMessage);
             }
             this.LocationRow = false;
             this.itemLocation = res.data[0].location;

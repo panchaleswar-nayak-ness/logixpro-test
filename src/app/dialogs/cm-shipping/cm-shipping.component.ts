@@ -161,7 +161,7 @@ export class CmShippingComponent implements OnInit {
         orderNumber: this.orderNumber
       }
       this.IconsolidationAPI.SelCountOfOpenTransactionsTemp(obj).subscribe((res: any) => {
-        if (res) {
+        if (res.isExecuted) {
           if (res.data == -1) {
             this.global.ShowToastr('error',"An error has occurred", "Error");
           } else if (res.data == 0) {

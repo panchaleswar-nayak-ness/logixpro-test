@@ -65,7 +65,7 @@ export class ConfigDatabaseComponent {
           }
           else{
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("getConnectionStringSet",res.responseMessage);
+            console.log("LAConnectionStringSet",res.responseMessage);
           }
         },
         error: (error) => {}}

@@ -680,12 +680,6 @@ export class ProcessPutAwaysComponent implements OnInit {
       if (!res.isExecuted) {
         this.global.ShowToastr('error','Something is wrong.', 'Error!');
       }
-      else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("NextToteUpdate",res.responseMessage);
-
-      }
-
     });
   }
 

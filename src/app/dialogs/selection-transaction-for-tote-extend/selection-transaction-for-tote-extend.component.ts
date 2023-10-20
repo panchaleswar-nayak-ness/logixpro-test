@@ -288,7 +288,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   getCellSizeList() {
     this.iCommonAPI.getCellSize().subscribe((res) => {
-      if (res.data && res.isExecuted)
+      if (res.isExecuted && res.data)
       {
       this.cellSizeList = res.data;
       }
@@ -302,7 +302,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   getVelocityCodeList() {
     this.iCommonAPI.getVelocityCode().subscribe((res) => {
-      if (res.data && res.isExecuted) {
+      if (res.isExecuted && res.data) {
       this.velocityCodeList = res.data;
       }
       else {
@@ -524,9 +524,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             });
 
           } else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            
             this.findLocation(false, 0);
-            console.log("CheckForwardLocations",res.responseMessage);
+            
           }
         },
         (error) => {}

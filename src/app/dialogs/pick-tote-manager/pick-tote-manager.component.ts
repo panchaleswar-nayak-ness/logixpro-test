@@ -222,7 +222,7 @@ export class PickToteManagerComponent implements OnInit {
     let paylaod = { 
     }
     this.iinductionManagerApi.PickBatchZonesSelect(paylaod).subscribe(res => {
-      if (res.data) {
+      if (res.isExecuted && res.data) {
         this.batchByZoneData = res.data
         this.batchByZoneSource = new MatTableDataSource<any>(this.batchByZoneData);
       }
@@ -245,7 +245,7 @@ export class PickToteManagerComponent implements OnInit {
       "filter": "", 
     }
     this.iinductionManagerApi.PickBatchFilterTypeAhead(paylaod).subscribe((res) => {
-      if (res.data) {
+      if (res.isExecuted && res.data) {
         
         this.savedFilterList = res.data;
         this.filteredOptions = this.savedFilter.valueChanges.pipe(
@@ -475,7 +475,7 @@ export class PickToteManagerComponent implements OnInit {
         "RP": false, 
       }
       this.iinductionManagerApi.OrdersFilterZoneSelect(payload).subscribe(res => {
-        if (res.data) {
+        if (res.isExecuted && res.data) {
           res.data.map(val => {
             this.FILTER_BATCH_DATA.push({ 'orderNumber': val.orderNumber, 'reqDate': val.reqDate, 'priority': val.priority, isSelected: false });
           });
@@ -508,7 +508,7 @@ export class PickToteManagerComponent implements OnInit {
         "RP": rp, 
       }
       this.iinductionManagerApi.OrdersFilterZoneSelect(payload).subscribe(res => {
-        if (res.data) {
+        if (res.isExecuted && res.data) {
           ;
           res.data.map(val => {
             this.FILTER_BATCH_DATA_ZONE.push({ 'orderNumber': val.orderNumber, 'reqDate': val.reqDate, 'priority': val.priority, isSelected: false });
@@ -664,7 +664,7 @@ export class PickToteManagerComponent implements OnInit {
     }
     this.iinductionManagerApi.PickBatchFilterOrderData(paylaod).subscribe(res => {
 
-      if (res.data) {
+      if (res.isExecuted && res.data) {
         this.FILTER_DATA = [];
         this.ORDER_BY_DATA = [];
         this.pickBatchFilter = res.data.pickBatchFilter

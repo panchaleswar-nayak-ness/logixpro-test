@@ -42,7 +42,7 @@ export class ShippingCompleteDialogComponent implements OnInit {
 
   viewShipping(orderNumber: any, loader: boolean = false) {
     this.IconsolidationAPI.viewShipping({ orderNum: orderNumber }).subscribe((res: any) => {
-      if (res.isExecuted )
+      if (res.isExecuted)
       {
         if (res.data) {
           this.tableData1 = new MatTableDataSource(res.data.packTable);

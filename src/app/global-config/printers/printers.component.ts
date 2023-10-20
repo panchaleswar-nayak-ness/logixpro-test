@@ -80,7 +80,7 @@ export class PrintersComponent implements OnInit {
       }
       else{
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("getServiceStatus",res.responseMessage);
+        console.log("StatusPrintService",res.responseMessage);
       }
     });
   }

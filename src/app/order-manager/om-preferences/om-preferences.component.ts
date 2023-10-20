@@ -109,7 +109,7 @@ export class OmPreferencesComponent implements OnInit {
         }
         else{
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("getPreferences",response.responseMessage);
+          console.log("OrderManagerPreferenceIndex",response.responseMessage);
         }
       });
   }

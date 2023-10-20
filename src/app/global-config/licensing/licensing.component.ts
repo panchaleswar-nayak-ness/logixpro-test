@@ -98,7 +98,7 @@ export class LicensingComponent implements OnInit {
         }
         else{
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("getAppLicense",res.responseMessage);
+          console.log("AppLicense",res.responseMessage);
         }
       },
       error: (error) => {}}
@@ -160,7 +160,7 @@ export class LicensingComponent implements OnInit {
           }
           else{
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("saveLicense",res.responseMessage);
+            console.log("ValidateLicenseSave",res.responseMessage);
           }
         },
         error: (error) => {

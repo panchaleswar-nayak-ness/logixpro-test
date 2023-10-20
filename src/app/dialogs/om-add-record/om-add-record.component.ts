@@ -375,9 +375,9 @@ export class OmAddRecordComponent implements OnInit {
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        
         this.oTTempUpdatePayload.itemNumber = "";
-        console.log("SearchItem",res.responseMessage);
+        
         return false;
       }
     }

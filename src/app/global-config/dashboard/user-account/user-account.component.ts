@@ -67,7 +67,7 @@ export class UserAccountComponent implements OnInit {
         }
         else{
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("getMenuData",res.responseMessage);
+          console.log("Menu",res.responseMessage);
         }
       },
       error: (error) => {}}
@@ -89,7 +89,7 @@ export class UserAccountComponent implements OnInit {
           }
           else{
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("changeGlobalAcc",res.responseMessage);
+            console.log("changeGlobalAccount",res.responseMessage);
           }
           this.getMenuData();
           localStorage.clear();

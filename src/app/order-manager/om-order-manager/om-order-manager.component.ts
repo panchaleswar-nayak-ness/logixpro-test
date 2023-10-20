@@ -364,7 +364,7 @@ export class OmOrderManagerComponent implements OnInit {
             }
             else{
               this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-              console.log("deleteViewed",res.responseMessage)
+              console.log("OMOTPendDelete",res.responseMessage)
             }
           });
         }
@@ -458,13 +458,17 @@ export class OmOrderManagerComponent implements OnInit {
               this.getOrders();
               this.clearSearch();
             }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("ReleaseOrders",res.responseMessage);
+            }
           });
           
         } else {
           this.clearSearch();
           this.FilterString = "";
           this.fillTable();
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          
         }
       });
 

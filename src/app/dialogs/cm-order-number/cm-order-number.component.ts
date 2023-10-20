@@ -66,7 +66,7 @@ export class CmOrderNumberComponent implements OnInit {
       };
 
       this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
-        if (res)
+        if (res.isExecuted)
         {
           if (typeof res?.data == 'string') {
             switch (res?.data) {
