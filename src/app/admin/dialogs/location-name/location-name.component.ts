@@ -113,6 +113,7 @@ export class LocationNameComponent implements OnInit {
       }
       else{
         this.global.ShowToastr('error',`Location Name Not Updated`, 'Error!');
+        console.log("LocationNamesSave",res.responseMessage);
       }
     }))
   }

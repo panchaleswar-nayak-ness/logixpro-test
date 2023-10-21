@@ -118,7 +118,16 @@ export class DeAllocateOrdersComponent implements OnInit {
       }
   
       this.iAdminApiService.AllocatedOrders(payload).subscribe((res: any) => {
-        this.searchedItemOrder = res.data
+        if(res.isExecuted && res.data)
+        {
+          this.searchedItemOrder = res.data
+
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("AllocatedOrders",res.responseMessage);
+
+        }
       });
     }
     else if(this.chooseSearchType == 'Item Number'){
@@ -126,7 +135,16 @@ export class DeAllocateOrdersComponent implements OnInit {
         "itemNumber": this.TypeValue, 
       }
       this.iAdminApiService.AllocatedItems(payload).subscribe((res: any) => {
-        this.searchedItemOrder = res.data
+        if(res.isExecuted && res.data)
+        {
+          this.searchedItemOrder = res.data
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("AllocatedItems",res.responseMessage);
+
+        }
+        
       });
     }
 
@@ -187,21 +205,27 @@ export class DeAllocateOrdersComponent implements OnInit {
         "filter": this.FilterString 
       }
       this.iAdminApiService.OrderItemsTable(payload).subscribe((res=>{
-        res.data.openTransactions.forEach((item,i)=>
+        if(res.isExecuted)
+        {
+          res.data.openTransactions.forEach((item,i)=>
         {
           if(this.orderNumbersList.includes(item.orderNumber))
           {
             res.data.openTransactions[i].isDeallocate=true
           }else{
             res.data.openTransactions[i].isDeallocate=false
-            
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("OrderItemsTable",res.responseMessage);
-
           }
         })
         this.orderItemTransactions.data = res.data.openTransactions
         this.pageLength= res.data.recordsTotal
+
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("OrderItemsTable",res.responseMessage);
+
+        }
+        
       }))
     }
     else{
@@ -223,24 +247,27 @@ export class DeAllocateOrdersComponent implements OnInit {
         "filter":  this.FilterString, 
       }
       this.iAdminApiService.OrderItemsTable(payload).subscribe((res=>{
-        res.data.openTransactions.forEach((item,i)=>{
-          if(this.orderNumbersList.includes(item.orderNumber)){
-            res.data.openTransactions[i].isDeallocate=true
-          }else{
-            res.data.openTransactions[i].isDeallocate=false
-            
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("OrderItemsTable",res.responseMessage);
-          }
-        })
+        if(res.isExecuted)
+        {
+          res.data.openTransactions.forEach((item,i)=>{
+            if(this.orderNumbersList.includes(item.orderNumber)){
+              res.data.openTransactions[i].isDeallocate=true
+            }else{
+              res.data.openTransactions[i].isDeallocate=false
+            }
+          })
+  
+          
+          this.orderItemTransactions.data = res.data.openTransactions
+          this.pageLength= res.data.recordsTotal
+          this.dublicateTransaction =  res.data.openTransactions
+          this.dublicateRecords = res.data.recordsTotal
 
-        
-        this.orderItemTransactions.data = res.data.openTransactions
-        this.pageLength= res.data.recordsTotal
-        this.dublicateTransaction =  res.data.openTransactions
-        this.dublicateRecords = res.data.recordsTotal
-
-        
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("OrderItemsTable",res.responseMessage);
+        }
       }))
     }
 

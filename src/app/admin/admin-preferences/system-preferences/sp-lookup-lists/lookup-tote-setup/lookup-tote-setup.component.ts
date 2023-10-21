@@ -49,6 +49,10 @@ export class LookupToteSetupComponent implements OnInit {
         this.OldtableData =res.data;   
         this.tableData = JSON.parse(JSON.stringify(res.data));   
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getToteCell",res.responseMessage);
+      }
     });
   }
 
@@ -126,7 +130,7 @@ export class LookupToteSetupComponent implements OnInit {
           else {
             
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("LocationZone", res.responseMessage);
+            console.log("deleteTote", res.responseMessage);
 
           }
         }))
@@ -150,7 +154,7 @@ export class LookupToteSetupComponent implements OnInit {
       console.log(result)
       if(result){
         this.iAdminApiService.cleartote({}).subscribe((res=>{
-          console.log(res)
+          
           if(res.isExecuted){
             this.global.ShowToastr('success',`Tote Clear Successfully`, 'Error!');
           }
@@ -158,7 +162,7 @@ export class LookupToteSetupComponent implements OnInit {
           else {
             
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("LocationZone", res.responseMessage);
+            console.log("cleartote", res.responseMessage);
           }
         }))
       }

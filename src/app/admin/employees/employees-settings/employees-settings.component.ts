@@ -191,7 +191,17 @@ export class EmployeesSettingsComponent implements OnInit {
       user : this.grp_data
     }
     this.iAdminApiService.Groupnames(payload).subscribe((res:any) => {
-      this.groupAllowedList = new MatTableDataSource(res.data);
+      if(res.isExecuted && res.data)
+      {
+        this.groupAllowedList = new MatTableDataSource(res.data);
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("Groupnames",res.responseMessage);
+
+      }
+      
     }) 
   }
 

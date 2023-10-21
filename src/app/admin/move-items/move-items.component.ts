@@ -250,39 +250,47 @@ export class MoveItemsComponent implements OnInit {
     this.iAdminApiService
       .GetMoveItemsTable(payload)
       .subscribe((res: any) => {
-        if (res?.data && res.data['moveMapItems'].length === 0) {
-          if (tableName === 'MoveFrom') {
-            this.resetPaginationFrom();
+        if(res.isExecuted)
+        {
+          if (res?.data && res.data['moveMapItems'].length === 0) {
+            if (tableName === 'MoveFrom') {
+              this.resetPaginationFrom();
+            } else {
+              this.resetPaginationTo();
+            }
+          }
+          if (tableName === 'MoveTo') {
+              res?.data &&
+              res.data['moveMapItems'].map((item) => {
+                item.isSelected = false;
+              });
+            this.moveToDatasource = new MatTableDataSource(
+              res?.data && res.data && res.data['moveMapItems']
+            );
+            this.totalRecordsTo = res?.data.recordsTotal;
+            this.recordsFilteredTo = res?.data.recordsFiltered;
+            this.customLabelTo = `Showing page ${
+              this.totalRecords
+            } of ${Math.ceil(this.totalRecords / this.recordsPerPage)}`;
           } else {
-            this.resetPaginationTo();
+            res?.data &&
+              res.data &&
+              res.data['moveMapItems'].map((item) => {
+                item.isSelected = false;
+              });
+            this.dataSource = new MatTableDataSource(res?.data['moveMapItems']);
+            this.totalRecords = res?.data.recordsTotal;
+            this.recordsFiltered = res?.data.recordsFiltered;
+            this.customLabel = `Showing page ${this.totalRecords} of ${Math.ceil(
+              this.totalRecords / this.recordsPerPage
+            )}`;
           }
         }
-        if (tableName === 'MoveTo') {
-            res?.data &&
-            res.data['moveMapItems'].map((item) => {
-              item.isSelected = false;
-            });
-          this.moveToDatasource = new MatTableDataSource(
-            res?.data && res.data && res.data['moveMapItems']
-          );
-          this.totalRecordsTo = res?.data.recordsTotal;
-          this.recordsFilteredTo = res?.data.recordsFiltered;
-          this.customLabelTo = `Showing page ${
-            this.totalRecords
-          } of ${Math.ceil(this.totalRecords / this.recordsPerPage)}`;
-        } else {
-          res?.data &&
-            res.data &&
-            res.data['moveMapItems'].map((item) => {
-              item.isSelected = false;
-            });
-          this.dataSource = new MatTableDataSource(res?.data['moveMapItems']);
-          this.totalRecords = res?.data.recordsTotal;
-          this.recordsFiltered = res?.data.recordsFiltered;
-          this.customLabel = `Showing page ${this.totalRecords} of ${Math.ceil(
-            this.totalRecords / this.recordsPerPage
-          )}`;
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GetMoveItemsTable",res.responseMessage);
         }
+        
 
       });
   }

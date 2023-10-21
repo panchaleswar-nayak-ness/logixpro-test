@@ -51,12 +51,21 @@ export class AddGroupAllowedComponent implements OnInit {
       "filter": "%"
     }
     this.iAdminApiService.getControlName(payload).subscribe((res: any) => {
-      
-      this.controlNameList = res.data;
+      if(res.isExecuted)
+      {
+        this.controlNameList = res.data;
       this.filteredOptions = this.controlNameForm.controls['controlName'].valueChanges.pipe(
         startWith(''),
         map(value => this.filterx(value || '')),
       );
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getControlName",res.responseMessage);
+      }
+      
+      
     });
 
    
@@ -85,7 +94,7 @@ export class AddGroupAllowedComponent implements OnInit {
       }
       else{
         
-        this.global.ShowToastr('success',res.responseMessage, 'Success!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         console.log("submitControlResponse",res.responseMessage);
       }
     });

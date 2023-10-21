@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -15,7 +16,7 @@ export class PodSetupComponentComponent implements OnInit{
   orderosrts: any;
 FieldNames: ReadonlyMap<unknown,unknown>;
   constructor(    
-    public authService: AuthService,private adminApiService: AdminApiService,private Api:ApiFuntions) {
+    public authService: AuthService,private global : GlobalService, private adminApiService: AdminApiService,private Api:ApiFuntions) {
     this.iAdminApiService = adminApiService;
     this.userData = authService.userData();
    }
@@ -24,7 +25,14 @@ FieldNames: ReadonlyMap<unknown,unknown>;
   }
   public OSFieldFilterNames() { 
     this.iAdminApiService.OSFieldFilterNames().subscribe((res: any) => {
-      this.FieldNames = res.data;
+      if(res.isExecuted && res.data)
+      {
+        this.FieldNames = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("OSFieldFilterNames",res.responseMessage);
+      }
     })
   }
 
@@ -45,7 +53,17 @@ FieldNames: ReadonlyMap<unknown,unknown>;
   }
   async GetOrderSort(){
     this.iAdminApiService.ordersort().subscribe((res:any)=>{
-      this.orderosrts = res.data;
+      
+      if(res.isExecuted && res.data)
+      {
+        this.orderosrts = res.data;
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ordersort",res.responseMessage);
+
+      }
     })
   }
 }

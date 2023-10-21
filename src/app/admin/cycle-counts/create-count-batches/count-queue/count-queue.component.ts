@@ -112,15 +112,24 @@ export class CCBCountQueueComponent implements OnInit {
     };
     this.iAdminApiService.GetCCQueue(payload).subscribe(
       (res: any) => {
-        if (res.isExecuted && res.data.invCycleCount.length >= 0) {
-          this.dataSource = new MatTableDataSource(res.data.invCycleCount);
-          this.customPagination.total = res.data?.recordsFiltered;
-          this.noData=true;
-          this.getCount(res.data.recordsTotal);
-        } else {
-this.noData  = false;
-this.customPagination.total = 0;
+        if(res.isExecuted && res.data)
+        {
+          if (res.data.invCycleCount.length >= 0) {
+            this.dataSource = new MatTableDataSource(res.data.invCycleCount);
+            this.customPagination.total = res.data?.recordsFiltered;
+            this.noData=true;
+            this.getCount(res.data.recordsTotal);
+          } else {
+  this.noData  = false;
+  this.customPagination.total = 0;
+          }
+
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GetCCQueue",res.responseMessage);
+        }
+
       },
       (error) => {}
     );

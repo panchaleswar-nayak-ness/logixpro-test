@@ -211,7 +211,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
           else {
             
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("userfieldlookup",res.responseMessage);
+            console.log("BatchInsert",res.responseMessage);
           }
         });
     } catch (error) { 

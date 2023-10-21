@@ -56,11 +56,20 @@ export class GroupAllowedComponent implements OnInit {
       "wsid": this.userData.wsid,
     }
     this.iAdminApiService.getEmployeeData(payload).subscribe((res: any) => {
-      this.controlNameList = res.data.allGroups;
+      if(res.isExecuted)
+      {
+        this.controlNameList = res.data.allGroups;
       this.filteredOptions = this.controlNameForm.controls['controlName'].valueChanges.pipe(
         startWith(''),
         map(value => this.filterx(value || '')),
       );
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getEmployeeData",res.responseMessage);
+      }
+      
+      
     });
 
 

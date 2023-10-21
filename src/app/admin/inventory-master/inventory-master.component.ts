@@ -443,18 +443,25 @@ export class InventoryMasterComponent implements OnInit {
     }
     this.iAdminApiService.GetInventory(paylaod).subscribe((res: any) => {
       
-      if (currentPageItemNumber == '') {
-        currentPageItemNumber = res.data?.firstItemNumber;
+      if(res.isExecuted)
+      {
+        if (currentPageItemNumber == '') {
+          currentPageItemNumber = res.data?.firstItemNumber;
+        }
+        this._searchValue = currentPageItemNumber;
+        this.paginationData = {
+          total: res.data?.filterCount.total,
+          position: res.data?.filterCount.pos,
+          itemNumber: res.data?.filterCount.itemNumber,
+        }
+        this.saveDisabled = true;
+        this.getInvMasterDetail(currentPageItemNumber);
+        this.getInvMasterLocations(currentPageItemNumber);
       }
-      this._searchValue = currentPageItemNumber;
-      this.paginationData = {
-        total: res.data?.filterCount.total,
-        position: res.data?.filterCount.pos,
-        itemNumber: res.data?.filterCount.itemNumber,
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetInventory",res.responseMessage);
       }
-      this.saveDisabled = true;
-      this.getInvMasterDetail(currentPageItemNumber);
-      this.getInvMasterLocations(currentPageItemNumber);
     });
   }
   
@@ -472,13 +479,21 @@ export class InventoryMasterComponent implements OnInit {
     } catch (error) {
     }
     this.iAdminApiService.GetInventoryMasterData(paylaod).subscribe((res: any) => {
-      res.data['scanCode'] = res.data['scanCode'].map(item => {
-        return { ...item, isDisabled: true };
-      })
-      this.getInvMasterData = res.data;
+      if(res.isExecuted && res.data)
+      {
+        res.data['scanCode'] = res.data['scanCode'].map(item => {
+          return { ...item, isDisabled: true };
+        })
+        this.getInvMasterData = res.data;
+        
+  
+        this.initialzeIMFeilds();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetInventoryMasterData",res.responseMessage);
+      }
       
-
-      this.initialzeIMFeilds();
     })
   }
   private getChangedProperties(): string[] {
@@ -775,7 +790,7 @@ export class InventoryMasterComponent implements OnInit {
             
           } else {
             this.global.ShowToastr('error','Delete failed!  Item exists in Inventory Map.  Please deallocate item from Inventory Map location(s) before deleting.', 'Error!');
-            console.log("NextItemNumber",res.responseMessage);
+            console.log("DeleteItem",res.responseMessage);
           }
         })
       }
@@ -878,16 +893,24 @@ export class InventoryMasterComponent implements OnInit {
       "stockCode": e.currentTarget.value
     }
     this.iAdminApiService.GetLocationTable(paylaod).subscribe((res: any) => {
-      if (res.data?.length) {
+      if(res.isExecuted)
+      {
+        if (res.data?.length) {
 
-        this.searchList = res.data;
-        this.isDataFound = true;
-        this.isDataFoundCounter = 0;
-        this.saveDisabled = true;
-      } else {
-        this.isDataFound = false;
-        this.isDataFoundCounter = 1;
-        this.saveDisabled = false;
+          this.searchList = res.data;
+          this.isDataFound = true;
+          this.isDataFoundCounter = 0;
+          this.saveDisabled = true;
+        } else {
+          this.isDataFound = false;
+          this.isDataFoundCounter = 1;
+          this.saveDisabled = false;
+        }
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetLocationTable",res.responseMessage);
       }
     });
   }

@@ -117,11 +117,11 @@ export class AddZoneComponent implements OnInit {
             if (res.isExecuted) {
               this.addUpdateZone(addZoneData, oldZone, mode)
             }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("deleteEmployeeZone",res.responseMessage);
+            }
           });
-        }else{
-          
-          this.global.ShowToastr('error','Zone Already Exists!', 'Error!');
-          console.log("deleteEmployeeZone");
         }
      
     

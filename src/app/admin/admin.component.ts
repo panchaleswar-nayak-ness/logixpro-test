@@ -209,7 +209,7 @@ export class AdminComponent implements OnInit {
     };
     this.iAdminApiService.Inventorymasterdata(payload).subscribe({
       next: (res: any) => {
-        if (res.isExecuted) {
+        if (res.isExecuted && res.data) {
           const data = res.data;
           this.inventoryDetail.get("item")?.setValue(data?.itemNumber);
           this.inventoryDetail.get("description")?.setValue(data?.description);
@@ -299,15 +299,14 @@ export class AdminComponent implements OnInit {
   }
   getAdminMenu() { 
     this.iAdminApiService.GetAdminMenu().subscribe((res: any) => {
+      if(res.isExecuted && res.data)
+      {
         if ( res?.data?.totalOrders) {
           this.dataSource = new MatTableDataSource(
             res.data.totalOrders.orderTable
           );
         }
-        else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("GetAdminMenu : totalOrders data is not available",res.responseMessage);
-        }
+        
         if (res?.data?.totalOrders?.adminValues) {
           let item = res.data.totalOrders.adminValues;
           this.picksOpen = item.openPicks;
@@ -324,10 +323,15 @@ export class AdminComponent implements OnInit {
 
           this.reprocessOpen = item.reprocess;
         }
-        else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("GetAdminMenu : adminValues data is not available",res.responseMessage);
-        }
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetAdminMenu",res.responseMessage);
+
+      }
+        
+        
       });
   }
   isLookUp = false;

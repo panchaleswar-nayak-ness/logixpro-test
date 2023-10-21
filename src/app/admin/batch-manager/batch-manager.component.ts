@@ -84,8 +84,9 @@ export class BatchManagerComponent implements OnInit {
           this.orderList = data;
           this.RecordSavedItem();
         } else {
-          console.log("BatchManagerOrder", res);
+          
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("BatchManagerOrder", res.responseMessage);
         }
       
       
@@ -99,8 +100,9 @@ export class BatchManagerComponent implements OnInit {
           this.extraField=this.batchManagerSettings[0].extraField1;
           
         } else {
-          console.log("GetBatchManager", res);
+          
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GetBatchManager", res.responseMessage);
         }
       
        

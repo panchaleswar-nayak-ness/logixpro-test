@@ -624,8 +624,16 @@ this.router.navigate([]).then((result) => {
       .TransactionModelIndex(paylaod)
       .subscribe(
         {next: (res: any) => {
-          this.columnValues = res.data?.openTransactionColumns;
+          
+          if(res.isExecuted && res.data)
+          {
+            this.columnValues = res.data?.openTransactionColumns;
           this.columnValues.push('actions');
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("TransactionModelIndex",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );

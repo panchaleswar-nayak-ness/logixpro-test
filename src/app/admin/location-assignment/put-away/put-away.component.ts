@@ -73,10 +73,6 @@ export class PutAwayComponent implements OnInit {
         this.tableData1.paginator = this.paginator1;
       } else { 
         this.tableData1 = new MatTableDataSource([]);
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("GetLocAssPutAwayTable",res.responseMessage);
-
-
       }
     });
   }

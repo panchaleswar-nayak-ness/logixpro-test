@@ -10,6 +10,7 @@ import { AuthService } from '../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 // employee_details table data
 
@@ -36,7 +37,7 @@ export class EmployeesLookupComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   // table initialization
   displayedColumns: string[] = ['lastName', 'firstName', 'mi', 'username'];
-  constructor(private _liveAnnouncer: LiveAnnouncer,  
+  constructor(private _liveAnnouncer: LiveAnnouncer, private global : GlobalService,  
     private adminApiService: AdminApiService,
     private employeeService: ApiFuntions, private authService: AuthService) { 
       this.iAdminApiService = adminApiService;
@@ -58,8 +59,16 @@ EmployeeLookUp(LastName:any = "",IsLoader=true){
     "lastName": LastName, 
   };
   this.iAdminApiService.getAdminEmployeeLookup(this.emp,false)
-    .subscribe((response: any) => { 
-      this.employee_data_source = new MatTableDataSource(response.data.employees);
+    .subscribe((response: any) => {
+      if(response.isExecuted && response.data)
+      {
+        this.employee_data_source = new MatTableDataSource(response.data.employees);
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getAdminEmployeeLookup",response.responseMessage);
+      } 
+      
     });
 }
   ngAfterViewInit() {

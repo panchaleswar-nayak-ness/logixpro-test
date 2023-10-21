@@ -37,7 +37,7 @@ AddBtn = false
   getadjustmentlookup(){
     this.iAdminApiService.adjustmentlookup().subscribe(res=>{
       
-      if(res.isExecuted){
+      if(res.isExecuted && res.data){
         this.adjustmentLookUp = res.data
         // console.log(this.adjustmentLookUp)
         let tempAdjustLookUp:any = [];
@@ -55,7 +55,7 @@ AddBtn = false
       {
         
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("LocationZone", res.responseMessage);
+        console.log("adjustmentlookup", res.responseMessage);
       } 
     })
   }
@@ -124,6 +124,10 @@ AddBtn = false
         this.iAdminApiService.deleteAdjustmentLookup(payload).subscribe((res=>{ 
           if(res.isExecuted){
             this.getadjustmentlookup()
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("deleteAdjustmentLookup",res.responseMessage);
           }
         }))
       }

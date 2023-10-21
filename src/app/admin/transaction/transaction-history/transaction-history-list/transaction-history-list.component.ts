@@ -277,7 +277,14 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {
-          this.searchAutocompleteList = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );
@@ -319,7 +326,14 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       .TransactionModelIndex(paylaod)
       .subscribe(
         {next: (res: any) => {
-          this.columnValues = res.data?.transactionHistoryColumns;
+          if(res.isExecuted && res.data)
+          {
+            this.columnValues = res.data?.transactionHistoryColumns;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("TransactionModelIndex",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );
@@ -346,10 +360,17 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       .TransactionHistoryTable(payload)
       .subscribe(
         {next: (res: any) => {
-          this.detailDataTransHistory = res.data?.transactions;
+          if(res.isExecuted && res.data)
+          {
+            this.detailDataTransHistory = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
           this.customPagination.total = res.data?.recordsFiltered;
           this.dataSource.sort = this.sort;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("TransactionHistoryTable",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );

@@ -164,7 +164,7 @@ export class BatchOrderListComponent implements OnInit {
         else {
           
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("userfieldlookup",res.responseMessage);
+          console.log("DetailView",res.responseMessage);
 
         }
       });

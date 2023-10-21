@@ -196,7 +196,7 @@ export class OmOrderManagerComponent implements OnInit {
       }
       else{
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("getColumnSequence",res.responseMessage);
+        console.log("GetColumnSequence",res.responseMessage);
       }
     });
   }

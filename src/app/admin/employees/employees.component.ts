@@ -126,7 +126,15 @@ export class EmployeesComponent implements OnInit {
       "access": this.empData.accessLevel
     }
     this.iAdminApiService.getInsertAllAccess(emp).subscribe((res:any) => {
-      if(res.isExecuted) this.reloadData();
+      if(res.isExecuted)
+      {
+        this.reloadData();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getInsertAllAccess",res.responseMessage);
+      }
+      
     }) 
   }
   
@@ -152,7 +160,9 @@ export class EmployeesComponent implements OnInit {
  
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => { 
-        this.isLookUp = event;
+        if(response.isExecuted && response.data)
+        {
+          this.isLookUp = event;
         this.lookUpEvnt=true;
         this.employee_group_allowed = response.data?.userRights
         this.pickUplevels = response.data?.pickLevels;
@@ -170,6 +180,11 @@ export class EmployeesComponent implements OnInit {
       };
         this.emp_all_zones = response.data?.allZones;
         if(this.env !== 'DB') this.getgroupAllowedList();
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("getAdminEmployeeDetails",response.responseMessage);
+        }
          
       });
 
@@ -183,7 +198,9 @@ export class EmployeesComponent implements OnInit {
     };
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => {
-        this.employee_group_allowed = response.data?.userRights
+        if(response.isExecuted && response.data)
+        {
+          this.employee_group_allowed = response.data?.userRights
         this.pickUplevels = response.data?.pickLevels;
         this.location_data_source = new MatTableDataSource(response.data?.bulkRange);
         this.FuncationAllowedList = new MatTableDataSource(response.data.userRights);
@@ -193,6 +210,12 @@ export class EmployeesComponent implements OnInit {
         })
         this.employee_fetched_zones = new MatTableDataSource(res);
         this.emp_all_zones = response.data?.allZones;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("getAdminEmployeeDetails",response.responseMessage);
+        }
+        
       });
   }
   addPermission(event:any){
@@ -257,9 +280,17 @@ export class EmployeesComponent implements OnInit {
 
       }; 
     this.iAdminApiService.getFunctionByGroup(grp_data)
-    .subscribe((response:any) => { 
-      this.assignedFunctions = response.data?.groupFunc
+    .subscribe((response:any) => {
+      if(response.isExecuted && response.data)
+      {
+        this.assignedFunctions = response.data?.groupFunc
       this.unassignedFunctions = response.data?.allFunc
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getFunctionByGroup",response.responseMessage);
+      } 
+      
     });
   }
 
@@ -465,7 +496,9 @@ export class EmployeesComponent implements OnInit {
     const emp_data = {};
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => {
-        let existingRights:any=[];
+        if(response.isExecuted)
+        {
+          let existingRights:any=[];
         let userRights:any=[];
         let customPermissions:any=[];
           
@@ -474,6 +507,12 @@ export class EmployeesComponent implements OnInit {
         userRights = [...existingRights, ...customPermissions];
          
         localStorage.setItem('userRights', JSON.stringify(userRights));
+
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("",response.responseMessage)
+        }
       })
   }
 
@@ -482,7 +521,15 @@ export class EmployeesComponent implements OnInit {
       user : this.grp_data
     }
     this.iAdminApiService.Groupnames(payload).subscribe((res:any) => {
-      this.groupAllowedList = new MatTableDataSource(res.data);
+      if(res.isExecuted && res.data)
+      {
+        this.groupAllowedList = new MatTableDataSource(res.data);
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("Groupnames",res.responseMessage);
+      }
+      
     }) 
   }
 
@@ -503,7 +550,15 @@ export class EmployeesComponent implements OnInit {
     }
     this.iAdminApiService.updateControlName(item)
     .subscribe((r) => {
-      this.global.ShowToastr('success',labels.alert.update, 'Success!');
+      if(r.isExecuted)
+      {
+        this.global.ShowToastr('success',labels.alert.update, 'Success!');
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("updateControlName",r.responseMessage);
+      }
+      
     });
   }
 

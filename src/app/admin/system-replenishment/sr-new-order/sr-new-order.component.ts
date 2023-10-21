@@ -162,12 +162,6 @@ export class SrNewOrderComponent implements OnInit {
         } 
       });
     }
-    else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-      console.log("(Outer If) --> SystemReplenishmentNewTable");
-
-
-    }
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

@@ -141,7 +141,9 @@ export class ColumnSequenceDialogComponent implements OnInit {
     this.iAdminApiService
       .GetColumnSequenceDetail(this.payload)
       .subscribe((res: any) => {
-        this.unorderedCol = res.data?.allColumnSequence;
+        if(res?.isExecuted)
+        {
+          this.unorderedCol = res.data?.allColumnSequence;
         if (res.data?.columnSequence.length) {
           this.defaultCol = res.data.columnSequence;
 
@@ -151,10 +153,13 @@ export class ColumnSequenceDialogComponent implements OnInit {
           });
           this.unorderedCol = newArr;
         }
-        else{
+        }
+        else {
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
           console.log("GetColumnSequenceDetail",res.responseMessage);
         }
+        
+        
       });
   }
 

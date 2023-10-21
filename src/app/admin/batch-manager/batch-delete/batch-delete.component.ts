@@ -102,7 +102,7 @@ export class BatchDeleteComponent implements OnInit {
           else{
             
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("userfieldlookup",res.responseMessage);
+            console.log("SelectBatchesDeleteDrop",res.responseMessage);
 
           }
         });
@@ -169,7 +169,7 @@ export class BatchDeleteComponent implements OnInit {
               else{
                 
                 this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-                console.log("userfieldlookup",res.responseMessage);
+                console.log("BatchDeleteAll",res.responseMessage);
               }
             });
         }
@@ -194,14 +194,13 @@ export class BatchDeleteComponent implements OnInit {
                 this.batchID = "";
                 this.dltType = "";
               }
+              else {
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("BatchDeleteAll",res.responseMessage);
+              }
             });
         }
-        else {
-          
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("userfieldlookup",res.responseMessage);
-
-        }
+        
       });
     }
     this.isChecked = false;

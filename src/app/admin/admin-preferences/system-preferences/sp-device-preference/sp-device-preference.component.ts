@@ -148,6 +148,7 @@ export class SpDevicePreferenceComponent implements OnInit {
               this.getDevicePrefTable();
             } else {
               this.global.ShowToastr('error',res.responseMessage, 'Error!');
+              console.log("DevicePreferencesDelete",res.responseMessage);
             }
           });
       }

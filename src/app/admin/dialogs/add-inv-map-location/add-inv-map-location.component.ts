@@ -192,11 +192,22 @@ export class AddInvMapLocationComponent implements OnInit {
 
 
     this.iAdminApiService.getLocZTypeInvMap({}).subscribe((res) => {
-      this.locZoneList = res.data; 
+      if(res.isExecuted && res.data)
+      {
+        this.locZoneList = res.data; 
       this.filteredOptions = this.addInvMapLocation.controls['location'].valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value || '')),
       );
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getLocZTypeInvMap",res.responseMessage);
+
+
+      }
+      
 
     });
 
@@ -546,6 +557,10 @@ export class AddInvMapLocationComponent implements OnInit {
         if (match != '') {
           this.global.ShowToastr('info','Provided ' + match + ' do not match Inventory Master.' + expected + ' for specified Item and Zone', 'Info!');
         }
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getItemNumDetail",res.responseMessage);
       }
 
     });
