@@ -188,13 +188,17 @@ export class EventLogComponent implements OnInit {
       "eDate": "2023-06-05T00:00:00.597Z",
     }
     this.eventLogTypeAheadSubscribe = this.iAdminApiService.EventLogTypeAhead(payload).subscribe((res: any) => {
-      if (res.isExecuted && res.data && message != "") {
-        this.searchAutocompleteList = res.data.sort();
+      if(res.isExecuted)
+      {
+        if (res.data && message != "") {
+          this.searchAutocompleteList = res.data.sort();
+        }
       }
-      else{
+      else {
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         console.log("EventLogTypeAhead",res.responseMessage);
       }
+      
     });
   }
 

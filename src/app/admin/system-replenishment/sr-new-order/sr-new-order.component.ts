@@ -187,12 +187,6 @@ export class SrNewOrderComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.newOrderListCreated = true;
       }
-      else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("ReplenishmentInsert",res.responseMessage);
-
-
-      }
       this.newReplenishmentOrders();
     });
   }
