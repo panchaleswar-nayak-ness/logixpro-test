@@ -12,55 +12,37 @@
             <div class="header-filter-options w-100 d-xl-flex d-lg-block align-items-center justify-content-between" style="gap:12px">
               <div class="d-xl-flex d-lg-block gap-12 align-items-center">
                 <mat-form-field class="action-dropdown d-block mb-3 mb-xl-0" appearance="outline">
-                  <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn"
-                    (keyup.enter)="searchColumn()" (selectionChange)="searchColumn()" [compareWith]="compareObjects"
-                    placeholder="Select">
-                    <mat-option ></mat-option>
-                    <mat-option *ngFor="let item of displayedColumns" [value]="item">
-                      {{item.colDef}}
-                    </mat-option>
+                  <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn" (keyup.enter)="searchColumn()" (selectionChange)="searchColumn()" [compareWith]="compareObjects" placeholder="Select">
+                    <mat-option></mat-option>
+                    <mat-option *ngFor="let item of displayedColumns" [value]="item"> {{item.colDef}}</mat-option>
                   </mat-select>
-                  <span class="material-symbols-outlined icon-expand-more">
-                    expand_more
-                  </span>
+                  <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>
 
                 <span class="v-br d-none d-xl-block">-</span>
+
                 <div class="d-xl-flex d-lg-block g-mini-search-box col-xl-6">
-                  <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()"
-                    [hideRequiredMarker]="hideRequiredControl.value" (keyup.enter)="closeautoMenu()" (change)="reset()" >
-                    <span class="material-symbols-outlined icon-search">
-                      search
-                    </span>
-                    <input type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
-                      [(ngModel)]='this.columnSearch.searchValue' [matAutocomplete]="auto"
-                      (keyup)="autocompleteSearchColumn()"  (keyup.enter)="searchData()"  [disabled]="!isSearchColumn">
-                      <button matSuffix *ngIf="this.columnSearch.searchValue" class="clear-btn"  (click)="this.columnSearch.searchValue='';reset()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                  <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value" (keyup.enter)="closeautoMenu()" (change)="reset()" >
+                    <span class="material-symbols-outlined icon-search">search</span>
+                    <input type="text" placeholder="Search" aria-label="Number" matInput maxlength="255" [(ngModel)]='this.columnSearch.searchValue' [matAutocomplete]="auto" (keyup)="autocompleteSearchColumn()" (keyup.enter)="searchData()" [disabled]="!isSearchColumn">
+                    <button matSuffix *ngIf="this.columnSearch.searchValue" class="clear-btn" (click)="this.columnSearch.searchValue=''; reset()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()" #autocompleteInventory>
-                      <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                        {{option}}
-                      </mat-option>
-                      <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
-                        No data found
-                      </mat-option>
+                      <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
+                      <mat-option *ngIf="searchAutocompleteList?.length == 0" disabled>No data found</mat-option>
                     </mat-autocomplete>
                   </mat-form-field>
                 </div>
               </div>
 
               <div class="d-xl-flex d-lg-block align-items-center gap-12">
-
                 <mat-form-field class="action-dropdown d-block mt-3 mt-xl-0 mt-sm-3" appearance="outline">
                   <mat-label>Actions</mat-label>
-                  <mat-select  #matRef class="employees-action" (selectionChange)="inventoryMapAction($event)" 
-                    placeholder="Actions">
+                  <mat-select #matRef class="employees-action" (selectionChange)="inventoryMapAction($event)" placeholder="Actions">
                     <mat-option (click)="addLocDialog()" [hidden]="isAuthorized('Inv Map Add Location')" *ngIf="myroute">Add Location</mat-option>
                     <mat-option (click)="printRange()">Print Range</mat-option>
                     <mat-option value="set_column_sq">Set Column Sequence</mat-option>
                   </mat-select>
-                  <span class="material-symbols-outlined icon-expand-more">
-                    expand_more
-                  </span>
+                  <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>
                 <div class="p-xl-3 mt-3 mt-xl-0 mt-sm-3">
                   <button type="button" mat-flat-button (click)="viewAllLocDialog()" color="primary" class="d-block col-sm-12 w-100 button-primary-i button-sm">View Locations</button>
@@ -69,73 +51,52 @@
             </div>
           </div>
 
-          <div class="card br-14 table-responsive my-3"
-            *ngIf="columnValues?.length>0 && displayedColumns">
+          <div class="card br-14 table-responsive my-3" *ngIf="columnValues?.length>0 && displayedColumns">
             <ng-scrollbar class="mat-table-scrollbar" style="height: 575px;" track="all">
+              <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
 
+                <ng-container matColumnDef="{{col.colDef}}" *ngFor="let col of displayedColumns; let indexOfelement=index;">
+                  <th class="header" mat-header-cell  *matHeaderCellDef mat-sort-header style="width:auto; padding: 5px 12px;">{{ col.colDef === 'User Field1' ? fieldNames && fieldNames.userField1 : col.colDef === 'User Field2' ? fieldNames && fieldNames.userField2:col.colDef }}</th>
+                  <td mat-cell *matCellDef="let element" (contextmenu)=" onContextMenu($event,  element[col.colHeader], col.colDef)" style=" padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;" [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" > {{ element[col.colHeader] }}</td>
+                </ng-container>
 
-            <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort
-              (matSortChange)="announceSortChange($event)">
+                <ng-container matColumnDef="actions" stickyEnd>
 
-              <ng-container matColumnDef="{{col.colDef}}" *ngFor="let col of displayedColumns; let indexOfelement=index;">
-                <!-- *cdkHeaderCellDef -->
-                <th class="header" mat-header-cell  *matHeaderCellDef mat-sort-header
-                  
-                  style="width:auto; padding: 5px 12px;">
-                  {{ col.colDef==='User Field1'?fieldNames && fieldNames.userField1:col.colDef==='User Field2'?fieldNames && fieldNames.userField2:col.colDef }}
+                  <th mat-header-cell *matHeaderCellDef style="border: 0;height: 66px; padding-left:65px;"></th>
 
-                </th>
+                  <td mat-cell *matCellDef="let seletedRecord" style="border: 0; padding-left: 24px; background: #fff;" >
+                    <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o" appearance="outline">
+                      <mat-icon>more_horiz</mat-icon>
+                    </button>
 
-                <td mat-cell *matCellDef="let element" (contextmenu)=" onContextMenu($event,  element[col.colHeader], col.colDef)" 
-                style=" padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
-                [ngClass]="{'quarantineColor': element.warehouse.includes('Quarantine')}" > {{ element[col.colHeader] }}</td>
+                    <mat-menu #appMenu="matMenu">
+                      <button mat-menu-item (click)="printSelected(seletedRecord)">Print</button>
+                      <button mat-menu-item (click)="edit(seletedRecord)">Edit</button>
+                      <button mat-menu-item (click)="delete(seletedRecord)"  [hidden]="isAuthorized('Inv Map Delete')" *ngIf="myroute">Delete</button>
+                      <button *ngIf="!seletedRecord.warehouse.includes('Quarantine')" mat-menu-item (click)="quarantine(seletedRecord)" >Quarantine</button>
+                      <button *ngIf="seletedRecord.warehouse.includes('Quarantine')" mat-menu-item (click)="unQuarantine(seletedRecord)">Unquarantine</button>
+                      <button mat-menu-item (click)="adjustQuantity(seletedRecord)" [disabled]="seletedRecord.itemNumber == ''">Adjust Quantity</button>
+                      <button mat-menu-item *ngIf="transHistory" (click)="tranhistory(seletedRecord)" >Transaction History</button>
+                      <button mat-menu-item (click)="duplicate(seletedRecord)" *ngIf="myroute">Duplicate</button>
+                      <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)">View item in Inventory Master</button>
+                      <button mat-menu-item (click)="viewLocationHistory(seletedRecord)">View Location History</button>
+                    </mat-menu>
+                  </td>
 
-              </ng-container>
+                </ng-container>
 
-              <ng-container matColumnDef="actions" stickyEnd>
+                <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
+                  <td class="mat-cell " [attr.colspan]="columnValues.length" style="border: 0;">No data available in table.</td>
+                </tr>
 
-                <th mat-header-cell *matHeaderCellDef style="border: 0;height: 66px; padding-left:65px;">
-                </th>
-
-                <td mat-cell *matCellDef="let seletedRecord" style="border: 0; padding-left: 24px; background: #fff;" >
-                  <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o" appearance="outline">
-                    <mat-icon>more_horiz</mat-icon>
-                  </button>
-
-                  <mat-menu #appMenu="matMenu">
-                    <button mat-menu-item (click)="printSelected(seletedRecord)">Print</button>
-                    <button mat-menu-item (click)="edit(seletedRecord)">Edit</button>
-                    <button mat-menu-item (click)="delete(seletedRecord)"  [hidden]="isAuthorized('Inv Map Delete')" *ngIf="myroute">Delete</button>
-                    <button *ngIf="!seletedRecord.warehouse.includes('Quarantine')" mat-menu-item
-                      (click)="quarantine(seletedRecord)" >Quarantine</button>
-                    <button *ngIf="seletedRecord.warehouse.includes('Quarantine')" mat-menu-item
-                      (click)="unQuarantine(seletedRecord)">Unquarantine</button>
-                    <button mat-menu-item (click)="adjustQuantity(seletedRecord)" [disabled]="seletedRecord.itemNumber == ''">Adjust Quantity</button>
-                    <button mat-menu-item *ngIf="transHistory" (click)="tranhistory(seletedRecord)" >Transaction History</button>
-                    <button mat-menu-item (click)="duplicate(seletedRecord)" *ngIf="myroute">Duplicate</button>
-                    <button mat-menu-item (click)="viewInInventoryMaster(seletedRecord)">View item in Inventory Master</button>
-                    <button mat-menu-item (click)="viewLocationHistory(seletedRecord)">View Location History</button>
-                  </mat-menu>
-
-                </td>
-
-              </ng-container>
-
-              <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
-                <td class="mat-cell " [attr.colspan]="columnValues.length" style="border: 0;">
-                  No data available in table.
-                </td>
-              </tr>
-
-              <mat-header-row *matHeaderRowDef="columnValues;sticky: true" style=" border: 0"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>
-
-            </table>
-          </ng-scrollbar>
+                <mat-header-row *matHeaderRowDef="columnValues;sticky: true" style=" border: 0"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columnValues;" (click)="selectRow(row)"></mat-row>
+              </table>
+            </ng-scrollbar>
           </div>
+
           <div class="table-pagination d-flex justify-content-start align-items-center" *ngIf="columnValues.length> 0 && displayedColumns && dataSource">
-            <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"
-              (page)="handlePageEvent($event)"></mat-paginator>
+            <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
           </div>
 
         </mat-card-content>
