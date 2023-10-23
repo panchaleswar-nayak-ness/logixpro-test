@@ -53,9 +53,8 @@ export class ReprocessChoiceComponent  {
     }
   }
 
-  postTransaction() {
-    let payload = {  }
-    this.iAdminApiService.PostReprocessTransaction(payload).subscribe(
+  postTransaction() { 
+    this.Api.PostReprocessTransaction().subscribe(
       {next: (res: any) => {
         if (res.data && res.isExecuted) {
           this.isEnabled = true;

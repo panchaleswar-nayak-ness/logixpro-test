@@ -1106,8 +1106,8 @@ public SetAllReprocessColumn(Body: any ): Observable<any> {
 public ReprocessTransactionData(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Admin/reprocesstransactiondata`, Body);
 } 
-public PostReprocessTransaction(Body: any ): Observable<any> {
-  return this.ApiBase.Get(`/Admin/postreprocesstransaction`, Body);
+public PostReprocessTransaction(): Observable<any> {
+  return this.ApiBase.Get(`/Admin/postreprocesstransaction`);
 } 
 public OrderNumberNext(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Admin/ordernumbernext`, Body);
