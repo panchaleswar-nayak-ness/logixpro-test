@@ -65,11 +65,9 @@ export class DeleteConfirmationManualTransactionComponent {
             (error) => {}
           );
       } else if (this.data.mode === 'delete-order') {
-   
         let payload = {
           orderNumber: this.data.orderNumber, 
         };
- 
         this.iAdminApiService
           .TransactionForOrderDelete(payload)
           .subscribe(

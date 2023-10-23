@@ -215,9 +215,7 @@ export class GenerateOrderComponent implements OnInit {
       });
     }
   }
-  searchData() {
-  this.selectedOrder=this.orderNumber
-  }
+
   clearFields(){
     this.orderNumber='';
     this.selectedOrder='';
@@ -292,7 +290,8 @@ export class GenerateOrderComponent implements OnInit {
         this.getOrderTableData();
     });
   }
-  getOrderTableData() {
+  getOrderTableData(ordernumber:any =null) {
+    if(ordernumber) this.orderNumber = ordernumber;
     let payload = {
       orderNumber: this.orderNumber,
       transactionType: this.transType,
@@ -327,7 +326,6 @@ export class GenerateOrderComponent implements OnInit {
           else{
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
             console.log("GernerateOrderTable",res.responseMessage);
-
           }
         },
         (error) => {}

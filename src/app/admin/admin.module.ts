@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { AdminRoutingModule } from './admin-routing.module'; 
 import { AdminComponent } from './admin.component';
 import { MaterialModule } from '../material-module';
@@ -169,7 +168,10 @@ import { SrNewInputFieldsComponent } from './system-replenishment/sr-new-order/s
 import { CompanyInfoComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/company-info-component/company-info-component.component';
 import { SystemLogicPreferencesComponent } from './admin-preferences/system-preferences/sp-general-setup/system-logic-preferences/system-logic-preferences.component';
 import { PodSetupComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/pod-setup-component/pod-setup-component.component';
-
+import { SelectOrderComponentComponent } from './manual-transactions/generate-order/select-order-component/select-order-component.component';
+import { GtLocationComponent } from './manual-transactions/generate-transaction/gt-location/gt-location.component';
+import { GtItemDetailsComponent } from './manual-transactions/generate-transaction/gt-item-details/gt-item-details.component';
+import { GtTransactionDetailsComponent } from './manual-transactions/generate-transaction/gt-transaction-details/gt-transaction-details.component';
 
 @NgModule({
     declarations: [
@@ -330,7 +332,10 @@ import { PodSetupComponentComponent } from './admin-preferences/system-preferenc
         CompanyInfoComponentComponent,
         SystemLogicPreferencesComponent,
         PodSetupComponentComponent,
-
+        SelectOrderComponentComponent,
+        GtLocationComponent,
+        GtItemDetailsComponent,
+        GtTransactionDetailsComponent,
     ],
     imports: [
         CommonModule,
@@ -350,7 +355,7 @@ import { PodSetupComponentComponent } from './admin-preferences/system-preferenc
                 warning: 'toast-warning',
             }
         }),
-        SharedComponentsModule
+        SharedComponentsModule,
     ]
 })
 export class AdminModule { }

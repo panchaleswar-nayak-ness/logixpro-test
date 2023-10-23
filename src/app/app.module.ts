@@ -206,7 +206,7 @@ import { SharedComponentsModule } from './common/globalComponents/shared-compone
     ShippingCompleteDialogComponent,
     CrDesignFilenameConfirmationComponent,
     DPrinterSetupComponent,
-    PaPrintLabelConfirmationComponent
+    PaPrintLabelConfirmationComponent,
   ],
   imports: [
     BrowserModule,

@@ -11,47 +11,65 @@
                     <span class="ps-2 w-100">Conflict: {{message}} </span>
                 </div>
             </ng-container>
-        
             <div class="header-filter-bar">
                 <div class="row">
                     <div class="col-xl-6">
-
-                   
-                        <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3 mb-xl-0" appearance="outline"
-                            [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
+                        <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-3 mb-xl-0"
+                            appearance="outline" [floatLabel]="getFloatLabelValue()"
+                            [hideRequiredMarker]="hideRequiredControl.value">
                             <mat-label>Order Number</mat-label>
-                            <input type="text" placeholder="Search" aria-label="Number" matInput autoFocus   #publicSearchBox
-                           
-                                [(ngModel)]='orderNumber' maxlength="255" [matAutocomplete]="auto"
+                            <input type="text" placeholder="Search" aria-label="Number" matInput autoFocus
+                                #publicSearchBox [(ngModel)]='orderNumber' maxlength="255" [matAutocomplete]="auto"
                                 (ngModelChange)="this.searchByInput.next($event)">
 
-                                <button matSuffix *ngIf="orderNumber" class="clear-btn"  (click)=" orderNumber = '';autocompleteSearchColumn();clearFields();"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                            <button matSuffix *ngIf="orderNumber" class="clear-btn"
+                                (click)=" orderNumber = '';autocompleteSearchColumn();clearFields();"><mat-icon
+                                    class="text-20 text-chrome-600">cancel</mat-icon></button>
 
-                        <mat-autocomplete class="card custom-scroll" #auto="matAutocomplete">
-                            
-                            <h6 class ="card-header matAutoCompHeader "><span style="width:  140px;">Order Number</span> <span  style="width:  140px;">Trans. Type</span> <span  style="width:  140px;">Item Number</span> <span  style="width:  140px;">Trans. Quantity</span></h6>
-                          
-                            <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber" class="matAutoCompTableContent">
-                              <div class="loc_option" (click)="getRow(option)" >
-                                <span  class="searchColumn" style="width:  140px;">{{option.orderNumber}}</span> <span  class="searchColumn" style="width:  140px;">{{option.transactionType}}</span> <span  class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span> <span class="searchColumn" style="width:  140px;">{{option.transactionQuantity}}</span>
-                            </div>
-                            </mat-option>
-                          </mat-autocomplete>
+                            <mat-autocomplete class="card custom-scroll" #auto="matAutocomplete">
+
+                                <h6 class="card-header matAutoCompHeader "><span style="width:  140px;">Order
+                                        Number</span> <span style="width:  140px;">Trans. Type</span> <span
+                                        style="width:  140px;">Item Number</span> <span style="width:  140px;">Trans.
+                                        Quantity</span></h6>
+
+                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber"
+                                    class="matAutoCompTableContent">
+                                    <div class="loc_option" (click)="getRow(option)">
+                                        <span class="searchColumn" style="width:  140px;">{{option.orderNumber}}</span>
+                                        <span class="searchColumn"
+                                            style="width:  140px;">{{option.transactionType}}</span> <span
+                                            class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span>
+                                        <span class="searchColumn"
+                                            style="width:  140px;">{{option.transactionQuantity}}</span>
+                                    </div>
+                                </mat-option>
+                            </mat-autocomplete>
                         </mat-form-field>
                     </div>
                     <div class="col-xl-3 offset-xl-3">
-                            <div class="d-xl-block d-flex justify-content-end">
+                        <div class="d-xl-block d-flex justify-content-end">
 
-                            <mat-form-field class="action-dropdown custom-form-field-bg-white float-end " appearance="outline" style="flex:1">
-                                <mat-select #openAction [(ngModel)]="selectedAction" class="employees-action" placeholder="Actions" (selectionChange)="generateTranscAction($event)" >
-                                    
-                                    <mat-option value="0" (click)="openTemporaryManualOrderDialogue()">Add New Transaction</mat-option>
+                            <mat-form-field class="action-dropdown custom-form-field-bg-white float-end "
+                                appearance="outline" style="flex:1">
+                                <mat-select #openAction [(ngModel)]="selectedAction" class="employees-action"
+                                    placeholder="Actions" (selectionChange)="generateTranscAction($event)">
+
+                                    <mat-option value="0" (click)="openTemporaryManualOrderDialogue()">Add New
+                                        Transaction</mat-option>
                                     <mat-option (click)="clearFields()" value="clear">Clear</mat-option>
-                                    <mat-option [disabled]="!item || this.orderNumber==''" (click)="updateTransaction()"   value="2">Save Transaction</mat-option>
-                                    <mat-option [disabled]="!item || this.orderNumber==''"  (click)="deleteTransaction()" value="3">Delete Transaction</mat-option>
-                                    <mat-option [disabled]="!item || this.orderNumber==''" (click)="printLabelMT()"  value="4">Print Label</mat-option>
-                                    <mat-option [disabled]="!item || this.orderNumber=='' || this.item===''"  (click)="postTransaction('save')" value="5">Post and Save Transaction</mat-option>
-                                    <mat-option [disabled]="!item || this.orderNumber=='' || this.item===''"  (click)="postTransaction('delete')" value="6">Post and Delete Transaction</mat-option>
+                                    <mat-option [disabled]="!item || this.orderNumber==''" (click)="updateTransaction()"
+                                        value="2">Save Transaction</mat-option>
+                                    <mat-option [disabled]="!item || this.orderNumber==''" (click)="deleteTransaction()"
+                                        value="3">Delete Transaction</mat-option>
+                                    <mat-option [disabled]="!item || this.orderNumber==''" (click)="printLabelMT()"
+                                        value="4">Print Label</mat-option>
+                                    <mat-option [disabled]="!item || this.orderNumber=='' || this.item===''"
+                                        (click)="postTransaction('save')" value="5">Post and Save
+                                        Transaction</mat-option>
+                                    <mat-option [disabled]="!item || this.orderNumber=='' || this.item===''"
+                                        (click)="postTransaction('delete')" value="6">Post and Delete
+                                        Transaction</mat-option>
                                 </mat-select>
                                 <span class="material-symbols-outlined icon-expand-more">
                                     expand_more
@@ -60,236 +78,28 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </mat-card-content>
     </mat-card>
 
-    <mat-card class="mat-elevation-z g-card mb-4">
-        <mat-card-content>
-            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-                <app-icon-heading-component heading="Location" icon="pin_drop">
-                </app-icon-heading-component>
-            </div>
-            <div class="d-flex flex-wrap gap-12 mx-5 ps-3">
-                <span class="label label-gray px-2 f-14">Zone:&nbsp;<b>{{zone}}</b></span>
-                <span class="label label-gray px-2 f-14">Row:&nbsp;<b>{{row}}</b></span>
-                <span class="label label-gray px-2 f-14">Shelf:&nbsp;<b>{{shelf}}</b></span>
-                <span class="label label-gray px-2 f-14">Carousel:&nbsp;<b>{{carousel}}</b></span>
-                <span class="label label-gray px-2 f-14">Bin:&nbsp;<b>{{bin}}</b></span>
-                
-                <span class="label label-gray px-2 f-14">Quantity Allocated Pick:&nbsp;<b>{{quantityAllocatedPick}}</b></span>
-                <span class="label label-gray px-2 f-14">Quantity Allocated Put Away:&nbsp;<b>{{quantityAllocatedPutAway}}</b></span>
-                <span class="label label-gray px-2 f-14">Total Quantity:&nbsp;<b>{{totalQuantity}}</b></span>
-                <span class="label label-gray px-2 f-14">Inventory Map ID:&nbsp;<b>{{invMapID}}</b></span>
-            </div>
-        </mat-card-content>
-    </mat-card>
 
-    <mat-card class="mat-elevation-z g-card mb-4">
-        <mat-card-content>
-            <div class="row">
-            
-                 <app-icon-heading-component class="col card-header-title mb-3 d-flex align-items-center" heading="Item Details" icon="category">
+    <app-gt-location [zone]="zone" [row]="row" [shelf]="shelf" [carousel]="carousel" [bin]="bin"
+        [quantityAllocatedPick]="quantityAllocatedPick" [totalQuantity]='totalQuantity'
+        [invMapID]="invMapID"></app-gt-location>
 
-                </app-icon-heading-component> 
-                
-                <div class="col-xl-6">
-                <div class="d-xl-block d-flex mb-3 w-100">
-                <button [disabled]="!item || this.orderNumber==''" mat-flat-button color="primary" class="btn-regular float-end" color="primary" (click)="openUserFieldsEditDialogue()" style="flex:1">
-                    View/Set User Fields
-                </button>
-            </div>
-        </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
-                        (click)="openSetItemLocationDialogue()">
-                        <mat-label>{{columns.itemNumber}}</mat-label>
-                        <input readonly [disabled]="!item || this.orderNumber==''"  [(ngModel)]="itemNumber" matInput type="text" maxlength="255" value="Value">
-                        <span matSuffix>
-                            <mat-icon
-                                style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
-                        </span>
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
-                        (click)="openSupplierItemDialogue()">
-                        <mat-label>Supplier Item ID</mat-label>
-                        <input  [disabled]="!item" [(ngModel)]="supplierID" matInput type="text" maxlength="255" value="Value">
-                        <span matSuffix>
-                            <mat-icon
-                                style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
-                        </span>
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
+    <app-gt-item-details [item]="item" [itemNumber]="itemNumber" [orderNumber]="orderNumber" [columns]="columns"
+        [supplierID]="supplierID" [expDate]="expDate" [revision]="revision" [description]="description"
+        [lotNumber]="lotNumber" [uom]="uom" [notes]="notes" [serialNumber]="serialNumber"
+        (getLocationData)="getLocationData()" (getSupplierItemInfo)="getSupplierItemInfo()" [userData]="userData"
+        (fieldValuesChanged)="onFieldValuesChanged($event)"
+        (openSetItemLocationDialogue)="openSetItemLocationDialogue()"> </app-gt-item-details>
 
-                    <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline"
-                    [class.mat-form-field-invalid]="isInvalid" >
-                        <mat-label>Expiration Date</mat-label>
-                        <input [disabled]="!item" maxlength="11" matInput [matDatepicker]="expirationDate" [(ngModel)]="expDate" (focusout)="onFormFieldFocusOut()">
-                        <mat-datepicker-toggle matSuffix [for]="expirationDate" ngDefaultControl></mat-datepicker-toggle>
-                        <mat-datepicker   #expirationDate></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Revision</mat-label>
-                        <input [disabled]="!item" [(ngModel)]="revision" matInput type="text" maxlength="50" value="Value">
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Description</mat-label>
-                        <input readonly [disabled]="!item" [(ngModel)]="description" matInput type="text" maxlength="255" value="Value">
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Lot Number</mat-label>
-                        <input [disabled]="!item" [(ngModel)]="lotNumber" matInput type="text" maxlength="50" value="Value">
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
-                        (click)="openUnitOfMeasureDialogue()">
-                        <mat-label>{{columns.unitOfMeasure}}</mat-label>
-                        <input readonly [disabled]="!item" [(ngModel)]="uom" matInput type="text" maxlength="255" value="Value">
-                        <span matSuffix>
-                            <mat-icon
-                                style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
-                        </span>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-6">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                    (click)="openNotes()"  appearance="outline">
-                        <mat-label>Notes</mat-label>
-                        <input readonly [disabled]="!item" [(ngModel)]="notes" matInput type="text" maxlength="255" value="Value">
-                        <span matSuffix>
-                            <mat-icon
-                                style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
-                        </span>
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Serial Number</mat-label>
-                        <input [disabled]="!item" [(ngModel)]="serialNumber" matInput type="text" maxlength="50" value="Value">
-                    </mat-form-field>
-                </div>
-            </div>
-        </mat-card-content>
-    </mat-card>
-    <mat-card class="mat-elevation-z g-card mb-4">
-        <mat-card-content>
-            <div class="d-flex align-items-center mb-3 flex-wrap">
-            
-                <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center me-4" heading="Transaction Details" icon="dvr"></app-icon-heading-component>
-                <mat-checkbox [disabled]="!item" [(ngModel)]="emergency" color="primary" class="example-margin custom-checkbox mb-3">Emergency</mat-checkbox>
-            </div>
-            <div class="row">
-                <div class="col-xl-3">
-                    <mat-form-field class="action-dropdown custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Transaction Type</mat-label>
-                        <mat-select [disabled]="!item" [(ngModel)]="transType" #matRef class="employees-action" placeholder="Actions">
-                            <mat-option value="Pick">Pick</mat-option>
-                            <mat-option value="Put Away">Put Away</mat-option>
-                            <mat-option value="Count">Count</mat-option>
-                        </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
-                            expand_more
-                        </span>
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
+    <app-gt-transaction-details [emergency]="emergency" [item]="item" [transType]="transType" [reqDate]="reqDate"
+        [wareHouse]="wareHouse" [toteID]="toteID" [priority]="priority" [lineSeq]="lineSeq" [lineNumber]="lineNumber"
+        [transQuantity]="transQuantity" [orderNumber]="orderNumber" [hostTransID]="hostTransID"
+        [batchPickID]="batchPickID" [lineNumber]="lineNumber" [transQuantity]="transQuantity"
+        [warehouseSensitivity]="warehouseSensitivity" [userData]="userData" [supplierID]="supplierID"
+        (onFormFieldFocusOut)="onFormFieldFocusOut()" (fieldValuesChanged)="onFieldValuesChangedOfTrans($event)">
+    </app-gt-transaction-details>
 
-                    <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" 
-                    [class.mat-form-field-invalid]="isInvalid">
-                        <mat-label>Required Date</mat-label>
-                        <input [disabled]="!item" maxlength="11" matInput [matDatepicker]="requiredDate" [(ngModel)]="reqDate"  (focusout)="onFormFieldFocusOut()">
-                        <mat-datepicker-toggle matSuffix [for]="requiredDate" ngDefaultControl ></mat-datepicker-toggle>
-                        <mat-datepicker #requiredDate></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Line number</mat-label>
-                        <input [disabled]="!item" [(ngModel)]="lineNumber" matInput type="text" maxlength="9" value="Value">
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Transaction Quantity</mat-label>
-                        <input [disabled]="!item" (keydown)="limitNumber($event)" [(ngModel)]="transQuantity" matInput type="number" min="0" maxlength="9" value="Value" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Priority</mat-label>
-                        <input [disabled]="!item" [(ngModel)]="priority" matInput type="text" maxlength="9" value="Value">
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Line Sequence</mat-label>
-                        <input [disabled]="!item" [(ngModel)]="lineSeq" matInput type="text" maxlength="9" value="Value">
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Host Transaction ID</mat-label>
-                        <input [disabled]="!item" [(ngModel)]="hostTransID" matInput type="text" maxlength="50" value="Value">
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Batch Pick ID</mat-label>
-                        <input [disabled]="!item" [(ngModel)]="batchPickID" matInput type="text" maxlength="50" value="Value">
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-3">
-                    <mat-form-field (click)="openWareHouse()" class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Warehouse</mat-label>
-                        <input readonly [disabled]="!item" [(ngModel)]="wareHouse" matInput type="text" maxlength="255" value="Value">
-                        <span matSuffix>
-                            <mat-icon
-                                style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
-                        </span>
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-3">
-                    <mat-form-field class="custom-form-field w-100 mb-3"
-                        appearance="outline">
-                        <mat-label>Tote ID</mat-label>
-                        <input [disabled]="!item" [(ngModel)]="toteID" matInput type="text" maxlength="50" value="Value">
-                    </mat-form-field>
-                </div>
-            </div>
-        </mat-card-content>
-    </mat-card>
 </div>
