@@ -128,7 +128,14 @@ export class GenerateOrderComponent implements OnInit {
       .ManualOrderTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
-          this.searchAutocompleteList = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ManualOrderTypeAhead",res.responseMessage);
+          }
         },
         (error) => {}
       );

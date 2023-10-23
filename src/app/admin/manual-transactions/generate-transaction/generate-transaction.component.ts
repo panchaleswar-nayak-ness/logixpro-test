@@ -124,7 +124,14 @@ export class GenerateTransactionComponent implements OnInit {
   }
   public OSFieldFilterNames() {
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      this.columns = res.data;
+      if(res.isExecuted && res.data)
+      {
+        this.columns = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
     })
   }
   getRow(row?, type?) {
@@ -224,7 +231,14 @@ export class GenerateTransactionComponent implements OnInit {
       .ManualTransactionTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
-          this.searchAutocompleteList = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ManualTransactionTypeAhead",res.responseMessage);
+          }
         },
         (error) => { }
       );
