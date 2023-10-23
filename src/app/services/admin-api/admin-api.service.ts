@@ -529,7 +529,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public Groupnames(body: any) {
     const payload = {
-      username: this.userData.username,
+      // username: this.userData.username,
       wsid: this.userData.wsid,
       ...body
     }
@@ -851,8 +851,8 @@ export class AdminApiService implements IAdminApiService {
   //EmployeeLocation
   public insertEmployeeLocation(body: any) {
     const payload = {
-      username: this.userData.username,
-      wsid: this.userData.wsid,
+      // username: this.userData.username,
+      // wsid: this.userData.wsid,
       ...body
     }
     return this.Api.insertEmployeeLocation(payload);
@@ -866,6 +866,7 @@ export class AdminApiService implements IAdminApiService {
     }
     return this.Api.updateEmployeeLocation(payload);
   }
+  
   public deleteEmployeeLocation(body: any) {
     const payload = { 
       wsid: this.userData.wsid,
@@ -876,7 +877,7 @@ export class AdminApiService implements IAdminApiService {
  
   public insertPickLevels(body: any) {
     const payload = {
-      username: this.userData.username,
+      // username: this.userData.username,
       wsid: this.userData.wsid,
       ...body
     }
@@ -885,18 +886,21 @@ export class AdminApiService implements IAdminApiService {
 
   public updatePickLevels(body: any) {
     const payload = {
-      username: this.userData.username,
+      // username: this.userData.username,
       wsid: this.userData.wsid,
       ...body
     }
     return this.Api.updatePickLevels(payload);
-  }  public deletePickLevels(body: any) {
+  }  
+  
+  public deletePickLevels(body: any) {
     const payload = { 
       wsid: this.userData.wsid,
       ...body
     }
     return this.Api.deletePickLevels(payload);
   } 
+
   public updateAccessGroup(body: any) {
     const payload = {
       username: this.userData.username,

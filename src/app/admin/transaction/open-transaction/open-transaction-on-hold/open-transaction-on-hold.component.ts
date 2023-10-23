@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   TemplateRef,
@@ -106,6 +107,7 @@ let backDate = new Date(year - 50, month, day);
 export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   @Output() back = new EventEmitter<string>();
   @Output() returnToOrder = new EventEmitter<string>();
+  @Input() TabIndex:any;
   @Output() startdateChange: EventEmitter<MatDatepickerInputEvent<any>> =
     new EventEmitter();
   @Output() enddateChange: EventEmitter<MatDatepickerInputEvent<any>> =
@@ -622,8 +624,16 @@ this.router.navigate([]).then((result) => {
       .TransactionModelIndex(paylaod)
       .subscribe(
         {next: (res: any) => {
-          this.columnValues = res.data?.openTransactionColumns;
+          
+          if(res.isExecuted && res.data)
+          {
+            this.columnValues = res.data?.openTransactionColumns;
           this.columnValues.push('actions');
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("TransactionModelIndex",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );

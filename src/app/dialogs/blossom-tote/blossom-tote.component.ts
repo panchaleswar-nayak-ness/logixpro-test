@@ -86,7 +86,7 @@ export class BlossomToteComponent implements OnInit {
             "NewTote": this.nxtToteID?.toString()
           }
           this.iinductionManagerApi.ProcessBlossom(paylaod).subscribe(res => {
-            if (res.data) {
+            if (res.isExecuted && res.data) {
               let batch = res.data
               if(this.imPreferences.autoPrintPickToteLabels){
                 if(this.imPreferences.printDirectly){

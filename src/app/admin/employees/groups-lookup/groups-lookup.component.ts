@@ -10,6 +10,7 @@ import { AuthService } from '../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 export interface GroupsDetails {
@@ -59,7 +60,7 @@ export class GroupsLookupComponent implements OnInit {
     }
   }
   public iAdminApiService: IAdminApiService;
-  constructor(private _liveAnnouncer: LiveAnnouncer,private adminApiService: AdminApiService, private employeeService: ApiFuntions, private authService: AuthService) { 
+  constructor(private _liveAnnouncer: LiveAnnouncer, private global : GlobalService, private adminApiService: AdminApiService, private employeeService: ApiFuntions, private authService: AuthService) { 
     this.iAdminApiService = adminApiService;
   }
 
@@ -126,9 +127,17 @@ export class GroupsLookupComponent implements OnInit {
     };
     this.iAdminApiService.getEmployeeData(this.emp)
       .subscribe((response: EmployeeObject) => {
-        this.employees_res = response
+        if(response.isExecuted)
+        {
+          this.employees_res = response
         this.groups_details_data = this.employees_res.data.allGroups
         this.group_data_source = new MatTableDataSource(this.groups_details_data);
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("getEmployeeData",response.responseMessage);
+        }
+        
       });
 
   }

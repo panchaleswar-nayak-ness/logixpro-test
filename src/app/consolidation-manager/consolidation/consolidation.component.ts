@@ -69,7 +69,6 @@ export class ConsolidationComponent implements OnInit {
   public isitemVisible: boolean = true;
   public issupplyVisible: boolean = false;
 
-  searchByItem: any = new Subject<string>();
   searchAutocompleteItemNum: any = [];
 
   displayedColumns: string[] = ['toteID', 'complete', 'stagingLocation', 'stagedBy', 'stagedDate'];
@@ -105,11 +104,7 @@ export class ConsolidationComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.ConsolidationIndex()
-    this.searchByItem
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        this.autocompleteSearchColumnItem()
-      });
+    
 
   }
 
@@ -295,18 +290,25 @@ export class ConsolidationComponent implements OnInit {
           }
 
           this.IconsolidationAPI.ShippingButtSet(payload).subscribe((res: any) => {
-            if (res.data == 1) {
-              this.enableConButts()
-              this.shippingbtb = false;
-            }
-            else if (res.data == 0) {
-              this.enableConButts()
-              this.shippingbtb = true;
+            if(res.isExecuted)
+            {
+              if (res.data == 1) {
+                this.enableConButts()
+                this.shippingbtb = false;
+              }
+              else if (res.data == 0) {
+                this.enableConButts()
+                this.shippingbtb = true;
+              }
+              else {
+                this.global.ShowToastr('error','Error has occured', 'Error!');
+              }
             }
             else {
-              this.global.ShowToastr('error','Error has occured', 'Error!');
-            }
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("ShippingButtSet",res.responseMessage);
 
+            }
           })
         }
       }
@@ -623,8 +625,8 @@ export class ConsolidationComponent implements OnInit {
     this.paginator3.pageIndex = 0;
   }
 
-  async autocompleteSearchColumnItem() {
-
+  async autocompleteSearchColumnItem(val:any = null) {
+    if(val) this.filterValue = val;
     let payload = {
       "column": this.startSelectFilter,
       "value": this.filterValue ? this.filterValue : '',

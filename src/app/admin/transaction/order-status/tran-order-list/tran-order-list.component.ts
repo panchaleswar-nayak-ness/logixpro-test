@@ -45,6 +45,7 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 })
 export class TranOrderListComponent implements OnInit, AfterViewInit {
   public columnValues: any = [];
+  @Input() TabIndex:any;
   public Order_Table_Config = [
     { colHeader: 'status', colDef: 'Status' },
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
@@ -285,59 +286,63 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       .OrderStatusData(this.payload)
       .subscribe(
         {next: (res: any) => {
-          
-          this.detailDataInventoryMap = res.data?.orderStatus;
-          this.getOrderForTote = res.data?.orderNo;
-          this.dataSource = new MatTableDataSource(res.data?.orderStatus);
-
-          this.columnValues = res.data?.orderStatusColSequence;
-          this.customPagination.total = res.data?.totalRecords;
-          this.getOrderForTote =
-            res?.data?.orderStatus[0]?.orderNumber;
-          if (res.data) {
-            this.onOpenOrderChange(res.data?.opLines);
-            this.onCompleteOrderChange(res.data?.compLines);
-            this.onReprocessOrderChange(res.data?.reLines);
-            if (
-              res?.data?.orderStatus?.length > 0
-            ) {
-              res.data.orderStatus.find((el) => {
-                return el.completedDate === ''
-                  ? (res.data.completedStatus = 'In Progress')
-                  : (res.data.completedStatus = 'Completed');
+          if(res.isExecuted)
+          {
+            this.detailDataInventoryMap = res.data?.orderStatus;
+            this.getOrderForTote = res.data?.orderNo;
+            this.dataSource = new MatTableDataSource(res.data?.orderStatus);
+  
+            this.columnValues = res.data?.orderStatusColSequence;
+            this.customPagination.total = res.data?.totalRecords;
+            this.getOrderForTote =
+              res?.data?.orderStatus[0]?.orderNumber;
+            if (res.data) {
+              this.onOpenOrderChange(res.data?.opLines);
+              this.onCompleteOrderChange(res.data?.compLines);
+              this.onReprocessOrderChange(res.data?.reLines);
+              if (
+                res?.data?.orderStatus?.length > 0
+              ) {
+                res.data.orderStatus.find((el) => {
+                  return el.completedDate === ''
+                    ? (res.data.completedStatus = 'In Progress')
+                    : (res.data.completedStatus = 'Completed');
+                });
+              }
+              this.onOrderTypeOrderChange(
+                
+                  res?.data?.orderStatus?.length > 0 &&
+                  res?.data?.orderStatus[0]?.transactionType
+              );
+              
+              this.currentStatusChange(res.data.completedStatus);
+              this.totalLinesOrderChange(res.data?.totalRecords);
+              this.sharedService.updateOrderStatusSelect({
+                totalRecords: res.data?.totalRecords,
               });
             }
-            this.onOrderTypeOrderChange(
-              
-                res?.data?.orderStatus?.length > 0 &&
-                res?.data?.orderStatus[0]?.transactionType
-            );
             
-            this.currentStatusChange(res.data.completedStatus);
-            this.totalLinesOrderChange(res.data?.totalRecords);
-            this.sharedService.updateOrderStatusSelect({
-              totalRecords: res.data?.totalRecords,
-            });
+  
+            if (res.data?.onCar.length) {
+              res.data.onCar.filter((item) => {
+                return (item.carousel = 'on');
+              });
+              this.onLocationZoneChange(res.data?.onCar);
+            } else if (res.data?.offCar.length) {
+              res.data.offCar.filter((item) => {
+                return (item.carousel = 'off');
+              });
+              this.onLocationZoneChange(res.data?.offCar);
+            } else {
+              this.onLocationZoneChange(res.data?.onCar);
+            }
           }
-          else{ // MY ELSE CONDITION
+          else {
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("OrderStatusData",res.responseMessage);
-
+            console.log("iAdminApiService",res.responseMessage);
           }
-
-          if (res.data?.onCar.length) {
-            res.data.onCar.filter((item) => {
-              return (item.carousel = 'on');
-            });
-            this.onLocationZoneChange(res.data?.onCar);
-          } else if (res.data?.offCar.length) {
-            res.data.offCar.filter((item) => {
-              return (item.carousel = 'off');
-            });
-            this.onLocationZoneChange(res.data?.offCar);
-          } else {
-            this.onLocationZoneChange(res.data?.onCar);
-          }
+          
+         
         },
         error: (error) => {}}
       );
@@ -352,6 +357,10 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
           } else {
             this.shippingComplete = true;
           }
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("selShipComp",res.responseMessage);
         }
       });
     }
@@ -503,7 +512,15 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {
-          this.searchAutocompleteList = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+
+          }
         },
         error: (error) => {}}
       );
@@ -590,42 +607,49 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
             .ScanValidateOrder(payload)
             .subscribe(
               {next: (res: any) => {
-                if (
-                  res.isExecuted &&
-                  res.data.length > 0 &&
-                  res.data.length >= 2
-                ) {
-                  res.data[0] = 'Entire Order';
-                  // add default check for tote id
-                  this.sharedService.updateToteFilterCheck(true);
-                  const dialogRef:any = this.global.OpenDialog(FilterToteComponent, {
-                    width: '650px',
-                    autoFocus: '__non_existing_element__',
-      disableClose:true,
-                    data: {
-                      dates: res.data,
-                      orderName: this.getOrderForTote,
-                    },
-                  });
-                  dialogRef.afterClosed().subscribe((res) => {
-                    if (
-                      res.selectedDate != '' &&
-                      res.selectedDate != undefined
-                    ) {
-                      if (res.selectedDate == 'Entire Order') {
-                        this.compDate = '';
-                      } else {
-                        this.compDate = res.selectedDate;
+                if(res.isExecuted)
+                {
+                  if (
+                    res.data.length > 0 &&
+                    res.data.length >= 2
+                  ) {
+                    res.data[0] = 'Entire Order';
+                    // add default check for tote id
+                    this.sharedService.updateToteFilterCheck(true);
+                    const dialogRef:any = this.global.OpenDialog(FilterToteComponent, {
+                      width: '650px',
+                      autoFocus: '__non_existing_element__',
+        disableClose:true,
+                      data: {
+                        dates: res.data,
+                        orderName: this.getOrderForTote,
+                      },
+                    });
+                    dialogRef.afterClosed().subscribe((res) => {
+                      if (
+                        res.selectedDate != '' &&
+                        res.selectedDate != undefined
+                      ) {
+                        if (res.selectedDate == 'Entire Order') {
+                          this.compDate = '';
+                        } else {
+                          this.compDate = res.selectedDate;
+                        }
+  
+                        this.getContentData();
                       }
-
-                      this.getContentData();
-                    }
-                  });
-                } else {
-                  this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-                  this.compDate = '';
-                  console.log("ScanValidateOrder",res.responseMessage);
+                    });
+                  } else {
+                    
+                    this.compDate = '';
+                    
+                  }
                 }
+                else {
+                  this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                  console.log("iAdminApiService",res.responseMessage);
+                }
+                
               },
               error: (error) => {}}
             );

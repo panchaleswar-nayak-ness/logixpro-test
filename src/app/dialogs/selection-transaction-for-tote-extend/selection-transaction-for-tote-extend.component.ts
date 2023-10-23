@@ -288,7 +288,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   getCellSizeList() {
     this.iCommonAPI.getCellSize().subscribe((res) => {
-      if (res.data && res.isExecuted)
+      if (res.isExecuted && res.data)
       {
       this.cellSizeList = res.data;
       }
@@ -302,7 +302,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   getVelocityCodeList() {
     this.iCommonAPI.getVelocityCode().subscribe((res) => {
-      if (res.data && res.isExecuted) {
+      if (res.isExecuted && res.data) {
       this.velocityCodeList = res.data;
       }
       else {
@@ -505,29 +505,37 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
       this.iinductionManagerApi.CheckForwardLocations(payLoad).subscribe(
         (res: any) => {
-          if (res.data > 0 && res.isExecuted && this.data.autoForwardReplenish) {
+          if(res.isExecuted)
+          {
+            if (res.data > 0 && this.data.autoForwardReplenish) {
             
-            let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
-              height: 'auto',
-              width: '560px',
-              autoFocus: '__non_existing_element__',
-      disableClose:true,
-              data: {
-                message: 'There is a need for ' + res.data + ' of item: ' + values.itemNumber + '. Press OK to find a location needing replenishment. Otherwise press CANCEL to do a normal location search',
-              }
-            });
-
-            dialogRef.afterClosed().subscribe((result) => {
-              if (result == 'Yes') {
-                this.findLocation(true, res.data);
-              }
-            });
-
-          } else {
+              let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
+                height: 'auto',
+                width: '560px',
+                autoFocus: '__non_existing_element__',
+        disableClose:true,
+                data: {
+                  message: 'There is a need for ' + res.data + ' of item: ' + values.itemNumber + '. Press OK to find a location needing replenishment. Otherwise press CANCEL to do a normal location search',
+                }
+              });
+  
+              dialogRef.afterClosed().subscribe((result) => {
+                if (result == 'Yes') {
+                  this.findLocation(true, res.data);
+                }
+              });
+  
+            } else {
+              
+              this.findLocation(false, 0);
+              
+            }
+          }
+          else {
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            this.findLocation(false, 0);
             console.log("CheckForwardLocations",res.responseMessage);
           }
+          
         },
         (error) => {}
       );      
@@ -775,6 +783,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                         }
                       } else {
                         this.global.ShowToastr('error','Something went wrong', 'Error!' );
+                        console.log("CrossDock",res.responseMessage);
                       }
                     },
                     (error) => {}

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'; 
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
@@ -19,6 +20,7 @@ export class DPrinterSetupComponent implements OnInit {
   public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private dialog:MatDialog,
+    private global : GlobalService,
     private api:ApiFuntions,
     public globalConfigApi: GlobalConfigApiService,
     private authService:AuthService) 
@@ -36,9 +38,17 @@ ClosePopup(){
   this.dialog.closeAll();
 }
 getAllPrinters(){
-  this.iGlobalConfigApi.GetAllPrinters().subscribe((res:any)=>{ 
+  this.iGlobalConfigApi.GetAllPrinters().subscribe((res:any)=>{
+    if(res)
+    {
       this.ListLabelPrinter = res.data.filter(x=>x.label == "Able to Print Labels");
       this.ListReportPrinter = res.data.filter(x=>x.label == "Not Able to Print Labels");
+    }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("GetAllPrinters",res.responseMessage);
+    } 
+      
   });
 }
 UpdWSPrefsPrinters(ReportPrinter,LabelPrinter){
@@ -46,9 +56,17 @@ UpdWSPrefsPrinters(ReportPrinter,LabelPrinter){
       ReportPrinter:ReportPrinter,
       LabelPrinter:LabelPrinter,
   }
-  this.iGlobalConfigApi.UpdWSPrefsPrinters(payload).subscribe((res:any)=>{ 
-    localStorage.setItem("SelectedReportPrinter",ReportPrinter);
-    localStorage.setItem("SelectedLabelPrinter",LabelPrinter); 
+  this.iGlobalConfigApi.UpdWSPrefsPrinters(payload).subscribe((res:any)=>{
+    if(res)
+    {
+      localStorage.setItem("SelectedReportPrinter",ReportPrinter);
+      localStorage.setItem("SelectedLabelPrinter",LabelPrinter);
+    }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("UpdWSPrefsPrinters",res.responseMessage);
+    } 
+     
   });
 }
 }

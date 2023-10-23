@@ -127,6 +127,10 @@ export class WorkstationComponent implements OnInit {
               }
           })
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GlobalMenu",res.responseMessage);
+        }
       },
       error: (error) => {}}
     );
@@ -134,14 +138,21 @@ export class WorkstationComponent implements OnInit {
   async getAppLicense() {
     this.iGlobalConfigApi.AppLicense().subscribe(
       {next: (res: any) => {
-        if(res?.data) {
-          this.licAppNames = res.data;
-          this.sharedService.setApp(this.licAppNames);
-          this.licAppNames = Object.keys(res.data);
-          this.convertToObj();
-          this.updateLicObj(res)
-            
-          this.appName_datasource = new MatTableDataSource(this.licAppObj);
+        if(res.isExecuted)
+        {
+          if(res?.data) {
+            this.licAppNames = res.data;
+            this.sharedService.setApp(this.licAppNames);
+            this.licAppNames = Object.keys(res.data);
+            this.convertToObj();
+            this.updateLicObj(res)
+              
+            this.appName_datasource = new MatTableDataSource(this.licAppObj);
+          }
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("AppLicense",res.responseMessage);
         }
       },
       error: (error) => {}}
@@ -170,9 +181,13 @@ export class WorkstationComponent implements OnInit {
     this.iGlobalConfigApi.getWorkstationapp(payload)
       .subscribe(
         {next: (res: any) => {
-          if (res?.data) {
+          if (res.isExecuted && res.data) {
             this.canAccessAppList = res.data;
             this.getDefaultAppList(wsid, this.canAccessAppList);
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("getWorkstationapp",res.responseMessage);
           }
         },
         error: (error) => {}}
@@ -191,29 +206,37 @@ export class WorkstationComponent implements OnInit {
     this.iGlobalConfigApi.workstationdefaultapp(payload)
       .subscribe(
         {next: (res: any) => {
-          this.defaultAccessApp =  res?.data ? res.data : '';
+          if(res.isExecuted)
+          {
+            this.defaultAccessApp =  res?.data ? res.data : '';
 
-          if (this.licAppObj.length) {
-            // reset to default
-            this.licAppObj.map((itm) => {
-              itm.canAccess = false;
-              itm.defaultApp = false;
-              itm.defaultDisable= itm.appName==='Induction' || itm.appName==='ICSAdmin' 
-            });
-          }
-          if (canAccessArr.length) {
-            // find and map check boxes of selected apps
-            this.licAppObj.map((obj, i) => {
-              if (this.defaultAccessApp === obj.appName) {
-                this.licAppObj[i].defaultApp = true;
-              }
-              canAccessArr.find((item, j) => {
-                if (item === obj.appName) {
-                  this.licAppObj[i].canAccess = true;
-                }
+            if (this.licAppObj.length) {
+              // reset to default
+              this.licAppObj.map((itm) => {
+                itm.canAccess = false;
+                itm.defaultApp = false;
+                itm.defaultDisable= itm.appName==='Induction' || itm.appName==='ICSAdmin' 
               });
-            });
+            }
+            if (canAccessArr.length) {
+              // find and map check boxes of selected apps
+              this.licAppObj.map((obj, i) => {
+                if (this.defaultAccessApp === obj.appName) {
+                  this.licAppObj[i].defaultApp = true;
+                }
+                canAccessArr.find((item, j) => {
+                  if (item === obj.appName) {
+                    this.licAppObj[i].canAccess = true;
+                  }
+                });
+              });
+            }
           }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("workstationdefaultapp",res.responseMessage);
+          }
+        
         },
         error: (error) => {}}
       );
@@ -247,6 +270,10 @@ export class WorkstationComponent implements OnInit {
           if(res.isExecuted){
             this.getCanAccessList(this.wsid);
           }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("WorkStationDefaultAppAddDefault",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );
@@ -267,6 +294,10 @@ export class WorkstationComponent implements OnInit {
         {next: (res: any) => {
           if (res.isExecuted) {
             this.getCanAccessList(this.wsid);
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("workstationapp",res.responseMessage);
           }
         },
         error: (error) => {}}
@@ -310,6 +341,10 @@ export class WorkstationComponent implements OnInit {
         {next: (res: any) => {
           if (res.isExecuted) {
             this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("WorkStationDelete",res.responseMessage);
           }
           this.getMenuData();
           this.wsid = null;

@@ -46,8 +46,18 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
         "orderNumber": this.orderNumber,
         "itemNumber":this.itemNumber 
     };
-    this.IconsolidationAPI.ConfPackSelectDT(Obj).subscribe((response:any) => { 
-      this.confPackSelectTable = response.data;  
+    this.IconsolidationAPI.ConfPackSelectDT(Obj).subscribe((response:any) => {
+      if(response.isExecuted && response.data)
+      {
+        this.confPackSelectTable = response.data;
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ConfPackSelectDT",response.responseMessage);
+
+      }
+        
     });
   } 
   
@@ -75,42 +85,48 @@ openScanItem(ItemNumber:any,id: any) {
       modal: ""
     };
     this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
-  
-      if (res.data == "Fail") {
-        this.global.ShowToastr('error','An error has occurred', 'Error!');
-        console.log("ConfPackProcModalUpdate",res.responseMessage);  
-    } else if (res.data == "Modal") {
-       this.openScanItem(this.itemNumber,id);
+      if (res)
+      {
+        if (res.data == "Fail") {
+          this.global.ShowToastr('error','An error has occurred', 'Error!');
+          console.log("ConfPackProcModalUpdate",res.responseMessage);  
+      } else if (res.data == "Modal") {
+         this.openScanItem(this.itemNumber,id);
+         
        
-     
-    }else {
-      //edit table
-      for (let x = 0; x < this.confPackTransTable.length; x++) {
-          let tabID = this.confPackTransTable[x].sT_ID;
-          if (id == tabID) {
-            // click active 
-          };
-      }; 
-
-
-
-      if(this.preferencesData?.autoPrintContLabel){
-        this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|contID:${this.contID}`);
-      
-      }
-      if( this.preferencesData?.autoPrintContPL){
-        this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
-      
-      }
-      if(this.preferencesData?.autoPrintOrderPL){
-        this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
-      
-      }
-      //remove items from modal table here
-      this.dialogRef.close('true');
+      }else {
+        //edit table
+        for (let x = 0; x < this.confPackTransTable.length; x++) {
+            let tabID = this.confPackTransTable[x].sT_ID;
+            if (id == tabID) {
+              // click active 
+            };
+        }; 
   
-   
-  } ;
+  
+  
+        if(this.preferencesData?.autoPrintContLabel){
+          this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|contID:${this.contID}`);
+        
+        }
+        if( this.preferencesData?.autoPrintContPL){
+          this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
+        
+        }
+        if(this.preferencesData?.autoPrintOrderPL){
+          this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
+        
+        }
+        //remove items from modal table here
+        this.dialogRef.close('true');
+      }
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ConfPackProcModalUpdate",res.responseMessage);
+        
+      };
   });
 
 }

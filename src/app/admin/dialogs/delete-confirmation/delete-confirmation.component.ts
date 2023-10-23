@@ -224,6 +224,10 @@ export class DeleteConfirmationComponent implements OnInit {
               this.dialogRef.close('deleted');
               this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("deleteAdminEmployee",res.responseMessage);
+            }
           });
       } else if (this.data.mode === 'delete-grpallowed') {
         let emp_data = {

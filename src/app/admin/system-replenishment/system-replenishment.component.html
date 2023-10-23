@@ -1,8 +1,8 @@
-<mat-tab-group dynamicHeight (selectedTabChange)="onTabChanged($event);">
+<mat-tab-group dynamicHeight [(selectedIndex)]="TabIndex" (selectedTabChange)="onTabChanged($event);">
   <mat-tab label="New Orders" >
-    <app-sr-new-order [refreshNewOrders]="refreshNewOrders" (replenishmentsProcessed)="replenishmentsProcessed = true" [hidden]="activeTabIndex == 1"></app-sr-new-order>
+    <app-sr-new-order [TabIndex]="TabIndex" [refreshNewOrders]="refreshNewOrders" (replenishmentsProcessed)="replenishmentsProcessed = true" [hidden]="activeTabIndex == 1"></app-sr-new-order>
   </mat-tab>
   <mat-tab label="Current Orders">
-    <app-sr-current-order [refreshCurrentOrders]="refreshCurrentOrders" (replenishmentsDeleted)="replenishmentsDeleted = true" [hidden]="activeTabIndex == 0"></app-sr-current-order>
+    <app-sr-current-order [TabIndex]="TabIndex" [refreshCurrentOrders]="refreshCurrentOrders" (replenishmentsDeleted)="replenishmentsDeleted = true" [hidden]="activeTabIndex == 0"></app-sr-current-order>
   </mat-tab>
-</mat-tab-group>
+</mat-tab-group> 

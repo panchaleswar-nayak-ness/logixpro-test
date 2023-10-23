@@ -1,0 +1,101 @@
+<div class="row">
+    <div [ngClass]="useInZonePickScreen === true ? 'col-xl-6' : 'col-xl-12'" class="mb-3">
+        <mat-card class="mat-elevation-z g-card mb-3 h-100">
+            <mat-card-content class=" h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <app-icon-heading-component heading="Print Existing Pick Batches" icon="print">
+                    </app-icon-heading-component>
+                    <button type="submit" mat-stroked-button class="btn-regular" color="primary"
+                        [matMenuTriggerFor]="appMenu1">
+                        <mat-icon class="material-symbols-outlined">print</mat-icon>
+                        <span class="material-symbols-outlined icon-expand-more">
+                            expand_more
+                        </span>
+                    </button>
+                    <mat-menu #appMenu1="matMenu">
+                        <button (click)="printExisting('PrintTote')" mat-menu-item><b>Print Tote/Location Labels</b></button>
+                        <button  (click)="printExisting('PrintPickLabel')" mat-menu-item>Print Pick Labels</button>
+                        <button  (click)="printExisting('PrintPickList')" mat-menu-item>Print Pick List</button>
+                        <button  (click)="printExisting('PrintCase')" mat-menu-item>Print Case Labels</button>
+                        <button  (click)="printExisting('PrintBatch')" mat-menu-item>Print Pick Batch List</button>
+                    </mat-menu>
+                </div>
+                <div class="card p-3 mb-2">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <mat-form-field class="custom-form-field w-100 position-relative" appearance="outline">
+                                <mat-label>Batch ID</mat-label>
+                                <input type="text" [formControl]="pickBatches" aria-label="Number" matInput
+                                    [matAutocomplete]="auto" [(ngModel)]="pickBatchesCrossbtn">
+                                    <button matSuffix *ngIf="pickBatchesCrossbtn" class="clear-btn" (click)="pickBatchesCrossbtn= ''" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>                              
+                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                    <h6 class="ctl_name ac-dropdown-label"><span>Batch ID</span></h6>
+                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                        <div class="ctl_option ac-dropdown-option">
+                                            <span>{{option}}</span>
+                                        </div>
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-xl-6 mb-3" *ngIf="useInZonePickScreen">
+        <mat-card class="mat-elevation-z g-card mb-3 h-100">
+            <mat-card-content>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <app-icon-heading-component heading="Order Number Select" icon="filter_frames">
+                    </app-icon-heading-component>
+                    <div class="text-center"> <span class="label label-gray px-2 f-14">Zones:&nbsp;<b><span
+                                    *ngFor="let zone of allZones"> {{zone}} </span></b></span></div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-xl-8">
+                        <mat-form-field class="custom-form-field w-100 position-relative mb-2" appearance="outline">
+                            <mat-label>Order No.</mat-label>
+                            <input type="text" [formControl]="orderNumber" aria-label="Number" matInput
+                                [matAutocomplete]="auto" [(ngModel)]="orderInput" (keyup.enter)="ifOrderExits(orderInput)">
+                                <button matSuffix *ngIf="orderInput" class="clear-btn" (click)="orderInput = ''" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="ifOrderExits(orderInput)">
+                                <h6 class="ctl_name ac-dropdown-label"><span>Batch ID</span></h6>
+                                <mat-option *ngFor="let option of filteredOrderNum | async" [value]="option">
+                                    <div class="ctl_option ac-dropdown-option">
+                                        <span>{{option}}</span>
+                                    </div>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-xl-4">
+                        <a mat-flat-button [matMenuTriggerFor]="orderMenu" color="primary"
+                            class="primary-button btn-regular w-100 mb-2" style="min-width: 150px;">
+                            View Orders
+                            <mat-icon matSuffix> expand_more</mat-icon>
+                        </a>
+                        <mat-menu #orderMenu="matMenu" xPosition="before">
+                            <button type="button" mat-menu-item (click)="openViewOrdersDialogue('All')"><b
+                                    class="text-tertiary-900">View All Orders</b></button>
+                            <button type="button" mat-menu-item (click)="openViewOrdersDialogue('NonReplen')">View Non Replenishment
+                                Orders</button>
+                            <button type="button" mat-menu-item (click)="openViewOrdersDialogue('Replen')">View Replenishment
+                                Orders</button>
+                        </mat-menu>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <button type="button" mat-flat-button color="primary" class="primary-button btn-regular w-100"
+                        style="min-width: 150px;" (click)="openWorkstationZone()">
+                        Select Workstation Zones
+                    </button>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

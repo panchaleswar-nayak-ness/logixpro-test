@@ -79,7 +79,7 @@ private adminApiService: AdminApiService,
   }
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      if (res.data) {
+      if (res.isExecuted && res.data) {
         this.fieldNames = res.data;
       } else {
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');

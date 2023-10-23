@@ -74,11 +74,7 @@ export class BatchDeleteConfirmationComponent {
         this.dialogRef.close({isExecuted:false});
       }
     }
-    else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-      console.log("onConfirmdelete");
-
-    }
+    
   }
   CancelPopup(){
     this.dialogRef.close({isExecuted:false});

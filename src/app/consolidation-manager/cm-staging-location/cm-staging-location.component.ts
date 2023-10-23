@@ -86,41 +86,49 @@ export class CmStagingLocationComponent {
       };
       let inputVal = this.OrderNumberTote;
       this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
-        if (typeof res?.data == 'string') { 
-          switch (res?.data) {
-            case "DNE":
-              this.global.ShowToastr('error',"The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!');
-              this.OrderNumberTote = null;
-              break;
-            case "DNENP":
-              this.OrderNumberTote = null; 
-              let dialogRef:any = this.global.OpenDialog(StagingLocationOrderComponent, { 
-                height: 'auto',
-                width: '620px',
-                autoFocus: '__non_existing_element__',
-                disableClose:true, 
-              })
-              dialogRef.afterClosed().subscribe(result => { 
-                this.stagetables = [];
-                  if(result) {this.OrderNumberTote = result;
-                  this.stagetables.push({ toteID: inputVal, stagingLocation:null});
-                  }
+        if(res.isExecuted && res.data)
+        {
+          if (typeof res?.data == 'string') { 
+            switch (res?.data) {
+              case "DNE":
+                this.global.ShowToastr('error',"The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!');
+                this.OrderNumberTote = null;
+                break;
+              case "DNENP":
+                this.OrderNumberTote = null; 
+                let dialogRef:any = this.global.OpenDialog(StagingLocationOrderComponent, { 
+                  height: 'auto',
+                  width: '620px',
+                  autoFocus: '__non_existing_element__',
+                  disableClose:true, 
                 })
-              break;
-            case "Conflict":
-                this.openCmOrderToteConflict(inputVal); 
-              break;
-            case "Error":
-              this.global.ShowToastr('error',"An Error occured while retrieving data", "Consolidation Error");
-              break;
+                dialogRef.afterClosed().subscribe(result => { 
+                  this.stagetables = [];
+                    if(result) {this.OrderNumberTote = result;
+                    this.stagetables.push({ toteID: inputVal, stagingLocation:null});
+                    }
+                  })
+                break;
+              case "Conflict":
+                  this.openCmOrderToteConflict(inputVal); 
+                break;
+              case "Error":
+                this.global.ShowToastr('error',"An Error occured while retrieving data", "Consolidation Error");
+                break;
+            }
           }
+          else { 
+            this.stagetables = res.data.stageTable;
+          }
+          if(res?.data?.orderNumber) this.OrderNumberTote  = res?.data?.orderNumber;
+          if(!res.data.stageTable) this.stagetables  = [];
+          this.IsLoading = false;
         }
-        else { 
-          this.stagetables = res.data.stageTable;
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("ConsolidationData",res.responseMessage);
         }
-        if(res?.data?.orderNumber) this.OrderNumberTote  = res?.data?.orderNumber;
-        if(!res.data.stageTable) this.stagetables  = [];
-        this.IsLoading = false;
+        
       });
     }
   }
@@ -152,12 +160,15 @@ export class CmStagingLocationComponent {
               break;
             }
           }
-        
       }
-      if(res.isExecuted && index!=null){ 
+      if(res && res.isExecuted && index!=null){ 
         this.stagetables[index].stagingLocation = location;
         this.stagetables[index].location = location; 
+      }else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("StagingLocationsUpdate",res.responseMessage)
       }
+      
     })
   }
   }

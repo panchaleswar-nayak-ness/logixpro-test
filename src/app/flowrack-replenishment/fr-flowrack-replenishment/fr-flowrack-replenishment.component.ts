@@ -78,12 +78,21 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
     //   "WSID": this.userData.wsid,
     // }
     this.iFlowRackReplenishApi.wslocation({}).subscribe((res) => {
-      if (res.data == 'No'||res.data == ''||res.data == null){
-        this.zone='This workstation is not assigned to a zone';
+      if (res.isExecuted)
+      {
+        if (res.data == 'No'||res.data == ''||res.data == null){
+          this.zone='This workstation is not assigned to a zone';
+        }
+        else{
+          this.zone=res.data;
+        }
       }
-      else{
-        this.zone=res.data;
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("wslocation",res.responseMessage);
       }
+
+      
     })
   }
 
@@ -152,54 +161,62 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
         "ItemNumber": this.itemnumscan,
       }
       this.iFlowRackReplenishApi.CFData(payload).subscribe((res => {
-        if (res.data != '') {
-          this.itemnumscan = res.data
-          let payload = {
-            "itemNumber": this.itemnumscan
+        if(res.isExecuted)
+        {
+          if (res.data != '') {
+            this.itemnumscan = res.data
+            let payload = {
+              "itemNumber": this.itemnumscan
+            }
+            this.iFlowRackReplenishApi.ItemLocation(payload).subscribe((res => {
+              if (res.data.length < 1) {
+                this.locationSuggestions = [];
+                // let payload = {}
+                this.iFlowRackReplenishApi.openlocation({}).subscribe((res => {
+                  if (res.data.length < 1) {
+                    this.global.ShowToastr('error',"There are no open locations.", 'Error!');
+                    this.LocationRow = true;
+                    this.itemLocation = ''
+                  }
+                  else {
+                    this.global.ShowToastr('error',"No Locations found for Item Number, Scan or Select an open Location.", 'Error!');
+                    console.log("findItemLocation",res.responseMessage);
+                    this.locationSuggestions = res.data
+                    this.LocationRow = false;
+  
+  
+                    setTimeout(() => {
+                      this.itemLocationFocus.nativeElement.focus();
+                      this.itemLocationFocus.nativeElement.select();
+                    }, 0);
+                  }
+                }))
+              }
+              else {
+                this.locationSuggestions = res.data
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("ItemLocation",res.responseMessage);
+              }
+              this.LocationRow = false;
+              this.itemLocation = res.data[0].location;
+              setTimeout(() => {
+                this.itemLocationFocus.nativeElement.focus();
+                this.itemLocationFocus.nativeElement.select();
+              }, 0);
+            }))
+  
           }
-          this.iFlowRackReplenishApi.ItemLocation(payload).subscribe((res => {
-            if (res.data.length < 1) {
-              this.locationSuggestions = [];
-              // let payload = {}
-              this.iFlowRackReplenishApi.openlocation({}).subscribe((res => {
-                if (res.data.length < 1) {
-                  this.global.ShowToastr('error',"There are no open locations.", 'Error!');
-                  this.LocationRow = true;
-                  this.itemLocation = ''
-                }
-                else {
-                  this.global.ShowToastr('error',"No Locations found for Item Number, Scan or Select an open Location.", 'Error!');
-                  console.log("findItemLocation",res.responseMessage);
-                  this.locationSuggestions = res.data
-                  this.LocationRow = false;
-
-
-                  setTimeout(() => {
-                    this.itemLocationFocus.nativeElement.focus();
-                    this.itemLocationFocus.nativeElement.select();
-                  }, 0);
-                }
-              }))
-            }
-            else {
-              this.locationSuggestions = res.data
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-              console.log("findItemLocation",res.responseMessage);
-            }
-            this.LocationRow = false;
-            this.itemLocation = res.data[0].location;
-            setTimeout(() => {
-              this.itemLocationFocus.nativeElement.focus();
-              this.itemLocationFocus.nativeElement.select();
-            }, 0);
-          }))
-
+          else {
+            this.itemnumscan = '';
+            this.global.ShowToastr('error',"This item does not exist in Inventory Master for this carton flow zone.", 'Error!');
+            this.clearAllFields()
+          }
         }
         else {
-          this.itemnumscan = '';
-          this.global.ShowToastr('error',"This item does not exist in Inventory Master for this carton flow zone.", 'Error!');
-          this.clearAllFields()
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("CFData",res.responseMessage);
         }
+      
       }))
 
     }
@@ -216,18 +233,26 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
       "Input": this.itemLocation
     }
     this.iFlowRackReplenishApi.verifyitemlocation( payload).subscribe((res => {
-      if (res.data) {
-        this.itemQtyRow = false;
-        this.calculator = false
-        this.openCal()
+      if(res.isExecuted)
+      {
+        if (res.data) {
+          this.itemQtyRow = false;
+          this.calculator = false
+          this.openCal()
+        }
+        else if (!res.data) {
+          this.autocompleteTrigger.closePanel()
+          this.clearLocationField()
+          this.LocationRow = true;
+          this.global.ShowToastr('error',"Location Unavailable.", 'Error!');
+          console.log("onLocationSelected",res.responseMessage);
+        }
       }
-      else if (!res.data) {
-        this.autocompleteTrigger.closePanel()
-        this.clearLocationField()
-        this.LocationRow = true;
-        this.global.ShowToastr('error',"Location Unavailable.", 'Error!');
-        console.log("onLocationSelected",res.responseMessage);
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("verifyitemlocation",res.responseMessage);
       }
+    
     }))
   }
   
@@ -317,6 +342,11 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
             if (res.isExecuted) {
               this.global.ShowToastr('success','Item Quantity Added', 'Success!');
               this.resetForm()
+            }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("itemquantity",res.responseMessage);
+
             }
           }))
         }

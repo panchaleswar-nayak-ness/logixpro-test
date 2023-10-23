@@ -62,8 +62,6 @@ export class ReelTrackingComponent implements OnInit {
     "includeAutoRTS": event.checked, 
  }
   this.iAdminApiService.UpdateReelQuantity(payload).subscribe((res:any)=>{
-
-    
     if(res.isExecuted){
       this.sharedService.updateInvMasterState(event,true)
        
@@ -122,7 +120,7 @@ export class ReelTrackingComponent implements OnInit {
             
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
-            console.log("RefreshRTS",res.responseMessage);
+            console.log("UpdateReelAll",res.responseMessage);
           }
 
           

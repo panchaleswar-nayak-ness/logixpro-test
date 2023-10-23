@@ -126,7 +126,7 @@ export class LookupUserTwoSetupComponent implements OnInit {
           else {
             
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("userfieldlookup",res.responseMessage);
+            console.log("deleteUserfieldLookUp",res.responseMessage);
 
           }
         }))

@@ -93,12 +93,17 @@ export class CmItemSelectedComponent implements OnInit {
 
 
     this.IconsolidationAPI.ItemModelData(payload).subscribe((res=>{
-        
+      if(res.isExecuted && res.data)
+      {
         this.itemSelectTable= new MatTableDataSource(res.data);
         this.itemSelectTable.paginator = this.paginator;
 
-
-       
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ItemModelData",res.responseMessage);
+      }
+        
     }))
 }
 

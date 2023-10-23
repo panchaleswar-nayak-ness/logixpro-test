@@ -16,12 +16,10 @@
                   <h6 class="text-tertiary-900"><b>Picks</b></h6>
                   <div class="d-flex gap-20 justify-content-center">
                     <div class="employees text-center">
-                      <p class="counter-count mb-1 bg-primary-900">{{openPicks}}</p>
-                      <p class="employee-p text-tertiary-900 mb-1  ">Open</p>
+                      <app-stats-circle value="{{openPicks}}" title="Open"></app-stats-circle>
                     </div>
                     <div class="customer text-center">
-                      <p class="counter-count mb-1 bg-primary-900">{{compPicks}}</p>
-                      <p class="customer-p text-tertiary-900 mb-1  ">Completed</p>
+                      <app-stats-circle value="{{compPicks}}" title="Completed"></app-stats-circle>
                     </div>
                   </div>
                 </div>
@@ -35,12 +33,10 @@
                   <h6 class="text-tertiary-900"><b>Put Aways</b></h6>
                   <div class="d-flex gap-20 justify-content-center">
                     <div class="employees text-center">
-                      <p class="counter-count mb-1 bg-primary-900">{{openPuts}}</p>
-                      <p class="employee-p text-tertiary-900 mb-1  ">Open</p>
+                      <app-stats-circle value="{{openPuts}}" title="Open"></app-stats-circle>
                     </div>
                     <div class="customer text-center">
-                      <p class="counter-count mb-1 bg-primary-900">{{compPuts}}</p>
-                      <p class="customer-p text-tertiary-900 mb-1  ">Closed</p>
+                      <app-stats-circle value="{{compPuts}}" title="Closed"></app-stats-circle>
                     </div>
                   </div>
                 </div>
@@ -54,12 +50,10 @@
                   <h6 class="text-tertiary-900"><b>Counts</b></h6>
                   <div class="d-flex gap-20 justify-content-center">
                     <div class="employees text-center">
-                      <p class="counter-count mb-1 bg-primary-900">{{openCounts}}</p>
-                      <p class="employee-p text-tertiary-900 mb-1  ">Open</p>
+                      <app-stats-circle value="{{openCounts}}" title="Open"></app-stats-circle>
                     </div>
                     <div class="customer text-center">
-                      <p class="counter-count mb-1 bg-primary-900">{{compCounts}}</p>
-                      <p class="customer-p text-tertiary-900 mb-1  ">Closed</p>
+                      <app-stats-circle value="{{compCounts}}" title="Closed"></app-stats-circle>
                     </div>
                   </div>
                 </div>
@@ -73,8 +67,7 @@
                   <h6 class="text-tertiary-900"><b>Adjustments</b></h6>
                   <div class="d-flex gap-20 justify-content-center">
                     <div class="employees text-center">
-                      <p class="counter-count mb-1 bg-primary-900">{{compAdjust}}</p>
-                      <p class="employee-p text-tertiary-900 mb-1  ">Adjusted</p>
+                      <app-stats-circle value="{{compAdjust}}" title="Adjusted"></app-stats-circle>
                     </div>
                   </div>
                 </div>
@@ -88,8 +81,7 @@
                   <h6 class="text-tertiary-900"><b>Changes</b></h6>
                   <div class="d-flex gap-20 justify-content-center">
                     <div class="employees text-center">
-                      <p class="counter-count mb-1 bg-primary-900">{{compLocChange}}</p>
-                      <p class="employee-p text-tertiary-900 mb-1  ">Location</p>
+                      <app-stats-circle value="{{compLocChange}}" title="Location"></app-stats-circle>
                     </div>
                   </div>
                 </div>
@@ -103,8 +95,7 @@
                   <h6 class="text-tertiary-900"><b>Transactions</b></h6>
                   <div class="d-flex gap-20 justify-content-center">
                     <div class="employees text-center">
-                      <p class="counter-count mb-1 bg-primary-900">{{reprocCount}}</p>
-                      <p class="employee-p text-tertiary-900 mb-1  ">Re-Processed</p>
+                      <app-stats-circle value="{{reprocCount}}" title="Re-Processed"></app-stats-circle>
                     </div>
                   </div>
                 </div>

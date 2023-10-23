@@ -72,25 +72,31 @@ export class CmShippingComponent implements OnInit {
       }
       this.IsLoading = true;
       this.IconsolidationAPI.ShippingIndex(obj).subscribe((res: any) => {
-        if (res?.isExecuted) {
-          this.shippingData = res.data.shippingData;
-          this.carriers = res.data.carriers;
-          this.shippingPreferences = res.data.shippingPreferences;
-          let indx=0;
-          for (let key in this.shippingPreferences) { 
-            if((this.displayedColumns.indexOf(key) <= -1) && this.shippingPreferences[key]){
-          this.displayedColumns.splice((3+indx), 0, key);
-          indx=indx+1;
+        if(res.isExecuted)
+        {
+          if (res && res.data) {
+            this.shippingData = res.data.shippingData;
+            this.carriers = res.data.carriers;
+            this.shippingPreferences = res.data.shippingPreferences;
+            let indx=0;
+            for (let key in this.shippingPreferences) { 
+              if((this.displayedColumns.indexOf(key) <= -1) && this.shippingPreferences[key]){
+            this.displayedColumns.splice((3+indx), 0, key);
+            indx=indx+1;
+              }
             }
-          }
-         this.shippingComp = res.data.shippingComp;
-          this.orderNumber = res.data.orderNumber;
-          this.IsLoading = false; 
-        }else{
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');  
-          this.IsLoading = false;
+           this.shippingComp = res.data.shippingComp;
+            this.orderNumber = res.data.orderNumber;
+            this.IsLoading = false; 
+          }else{  
+            this.IsLoading = false;
+          } 
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
           console.log("ShippingIndex",res.responseMessage);
-        } 
+        }
+      
       });
     }
    
@@ -161,7 +167,7 @@ export class CmShippingComponent implements OnInit {
         orderNumber: this.orderNumber
       }
       this.IconsolidationAPI.SelCountOfOpenTransactionsTemp(obj).subscribe((res: any) => {
-        if (res) {
+        if (res.isExecuted) {
           if (res.data == -1) {
             this.global.ShowToastr('error',"An error has occurred", "Error");
           } else if (res.data == 0) {

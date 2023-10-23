@@ -173,7 +173,7 @@ export class OmOrderManagerComponent implements OnInit {
           if ( res.data?.preferences) this.maxOrders = res.data.preferences[0].maxOrders;
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
-          console.log("getOMIndex",res.responseMessage);
+          console.log("OrderManagerPreferenceIndex",res.responseMessage);
         }
       },
       (error) => { }
@@ -196,7 +196,7 @@ export class OmOrderManagerComponent implements OnInit {
       }
       else{
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("getColumnSequence",res.responseMessage);
+        console.log("GetColumnSequence",res.responseMessage);
       }
     });
   }
@@ -276,13 +276,21 @@ export class OmOrderManagerComponent implements OnInit {
     }; 
 
     this.iOrderManagerApi.SelectOrderManagerTempDTNew(payload2).subscribe((res: any) => {
-      this.orderTable = new MatTableDataSource(res.data?.transactions);
-      this.customPagination.total = res.data?.recordsFiltered;
-      this.totalRecords = res.data?.recordsFiltered;
+      if(res)
+      {
+        this.orderTable = new MatTableDataSource(res.data?.transactions);
+        this.customPagination.total = res.data?.recordsFiltered;
+        this.totalRecords = res.data?.recordsFiltered;
       
       this.RecordSavedItem();
 
       this.orderTable.sort = this.sort;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SelectOrderManagerTempDTNew",res.responseMessage);
+      }
+      
     });   
   }
 
@@ -364,7 +372,7 @@ export class OmOrderManagerComponent implements OnInit {
             }
             else{
               this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-              console.log("deleteViewed",res.responseMessage)
+              console.log("OMOTPendDelete",res.responseMessage)
             }
           });
         }
@@ -458,13 +466,17 @@ export class OmOrderManagerComponent implements OnInit {
               this.getOrders();
               this.clearSearch();
             }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("ReleaseOrders",res.responseMessage);
+            }
           });
           
         } else {
           this.clearSearch();
           this.FilterString = "";
           this.fillTable();
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          
         }
       });
 
@@ -495,7 +507,7 @@ export class OmOrderManagerComponent implements OnInit {
             }
             else{
               this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-              console.log("releaseViewed",res.responseMessage);
+              console.log("ReleaseOrders",res.responseMessage);
             }
           });
           

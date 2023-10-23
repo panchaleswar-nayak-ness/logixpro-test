@@ -24,7 +24,7 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 })
 export class SrNewOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
-
+ @Input() TabIndex:any;
   displayedColumns: string[] = ['Item Number', 'Description', 'Warehouse', 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', 'action'];
   tableData: any = [];
   filteredTableData: any = [];
@@ -162,12 +162,6 @@ export class SrNewOrderComponent implements OnInit {
         } 
       });
     }
-    else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-      console.log("(Outer If) --> SystemReplenishmentNewTable");
-
-
-    }
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -192,12 +186,6 @@ export class SrNewOrderComponent implements OnInit {
     this.iAdminApiService.ReplenishmentInsert(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.newOrderListCreated = true;
-      }
-      else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("ReplenishmentInsert",res.responseMessage);
-
-
       }
       this.newReplenishmentOrders();
     });

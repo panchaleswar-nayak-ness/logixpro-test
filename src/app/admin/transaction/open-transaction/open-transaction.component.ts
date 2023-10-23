@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { AuthService } from 'src/app/init/auth.service';
 import {
@@ -14,6 +14,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class OpenTransactionComponent implements OnInit {
   transactions;
   userData: any;
+  @Input() TabIndex:any;
   transactionIndex: ITransactionModelIndex;
   selectedIndex: number = 0;
   event: any;

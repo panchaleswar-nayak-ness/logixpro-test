@@ -358,7 +358,17 @@ constructor(
       this.iAdminApiService
         .GetCCDescriptionTypeAhead(paylaod)
         .subscribe((res: any) => {
-          this.searchAutocompleteDescription = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteDescription = res.data;
+
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("GetCCDescriptionTypeAhead",res.responseMessage);
+
+          }
+          
         });
 
       // this is the first time the component is rendered
@@ -371,7 +381,17 @@ constructor(
       this.iAdminApiService
         .GetCCCategoryTypeAhead(paylaod)
         .subscribe((res: any) => {
-          this.searchAutocompletCategory = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompletCategory = res.data;
+
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("GetCCCategoryTypeAhead",res.responseMessage);
+
+          }
+          
         });
     } else if (type === 'BeginCost' || type === 'EndCost') {
       let payload={};
@@ -395,7 +415,7 @@ constructor(
         .GetCCCountToCostTypeAhead(payload)
         .subscribe((res: any) => {
           
-          if (res.data) {
+          if (res.isExecuted && res.data) {
             if (type === 'BeginCost') {
               this.searchAutocompletBeginCost = res.data;
             } else {

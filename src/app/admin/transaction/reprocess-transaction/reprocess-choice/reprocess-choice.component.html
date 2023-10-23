@@ -8,66 +8,56 @@
             </div>
             <span>Reprocess Choices</span>
         </h2>
-
-
-
-
-        
-<div class="custom">
-    <div class="counter mt-0 bg-white">
-        <div>
-        <div class="row">
-            <div class="col-xl-4 employees text-center mb-2">
-            <p class="counter-count mb-1 bg-primary-900">{{reprocessCount.reprocess}}</p>
-            <p class="employee-p text-tertiary-900 mb-1  ">Reprocess<br>&nbsp;</p>
-            <span>
-                <mat-checkbox color="primary" [(ngModel)] = "isReprocessedChecked.flag"   [disabled]="isEnabled" (change)="changeOrderStatus($event,'Reprocess')">
-
-                </mat-checkbox>
-            </span>
-           
-            </div>
-            <div class="col-xl-4 customer text-center  mb-2">
-            <p class="counter-count mb-1 bg-primary-900">{{reprocessCount.complete}}</p>
-            <p class="customer-p text-tertiary-900 mb-1  ">Post as<br>Complete</p>
-            <span>
-                <mat-checkbox color="primary" [(ngModel)]= "isCompleteChecked.flag" [disabled]="isEnabled" (change)="changeOrderStatus($event,'Complete')">
-    
-                </mat-checkbox>
-            </span>
-            </div>
-            <div class="col-xl-4 customer text-center  mb-2">
-                <p class="counter-count mb-1 bg-primary-900">{{reprocessCount.history}}</p>
-                <p class="customer-p text-tertiary-900 mb-1  ">Send to<br>Reprocess History</p>
-                <span>
-                    <mat-checkbox color="primary" [(ngModel)]= "isHistoryChecked.flag" [disabled]="isEnabled" (change)="changeOrderStatus($event,'History')">
-        
-                    </mat-checkbox>
-                </span>
+        <div class="custom">
+            <div class="counter mt-0 bg-white">
+                <div>
+                    <div class="row">
+                        <div class="col-xl-4 employees text-center mb-2">
+                            <app-stats-circle [value]="reprocessCount.reprocess" [title]="'Reprocess'" divClass="div2"></app-stats-circle>
+                            <span>
+                                <mat-checkbox color="primary" [(ngModel)]="isReprocessedChecked.flag"
+                                    [disabled]="isEnabled" (change)="changeOrderStatus($event,'Reprocess')">
+                                </mat-checkbox>
+                            </span>
+                        </div>
+                        <div class="col-xl-4 customer text-center  mb-2">
+                            <app-stats-circle [value]="reprocessCount.complete" [title]="'Post as Complete'" divClass="div2"></app-stats-circle>
+                            <span>
+                                <mat-checkbox color="primary" [(ngModel)]="isCompleteChecked.flag"
+                                    [disabled]="isEnabled" (change)="changeOrderStatus($event,'Complete')">
+                                </mat-checkbox>
+                            </span>
+                        </div>
+                        <div class="col-xl-4 customer text-center  mb-2">
+                            <app-stats-circle [value]="reprocessCount.history" [title]="'Send to Reprocess History'" divClass="div2"></app-stats-circle>
+                            <span>
+                                <mat-checkbox color="primary" [(ngModel)]="isHistoryChecked.flag" [disabled]="isEnabled"
+                                    (change)="changeOrderStatus($event,'History')">
+                                </mat-checkbox>
+                            </span>
+                        </div>
+                    </div>
                 </div>
+            </div>
         </div>
-        </div>
-    </div>
-</div>
-<div>
-    <mat-form-field class="action-dropdown mb-3 w-100" appearance="outline" style="flex:1 auto">
-        <mat-label>Mark Table</mat-label>
-        <mat-select class="employees-action" (selectionChange)="markTableSelection($event)">
-            <mat-option (click)="markTable('reprocess')" >Mark For Reprocess</mat-option>
-            <mat-option (click)="markTable('complete')">Mark For Post as Complete</mat-option>
-            <mat-option (click)="markTable('history')">Mark to Send to History</mat-option>
-        </mat-select>
-        <span class="material-symbols-outlined icon-expand-more">
-            expand_more
-        </span>
-    </mat-form-field>
-</div>
-
         <div>
-            <button mat-flat-button color="primary" class="w-100 btn-regular"  color="primary" (click)="postTransaction()">
+            <mat-form-field class="action-dropdown mb-3 w-100" appearance="outline" style="flex:1 auto">
+                <mat-label>Mark Table</mat-label>
+                <mat-select class="employees-action" (selectionChange)="markTableSelection($event)">
+                    <mat-option (click)="markTable('reprocess')">Mark For Reprocess</mat-option>
+                    <mat-option (click)="markTable('complete')">Mark For Post as Complete</mat-option>
+                    <mat-option (click)="markTable('history')">Mark to Send to History</mat-option>
+                </mat-select>
+                <span class="material-symbols-outlined icon-expand-more">
+                    expand_more
+                </span>
+            </mat-form-field>
+        </div>
+        <div>
+            <button mat-flat-button color="primary" class="w-100 btn-regular" color="primary"
+                (click)="postTransaction()">
                 Post Transactions
-              </button>
+            </button>
         </div>
     </mat-card-content>
-
 </mat-card>

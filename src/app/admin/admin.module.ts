@@ -162,12 +162,23 @@ import { LookupToteSetupComponent } from './admin-preferences/system-preferences
 import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
 import { QuarantineDialogComponent } from './dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from './dialogs/unquarantine-dialog/unquarantine-dialog.component';
+import { LocationDetailsComponent } from './move-items/location-details/location-details.component';
+import { MoveLocationsComponent } from './move-items/move-locations/move-locations.component';
 import { SrInputFieldsComponent } from './system-replenishment/sr-current-order/sr-input-fields/sr-input-fields.component';
 import { SrNewInputFieldsComponent } from './system-replenishment/sr-new-order/sr-new-input-fields/sr-new-input-fields.component';
+import { CountOrderSelectionComponentComponent } from './location-assignment/count/count-order-selection-component/count-order-selection-component.component';
+import { CountSelectOrdersComponentComponent } from './location-assignment/count/count-select-orders-component/count-select-orders-component.component';
 
 import { CompanyInfoComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/company-info-component/company-info-component.component';
 import { SystemLogicPreferencesComponent } from './admin-preferences/system-preferences/sp-general-setup/system-logic-preferences/system-logic-preferences.component';
 import { PodSetupComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/pod-setup-component/pod-setup-component.component';
+import { EmployeesInformationComponent } from './employees/employees-information/employees-information.component';
+import { EmployeesSettingsComponent } from './employees/employees-settings/employees-settings.component';
+import { GroupsAssignedFunctionsCompComponent } from './employees/groups-assigned-functions-comp/groups-assigned-functions-comp.component';
+import { GroupsEmployeesGroupManagementComponent } from './employees/groups-employees-group-management/groups-employees-group-management.component';
+import { RtSelectedTransactionInfoComponent } from './transaction/reprocess-transaction/rt-selected-transaction-info/rt-selected-transaction-info.component';
+import { PickSelectOrdersComponentComponent } from './location-assignment/pick/pick-select-orders-component/pick-select-orders-component.component';
+import { PutAwaySelectOrdersComponentComponent } from './location-assignment/put-away/put-away-select-orders-component/put-away-select-orders-component.component';
 import { SelectOrderComponentComponent } from './manual-transactions/generate-order/select-order-component/select-order-component.component';
 import { GtLocationComponent } from './manual-transactions/generate-transaction/gt-location/gt-location.component';
 import { GtItemDetailsComponent } from './manual-transactions/generate-transaction/gt-item-details/gt-item-details.component';
@@ -327,11 +338,22 @@ import { GtTransactionDetailsComponent } from './manual-transactions/generate-tr
         LookupToteSetupComponent,
         QuarantineDialogComponent,
         UnquarantineDialogComponent,
+        LocationDetailsComponent,
+        MoveLocationsComponent,
         SrInputFieldsComponent,
         SrNewInputFieldsComponent,
+        CountOrderSelectionComponentComponent,
+        CountSelectOrdersComponentComponent,
         CompanyInfoComponentComponent,
         SystemLogicPreferencesComponent,
         PodSetupComponentComponent,
+        EmployeesInformationComponent,
+        EmployeesSettingsComponent,
+        GroupsAssignedFunctionsCompComponent,
+        GroupsEmployeesGroupManagementComponent,
+        RtSelectedTransactionInfoComponent,
+        PickSelectOrdersComponentComponent,
+        PutAwaySelectOrdersComponentComponent,
         SelectOrderComponentComponent,
         GtLocationComponent,
         GtItemDetailsComponent,

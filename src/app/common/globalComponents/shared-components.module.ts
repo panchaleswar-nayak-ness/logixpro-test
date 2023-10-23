@@ -7,6 +7,7 @@ import { IconHeadingComponentComponent } from './icon-heading-component/icon-hea
 import { InfoCardComponentComponent } from './info-card-component/info-card-component.component';
 import { ColumnFilterComponentComponent } from './column-filter-component/column-filter-component.component';
 import { SortPipe } from 'src/app/init/sort.pipe';
+import { StatsCircleComponent } from './stats-circle/stats-circle.component';
 
 
 
@@ -17,11 +18,13 @@ import { SortPipe } from 'src/app/init/sort.pipe';
     InfoCardComponentComponent,
     IconHeadingComponentComponent,
     ColumnFilterComponentComponent,
-    SortPipe
+    SortPipe,
+    StatsCircleComponent
   ],
   exports: [
     TableContextMenuComponentComponent,
     IconHeadingComponentComponent,
+    StatsCircleComponent,
     InfoCardComponentComponent,
     ColumnFilterComponentComponent,
     SortPipe

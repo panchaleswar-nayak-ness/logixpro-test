@@ -19,10 +19,10 @@ export class ColumnFilterComponentComponent implements OnInit {
   @Input() showClearBtn: boolean = false;
 
   @Output() selectionChangeEvent = new EventEmitter<Event>();
+  @Output() clearInputFieldEvent = new EventEmitter();
   @Output() autoCompleteEvent = new EventEmitter<string>();
   @Output() clearBtnEvent = new EventEmitter<Event>();
 
-  
   hideRequiredControl = new FormControl(false);
   floatLabelControl = new FormControl('auto' as FloatLabelType);
 
@@ -33,6 +33,10 @@ export class ColumnFilterComponentComponent implements OnInit {
 
   selectionChange(event) {
     this.selectionChangeEvent.emit(event);
+  }
+
+  clearInputField(event) {
+    this.clearInputFieldEvent.emit(event);
   }
 
   getFloatLabelValue(): FloatLabelType {

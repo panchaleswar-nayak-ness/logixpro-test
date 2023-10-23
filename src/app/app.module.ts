@@ -112,6 +112,18 @@ import { CrDesignFilenameConfirmationComponent } from './dialogs/cr-design-filen
 import { DPrinterSetupComponent } from './dialogs/d-printer-setup/d-printer-setup.component';
 import { PaPrintLabelConfirmationComponent } from './dialogs/pa-print-label-confirmation/pa-print-label-confirmation.component';
 import { SharedComponentsModule } from './common/globalComponents/shared-components.module';
+import { IeSsTransactionsComponent } from './import-export/ie-system-settings/ie-ss-transactions/ie-ss-transactions.component';
+import { IeSsImportComponent } from './import-export/ie-system-settings/ie-ss-import/ie-ss-import.component';
+import { IeSsExportComponent } from './import-export/ie-system-settings/ie-ss-export/ie-ss-export.component';
+import { IeSsCheckForDuplicatesComponent } from './import-export/ie-system-settings/ie-ss-check-for-duplicates/ie-ss-check-for-duplicates.component';
+import { IeTsImportExportJobTypeComponent } from './import-export/ie-transfer-settings/ie-ts-import-export-job-type/ie-ts-import-export-job-type.component';
+import { IeTsTransactionTypeToExportComponent } from './import-export/ie-transfer-settings/ie-ts-transaction-type-to-export/ie-ts-transaction-type-to-export.component';
+import { IeAlAutoLocationAssignmentComponent } from './import-export/ie-assign-locations/ie-al-auto-location-assignment/ie-al-auto-location-assignment.component';
+import { IeAlUnallocatedTransactionsComponent } from './import-export/ie-assign-locations/ie-al-unallocated-transactions/ie-al-unallocated-transactions.component';
+import { IeMdExportInvertoryMapComponent } from './import-export/ie-manage-data/ie-md-export-invertory-map/ie-md-export-invertory-map.component';
+import { IeMdImportInvertoryMapComponent } from './import-export/ie-manage-data/ie-md-import-invertory-map/ie-md-import-invertory-map.component';
+import { IeMdImportInvertoryComponent } from './import-export/ie-manage-data/ie-md-import-invertory/ie-md-import-invertory.component';
+import { IeMdExportInvertoryComponent } from './import-export/ie-manage-data/ie-md-export-invertory/ie-md-export-invertory.component';
 
 @NgModule({
   declarations: [
@@ -206,7 +218,19 @@ import { SharedComponentsModule } from './common/globalComponents/shared-compone
     ShippingCompleteDialogComponent,
     CrDesignFilenameConfirmationComponent,
     DPrinterSetupComponent,
-    PaPrintLabelConfirmationComponent,
+    PaPrintLabelConfirmationComponent,,
+    IeSsTransactionsComponent,
+    IeSsImportComponent,
+    IeSsExportComponent,
+    IeSsCheckForDuplicatesComponent,
+    IeTsImportExportJobTypeComponent,
+    IeTsTransactionTypeToExportComponent,
+    IeAlAutoLocationAssignmentComponent,
+    IeAlUnallocatedTransactionsComponent,
+    IeMdExportInvertoryMapComponent,
+    IeMdImportInvertoryMapComponent,
+    IeMdImportInvertoryComponent,
+    IeMdExportInvertoryComponent
   ],
   imports: [
     BrowserModule,

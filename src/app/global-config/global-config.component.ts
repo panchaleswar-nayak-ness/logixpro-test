@@ -100,7 +100,7 @@ export class GlobalConfigComponent {
         } 
         else {
           this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
-          console.log("ngOnInit",res.responseMessage);
+          console.log("getSecurityEnvironment",res.responseMessage);
       }
       });
     }

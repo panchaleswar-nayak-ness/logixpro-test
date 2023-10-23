@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 let today = new Date();
 let year = today.getFullYear();
@@ -38,6 +39,7 @@ export class TransactionHistoryFiltersComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private adminApiService: AdminApiService,
+    private global : GlobalService,
     private Api:ApiFuntions
   ) {
     this.iAdminApiService = adminApiService;
@@ -88,7 +90,14 @@ export class TransactionHistoryFiltersComponent implements OnInit {
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {
-          this.searchAutocompleteList = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );

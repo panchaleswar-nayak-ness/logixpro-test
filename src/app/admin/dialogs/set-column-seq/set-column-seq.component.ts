@@ -41,7 +41,16 @@ export class SetColumnSeqComponent implements OnInit {
     "viewName": "Inventory Map"
   }
     this.iAdminApiService.GetColumnSequenceDetail(payload).subscribe((res) => {
-          this.formatColumn(res.data.columnSequence);
+      if(res.isExecuted)
+      {
+        this.formatColumn(res.data.columnSequence);
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetColumnSequenceDetail",res.responseMessage);
+      }
+          
+      
     });
   }
 

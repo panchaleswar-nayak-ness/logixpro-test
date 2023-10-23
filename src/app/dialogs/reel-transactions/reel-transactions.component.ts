@@ -350,6 +350,7 @@ CreateReels(){
                         }
                         else{
                           this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                          console.log("ReelsCreate",res.responseMessage);
                         }
                       }));
                     }
@@ -357,7 +358,7 @@ CreateReels(){
                   }
                   else {
                     this.global.ShowToastr('error','Something went wrong', 'Error!');
-                    console.log("ValidateSn",res.responseMessage);
+                    
                   }
                 });
 

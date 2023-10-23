@@ -16,7 +16,7 @@
     <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
       <span class="material-symbols-outlined icon-search">Search</span>
       <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='searchString' [disabled]="!searchCol" [matAutocomplete]="auto" (ngModelChange)="autoComplete($event)">
-      <button matSuffix *ngIf="searchString" class="clear-btn" (click)="searchString = '';this.searchByInput.next('')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+      <button matSuffix *ngIf="searchString" class="clear-btn" (click)="searchString = ''; this.searchByInput.next(''); clearInputField('')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
       </mat-autocomplete>

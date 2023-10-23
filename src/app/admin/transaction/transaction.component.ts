@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-transaction',
@@ -36,6 +37,7 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     private adminApiService: AdminApiService,
     private sharedService: SharedService,
     public authService: AuthService,
+    private global : GlobalService,
     private Api: ApiFuntions,
   ) { 
     this.iAdminApiService = adminApiService;
@@ -138,8 +140,15 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   }
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
+      if(res.isExecuted && res.data)
+      {
+        this.fieldNames = res.data;
       this.sharedService.updateFieldNames(this.fieldNames)
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
     })
   }
   switchToOrder(event) {

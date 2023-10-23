@@ -154,6 +154,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
             this.dialogRef.close({ isExecuted: true,id:res.data,orderNumber:this.orderNumber,itemNumber:this.itemNumber  });
+            console.log("NewTransactionSave",res.responseMessage);
           }
         },
         (error) => {}
@@ -224,7 +225,15 @@ this.orderRequired=true
       .ManualTransactionTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
-          this.searchAutocompleteOrderNum = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteOrderNum = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ManualTransactionTypeAhead",res.responseMessage);
+          }
+          
         },
         (error) => {}
       );

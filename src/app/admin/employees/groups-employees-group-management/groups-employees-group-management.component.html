@@ -1,0 +1,44 @@
+<div class="d-xl-flex justify-content-between align-items-center">
+    <h2 class="card-header-title mb-0 mb-sm-3 mb-md-3 mb-lg-0 d-flex align-items-center">
+      <div class="mat-icon-wrap me-lg-3" *ngIf="isGroupLookUp" (click)="backGroupAction()">
+        <span class="material-symbols-outlined" style="cursor:pointer;" matTooltip="Back to group list"
+          matTooltipPosition="above">
+          arrow_back
+        </span>
+      </div>
+      <div class="mat-icon-wrap me-1 me-lg-3">
+        <span class="material-symbols-outlined">
+          diversity_2
+        </span>
+      </div>
+      <span>Employee Group Management</span>
+    </h2>
+    <mat-form-field class="action-dropdown d-block" appearance="outline">
+      <mat-label>Actions</mat-label>
+      <mat-select class="employees-action"
+        (selectionChange)="actionGroupDialog($event.value, grpData, $event)">
+        <mat-option [hidden]="isGroupLookUp" (click)="openGroupDialog()">Add new group</mat-option>
+        <mat-option [hidden]="!isGroupLookUp" value="delete">Delete</mat-option>
+        <mat-option [hidden]="!isGroupLookUp" value="clone" *ngIf="env !== 'DB'">Clone</mat-option>
+        <mat-option value="print selected" [disabled]="!this.grpData.groupName" (click)="printSelected()">Print Selected Group</mat-option>
+        <mat-option value="print all" (click)="printAll()">Print All Groups</mat-option>
+      </mat-select>
+      <span class="material-symbols-outlined icon-expand-more">
+        expand_more
+      </span>
+    </mat-form-field>
+  </div>
+  <div class="groups-details details-wrap g-details-wrap" *ngIf="!isGroupLookUp">
+
+    <!-- groups lookup here -->
+    <app-groups-lookup [updateGrpTable]="updateGrpTable" [childGroupLookUp]="isGroupLookUp"
+      (updateGrpLookUp)="updateGrpLookUp($event)" [tab]="selectedIndex">
+    </app-groups-lookup>
+
+  </div>
+  <div class="group-details details-wrap g-details-wrap" *ngIf="isGroupLookUp">
+    <div class="g-detail">
+      <label class="g-field-label">Group Name 33</label>
+      <div class="g-field-content">{{grpData.groupName }}</div>
+    </div>
+  </div>

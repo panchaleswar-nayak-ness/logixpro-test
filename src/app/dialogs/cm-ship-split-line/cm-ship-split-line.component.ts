@@ -64,7 +64,7 @@ export class CmShipSplitLineComponent implements OnInit {
 
       this.IconsolidationAPI.SplitLineTrans(payLoad).subscribe(
         (res: any) => {
-          if (res.isExecuted) {            
+          if (res.isExecuted && res.data) {            
             let orderQty = parseInt(this.data.order.transactionQuantity) - parseInt(this.splitScreenQty);
             let pickQty = parseInt(this.data.order.completedQuantity) - parseInt(this.splitScreenQty);
             let shipQty = parseInt(this.data.order.shipQuantity) - parseInt(this.splitScreenQty);

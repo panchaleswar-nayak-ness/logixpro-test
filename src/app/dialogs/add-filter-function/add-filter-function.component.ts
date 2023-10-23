@@ -51,7 +51,7 @@ export class AddFilterFunction implements OnInit {
      
       }
       this.iinductionManagerApi.PickBatchFilterRename(paylaod).subscribe(res => {
-        if(res.isExecuted){
+        if( res && res.isExecuted){
           this.dialogRef.close({"oldFilter": this.data.savedFilter,"newFilter":this.filter_name,})
         }
         else {

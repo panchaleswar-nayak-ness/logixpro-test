@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -12,7 +13,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 export class CompanyInfoComponentComponent  implements OnInit{
   public iAdminApiService: IAdminApiService;
   userData: any;
-  constructor(    public authService: AuthService,private adminApiService: AdminApiService,private Api:ApiFuntions) {
+  constructor(    public authService: AuthService, private global : GlobalService,private adminApiService: AdminApiService,private Api:ApiFuntions) {
     this.iAdminApiService = adminApiService;
     this.userData = authService.userData();
    }
@@ -22,7 +23,15 @@ export class CompanyInfoComponentComponent  implements OnInit{
   CompanyObj: any = {};
   public CompanyInfo() {
     this.iAdminApiService.AdminCompanyInfo().subscribe((res: any) => {
+      if(res.isExecuted && res.data)
+      {
       this.CompanyObj = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("AdminCompanyInfo",res.responseMessage);
+
+      }
     })
   }
 

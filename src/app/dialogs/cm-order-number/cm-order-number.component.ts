@@ -66,7 +66,7 @@ export class CmOrderNumberComponent implements OnInit {
       };
 
       this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
-        if (res)
+        if (res && res.isExecuted)
         {
           if (typeof res?.data == 'string') {
             switch (res?.data) {
@@ -92,7 +92,7 @@ export class CmOrderNumberComponent implements OnInit {
         }
         else {
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("LocationAssignmentOrderInsert",res.responseMessage);
+          console.log("ConsolidationData",res.responseMessage);
 
         }
         
@@ -129,22 +129,30 @@ export class CmOrderNumberComponent implements OnInit {
     }
 
     this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
-      if (res.responseMessage == "Fail") {
-        this.global.ShowToastr('error',"Error Has Occured", "Consolidation");
-        console.log("StagingLocationsUpdate",res.responseMessage);
-      } else {
-        if (typeof this.tableData != 'undefined') {
-          for (let x = 0; x < this.tableData.length; x++) {
-            let tote = this.tableData[x].toteID;
-            if (tote == values.toteID) {
-              this.tableData[x].stagingLocation = clear ? '' :  values.stagingLocation;
-              this.tableData[x].stagedBy = clear ? '' : this.userData.userName;
-              this.tableData[x].stagedDate = clear ? '' :  res.data;
-              break;
+      if(res)
+      {
+        if (res && res.responseMessage == "Fail") {
+          this.global.ShowToastr('error',"Error Has Occured", "Consolidation");
+          console.log("StagingLocationsUpdate",res.responseMessage);
+        } else {
+          if (typeof this.tableData != 'undefined') {
+            for (let x = 0; x < this.tableData.length; x++) {
+              let tote = this.tableData[x].toteID;
+              if (tote == values.toteID) {
+                this.tableData[x].stagingLocation = clear ? '' :  values.stagingLocation;
+                this.tableData[x].stagedBy = clear ? '' : this.userData.userName;
+                this.tableData[x].stagedDate = clear ? '' :  res.data;
+                break;
+              }
             }
           }
         }
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("StagingLocationsUpdate",res.responseMessage);
+      }
+     
     });    
   }
 

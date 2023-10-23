@@ -164,17 +164,7 @@ export class SpLocationZonesComponent implements OnInit {
          
         
         this.iAdminApiService.LocationZoneSave(payload).subscribe((res=>{
-          if(res.isExecuted){
-            
-          }
-
-          else
-          {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("LocationZoneSave", res.responseMessage);
-
-      
-          }
+         
         }))
   }
   else{
@@ -189,22 +179,23 @@ export class SpLocationZonesComponent implements OnInit {
 
     
     this.iAdminApiService.LocationZone().subscribe((res => {
-      this.locationzone = [];
-      res.data.forEach((zone: any, i) => {
-        zone.ID = i + 1;
-        if(zone.carousel && zone.zone!=''){
-          this.parentZones.push(zone.zone);
-        }
-        else{
-          
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("LocationZone", res.responseMessage);
-        }
-        this.locationzone.push(zone);
-        
-        
-      });
-      this.duplicatelocationzone = JSON.parse(JSON.stringify(this.locationzone));
+      if(res.isExecuted && res.data)
+      {
+        this.locationzone = [];
+        res.data.forEach((zone: any, i) => {
+          zone.ID = i + 1;
+          if(zone.carousel && zone.zone!=''){
+            this.parentZones.push(zone.zone);
+          }
+          this.locationzone.push(zone);
+        });
+        this.duplicatelocationzone = JSON.parse(JSON.stringify(this.locationzone));
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("LocationZone",res.responseMessage);
+      }
+    
 
     }));
   }
@@ -315,7 +306,7 @@ export class SpLocationZonesComponent implements OnInit {
       else {
         
         this.global.ShowToastr('error','Cannot insert duplicate Zone', 'Error!');
-        console.log("LocationZone", res.responseMessage);
+        console.log("LocationZoneNewSave", res.responseMessage);
       }
     }))
   }

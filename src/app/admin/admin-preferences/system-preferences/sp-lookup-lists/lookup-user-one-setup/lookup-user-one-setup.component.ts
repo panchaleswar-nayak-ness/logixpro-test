@@ -62,7 +62,7 @@ export class LookupUserOneSetupComponent implements OnInit {
       {
         
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("LocationZone", res.responseMessage);
+        console.log("userfieldlookup", res.responseMessage);
       }
     })
   }

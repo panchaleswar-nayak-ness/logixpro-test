@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -15,7 +16,7 @@ export class SystemLogicPreferencesComponent implements OnInit{
   FieldNames: any;
   orderosrts: any;
   constructor(    
-    public authService: AuthService,private adminApiService: AdminApiService,private Api:ApiFuntions) {
+    public authService: AuthService, private global : GlobalService,private adminApiService: AdminApiService,private Api:ApiFuntions) {
     this.iAdminApiService = adminApiService;
     this.userData = authService.userData();
    }
@@ -24,7 +25,17 @@ export class SystemLogicPreferencesComponent implements OnInit{
   }
   public CompanyInfo() {
     this.iAdminApiService.AdminCompanyInfo().subscribe((res: any) => {
-      this.CompanyObj = res.data;
+      
+      if(res.isExecuted && res.data)
+      {
+        this.CompanyObj = res.data;
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("AdminCompanyInfo",res.responseMessage);
+
+      }
     })
   }
  

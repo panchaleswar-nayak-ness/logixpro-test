@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -15,7 +16,7 @@ export class SpFieldNameMappingComponent implements OnInit {
   Object=Object;
   public columns :any={};
   public iAdminApiService: IAdminApiService;
-  constructor(    public authService: AuthService,private adminApiService: AdminApiService,private Api:ApiFuntions) {
+  constructor(    public authService: AuthService, private global : GlobalService ,private adminApiService: AdminApiService,private Api:ApiFuntions) {
     this.iAdminApiService = adminApiService;
     this.userData = authService.userData();
    }
@@ -31,7 +32,15 @@ export class SpFieldNameMappingComponent implements OnInit {
    
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      this.columns = res.data;
+      if(res.isExecuted && res.data)
+      {
+        this.columns = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
+      
     })
   }
   public FieldNameSave() { 
@@ -44,7 +53,15 @@ export class SpFieldNameMappingComponent implements OnInit {
       ]
     };
     this.iAdminApiService.FieldNameSave(payload).subscribe((res: any) => {
-      this.OSFieldFilterNames();
+      if(res)
+      {
+        this.OSFieldFilterNames();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("FieldNameSave",res.responseMessage);
+      }
+      
     })
   }
   

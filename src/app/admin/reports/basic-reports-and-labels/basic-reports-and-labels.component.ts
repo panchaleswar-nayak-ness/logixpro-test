@@ -119,8 +119,15 @@ export class BasicReportsAndLabelsComponent implements OnInit {
       'app':this.currentApp
     }
     this.iAdminApiService.Getcustomreports(payload).subscribe((res:any)=>{
-      this.reports = res?.data?.reports;
+      if(res.isExecuted && res.data)
+      {
+        this.reports = res?.data?.reports;
       this.reports.unshift('');
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("Getcustomreports",res.responseMessage);
+      }
     })
   }
   basicreportdetails(Report){
@@ -128,9 +135,16 @@ export class BasicReportsAndLabelsComponent implements OnInit {
     report:Report, 
     }
     this.iAdminApiService.basicreportdetails(payload).subscribe((res:any)=>{
-      this.reportData = res?.data?.reportData; 
+      if(res.isExecuted && res.data)
+      {
+        this.reportData = res?.data?.reportData; 
       this.fields = res?.data?.fields; 
       this.fields.unshift('');
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("basicreportdetails",res.responseMessage);
+      }
     })
   }
   async changefilter(column,index){
@@ -140,9 +154,15 @@ export class BasicReportsAndLabelsComponent implements OnInit {
       column:column
     };
     this.iAdminApiService.changefilter(payload).subscribe((res:any)=>{
-      console.log(res)  
+      if(res.isExecuted && res.data)
+      {
         this.ListFilterValue[index] = res.data;
         this.oldFilterValue[index] = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("changefilter",res.responseMessage);
+      }
     })  
     
   }

@@ -73,7 +73,7 @@ export class CpbBlossomToteComponent implements OnInit {
           this.newToteID = "";
           this.submitBlossomEnable = false;
           this.global.ShowToastr('error',"This tote is currently assigned to another open order", 'Invalid Tote');
-          console.log("",res.responseMessage);
+          console.log("ValidateTote",res.responseMessage);
         }
       });
     }

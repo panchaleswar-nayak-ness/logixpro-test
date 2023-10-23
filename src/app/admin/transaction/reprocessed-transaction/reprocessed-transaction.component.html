@@ -2,20 +2,16 @@
     <mat-card-content>
         <div class="row">
             <div class="col mb-3">
-                
                 <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3" heading="Reprocessed Transactions" icon="tab_unselected"></app-icon-heading-component>
             </div>
             <div class="col-xl-2 offset-xl-5 d-flex justify-content-end mb-3">
                 <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
                 <mat-form-field class="action-dropdown" appearance="outline" style="flex:1 auto">
                     <mat-label>Action</mat-label>
-                    <mat-select  #matRef  class="employees-action" (openedChange)="actionDialog($event)"
-                        [(value)]="selectedVariable" placeholder="Actions">
+                    <mat-select  #matRef  class="employees-action" (openedChange)="actionDialog($event)" [(value)]="selectedVariable" placeholder="Actions">
                         <mat-option value="set_column_sq">Set Column Sequence</mat-option>
                     </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                        expand_more
-                    </span>
+                    <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>
                 </div>
             </div>
@@ -23,44 +19,55 @@
         <div class="row">
             <div class="col-xl-5">
                 <div class="d-block d-xl-flex gap-12 align-items-center">
-                    <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline" style="flex:1">
+                    <!-- <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline" style="flex:1">
                         <mat-label>Search</mat-label>
-                        <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn"
-                        (selectionChange)="resetFields($event.value)">
+                        <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn" (selectionChange)="resetFields($event.value)">
                             <mat-option value="" (click)="this.orderSelectionSearch = true"></mat-option>
-                            <mat-option *ngFor="let item of displayedColumns | sort:'colDef':false" [value]="item">
-                                {{item.colDef}}
-                            </mat-option>
+                            <mat-option *ngFor="let item of displayedColumns | sort:'colDef':false" [value]="item">{{item.colDef}}</mat-option>
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
-                            expand_more
-                        </span>
+                        <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                     </mat-form-field>
 
                     <span class="v-br d-none d-xl-flex mb-3">-</span>
+                    
                     <div class="d-flex g-mini-search-box w-100 mb-3">
-
-                       
-
-                        <mat-form-field class="w-100 bg-white br-8" appearance="fill"
-                            [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-                            <span class="material-symbols-outlined icon-search">
-                                Search
-                            </span>
-                            <input type="text" placeholder="Search" aria-label="Number" matInput
-                                [(ngModel)]='this.columnSearch.searchValue' [matAutocomplete]="auto"
-                                (ngModelChange)="this.searchBar.next($event)"  [disabled]="orderSelectionSearch">
-                                <button matSuffix *ngIf="this.columnSearch.searchValue" class="clear-btn"  (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                            <mat-autocomplete #auto="matAutocomplete"
-                                (optionSelected)="searchData($event.option.value)">
-                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                                    {{option}}
-                                </mat-option>
+                        <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
+                            <span class="material-symbols-outlined icon-search">Search</span>
+                            <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='this.columnSearch.searchValue' [matAutocomplete]="auto" (ngModelChange)="this.searchBar.next($event)" [disabled]="orderSelectionSearch">
+                            <button matSuffix *ngIf="this.columnSearch.searchValue" class="clear-btn"  (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData($event.option.value)">
+                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
+                    </div> -->
 
+                    <!--
+                        This component provides a filter interface for table columns. 
+                        It allows users to select a column, search within the selected column, 
+                        and clear the filter settings.
 
-                    </div>
+                        Properties:
+                        - [tableColumns]: Array of table header definitions.
+                        - [searchCol]: Currently selected column for filtering.
+                        - (selectionChangeEvent): Event emitted when a column is selected.
+                        - [searchString]: String to filter records within the selected column.
+                        - [searchByInput]: Subject to handle search input changes.
+                        - [searchAutocompleteList]: List of options for autocomplete functionality.
+                        - (autoCompleteEvent): Event emitted when search string changes.
+                        - [showClearBtn]: Boolean to toggle visibility of the clear button.
+                        - (clearBtnEvent): Event emitted when the clear button is clicked.
+                    -->
+
+                    <app-column-filter-component 
+                        [tableColumns]="this.displayedColumns" 
+                        [searchCol]="this.columnSearch.searchColumn.colDef"
+                        (selectionChangeEvent)="this.columnSearch.searchColumn.colDef = $event; resetFields($event)"
+                        (clearInputFieldEvent)="this.columnSearch.searchColumn.colDef = '';  this.columnSearch.searchValue = '';this.searchBar.next($event)"
+                        [searchString]="this.columnSearch.searchValue"
+                        [searchByInput]="this.searchBar"
+                        [searchAutocompleteList]="this.searchAutocompleteList"
+                        (autoCompleteEvent)="this.columnSearch.searchValue = $event; this.searchBar.next($event)">
+                    </app-column-filter-component>
                 </div>
             </div>
 
@@ -68,50 +75,33 @@
 
         <div class="card br-14 table-responsive mb-3">
             <ng-scrollbar style="height:500px" track="all" class="mat-table-scrollbar">
-                <table mat-table class="custom-table  table-fix" #table [dataSource]="dataSource" matSort
-                    (matSortChange)="sortChange($event)">
+                <table mat-table class="custom-table  table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)">
 
-                    <ng-container style="display: table-row;"  [matColumnDef]="col.colDef"
-                        *ngFor="let col of displayedColumns; let indexOfelement=index;">
-
-                        <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header
-                            (sortActionDescription)="indexOfelement"
-                            style="width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);">
+                    <ng-container style="display: table-row;" [matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
+                        <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement" style="width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);">
                             {{ col.colDef }}
-
                         </th>
 
                         <td *matCellDef="let element"  mat-cell  style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;" #tooltip="matTooltip"
-                         [matTooltip]="element[col.colHeader]"   matTooltipPosition="above" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true"> {{
-                            element[col.colHeader] }}</td>
-
+                         [matTooltip]="element[col.colHeader]" matTooltipPosition="above" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true"> {{element[col.colHeader] }}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="actions" stickyEnd>
-
-                        <th mat-header-cell *matHeaderCellDef style="border: 0; width: 200px; min-width: 64px;">
-                        </th>
-
-
+                        <th mat-header-cell *matHeaderCellDef style="border: 0; width: 200px; min-width: 64px;"></th>
                     </ng-container>
-                    <tr class="mat-row d-flex w-100 justify-content-center position-absolute" *matNoDataRow  [attr.colspan]="displayedColumns && displayedColumns.length">
-                        <div class="p-3">
-                              No data matching the filter.
-                          </div>
-                      </tr>
+
+                    <tr class="mat-row d-flex w-100 justify-content-center position-absolute" *matNoDataRow [attr.colspan]="displayedColumns && displayedColumns.length">
+                        <div class="p-3">No data matching the filter.</div>
+                    </tr>
 
                     <mat-header-row *matHeaderRowDef="columnValues;sticky: true" style="border:0"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: columnValues;"></mat-row>
-
                 </table>
             </ng-scrollbar>
         </div>
 
         <div class="table-pagination d-flex justify-content-start" *ngIf="columnValues.length>0 && displayedColumns && dataSource">
-            <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"
-                (page)="handlePageEvent($event)"></mat-paginator>
-
-
+            <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" (page)="handlePageEvent($event)"></mat-paginator>
         </div>
     </mat-card-content>
 </mat-card>

@@ -45,7 +45,7 @@ export class GlobalDashboardComponent implements OnInit {
         }
         else{
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("sideBarToggler",res.responseMessage);
+          console.log("AppLicense",res.responseMessage);
         }
       },
       error: (error) => {}}

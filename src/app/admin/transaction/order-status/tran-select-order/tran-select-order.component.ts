@@ -344,14 +344,28 @@ export class TranSelectOrderComponent implements OnInit {
    if( this.columnSelect == 'Order Number'){
     this.iAdminApiService.OrderNumberNext(searchPayload).subscribe(
       {next: (res: any) => {
-        this.searchAutocompleteList = res.data;
+        if(res.isExecuted && res.data)
+        {
+          this.searchAutocompleteList = res.data;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("OrderNumberNext",res.responseMessage);
+        }
       },
       error: (error) => {}}
     );
    }else{
     this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe(
       {next: (res: any) => {
-        this.searchAutocompleteList = res.data;
+        if(res.isExecuted && res.data)
+        {
+          this.searchAutocompleteList = res.data;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("NextSuggestedTransactions",res.responseMessage);
+        }
       },
       error: (error) => {}}
     );

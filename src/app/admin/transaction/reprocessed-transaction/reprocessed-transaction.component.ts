@@ -144,7 +144,14 @@ export class ReprocessedTransactionComponent implements OnInit {
       .TransactionModelIndex(paylaod)
       .subscribe(
         {next: (res: any) => {
-          this.columnValues = res.data?.reprocessedColumns;
+          if(res.isExecuted && res.data)
+          {
+            this.columnValues = res.data?.reprocessedColumns;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("TransactionModelIndex",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );
@@ -163,10 +170,17 @@ export class ReprocessedTransactionComponent implements OnInit {
       .ReprocessedTransactionTable(this.payload)
       .subscribe(
         {next: (res: any) => {
-          this.detailDataTransHistory = res.data?.transactions;
+          if(res.isExecuted && res.data)
+          {
+            this.detailDataTransHistory = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
           this.customPagination.total = res.data?.recordsFiltered;
           this.dataSource.sort = this.sort;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ReprocessedTransactionTable",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );
@@ -194,8 +208,15 @@ export class ReprocessedTransactionComponent implements OnInit {
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
        { next: (res: any) => {
-          this.searchAutocompleteList = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
           this.getContentData();
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );

@@ -52,15 +52,25 @@ export class ChangePasswordComponent implements OnInit {
         "newpassword": form.value.new_password
       }
       this.iUserApi.changePassword(payload).subscribe((res) => {
-        const { isExecuted, responseMessage } = res;
-        if (isExecuted) {
+        if(res && res.isExecuted)
+        {
+          const { isExecuted, responseMessage } = res;
+          if (isExecuted) {
           this.global.ShowToastr('success',labels.alert.update, 'Success!');
           this.dialogRef.close();
         }
         else {
           this.global.ShowToastr('error',responseMessage?.toString(), 'Error!');
-          console.log("changePassword",res.responseMessage);
+          
         }
+
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("changePassword",res.responseMessage);
+
+        }
+        
       })
     }
 

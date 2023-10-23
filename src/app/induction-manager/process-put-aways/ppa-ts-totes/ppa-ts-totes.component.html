@@ -1,0 +1,115 @@
+<mat-card class="mat-elevation-z g-card mt-3 mb-4">
+    <mat-card-content>
+        <div class="d-block d-lg-flex justify-content-between align-items-center">
+            <app-icon-heading-component class="card-header-title mb-3 d-flex align-items-center" heading="Totes"
+                icon="inbox"></app-icon-heading-component>
+            <div>
+                <mat-form-field class="action-dropdown mb-3 w-100" appearance="outline">
+                    <mat-label>Actions</mat-label>
+                    <mat-select class="employees-action" [(ngModel)]="actionDropDown" #actionRef1
+                        (selectionChange)="callFun('gridAction',$event.value)">
+                        <mat-option value="assignAll">Assign all IDs</mat-option>
+                        <mat-option (click)="callFun('printToteLoc')" value="delete">Print Tote/Location Labels</mat-option>
+                    </mat-select>
+                    <span class="material-symbols-outlined icon-expand-more">
+                        expand_more
+                    </span>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="d-flex gap-12 mb-3">
+                    <mat-form-field class="custom-form-field w-100" appearance="outline">
+                        <mat-label>Enter Tote ID</mat-label>
+                        <input (keyup.enter)="callFun('updateToteID',$event)" matInput type="text" [(ngModel)]="toteID">
+                        <button matSuffix *ngIf="toteID" class="clear-btn" (click)="toteID=''"><mat-icon
+                                class="text-20 text-chrome-600">cancel</mat-icon></button>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="card br-14 table-responsive borderless px-0">
+            <ng-scrollbar style="height: 620px;" track="all" class="mat-table-scrollbar">
+                <table mat-table [dataSource]="dataSource" class="custom-table table-fix">
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="positions">
+                        <th mat-header-cell *matHeaderCellDef> Position</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="pe-2">
+                                <mat-form-field class="custom-form-field w-100" appearance="outline">
+
+                                    <input matInput type="text" #specialFeature maxlength="255"
+                                        [value]="element.position" disabled>
+                                </mat-form-field>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cells">
+                        <th mat-header-cell *matHeaderCellDef style="width:35%"> Cells </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="pe-2">
+                                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                    <input matInput type="text" [disabled]="element.locked ? true : false"
+                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                        #specialFeature maxlength="255" [value]="element.cells"
+                                        (keydown)="callFun('onToteChange',$event,element.position,'1')"
+                                        (keyup)="callFun('onToteChange',$event,element.position,'1')"
+                                        (change)="callFun('onToteChange',$event,element.position,'1')"
+                                        (keypress)="callFun('onToteChange',$event,element.position,'1')"
+                                        (keypress)="callFun('onToteChange',$event,element.position,'1')">
+                                </mat-form-field>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="toteid">
+                        <th mat-header-cell *matHeaderCellDef style="width:35%"> Tote ID</th>
+                        <td mat-cell *matCellDef="let element;let i=index">
+                            <div class="pe-2 d-flex gap-12 align-items-center">
+                                <mat-form-field class="custom-form-field w-100" appearance="outline"
+                                    (click)="element.locked ? false : callFun('openTotesDialogue',element.position,i)">
+                                    <span matSuffix>
+                                        <mat-icon
+                                            style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
+                                    </span>
+                                    <input matInput readonly="readonly" type="text" #specialFeature maxlength="255"
+                                        [value]="element.toteid" (keydown)="callFun('onToteChange',$event,element.position)"
+                                        (keyup)="callFun('onToteChange',$event,element.position)"
+                                        (change)="callFun('onToteChange',$event,element.position)"
+                                        (keypress)="callFun('onToteChange',$event,element.position)"
+                                        (keypress)="callFun('onToteChange',$event,element.position)">
+                                </mat-form-field>
+                                <button *ngIf="element.locked" matTooltip="Allocated in Open Transaction" mat-mini-fab
+                                    color="Default" class="button-default-i icon-button-8br">
+                                    <mat-icon style="color:#f0ad4e;">flag</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="save" stickyEnd>
+                        <th mat-header-cell *matHeaderCellDef class="ps-2"></th>
+                        <td mat-cell *matCellDef="let element ; let i = index" class="ps-2">
+                            <div class="d-flex justify-content-end">
+                                <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
+                                    class="circle-icon-o" appearance="outline">
+                                    <mat-icon>more_horiz</mat-icon>
+                                </button>
+
+                                <mat-menu #appMenu="matMenu">
+                                    <button mat-menu-item (click)="callFun('print',element.toteid)">Print</button>
+                                    <button [disabled]="element.locked ? true : false" mat-menu-item
+                                        (click)="callFun('assignToteAtPosition',element,1,i)">Clear</button>
+                                    <button [disabled]="element.locked ? true : false" mat-menu-item
+                                        (click)="callFun('assignToteAtPosition',element,0,i)">Assign Next ID</button>
+                                </mat-menu>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+                    </tr>
+                </table>
+            </ng-scrollbar>
+        </div>
+    </mat-card-content>
+</mat-card>

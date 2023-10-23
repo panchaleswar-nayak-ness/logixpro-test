@@ -122,7 +122,14 @@ export class OpenTransactionDataTableComponent
       .HoldTransactionsData(this.payload)
       .subscribe(
         (res: any) => {
-          this.datasource = res.data.holdTransactions;
+          if(res.isExecuted && res.data)
+          {
+            this.datasource = res.data.holdTransactions;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("HoldTransactionsData",res.responseMessage);
+          }
         },
         (error) => {}
       );
