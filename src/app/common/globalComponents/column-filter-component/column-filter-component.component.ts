@@ -19,6 +19,10 @@ export class ColumnFilterComponentComponent implements OnInit {
   @Input() showClearBtn: boolean = false;
 
   @Output() selectionChangeEvent = new EventEmitter<Event>();
+  @Output() colKeyUpEnterEvent = new EventEmitter<Event>();
+  @Output() searchKeyUpEnterEvent = new EventEmitter<Event>();
+  @Output() searchKeyUpEvent = new EventEmitter<Event>();
+  @Output() searchFocusEvent = new EventEmitter<Event>();
   @Output() clearInputFieldEvent = new EventEmitter();
   @Output() autoCompleteEvent = new EventEmitter<string>();
   @Output() clearBtnEvent = new EventEmitter<Event>();
@@ -31,8 +35,28 @@ export class ColumnFilterComponentComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  compareObjects(o1: any, o2: any): boolean {
+    return o1.colDef === o2.colDef && o1.colHeader === o2.colHeader;
+  }
+
   selectionChange(event) {
     this.selectionChangeEvent.emit(event);
+  }
+
+  colKeyUpEnter(event) {
+    this.colKeyUpEnterEvent.emit(event);
+  }
+
+  searchKeyUpEnter(event) {
+    this.searchKeyUpEnterEvent.emit(event);
+  }
+
+  searchKeyUp(event) {
+    this.searchKeyUpEvent.emit(event);
+  }
+
+  searchFocus(event) {
+    this.searchFocusEvent.emit(event);
   }
 
   clearInputField(event) {
