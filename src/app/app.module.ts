@@ -218,7 +218,7 @@ import { IeMdExportInvertoryComponent } from './import-export/ie-manage-data/ie-
     ShippingCompleteDialogComponent,
     CrDesignFilenameConfirmationComponent,
     DPrinterSetupComponent,
-    PaPrintLabelConfirmationComponent,,
+    PaPrintLabelConfirmationComponent,
     IeSsTransactionsComponent,
     IeSsImportComponent,
     IeSsExportComponent,
