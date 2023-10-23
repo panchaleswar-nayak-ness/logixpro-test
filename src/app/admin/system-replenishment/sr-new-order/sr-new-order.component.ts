@@ -47,20 +47,20 @@ export class SrNewOrderComponent implements OnInit {
   tableDataTotalCount: number = 0;
   filterItemNumbersText: string = "";
   searchColumnOptions: any = [
-    { value: 'Alloc Pick', viewValue: 'Alloc Pick', sortValue: '12', key: 'allocPick' },
-    { value: 'Alloc Put', viewValue: 'Alloc Put', sortValue: '13', key: 'allocPut' },
-    { value: 'Available Qty', viewValue: 'Available Qty', sortValue: '6', key: 'availableQuantity' },
-    { value: 'Case Qty', viewValue: 'Case Qty', sortValue: '8', key: 'caseQuantity' },
-    { value: 'Description', viewValue: 'Description', sortValue: '1', key: 'description' },
-    { value: 'Item Number', viewValue: 'Item Number', sortValue: '0', key: 'itemNumber' },
-    { value: 'Replenish', viewValue: 'Replenish', sortValue: '10', key: 'replenish' },
-    { value: 'Replenish Exists', viewValue: 'Replenish Exists', sortValue: '11', key: 'replenishExists' },
-    { value: 'Replenishment Level', viewValue: 'Replenishment Level', sortValue: '5', key: 'replenishmentLevel' },
-    { value: 'Replenishment Point', viewValue: 'Replenishment Point', sortValue: '4', key: 'replenishmentPoint' },
-    { value: 'Replenishment Qty', viewValue: 'Replenishment Qty', sortValue: '7', key: 'replenishmentQuantity' },
-    { value: 'Stock Qty', viewValue: 'Stock Qty', sortValue: '3', key: 'stockQuantity' },
-    { value: 'Transaction Qty', viewValue: 'Transaction Qty', sortValue: '9', key: 'transactionQuantity' },
-    { value: 'Warehouse', viewValue: 'Warehouse', sortValue: '2', key: 'warehouse' },
+    { value: 'Alloc Pick', viewValue: 'Alloc Pick', sortValue: '12', key: 'allocPick', colDef: 'Alloc Pick' },
+    { value: 'Alloc Put', viewValue: 'Alloc Put', sortValue: '13', key: 'allocPut', colDef: 'Alloc Put' },
+    { value: 'Available Qty', viewValue: 'Available Qty', sortValue: '6', key: 'availableQuantity', colDef: 'Available Qty' },
+    { value: 'Case Qty', viewValue: 'Case Qty', sortValue: '8', key: 'caseQuantity', colDef: 'Case Qty' },
+    { value: 'Description', viewValue: 'Description', sortValue: '1', key: 'description', colDef: 'Description' },
+    { value: 'Item Number', viewValue: 'Item Number', sortValue: '0', key: 'itemNumber', colDef: 'Item Number' },
+    { value: 'Replenish', viewValue: 'Replenish', sortValue: '10', key: 'replenish', colDef: 'Replenish' },
+    { value: 'Replenish Exists', viewValue: 'Replenish Exists', sortValue: '11', key: 'replenishExists', colDef: 'Replenish Exists' },
+    { value: 'Replenishment Level', viewValue: 'Replenishment Level', sortValue: '5', key: 'replenishmentLevel', colDef: 'Replenishment Level' },
+    { value: 'Replenishment Point', viewValue: 'Replenishment Point', sortValue: '4', key: 'replenishmentPoint', colDef: 'Replenishment Point' },
+    { value: 'Replenishment Qty', viewValue: 'Replenishment Qty', sortValue: '7', key: 'replenishmentQuantity', colDef: 'Replenishment Qty' },
+    { value: 'Stock Qty', viewValue: 'Stock Qty', sortValue: '3', key: 'stockQuantity', colDef: 'Stock Qty' },
+    { value: 'Transaction Qty', viewValue: 'Transaction Qty', sortValue: '9', key: 'transactionQuantity', colDef: 'Transaction Qty' },
+    { value: 'Warehouse', viewValue: 'Warehouse', sortValue: '2', key: 'warehouse', colDef: 'Warehouse' },
   ];
   searchAutocompleteList: any;
   newOrderListCreated:boolean = false;

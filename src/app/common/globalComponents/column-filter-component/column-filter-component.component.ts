@@ -25,6 +25,7 @@ export class ColumnFilterComponentComponent implements OnInit {
   @Output() searchFocusEvent = new EventEmitter<Event>();
   @Output() clearInputFieldEvent = new EventEmitter();
   @Output() autoCompleteEvent = new EventEmitter<string>();
+  @Output() optionSelectedEvent = new EventEmitter<string>();
   @Output() clearBtnEvent = new EventEmitter<Event>();
 
   hideRequiredControl = new FormControl(false);
@@ -73,6 +74,10 @@ export class ColumnFilterComponentComponent implements OnInit {
 
   autoComplete(event) {
     this.autoCompleteEvent.emit(event);
+  }
+  
+  optionSelected(event) {
+    this.optionSelectedEvent.emit(this.searchString);
   }
 
 }
