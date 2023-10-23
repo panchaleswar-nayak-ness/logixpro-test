@@ -21,7 +21,7 @@ export class ColumnFilterComponentComponent implements OnInit {
   @Output() selectionChangeEvent = new EventEmitter<Event>();
   @Output() colKeyUpEnterEvent = new EventEmitter<Event>();
   @Output() searchKeyUpEnterEvent = new EventEmitter<Event>();
-  @Output() searchKeyUpEvent = new EventEmitter<Event>();
+  @Output() searchKeyUpEvent = new EventEmitter();
   @Output() searchFocusEvent = new EventEmitter<Event>();
   @Output() clearInputFieldEvent = new EventEmitter();
   @Output() autoCompleteEvent = new EventEmitter<string>();
@@ -53,7 +53,7 @@ export class ColumnFilterComponentComponent implements OnInit {
   }
 
   searchKeyUp(event) {
-    this.searchKeyUpEvent.emit(event);
+    this.searchKeyUpEvent.emit(this.searchString);
   }
 
   searchFocus(event) {

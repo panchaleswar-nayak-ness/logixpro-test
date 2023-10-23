@@ -164,7 +164,7 @@
     <mat-card-content>
         <div class="row">
             <div class="col-xl-5">
-                <div class="d-xl-flex d-block gap-12 align-items-center mb-3">
+                <!-- <div class="d-xl-flex d-block gap-12 align-items-center mb-3">
                     
                     
                     <mat-form-field class="action-dropdown d-xl-flex d-block mb-3 mb-xl-0" appearance="outline">
@@ -186,7 +186,30 @@
                             <button matSuffix *ngIf="searchTxt" class="clear-btn" (click)=" searchTxt='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
                         </mat-form-field>
                     </div>
-                </div>
+                </div> -->
+                <!-- <app-column-filter-component 
+                [tableColumns]="this.displayedColumns" 
+                [searchCol]="this.columnSearch.searchColumn.colDef"
+                (selectionChangeEvent)="this.columnSearch.searchColumn.colDef = $event; searchColumn()"
+                (colKeyUpEnterEvent)="searchColumn()"
+                (searchKeyUpEvent)="autocompleteSearchColumn()"
+                (searchKeyUpEnterEvent)="searchData()"
+                (clearInputFieldEvent)="this.columnSearch.searchColumn.colDef = '';  this.columnSearch.searchValue = ''; reset()"
+                [searchString]="this.columnSearch.searchValue"
+                [searchAutocompleteList]="this.searchAutocompleteList"
+                (optionSelectedEvent)="this.columnSearch.searchValue = $event; searchData()">
+                </app-column-filter-component> -->
+
+                <app-column-filter-component
+                [tableColumns]="this.allColumns" 
+                [searchCol]="this.allColumns.colDef"
+                (selectionChangeEvent)="this.searchCol = ($event).toString(); fillTable()"
+                (colKeyUpEnterEvent)="fillTable()"
+                (searchKeyUpEvent)="this.searchTxt = $event; fillTable(true)"
+                (clearInputFieldEvent)="searchTxt=''"
+                [searchString]="this.allColumns.searchValue"
+               >
+                ></app-column-filter-component>
             </div>
             <div class="col-xl-5 offset-xl-2">
                 <div class="d-xl-flex d-block justify-content-end mb-3">
