@@ -1108,7 +1108,7 @@ public PostReprocessTransaction(body: any ){
       wsid: this.userData.wsid,
       ...body
     }
-  return this.Api.PostReprocessTransaction(payload);
+  return this.Api.PostReprocessTransaction();
 } 
 public OrderNumberNext(body: any ){
       const payload = {
