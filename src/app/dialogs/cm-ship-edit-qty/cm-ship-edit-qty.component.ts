@@ -1,9 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { GlobalService } from 'src/app/common/services/global.service'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
@@ -77,8 +76,8 @@ export class CmShipEditQtyComponent implements OnInit {
         if (res.isExecuted) {
 
           let Exists = false;
-          for (let i = 0; i < this.data.reasons.length; i++) {
-            if (this.data.reasons[i] == this.adjustReason) {
+          for (let i of this.data.reasons) {
+            if (i == this.adjustReason) {
               Exists = true;
               break;
             };

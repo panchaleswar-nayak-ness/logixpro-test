@@ -22,15 +22,10 @@ import {
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
-import { HttpContext, HttpHeaders } from '@angular/common/http';
-import { BYPASS_LOG } from 'src/app/init/http-interceptor';
 import { SharedService } from 'src/app/services/shared.service';
 import { FilterToteComponent } from 'src/app/admin/dialogs/filter-tote/filter-tote.component';
-import { MatDialog } from '@angular/material/dialog';
 import { OmChangePriorityComponent } from 'src/app/dialogs/om-change-priority/om-change-priority.component';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ShippingCompleteDialogComponent } from 'src/app/dialogs/shipping-complete-dialog/shipping-complete-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -304,9 +299,8 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                 res?.data?.orderStatus?.length > 0
               ) {
                 res.data.orderStatus.find((el) => {
-                  return el.completedDate === ''
-                    ? (res.data.completedStatus = 'In Progress')
-                    : (res.data.completedStatus = 'Completed');
+                    return res.data.completedStatus=(el.completedDate === ''? 'In Progress'
+                    : 'Completed')
                 });
               }
               this.onOrderTypeOrderChange(
@@ -714,7 +708,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   }
 
   ShippingCompleteDialog() {
-    const dialogRef:any = this.global.OpenDialog(ShippingCompleteDialogComponent,{
+    this.global.OpenDialog(ShippingCompleteDialogComponent,{
       height: 'auto',
       width: '100vw',
       autoFocus: '__non_existing_element__',

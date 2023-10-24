@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ItemNumUpdateConfirmationComponent } from '../item-num-update-confirmation/item-num-update-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 
@@ -10,7 +10,6 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class ItemNumberComponent implements OnInit {
   @ViewChild('itm_nmb') itm_nmb: ElementRef;
-  // updateItemNumber : boolean = true;
   addItem : boolean = true;
   submit: boolean = false;
 
@@ -30,18 +29,14 @@ export class ItemNumberComponent implements OnInit {
       this.data.itemNumber = "";
       this.data.description = "";
     }
-    else 
-    {
-      
-    
-    if (this.data.addItem) {
+    else if (this.data.addItem) {
       this.addItem = true;
       this.data.itemNumber="";
       this.data.description="";
-    } else {
+    } 
+    else {
       this.addItem = false;
     }   
-    }
      
   }
   ngAfterViewInit() {

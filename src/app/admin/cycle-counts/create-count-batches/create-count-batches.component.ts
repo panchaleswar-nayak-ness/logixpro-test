@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-create-count-batches',
   templateUrl: './create-count-batches.component.html',
   styleUrls: [],
 })
-export class CreateCountBatchesComponent implements OnInit {
+export class CreateCountBatchesComponent {
   countQueValue: any = 0;
-  constructor() {}
   selectedIndex: number = 0;
   updateQueue: any;
   updateCreateCount: any;
   event: Event;
-  ngOnInit(): void {}
   getCount(value) {
  
     this.countQueValue = value;
