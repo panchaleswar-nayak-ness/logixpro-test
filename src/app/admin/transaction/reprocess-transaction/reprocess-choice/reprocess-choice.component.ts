@@ -116,7 +116,7 @@ export class ReprocessChoiceComponent  {
   }
 
   markTable(type: string) {
-    var payload = {
+    let payload = {
       "OrderNum": this.ROrder,
       "ItemNum": this.RItem,
       "Hold": this.hold ? 1 : 0,
