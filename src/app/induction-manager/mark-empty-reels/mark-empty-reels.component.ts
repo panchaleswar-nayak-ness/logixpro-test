@@ -1,5 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog'; 
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'; 
 
 import { AuthService } from 'src/app/init/auth.service';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';

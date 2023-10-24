@@ -1,5 +1,4 @@
 import { Component} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IeFtpSettingsComponent } from 'src/app/dialogs/ie-ftp-settings/ie-ftp-settings.component';
 import { IeInventMapExportComponent } from 'src/app/dialogs/ie-invent-map-export/ie-invent-map-export.component';

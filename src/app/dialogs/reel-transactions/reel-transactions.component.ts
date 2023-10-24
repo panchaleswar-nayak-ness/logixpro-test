@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ReelDetailComponent } from '../reel-detail/reel-detail.component';

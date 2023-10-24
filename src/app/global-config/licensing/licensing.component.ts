@@ -4,7 +4,6 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../labels/labels.json';
-import { MatDialog } from '@angular/material/dialog';
 import { LicensingInvalidComponent } from 'src/app/admin/dialogs/licensing-invalid/licensing-invalid.component';
 import { Subject, takeUntil } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';

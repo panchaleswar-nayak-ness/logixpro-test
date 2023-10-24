@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Inject, ElementRef } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject'; 

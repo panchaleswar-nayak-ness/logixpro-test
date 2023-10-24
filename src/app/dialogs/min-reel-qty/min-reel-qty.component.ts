@@ -1,5 +1,5 @@
 import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-min-reel-qty',

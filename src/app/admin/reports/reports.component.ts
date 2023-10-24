@@ -1,5 +1,4 @@
 import { Component} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 
