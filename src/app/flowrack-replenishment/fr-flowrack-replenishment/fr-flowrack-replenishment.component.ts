@@ -1,12 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { FrNumpadComponent } from '../../dialogs/fr-numpad/fr-numpad.component'; 
 import { AuthService } from '../../init/auth.service';
 
 import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete'; 
 import { SharedService } from '../../services/shared.service';
-import { ApiFuntions } from '../../services/ApiFuntions';
 import { IFlowRackReplenishApi } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api-interface';
 import { FlowRackReplenishApiService } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -50,7 +48,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   constructor(private global:GlobalService, 
     private authservice: AuthService,
     private sharedService: SharedService,
-    // private Api:ApiFuntions,
     
     public flowRackReplenishApi : FlowRackReplenishApiService) {
       this.iFlowRackReplenishApi = flowRackReplenishApi;
@@ -74,9 +71,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   }
 
   cartonFlow() {
-    // let payload = {
-    //   "WSID": this.userData.wsid,
-    // }
     this.iFlowRackReplenishApi.wslocation({}).subscribe((res) => {
       if (res.isExecuted)
       {
@@ -171,7 +165,6 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
             this.iFlowRackReplenishApi.ItemLocation(payload).subscribe((res => {
               if (res.data.length < 1) {
                 this.locationSuggestions = [];
-                // let payload = {}
                 this.iFlowRackReplenishApi.openlocation({}).subscribe((res => {
                   if (res.data.length < 1) {
                     this.global.ShowToastr('error',"There are no open locations.", 'Error!');
@@ -362,24 +355,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   }
 
   getAppLicense() {
-    let payload = {
-      workstationid: this.userData.wsid,
-    };
-
-    // Manual 
-
-    // this.Api
-    //   .AppNameByWorkstation(payload)
-    //   .subscribe(
-    //     (res: any) => {
-    //       if (res?.data) {
-    //         this.convertToObj(res.data);
-    //         localStorage.setItem('availableApps',JSON.stringify(this.applicationData)) 
-    //         this.sharedService.setMenuData(this.applicationData)
-    //       }
-    //     },
-    //     (error) => {}
-    //   );
+      this.userData.wsid
   }
   
   convertToObj(data) {

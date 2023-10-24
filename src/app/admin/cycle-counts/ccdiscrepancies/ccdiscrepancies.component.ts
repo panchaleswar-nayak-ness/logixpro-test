@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 
@@ -28,8 +28,6 @@ export class CCDiscrepanciesComponent{
   tableData = ELEMENT_DATA;
 
   constructor(private router: Router) { }
-
- 
 
   createTransaction(){
     this.router.navigate(['/admin/createCounts']);

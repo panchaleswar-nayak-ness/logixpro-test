@@ -1,16 +1,12 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import labels from '../../../labels/labels.json';
-import { Component, ElementRef, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {  } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
 import { AuthService } from 'src/app/init/auth.service'; 
-import {  } from 'jquery';
-
-import {  } from '@popperjs/core';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -67,9 +63,6 @@ export class CountComponent implements OnInit {
   @ViewChild('addOrder') addOrderTemp: TemplateRef<any>;
   @Output() newItemEvent = new EventEmitter<Event>(); 
 
-  ngAfterViewInit() { 
-    
-  }
 
   ngOnInit(): void {
     this.userData = this.authservice.userData()

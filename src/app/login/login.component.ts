@@ -2,8 +2,6 @@ import { Component, ElementRef,  ViewChild } from '@angular/core';
 import { ILogin} from './Ilogin'; 
 import { FormControl} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { SpinnerService } from '../init/spinner.service';
 import { AuthService } from '../init/auth.service'; 
@@ -134,7 +132,7 @@ export class LoginComponent {
     }
     else{
       this.iUserApi.getSecurityEnvironment().subscribe((res:any) => {
-        if(res && res.isExecuted)
+        if(res?.isExecuted)
         {
           this.env = res.data.securityEnvironment;
         if(this.env){

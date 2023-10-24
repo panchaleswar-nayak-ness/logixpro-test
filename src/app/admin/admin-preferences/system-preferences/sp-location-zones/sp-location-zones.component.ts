@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { LocationNameComponent } from 'src/app/admin/dialogs/location-name/location-name.component';
-import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 
 import { KanbanZoneAllocationConflictComponent } from 'src/app/admin/dialogs/kanban-zone-allocation-conflict/kanban-zone-allocation-conflict.component';

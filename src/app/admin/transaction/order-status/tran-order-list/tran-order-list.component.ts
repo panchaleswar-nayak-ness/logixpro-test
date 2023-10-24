@@ -319,12 +319,14 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   
             if (res.data?.onCar.length) {
               res.data.onCar.filter((item) => {
-                return (item.carousel = 'on');
+                let carouselValue = 'on';
+                return (item.carousel = carouselValue);
               });
               this.onLocationZoneChange(res.data?.onCar);
             } else if (res.data?.offCar.length) {
               res.data.offCar.filter((item) => {
-                return (item.carousel = 'off');
+                let carouselValue = 'off';
+                return (item.carousel = carouselValue);
               });
               this.onLocationZoneChange(res.data?.offCar);
             } else {

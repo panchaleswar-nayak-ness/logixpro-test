@@ -2,8 +2,7 @@ import { Component, OnInit , Inject, ViewChild, ElementRef} from '@angular/core'
 import { SharedService } from 'src/app/services/shared.service';
 
 import { AuthService } from 'src/app/init/auth.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; 
-import { ToastrService } from "ngx-toastr";
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
