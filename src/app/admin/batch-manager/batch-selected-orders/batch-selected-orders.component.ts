@@ -12,15 +12,10 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '../../../../app/init/auth.service'; 
-
-import { MatDialog } from '@angular/material/dialog';
-
 import labels from '../../../labels/labels.json';
 import { SharedService } from 'src/app/services/shared.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { CreateBatchConfirmationComponent } from '../../dialogs/create-batch-confirmation/create-batch-confirmation.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -68,12 +63,8 @@ export class BatchSelectedOrdersComponent implements OnInit {
     private global:GlobalService,
     private _liveAnnouncer: LiveAnnouncer,
     private authService: AuthService,
-    private Api: ApiFuntions,
-    private adminApiService: AdminApiService,
-    
-    private sharedService: SharedService,
-    private router:Router, 
-    
+    public adminApiService: AdminApiService,
+    private sharedService: SharedService
   ) {
     this.iAdminApiService = adminApiService;
   }

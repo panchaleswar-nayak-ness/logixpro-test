@@ -1,12 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
- 
 import { AuthService } from '../../../../app/init/auth.service'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -23,15 +18,13 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
   public userData;
   public iAdminApiService: IAdminApiService;
   accessLevel = 'Selected Only';
+  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, 
-    private adminApiService: AdminApiService,
-     
+    public adminApiService: AdminApiService,
     private global:GlobalService,
     public dialogRef: MatDialogRef<DeleteConfirmationTransactionComponent>,
-    private authService: AuthService,
-    private Api: ApiFuntions,
-    private router: Router
+    private authService: AuthService
   ) {
     this.iAdminApiService = adminApiService;
   }

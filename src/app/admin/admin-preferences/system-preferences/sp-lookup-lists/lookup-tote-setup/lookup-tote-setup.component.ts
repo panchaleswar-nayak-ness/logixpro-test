@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-
 import { catchError, of } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
@@ -16,7 +13,6 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
   styleUrls: []
 })
 export class LookupToteSetupComponent implements OnInit {
-
 
   ELEMENT_DATA: any[] =[
     {tote_id: '125874', cells: '120' },
@@ -30,11 +26,10 @@ export class LookupToteSetupComponent implements OnInit {
   AddBtn = false
   saveCheck = false
 
-  constructor(private Api:ApiFuntions,
+  constructor(
     private global:GlobalService,
-    private adminApiService: AdminApiService,
-    
-    public authService: AuthService,) { 
+    public adminApiService: AdminApiService,
+    public authService: AuthService) { 
       this.iAdminApiService = adminApiService;
     }
 
@@ -43,7 +38,6 @@ export class LookupToteSetupComponent implements OnInit {
   }
 
   getToteTable(){
-
     this.iAdminApiService.getToteCell().subscribe(res => {
       if (res.isExecuted) {
         this.OldtableData =res.data;   
