@@ -19,6 +19,7 @@
       <button matSuffix *ngIf="searchString" class="clear-btn" (click)="searchString = ''; this.searchByInput.next(''); clearInputField('')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)">
         <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
+        <mat-option *ngIf="searchAutocompleteList?.length == 0" disabled>No data found</mat-option>
       </mat-autocomplete>
     </mat-form-field>
   </div>
