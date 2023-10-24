@@ -1,8 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { Router } from '@angular/router';
-import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-ie-transfer-settings',

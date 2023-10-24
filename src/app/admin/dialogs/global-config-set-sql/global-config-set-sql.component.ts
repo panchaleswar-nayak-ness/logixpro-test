@@ -1,6 +1,5 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import {
-  MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
@@ -18,7 +17,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   templateUrl: './global-config-set-sql.component.html',
   styleUrls: [],
 })
-export class GlobalConfigSetSqlComponent implements OnInit {
+export class GlobalConfigSetSqlComponent {
   @ViewChild('user_name') user_name: ElementRef;
   form_heading = 'SQL Auth Username and Password';
   userName: any ;
@@ -41,9 +40,6 @@ export class GlobalConfigSetSqlComponent implements OnInit {
     this.connectionName=data.ConnectionName;
   }
 
-  ngOnInit(): void {
-   
-  }
   ngAfterViewInit() {
     this.user_name.nativeElement.focus();
   }

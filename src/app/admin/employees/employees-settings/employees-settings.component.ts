@@ -16,7 +16,7 @@ import { GroupAllowedComponent } from '../../dialogs/group-allowed/group-allowed
 @Component({
   selector: 'app-employees-settings',
   templateUrl: './employees-settings.component.html',
-  styleUrls: ['./employees-settings.component.scss']
+  styleUrls: []
 })
 export class EmployeesSettingsComponent implements OnInit {
 

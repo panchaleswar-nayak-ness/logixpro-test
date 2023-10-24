@@ -724,22 +724,22 @@ export class ProcessPicksComponent implements OnInit {
 
   async ProcessPickPrintPref(Positions, ToteIDs, OrderNumbers, batchId) {
     try {
-      let isWindowClosed: any = null;
-      let isAnyWindowOpen = false;
+      let _isWindowClosed: any = null;
+      let _isAnyWindowOpen = false;
       if (this.imPreferences.autoPrintPickToteLabels) {
 
         if (this.imPreferences.printDirectly) {
           await  this.global.Print(`FileName:PrintPrevPickToteLabel|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}|BatchID:${batchId}`, 'lbl');
         } else {
-          isAnyWindowOpen = true;
-          isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickToteLabel|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}|BatchID:${batchId}`);
+          _isAnyWindowOpen = true;
+          _isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickToteLabel|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}|BatchID:${batchId}`);
         }
         if (this.imPreferences.autoPrintOffCarouselPickList) {
           if (this.imPreferences.printDirectly) {
             await   this.global.Print(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
-          } else if (isWindowClosed) {
-            isAnyWindowOpen = true;
-            isWindowClosed = await this.previewWindow(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
+          } else if (_isWindowClosed) {
+            _isAnyWindowOpen = true;
+            _isWindowClosed = await this.previewWindow(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
           }
         }
 
@@ -748,8 +748,8 @@ export class ProcessPicksComponent implements OnInit {
         if (this.imPreferences.printDirectly) {
           await   this.global.Print(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
         } else {
-          isAnyWindowOpen = true;
-          isWindowClosed = await this.previewWindow(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
+          _isAnyWindowOpen = true;
+          _isWindowClosed = await this.previewWindow(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
         }
 
       }else if (this.imPreferences.autoPrintCaseLabel) {
@@ -757,8 +757,8 @@ export class ProcessPicksComponent implements OnInit {
           await  this.global.Print(`FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`, 'lbl');
         }
 
-        else if (isAnyWindowOpen) {
-          if (isWindowClosed) {
+        else if (_isAnyWindowOpen) {
+          if (_isWindowClosed) {
             window.open(`/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
           }
         } else {

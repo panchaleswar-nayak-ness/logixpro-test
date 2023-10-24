@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog'; 
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
 import { AuthService } from '../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
@@ -51,7 +51,7 @@ export class AddFilterFunction implements OnInit {
      
       }
       this.iinductionManagerApi.PickBatchFilterRename(paylaod).subscribe(res => {
-        if( res && res.isExecuted){
+        if( res?.isExecuted){
           this.dialogRef.close({"oldFilter": this.data.savedFilter,"newFilter":this.filter_name,})
         }
         else {
