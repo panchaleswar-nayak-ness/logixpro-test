@@ -298,7 +298,7 @@ export class AddInvMapLocationComponent implements OnInit {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-      if (result != true) {
+      if (!result) {
 
         this.addInvMapLocation.patchValue({
           'itemQuantity': result
@@ -593,9 +593,6 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   @HostListener('unloaded')
-  ngOnDestroy() {
-    
-  }
 
   focusinmethod(){
     this.itemNumberScroll = "";

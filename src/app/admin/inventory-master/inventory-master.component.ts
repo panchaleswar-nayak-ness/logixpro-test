@@ -537,7 +537,6 @@ export class InventoryMasterComponent implements OnInit {
     this.iAdminApiService.GetInventoryMasterLocation(paylaod).subscribe((res: any) => {
       if(res.isExecuted && res.data)
       {
-         // this.invMasterLocations ='asdsad';
       this.invMaster.get('inventoryTable')?.setValue(res.data.inventoryTable);
       this.count = res.data.count 
       this.initialzeIMFeilds();
@@ -861,14 +860,13 @@ export class InventoryMasterComponent implements OnInit {
     if (this.setVal == true) {
       this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
     }
-    else {
-      if(this.spliUrl[1] == 'InductionManager'){
+    else if(this.spliUrl[1] == 'InductionManager'){
         this.router.navigate(['/InductionManager/Admin/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
       }
       else{
         this.router.navigate(['/admin/inventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
       }
-    }
+    
   }
 
 
@@ -949,7 +947,7 @@ export class InventoryMasterComponent implements OnInit {
       for (let i = 0; i < this.kititemcom.kitItemsList.length; i++) {
         for (let key in this.OldinvMaster.kitInventories[0]) {
           if (this.OldinvMaster.kitInventories[i] && this.OldinvMaster.kitInventories[i][key] == this.kititemcom.kitItemsList[i][key]) {
-
+            continue;
           } else {
             IsReturn = true;
             break;
@@ -965,7 +963,7 @@ export class InventoryMasterComponent implements OnInit {
       for (let i = 0; i < this.ScanCodesCom.scanCodesList.length; i++) {
         for (let key in this.ScanCodesCom.scanCodesList[0]) {
           if (this.OldinvMaster.scanCode[i] && this.OldinvMaster.scanCode[i][key] == this.ScanCodesCom.scanCodesList[i][key]) {
-
+            continue;
           } else { 
             IsReturn = true;
             break;

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild, Inject, ViewChildren, QueryList } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { AuthService } from 'src/app/init/auth.service'; 
 import { CmOrderToteConflictComponent } from '../cm-order-tote-conflict/cm-order-tote-conflict.component';
@@ -66,7 +66,7 @@ export class CmOrderNumberComponent implements OnInit {
       };
 
       this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
-        if (res && res.isExecuted)
+        if (res?.isExecuted)
         {
           if (typeof res?.data == 'string') {
             switch (res?.data) {
@@ -127,23 +127,20 @@ export class CmOrderNumberComponent implements OnInit {
       "location": values.stagingLocation,
       "clear": clear
     }
-
     this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
       if(res)
       {
-        if (res && res.responseMessage == "Fail") {
-          this.global.ShowToastr('error',"Error Has Occured", "Consolidation");
-          console.log("StagingLocationsUpdate",res.responseMessage);
-        } else {
-          if (typeof this.tableData != 'undefined') {
-            for (let x = 0; x < this.tableData.length; x++) {
-              let tote = this.tableData[x].toteID;
-              if (tote == values.toteID) {
-                this.tableData[x].stagingLocation = clear ? '' :  values.stagingLocation;
-                this.tableData[x].stagedBy = clear ? '' : this.userData.userName;
-                this.tableData[x].stagedDate = clear ? '' :  res.data;
-                break;
-              }
+        if (res?.responseMessage == "Fail") {
+          this.global.ShowToastr('error', "Error Has Occured", "Consolidation");
+          console.log("StagingLocationsUpdate", res.responseMessage);
+        } else if (typeof this.tableData != 'undefined') {
+          for (const item of this.tableData) {
+            let tote = item.toteID;
+            if (tote == values.toteID) {
+              item.stagingLocation = clear ? '' : values.stagingLocation;
+              item.stagedBy = clear ? '' : this.userData.userName;
+              item.stagedDate = clear ? '' : res.data;
+              break;
             }
           }
         }

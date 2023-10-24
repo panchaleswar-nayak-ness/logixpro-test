@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ViewOrdersComponent } from 'src/app/dialogs/view-orders/view-orders.component';
-import {   takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { WorkstationZonesComponent } from 'src/app/dialogs/workstation-zones/workstation-zones.component';
 import { AuthService } from 'src/app/init/auth.service';
 @Component({
@@ -45,13 +45,10 @@ export class ProcessPickBatchesComponent   {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.workstationzone.emit(true);
-        // this.getAllZones();
       }
     })
   }
   async printExisting(type) {
-
-
     let positionList: any[] = [];
     let toteIds: any[] = [];
     let OrderNumList: any[] = [];
@@ -139,7 +136,7 @@ export class ProcessPickBatchesComponent   {
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
 
 
-      if (result && result != true) {
+      if (!result) {
         if (result.length > 0) {
           this.allOrders = result;
           this.TOTE_SETUP.forEach((element, key) => {

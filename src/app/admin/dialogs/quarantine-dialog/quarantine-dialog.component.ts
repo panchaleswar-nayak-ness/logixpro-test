@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-quarantine-dialog',
   templateUrl: './quarantine-dialog.component.html',
   styleUrls: []
 })
-export class QuarantineDialogComponent implements OnInit {
+export class QuarantineDialogComponent {
   currentPageItemNo: number; 
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 }
