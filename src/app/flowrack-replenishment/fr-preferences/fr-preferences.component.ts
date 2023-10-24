@@ -30,9 +30,7 @@ export class FrPreferencesComponent implements OnInit {
   }
 
   cartonFlow() {
-    // let payload = {
-    //   "WSID": this.userData.wsid,
-    // }
+    
     this.iFlowRackReplenishApi.wslocation({}).subscribe((res) => {
       if(res.isExecuted && res.data)
       {
