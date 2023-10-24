@@ -1,5 +1,5 @@
 import { Component, OnInit , Inject, ViewChild, ElementRef, ViewChildren, QueryList, Renderer2 } from '@angular/core';
-import { MatDialog, MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Subject, takeUntil } from 'rxjs'; 
 import { AuthService } from '../../../../app/init/auth.service';

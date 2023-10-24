@@ -13,8 +13,6 @@ export class TableContextMenuService{
     FilterItemType? : any;
     contextMenuObserver : Subject<boolean> = new Subject<boolean>(); // observing that bool
     
-    constructor() { }
-
     updateContextMenuState(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
         this.event = event;
         this.SelectedItem = SelectedItem;

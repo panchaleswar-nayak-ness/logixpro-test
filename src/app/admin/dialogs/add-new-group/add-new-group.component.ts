@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ViewChild, TemplateRef, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json'; 
 import { AccessGroupObject, IEmployee } from 'src/app/Iemployee';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';

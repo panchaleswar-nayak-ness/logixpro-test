@@ -5,11 +5,9 @@ import { OmEventLogEntryDetailComponent } from 'src/app/dialogs/om-event-log-ent
 import { AuthService } from 'src/app/init/auth.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-
 import labels from '../../labels/labels.json';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -88,7 +86,7 @@ export class EventLogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isAdmin = this.router.url == "/OrderManager/EventLog" ? false : true;
+    this.isAdmin = !(this.router.url == "/OrderManager/EventLog");
     this.userData = this.authService.userData();
     this.startDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
