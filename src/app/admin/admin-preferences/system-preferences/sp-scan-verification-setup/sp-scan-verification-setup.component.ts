@@ -1,5 +1,4 @@
 import { Component} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ScanVerificationDefaultsComponent } from 'src/app/admin/dialogs/scan-verification-defaults/scan-verification-defaults.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 
@@ -23,9 +22,7 @@ export class SpScanVerificationSetupComponent  {
       autoFocus: '__non_existing_element__',
       disableClose:true,
     })
-    dialogRef.afterClosed().subscribe(result => {
-     
-    })
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
 }

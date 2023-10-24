@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 interface Actions {
   title: string;
@@ -7,9 +7,9 @@ interface Actions {
 @Component({
   selector: 'app-ie-ts-transaction-type-to-export',
   templateUrl: './ie-ts-transaction-type-to-export.component.html',
-  styleUrls: ['./ie-ts-transaction-type-to-export.component.scss']
+  styleUrls: []
 })
-export class IeTsTransactionTypeToExportComponent implements OnInit {
+export class IeTsTransactionTypeToExportComponent {
 
   actionBtnListOne : Actions[] = [
     { title: "Hot Picks" },
@@ -29,10 +29,5 @@ export class IeTsTransactionTypeToExportComponent implements OnInit {
     { title: "Hold Pick Until Tote Complete" },
     { title: "Hold Pick Until Order Complete" }
   ]
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

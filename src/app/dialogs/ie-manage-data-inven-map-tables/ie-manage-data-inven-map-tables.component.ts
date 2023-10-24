@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { GlobalService } from 'src/app/common/services/global.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-ie-manage-data-inven-map-tables',
@@ -8,23 +6,10 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: []
 })
 export class IeManageDataInvenMapTablesComponent {
-  ELEMENT_DATA: any[] =[
+  ELEMENT_DATA: any[] = [
     {inv_map_id: '1202122'},
-    // {inv_map_id: '1202123'},
-    // {inv_map_id: '1202124'},
-    // {inv_map_id: '1202125'},
-    // {inv_map_id: '1202126'},
-    // {inv_map_id: '1202127'},
-    
-  ]
-
-    displayedColumns: string[] = ['inv_map_id','transaction_type','location_id','warehouse','cell_size','golden_zone','zone','carousel','putaway','maxqty','revision','s_no','lot_no','e_date','uf1','uf2'];
-    tableData = this.ELEMENT_DATA
-    dataSourceList:any
-
-  constructor(
-    private global:GlobalService,
-  ) { }
-
-
+  ];
+  displayedColumns: string[] = ['inv_map_id','transaction_type','location_id','warehouse','cell_size','golden_zone','zone','carousel','putaway','maxqty','revision','s_no','lot_no','e_date','uf1','uf2'];
+  tableData = this.ELEMENT_DATA;
+  dataSourceList: any;
 }

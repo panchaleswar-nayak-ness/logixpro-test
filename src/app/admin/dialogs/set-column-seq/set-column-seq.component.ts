@@ -72,7 +72,6 @@ export class SetColumnSeqComponent implements OnInit {
   }
   
   saveColumnSeq(){
-    let userData = this.authService.userData();
     let sortedColumn = this.dataSource.map(t=>t.name);
     let payload = {
       "columns": sortedColumn, 

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { AddNotesComponent } from 'src/app/admin/dialogs/add-notes/add-notes.component';
-import { SetItemLocationComponent } from 'src/app/admin/dialogs/set-item-location/set-item-location.component';
 import { SupplierItemIdComponent } from 'src/app/admin/dialogs/supplier-item-id/supplier-item-id.component';
 import { UnitMeasureComponent } from 'src/app/admin/dialogs/unit-measure/unit-measure.component';
 import { UserFieldsEditComponent } from 'src/app/admin/dialogs/user-fields-edit/user-fields-edit.component';
@@ -10,7 +9,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-gt-item-details',
   templateUrl: './gt-item-details.component.html',
-  styleUrls: ['./gt-item-details.component.scss']
+  styleUrls: []
 })
 export class GtItemDetailsComponent {
 
@@ -123,9 +122,6 @@ openUserFieldsEditDialogue() {
   });
   dialogRef.afterClosed().subscribe((res) => {
     this.clearMatSelectList();
-    if (res.isExecuted) {
-    }
-    ;
   });
 }
 

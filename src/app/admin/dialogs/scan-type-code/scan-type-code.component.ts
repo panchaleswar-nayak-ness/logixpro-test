@@ -1,9 +1,7 @@
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
- 
+import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
@@ -21,17 +19,15 @@ export class ScanTypeCodeComponent implements OnInit {
   public scanTypeCode_list_Response: any;
   public userData: any;
 
-
   public iCommonAPI : ICommonApi;
 
   constructor(
     public commonAPI : CommonApiService,
     private global:GlobalService,
-    // private Api: ApiFuntions, 
     private authService: AuthService,
-    
     private renderer: Renderer2,
-    public dialogRef: MatDialogRef<any>) { this.iCommonAPI = commonAPI; }
+    public dialogRef: MatDialogRef<any>) 
+  { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();

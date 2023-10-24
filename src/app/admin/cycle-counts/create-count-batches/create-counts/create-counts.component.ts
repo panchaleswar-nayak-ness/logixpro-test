@@ -1,29 +1,14 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table'; 
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { AuthService } from 'src/app/init/auth.service';
-
-import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-} from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { FloatLabelType } from '@angular/material/form-field';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { Router } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -131,14 +116,10 @@ export class CCBCreateCountsComponent implements OnInit {
 constructor(
     public commonAPI : CommonApiService,
     public Api: ApiFuntions,
-    
     private authService: AuthService,
-    private fb: FormBuilder,
     public global:GlobalService,
     private liveAnnouncer: LiveAnnouncer,
-    private adminApiService: AdminApiService,
-    private router: Router 
-    
+    public adminApiService: AdminApiService
   ) {
     this.iAdminApiService = adminApiService;
     this.iCommonAPI = commonAPI;
@@ -172,24 +153,8 @@ constructor(
     const iso = dateLocal.toISOString();
     const isoLocal = iso.slice(0, 19)+".932Z";
 
-    //alert(isoLocal);
-   // this.localCompleteDate = this.completeDate.toISOString();
-
     //var test = "2023-09-25T19:48:18.932Z" //  2023-09-25T19:39:19.932Z
     this.localCompleteDate=isoLocal.substring(0, isoLocal.length - 8);
-
-
-    
-    //this.localCompleteDate.substring(0, isoLocal.length - 1)
-    //alert(isoLocal);
-
-
-    //alert(this.localCompleteDate.substring(0, this.localCompleteDate.length - 1));
-
-    //alert(this.localCompleteDate.toLocaleString());
-
-
-    //this.localCompleteDate = this.localCompleteDate.substring(0, this.localCompleteDate.length - 1);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -309,9 +274,7 @@ constructor(
         this.fillData();
       });
   }
-  searchData() {
 
-  }
   onSelFunc(item, event: any) {
     if (event.isUserInput) {  
     this.subCategory = item.subCategory;
@@ -321,14 +284,11 @@ constructor(
   printCountOrders(){
     if(this.printCC){
       this.global.Print(`FileName:PrintCycleCountReport|OrderNum:${this.orderNumber?this.orderNumber:''}`)
-
-     }else{
+     } else {
       window.open(`/#/report-view?file=PrintCycleCountReport-lst-prv|OrderNum:${this.orderNumber?this.orderNumber:''}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-
-
-      }
-
+    }
   }
+
   resetVal() {
     this.filtersForm.controls['fromLocation'].setValue('');
     this.filtersForm.controls['toLocation'].setValue('');

@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-sr-new-input-fields',
   templateUrl: './sr-new-input-fields.component.html',
-  styleUrls: ['./sr-new-input-fields.component.scss']
+  styleUrls: []
 })
 export class SrNewInputFieldsComponent {
   @Input() numberSelectedRep: number;

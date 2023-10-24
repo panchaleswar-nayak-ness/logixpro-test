@@ -1,15 +1,10 @@
-import { Component , ElementRef, OnInit, ViewChild } from '@angular/core';
-import {  MatDialog } from '@angular/material/dialog';
- 
+import { Component , ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/init/auth.service';
 import { CmOrderToteConflictComponent } from 'src/app/dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
 import { StagingLocationOrderComponent } from 'src/app/dialogs/staging-location-order/staging-location-order.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { event } from 'jquery';
-
 
 export interface PeriodicElement {
   name: string;
@@ -47,7 +42,6 @@ export class CmStagingLocationComponent {
   public IconsolidationAPI : IConsolidationApi;
 
   constructor(
-    // private Api: ApiFuntions,
     public consolidationAPI : ConsolidationApiService,
     private authService: AuthService,
     private global:GlobalService,

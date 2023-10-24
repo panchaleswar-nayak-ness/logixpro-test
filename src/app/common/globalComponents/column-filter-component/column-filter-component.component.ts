@@ -7,7 +7,7 @@ import { TableHeaderDefinitions } from '../../types/CommonTypes';
 @Component({
   selector: 'app-column-filter-component',
   templateUrl: './column-filter-component.component.html',
-  styleUrls: ['./column-filter-component.component.scss']
+  styleUrls: []
 })
 export class ColumnFilterComponentComponent {
 

@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-employees-information',
   templateUrl: './employees-information.component.html',
-  styleUrls: ['./employees-information.component.scss']
+  styleUrls: []
 })
 export class EmployeesInformationComponent{
 

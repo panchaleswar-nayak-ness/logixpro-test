@@ -5,7 +5,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-gt-transaction-details',
   templateUrl: './gt-transaction-details.component.html',
-  styleUrls: ['./gt-transaction-details.component.scss']
+  styleUrls: []
 })
 export class GtTransactionDetailsComponent {
 

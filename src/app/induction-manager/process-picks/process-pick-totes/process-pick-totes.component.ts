@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input,Output } from '@angular/core';
 import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -10,9 +10,9 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 @Component({
   selector: 'app-process-pick-totes',
   templateUrl: './process-pick-totes.component.html',
-  styleUrls: ['./process-pick-totes.component.scss']
+  styleUrls: []
 })
-export class ProcessPickTotesComponent implements OnInit {
+export class ProcessPickTotesComponent{
   @Output() ToteAction = new EventEmitter<any>();
   @Output() fillNxtToteId = new EventEmitter<any>();
   @Output() clearOrderNum = new EventEmitter<any>();
@@ -33,8 +33,7 @@ export class ProcessPickTotesComponent implements OnInit {
     this.userData = this.authService.userData();
   }
 
-  ngOnInit(): void {
-  }
+
   onViewOrder(ele: any) {
     if (ele.orderNumber) {
       this.router.navigate([]).then((result) => {

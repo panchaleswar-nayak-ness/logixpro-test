@@ -3,7 +3,7 @@ import { Component,Input } from '@angular/core';
 @Component({
   selector: 'app-icon-heading-component',
   templateUrl: './icon-heading-component.component.html',
-  styleUrls: ['./icon-heading-component.component.scss']
+  styleUrls: []
 })
 export class IconHeadingComponentComponent {
 

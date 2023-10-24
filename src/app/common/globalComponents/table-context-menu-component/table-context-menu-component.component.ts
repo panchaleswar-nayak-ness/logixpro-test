@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
@@ -10,9 +10,9 @@ import { Operations } from './../../types/CommonTypes';
 @Component({
   selector: 'app-table-context-menu-component',
   templateUrl: './table-context-menu-component.component.html',
-  styleUrls: ['./table-context-menu-component.component.scss']
+  styleUrls: []
 })
-export class TableContextMenuComponentComponent implements OnInit {
+export class TableContextMenuComponentComponent {
 
   public OperationTypes = OperationTypes;
 
@@ -60,8 +60,7 @@ export class TableContextMenuComponentComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-  }
+  
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault();

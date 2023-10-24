@@ -1,11 +1,8 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
- 
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/init/auth.service';
 import { CmAddNewItemToShipmentComponent } from '../cm-add-new-item-to-shipment/cm-add-new-item-to-shipment.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
@@ -40,15 +37,16 @@ export class CmShippingComponent implements OnInit {
   carriers: any[] = [];
   shippingComp: any = false;
   shippingPreferences: any = {};
+
   public IconsolidationAPI : IConsolidationApi;
+
   constructor(
     public consolidationAPI : ConsolidationApiService,
-    // private Api: ApiFuntions, 
     private authService: AuthService, 
     private global:GlobalService,
-    private route: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<CmShippingComponent>,) {
+    public dialogRef: MatDialogRef<CmShippingComponent>) 
+  {
     this.orderNumber = this.data.orderNumber;
     this.userData = this.authService.userData();
     this.IconsolidationAPI = consolidationAPI;
@@ -74,7 +72,7 @@ export class CmShippingComponent implements OnInit {
       this.IconsolidationAPI.ShippingIndex(obj).subscribe((res: any) => {
         if(res.isExecuted)
         {
-          if (res && res.data) {
+          if (res?.data) {
             this.shippingData = res.data.shippingData;
             this.carriers = res.data.carriers;
             this.shippingPreferences = res.data.shippingPreferences;

@@ -1,18 +1,9 @@
 import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-
 import { AuthService } from 'src/app/init/auth.service'; 
 import labels from '../../../labels/labels.json';
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
@@ -35,8 +26,7 @@ export class ColumnSequenceDialogComponent implements OnInit {
     private Api: ApiFuntions,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
-    
-    private adminApiService: AdminApiService,
+    public adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) data,
     private global:GlobalService,
     
@@ -112,7 +102,6 @@ export class ColumnSequenceDialogComponent implements OnInit {
 
   }
   initializePayload(tableName) {
-    let userData = this.authService.userData();
     this.payload = { 
       viewName: tableName,
     };
