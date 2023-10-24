@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component } from '@angular/core';
 import { ImportFieldMappingComponent } from '../import-field-mapping/import-field-mapping.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 

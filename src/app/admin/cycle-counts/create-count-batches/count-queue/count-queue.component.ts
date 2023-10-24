@@ -8,7 +8,6 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';

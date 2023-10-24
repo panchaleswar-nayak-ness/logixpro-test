@@ -3,7 +3,6 @@ import {MatSort, Sort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { AddPickuplevelsComponent } from '../../dialogs/add-pickuplevels/add-pickuplevels.component';
-import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 

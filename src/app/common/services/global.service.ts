@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -13,7 +12,6 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
-import { components } from 'angular-routing';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
@@ -74,9 +72,9 @@ export class GlobalService {
 
   }
 ShowToastr(type?:any,msg?:any,title?:any,timeOut?:any,positionClass?:any){
-  this.toastr[type](msg, title?title:'Success!', {
-    positionClass: positionClass?positionClass:'toast-bottom-right',
-    timeOut: timeOut?timeOut:2000,
+  this.toastr[type](msg, title||'Success!', {
+    positionClass: positionClass||'toast-bottom-right',
+    timeOut: timeOut||2000,
   });
 }
 
@@ -243,7 +241,7 @@ globalErrorMsg() {
       return  this.dialog.open(component, {
           height: item.height?item.height:'auto',
           width: item.width ? item.width:'600px',
-        disableClose:item.disableClose != null?item.disableClose:true,
+        disableClose:item.disableClose ?? true,
           data: item.data,
         });
       }

@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-count-select-orders-component',

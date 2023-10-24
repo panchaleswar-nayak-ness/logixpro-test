@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { FunctionAllocationComponent } from '../function-allocation/function-allocation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
