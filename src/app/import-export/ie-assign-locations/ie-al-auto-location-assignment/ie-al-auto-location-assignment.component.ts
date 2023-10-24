@@ -3,7 +3,7 @@ import { Component} from '@angular/core';
 @Component({
   selector: 'app-ie-al-auto-location-assignment',
   templateUrl: './ie-al-auto-location-assignment.component.html',
-  styleUrls: ['./ie-al-auto-location-assignment.component.scss']
+  styleUrls: []
 })
 export class IeAlAutoLocationAssignmentComponent {
 

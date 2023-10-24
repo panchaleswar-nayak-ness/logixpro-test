@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/init/auth.service';
 @Component({
   selector: 'app-process-pick-batches',
   templateUrl: './process-pick-batches.component.html',
-  styleUrls: ['./process-pick-batches.component.scss']
+  styleUrls: []
 })
 export class ProcessPickBatchesComponent   {
   orderInput: any;

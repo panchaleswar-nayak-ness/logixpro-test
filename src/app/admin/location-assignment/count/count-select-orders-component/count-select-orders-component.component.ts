@@ -5,7 +5,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 @Component({
   selector: 'app-count-select-orders-component',
   templateUrl: './count-select-orders-component.component.html',
-  styleUrls: ['./count-select-orders-component.component.scss']
+  styleUrls: []
 })
 export class CountSelectOrdersComponentComponent {
  

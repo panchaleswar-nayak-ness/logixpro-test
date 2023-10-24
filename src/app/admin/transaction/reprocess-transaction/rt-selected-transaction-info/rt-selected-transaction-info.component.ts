@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-rt-selected-transaction-info',
   templateUrl: './rt-selected-transaction-info.component.html',
-  styleUrls: ['./rt-selected-transaction-info.component.scss']
+  styleUrls: []
 })
 export class RtSelectedTransactionInfoComponent {
 

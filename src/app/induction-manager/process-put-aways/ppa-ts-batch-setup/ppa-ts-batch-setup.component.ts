@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-ppa-ts-batch-setup',
   templateUrl: './ppa-ts-batch-setup.component.html',
-  styleUrls: ['./ppa-ts-batch-setup.component.scss']
+  styleUrls: []
 })
 export class PpaTsBatchSetupComponent {
 

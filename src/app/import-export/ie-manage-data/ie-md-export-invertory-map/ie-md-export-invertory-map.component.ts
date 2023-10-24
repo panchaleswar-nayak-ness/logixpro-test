@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IeManageDataInvenMapTablesComponent } from 'src/app/dialogs/ie-manage-data-inven-map-tables/ie-manage-data-inven-map-tables.component';
 import { IeManageDataTransFieldMapComponent } from 'src/app/dialogs/ie-manage-data-trans-field-map/ie-manage-data-trans-field-map.component';
@@ -6,16 +6,15 @@ import { IeManageDataTransFieldMapComponent } from 'src/app/dialogs/ie-manage-da
 @Component({
   selector: 'app-ie-md-export-invertory-map',
   templateUrl: './ie-md-export-invertory-map.component.html',
-  styleUrls: ['./ie-md-export-invertory-map.component.scss']
+  styleUrls: []
 })
-export class IeMdExportInvertoryMapComponent implements OnInit {
+export class IeMdExportInvertoryMapComponent {
 
   constructor(
     private global:GlobalService
   ) { }
 
-  ngOnInit(): void {
-  }
+ 
 
   IeTransFieldMappingDialog() {
     this.global.OpenDialog(IeManageDataTransFieldMapComponent,{

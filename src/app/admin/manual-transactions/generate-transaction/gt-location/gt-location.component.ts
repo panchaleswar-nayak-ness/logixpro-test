@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-gt-location',
   templateUrl: './gt-location.component.html',
-  styleUrls: ['./gt-location.component.scss']
+  styleUrls: []
 })
 export class GtLocationComponent {
   @Input() zone: any;

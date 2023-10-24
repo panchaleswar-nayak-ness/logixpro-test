@@ -9,7 +9,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-gt-item-details',
   templateUrl: './gt-item-details.component.html',
-  styleUrls: ['./gt-item-details.component.scss']
+  styleUrls: []
 })
 export class GtItemDetailsComponent {
 
