@@ -1,12 +1,12 @@
 import { Component, Input, Output, EventEmitter, ViewChild  } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-count-order-selection-component',
   templateUrl: './count-order-selection-component.component.html',
-  styleUrls: ['./count-order-selection-component.component.scss']
+  styleUrls: []
 })
 export class CountOrderSelectionComponentComponent   {
 

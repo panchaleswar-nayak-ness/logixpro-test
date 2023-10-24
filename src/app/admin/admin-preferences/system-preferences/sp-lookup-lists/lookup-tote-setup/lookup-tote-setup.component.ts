@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 
 import { catchError, of } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
@@ -70,13 +69,12 @@ export class LookupToteSetupComponent implements OnInit {
   }
 
   check(toteID,ind){
-    for(let i = 0; i < this.OldtableData.length; i++) {
-      if(this.OldtableData[i].toteID == toteID) {
+    for(const element of this.OldtableData) {
+      if(element.toteID == toteID) {
         this.tableData[ind].IsDisabled = true;
         this.global.ShowToastr('error',`Tote must be unique. Another entry matches it. Please save any pending totes and try again.`, 'Error!');
         break;
       }else  this.tableData[ind].IsDisabled = false;
-       
     }
   
   }

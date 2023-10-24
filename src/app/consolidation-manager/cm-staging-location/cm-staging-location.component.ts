@@ -151,17 +151,17 @@ export class CmStagingLocationComponent {
       } else if (res.responseMessage == "Redirect") {
         window.location.href = "/#/Logon/";
       } else if (typeof this.stagetables != 'undefined'){
-          for (let x = 0; x < this.stagetables.length; x++) {
-            let tote = this.stagetables[x].toteID;
+          for (const element of this.stagetables) {
+            let tote = element.toteID;
             if (tote == toteID) {
-              this.stagetables[x].location = location; //location
-              this.stagetables[x].by = res.data; //by
-              this.stagetables[x].date = res.data; //date
+              element.location = location; //location
+              element.by = res.data; //by
+              element.date = res.data; //date
               break;
             }
           }
       }
-      if(res && res.isExecuted && index!=null){ 
+      if(res?.isExecuted && index!=null){ 
         this.stagetables[index].stagingLocation = location;
         this.stagetables[index].location = location; 
       }else{
