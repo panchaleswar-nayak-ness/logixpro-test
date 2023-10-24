@@ -324,31 +324,21 @@ export class ProcessPutAwaysComponent implements OnInit {
           this.currentToteID++;
         }
       }
-
       this.actionDropDown = null;
-    } else {
-      this.actionDropDown = null;
-    }
+    } else this.actionDropDown = null;
     this.clearMatSelectList()
   }
 
   getRow(batchID) {
-    let payLoad = {
-      batchID: batchID, 
-    };    
+    let payLoad = { batchID: batchID };    
     this.iinductionManagerApi.BatchTotes(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
-          if (res.data.length > 0) {
-            this.status = "Processed";
-          }
-          else{
-            this.status = "Not Processed";
-          }
+          if (res.data.length > 0) this.status = "Processed";
+          else this.status = "Not Processed";
           this.ELEMENT_DATA.length = 0;
           for (let ix = 0; ix < res.data.length; ix++) {
             this.ELEMENT_DATA.push({
-             
               position: parseInt(res.data[ix].totePosition),
               cells: res.data[ix].cells,
               toteid: res.data[ix].toteID.toString(),
@@ -366,8 +356,6 @@ export class ProcessPutAwaysComponent implements OnInit {
             }
           }
           this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
-
-
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
           console.log("BatchTotes",res.responseMessage);
@@ -397,8 +385,8 @@ export class ProcessPutAwaysComponent implements OnInit {
         if (result) {
           let zones = 'Zones:';
           this.assignedZonesArray = result;
-          for (let i = 0; i < result.length; i++) {
-            zones = zones + ' ' + result[i].zone;
+          for (const element of result) {
+            zones = zones + ' ' + element.zone;
           }
           this.assignedZones = zones;
         }
@@ -408,52 +396,41 @@ export class ProcessPutAwaysComponent implements OnInit {
     }
   }
 
-  openTotesDialogue(position: any,index?) {
+  openTotesDialogue(position: any, index?) {
     const dialogRef:any = this.global.OpenDialog(TotesAddEditComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
       disableClose:true,
-      data:
-      {
+      data: {
         position: position,
         alreadySavedTotes: this.ELEMENT_DATA,
         validateTotes: this.processPutAwayIndex.imPreference.validateTotes,
         defaultCells: this.processPutAwayIndex.imPreference.defaultCells
       }
     });
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (result.toteID != "") {
-          if (result.toteID.toString() != '') {
-
-            this.ELEMENT_DATA[index].toteid = result.toteID.toString();
-          }
+          if (result.toteID.toString() != '') this.ELEMENT_DATA[index].toteid = result.toteID.toString();
           if (result.cellID.toString() != '') {
-            for (let i = 0; i < this.ELEMENT_DATA.length; i++) {
-              this.ELEMENT_DATA[i].cells = result.cellID.toString();
+            for (const element of this.ELEMENT_DATA) {
+              element.cells = result.cellID.toString();
             }
           }
-
-
         }
-
       }
     });
-
-
-
   }
+  
   onFocusOutBatchID(val) {
     if (val) {
       try {
         setTimeout(() => {
-          let payload = {
-            batchID: this.batchId2, 
-          }
-
+          let payload = { batchID: this.batchId2 }
           this.iinductionManagerApi.BatchExist(payload).subscribe((res: any) => {
-            if(res && res.isExecuted)
+            if(res?.isExecuted)
             {
               if (!res.data) {
                 const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
@@ -466,29 +443,19 @@ export class ProcessPutAwaysComponent implements OnInit {
                     heading: 'Invalid Batch ID'
                   },
                 });
-                dialogRef.afterClosed().subscribe(result => {
-                  this.clearFormAndTable();
-                });
-              } else {
-                
-                this.fillToteTable();
-                
-              }
 
+                dialogRef.afterClosed().subscribe(result => this.clearFormAndTable());
+              } else this.fillToteTable();
             }
             else {
               this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
               console.log("BatchExist",res.responseMessage);
             }
-            
-            
           });
           this.inputVal.nativeElement.blur();
-
         }, 200);
 
-      } catch (error) { 
-      }
+      } catch (error) { }
     }
   }
 
@@ -510,17 +477,12 @@ export class ProcessPutAwaysComponent implements OnInit {
       if (res.isDeleted) {
         this.clearFormAndTable();
         this.autocompleteSearchColumnItem2();
-      } else if (res.isExecuted) {
-        this.fillToteTable();
-      }
+      } else if (res.isExecuted) this.fillToteTable();
     });
   }
 
   clearBatch() {
     this.batchId = '';
-  }
-
-  ngAfterViewChecked(): void {
   }
 
   processIfZoneSelected() {
@@ -529,33 +491,28 @@ export class ProcessPutAwaysComponent implements OnInit {
         height: 'auto',
         width: '50vw',
         autoFocus: '__non_existing_element__',
-      disableClose:true,
+        disableClose:true,
         data: {
           message: "You must select one or more zones. If there are no zones available for selection check your Location Zones settings and/or delete or deallocate a batch to free up a zone.",
           heading: 'Error'
         },
       });
-    }
-    else {
-      this.processBath();
-    }
+    } else this.processBath();
   }
 
   processBath() {
-
-    if (this.batchId == '') {
-      this.showMessage('You must provide a Batch ID.', 2000, 'error');
-    } else {
+    if (this.batchId == '') this.showMessage('You must provide a Batch ID.', 2000, 'error');
+    else {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
-      disableClose:true,
+        disableClose:true,
         data: {
-          message:
-            'Batch processed!  Click OK to move onto the next step or cancel to remain on this screen to create/edit more batches.',
+          message: 'Batch processed!  Click OK to move onto the next step or cancel to remain on this screen to create/edit more batches.',
         },
       });
+
       dialogRef.afterClosed().subscribe((result) => {
         if (result == 'Yes') {
           let toteID = '',
@@ -572,17 +529,15 @@ export class ProcessPutAwaysComponent implements OnInit {
               position = position + ',' + this.ELEMENT_DATA[i].position;
             }
           }
-          const totePaylaod = {
-            "ToteID": toteID, 
-          }
+          const totePaylaod = { "ToteID": toteID }
           this.iinductionManagerApi.ValidateTotesForPutAways(totePaylaod).subscribe(res => {
             if (res.data != '') {
               this.global.ShowToastr('error',`The tote id ${res.data} already exists in Open Transactions. Please select another tote`, 'Error!');
               console.log("ValidateTotesForPutAways",res.responseMessage);
-              for (let i = 0; i < this.ELEMENT_DATA.length; i++) {
-                if (this.ELEMENT_DATA[i].toteid == res.data) {
-                  this.ELEMENT_DATA[i].toteid = '';
-                  this.ELEMENT_DATA[i].locked = '';
+              for (const element of this.ELEMENT_DATA) {
+                if (element.toteid == res.data) {
+                  element.toteid = '';
+                  element.locked = '';
                 }
               }
             }
@@ -596,19 +551,14 @@ export class ProcessPutAwaysComponent implements OnInit {
                 (res: any) => {
                   if (res.data && res.isExecuted) {
                     if(this.imPreferences.autoPrintPutAwayToteLabels){
-                      if(this.imPreferences.printDirectly){
-                        this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`)
-                      }else{
-                        window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-                      }
+                      if(this.imPreferences.printDirectly) this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`)
+                      else window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
                     }
                     this.global.ShowToastr('success',res.responseMessage, 'Success!');
                     this.status = 'Processed';
                     this.selectedIndex = 1;
                     this.batchId2 = this.batchId;
-                    setTimeout(() => {
-                      this.inputVal.nativeElement.focus();
-                    }, 500);
+                    setTimeout(() => this.inputVal.nativeElement.focus(), 500);
                     this.fillToteTable(this.batchId);
                   } else {
                     this.global.ShowToastr('error','Something went wrong', 'Error!');
@@ -617,7 +567,6 @@ export class ProcessPutAwaysComponent implements OnInit {
                 },
                 (error) => { }
               );
-
             }
           });
         }
@@ -626,14 +575,11 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   showMessage(message: any, timeout: any, type: any) {
-    if (type == 'error') {
-      this.global.ShowToastr('error',message, 'Error!');
-    } else {
-      this.global.ShowToastr('success',message, 'Success!');
-    }
+    if (type == 'error') this.global.ShowToastr('error',message, 'Error!');
+    else this.global.ShowToastr('success',message, 'Success!');
   }
 
-   IMPreferences:any;
+  IMPreferences:any;
   getProcessPutAwayIndex() {
     this.iinductionManagerApi.ProcessPutAwayIndex().subscribe(
       (res: any) => {
@@ -643,7 +589,6 @@ export class ProcessPutAwaysComponent implements OnInit {
           this.autoPutToteIDS = res.data.imPreference.autoPutAwayToteID;
           this.pickBatchQuantity = res.data.imPreference.pickBatchQuantity;
           this.processPutAwayIndex = res.data;
-          
           this.inputType = res.data.imPreference.defaultPutAwayScanType;
           this.applyStrip = res.data.imPreference.stripScan
           this.stripLength = res.data.imPreference.stripNumber
@@ -658,7 +603,6 @@ export class ProcessPutAwaysComponent implements OnInit {
               this.autocompleteSearchColumnItem2();
             }, 500);
           }
-
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
           console.log("ProcessPutAwayIndex",res.responseMessage);
@@ -684,9 +628,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   updateNxtTote() {
-    let updatePayload = {
-      "tote": this.currentToteID, 
-    }
+    let updatePayload = { "tote": this.currentToteID }
     this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
         this.global.ShowToastr('error','Something is wrong.', 'Error!');
@@ -695,158 +637,123 @@ export class ProcessPutAwaysComponent implements OnInit {
     });
   }
 
+  startNewBatchWithID() {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
+      height: 'auto',
+      width: '560px',
+      data: {
+        message: 'Click OK to start a new batch and discard any changes to the current batch.',
+        heading: '',
+        notificationPrimary: true,
+      },
+      autoFocus: '__non_existing_element__',
+      disableClose:true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result){
+        this.ELEMENT_DATA.length = 0;
+        for (let index = 0; index < this.pickBatchQuantity; index++) {
+          if (!this.autoPutToteIDS) {
+            this.ELEMENT_DATA.push({
+              position: index + 1,
+              cells: this.cellSize,
+              toteid: '',
+              locked: ""
+            });
+          } else {
+            this.ELEMENT_DATA.push({
+              position: index + 1,
+              cells: this.cellSize,
+              toteid: this.currentToteID.toString(),
+              locked: ""
+            });
+            this.currentToteID++;
+          }
+        }
+        this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
+      }
+    });
+  }
+
+  createBatchByID() {
+    //Getting and setting next batch ID
+    this.getNextBatchID();
+    //setup totes
+    this.ELEMENT_DATA.length = 0;
+    for (let index = 0; index < this.pickBatchQuantity; index++) {
+      if (!this.autoPutToteIDS) {
+        this.ELEMENT_DATA.push({
+          position: index + 1,
+          cells: this.cellSize,
+          toteid: '',
+          locked: ""
+        });
+      } else {
+        this.ELEMENT_DATA.push({
+          position: index + 1,
+          cells: this.cellSize,
+          toteid: this.currentToteID.toString(),
+          locked: ""
+        });
+        this.currentToteID++;
+      }
+    }
+    this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
+    this.updateNxtTote();
+  }
+
+  startNewBatchWithOutID() {
+    if(this.ELEMENT_DATA.length != 0) {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
+        height: 'auto',
+        width: '560px',
+        data: {
+          message: 'Click OK to start a new batch and discard any changes to the current batch.',
+          heading: '',
+          notificationPrimary: true,
+        },
+        autoFocus: '__non_existing_element__',
+        disableClose:true,
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result) this.createBatchByID();
+      });
+    }
+    else this.createBatchByID();
+  }
+
   createNewBatch(withID = '') {
-
-
-
     if (withID == '') {
       if (this.batchId == '') {
-        this.showMessage(
-          'You must assign a Batch ID before creating a new batch.',
-          2000,
-          'error'
-        );
+        this.showMessage('You must assign a Batch ID before creating a new batch.', 2000, 'error');
       } else {
-        const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
-          height: 'auto',
-          width: '560px',
-          data: {
-            message: 'Click OK to start a new batch and discard any changes to the current batch.',
-            heading: '',
-            notificationPrimary: true,
-          },
-          autoFocus: '__non_existing_element__',
-      disableClose:true,
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-          if(result){
-            this.ELEMENT_DATA.length = 0;
-            for (let index = 0; index < this.pickBatchQuantity; index++) {
-              if (!this.autoPutToteIDS) {
-                this.ELEMENT_DATA.push({
-                  position: index + 1,
-                  cells: this.cellSize,
-                  toteid: '',
-                  locked: ""
-                });
-              } else {
-                this.ELEMENT_DATA.push({
-                  position: index + 1,
-                  cells: this.cellSize,
-                  toteid: this.currentToteID.toString(),
-                  locked: ""
-                });
-                this.currentToteID++;
-              }
-            }
-            this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
-          }
-        })
-      
+        this.startNewBatchWithID();
       }
     } else {
-
- 
-        if( this.ELEMENT_DATA.length != 0){
-        const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
-          height: 'auto',
-          width: '560px',
-          data: {
-            message: 'Click OK to start a new batch and discard any changes to the current batch.',
-            heading: '',
-            notificationPrimary: true,
-          },
-          autoFocus: '__non_existing_element__',
-      disableClose:true,
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-          if(result){
-   //Getting and setting next batch ID
-   this.getNextBatchID();
-   //setup totes
-   this.ELEMENT_DATA.length = 0;
-   for (let index = 0; index < this.pickBatchQuantity; index++) {
-     if (!this.autoPutToteIDS) {
-       this.ELEMENT_DATA.push({
-         position: index + 1,
-         cells: this.cellSize,
-         toteid: '',
-         locked: ""
-       });
-     } else {
-       this.ELEMENT_DATA.push({
-         position: index + 1,
-         cells: this.cellSize,
-         toteid: this.currentToteID.toString(),
-         locked: ""
-       });
-       this.currentToteID++;
-     }
-   }
-   this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
-   this.updateNxtTote()
-          }
-        });
-      }
-      else{
-          //Getting and setting next batch ID
-      this.getNextBatchID();
-      //setup totes
-      this.ELEMENT_DATA.length = 0;
-      for (let index = 0; index < this.pickBatchQuantity; index++) {
-        if (!this.autoPutToteIDS) {
-          this.ELEMENT_DATA.push({
-            position: index + 1,
-            cells: this.cellSize,
-            toteid: '',
-            locked: ""
-          });
-        } else {
-          this.ELEMENT_DATA.push({
-            position: index + 1,
-            cells: this.cellSize,
-            toteid: this.currentToteID.toString(),
-            locked: ""
-          });
-          this.currentToteID++;
-        }
-      }
-      this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
-      this.updateNxtTote()
-      }
-    
+      this.startNewBatchWithOutID();
     }
   }
 
   onToteChange($event, position, cells = '') {
-    if (cells == '') {
-      if (this.ELEMENT_DATA[position - 1].toteid != $event.target.value) {
-        this.ELEMENT_DATA[position - 1].toteid = $event.target.value;
-      }
-    } else if (this.ELEMENT_DATA[position - 1].cells != $event.target.value) {
-       
-        this.ELEMENT_DATA[position - 1].cells = $event.target.value;
-      
-    }
+    if (cells == '')
+      if (this.ELEMENT_DATA[position - 1].toteid != $event.target.value) this.ELEMENT_DATA[position - 1].toteid = $event.target.value;
+    else if (this.ELEMENT_DATA[position - 1].cells != $event.target.value) this.ELEMENT_DATA[position - 1].cells = $event.target.value;
   }
 
   async autocompleteSearchColumnItem() {
-    let searchPayload = {
-      batchID: this.batchId, 
-    };
-    this.iinductionManagerApi
-      .BatchIDTypeAhead(searchPayload)
-      .subscribe(
-        (res: any) => {
-          if (res.isExecuted &&  res.data) {
-            this.searchAutocompleteItemNum = res.data;
-          } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
-            console.log("BatchIDTypeAhead",res.responseMessage);
-          }
-        },
-        (error) => { }
-      );
+    let searchPayload = { batchID: this.batchId };
+    this.iinductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
+      (res: any) => {
+        if (res.isExecuted &&  res.data) this.searchAutocompleteItemNum = res.data;
+        else {
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("BatchIDTypeAhead",res.responseMessage);
+        }
+      },
+      (error) => { }
+    );
   }
 
   async autocompleteSearchColumnItem2() {
@@ -923,20 +830,13 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   openST(event: any) {
-    if (event.key === 'Enter') {
-      this.openSelectionTransactionDialogue();
-    }
+    if (event.key === 'Enter') this.openSelectionTransactionDialogue();
   }
 
   applyStripIfApplicable(){
-    if(this.applyStrip){
-      if (this.stripSide.toLowerCase() == 'right') {
-        this.inputValue = this.inputValue.substring(0, this.inputValue.length - this.stripLength);
-      } 
-      else {
-        this.inputValue = this.inputValue.substring(this.stripLength, this.inputValue.length);
-      };
-    }
+    if(this.applyStrip)
+      if (this.stripSide.toLowerCase() == 'right') this.inputValue = this.inputValue.substring(0, this.inputValue.length - this.stripLength);
+      else this.inputValue = this.inputValue.substring(this.stripLength, this.inputValue.length);
   }
 
   openSelectionTransactionDialogue() {
@@ -1009,7 +909,6 @@ export class ProcessPutAwaysComponent implements OnInit {
                   }
                   
                 })
-    
                 return
               }
               if (this.inputType == 'Any') {
@@ -1017,56 +916,47 @@ export class ProcessPutAwaysComponent implements OnInit {
               } else {
                 this.global.ShowToastr('error',`The input code provided was not recognized as a ${this.inputType}.`, 'Error!');
               }
-            } else if (result == "Task Completed") {
-              
+            } 
+            else if (result == "Task Completed") {
               this.inputValue='';
               this.fillToteTable(this.batchId2);
-          
-            } else if (result == "New Batch") {
-              
+            } 
+            else if (result == "New Batch") {
               this.inputValue='';
-
               this.clearFormAndTable();
             }
             else if(result.category == "isReel"){
               const d: Date = new Date();
               const now: string = `${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}${d.getHours()}${d.getMinutes()}${d.getSeconds()}-IM`;
-                    let hvObj =  {
-                        order: now,
-                        uf1: '',
-                        uf2: '',
-                        lot: 0,
-                        warehouse: '',
-                        expdate: '',
-                        notes: ''
-                      }
-                    let itemObj =  {
-                        number: result.item.itemNumber,
-                        numReels: 1,
-                        totalParts: 0,
-                        description: result.item.description,
-                        whseRequired: result.item.warehouseSensitive
-                        
-                      }
-                      
-                      this.ReelTransactionsDialogue(hvObj,itemObj,this.fieldNames)
-                      
-              
+              let hvObj =  {
+                order: now,
+                uf1: '',
+                uf2: '',
+                lot: 0,
+                warehouse: '',
+                expdate: '',
+                notes: ''
+              }
+              let itemObj =  {
+                number: result.item.itemNumber,
+                numReels: 1,
+                totalParts: 0,
+                description: result.item.description,
+                whseRequired: result.item.warehouseSensitive 
+              }  
+              this.ReelTransactionsDialogue(hvObj,itemObj,this.fieldNames);              
             }
           });
-
         }
       });
     }
-    else if (this.inputValue == "") {
-      this.global.ShowToastr('error','Please enter input value', 'Error!');
-    }
+    else if (this.inputValue == "") this.global.ShowToastr('error','Please enter input value', 'Error!');
     else {
       const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteComponent, {
         height: 'auto',
         width: '1100px',
         autoFocus: '__non_existing_element__',
-      disableClose:true,
+        disableClose:true,
         data: {
           inputType: this.inputType,
           inputValue: this.inputValue,
@@ -1080,13 +970,10 @@ export class ProcessPutAwaysComponent implements OnInit {
           autoForwardReplenish: this.processPutAwayIndex.imPreference.autoForwardReplenish,
           propFields:this.fieldNames
         }
-        
       });
 
       dialogRef.afterClosed().subscribe((result) => {
         if (result == 'NO') {
-
-      
           if(this.inputType !='Serial Number' && this.processPutAwayIndex.imPreference.createItemMaster ){
             this.ifAllowed=false;
 
@@ -1094,7 +981,7 @@ export class ProcessPutAwaysComponent implements OnInit {
               height: 'auto',
               width: '50vw',
               autoFocus: '__non_existing_element__',
-      disableClose:true,
+              disableClose:true,
               data: {
                 message: "The input code provided was not recognized.  Click OK to add the item to inventory or cancel to return.",
                 heading: ''
@@ -1105,55 +992,45 @@ export class ProcessPutAwaysComponent implements OnInit {
               if(result){
                 this.ifAllowed=false;
                 window.open(`/#/InductionManager/Admin/InventoryMaster?addItemNumber=${this.inputValue}`, '_self');
-
               }
-              
-            })
-
+            });
             return
           }
-          if (this.inputType == 'Any') {
-            this.global.ShowToastr('error','The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.', 'Error!');
-          } else {
-            this.global.ShowToastr('error',`The input code provided was not recognized as a ${this.inputType}.`, 'Error!');
-          }
-        } else if (result == "Task Completed") {
+          if (this.inputType == 'Any') this.global.ShowToastr('error','The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.', 'Error!');
+          else this.global.ShowToastr('error',`The input code provided was not recognized as a ${this.inputType}.`, 'Error!');
+        } 
+        else if (result == "Task Completed") {
           this.inputValue='';
           this.fillToteTable(this.batchId2);
-        } else if (result == "New Batch") {
+        } 
+        else if (result == "New Batch") {
           this.inputValue='';
           this.selectedIndex = 0;
         }
-          else if(result.category == "isReel"){
-            const d: Date = new Date();
-            const now: string = `${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}${d.getHours()}${d.getMinutes()}${d.getSeconds()}-IM`;
-                  let hvObj =  {
-                      order: now,
-                      uf1: '',
-                      uf2: '',
-                      lot: 0,
-                      warehouse: '',
-                      expdate: '',
-                      notes: ''
-                    }
-                  let itemObj =  {
-                      number: result.item.itemNumber,
-                      numReels: 1,
-                      totalParts: 0,
-                      description: result.item.description,
-                      whseRequired: result.item.warehouseSensitive
-                      
-                    }
-                    
-                    this.ReelTransactionsDialogue(hvObj,itemObj,this.fieldNames)
-                    
-            
+        else if(result.category == "isReel") {
+          const d: Date = new Date();
+          const now: string = `${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}${d.getHours()}${d.getMinutes()}${d.getSeconds()}-IM`;
+          let hvObj =  {
+            order: now,
+            uf1: '',
+            uf2: '',
+            lot: 0,
+            warehouse: '',
+            expdate: '',
+            notes: ''
           }
+          let itemObj =  {
+            number: result.item.itemNumber,
+            numReels: 1,
+            totalParts: 0,
+            description: result.item.description,
+            whseRequired: result.item.warehouseSensitive
+          }
+          this.ReelTransactionsDialogue(hvObj,itemObj,this.fieldNames)
+        }
       });
     }
-
   }
-
 
   zoneLabels:any;
   selectTotes(i: any) {
@@ -1171,7 +1048,6 @@ export class ProcessPutAwaysComponent implements OnInit {
 
     if (this.toteQuantity == this.cell) {
       this.isViewTote = false;
-
     } else {
       this.isViewTote = true;
     }
@@ -1180,7 +1056,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   fillToteTable(batchID: string = '') {
     try {
       let payLoad = {
-        batchID: batchID ? batchID : this.batchId2,
+        batchID: batchID || this.batchId2,
         sortOrder: 'asc',
         sortColumn: 0, 
       };

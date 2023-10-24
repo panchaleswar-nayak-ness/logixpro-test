@@ -1,5 +1,4 @@
 import { Component} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-wp-bulk-zones',
@@ -8,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class WpBulkZonesComponent  {
 
-  constructor() { }
+  
   displayedColumns: string[] = ['transType', 'scanSequence','actions'];
   dataSource:any
 

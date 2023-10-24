@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CrEditDesignTestDataComponent } from '../cr-edit-design-test-data/cr-edit-design-test-data.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
@@ -56,7 +56,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.NewDesignTestData = result ? result : this.NewDesignTestData
+      this.NewDesignTestData = result ?? this.NewDesignTestData;
     }
     );
   }
@@ -187,7 +187,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       dataType:  this.NewDesignDataType,
       outputType:  this.NewOutputType == 'Report' ? 2 : 1,
       exportFilename: this.NewExportFilename,
-      all: all ? all : false
+      all: all || false
   };
   this.iAdminApiService.restoreDesign(obj).subscribe(res=>{
     if(!res.data){
@@ -246,8 +246,8 @@ export class CrAddNewCustomReportComponent implements OnInit {
     let appendstring = '';
     if (errors.length > 0) {
         appendstring +=  title ;
-        for (let y = 0; y < errors.length; y++) {
-            appendstring +=   errors[y] ;
+        for (const error of errors) {
+            appendstring += error ;
         };
     };
     return appendstring;

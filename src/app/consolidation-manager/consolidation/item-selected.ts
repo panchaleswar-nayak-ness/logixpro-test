@@ -1,9 +1,7 @@
-import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Router } from "angular-routing";
-import { ToastrService } from "ngx-toastr"; 
 import { AuthService } from "src/app/init/auth.service";
 import { Component, Inject, OnInit } from "@angular/core";
-import { ApiFuntions } from "src/app/services/ApiFuntions";
 import { IConsolidationApi } from "src/app/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/services/consolidation-api/consolidation-api.service";
 import { GlobalService } from "src/app/common/services/global.service";

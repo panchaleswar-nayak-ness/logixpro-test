@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-location-details',
   templateUrl: './location-details.component.html',
   styleUrls: ['./location-details.component.scss']
 })
-export class LocationDetailsComponent implements OnInit {
+export class LocationDetailsComponent {
 
   @Input() reqDate : Date;
   @Input() isMoveQty : boolean = false;
@@ -36,10 +36,7 @@ export class LocationDetailsComponent implements OnInit {
 
   @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
 
-  constructor() { }
 
-  ngOnInit(): void {
-  }
 
   restrictTo4Digits(): void {
     const inputElement = this.myInput.nativeElement;

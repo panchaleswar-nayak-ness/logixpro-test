@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from 'src/app/init/auth.service';
 import { ItemCategoryComponent } from '../../dialogs/item-category/item-category.component';
@@ -60,7 +59,7 @@ export class DetailComponent implements OnInit {
   ngOnInit(): void {
      
     this.userData = this.authService.userData();
-    this.setVal = localStorage.getItem('routeFromOrderStatus') == 'true' ? true : false;
+    this.setVal = localStorage.getItem('routeFromOrderStatus') === 'true';
    
     this.spliUrl=this.router.url.split('/');
    

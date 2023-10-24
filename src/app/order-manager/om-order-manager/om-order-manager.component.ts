@@ -10,8 +10,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { ColumnSequenceDialogComponent } from 'src/app/admin/dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
@@ -416,15 +414,13 @@ export class OmOrderManagerComponent implements OnInit {
     if((this.value1 == "" || this.column != "Order Number") && !fromTable){
       this.global.ShowToastr('error',"You must select an Order Number to view the order status.", 'Error!');
     }
-    else{
-      if (!fromTable){
-        this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${this.value1 ? this.value1 : ''}`);
-      } 
-      else {
-        
-          this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${ele.orderNumber ? ele.orderNumber : ''}`);
-      } 
-    }
+    else if (!fromTable){
+      this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${this.value1 ? this.value1 : ''}`);
+    } 
+    else {
+      
+        this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${ele.orderNumber ? ele.orderNumber : ''}`);
+    } 
   }
 
   releaseViewed() {

@@ -1,10 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/init/auth.service';
 
 import { CmShipSplitLineComponent } from '../cm-ship-split-line/cm-ship-split-line.component';
 import { CmShipEditQtyComponent } from '../cm-ship-edit-qty/cm-ship-edit-qty.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
@@ -28,7 +27,6 @@ IsSelectModal: boolean = false;
 public IconsolidationAPI : IConsolidationApi;
 constructor(
   private global:GlobalService,
-  // private Api:ApiFuntions,
   public consolidationAPI : ConsolidationApiService,
   private authService: AuthService, 
   @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<CmConfirmAndPackingProcessTransactionComponent>,) {

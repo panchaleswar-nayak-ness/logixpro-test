@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, Inject, OnInit, ViewChild, Renderer2, ViewChildren, QueryList } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog'; 
+import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog'; 
 import { AuthService } from 'src/app/init/auth.service';
 
 import { DeleteConfirmationComponent } from '../../admin/dialogs/delete-confirmation/delete-confirmation.component';
@@ -288,12 +288,12 @@ export class TotesAddEditComponent implements OnInit {
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.ELEMENT_DATA_TOTE = res.data;
-          for(let i=0;i<this.ELEMENT_DATA_TOTE.length;i++)
+          for(let value of this.ELEMENT_DATA_TOTE)
           {
-          this.ELEMENT_DATA_TOTE[i].isInserted = 1;
-          this.ELEMENT_DATA_TOTE[i].isDuplicate = false;
-          this.ELEMENT_DATA_TOTE[i].oldToteID   = this.ELEMENT_DATA_TOTE[i].toteID
-          this.ELEMENT_DATA_TOTE[i].isEdit   = false
+            value.isInserted = 1;
+            value.isDuplicate = false;
+            value.oldToteID   = value.toteID
+            value.isEdit   = false
           }
           if(items){
             this.ELEMENT_DATA_TOTE.push(items[items.length-1])

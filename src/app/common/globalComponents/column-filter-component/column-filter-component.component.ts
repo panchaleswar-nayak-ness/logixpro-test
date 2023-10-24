@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
@@ -9,7 +9,7 @@ import { TableHeaderDefinitions } from '../../types/CommonTypes';
   templateUrl: './column-filter-component.component.html',
   styleUrls: ['./column-filter-component.component.scss']
 })
-export class ColumnFilterComponentComponent implements OnInit {
+export class ColumnFilterComponentComponent {
 
   @Input() tableColumns : TableHeaderDefinitions[];
   @Input() searchCol: any = '';
@@ -30,11 +30,6 @@ export class ColumnFilterComponentComponent implements OnInit {
 
   hideRequiredControl = new FormControl(false);
   floatLabelControl = new FormControl('auto' as FloatLabelType);
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   compareObjects(o1: any, o2: any): boolean {
     return o1.colDef === o2.colDef && o1.colHeader === o2.colHeader;

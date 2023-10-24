@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ViewChild, TemplateRef, ElementRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json'; 
 import { AdminEmployeeLookupResponse } from 'src/app/Iemployee';
 import { Router } from '@angular/router';
@@ -72,9 +72,9 @@ export class AddNewEmployeeComponent implements OnInit {
     this.allGroups  = this.empData?.allGroups;
     this.form_heading = this.data?.mode === 'edit' ? 'Edit Employee' : 'Add New Employee';
     this.form_btn_label = this.data?.mode === 'edit' ?'Save' : 'Add';
-    this.isEmail = this.data?.mode === 'edit' ? true : false;
-    this.isDisabledPassword = this.data?.mode === 'edit' ? true : false;
-    this.isDisabledUsername = this.data?.mode === 'edit' ? true : false;
+    this.isEmail = this.data?.mode === 'edit';
+    this.isDisabledPassword = this.data?.mode === 'edit';
+    this.isDisabledUsername = this.data?.mode === 'edit';
     this.mi = this.empData?.mi ?? '';
     this.firstName = this.empData?.firstName ?? '';
     this.OldPassword = this.empData?.password ?? '';
@@ -167,15 +167,11 @@ ChangePassword(data){
               this.global.ShowToastr('success',labels.alert.success, 'Success!');
               
             }
-            else {
-              if(response.responseMessage?.toString() === 'User already exists'){
+            else if(response.responseMessage?.toString() === 'User already exists'){
                 this.global.ShowToastr('error',response.responseMessage, 'Error!');
               } else{
-                
                 this.global.ShowToastr('error',response.responseMessage?.toString() + '. User already exists.', 'Error!');
-                
               }
-            }
           });
       }
 

@@ -5,15 +5,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort} from '@angular/material/sort';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
-import { MatDialog } from '@angular/material/dialog';
-import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { SharedService } from 'src/app/services/shared.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';

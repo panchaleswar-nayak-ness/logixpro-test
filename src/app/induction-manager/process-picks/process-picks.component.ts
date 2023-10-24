@@ -1,4 +1,3 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, HostListener,OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,7 +8,7 @@ import { AuthService } from '../../../app/init/auth.service';
 import { FormControl } from '@angular/forms';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { PickToteManagerComponent } from 'src/app/dialogs/pick-tote-manager/pick-tote-manager.component'; 
-import { WorkstationZonesComponent } from 'src/app/dialogs/workstation-zones/workstation-zones.component';
+
 import { map, Subject, takeUntil } from 'rxjs';
 import labels from '../../labels/labels.json';
 import { MatSelect } from '@angular/material/select';
@@ -149,17 +148,13 @@ export class ProcessPicksComponent implements OnInit {
       }
       else if (!this.orderEmpty) {
         this.global.ShowToastr('error','Please enter in at least 1 order number', 'Error!')
-      } else {
-        if (this.imPreferences.printDirectly) {
+      } else  if (this.imPreferences.printDirectly) {
           await  this.global.Print(`FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`);
 
         } else {
           window.open(`/#/report-view?file=FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
         }
-
-
-      }
     }
   }
   getAllOrders() {

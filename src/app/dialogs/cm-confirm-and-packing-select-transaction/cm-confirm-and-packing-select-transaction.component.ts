@@ -1,5 +1,5 @@
 import { Component, Inject,OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
  
 import { CmConfirmAndPackingProcessTransactionComponent } from '../cm-confirm-and-packing-process-transaction/cm-confirm-and-packing-process-transaction.component';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -96,8 +96,8 @@ openScanItem(ItemNumber:any,id: any) {
        
       }else {
         //edit table
-        for (let x = 0; x < this.confPackTransTable.length; x++) {
-            let tabID = this.confPackTransTable[x].sT_ID;
+        for (let x of this.confPackTransTable) {
+            let tabID = x.sT_ID;
             if (id == tabID) {
               // click active 
             };

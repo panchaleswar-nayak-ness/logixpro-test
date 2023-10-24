@@ -1,25 +1,18 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { AuthService } from 'src/app/init/auth.service';
 import { SetItemLocationComponent } from '../../dialogs/set-item-location/set-item-location.component';
-import { SupplierItemIdComponent } from '../../dialogs/supplier-item-id/supplier-item-id.component';
 import { TemporaryManualOrderNumberAddComponent } from '../../dialogs/temporary-manual-order-number-add/temporary-manual-order-number-add.component';
-import { UnitMeasureComponent } from '../../dialogs/unit-measure/unit-measure.component';
-import { UserFieldsEditComponent } from '../../dialogs/user-fields-edit/user-fields-edit.component';
 import labels from '../../../labels/labels.json';
 import { PostManualTransactionComponent } from '../../dialogs/post-manual-transaction/post-manual-transaction.component';
-import { DeleteConfirmationTransactionComponent } from '../../dialogs/delete-confirmation-transaction/delete-confirmation-transaction.component';
 import { DeleteConfirmationManualTransactionComponent } from '../../dialogs/delete-confirmation-manual-transaction/delete-confirmation-manual-transaction.component';
-import { WarehouseComponent } from '../../dialogs/warehouse/warehouse.component';
 import { InvalidQuantityComponent } from '../../dialogs/invalid-quantity/invalid-quantity.component';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { AddNotesComponent } from '../../dialogs/add-notes/add-notes.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
@@ -109,7 +102,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.OSFieldFilterNames();
   }
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
   printLabelMT() {
     this.global.Print(`FileName:printMTLabel|ID:${this.transactionID}|User:${this.userData.userName}`, 'lbl')
@@ -148,7 +141,7 @@ export class GenerateTransactionComponent implements OnInit {
       .TransactionInfo(payLoad)
       .subscribe(
         (res: any) => {
-          if (res && res.data && res.data.getTransaction) {
+          if (res?.data && res.data.getTransaction) {
             this.item = res.data.getTransaction;
 
             this.itemNumber = this.item.itemNumber;
@@ -170,10 +163,7 @@ export class GenerateTransactionComponent implements OnInit {
             this.batchPickID = this.item.batchPickID;
             this.wareHouse = this.item.warehouse;
             this.toteID = this.item.toteID;
-            this.emergency =
-              this.item.emergency === 'False' || this.item.emergency === 'false'
-                ? false
-                : true;
+            this.emergency =!(this.item.emergency === 'False' || this.item.emergency === 'false')
             this.warehouseSensitivity = this.item.wareHouseSensitive;
             this.totalQuantity = res.data.totalQuantity;
             this.zone = this.item.zone;
@@ -183,13 +173,11 @@ export class GenerateTransactionComponent implements OnInit {
             this.invMapID = this.item.invMapID;
             this.bin = this.item.bin;
             this.quantityAllocatedPick =
-              res.data &&
-              res.data.quantityAllocated.length &&
+              res?.data.quantityAllocated.length &&
               res.data.quantityAllocated[0].quantityAllocatedPick;
 
             this.quantityAllocatedPutAway =
-              res.data &&
-              res.data.quantityAllocated.length &&
+              res?.data.quantityAllocated.length &&
               res.data.quantityAllocated[0].quantityAllocatedPutAway;
           } else {
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
@@ -257,7 +245,7 @@ export class GenerateTransactionComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
-      if (res && res.invMapID) {
+      if (res?.invMapID) {
         this.invMapIDget = res.invMapID;
         this.itemNumber = res.itemNumber;
         this.getLocationData();
@@ -325,7 +313,7 @@ export class GenerateTransactionComponent implements OnInit {
             .PostTransaction(payload)
             .subscribe(
               (res: any) => {
-                if (res && res.isExecuted) {
+                if (res?.isExecuted) {
                   this.global.ShowToastr('success', labels.alert.success, 'Success!');
                   this.updateTrans();
                   if (type != 'save') {
@@ -423,7 +411,7 @@ export class GenerateTransactionComponent implements OnInit {
     };
     this.iAdminApiService.LocationData(payload).subscribe(
       (res: any) => {
-        if (res && res.isExecuted) {
+        if (res?.isExecuted) {
           let items = res.data.locationTables[0];
           this.zone = items.zone;
           this.carousel = items.carousel;
@@ -506,7 +494,7 @@ export class GenerateTransactionComponent implements OnInit {
       this.iAdminApiService
         .UpdateTransaction(payload)
         .subscribe((res: any) => {
-          if (res && res.isExecuted) {
+          if (res?.isExecuted) {
             this.global.ShowToastr('success', labels.alert.success, 'Success!');
             this.clearMatSelectList();
           } else {
@@ -525,7 +513,7 @@ export class GenerateTransactionComponent implements OnInit {
       .SupplierItemIDInfo(payload)
       .subscribe(
         (res: any) => {
-          if (res && res.isExecuted) {
+          if (res?.isExecuted) {
             this.itemNumber = res.data[0].itemNumber
             this.description = res.data[0].description
             if (res.data[0].unitofMeasure != this.uom) {

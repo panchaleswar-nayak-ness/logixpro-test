@@ -5,7 +5,6 @@ import {
   OnInit,
   ViewChild,
   Renderer2,
-  ViewChildren,
   QueryList,
 } from '@angular/core'; 
 import { MatTableDataSource } from '@angular/material/table';
@@ -760,8 +759,7 @@ export class MoveItemsComponent implements OnInit {
     this.endRowTo = 10;
     this.recordsPerPageTo = 10;
     this.recordsFilteredTo = 0;
-    // this.paginator.pageIndex = 0;
-    // this.paginatorTo.pageIndex = 0;
+    
   }
   resetPaginationTo() {
     this.sortOrderTo = 'asc';
@@ -771,7 +769,7 @@ export class MoveItemsComponent implements OnInit {
     this.endRowTo = 10;
     this.recordsPerPageTo = 10;
     this.recordsFilteredTo = 0;
-    // this.paginatorTo.pageIndex = 0;
+    
   }
   resetPaginationFrom() {
     this.sortOrder = 'asc';
@@ -781,7 +779,7 @@ export class MoveItemsComponent implements OnInit {
     this.endRow = 10;
     this.recordsPerPage = 10;
     this.recordsFiltered = 0;
-    // this.paginator.pageIndex = 0;
+    
   }
   resetFromFilters() {
     this.startRow = 0;
@@ -789,15 +787,13 @@ export class MoveItemsComponent implements OnInit {
   resetToFilters() {
     this.startRowTo = 0;
     this.viewModeTo = 'All';
-    // this.paginatorTo.pageIndex = 0;
+    
   }
 
   clearItemNum() {
     this.itemNo = '';
     this.invMapIDToItem = -1;
-    // this.paginators.forEach((paginator) => {
-    //   paginator.pageIndex = 0;
-    // });
+    
 
     this.clearFields('MoveFrom');
     this.clearFields('MoveTo');

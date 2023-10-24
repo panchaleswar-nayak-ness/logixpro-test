@@ -11,7 +11,6 @@ import { CmShipSplitLineComponent } from '../cm-ship-split-line/cm-ship-split-li
 import { CmShipEditConIdComponent } from '../cm-ship-edit-con-id/cm-ship-edit-con-id.component';
 import { CmShipEditQtyComponent } from '../cm-ship-edit-qty/cm-ship-edit-qty.component';
 import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote-id-update-modal.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
@@ -93,8 +92,8 @@ export class CmShippingTransactionComponent implements OnInit {
 
   checkToteID() {
     let noExists = false; // this is a flag that will let us know if the toteID exists in the data
-    for (let x = 0; x < this.tableData.data.length; x++) { // this is a loop that will go through each row in the data
-        let tabTote = this.tableData.data[x].toteID; // this will get the toteID value from the current row of the data
+    for (const row of this.tableData.data) { // this is a loop that will go through each row in the data
+        let tabTote = row.toteID; // this will get the toteID value from the current row of the data
         if (this.toteID == tabTote) { // this is a conditional statement that will check if the toteID entered by the user matches the toteID in the current row of the data
             this.openToteIDUpdate(); // if the toteID does match, then we will open the modal
             noExists = false; // we will set the flag to false since the toteID does exist
@@ -127,11 +126,11 @@ export class CmShippingTransactionComponent implements OnInit {
       // update the container ID for the selected tote ID
       if (res?.isExecuted) {
         // loop through the table data
-        for (let x = 0; x < this.tableData.data.length; x++) {
+        for (const row of this.tableData.data) {
           // if the tote ID matches the one that was updated
-          if (res.toteID == this.tableData.data[x].toteID) {
+          if (res.toteID == row.toteID) {
               // set the container ID
-              this.tableData.data[x].containerID = res.containerID;
+              row.containerID = res.containerID;
           }
         } 
       }      

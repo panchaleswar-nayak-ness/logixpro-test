@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -37,7 +37,8 @@ export class CpbBlossomToteComponent implements OnInit {
   }
 
   restrictKeyboard(event: KeyboardEvent) {
-    const isNumericInput = event.key.match(/^[0-9]+$/);
+    const isNumericInput = (/^\d+$/).exec(event.key);
+
     if (!isNumericInput && event.key !== "Backspace") {
       event.preventDefault();
     }
