@@ -1103,11 +1103,6 @@ public ReprocessTransactionData(body: any ){
   return this.Api.ReprocessTransactionData(payload);
 } 
 public PostReprocessTransaction(body: any ){
-      const payload = {
-      username: this.userData.username,
-      wsid: this.userData.wsid,
-      ...body
-    }
   return this.Api.PostReprocessTransaction();
 } 
 public OrderNumberNext(body: any ){
