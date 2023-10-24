@@ -857,7 +857,7 @@ export class InventoryMasterComponent implements OnInit {
 
   viewLocations() {
     this.RecordSavedItem();
-    if (this.setVal == true) {
+    if (this.setVal) {
       this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
     }
     else if(this.spliUrl[1] == 'InductionManager'){

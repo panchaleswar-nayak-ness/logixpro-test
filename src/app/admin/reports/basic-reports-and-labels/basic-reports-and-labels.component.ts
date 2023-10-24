@@ -6,7 +6,6 @@ import { MatSelect } from '@angular/material/select';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { } from 'src/app/dialogs/br-choose-report-type/br-choose-report-type.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions'; 
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -200,7 +199,7 @@ export class BasicReportsAndLabelsComponent implements OnInit {
       }, 1000);
    }
 reportfieldvalues(selectedIndex,selectedValue,IsRemove=false){
-  if(IsRemove == true || !(selectedIndex == this.selectedIndex && selectedValue == this.selectedIndex)){
+  if(IsRemove || !(selectedIndex == this.selectedIndex && selectedValue == this.selectedIndex)){
     this.selectedIndex = selectedIndex;
     this.selectedValue =selectedValue;
   let payload:any = {
