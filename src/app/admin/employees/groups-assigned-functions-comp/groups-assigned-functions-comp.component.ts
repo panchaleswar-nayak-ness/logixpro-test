@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-groups-assigned-functions-comp',
   templateUrl: './groups-assigned-functions-comp.component.html',
-  styleUrls: ['./groups-assigned-functions-comp.component.scss']
+  styleUrls: []
 })
 export class GroupsAssignedFunctionsCompComponent implements OnInit {
 

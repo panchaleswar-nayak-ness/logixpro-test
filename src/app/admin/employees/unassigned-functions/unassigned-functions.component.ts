@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input,Output, Pipe, PipeTransform} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-
 import { AssignService } from 'src/app/assign.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 

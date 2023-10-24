@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-groups-employees-group-management',
   templateUrl: './groups-employees-group-management.component.html',
-  styleUrls: ['./groups-employees-group-management.component.scss']
+  styleUrls: []
 })
 export class GroupsEmployeesGroupManagementComponent implements OnInit {
 

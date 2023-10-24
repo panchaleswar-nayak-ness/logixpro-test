@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core'; 
 import { AuthService } from 'src/app/init/auth.service';
 
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {MatDialogRef } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
