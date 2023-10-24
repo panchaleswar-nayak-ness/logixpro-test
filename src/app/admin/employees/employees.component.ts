@@ -1,8 +1,6 @@
 import {Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { MatSort, Sort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {MatTableDataSource } from '@angular/material/table';
+import {FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators'; 
 import { IEmployee } from 'src/app/Iemployee';
@@ -10,12 +8,8 @@ import { MatDialog} from '@angular/material/dialog';
 import { AddNewEmployeeComponent } from '../dialogs/add-new-employee/add-new-employee.component';
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
-import { AddZoneComponent } from '../dialogs/add-zone/add-zone.component';
-import { AddLocationComponent } from '../dialogs/add-location/add-location.component';
-import { AddGroupAllowedComponent } from '../dialogs/add-group-allowed/add-group-allowed.component';
 import { AddNewGroupComponent } from '../dialogs/add-new-group/add-new-group.component';
 import labels from '../../labels/labels.json';
-import { GroupAllowedComponent } from '../dialogs/group-allowed/group-allowed.component';
 import { CloneGroupComponent } from '../dialogs/clone-group/clone-group.component';
 import { Router} from '@angular/router';
 import { AuthService } from '../../../app/init/auth.service';
@@ -302,7 +296,6 @@ export class EmployeesComponent implements OnInit {
     );
 
    this.env =  JSON.parse(localStorage.getItem('env') ?? '');
-  //  this.initialzeEmpForm();
    this.getEmployeeData();
   }
 
@@ -472,7 +465,6 @@ export class EmployeesComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-        if (result !== undefined)
           if(result == true) this.employeesLookup.EmployeeLookUp();
     });
   }
@@ -539,7 +531,7 @@ export class EmployeesComponent implements OnInit {
     this.searchfuncAllowed = '';
     this.grpAllFilter='';
     this.employee_fetched_zones.filter = '';
-    this.location_data_source!.filter = '';
+    this.location_data_source.filter = '';
     this.groupAllowedList.filter = '';
   }
  

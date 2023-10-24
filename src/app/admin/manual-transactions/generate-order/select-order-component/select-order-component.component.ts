@@ -105,7 +105,6 @@ export class SelectOrderComponentComponent implements OnInit {
       this.clearMatSelectList()
         if (res.isExecuted) {
           this.selectedOrder=this.orderNumber
-          // this.getOrderTableData();
         }
       });
     } else if (
@@ -131,14 +130,8 @@ export class SelectOrderComponentComponent implements OnInit {
       dialogRef.afterClosed().subscribe((res) => {
         this.clear()
         this.clearMatSelectList()
-        // this.getOrderTableData();
-
-        if (res.isExecuted) {
-          // this.getOrderTableData();
-          
-        }
       });
-    }else   if (
+    }else if (
       !opened &&
       this.selectedOption &&
       this.selectedOption === 'post_order'
@@ -159,7 +152,6 @@ export class SelectOrderComponentComponent implements OnInit {
         this.clearMatSelectList()
         if (res.isExecuted) {
           this.clear();
-          // this.getOrderTableData();
         }
       });
     }

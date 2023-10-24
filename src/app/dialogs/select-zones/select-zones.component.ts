@@ -37,18 +37,9 @@ export class SelectZonesComponent implements OnInit {
 
 
   selectZone(row:any){
-
-    this.ELEMENT_DATA.find((o, i) => {
-      if (o.zone === row.zone) {
-        this.ELEMENT_DATA[i].selected = !this.ELEMENT_DATA[i].selected;
-        return true; // stop searching
-      }
-      else 
-      {
-        return false;
-      }
-    });
-
+    const index = this.ELEMENT_DATA.findIndex(o => o.zone === row.zone);
+    if (index !== -1) this.ELEMENT_DATA[index].selected = !this.ELEMENT_DATA[index].selected;
+    else console.log('Element not found:', row.zone);
   }
 
 

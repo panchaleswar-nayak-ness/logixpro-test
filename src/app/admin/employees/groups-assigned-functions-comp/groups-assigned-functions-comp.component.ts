@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-groups-assigned-functions-comp',
   templateUrl: './groups-assigned-functions-comp.component.html',
   styleUrls: []
 })
-export class GroupsAssignedFunctionsCompComponent implements OnInit {
+export class GroupsAssignedFunctionsCompComponent {
 
   @Input() isGroupLookUp : boolean = false;
   @Input() unassignedFunctions;
@@ -14,11 +14,6 @@ export class GroupsAssignedFunctionsCompComponent implements OnInit {
   @Output() saveAssignedFuncEmit = new EventEmitter();
   @Output() addPermissionEmit = new EventEmitter();
   @Output() removePermissionEmit = new EventEmitter();
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   saveAssignedFunc() {
     this.saveAssignedFuncEmit.emit();

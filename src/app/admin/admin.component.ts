@@ -7,7 +7,6 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
-import { ApiFuntions } from '../services/ApiFuntions';
 import { IAdminApiService } from '../services/admin-api/admin-api-interface';
 import { AdminApiService } from '../services/admin-api/admin-api.service';
 import { GlobalService } from '../common/services/global.service';
@@ -91,11 +90,9 @@ export class AdminComponent implements OnInit {
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   constructor(
     public authService: AuthService, 
-    private api:ApiFuntions,
     private global : GlobalService,
-    private adminApiService: AdminApiService,
-    private _liveAnnouncer: LiveAnnouncer,
-   
+    public adminApiService: AdminApiService,
+    private _liveAnnouncer: LiveAnnouncer
   ) {
     this.iAdminApiService = adminApiService;
   }
@@ -245,7 +242,7 @@ export class AdminComponent implements OnInit {
           this.inventoryDetail.get("replenishmentPoint")?.setValue(data?.reorderPoint);
           this.inventoryDetail.get("replenishmentLevel")?.setValue(data?.replenishmentLevel);
           this.inventoryDetail.get("includeRTSUpdate")?.setValue(data?.includeInAutoRTSUpdate ? 'Yes' : 'No');
-          this.inventoryDetail.get("fifo")?.setValue(data && data?.fifo ? 'Yes' : 'No');
+          this.inventoryDetail.get("fifo")?.setValue(data?.fifo ? 'Yes' : 'No');
           this.inventoryDetail.get("dateSensitive")?.setValue(data?.dateSensitive ? 'Yes' : 'No');
           this.inventoryDetail.get("wareHouseSensitive")?.setValue(data?.warehouseSensitive ? 'Yes' : 'No');
           this.inventoryDetail.get("active")?.setValue(data?.active ? 'Yes' : 'No');

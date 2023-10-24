@@ -1,17 +1,11 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
- 
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import labels from '../../../labels/labels.json';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import { ItemExistGenerateOrderComponent } from '../item-exist-generate-order/item-exist-generate-order.component';
 import { EmptyFieldsComponent } from '../empty-fields/empty-fields.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
@@ -42,13 +36,12 @@ export class AddNewTransactionToOrderComponent implements OnInit {
     public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global:GlobalService,
-    
-    private adminApiService: AdminApiService,
-    private Api: ApiFuntions,
+    public adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
   ) {
     this.iAdminApiService = adminApiService;
-   this.iCommonAPI = commonAPI; }
+    this.iCommonAPI = commonAPI; 
+  }
   transactionInfo = new FormGroup({
     lineNumber: new FormControl(''),
     lineSequence: new FormControl(''),

@@ -279,7 +279,7 @@ export class AddNewDeviceComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
         let payload = {
-          deviceID: this.data?.item  ? this.data.item.deviceID : this.newDeviceID > 0? this.newDeviceID:0
+          deviceID: (this.data?.item)  ? (this.data.item.deviceID) : (this.newDeviceID > 0? this.newDeviceID:0)
         };
         this.iAdminApiService
           .DevicePreferencesDelete(payload)

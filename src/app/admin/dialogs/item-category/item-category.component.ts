@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
- 
+import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
@@ -26,7 +25,6 @@ export class  ItemCategoryComponent implements OnInit {
     public commonAPI : CommonApiService,
     private global:GlobalService,
     private authService: AuthService,
-    
     private renderer: Renderer2,
     public dialogRef: MatDialogRef<any>, 
     public route: Router

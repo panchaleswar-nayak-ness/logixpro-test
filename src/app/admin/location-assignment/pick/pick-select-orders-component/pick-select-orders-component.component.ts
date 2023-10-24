@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 
@@ -7,7 +7,7 @@ import { MatSort, Sort } from '@angular/material/sort';
   templateUrl: './pick-select-orders-component.component.html',
   styleUrls: ['./pick-select-orders-component.component.scss']
 })
-export class PickSelectOrdersComponentComponent implements OnInit {
+export class PickSelectOrdersComponentComponent {
 
   @Input() filterValue : string;
   @Input() tableData2 : any;
@@ -19,11 +19,6 @@ export class PickSelectOrdersComponentComponent implements OnInit {
   @ViewChild('paginator2') paginator2: MatPaginator; 
   @ViewChild('MatSort2') sort2: MatSort;
   
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
   applyFilter(event){
     this.applyFilterEmit.emit(event);
   }

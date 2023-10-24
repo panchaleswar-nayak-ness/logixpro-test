@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-groups-employees-group-management',
   templateUrl: './groups-employees-group-management.component.html',
   styleUrls: []
 })
-export class GroupsEmployeesGroupManagementComponent implements OnInit {
+export class GroupsEmployeesGroupManagementComponent {
 
   @Input() isGroupLookUp : boolean = false;
   @Input() env : string = '';
@@ -19,11 +19,6 @@ export class GroupsEmployeesGroupManagementComponent implements OnInit {
   @Output() printSelectedEmit = new EventEmitter();
   @Output() printAllEmit = new EventEmitter();
   @Output() updateGrpLookUpEmit = new EventEmitter();
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   backGroupAction() {
     this.backGroupActionEmit.emit();

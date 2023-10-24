@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { SpinnerService } from '../../../app/init/spinner.service'; 
 import { Router,NavigationEnd  } from '@angular/router';
 import { AuthService } from '../../../app/init/auth.service';
@@ -7,8 +7,6 @@ import { SharedService } from 'src/app/services/shared.service';
 import { Title } from '@angular/platform-browser';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Subscription } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions'; 
-import { MatDialog } from '@angular/material/dialog';
 import { DPrinterSetupComponent } from 'src/app/dialogs/d-printer-setup/d-printer-setup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
@@ -24,7 +22,7 @@ import { UserApiService } from 'src/app/services/user-api/user-api.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   private breakpointSubscription: Subscription
   @Output() toggleSidebarForMe: EventEmitter<any> = new EventEmitter();
   loading:boolean = true;
@@ -44,7 +42,6 @@ constructor(
     public inductionManagerApi: InductionManagerApiService,
     public spinnerService: SpinnerService, 
     private authService: AuthService,
-    // private api:ApiFuntions,
     public globalConfigApi: GlobalConfigApiService,
     
     private sharedService: SharedService,

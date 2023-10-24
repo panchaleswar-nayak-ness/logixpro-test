@@ -65,7 +65,7 @@
                             <button matSuffix *ngIf="fromLocationCrossbtn" class="clear-btn" (click)=" fromLocationCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
 
                             
-                        <mat-autocomplete #fromLocation="matAutocomplete" (optionSelected)="searchData()">
+                        <mat-autocomplete #fromLocation="matAutocomplete">
                             <mat-option *ngFor="let option of searchAutocompleteFromLocation" [value]="option">
                                 {{option}}
                             </mat-option>
@@ -84,7 +84,7 @@
                             formControlName="toLocation" matInput type="text"
                             maxlength="50" [(ngModel)]="toLocationCrossbtn">
                             <button matSuffix *ngIf="toLocationCrossbtn" class="clear-btn" (click)=" toLocationCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
-                        <mat-autocomplete #toLocation="matAutocomplete" (optionSelected)="searchData()">
+                        <mat-autocomplete #toLocation="matAutocomplete">
                             <mat-option *ngFor="let option of searchAutocompleteToLocation" [value]="option">
                                 {{option}}
                             </mat-option>
@@ -109,7 +109,7 @@
                         <input [matAutocomplete]="fromItem" (ngModelChange)="this.fromItemTA.next($event)"
                             formControlName="fromItem" matInput class=" " type="text"
                             maxlength="50">
-                        <mat-autocomplete #fromItem="matAutocomplete" (optionSelected)="searchData()">
+                        <mat-autocomplete #fromItem="matAutocomplete">
                             <mat-option *ngFor="let option of searchAutocompleteFromItem" [value]="option.itemNumber">
                                 {{option.itemNumber}}
                             </mat-option>
@@ -128,7 +128,7 @@
                         <input [matAutocomplete]="toItem" (ngModelChange)="this.toItemTA.next($event)"
                             formControlName="toItem" matInput class=" " type="text"
                             maxlength="50">
-                        <mat-autocomplete #toItem="matAutocomplete" (optionSelected)="searchData()">
+                        <mat-autocomplete #toItem="matAutocomplete">
                             <mat-option *ngFor="let option of searchAutocompleteToItem" [value]="option.itemNumber">
                                 {{option.itemNumber}}
                             </mat-option>
@@ -149,7 +149,7 @@
                             <input [matAutocomplete]="auto" (ngModelChange)="this.descriptionTA.next($event)"
                                 formControlName="description" matInput class=" " type="text"
                                 maxlength="255">
-                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
+                            <mat-autocomplete #auto="matAutocomplete">
                                 <mat-option *ngFor="let option of searchAutocompleteDescription" [value]="option">
                                     {{option}}
                                 </mat-option>
@@ -174,7 +174,7 @@
                             <mat-label>Category</mat-label>
                             <input [matAutocomplete]="auto" (ngModelChange)="this.categoryTA.next($event)"
                                 formControlName="category" matInput class=" " type="text" maxlength="50">
-                            <mat-autocomplete #auto="matAutocomplete"   (optionSelected)="searchData()">
+                            <mat-autocomplete #auto="matAutocomplete"  >
                                
                                
                                
@@ -293,7 +293,7 @@
                             <mat-label>From Cost</mat-label>
                             <input  [NumbersOnly]="true" [matAutocomplete]="fromCost" (ngModelChange)="this.beginCostTA.next($event)"
                                 formControlName="costStart" matInput class=" " type="text" maxlength="50">
-                            <mat-autocomplete #fromCost="matAutocomplete" (optionSelected)="searchData()">
+                            <mat-autocomplete #fromCost="matAutocomplete">
                                 <mat-option *ngFor="let option of searchAutocompletBeginCost" [value]="math.trunc(option).toString()">
                                     {{math.trunc(option)}}
                                 </mat-option>
@@ -312,7 +312,7 @@
                             <mat-label>To Cost</mat-label>
                             <input  [NumbersOnly]="true" [matAutocomplete]="toCost" (ngModelChange)="this.endCostTA.next($event)"
                                 formControlName="costEnd" matInput class=" " type="text" maxlength="50">
-                            <mat-autocomplete #toCost="matAutocomplete" (optionSelected)="searchData()">
+                            <mat-autocomplete #toCost="matAutocomplete">
                                 <mat-option *ngFor="let option of searchAutocompletEndCost" [value]="math.trunc(option).toString()">
                                     {{math.trunc(option)}}
                                 </mat-option>

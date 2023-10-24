@@ -1,4 +1,3 @@
-import { HttpContext, HttpHeaders } from '@angular/common/http';
 import {
   Component,
   EventEmitter,
@@ -8,7 +7,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 
 import {
@@ -19,7 +17,6 @@ import {
 } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { AuthService } from 'src/app/init/auth.service';
-import { BYPASS_LOG } from 'src/app/init/http-interceptor'; 
 import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
@@ -109,7 +106,6 @@ export class TranSelectOrderComponent implements OnInit {
 
   @Input() set totalLinesOrderEvent(event: Event) {
     if (event) {
-      // this.totalLinesOrder = event;   // getting it from shared service
       this.info[4].value = this.totalLinesOrder;
     }
   }

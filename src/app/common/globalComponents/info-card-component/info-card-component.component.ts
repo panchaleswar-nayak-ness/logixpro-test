@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-info-card-component',
@@ -10,10 +10,6 @@ export class InfoCardComponentComponent {
   @Input() title : string= '';
   @Input() value : string= '-';
   @Input() colorClass : string;
-
-  constructor() { }
-
-
 
 }
 

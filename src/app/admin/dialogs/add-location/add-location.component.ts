@@ -1,10 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
- 
-import { SpinnerService } from '../../../../app/init/spinner.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 import labels from '../../../labels/labels.json';
-import {  } from 'datatables.net';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
@@ -31,9 +28,7 @@ export class AddLocationComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private global:GlobalService, 
     private employeeService: ApiFuntions, 
-    
-    private loader: SpinnerService,
-    private adminApiService: AdminApiService,
+    public adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
     ) {
       this.iAdminApiService = adminApiService;
