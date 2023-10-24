@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
  
 import { AuthService } from 'src/app/init/auth.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import { CmConfirmAndPackingProcessTransactionComponent } from '../cm-confirm-and-packing-process-transaction/cm-confirm-and-packing-process-transaction.component';
 import { CmConfirmAndPackingSelectTransactionComponent } from '../cm-confirm-and-packing-select-transaction/cm-confirm-and-packing-select-transaction.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -9,7 +9,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
@@ -243,7 +242,7 @@ async ClickConfirmAll(){
 openScanItem(ItemNumber:any,id: any) {
   let index= this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
   this.transTable.filteredData[index].active = true; 
-  let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingProcessTransactionComponent, {
+  this.global.OpenDialog(CmConfirmAndPackingProcessTransactionComponent, {
     height: 'auto',
     width: '96vw',
     autoFocus: '__non_existing_element__',
@@ -308,12 +307,12 @@ async ScanItemNum($event:any){
 let searchCount = 0;
 let id;
 let contID;
-for (let x = 0; x < this.transTable.filteredData.length; x++) {
-    let itemNum = this.transTable.filteredData[x].itemNumber;
-    let complete = this.transTable.filteredData[x].complete;
+for (const item of this.transTable.filteredData) {
+    let itemNum = item.itemNumber;
+    let complete = item.complete;
     if (this.ItemNumber.toLowerCase() == itemNum.toLowerCase() && !complete) {
         searchCount += 1;
-        id = this.transTable.filteredData[x].sT_ID;
+        id = item.sT_ID;
     };
 };
  

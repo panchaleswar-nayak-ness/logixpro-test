@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-employees-information',
   templateUrl: './employees-information.component.html',
   styleUrls: ['./employees-information.component.scss']
 })
-export class EmployeesInformationComponent implements OnInit {
+export class EmployeesInformationComponent{
 
   @Input() isLookUp : boolean = false;
   @Input() env : string = '';
@@ -17,10 +17,7 @@ export class EmployeesInformationComponent implements OnInit {
   @Output() printEmpListEmit = new EventEmitter();
   @Output() updateIsLookUpEmit = new EventEmitter();
 
-  constructor() { }
 
-  ngOnInit(): void {
-  }
 
   backEmpAction() {
     this.backEmpActionEmit.emit();

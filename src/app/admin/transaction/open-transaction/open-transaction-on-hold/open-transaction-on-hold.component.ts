@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -26,10 +25,6 @@ import { ColumnSequenceDialogComponent } from 'src/app/admin/dialogs/column-sequ
 import { FunctionAllocationComponent } from 'src/app/admin/dialogs/function-allocation/function-allocation.component';
 import { SendTranHistoryComponent } from 'src/app/admin/dialogs/send-tran-history/send-tran-history.component';
 import { SharedService } from 'src/app/services/shared.service';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';

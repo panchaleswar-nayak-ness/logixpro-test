@@ -62,11 +62,11 @@ export class SelectZonesComponent implements OnInit {
   AllRecordsChecked()
   {
     let selected=false;
-    for(let i=0;i<this.ELEMENT_DATA.length;i++)
+    for (const element of this.ELEMENT_DATA) 
     {
-      if(!(!this.ELEMENT_DATA[i].selected && !this.ELEMENT_DATA[i].available))
+      if(!(! element.selected && ! element.available))
       {
-        if(!this.ELEMENT_DATA[i].selected)
+        if(!element.selected)
         {
           selected = false;
           break;
@@ -94,11 +94,10 @@ export class SelectZonesComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows($event:any) {
-    for(let i=0;i<this.ELEMENT_DATA.length;i++)
-    {
-      if(!(!this.ELEMENT_DATA[i].selected && !this.ELEMENT_DATA[i].available))
+    for (const element of this.ELEMENT_DATA) {
+      if(!(!element.selected && !element.available))
       {
-        this.ELEMENT_DATA[i].selected=$event.checked;
+        element.selected=$event.checked;
       }
     }
     this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
@@ -121,11 +120,10 @@ export class SelectZonesComponent implements OnInit {
   {
   //Auto select staging records
   let recordExists=0;
-  for(let i=0;i<this.ELEMENT_DATA.length;i++)
+  for (const element of this.ELEMENT_DATA) {
+  if(element.stagingZone=='False' && !(!element.selected && !element.available))
   {
-  if(this.ELEMENT_DATA[i].stagingZone=='False' && !(!this.ELEMENT_DATA[i].selected && !this.ELEMENT_DATA[i].available))
-  {
-    this.ELEMENT_DATA[i].selected=true;
+    element.selected=true;
     recordExists=1;
   }
   
@@ -139,11 +137,10 @@ export class SelectZonesComponent implements OnInit {
   {
   //Auto select staging records
   let recordExists=0;
-  for(let i=0;i<this.ELEMENT_DATA.length;i++)
+  for (const element of this.ELEMENT_DATA) {
+  if(element.stagingZone!='False')
   {
-  if(this.ELEMENT_DATA[i].stagingZone!='False')
-  {
-    this.ELEMENT_DATA[i].selected=true;
+    element.selected=true;
     recordExists=1;
   }
   
@@ -161,11 +158,10 @@ export class SelectZonesComponent implements OnInit {
   {
     let selectedRecords=[{zone:'',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
     selectedRecords.shift();
-    for(let i=0;i<this.ELEMENT_DATA.length;i++)
+    for (const element of this.ELEMENT_DATA) {
+    if(element.selected)
     {
-    if(this.ELEMENT_DATA[i].selected)
-    {
-    selectedRecords.push(this.ELEMENT_DATA[i]);
+    selectedRecords.push(element);
     }
     }
     this.dialogRef.close(selectedRecords);
@@ -189,24 +185,23 @@ export class SelectZonesComponent implements OnInit {
       (res: any) => {
         if (res.data && res.isExecuted) {
         this.zoneDetails = res.data.zoneDetails; 
-        for(let i=0;i<this.zoneDetails.length;i++)
-        {
+        for (const zoneDetail of this.zoneDetails) {
                     
           if(this.alreadyAssignedZones!=null && this.alreadyAssignedZones.length>0)
           {
             this.alreadyAssignedZones.find((o) => {
-              return o.zone == this.zoneDetails[i].zone;
+              return o.zone == zoneDetail.zone;
             });
   
           }
           this.ELEMENT_DATA.push(
             { 
-              zone: this.zoneDetails[i].zone,
-              locationName:this.zoneDetails[i].locationName,
-              locationType:this.zoneDetails[i].locationType,
-              stagingZone:this.zoneDetails[i].stagingZone,
-              selected:this.zoneDetails[i].selected,
-              available: this.zoneDetails[i].available
+              zone: zoneDetail.zone,
+              locationName:zoneDetail.locationName,
+              locationType:zoneDetail.locationType,
+              stagingZone:zoneDetail.stagingZone,
+              selected:zoneDetail.selected,
+              available: zoneDetail.available
             }
             );
         }

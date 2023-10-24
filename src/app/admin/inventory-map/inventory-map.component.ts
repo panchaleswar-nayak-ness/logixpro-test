@@ -157,15 +157,11 @@ export class InventoryMapComponent implements OnInit {
       }
       this.isSearchColumn = true;
     }
-    else {
-      
-      if (this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP])
+    else if (this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP])
       {
           this.ApplySavedItem();
           this.isSearchColumn = true;
       }
-    }
- 
     if(router.url == '/OrderManager/InventoryMap'){
       this.transHistory = true;
     }
