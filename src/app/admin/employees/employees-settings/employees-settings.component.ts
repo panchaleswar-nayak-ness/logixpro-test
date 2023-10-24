@@ -98,62 +98,6 @@ export class EmployeesSettingsComponent implements OnInit {
     this.initialzeEmpForm();
   }
 
-  // tabChanged(event) { 
-  //   this.tabChangedEmit.emit(event);
-  // }
-  
-  // zoneFilter(event) { 
-  //   this.zoneFilterEmit.emit(event);
-  // }
-  
-  // clearZones() { 
-  //   this.clearZonesEmit.emit();
-  // }
-  
-  // addZoneDialog() { 
-  //   this.addZoneDialogEmit.emit();
-  // }
-
-  // announceSortChange(event) { 
-  //   this.announceSortChangeEmit.emit(event);
-  // }
-
-  // editZoneDialog(element) { 
-  //   this.editZoneDialogEmit.emit(element);
-  // }
-
-  // deleteZone(element) { 
-  //   this.deleteZoneEmit.emit(element);
-  // }
-
-  // applyFilter(event) { 
-  //   this.applyFilterEmit.emit(event);
-  // }
-
-  // clear() { 
-  //   this.clearEmit.emit();
-  // }
-
-  // addLocationDialog() { 
-  //   this.addLocationDialogEmit.emit();
-  // }
-
-  // editLocationDialog(element) { 
-  //   this.editLocationDialogEmit.emit(element);
-  // }
-
-  // deleteLocation(element) { 
-  //   this.deleteLocationEmit.emit(element);
-  // }
-
-  // saveMaximumOrders() {
-  //   this.saveMaximumOrdersEmit.emit();
-  // }
-
-  // relaodPickUpLvl() {
-  //   this.relaodPickUpLvlEmit.emit();
-  // }
-
   applyFunctionAllowedFilter(event) {
     this.applyFunctionAllowedFilterEmit.emit(event);
   }
@@ -161,30 +105,6 @@ export class EmployeesSettingsComponent implements OnInit {
   getFuncationAllowedList() {
     this.getFuncationAllowedListEmit.emit();
   }
-
-  // AddFunctionAllowedDialog() {
-  //   this.AddFunctionAllowedDialogEmit.emit();
-  // }
-
-  // deleteFuncationAllowed(element) {
-  //   this.deleteFuncationAllowedEmit.emit(element);
-  // }
-
-  // groupAllowedFilter(event) {
-  //   this.groupAllowedFilterEmit.emit(event);
-  // }
-
-  // clearGrp() {
-  //   this.clearGrpEmit.emit();
-  // }
-
-  // grpAllowedDialog() {
-  //   this.grpAllowedDialogEmit.emit();
-  // }
-
-  // deleteGrpAllowed(element) {
-  //   this.deleteGrpAllowedEmit.emit(element);
-  // }
 
   getgroupAllowedList(){
     let payload:any = {
@@ -212,11 +132,9 @@ export class EmployeesSettingsComponent implements OnInit {
     };
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => {
-        // this.employee_group_allowed = response.data?.userRights
         this.pickUplevels = response.data?.pickLevels;
         this.location_data_source = new MatTableDataSource(response.data?.bulkRange);
         this.FuncationAllowedList = new MatTableDataSource(response.data.userRights);
-        // this.location_data = response.data?.bulkRange;
         let res=response.data?.handledZones.map(item=>{
           return {zones:item}
         })
@@ -236,7 +154,7 @@ export class EmployeesSettingsComponent implements OnInit {
     this.searchfuncAllowed = '';
     this.grpAllFilter='';
     this.employee_fetched_zones.filter = '';
-    this.location_data_source!.filter = '';
+    this.location_data_source.filter = '';
     this.groupAllowedList.filter = '';
   }
 

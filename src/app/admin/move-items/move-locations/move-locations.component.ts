@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
-import { MatPaginator } from '@angular/material/paginator';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 @Component({
@@ -9,7 +8,7 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
   templateUrl: './move-locations.component.html',
   styleUrls: ['./move-locations.component.scss']
 })
-export class MoveLocationsComponent implements OnInit {
+export class MoveLocationsComponent {
 
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
@@ -44,9 +43,6 @@ export class MoveLocationsComponent implements OnInit {
   constructor(
     private contextMenuService : TableContextMenuService
   ) { }
-
-  ngOnInit(): void {
-  }
 
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';

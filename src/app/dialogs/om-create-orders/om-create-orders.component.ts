@@ -1,18 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { OmAddRecordComponent } from '../om-add-record/om-add-record.component';
-import {  } from '../om-add-transaction/om-add-transaction.component';
-import {  } from '../om-edit-transaction/om-edit-transaction.component';
 import { OmUserFieldDataComponent } from '../om-user-field-data/om-user-field-data.component';
-
 import { AuthService } from 'src/app/init/auth.service';
 import { Router } from '@angular/router'; 
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import labels from '../../labels/labels.json';
 import { MatAutocomplete } from '@angular/material/autocomplete';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from '../input-filter/input-filter.component';
 import { ColumnSequenceDialogComponent } from 'src/app/admin/dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatSort, Sort } from '@angular/material/sort';

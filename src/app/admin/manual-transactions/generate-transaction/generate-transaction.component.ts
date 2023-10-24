@@ -534,7 +534,6 @@ export class GenerateTransactionComponent implements OnInit {
             console.log("SupplierItemIDInfo", res.responseMessage);
 
           }
-
         })
 
 

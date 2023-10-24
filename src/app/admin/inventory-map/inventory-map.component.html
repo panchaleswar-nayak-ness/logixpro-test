@@ -11,27 +11,6 @@
           <div class="header-filter-bar">
             <div class="header-filter-options w-100 d-xl-flex d-lg-block align-items-center justify-content-between" style="gap:12px">
               <div class="d-xl-flex d-lg-block gap-12 align-items-center">
-                <!-- <mat-form-field class="action-dropdown d-block mb-3 mb-xl-0" appearance="outline">
-                  <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn" (keyup.enter)="searchColumn()" (selectionChange)="searchColumn()" [compareWith]="compareObjects" placeholder="Select">
-                    <mat-option></mat-option>
-                    <mat-option *ngFor="let item of displayedColumns" [value]="item"> {{item.colDef}}</mat-option>
-                  </mat-select>
-                  <span class="material-symbols-outlined icon-expand-more">expand_more</span>
-                </mat-form-field>
-
-                <span class="v-br d-none d-xl-block">-</span>
-
-                <div class="d-xl-flex d-lg-block g-mini-search-box col-xl-6">
-                  <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value" (keyup.enter)="closeautoMenu()" (change)="reset()" >
-                    <span class="material-symbols-outlined icon-search">search</span>
-                    <input type="text" placeholder="Search" aria-label="Number" matInput maxlength="255" [(ngModel)]='this.columnSearch.searchValue' [matAutocomplete]="auto" (keyup)="autocompleteSearchColumn()" (keyup.enter)="searchData()" [disabled]="!isSearchColumn">
-                    <button matSuffix *ngIf="this.columnSearch.searchValue" class="clear-btn" (click)="this.columnSearch.searchValue=''; reset()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()" #autocompleteInventory>
-                      <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
-                      <mat-option *ngIf="searchAutocompleteList?.length == 0" disabled>No data found</mat-option>
-                    </mat-autocomplete>
-                  </mat-form-field>
-                </div> -->
 
                 <app-column-filter-component 
                     [tableColumns]="this.displayedColumns" 
