@@ -1,5 +1,4 @@
 import { Component} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 

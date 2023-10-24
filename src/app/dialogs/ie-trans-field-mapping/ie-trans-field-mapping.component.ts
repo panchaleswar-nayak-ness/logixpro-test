@@ -1,5 +1,4 @@
 import { Component,  ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSort} from '@angular/material/sort';
 import { GlobalService } from 'src/app/common/services/global.service';
 

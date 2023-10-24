@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup} from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog'; 
+import { FormGroup} from '@angular/forms'; 
 import { AuthService } from 'src/app/init/auth.service';
 
 import { MinReelQtyComponent } from 'src/app/dialogs/min-reel-qty/min-reel-qty.component';

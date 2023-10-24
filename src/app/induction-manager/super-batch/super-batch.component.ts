@@ -1,5 +1,4 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 
 import { RequiredDateStatusComponent } from '../../../app/dialogs/required-date-status/required-date-status.component';

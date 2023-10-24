@@ -19,45 +19,7 @@
         <div class="row">
             <div class="col-xl-5">
                 <div class="d-block d-xl-flex gap-12 align-items-center">
-                    <!-- <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline" style="flex:1">
-                        <mat-label>Search</mat-label>
-                        <mat-select class="employees-action" [(ngModel)]="this.columnSearch.searchColumn" (selectionChange)="resetFields($event.value)">
-                            <mat-option value="" (click)="this.orderSelectionSearch = true"></mat-option>
-                            <mat-option *ngFor="let item of displayedColumns | sort:'colDef':false" [value]="item">{{item.colDef}}</mat-option>
-                        </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">expand_more</span>
-                    </mat-form-field>
-
-                    <span class="v-br d-none d-xl-flex mb-3">-</span>
                     
-                    <div class="d-flex g-mini-search-box w-100 mb-3">
-                        <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-                            <span class="material-symbols-outlined icon-search">Search</span>
-                            <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='this.columnSearch.searchValue' [matAutocomplete]="auto" (ngModelChange)="this.searchBar.next($event)" [disabled]="orderSelectionSearch">
-                            <button matSuffix *ngIf="this.columnSearch.searchValue" class="clear-btn"  (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData($event.option.value)">
-                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
-                    </div> -->
-
-                    <!--
-                        This component provides a filter interface for table columns. 
-                        It allows users to select a column, search within the selected column, 
-                        and clear the filter settings.
-
-                        Properties:
-                        - [tableColumns]: Array of table header definitions.
-                        - [searchCol]: Currently selected column for filtering.
-                        - (selectionChangeEvent): Event emitted when a column is selected.
-                        - [searchString]: String to filter records within the selected column.
-                        - [searchByInput]: Subject to handle search input changes.
-                        - [searchAutocompleteList]: List of options for autocomplete functionality.
-                        - (autoCompleteEvent): Event emitted when search string changes.
-                        - [showClearBtn]: Boolean to toggle visibility of the clear button.
-                        - (clearBtnEvent): Event emitted when the clear button is clicked.
-                    -->
-
                     <app-column-filter-component 
                         [tableColumns]="this.displayedColumns" 
                         [searchCol]="this.columnSearch.searchColumn.colDef"

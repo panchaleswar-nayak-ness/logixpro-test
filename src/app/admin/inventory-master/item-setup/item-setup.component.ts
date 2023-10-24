@@ -1,6 +1,5 @@
 import { Component, Input, SimpleChanges} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { CellSizeComponent } from '../../dialogs/cell-size/cell-size.component';
 import { VelocityCodeComponent } from '../../dialogs/velocity-code/velocity-code.component';
 import { SharedService } from 'src/app/services/shared.service';

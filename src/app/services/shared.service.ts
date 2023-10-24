@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs'; 
-import { ApiFuntions } from './ApiFuntions';
 import { ICommonApi } from './common-api/common-api-interface';
 import { CommonApiService } from './common-api/common-api.service';
 

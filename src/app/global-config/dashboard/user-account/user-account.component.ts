@@ -4,7 +4,6 @@ import { SharedService } from 'src/app/services/shared.service';
 import labels from '../../../labels/labels.json';
 import { Router  } from '@angular/router';
 import { FormControl, FormGroup, Validators, } from '@angular/forms';
-import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';

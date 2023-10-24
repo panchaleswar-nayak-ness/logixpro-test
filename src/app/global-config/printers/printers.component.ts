@@ -1,5 +1,4 @@
 import { Component, OnInit, ElementRef, Renderer2, ViewChildren, QueryList, } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component'; 
 import { AuthService } from 'src/app/init/auth.service';
 

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';

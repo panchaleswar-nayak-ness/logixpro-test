@@ -1,5 +1,4 @@
 import { Component, Input,  SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { IConnectionString } from 'src/app/interface/transaction'; 
