@@ -443,7 +443,6 @@ export class GenerateTransactionComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((res) => {
         this.clearMatSelectList();
-        return
       });
 
     }

@@ -299,8 +299,8 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
                 res?.data?.orderStatus?.length > 0
               ) {
                 res.data.orderStatus.find((el) => {
-                    return res.data.completedStatus=(el.completedDate === ''? 'In Progress'
-                    : 'Completed')
+                  res.data.completedStatus = (el.completedDate === '' ? 'In Progress' : 'Completed');
+                  return res.data.completedStatus;
                 });
               }
               this.onOrderTypeOrderChange(
@@ -320,13 +320,15 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
             if (res.data?.onCar.length) {
               res.data.onCar.filter((item) => {
                 let carouselValue = 'on';
-                return (item.carousel = carouselValue);
+                item.carousel = carouselValue
+                return item.carousel;
               });
               this.onLocationZoneChange(res.data?.onCar);
             } else if (res.data?.offCar.length) {
               res.data.offCar.filter((item) => {
                 let carouselValue = 'off';
-                return (item.carousel = carouselValue);
+                item.carousel = carouselValue
+                return item.carousel;
               });
               this.onLocationZoneChange(res.data?.offCar);
             } else {

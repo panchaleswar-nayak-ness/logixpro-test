@@ -1,8 +1,6 @@
 import { Component, ElementRef,  ViewChild } from '@angular/core';
 import { FormControl} from '@angular/forms';
 import { ActivatedRoute,  Router } from '@angular/router';
-
-import { MatDialog } from '@angular/material/dialog';
 import { SpinnerService } from '../init/spinner.service';
 import { AuthService } from '../init/auth.service'; 
 import { ILogin } from '../login/Ilogin';
@@ -32,7 +30,6 @@ export class GlobalConfigComponent {
     public globalConfigApi: GlobalConfigApiService,
     private router: Router,
     private route: ActivatedRoute,
-    
     private global:GlobalService,
     public loader: SpinnerService,
     private auth: AuthService 

@@ -156,7 +156,6 @@ export class ScanCodesComponent{
 
     if(!newRecord || item.scanCode=='' ){
       this.global.ShowToastr('error','Already Exists', 'Error!');
-      return;
     }
 
     else if(newRecord){

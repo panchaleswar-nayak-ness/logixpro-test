@@ -49,14 +49,6 @@ export class ProcessPickBatchesComponent   {
     })
   }
   async printExisting(type) {
-    let positionList: any[] = [];
-    let toteIds: any[] = [];
-    let OrderNumList: any[] = [];
-    this.dataSource?._data?._value.forEach(element => {
-      if (element.position) positionList.push(element.position);
-      if (element.toteID) toteIds.push(element.toteID);
-      if (element.orderNumber) OrderNumList.push(element.orderNumber);
-    });
     
     if (!this.pickBatchesCrossbtn) {
       this.global.ShowToastr('error','Please select a Batch ID to print', 'Error!')

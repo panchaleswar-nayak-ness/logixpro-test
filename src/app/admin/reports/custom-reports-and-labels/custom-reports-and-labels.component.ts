@@ -130,7 +130,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   SelectedFile: any;
 
   Getreportdetails(file, index?) {
-    console.log(file);
+    
     this.ListReports.forEach((item, i) => {
       if (i === index) {
         if (item.isSelected) {

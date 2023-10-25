@@ -1,14 +1,11 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-
 import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../labels/labels.json';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -68,8 +65,6 @@ export class WorkstationComponent implements OnInit {
   
   constructor(
     private sharedService: SharedService,
-    private api: ApiFuntions,
-    
     private global:GlobalService,
     public globalConfigApi: GlobalConfigApiService
   ) {

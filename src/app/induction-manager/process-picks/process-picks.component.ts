@@ -803,11 +803,9 @@ export class ProcessPicksComponent implements OnInit {
           if (this.imPreferences.printDirectly) {
             await this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           } else if (isWindowClosed) {
-            isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
+            await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           }
         }
-
-
       }
      else if (this.imPreferences.autoPrintOffCarouselPickList) {
 
@@ -828,7 +826,7 @@ export class ProcessPicksComponent implements OnInit {
           if (this.imPreferences.printDirectly) {
             await this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           } else if (isWindowClosed) {
-            isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
+            await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           }
         }
       }
@@ -843,11 +841,9 @@ export class ProcessPicksComponent implements OnInit {
           if (this.imPreferences.printDirectly) {
             await this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           } else if (isWindowClosed) {
-            isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
+            await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           }
         }
-
-
       }
       else  if (this.imPreferences.autoPrintPickBatchList) {
         if (this.imPreferences.printDirectly) {
