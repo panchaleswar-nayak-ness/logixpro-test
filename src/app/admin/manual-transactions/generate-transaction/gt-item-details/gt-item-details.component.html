@@ -42,10 +42,11 @@
                 [class.mat-form-field-invalid]="isInvalid" >
                     <mat-label>Expiration Date</mat-label>
                     <input [disabled]="!item" maxlength="11" matInput [matDatepicker]="expirationDate"
-                        (ngModelChange)="onFieldChange(expDate)" [(ngModel)]="expDate" (focusout)="onFormFieldFocusOut()">
+                    [(ngModel)]="expDate" (focusout)="this.onFormFieldFocusOut.emit()" (ngModelChange)="onFieldChange(expDate)">
                     <mat-datepicker-toggle matSuffix [for]="expirationDate" ngDefaultControl></mat-datepicker-toggle>
                     <mat-datepicker   #expirationDate></mat-datepicker>
                 </mat-form-field>
+
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3"

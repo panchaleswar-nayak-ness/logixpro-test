@@ -63,7 +63,6 @@ export class GenerateTransactionComponent implements OnInit {
   toteID;
   transactionQtyInvalid = false;
   warehouseSensitivity;
-  isInvalid = false;
   totalQuantity: '';
   zone: '';
   row: '';
@@ -343,14 +342,14 @@ export class GenerateTransactionComponent implements OnInit {
     let updateValsequence: any = [];
     updateValsequence[0] = this.itemNumber; //itemNumber
     updateValsequence[1] = this.transType; //TransType
-    updateValsequence[2] = this.expDate ? this.expDate : ''; //expDate
+    updateValsequence[2] = new Date (this.expDate) || ''; //expDate
     updateValsequence[3] = this.revision; //revision
     updateValsequence[4] = this.description; //description
     updateValsequence[5] = this.lotNumber; //lotNumber
     updateValsequence[6] = this.uom; //UoM
     updateValsequence[7] = this.notes; //notes
     updateValsequence[8] = this.serialNumber; //serialNumber
-    updateValsequence[9] = this.reqDate ? this.reqDate : ''; //RequiredDate
+    updateValsequence[9] = new Date (this.reqDate) || ''; //RequiredDate
     updateValsequence[10] = this.lineNumber; //lineNumber
     updateValsequence[11] = this.transQuantity.toString(); //transQuantity
     updateValsequence[12] = this.priority.toString(); //priority
@@ -566,7 +565,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.autocompleteSearchColumn();
     this.searchBoxField.nativeElement.focus();
   }
-
+  isInvalid = false;
   onFormFieldFocusOut() {
     // Implement your custom validation logic here
     // For example, check if the input is valid, and if not, set isInvalid to true
@@ -581,14 +580,13 @@ export class GenerateTransactionComponent implements OnInit {
   onFieldValuesChanged(fieldValues: any) {
     this.itemNumber = fieldValues.itemNumber;
     this.supplierID = fieldValues.supplierID;
-    this.item.expDate = fieldValues.expDate;
+    this.expDate = fieldValues.expDate;
     this.revision = fieldValues.revision;
     this.description = fieldValues.description;
     this.lotNumber = fieldValues.lotNumber;
     this.uom = fieldValues.uom;
     this.notes = fieldValues.notes;
     this.serialNumber = fieldValues.serialNumber;
-    console.log('Order Details Received updated field values:', fieldValues);
   }
 
   onFieldValuesChangedOfTrans(fieldValues: any){
@@ -603,7 +601,6 @@ export class GenerateTransactionComponent implements OnInit {
     this.batchPickID = fieldValues.batchPickID;
     this.lineNumber = fieldValues.lineNumber;
     this.transQuantity = fieldValues.transQuantity;
-    console.log('Trans Received updated field values:', fieldValues);
   }
 
 }
