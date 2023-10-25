@@ -8,14 +8,16 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-ccb-count-queue',
@@ -41,13 +43,15 @@ export class CCBCountQueueComponent implements OnInit {
   noData:boolean=false;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @Input() updateData: string;
+  public iAdminApiService: IAdminApiService;
   constructor(
+    private adminApiService: AdminApiService,
     private _liveAnnouncer: LiveAnnouncer,
     public Api: ApiFuntions,
     private authService: AuthService,
-    public dialog: MatDialog,
-    public toastr: ToastrService
+    public global:GlobalService, 
   ) {
+    this.iAdminApiService = adminApiService;
     this.userData = this.authService.userData();
   }
   userData: any;
@@ -98,26 +102,33 @@ export class CCBCountQueueComponent implements OnInit {
 
 
   getCountQue() {
-    let payload = {
-      userName: this.userData.userName,
-      wsid: this.userData.wsid,
+    let payload = { 
       draw: 1,
       sRow: this.customPagination.startIndex,
       eRow: this.customPagination.endIndex,
       sortColumnIndex: this.sortColumn.columnIndex,
       sortOrder: this.sortColumn.sortOrder,
     };
-    this.Api.GetCCQueue(payload).subscribe(
+    this.iAdminApiService.GetCCQueue(payload).subscribe(
       (res: any) => {
-        if (res.isExecuted && res.data.invCycleCount.length >= 0) {
-          this.dataSource = new MatTableDataSource(res.data.invCycleCount);
-          this.customPagination.total = res.data?.recordsFiltered;
-          this.noData=true;
-          this.getCount(res.data.recordsTotal);
-        } else {
-this.noData  = false;
-this.customPagination.total = 0;
+        if(res.isExecuted && res.data)
+        {
+          if (res.data.invCycleCount.length >= 0) {
+            this.dataSource = new MatTableDataSource(res.data.invCycleCount);
+            this.customPagination.total = res.data?.recordsFiltered;
+            this.noData=true;
+            this.getCount(res.data.recordsTotal);
+          } else {
+  this.noData  = false;
+  this.customPagination.total = 0;
+          }
+
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GetCCQueue",res.responseMessage);
+        }
+
       },
       (error) => {}
     );
@@ -129,7 +140,7 @@ this.customPagination.total = 0;
   }
 
   createCycleCount() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '786px',
       autoFocus: '__non_existing_element__',
@@ -145,26 +156,21 @@ this.customPagination.total = 0;
       if (res==='Yes') {
        
        
-        this.Api.CreateCountRecords().subscribe(
+        this.iAdminApiService.CreateCountRecords().subscribe(
           (response: any) => {
             if (response.isExecuted) {
-              this.toastr.success(response.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',response.responseMessage, 'Success!');
               this.getCountQue();
               this.getCount(0);
               this.ngOnInit();
               this.insertEvent.emit('insert');
             } else {
-              this.toastr.error(
+              
+              this.global.ShowToastr('error',
                 'Error',
-                'Error Occured while creating Count records, check event log for more information',
-                {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                }
+                'Error Occured while creating Count records, check event log for more information'
               );
+              console.log("CreateCountRecords",res.responseMessage);
             }
           },
           (error) => {}
@@ -177,26 +183,21 @@ this.customPagination.total = 0;
 
       
 
-        this.Api.RemoveccQueueAll().subscribe(
+        this.iAdminApiService.RemoveccQueueAll().subscribe(
           (response: any) => {
             if (response.isExecuted) {
-              this.toastr.success(response.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',response.responseMessage, 'Success!');
               this.getCount(0);
               this.getCountQue();
               this.ngOnInit();
 
             } else {
-              this.toastr.error(
+              
+              this.global.ShowToastr('error',
                 'Error',
-                'An Error Occured while trying to remove all data, check the event log for more information',
-                {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                }
+                'An Error Occured while trying to remove all data, check the event log for more information'
               );
+              console.log("RemoveccQueueAll",response.responseMessage);
             }
           },
           (error) => {}
@@ -205,23 +206,20 @@ this.customPagination.total = 0;
 
   deleteRow(rowId) {
 
-    let payload = {
-      wsid: this.userData.wsid,
+    let payload = { 
       invMapID: rowId.toString(),
     };
-    this.Api.RemoveccQueueRow(payload).subscribe(
+    this.iAdminApiService.RemoveccQueueRow(payload).subscribe(
       (res: any) => {
         if (res.isExecuted) {
           this.getCountQue();
         } else {
-          this.toastr.error(
+          
+          this.global.ShowToastr('error',
             'Error',
-            'An Error Occured while trying to remove this row, check the event log for more information',
-            {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            }
+            'An Error Occured while trying to remove this row, check the event log for more information'
           );
+          console.log("RemoveccQueueRow",res.responseMessage);
         }
       },
       (error) => {}

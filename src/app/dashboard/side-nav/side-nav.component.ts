@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -114,13 +116,17 @@ export class SideNavComponent implements OnInit {
   isParentMenu: boolean = true;
   isChildMenu: boolean = false;
   childMenus: any;
+  public  iGlobalConfigApi: IGlobalConfigApi
   constructor(private http: HttpClient,
               private router: Router,
               private authService: AuthService,
               private sharedService:SharedService, 
               private currentTabDataService:CurrentTabDataService,
               private global:GlobalService,
-              private Api:ApiFuntions) { 
+              private Api:ApiFuntions,
+              public globalConfigApi: GlobalConfigApiService
+              ) { 
+                this.iGlobalConfigApi = globalConfigApi;
                 this.sharedService?.sideMenuHideObserver?.subscribe(menu => {
                   this.isMenuHide = menu;   
                 });
@@ -260,7 +266,7 @@ redirect(){
 
   async getAppLicense() {
 
-    this.Api.AppLicense().subscribe(
+    this.iGlobalConfigApi.AppLicense().subscribe(
       (res: any) => {},
       (error) => {}
     );

@@ -2,7 +2,6 @@ import { } from '@angular/cdk/collections';
 import { Component, ElementRef, OnInit, ViewChild, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
-import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
@@ -14,6 +13,9 @@ import { AddNewTransactionToOrderComponent } from '../../dialogs/add-new-transac
 import { DeleteConfirmationManualTransactionComponent } from '../../dialogs/delete-confirmation-manual-transaction/delete-confirmation-manual-transaction.component';
 import { ManualTransPostConfirmComponent } from '../../dialogs/manual-trans-post-confirm/manual-trans-post-confirm.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
  
 
 @Component({
@@ -50,17 +52,20 @@ export class GenerateOrderComponent implements OnInit {
   @Input() set tab(event : any) {
     if (event) { 
       setTimeout(()=>{
-        this.searchBoxField.nativeElement.focus();
+        this.searchBoxField?.nativeElement.focus();
       }, 500);
     }
   }
+  public iAdminApiService: IAdminApiService;
 
   constructor(
     private authService: AuthService,
     private Api: ApiFuntions,
-    private dialog: MatDialog
+    private adminApiService: AdminApiService,
+    private global:GlobalService
   ) {
     this.userData = this.authService.userData();
+    this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
@@ -117,14 +122,19 @@ export class GenerateOrderComponent implements OnInit {
     let searchPayload = {
       orderNumber: this.orderNumber,
       transType: this.transType,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .ManualOrderTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
-          this.searchAutocompleteList = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ManualOrderTypeAhead",res.responseMessage);
+          }
         },
         (error) => {}
       );
@@ -136,7 +146,7 @@ export class GenerateOrderComponent implements OnInit {
       this.selectedOption &&
       this.selectedOption === 'add_new_transaction'
     ) {
-      const dialogRef = this.dialog.open(AddNewTransactionToOrderComponent, {
+      const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
         height: 'auto',
         width: '100vw',
         autoFocus: '__non_existing_element__',
@@ -146,8 +156,6 @@ export class GenerateOrderComponent implements OnInit {
           itemNumber:this.itemNumberForInsertion,
           orderNumber: this.orderNumber,
           transactionType: this.transType,
-          userName: this.userData.userName,
-          wsid: this.userData.wsid,
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
@@ -162,7 +170,7 @@ export class GenerateOrderComponent implements OnInit {
       this.selectedOption &&
       this.selectedOption === 'delete_order'
     ) {
-      const dialogRef = this.dialog.open(
+      const dialogRef:any = this.global.OpenDialog(
         DeleteConfirmationManualTransactionComponent,
         {
           height: 'auto',
@@ -173,8 +181,6 @@ export class GenerateOrderComponent implements OnInit {
             mode: 'delete-order',
             heading: 'Delete Order',
             message: `Are you sure you want to remove order: ${this.orderNumber} ? This will  remove all manual transaction for this order`,
-            userName: this.userData.userName,
-            wsid: this.userData.wsid,
             orderNumber:this.orderNumber
           },
         }
@@ -194,7 +200,7 @@ export class GenerateOrderComponent implements OnInit {
       this.selectedOption &&
       this.selectedOption === 'post_order'
     ) {
-      const dialogRef = this.dialog.open(ManualTransPostConfirmComponent, {
+      const dialogRef:any = this.global.OpenDialog(ManualTransPostConfirmComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -215,9 +221,7 @@ export class GenerateOrderComponent implements OnInit {
       });
     }
   }
-  searchData() {
-  this.selectedOrder=this.orderNumber
-  }
+
   clearFields(){
     this.orderNumber='';
     this.selectedOrder='';
@@ -228,7 +232,7 @@ export class GenerateOrderComponent implements OnInit {
   }
   editTransaction(element){
 
-  const dialogRef = this.dialog.open(AddNewTransactionToOrderComponent, {
+  const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
         height: 'auto',
         width: '100vw',
         autoFocus: '__non_existing_element__',
@@ -236,8 +240,6 @@ export class GenerateOrderComponent implements OnInit {
         data: {
           mode:'edit-transaction',
           item:element,
-          userName: this.userData.userName,
-          wsid: this.userData.wsid,
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
@@ -274,7 +276,7 @@ export class GenerateOrderComponent implements OnInit {
     this.getOrderTableData();
   }
   deleteTransaction(element?) {
-    const dialogRef = this.dialog.open(
+    const dialogRef:any = this.global.OpenDialog(
       DeleteConfirmationManualTransactionComponent,
       {
         height: 'auto',
@@ -285,8 +287,6 @@ export class GenerateOrderComponent implements OnInit {
           mode: 'delete-trans',
           heading: 'Delete Selected Transaction',
           message: 'Delete this transaction',
-          userName: this.userData.userName,
-          wsid: this.userData.wsid,
           element: element,
         },
       }
@@ -296,7 +296,8 @@ export class GenerateOrderComponent implements OnInit {
         this.getOrderTableData();
     });
   }
-  getOrderTableData() {
+  getOrderTableData(ordernumber:any =null) {
+    if(ordernumber) this.orderNumber = ordernumber;
     let payload = {
       orderNumber: this.orderNumber,
       transactionType: this.transType,
@@ -305,10 +306,8 @@ export class GenerateOrderComponent implements OnInit {
       length: this.customPagination.recordsPerPage,
       orderColumn: this.sortCol,
       sortOrder: this.sortOrder,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .GernerateOrderTable(payload)
       .subscribe(
         (res: any) => {
@@ -329,6 +328,10 @@ export class GenerateOrderComponent implements OnInit {
             }
             this.dataSource = new MatTableDataSource(res?.data?.orderTable);
             this.itemNumberForInsertion= res?.data?.orderTable[0]?.itemNumber
+          }
+          else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("GernerateOrderTable",res.responseMessage);
           }
         },
         (error) => {}

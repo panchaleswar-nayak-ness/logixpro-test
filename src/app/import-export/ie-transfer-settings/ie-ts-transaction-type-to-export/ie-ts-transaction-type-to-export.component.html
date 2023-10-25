@@ -1,0 +1,16 @@
+<div class="card p-3 mb-4" style="padding-bottom: 1px !important">
+    <div class="row align-items-center">
+      <div class="col-xl-6">
+        <div class="d-flex justify-content-between mb-2" *ngFor="let item of actionBtnListOne">
+          {{item.title}}<mat-slide-toggle color="primary">
+          </mat-slide-toggle>
+        </div>
+      </div>
+      <div class="col-xl-6">
+        <div class="d-flex justify-content-between mb-2" *ngFor="let item of actionBtnListTwo">
+          {{item.title}}<mat-slide-toggle color="primary">
+          </mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+  </div>

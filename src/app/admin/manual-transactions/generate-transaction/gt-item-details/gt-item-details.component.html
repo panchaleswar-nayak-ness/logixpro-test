@@ -1,0 +1,106 @@
+<mat-card class="mat-elevation-z g-card mb-4">
+    <mat-card-content>
+        <div class="row">
+        
+             <app-icon-heading-component class="col card-header-title mb-3 d-flex align-items-center" heading="Item Details" icon="category">
+
+            </app-icon-heading-component> 
+            
+            <div class="col-xl-6">
+            <div class="d-xl-block d-flex mb-3 w-100">
+            <button [disabled]="!item || this.orderNumber==''" mat-flat-button color="primary" class="btn-regular float-end" color="primary" (click)="openUserFieldsEditDialogue()" style="flex:1">
+                View/Set User Fields
+            </button>
+        </div>
+    </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
+                    (click)="this.openSetItemLocationDialogue.emit()">
+                    <mat-label>{{columns?.itemNumber}}</mat-label>
+                    <input readonly [disabled]="!item || this.orderNumber==''"  [(ngModel)]="itemNumber" (ngModelChange)="onFieldChange(itemNumber)"  matInput type="text" maxlength="255" value="Value"> 
+                    <span matSuffix>
+                        <mat-icon
+                            style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                    </span>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
+                    (click)="openSupplierItemDialogue()">
+                    <mat-label>Supplier Item ID</mat-label>
+                    <input  [disabled]="!item" [(ngModel)]="supplierID"  matInput type="text" maxlength="255" value="Value" (ngModelChange)="onFieldChange(supplierID)" (ngModelChange)="onFieldChange(userData)">
+                    <span matSuffix>
+                        <mat-icon
+                            style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                    </span>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline"
+                [class.mat-form-field-invalid]="isInvalid" >
+                    <mat-label>Expiration Date</mat-label>
+                    <input [disabled]="!item" maxlength="11" matInput [matDatepicker]="expirationDate"
+                        (ngModelChange)="onFieldChange(expDate)" [(ngModel)]="expDate" (focusout)="onFormFieldFocusOut()">
+                    <mat-datepicker-toggle matSuffix [for]="expirationDate" ngDefaultControl></mat-datepicker-toggle>
+                    <mat-datepicker   #expirationDate></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3"
+                    appearance="outline">
+                    <mat-label>Revision</mat-label>
+                    <input [disabled]="!item" [(ngModel)]="revision" matInput type="text" maxlength="50" value="Value" (ngModelChange)="onFieldChange(revision)">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <mat-form-field class="custom-form-field w-100 mb-3"
+                    appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <input readonly [disabled]="!item" [(ngModel)]="description" matInput type="text" maxlength="255"  value="Value" (ngModelChange)="onFieldChange(description)">
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3"
+                    appearance="outline">
+                    <mat-label>Lot Number</mat-label>
+                    <input [disabled]="!item" [(ngModel)]="lotNumber" (ngModelChange)="onFieldChange(lotNumber)"   matInput type="text" maxlength="50" value="Value">
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
+                    (click)="openUnitOfMeasureDialogue()">
+                    <mat-label>{{columns?.unitOfMeasure}}</mat-label>
+                    <input readonly [disabled]="!item" [(ngModel)]="uom" matInput type="text" maxlength="255" value="Value" (ngModelChange)="onFieldChange(uom)">
+                    <span matSuffix>
+                        <mat-icon
+                            style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                    </span>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <mat-form-field class="custom-form-field w-100 mb-3"
+                (click)="openNotes()"  appearance="outline">
+                    <mat-label>Notes</mat-label>
+                    <input readonly [disabled]="!item" [(ngModel)]="notes" matInput type="text" maxlength="255" value="Value"  (ngModelChange)="onFieldChange(notes)" >
+                    <span matSuffix>
+                        <mat-icon
+                            style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                    </span>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3"
+                    appearance="outline">
+                    <mat-label>Serial Number</mat-label>
+                    <input [disabled]="!item" [(ngModel)]="serialNumber" matInput type="text" maxlength="50" value="Value"  (ngModelChange)="onFieldChange(serialNumber)" >
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

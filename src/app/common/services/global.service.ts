@@ -1,12 +1,18 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ToastrService } from 'ngx-toastr';
+
 import { BrChooseReportTypeComponent } from 'src/app/dialogs/br-choose-report-type/br-choose-report-type.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { environment } from 'src/environments/environment';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +20,7 @@ import { environment } from 'src/environments/environment';
 export class GlobalService {
   safeUrl: SafeUrl;
   userData:any;
+  public iinductionManagerApi:IInductionManagerApiService;
   sqlLimits : any = {
     numerics: {
         bigint: {
@@ -46,12 +53,34 @@ export class GlobalService {
     }
   };
   changesConfirmation = false;
-
-  constructor(private Api:ApiFuntions,private toast:ToastrService,private dialog: MatDialog, private httpClient : HttpClient
-    ,private authService:AuthService,private sanitizer: DomSanitizer) {
+  public iOrderManagerApi :  IOrderManagerAPIService;
+  public iAdminApiService: IAdminApiService;
+  constructor(
+    private Api:ApiFuntions,
+    public orderManagerApi  : OrderManagerApiService, 
+    private dialog:MatDialog,
+    private toastr:ToastrService,
+    private inductionManagerApi: InductionManagerApiService,
+    private adminApiService: AdminApiService, 
+    
+    private authService:AuthService,
+    private sanitizer: DomSanitizer) {
+    this.iOrderManagerApi = orderManagerApi;
     this.userData=this.authService.userData();
-  }
+    this.iAdminApiService = adminApiService;
+    this.iinductionManagerApi = inductionManagerApi;
 
+  }
+ShowToastr(type?:any,msg?:any,title?:any,timeOut?:any,positionClass?:any){
+  this.toastr[type](msg, title||'Success!', {
+    positionClass: positionClass||'toast-bottom-right',
+    timeOut: timeOut||2000,
+  });
+}
+
+globalErrorMsg() {
+  return "Error Response from Server";
+}
     // returns the date from JS in format: mm/dd/yyyy hh:mm
     getCurrentDateTime() {
         let date = new Date();
@@ -198,26 +227,28 @@ export class GlobalService {
           PrinterReportName:localStorage.getItem("SelectedReportPrinter"),
           PrinterLabelName:localStorage.getItem("SelectedLabelPrinter"),
         }
-        let res:any = await this.Api.CommonPrint(paylaod); 
+        let res:any = await this.iAdminApiService.CommonPrint(paylaod); 
         if(res.isExecuted){
-          this.toast.success("print successfully completed", 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+          this.ShowToastr('success',"print successfully completed", 'Success!');
             return true;
         }else{
-          this.toast.error("print unsuccessfully complete", 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+          this.ShowToastr('error',"print unsuccessfully complete", 'Error!');
             return false;
 
         }
       }
+      OpenDialog(component:any,item:any){
+      return  this.dialog.open(component, {
+          height: item.height?item.height:'auto',
+          width: item.width ? item.width:'600px',
+        disableClose:item.disableClose ?? true,
+          data: item.data,
+        });
+      }
       OpenExportModal(Name:any,ReportName) {
         ReportName = ReportName.replace(".lst","-lst").replace(".lbl","-lbl");
         Name = Name.replace(".lst","").replace(".lbl","");
-        const dialogRef = this.dialog.open(BrChooseReportTypeComponent, {
+        const dialogRef:any = this.OpenDialog(BrChooseReportTypeComponent, {
           height: 'auto',
           width: '560px',
           autoFocus: '__non_existing_element__',
@@ -238,33 +269,18 @@ export class GlobalService {
           type:Type,
           FileName:`${this.capitalizeAndRemoveSpaces(filename)}`
         }
-        this.Api.CommonExport(paylaod).subscribe((res:any)=>{
+        this.iAdminApiService.CommonExport(paylaod).subscribe((res:any)=>{
             if(res.isExecuted){
-                this.toast.success("Export successfully completed", 'Success!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000,
-                  });  
-                   debugger
+                this.ShowToastr('success',"Export successfully completed", 'Success!');  
                   if(res.data.fileName.indexOf("txt") > -1){
                     this.downloadTextFile(res.data.fileName, res.data.fileContent);
                   }else{
                 document.getElementById('CurrentDownload')?.setAttribute("href",`${environment.apiUrl.replace("/api","")}/pdf/`+res.data.fileName);
                   document.getElementById('CurrentDownload')?.setAttribute("download",res.data.fileName);
                     document.getElementById('CurrentDownload')?.click();
-                  }
-                    
-                 
-                   
-
-               
-                   
-                     
-                  
+                  }   
               }else{
-                this.toast.error("Export unsuccessfully complete", 'Error!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000,
-                  });
+                this.ShowToastr('error',"Export unsuccessfully complete", 'Error!');
               }
         })
       }
@@ -293,7 +309,7 @@ export class GlobalService {
         if(preferencesString){
           return JSON.parse(preferencesString)
         }else{
-          this.Api.OrderManagerPreferenceIndex().subscribe((response: any) => {
+          this.iOrderManagerApi.OrderManagerPreferenceIndex().subscribe((response: any) => {
             if (response.isExecuted) {
               localStorage.setItem('OmPreference', JSON.stringify(response.data.preferences[0]));
               const getOm:any = localStorage.getItem('OmPreference');
@@ -304,7 +320,7 @@ export class GlobalService {
       }
 
       updateOmPref(){
-        this.Api.OrderManagerPreferenceIndex().subscribe((response: any) => {
+        this.iOrderManagerApi.OrderManagerPreferenceIndex().subscribe((response: any) => {
           if (response.isExecuted) {
             localStorage.setItem('OmPreference', JSON.stringify(response.data.preferences[0]));
        
@@ -318,11 +334,9 @@ export class GlobalService {
       }
 
       updateImPreferences(){
-        let paylaod = {
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid,
+        let paylaod = { 
         }
-        this.Api.PickToteSetupIndex(paylaod).subscribe(res => {
+        this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
           localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
     
     

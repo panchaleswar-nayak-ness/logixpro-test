@@ -1,10 +1,13 @@
 import { Component, Input,  SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { IConnectionString } from 'src/app/interface/transaction'; 
 import { GlobalConfigSetSqlComponent } from 'src/app/admin/dialogs/global-config-set-sql/global-config-set-sql.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+
 
 @Component({
   selector: 'app-connection-strings',
@@ -17,11 +20,15 @@ export class ConnectionStringsComponent {
   isAddedNewRow = false;
   isDuplicateAllow=false;
   duplicateIndex;
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private Api: ApiFuntions,
-    private toastr: ToastrService,
-    private dialog: MatDialog,
-  ) {}
+    
+    private global:GlobalService,
+    public globalConfigApi: GlobalConfigApiService
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
  
   ngOnChanges(changes: SimpleChanges) {
@@ -98,41 +105,30 @@ export class ConnectionStringsComponent {
       DatabaseName: item.databaseName,
       ServerName: item.serverName,
     };
-    this.Api
+    this.iGlobalConfigApi
       .ConnectionSave(payload)
       .subscribe(
         (res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
         this.connectionStringData[index].isSqlButtonDisable = false;
         this.connectionStringData[index].isButtonDisable = true;
 
           }else{
-            this.toastr.error('A connection by this name already exists', 'Error!!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','A connection by this name already exists', 'Error!!');
+            console.log("saveString",res.responseMessage);
           }
         },
         (error) => {
-          this.toastr.error('something went wrong!', 'Error!!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','something went wrong!', 'Error!!');
         }
       );
     }else{
-      this.toastr.error('A connection by this name already exists', 'Error!!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      });
+      this.global.ShowToastr('error','A connection by this name already exists', 'Error!!');
     }
   }
   deleteString(item) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       data: {
@@ -155,7 +151,7 @@ export class ConnectionStringsComponent {
     let payload = {
       ConnectionName: item.connectionName,
     };
-    this.Api
+    this.iGlobalConfigApi
       .ConnectionUserPassword(payload)
       .subscribe(
         (res: any) => {
@@ -163,7 +159,7 @@ export class ConnectionStringsComponent {
           
           if (res.isExecuted) {
          
-            const dialogRef = this.dialog.open(GlobalConfigSetSqlComponent, {
+            const dialogRef:any = this.global.OpenDialog(GlobalConfigSetSqlComponent, {
               height: 'auto',
               width: '600px',
               autoFocus: '__non_existing_element__',

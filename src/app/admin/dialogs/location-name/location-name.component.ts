@@ -1,10 +1,13 @@
 import { Component, OnInit} from '@angular/core'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+
+import {MatDialogRef } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-location-name',
@@ -15,13 +18,17 @@ export class LocationNameComponent implements OnInit {
   displayedColumns: string[] = ['check','locationName','actions'];
   userData;
   LocationName;
+  public iAdminApiService: IAdminApiService;
     locationNames :any = new MatTableDataSource([]);
   save
   constructor(private Api: ApiFuntions,
             public authService: AuthService,
-            private toastr: ToastrService,
+            private adminApiService: AdminApiService,
+            
             public dialogRef: MatDialogRef<any>,
-            private dialog: MatDialog,) { }
+            private global:GlobalService) {
+              this.iAdminApiService = adminApiService;
+             }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -29,7 +36,7 @@ export class LocationNameComponent implements OnInit {
   }
 
   getLocation(){ 
-    this.Api.LocationNames().subscribe((res=>{
+    this.iAdminApiService.LocationNames().subscribe((res=>{
       if(res?.isExecuted){
         
         let tempLocationNames:any = [];
@@ -43,13 +50,18 @@ export class LocationNameComponent implements OnInit {
         this.locationNames = new MatTableDataSource(tempLocationNames);
         
       }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("LocationNames",res.responseMessage);
+
+      }
     }))
   }
 
 
 
  delLocation(ele){
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
@@ -62,14 +74,18 @@ export class LocationNameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       if (res === 'Yes'){
 
-        let payload = {
-          'username': this.userData.userName,
-          "wsid": this.userData.wsid,
+        let payload = { 
           "name": ele.currentVal,
         }
-        this.Api.DeleteLocationNames(payload).subscribe((res=>{ 
+        this.iAdminApiService.DeleteLocationNames(payload).subscribe((res=>{ 
           if(res.isExecuted){
             this.getLocation()
+          }
+          else
+          {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("DeleteLocationNames:", res.responseMessage);
+
           }
         }))
       }
@@ -85,26 +101,19 @@ export class LocationNameComponent implements OnInit {
   }
 
   saveLocation(ele){
-    let payload = {
-      'username': this.userData.userName,
-      "wsid": this.userData.wsid,
+    let payload = { 
       "oldName":ele.oldVal,
       "newName":ele.currentVal
     }
-    this.Api.LocationNamesSave(payload).subscribe((res=>{
+    this.iAdminApiService.LocationNamesSave(payload).subscribe((res=>{
       if(res.isExecuted){
-        this.toastr.success("Location Name Updated Succesfully", 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',"Location Name Updated Succesfully", 'Success!');
           
         ele.oldVal = ele.currentVal
       }
       else{
-        this.toastr.error(`Location Name Not Updated`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',`Location Name Not Updated`, 'Error!');
+        console.log("LocationNamesSave",res.responseMessage);
       }
     }))
   }

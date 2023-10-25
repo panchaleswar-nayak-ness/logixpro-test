@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
@@ -15,12 +16,16 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class LookupUserOneSetupComponent implements OnInit {
   userF1List :any = new MatTableDataSource([]);
-  AddBtn
+  AddBtn;
   fieldNames:any;
+  public iAdminApiService: IAdminApiService;
   constructor(private Api:ApiFuntions,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
-    public authService: AuthService,private sharedService:SharedService) { }
+    private global:GlobalService,
+    
+    private adminApiService: AdminApiService,
+    public authService: AuthService,private sharedService:SharedService) {
+      this.iAdminApiService = adminApiService;
+     }
     
   ngOnInit(): void {
     this.getUserFeild1()
@@ -35,7 +40,7 @@ export class LookupUserOneSetupComponent implements OnInit {
     let payload = {
       "userField":1
     }
-    this.Api.userfieldlookup(payload).subscribe(res=>{
+    this.iAdminApiService.userfieldlookup(payload).subscribe(res=>{
       
       if(res.isExecuted){
         this.userF1List = res.data
@@ -50,6 +55,13 @@ export class LookupUserOneSetupComponent implements OnInit {
         this.userF1List = new MatTableDataSource(tempuserF1);
     
       }
+
+      else 
+      {
+        
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("userfieldlookup", res.responseMessage);
+      }
     })
   }
 
@@ -63,7 +75,7 @@ export class LookupUserOneSetupComponent implements OnInit {
       "newValue": ele.currentVal,
       "userField": 1
     }
-    this.Api.updateuserfieldlookup(payload).pipe(
+    this.iAdminApiService.updateuserfieldlookup(payload).pipe(
     
       catchError((error) => {
         return of({ isExecuted: false });
@@ -74,16 +86,12 @@ export class LookupUserOneSetupComponent implements OnInit {
       if(res.isExecuted){
         this.AddBtn = false
         ele.oldVal = ele.currentVal
-        this.toastr.success(` Saved Successfully`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('success',` Saved Successfully`, 'Error!');
       }
       else{
-        this.toastr.error(`Field is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        
+        this.global.ShowToastr('error',`Field is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!');
+        console.log("updateuserfieldlookup",res.responseMessage);
       }
     }))
   }
@@ -93,7 +101,7 @@ export class LookupUserOneSetupComponent implements OnInit {
 
 
   deleteUserF1(ele){
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
@@ -110,9 +118,15 @@ export class LookupUserOneSetupComponent implements OnInit {
           "value":  ele.currentVal,
           "userField": 1
         }
-        this.Api.deleteUserfieldLookUp(payload).subscribe((res=>{ 
+        this.iAdminApiService.deleteUserfieldLookUp(payload).subscribe((res=>{ 
           if(res.isExecuted){
             this.getUserFeild1()
+          }
+
+          else {
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("deleteUserfieldLookUp",res.responseMessage);
           }
         }))
       }

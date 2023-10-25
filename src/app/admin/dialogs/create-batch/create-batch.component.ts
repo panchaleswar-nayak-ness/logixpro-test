@@ -7,6 +7,7 @@ import {
 } from '@angular/material/dialog';
 import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.component';
 import { SharedService } from 'src/app/services/shared.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-create-batch',
@@ -19,7 +20,8 @@ export class CreateBatchComponent implements OnInit {
   selectedList:any;
   nextToteID:any;
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
+    private dialog:MatDialog,
     public dialogRef: MatDialogRef<CreateBatchComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private sharedService: SharedService
@@ -42,7 +44,7 @@ export class CreateBatchComponent implements OnInit {
       this.sharedService.updateBatchManagerObject({isCreate:true})
 this.dialogRef.close();
       let dialogRefTote;
-      dialogRefTote = this.dialog.open(BmToteidEntryComponent, {
+      dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
         height: 'auto',
         width: '990px',
         autoFocus: '__non_existing_element__',
@@ -58,7 +60,7 @@ this.dialogRef.close();
       
     } else {
       let dialogRef;
-      dialogRef = this.dialog.open(CreateBatchConfirmationComponent, {
+      dialogRef = this.global.OpenDialog(CreateBatchConfirmationComponent, {
         height: 'auto',
         width: '550px',
         autoFocus: '__non_existing_element__',

@@ -1,9 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 import { GlobalService } from 'src/app/common/services/global.service'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-ship-edit-qty',
@@ -22,13 +23,17 @@ export class CmShipEditQtyComponent implements OnInit {
 
   @ViewChild('adjReason') adjReason : ElementRef;
 
-  constructor(private dialog: MatDialog,
-              public dialogRef: MatDialogRef<CmShipEditQtyComponent>,
-              private toast: ToastrService,
-              private Api: ApiFuntions,
-              private authService: AuthService,
-              public globalService: GlobalService,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+  public IconsolidationAPI : IConsolidationApi;
+
+  constructor(
+    public consolidationAPI : ConsolidationApiService,
+    private global:GlobalService,
+    public dialogRef: MatDialogRef<CmShipEditQtyComponent>,
+    
+    // private Api: ApiFuntions,
+    private authService: AuthService,
+    public globalService: GlobalService,
+    @Inject(MAT_DIALOG_DATA) public data: any) { this.IconsolidationAPI = consolidationAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -65,15 +70,14 @@ export class CmShipEditQtyComponent implements OnInit {
       let payLoad = {
         stid : this.data.order.sT_ID,
         shipQTY: this.adjustShipQty,
-        reason: this.adjustReason,
-        username: this.userData.userName,
+        reason: this.adjustReason
       }
-      this.Api.ShipQTYShipTransUpdate(payLoad).subscribe((res:any)=>{
+      this.IconsolidationAPI.ShipQTYShipTransUpdate(payLoad).subscribe((res:any)=>{
         if (res.isExecuted) {
 
           let Exists = false;
-          for (let i = 0; i < this.data.reasons.length; i++) {
-            if (this.data.reasons[i] == this.adjustReason) {
+          for (let i of this.data.reasons) {
+            if (i == this.adjustReason) {
               Exists = true;
               break;
             };
@@ -90,7 +94,8 @@ export class CmShipEditQtyComponent implements OnInit {
           this.adjustReason = '';
 
         } else {
-          this.toast.error('Something went wrong', 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("ShipQTYShipTransUpdate",res.responseMessage);
         }
       });
     } catch (error) { 

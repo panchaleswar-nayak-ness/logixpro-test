@@ -1,14 +1,14 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
 import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../labels/labels.json';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {
   position: string;
@@ -61,13 +61,15 @@ export class WorkstationComponent implements OnInit {
   
   /** The label for the checkbox on the passed row */
   
-
+  public  iGlobalConfigApi: IGlobalConfigApi
+  
   constructor(
     private sharedService: SharedService,
-    private api: ApiFuntions,
-    private toastr: ToastrService,
-    private dialog: MatDialog
-  ) {}
+    private global:GlobalService,
+    public globalConfigApi: GlobalConfigApiService
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
   ngOnInit(): void {
     let sharedData = this.sharedService.getData();
@@ -107,7 +109,7 @@ export class WorkstationComponent implements OnInit {
       DisplayName: 'Consolidation Manager',
       AppName: 'Consolidation Manager',
     };
-    this.api.GlobalMenu(payload).subscribe(
+    this.iGlobalConfigApi.GlobalMenu(payload).subscribe(
       {next: (res: any) => {
         if (res?.data) {
           this.sharedService.setData(res.data);
@@ -120,21 +122,32 @@ export class WorkstationComponent implements OnInit {
               }
           })
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GlobalMenu",res.responseMessage);
+        }
       },
       error: (error) => {}}
     );
   }
   async getAppLicense() {
-    this.api.AppLicense().subscribe(
+    this.iGlobalConfigApi.AppLicense().subscribe(
       {next: (res: any) => {
-        if(res?.data) {
-          this.licAppNames = res.data;
-          this.sharedService.setApp(this.licAppNames);
-          this.licAppNames = Object.keys(res.data);
-          this.convertToObj();
-          this.updateLicObj(res)
-            
-          this.appName_datasource = new MatTableDataSource(this.licAppObj);
+        if(res.isExecuted)
+        {
+          if(res?.data) {
+            this.licAppNames = res.data;
+            this.sharedService.setApp(this.licAppNames);
+            this.licAppNames = Object.keys(res.data);
+            this.convertToObj();
+            this.updateLicObj(res)
+              
+            this.appName_datasource = new MatTableDataSource(this.licAppObj);
+          }
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("AppLicense",res.responseMessage);
         }
       },
       error: (error) => {}}
@@ -160,12 +173,16 @@ export class WorkstationComponent implements OnInit {
     let payload = {
       workstationid: wsid,
     };
-    this.api.getWorkstationapp(payload)
+    this.iGlobalConfigApi.getWorkstationapp(payload)
       .subscribe(
         {next: (res: any) => {
-          if (res?.data) {
+          if (res.isExecuted && res.data) {
             this.canAccessAppList = res.data;
             this.getDefaultAppList(wsid, this.canAccessAppList);
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("getWorkstationapp",res.responseMessage);
           }
         },
         error: (error) => {}}
@@ -181,32 +198,40 @@ export class WorkstationComponent implements OnInit {
     let payload = {
       workstationid: wsid,
     };
-    this.api.workstationdefaultapp(payload)
+    this.iGlobalConfigApi.workstationdefaultapp(payload)
       .subscribe(
         {next: (res: any) => {
-          this.defaultAccessApp =  res?.data ? res.data : '';
+          if(res.isExecuted)
+          {
+            this.defaultAccessApp =  res?.data ? res.data : '';
 
-          if (this.licAppObj.length) {
-            // reset to default
-            this.licAppObj.map((itm) => {
-              itm.canAccess = false;
-              itm.defaultApp = false;
-              itm.defaultDisable= itm.appName==='Induction' || itm.appName==='ICSAdmin' 
-            });
-          }
-          if (canAccessArr.length) {
-            // find and map check boxes of selected apps
-            this.licAppObj.map((obj, i) => {
-              if (this.defaultAccessApp === obj.appName) {
-                this.licAppObj[i].defaultApp = true;
-              }
-              canAccessArr.find((item, j) => {
-                if (item === obj.appName) {
-                  this.licAppObj[i].canAccess = true;
-                }
+            if (this.licAppObj.length) {
+              // reset to default
+              this.licAppObj.map((itm) => {
+                itm.canAccess = false;
+                itm.defaultApp = false;
+                itm.defaultDisable= itm.appName==='Induction' || itm.appName==='ICSAdmin' 
               });
-            });
+            }
+            if (canAccessArr.length) {
+              // find and map check boxes of selected apps
+              this.licAppObj.map((obj, i) => {
+                if (this.defaultAccessApp === obj.appName) {
+                  this.licAppObj[i].defaultApp = true;
+                }
+                canAccessArr.find((item, j) => {
+                  if (item === obj.appName) {
+                    this.licAppObj[i].canAccess = true;
+                  }
+                });
+              });
+            }
           }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("workstationdefaultapp",res.responseMessage);
+          }
+        
         },
         error: (error) => {}}
       );
@@ -232,7 +257,7 @@ export class WorkstationComponent implements OnInit {
   }
 
   defaultAppAdd(payload) {
-    this.api.WorkStationDefaultAppAddDefault(payload)
+    this.iGlobalConfigApi.WorkStationDefaultAppAddDefault(payload)
       .subscribe(
         {next: (res: any) => {
 
@@ -240,13 +265,17 @@ export class WorkstationComponent implements OnInit {
           if(res.isExecuted){
             this.getCanAccessList(this.wsid);
           }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("WorkStationDefaultAppAddDefault",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );
   }
 
   removeCanAccess(payload) {
-    this.api.WorkStationAppDelete(payload)
+    this.iGlobalConfigApi.WorkStationAppDelete(payload)
       .subscribe(
         {next: (res: any) => {
           ;
@@ -256,10 +285,14 @@ export class WorkstationComponent implements OnInit {
   }
 
   addCanAccess(payload) {
-    this.api.workstationapp(payload).subscribe(
+    this.iGlobalConfigApi.workstationapp(payload).subscribe(
         {next: (res: any) => {
           if (res.isExecuted) {
             this.getCanAccessList(this.wsid);
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("workstationapp",res.responseMessage);
           }
         },
         error: (error) => {}}
@@ -269,7 +302,7 @@ export class WorkstationComponent implements OnInit {
   actionDialog(opened: boolean) {
     if (!opened && this.selectedVariable) {
       if (this.selectedVariable === 'delete_workstation') {
-        const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+        const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
           height: 'auto',
           width: '480px',
           autoFocus: '__non_existing_element__',
@@ -297,24 +330,22 @@ export class WorkstationComponent implements OnInit {
   deleteWorkStation() {
     if (!this.wsid) return;
     let payload = {
-      WSID: this.wsid,
+     
     };
-    this.api.WorkStationDelete(payload).subscribe(
+    this.iGlobalConfigApi.WorkStationDelete().subscribe(
         {next: (res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("WorkStationDelete",res.responseMessage);
           }
           this.getMenuData();
           this.wsid = null;
         },
         error: (error) => {
-          this.toastr.error(labels.alert.went_worng, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
         }}
       );
   }

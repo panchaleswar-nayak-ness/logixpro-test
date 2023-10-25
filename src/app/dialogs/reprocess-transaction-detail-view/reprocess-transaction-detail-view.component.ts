@@ -1,8 +1,13 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-reprocess-transaction-detail-view',
@@ -13,12 +18,20 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;
   itemID:any;
   userData:any;
+  public iAdminApiService: IAdminApiService;
+  public iinductionManagerApi:IInductionManagerApiService;
   fieldNames:any;
   constructor(
     private Api: ApiFuntions,
     private userService:AuthService,
+    private global : GlobalService,
+    private inductionManagerApi: InductionManagerApiService,
+private adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+    this.iinductionManagerApi = inductionManagerApi;
+  }
   reprocessInfo = new FormGroup({
     orderNumber: new FormControl({ value: '', disabled: true }),
     itemNumber: new FormControl({ value: '', disabled: true }),
@@ -65,14 +78,21 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
     this.field_focus.nativeElement.focus();
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
-    })
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.fieldNames = res.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+        
+      }
+    });
+
   }
   getReprocessData() {
-    let payLoad = { id: this.itemID, username: this.userData.userName, wsid: this.userData.wsid};
+    let payLoad = { id: this.itemID};
 
-    this.Api
+    this.iinductionManagerApi
       .RPDetails(payLoad)
       .subscribe((res: any) => {
         if (res?.isExecuted) {
@@ -111,6 +131,11 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
           this.reprocessInfo.controls.userField10.setValue(item.userField10);
           this.reprocessInfo.controls.reason.setValue(item.reason);
           this.reprocessInfo.controls.reasonMessage.setValue(item.reasonMessage);
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("RPDetails",res.responseMessage);
+
         }
       });
   }

@@ -12,17 +12,14 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '../../../../app/init/auth.service'; 
-import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
-
 import labels from '../../../labels/labels.json';
 import { SharedService } from 'src/app/services/shared.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { CreateBatchConfirmationComponent } from '../../dialogs/create-batch-confirmation/create-batch-confirmation.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-batch-selected-orders',
@@ -60,18 +57,17 @@ export class BatchSelectedOrdersComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  public iAdminApiService: IAdminApiService;
   toteValue = 0;
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private _liveAnnouncer: LiveAnnouncer,
     private authService: AuthService,
-    private Api: ApiFuntions,
-    private toastr: ToastrService,
-    private sharedService: SharedService,
-    private router:Router,
-    private global:GlobalService
-    
-  ) {}
+    public adminApiService: AdminApiService,
+    private sharedService: SharedService
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -126,7 +122,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
   }
   printReport(type){
     if(type==='Batch'){
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '786px',
         autoFocus: '__non_existing_element__',
@@ -147,7 +143,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
          }
       });
     }else{
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '786px',
         autoFocus: '__non_existing_element__',
@@ -190,22 +186,23 @@ export class BatchSelectedOrdersComponent implements OnInit {
         this.nextOrderNumber != this.batchID
           ? this.nextOrderNumber
           : this.batchID,
-      transType: this.type,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      transType: this.type, 
     };
     try {
-      this.Api
+      this.iAdminApiService
         .BatchInsert(paylaod)
         .subscribe((res: any) => {
           const { isExecuted } = res;
           if (isExecuted) {
             this.batchCreated.emit(true);
             this.batchIdUpdateEmit.emit(true);
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
+            
+          }
+          else {
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("BatchInsert",res.responseMessage);
           }
         });
     } catch (error) { 
@@ -223,7 +220,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
   */
   createBatchDialog() {
     if (this.nextOrderNumber === '') {
-      const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '786px',
         data: {
@@ -235,7 +232,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((result) => {});
     } else if (this.tableData.data.length == 0) {
-      const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '786px',
         data: {
@@ -248,7 +245,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => {});
     } else {
       let dialogRef;
-      dialogRef = this.dialog.open(CreateBatchConfirmationComponent, {
+      dialogRef = this.global.OpenDialog(CreateBatchConfirmationComponent, {
         height: 'auto',
         width: '550px',
         autoFocus: '__non_existing_element__',

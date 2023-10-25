@@ -6,6 +6,10 @@ import {MatPaginator} from '@angular/material/paginator';
 import { SignalrServiceService } from '../../../../app/services/signalr-service.service';
 import { HttpClient } from '@angular/common/http';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+
 
 @Component({
   selector: 'app-connected-users',
@@ -16,12 +20,17 @@ export class ConnectedUsersComponent implements OnInit,AfterViewInit {
   displayedColumns: string[] = ['username', 'wsid', 'appname'];
   user_connected_datasource: any = [];
   ConnectedUserSubscription : any;
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private Api:ApiFuntions,
     private _liveAnnouncer: LiveAnnouncer,
+    public globalConfigApi: GlobalConfigApiService,
     public signalRService: SignalrServiceService, 
-    private http: HttpClient
-  ) {}
+    private http: HttpClient,
+    private global:GlobalService
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -38,7 +47,7 @@ export class ConnectedUsersComponent implements OnInit,AfterViewInit {
   }
   getConnectedUsers() {
 
-    this.Api.ConnectedUser().subscribe(
+    this.iGlobalConfigApi.ConnectedUser().subscribe(
       (res: any) => {
         if (res.isExecuted) {
           res.data.map((obj) => ({
@@ -48,6 +57,10 @@ export class ConnectedUsersComponent implements OnInit,AfterViewInit {
           this.user_connected_datasource = new MatTableDataSource(res.data);
           this.user_connected_datasource.paginator = this.paginator;
 
+        }
+        else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("ConnectedUser",res.responseMessage);
         }
       },
       (error) => {}

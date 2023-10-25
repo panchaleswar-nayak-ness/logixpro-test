@@ -1,10 +1,15 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import { FormControl, FormGroup, Validators } from '@angular/forms'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 
@@ -30,9 +35,19 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   reqDate: any;
   fieldNames:any;
 
+  public iAdminApiService: IAdminApiService;
+  public iCommonAPI : ICommonApi;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<any>, 
-  private Api:ApiFuntions, private toastr: ToastrService, private authService: AuthService) { }
+  constructor(
+    public commonAPI : CommonApiService,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    private global: GlobalService,
+    public dialogRef: MatDialogRef<any>, 
+    private Api:ApiFuntions, 
+     
+    private authService: AuthService,private adminApiService: AdminApiService) { this.iCommonAPI = commonAPI; 
+    this.iAdminApiService = adminApiService;
+  }
 
   editTransactionForm = new FormGroup({
     transactionQuantity: new FormControl('', [Validators.required]),
@@ -77,8 +92,15 @@ export class ReprocessTransactionDetailComponent implements OnInit {
     this.trans_qty.nativeElement.focus();
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
+      if(res.isExecuted && res.data)
+      {
+        this.fieldNames = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
 
     })
   }
@@ -120,24 +142,17 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get("label")?.value?.toString(),
         this.editTransactionForm.get("emergency")?.value?.toString(),
         this.editTransactionForm.get("wareHouse")?.value
-      ],
-      "username": this.userData.username,
-      "wsid": this.userData.wsid
+      ]
     }
 
-    this.Api.SaveTransaction(payload).subscribe((res: any) => {
+    this.iAdminApiService.SaveTransaction(payload).subscribe((res: any) => {
       if (res.isExecuted){
         this.dialogRef.close('add');
-        this.toastr.success(labels.alert.update, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.update, 'Success!');
       }
       else{
-        this.toastr.error('Something went wrong', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','Something went wrong', 'Error!');
+        console.log("SaveTransaction",res.responseMessage);
       }
     });
   }
@@ -163,15 +178,20 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   }
 
   getUOM() {
-    this.Api.getUnitOfMeasure().subscribe((res) => {
+    this.iCommonAPI.getUnitOfMeasure().subscribe((res) => {
       if (res.isExecuted) {
         this.unitOfMeasure_list = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getUnitOfMeasure:", res.responseMessage);
+
       }
     });
   }
 
   getWarehouse() {
-    this.Api.GetWarehouses().subscribe((res) => {
+    this.iCommonAPI.GetWarehouses().subscribe((res) => {
       this.warehouse_list = res.data;
     });
   }
@@ -189,11 +209,9 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   getTransactionDetail() {
     let payload = {
       id: '' + this.transactionID + '',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
       history: false,
     }
-    this.Api.TransactionByID(payload).subscribe(
+    this.iAdminApiService.TransactionByID(payload).subscribe(
       {next: (res: any) => {
         if (res.data && res.isExecuted) {
           let finalExpiryDate, finalReqDate;
@@ -257,10 +275,8 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
 
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("TransactionByID",res.responseMessage);
         }
       },
       error: (error) => { }}

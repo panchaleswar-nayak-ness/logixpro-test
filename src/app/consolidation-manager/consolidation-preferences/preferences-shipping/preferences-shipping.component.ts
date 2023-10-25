@@ -7,12 +7,13 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { CmShippingCarrierComponent } from 'src/app/dialogs/cm-shipping-carrier/cm-shipping-carrier.component'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
-import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-preferences-shipping',
@@ -29,11 +30,15 @@ export class PreferencesShippingComponent implements OnInit {
   @Input() shippingData: any;
   @Output() shippingEvnt = new EventEmitter<void>();
   userData: any;
+
+  public IconsolidationAPI : IConsolidationApi;
+
   constructor(
-    private Api: ApiFuntions,
-    private toastr: ToastrService,
+    public consolidationAPI : ConsolidationApiService,
+    // private Api: ApiFuntions,
+    
     private authService: AuthService,
-    public dialog: MatDialog
+    public global:GlobalService
   ) {
     this.userData = this.authService.userData();
 
@@ -57,6 +62,8 @@ export class PreferencesShippingComponent implements OnInit {
       confirmQTY: new FormControl(''),
       contIDText: new FormControl(''),
     });
+    
+    this.IconsolidationAPI = consolidationAPI;
   }
 
   ngOnInit(): void {
@@ -119,7 +126,7 @@ export class PreferencesShippingComponent implements OnInit {
   }
 
   openCarrier() {
-    const dialogRef = this.dialog.open(CmShippingCarrierComponent, {
+    const dialogRef:any = this.global.OpenDialog(CmShippingCarrierComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
@@ -150,19 +157,15 @@ export class PreferencesShippingComponent implements OnInit {
       width: this.shippingForm.controls['width'].value,
       height: this.shippingForm.controls['height'].value,
       cube: this.shippingForm.controls['cube'].value,
-      shipping: this.shippingForm.controls['allowShip']?.value,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      shipping: this.shippingForm.controls['allowShip']?.value
     };
-    this.Api
+    this.IconsolidationAPI
       .ConsolidationPreferenceShipUpdate(payload)
       .subscribe((response: any) => {
         this.shippingEvnt.emit();
         if (!response.isExecuted) {
-          this.toastr.error('Error', 'An Error Occured while trying to save', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Error', 'An Error Occured while trying to save');
+          console.log("ConsolidationPreferenceShipUpdate",response.responseMessage);
         }
       });
   }

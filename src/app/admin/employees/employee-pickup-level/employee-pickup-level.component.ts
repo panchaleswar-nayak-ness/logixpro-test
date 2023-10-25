@@ -3,8 +3,8 @@ import {MatSort, Sort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { AddPickuplevelsComponent } from '../../dialogs/add-pickuplevels/add-pickuplevels.component';
-import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 export interface PickupLevelDetails {
@@ -33,7 +33,7 @@ export class EmployeePickupLevelComponent{
   pickup_level_data_source: any;
   searchPickLvl='';
   isLookup: boolean=false;
-  constructor(private _liveAnnouncer: LiveAnnouncer, private dialog: MatDialog) {}
+  constructor(private _liveAnnouncer: LiveAnnouncer, private global:GlobalService) {}
 
   @ViewChild(MatSort) sort: MatSort;
   public nextPickLvl:any;
@@ -93,7 +93,7 @@ export class EmployeePickupLevelComponent{
 
   pickUpLevelDialog(){
     let dialogRef;
-    dialogRef = this.dialog.open(AddPickuplevelsComponent, {
+    dialogRef = this.global.OpenDialog(AddPickuplevelsComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -109,7 +109,7 @@ export class EmployeePickupLevelComponent{
   }
   editPickLevel(pickLevelData){
     let dialogRef;
-    dialogRef = this.dialog.open(AddPickuplevelsComponent, {
+    dialogRef = this.global.OpenDialog(AddPickuplevelsComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -127,7 +127,7 @@ export class EmployeePickupLevelComponent{
 
   deletePickLevel(picklevel){
     let dialogRef;
-    dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    dialogRef = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',

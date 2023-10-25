@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from 'src/app/init/auth.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import { CmConfirmAndPackingProcessTransactionComponent } from '../cm-confirm-and-packing-process-transaction/cm-confirm-and-packing-process-transaction.component';
 import { CmConfirmAndPackingSelectTransactionComponent } from '../cm-confirm-and-packing-select-transaction/cm-confirm-and-packing-select-transaction.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -9,9 +9,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',
@@ -42,14 +43,23 @@ userData:any={};
 @ViewChild('paginator2') paginator2: MatPaginator;
 displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transactionQuantity', 'completedQuantity', 'containerID',
  'shipQuantity', 'complete']; 
-  constructor(private Api:ApiFuntions,public authService: AuthService,private toast:ToastrService,private dialog: MatDialog,
-    private global:GlobalService,
+
+ public IconsolidationAPI : IConsolidationApi;
+ 
+ constructor(
+    // private Api:ApiFuntions,
+    public consolidationAPI : ConsolidationApiService,
+    public authService: AuthService,
+    
+    private global:GlobalService, 
     public route: Router,
-    @Inject(MAT_DIALOG_DATA) public data: any,private _liveAnnouncer: LiveAnnouncer,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _liveAnnouncer: LiveAnnouncer,
     public dialogRef: MatDialogRef<any>) { 
+
     this.userData = this.authService.userData();
-   
     this.orderNumber = this.data.orderNumber;
+    this.IconsolidationAPI = consolidationAPI;
   }
 
   ngOnInit(): void {
@@ -70,51 +80,72 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
   }
   async NextContID(){ 
     let obj : any = {
-      orderNumber: this.orderNumber,
-      username: this.userData.userName,
-      wsid: this.userData.wsid, 
+      orderNumber: this.orderNumber
     };
-   this.Api.SelContIDConfirmPack(obj).subscribe((res:any) => { 
-    if(res.data == ''){
-      this.toast.error("An error has occurred",'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});
-    }else{
-      this.getPreferences();
-      if(this.preferencesData?.autoPrintContPL){
-        this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
+   this.IconsolidationAPI.SelContIDConfirmPack(obj).subscribe((res:any) => {
+    if(res.isExecuted)
+    {
+      if(res.data == ''){
+        this.global.ShowToastr('error',"An error has occurred",'Error!');
+        console.log("SelContIDConfirmPack",res.responseMessage);
+      }else{
+        this.getPreferences();
+        if(this.preferencesData?.autoPrintContPL){
+          this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
+        }
+        this.contID = res.data;
+  
       }
-      this.contID = res.data;
-
     }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("SelContIDConfirmPack",res.responseMessage);
+    }
+
+    
    });
 }
 
 
 async UnPack(id:any){  
-  this.Api.ShipTransUnPackUpdate({id:id}).subscribe((res:any) => {
-    if (res.data == "Fail") {
-      this.toast.error("An error has occurred", 'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});  
-  } else {  
-     let index =  this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
-     this.transTable.filteredData[index].containerID = '';
-     this.transTable.filteredData[index].complete = false; 
-  };
+  this.IconsolidationAPI.ShipTransUnPackUpdate({id:id}).subscribe((res:any) => {
+    if(res)
+    {
+      if (res.data == "Fail") {
+        this.global.ShowToastr('error',"An error has occurred", 'Error!');
+        console.log("ShipTransUnPackUpdate",res.responseMessage);  
+    } else {  
+       let index =  this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
+       this.transTable.filteredData[index].containerID = '';
+       this.transTable.filteredData[index].complete = false; 
+    }
+    }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("ShipTransUnPackUpdate",res.responseMessage);
+    }
+  
+  ;
   });
  
 }
 getPreferences() {
   let payload = {
     type: '',
-    value: '',
-    username: this.userData.userName,
-    wsid: this.userData.wsid,
+    value: ''
   };
 
-  this.Api
+  this.IconsolidationAPI
     .ConsoleDataSB(payload)
     .subscribe((res) => {
-      if (res.isExecuted) {
+      if (res.isExecuted && res.data) {
         this.preferencesData = res.data.cmPreferences;
  
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ConsoleDataSB",res.responseMessage);
+
       }
       
     });
@@ -125,32 +156,38 @@ ConfirmAndPackingIndex(){
 
 if(this.orderNumber != ""){
   let obj : any = {
-    orderNumber: this.orderNumber,
-    username: this.userData.userName,
-    wsid: this.userData.wsid, 
+    orderNumber: this.orderNumber
   };
- this.Api.ConfirmAndPackingIndex(obj).subscribe((res:any) => { 
-  
-  this.orderNumber = res.data.orderNumber;
+ this.IconsolidationAPI.ConfirmAndPackingIndex(obj).subscribe((res:any) => {
+  if (res.isExecuted && res.data)
+  {
+    this.orderNumber = res.data.orderNumber;
 
-  this.contIDDrop = res.data.confPackContIDDrop;
-  this.confPackEnable = res.data.confPackEnable;
-  this.contID = res.data.contIDConfirmPack;
- 
-  this.reasons = res.data.adjustmentReason;
-  this.shipComp = res.data.confPackShipComp;
-  this.PrintPrefs = res.data.confPackPrintPrefs; 
-  this.IsLoading = false; 
-  this.toteTable =  new MatTableDataSource(res.data.confPackToteTable);
-  this.transTable =  new MatTableDataSource(res.data.confPackShipTransTable);
-  this.toteTable.paginator = this.paginator1;
-  this.transTable.paginator = this.paginator2;
+    this.contIDDrop = res.data.confPackContIDDrop;
+    this.confPackEnable = res.data.confPackEnable;
+    this.contID = res.data.contIDConfirmPack;
+   
+    this.reasons = res.data.adjustmentReason;
+    this.shipComp = res.data.confPackShipComp;
+    this.PrintPrefs = res.data.confPackPrintPrefs; 
+    this.IsLoading = false; 
+    this.toteTable =  new MatTableDataSource(res.data.confPackToteTable);
+    this.transTable =  new MatTableDataSource(res.data.confPackShipTransTable);
+    this.toteTable.paginator = this.paginator1;
+    this.transTable.paginator = this.paginator2;
+  }
+  else {
+    this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+    console.log("ConfirmAndPackingIndex",res.responseMessage);
+  } 
+  
+
 });
 }
 }
 async ClickConfirmAll(){
   this.getPreferences();
-  let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+  let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
     height: 'auto',
     width: '560px',
     autoFocus: '__non_existing_element__',
@@ -164,35 +201,39 @@ async ClickConfirmAll(){
     if (result == 'Yes') { 
     let obj : any = {
       orderNumber:this.orderNumber,
-      containerID: this.contID,
-      username: this.userData.userName,
-      wsid: this.userData.wsid, 
+      containerID: this.contID
     };
-   this.Api.ConfirmAllConfPack(obj).subscribe((res:any) => {
-    if (res.data == "Fail") {
-      this.toast.error('An error has occurred', 'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000}); 
-  } else { 
-
-   
-
-    if(this.preferencesData?.autoPrintContLabel){
-      this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
-    }
-    if(this.preferencesData?.autoPrintContPL){
-      setTimeout(() => {
+   this.IconsolidationAPI.ConfirmAllConfPack(obj).subscribe((res:any) => {
+    if(res)
+    {
+      if (res.data == "Fail") {
+        this.global.ShowToastr('error','An error has occurred', 'Error!');
+        console.log("ConfirmAllConfPack",res.responseMessage); 
+    } else { 
+      if(this.preferencesData?.autoPrintContLabel){
         this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
-      }, 2000); 
-      
+      }
+      if(this.preferencesData?.autoPrintContPL){
+        setTimeout(() => {
+          this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|contID:${this.contID}`);
+        }, 2000); 
+        
+      }
+      if(this.preferencesData?.autoPrintOrderPL){
+        setTimeout(() => {
+          this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
+        }, 3500); 
+        
+      }
+  
+      this.ConfirmAndPackingIndex(); 
+      }
     }
-    if(this.preferencesData?.autoPrintOrderPL){
-      setTimeout(() => {
-        this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
-      }, 3500); 
-      
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("ConfirmAllConfPack",res.responseMessage);
     }
-
-    this.ConfirmAndPackingIndex(); 
-    }
+   
   });
 }
 });
@@ -201,7 +242,7 @@ async ClickConfirmAll(){
 openScanItem(ItemNumber:any,id: any) {
   let index= this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
   this.transTable.filteredData[index].active = true; 
-  let dialogRef = this.dialog.open(CmConfirmAndPackingProcessTransactionComponent, {
+  this.global.OpenDialog(CmConfirmAndPackingProcessTransactionComponent, {
     height: 'auto',
     width: '96vw',
     autoFocus: '__non_existing_element__',
@@ -237,7 +278,7 @@ announceSortChange2(sortState: Sort) {
  openSelectTransaction(ItemNumber:any,id: any) {
   let index= this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
   this.transTable.filteredData[index].active = true;
-  let dialogRef = this.dialog.open(CmConfirmAndPackingSelectTransactionComponent, {
+  let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingSelectTransactionComponent, {
     height: 'auto',
     width: '96vw',
     autoFocus: '__non_existing_element__',
@@ -266,30 +307,29 @@ async ScanItemNum($event:any){
 let searchCount = 0;
 let id;
 let contID;
-for (let x = 0; x < this.transTable.filteredData.length; x++) {
-    let itemNum = this.transTable.filteredData[x].itemNumber;
-    let complete = this.transTable.filteredData[x].complete;
+for (const item of this.transTable.filteredData) {
+    let itemNum = item.itemNumber;
+    let complete = item.complete;
     if (this.ItemNumber.toLowerCase() == itemNum.toLowerCase() && !complete) {
         searchCount += 1;
-        id = this.transTable.filteredData[x].sT_ID;
+        id = item.sT_ID;
     };
 };
  
 if(searchCount == 0){ 
-  this.toast.error("The desired item number was not found or is already confirmed and packed",'Item Number Issue', { positionClass: 'toast-bottom-right',timeOut: 2000}); 
+  this.global.ShowToastr('error',"The desired item number was not found or is already confirmed and packed",'Item Number Issue'); 
 } else if (searchCount == 1) {
   let obj : any = {
     id: id,
     orderNumber: this.orderNumber,
     containerID: this.contID,
-    modal: "",
-    userName: this.userData.userName,
-    wsid: this.userData.wsid
+    modal: ""
   };
- this.Api.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
+ this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
    
   if (res.data == "Fail") {
-    this.toast.error('An error has occurred', 'Error!', { positionClass: 'toast-bottom-right',timeOut: 2000});  
+    this.global.ShowToastr('error','An error has occurred', 'Error!');
+    console.log("ConfPackProcModalUpdate",res.responseMessage);  
 } else if (res.data == "Modal") {
     //show modal here
   this.openScanItem($event.target.value,id);  

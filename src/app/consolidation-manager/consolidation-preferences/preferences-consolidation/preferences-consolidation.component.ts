@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-preferences-consolidation',
@@ -16,11 +16,12 @@ export class PreferencesConsolidationComponent {
   userData: any;
   @Output() consolidationEvnt= new EventEmitter<void>();
 
+  public IconsolidationAPI : IConsolidationApi;
+
   constructor(
-    private Api: ApiFuntions,
-    private toastr: ToastrService,
+    public consolidationAPI : ConsolidationApiService,
     private authService: AuthService,
-    public dialog: MatDialog
+    public global:GlobalService
   ) {
     this.userData = this.authService.userData();
     this.filtersForm = new FormGroup({
@@ -36,6 +37,7 @@ export class PreferencesConsolidationComponent {
       emailPackSlip: new FormControl(''),
       validateStaingLocs: new FormControl(''),
     });
+    this.IconsolidationAPI = consolidationAPI;
   }
 
 
@@ -67,12 +69,10 @@ export class PreferencesConsolidationComponent {
     let payload = {
       emailPickSlip: this.filtersForm.controls['emailPackSlip'].value
         ? this.filtersForm.controls['emailPackSlip'].value
-        : false,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+        : false
     };
     // Get the email slip data from the server
-this.Api
+this.IconsolidationAPI
   .SystemPreferenceEmailSlip(payload)
   .subscribe(
     // When the request has completed
@@ -80,21 +80,15 @@ this.Api
       // If the request was successful
       if (response.isExecuted) {
         // Show a success message
-        this.toastr.success(response.responseMessage, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('success',response.responseMessage, 'Success!');
 
       } else {
         // Show an error message
-        this.toastr.error(
+        this.global.ShowToastr('error',
           'Error',
-          'An Error Occured while trying to remove all data, check the event log for more information',
-          {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          }
+          'An Error Occured while trying to remove all data, check the event log for more information'
         );
+        console.log("SystemPreferenceEmailSlip");
       }
     },
         (error) => {}
@@ -111,25 +105,20 @@ this.Api
       printUnVerified: this.filtersForm.controls['printUnVerified'].value,
       packingListSort: this.filtersForm.controls['packingList'].value,
       nonPickpro: this.filtersForm.controls['nonPickpro'].value.toString(),
-      validateStaingLocs: this.filtersForm.controls['validateStaingLocs'].value.toString(),
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      validateStaingLocs: this.filtersForm.controls['validateStaingLocs'].value.toString()
     };
-    this.Api
+    this.IconsolidationAPI
       .ConsolidationPreferenceUpdate(payload)
       .subscribe(
         (response: any) => {
           if (response.isExecuted) {
             this.consolidationEvnt.emit();
           } else {
-            this.toastr.error(
+            this.global.ShowToastr('error',
               'Error',
-              'An Error Occured while trying to remove all data, check the event log for more information',
-              {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              }
+              'An Error Occured while trying to remove all data, check the event log for more information'
             );
+            console.log("ConsolidationPreferenceUpdate");
           }
         },
         (error) => {}

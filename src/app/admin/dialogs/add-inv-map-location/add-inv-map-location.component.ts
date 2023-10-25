@@ -7,11 +7,16 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from '../../../../app/init/auth.service';
 import { AdjustQuantityComponent } from '../adjust-quantity/adjust-quantity.component';
 import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 export interface InventoryMapDataStructure {
@@ -126,22 +131,28 @@ export class AddInvMapLocationComponent implements OnInit {
   headerLable: any;
   userData: any;
   FromOm:boolean=false;
-
+  public iAdminApiService: IAdminApiService;
   myroute1:boolean=true;
   myroute2:boolean=true;
   unitOFMeasure  
   itemNumberScroll:any = "vertical";
 
+  public iCommonAPI : ICommonApi;
+
   constructor(
-    private dialog: MatDialog,
+    public commonAPI : CommonApiService,
+    private global:GlobalService,
+    private dialog:MatDialog,
     private fb: FormBuilder,
     private Api: ApiFuntions,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>,
     private router: Router
   ) {
+    this.iAdminApiService = adminApiService;
     if (data.mode == "addInvMapLocation") {
       this.headerLable = 'Add Location';
     } else if (data.mode == "editInvMapLocation") {
@@ -152,6 +163,8 @@ export class AddInvMapLocationComponent implements OnInit {
       this.myroute1=false;
       this.myroute2=false;
     }
+
+    this.iCommonAPI = commonAPI;
 
   }
 
@@ -178,12 +191,23 @@ export class AddInvMapLocationComponent implements OnInit {
     this.searchItemNumbers = this.getDetailInventoryMapData.itemNumber;
 
 
-    this.Api.getLocZTypeInvMap().subscribe((res) => {
-      this.locZoneList = res.data; 
+    this.iAdminApiService.getLocZTypeInvMap({}).subscribe((res) => {
+      if(res.isExecuted && res.data)
+      {
+        this.locZoneList = res.data; 
       this.filteredOptions = this.addInvMapLocation.controls['location'].valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value || '')),
       );
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getLocZTypeInvMap",res.responseMessage);
+
+
+      }
+      
 
     });
 
@@ -261,13 +285,10 @@ export class AddInvMapLocationComponent implements OnInit {
   adjustQuantity() {
     if(this.addInvMapLocation.value.item == '') return;
     if(this.getDetailInventoryMapData.itemNumber == ''){
-      this.toastr.error('No item found at the location specified.  Ensure that the entry selected has been saved since an item was assigned to it.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','No item found at the location specified.  Ensure that the entry selected has been saved since an item was assigned to it.', 'Error!');
       return;
     }
-    let dialogRef = this.dialog.open(AdjustQuantityComponent, {
+    let dialogRef:any = this.global.OpenDialog(AdjustQuantityComponent, {
       height: 'auto',
       width: '800px',
       autoFocus: '__non_existing_element__',
@@ -277,7 +298,7 @@ export class AddInvMapLocationComponent implements OnInit {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-      if (result != true) {
+      if (!result) {
 
         this.addInvMapLocation.patchValue({
           'itemQuantity': result
@@ -301,11 +322,9 @@ export class AddInvMapLocationComponent implements OnInit {
     let payload = {
       "itemNumber": itemNum.value.toString(),
       "beginItem": "---",
-      "isEqual": false,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "isEqual": false
     }
-    this.Api.getSearchedItem(payload).subscribe(res => {
+    this.iCommonAPI.getSearchedItem(payload).subscribe(res => {
       if (res.data.length > 0) {
         this.itemNumberList = res.data;
       }
@@ -387,30 +406,39 @@ export class AddInvMapLocationComponent implements OnInit {
         if (this.clickSubmit) {
           if (this.data.detailData) {
             this.clickSubmit = false;
-            this.Api.updateInventoryMap(form.value,invMapIDs).subscribe((res) => {
+            this.iAdminApiService.updateInventoryMap(form.value,invMapIDs).subscribe((res) => {
               this.clickSubmit = true;
               
               if (res.isExecuted) {
-                this.toastr.success("Your details have been updated", 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+                this.global.ShowToastr('success',"Your details have been updated", 'Success!');
 
                 this.dialog.closeAll()
+              }
+
+              else {
+
+                
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("updateInventoryMap",res.responseMessage);
+
               }
             });
           } else {
             this.clickSubmit = false;
-            this.Api.createInventoryMap(form.value).subscribe((res) => {
+            this.iAdminApiService.createInventoryMap(form.value).subscribe((res) => {
               this.clickSubmit = true;
               
               if (res.isExecuted) {
-                this.toastr.success("Your details have been added", 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+                this.global.ShowToastr('success',"Your details have been added", 'Success!');
 
                 this.dialog.closeAll()
+              }
+
+              else {
+                
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("createInventoryMap",res.responseMessage);
+
               }
             });
           }
@@ -429,7 +457,7 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   loadWarehouse() {
-    let dialogRef = this.dialog.open(WarehouseComponent, {
+    let dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
       height: 'auto',
       width: '640px',
       autoFocus: '__non_existing_element__',
@@ -451,7 +479,7 @@ export class AddInvMapLocationComponent implements OnInit {
   }
   loadCellSize() {
 
-    let dialogRef = this.dialog.open(CellSizeComponent, {
+    let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
       height: 'auto',
       width: '660px',
       autoFocus: '__non_existing_element__',
@@ -467,7 +495,7 @@ export class AddInvMapLocationComponent implements OnInit {
     })
   }
   loadVelocityCode() {
-    let dialogRef = this.dialog.open(VelocityCodeComponent, {
+    let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
       height: 'auto',
       width: '660px',
       autoFocus: '__non_existing_element__',
@@ -514,7 +542,7 @@ export class AddInvMapLocationComponent implements OnInit {
     const velCodeVal = this.velCodeVal.nativeElement.value
     
 
-    this.Api.getItemNumDetail(payload).subscribe((res) => {
+    this.iAdminApiService.getItemNumDetail(payload).subscribe((res) => {
       if (res.isExecuted) {
         this.unitOFMeasure =res.data.unitOfMeasure 
         let match = '';
@@ -527,11 +555,12 @@ export class AddInvMapLocationComponent implements OnInit {
           if (match != '') { match += ', Velocity Code'; expected += ' and Velocity Code: ' + res.data.velocityCode } else { match += 'Velocity Code'; expected += 'Velocity Code: ' + res.data.velocityCode };
         };
         if (match != '') {
-          this.toastr.info('Provided ' + match + ' do not match Inventory Master.' + expected + ' for specified Item and Zone', 'Info!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('info','Provided ' + match + ' do not match Inventory Master.' + expected + ' for specified Item and Zone', 'Info!');
         }
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getItemNumDetail",res.responseMessage);
       }
 
     });
@@ -564,9 +593,6 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   @HostListener('unloaded')
-  ngOnDestroy() {
-    
-  }
 
   focusinmethod(){
     this.itemNumberScroll = "";

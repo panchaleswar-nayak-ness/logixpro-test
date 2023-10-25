@@ -1,18 +1,17 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import labels from '../../../labels/labels.json';
-import { Component, ElementRef, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {  } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
 import { AuthService } from 'src/app/init/auth.service'; 
-import {  } from 'jquery';
-import { ToastrService } from 'ngx-toastr';
-import {  } from '@popperjs/core';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {
   location: number;
@@ -28,12 +27,12 @@ export interface PeriodicElement {
   styleUrls: ['./count.component.scss']
 })
 export class CountComponent implements OnInit {
-
+  public iAdminApiService: IAdminApiService;
   public userData: any;
   public totalCount: any;
   public searchOrder: string = '';
   public searchOrder1: string = '';
-
+  settime:any =false;
   displayedColumns: string[] = ['orderNumber'  , 'itemCount', 'priority', 'requiredDate','actions'];
   displayedColumns1: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate','actions'];
   
@@ -42,10 +41,13 @@ export class CountComponent implements OnInit {
   rightTable:any = new MatTableDataSource([]);
 
   constructor(private _liveAnnouncer: LiveAnnouncer ,
-              private dialog: MatDialog ,
+              private global:GlobalService ,
               private authservice : AuthService,
               private Api: ApiFuntions,
-              private toastr: ToastrService) {}
+              private adminApiService: AdminApiService,
+              ) {
+                this.iAdminApiService = adminApiService;
+              }
 
 
   @ViewChild('paginator') paginator: MatPaginator;
@@ -59,12 +61,8 @@ export class CountComponent implements OnInit {
   @ViewChild('deleteAction') quarantineTemp: TemplateRef<any>;
 
   @ViewChild('addOrder') addOrderTemp: TemplateRef<any>;
-  @Output() newItemEvent = new EventEmitter<Event>();
-  @ViewChild('autoFocusField') searchBoxField: ElementRef;
+  @Output() newItemEvent = new EventEmitter<Event>(); 
 
-  ngAfterViewInit() {
-    this.searchBoxField.nativeElement.focus();
-  }
 
   ngOnInit(): void {
     this.userData = this.authservice.userData()
@@ -90,7 +88,7 @@ export class CountComponent implements OnInit {
 
   quarantineDialog(): void {
     if(this.rightTable.data.length > 0){
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -107,10 +105,7 @@ export class CountComponent implements OnInit {
       })
     }
     else{
-      this.toastr.error("There were no orders selected for location assignment marking", 'No Orders Selected', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"There were no orders selected for location assignment marking", 'No Orders Selected');
     }
   }
 
@@ -120,25 +115,18 @@ export class CountComponent implements OnInit {
      
     let payload = {
       "transType": "count",
-      "orders": orders,
-      "userName" : this.userData.userName,
-      "wsid": this.userData.wsid
+      "orders": orders, 
     }
-    this.Api.LocationAssignmentOrderInsert(payload).subscribe((res => {
+    this.iAdminApiService.LocationAssignmentOrderInsert(payload).subscribe((res => {
      console.log(res.data.orders,'insertion')
      if(res.isExecuted){
       let testdata = res.data.orders
      this.rightTable.data = this.rightTable.data.filter((data) => !testdata.includes(data.orderNumber)) 
-     this.toastr.success(labels.alert.success, 'Success!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000
-    });
+     this.global.ShowToastr('success',labels.alert.success, 'Success!');
      }
      else{
-      this.toastr.success(res.responseMessage, 'Success!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("LocationAssignmentOrderInsert",res.responseMessage);
      }
     }))
   }
@@ -158,13 +146,11 @@ export class CountComponent implements OnInit {
   }
   
   openLAQ() {
-    let payload = {
-      "userName" : this.userData.userName,
-      "wsid": this.userData.wsid
+    let payload = { 
     }
 
-    this.Api.GetTransactionTypeCounts(payload).subscribe((res =>{
-    let dialogRef = this.dialog.open(LaLocationAssignmentQuantitiesComponent, {
+    this.iAdminApiService.GetTransactionTypeCounts(payload).subscribe((res =>{
+    let dialogRef:any = this.global.OpenDialog(LaLocationAssignmentQuantitiesComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -178,7 +164,7 @@ export class CountComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.leftTable = new MatTableDataSource(result);
       this.leftTable.paginator = this.paginator
-      this.newItemEvent.emit(result.tabIndex);
+      this.newItemEvent.emit(result.tabIndex); 
       
     })
   }))

@@ -11,7 +11,7 @@
   </div>
   <div class="row mb-3">
     <div class="col-12">
-      <app-tran-order-list [deleteEvnt]="event" [clearEvent]="clearEvent"  (clearFromListChange)="onClearList($event)"   (currentStatus)="currentStatusOrderChange($event)" (totalLinesOrders)="totalLinesOrderChange($event)" (orderTypeOrders)="orderTypeOrderChange($event)"  (reprocessOrders)="reprocessOrderChange($event)"  (completeOrders)="completeOrderChange($event)"   (locationZones)="locationZones($event)" (openOrders)="openOrderChange($event)"
+      <app-tran-order-list [TabIndex]="TabIndex" [deleteEvnt]="event" [clearEvent]="clearEvent"  (clearFromListChange)="onClearList($event)"   (currentStatus)="currentStatusOrderChange($event)" (totalLinesOrders)="totalLinesOrderChange($event)" (orderTypeOrders)="orderTypeOrderChange($event)"  (reprocessOrders)="reprocessOrderChange($event)"  (completeOrders)="completeOrderChange($event)"   (locationZones)="locationZones($event)" (openOrders)="openOrderChange($event)"
         [orderNoEvent]="orderNoEvent" [toteIdEvent]="toteIdEvent"  ></app-tran-order-list>
     </div>
   </div>

@@ -1,8 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
-import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+
 import { AuthService } from '../../../app/init/auth.service';
 import { CmConfirmAndPackingSelectTransactionComponent } from 'src/app/dialogs/cm-confirm-and-packing-select-transaction/cm-confirm-and-packing-select-transaction.component';
 import { CmConfirmAndPackingComponent } from 'src/app/dialogs/cm-confirm-and-packing/cm-confirm-and-packing.component';
@@ -11,17 +9,18 @@ import { CmOrderNumberComponent } from 'src/app/dialogs/cm-order-number/cm-order
 import { CmPrintOptionsComponent } from 'src/app/dialogs/cm-print-options/cm-print-options.component';
 import { CmShippingTransactionComponent } from 'src/app/dialogs/cm-shipping-transaction/cm-shipping-transaction.component';
 import { CmShippingComponent } from 'src/app/dialogs/cm-shipping/cm-shipping.component';
-import { Subject, catchError, debounceTime, distinctUntilChanged, of } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CmOrderToteConflictComponent } from 'src/app/dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-consolidation',
@@ -69,7 +68,6 @@ export class ConsolidationComponent implements OnInit {
   public isitemVisible: boolean = true;
   public issupplyVisible: boolean = false;
 
-  searchByItem: any = new Subject<string>();
   searchAutocompleteItemNum: any = [];
 
   displayedColumns: string[] = ['toteID', 'complete', 'stagingLocation', 'stagedBy', 'stagedDate'];
@@ -91,23 +89,21 @@ export class ConsolidationComponent implements OnInit {
     { key: '9', value: 'User Field 1' },
   ];
 
-  constructor(private dialog: MatDialog,
-    private toastr: ToastrService,
-    private router: Router,
-    private Api: ApiFuntions,
-    private global:GlobalService,
+  public IconsolidationAPI : IConsolidationApi;
+
+  constructor(private global:GlobalService,
+    
+    public consolidationAPI : ConsolidationApiService, 
     public authService: AuthService,
     private currentTabDataService: CurrentTabDataService,
-    private _liveAnnouncer: LiveAnnouncer,) { }
+    private _liveAnnouncer: LiveAnnouncer) {
+      this.IconsolidationAPI = consolidationAPI;
+     }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.ConsolidationIndex()
-    this.searchByItem
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        this.autocompleteSearchColumnItem()
-      });
+    
 
   }
 
@@ -196,12 +192,10 @@ export class ConsolidationComponent implements OnInit {
 
   ConsolidationIndex() {
     let payload = {
-      "username": this.userData.username,
-      "wsid": this.userData.wsid,
       "orderNumber": this.TypeValue
     }
 
-    this.Api.ConsolidationIndex(payload).subscribe((res: any) => {
+    this.IconsolidationAPI.ConsolidationIndex(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.consolidationIndex = res.data;
         this.startSelectFilterLabel = this.consolidationIndex.cmPreferences.defaultLookupType;
@@ -226,6 +220,11 @@ export class ConsolidationComponent implements OnInit {
           this.displayedColumns_1.unshift('itemNumber')
         }
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ConsolidationIndex",res.responseMessage);
+
+      }
     }
     )
   }
@@ -235,36 +234,25 @@ export class ConsolidationComponent implements OnInit {
     let curValue = TypeValue;
     let payload = {
       "type": this.type,
-      "selValue": curValue,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "selValue": curValue
     }
 
-    this.Api.ConsolidationData(payload).subscribe((res: any) => {
+    this.IconsolidationAPI.ConsolidationData(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         if ((typeof res.data == 'string')) {
           switch (res.data) {
             case "DNE":
-              this.toastr.error("Consolidation The Order/Tote that you entered is invalid or no longer exists in the system.", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"Consolidation The Order/Tote that you entered is invalid or no longer exists in the system.", 'Error!');
               this.searchBoxField.nativeElement.focus();
               break;
 
             case "Conflict":
               this.openCmOrderToteConflict()
-              this.toastr.error("The Value you Entered matched a Tote and Order Number, select one to Continue.", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"The Value you Entered matched a Tote and Order Number, select one to Continue.", 'Error!');
               break;
 
             case "Error":
-              this.toastr.error("An Error occured while retrieving data.", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
               break;
           }
 
@@ -297,35 +285,35 @@ export class ConsolidationComponent implements OnInit {
           this.stageTable.paginator = this.paginator3;
 
           let payload = {
-            "orderNumber": curValue,
-            "username": this.userData.username,
-            "wsid": this.userData.wsid
+            "orderNumber": curValue
           }
 
-          this.Api.ShippingButtSet(payload).subscribe((res: any) => {
-            if (res.data == 1) {
-              this.enableConButts()
-              this.shippingbtb = false;
-            }
-            else if (res.data == 0) {
-              this.enableConButts()
-              this.shippingbtb = true;
+          this.IconsolidationAPI.ShippingButtSet(payload).subscribe((res: any) => {
+            if(res.isExecuted)
+            {
+              if (res.data == 1) {
+                this.enableConButts()
+                this.shippingbtb = false;
+              }
+              else if (res.data == 0) {
+                this.enableConButts()
+                this.shippingbtb = true;
+              }
+              else {
+                this.global.ShowToastr('error','Error has occured', 'Error!');
+              }
             }
             else {
-              this.toastr.error('Error has occured', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
-            }
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("ShippingButtSet",res.responseMessage);
 
+            }
           })
         }
       }
       else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("ConsolidationData",res.responseMessage);
       }
       
       this.RecordSavedItem();
@@ -343,16 +331,11 @@ export class ConsolidationComponent implements OnInit {
     let payload = {
       "iDs":
         IDS
-      ,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
     }
-    this.Api.VerifyAllItemPost(payload).subscribe((res: any) => {
+    this.IconsolidationAPI.VerifyAllItemPost(payload).subscribe((res: any) => {
       if (!res.isExecuted) {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("VerifyAllItemPost",res.responseMessage);
       }
       else {
         let z: any[] = [];
@@ -372,10 +355,7 @@ export class ConsolidationComponent implements OnInit {
         })
 
         if (this.tableData_1.data.length == 0) {
-          this.toastr.info('You have consolidated all items in this order', 'Alert!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('info','You have consolidated all items in this order', 'Alert!');
         }
       }
     })
@@ -391,17 +371,13 @@ export class ConsolidationComponent implements OnInit {
     }
     )
     let payload = {
-      "iDs": IDS,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "iDs": IDS
     }
-    this.Api.UnVerifyAll(payload).subscribe((res: any) => {
+    this.IconsolidationAPI.UnVerifyAll(payload).subscribe((res: any) => {
 
       if (!res.isExecuted) {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("UnVerifyAll",res.responseMessage);
 
       }
       else {
@@ -433,19 +409,14 @@ export class ConsolidationComponent implements OnInit {
     }
 
     if (status == "Not Completed" || status == "Not Assigned") {
-      this.toastr.error("The selected item has not yet been completed and can't be verified at this time", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"The selected item has not yet been completed and can't be verified at this time", 'Error!');
     }
     else {
       let payload = {
-        "id": id,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid
+        "id": id
       }
 
-      this.Api.VerifyItemPost(payload).subscribe((res: any) => {
+      this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
         if (res.isExecuted) {
           if (Index != undefined) {
             let data = this.tableData_2.data;
@@ -470,10 +441,8 @@ export class ConsolidationComponent implements OnInit {
 
         }
         else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          })
+          this.global.ShowToastr('error',res.responseMessage, 'Error!')
+          console.log("VerifyItemPost",res.responseMessage);
         }
 
       })
@@ -493,11 +462,9 @@ export class ConsolidationComponent implements OnInit {
     }
     else {
       let payload = {
-        "id": id,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid
+        "id": id
       }
-      this.Api.DeleteVerified(payload).subscribe((res: any) => {
+      this.IconsolidationAPI.DeleteVerified(payload).subscribe((res: any) => {
         if (res.isExecuted) {
           let data2 = this.tableData_1.data;
           data2.push({ ...this.tableData_2.data[index] });
@@ -509,10 +476,8 @@ export class ConsolidationComponent implements OnInit {
           this.tableData_2.paginator = this.paginator2;
         }
         else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("DeleteVerified",res.responseMessage);
         }
       })
     }
@@ -563,7 +528,7 @@ export class ConsolidationComponent implements OnInit {
     // desturcturing
     const { verifyItems, blindVerifyItems } = this.consolidationIndex.cmPreferences;
     if (result.valueCount >= 1 && verifyItems == 'No' && blindVerifyItems == 'No') {
-      const dialogRef = this.dialog.open(CmItemSelectedComponent, {
+      const dialogRef:any = this.global.OpenDialog(CmItemSelectedComponent, {
         height: 'auto',
         width: '899px',
         autoFocus: '__non_existing_element__',
@@ -588,10 +553,7 @@ export class ConsolidationComponent implements OnInit {
       this.verifyLine(val, result.index)
     }
     else {
-      this.toastr.error('Item not in order or has already been consolidated', 'error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Item not in order or has already been consolidated', 'error!');
     }
   }
 
@@ -662,26 +624,22 @@ export class ConsolidationComponent implements OnInit {
     this.paginator3.pageIndex = 0;
   }
 
-  async autocompleteSearchColumnItem() {
-
+  async autocompleteSearchColumnItem(val:any = null) {
+    if(val) this.filterValue = val;
     let payload = {
       "column": this.startSelectFilter,
       "value": this.filterValue ? this.filterValue : '',
-      "orderNumber": this.TypeValue,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "orderNumber": this.TypeValue
     }
 
-    this.Api.ConsoleItemsTypeAhead(payload).pipe(
+    this.IconsolidationAPI.ConsoleItemsTypeAhead(payload).pipe(
 
       catchError((error) => {
 
         // Handle the error here
 
-        this.toastr.error("An error occured while retrieving data.", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',"An error occured while retrieving data.", 'Error!');
+        console.log("ConsoleItemsTypeAhead");
 
 
         // Return a fallback value or trigger further error handling if needed
@@ -702,7 +660,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmShipping() {
-    let dialogRef = this.dialog.open(CmShippingComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmShippingComponent, {
       height: 'auto',
       width: '96vw',
       autoFocus: '__non_existing_element__',
@@ -717,7 +675,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmShippingTransaction() {
-    let dialogRef = this.dialog.open(CmShippingTransactionComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmShippingTransactionComponent, {
       height: 'auto',
       width: '96vw',
       autoFocus: '__non_existing_element__',
@@ -735,7 +693,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmConfirmPacking() {
-    let dialogRef = this.dialog.open(CmConfirmAndPackingComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingComponent, {
       height: 'auto',
       width: '96vw',
       autoFocus: '__non_existing_element__',
@@ -759,7 +717,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmOrderNumber() {
-    let dialogRef = this.dialog.open(CmOrderNumberComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmOrderNumberComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -776,7 +734,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmItemSelected() {
-    let dialogRef = this.dialog.open(CmItemSelectedComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmItemSelectedComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -790,7 +748,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmSelectTransaction() {
-    let dialogRef = this.dialog.open(CmConfirmAndPackingSelectTransactionComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingSelectTransactionComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -804,7 +762,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmPrintOptions() {
-    let dialogRef = this.dialog.open(CmPrintOptionsComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmPrintOptionsComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -826,7 +784,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   openCmOrderToteConflict() {
-    let dialogRef = this.dialog.open(CmOrderToteConflictComponent, {
+    let dialogRef:any = this.global.OpenDialog(CmOrderToteConflictComponent, {
       height: 'auto',
       width: '620px',
       autoFocus: '__non_existing_element__',
@@ -859,16 +817,13 @@ export class ConsolidationComponent implements OnInit {
       }
     }
     else {
-      this.toastr.error("There are no unverfied items", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"There are no unverfied items", 'Error!');
     }
   }
 
   printPreviewPackList(print = true) {
     if (this.tableData_1?.filteredData && this.tableData_1.filteredData.length > 0) {
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '786px',
         data: {
@@ -879,7 +834,7 @@ export class ConsolidationComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result === 'Yes') {
-          this.Api.ShowCMPackPrintModal({ orderNumber: this.TypeValue }).subscribe((res: any) => {
+          this.IconsolidationAPI.ShowCMPackPrintModal({ orderNumber: this.TypeValue }).subscribe((res: any) => {
             if (res.isExecuted && res.data == "all") {
               if(print){
                 this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.TypeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
@@ -890,14 +845,15 @@ export class ConsolidationComponent implements OnInit {
             } else if (res.isExecuted && res.data == "modal") {
               this.showCmPackPrintModal(true, this.TypeValue,print);
             } else {
-              this.toastr.error("Error has occured","Error");
+              this.global.ShowToastr('error',"Error has occured","Error");
+              console.log("ShowCMPackPrintModal",res.responseMessage);
             }
           });
         }
       });
     }
     else {
-      this.Api.ShowCMPackPrintModal({ orderNumber: this.TypeValue }).subscribe((res: any) => {
+      this.IconsolidationAPI.ShowCMPackPrintModal({ orderNumber: this.TypeValue }).subscribe((res: any) => {
         if (res.isExecuted && res.data == "all") {
           if(print){
             this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.TypeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
@@ -908,14 +864,15 @@ export class ConsolidationComponent implements OnInit {
         } else if (res.isExecuted && res.data == "modal") {
           this.showCmPackPrintModal(true, this.TypeValue,print);
         } else {
-          this.toastr.error("Error has occured","Error");
+          this.global.ShowToastr('error',"Error has occured","Error");
+          console.log("ShowCMPackPrintModal",res.responseMessage);
         }
       });
     }
   }
 
   showCmPackPrintModal(preview:boolean,orderNumber:any,print:any){
-     this.dialog.open(CmPrintOptionsComponent, {
+     this.global.OpenDialog(CmPrintOptionsComponent, {
       height: 'auto',
       width: '786px',
       data: {

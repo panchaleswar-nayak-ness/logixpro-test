@@ -5,7 +5,6 @@ import {
   OnInit,
   ViewChild,
   Renderer2,
-  ViewChildren,
   QueryList,
 } from '@angular/core'; 
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,14 +13,14 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
-import { ToastrService } from 'ngx-toastr';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { } from 'datatables.net';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
@@ -64,16 +63,17 @@ const TRNSC_DATA = [
   styleUrls: ['./move-items.component.scss'],
 })
 export class MoveItemsComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatPaginator) paginatorTo: MatPaginator;
-  @ViewChildren(MatPaginator) paginators: QueryList<MatPaginator>;
-  @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
+  paginator: MatPaginator;
+  paginatorTo: MatPaginator;
+  paginators: QueryList<MatPaginator>;
+  // @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   @ViewChild('matToolbar') matToolbar: ElementRef;
   public dataSource: any = new MatTableDataSource();
   public moveToDatasource: any = new MatTableDataSource();
   @ViewChild('trigger') trigger: MatMenuTrigger;
   tabIndex: any = 0;
+  public iAdminApiService: IAdminApiService;
   isRowSelected = false;
   contextMenuPosition = { x: '0px', y: '0px' };
   moveFromFilter: string = '1 = 1';
@@ -152,16 +152,18 @@ export class MoveItemsComponent implements OnInit {
   hideRequiredControl = new FormControl(false);
   searchAutocompletItemNo: any = [];
   public itemnumscan: any = '';
+  public iCommonAPI : ICommonApi;
   constructor(
-    private Api: ApiFuntions,
+    public commonAPI : CommonApiService,
     private authService: AuthService,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
-    private filterService: ContextMenuFiltersService,
+    private global:GlobalService,
+    public adminApiService: AdminApiService,
     private renderer: Renderer2,
-    private elementRef: ElementRef
+    private contextMenuService : TableContextMenuService
   ) {
     this.userData = this.authService.userData();
+    this.iAdminApiService = adminApiService;
+    this.iCommonAPI = commonAPI;
   }
 
   ngOnInit(): void {
@@ -236,7 +238,6 @@ export class MoveItemsComponent implements OnInit {
       searchColumn: 'Item Number',
       sortColumnIndex: tableName === 'MoveFrom' ? this.sortCol : this.sortColTo,
       sortOrder: tableName === 'MoveFrom' ? this.sortOrder : this.sortOrderTo,
-      username: this.userData.userName,
       tableName: tableName,
       cellSize: this.from_cellSize,
       warehouse: this.from_warehouse,
@@ -244,44 +245,51 @@ export class MoveItemsComponent implements OnInit {
       viewMode: tableName === 'MoveFrom' ? this.viewMode : this.viewModeTo,
       filter:
         tableName === 'MoveFrom' ? this.moveFromFilter : this.moveToFilter,
-      wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .GetMoveItemsTable(payload)
       .subscribe((res: any) => {
-        if (res?.data && res.data['moveMapItems'].length === 0) {
-          if (tableName === 'MoveFrom') {
-            this.resetPaginationFrom();
+        if(res.isExecuted)
+        {
+          if (res?.data && res.data['moveMapItems'].length === 0) {
+            if (tableName === 'MoveFrom') {
+              this.resetPaginationFrom();
+            } else {
+              this.resetPaginationTo();
+            }
+          }
+          if (tableName === 'MoveTo') {
+              res?.data &&
+              res.data['moveMapItems'].map((item) => {
+                item.isSelected = false;
+              });
+            this.moveToDatasource = new MatTableDataSource(
+              res?.data && res.data && res.data['moveMapItems']
+            );
+            this.totalRecordsTo = res?.data.recordsTotal;
+            this.recordsFilteredTo = res?.data.recordsFiltered;
+            this.customLabelTo = `Showing page ${
+              this.totalRecords
+            } of ${Math.ceil(this.totalRecords / this.recordsPerPage)}`;
           } else {
-            this.resetPaginationTo();
+            res?.data &&
+              res.data &&
+              res.data['moveMapItems'].map((item) => {
+                item.isSelected = false;
+              });
+            this.dataSource = new MatTableDataSource(res?.data['moveMapItems']);
+            this.totalRecords = res?.data.recordsTotal;
+            this.recordsFiltered = res?.data.recordsFiltered;
+            this.customLabel = `Showing page ${this.totalRecords} of ${Math.ceil(
+              this.totalRecords / this.recordsPerPage
+            )}`;
           }
         }
-        if (tableName === 'MoveTo') {
-            res?.data &&
-            res.data['moveMapItems'].map((item) => {
-              item.isSelected = false;
-            });
-          this.moveToDatasource = new MatTableDataSource(
-            res?.data && res.data && res.data['moveMapItems']
-          );
-          this.totalRecordsTo = res?.data.recordsTotal;
-          this.recordsFilteredTo = res?.data.recordsFiltered;
-          this.customLabelTo = `Showing page ${
-            this.totalRecords
-          } of ${Math.ceil(this.totalRecords / this.recordsPerPage)}`;
-        } else {
-          res?.data &&
-            res.data &&
-            res.data['moveMapItems'].map((item) => {
-              item.isSelected = false;
-            });
-          this.dataSource = new MatTableDataSource(res?.data['moveMapItems']);
-          this.totalRecords = res?.data.recordsTotal;
-          this.recordsFiltered = res?.data.recordsFiltered;
-          this.customLabel = `Showing page ${this.totalRecords} of ${Math.ceil(
-            this.totalRecords / this.recordsPerPage
-          )}`;
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GetMoveItemsTable",res.responseMessage);
         }
+        
 
       });
   }
@@ -293,11 +301,9 @@ export class MoveItemsComponent implements OnInit {
     let searchPayload = {
       itemNumber: this.itemNo,
       beginItem: '---',
-      isEqual: false,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      isEqual: false
     };
-    this.Api.SearchItem(searchPayload).subscribe(
+    this.iCommonAPI.SearchItem(searchPayload).subscribe(
       {next: (res: any) => {
         this.searchAutocompletItemNo = res.data;
         this.getMoveItemList('MoveFrom');
@@ -310,9 +316,7 @@ export class MoveItemsComponent implements OnInit {
       this.tabIndex = 0;
     }
   }
-  isQuantityGreater(quantity: number): boolean {
-    return quantity >= 2;
-  }
+  
   sortChange(event) {
     if (
       !this.dataSource._data._value ||
@@ -334,8 +338,6 @@ export class MoveItemsComponent implements OnInit {
   }
 
   sortChangeToItems(event) {
-    console.log(this.itemSelected);
-
     if (
       !this.moveToDatasource._data._value ||
       event.direction == '' ||
@@ -553,7 +555,7 @@ export class MoveItemsComponent implements OnInit {
         break;
     }
 
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '560px',
       data: {
@@ -704,18 +706,13 @@ export class MoveItemsComponent implements OnInit {
       priority: this.from_priority,
       dedicateMoveTo: this.dedicateMoveTo,
       unDedicateMoveFrom: this.undedicateMoveFrom,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
 
-    this.Api
+    this.iAdminApiService
     .CreateMoveTransactions(payload)
     .subscribe((res: any) => {
       if(res.isExecuted){
-        this.toastr.success('Item moved successfully', 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success','Item moved successfully', 'Success!');
         this.resetPagination();
         this.moveToFilter='1 = 1';
         this.moveFromFilter='1 = 1';
@@ -726,109 +723,25 @@ export class MoveItemsComponent implements OnInit {
         this.clearFields('MoveFrom')
         this.clearFields('MoveTo')
       }else{
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("CreateMoveTransactions",res.responseMessage);
       }
     });
   }
 
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-  onContextMenu(
-    event: MouseEvent,
-    SelectedItem: any,
-    FilterColumnName?: any,
-    FilterConditon?: any,
-    FilterItemType?: any
-  ) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = {
-      item: {
-        SelectedItem: SelectedItem,
-        FilterColumnName: FilterColumnName,
-        FilterConditon: FilterConditon,
-        FilterItemType: FilterItemType,
-      },
-    };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
-  }
-  onContextMenuCommand(
-    SelectedItem: any,
-    FilterColumnName: any,
-    Condition: any,
-    Type: any
-  ) {
+  // onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+  //   this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+  // }
+
+  optionSelected(filter : string) {
     if (this.tableType === 'MoveFrom') {
-      if (SelectedItem != undefined) {
-        this.moveFromFilter = this.filterService.onContextMenuCommand(
-          SelectedItem,
-          FilterColumnName,
-          'clear',
-          Type
-        );
-        this.moveFromFilter = this.filterService.onContextMenuCommand(
-          SelectedItem,
-          FilterColumnName,
-          Condition,
-          Type
-        );
-        this.resetFromFilters();
-        this.resetPaginationFrom();
-      }
-      this.moveFromFilter =
-        this.moveFromFilter != '' ? this.moveFromFilter : '1 = 1';
-    } else if (this.tableType === 'MoveTo') {
-      if (SelectedItem != undefined) {
-        this.moveToFilter = this.filterService.onContextMenuCommand(
-          SelectedItem,
-          FilterColumnName,
-          'clear',
-          Type
-        );
-        this.moveToFilter = this.filterService.onContextMenuCommand(
-          SelectedItem,
-          FilterColumnName,
-          Condition,
-          Type
-        );
-        this.resetToFilters();
-        this.resetPaginationTo();
-      }
-      this.moveToFilter = this.moveToFilter != '' ? this.moveToFilter : '1 = 1';
+      this.moveFromFilter = filter;
+    } else if(this.tableType === 'MoveTo') {
+      this.moveToFilter = filter;
     }
-
-    this.getMoveItemList(this.tableType);
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement,
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.onContextMenuCommand(
-        result.SelectedItem,
-        result.SelectedColumn,
-        result.Condition,
-        result.Type
-      );
-    });
-  }
-  onChangeLocation(event: any) {
-    this.getMoveItemList('MoveTo');
+    this.resetFromFilters();
+    this.resetPaginationFrom();
+    this.getMoveItemList(this.tableType);  
   }
 
   resetPagination() {
@@ -846,8 +759,7 @@ export class MoveItemsComponent implements OnInit {
     this.endRowTo = 10;
     this.recordsPerPageTo = 10;
     this.recordsFilteredTo = 0;
-    this.paginator.pageIndex = 0;
-    this.paginatorTo.pageIndex = 0;
+    
   }
   resetPaginationTo() {
     this.sortOrderTo = 'asc';
@@ -857,7 +769,7 @@ export class MoveItemsComponent implements OnInit {
     this.endRowTo = 10;
     this.recordsPerPageTo = 10;
     this.recordsFilteredTo = 0;
-    this.paginatorTo.pageIndex = 0;
+    
   }
   resetPaginationFrom() {
     this.sortOrder = 'asc';
@@ -867,7 +779,7 @@ export class MoveItemsComponent implements OnInit {
     this.endRow = 10;
     this.recordsPerPage = 10;
     this.recordsFiltered = 0;
-    this.paginator.pageIndex = 0;
+    
   }
   resetFromFilters() {
     this.startRow = 0;
@@ -875,15 +787,13 @@ export class MoveItemsComponent implements OnInit {
   resetToFilters() {
     this.startRowTo = 0;
     this.viewModeTo = 'All';
-    this.paginatorTo.pageIndex = 0;
+    
   }
 
   clearItemNum() {
     this.itemNo = '';
     this.invMapIDToItem = -1;
-    this.paginators.forEach((paginator) => {
-      paginator.pageIndex = 0;
-    });
+    
 
     this.clearFields('MoveFrom');
     this.clearFields('MoveTo');
@@ -900,20 +810,5 @@ export class MoveItemsComponent implements OnInit {
     if (this.tabIndex === 1) {
       this.tabIndex = 0;
     }
-  }
-  restrictTo4Digits(): void {
-    const inputElement = this.myInput.nativeElement;
-    let value = inputElement.value.replace(/\D/g, ''); // Remove non-digit characters
-    if (parseInt(value) > 2147483647) {
-      value = value.slice(0, 3);
-    } else {
-      value = value.slice(0, 4);
-    }
-    inputElement.value = value;
-  }
-  onBlurPriority(){
-  if(this.from_priority=== undefined || this.from_priority=== null){
-    this.from_priority=0;
-  }
   }
 }

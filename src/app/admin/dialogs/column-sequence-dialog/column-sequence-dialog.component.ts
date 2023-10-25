@@ -1,19 +1,13 @@
 import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service'; 
 import labels from '../../../labels/labels.json';
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-column-sequence-dialog',
@@ -23,6 +17,8 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class ColumnSequenceDialogComponent implements OnInit {
   dialogData;
   payload;
+  public iAdminApiService: IAdminApiService;
+
   userData;
   unorderedCol: any = [];
   defaultCol: any = [];
@@ -30,13 +26,13 @@ export class ColumnSequenceDialogComponent implements OnInit {
     private Api: ApiFuntions,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
-    private toastr: ToastrService,
+    public adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) data,
-    private dialog: MatDialog,
+    private global:GlobalService,
     
   ) {
     this.dialogData = data;
-   
+    this.iAdminApiService = adminApiService;
   }
   @ViewChild('table') table: MatTable<any>;
 
@@ -86,7 +82,7 @@ export class ColumnSequenceDialogComponent implements OnInit {
 
     
     
-    this.Api
+    this.iAdminApiService
       .DeleteColumns(this.payload)
       .subscribe({
         next: (res: any) => {
@@ -94,6 +90,11 @@ export class ColumnSequenceDialogComponent implements OnInit {
               this.defaultCol.length=0;
               this.getColumnsSeqDetail();
            
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("DeleteColumns",res.responseMessage);
+
           } 
         },
         error: (error)=>{}
@@ -101,42 +102,37 @@ export class ColumnSequenceDialogComponent implements OnInit {
 
   }
   initializePayload(tableName) {
-    let userData = this.authService.userData();
-    this.payload = {
-      username: userData.userName,
-      wsid: userData.wsid,
+    this.payload = { 
       viewName: tableName,
     };
   }
 
   saveColumnsSeq() {
-    this.Api.SaveColumns(this.payload).subscribe(
+    this.iAdminApiService.SaveColumns(this.payload).subscribe(
       {next: (res: any) => {
         if (res.isExecuted) {
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.dialogRef.close({ isExecuted: true });
         } else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SaveColumns",res.responseMessage);
           this.dialogRef.close('');
         }
       },
       error: (error) => {
-        this.toastr.error(labels.alert.went_worng, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
         this.dialogRef.close({ isExecuted: false });
       }}
     );
   }
 
   getColumnsSeqDetail() {
-    this.Api
+    this.iAdminApiService
       .GetColumnSequenceDetail(this.payload)
       .subscribe((res: any) => {
-        this.unorderedCol = res.data?.allColumnSequence;
+        if(res?.isExecuted)
+        {
+          this.unorderedCol = res.data?.allColumnSequence;
         if (res.data?.columnSequence.length) {
           this.defaultCol = res.data.columnSequence;
 
@@ -146,6 +142,13 @@ export class ColumnSequenceDialogComponent implements OnInit {
           });
           this.unorderedCol = newArr;
         }
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GetColumnSequenceDetail",res.responseMessage);
+        }
+        
+        
       });
   }
 

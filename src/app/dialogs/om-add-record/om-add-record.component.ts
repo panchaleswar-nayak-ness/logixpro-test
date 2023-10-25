@@ -1,11 +1,14 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import labels from '../../labels/labels.json';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-om-add-record',
@@ -54,7 +57,6 @@ export class OmAddRecordComponent implements OnInit {
     "importBy": "",
     "importDate": "",
     "importFileName": "",
-    "wsid": ""
   };
   transactionTypes: any = [
     { value: 'Pick', title: 'Pick' },
@@ -70,15 +72,21 @@ export class OmAddRecordComponent implements OnInit {
   orderNumberDisabled: boolean = false;
   itemNumberScroll:any = "all";
 
+  public iOrderManagerApi :  IOrderManagerAPIService;
+  public iCommonAPI : ICommonApi;
   constructor(
-    private toastr: ToastrService,
+    public commonAPI : CommonApiService,
+    
     private authService: AuthService,
-    private Api: ApiFuntions,
-    private dialog: MatDialog,
+    public orderManagerApi  : OrderManagerApiService,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<OmAddRecordComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public globalService: GlobalService,
-  ) { }
+  ) {
+    this.iOrderManagerApi = orderManagerApi;
+    this.iCommonAPI = commonAPI;
+   }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -183,43 +191,27 @@ export class OmAddRecordComponent implements OnInit {
   }
 
   getUserFieldData(loader: boolean = false) {
-    let payload = {
-      "userName": this.userData.userName,
-      "wsid": this.userData.wsid,
-      "appName": ""
-    }
-    this.Api.UserFieldData().subscribe((res: any) => {
+    this.iOrderManagerApi.UserFieldData().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.userFieldData = res.data[0];
         this.mapDefaultValues();
         this.getWarehouses();
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("UserFieldData",res.responseMessage);
       }
     });
   }
 
   async save(loader: boolean = false) { 
     if (this.oTTempUpdatePayload.orderNumber.trim() == '' || this.oTTempUpdatePayload.itemNumber.trim() == '' || this.oTTempUpdatePayload.transType.trim() == '') {
-      this.toastr.error("Order Number, Item Number and Transaction Type must be completed in order to continue.", 'Warning!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Order Number, Item Number and Transaction Type must be completed in order to continue.", 'Warning!');
     }
     else if (this.wharehouseRequired && this.oTTempUpdatePayload.warehouse == '') {
-      this.toastr.error("The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
     }
     else if (this.oTTempUpdatePayload.transQty <= 0) {
-      this.toastr.error("The transaction quantity for this transaction must be greater than 0.", 'Warning!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"The transaction quantity for this transaction must be greater than 0.", 'Warning!');
     }
     else {
       let check: any = await this.checkItemNumberBeforeSave();
@@ -230,34 +222,24 @@ export class OmAddRecordComponent implements OnInit {
       this.oTTempUpdatePayload.requiredDate = this.oTTempUpdatePayload.requiredDate ? new Date(this.oTTempUpdatePayload.requiredDate).getMonth()+1 + '/' +  new Date(this.oTTempUpdatePayload.requiredDate).getDate() + '/' + new Date(this.oTTempUpdatePayload.requiredDate).getFullYear() : "";
       this.oTTempUpdatePayload.expirationDate = this.oTTempUpdatePayload.expirationDate ? new Date(this.oTTempUpdatePayload.expirationDate).getMonth()+1 + '/' +  new Date(this.oTTempUpdatePayload.expirationDate).getDate() + '/' + new Date(this.oTTempUpdatePayload.expirationDate).getFullYear() : "";
       if (!this.isEdit) {
-        this.Api.OTTempInsert(this.oTTempUpdatePayload).subscribe((res: any) => {
+        this.iOrderManagerApi.OTTempInsert(this.oTTempUpdatePayload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
             this.dialogRef.close(res.data);
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("OTTempInsert",res.responseMessage);
           }
         })
       }
       else {
-        this.Api.OTTempUpdate(this.oTTempUpdatePayload).subscribe((res: any) => {
+        this.iOrderManagerApi.OTTempUpdate(this.oTTempUpdatePayload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.toastr.success(labels.alert.update, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.update, 'Success!');
             this.dialogRef.close(res.data);
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("OTTempUpdate",res.responseMessage);
           }
         })
       }
@@ -270,13 +252,16 @@ export class OmAddRecordComponent implements OnInit {
         "appName": "",
         "itemNumber": this.oTTempUpdatePayload.itemNumber,
         "beginItem": "---",
-        "isEqual": false,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "isEqual": false
       }
-      this.Api.SearchItem(payload).subscribe((res: any) => {
+      this.iCommonAPI.SearchItem(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.itemNumberSearchList = res.data;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SearchItem",res.responseMessage);
+
         } 
       });
     }
@@ -296,15 +281,16 @@ export class OmAddRecordComponent implements OnInit {
   }
 
   getWarehouses() {
-    let payload = {
-      "userName": this.userData.userName,
-      "wsid": this.userData.wsid
-    }
-    this.Api.GetWarehouses().subscribe((res: any) => {
+    this.iCommonAPI.GetWarehouses().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.wharehouses = res.data;
         this.wharehouses = res.data.sort();
         this.wharehouses.unshift("")
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetWarehouses",res.responseMessage);
+
       } 
     });
   }
@@ -328,39 +314,40 @@ export class OmAddRecordComponent implements OnInit {
         "appName": "",
         "itemNumber": this.oTTempUpdatePayload.itemNumber,
         "beginItem": "---",
-        "isEqual": false,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "isEqual": false
       }
       setTimeout(() => {
-        this.Api.SearchItem(payload).subscribe((res: any) => {
-          if (res.isExecuted && res.data && res.data.length > 0) {
-            if(res.data[0].itemNumber == this.oTTempUpdatePayload.itemNumber){
-              this.oTTempUpdatePayload.description = res.data[0].description;
-              this.oTTempUpdatePayload.unitofMeasure = res.data[0].unitOfMeasure;
-              this.wharehouseRequired = res.data[0].warehouseSensitive;
+        this.iCommonAPI.SearchItem(payload).subscribe((res: any) => {
+          if(res.isExecuted)
+          {
+            if (res.data && res.data.length > 0) {
+              if(res.data[0].itemNumber == this.oTTempUpdatePayload.itemNumber){
+                this.oTTempUpdatePayload.description = res.data[0].description;
+                this.oTTempUpdatePayload.unitofMeasure = res.data[0].unitOfMeasure;
+                this.wharehouseRequired = res.data[0].warehouseSensitive;
+              }
+              else{
+                this.global.ShowToastr('error',`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory');
+                this.oTTempUpdatePayload.itemNumber = "";
+                this.oTTempUpdatePayload.description = "";
+                this.oTTempUpdatePayload.unitofMeasure = ""; 
+                this.wharehouseRequired = false;
+              }
             }
-            else{
-              this.toastr.error(`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+            else {
+              this.global.ShowToastr('error',`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory');
               this.oTTempUpdatePayload.itemNumber = "";
               this.oTTempUpdatePayload.description = "";
               this.oTTempUpdatePayload.unitofMeasure = ""; 
               this.wharehouseRequired = false;
+              console.log("SearchItem",res.responseMessage);
             }
           }
           else {
-            this.toastr.error(`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
-            this.oTTempUpdatePayload.itemNumber = "";
-            this.oTTempUpdatePayload.description = "";
-            this.oTTempUpdatePayload.unitofMeasure = ""; 
-            this.wharehouseRequired = false;
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("SearchItem",res.responseMessage);
           }
+          
         });
       }, 500);
 
@@ -373,11 +360,9 @@ export class OmAddRecordComponent implements OnInit {
         "appName": "",
         "itemNumber": this.oTTempUpdatePayload.itemNumber,
         "beginItem": "---",
-        "isEqual": false,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "isEqual": false
       }
-      let res: any = await this.Api.SearchItem(payload).toPromise();
+      let res: any = await this.iCommonAPI.SearchItem(payload).toPromise();
       if (res.isExecuted && res.data && res.data.length > 0) {
         let filtered = res.data.filter((item: any) => (item.itemNumber == this.oTTempUpdatePayload.itemNumber));
         if (filtered.length > 0) {
@@ -385,10 +370,7 @@ export class OmAddRecordComponent implements OnInit {
           this.oTTempUpdatePayload.unitofMeasure = filtered[0].unitOfMeasure;
           this.wharehouseRequired = filtered[0].warehouseSensitive;
           if(this.wharehouseRequired == true && this.oTTempUpdatePayload.warehouse == ""){
-            this.toastr.error("The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
             return false;
           }
           else{
@@ -401,7 +383,9 @@ export class OmAddRecordComponent implements OnInit {
         }
       }
       else {
+        
         this.oTTempUpdatePayload.itemNumber = "";
+        
         return false;
       }
     }

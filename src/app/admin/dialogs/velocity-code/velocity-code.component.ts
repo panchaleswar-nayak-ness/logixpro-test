@@ -1,11 +1,13 @@
 import { Component, OnInit , Inject, ViewChild, ElementRef, ViewChildren, QueryList, Renderer2 } from '@angular/core';
-import { MatDialog, MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 import { Subject, takeUntil } from 'rxjs'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-velocity-code',
@@ -22,16 +24,17 @@ export class VelocityCodeComponent implements OnInit {
   public userData: any;
   @ViewChild('btnSave') button;
   disableEnable=[{index:-1,value:false}];
+  public iCommonAPI : ICommonApi;
+
   constructor(
-    
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private Api: ApiFuntions,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     public dialogRef: MatDialogRef<any>,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private renderer: Renderer2,
-    ) { }
+    ) { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -41,7 +44,7 @@ export class VelocityCodeComponent implements OnInit {
   }
 
   getVelocity(){
-    this.Api.getVelocityCode().subscribe((res) => {
+    this.iCommonAPI.getVelocityCode().subscribe((res) => {
       this.velocity_code_list_Res = [...res.data];
       this.velocity_code_list = res.data;
       this.disableEnable.shift();
@@ -81,10 +84,7 @@ export class VelocityCodeComponent implements OnInit {
     this.velocity_code_list_Res.forEach(element => {
       if(element == vlcode && cond) { 
         cond = false;
-       this.toastr.error('Velocity cannot be saved! Another velocity code matches the current. Please save any pending changes before attempting to save this entry.', 'Error!', {
-         positionClass: 'toast-bottom-right',
-         timeOut: 2000
-       });
+       this.global.ShowToastr('error','Velocity cannot be saved! Another velocity code matches the current. Please save any pending changes before attempting to save this entry.', 'Error!');
        
       }   
     });
@@ -93,28 +93,21 @@ export class VelocityCodeComponent implements OnInit {
 
     let paylaod = {
       "oldVelocity": oldVC.toString(),
-      "velocity": vlcode,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "velocity": vlcode
     } 
-    this.Api.saveVelocityCode(paylaod).subscribe((res) => {
-      this.toastr.success(labels.alert.success, 'Success!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+    this.iCommonAPI.saveVelocityCode(paylaod).subscribe((res) => {
+      this.global.ShowToastr('success',labels.alert.success, 'Success!');
       this.getVelocity()
     });
     } 
   } else {
-    this.toastr.error('Velocity cannot be empty!.', 'Error!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000
-    });
+    this.global.ShowToastr('error','Velocity cannot be empty!.', 'Error!');
+    console.log("saveVelocityCode");
   }
   }
   dltVlCode(vlCode:any){
     if(vlCode){
-      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -123,19 +116,19 @@ export class VelocityCodeComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
           if(result === 'Yes'){
             let paylaod = {
-              "velocity": vlCode,
-              "username": this.userData.userName,
-              "wsid": this.userData.wsid,
+              "velocity": vlCode
             }
-            this.Api.dltVelocityCode(paylaod).subscribe((res) => {
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+            this.iCommonAPI.dltVelocityCode(paylaod).subscribe((res) => {
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
         
               this.getVelocity();
               
             });
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("dltVelocityCode");
+
           }
       })
     
@@ -148,7 +141,7 @@ export class VelocityCodeComponent implements OnInit {
     
     
     if(event != ''){
-      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',

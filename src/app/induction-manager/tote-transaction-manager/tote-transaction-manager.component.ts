@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
-import { ToastrService } from 'ngx-toastr';
+
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';  
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,11 +9,12 @@ import { AuthService } from 'src/app/init/auth.service';
 import { BatchDeleteComponent } from 'src/app/dialogs/batch-delete/batch-delete.component';
 import labels from '../../labels/labels.json';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 @Component({
   selector: 'app-tote-transaction-manager',
   templateUrl: './tote-transaction-manager.component.html',
@@ -47,7 +47,7 @@ export class ToteTransactionManagerComponent implements OnInit {
       host_trans_id: '123641',
     },
   ];
-
+public iinductionManagerApi:IInductionManagerApiService;
   pageEvent: PageEvent;
   public dataSource: any = new MatTableDataSource();
   batchId: any = '';
@@ -75,21 +75,20 @@ export class ToteTransactionManagerComponent implements OnInit {
   tableData = this.ELEMENT_DATA;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   dataSourceList: any;
-  contextMenuPosition = { x: '0px', y: '0px' };
-  @ViewChild('trigger') trigger: MatMenuTrigger;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
 
 
   constructor(
-    private dialog: MatDialog,
-    private toastr: ToastrService,
+    private global:GlobalService,
+    private contextMenuService : TableContextMenuService,
     private Api: ApiFuntions,
     private authService: AuthService,
-    private filterService: ContextMenuFiltersService,
-    private global:GlobalService
+    private inductionManagerApi: InductionManagerApiService,
+    private filterService: ContextMenuFiltersService, 
   ) {
     this.userData = this.authService.userData();
+    this.iinductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -107,7 +106,6 @@ export class ToteTransactionManagerComponent implements OnInit {
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
   }
-  searchData(event) {}
 
   clearBatchButt() {
     this.batchId = '';
@@ -123,7 +121,7 @@ export class ToteTransactionManagerComponent implements OnInit {
     enablebatch = true
   }
         if (type != 'pickTote') {
-          const dialogRef = this.dialog.open(BatchDeleteComponent, {
+          const dialogRef:any = this.global.OpenDialog(BatchDeleteComponent, {
             height: 'auto',
             width: '60vw',
             autoFocus: '__non_existing_element__',
@@ -144,7 +142,7 @@ export class ToteTransactionManagerComponent implements OnInit {
             }
           });
         } else {
-          const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+          const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
             height: 'auto',
             width: '600px',
             autoFocus: '__non_existing_element__',
@@ -177,11 +175,22 @@ export class ToteTransactionManagerComponent implements OnInit {
       SortOrder:this.sortOrder,
       Filter: this.FilterString,
     };
-    this.Api
+    this.iinductionManagerApi
       .SelectToteTransManTable(payload)
       .subscribe((res: any) => {
+        if(res.isExecuted && res.data)
+        {
+
         this.totalRecords=  res?.data[0]?.totalCount? res.data[0].totalCount:0;
         this.dataSource = new MatTableDataSource(res?.data);
+
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SelectToteTransManTable",res.responseMessage)
+
+        }
+        
       });
   }
 
@@ -189,31 +198,42 @@ export class ToteTransactionManagerComponent implements OnInit {
    let searchPayload = {
       batchID:this.batchId
     };
-    this.Api
+    this.iinductionManagerApi
     .SelectBatchPickTA(this.batchId?searchPayload:null)
       .subscribe(
         (res: any) => {
-          this.searchAutocompletBatchPick = res.data;
-          this.getToteTrans();
+          if (res.isExecuted && res.data)
+          {
+            this.searchAutocompletBatchPick = res.data;
+            this.getToteTrans();
+
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("SelectBatchPickTA",res.responseMessage);
+
+          }
+
+         
         },
         (error) => {}
       );
   }
   clearToteInfo() {
-    let payload = {
-      userName: this.userData.userName,
-      wsid: this.userData.wsid,
+    let payload = { 
       appName: '',
     };
-    this.Api
+    this.iinductionManagerApi
       .ClearPickToteInfo(payload)
       .subscribe((res: any) => {
         if (res.isExecuted) {
           this.getToteTrans();
-          this.toastr.success(labels.alert.delete, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("ClearPickToteInfo",res.responseMessage);
+
         }
       });
   }
@@ -251,73 +271,47 @@ export class ToteTransactionManagerComponent implements OnInit {
   printToteList(type,row){
     switch (type) {
       case 'printCarouselList':
-
-      if(this.imPreferences.printDirectly){
-        this.global.Print(`FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`)
-      }else{
-        window.open(`/#/report-view?file=FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-      }
-        break;
-        case 'printTotelContents' || 'printToteLabels':
-
         if(this.imPreferences.printDirectly){
-          this.global.Print(`FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`)
+          this.global.Print(`FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`)
         }else{
-          window.open(`/#/report-view?file=FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+          window.open(`/#/report-view?file=FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
         }
-           break;
-
-         
+        break;
+      case 'printTotelContents':
+        this.printOrOpenWindow(type, row);
+        break;
+      case 'printToteLabels':
+        this.printOrOpenWindow(type, row);
+        break;
       default:
         break;
-    }
- 
-    
-  }
-  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    }    
   }
 
-  FilterString: string = "1 = 1";
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
-    this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-    this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-    this.FilterString = this.FilterString != "" ? this.FilterString : "1 = 1";
-    this.getToteTrans();
+  printOrOpenWindow(type, row) {
+    if(this.imPreferences.printDirectly){
+      this.global.Print(`FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`)
+    }else{
+      window.open(`/#/report-view?file=FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+    }
   }
+  
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+  }
+
+  FilterString : string = "1 = 1";
+
+  optionSelected(filter : string) {
+    this.FilterString = filter;
+    this.getToteTrans();  
+  }
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   resetPagination() {
     this.startRow = 0;
     this.paginator.pageIndex = 0;
-  }
-
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => {
-      ;
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
-    }
-    );
   }
 
   ngAfterViewInit() {

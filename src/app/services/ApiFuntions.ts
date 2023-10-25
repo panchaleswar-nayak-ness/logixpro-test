@@ -1248,14 +1248,8 @@ public ReprocessTransactionDelete(payload:any): Observable<any>{
   return this.ApiBase.Post(`/Admin/reprocesstransaction`, payload);
 }
 
-public updateAppName(userName:any, wsid:any, appName:any = ''): Observable<any> {
-  
-    let payLoad = {
-      "userName":userName,
-      "wsid": wsid,
-      "appName":appName   
-    }; 
-    return this.ApiBase.Post(`/Common/UserAppNameAdd`, payLoad,);           
+public updateAppName(payLoad:any): Observable<any> {
+    return this.ApiBase.Post(`/Common/UserAppNameAdd`, payLoad);           
 }
 
 public saveWareHouse(body: any): Observable<any> { 
@@ -1276,7 +1270,7 @@ public quarantineInventoryMap(reqPaylaod:any): Observable<any>{
 public unQuarantineInventoryMap(reqPaylaod:any): Observable<any>{ 
   return this.ApiBase.Put(`/Admin/inventorymapotUnquarantine`, reqPaylaod);
 } 
-public getVelocityCode(body?: any): Observable<any> { 
+public getVelocityCode(): Observable<any> { 
   return this.ApiBase.Get(`/Common/velocitycode`);
 }
 public saveVelocityCode(body: any): Observable<any> { 

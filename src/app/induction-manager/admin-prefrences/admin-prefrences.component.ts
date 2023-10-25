@@ -5,11 +5,13 @@ import {
   FormBuilder,
   Validators,
 } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import labels from '../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-admin-prefrences',
@@ -120,14 +122,16 @@ export class AdminPrefrencesComponent implements OnInit {
   ];
 
   superBatchFilterList: any;
-
+  public iInductionManagerApi:IInductionManagerApiService;
   constructor(
     private authService: AuthService,
     private Api: ApiFuntions,
+    public inductionManagerApi: InductionManagerApiService,
     public formBuilder: FormBuilder,
-    private toast: ToastrService,
+    
     private global:GlobalService
   ) {
+    this.iInductionManagerApi = inductionManagerApi;
     this.preferencesForm = this.formBuilder.group({
       // System Settings
       useDefault: new FormControl('', Validators.compose([])),
@@ -224,7 +228,7 @@ export class AdminPrefrencesComponent implements OnInit {
   getPreferences() {
     try {
       
-      this.Api
+      this.iInductionManagerApi
         .PreferenceIndex()
         .subscribe(
           (res: any) => {
@@ -330,10 +334,8 @@ export class AdminPrefrencesComponent implements OnInit {
                 orderNoPrefix: reelVal.orderNumberPrefix,
               });
             } else {
-              this.toast.error('Something went wrong', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error','Something went wrong', 'Error!');
+              console.log("PreferenceIndex",res.responseMessage);
             }
           },
           (error) => {}
@@ -412,10 +414,7 @@ export class AdminPrefrencesComponent implements OnInit {
         }
 
         if(values.defaultSuperBatchSize<2){
-          this.toast.error('Default Super Batch Size must be greater than 1', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Default Super Batch Size must be greater than 1', 'Error!');
           return 
         }
         
@@ -450,19 +449,14 @@ export class AdminPrefrencesComponent implements OnInit {
         endPoint = '/Induction/imprintsettings';
       }
 
-      this.Api.DynamicMethod(payLoad, endPoint).subscribe(
+      this.iInductionManagerApi.DynamicMethod(payLoad, endPoint).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
               this.global.updateImPreferences()
-            this.toast.success(labels.alert.update, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.update, 'Success!');
           } else {
-            this.toast.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("DynamicMethod",res.responseMessage);
           }
         },
         (error) => {}
@@ -472,21 +466,16 @@ export class AdminPrefrencesComponent implements OnInit {
   }
   getCompName() {
     
-    this.Api.CompName().subscribe(
+    this.iInductionManagerApi.CompName().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
 
           this.preferencesForm.get('inductionLocation')?.setValue(res.data);
           this.updatePreferences(3);
-          this.toast.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
         } else {
-          this.toast.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("CompName",res.responseMessage);
         }
       },
       (error) => {}

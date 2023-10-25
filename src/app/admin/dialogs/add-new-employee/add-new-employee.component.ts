@@ -1,13 +1,16 @@
 import { Component, OnInit, Inject, ViewChild, TemplateRef, ElementRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+import {MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json'; 
 import { AdminEmployeeLookupResponse } from 'src/app/Iemployee';
 import { Router } from '@angular/router';
 import { CustomValidatorService } from '../../../../app/init/custom-validator.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface DialogData {
   animal: 'panda' | 'unicorn' | 'lion';
@@ -46,18 +49,21 @@ export class AddNewEmployeeComponent implements OnInit {
   OldPassword:any;
   IsEdit:any=false;
   @ViewChild('focusFeild') focusFeild: ElementRef;
-
+  public iAdminApiService: IAdminApiService;
    validatorsArray:any = []
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
+    private global:GlobalService,
+    
+    private adminApiService: AdminApiService,
     private employeeService: ApiFuntions,
     private router: Router,
     private fb: FormBuilder,
     private cusValidator: CustomValidatorService,
     public dialogRef: MatDialogRef<any>
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void { 
     this.empData = this.data?.emp_data;
@@ -66,9 +72,9 @@ export class AddNewEmployeeComponent implements OnInit {
     this.allGroups  = this.empData?.allGroups;
     this.form_heading = this.data?.mode === 'edit' ? 'Edit Employee' : 'Add New Employee';
     this.form_btn_label = this.data?.mode === 'edit' ?'Save' : 'Add';
-    this.isEmail = this.data?.mode === 'edit' ? true : false;
-    this.isDisabledPassword = this.data?.mode === 'edit' ? true : false;
-    this.isDisabledUsername = this.data?.mode === 'edit' ? true : false;
+    this.isEmail = this.data?.mode === 'edit';
+    this.isDisabledPassword = this.data?.mode === 'edit';
+    this.isDisabledUsername = this.data?.mode === 'edit';
     this.mi = this.empData?.mi ?? '';
     this.firstName = this.empData?.firstName ?? '';
     this.OldPassword = this.empData?.password ?? '';
@@ -132,55 +138,40 @@ ChangePassword(data){
         form.value.wsid = "TESTWID"; 
         form.value.username = this.data?.emp_data?.username ? this.data.emp_data.username : this.data.emp_data.Username;
         if(this.groupChanged){
-          let requpdateAccessGroup = await this.employeeService.updateAccessGroup({"group": this.empForm.value.groupName,"Username" : this.username}).toPromise();
+          let requpdateAccessGroup = await this.iAdminApiService.updateAccessGroup({"group": this.empForm.value.groupName,"Username" : this.username}).toPromise();
           if(requpdateAccessGroup.isExecuted){
-            let reqgetAdminEmployeeDetails = await this.employeeService.getAdminEmployeeDetails({"user": this.username,"wsid": "TESTWSID"}).toPromise();
+            let reqgetAdminEmployeeDetails = await this.iAdminApiService.getAdminEmployeeDetails({"user": this.username,"wsid": "TESTWSID"}).toPromise();
             if(reqgetAdminEmployeeDetails.isExecuted){
               this.functionsAllowedList = reqgetAdminEmployeeDetails.data.userRights;
             }
           }
 
         }
-          this.employeeService.updateAdminEmployee(form.value).subscribe((res: any) => {
+          this.iAdminApiService.updateAdminEmployee(form.value).subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialogRef.close({mode: 'edit-employee', data:{empData: form.value,functionsAllowedList:this.functionsAllowedList,groupChanged:this.groupChanged}});
-              this.toastr.success(labels.alert.update, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.update, 'Success!');
             }
             else {
-              this.toastr.error(res.responseMessage?.toString() + '. User already exists.', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              
+              this.global.ShowToastr('error',res.responseMessage?.toString() + '. User already exists.', 'Error!');
+              console.log("updateAdminEmployee",res.responseMessage);
             }
           });
       }
       else {
-        this.employeeService.saveAdminEmployee(form.value)
+        this.iAdminApiService.saveAdminEmployee(form.value)
           .subscribe((response: AdminEmployeeLookupResponse) => {
             if (response.isExecuted) {
               this.dialogRef.close(true);
-              this.toastr.success(labels.alert.success, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.success, 'Success!');
               
             }
-            else {
-              if(response.responseMessage?.toString() === 'User already exists'){
-                this.toastr.error(response.responseMessage, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+            else if(response.responseMessage?.toString() === 'User already exists'){
+                this.global.ShowToastr('error',response.responseMessage, 'Error!');
               } else{
-                this.toastr.error(response.responseMessage?.toString() + '. User already exists.', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+                this.global.ShowToastr('error',response.responseMessage?.toString() + '. User already exists.', 'Error!');
               }
-            }
           });
       }
 
@@ -215,7 +206,7 @@ ChangePassword(data){
   groupChanged: boolean = false;
   groupChange($event:any){
     if (this.data?.mode === 'edit') {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '786px',
         data: {

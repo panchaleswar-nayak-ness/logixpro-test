@@ -1,10 +1,11 @@
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-scan-type-code',
@@ -18,13 +19,15 @@ export class ScanTypeCodeComponent implements OnInit {
   public scanTypeCode_list_Response: any;
   public userData: any;
 
+  public iCommonAPI : ICommonApi;
 
-  constructor(private dialog: MatDialog,
-    private Api: ApiFuntions, 
-              private authService: AuthService,
-              private toastr: ToastrService,
-              private renderer: Renderer2,
-              public dialogRef: MatDialogRef<any>) { }
+  constructor(
+    public commonAPI : CommonApiService,
+    private global:GlobalService,
+    private authService: AuthService,
+    private renderer: Renderer2,
+    public dialogRef: MatDialogRef<any>) 
+  { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -32,7 +35,7 @@ export class ScanTypeCodeComponent implements OnInit {
   }
   getScanCodeType(){
     
-    this.Api.ScanCodeTypes().subscribe((res) => {
+    this.iCommonAPI.ScanCodeTypes().subscribe((res) => {
       if (res.isExecuted) {
         this.scanTypeCode_list_Response = [...res.data];
         this.scanTypeCode_list = res.data;
@@ -42,6 +45,11 @@ export class ScanTypeCodeComponent implements OnInit {
             this.renderer.selectRootElement(inputElement).focus();
         }, 100);
   
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ScanCodeTypes:", res);
+        
       }
 
     });
@@ -65,42 +73,36 @@ export class ScanTypeCodeComponent implements OnInit {
     this.scanTypeCode_list_Response.forEach(element => {
       if(element.toLowerCase() == newScanCode.toLowerCase() && cond) {
         cond = false;
-       this.toastr.error('Already Exists', 'Error!', {
-         positionClass: 'toast-bottom-right',
-         timeOut: 2000
-       });
+       this.global.ShowToastr('error','Already Exists', 'Error!');
       }   
     });
 
     if(newScanCode && cond){
     let paylaod = {      
       "oldScanCodeType": oldScanCode.toString()  ,
-      "scanCodeType": newScanCode,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "scanCodeType": newScanCode
     }
     
-    this.Api.CodeTypeSave(paylaod).subscribe((res) => {
+    this.iCommonAPI.CodeTypeSave(paylaod).subscribe((res) => {
       if(res.isExecuted){
         this.getScanCodeType();
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("CodeTypeSave:", res.responseMessage);
       }
   
     });
   } else {
-    this.toastr.error('Scan Codes cannot be empty', 'Error!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000
-    });
+    this.global.ShowToastr('error','Scan Codes cannot be empty', 'Error!');
+    console.log("CodeTypeSave");
   }
   }
 
   dltScanTypeCode(newScanTypeCode : any) {
 
-    let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -115,18 +117,17 @@ export class ScanTypeCodeComponent implements OnInit {
       if (result == 'Yes') {
         if(newScanTypeCode){
           let paylaod = {
-            "scanCodeType": newScanTypeCode,
-            "username": this.userData.userName,
-            "wsid": this.userData.wsid,
+            "scanCodeType": newScanTypeCode
           }
           
-          this.Api.ScanCodeTypeDelete(paylaod).subscribe((res) => {
+          this.iCommonAPI.ScanCodeTypeDelete(paylaod).subscribe((res) => {
             if(res.isExecuted){
               this.getScanCodeType();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ScanCodeTypeDelete:", res.responseMessage);
           }
           });
         } else {
@@ -148,10 +149,7 @@ export class ScanTypeCodeComponent implements OnInit {
       }   
     });
     if(notselected){
-      this.toastr.error('Please save the record first.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Please save the record first.', 'Error!');
     }
 
   }

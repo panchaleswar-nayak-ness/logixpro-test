@@ -1,11 +1,14 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { AuthService } from 'src/app/init/auth.service'; 
 import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { SharedService } from 'src/app/services/shared.service';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-open-transaction-filters',
@@ -30,13 +33,15 @@ export class OpenTransactionFiltersComponent implements OnInit {
     selectedCheck:'',
 
   }
+  public iAdminApiService: IAdminApiService;
   constructor(
     private authService: AuthService,
+    private adminApiService: AdminApiService,
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    private global : GlobalService,
+    
     private sharedService:SharedService
-  ) {}
-
+  ) { this.iAdminApiService = adminApiService;} 
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.searchDeb
@@ -83,17 +88,20 @@ export class OpenTransactionFiltersComponent implements OnInit {
     let searchPayload = {
       query: this.searchValue,
       tableName: 2,
-      column: this.selectedOption,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      column: this.selectedOption
     };
 
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {
           if (res?.isExecuted) {
             this.autoCompleteSearchResult = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+            
           }
         },
         error: (error) => {}}

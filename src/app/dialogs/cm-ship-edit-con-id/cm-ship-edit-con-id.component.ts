@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+import {MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+ 
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-ship-edit-con-id',
@@ -20,12 +22,15 @@ export class CmShipEditConIdComponent implements OnInit {
 
   @ViewChild('conID') conID : ElementRef;
 
-  constructor(private dialog: MatDialog,
-              public dialogRef: MatDialogRef<CmShipEditConIdComponent>,
-              private toast: ToastrService,
-              private Api: ApiFuntions,
-              private authService: AuthService,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+  public IconsolidationAPI : IConsolidationApi;
+
+  constructor(
+    public consolidationAPI : ConsolidationApiService,
+    private global:GlobalService,
+    public dialogRef: MatDialogRef<CmShipEditConIdComponent>,
+    
+    private authService: AuthService,
+    @Inject(MAT_DIALOG_DATA) public data: any) { this.IconsolidationAPI = consolidationAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -58,12 +63,10 @@ export class CmShipEditConIdComponent implements OnInit {
     try {
       let payLoad = {
         stid : this.data.order.sT_ID,
-        containerID: this.containerID,
-        username: this.userData.userName,
-        wsid: this.userData.wsid
+        containerID: this.containerID
       };
 
-      this.Api.ContainerIdSingleShipTransUpdate(payLoad).subscribe(
+      this.IconsolidationAPI.ContainerIdSingleShipTransUpdate(payLoad).subscribe(
         (res: any) => {
           if (res.isExecuted) {
             this.dialogRef.close({
@@ -71,7 +74,8 @@ export class CmShipEditConIdComponent implements OnInit {
               containerID: this.containerID
             });
           } else {
-            this.toast.error('Something went wrong', 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("ContainerIdSingleShipTransUpdate",res.responseMessage);
           }
         },
         (error) => { }

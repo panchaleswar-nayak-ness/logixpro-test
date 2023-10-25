@@ -2,9 +2,12 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { NgForm } from '@angular/forms';
 import labels from '../../../labels/labels.json';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from '../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-add-pickuplevels',
@@ -21,13 +24,18 @@ export class AddPickuplevelsComponent implements OnInit {
   userData: any;
   picklvl: any;
   isValidForm: boolean = true;
+  public iAdminApiService: IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private dialog:MatDialog,
     private employeeService: ApiFuntions,
-    private toastr: ToastrService,
+    private global: GlobalService,
+    
+    private adminApiService: AdminApiService,
     private authService: AuthService
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void { 
 
@@ -53,41 +61,31 @@ export class AddPickuplevelsComponent implements OnInit {
     }
   }
 
-  onSend(form: NgForm) {
-    form.value.username = this.data.userName;
-    form.value.wsid = this.userData.wsid;
+  onSend(form: NgForm) { 
     if (this.data.mode === 'edit') {
       form.value.levelID = this.levelId;
       
-      this.employeeService.updatePickLevels(form.value).subscribe((res:any) =>{
+      this.iAdminApiService.updatePickLevels({ userName : this.data.userName, ...form.value }).subscribe((res:any) =>{
         if (res.isExecuted) {
           this.dialog.closeAll();
-          this.toastr.success(labels.alert.success, 'Update!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Update!');
         } else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("updatePickLevels",res.responseMessage);
         }
       });
     }
     else {  
       form.value.levelID = this.picklvl;
-      this.employeeService.insertPickLevels(form.value).subscribe((res: any) => {
+      this.iAdminApiService.insertPickLevels({ userName : this.data.userName, ...form.value }).subscribe((res: any) => {
         if (res.isExecuted) {
           this.dialog.closeAll();
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
         } else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("insertPickLevels",res.responseMessage);
         }
       });
     }

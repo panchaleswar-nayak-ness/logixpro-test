@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+
 import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../../labels/labels.json';
 import { Router  } from '@angular/router';
 import { FormControl, FormGroup, Validators, } from '@angular/forms';
-import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-user-account',
@@ -14,13 +15,17 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
   styleUrls: [],
 })
 export class UserAccountComponent implements OnInit {
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private sharedService: SharedService,
     private Api:ApiFuntions,
-    private toastr: ToastrService,
+    
     private router: Router,
-    private authService:AuthService
-  ) {}
+    public globalConfigApi: GlobalConfigApiService,
+    private global: GlobalService
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
   username: any;
   password: any;
@@ -49,15 +54,19 @@ export class UserAccountComponent implements OnInit {
       DisplayName: 'Consolidation Manager',
       AppName: 'Consolidation Manager',
     };
-    this.Api.Menu(payload).subscribe(
+    this.iGlobalConfigApi.Menu(payload).subscribe(
       {next: (res: any) => {
-        if (res?.data ) {
+        if (res.isExecuted && res.data ) {
           this.sharedService.setData(res.data);
           this.username = res.data.loginInfo[0].user;
           this.password = res.data.loginInfo[0].password;
           this.passwordCompare= res.data.loginInfo[0].password;
 
           this.constUser=res.data.loginInfo[0].user;
+        }
+        else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("Menu",res.responseMessage);
         }
       },
       error: (error) => {}}
@@ -68,29 +77,25 @@ export class UserAccountComponent implements OnInit {
  
   changeGlobalAcc() {
     let payload = {
-      // userName: this.constUser,
-      userName:this.authService.userData().userName,
       password: this.password,
     };
-    this.Api
+    this.iGlobalConfigApi
       .ChangeGlobalAccount(payload)
       .subscribe(
         {next: (res: any) => {
           if (res?.isExecuted) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          }
+          else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("changeGlobalAccount",res.responseMessage);
           }
           this.getMenuData();
           localStorage.clear();
           this.router.navigate(['/globalconfig']);
         },
         error: (error) => {
-          this.toastr.error(labels.alert.went_worng, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
         }}
       );
   }

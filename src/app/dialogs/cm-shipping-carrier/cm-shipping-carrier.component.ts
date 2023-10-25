@@ -1,14 +1,15 @@
 import { Component, ElementRef, Inject, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { Subject, takeUntil } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component'; 
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-shipping-carrier',
@@ -24,15 +25,19 @@ export class CmShippingCarrierComponent implements OnInit {
   disableAddField: boolean = false;
   disableEnable = [{ index: -1, value: false }];
   onDestroy$: Subject<boolean> = new Subject();
+  public IconsolidationAPI : IConsolidationApi;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private authService: AuthService,
-    private Api: ApiFuntions,
-    private toastr: ToastrService,
+    // private Api: ApiFuntions,
+    public consolidationAPI : ConsolidationApiService,
+    
     public dialogRef: MatDialogRef<any>,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private renderer: Renderer2
-  ) {}
+  ) {
+    this.IconsolidationAPI = consolidationAPI;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -40,7 +45,7 @@ export class CmShippingCarrierComponent implements OnInit {
   }
 
   getCarrier() { 
-    this.Api
+    this.consolidationAPI
       .CarrierSelect()
       .subscribe((res: any) => {
         if (res.isExecuted) {
@@ -85,27 +90,24 @@ export class CmShippingCarrierComponent implements OnInit {
     if (item.oldCarrier) {
       paylaod = {
         carrier: carrer,
-        oldCarrier: item.carrier,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        oldCarrier: item.carrier
       };
     } else {
       paylaod = {
         carrier: carrer,
-        oldCarrier: '',
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        oldCarrier: ''
       };
     }
 
-    this.Api
+    this.IconsolidationAPI
       .CarrierSave(paylaod)
       .subscribe((res: any) => {
         if (res.isExecuted) {
-          this.toastr.success(res.message);
+          this.global.ShowToastr('success',res.message,"Success!");
           this.getCarrier();
         } else {
-          this.toastr.error(res.message);
+          this.global.ShowToastr('error',res.message);
+          console.log("CarrierSave",res.responseMessage);
         }
       });
   }
@@ -115,7 +117,7 @@ export class CmShippingCarrierComponent implements OnInit {
   }
   deleteCarrier(event: any) {
     if (event != '') {
-      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -132,7 +134,6 @@ export class CmShippingCarrierComponent implements OnInit {
         .subscribe((result) => {
           this.getCarrier();
         });
-    } else {
-    }
+    } 
   }
 }

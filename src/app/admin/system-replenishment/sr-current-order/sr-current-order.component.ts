@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { PrintReplenLabelsComponent } from 'src/app/dialogs/print-replen-labels/print-replen-labels.component';
@@ -8,29 +8,69 @@ import { DeleteRangeComponent } from 'src/app/dialogs/delete-range/delete-range.
 import labels from '../../../labels/labels.json';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { SrDeleteOrderComponent } from 'src/app/dialogs/sr-delete-order/sr-delete-order.component';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import {  } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { Subject } from 'rxjs';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import {  } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+
 @Component({
   selector: 'app-sr-current-order',
   templateUrl: './sr-current-order.component.html',
-  styleUrls: ['./sr-current-order.component.scss']
+  styleUrls: ['./sr-current-order.component.scss'],
 })
 export class SrCurrentOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
-
-  displayedColumns2: string[] = ['Item Number', 'Trans Type', 'warehouse', 'zone', 'carousel', 'row', 'shelf', 'bin', 'cell', 'lotNumber', 'Trans Qty', 'description', 'Order Number', 'UofM', 'Batch Pick ID', 'Serial Number', 'Completed Date', 'Print Date','action'];
+  @Input() TabIndex:any;
+  displayedColumns2: string[] = [
+    'Item Number',
+    'Trans Type',
+    'warehouse',
+    'zone',
+    'carousel',
+    'row',
+    'shelf',
+    'bin',
+    'cell',
+    'lotNumber',
+    'Trans Qty',
+    'description',
+    'Order Number',
+    'UofM',
+    'Batch Pick ID',
+    'Serial Number',
+    'Completed Date',
+    'Print Date',
+    'action',
+  ];
+  coloumnTable = [
+    { defination: 'Item Number', label: 'Item Num', value: 'itemNumber',filterProperty:'Item Number'},
+    { defination: 'Trans Type', label: 'Trans Type', value: 'transactionType',filterProperty:'Transaction Type' },
+    { defination: 'warehouse', label: 'Warehouse', value: 'warehouse', filterProperty:'Warehouse'},
+    { defination: 'zone', label: 'Zone', value: 'zone', filterProperty:'Zone' },
+    { defination: 'carousel', label: 'Carsl', value: 'carousel', filterProperty:'Carousel' },
+    { defination: 'row', label: 'Row', value: 'row', filterProperty:'Row' },
+    { defination: 'shelf', label: 'Shelf', value: 'shelf', filterProperty:'Shelf' },
+    { defination: 'bin', label: 'Bin', value: 'bin', filterProperty:'Bin' },
+    { defination: 'cell', label: 'Cell', value: 'cell', filterProperty:'Cell' },
+    { defination: 'lotNumber', label: 'Lot Number', value: 'lotNumber', filterProperty:'lot Number' },
+    { defination: 'Trans Qty', label: 'Trans Qty', value: 'transactionQuantity' , filterProperty:'Trans Qty'},
+    { defination: 'description', label: 'Description', value: 'description', filterProperty:'Description' },
+    { defination: 'Order Number', label: 'Order Number', value: 'orderNumber', filterProperty:'Order Number' },
+    { defination: 'UofM', label: 'UofM', value: 'unitOfMeasure', filterProperty:'UofM' },
+    { defination: 'Batch Pick ID', label: 'Batch Pick ID', value: 'batchPickID', filterProperty:'Batch Pick ID' },
+    { defination: 'Serial Number', label: 'Serial Number', value: 'serialNumber', filterProperty:'Serial Number' },
+    { defination: 'Completed Date', label: 'Comp Date', value: 'completedDate', filterProperty:'Comp Date' },
+    { defination: 'Print Date', label: 'Print Date', value: 'printDate', filterProperty:'Print Date' },
+  ];
   noOfPicks: number = 0;
   noOfPutAways: number = 0;
   public userData: any;
@@ -38,120 +78,141 @@ export class SrCurrentOrderComponent implements OnInit {
     draw: 0,
     start: 0,
     length: 10,
-    searchString: "",
-    searchColumn: "",
-    sortColumn: "",
-    sortDir: "asc",
-    status: "All",
-    filter: "1=1",
-    username: "",
-    wsid: ""
+    searchString: '',
+    searchColumn: '',
+    sortColumn: '',
+    sortDir: 'asc',
+    status: 'All',
+    filter: '1=1',
+    username: '',
+    wsid: '',
   };
   tableData: any = [];
   filteredTableData: any = [];
   tableDataTotalCount: number = 0;
   searchColumnOptions: any = [
-    { value: 'Batch Pick ID', viewValue: 'Batch Pick ID', sortColumn: '14', key: 'batchPickID' },
+    {
+      value: 'Batch Pick ID',
+      viewValue: 'Batch Pick ID',
+      sortColumn: '14',
+      key: 'batchPickID',
+    },
     { value: 'Bin', viewValue: 'Bin', sortColumn: '7', key: 'bin' },
     { value: 'Carsl', viewValue: 'Carsl', sortColumn: '4', key: 'carousel' },
     { value: 'Cell', viewValue: 'Cell', sortColumn: '8', key: 'cell' },
-    { value: 'Comp Date', viewValue: 'Comp Date', sortColumn: '16', key: 'completedDate' },
-    { value: 'Description', viewValue: 'Description', sortColumn: '11', key: 'description' },
-    { value: 'Item Number', viewValue: 'Item Number', sortColumn: '0', key: 'itemNumber' },
-    { value: 'Lot Number', viewValue: 'Lot Number', sortColumn: '9', key: 'lotNumber' },
-    { value: 'Order Number', viewValue: 'Order Number', sortColumn: '12', key: 'orderNumber' },
-    { value: 'Print Date', viewValue: 'Print Date', sortColumn: '17', key: 'printDate' },
+    {
+      value: 'Comp Date',
+      viewValue: 'Comp Date',
+      sortColumn: '16',
+      key: 'completedDate',
+    },
+    {
+      value: 'Description',
+      viewValue: 'Description',
+      sortColumn: '11',
+      key: 'description',
+    },
+    {
+      value: 'Item Number',
+      viewValue: 'Item Number',
+      sortColumn: '0',
+      key: 'itemNumber',
+    },
+    {
+      value: 'Lot Number',
+      viewValue: 'Lot Number',
+      sortColumn: '9',
+      key: 'lotNumber',
+    },
+    {
+      value: 'Order Number',
+      viewValue: 'Order Number',
+      sortColumn: '12',
+      key: 'orderNumber',
+    },
+    {
+      value: 'Print Date',
+      viewValue: 'Print Date',
+      sortColumn: '17',
+      key: 'printDate',
+    },
     { value: 'Row', viewValue: 'Row', sortColumn: '5', key: 'row' },
-    { value: 'Serial Number', viewValue: 'Serial Number', sortColumn: '15', key: 'serialNumber' },
+    {
+      value: 'Serial Number',
+      viewValue: 'Serial Number',
+      sortColumn: '15',
+      key: 'serialNumber',
+    },
     { value: 'Shelf', viewValue: 'Shelf', sortColumn: '6', key: 'shelf' },
-    { value: 'Trans Qty', viewValue: 'Trans Qty', sortColumn: '10', key: 'transactionQuantity' },
-    { value: 'Transaction Type', viewValue: 'Trans Type', sortColumn: '1', key: 'transactionType' },
-    { value: 'UofM', viewValue: 'UofM', sortColumn: '13', key: 'unitOfMeasure' },
-    { value: 'Warehouse', viewValue: 'Warehouse', sortColumn: '2', key: 'warehouse' },
+    {
+      value: 'Trans Qty',
+      viewValue: 'Trans Qty',
+      sortColumn: '10',
+      key: 'transactionQuantity',
+    },
+    {
+      value: 'Transaction Type',
+      viewValue: 'Trans Type',
+      sortColumn: '1',
+      key: 'transactionType',
+    },
+    {
+      value: 'UofM',
+      viewValue: 'UofM',
+      sortColumn: '13',
+      key: 'unitOfMeasure',
+    },
+    {
+      value: 'Warehouse',
+      viewValue: 'Warehouse',
+      sortColumn: '2',
+      key: 'warehouse',
+    },
     { value: 'Zone', viewValue: 'Zone', sortColumn: '3', key: 'zone' },
   ];
   repByDeletePayload: any = {
-    identity: "",
-    filter1: "",
-    filter2: "",
-    searchString: "",
-    searchColumn: "",
-    status: "",
-    username: "",
-    wsid: ""
+    identity: '',
+    filter1: '',
+    filter2: '',
+    searchString: '',
+    searchColumn: '',
+    status: '',
+    username: '',
+    wsid: '',
   };
   selectedOrder: any = {};
-
+  public iAdminApiService: IAdminApiService;
   constructor(
     private dialog: MatDialog,
-    private Api: ApiFuntions,
-    private toastr: ToastrService,
+    public adminApiService: AdminApiService,
+    private contextMenuService : TableContextMenuService,
     private authService: AuthService,
-    private filterService: ContextMenuFiltersService,
     private global:GlobalService,
-  ) { }
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
+  getUniqueColumnDef(column: string): string {
+    return `column_${column}`;
+  }
 
-
-
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  onClick() { 
-    this.trigger.closeMenu();
-  }
+  FilterString : string = "1 = 1";
 
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-
-  FilterString: string = "1 = 1";
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
-    if ((SelectedItem != undefined && FilterColumnName != "") || Condition == "clear") {
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-    }
-    this.tablePayloadObj.filter = this.FilterString != "" ? this.FilterString : "1 = 1";
+  optionSelected(filter : string) {
+    this.tablePayloadObj.filter = filter;
     this.resetPagination();
-    this.newReplenishmentOrders();
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => {
-      ;
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
-    }
-    );
-  }
-
-  ClearFilters() {
-    this.tablePayloadObj.filter = "1=1";
-    this.newReplenishmentOrders();
+    this.newReplenishmentOrders();    
   }
 
   hideRequiredControl = new FormControl(false);
-  @ViewChild(MatAutocompleteTrigger) autocompleteInventory: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger)
+  autocompleteInventory: MatAutocompleteTrigger;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   autocompleteSearchColumn() {
-    if (this.tablePayloadObj.searchColumn != "") {
+    if (this.tablePayloadObj.searchColumn != '') {
       this.resetPagination();
       this.getSearchOptionsSubscribe.unsubscribe();
       this.getSearchOptions(true);
@@ -184,7 +245,7 @@ export class SrCurrentOrderComponent implements OnInit {
     this.repByDeletePayload.username = this.userData.userName;
     this.repByDeletePayload.wsid = this.userData.wsid;
     this.newReplenishmentOrders();
-    this.refreshCurrentOrders.subscribe(e => {
+    this.refreshCurrentOrders.subscribe((e) => {
       this.newReplenishmentOrders();
     });
   }
@@ -196,7 +257,7 @@ export class SrCurrentOrderComponent implements OnInit {
   newReplenishmentOrdersSubscribe: any;
 
   newReplenishmentOrders(loader: boolean = false) {
-    this.newReplenishmentOrdersSubscribe = this.Api.SystemReplenishmentTable(this.tablePayloadObj).subscribe((res: any) => {
+    this.newReplenishmentOrdersSubscribe = this.iAdminApiService.SystemReplenishmentTable(this.tablePayloadObj).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.tableData = res.data.sysTable;
         this.tableData.forEach(element => {
@@ -206,10 +267,8 @@ export class SrCurrentOrderComponent implements OnInit {
         this.filteredTableData = JSON.parse(JSON.stringify(this.tableData));
         this.systemReplenishmentCount(true);
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("SystemReplenishmentTable",res.responseMessage);
       }
     });
   }
@@ -217,8 +276,12 @@ export class SrCurrentOrderComponent implements OnInit {
   searchAutocompleteList: any;
 
   updateCounts() {
-    this.noOfPutAways = this.filteredTableData.filter((item: any) => item.transactionType == 'Put Away').length;
-    this.noOfPicks = this.filteredTableData.filter((item: any) => item.transactionType == 'Pick').length;
+    this.noOfPutAways = this.filteredTableData.filter(
+      (item: any) => item.transactionType == 'Put Away'
+    ).length;
+    this.noOfPicks = this.filteredTableData.filter(
+      (item: any) => item.transactionType == 'Pick'
+    ).length;
   }
 
   paginatorChange(event: PageEvent) {
@@ -229,23 +292,27 @@ export class SrCurrentOrderComponent implements OnInit {
 
   actionChange(event: any) {
     if (this.tableData.length != 0) {
-      if (event == 'Delete All Orders') {
-        this.deleteAllOrders();
-      }
-      else if (event == 'Delete Shown Orders') {
-        this.deleteShownOrders();
-      }
-      else if (event == 'Delete Range') {
-        this.deleteRange();
-      }
-      else if (event == 'Delete Selected Order') {
-        this.deleteSelectedOrder();
-      }
-      else if (event == 'View All Orders') {
-        this.viewAllOrders();
-      }
-      else if (event == 'View Unprinted Orders') {
-        this.viewUnprintedOrders();
+      switch (event) {
+        case 'Delete All Orders':
+          this.deleteAllOrders();
+          break;
+        case 'Delete Shown Orders':
+          this.deleteShownOrders();
+          break;
+        case 'Delete Range':
+          this.deleteRange();
+          break;
+        case 'Delete Selected Order':
+          this.deleteSelectedOrder();
+          break;
+        case 'View All Orders':
+          this.viewAllOrders();
+          break;
+        case 'View Unprinted Orders':
+          this.viewUnprintedOrders();
+          break;
+        default:
+          break;
       }
     }
     if (event == 'Print Orders') {
@@ -257,118 +324,137 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   printOrders() {
-
-    switch ( this.tablePayloadObj.searchColumn) {
+    switch (this.tablePayloadObj.searchColumn) {
       case 'Trans Type':
-        this.tablePayloadObj.searchColumn='Transaction Type'
+        this.tablePayloadObj.searchColumn = 'Transaction Type';
         break;
-        case 'Carsl':
-          this.tablePayloadObj.searchColumn='Carousel'
-          break;
-          case 'Trans Qty':
-            this.tablePayloadObj.searchColumn='Transaction Quantity'
-            break;
-            case 'UofM':
-              this.tablePayloadObj.searchColumn='Unit of Measure'
-              break;
-              case 'Comp Date':
-                this.tablePayloadObj.searchColumn='Completed Date'
-                break;
+      case 'Carsl':
+        this.tablePayloadObj.searchColumn = 'Carousel';
+        break;
+      case 'Trans Qty':
+        this.tablePayloadObj.searchColumn = 'Transaction Quantity';
+        break;
+      case 'UofM':
+        this.tablePayloadObj.searchColumn = 'Unit of Measure';
+        break;
+      case 'Comp Date':
+        this.tablePayloadObj.searchColumn = 'Completed Date';
+        break;
       default:
         break;
     }
-   
-    this.global.Print(`FileName:printReplenishmentReportLabels|searchString:${this.repByDeletePayload.searchString?this.repByDeletePayload.searchString:''}|searchColumn:${this.tablePayloadObj.searchColumn}|Status:${this.tablePayloadObj.status}|filter:${this.tablePayloadObj.filter}|ident:Orders`,'lbl')
-    
-    
+
+    this.global.Print(
+      `FileName:printReplenishmentReportLabels|searchString:${
+        this.repByDeletePayload.searchString
+          ? this.repByDeletePayload.searchString
+          : ''
+      }|searchColumn:${this.tablePayloadObj.searchColumn}|Status:${
+        this.tablePayloadObj.status
+      }|filter:${this.tablePayloadObj.filter}|ident:Orders`,
+      'lbl'
+    );
   }
 
-  clearMatSelectList(){
-    this.openActionDropDown.options.forEach((data: MatOption) => data.deselect());
+  clearMatSelectList() {
+    this.openActionDropDown.options.forEach((data: MatOption) =>
+      data.deselect()
+    );
   }
-  openAction(event:any){
+  openAction(event: any) {
     this.clearMatSelectList();
   }
   printLabels() {
- 
-    const dialogRef = this.dialog.open(PrintReplenLabelsComponent, {
+    const dialogRef: any = this.global.OpenDialog(PrintReplenLabelsComponent, {
       width: '1100px',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-      },
+      disableClose: true,
+      data: {},
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        switch ( this.tablePayloadObj.searchColumn) {
+        switch (this.tablePayloadObj.searchColumn) {
           case 'Trans Type':
-            this.tablePayloadObj.searchColumn='Transaction Type'
+            this.tablePayloadObj.searchColumn = 'Transaction Type';
             break;
-            case 'Carsl':
-              this.tablePayloadObj.searchColumn='Carousel'
-              break;
-              case 'Trans Qty':
-                this.tablePayloadObj.searchColumn='Transaction Quantity'
-                break;
-                case 'UofM':
-                  this.tablePayloadObj.searchColumn='Unit of Measure'
-                  break;
-                  case 'Comp Date':
-                    this.tablePayloadObj.searchColumn='Completed Date'
-                    break;
+          case 'Carsl':
+            this.tablePayloadObj.searchColumn = 'Carousel';
+            break;
+          case 'Trans Qty':
+            this.tablePayloadObj.searchColumn = 'Transaction Quantity';
+            break;
+          case 'UofM':
+            this.tablePayloadObj.searchColumn = 'Unit of Measure';
+            break;
+          case 'Comp Date':
+            this.tablePayloadObj.searchColumn = 'Completed Date';
+            break;
           default:
             break;
         }
-        this.global.Print(`FileName:printReplenishmentReportLabels|searchString:${this.repByDeletePayload.searchString?this.repByDeletePayload.searchString:''}|searchColumn:${this.tablePayloadObj.searchColumn}|Status:${this.tablePayloadObj.status}|PrintAll:${1}|filter:${this.tablePayloadObj.filter}|Sort:${this.tableData.sort}|ident:Labels`,'lbl')
-         
+        this.global.Print(
+          `FileName:printReplenishmentReportLabels|searchString:${
+            this.repByDeletePayload.searchString
+              ? this.repByDeletePayload.searchString
+              : ''
+          }|searchColumn:${this.tablePayloadObj.searchColumn}|Status:${
+            this.tablePayloadObj.status
+          }|PrintAll:${1}|filter:${this.tablePayloadObj.filter}|Sort:${
+            this.tableData.sort
+          }|ident:Labels`,
+          'lbl'
+        );
       }
     });
   }
 
   deleteAllOrders() {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
         mode: 'delete-all-current-orders',
         ErrorMessage: 'Are you sure you want to delete all records',
-        action: 'delete'
+        action: 'delete',
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
-        this.repByDeletePayload.identity = "ALL";
-        this.repByDeletePayload.filter1 = "";
-        this.repByDeletePayload.filter2 = "";
-        this.repByDeletePayload.searchString = "";
-        this.repByDeletePayload.searchColumn = "";
-        this.repByDeletePayload.status = "";
+        this.repByDeletePayload.identity = 'ALL';
+        this.repByDeletePayload.filter1 = '';
+        this.repByDeletePayload.filter2 = '';
+        this.repByDeletePayload.searchString = '';
+        this.repByDeletePayload.searchColumn = '';
+        this.repByDeletePayload.status = '';
         this.ReplenishmentsByDelete();
       }
     });
   }
 
   deleteShownOrders() {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
         mode: 'delete-shown-current-orders',
-        ErrorMessage: 'Are you sure you want to delete all records that are currently dipslayed',
-        action: 'delete'
+        ErrorMessage:
+          'Are you sure you want to delete all records that are currently dipslayed',
+        action: 'delete',
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
-        this.repByDeletePayload.identity = "Shown";
-        this.repByDeletePayload.filter1 = "";
-        this.repByDeletePayload.filter2 = "";
-        this.repByDeletePayload.searchString = this.tablePayloadObj.searchString;
-        this.repByDeletePayload.searchColumn = this.tablePayloadObj.searchColumn;
+        this.repByDeletePayload.identity = 'Shown';
+        this.repByDeletePayload.filter1 = '';
+        this.repByDeletePayload.filter2 = '';
+        this.repByDeletePayload.searchString =
+          this.tablePayloadObj.searchString;
+        this.repByDeletePayload.searchColumn =
+          this.tablePayloadObj.searchColumn;
         this.repByDeletePayload.status = this.tablePayloadObj.status;
         this.ReplenishmentsByDelete();
       }
@@ -376,10 +462,10 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   deleteRange() {
-    const dialogRef = this.dialog.open(DeleteRangeComponent, {
+    const dialogRef: any = this.global.OpenDialog(DeleteRangeComponent, {
       width: '900px',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {},
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -391,38 +477,37 @@ export class SrCurrentOrderComponent implements OnInit {
 
   deleteSelectedOrder() {
     if (this.selectedOrder.rowNumber == undefined) {
-      const dialogRef = this.dialog.open(SrDeleteOrderComponent, {
+      const dialogRef: any = this.global.OpenDialog(SrDeleteOrderComponent, {
         height: 'auto',
         width: '600px',
         autoFocus: '__non_existing_element__',
-      disableClose:true,
+        disableClose: true,
         data: {
           orderNumber: null,
         },
       });
-      dialogRef.afterClosed().subscribe((res) => {
-        
-      });
-    }
-    else {
-      const dialogRef = this.dialog.open(this.deleteSelectedConfirm, {
-        width: '550px',
-        autoFocus: '__non_existing_element__',
-      disableClose:true,
-      });
+      dialogRef.afterClosed().subscribe((res) => {});
+    } else {
+      const dialogRef: any = this.global.OpenDialog(
+        this.deleteSelectedConfirm,
+        {
+          width: '550px',
+          autoFocus: '__non_existing_element__',
+          disableClose: true,
+        }
+      );
 
-      dialogRef.afterClosed().subscribe(() => {
-      });
+      dialogRef.afterClosed().subscribe(() => {});
     }
   }
 
   deleteSelected() {
-    this.repByDeletePayload.identity = "Shown";
-    this.repByDeletePayload.filter1 = "";
-    this.repByDeletePayload.filter2 = "";
+    this.repByDeletePayload.identity = 'Shown';
+    this.repByDeletePayload.filter1 = '';
+    this.repByDeletePayload.filter2 = '';
     this.repByDeletePayload.searchString = this.selectedOrder.orderNumber;
-    this.repByDeletePayload.searchColumn = "Order Number";
-    this.repByDeletePayload.status = "All";
+    this.repByDeletePayload.searchColumn = 'Order Number';
+    this.repByDeletePayload.status = 'All';
     this.ReplenishmentsByDelete();
     this.selectedOrder = {};
   }
@@ -444,7 +529,9 @@ export class SrCurrentOrderComponent implements OnInit {
 
   viewUnprintedOrders() {
     this.tableData = JSON.parse(JSON.stringify(this.filteredTableData));
-    this.filteredTableData = this.filteredTableData.filter((item: any) => item.printDate == '');
+    this.filteredTableData = this.filteredTableData.filter(
+      (item: any) => item.printDate == ''
+    );
     this.updateCounts();
   }
 
@@ -453,12 +540,11 @@ export class SrCurrentOrderComponent implements OnInit {
       this.tablePayloadObj.status = event;
       this.newReplenishmentOrders();
     }
-    
   }
 
   searchChange(event: any) {
-    if(event == ""){
-      this.tablePayloadObj.searchString = "";
+    if (event == '') {
+      this.tablePayloadObj.searchString = '';
     }
     this.tablePayloadObj.searchColumn = event;
     this.getSearchOptions();
@@ -473,27 +559,25 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   search() {
-    if (this.tablePayloadObj.searchColumn != "" && this.tablePayloadObj.searchString != "") {
+    if (
+      this.tablePayloadObj.searchColumn != '' &&
+      this.tablePayloadObj.searchString != ''
+    ) {
       this.resetPagination();
       this.newReplenishmentOrders();
     }
   }
 
   ReplenishmentsByDelete() {
-    this.Api.ReplenishmentsByDelete(this.repByDeletePayload).subscribe((res: any) => {
+    this.iAdminApiService.ReplenishmentsByDelete(this.repByDeletePayload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-        this.toastr.success(labels.alert.delete, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.delete, 'Success!');
         this.newReplenishmentOrders();
         this.replenishmentsDeleted.emit();
       } else {
-        this.toastr.error(labels.alert.went_worng, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
         this.dialog.closeAll();
+        console.log("ReplenishmentsByDelete",res.responseMessage);
       }
     });
   }
@@ -502,34 +586,45 @@ export class SrCurrentOrderComponent implements OnInit {
   getSearchOptions(loader: boolean = false) {
     let payload = {
       "searchString": this.tablePayloadObj.searchString,
-      "searchColumn": this.tablePayloadObj.searchColumn,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "searchColumn": this.tablePayloadObj.searchColumn, 
     }
-    this.getSearchOptionsSubscribe = this.Api.ReplenishReportSearchTA(payload).subscribe((res: any) => {
+    this.getSearchOptionsSubscribe = this.iAdminApiService.ReplenishReportSearchTA(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.searchAutocompleteList = res.data.sort();
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ReplenishReportSearchTA",res.responseMessage);
+
       }
     });
   }
 
   viewItemInInventoryMaster(element: any) {
-    window.open(`/#/admin/inventoryMaster?itemNumber=${element.itemNumber}`, '_blank', "location=yes");
+    window.open(
+      `/#/admin/inventoryMaster?itemNumber=${element.itemNumber}`,
+      '_blank',
+      'location=yes'
+    );
   }
 
-
   systemReplenishmentCount(loader: boolean = false) {
-    this.newReplenishmentOrdersSubscribe = this.Api.SystemReplenishmentCount(this.tablePayloadObj).subscribe((res: any) => {
+    this.newReplenishmentOrdersSubscribe = this.iAdminApiService.SystemReplenishmentCount(this.tablePayloadObj).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.noOfPicks = res.data.pickCount;
         this.noOfPutAways = res.data.putCount;
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SystemReplenishmentCount",res.responseMessage);
+
       }
     });
   }
 
   selectRow(row: any) {
-    this.filteredTableData.forEach(element => {
-      if(row != element){
+    this.filteredTableData.forEach((element) => {
+      if (row != element) {
         element.selected = false;
       }
     });
@@ -538,5 +633,5 @@ export class SrCurrentOrderComponent implements OnInit {
       selectedRow.selected = !selectedRow.selected;
     }
   }
-
 }
+

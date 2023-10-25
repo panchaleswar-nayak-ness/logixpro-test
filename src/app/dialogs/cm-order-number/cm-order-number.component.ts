@@ -1,9 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild, Inject, ViewChildren, QueryList } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import {MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import { CmOrderToteConflictComponent } from '../cm-order-tote-conflict/cm-order-tote-conflict.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-cm-order-number',
@@ -23,12 +25,16 @@ export class CmOrderNumberComponent implements OnInit {
   @ViewChild('searchTote') searchTote: ElementRef;
   @ViewChildren('stagLoc') stagLoc: QueryList<HTMLInputElement>;
 
-  constructor(private dialog          : MatDialog,
+  public IconsolidationAPI : IConsolidationApi;
+
+  constructor(private global          : GlobalService,
               public dialogRef        : MatDialogRef<CmOrderNumberComponent>,
-              private toast           : ToastrService,
-              private Api: ApiFuntions,
+              
+              public consolidationAPI : ConsolidationApiService,
               private authService     : AuthService,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+                this.IconsolidationAPI = consolidationAPI;
+               }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -56,38 +62,46 @@ export class CmOrderNumberComponent implements OnInit {
     if (event.key == "Enter") {
       let obj: any = {
         type: this.type,
-        selValue: value,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        selValue: value
       };
 
-      this.Api.ConsolidationData(obj).subscribe((res: any) => {
-        if (typeof res?.data == 'string') {
-          switch (res?.data) {
-            case "DNE":
-              this.toast.error("The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
-              this.order.nativeElement.value = '';
-              this.order.nativeElement.focus();
-              break;
-            case "Conflict":
-              this.toast.warning("You have a conflicting Tote ID and Order Number.", 'Staging Locations', { positionClass: 'toast-bottom-right', timeOut: 2000 });
-                this.openCmOrderToteConflict(value); 
-              break;
-            case "Error":
-              this.toast.error("An Error occured while retrieving data", "Consolidation Error", { positionClass: 'toast-bottom-right', timeOut: 2000 });
-              break;
+      this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
+        if (res?.isExecuted)
+        {
+          if (typeof res?.data == 'string') {
+            switch (res?.data) {
+              case "DNE":
+                this.global.ShowToastr('error',"The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!');
+                this.order.nativeElement.value = '';
+                this.order.nativeElement.focus();
+                break;
+              case "Conflict":
+                this.global.ShowToastr('warning',"You have a conflicting Tote ID and Order Number.", 'Staging Locations');
+                  this.openCmOrderToteConflict(value); 
+                break;
+              case "Error":
+                this.global.ShowToastr('error',"An Error occured while retrieving data", "Consolidation Error");
+                break;
+            }
           }
+          else { 
+            this.findTote({key: 'Enter'} as KeyboardEvent, value);
+            this.tableData = res.data.stageTable;
+          }
+
         }
-        else { 
-          this.findTote({key: 'Enter'} as KeyboardEvent, value);
-          this.tableData = res.data.stageTable;
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("ConsolidationData",res.responseMessage);
+
         }
+        
       });
     }
   }
 
   openCmOrderToteConflict(order : any) { 
-    let dialogRef = this.dialog.open(CmOrderToteConflictComponent, { 
+    let dialogRef:any = this.global.OpenDialog(CmOrderToteConflictComponent, { 
       height: 'auto',
       width: '620px',
       autoFocus: '__non_existing_element__',
@@ -111,27 +125,31 @@ export class CmOrderNumberComponent implements OnInit {
       "orderNumber": this.order.nativeElement.value,
       "toteID": values.toteID,
       "location": values.stagingLocation,
-      "clear": clear,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "clear": clear
     }
-
-    this.Api.StagingLocationsUpdate(obj).subscribe((res: any) => {
-      if (res.responseMessage == "Fail") {
-        this.toast.error("Error Has Occured", "Consolidation", { positionClass: 'toast-bottom-right', timeOut: 2000 });
-      } else {
-        if (typeof this.tableData != 'undefined') {
-          for (let x = 0; x < this.tableData.length; x++) {
-            let tote = this.tableData[x].toteID;
+    this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
+      if(res)
+      {
+        if (res?.responseMessage == "Fail") {
+          this.global.ShowToastr('error', "Error Has Occured", "Consolidation");
+          console.log("StagingLocationsUpdate", res.responseMessage);
+        } else if (typeof this.tableData != 'undefined') {
+          for (const item of this.tableData) {
+            let tote = item.toteID;
             if (tote == values.toteID) {
-              this.tableData[x].stagingLocation = clear ? '' :  values.stagingLocation;
-              this.tableData[x].stagedBy = clear ? '' : this.userData.userName;
-              this.tableData[x].stagedDate = clear ? '' :  res.data;
+              item.stagingLocation = clear ? '' : values.stagingLocation;
+              item.stagedBy = clear ? '' : this.userData.userName;
+              item.stagedDate = clear ? '' : res.data;
               break;
             }
           }
         }
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("StagingLocationsUpdate",res.responseMessage);
+      }
+     
     });    
   }
 

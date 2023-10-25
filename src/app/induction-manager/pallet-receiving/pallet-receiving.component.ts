@@ -1,10 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AuthService } from 'src/app/init/auth.service';
-import { MatDialog } from '@angular/material/dialog';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 @Component({
   selector: 'app-pallet-receiving',
   templateUrl: './pallet-receiving.component.html',
@@ -15,13 +17,16 @@ export class PalletReceivingComponent implements OnInit {
   userData;
   toteIDCrossBtn;
   itemNoCrossBtn;
+  public iInductionManagerApi:IInductionManagerApiService;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   constructor(
     public Api: ApiFuntions,
-    public toastService: ToastrService,
+    public inductionManagerApi : InductionManagerApiService,
     private authService: AuthService,
-    public dialog: MatDialog
+    public global:GlobalService,
+    
   ) {
+    this.iInductionManagerApi = inductionManagerApi;
     this.processForm = new FormGroup({
       toteID: new FormControl('', Validators.required),
       itemNo: new FormControl('', Validators.required),
@@ -52,19 +57,15 @@ export class PalletReceivingComponent implements OnInit {
       // validate Tote
       let payloadTote = {
         toteID: this.processForm.value.toteID,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
       };
-      this.Api
+      this.iInductionManagerApi
         .ValidateTote(payloadTote) //validate tote
         .subscribe((response: any) => {
           if (response.data) {
             let payloadItem = {
-              item: this.processForm.value.itemNo,
-              username: this.userData.userName,
-              wsid: this.userData.wsid,
+              item: this.processForm.value.itemNo
             };
-            this.Api
+            this.iInductionManagerApi
               .ValidateItem(payloadItem) //validate item number
               .subscribe((response: any) => {
                 if (response.data) {
@@ -72,31 +73,22 @@ export class PalletReceivingComponent implements OnInit {
                   let payload = {
                     toteId: this.processForm.value.toteID,
                     itemNumber: this.processForm.value.itemNo,
-                    quantity: this.processForm.value.quantity,
-                    username: this.userData.userName,
+                    quantity: this.processForm.value.quantity, 
                   };
-                  this.Api
+                  this.iInductionManagerApi
                     .ProcessPallet(payload)
                     .subscribe((response: any) => {
                       if (response.isExecuted) {
-                        this.toastService.success(
+                        this.global.ShowToastr('success',
                           'Pallet was processed',
-                          'Success!',
-                          {
-                            positionClass: 'toast-bottom-right',
-                            timeOut: 2000,
-                          }
+                          'Success!' 
                         );
 
                         this.resetForm();
                       } else {
-                        this.toastService.error(
+                        this.global.ShowToastr('error',
                           'An error occurred processing this pallet setup',
-                          'Error!',
-                          {
-                            positionClass: 'toast-bottom-right',
-                            timeOut: 2000,
-                          }
+                          'Error!' 
                         );
                       }
                     });
@@ -112,6 +104,7 @@ export class PalletReceivingComponent implements OnInit {
               'Invalid Tote Entered',
               'This tote id already exists in Open Transactions'
             );
+            console.log("ValidateTote");
           }
         });
     }
@@ -128,7 +121,7 @@ export class PalletReceivingComponent implements OnInit {
   }
 
   showNotification(heading, message) {
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '786px',
       data: {

@@ -1,9 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, Inject, OnInit, ViewChild, Renderer2, ViewChildren, QueryList } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog'; 
+import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { DeleteConfirmationComponent } from '../../admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -13,6 +13,10 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, catchError, of, takeUntil } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 export interface PeriodicElement {
   name: string;
@@ -51,6 +55,8 @@ export class TotesAddEditComponent implements OnInit {
   selection = new SelectionModel<PeriodicElement>(true, []);
   position:any;
   isIMPath=false;
+  public iAdminApiService: IAdminApiService;
+  public iinductionManagerApi:IInductionManagerApiService;
   toteID="";
   cellID="";
   fromTote;
@@ -148,11 +154,12 @@ export class TotesAddEditComponent implements OnInit {
   }
   autocompleteSearchColumn(){
     
-    this.Api.GetFromToteTypeAhead().pipe(takeUntil(this.onDestroy$)).pipe(
+    this.iinductionManagerApi.GetFromToteTypeAhead().pipe(takeUntil(this.onDestroy$)).pipe(
       catchError((error) => {
         // Handle the error here
-        this.toastr.error("An Error occured while retrieving data.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        this.global.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
         // Return a fallback value or trigger further error handling if needed
+        console.log("GetFromToteTypeAhead");
         return of({ isExecuted: false });
       })
     ).subscribe((res: any) => {
@@ -175,19 +182,14 @@ export class TotesAddEditComponent implements OnInit {
         oldTote = oldToteID;
       }
       let searchPayload = {
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
         oldToteID: oldTote,
         toteID: toteID,
         cells: cells
       }
-      this.Api.ToteSetupInsert(searchPayload).subscribe(
+      this.iAdminApiService.ToteSetupInsert(searchPayload).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
-            this.toastr.success(isInserted=="1"?updateMessage:res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',isInserted=="1"?updateMessage:res.responseMessage, 'Success!');
             this.dataSourceManagedTotes.data[index]['isDuplicate']=false
             this.isRowAdded=false;
           this.getTotes();
@@ -195,19 +197,14 @@ export class TotesAddEditComponent implements OnInit {
             this.dataSourceManagedTotes.data[index]['isDuplicate']=true
        
         
-            this.toastr.error("Cannot set the selected tote because it is already set in the batch.", 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',"Cannot set the selected tote because it is already set in the batch.", 'Error!');
+            console.log("ToteSetupInsert",res.responseMessage);
           }
         },
         (error) => { 
           this.dataSourceManagedTotes.data[index]['isDuplicate']=true
          
-            this.toastr.error("Cannot set the selected tote because it is already set in the batch.", 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',"Cannot set the selected tote because it is already set in the batch.", 'Error!');
        
           
           
@@ -219,7 +216,7 @@ export class TotesAddEditComponent implements OnInit {
 
   deleteTote(toteID:any,index)
   {  //jhgjhgfhgfh
-    const dialogRef =  this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any =  this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -241,17 +238,12 @@ export class TotesAddEditComponent implements OnInit {
           this.isRowAdded=false
         }else{
           let deleteTote = {
-            username: this.userData.userName,
-            wsid: this.userData.wsid,
             toteID: toteID
           }
-          this.Api.ToteSetupDelete(deleteTote).subscribe(
+          this.iAdminApiService.ToteSetupDelete(deleteTote).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
-                this.toastr.success("Deleted successfuly", 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+                this.global.ShowToastr('success',"Deleted successfuly", 'Success!');
                 this.isRowAdded=false;
                 let isUnsavedItem=false
                 this.dataSourceManagedTotes.data.forEach(obj=>{
@@ -269,10 +261,8 @@ export class TotesAddEditComponent implements OnInit {
                
         
               } else {
-                this.toastr.error("Already exists", 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',"Already exists", 'Error!');
+                console.log("ToteSetupDelete",res.responseMessage);
               }
             },
             (error) => { }
@@ -294,16 +284,16 @@ export class TotesAddEditComponent implements OnInit {
       items=JSON.parse(JSON.stringify(item))
     }
     this.ELEMENT_DATA_TOTE.length=0;
-    this.Api.ToteSetup().subscribe(
+    this.iAdminApiService.ToteSetup().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.ELEMENT_DATA_TOTE = res.data;
-          for(let i=0;i<this.ELEMENT_DATA_TOTE.length;i++)
+          for(let value of this.ELEMENT_DATA_TOTE)
           {
-          this.ELEMENT_DATA_TOTE[i].isInserted = 1;
-          this.ELEMENT_DATA_TOTE[i].isDuplicate = false;
-          this.ELEMENT_DATA_TOTE[i].oldToteID   = this.ELEMENT_DATA_TOTE[i].toteID
-          this.ELEMENT_DATA_TOTE[i].isEdit   = false
+            value.isInserted = 1;
+            value.isDuplicate = false;
+            value.oldToteID   = value.toteID
+            value.isEdit   = false
           }
           if(items){
             this.ELEMENT_DATA_TOTE.push(items[items.length-1])
@@ -311,10 +301,8 @@ export class TotesAddEditComponent implements OnInit {
           }
           this.dataSourceManagedTotes = new MatTableDataSource<any>(this.ELEMENT_DATA_TOTE);
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("ToteSetup",res.responseMessage);
         }
       },
       (error) => { }
@@ -374,10 +362,7 @@ export class TotesAddEditComponent implements OnInit {
 
     if(exists)
     {
-      this.toastr.error("Cannot set the selected tote because it is already set in the batch.", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      });
+      this.global.ShowToastr('error',"Cannot set the selected tote because it is already set in the batch.", 'Error!');
     }
     else 
     {
@@ -385,10 +370,7 @@ export class TotesAddEditComponent implements OnInit {
       if(toteIDs == null && cells == null)
       {
         if (!this.cellID) {
-          this.toastr.error("Cannot set the selected tote because it is cells is empty.", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',"Cannot set the selected tote because it is cells is empty.", 'Error!');
           return;
         }
         selectedTote = { toteID : this.toteID, cellID : this.cellID, position : this.position };
@@ -397,10 +379,7 @@ export class TotesAddEditComponent implements OnInit {
       else 
       {
         if (!cells) {
-          this.toastr.error("Cannot set the selected tote because it is cells is empty.", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',"Cannot set the selected tote because it is cells is empty.", 'Error!');
           return;
         }
         selectedTote = { toteID : toteIDs, cellID : cells, position : this.position }; 
@@ -416,12 +395,13 @@ export class TotesAddEditComponent implements OnInit {
   dataSource1 = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection1 = new SelectionModel<PeriodicElement>(true, []);
 
-  constructor(public dialogRef: MatDialogRef<TotesAddEditComponent>,private route: ActivatedRoute,private location: Location,private renderer: Renderer2,
-    @Inject(MAT_DIALOG_DATA) public data : any,private authService: AuthService,private Api:ApiFuntions,private toastr: ToastrService,private dialog: MatDialog,private global:GlobalService) {
-
+  constructor(public dialogRef: MatDialogRef<TotesAddEditComponent>,
+    private inductionManagerApi: InductionManagerApiService,private adminApiService: AdminApiService,private route: ActivatedRoute,private location: Location,private renderer: Renderer2,
+    @Inject(MAT_DIALOG_DATA) public data : any,private authService: AuthService,private Api:ApiFuntions,private global:GlobalService) {
+      this.iAdminApiService = adminApiService;
       let pathArr= this.location.path().split('/')
       this.isIMPath=pathArr[pathArr.length-1]==='ImToteManager'
-
+      this.iinductionManagerApi = inductionManagerApi;
     
       
       

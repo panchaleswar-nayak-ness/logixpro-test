@@ -1,44 +1,9 @@
-<mat-card class="mat-elevation-z g-card mt-2 mb-3">
-    <div class="mb-3">
-        <h2 class="card-header-title mb-0 d-flex align-items-center">
-            <div class="mat-icon-wrap me-1 me-lg-3">
-                <span class="material-symbols-outlined">
-                    ads_click
-                </span>
-            </div>
-            <span>Create New Replenishment Orders</span>
-        </h2>
-    </div>
-    <div class="card bg-light-blue bg-50 br-none px-4 py-4 br-14">
-        <div class="row">
-            <div class="col-xl-6">
-                <div class="row align-items-center">
-                    <div class="col-xl-7">
-                        <mat-form-field class="w-100 custom-form-field custom-form-field-bg-white" appearance="outline">
-                            <mat-label>No. of Selected Replenishments</mat-label>
-                            <input type="text" aria-label="Search" matInput disabled [(ngModel)]="numberSelectedRep">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-xl-5 mb-3 mb-lg-0">
-                        <div class="d-flex gap-20 mb-0">
-                            <mat-checkbox [checked]="kanban" color="primary" (change)="onChangeKanban($event)" [(ngModel)]="kanban">
-                                Kanban
-                            </mat-checkbox>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-xl-4 offset-xl-2">
-                <div class="d-flex d-xl-block justify-content-end">
-                    <button style="flex:1 auto" mat-flat-button color="primary" class="btn-md float-end" (click)="createNewOrdersList()">
-                        Create New Order List
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</mat-card>
+<app-sr-new-input-fields
+[numberSelectedRep]="numberSelectedRep"
+[kanban]="kanban"
+(onChangeKanbanEmit)="onChangeKanban($event)"
+(createNewOrdersListEmit)="kanban = $event; createNewOrdersList()">
+</app-sr-new-input-fields>
 <mat-card class="mat-elevation-z g-card mb-3">
     <mat-card-content>
         <div class="row mb-3">
@@ -50,53 +15,32 @@
                             <mat-option value=""></mat-option>
                             <mat-option *ngFor="let option of searchColumnOptions" [value]="option.value">{{option.viewValue}}</mat-option>
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
-                            expand_more
-                        </span>
+                        <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                     </mat-form-field>
 
                     <span class="v-br d-none d-xl-block">-</span>
-                    <div class="d-xl-flex g-mini-search-box mb-3 mb-xl-0 col-xl-3" style="flex:1">
-                        <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()"
-                        [hideRequiredMarker]="hideRequiredControl.value" (keyup.enter)="closeautoMenu()">
-                            <span class="material-symbols-outlined icon-search">
-                                Search
-                            </span>
-                            <input 
-                            type="text" 
-                            placeholder="Search" 
-                            aria-label="Search" 
-                            matInput 
-                            [disabled]="tablePayloadObj.searchColumn.length < 1" 
-                            [matAutocomplete]="auto"
-                            [(ngModel)]="tablePayloadObj.searchString"
-                            (keyup.enter)="search(); getSearchOptions()"
-                            (keyup)="autocompleteSearchColumn()"
-                            (focus)="getSearchOptions(true)"
-                            >
 
+                    <div class="d-xl-flex g-mini-search-box mb-3 mb-xl-0 col-xl-3" style="flex:1">
+                        <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value" (keyup.enter)="closeautoMenu()">
+                            <span class="material-symbols-outlined icon-search">Search</span>
+                            <input type="text" placeholder="Search" aria-label="Search" matInput [disabled]="tablePayloadObj.searchColumn.length < 1" [matAutocomplete]="auto" [(ngModel)]="tablePayloadObj.searchString" (keyup.enter)="search(); getSearchOptions()" (keyup)="autocompleteSearchColumn()" (focus)="getSearchOptions(true)">
                             <button matSuffix *ngIf="tablePayloadObj.searchString" class="clear-btn"  (click)=" tablePayloadObj.searchString = '';newReplenishmentOrders()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="search()" #autocompleteInventory>
-                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                                  {{option}}
-                                </mat-option>
-                                <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
-                                  No data found
-                                </mat-option>
+                                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">{{option}}</mat-option>
+                                <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>No data found</mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
-
-
                     </div>
+
+                    
+
                     <mat-form-field class="action-dropdown d-xl-flex d-block  mb-3 mb-xl-0" appearance="outline">
                         <mat-label>Show</mat-label>
                         <mat-select class="employees-action" (selectionChange)="showChange($event.value)"  >
                             <mat-option value="1">All</mat-option>
                             <mat-option value="2">Reorder</mat-option>
                         </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
-                            expand_more
-                        </span>
+                        <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                     </mat-form-field>
                 </div>
             </div>
@@ -261,38 +205,4 @@
     </button>
 </div>
 
-
-<div #trigger="matMenuTrigger"
-style="visibility: hidden; position: fixed"
-[style.left]="contextMenuPosition.x"
-[style.top]="contextMenuPosition.y"
-[matMenuTriggerFor]="contextMenuFilter"
-></div>
-<mat-menu #contextMenuFilter="matMenu">
-<ng-template matMenuContent let-item="item">
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'equals to',getType(item.SelectedItem))"> Equals</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not equals to', getType(item.SelectedItem))">Not Equals</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is greater than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Greater than or Equal</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is less than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Less than or Equal</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Like</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Not Like</button>
-  <button mat-menu-item [matMenuTriggerFor]="InputFiltersList" [matMenuTriggerData]="{category: item}" *ngIf="getType(item.SelectedItem) != 'boolean'" >Input FIlters</button>
-  <button mat-menu-item (click)="onContextMenuCommand('', '', 'clear', '')">Clear Filters</button>
-</ng-template>
-</mat-menu>
-
-<mat-menu #InputFiltersList="matMenu">
-    <ng-template matMenuContent let-category="category">
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'equals to', getType(category.SelectedItem))">Equals</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is not equals to', getType(category.SelectedItem))">Not Equals</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Begins</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Begin</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Ends With</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not End With</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Contains</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Contain</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is less than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Less Than</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is greater than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Greater Than</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is between', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Between</button>
-    </ng-template>
-  </mat-menu>
+<app-table-context-menu-component (optionSelected)="optionSelected($event)" *ngIf="TabIndex == 0" [componentName]="'sysRepNewOrd'"></app-table-context-menu-component>

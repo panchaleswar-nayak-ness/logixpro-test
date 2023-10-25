@@ -1,10 +1,12 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import labels from '../../labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-cpb-blossom-tote',
@@ -12,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./cpb-blossom-tote.component.scss']
 })
 export class CpbBlossomToteComponent implements OnInit {
-
+  public iinductionManagerApi:IInductionManagerApiService;
   displayedColumns: string[] = ['item_number', 'transaction_qty', 'qty_in_old_date'];
   toteId: any;
   transactions: any = [];
@@ -23,15 +25,20 @@ export class CpbBlossomToteComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private toastr: ToastrService,
-    private dialog: MatDialog,
+    
+    private global:GlobalService,
     private Api: ApiFuntions,
+    private inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<CpbBlossomToteComponent>,
     private globalService: GlobalService
-  ) { }
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+
+  }
 
   restrictKeyboard(event: KeyboardEvent) {
-    const isNumericInput = event.key.match(/^[0-9]+$/);
+    const isNumericInput = (/^\d+$/).exec(event.key);
+
     if (!isNumericInput && event.key !== "Backspace") {
       event.preventDefault();
     }
@@ -59,17 +66,15 @@ export class CpbBlossomToteComponent implements OnInit {
 
   newToteIdFocusOut() {
     if (this.newToteID != "") {
-      this.Api.ValidateTote({ toteID: this.newToteID }).subscribe((res: any) => {
+      this.iinductionManagerApi.ValidateTote({ toteID: this.newToteID }).subscribe((res: any) => {
         if (res.isExecuted && res.data != "") {
           this.submitBlossomEnable = true;
         }
         else {
           this.newToteID = "";
           this.submitBlossomEnable = false;
-          this.toastr.error("This tote is currently assigned to another open order", 'Invalid Tote', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"This tote is currently assigned to another open order", 'Invalid Tote');
+          console.log("ValidateTote",res.responseMessage);
         }
       });
     }
@@ -80,10 +85,7 @@ export class CpbBlossomToteComponent implements OnInit {
 
   qtyInOldToteFoucusOut(element:any){
     if(element.oldToteQuantity < 0 || element.oldToteQuantity > element.transactionQuantity){
-      this.toastr.error("Invalid Quantity Entered", 'Invalid Quantity Entered', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Invalid Quantity Entered", 'Invalid Quantity Entered');
       element.oldToteQuantity = null;
     }
   }
@@ -105,13 +107,10 @@ export class CpbBlossomToteComponent implements OnInit {
       }
     });
     if(isDecimalExist){
-      this.toastr.error("Tote Quantity can not be in decimal", 'Error', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Tote Quantity can not be in decimal", 'Error');
       return;
     }
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -123,19 +122,14 @@ export class CpbBlossomToteComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'Yes') {
-        this.Api.blossomTote(payload).subscribe((res: any) => {
+        this.iinductionManagerApi.blossomTote(payload).subscribe((res: any) => {
           if(res.isExecuted){
             this.dialogRef.close({newToteID:this.newToteID});
-            this.toastr.success(labels.alert.update, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.update, 'Success!');
           }
           else{
-            this.toastr.error("An error occured when blossoming this tote", 'Error', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"An error occured when blossoming this tote", 'Error');
+            console.log("blossomTote",res.responseMessage);
           }
         });
       }

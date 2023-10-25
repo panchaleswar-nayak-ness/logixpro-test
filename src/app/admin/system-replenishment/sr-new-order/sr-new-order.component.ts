@@ -1,26 +1,21 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatDialog } from '@angular/material/dialog';
 import { TransactionQtyEditComponent } from 'src/app/dialogs/transaction-qty-edit/transaction-qty-edit.component'; 
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
 import { FilterItemNumbersComponent } from '../../dialogs/filter-item-numbers/filter-item-numbers.component';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { FloatLabelType } from '@angular/material/form-field';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { Subject } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
-
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 @Component({
   selector: 'app-sr-new-order',
@@ -29,7 +24,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class SrNewOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
-
+ @Input() TabIndex:any;
   displayedColumns: string[] = ['Item Number', 'Description', 'Warehouse', 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', 'action'];
   tableData: any = [];
   filteredTableData: any = [];
@@ -52,33 +47,32 @@ export class SrNewOrderComponent implements OnInit {
   tableDataTotalCount: number = 0;
   filterItemNumbersText: string = "";
   searchColumnOptions: any = [
-    { value: 'Alloc Pick', viewValue: 'Alloc Pick', sortValue: '12', key: 'allocPick' },
-    { value: 'Alloc Put', viewValue: 'Alloc Put', sortValue: '13', key: 'allocPut' },
-    { value: 'Available Qty', viewValue: 'Available Qty', sortValue: '6', key: 'availableQuantity' },
-    { value: 'Case Qty', viewValue: 'Case Qty', sortValue: '8', key: 'caseQuantity' },
-    { value: 'Description', viewValue: 'Description', sortValue: '1', key: 'description' },
-    { value: 'Item Number', viewValue: 'Item Number', sortValue: '0', key: 'itemNumber' },
-    { value: 'Replenish', viewValue: 'Replenish', sortValue: '10', key: 'replenish' },
-    { value: 'Replenish Exists', viewValue: 'Replenish Exists', sortValue: '11', key: 'replenishExists' },
-    { value: 'Replenishment Level', viewValue: 'Replenishment Level', sortValue: '5', key: 'replenishmentLevel' },
-    { value: 'Replenishment Point', viewValue: 'Replenishment Point', sortValue: '4', key: 'replenishmentPoint' },
-    { value: 'Replenishment Qty', viewValue: 'Replenishment Qty', sortValue: '7', key: 'replenishmentQuantity' },
-    { value: 'Stock Qty', viewValue: 'Stock Qty', sortValue: '3', key: 'stockQuantity' },
-    { value: 'Transaction Qty', viewValue: 'Transaction Qty', sortValue: '9', key: 'transactionQuantity' },
-    { value: 'Warehouse', viewValue: 'Warehouse', sortValue: '2', key: 'warehouse' },
+    { value: 'Alloc Pick', viewValue: 'Alloc Pick', sortValue: '12', key: 'allocPick', colDef: 'Alloc Pick' },
+    { value: 'Alloc Put', viewValue: 'Alloc Put', sortValue: '13', key: 'allocPut', colDef: 'Alloc Put' },
+    { value: 'Available Qty', viewValue: 'Available Qty', sortValue: '6', key: 'availableQuantity', colDef: 'Available Qty' },
+    { value: 'Case Qty', viewValue: 'Case Qty', sortValue: '8', key: 'caseQuantity', colDef: 'Case Qty' },
+    { value: 'Description', viewValue: 'Description', sortValue: '1', key: 'description', colDef: 'Description' },
+    { value: 'Item Number', viewValue: 'Item Number', sortValue: '0', key: 'itemNumber', colDef: 'Item Number' },
+    { value: 'Replenish', viewValue: 'Replenish', sortValue: '10', key: 'replenish', colDef: 'Replenish' },
+    { value: 'Replenish Exists', viewValue: 'Replenish Exists', sortValue: '11', key: 'replenishExists', colDef: 'Replenish Exists' },
+    { value: 'Replenishment Level', viewValue: 'Replenishment Level', sortValue: '5', key: 'replenishmentLevel', colDef: 'Replenishment Level' },
+    { value: 'Replenishment Point', viewValue: 'Replenishment Point', sortValue: '4', key: 'replenishmentPoint', colDef: 'Replenishment Point' },
+    { value: 'Replenishment Qty', viewValue: 'Replenishment Qty', sortValue: '7', key: 'replenishmentQuantity', colDef: 'Replenishment Qty' },
+    { value: 'Stock Qty', viewValue: 'Stock Qty', sortValue: '3', key: 'stockQuantity', colDef: 'Stock Qty' },
+    { value: 'Transaction Qty', viewValue: 'Transaction Qty', sortValue: '9', key: 'transactionQuantity', colDef: 'Transaction Qty' },
+    { value: 'Warehouse', viewValue: 'Warehouse', sortValue: '2', key: 'warehouse', colDef: 'Warehouse' },
   ];
   searchAutocompleteList: any;
   newOrderListCreated:boolean = false;
-
+  public iAdminApiService: IAdminApiService;
   constructor(
-    private dialog: MatDialog,
-    private Api: ApiFuntions,
-    private toastr: ToastrService,
-    private authService: AuthService,
-    private router: Router,
     private global:GlobalService,
-    private filterService: ContextMenuFiltersService
-  ) { }
+    private contextMenuService : TableContextMenuService,
+    private authService: AuthService,
+    public adminApiService: AdminApiService
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   @Input('refreshNewOrders') refreshNewOrders:Subject<any>;
   @Output() replenishmentsProcessed: EventEmitter<any> = new EventEmitter();
@@ -96,57 +90,14 @@ export class SrNewOrderComponent implements OnInit {
     this.refreshNewOrders.unsubscribe();
   }
 
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  onClick() {
-    this.trigger.closeMenu();
-  }
-
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-
-  FilterString: string = "1 = 1";
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
-    if ((SelectedItem != undefined && FilterColumnName != "") || Condition == "clear") {
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-    }
-    this.tablePayloadObj.filter = this.FilterString != "" ? this.FilterString : "1 = 1";
+  optionSelected(filter : string) {
+    this.tablePayloadObj.filter = filter;
     this.resetPagination();
-    this.newReplenishmentOrders();
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => {
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
-    }
-    );
-  }
-
-  ClearFilters() {
-    this.tablePayloadObj.filter = "1=1";
-    this.newReplenishmentOrders();
+    this.newReplenishmentOrders(); 
   }
 
   hideRequiredControl = new FormControl(false);
@@ -171,7 +122,7 @@ export class SrNewOrderComponent implements OnInit {
   }
 
   editTransDialog(element: any): void {
-    const dialogRef = this.dialog.open(TransactionQtyEditComponent, {
+    const dialogRef:any = this.global.OpenDialog(TransactionQtyEditComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -197,12 +148,17 @@ export class SrNewOrderComponent implements OnInit {
   newReplenishmentOrders(loader:boolean =false) {
     if(this.newOrderListCreated){
       this.tablePayloadObj.searchString = this.tablePayloadObj.searchString.toString();
-      this.newReplenishmentOrdersSubscribe = this.Api.SystemReplenishmentNewTable(this.tablePayloadObj).subscribe((res: any) => {
+      this.newReplenishmentOrdersSubscribe = this.iAdminApiService.SystemReplenishmentNewTable(this.tablePayloadObj).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.tableData = res.data.sysTable;
           this.numberSelectedRep = res.data.selectedOrders;
           this.tableDataTotalCount = res.data.recordsFiltered;
           this.filteredTableData = JSON.parse(JSON.stringify(this.tableData));
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SystemReplenishmentNewTable",res.responseMessage);
+
         } 
       });
     }
@@ -225,11 +181,9 @@ export class SrNewOrderComponent implements OnInit {
 
   createNewReplenishments(kanban: boolean) {
     let paylaod = {
-      "kanban": kanban,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "kanban": kanban, 
     }
-    this.Api.ReplenishmentInsert(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.ReplenishmentInsert(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.newOrderListCreated = true;
       }
@@ -290,7 +244,7 @@ export class SrNewOrderComponent implements OnInit {
   print() {
 
   
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -340,7 +294,7 @@ export class SrNewOrderComponent implements OnInit {
   }
 
   filterItemNo() {
-    const dialogRef = this.dialog.open(FilterItemNumbersComponent, {
+    const dialogRef:any = this.global.OpenDialog(FilterItemNumbersComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -368,20 +322,15 @@ export class SrNewOrderComponent implements OnInit {
   processReplenishments() {
 
     let paylaod = {
-      "kanban": this.kanban,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "kanban": this.kanban, 
     }
-    this.Api.ProcessReplenishments(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.ProcessReplenishments(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         if(res.responseMessage == "Update Successful"){
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
         }
         if(res.responseMessage == "Reprocess"){
-          let dialogRef2 = this.dialog.open(ConfirmationDialogComponent, {
+          let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
             height: 'auto',
             width: '560px',
             autoFocus: '__non_existing_element__',
@@ -399,10 +348,8 @@ export class SrNewOrderComponent implements OnInit {
         this.newReplenishmentOrders();
         this.replenishmentsProcessed.emit();
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("ProcessReplenishments",res.responseMessage);
       }
     });
   }
@@ -423,18 +370,14 @@ export class SrNewOrderComponent implements OnInit {
   ReplenishmentsIncludeUpdate(replenish: boolean, rfid: number) {
     let paylaod = {
       "rfid": rfid,
-      "replenish": replenish,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "replenish": replenish, 
     }
-    this.Api.ReplenishmentsIncludeUpdate(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.ReplenishmentsIncludeUpdate(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.newReplenishmentOrders();
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("ReplenishmentsIncludeUpdate",res.responseMessage);
       }
     });
   }
@@ -445,24 +388,17 @@ export class SrNewOrderComponent implements OnInit {
       "reorder": this.tablePayloadObj.reOrder,
       "searchString": this.tablePayloadObj.searchString,
       "searchColumn": this.tablePayloadObj.searchColumn,
-      "filter": "1=1",
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "filter": "1=1", 
     }
-    this.Api.ReplenishmentsIncludeAllUpdate(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.ReplenishmentsIncludeAllUpdate(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.newReplenishmentOrders();
       } 
         else if (replenish){
-          this.toastr.error("No items available to replenish.", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"No items available to replenish.", 'Error!');
         }else{
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("ReplenishmentsIncludeAllUpdate",res.responseMessage);
         }
       
     });
@@ -472,13 +408,16 @@ export class SrNewOrderComponent implements OnInit {
   getSearchOptions(loader:boolean=false){
     let payload = {
       "searchString": this.tablePayloadObj.searchString,
-      "searchColumn": this.tablePayloadObj.searchColumn,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "searchColumn": this.tablePayloadObj.searchColumn 
     }
-    this.getSearchOptionsSubscribe = this.Api.SystemReplenishNewTA(payload).subscribe((res: any) => {
+    this.getSearchOptionsSubscribe = this.iAdminApiService.SystemReplenishNewTA(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.searchAutocompleteList = res.data.sort();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SystemReplenishNewTA",res.responseMessage);
+
       }
     });
   }

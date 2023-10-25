@@ -1,13 +1,15 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import {
-  MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-delete-confirmation-manual-transaction',
@@ -18,13 +20,16 @@ export class DeleteConfirmationManualTransactionComponent {
   isChecked = true;
   heading: '';
   message: '';
+  public iAdminApiService: IAdminApiService;
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    
     private Api: ApiFuntions,
+    private global: GlobalService,
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
   ) {
+    this.iAdminApiService = adminApiService;
     this.heading = data.heading;
     this.message = data.message;
   }
@@ -41,54 +46,39 @@ export class DeleteConfirmationManualTransactionComponent {
     if (this.data) {
       if (this.data.mode === 'delete-trans') {
         let payload = {
-          transID: this.data.element.id,
-          username: this.data.userName,
-          wsid: this.data.wsid,
+          transID: this.data.element.id, 
         };
-        this.Api
+        this.iAdminApiService
           .TransactionDelete(payload)
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.delete, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.delete, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
+                console.log("TransactionDelete",res.responseMessage);
               }
             },
             (error) => {}
           );
       } else if (this.data.mode === 'delete-order') {
-   
         let payload = {
-          orderNumber: this.data.orderNumber,
-          username: this.data.userName,
-          wsid: this.data.wsid,
+          orderNumber: this.data.orderNumber, 
         };
- 
-        this.Api
+        this.iAdminApiService
           .TransactionForOrderDelete(payload)
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.delete, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.delete, 'Success!');
                 this.dialogRef.close({isExecuted:true})
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({isExecuted:false})
+                console.log("TransactionForOrderDelete",res.responseMessage);
+                
               }
             },
             (error) => {}
@@ -96,24 +86,17 @@ export class DeleteConfirmationManualTransactionComponent {
       }
       else if (this.data.mode === 'delete-manual-transaction') { 
         let payload = {
-          transID: this.data.transID,
-          username: this.data.userName,
-          wsid: this.data.wsid,
+          transID: this.data.transID, 
         };
-        this.Api.TransactionDelete(payload).subscribe(
+        this.iAdminApiService.TransactionDelete(payload).subscribe(
           (res: any) => {
             if (res?.isExecuted) {
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
               this.dialogRef.close({ isExecuted: true });
             }else{
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
               this.dialogRef.close({ isExecuted: false });
+              console.log("TransactionDelete",res.responseMessage);
             }
           },
           (error) => {}

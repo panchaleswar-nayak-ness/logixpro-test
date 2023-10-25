@@ -1,9 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import {  MatDialogRef } from '@angular/material/dialog';
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import labels from '../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-om-user-field-data',
@@ -14,14 +17,18 @@ export class OmUserFieldDataComponent implements OnInit {
   @ViewChild('user_focus') user_focus: ElementRef;
   userData: any;
   userFieldData: any;
+  public iOrderManagerApi :  IOrderManagerAPIService;
 
   constructor(
-    private toastr: ToastrService,
+    
     private authService: AuthService,
     private Api: ApiFuntions,
-    private dialog: MatDialog,
+    public orderManagerApi  : OrderManagerApiService,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<OmUserFieldDataComponent>,
-  ) { }
+  ) {
+    this.iOrderManagerApi = orderManagerApi;
+   }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -30,14 +37,12 @@ export class OmUserFieldDataComponent implements OnInit {
 
   getUserFieldData(loader: boolean = false) {
     
-    this.Api.UserFieldData().subscribe((res: any) => {
+    this.iOrderManagerApi.UserFieldData().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.userFieldData = res.data[0];
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("UserFieldData",res.responseMessage);
       }
     });
   }
@@ -54,20 +59,14 @@ export class OmUserFieldDataComponent implements OnInit {
       userField8: this.userFieldData.userField8,
       userField9: this.userFieldData.userField9,
       userField10: this.userFieldData.userField10,
-      wsid: this.userData.wsid
     };
-    this.Api.UserFieldDataUpdate(payload).subscribe((res: any) => {
+    this.iOrderManagerApi.UserFieldDataUpdate(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
         this.dialogRef.close(res.data);
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("UserFieldDataUpdate",res.responseMessage);
       }
     });
   }

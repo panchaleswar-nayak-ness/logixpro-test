@@ -49,16 +49,13 @@ check1:boolean = false
       this.itemQuantity =  test.join("")
       }
     }
-    else{
-      if(this.itemQuantity.includes(',')){
+    else if(this.itemQuantity.includes(',')){
         this.itemQuantity = ''
         this.itemQuantity =  this.itemQuantity + number
       }
       else{
         this.itemQuantity =  this.itemQuantity + number
       }
-     
-    }
 
   }
 

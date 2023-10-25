@@ -1,10 +1,13 @@
 import { Component, OnInit, Inject, ViewChild, TemplateRef, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json'; 
 import { AccessGroupObject, IEmployee } from 'src/app/Iemployee';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface DialogData {
   animal: 'panda' | 'unicorn' | 'lion';
@@ -24,13 +27,17 @@ export class AddNewGroupComponent implements OnInit {
   form_btn_label: string = 'Add';
   grpData: any = [];
   isValidForm: boolean = true;
+  public iAdminApiService: IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
+    private global:GlobalService,
+    
     private employeeService: ApiFuntions,
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   emp: IEmployee;
   groupName: string;
@@ -66,20 +73,16 @@ export class AddNewGroupComponent implements OnInit {
     if (form.status === 'INVALID') {
       // display error in your form
     } else {
-      this.employeeService.insertGroup(form.value)
+      this.iAdminApiService.insertGroup(form.value)
         .subscribe((response: AccessGroupObject) => {
           if (response.isExecuted) {
             this.dialogRef.close(form.value); // Close opened diaglo
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
           }
           else {
-            this.toastr.error(response.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            
+            this.global.ShowToastr('error',response.responseMessage, 'Error!');
+            console.log("insertGroup",response.responseMessage);
           }
         });
 

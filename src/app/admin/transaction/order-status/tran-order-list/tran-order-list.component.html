@@ -3,66 +3,34 @@
 
     <div class="row">
       <div class="col-xl-5">
-        <div class="d-xl-flex gap-12 align-items-center ">
+        
+          
+          <app-column-filter-component 
+            [tableColumns]="this.Order_Table_Config" 
+            [searchCol]="this.searchCol"
+            (selectionChangeEvent)="actionDialog($event)"
+            [searchString]="this.searchString"
+            [searchByInput]="this.searchByInput"
+            [searchAutocompleteList]="this.searchAutocompleteList"
+            (autoCompleteEvent)="this.searchString = $event; this.searchByInput.next($event)"
+            [showClearBtn]="true"
+            (clearBtnEvent)="clearData($event)">
+          </app-column-filter-component>
 
-          <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
-            <mat-label>Select</mat-label>
-            <mat-select class="employees-action" [(ngModel)]="this.searchCol"
-              (selectionChange)="actionDialog($event.value)">
-              <mat-option value=""></mat-option>
-              <mat-option *ngFor="let item of Order_Table_Config | sort:'colDef':false" [value]="item.colDef">
-                {{item.colDef}}
-              </mat-option>
-            </mat-select>
-            <span class="material-symbols-outlined icon-expand-more">
-              expand_more
-            </span>
-          </mat-form-field>
-          <span class="v-br d-xl-block d-none mb-3">-</span>
-          <div class="d-flex g-mini-search-box w-100 mb-3">
-
-
-            <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()"
-              [hideRequiredMarker]="hideRequiredControl.value">
-              <span class="material-symbols-outlined icon-search">
-                Search
-              </span>
-              <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='searchString' [disabled]="!searchCol"
-                [matAutocomplete]="auto" (ngModelChange)="this.searchByInput.next($event)">
-                <button matSuffix *ngIf="searchString" class="clear-btn"  (click)="searchString = '';this.searchByInput.next('')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-              <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                  {{option}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-
-
-          </div>
-          <div class="d-block d-lg-flex">
-          <button  (click)="clearData($event)" mat-stroked-button appearance="outline" color="warn"
-            class="button-remove-all-w-stroke mb-3 w-100" style="flex:1">
-            Clear
-          </button>
-          </div>
-        </div>
       </div>
+
       <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
         <div class="d-block d-lg-flex w-100 justify-content-end">
-        <mat-form-field class="action-dropdown" appearance="outline" style="flex:1 auto">
-          <mat-label>Action</mat-label>
-          <mat-select class="employees-action">
-            <mat-option (click)="previewReport()">Preview 50 Pages Only</mat-option>
-            <mat-option (click)="printReport()">Print Report</mat-option>
-          </mat-select>
-          <span class="material-symbols-outlined icon-expand-more">
-            expand_more
-          </span>
-        </mat-form-field>
+          <mat-form-field class="action-dropdown" appearance="outline" style="flex:1 auto">
+            <mat-label>Action</mat-label>
+            <mat-select class="employees-action">
+              <mat-option (click)="previewReport()">Preview 50 Pages Only</mat-option>
+              <mat-option (click)="printReport()">Print Report</mat-option>
+            </mat-select>
+            <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+          </mat-form-field>
         </div>
-
       </div>
-   
     </div>
 
 
@@ -375,38 +343,4 @@
 </mat-card>
 
 
-
-<div #trigger="matMenuTrigger"
-style="visibility: hidden; position: fixed"
-[style.left]="contextMenuPosition.x"
-[style.top]="contextMenuPosition.y"
-[matMenuTriggerFor]="contextMenuFilter"
-></div>
-<mat-menu #contextMenuFilter="matMenu">
-<ng-template matMenuContent let-item="item">
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'equals to',getType(item.SelectedItem))"> Equals</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not equals to', getType(item.SelectedItem))">Not Equals</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is greater than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Greater than or Equal</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is less than or equal to', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'number' || getType(item.FilterColumnName) == 'date'" >Less than or Equal</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Like</button>
-  <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, 'is not like', getType(item.SelectedItem))" *ngIf="getType(item.SelectedItem) == 'string' && getType(item.FilterColumnName) != 'date'" >Not Like</button>
-  <button mat-menu-item [matMenuTriggerFor]="InputFiltersList" [matMenuTriggerData]="{category: item}" *ngIf="getType(item.SelectedItem) != 'boolean'" >Input FIlters</button>
-  <button mat-menu-item (click)="onContextMenuCommand('', '', 'clear', '')">Clear Filters</button>
-</ng-template>
-</mat-menu>
-
-<mat-menu #InputFiltersList="matMenu">
-    <ng-template matMenuContent let-category="category">
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'equals to', getType(category.SelectedItem))">Equals</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is not equals to', getType(category.SelectedItem))">Not Equals</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Begins</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not begins with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Begin</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Ends With</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not ends with', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not End With</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Contains</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'does not contains', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'string' && getType(category.FilterColumnName) != 'date'">Does Not Contain</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is less than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Less Than</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is greater than', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Greater Than</button>
-      <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, 'is between', getType(category.SelectedItem))" *ngIf="getType(category.SelectedItem) == 'number' || getType(category.FilterColumnName) == 'date'">Between</button>
-    </ng-template>
-</mat-menu>
+<app-table-context-menu-component *ngIf="TabIndex==0" (optionSelected)="optionSelected($event)" [componentName]="'transOrders'"></app-table-context-menu-component>

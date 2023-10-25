@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IFlowRackReplenishApi } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api-interface';
+import { FlowRackReplenishApiService } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api.service';
 
 @Component({
   selector: 'app-fr-preferences',
@@ -11,7 +16,12 @@ export class FrPreferencesComponent implements OnInit {
   public cartonFlowList: any;
   public userData: any;
   selectedCarton:any;
-  constructor(private Api: ApiFuntions,  private authservice: AuthService) {}
+  public iAdminApiService: IAdminApiService;
+  public iFlowRackReplenishApi : IFlowRackReplenishApi;
+  constructor(private Api: ApiFuntions,private adminApiService: AdminApiService, private global : GlobalService,  private authservice: AuthService,public flowRackReplenishApi : FlowRackReplenishApiService) {
+    this.iAdminApiService = adminApiService;
+    this.iFlowRackReplenishApi = flowRackReplenishApi;
+  }
 
   ngOnInit(): void {
     this.userData = this.authservice.userData()
@@ -20,12 +30,18 @@ export class FrPreferencesComponent implements OnInit {
   }
 
   cartonFlow() {
-    let payload = {
-      "WSID": this.userData.wsid,
-    }
-    this.Api.wslocation(payload).subscribe((res) => {
-      // console.log(res)
-      this.selectedCarton=res.data
+    
+    this.iFlowRackReplenishApi.wslocation({}).subscribe((res) => {
+      if(res.isExecuted && res.data)
+      {
+        this.selectedCarton=res.data
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("wslocation",res.responseMessage);
+      }
+      
+      
     })
   }
   updatePref(item) {
@@ -42,12 +58,12 @@ export class FrPreferencesComponent implements OnInit {
       defQuickPick: true,
     };
 
-    this.Api.UpdateCartonFlow(payload).subscribe((res) => {
+    this.iAdminApiService.UpdateCartonFlow(payload).subscribe((res) => {
       this.cartonFlowList = [...res.data];
     });
   }
   getCartonFlowList() {
-    this.Api.GetCartonFlow().subscribe((res) => {
+    this.iAdminApiService.GetCartonFlow({}).subscribe((res) => {
       this.cartonFlowList = [...res.data];
     });
   }

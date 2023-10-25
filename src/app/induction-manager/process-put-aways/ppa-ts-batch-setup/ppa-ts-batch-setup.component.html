@@ -1,0 +1,88 @@
+<mat-card class="mat-elevation-z g-card mt-3 mb-4">
+    <mat-card-content>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <app-icon-heading-component heading="Batch Setup" icon="ballot"></app-icon-heading-component>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="card p-3 mb-3 mb-xl-0">
+                    <div class="d-block d-xl-flex gap-12">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline"
+                            [floatLabel]="getFloatLabelValueItem()"
+                            [hideRequiredMarker]="hideRequiredControlItem.value">
+                            <mat-label>Batch ID</mat-label>
+
+                            <input #batchFocus (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
+                                [(ngModel)]="batchId" [matAutocomplete]="item"
+                                (ngModelChange)="this.searchByItem.next($event)"
+                                (keyup)="callFun('batchIdKeyup',undefined)">
+                            <button matSuffix *ngIf="batchId" class="clear-btn"
+                                (click)="callFun('clear',undefined)"><mat-icon
+                                    class="text-20 text-chrome-600">cancel</mat-icon></button>
+
+                            <mat-autocomplete class="card custom-scroll" #item="matAutocomplete">
+                                <h6 class="card-header matAutoCompHeader ">
+                                    <span style="width:  140px;">Batch ID</span>
+                                    <span style="width:  140px;">Zone Label</span>
+                                </h6>
+                                <ng-scrollbar style="height:350px">
+                                    <mat-option *ngFor="let option of searchAutocompleteItemNum"
+                                        [value]="option.batchID" class="matAutoCompTableContent"
+                                        style="line-height: 24px; height:auto; min-height: auto!important; padding: 12px 16px; overflow: unset;">
+                                        <div class="loc_option" (click)="callFun('getRow',option.batchID)">
+                                            <span class="searchColumn" style="width:  140px;">{{option.batchID}}</span>
+                                            <span class="searchColumn"
+                                                style="width:  140px; white-space: normal;">{{option.zoneLabel}}</span>
+                                        </div>
+                                    </mat-option>
+                                </ng-scrollbar>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Status</mat-label>
+                            <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
+                                [(ngModel)]="status" disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="d-block d-xl-flex gap-12">
+                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100 mb-3 mb-xl-0"
+                            (click)="callFun('createNewBatch','1')">
+                            New Batch with ID
+                        </button>
+                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100"
+                            (click)="callFun('createNewBatch','')">
+                            New Batch
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="card p-3">
+                    <div class="d-block d-xl-flex gap-12">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Assigned Zones</mat-label>
+                            <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
+                                [(ngModel)]="assignedZones" disabled>
+                        </mat-form-field>
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Default Cells</mat-label>
+                            <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
+                                [(ngModel)]="cellSize" disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="d-block d-xl-flex gap-12">
+                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100 mb-3 mb-xl-0"
+                            (click)="callFun('openSelectZonesDialogue',undefined)">
+                            Select Zones
+                        </button>
+                        <button mat-flat-button color="primary" class="primary-button btn-regular w-100"
+                            (click)="callFun('setToDefaultQuantity',undefined)">
+                            Set To Default Cell Quantity
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

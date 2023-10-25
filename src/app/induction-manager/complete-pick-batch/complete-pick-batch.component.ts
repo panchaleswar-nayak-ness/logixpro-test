@@ -1,12 +1,14 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { ToastrService } from 'ngx-toastr';
+
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { CpbBlossomToteComponent } from 'src/app/dialogs/cpb-blossom-tote/cpb-blossom-tote.component';
 import { ShortTransactionComponent } from 'src/app/dialogs/short-transaction/short-transaction.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import labels from '../../labels/labels.json';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-complete-pick-batch',
@@ -19,6 +21,7 @@ export class CompletePickBatchComponent{
   tableData: any = [];
   dataSourceList: any;
   batchId: string = "";
+  public iinductionManagerApi:IInductionManagerApiService;
   toteId: string = "";
   showToteCol: boolean = false;
   completeBatchEnable: boolean = false;
@@ -32,10 +35,13 @@ export class CompletePickBatchComponent{
   totalTransactions: number = 0;
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
-    private toastr: ToastrService,
-  ) { }
+    private inductionManagerApi: InductionManagerApiService,
+    
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngAfterViewInit() {
     setTimeout(()=>{
@@ -70,7 +76,7 @@ export class CompletePickBatchComponent{
     if(this.batchId != ""){
       payload.BatchID = this.batchId;
     }
-    this.Api.getPickBatchTransactionTable(payload).subscribe((res: any) => {
+    this.iinductionManagerApi.getPickBatchTransactionTable(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.tableData = res.data;
         this.blossomToteEnable = false;
@@ -90,21 +96,20 @@ export class CompletePickBatchComponent{
         }
         else {
           if (this.batchId != "" && this.toteId == "") {
-            this.toastr.error("No open transactions for the entered batch", 'No Rows', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"No open transactions for the entered batch", 'No Rows');
           }
           else if (this.batchId != "" && this.toteId != "") {
-            this.toastr.error("No open transaction for that tote in the batch", 'No Rows', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"No open transaction for that tote in the batch", 'No Rows');
             this.toteId = "";
             this.BatchPickIDKeyup({ keyCode: 13 });
           }
           this.completeBatchEnable = false;
         }
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getPickBatchTransactionTable",res.responseMessage);
+
       }
     });
   }
@@ -122,7 +127,7 @@ export class CompletePickBatchComponent{
   }
 
   ShortTransactionDialogue(element:any) {
-    const dialogRef = this.dialog.open(ShortTransactionComponent, {
+    const dialogRef:any = this.global.OpenDialog(ShortTransactionComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -139,7 +144,7 @@ export class CompletePickBatchComponent{
   }
 
   CpbBlossomToteDialogue() {
-    const dialogRef = this.dialog.open(CpbBlossomToteComponent, {
+    const dialogRef:any = this.global.OpenDialog(CpbBlossomToteComponent, {
       height: '640px',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -158,7 +163,7 @@ export class CompletePickBatchComponent{
   }
 
   CompleteTransaction(element:any){
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -170,19 +175,14 @@ export class CompletePickBatchComponent{
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'Yes') {
-        this.Api.completeTransaction({Id:element.id}).subscribe((res: any) => {
+        this.iinductionManagerApi.completeTransaction({Id:element.id}).subscribe((res: any) => {
           if(res.isExecuted){
             this.pickBatchTransactionTable();
-            this.toastr.success(labels.alert.update, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.update, 'Success!');
           }
           else{
-            this.toastr.error("An error occured completing this transaction", 'Error', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"An error occured completing this transaction", 'Error');
+            console.log("completeTransaction",res.responseMessage);
           }
         });
       }
@@ -190,7 +190,7 @@ export class CompletePickBatchComponent{
   }
 
   CompleteBatch(){
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -202,19 +202,14 @@ export class CompletePickBatchComponent{
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'Yes') {
-        this.Api.completePickBatch({batchId:this.batchId}).subscribe((res: any) => {
+        this.iinductionManagerApi.completePickBatch({batchId:this.batchId}).subscribe((res: any) => {
           if(res.isExecuted){
             this.clearScreen();
-            this.toastr.success(labels.alert.update, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.update, 'Success!');
           }
           else{
-            this.toastr.error("An error occured completing this transaction", 'Error', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"An error occured completing this transaction", 'Error');
+            console.log("completePickBatch",res.responseMessage);
           }
         });
       }

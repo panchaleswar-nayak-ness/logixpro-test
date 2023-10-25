@@ -1,6 +1,4 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,10 +16,8 @@ export class IeTransferSettingsComponent implements OnInit {
 
   showFilter: boolean =false;
   constructor(
-    private router: Router, 
-    private dialog: MatDialog,
+    private router: Router
   ) { }
-
 
   ngOnInit(): void {
     this.setVal = localStorage.getItem('routeFromOrderStatus') 
@@ -34,16 +30,6 @@ export class IeTransferSettingsComponent implements OnInit {
       this.directAdmin = true;
     }
     this.hideDelete=JSON.parse(this.isDeleteVisible);
-
-  }
-  IeImportAllDialog(){
-    this.dialog.open(ConfirmationDialogComponent, {
-      height: 'auto',
-      width: '550px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    });
-
   }
 
   retunrToPrev() {

@@ -1,10 +1,10 @@
-import { Component , ElementRef, OnInit, ViewChild } from '@angular/core';
-import {  MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+import { Component , ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/init/auth.service';
 import { CmOrderToteConflictComponent } from 'src/app/dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
 import { StagingLocationOrderComponent } from 'src/app/dialogs/staging-location-order/staging-location-order.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {
   name: string;
@@ -39,17 +39,21 @@ export class CmStagingLocationComponent {
 
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
-  constructor(private toast: ToastrService,
-    private Api: ApiFuntions,
+  public IconsolidationAPI : IConsolidationApi;
+
+  constructor(
+    public consolidationAPI : ConsolidationApiService,
     private authService: AuthService,
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) {
+    this.IconsolidationAPI = consolidationAPI;
     this.userData = this.authService.userData();
   }
 
   ngAfterViewInit() {
-    this.searchBoxField.nativeElement.focus(); 
+    this.searchBoxField.nativeElement.focus();
   }
+  
   async SearchToteAndLocation(){ 
     if(this.stagingLocation != ""){
       if(!this.Oldstagetables.length) this.Oldstagetables = this.stagetables;
@@ -68,51 +72,57 @@ export class CmStagingLocationComponent {
   }
   }
   async StagingLocsOrderNum($event: any) { 
-    if ($event.key == "Enter" || $event == 'event') {
+    if ($event.key == "Enter"|| $event == 'event') {
       this.IsLoading = true;
       let obj: any = {
         type: this.type,
-        selValue: this.OrderNumberTote,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        selValue: this.OrderNumberTote
       };
       let inputVal = this.OrderNumberTote;
-      this.Api.ConsolidationData(obj).subscribe((res: any) => {
-        if (typeof res?.data == 'string') { 
-          switch (res?.data) {
-            case "DNE":
-              this.toast.error("The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
-              this.OrderNumberTote = null;
-              break;
-            case "DNENP":
-              this.OrderNumberTote = null; 
-              let dialogRef = this.dialog.open(StagingLocationOrderComponent, { 
-                height: 'auto',
-                width: '620px',
-                autoFocus: '__non_existing_element__',
-      disableClose:true, 
-              })
-              dialogRef.afterClosed().subscribe(result => { 
-                this.stagetables = [];
-                  if(result) {this.OrderNumberTote = result;
-                  this.stagetables.push({ toteID: inputVal, stagingLocation:null});
-                  }
+      this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
+        if(res.isExecuted && res.data)
+        {
+          if (typeof res?.data == 'string') { 
+            switch (res?.data) {
+              case "DNE":
+                this.global.ShowToastr('error',"The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!');
+                this.OrderNumberTote = null;
+                break;
+              case "DNENP":
+                this.OrderNumberTote = null; 
+                let dialogRef:any = this.global.OpenDialog(StagingLocationOrderComponent, { 
+                  height: 'auto',
+                  width: '620px',
+                  autoFocus: '__non_existing_element__',
+                  disableClose:true, 
                 })
-              break;
-            case "Conflict":
-                this.openCmOrderToteConflict(inputVal); 
-              break;
-            case "Error":
-              this.toast.error("An Error occured while retrieving data", "Consolidation Error", { positionClass: 'toast-bottom-right', timeOut: 2000 });
-              break;
+                dialogRef.afterClosed().subscribe(result => { 
+                  this.stagetables = [];
+                    if(result) {this.OrderNumberTote = result;
+                    this.stagetables.push({ toteID: inputVal, stagingLocation:null});
+                    }
+                  })
+                break;
+              case "Conflict":
+                  this.openCmOrderToteConflict(inputVal); 
+                break;
+              case "Error":
+                this.global.ShowToastr('error',"An Error occured while retrieving data", "Consolidation Error");
+                break;
+            }
           }
+          else { 
+            this.stagetables = res.data.stageTable;
+          }
+          if(res?.data?.orderNumber) this.OrderNumberTote  = res?.data?.orderNumber;
+          if(!res.data.stageTable) this.stagetables  = [];
+          this.IsLoading = false;
         }
-        else { 
-          this.stagetables = res.data.stageTable;
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("ConsolidationData",res.responseMessage);
         }
-        if(res?.data?.orderNumber) this.OrderNumberTote  = res?.data?.orderNumber;
-        if(!res.data.stageTable) this.stagetables  = [];
-        this.IsLoading = false;
+        
       });
     }
   }
@@ -124,37 +134,37 @@ export class CmStagingLocationComponent {
       "orderNumber": this.OrderNumberTote,
       "toteID": toteID,
       "location": location,
-      "clear": clear,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "clear": clear
     }
-    this.Api.StagingLocationsUpdate(obj).subscribe((res: any) => {
+    this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
       if (res.responseMessage == "Fail") {
-        this.toast.error("Error Has Occured", "Consolidation", { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        this.global.ShowToastr('error',"Error Has Occured", "Consolidation");
       } else if (res.responseMessage == 'INVALID') {
-        this.toast.error("The Location entered was not valid", "Staging", { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        this.global.ShowToastr('error',"The Location entered was not valid", "Staging");
 
       } else if (res.responseMessage == "Redirect") {
         window.location.href = "/#/Logon/";
       } else if (typeof this.stagetables != 'undefined'){
-          for (let x = 0; x < this.stagetables.length; x++) {
-            let tote = this.stagetables[x].toteID;
+          for (const element of this.stagetables) {
+            let tote = element.toteID;
             if (tote == toteID) {
-              this.stagetables[x].location = location; //location
-              this.stagetables[x].by = res.data; //by
-              this.stagetables[x].date = res.data; //date
+              element.location = location; //location
+              element.by = res.data; //by
+              element.date = res.data; //date
               break;
             }
           }
-        
       }
-      if(res.isExecuted && index!=null){ 
+      if(res?.isExecuted && index!=null){ 
         this.stagetables[index].stagingLocation = location;
         this.stagetables[index].location = location; 
-
+      }else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("StagingLocationsUpdate",res.responseMessage)
       }
+      
     })
-  } 
+  }
   }
   async UnstageAll(){
     for (let x = 0; x < this.stagetables.length; x++) {
@@ -167,7 +177,7 @@ export class CmStagingLocationComponent {
   }
   
   openCmOrderToteConflict(order:any) { 
-    let dialogRef = this.dialog.open(CmOrderToteConflictComponent, { 
+    let dialogRef:any = this.global.OpenDialog(CmOrderToteConflictComponent, { 
       height: 'auto',
       width: '620px',
       autoFocus: '__non_existing_element__',

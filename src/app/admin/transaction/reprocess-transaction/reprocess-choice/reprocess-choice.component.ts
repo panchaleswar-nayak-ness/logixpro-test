@@ -1,10 +1,13 @@
 import { Component, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { ToastrService } from 'ngx-toastr';
+
 import labels from '../../../../labels/labels.json';
 import { SharedService } from '../../../../services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-reprocess-choice',
@@ -21,7 +24,7 @@ export class ReprocessChoiceComponent  {
   @Input() isCompleteChecked: any;
   @Input() isHistoryChecked: any;
   @Output() itemUpdatedEvent = new EventEmitter<boolean>();
-
+  public iAdminApiService: IAdminApiService;
   @Input() ROrder: any = '';
   @Input() RItem: any = '';
   @Input() selection4: any = '';
@@ -29,9 +32,7 @@ export class ReprocessChoiceComponent  {
   @Input() hold: boolean = false;
 
 
-  constructor(private Api: ApiFuntions, private toastr: ToastrService, private sharedService: SharedService) { }
-
-  
+  constructor(private Api: ApiFuntions,  private global: GlobalService, private sharedService: SharedService,public adminApiService: AdminApiService) { this.iAdminApiService = adminApiService }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['ROrder']?.currentValue) {
@@ -58,18 +59,13 @@ export class ReprocessChoiceComponent  {
         if (res.data && res.isExecuted) {
           this.isEnabled = true;
           this.clearControls();
-          this.toastr.success(res.responseMessage, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',res.responseMessage, 'Success!');
           this.itemUpdatedEvent.emit(true);
         } else {
           this.clearControls();
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
           this.itemUpdatedEvent.emit(true);
+          console.log("PostReprocessTransaction",res.responseMessage);
         }
       },
       error: (error) => { }}
@@ -95,23 +91,16 @@ export class ReprocessChoiceComponent  {
       reprocess: (this.isReprocessedChecked.flag) ? 1 : 0,
       postComplete: (this.isCompleteChecked.flag) ? 1 : 0,
       sendHistory: (this.isHistoryChecked.flag) ? 1 : 0,
-      field: "",
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      field: "", 
     }
-    this.Api.ReprocessIncludeSet(payload).subscribe(
+    this.iAdminApiService.ReprocessIncludeSet(payload).subscribe(
       {next: (res: any) => {
         if (res.data && res.isExecuted) {
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
           this.itemUpdatedEvent.emit(true);
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("ReprocessIncludeSet",res.responseMessage);
         }
       },
       error: (error) => { }}
@@ -127,7 +116,7 @@ export class ReprocessChoiceComponent  {
   }
 
   markTable(type: string) {
-    var payload = {
+    let payload = {
       "OrderNum": this.ROrder,
       "ItemNum": this.RItem,
       "Hold": this.hold ? 1 : 0,
@@ -135,19 +124,13 @@ export class ReprocessChoiceComponent  {
       "searchString": this.searchString4,
       "field": type
     }
-    this.Api.SetReprocessIds(payload).subscribe(
+    this.iAdminApiService.SetReprocessIds(payload).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
           this.itemUpdatedEvent.emit(true);
         } else {
-          this.toastr.error('There was an error marking the designated reprocess records', 'Error', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','There was an error marking the designated reprocess records', 'Error');
         }
       },
       (error) => { }

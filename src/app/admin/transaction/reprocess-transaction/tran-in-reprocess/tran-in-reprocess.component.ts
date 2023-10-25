@@ -2,6 +2,9 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { SharedService } from 'src/app/services/shared.service';
 import { AuthService } from '../../../../../app/init/auth.service'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-tran-in-reprocess',
@@ -20,6 +23,7 @@ export class TranInReprocessComponent implements OnInit {
   public itemNumber : string = '';
   public orderNumber : string = '';
   public history : boolean = false;
+  public iAdminApiService: IAdminApiService;
   @Output() reprocessSelectionEvent = new EventEmitter<string>();
   @Output() radioChangeEvent = new EventEmitter<any>();
   @Output() reasonFilterEvent = new EventEmitter<string>();
@@ -30,10 +34,11 @@ export class TranInReprocessComponent implements OnInit {
 
   constructor(
     private Api: ApiFuntions,
+    private global : GlobalService,
     private authService: AuthService,
+    private adminApiService: AdminApiService,
     private sharedService:SharedService
-
-  ) { }
+  ) {   this.iAdminApiService = adminApiService; }
 
   ngOnInit(): void {
     this.selectedOptionChange.emit(this.selectedOption);
@@ -106,12 +111,15 @@ export class TranInReprocessComponent implements OnInit {
     let payload = {
       "ItemNumber": this.itemNumber,
       "OrderNumber": this.orderNumber,
-      "History": this.history,
-      "username":  this.userData.userName,
-      "wsid": this.userData.wsid
+      "History": this.history, 
     }
-    this.Api.ReprocessTypeahead(payload).subscribe(res => {
-      this.orderList = res.data;
+    this.iAdminApiService.ReprocessTypeahead(payload).subscribe(res => {
+      if (res.data) {
+        this.orderList = res.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ReprocessTypeahead",res.responseMessage);
+      }
     });
   }
 
@@ -126,12 +134,16 @@ export class TranInReprocessComponent implements OnInit {
     let payload = {
       "ItemNumber": this.itemNumber,
       "OrderNumber": this.orderNumber,
-      "History": this.history,
-      "username":  this.userData.userName,
-      "wsid": this.userData.wsid
+      "History": this.history, 
     }
-    this.Api.ReprocessTypeahead(payload).subscribe(res => {
-      this.itemNumberList = res.data;
+    this.iAdminApiService.ReprocessTypeahead(payload).subscribe(res => {
+      if (res.data) {
+        this.itemNumberList = res.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ReprocessTypeahead",res.responseMessage);
+        
+      }
     });
   }
 

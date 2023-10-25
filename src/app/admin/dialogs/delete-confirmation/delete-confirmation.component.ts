@@ -6,10 +6,19 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';  
+  
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json';  
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-delete-confirmation',
@@ -20,16 +29,32 @@ export class DeleteConfirmationComponent implements OnInit {
   action = 'remove';
   actionMessage = '';
   Message: any;
+  public iAdminApiService: IAdminApiService;
   public userData;
+  public IconsolidationAPI : IConsolidationApi;
+  public iCommonAPI : ICommonApi;
+
+
+  public  iGlobalConfigApi: IGlobalConfigApi
   constructor(
+    public consolidationAPI : ConsolidationApiService,
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
+    private dialog:MatDialog,
+    
+    public globalConfigApi: GlobalConfigApiService,
     private Api: ApiFuntions, 
+    private global: GlobalService,
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<DeleteConfirmationComponent>,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { 
+    this.IconsolidationAPI = consolidationAPI; this.iAdminApiService = adminApiService; 
+    this.iGlobalConfigApi = globalConfigApi;
+  
+    this.iCommonAPI = commonAPI;
+  }
 
   ngOnInit(): void {
     this.Message = ''; 
@@ -53,21 +78,16 @@ export class DeleteConfirmationComponent implements OnInit {
           zone: this.data.zone,
           username: this.data.userName,
         };
-        this.Api
+        this.iAdminApiService
           .deleteEmployeeZone(zoneData)
           .subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialog.closeAll();
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             } else {
               this.dialog.closeAll();
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+              console.log("deleteEmployeeZone",res.responseMessage);
             }
           });
       } else if (this.data.mode === 'delete-picklevel') {
@@ -78,21 +98,16 @@ export class DeleteConfirmationComponent implements OnInit {
           endShelf: this.data.picklevel.endCarousel.toString(),
           userName: this.data.userName,
         };
-        this.Api
+        this.iAdminApiService
           .deletePickLevels(pickLevelData)
           .subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialog.closeAll();
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             } else {
               this.dialog.closeAll();
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+              console.log("deletePickLevels",res.responseMessage);
             }
           });
       }
@@ -103,44 +118,34 @@ export class DeleteConfirmationComponent implements OnInit {
           endLocation: this.data.location.endLocation,
           username: this.data.userName,
         };
-        this.Api
+        this.iAdminApiService
           .deleteEmployeeLocation(locationData)
           .subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialog.closeAll();
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             } else {
               this.dialog.closeAll();
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+              console.log("deleteEmployeeLocation",res.responseMessage);
             }
           });
       } else if (this.data.mode === 'delete-connection-string') {
         let payload = {
           ConnectionName: this.data.connectionName,
         };
-        this.Api
+        this.iGlobalConfigApi
           .ConnectionDelete(payload)
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(res.responseMessage, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',res.responseMessage, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               }
             },
             (error) => {
-              this.toastr.error(labels.alert.went_worng, 'Error!!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!!');
+              console.log("ConnectionDelete");
             }
           );
       } else if (this.data.mode === 'delete-group') {
@@ -149,19 +154,14 @@ export class DeleteConfirmationComponent implements OnInit {
           GroupName: this.data.grp_data.groupName,
           userName: this.data.userName,
         };
-        this.Api.deleteGroup(groupData).subscribe((res: any) => {
+        this.iAdminApiService.deleteGroup(groupData).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.dialog.closeAll();
-            this.toastr.error(labels.alert.went_worng, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+            console.log("deleteGroup",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-allowed-group') {
@@ -170,19 +170,14 @@ export class DeleteConfirmationComponent implements OnInit {
           GroupName: this.data.allowedGroup,
           userName: this.data.userName,
         };
-        this.Api.deleteGroup(groupData).subscribe((res: any) => {
+        this.iAdminApiService.deleteGroup(groupData).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.dialog.closeAll();
-            this.toastr.error(labels.alert.went_worng, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+            console.log("deleteGroup",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-allowed-funcation') {
@@ -191,41 +186,29 @@ export class DeleteConfirmationComponent implements OnInit {
           controlName: this.data.controlName,
           userName: this.data.userName,
         };
-        this.Api.deleteControlName(groupData).subscribe((res: any) => {
+        this.iAdminApiService.deleteControlName(groupData).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.dialog.closeAll();
-            this.toastr.error(labels.alert.went_worng, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+            console.log("deleteControlName",res.responseMessage);
           }
         });
       }
        else if (this.data.mode === 'delete-inventory-map') {
         let payload = {
-          inventoryMapID: this.data.id,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          inventoryMapID: this.data.id, 
         };
-        this.Api.deleteInventoryMap(payload).subscribe((res: any) => {
+        this.iAdminApiService.deleteInventoryMap(payload).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.dialog.closeAll();
-            this.toastr.error(labels.alert.went_worng, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+            console.log("deleteInventoryMap",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-emp') {
@@ -234,15 +217,16 @@ export class DeleteConfirmationComponent implements OnInit {
           deleteBy: this.userData.userName,
           wsid: 'TESTWSID',
         };
-        this.Api
+        this.iAdminApiService
           .deleteAdminEmployee(emp_data)
           .subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialogRef.close('deleted');
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+            }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("deleteAdminEmployee",res.responseMessage);
             }
           });
       } else if (this.data.mode === 'delete-grpallowed') {
@@ -250,169 +234,119 @@ export class DeleteConfirmationComponent implements OnInit {
           groupname: this.data.allowedGroup.groupName,
           username: this.data.allowedGroup.userName,
         };
-        this.Api.deleteUserGroup(emp_data).subscribe((res: any) => {
+        this.iAdminApiService.deleteUserGroup(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialog.closeAll();
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("deleteUserGroup",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-warehouse') {
         let emp_data = {
-          warehouse: this.data.warehouse,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          warehouse: this.data.warehouse
         };
-        this.Api.dltWareHouse(emp_data).subscribe((res: any) => {
+        this.iCommonAPI.dltWareHouse(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialogRef.close('Yes');
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("dltWareHouse",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-velocity') {
         let emp_data = {
-          velocity: this.data.velocity,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          velocity: this.data.velocity
         };
-        this.Api.dltVelocityCode(emp_data).subscribe((res: any) => {
+        this.iCommonAPI.dltVelocityCode(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
             this.dialogRef.close('Yes');
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("dltVelocityCode",res.responseMessage);
           }
         });
       } else if (this.data.mode === 'delete-order-status') {
-        this.Api
+        this.iAdminApiService
           .DeleteOrderStatus(this.data.paylaod)
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
+                console.log("DeleteOrderStatus",res.responseMessage);
+                
+                
               }
             },
             (error) => {}
           );
       } else if (this.data.mode === 'delete-carrier') {
         let payload = {
-          carrier: this.data.carrier,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          carrier: this.data.carrier
         };
-        this.Api
+        this.IconsolidationAPI
           .CarrierDelete(payload)
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
+                console.log("CarrierDelete",res.responseMessage);
               }
             },
             (error) => {}
           );
       } else if (this.data.mode === 'delete_workstation') {
-        let payload = {
-          WSID: this.data.wsid,
-        };
-
-        this.Api
-          .WorkStationDelete(payload)
+        this.iGlobalConfigApi
+          .WorkStationDelete()
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+                console.log("WorkStationDelete",res.responseMessage);
               }
               this.dialogRef.close({ isExecuted: false });
             },
             (err) => {
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+              
             }
           );
       }else if(this.data.mode == 'delete-category'){
         let payload = {
-          WSID: this.userData.wsid,
-          Username:this.userData.userName,
           Category:this.data.category,
           SubCategory:this.data.subCategory,
         };
 
-        this.Api
+        this.iCommonAPI
           .CategoryDelete(payload)
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
                 this.dialogRef.close('Yes');
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
                 this.dialogRef.close({ isExecuted: false });
+                console.log("CategoryDelete",res.responseMessage);
               }
         
             },
             (err) => {
-              this.toastr.error(labels.alert.went_worng, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
             }
           );
       } 
