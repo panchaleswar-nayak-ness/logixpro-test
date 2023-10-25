@@ -20,9 +20,10 @@ import { MatOption } from '@angular/material/core';
 })
 export class SelectOrderComponentComponent implements OnInit {
 
-  orderNumber: string = '';
+  @Input() orderNumber: string = '';
   
   @Output() OrderTableData: EventEmitter<any> = new EventEmitter();
+  @Output() clear: EventEmitter<any> = new EventEmitter();
 
   floatLabelType: FloatLabelType;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -58,12 +59,12 @@ export class SelectOrderComponentComponent implements OnInit {
     });   
   }
   
-  clear() {
-    this.orderNumber = '';
-    this.orderNumber='';
-    this.selectedOrder='';
-    this.searchAutocompleteList=[];
-  }
+  // clear() {
+  //   this.orderNumber = '';
+  //   this.orderNumber='';
+  //   this.selectedOrder='';
+  //   this.searchAutocompleteList=[];
+  // }
   searchData() {
     this.selectedOrder=this.orderNumber
     }
@@ -128,7 +129,7 @@ export class SelectOrderComponentComponent implements OnInit {
         }
       );
       dialogRef.afterClosed().subscribe((res) => {
-        this.clear()
+        this.clear.emit()
         this.clearMatSelectList()
       });
     }else if (
@@ -151,7 +152,7 @@ export class SelectOrderComponentComponent implements OnInit {
       dialogRef.afterClosed().subscribe((res) => {
         this.clearMatSelectList()
         if (res.isExecuted) {
-          this.clear();
+          this.clear.emit();
         }
       });
     }

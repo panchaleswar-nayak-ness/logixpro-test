@@ -1,6 +1,6 @@
 <div class="my-3">
-  <app-select-order-component [isPost]="isPost"
-  (OrderTableData)="getOrderTableData($event)"
+  <app-select-order-component [isPost]="isPost" [orderNumber]="orderNumber" 
+  (OrderTableData)="getOrderTableData($event)" (clear)="clear()"
   ></app-select-order-component>
   <mat-card class="mat-elevation-z g-card mb-4">
     <mat-card-content>
@@ -28,8 +28,7 @@
             <mat-label>Tote ID For Order</mat-label>
             <input type="text" placeholder="Search" [(ngModel)]="toteID" matInput maxlength="255">
             <button matSuffix *ngIf="toteID" class="clear-btn"  (click)=" toteID = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-          </mat-form-field>
-          
+          </mat-form-field> 
         </div>
       </div>
       <div class="card br-14 table-responsive borderless px-0 mb-3">
