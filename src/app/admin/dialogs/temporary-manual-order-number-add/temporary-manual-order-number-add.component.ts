@@ -2,8 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
-
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -32,15 +31,15 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
   searchByItem: any = new Subject<string>();
   transType = 'Pick';
   itemNumber;
-  orderRequired:boolean=false;
+  orderRequired: boolean = false;
   public iAdminApiService: IAdminApiService;
-  itemInvalid=false;
-  public iCommonAPI : ICommonApi;
+  itemInvalid = false;
+  public iCommonAPI: ICommonApi;
 
   constructor(
-    public commonAPI : CommonApiService,
+    public commonAPI: CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    
+
     private global: GlobalService,
     private Api: ApiFuntions,
     private adminApiService: AdminApiService,
@@ -58,43 +57,45 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
     return this.floatLabelControlItem.value || 'item';
   }
   ngAfterViewInit() {
-    this.ord_nmb.nativeElement.focus();
+    setTimeout(() => {
+      this.ord_nmb.nativeElement.focus();
+    },200);
   }
   searchData(event) {
     let payLoad = {
       itemNumber: this.itemNumber
-      };
-  
-     
-        this.iCommonAPI
-        .ItemExists(payLoad)
-        .subscribe(
-          (res: any) => {
-            if(res?.isExecuted){
-              if(res.data===''){
-                this.itemInvalid=true
-                this.setLocationByItemList.length=0;
-              }else{
-                this.itemInvalid=false
-                this.setItem()
-              }
-       
-            }
-            else{
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-              console.log("ItemExists",res.responseMessage);
+    };
 
+
+    this.iCommonAPI
+      .ItemExists(payLoad)
+      .subscribe(
+        (res: any) => {
+          if (res?.isExecuted) {
+            if (res.data === '') {
+              this.itemInvalid = true
+              this.setLocationByItemList.length = 0;
+            } else {
+              this.itemInvalid = false
+              this.setItem()
             }
-          },
-          (error) => {}
-        );
-    
+
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ItemExists", res.responseMessage);
+
+          }
+        },
+        (error) => { }
+      );
+
   }
 
   setItem(event?) {
-  
+
     let payLoad = {
-      itemNumber: this.itemNumber, 
+      itemNumber: this.itemNumber,
     };
     this.iAdminApiService.GetLocations(payLoad).subscribe(
       (res: any) => {
@@ -105,15 +106,15 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
               select: `${item.itemQty} @ ${item.locationNumber}`,
             };
           });
- 
+
         }
-        else{
+        else {
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
           console.log("GetLocations:", res.responseMessage);
         }
 
       },
-      (error) => {}
+      (error) => { }
     );
   }
 
@@ -122,100 +123,100 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
 
     let payLoadItem = {
       itemNumber: this.itemNumber
-      };
-  
-     
-        this.iCommonAPI
-        .ItemExists(payLoadItem)
-        .subscribe(
-          (res: any) => {
-            if(res?.isExecuted){
-              if(res.data===''){
-                this.itemInvalid=true
-                this.setLocationByItemList.length=0;
-
-              }else{
-                this.itemInvalid=false
-                if(this.orderRequired || this.itemInvalid ||   this.itemNumber==='' || this.itemNumber===undefined)return
-    let payLoad = {
-      orderNumber: this.orderNumber,
-      itemNumber: this.itemNumber,
-      transactionType: this.transType,
-      invMapID: this.inventoryMapID 
     };
 
-    this.iAdminApiService
-      .NewTransactionSave(payLoad)
+
+    this.iCommonAPI
+      .ItemExists(payLoadItem)
       .subscribe(
         (res: any) => {
-          if (res.isExecuted) {
-            this.global.ShowToastr('success',labels.alert.success, 'Success!');
-            this.dialogRef.close({ isExecuted: true,id:res.data,orderNumber:this.orderNumber,itemNumber:this.itemNumber,location:this.inventoryMapID});
-          } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
-            this.dialogRef.close({ isExecuted: true,id:res.data,orderNumber:this.orderNumber,itemNumber:this.itemNumber  });
-            console.log("NewTransactionSave",res.responseMessage);
+          if (res?.isExecuted) {
+            if (res.data === '') {
+              this.itemInvalid = true
+              this.setLocationByItemList.length = 0;
+
+            } else {
+              this.itemInvalid = false
+              if (this.orderRequired || this.itemInvalid || this.itemNumber === '' || this.itemNumber === undefined) return
+              let payLoad = {
+                orderNumber: this.orderNumber,
+                itemNumber: this.itemNumber,
+                transactionType: this.transType,
+                invMapID: this.inventoryMapID
+              };
+
+              this.iAdminApiService
+                .NewTransactionSave(payLoad)
+                .subscribe(
+                  (res: any) => {
+                    if (res.isExecuted) {
+                      this.global.ShowToastr('success', labels.alert.success, 'Success!');
+                      this.dialogRef.close({ isExecuted: true, id: res.data, orderNumber: this.orderNumber, itemNumber: this.itemNumber, location: this.inventoryMapID });
+                    } else {
+                      this.global.ShowToastr('error', res.responseMessage, 'Error!');
+                      this.dialogRef.close({ isExecuted: true, id: res.data, orderNumber: this.orderNumber, itemNumber: this.itemNumber });
+                      console.log("NewTransactionSave", res.responseMessage);
+                    }
+                  },
+                  (error) => { }
+                );
+            }
+
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ItemExists:", res.responseMessage);
           }
         },
-        (error) => {}
+        (error) => { }
       );
+
+
+  }
+
+
+
+  onFocusOutEvent(event, type) {
+    if (this.searchAutocompleteItemNum.length > 0) return
+
+    if (type === 'order') {
+      if (event.target.value === '') {
+        this.orderRequired = true
+      } else {
+        this.orderRequired = false;
+      }
+    } else if (type === 'item') {
+      if (this.itemNumber) {
+        let payLoad = {
+          itemNumber: this.itemNumber
+        };
+
+
+        this.iCommonAPI
+          .ItemExists(payLoad)
+          .subscribe(
+            (res: any) => {
+              if (res?.isExecuted) {
+                if (res.data === '') {
+                  this.itemInvalid = true
+                } else {
+                  this.itemInvalid = false
+
+                }
+
               }
-       
-            }
-            else{
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-              console.log("ItemExists:", res.responseMessage);
-            }
-          },
-          (error) => {}
-        );
+              else {
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("ItemExists", res.responseMessage);
+              }
+            },
+            (error) => { }
+          );
+      }
 
-    
+
+    }
   }
-
-
-
-  onFocusOutEvent(event,type){ 
-    if(this.searchAutocompleteItemNum.length>0)return
-   
-if(type==='order'){
-if(event.target.value===''){
-this.orderRequired=true
-}else{
-  this.orderRequired=false;
-}
-}else if(type==='item'){
-  if(this.itemNumber){
-    let payLoad = {
-     itemNumber: this.itemNumber
-     };
- 
-   
-       this.iCommonAPI
-       .ItemExists(payLoad)
-       .subscribe(
-         (res: any) => {
-           if(res?.isExecuted){
-             if(res.data===''){
-               this.itemInvalid=true
-             }else{
-               this.itemInvalid=false
- 
-             }
-      
-           }
-           else{
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("ItemExists",res.responseMessage);
-           }
-         },
-         (error) => {}
-       );
-  }
-
-
-}
-  } 
 
   async autocompleteSearchColumn() {
     let searchPayload = {
@@ -225,53 +226,52 @@ this.orderRequired=true
       .ManualTransactionTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
-          if(res.isExecuted && res.data)
-          {
+          if (res.isExecuted && res.data) {
             this.searchAutocompleteOrderNum = res.data;
           }
           else {
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("ManualTransactionTypeAhead",res.responseMessage);
+            console.log("ManualTransactionTypeAhead", res.responseMessage);
           }
-          
+
         },
-        (error) => {}
+        (error) => { }
       );
   }
 
   async autocompleteSearchColumnItem() {
 
-   
+
     let searchPayload = {
       itemNumber: this.itemNumber,
-      beginItem:'---',
-      isEqual:false
+      beginItem: '---',
+      isEqual: false
     };
     this.iCommonAPI
       .SearchItem(searchPayload)
       .subscribe(
         (res: any) => {
-          
-          if (res.data.length>0) {
-            this.searchAutocompleteItemNum=res.data
+
+          if (res.data.length > 0) {
+            this.searchAutocompleteItemNum = res.data
             this.setItem()
-          }else{
-            
-            this.searchAutocompleteItemNum.length=0;
+          } else {
+
+            this.searchAutocompleteItemNum.length = 0;
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("SearchItem",res.responseMessage);
+            console.log("SearchItem", res.responseMessage);
 
           }
-        
+
         },
-        (error) => {}
+        (error) => { }
       );
   }
   ngOnInit(): void {
     this.searchByOrder
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
-        if(this.orderNumber != ""){
+        if (this.orderNumber != "") {
           this.orderRequired = false;
         }
         this.autocompleteSearchColumn();
@@ -282,6 +282,7 @@ this.orderRequired=true
       .subscribe((value) => {
         this.autocompleteSearchColumnItem();
       });
+      
   }
 
   ngOnDestroy() {
