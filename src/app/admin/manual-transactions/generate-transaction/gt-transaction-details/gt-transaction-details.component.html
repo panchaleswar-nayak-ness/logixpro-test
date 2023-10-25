@@ -27,7 +27,7 @@
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline"
                     [class.mat-form-field-invalid]="isInvalid">
                     <mat-label>Required Date</mat-label>
-                    <input [disabled]="!item" maxlength="11" matInput [matDatepicker]="requiredDate"
+                    <input  [disabled]="!item" maxlength="11" matInput [matDatepicker]="requiredDate"
                         [(ngModel)]="reqDate" (focusout)="this.onFormFieldFocusOut.emit()" (ngModelChange)="onFieldChange(reqDate)">
                     <mat-datepicker-toggle matSuffix [for]="requiredDate" ngDefaultControl></mat-datepicker-toggle>
                     <mat-datepicker #requiredDate></mat-datepicker>
