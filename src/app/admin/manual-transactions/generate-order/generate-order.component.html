@@ -1,7 +1,14 @@
 <div class="my-3">
-  <app-select-order-component [isPost]="isPost" [orderNumber]="orderNumber" [transType]="transType"
-  (OrderTableData)="getOrderTableData($event)" (clear)="clear()" (clearMatSelectList)="clearMatSelectList()" (transTypeEmitter)="onTransTypeChange($event)"
-  
+  <app-select-order-component #SelectOrderComponentComponent [isPost]="isPost" [orderNumber]="orderNumber" [transType]="transType"
+  (OrderTableData)="getOrderTableData($event)" 
+  (clear)="clear()"
+  (transTypeEmitter)="onTransTypeChange($event)"
+  (orderNumberEmitter)="onOrderNoChange($event)"
+  (actionDialog)="actionDialog($event.param1,$event.param2)"
+  (autocompleteSearchColumn)="orderNumber = $event;autocompleteSearchColumn()"
+  [searchAutocompleteList]="searchAutocompleteList"
+  (getOrderTableData)="getOrderTableData($event)"
+  (searchData)="searchData()"
   ></app-select-order-component>
   <mat-card class="mat-elevation-z g-card mb-4">
     <mat-card-content>

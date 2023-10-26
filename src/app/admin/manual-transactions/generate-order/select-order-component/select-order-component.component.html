@@ -43,19 +43,19 @@
               [(ngModel)]="orderNumber"
               maxlength="255"
               [matAutocomplete]="auto"
-              (ngModelChange)="this.searchByInput.next($event)"
+              (ngModelChange)="this.searchByInput.next($event); onOrderNoChange()"
             />
             <button
               matSuffix
               *ngIf="orderNumber"
               class="clear-btn"
-              (click)="clear.emit()"
+              (click)="clear.emit();orderNumber =''"
             >
               <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
             </button>
             <mat-autocomplete
               #auto="matAutocomplete"
-              (optionSelected)="searchData()"
+              (optionSelected)="searchData.emit()"
             >
               <mat-option
                 *ngFor="let option of searchAutocompleteList"
@@ -78,7 +78,7 @@
                 class="employees-action"
                 placeholder="Actions"
                 [(ngModel)]="selectedOption"
-                (openedChange)="actionDialog($event)"
+                (openedChange)="actionDialog.emit({param1: $event, param2: selectedOption })"
               >
                 <mat-option [disabled]="!isPost" value="post_order"
                   >Post Order</mat-option

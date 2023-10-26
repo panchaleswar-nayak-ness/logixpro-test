@@ -7,7 +7,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AuthService } from 'src/app/init/auth.service';
 import { AddNewTransactionToOrderComponent } from '../../dialogs/add-new-transaction-to-order/add-new-transaction-to-order.component';
 import { DeleteConfirmationManualTransactionComponent } from '../../dialogs/delete-confirmation-manual-transaction/delete-confirmation-manual-transaction.component';
@@ -16,6 +16,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { SelectOrderComponentComponent } from './select-order-component/select-order-component.component';
  
 
 @Component({
@@ -24,9 +25,9 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./generate-order.component.scss'],
 })
 export class GenerateOrderComponent implements OnInit {
-  @ViewChild('matRef') matRef: MatSelect;
-  @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
+  @ViewChild('autoFocusField') searchBoxField: ElementRef;
+  @ViewChild('SelectOrderComponentComponent') SelectOrderComponentComponent: SelectOrderComponentComponent;
   transType: any = 'Pick';
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
@@ -43,11 +44,11 @@ export class GenerateOrderComponent implements OnInit {
   customPagination: any;
   public searchString: any = '';
   public columnValues: any = [];
-  selectedOption: any;
   isPost=false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   pageEvent: PageEvent;
+  selectedOption: any;
 
   @Input() set tab(event : any) {
     if (event) { 
@@ -75,13 +76,7 @@ export class GenerateOrderComponent implements OnInit {
       startIndex: 0,
       endIndex: 10,
     };
-
-    this.searchByInput
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        this.autocompleteSearchColumn();
-        this.getOrderTableData();
-      });      
+  
 
   }
 
@@ -115,9 +110,7 @@ export class GenerateOrderComponent implements OnInit {
   ];
   public dataSource: any = new MatTableDataSource();
 
-  getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value ?? 'auto';
-  }
+
   async autocompleteSearchColumn() {
     let searchPayload = {
       orderNumber: this.orderNumber,
@@ -140,11 +133,11 @@ export class GenerateOrderComponent implements OnInit {
       );
   }
 
-  actionDialog(opened: boolean) {
+  actionDialog(opened: boolean, selectedOption: any) {
     if (
       !opened &&
-      this.selectedOption &&
-      this.selectedOption === 'add_new_transaction'
+      selectedOption &&
+      selectedOption === 'add_new_transaction'
     ) {
       const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
         height: 'auto',
@@ -159,16 +152,17 @@ export class GenerateOrderComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
-      this.clearMatSelectList()
+        console.log("here");
+      this.SelectOrderComponentComponent.clearMatSelectList()
         if (res.isExecuted) {
           this.selectedOrder=this.orderNumber
-          this.getOrderTableData();
+          this.getOrderTableData(this.orderNumber);
         }
       });
     } else if (
       !opened &&
-      this.selectedOption &&
-      this.selectedOption === 'delete_order'
+      selectedOption &&
+      selectedOption === 'delete_order'
     ) {
       const dialogRef:any = this.global.OpenDialog(
         DeleteConfirmationManualTransactionComponent,
@@ -187,7 +181,7 @@ export class GenerateOrderComponent implements OnInit {
       );
       dialogRef.afterClosed().subscribe((res) => {
         this.clearFields()
-        this.clearMatSelectList()
+        this.SelectOrderComponentComponent?.clearMatSelectList()
         this.getOrderTableData();
 
         if (res.isExecuted) {
@@ -195,10 +189,10 @@ export class GenerateOrderComponent implements OnInit {
           
         }
       });
-    }else   if (
+    }else if (
       !opened &&
-      this.selectedOption &&
-      this.selectedOption === 'post_order'
+      selectedOption &&
+      selectedOption === 'post_order'
     ) {
       const dialogRef:any = this.global.OpenDialog(ManualTransPostConfirmComponent, {
         height: 'auto',
@@ -213,7 +207,7 @@ export class GenerateOrderComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
-        this.clearMatSelectList()
+        this.SelectOrderComponentComponent?.clearMatSelectList()
         if (res.isExecuted) {
           this.clearFields();
           this.getOrderTableData();
@@ -221,15 +215,12 @@ export class GenerateOrderComponent implements OnInit {
       });
     }
   }
-
   clearFields(){
     this.orderNumber='';
     this.selectedOrder='';
     this.searchAutocompleteList=[];
   }
-  clearMatSelectList(){
-    this.matRef.options.forEach((data: MatOption) => data.deselect());
-  }
+
   editTransaction(element){
 
   const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
@@ -243,7 +234,7 @@ export class GenerateOrderComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
-        this.clearMatSelectList()
+        this.SelectOrderComponentComponent?.clearMatSelectList()
         if (res.isExecuted) {
           this.getOrderTableData();
           this.clearFields();
@@ -292,7 +283,7 @@ export class GenerateOrderComponent implements OnInit {
       }
     );
     dialogRef.afterClosed().subscribe((res) => {
-      this.clearMatSelectList()
+      this.SelectOrderComponentComponent?.clearMatSelectList()
         this.getOrderTableData();
     });
   }
@@ -341,7 +332,8 @@ export class GenerateOrderComponent implements OnInit {
     this.searchByInput.unsubscribe();
   }
   clear(){
-    this.orderNumber = ''
+    this.orderNumber ='';
+    this.selectedOrder='';
     this.autocompleteSearchColumn();
     this.getOrderTableData();
   }
@@ -359,7 +351,16 @@ export class GenerateOrderComponent implements OnInit {
   }
   onTransTypeChange(transType: any){
     this.transType=transType;
-    console.log(this.onTransTypeChange);
+  }
+  onOrderNoChange(orderNumber: any){
+    this.orderNumber=orderNumber;
+  }
+  searchData() {
+    this.selectedOrder = this.orderNumber;
+  }
+
+  hideRequiredMarker() {
+    return false;
   }
 
 }
