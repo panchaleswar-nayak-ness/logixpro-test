@@ -124,7 +124,7 @@ export interface IAdminApiService
       deleteGroup(payload : any);
       getItemNumDetail(payload : any);
       getLocZTypeInvMap(payload : any);
-      updateInventoryMap(payload : any,mapID)
+      updateInventoryMap(payload : any, mapID? : any)
        // check api call 
       createInventoryMap(payload : any)
       GetLocAssCountTable();
