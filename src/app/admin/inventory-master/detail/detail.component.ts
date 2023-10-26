@@ -151,20 +151,28 @@ export class DetailComponent implements OnInit {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-      if(result.category!='' && result)
-      { 
+      // if(result.category!='' && result)
+      // { 
+      //   this.details.patchValue({        
+      //     'category': result.category      
+      //   });
+      // }
+      // if(result.subCategory!='' && result)
+      // {
+      //   this.details.patchValue({            
+      //     'subCategory': result.subCategory,        
+      //   });
+      // } 
+      console.log(result);
+      
+      if (result && result != true) {
         this.details.patchValue({        
-          'category': result.category      
-        });
-      }
-      if(result.subCategory!='' && result)
-      {
-        this.details.patchValue({            
-          'subCategory': result.subCategory,        
+          'category': result.category,
+          'subCategory': result.subCategory
         });
       }
       
-      this.sharedService.updateInvMasterState(result,true)
+      this.sharedService.updateInvMasterState(result, true)
     })
   }
   public openUmDialog() { 

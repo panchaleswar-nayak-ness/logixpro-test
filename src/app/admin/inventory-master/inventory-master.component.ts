@@ -436,11 +436,10 @@ export class InventoryMasterComponent implements OnInit {
       "newItem": false
     }
     this.iAdminApiService.GetInventory(paylaod).subscribe((res: any) => {
-      
       if(res.isExecuted)
       {
         if (currentPageItemNumber == '') {
-          currentPageItemNumber = res.data?.firstItemNumber;
+          this.global.ShowToastr('error', 'No Data Found.', 'Error!');
         }
         this._searchValue = currentPageItemNumber;
         this.paginationData = {
@@ -673,8 +672,8 @@ export class InventoryMasterComponent implements OnInit {
       this.invMaster.patchValue({
         'bulkGoldZone': this.invMaster.value?.bulkVelocity,
         'CfGoldZone': this.invMaster.value?.cfVelocity,
-        'splitCase':this.invMaster.value.splitCase,
-        'active': this.invMaster.value.active
+        'splitCase':this.invMaster.value.splitCase || false,
+        'active': this.invMaster.value.active || false
       }); 
       if(!this.invMaster.value.secondaryPickZone){
         this.invMaster.value['secondaryPickZone'] = '';

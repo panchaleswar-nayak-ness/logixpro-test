@@ -8,27 +8,22 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
-
-import {
-  
-  
-  Subject,
-  Subscription,
-} from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { ActivatedRoute } from '@angular/router';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+
 class info {
   title: string;
   value: string;
   colorClass: string;
 }
+
 @Component({
   selector: 'app-tran-select-order',
   templateUrl: './tran-select-order.component.html',
@@ -74,7 +69,6 @@ export class TranSelectOrderComponent implements OnInit {
     { title: 'Current Status', value: this.currentStatusOrder, colorClass: 'Current-status' }
   ];
 
-
   @Output() deleteEvent = new EventEmitter<Event>();
 
   @Input() set openOrderEvent(event: Event) {
@@ -83,7 +77,6 @@ export class TranSelectOrderComponent implements OnInit {
       this.info[2].value = this.openOrder;
     }
   }
-
   @Input() set completeOrderEvent(event: Event) {
     if (event) {
       this.completeOrder = event;
@@ -96,14 +89,12 @@ export class TranSelectOrderComponent implements OnInit {
       this.info[1].value = this.reprocessOrder;
     }
   }
-
   @Input() set orderTypeOrderEvent(event: Event) {
     if (event) {
       this.orderTypeOrder = event;
       this.info[3].value = this.orderTypeOrder;
     }
   }
-
   @Input() set totalLinesOrderEvent(event: Event) {
     if (event) {
       this.info[4].value = this.totalLinesOrder;
@@ -126,10 +117,8 @@ export class TranSelectOrderComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   constructor(
     public authService: AuthService,
-    private Api:ApiFuntions,
     private global:GlobalService,
-    private adminApiService: AdminApiService,
-    
+    public adminApiService: AdminApiService,
     private sharedService: SharedService,
     private currentTabDataService: CurrentTabDataService,
     private route: ActivatedRoute
@@ -239,16 +228,22 @@ export class TranSelectOrderComponent implements OnInit {
   }
 
   getNextItemNo(event:any){
-     
-      if(event.target.value==''){
-         this.resetLines();
-            this.columnSelect = '';
-      }
+    if(event.target.value==''){
+      this.resetLines();
+      this.columnSelect = '';
+    }
     this.autocompleteSearchColumn();
     this.onOrderNoChange();
   }
 
   resetLines() {
+    this.info[0].value = '0';
+    this.info[1].value = '0';
+    this.info[2].value = '0';
+    this.info[3].value = '-';
+    this.info[4].value = '0';
+    this.info[5].value = '-';
+
     this.openOrder = 0;
     this.completeOrder = 0;
     this.reprocessOrder = 0;
