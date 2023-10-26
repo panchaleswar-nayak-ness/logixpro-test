@@ -68,7 +68,7 @@ export class ScanTypeCodeComponent implements OnInit {
   }
 
   saveScanCodeType(newScanCode : any, oldScanCode  : any) {
-
+    debugger
     let cond = true;
     this.scanTypeCode_list_Response.forEach(element => {
       if(element.toLowerCase() == newScanCode.toLowerCase() && cond) {
@@ -94,7 +94,7 @@ export class ScanTypeCodeComponent implements OnInit {
       }
   
     });
-  } else {
+  } else if(!newScanCode){
     this.global.ShowToastr('error','Scan Codes cannot be empty', 'Error!');
     console.log("CodeTypeSave");
   }
