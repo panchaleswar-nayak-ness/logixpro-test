@@ -357,5 +357,9 @@ export class GenerateOrderComponent implements OnInit {
       selectedRow.selected = !selectedRow.selected;
     }
   }
+  onTransTypeChange(transType: any){
+    this.transType=transType;
+    console.log(this.onTransTypeChange);
+  }
 
 }

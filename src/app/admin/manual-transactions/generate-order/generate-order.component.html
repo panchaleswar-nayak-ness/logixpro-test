@@ -1,6 +1,7 @@
 <div class="my-3">
-  <app-select-order-component [isPost]="isPost" [orderNumber]="orderNumber" 
-  (OrderTableData)="getOrderTableData($event)" (clear)="clear()"
+  <app-select-order-component [isPost]="isPost" [orderNumber]="orderNumber" [transType]="transType"
+  (OrderTableData)="getOrderTableData($event)" (clear)="clear()" (clearMatSelectList)="clearMatSelectList()" (transTypeEmitter)="onTransTypeChange($event)"
+  
   ></app-select-order-component>
   <mat-card class="mat-elevation-z g-card mb-4">
     <mat-card-content>
