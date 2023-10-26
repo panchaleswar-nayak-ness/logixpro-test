@@ -436,11 +436,10 @@ export class InventoryMasterComponent implements OnInit {
       "newItem": false
     }
     this.iAdminApiService.GetInventory(paylaod).subscribe((res: any) => {
-      
       if(res.isExecuted)
       {
         if (currentPageItemNumber == '') {
-          currentPageItemNumber = res.data?.firstItemNumber;
+          this.global.ShowToastr('error', 'No Data Found.', 'Error!');
         }
         this._searchValue = currentPageItemNumber;
         this.paginationData = {
