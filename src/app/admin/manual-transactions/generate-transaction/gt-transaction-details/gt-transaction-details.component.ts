@@ -16,16 +16,6 @@ export class GtTransactionDetailsComponent {
 
   }
 
-  // @HostListener('window:keydown', ['$event'])
-  // handleKeyboardEvent(event: KeyboardEvent) {
-  //   if (event.key === 'Backspace') {
-  //     this.clearReqField();
-  //   }
-  // }
-  // clearReqField() {
-  //   this.reqDate = '';
-  //   this.inputField.nativeElement.value = '';
-  // }
   @Input() item: any ="";
   @Input() emergency: any ="";
   @Input() transType: any ="";
@@ -54,10 +44,7 @@ export class GtTransactionDetailsComponent {
       autoFocus: '__non_existing_element__',
       disableClose: true,
       data: {
-        userName: this.userData.userName,
-        wsid: this.userData.wsid,
         supplierID: this.supplierID,
-
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
@@ -65,10 +52,13 @@ export class GtTransactionDetailsComponent {
 
         this.wareHouse = res;
         this.warehouseSensitivity = 'False';
+        this.onFieldChange(this.wareHouse);
       } else if (res && res === 'clear') {
         this.wareHouse = '';
+        this.onFieldChange(this.wareHouse);
       }
     });
+    
   }
 
   // limit number to 9 digits

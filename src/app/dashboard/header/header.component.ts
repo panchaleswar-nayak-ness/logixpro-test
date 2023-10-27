@@ -137,8 +137,6 @@ constructor(
     const imPreference = localStorage.getItem('InductionPreference');
     if (imPreference) {
       const parsedData = JSON.parse(imPreference);
-      console.log('InductionPreference:', parsedData);
-
     } else {
 
  let paylaod = { 

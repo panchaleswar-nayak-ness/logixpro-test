@@ -602,6 +602,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.batchPickID = fieldValues.batchPickID;
     this.lineNumber = fieldValues.lineNumber;
     this.transQuantity = fieldValues.transQuantity;
+    console.log(fieldValues.wareHouse);
   }
 
 }
