@@ -109,6 +109,8 @@ export class EventLogComponent implements OnInit {
     this.eventLocation = "";
     this.userName = "";
     this.message = "";
+    this.eventCode='';
+    this.eventType='';
     this.resetPagination();
     this.eventLogTable();
   }
