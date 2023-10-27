@@ -51,7 +51,7 @@
                     [paginator]="paginator"
                     [paginatorTo]="paginatorTo"
                     [paginators]="paginators"
-                    (onChangeLocationEmit)="this.getMoveItemList('MoveTo');"
+                    (onChangeLocationEmit)="viewAll = $event; this.getMoveItemList('MoveTo');"
                     (tabChangedEmit)="tabChanged($event)"
                     (sortChangeEmit)="sortChange($event)"
                     (clearItemNumEmit)="clearItemNum()"
