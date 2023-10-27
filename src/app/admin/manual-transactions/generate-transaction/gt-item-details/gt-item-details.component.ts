@@ -32,7 +32,7 @@ isInvalid = false;
 
 openAction: any;
 @Input() userData :any ="";
-transactionID: any ="";
+@Input() transactionID: any ;
 
 @Output() getSupplierItemInfo: EventEmitter<any> = new EventEmitter();
 @Output() getLocationData: EventEmitter<any> = new EventEmitter();
@@ -109,6 +109,7 @@ openUserFieldsEditDialogue() {
       wsid: this.userData.wsid,
       fieldNames:this.columns
     },
+    
   });
   dialogRef.afterClosed().subscribe((res) => {
     this.clearMatSelectList();

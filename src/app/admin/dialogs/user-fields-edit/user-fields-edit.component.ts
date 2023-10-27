@@ -86,7 +86,6 @@ export class UserFieldsEditComponent implements OnInit {
       transaction: this.data.transID,
       userFields: userFields
     };
-
     this.iCommonAPI.UserFieldMTSave(payload).subscribe((res:any)=>{
       if(res.isExecuted){
              this.global.ShowToastr('success',labels.alert.success, 'Success!');
