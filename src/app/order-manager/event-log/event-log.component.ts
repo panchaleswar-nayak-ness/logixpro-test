@@ -82,7 +82,7 @@ export class EventLogComponent implements OnInit {
 
   event(e:any){
     this.resetPagination();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   ngOnInit(): void {
@@ -99,7 +99,7 @@ export class EventLogComponent implements OnInit {
 
   onIgnoreDateRange(ob: MatCheckboxChange) {
     this.resetPagination();
-    this.eventLogTable();
+    this.eventLogTable(ob);
   }
 
   clearFilters() {
@@ -110,7 +110,7 @@ export class EventLogComponent implements OnInit {
     this.userName = "";
     this.message = "";
     this.resetPagination();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   openOmEventLogEntryDetail(element: any) {
@@ -123,12 +123,12 @@ export class EventLogComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.eventLogTable(true);
+        this.eventLogTable();
       }
     });
   }
 
-  eventLogTable(loader: boolean = false) {
+  eventLogTable(obj?:any) {
     let payload: any = {
       "draw": 0,
       "start": this.start,
@@ -139,8 +139,8 @@ export class EventLogComponent implements OnInit {
       "eventLocation": this.eventLocation,
       "transStatus": this.eventCode,
       "transType": this.eventType,
-      "sDate": !this.ignoreDateRange ? this.startDate: new Date(new Date().setFullYear(1990)),
-      "eDate": !this.ignoreDateRange ? this.endDate : new Date(),
+      "sDate": !obj?.checked ? this.startDate: new Date(new Date().setFullYear(1990)),
+      "eDate": !obj?.checked ? this.endDate : new Date(),
       "nameStamp": this.userName,
       "filter": this.filterString,
     };
@@ -161,7 +161,7 @@ export class EventLogComponent implements OnInit {
   search(event: any, key: any) {
     this[key] = event.option.value;
     this.resetPagination();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   resetPagination() {
@@ -174,7 +174,7 @@ export class EventLogComponent implements OnInit {
     this.eventLogTypeAheadSubscribe.unsubscribe();
     this.eventLogTypeAhead(columnName, message, true);
     this.eventLogTableSubscribe.unsubscribe();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   eventLogTypeAhead(columnName: any, message: any, loader: boolean = false) {
@@ -202,7 +202,7 @@ export class EventLogComponent implements OnInit {
 
   refresh() {
     this.resetPagination();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   deleteRange() { 
@@ -233,7 +233,7 @@ export class EventLogComponent implements OnInit {
         this.iAdminApiService.EventRangeDelete(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.resetPagination();
-            this.eventLogTable(true);
+            this.eventLogTable();
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
@@ -257,7 +257,7 @@ export class EventLogComponent implements OnInit {
   paginatorChange(event: PageEvent) {
     this.start = event.pageSize * event.pageIndex;
     this.length = event.pageSize;
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
@@ -267,14 +267,14 @@ export class EventLogComponent implements OnInit {
   optionSelected(filter : string) {
     this.filterString = filter;
     this.resetPagination();
-    this.eventLogTable(true);  
+    this.eventLogTable();  
   }
 
   announceSortChange(e: any) {
     this.sortColumn = this.sortMapping.filter((item: any) => item.value == e.active)[0].sortValue;
     this.sortOrder = e.direction;
     this.resetPagination();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   exportRange(){
@@ -308,7 +308,7 @@ export class EventLogComponent implements OnInit {
   }
 
   clear(){
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 }
 
