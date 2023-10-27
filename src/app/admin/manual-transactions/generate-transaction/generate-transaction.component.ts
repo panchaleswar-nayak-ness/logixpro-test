@@ -266,6 +266,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.searchAutocompleteList = [];
     this.item = null;
     this.selectedAction = '';
+    this.invMapID='';
     this.clearMatSelectList();
     this.emergency=false;
 
