@@ -104,12 +104,12 @@ export class TransactionHistoryFiltersComponent implements OnInit {
   }
   onDateChange(event: any): void {
     this.sdate = new Date(event).toISOString();
-    this.startDate.emit(event);
+    this.startDate.emit(this.sdate);
   }
 
   onEndDateChange(event: any): void {
     this.edate = new Date(event).toISOString();
-    this.endDate.emit(event);
+    this.endDate.emit(this.edate);
   }
   ngOnDestroy() {
     this.searchByOrderNumber.unsubscribe();
