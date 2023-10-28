@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-groups-allowed',
   templateUrl: './groups-allowed.component.html',
-  styleUrls: ['./groups-allowed.component.scss']
+  styleUrls: []
 })
-export class GroupsAllowedComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class GroupsAllowedComponent {
 
 }

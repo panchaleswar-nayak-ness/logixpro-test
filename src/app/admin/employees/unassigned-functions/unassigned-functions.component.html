@@ -18,10 +18,10 @@
       <div class="card-header">
         Unassigned
       </div>
-      <div class="card-body">
-    <mat-list class="zones-list g-card-list list-style-1" role="list">
-      <ng-scrollbar *ngIf="!filterValue" style="height: 380px">
-        <mat-list-item class="pt-0" role="listitem"  *ngFor="let groupname of unassignedFunctions | filterUnassignedFunc:filterName">
+      <div class="card-body py-0 px-2">
+    <mat-list class="zones-list g-card-list list-style-1 pt-0" role="list">
+      <ng-scrollbar *ngIf="!filterValue" style="height: 380px" pointerEventsMethod="scrollbar">
+        <mat-list-item class="pt-2" role="listitem"  *ngFor="let groupname of unassignedFunctions | filterUnassignedFunc:filterName">
           <span class="list-label zone-list-label">
             {{groupname}}
           </span>

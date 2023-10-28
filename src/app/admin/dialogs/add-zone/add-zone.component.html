@@ -24,7 +24,6 @@
             </mat-form-field>
             <div class="error" *ngIf="hasError('zoneList', 'required')">This field is required.</div>
             <mat-dialog-actions align="end">
-                <!-- <button mat-button matDialogClose="no" color="danger">Cancel</button> -->
                 <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100"
                     color="primary" [disabled]="!addZoneForm.valid">{{form_btn_label}}</button>
             </mat-dialog-actions>

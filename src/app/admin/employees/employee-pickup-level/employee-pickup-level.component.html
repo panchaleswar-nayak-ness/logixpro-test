@@ -15,10 +15,7 @@
                 <input type="text" [(ngModel)]="searchPickLvl" placeholder="Search Pick Levels" aria-label="Search Pick Levels" matInput
                   (keyup)="applyFilter($event)" maxlength="50">
         <button matSuffix *ngIf="searchPickLvl" class="clear-btn" (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                  
-                  <!-- <button *ngIf="searchPickLvl" matSuffix mat-icon-button aria-label="Clear" (click)="searchPickLvl=''">
-                    <mat-icon>close</mat-icon>
-                  </button> -->
+
               </mat-form-field>
               <button mat-flat-button color="primary" [disabled]="!isLookup" class="mat-button-icon" (click)="pickUpLevelDialog()">
                 <span class="material-symbols-outlined" matTooltip="Add pick levels" matTooltipPosition="above">
@@ -26,12 +23,6 @@
                 </span>
               </button>
             </div>
-            <!-- <div class="d-block text-end my-4">
-              <button mat-stroked-button color="warn" class="button-remove-all">
-                <mat-icon>close</mat-icon>
-                Remove All
-              </button>
-            </div> -->
             <div class="card table-responsive">
               <ng-scrollbar class="mat-table-scrollbar" style="height: 500px;">
             <table mat-table [dataSource]="pickup_level_data_source" matSort
@@ -62,9 +53,6 @@
               <ng-container matColumnDef="edit">
                 <th width="20%" class="text-center" mat-header-cell *matHeaderCellDef>Action</th>
                 <td width="20%" class="text-center" mat-cell *matCellDef="let element">
-                  <!-- <button mat-icon-button aria-label="Delete" (click)="deletePickLevel(element)" matTooltip="Delete pick levels" matTooltipPosition="above">
-                    <mat-icon class="icon-circle-cancel">close</mat-icon>
-                  </button> -->
                   <button  mat-icon-button aria-label="Edit" (click)="editPickLevel(element)" matTooltip="Edit pick levels" matTooltipPosition="above">
                     <mat-icon class="icon-circle-edit">border_color</mat-icon>
                   </button>

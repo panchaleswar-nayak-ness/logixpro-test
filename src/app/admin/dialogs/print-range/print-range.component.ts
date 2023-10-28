@@ -5,11 +5,15 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-print-range',
   templateUrl: './print-range.component.html',
-  styleUrls: ['./print-range.component.scss']
+  styleUrls: []
 })
 export class PrintRangeComponent implements OnInit {
   @ViewChild('begin_loc') begin_loc: ElementRef;
@@ -18,13 +22,19 @@ export class PrintRangeComponent implements OnInit {
   endLoc: string = "";
   groupLikeLoc: boolean = false;
   quantitySelected: number = 0;
+  public iAdminApiService: IAdminApiService;
+  public iCommonAPI : ICommonApi;
   constructor(
+    public commonAPI : CommonApiService,
     private route: Router,
     public dialogRef: MatDialogRef<any>,
     private authService: AuthService,
+    private adminApiService: AdminApiService,
     private Api: ApiFuntions,
     private global:GlobalService
-  ) { }
+  ) { this.iCommonAPI = commonAPI; 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -58,13 +68,17 @@ export class PrintRangeComponent implements OnInit {
       "query": this.beginLoc,
       "unique": true
     }
-    this.Api.LocationBegin(payload).subscribe((res: any) => {
+    this.iCommonAPI.LocationBegin(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.beginLocationSearchList = res.data;
         this.getQtySelected();
       }
       else {
         this.beginLocationSearchList = [];
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("LocationBegin",res.responseMessage);
+        
+
       }
     });
   }
@@ -74,13 +88,16 @@ export class PrintRangeComponent implements OnInit {
       "beginLocation": this.beginLoc,
       "unique": true
     }
-    this.Api.LocationEnd(payload).subscribe((res: any) => {
+    this.iCommonAPI.LocationEnd(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.endLocationSearchList = res.data;
         this.getQtySelected();
       }
       else {
         this.endLocationSearchList = [];
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("LocationEnd",res.responseMessage);
+
       }
     });
   }
@@ -91,7 +108,7 @@ export class PrintRangeComponent implements OnInit {
       "endLocation": this.endLoc ? this.endLoc : 0,
       "unique": this.groupLikeLoc
     }
-    this.Api.QuantitySelected(payload).subscribe((res: any) => {
+    this.iAdminApiService.QuantitySelected(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         if (res.data == -1) {
           this.quantitySelected = 0;
@@ -102,14 +119,13 @@ export class PrintRangeComponent implements OnInit {
       }
       else {
         this.quantitySelected = 0;
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("QuantitySelected",res.responseMessage);
       }
     });
   }
 
   printRange() {
     this.global.Print(`FileName:printIMReport|invMapID:0|groupLikeLoc:${this.groupLikeLoc}|beginLoc:${this.beginLoc}|endLoc:${this.endLoc}|User:${this.userData.userName}`)
-    // this.dialogRef.close();
-    // window.location.href = `/#/report-view?file=FileName:printIMReport|invMapID:0|groupLikeLoc:${this.groupLikeLoc}|beginLoc:${this.beginLoc}|endLoc:${this.endLoc}|User:${this.userData.userName}`
-    // window.location.reload();
   }
 }

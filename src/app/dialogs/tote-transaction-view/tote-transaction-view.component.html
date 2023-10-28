@@ -28,7 +28,6 @@
                     <mat-option value="printToteLabel" (click)="print('tote-label')">Print Tote Label</mat-option>
                     <mat-option value="printItemLabel" (click)="print('item-label')">Print Item Label</mat-option>
                     <mat-option value="printToteContent" (click)="print('tote-contents')">Print Tote Contents</mat-option>
-                    <!-- <mat-option value="back">Back</mat-option> -->
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
                     expand_more
@@ -95,7 +94,6 @@
                     <ng-container matColumnDef="cell">
                         <th style="width:200px!important" mat-header-cell mat-sort-header *matHeaderCellDef> Cell </th>
                         <td mat-cell *matCellDef="let element">
-                            <!-- class="pe-2 overflow-limit-20" -->
                             <div class="d-flex align-items-center ">
                                 {{element.cell}}
                             </div>

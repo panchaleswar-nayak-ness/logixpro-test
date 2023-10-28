@@ -1,12 +1,12 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common' 
 import {
   MatDialog,
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { CrossDockTransactionComponent } from '../cross-dock-transaction/cross-dock-transaction.component';
@@ -19,15 +19,21 @@ import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PaPrintLabelConfirmationComponent } from '../pa-print-label-confirmation/pa-print-label-confirmation.component';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
   templateUrl: './selection-transaction-for-tote-extend.component.html',
-  styleUrls: ['./selection-transaction-for-tote-extend.component.scss']
+  styleUrls: []
 })
 export class SelectionTransactionForToteExtendComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;
-
+  public iinductionManagerApi:IInductionManagerApiService;
   public userData   : any;
   isWarehouseSensitive:boolean=false;
   toteForm          : FormGroup;
@@ -37,20 +43,26 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   totes             : any = [];
   selectedTotePosition:any='';
   selectedToteID:any='';
+  public iAdminApiService: IAdminApiService;
   fieldNames:any;
   imPreferences:any;
-  constructor(public dialogRef                  : MatDialogRef<SelectionTransactionForToteExtendComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private dialog                    : MatDialog,
-              public formBuilder                : FormBuilder,
-              private authService               : AuthService,
-              private toast                     : ToastrService, 
-              private Api : ApiFuntions, 
-              private toastr: ToastrService,
-              public router: Router,
-              private global:GlobalService,
-              ) {
-
+  public iCommonAPI : ICommonApi;
+  constructor(
+    public commonAPI : CommonApiService,
+    public dialogRef                  : MatDialogRef<SelectionTransactionForToteExtendComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+              private adminApiService: AdminApiService,
+    private dialog                    : MatDialog,
+    public formBuilder                : FormBuilder,
+    private authService               : AuthService, 
+              private inductionManagerApi: InductionManagerApiService,
+    private Api : ApiFuntions, 
+    
+    public router: Router,
+    private global:GlobalService,
+    ) {
+                this.iinductionManagerApi = inductionManagerApi;
+                this.iAdminApiService = adminApiService;
     this.toteForm = this.formBuilder.group({
 
       // Header
@@ -112,6 +124,8 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
     });
 
+    this.iCommonAPI = commonAPI;
+
   }
 
   ngOnInit(): void {
@@ -126,24 +140,33 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.field_focus.nativeElement.focus();
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
+      
+      if (res.data && res.isExecuted)
+      {
       this.fieldNames = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+
+
+      }
 
     })
   }
   onToteChange(event,type){
-  // event.value
     this.totes.filter(item=>{
       if(type==='toteId'){  // change position on id base
         if(item.toteID===event.value){
           this.selectedTotePosition=item.totesPosition
           return
         }
-      }else{ //change id on position base
-        if(item.totesPosition===event.value){
+      }else if(item.totesPosition===event.value) { //change id on position base
+        
           this.selectedToteID=item.toteID
           return
-        }
+        
       }
     
     });
@@ -151,13 +174,11 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   getDetails() {
     try {
-      var payload = { 
+      let payload = { 
         "otid": this.data.otid,
-        "itemNumber": this.data.itemNumber,
-        "username": this.userData.userName,
-        wsid: this.userData.wsid 
+        "itemNumber": this.data.itemNumber, 
       }
-      this.Api.ItemDetails(payload).subscribe(
+      this.iinductionManagerApi.ItemDetails(payload).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
             const values = res.data[0];  
@@ -165,7 +186,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             this.orderNum = values.orderNumber;
             this.totes = this.data.totes;
 
-            var fil = this.totes.filter((e: any) => e.isSelected == true);
+            let fil = this.totes.filter((e: any) => e.isSelected);
 
             this.toteForm.patchValue({
 
@@ -228,10 +249,8 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
             this.checkRepenishment();
           } else {
-            this.toast.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("ItemDetails",res.responseMessage);
           }
         },
         (error) => { }
@@ -243,7 +262,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   clearTransInfo() {
 
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -268,21 +287,36 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   }
 
   getCellSizeList() {
-    this.Api.getCellSize().subscribe((res) => {
+    this.iCommonAPI.getCellSize().subscribe((res) => {
+      if (res.isExecuted && res.data)
+      {
       this.cellSizeList = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getCellSize",res.responseMessage);
+
+      }
     });
   }
 
   getVelocityCodeList() {
-    this.Api.getVelocityCode().subscribe((res) => {
+    this.iCommonAPI.getVelocityCode().subscribe((res) => {
+      if (res.isExecuted && res.data) {
       this.velocityCodeList = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getVelocityCode",res.responseMessage);
+
+      }
     });
   }
 
   updateItemInfo() {
     try {
 
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -297,7 +331,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
           const values = this.toteForm.value;
 
-          var payload = { 
+          let payload = { 
             "itemNumber": values.itemNumber,
             "ccell": values.carouselCellSize,
             "bcell": values.bulkCellSize,
@@ -306,23 +340,16 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             "bvel": values.bulkVelocity,
             "cFvel": values.cfVelocity,
             "pzone": values.primaryPickZone,
-            "szone": values.secondaryPickZone,
-            username: this.userData.userName,
-            wsid: this.userData.wsid 
+            "szone": values.secondaryPickZone, 
           }
           
-          this.Api.IMUpdate(payload).subscribe(
+          this.iinductionManagerApi.IMUpdate(payload).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
-                this.toast.success(labels.alert.update, 'Success!',{
-                  positionClass: 'toast-bottom-right',
-                  timeOut:2000
-               });            
+                this.global.ShowToastr('success',labels.alert.update, 'Success!');            
               } else {
-                this.toast.error('Something went wrong', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error','Something went wrong', 'Error!');
+                console.log("IMUpdate",res.responseMessage);
               }
             },
             (error) => { }
@@ -348,7 +375,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       currentValue  = this.toteForm.controls['cfCellSize'].value
     }
     
-    let dialogRef = this.dialog.open(CellSizeComponent, {
+    let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',
@@ -396,7 +423,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       currentValue  = this.toteForm.controls['cfVelocity'].value
     }
     
-    let dialogRef = this.dialog.open(VelocityCodeComponent, {
+    let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',
@@ -434,7 +461,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   openChooseLocation() {
     const values = this.toteForm.value;
-    const dialogRef = this.dialog.open(ChooseLocationComponent, {
+    const dialogRef:any = this.global.OpenDialog(ChooseLocationComponent, {
       height: 'auto',
       width: '70vw',
       autoFocus: '__non_existing_element__',
@@ -443,7 +470,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      if (res && res.responseMessage  === "Reserved Successfully") {        
+      if (res?.responseMessage  === "Reserved Successfully") {        
         this.toteForm.patchValue({
           zone                              : res.zone,
           carousel                          : res.carousel,
@@ -472,39 +499,43 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         return;
       }
 
-      var payLoad = {
-        "item": values.itemNumber,        
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+      let payLoad = {
+        "item": values.itemNumber,       
       };
 
-      this.Api.CheckForwardLocations(payLoad).subscribe(
+      this.iinductionManagerApi.CheckForwardLocations(payLoad).subscribe(
         (res: any) => {
-          if (res.data > 0 && res.isExecuted && this.data.autoForwardReplenish) {
+          if(res.isExecuted)
+          {
+            if (res.data > 0 && this.data.autoForwardReplenish) {
             
-            let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-              height: 'auto',
-              width: '560px',
-              autoFocus: '__non_existing_element__',
-      disableClose:true,
-              data: {
-                message: 'There is a need for ' + res.data + ' of item: ' + values.itemNumber + '. Press OK to find a location needing replenishment. Otherwise press CANCEL to do a normal location search',
-              }
-            });
-
-            dialogRef.afterClosed().subscribe((result) => {
-              if (result == 'Yes') {
-                this.findLocation(true, res.data);
-              }
-            });
-
-          } else {
-            this.findLocation(false, 0);
-            // this.toastr.error('Something went wrong', 'Error!', {
-            //   positionClass: 'toast-bottom-right',
-            //   timeOut: 2000,
-            // });
+              let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
+                height: 'auto',
+                width: '560px',
+                autoFocus: '__non_existing_element__',
+        disableClose:true,
+                data: {
+                  message: 'There is a need for ' + res.data + ' of item: ' + values.itemNumber + '. Press OK to find a location needing replenishment. Otherwise press CANCEL to do a normal location search',
+                }
+              });
+  
+              dialogRef.afterClosed().subscribe((result) => {
+                if (result == 'Yes') {
+                  this.findLocation(true, res.data);
+                }
+              });
+  
+            } else {
+              
+              this.findLocation(false, 0);
+              
+            }
           }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("CheckForwardLocations",res.responseMessage);
+          }
+          
         },
         (error) => {}
       );      
@@ -523,7 +554,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
       const values = this.toteForm.value;
 
-      var payLoad = {
+      let payLoad = {
         "qtyPut": values.quantityAllocatedPutAway ? parseInt(values.quantityAllocatedPutAway) : 0,
         "item": values.itemNumber,
         "ccell": values.carouselCellSize,
@@ -544,11 +575,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         "rts": false,
         "expDate": values.expirationDate,
         "primaryZone": values.primaryPickZone,
-        "secondaryZone": values.secondaryPickZone,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        "secondaryZone": values.secondaryPickZone, 
       };
-      this.Api.FindLocation(payLoad).subscribe(
+      this.iinductionManagerApi.FindLocation(payLoad).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
 
@@ -568,17 +597,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                 invMapID                          : res.data.invMapID
               }); 
             } else {
-              this.toastr.error('No available locations were found for this item.', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error','No available locations were found for this item.', 'Error!');
             }
 
           } else {
-            this.toastr.error('Something went wrong', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("FindLocation",res.responseMessage);
           }
         },
         (error) => {}
@@ -592,7 +616,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   openCrossDockTransactionDialogue() {
     const values = this.toteForm.value;
     
-    const dialogRef = this.dialog.open(CrossDockTransactionComponent, {
+    const dialogRef:any = this.global.OpenDialog(CrossDockTransactionComponent, {
       height: 'auto',
       width: '70vw',
       autoFocus: '__non_existing_element__',
@@ -625,7 +649,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   openWareHouse() {
     if(!this.isWarehouseSensitive)return
     const values = this.toteForm.value;
-    const dialogRef = this.dialog.open(WarehouseComponent, {
+    const dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
       height: 'auto',
       width: '640px',
       autoFocus: '__non_existing_element__',
@@ -653,44 +677,29 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   validationPopups(val : any) {
     if (val.type == 1) {
       if (val.invMapID <= 0 || !val.invMapID || val.zone == "") {
-        this.toast.error('You must select a location for this transaction before it can be processed.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','You must select a location for this transaction before it can be processed.', 'Error!');
         return false;
       } 
 
       if (this.toteForm.getRawValue().dateSensitive && !val.expirationDate) {
-        this.toast.error('This item is date sensitive. You must provide an expiration date.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','This item is date sensitive. You must provide an expiration date.', 'Error!');
         return false;
       }
 
     }    
 
     if (this.toteForm.getRawValue().fifo && val.fifoDate.toLowerCase() == 'expiration date' && !val.expirationDate) {
-      this.toast.error('This item is marked as FIFO with Expiration Date and its FIFO Date.You must provide an Expiration Date.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','This item is marked as FIFO with Expiration Date and its FIFO Date.You must provide an Expiration Date.', 'Error!');
       return false;
     }
 
     if (this.toteForm.getRawValue().warehouseSensitive && !val.warehouse) {
-      this.toast.error('This item is warehouse sensitive and must be assigned a warehouse before process can continue.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','This item is warehouse sensitive and must be assigned a warehouse before process can continue.', 'Error!');
       return false;
     }    
 
     if (val.toteQty <= 0) {
-      this.toast.error('Quantity should be greater 0', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      });
+      this.global.ShowToastr('error','Quantity should be greater 0', 'Error!');
       return false;
     }
 
@@ -706,18 +715,16 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       }
 
         let payload = {
-        zone: this.toteForm.value.zone,      
-        username: this.userData.userName,
-        wsid: this.userData.wsid
+        zone: this.toteForm.value.zone,   
       };
       
-      this.Api
+      this.iinductionManagerApi
         .BatchByZone(payload)
         .subscribe(
           (res: any) => {
             if (res.isExecuted) {
               if (!res.data) {
-                let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+                let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                   height: 'auto',
                   width: '560px',
                   autoFocus: '__non_existing_element__',
@@ -738,15 +745,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                   eRow: 5,
                   itemWhse: [
                     values.itemNumber,
-                    // "238562",
                     values.warehouse,
                     "1=1"
-                  ],
-                  username: this.userData.userName,
-                  wsid: this.userData.wsid 
+                  ], 
                 };
           
-                this.Api
+                this.iinductionManagerApi
                   .CrossDock(payLoad)
                   .subscribe(
                     (res: any) => {
@@ -754,7 +758,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                       {
                         if(res.data.transaction.length > 0)
                         {
-                          let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+                          let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                             height: 'auto',
                             width: '560px',
                             autoFocus: '__non_existing_element__',
@@ -778,15 +782,17 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                           this.complete(values);              
                         }
                       } else {
-                        this.toastr.error('Something went wrong', 'Error!', {
-                          positionClass: 'toast-bottom-right',
-                          timeOut: 2000,
-                        });
+                        this.global.ShowToastr('error','Something went wrong', 'Error!' );
+                        console.log("CrossDock",res.responseMessage);
                       }
                     },
                     (error) => {}
                   );   
               }
+            }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("BatchByZone",res.responseMessage);
             }
           });
    
@@ -805,7 +811,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       return;
     }
 
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -819,15 +825,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       if (result == 'Yes') {                                                              
 
         if (values.toteQty <= 0) {
-          this.toast.error('Quantity should be greater 0', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Quantity should be greater 0', 'Error!');
         } else {
 
-          var payload2 = {
+          let payload2 = {
             "otid": this.data.otid,
-            "splitQty": 0, // (values.toteQty ? parseInt(values.toteQty) : 0) - (values.quantityAllocatedPutAway ? parseInt(values.quantityAllocatedPutAway) : 0),
+            "splitQty": 0, 
             "qty": values.toteQty,
             "toteID": values.toteID,
             "batchID": this.data.batchID,
@@ -850,12 +853,10 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             "locMaxQty": values.maximumQuantity ? parseInt(values.maximumQuantity) : 0,
             "reel": false,
             "dedicate": values.dedicated,
-            "orderNumber": values.orderNumber,
-            "username": this.userData.userName,
-            wsid: this.userData.wsid 
+            "orderNumber": values.orderNumber
           }
           
-          this.Api.TaskComplete(payload2).subscribe(
+          this.iinductionManagerApi.TaskComplete(payload2).subscribe(
             (res: any) => {
               
               if (res.data && res.isExecuted) {
@@ -864,7 +865,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                   let numLabel = 1
                     if(this.imPreferences.requestNumberOfPutAwayLabels && this.imPreferences.printDirectly){
                       // here pop up will be implemented which will ask for number of labels
-                      let dialogRef = this.dialog.open(PaPrintLabelConfirmationComponent, {
+                      let dialogRef:any = this.global.OpenDialog(PaPrintLabelConfirmationComponent, {
                         height: 'auto',
                         width: '560px',
                         autoFocus: '__non_existing_element__',
@@ -878,7 +879,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
                           }
                           else{
-                            for (var i = 0; i < result; i++) {
+                            for (let i = 0; i < result; i++) {
                               this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`)
                           };
                           }
@@ -887,18 +888,18 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                       })
 
                     }
-                    else{
-                      if(numLabel>0){
+                    else if (numLabel > 0) {
+                      
                         if(!this.imPreferences.printDirectly){
                           window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
                         }
                         else{
-                          for (var i = 0; i < numLabel; i++) {
+                          for (let i = 0; i < numLabel; i++) {
                             this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`)
                         };
                         }
-                      }
+                      
                    
                     }
 
@@ -908,15 +909,10 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
 
                 this.dialogRef.close("Task Completed");
-                this.toast.success(labels.alert.update, 'Success!',{
-                  positionClass: 'toast-bottom-right',
-                  timeOut:2000
-                });            
+                this.global.ShowToastr('success',labels.alert.update, 'Success!' );            
               } else {
-                this.toast.error('Something went wrong', 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error','Something went wrong', 'Error!');
+                console.log("TaskComplete",res.responseMessage);
               }
             },
             (error) => { }

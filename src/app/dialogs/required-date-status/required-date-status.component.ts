@@ -3,6 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-required-date-status',
@@ -14,6 +16,7 @@ export class RequiredDateStatusComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  public iinductionManagerApi:IInductionManagerApiService;
 
   ELEMENT_DATA: any[] = [
     { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },    
@@ -52,7 +55,9 @@ export class RequiredDateStatusComponent implements OnInit {
     { countToInduct: "1", reqDate: "12/14/2022", zone: "12" }
   ];
 
-  constructor(private Api:ApiFuntions) { }
+  constructor(private Api:ApiFuntions,private inductionManagerApi: InductionManagerApiService) { 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
     this.getReqDateDataSelect();
@@ -64,15 +69,18 @@ export class RequiredDateStatusComponent implements OnInit {
   }
 
   getReqDateDataSelect(){
-    this.Api.ReqDateDataSelect().subscribe(res => {
-      if(res.data.length > 0) {
-        // console.log(res.data)
-        this.dataSource = new MatTableDataSource(res.data);
+    this.iinductionManagerApi.ReqDateDataSelect().subscribe(res => {
+      if (res?.isExecuted)
+      {
+        if(res.data.length > 0) {
+          this.dataSource = new MatTableDataSource(res.data);
+        }
+        else {
+         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+        }
+
       }
-      else {
-       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-      }
-      // console.log(this.dataSource.data);
+      
     });
   }
 

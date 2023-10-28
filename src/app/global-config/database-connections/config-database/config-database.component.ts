@@ -2,38 +2,43 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+
 
 @Component({
   selector: 'app-config-database',
   templateUrl: './config-database.component.html',
-  styleUrls: ['./config-database.component.scss'],
+  styleUrls: [],
 })
-export class ConfigDatabaseComponent implements OnInit {
+export class ConfigDatabaseComponent {
   @Input() connectionStringData;
   @Output() configdbUpdateEvent = new EventEmitter<string>();
 
   connectionNameSelect: any = '';
-  constructor(private Api:ApiFuntions) {}
+  public  iGlobalConfigApi: IGlobalConfigApi;
+  constructor(
+    private global: GlobalService,
+    private Api:ApiFuntions,
+    public globalConfigApi: GlobalConfigApiService
+    ) {
+      this.iGlobalConfigApi = globalConfigApi;
+    }
 
-  ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges) {
     if (
-      changes['connectionStringData'] &&
-      changes['connectionStringData']['currentValue'] &&
-      changes['connectionStringData']['currentValue']['connectionString']
+      changes['connectionStringData']?.currentValue?.connectionString
     )
       this.connectionStringData =
         changes['connectionStringData']['currentValue'];
 
     if (
-      this.connectionStringData &&
-      this.connectionStringData.laConnectionString &&
-      this.connectionStringData.laConnectionString.length > 0
+      this.connectionStringData?.laConnectionString?.length > 0
     ) {
       this.connectionNameSelect =
         this.connectionStringData?.laConnectionString[0]?.connectionName;
@@ -50,16 +55,20 @@ export class ConfigDatabaseComponent implements OnInit {
     let payload = {
       ConnectionName: item,
     };
-    this.Api
+    this.iGlobalConfigApi
       .LAConnectionStringSet(payload)
       .subscribe(
-        (res: any) => {
+        {next: (res: any) => {
           if (res.isExecuted) {
             this.connectionNameSelect = res.data.connectionName;
             this.configdbUpdateEvent.emit(res.isExecuted);
           }
+          else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("LAConnectionStringSet",res.responseMessage);
+          }
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
 }

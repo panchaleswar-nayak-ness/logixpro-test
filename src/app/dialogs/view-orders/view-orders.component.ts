@@ -1,12 +1,14 @@
-// import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from '../../../app/init/auth.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-view-orders',
@@ -89,20 +91,19 @@ export class ViewOrdersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('paginatorTrans') paginatorTrans: MatPaginator;
   @ViewChild(MatSort) viewTransSort: MatSort;
+  public iinductionManagerApi:IInductionManagerApiService;
 
-  // @ViewChild(MatPaginator, {static: false})
-  // set paginatorTrans(value: MatPaginator) {
-  //   if (this.orderTransDataSource){
-  //     this.orderTransDataSource.paginator = value;
-  //   }
-  // }
   constructor(
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    
     private authService: AuthService,
+    private inductionManagerApi: InductionManagerApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private global: GlobalService,
     public dialogRef: MatDialogRef<any>
-  ) { }
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -113,40 +114,41 @@ export class ViewOrdersComponent implements OnInit {
 
   getAllOrders() {
     let paylaod = {
-      "OrderView": this.data.viewType,
-      "wsid": this.userData.wsid,
+      "OrderView": this.data.viewType, 
     }
-    this.Api.OrdersInZone(paylaod).subscribe((res) => {
-      // console.log(res);
-      
-      if (res.data.length > 0) {
-        res.data.map(val => {
-          this.allOrders.push({ 'orderNumber': val, isSelected: false });
-        });
-        // console.log(this.allOrders);
-        // console.log(this.data.allOrders);
-        if (this.data.allOrders.length > 0) {
-          const selectedArr = this.allOrders.filter(element => this.data.allOrders.includes(element.orderNumber));
-          
-          selectedArr.map(ele => {
-            ele.isSelected = true
-            this.selectedOrders.push(ele.orderNumber);
+    this.iinductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
+      if (res.isExecuted && res.data)
+      {
+        if (res.data.length > 0) {
+          res.data.map(val => {
+            this.allOrders.push({ 'orderNumber': val, isSelected: false });
           });
-          // this.onOrderSelect(selectedArr[selectedArr.length -1]);
+          if (this.data.allOrders.length > 0) {
+            const selectedArr = this.allOrders.filter(element => this.data.allOrders.includes(element.orderNumber));
+            
+            selectedArr.forEach(ele => {
+              ele.isSelected = true
+              this.selectedOrders.push(ele.orderNumber);
+            });
+          }
+  
+          this.orderDataSource = new MatTableDataSource<any>(this.allOrders);
+          this.orderDataSource.paginator = this.paginator;
+          this.isDisableSubmit = false;
+  
         }
-
-        this.orderDataSource = new MatTableDataSource<any>(this.allOrders);
-        this.orderDataSource.paginator = this.paginator;
-        this.isDisableSubmit = false;
-
+        else{
+          this.global.ShowToastr('error','There are no orders for your zone', 'Error!');
+          this.isDisableSubmit = true
+          
+        }
       }
-      else{
-        this.toastr.error('There are no orders for your zone', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
-        this.isDisableSubmit = true
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("OrdersInZone",res.responseMessage);
       }
+      
+      
     });
   }
   onChangeOrderAction(option: any) {
@@ -175,7 +177,7 @@ export class ViewOrdersComponent implements OnInit {
     
     
     if (this.selectedOrders.includes(row.orderNumber)) {
-      this.allOrders.filter(val => {
+      this.allOrders.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = false;
           this.orderTransDataSource = [];
@@ -184,14 +186,11 @@ export class ViewOrdersComponent implements OnInit {
       this.selectedOrders = this.selectedOrders.filter(item => item !== row.orderNumber)
     }
     else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
-      this.toastr.error('No open totes in batch', 'Batch is Filled.', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','No open totes in batch', 'Batch is Filled.');
     }
     else {
       this.selectedOrders.push(row.orderNumber);
-      this.allOrders.filter(val => {
+      this.allOrders.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = true;
         }
@@ -203,16 +202,19 @@ export class ViewOrdersComponent implements OnInit {
         "eRow": 10,
         "SortColumnNumber": 0,
         "SortOrder": "asc",
-        "Filter": "1=1",
-        "Username": this.userData.username,
-        "wsid": this.userData.wsid,
+        "Filter": "1=1", 
       }
-      this.Api.InZoneTransDT(paylaod).subscribe((res) => {
-        if (res.data) {
+      this.iinductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
+        if (res.isExecuted && res.data) {
           this.transData = res.data.pickToteManTrans;
           this.orderTransDataSource = new MatTableDataSource<any>(this.transData);
           this.orderTransDataSource.paginator = this.paginatorTrans;
           this.orderTransDataSource.sort = this.viewTransSort;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("InZoneTransDT",res.responseMessage);
+
         }
       });
     }

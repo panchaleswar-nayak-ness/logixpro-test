@@ -1,15 +1,17 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+
 import labels from '../../../labels/labels.json'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-pick',
@@ -41,7 +43,7 @@ export class PickComponent implements OnInit {
     { sequence: 'priority', key: 'priority' },
     { sequence: 'requiredDate', key: 'requiredDate' },
   ];
-
+  public iAdminApiService: IAdminApiService;
   @ViewChild('paginator1') paginator1: MatPaginator;
   @ViewChild('paginator2') paginator2: MatPaginator;
 
@@ -50,13 +52,16 @@ export class PickComponent implements OnInit {
   shortList: any = [];
 
   constructor(
-    private toastr: ToastrService,
+    
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private authService: AuthService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private _liveAnnouncer1: LiveAnnouncer,
     private _liveAnnouncer2: LiveAnnouncer
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -70,7 +75,7 @@ export class PickComponent implements OnInit {
     let payload:any = {
       orderNumber: this.orderNumberSearch,
     };
-    this.Api.GetLocationAssignmentPickTable(payload).subscribe((res: any) => {
+    this.iAdminApiService.GetLocationAssignmentPickTable(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.allShortList = res.data.allShortList;
         this.fpzList = res.data.fpzList;
@@ -82,11 +87,7 @@ export class PickComponent implements OnInit {
         );
         this.tableData1.paginator = this.paginator1;
       } else { 
-        this.tableData1 = new MatTableDataSource([]); 
-        // this.toastr.error(res.responseMessage, 'Error!', {
-        //   positionClass: 'toast-bottom-right',
-        //   timeOut: 2000
-        // });
+        this.tableData1 = new MatTableDataSource([]);
       }
     });
   }
@@ -141,13 +142,10 @@ export class PickComponent implements OnInit {
 
   locationAssignment() {
     if (this.tableData2.data.length == 0) {
-      this.toastr.error("There were no orders selected for location assignment marking", 'No Orders Selected', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"There were no orders selected for location assignment marking", 'No Orders Selected');
     }
     else {
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -161,23 +159,16 @@ export class PickComponent implements OnInit {
         if (result === 'Yes') {
           let payload: any = {
             "transType": 'pick',
-            "orders": this.tableData2.data.map((item: any) => { return item.orderNumber }),
-            "username": this.userData.userName,
-            "wsid": this.userData.wsid
+            "orders": this.tableData2.data.map((item: any) => { return item.orderNumber }), 
           };
-          this.Api.LocationAssignmentOrderInsert(payload).subscribe((res: any) => {
+          this.iAdminApiService.LocationAssignmentOrderInsert(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
               this.tableData2 = new MatTableDataSource([]);
               this.tableData2.paginator = this.paginator2;
-              this.toastr.success(labels.alert.success, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.success, 'Success!');
             } else {
-              this.toastr.error("There was an error marking these orders for location assignment", 'Error', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"There was an error marking these orders for location assignment", 'Error');
+              console.log("LocationAssignmentOrderInsert",res.responseMessage);
             }
           });
         }
@@ -236,13 +227,11 @@ export class PickComponent implements OnInit {
 
 
   openLAQ() {
-    let payload = {
-      "userName" : this.userData.userName,
-      "wsid": this.userData.wsid
+    let payload = { 
     }
 
-    this.Api.GetTransactionTypeCounts(payload).subscribe((res =>{
-    let dialogRef = this.dialog.open(LaLocationAssignmentQuantitiesComponent, {
+    this.iAdminApiService.GetTransactionTypeCounts(payload).subscribe((res =>{
+    let dialogRef:any = this.global.OpenDialog(LaLocationAssignmentQuantitiesComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',

@@ -6,7 +6,6 @@
 </button>
 </div>
 <div class="">
-    <!-- <div mat-dialog-content> -->
 
         <form class="form pb-4" [formGroup]="controlNameForm" (ngSubmit)="onSend(controlNameForm)">
                 <mat-form-field class="d-block w-100" appearance="outline">
@@ -22,11 +21,6 @@
 
                     <mat-autocomplete class="card" autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="controlNameForm.controls['controlName'].setValue($event.option.value)">
                         <h6 class="card-header matAutoCompHeader stickyHeader ps-4"><span>Group Name</span></h6>
-                        <!-- <mat-option>
-                            <div class="ctl_option ac-dropdown-option">
-                                <span>Group Name</span>
-                            </div>
-                        </mat-option> -->
                         <div class=" custom-scroll">
                         <mat-option *ngFor="let option of filteredOptions | async"
                             [value]="option.groupName" style="width:900px !important;">
@@ -42,13 +36,10 @@
                       </span>
                   </mat-form-field>
                   <div class="error" *ngIf="hasError('controlName', 'required')">This field is required.</div>
-            <!-- </mat-form-field> -->
             <mat-dialog-actions align="end">
-                <!-- <button mat-button matDialogClose="no" color="danger">Cancel</button> -->
                 <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100"
                     color="primary" [disabled]="!controlNameForm.valid">{{form_btn_label}}</button>
             </mat-dialog-actions>
 
         </form>
-    <!-- </div> -->
 </div>

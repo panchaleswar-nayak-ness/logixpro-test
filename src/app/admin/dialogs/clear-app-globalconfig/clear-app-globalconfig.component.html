@@ -12,7 +12,6 @@
         <p class="prompt-message py-4 mb-0">
           Are you sure you want to clear default app? {{data && data.message}}
         </p>
-        <!-- <p class="bold text-danger mb-4">This action can not be redone.</p> -->
         <div class="br-14 px-4 py-3 checkbox-background mb-4">
           <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary">I understand </mat-checkbox>
         </div>
@@ -20,7 +19,7 @@
     </mat-dialog-content>
     <mat-dialog-actions class="d-flex flex-column justify-content-center m-0 p-0">
       <button  class="mat-button-base prompt-action-danger-button  mb-3 btn-lg w-100" mat-stroked-button mat-button
-      (click)="onConfirmdelete()" tabindex="1" [disabled]="isChecked" [ngStyle]="{'opacity': isChecked ? '0.8' : '1' }">Clear</button>
+       tabindex="1" [disabled]="isChecked" [ngStyle]="{'opacity': isChecked ? '0.8' : '1' }">Clear</button>
       <button class="mat-button-base prompt-action-basic-button btn-lg w-100" mat-button mat-dialog-close
         tabindex="-1">
         Close

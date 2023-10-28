@@ -1,19 +1,20 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import {
-  MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
-import labels from '../../../labels/labels.json'; 
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-hold-reason',
   templateUrl: './hold-reason.component.html',
-  styleUrls: ['./hold-reason.component.scss'],
+  styleUrls: [],
 })
 export class HoldReasonComponent implements OnInit {
   @ViewChild('order_text') order_text: ElementRef;
@@ -21,18 +22,22 @@ export class HoldReasonComponent implements OnInit {
   payload;
   userData;
   reason;
+  public iAdminApiService: IAdminApiService;
   reasonTextForm = new FormGroup({
     reason: new FormControl('' ,[Validators.pattern(/\s/), Validators.required])
   
   });
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    private adminApiService: AdminApiService,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<HoldReasonComponent>,
     private authService: AuthService,
     private Api: ApiFuntions,
-    private toastr: ToastrService
-  ) {}
+   ) {
+    this.iAdminApiService = adminApiService;
+
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -56,21 +61,16 @@ export class HoldReasonComponent implements OnInit {
       UserName: this.data.reel,
     };
     
-    this.Api
+    this.iAdminApiService
       .DeallocateTransactions(this.payload)
       .subscribe((res: any) => {
         if (res.isExecuted) {
-          this.toastr.success(res.responseMessage, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success',res.responseMessage, 'Success!');
           this.dialogRef.close({ isExecuted: true });
         } else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
           this.dialogRef.close({ isExecuted: false });
+          console.log("DeallocateTransactions",res.responseMessage);
         }
       });
   }

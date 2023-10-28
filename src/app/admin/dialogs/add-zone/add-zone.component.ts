@@ -1,13 +1,16 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { startWith } from 'rxjs/internal/operators/startWith'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-add-zone',
@@ -26,32 +29,33 @@ export class AddZoneComponent implements OnInit {
   addZoneForm: FormGroup;
   isValid = false;
   public editZoneName: any;
-
+  public iAdminApiService: IAdminApiService;
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    
     private employeeService: ApiFuntions,
     private router: Router,
+    private global:GlobalService,
+    private adminApiService: AdminApiService,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<any>
 
-  ) { }
+  ) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
-    this.data?.mode === 'edit-zone' ? this.form_heading = 'Edit Zone' : 'Update Zone';
-    this.data?.mode === 'edit-zone' ? this.form_btn_label = 'Update' : 'Add';
-    this.fetchedZones=this.data?.fetchedZones;
-    
-    this.editZoneName=this.data?.fetchedZones;
-
+    const isEditMode = this.data?.mode === 'edit-zone';
+    this.form_heading = isEditMode ? 'Edit Zone' : 'Update Zone';
+    this.form_btn_label = isEditMode ? 'Update' : 'Add';
+    this.fetchedZones = this.data?.fetchedZones;
+    this.editZoneName = this.data?.fetchedZones;
     this.initialzeEmpForm();
     this.filteredOptions = this.addZoneForm.controls['zoneList'].valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
+        startWith(''),
+        map(value => this._filter(value || '')),
     );
-
-  }
+}
 
   ngAfterViewInit() {
     if (this.data.mode === 'edit-zone') {
@@ -109,15 +113,14 @@ export class AddZoneComponent implements OnInit {
 
         let fetchedIndex=this.fetchedZones.findIndex(item => item.zones === form.value.zoneList )
         if(fetchedIndex===-1){
-          this.employeeService.deleteEmployeeZone(zoneData).subscribe((res: any) => {
+          this.iAdminApiService.deleteEmployeeZone(zoneData).subscribe((res: any) => {
             if (res.isExecuted) {
               this.addUpdateZone(addZoneData, oldZone, mode)
             }
-          });
-        }else{
-          this.toastr.error('Zone Already Exists!', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("deleteEmployeeZone",res.responseMessage);
+            }
           });
         }
      
@@ -133,19 +136,14 @@ export class AddZoneComponent implements OnInit {
   }
 
   private addUpdateZone(addZoneData: any, oldZone: any, mode: string) {
-    this.employeeService.updateEmployeeZone(addZoneData).subscribe((res: any) => {
+    this.iAdminApiService.updateEmployeeZone(addZoneData).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialogRef.close({ data: addZoneData, mode: mode, oldZone: oldZone });
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
-        //  this.reloadCurrentRoute();
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
       } else {
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("updateEmployeeZone",res.responseMessage);
       }
     });
   }

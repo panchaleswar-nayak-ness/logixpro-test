@@ -1,26 +1,31 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit } from '@angular/core';
+
 import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../../labels/labels.json';
-import { Router,NavigationEnd  } from '@angular/router';
+import { Router  } from '@angular/router';
 import { FormControl, FormGroup, Validators, } from '@angular/forms';
-import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-user-account',
   templateUrl: './user-account.component.html',
-  styleUrls: ['./user-account.component.scss'],
+  styleUrls: [],
 })
 export class UserAccountComponent implements OnInit {
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private sharedService: SharedService,
     private Api:ApiFuntions,
-    private toastr: ToastrService,
+    
     private router: Router,
-    private authService:AuthService
-  ) {}
+    public globalConfigApi: GlobalConfigApiService,
+    private global: GlobalService
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
   username: any;
   password: any;
@@ -29,7 +34,7 @@ export class UserAccountComponent implements OnInit {
   public toggle_password = true;
   ngOnInit(): void {
     let sharedData = this.sharedService.getData();
-    if (sharedData && sharedData.loginInfo) {
+    if (sharedData?.loginInfo) {
       this.username = sharedData.loginInfo[0].user;
       this.password = sharedData.loginInfo[0].password;
       this.passwordCompare = sharedData.loginInfo[0].password;
@@ -49,10 +54,9 @@ export class UserAccountComponent implements OnInit {
       DisplayName: 'Consolidation Manager',
       AppName: 'Consolidation Manager',
     };
-    this.Api.Menu(payload).subscribe(
-      (res: any) => {
-        res && res.data;
-        if (res && res.data ) {
+    this.iGlobalConfigApi.Menu(payload).subscribe(
+      {next: (res: any) => {
+        if (res.isExecuted && res.data ) {
           this.sharedService.setData(res.data);
           this.username = res.data.loginInfo[0].user;
           this.password = res.data.loginInfo[0].password;
@@ -60,8 +64,12 @@ export class UserAccountComponent implements OnInit {
 
           this.constUser=res.data.loginInfo[0].user;
         }
+        else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("Menu",res.responseMessage);
+        }
       },
-      (error) => {}
+      error: (error) => {}}
     );
   }
   
@@ -69,30 +77,26 @@ export class UserAccountComponent implements OnInit {
  
   changeGlobalAcc() {
     let payload = {
-      // userName: this.constUser,
-      userName:this.authService.userData().userName,
       password: this.password,
     };
-    this.Api
+    this.iGlobalConfigApi
       .ChangeGlobalAccount(payload)
       .subscribe(
-        (res: any) => {
-          if (res.isExecuted) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+        {next: (res: any) => {
+          if (res?.isExecuted) {
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          }
+          else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("changeGlobalAccount",res.responseMessage);
           }
           this.getMenuData();
           localStorage.clear();
           this.router.navigate(['/globalconfig']);
         },
-        (error) => {
-          this.toastr.error(labels.alert.went_worng, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
-        }
+        error: (error) => {
+          this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+        }}
       );
   }
 }

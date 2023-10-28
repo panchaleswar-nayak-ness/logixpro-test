@@ -1,15 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-import-field-mapping',
   templateUrl: './import-field-mapping.component.html',
-  styleUrls: ['./import-field-mapping.component.scss']
+  styleUrls: []
 })
-export class ImportFieldMappingComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class ImportFieldMappingComponent{}

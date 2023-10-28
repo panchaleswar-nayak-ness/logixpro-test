@@ -1,16 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-invalid-quantity',
   templateUrl: './invalid-quantity.component.html',
-  styleUrls: ['./invalid-quantity.component.scss']
+  styleUrls: []
 })
-export class InvalidQuantityComponent implements OnInit {
+export class InvalidQuantityComponent  {
 
   constructor(public dialogRef: MatDialogRef<any>) { }
-
-  ngOnInit(): void {
-  }
-
 }

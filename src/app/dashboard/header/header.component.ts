@@ -1,23 +1,28 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { SpinnerService } from '../../../app/init/spinner.service'; 
 import { Router,NavigationEnd  } from '@angular/router';
 import { AuthService } from '../../../app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { SharedService } from 'src/app/services/shared.service'; 
 import { Title } from '@angular/platform-browser';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Subscription } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions'; 
-import { MatDialog } from '@angular/material/dialog';
 import { DPrinterSetupComponent } from 'src/app/dialogs/d-printer-setup/d-printer-setup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IUserAPIService } from 'src/app/services/user-api/user-api-interface';
+import { UserApiService } from 'src/app/services/user-api/user-api.service';
+
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   private breakpointSubscription: Subscription
   @Output() toggleSidebarForMe: EventEmitter<any> = new EventEmitter();
   loading:boolean = true;
@@ -25,32 +30,32 @@ export class HeaderComponent implements OnInit {
   breadcrumbList: any = [];
   userData: any;
   configUser:any;
+  public iInductionManagerApi : IInductionManagerApiService;
 isConfigUser
 statusTab;
-  // public user_data  = JSON.parse(localStorage.getItem('user') || '');
-  constructor(
-    private dialog: MatDialog,
+public  iGlobalConfigApi: IGlobalConfigApi;
+public iUserApi : IUserAPIService;
+constructor(
+	  public userApi : UserApiService,
+    private global:GlobalService,
     private router: Router,
+    public inductionManagerApi: InductionManagerApiService,
     public spinnerService: SpinnerService, 
     private authService: AuthService,
-    private api:ApiFuntions,
-    private toastr: ToastrService,
+    public globalConfigApi: GlobalConfigApiService,
+    
     private sharedService: SharedService,
     private titleService: Title,
-    private breakpointObserver: BreakpointObserver,
-    private global:GlobalService,
+    private breakpointObserver: BreakpointObserver, 
     ) {
+      this.iGlobalConfigApi = globalConfigApi;
       let width=0;
-      let height =0;
+      this.iInductionManagerApi = inductionManagerApi;
+      this.iUserApi = userApi;
+
       this.breakpointSubscription = this.breakpointObserver.observe([Breakpoints.Small,Breakpoints.Large])
       .subscribe((state: BreakpointState) => {
-        // if (state.matches) {
-          // Small viewport dimensions
-           width = window.innerWidth;
-           height = window.innerHeight;
-          
-        
-        // }
+           width = window.innerWidth;    
       })
       
    this.isConfigUser=  this.authService.isConfigUser()
@@ -58,12 +63,7 @@ statusTab;
       if(!this.global.changesConfirmation){
 
         this.breadcrumbList = [];
-        if(this.authService.isConfigUser()){
-          // this.breadcrumbList.push({
-            //   name:'',
-            //   value:'/globalconfig/dashboard'
-            // })
-          }else{
+        if(!this.authService.isConfigUser()){
             this.breadcrumbList.push({
               name:'LogixPro',
               menu: '',
@@ -122,10 +122,7 @@ statusTab;
         }
       });
       
-      }  
-      // if(this.breadcrumbList[this.breadcrumbList.length-1].name == '/OrderStatus'){
-      //   this.breadcrumbList[this.breadcrumbList.length-1].value = this.statusTab
-      // } 
+      }   
      
   });
 
@@ -144,11 +141,9 @@ statusTab;
 
     } else {
 
- let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+ let paylaod = { 
     }
-    this.api.PickToteSetupIndex(paylaod).subscribe(res => {
+    this.iInductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
       localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
 
 
@@ -158,8 +153,8 @@ statusTab;
   }
   ngOnInit(): void {
     this.loading = false;
-    this.userData = JSON.parse(localStorage.getItem('user') || '{}');
-    this.configUser = JSON.parse(localStorage.getItem('userConfig') || '{}'); 
+    this.userData = JSON.parse(localStorage.getItem('user') ?? '{}');
+    this.configUser = JSON.parse(localStorage.getItem('userConfig') ?? '{}'); 
     if(this.router.url.indexOf('globalconfig') > -1){
       this.ConfigUserLogin =  true;
     }else {
@@ -169,13 +164,12 @@ statusTab;
       this.setImPreferences();
     }
       this.userData = this.authService.userData(); 
-    // 
     
 
   }
 
   GetWorkStatPrinters(){
-    this.api.GetWorkStatPrinters().subscribe((res:any)=>{ 
+    this.iGlobalConfigApi.GetWorkStatPrinters().subscribe((res:any)=>{ 
       localStorage.setItem("SelectedReportPrinter",res.data.reportPrinter);
        localStorage.setItem("SelectedLabelPrinter",res.data.labelPrinter);
     })
@@ -185,21 +179,18 @@ statusTab;
       this.statusTab = res.tab.textLabel;
       this.breadcrumbList[this.breadcrumbList.length-1].name = this.statusTab
     } )
- 
   }
 
   toggleSidebar() {
     this.toggleSidebarForMe.emit();
   }
   routeToLogin(){
-    localStorage.clear();
     this.router.navigate(['/login']);
   }
 
   breadCrumbClick(menu,index:any = null) { 
-    debugger
      if(index != null){ 
-      var Url = "";  
+      let Url = "";  
       for (let i = 0; i <= index; i++) {
         if(this.breadcrumbList[i].menu!='') Url += this.breadcrumbList[i].value; 
       }   
@@ -223,60 +214,38 @@ statusTab;
       }
     }    
   }
-  // RouterLinkSet(index){
-  //   var Url = "";
-  //   for (let i = 0; i <= index; i++) {
-  //         if(this.breadcrumbList[i].menu!='') Url += this.breadcrumbList[i].value; 
-  //       }   
-  //       return Url;
-  // }
 
   logout(){    
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
-    }
     if(this.authService.isConfigUser()){
-      localStorage.clear();
-      this.api.configLogout(paylaod).subscribe((res:any) => {
+      this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
         if (res.isExecuted) 
         {
           window.location.href = "/#/globalconfig"; 
         }
         else 
         {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("configLogout",res.responseMessage);
         }
       })
-      // this.router.navigate(['/globalconfig']);
      
     }else{
-      localStorage.clear();
-      this.api.Logout(paylaod).subscribe((res:any) => {
+      this.iUserApi.Logout().subscribe((res:any) => {
         if (res.isExecuted) 
         { 
           window.location.href = "/#/login";
         }
         else 
         {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("Logout",res.responseMessage);
         }
       })
     }
   
-    // this.deleteAllCookies();
 
   }
 
-  // deleteAllCookies() {
-  //   document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-  // }
   
   getViewportDimensions(): void {
     this.breakpointObserver.observe([Breakpoints.Small])
@@ -301,7 +270,7 @@ statusTab;
   }
 
   openPrintSetting(){
-    const dialogRef = this.dialog.open(DPrinterSetupComponent, {
+    this.global.OpenDialog(DPrinterSetupComponent, {
       height: 'auto',
       width: '556px',
       autoFocus: '__non_existing_element__',

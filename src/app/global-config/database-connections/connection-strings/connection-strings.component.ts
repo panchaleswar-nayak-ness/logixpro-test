@@ -1,34 +1,39 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import { Component, Input,  SimpleChanges, Output, EventEmitter } from '@angular/core';
+
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { IConnectionString } from 'src/app/interface/transaction'; 
-import { Output, EventEmitter } from '@angular/core';
 import { GlobalConfigSetSqlComponent } from 'src/app/admin/dialogs/global-config-set-sql/global-config-set-sql.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+
 
 @Component({
   selector: 'app-connection-strings',
   templateUrl: './connection-strings.component.html',
-  styleUrls: ['./connection-strings.component.scss'],
+  styleUrls: [],
 })
-export class ConnectionStringsComponent implements OnInit {
+export class ConnectionStringsComponent {
   @Input() connectionStringData: IConnectionString[] = [];
   @Output() connectionUpdateEvent = new EventEmitter<string>();
   isAddedNewRow = false;
   isDuplicateAllow=false;
   duplicateIndex;
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private Api: ApiFuntions,
-    private toastr: ToastrService,
-    private dialog: MatDialog,
-  ) {}
+    
+    private global:GlobalService,
+    public globalConfigApi: GlobalConfigApiService
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
-  ngOnInit(): void {}
+ 
   ngOnChanges(changes: SimpleChanges) {
     if (
-      changes['connectionStringData'] &&
-      changes['connectionStringData']['currentValue'] &&
+      
       changes['connectionStringData']['currentValue']['connectionString']
     )
       this.connectionStringData =
@@ -62,13 +67,11 @@ export class ConnectionStringsComponent implements OnInit {
         this.connectionStringData[index].isButtonDisable = true;
       } else {
         this.connectionStringData[index].isButtonDisable = false;
-        // this.connectionStringData[index].isSqlButtonDisable = false;
       }
     } else if(   item.connectionName == '' ||
     item.databaseName == '' ||
     item.serverName == '')  {
       this.connectionStringData[index].isButtonDisable = true;
-      // this.connectionStringData[index].isSqlButtonDisable = false;
     }else{
       this.connectionStringData[index].isButtonDisable = false;
 
@@ -77,53 +80,18 @@ export class ConnectionStringsComponent implements OnInit {
   saveString(item,index?) {
     let indexesToShow:any = [];
     let indexesToHide:any = [];
-    this.connectionStringData.map((el,i)=>{
+    this.connectionStringData.forEach((el,i)=>{
 
         if(i!=index){
         if(el.connectionName===item.connectionName){
-          // this.connectionStringData[index].isDuplicate=true
           this.duplicateIndex=true
         }else{
           this.duplicateIndex=false
       
         }
-        // else if(el.connectionName!=item.connectionName){
-        //   this.connectionStringData[i].isDuplicate=false;
-      
-        // }
       }
     })
 
-    
-
-
-
-
-    // this.connectionStringData.map((el,i)=>{
-    //   // if(i!=index){
-        
-    //     if(el.connectionName===item.connectionName && i === index && !this.duplicateIndex){
-    //       // this.connectionStringData[index].isDuplicate=true;
-    //       indexesToShow.push(i);
-    //       this.duplicateIndex = i;
-          
-    //     }
-    //     else{
-    //       // this.connectionStringData[index].isDuplicate=false;
-    //       indexesToHide.push(i);
-    //       if(this.duplicateIndex != undefined && this.duplicateIndex === i){
-    //           this.duplicateIndex = undefined;
-    //     }}
-    //   // } else{
-    //   //   indexesToHide.push(i);
-    //   // }
-    // });
-    // indexesToShow.forEach(x => {
-    //   this.connectionStringData[x].isDuplicate = true;      
-    // });
-    // indexesToHide.forEach(x => {
-    //   this.connectionStringData[x].isDuplicate = false;
-    // });
     
     if(!this.duplicateIndex){
     
@@ -137,41 +105,30 @@ export class ConnectionStringsComponent implements OnInit {
       DatabaseName: item.databaseName,
       ServerName: item.serverName,
     };
-    this.Api
+    this.iGlobalConfigApi
       .ConnectionSave(payload)
       .subscribe(
         (res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
         this.connectionStringData[index].isSqlButtonDisable = false;
         this.connectionStringData[index].isButtonDisable = true;
 
           }else{
-            this.toastr.error('A connection by this name already exists', 'Error!!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error','A connection by this name already exists', 'Error!!');
+            console.log("saveString",res.responseMessage);
           }
         },
         (error) => {
-          this.toastr.error('something went wrong!', 'Error!!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','something went wrong!', 'Error!!');
         }
       );
     }else{
-      this.toastr.error('A connection by this name already exists', 'Error!!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      });
+      this.global.ShowToastr('error','A connection by this name already exists', 'Error!!');
     }
   }
   deleteString(item) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       data: {
@@ -194,7 +151,7 @@ export class ConnectionStringsComponent implements OnInit {
     let payload = {
       ConnectionName: item.connectionName,
     };
-    this.Api
+    this.iGlobalConfigApi
       .ConnectionUserPassword(payload)
       .subscribe(
         (res: any) => {
@@ -202,7 +159,7 @@ export class ConnectionStringsComponent implements OnInit {
           
           if (res.isExecuted) {
          
-            const dialogRef = this.dialog.open(GlobalConfigSetSqlComponent, {
+            const dialogRef:any = this.global.OpenDialog(GlobalConfigSetSqlComponent, {
               height: 'auto',
               width: '600px',
               autoFocus: '__non_existing_element__',
@@ -215,7 +172,7 @@ export class ConnectionStringsComponent implements OnInit {
               },
             });
             dialogRef.afterClosed().subscribe((res) => {
-              if (res && res.isExecuted) {
+              if (res?.isExecuted) {
                 this.connectionUpdateEvent.emit(res.isExecuted);
               }
             });

@@ -1,8 +1,8 @@
-import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core'; 
 import { environment } from '../../environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';  
-import { BYPASS_LOG } from '../init/http-interceptor';
+import {  Observable } from 'rxjs';  
+
 
 @Injectable({
     providedIn: 'root'
@@ -58,11 +58,7 @@ export class BaseService {
             headers: this.GetHeaders(),
           });
     }
-    public Update(endPoint: string,reqPaylaod: any) { 
-        return this.http.put<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
-            headers: this.GetHeaders(),
-          });
-    }
+    
     public Delete(endPoint: string,reqPaylaod: any = null) {
       let queryParams = new HttpParams();
       for(let key in reqPaylaod){
@@ -74,11 +70,7 @@ export class BaseService {
             params:queryParams
           });
     } 
-    public update(reqPaylaod: any, endPoint: string) { 
-        return this.http.put<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
-            headers: this.GetHeaders(),
-          });
-    } 
+    
     token:string;
   private GetHeaders(): HttpHeaders {
     let httpHeaders = new HttpHeaders();
@@ -86,7 +78,7 @@ export class BaseService {
       'content-type',
       'application/json; charset=utf-8',
     );
-    const { _token } = JSON.parse(localStorage.getItem('user') || "{}");
+    const { _token } = JSON.parse(localStorage.getItem('user') ?? "{}");
     if (_token != null) {
       httpHeaders = httpHeaders.set('_token', _token);
     }
@@ -97,7 +89,7 @@ export class BaseService {
     httpHeaders.append('content-type', 'multipart/form-data');
     httpHeaders.append('Accept', 'application/json');
    
-    const { _token } = JSON.parse(localStorage.getItem('user') || "{}");
+    const { _token } = JSON.parse(localStorage.getItem('user') ??"{}");
     if (_token != null) {
       httpHeaders = httpHeaders.set('_token', _token);
     }

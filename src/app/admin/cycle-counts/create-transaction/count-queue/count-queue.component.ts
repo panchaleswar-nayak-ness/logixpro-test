@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 export interface PeriodicElement {
   name: string;
@@ -25,14 +25,10 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './count-queue.component.html',
   styleUrls: ['./count-queue.component.scss']
 })
-export class CountQueueComponent implements OnInit {
+export class CountQueueComponent  {
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'ex', 'srno', 'action'];
   tableData = ELEMENT_DATA;
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

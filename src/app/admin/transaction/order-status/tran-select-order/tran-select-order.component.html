@@ -18,17 +18,6 @@
         </button>
       </div>
     </div>
-    <!-- 
-    <div class="col-md-4">
-      <button (click)="deleteOrder()" [disabled]="totalLinesOrder==0" mat-flat-button color="warn" class="btn-md w-100 "
-        [ngClass]="{'disabled-button' : totalLinesOrder==0, 'delete-button' : totalLinesOrder>0 }">
-      </button>
-    </div> -->
-    <!-- <div class="col-md-4">
-        <button (click)="deleteOrder()" [disabled]="totalLinesOrder==0"  mat-flat-button color="warn"  class="btn-md w-100 " [ngClass]="{'disabled-button' : totalLinesOrder==0, 'delete-button' : totalLinesOrder>0 }" >
-          Delete
-        </button>
-      </div> -->
 
 
 
@@ -59,7 +48,6 @@
               <span class="material-symbols-outlined icon-search">
                 Search
               </span>
-              <!-- (ngModelChange)="this.searchBar.next($event)" -->
               <input  (keyup.enter)="selectOrderByTote()" (keyup)="getNextItemNo($event)" type="text" placeholder="Search" aria-label="Number" matInput [disabled]="!columnSelect"
                 [(ngModel)]='searchField' [matAutocomplete]="auto">
                 <button matSuffix *ngIf="searchField" class="clear-btn"  (click)="searchField = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
@@ -73,49 +61,8 @@
         </div>
 
 
-            <!-- <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()"
-              [hideRequiredMarker]="hideRequiredControl.value">
-              <span class="material-symbols-outlined icon-search">
-                Search
-              </span>
-              <input type="text" placeholder="Search" [(ngModel)]="orderNumber"
-                aria-label="Number" matInput [matAutocomplete]="auto">
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
-                <mat-option
-                  *ngFor="let option of searchAutocompleteListOrderNumber | searchFilter: orderNumber"
-                  [value]="option">
-                  {{option}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field> -->
-
-
 
           </div>
-          <!-- 
-          <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline"
-            [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
-            <span class="material-symbols-outlined icon-search">
-              search
-            </span>
-            <input type="text" placeholder="search" aria-label="Number" matInput [(ngModel)]="orderNumber"
-              [matAutocomplete]="auto" (ngModelChange)="this.searchByOrderNumber.next($event)">
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
-              <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
-                {{option}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-
-          <span class="v-br">-</span>
-          <div class="d-flex g-mini-search-box">
-            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
-              <mat-label>Tote ID.</mat-label>
-              <input [(ngModel)]="toteID" (ngModelChange)="this.searchByToteId.next($event)" matInput class="" value=""
-                type="text" type="text" placeholder="search" aria-label="Number" matInput>
-            </mat-form-field>
-
-          </div> -->
           <div class="col-xxl-3">
             <button (click)="clear()" mat-flat-button color="primary"
               class="button-remove-all-w-stroke w-100 mb-3" style="color:white!important">
@@ -142,132 +89,10 @@
       </div>
     </div>
 
-    <div class="row d-flex justify-content-between align-items-center ">
-      <div class="col-md-4 ">
-        <div class="d-flex  ">
-          <mat-card class="mat-elevation-z g-card br-14 Compete-cart w-100 mb-2">
-            <mat-card-content>
-              <div class="row">
-                <div class="col-12">
-                  Completed
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <strong>{{this.completeOrder}}</strong>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
 
-
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="d-flex ">
-          <mat-card class="mat-elevation-z g-card br-14  Reprocess-card w-100 mb-2">
-            <mat-card-content>
-              <div class="row">
-                <div class="col-12">
-                  Re-process
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <strong>{{this.reprocessOrder}}</strong>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="d-flex  ">
-          <mat-card class="mat-elevation-z g-card br-14  Open-card  w-100 mb-2">
-            <mat-card-content>
-              <div class="row">
-                <div class="col-12">
-                  Open
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <strong>{{this.openOrder}}</strong>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-
-        </div>
-      </div>
-    </div>
-    <div class="row d-flex mt-2">
-      <div class="col-md-4 ">
-        <div class="d-flex justify-content-between align-items-center  ">
-          <mat-card class="mat-elevation-z g-card br-14  Order-type  w-100 mb-2">
-            <mat-card-content>
-              <div class="row">
-                <div class="col-12">
-                  Order type
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <strong>{{this.orderTypeOrder}}</strong>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="d-flex justify-content-between align-items-center ">
-          <mat-card class="mat-elevation-z g-card br-14  Total-lines  w-100 mb-2">
-            <mat-card-content>
-              <div class="row">
-                <div class="col-12">
-                  Total-lines
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <strong>{{this.totalLinesOrder}}</strong>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="d-flex justify-content-between align-items-center ">
-          <mat-card class="mat-elevation-z g-card br-14  Current-status w-100  mb-2">
-            <mat-card-content>
-              <div class="row">
-                <div class="col-12">
-                  Current Status
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <strong>{{this.currentStatusOrder}}</strong>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-
-        </div>
+    <div  class="row d-flex justify-content-between align-items-center ">
+      <div *ngFor="let info of info" class="col-md-4 ">
+        <app-info-card-component title={{info.title}} value={{info.value}} colorClass={{info.colorClass}}></app-info-card-component>
       </div>
     </div>
 

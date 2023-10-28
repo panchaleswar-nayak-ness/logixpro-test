@@ -1,14 +1,17 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import labels from '../../../labels/labels.json'
 import { AuthService } from 'src/app/init/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-kit-item',
@@ -30,7 +33,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   oldNumber="";
   @ViewChild('namebutton', { read: ElementRef, static:false }) namebutton: ElementRef;
 
-
+ public iAdminApiService: IAdminApiService;
 
   searchValue: any = '';
   searchList: any;
@@ -44,15 +47,21 @@ export class KitItemComponent implements OnInit, OnChanges {
     this.notifyParent.emit(e);
   }
 
-  constructor(private Api: ApiFuntions,
-    private toastr: ToastrService,
+  public iCommonAPI : ICommonApi;
+
+  constructor(
+    public commonAPI : CommonApiService,
+    private adminApiService: AdminApiService,
+    
     private authService: AuthService,
-    private dialog: MatDialog,
-    private el: ElementRef,
     private global:GlobalService,
+    private el: ElementRef, 
     private sharedService:SharedService,
-    private route:Router
-    ) { }
+    private dialog:MatDialog,
+    private Api:ApiFuntions
+    ) { this.iCommonAPI = commonAPI; 
+      this.iAdminApiService = adminApiService;
+    }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -70,13 +79,10 @@ export class KitItemComponent implements OnInit, OnChanges {
 
   openPrintRangeDialog() {
     this.global.Print(`FileName:printKitReport|ItemNumber:${this.kitItem.value.itemNumber}`)
-    // window.location.href = `/#/report-view?file=FileName:printKitReport|ItemNumber:${this.kitItem.value.itemNumber}`
-    // window.location.reload();
 
   }
 
   addCatRow(e: any) {
-    // this.Ikey =  this.kitItemsList.length;
     this.kitItemsList.unshift({
       itemNumber: '',
       description: '',
@@ -97,7 +103,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   }
 
   dltCategory(e: any) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -110,18 +116,19 @@ export class KitItemComponent implements OnInit, OnChanges {
           "itemNumber": this.kitItem.controls['itemNumber'].value,
           "kitItem": e.itemNumber,
           "kitQuantity": e.kitQuantity,
-          "specialFeatures": e.specialFeatures,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid,
+          "specialFeatures": e.specialFeatures
         }
-        this.Api.DeleteKit(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.DeleteKit(paylaod).subscribe((res: any) => {
   
           if (res.isExecuted) {
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.sendNotification();
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("DeleteKit", res.responseMessage);
+
+
           }
   
         })
@@ -141,18 +148,12 @@ export class KitItemComponent implements OnInit, OnChanges {
   saveKit(newItem: any, e: any) {
 
     if (!e.itemNumber || !e.kitQuantity) {            
-      this.toastr.error("Please fill required fields", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Please fill required fields", 'Error!');
       return;
     }
 
     if (parseInt(e.kitQuantity) <= 0) {
-      this.toastr.error("Qty must be greater than 0", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Qty must be greater than 0", 'Error!');
       return;        
     }
 
@@ -160,7 +161,7 @@ export class KitItemComponent implements OnInit, OnChanges {
     this.kitItem.controls['kitInventories'].value.forEach(element => {
       if (element.itemNumber == newItem) {
         newRecord = false;
-        return;
+       
       }
     });
     if (e.itemNumber && newRecord && e.kitQuantity) {
@@ -168,23 +169,16 @@ export class KitItemComponent implements OnInit, OnChanges {
         "itemNumber": this.kitItem.controls['itemNumber'].value,
         "kitItem": newItem,
         "kitQuantity": e.kitQuantity,
-        "specialFeatures": e.specialFeatures,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "specialFeatures": e.specialFeatures
       }
-      this.Api.InsertKit(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.InsertKit(paylaod).subscribe((res: any) => {
 
         if (res.isExecuted) {
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.sendNotification();
         } else {
-          this.toastr.error("Invalid Input", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"Invalid Input", 'Error!');
+          console.log("InsertKit",res.responseMessage);
         }
 
       })
@@ -195,25 +189,17 @@ export class KitItemComponent implements OnInit, OnChanges {
         "oldKitItem": this.oldNumber!=""?this.oldNumber:newItem,
         "newKitItem": newItem,
         "kitQuantity": e.kitQuantity,
-        "specialFeatures": e.specialFeatures,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "specialFeatures": e.specialFeatures
       }
       
-      // console.log(paylaod);
-      this.Api.UpdateKit(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.UpdateKit(paylaod).subscribe((res: any) => {
 
         if (res.isExecuted) {
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.sendNotification();
         } else {
-          this.toastr.error("Invalid Input", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"Invalid Input", 'Error!');
+          console.log("UpdateKit",res.responseMessage);
         }
 
       })
@@ -229,7 +215,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   }
 
   openAddItemNumDialog(e): void {
-    const dialogRef = this.dialog.open(this.additemNumber, {
+    const dialogRef:any = this.global.OpenDialog(this.additemNumber, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -247,7 +233,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   }
 
   openDescriptionDialog(e): void {
-    const dialogRef = this.dialog.open(this.description, {
+    const dialogRef:any = this.global.OpenDialog(this.description, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -269,15 +255,19 @@ export class KitItemComponent implements OnInit, OnChanges {
     let paylaod = {
       "itemNumber": e.currentTarget.value,
       "beginItem": "---",
-      "isEqual": false,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "isEqual": false
     }
-    this.Api.SearchItem(paylaod).subscribe((res: any) => {
+    this.iCommonAPI.SearchItem(paylaod).subscribe((res: any) => {
       if (res.data) {
         this.searchList = res.data
         if (this.searchList.length > 0) {
           this.isValidForm = false;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SearchItem", res.responseMessage);
+
+
         }
       }
     });
@@ -288,10 +278,7 @@ export class KitItemComponent implements OnInit, OnChanges {
     if (this.kitItem.controls['itemNumber'].value == e.option.value.itemNumber) {
       this.dialogitemNumber = '';
       this.dialogDescription = '';
-      this.toastr.error("Item " + e.option.value.itemNumber + " cannot belong to itself in a kit.", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Item " + e.option.value.itemNumber + " cannot belong to itself in a kit.", 'Error!');
       this.isValidForm = false
       return;
     } else {
@@ -300,7 +287,7 @@ export class KitItemComponent implements OnInit, OnChanges {
       this.kitItem.controls['kitInventories'].value.forEach(element => {
         if (element.itemNumber == e.option.value.itemNumber) {
           alreadyExits = true;
-          return;
+          
         }
       });
       if (!alreadyExits) {
@@ -308,10 +295,7 @@ export class KitItemComponent implements OnInit, OnChanges {
         this.dialogDescription = e.option.value.description;
       } else {
         this.isValidForm = false
-        this.toastr.error("Item " + this.dialogitemNumber + " already exists in kit.", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',"Item " + this.dialogitemNumber + " already exists in kit.", 'Error!');
         this.dialogitemNumber = '';
         this.dialogDescription = '';
         return;
@@ -341,15 +325,10 @@ export class KitItemComponent implements OnInit, OnChanges {
       this.namebutton.nativeElement.classList.remove('mat-button-disabled')
     }
     if(this.namebutton.nativeElement.classList.contains('kit_push_'+index)){ 
-      // const myHtmlEl = document.getElementsByClassName('kit_push_'+index).item(0) as HTMLElement;
-      // myHtmlEl.removeAttribute('disabled');
       
       this.namebutton.nativeElement.disabled = false;
       this.namebutton.nativeElement.classList.remove('mat-button-disabled')
     }
-    // this.namebutton.nativeElement.classList.remove('mat-button-disabled')
-    // let myTag = this.el.nativeElement.querySelector("kit_"+index); 
-    // myTag.classList.remove('mat-button-disabled');
 
     if(input === 'kitQuantity'){
       if(val > 0){ 

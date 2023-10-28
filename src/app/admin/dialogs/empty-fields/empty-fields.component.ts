@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-empty-fields',
   templateUrl: './empty-fields.component.html',
-  styleUrls: ['./empty-fields.component.scss']
+  styleUrls: []
 })
-export class EmptyFieldsComponent implements OnInit {
+export class EmptyFieldsComponent  {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+ 
 
 }

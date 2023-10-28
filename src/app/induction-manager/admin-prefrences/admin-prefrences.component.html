@@ -1,4 +1,3 @@
-<!-- <p>admin-prefrences works!</p> -->
 
 <form [formGroup]="preferencesForm">
 
@@ -9,16 +8,9 @@
         <mat-card-content>
 
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="card-header-title mb-0 d-flex align-items-center">
-              <div class="mat-icon-wrap me-lg-3 m-2">
-                <span class="material-symbols-outlined">
-                  settings_applications
-                </span>
-              </div>
-              <span>System Settings</span>
-            </h2>
+            <app-icon-heading-component heading="System Settings" icon="settings_applications">
+            </app-icon-heading-component>
           </div>
-
           <div class="row mb-3">
             <div class="col-xl-6">
               <div class="pb-1">
@@ -66,23 +58,6 @@
               </div>
             </div>
 
-            <!-- <div class="col-xl-4">
-              <div class="d-flex gap-12 mb-2">
-                <mat-form-field class="custom-form-field w-100 shorting" appearance="outline">
-                  <mat-label>Shorting Methodology</mat-label>
-                  <mat-select class="shorting" formControlName="shortMethod" (selectionChange)="updatePreferences(1)">
-                    <mat-option *ngFor="let sm of shortMethodList" value="{{sm.id}}">
-                      {{sm.name}}
-                    </mat-option>
-                  </mat-select>
-                  <span class="material-symbols-outlined icon-expand-more">
-                    expand_more
-                  </span>
-                </mat-form-field>
-
-              </div>
-            </div> -->
-
             <div class="col-xl-6">
               <div class="gap-12 mb-2">
                   <div class="col-12 d-flex justify-content-between mb-2">
@@ -104,11 +79,6 @@
                       formControlName="createItemMaster" color="primary"
                       matTooltip="Toggles if new items can be created if they do not exist from put away batch manager"></mat-slide-toggle>
                   </div>
-                  <!-- <div class="col-12 d-flex justify-content-between mb-2">
-                    SAP Location Transactions: <mat-slide-toggle (change)="updatePreferences(1)"
-                      formControlName="sapLocationTransactions" color="primary"
-                      matTooltip="Toggles if SAP location transactions are created"></mat-slide-toggle>
-                  </div> -->
                   <div class="col-12 d-flex justify-content-between mb-2">
                     Strip Scan: <mat-slide-toggle (change)="updatePreferences(1)" formControlName="stripScan"
                       color="primary"
@@ -161,12 +131,8 @@
         <mat-card-content>
 
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="card-header-title mb-0 d-flex align-items-center">
-              <div class="mat-icon-wrap me-lg-3 m-2">
-                <span class="material-symbols-outlined"> open_in_browser </span>
-              </div>
-              <span>Pick Settings</span>
-            </h2>
+            <app-icon-heading-component heading="Pick Settings" icon="open_in_browser">
+            </app-icon-heading-component>
           </div>
 
           <div class="row mb-3">
@@ -252,12 +218,8 @@
         <mat-card-content>
 
           <div class="d-flex justify-content-between mb-2 align-items-center mb-3">
-            <h2 class="card-header-title mb-0 d-flex align-items-center">
-              <div class="mat-icon-wrap me-lg-3 m-2">
-                <span class="material-symbols-outlined"> browser_updated </span>
-              </div>
-              <span>Put Away Settings</span>
-            </h2>
+            <app-icon-heading-component heading="Put Away Settings" icon="browser_updated">
+            </app-icon-heading-component>
           </div>
 
           <div class="row mb-3">
@@ -281,10 +243,6 @@
                     Off Carousel Batch ID's- Put Aways: <mat-slide-toggle (change)="updatePreferences(1)"
                       formControlName="offCarouselBatchIDAways" color="primary"></mat-slide-toggle>
                   </div>
-                  <!-- <div class="d-flex justify-content-between mb-2">
-                    Create Put Away Adjustments: <mat-slide-toggle (change)="updatePreferences(1)"
-                      formControlName="createPutAwayAdjustments" color="primary"></mat-slide-toggle>
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -330,24 +288,6 @@
                 </div>
               </div>
 
-              <!-- <div class="col-xl-4">
-                <div class="d-flex gap-12 mb-2">
-                  <mat-form-field class="custom-form-field w-100 shorting" appearance="outline">
-                    <mat-label>Put Away Induction Screen</mat-label>
-                    <mat-select formControlName="putAwayInductionScreen"
-                      [disabled]="preferencesForm.value.pickBatchQuantity > 20"
-                      (selectionChange)="updatePreferences(1)">
-                      <mat-option *ngFor="let is of putAwayInductionScreenList" value="{{is.id}}">
-                        {{is.name}}
-                      </mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
-              </div> -->
-
             </div>
 
           
@@ -360,12 +300,8 @@
         <mat-card-content>
 
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="card-header-title mb-0 d-flex align-items-center">
-              <div class="mat-icon-wrap me-lg-3 m-2">
-                <span class="material-symbols-outlined"> print </span>
-              </div>
-              <span>Print Settings</span>
-            </h2>
+            <app-icon-heading-component heading="Print Settings" icon="print">
+            </app-icon-heading-component>
           </div>
 
           <div class="row mb-3">
@@ -427,14 +363,6 @@
                 <div class="d-flex gap-12 mb-2">
                   <mat-form-field class="custom-form-field w-100" appearance="outline">
                     <mat-label>Max Number of Put Away Labels</mat-label>
-                    <!-- <mat-select formControlName="maxNumberOfPutAwayLabels">
-                      <mat-option
-                        value="123456"
-                        (selectionChange)="(123456)"
-                        selected>
-                        123456
-                      </mat-option>
-                    </mat-select> -->
                     <input (focusout)="updatePreferences(0)" #maxNumber   (keyup)="restrictTo309Digits($event)"  formControlName="maxNumberOfPutAwayLabels" 
                       (keydown.shift.enter)="$event.preventDefault()" matInput type="number" [NumbersOnly]="true"
                       onKeypress="if(this.value.length == 309 ||  event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;" />
@@ -453,12 +381,8 @@
         <mat-card-content>
 
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="card-header-title mb-0 d-flex align-items-center">
-              <div class="mat-icon-wrap me-lg-3">
-                <span class="material-symbols-outlined">perm_data_setting</span>
-              </div>
-              <span>Misc Setup</span>
-            </h2>
+            <app-icon-heading-component heading="Misc Setup" icon="perm_data_setting">
+            </app-icon-heading-component>
           </div>
 
           <div class="row align-items-center">

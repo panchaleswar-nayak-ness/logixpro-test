@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class AssignService {
 
-  constructor() { }
-
   private data:string[] = [];
 
   removeGroupOption(data: string[], value: string) {

@@ -1,23 +1,30 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 import { SharedService } from 'src/app/services/shared.service'; 
 
 @Component({
   selector: 'app-database-connections',
   templateUrl: './database-connections.component.html',
-  styleUrls: ['./database-connections.component.scss'],
+  styleUrls: [],
 })
 export class DatabaseConnectionsComponent implements OnInit {
   sideBarOpen: boolean = true;
+  public iGlobalConfigApi : IGlobalConfigApi;
   constructor(
-    private Api:ApiFuntions,
+    public globalConfigApi : GlobalConfigApiService,
     private sharedService: SharedService
-  ) {}
+  ) { this.iGlobalConfigApi = globalConfigApi }
   dbConnectionData = [];
   ngOnInit(): void {
     let sharedData = this.sharedService.getData();
-    if (sharedData && sharedData['connectionString']) {
-      sharedData['connectionString'].map((obj) => {obj.isButtonDisable=true,obj.isSqlButtonDisable=false,obj.isNewConn=false,obj.isDuplicate=false});
+    if (sharedData['connectionString']) {
+      sharedData['connectionString'].map((obj) => {
+        obj.isButtonDisable=true;
+        obj.isSqlButtonDisable=false;
+        obj.isNewConn=false;
+        obj.isDuplicate=false;
+      });
 
       this.dbConnectionData = sharedData;
     } else {
@@ -37,11 +44,16 @@ export class DatabaseConnectionsComponent implements OnInit {
       DisplayName: 'Consolidation Manager',
       AppName: 'Consolidation Manager',
     };
-    this.Api.Menu(payload).subscribe(
+    this.iGlobalConfigApi.Menu(payload).subscribe(
       (res: any) => {
 
-        this.dbConnectionData = res && res.data;
-        this.dbConnectionData['connectionString'].map((obj) => {obj.isButtonDisable=true,obj.isSqlButtonDisable=false,obj.isNewConn=false,obj.isDuplicate=false});
+        this.dbConnectionData = res?.data;
+        this.dbConnectionData['connectionString'].map((obj) => {
+          obj.isButtonDisable=true;
+          obj.isSqlButtonDisable=false;
+          obj.isNewConn=false;
+          obj.isDuplicate=false;
+        });
         
         this.sharedService.setData(this.dbConnectionData);
       },

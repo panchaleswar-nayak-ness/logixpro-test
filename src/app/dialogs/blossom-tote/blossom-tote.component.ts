@@ -1,30 +1,37 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-blossom-tote',
   templateUrl: './blossom-tote.component.html',
-  styleUrls: ['./blossom-tote.component.scss']
+  styleUrls: []
 })
 export class BlossomToteComponent implements OnInit {
   @ViewChild('tote_focus') tote_focus: ElementRef;
   public userData: any;
   TOTE_SETUP: any = [];
+  public iinductionManagerApi:IInductionManagerApiService;
+
   nxtToteID: any;
   oldToteID: any;
   
   imPreferences:any;
 
-  constructor(private dialog: MatDialog,
-    private toastr: ToastrService,
+  constructor(private dialog:MatDialog,
+    
     private Api: ApiFuntions,
+    private inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
-    private global:GlobalService) { }
+    private global:GlobalService) {
+      this.iinductionManagerApi = inductionManagerApi;
+     }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -36,27 +43,19 @@ export class BlossomToteComponent implements OnInit {
   updateNxtTote() { 
     
     let updatePayload = {
-      "tote": this.nxtToteID,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "tote": this.nxtToteID, 
     }
-    this.Api.NextToteUpdate(updatePayload).subscribe(res => {
+    this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
-        this.toastr.error('Something is wrong.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Something is wrong.', 'Error!');
+        console.log("NextToteUpdate",res.responseMessage);
       }
 
     });
   }
 
   getNextToteId() {
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
-    }
-    this.Api.NextTote().subscribe(res => {
+    this.iinductionManagerApi.NextTote().subscribe(res => {
       if(res.data){
         this.nxtToteID = res.data;
         this.nxtToteID = this.nxtToteID + 1
@@ -68,13 +67,10 @@ export class BlossomToteComponent implements OnInit {
 
   submitBlosom() {
     if(!this.oldToteID || !this.nxtToteID){
-      this.toastr.error('Either the Old or New Tote ID was not supplied.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Either the Old or New Tote ID was not supplied.', 'Error!');
     }
     else{
-      const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '786px',
         data: {
@@ -89,9 +85,8 @@ export class BlossomToteComponent implements OnInit {
             "OldTote": this.oldToteID?.toString(),
             "NewTote": this.nxtToteID?.toString()
           }
-          this.Api.ProcessBlossom(paylaod).subscribe(res => {
-            // console.log(res.data);
-            if (res.data) {
+          this.iinductionManagerApi.ProcessBlossom(paylaod).subscribe(res => {
+            if (res.isExecuted && res.data) {
               let batch = res.data
               if(this.imPreferences.autoPrintPickToteLabels){
                 if(this.imPreferences.printDirectly){
@@ -110,16 +105,11 @@ export class BlossomToteComponent implements OnInit {
                 }
                 
               }
-              this.toastr.success('Updated Successfully', 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success','Updated Successfully', 'Success!');
               this.dialog.closeAll();
             } else {
-              this.toastr.error('Old tote ID does not exist', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error','Old tote ID does not exist', 'Error!');
+              console.log("ProcessBlossom",res.responseMessage);
             }
           });
         }

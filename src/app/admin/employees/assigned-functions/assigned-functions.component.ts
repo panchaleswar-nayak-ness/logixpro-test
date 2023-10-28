@@ -1,17 +1,14 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { map, Observable, startWith } from 'rxjs';
 import { AssignService } from 'src/app/assign.service'; 
-import { FunctionAllocationComponent } from '../../dialogs/function-allocation/function-allocation.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-assigned-functions',
   templateUrl: './assigned-functions.component.html',
-  styleUrls: ['./assigned-functions.component.scss']
+  styleUrls: []
 })
-export class AssignedFunctionsComponent implements OnInit {
+export class AssignedFunctionsComponent  {
   // @Input('isAssignedLookUp') isAssignedLookUp: boolean;
   // @Output() updateAssignedLookUp  = new EventEmitter();
   @Input() assignedFunctions: [];
@@ -35,12 +32,9 @@ export class AssignedFunctionsComponent implements OnInit {
   employee_fetched_zones: string[] = [];
   group_fetched_unassigned_function:string[] = [];
   userName:any;
-  constructor( private employeeService: ApiFuntions, private assignService:AssignService,private dialog: MatDialog) { }
-
-  ngOnInit(): void {
+  constructor( private employeeService: ApiFuntions, private assignService:AssignService) { }
 
 
-  }
   clearFields(){
       this.filterName='';
   
@@ -58,7 +52,7 @@ export class AssignedFunctionsComponent implements OnInit {
   
   unassignFunction(permData: any){ 
     // if(permData){
-    //   let dialogRef = this.dialog.open(FunctionAllocationComponent, {
+    //   let dialogRef:any = this.global.OpenDialog(FunctionAllocationComponent, {
     //     height: 'auto',
     //     width: '560px',
     //     autoFocus: '__non_existing_element__',

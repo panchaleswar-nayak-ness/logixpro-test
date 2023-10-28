@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-mark-tote-full',
   templateUrl: './mark-tote-full.component.html',
-  styleUrls: ['./mark-tote-full.component.scss'],
+  styleUrls: [],
 })
 export class MarkToteFullComponent implements OnInit {
   dialog_msg

@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-item-exist-generate-order',
   templateUrl: './item-exist-generate-order.component.html',
-  styleUrls: ['./item-exist-generate-order.component.scss'],
+  styleUrls: []
 })
 export class ItemExistGenerateOrderComponent implements OnInit {
   itemNumber;

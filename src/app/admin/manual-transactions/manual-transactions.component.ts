@@ -1,17 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-manual-transactions',
   templateUrl: './manual-transactions.component.html',
-  styleUrls: ['./manual-transactions.component.scss']
+  styleUrls: []
 })
-export class ManualTransactionsComponent implements OnInit {
+export class ManualTransactionsComponent {
 
   selectedIndex: number = 0;
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  
 
 }

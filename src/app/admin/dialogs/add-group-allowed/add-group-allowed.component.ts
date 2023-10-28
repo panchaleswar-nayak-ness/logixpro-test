@@ -1,14 +1,17 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map';
 import { AuthService } from '../../../../app/init/auth.service';
 import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-add-group-allowed',
@@ -20,8 +23,8 @@ export class AddGroupAllowedComponent implements OnInit {
   form_heading: string = 'Add Group Allowed';
   form_btn_label: string = 'Add';
   GroupName: any;
+  public iAdminApiService: IAdminApiService;
   controlNameList: any[] = [];
-  // myControl = new FormControl('');
   options: string[] = [];
   filteredOptions: Observable<any[]>;
   userData: any;
@@ -29,31 +32,40 @@ export class AddGroupAllowedComponent implements OnInit {
   constrolName
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private dialog:MatDialog,
     private employeeService: ApiFuntions,
-    private toastr: ToastrService,
+    private global: GlobalService,
     private authService: AuthService,
     private fb: FormBuilder,
+    private adminApiService: AdminApiService,
     private router: Router
-  ) { }
+  ) {this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.controlNameForm = this.fb.group({
       controlName: [ '', [Validators.required]]
     })
     this.userData = this.authService.userData();
-    let payload = {
-      "username": this.data.userName,
-      "wsid": this.data.wsid,
+    let payload = { 
       "filter": "%"
     }
-    this.employeeService.getControlName(payload).subscribe((res: any) => {
-      
-      this.controlNameList = res.data;
+    this.iAdminApiService.getControlName(payload).subscribe((res: any) => {
+      if(res.isExecuted)
+      {
+        this.controlNameList = res.data;
       this.filteredOptions = this.controlNameForm.controls['controlName'].valueChanges.pipe(
         startWith(''),
         map(value => this.filterx(value || '')),
       );
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getControlName",res.responseMessage);
+      }
+      
+      
     });
 
    
@@ -73,23 +85,17 @@ export class AddGroupAllowedComponent implements OnInit {
   }
   onSend(form: any) {
     let payload = {
-      "controlName": form.value.controlName,
-      "username": this.data.userName,
-      "wsid": this.data.wsid,
+      "controlName": form.value.controlName, 
     }
-    this.employeeService.submitControlResponse(payload).subscribe((res: any) => {
+    this.iAdminApiService.submitControlResponse(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialog.closeAll();
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        }); 
+        this.global.ShowToastr('success',labels.alert.success, 'Success!'); 
       }
       else{
-        this.toastr.success(res.responseMessage, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("submitControlResponse",res.responseMessage);
       }
     });
   }

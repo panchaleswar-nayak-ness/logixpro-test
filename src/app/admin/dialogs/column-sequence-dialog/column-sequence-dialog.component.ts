@@ -1,20 +1,13 @@
 import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service'; 
 import labels from '../../../labels/labels.json';
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
-import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-column-sequence-dialog',
@@ -24,6 +17,8 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class ColumnSequenceDialogComponent implements OnInit {
   dialogData;
   payload;
+  public iAdminApiService: IAdminApiService;
+
   userData;
   unorderedCol: any = [];
   defaultCol: any = [];
@@ -31,13 +26,13 @@ export class ColumnSequenceDialogComponent implements OnInit {
     private Api: ApiFuntions,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
-    private toastr: ToastrService,
+    public adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) data,
-    private dialog: MatDialog,
+    private global:GlobalService,
     
   ) {
     this.dialogData = data;
-   
+    this.iAdminApiService = adminApiService;
   }
   @ViewChild('table') table: MatTable<any>;
 
@@ -78,122 +73,66 @@ export class ColumnSequenceDialogComponent implements OnInit {
   restoreCol() {
     this.defaultCol.length=0;
     this.getColumnsSeqDetail();
-    // const autoArray = [...this.defaultCol, ...this.unorderedCol];
-    // this.unorderedCol = autoArray;
-    // this.defaultCol.length = 0;
   }
   save() {
     this.payload.columns = this.defaultCol;
     this.saveColumnsSeq();
-    // this.dialogRef.close({ isExecuted: true });
   }
   deleteColSeq() {
 
-    // this.restoreCol();
-    let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
-      viewName:this.dialogData.tableName,
-    };
     
-    this.Api
+    
+    this.iAdminApiService
       .DeleteColumns(this.payload)
-      .subscribe(
-        (res: any) => {
+      .subscribe({
+        next: (res: any) => {
           if (res.isExecuted) {
               this.defaultCol.length=0;
               this.getColumnsSeqDetail();
-            // this.toastr.success(labels.alert.success, 'Success!', {
-            //   positionClass: 'toast-bottom-right',
-            //   timeOut: 2000,
-            // });
            
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("DeleteColumns",res.responseMessage);
+
           } 
         },
-        (error) => {
-          // this.toastr.error(labels.alert.went_worng, 'Error!', {
-          //   positionClass: 'toast-bottom-right',
-          //   timeOut: 2000,
-          // });
-       
-        }
-      );
+        error: (error)=>{}
+      });
 
-      
-    // const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-    //   height: 'auto',
-    //   width: '480px',
-    //   autoFocus: '__non_existing_element__',
-    // });
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (result === 'Yes') {
-    //     let payload = {
-    //       username: this.userData.userName,
-    //       wsid: this.userData.wsid,
-    //       viewName:this.dialogData.tableName,
-    //     };
-    //     this.columnseqService
-    //       .get(this.payload, '/Admin/DeleteColumns')
-    //       .subscribe(
-    //         (res: any) => {
-    //           if (res.isExecuted) {
-    //             this.toastr.success(labels.alert.success, 'Success!', {
-    //               positionClass: 'toast-bottom-right',
-    //               timeOut: 2000,
-    //             });
-    //             this.dialogRef.close({ isExecuted: false });
-    //           } else {
-    //             this.dialogRef.close('');
-    //           }
-    //         },
-    //         (error) => {
-    //           this.toastr.error(labels.alert.went_worng, 'Error!', {
-    //             positionClass: 'toast-bottom-right',
-    //             timeOut: 2000,
-    //           });
-    //           this.dialogRef.close({ isExecuted: false });
-    //         }
-    //       );
-    //   }
-    // });
   }
   initializePayload(tableName) {
-    let userData = this.authService.userData();
-    this.payload = {
-      username: userData.userName,
-      wsid: userData.wsid,
+    this.payload = { 
       viewName: tableName,
     };
   }
 
   saveColumnsSeq() {
-    this.Api.SaveColumns(this.payload).subscribe(
-      (res: any) => {
+    this.iAdminApiService.SaveColumns(this.payload).subscribe(
+      {next: (res: any) => {
         if (res.isExecuted) {
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.dialogRef.close({ isExecuted: true });
         } else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("SaveColumns",res.responseMessage);
           this.dialogRef.close('');
         }
       },
-      (error) => {
-        this.toastr.error(labels.alert.went_worng, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+      error: (error) => {
+        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
         this.dialogRef.close({ isExecuted: false });
-      }
+      }}
     );
   }
 
   getColumnsSeqDetail() {
-    this.Api
+    this.iAdminApiService
       .GetColumnSequenceDetail(this.payload)
       .subscribe((res: any) => {
-        this.unorderedCol = res.data?.allColumnSequence;
+        if(res?.isExecuted)
+        {
+          this.unorderedCol = res.data?.allColumnSequence;
         if (res.data?.columnSequence.length) {
           this.defaultCol = res.data.columnSequence;
 
@@ -203,6 +142,13 @@ export class ColumnSequenceDialogComponent implements OnInit {
           });
           this.unorderedCol = newArr;
         }
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("GetColumnSequenceDetail",res.responseMessage);
+        }
+        
+        
       });
   }
 

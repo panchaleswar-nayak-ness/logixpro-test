@@ -1,13 +1,14 @@
 import { Component, ElementRef, Inject, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+
 import { Subject, takeUntil } from 'rxjs'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component'
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-warehouse',
@@ -25,24 +26,24 @@ export class WarehouseComponent implements OnInit {
   enableButton = [{ index: -1, value: true }];
 
 
+  public iCommonAPI : ICommonApi;
+
   constructor(
-    private Api: ApiFuntions,
+    public commonAPI : CommonApiService,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     public dialogRef: MatDialogRef<any>,
-    private dialog: MatDialog,
+    private global:GlobalService,
     private router: Router,
     private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) { this.iCommonAPI = commonAPI; }
 
 
   ngOnInit(): void {
-    console.log(this.data)
+    // console.log(this.data)
     this.userData = this.authService.userData();
     this.getWarehouse();
-    // this.spliUrl=this.router.url.split('/'); 
-    // console.log(this.spliUrl[1])
     if( this.data.check == 'fromReelDetail'  ){
        this.disableBtn =true
     }
@@ -53,7 +54,7 @@ export class WarehouseComponent implements OnInit {
 
   deleteWH(warehosue: any) { 
     if(warehosue != ''){
-      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -62,7 +63,6 @@ export class WarehouseComponent implements OnInit {
           mode: 'delete-warehouse',
           warehouse: warehosue,
           action: 'delete',
-          //  grp_data: grp_data
         }
       })
       dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
@@ -72,10 +72,6 @@ export class WarehouseComponent implements OnInit {
     else{
       this.warehouse_list.shift();
       this.getWarehouse();
-      // this.toastr.error('Warehouse can not be deleted.', 'Error!', {
-      //   positionClass: 'toast-bottom-right',
-      //   timeOut: 2000
-      // });
     }
    
   }
@@ -83,22 +79,15 @@ export class WarehouseComponent implements OnInit {
 
   getWarehouse() {
     this.enableButton = [];
-    this.Api.GetWarehouses().subscribe((res) => {
+    this.iCommonAPI.GetWarehouses().subscribe((res) => {
       this.warehouse_list = res.data;
-      for (var i = 0; i < this.warehouse_list.length; i++) {
-        // this.unitOfMeasure_list.fromDB = true;
+      for (let i = 0; i < this.warehouse_list.length; i++) {
         this.enableButton.push({ index: i, value: true });
       }
 
-      // setTimeout(() => {
-      //   const inputElements = this.whname.toArray();
-      //   const inputElement = inputElements[0].nativeElement as HTMLInputElement;
-      //     this.renderer.selectRootElement(inputElement).focus();
-      // }, 100)
     });
   }
   addwhRow(row: any) {
-    // this.inputEl.nativeElement.disabled = true;
     this.warehouse_list.unshift([]);
     this.enableButton.push({ index: -1, value: true })
     const lastIndex = this.warehouse_list.length - 1;
@@ -117,47 +106,36 @@ export class WarehouseComponent implements OnInit {
 
     let cond = true;
     this.warehouse_list.forEach(element => {
-      if (element == warehosue) {
+      if (element == warehosue && cond) {
         cond = false
-        this.toastr.error('Conflict: Warehouse cannot be saved! Another warehouse matches the current. Please save any pending changes before attempting to save this entry.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
-        return;
+        this.global.ShowToastr('error','Conflict: Warehouse cannot be saved! Another warehouse matches the current. Please save any pending changes before attempting to save this entry.', 'Error!');
+       
       }
     });
     if (cond) {
       let paylaod = {
         "oldWarehouse": oldWh.toString(),
-        "warehouse": warehosue,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "warehouse": warehosue
       }
-      // console.log(paylaod);
 
-      this.Api.saveWareHouse(paylaod).subscribe((res) => {
+      this.iCommonAPI.saveWareHouse(paylaod).subscribe((res) => {
         if(res.isExecuted){
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           this.getWarehouse();
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("saveWareHouse:", res.responseMessage);
         }
       });
     }
   }
   dltWareHouse(warehosue: any) {
     let paylaod = {
-      "warehouse": warehosue,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "warehouse": warehosue
     }
-    //  this.warehouse_list.pop(warehosue);
-    this.Api.dltWareHouse(paylaod).subscribe((res) => {
-      this.toastr.success(labels.alert.delete, 'Success!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+    this.iCommonAPI.dltWareHouse(paylaod).subscribe((res) => {
+      this.global.ShowToastr('success',labels.alert.delete, 'Success!');
 
       this.getWarehouse();
 

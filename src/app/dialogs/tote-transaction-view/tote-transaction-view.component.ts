@@ -1,13 +1,12 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import {
-  MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { BatchDeleteComponent } from '../batch-delete/batch-delete.component';
 import { MarkToteFullComponent } from '../mark-tote-full/mark-tote-full.component';
@@ -15,6 +14,8 @@ import labels from '../../labels/labels.json';
 import { PageEvent } from '@angular/material/paginator';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 
 @Component({
@@ -45,15 +46,17 @@ export class ToteTransactionViewComponent implements OnInit {
   IMPreferences:any;
   zoneLabels:any;
   imPreferences:any;
- 
+  public iInductionManagerApi:IInductionManagerApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<any>,
-    private dialog: MatDialog,
+    public dialogRef: MatDialogRef<any>, 
     private Api: ApiFuntions,
     private global:GlobalService,
-    private toastr: ToastrService,
-  ) {}
+    
+    public inductionManagerApi: InductionManagerApiService,
+  ) {
+    this.iInductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
     this.batchID = this.data.batchID;
@@ -86,7 +89,7 @@ export class ToteTransactionViewComponent implements OnInit {
   sortChange(event) {
     if (!this.dataSource._data._value || event.direction=='' || event.direction==this.sortOrder) return;
     let index;
-    this.displayedColumns.find((x, i) => {
+    this.displayedColumns.forEach((x, i) => {
       if (x === event.active) {
         index = i;
       }
@@ -95,21 +98,16 @@ export class ToteTransactionViewComponent implements OnInit {
     this.sortCol = index;
     this.sortOrder = event.direction;
     this.getTransactionTable();
-    // this.getContentData();
   }
 
 
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-    // this.customPagination.startIndex =  e.pageIndex
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
 
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
-    // this.length = e.length;
     this.customPagination.recordsPerPage = e.pageSize;
-    // this.pageIndex = e.pageIndex;
 
-    // this.initializeApi();
     this.getTransactionTable();
   }
   getTransactionTable() {
@@ -120,26 +118,31 @@ export class ToteTransactionViewComponent implements OnInit {
       eRow: this.customPagination.endIndex,
       sortColumn: this.sortCol,
       sortOrder: this.sortOrder,
-      username: this.data.userName,
-      wsid: this.data.wsid,
     };
 
-    this.Api.TransTableView(payLoad).subscribe((res:any)=>{
-      
-      if(res && res.data){
-        this.isData=true
-      // this.dataSource = new MatTableDataSource<any>(res.data);
+    this.iInductionManagerApi.TransTableView(payLoad).subscribe((res:any)=>{
+      if (res.isExecuted)
+      {
+        if(res?.data){
+          this.isData=true
+  
+        this.dataSource = new MatTableDataSource<any>(res.data);
+  
+        }else{
+          this.isData=false
+        }
 
-      this.dataSource = new MatTableDataSource<any>(res.data);
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("TransTableView",res.responseMessage);
 
-      }else{
-        this.isData=false
       }
     }, (error) => {})
   }
   actionDialog(opened: boolean) {
     if (!opened && this.selectedOption && this.selectedOption === 'clearTote') {
-      const dialogRef = this.dialog.open(BatchDeleteComponent, {
+      const dialogRef:any = this.global.OpenDialog(BatchDeleteComponent, {
         height: 'auto',
         width: '50vw',
         autoFocus: '__non_existing_element__',
@@ -164,7 +167,7 @@ export class ToteTransactionViewComponent implements OnInit {
       this.selectedOption === 'fullTote'
     ) {
       this.clearMatSelectList();
-      const dialogRef = this.dialog.open(MarkToteFullComponent, {
+      const dialogRef:any = this.global.OpenDialog(MarkToteFullComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -181,23 +184,16 @@ export class ToteTransactionViewComponent implements OnInit {
           let payLoad = {
             toteNumber: this.tote,
             cell: this.cell,
-            batchID: this.batchID,
-            username: this.data.userName,
-            wsid: this.data.wsid,
+            batchID: this.batchID, 
           };
 
-          this.Api.MarkToteFull(payLoad).subscribe(
+          this.iInductionManagerApi.MarkToteFull(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
               } else {
-                this.toastr.error(labels.alert.went_worng, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+                console.log("MarkToteFull",res.responseMessage);
               }
             },
             (error) => {}
@@ -229,7 +225,7 @@ export class ToteTransactionViewComponent implements OnInit {
   clear(type,item) {
    
     let itemId=item.id
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -253,18 +249,13 @@ export class ToteTransactionViewComponent implements OnInit {
           wsid: this.data.wsid,
         }
         let baseUrl=type==='clear'?'/Induction/ClearItemFromTote':'/Induction/DeAllocateItemFromTote'
-        this.Api.DynamicMethod(payLoad,baseUrl).subscribe((res:any)=>{
-          if (res && res.isExecuted) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+        this.iInductionManagerApi.DynamicMethod(payLoad,baseUrl).subscribe((res:any)=>{
+          if (res?.isExecuted) {
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
             this.getTransactionTable();
           } else {
-            this.toastr.error(labels.alert.went_worng, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+            console.log("DynamicMethod",res.responseMessage);
           }
         })
       }

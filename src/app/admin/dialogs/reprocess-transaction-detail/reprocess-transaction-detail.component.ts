@@ -1,10 +1,15 @@
-import { Component, OnInit, Inject, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import { FormControl, FormGroup, Validators } from '@angular/forms'; 
 import labels from '../../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 
@@ -12,7 +17,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-reprocess-transaction-detail',
   templateUrl: './reprocess-transaction-detail.component.html',
-  styleUrls: ['./reprocess-transaction-detail.component.scss']
+  styleUrls: []
 })
 export class ReprocessTransactionDetailComponent implements OnInit {
   @ViewChild('trans_qty') trans_qty: ElementRef;
@@ -30,9 +35,19 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   reqDate: any;
   fieldNames:any;
 
+  public iAdminApiService: IAdminApiService;
+  public iCommonAPI : ICommonApi;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<any>, 
-  private Api:ApiFuntions, private toastr: ToastrService, private authService: AuthService) { }
+  constructor(
+    public commonAPI : CommonApiService,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    private global: GlobalService,
+    public dialogRef: MatDialogRef<any>, 
+    private Api:ApiFuntions, 
+     
+    private authService: AuthService,private adminApiService: AdminApiService) { this.iCommonAPI = commonAPI; 
+    this.iAdminApiService = adminApiService;
+  }
 
   editTransactionForm = new FormGroup({
     transactionQuantity: new FormControl('', [Validators.required]),
@@ -77,26 +92,33 @@ export class ReprocessTransactionDetailComponent implements OnInit {
     this.trans_qty.nativeElement.focus();
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
+      if(res.isExecuted && res.data)
+      {
+        this.fieldNames = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
 
     })
   }
   onNumberValueChange() {
 
-    var currentLotNumber = this.editTransactionForm.get("lotNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("lotNumber")?.value?.toString();
-    var currentSerialNumber = this.editTransactionForm.get("serialNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("serialNumber")?.value?.toString();
+    let currentLotNumber = this.editTransactionForm.get("lotNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("lotNumber")?.value?.toString();
+    let currentSerialNumber = this.editTransactionForm.get("serialNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("serialNumber")?.value?.toString();
 
 
 
-    this.editTransactionForm.get("lotNumber")?.setValue(parseInt(currentLotNumber || '').toString());
-    this.editTransactionForm.get("serialNumber")?.setValue(parseInt(currentSerialNumber || '').toString());
+    this.editTransactionForm.get("lotNumber")?.setValue(parseInt(currentLotNumber ?? '').toString());
+    this.editTransactionForm.get("serialNumber")?.setValue(parseInt(currentSerialNumber ?? '').toString());
 
 
   }
 
   editTransaction() { 
-    var payload = {
+    let payload = {
       "id": this.transactionID,
       "oldValues": [
       ],
@@ -105,14 +127,12 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get("unitOfMeasure")?.value,
         this.editTransactionForm.get("serialNumber")?.value,
         this.editTransactionForm.get("lotNumber")?.value?.toString(),
-        // (this.expDate!=null&&this.expDate!="1900-01-01T19:31:48.000Z")?this.expDate:" ",
         this.dayIncrement(this.expDate),
         this.editTransactionForm.get("revision")?.value,
         this.editTransactionForm.get("notes")?.value,
         this.editTransactionForm.get("userField1")?.value,
         this.editTransactionForm.get("userField2")?.value,
         this.editTransactionForm.get("hostTransactionID")?.value,
-        // (this.reqDate!=null&&this.reqDate!="1900-01-01T19:31:48.000Z")?this.reqDate:" ",
         this.dayIncrement(this.reqDate),
 
         this.editTransactionForm.get("batchPickID")?.value,
@@ -122,25 +142,17 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get("label")?.value?.toString(),
         this.editTransactionForm.get("emergency")?.value?.toString(),
         this.editTransactionForm.get("wareHouse")?.value
-      ],
-      "username": this.userData.username,
-      "wsid": this.userData.wsid
+      ]
     }
 
-    this.Api.SaveTransaction(payload).subscribe((res: any) => {
-
-
-      this.dialogRef.close('add');
-      this.toastr.success(labels.alert.update, 'Success!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
-
-      (error) => {
-        this.toastr.error('Something went wrong', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+    this.iAdminApiService.SaveTransaction(payload).subscribe((res: any) => {
+      if (res.isExecuted){
+        this.dialogRef.close('add');
+        this.global.ShowToastr('success',labels.alert.update, 'Success!');
+      }
+      else{
+        this.global.ShowToastr('error','Something went wrong', 'Error!');
+        console.log("SaveTransaction",res.responseMessage);
       }
     });
   }
@@ -166,21 +178,26 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   }
 
   getUOM() {
-    this.Api.getUnitOfMeasure().subscribe((res) => {
+    this.iCommonAPI.getUnitOfMeasure().subscribe((res) => {
       if (res.isExecuted) {
         this.unitOfMeasure_list = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getUnitOfMeasure:", res.responseMessage);
+
       }
     });
   }
 
   getWarehouse() {
-    this.Api.GetWarehouses().subscribe((res) => {
+    this.iCommonAPI.GetWarehouses().subscribe((res) => {
       this.warehouse_list = res.data;
     });
   }
 
   onDateChange(event: any, fromExpDate = ""): void {
-    if (!(fromExpDate == "")) {
+    if ((fromExpDate !== "")) {
       this.expDate = new Date(event).toISOString();
     }
     else {
@@ -190,28 +207,20 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   }
 
   getTransactionDetail() {
-    var payload = {
+    let payload = {
       id: '' + this.transactionID + '',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
       history: false,
     }
-    this.Api.TransactionByID(payload).subscribe(
-      (res: any) => {
+    this.iAdminApiService.TransactionByID(payload).subscribe(
+      {next: (res: any) => {
         if (res.data && res.isExecuted) {
           let finalExpiryDate, finalReqDate;
           try {
             if (res.data[0].expirationDate != '') {
-              // var expDate = res.data[0].expirationDate.split(" ");
-              // expDate = expDate[0].split('/');
-              // finalExpiryDate = new Date(expDate[2],expDate[0]-1,parseInt(expDate[1])+1);
               finalExpiryDate = new Date(res.data[0].expirationDate);
 
             }
             if (res.data[0].requiredDate != '') {
-              // var reqDate = res.data[0].requiredDate.split(" ");
-              // reqDate = reqDate[0].split('/');
-              // finalReqDate = new Date(reqDate[2],reqDate[0]-1,parseInt(reqDate[1])+1);
               finalReqDate = new Date(res.data[0].requiredDate);
 
 
@@ -221,15 +230,12 @@ export class ReprocessTransactionDetailComponent implements OnInit {
             this.reqDate = finalReqDate ? finalReqDate.toISOString() : '';
           }
           catch (e) { }
-          // console.log('===========GET===============>');
-          // console.log(this.expDate);
-          // console.log(this.reqDate);
 
           this.expDate = this.expDate != "1900-01-01T19:31:48.000Z" ? this.expDate : " ";
           this.reqDate = this.reqDate != "1900-01-01T19:31:48.000Z" ? this.reqDate : " ";
 
 
-          if (res.data[0].label == false) { this.label = false; } else { this.label = true; }
+          if (!res.data[0].label) { this.label = false; } else { this.label = true; }
           if (res.data[0].emergency == 'False') { this.emergency = false; } else { this.emergency = true; }
           this.editTransactionForm.patchValue({
             "transactionQuantity": res.data[0].transactionQuantity,
@@ -269,22 +275,18 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
 
         } else {
-          // console.log(res);
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("TransactionByID",res.responseMessage);
         }
       },
-      (error) => { }
+      error: (error) => { }}
     );
   }
 
   dayIncrement(date: any) {
 
-    // (this.expDate!=null&&this.expDate!="1900-01-01T19:31:48.000Z")?this.expDate:" ",
     if (date != null && date != "1900-01-01T19:31:48.000Z" && date!='') {
-      var newDate = new Date(date);
+      let newDate = new Date(date);
       newDate.setDate(newDate.getDate() + 1);
       return newDate;
     } else {

@@ -96,8 +96,6 @@ export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
       endIndex: 20,
     };
 
-    // this.initializeApi();
-    //  this.getContentData();
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

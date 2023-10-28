@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder,FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
 import labels from '../../labels/labels.json'
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { UserApiService } from 'src/app/services/user-api/user-api.service';
+import { IUserAPIService } from 'src/app/services/user-api/user-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss']
+  styleUrls: []
 })
 export class ChangePasswordComponent implements OnInit {
   old_toggle = true;
@@ -16,12 +17,14 @@ export class ChangePasswordComponent implements OnInit {
   toggle_password = true;
   resetPassForm: FormGroup;
   isReadOnly: boolean = true;
+  public iUserApi : IUserAPIService;
+
   constructor(
+    public userApi : UserApiService,
     private fb: FormBuilder,
-    public api: ApiFuntions,
-    private toastr: ToastrService,
+    private global: GlobalService,
     public dialogRef: MatDialogRef<any>
-  ) { }
+  ) { this.iUserApi = userApi; }
 
   ngOnInit(): void {
     this.resetPassForm = this.fb.group({
@@ -31,45 +34,37 @@ export class ChangePasswordComponent implements OnInit {
       confirm_password: ['', Validators.required]
     }, { validator: this.passwordMatchValidator });
   }
+
   passwordMatchValidator(frm: FormGroup) {
     return frm.controls['new_password'].value === frm.controls['confirm_password'].value ? null : { 'mismatch': true };
   }
+
   onSend(form: FormGroup) {
 
-    // console.log(form.value);
-
-    if (form.value.old_password.toLowerCase() === form.value.new_password.toLowerCase()) {
-      this.toastr.error('You aren\'t changing your password. You\'re re-entering your password', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
-    }
+    if (form.value.old_password.toLowerCase() === form.value.new_password.toLowerCase()) this.global.ShowToastr('error','You aren\'t changing your password. You\'re re-entering your password', 'Error!');
     else {
       let payload = {
         "username": form.value.userName,
         "password": form.value.old_password,
         "newpassword": form.value.new_password
       }
-      this.api.changePassword(payload).subscribe((res) => {
-        const { isExecuted, responseMessage } = res;
-        if (isExecuted) {
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
-          this.dialogRef.close();
+      this.iUserApi.changePassword(payload).subscribe((res) => {
+        if(res?.isExecuted)
+        {
+          const { isExecuted, responseMessage } = res;
+          if (isExecuted) {
+            this.global.ShowToastr('success',labels.alert.update, 'Success!');
+            this.dialogRef.close();
+          }
+          else this.global.ShowToastr('error',responseMessage?.toString(), 'Error!');
         }
         else {
-          this.toastr.error(responseMessage?.toString(), 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
-          // this.dialogRef.close();
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("changePassword",res.responseMessage);
         }
-      })
+        
+      });
     }
-
-
   }
 
   removeReadOnly() {

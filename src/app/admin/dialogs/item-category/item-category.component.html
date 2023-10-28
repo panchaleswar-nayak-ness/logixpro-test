@@ -11,7 +11,7 @@
 
     <div class="">
         <div class="">
-            <div class="d-flex gap-12 my-4 justify-content-end w-100" style="">
+            <div class="d-flex gap-12 my-4 justify-content-end w-100" >
                 <button mat-flat-button color="primary" class="add-icon-button" (click)="addCatRow($event)">
                     <span class="material-symbols-outlined">
                       add
@@ -55,7 +55,6 @@
 
                                 <div class="col-6">
                                     <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                        <!-- <mat-label>Category</mat-label> -->
                                         <input  #category_category [autofocus]="i === 0"  (keydown)="enableDisableButton(i)" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" #catName name="{{category.category}}"  value="{{category.category}}" maxlength="50">
                                     </mat-form-field>
                                 </div>
@@ -64,7 +63,6 @@
                                     <div class="d-flex gap-12 align-items-center">
 
                                         <mat-form-field class="custom-form-field w-100" appearance="outline">
-                                            <!-- <mat-label>Sub-Category</mat-label> -->
                                             <input (keydown)="enableDisableButton(i)" (keydown.shift.enter)="$event.preventDefault()" matInput type="text" name="{{category.subCategory}}"  value="{{category.subCategory}}" #subCatName maxlength="50">
                                         </mat-form-field>
 

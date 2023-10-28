@@ -2,10 +2,13 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from '../../../../app/init/auth.service'; 
 import labels from '../../../labels/labels.json'
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -18,25 +21,36 @@ export interface PeriodicElement {
 })
 export class SetColumnSeqComponent implements OnInit {
   ELEMENT_DATA: PeriodicElement[] = [];
+  public iAdminApiService: IAdminApiService;
   constructor(
     private Api: ApiFuntions, 
     private authService: AuthService,
-    public dialogRef: MatDialogRef<any>,
-    private toastr: ToastrService
-    ) { } 
+    private adminApiService: AdminApiService,
+    private global:GlobalService,
+    public dialogRef: MatDialogRef<any> 
+    ) { 
+      this.iAdminApiService = adminApiService;
+
+    } 
   dataSource :PeriodicElement[];
 
   ngOnInit(): void {
     this.dataSource = [];
-    this.ELEMENT_DATA = [];
-    let userData = this.authService.userData();
-  let payload = {
-    "username": userData.userName,
-    "wsid": userData.wsid,
+    this.ELEMENT_DATA = []; 
+  let payload = { 
     "viewName": "Inventory Map"
   }
-    this.Api.GetColumnSequenceDetail(payload).subscribe((res) => {
-          this.formatColumn(res.data.columnSequence);
+    this.iAdminApiService.GetColumnSequenceDetail(payload).subscribe((res) => {
+      if(res.isExecuted)
+      {
+        this.formatColumn(res.data.columnSequence);
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetColumnSequenceDetail",res.responseMessage);
+      }
+          
+      
     });
   }
 
@@ -58,23 +72,21 @@ export class SetColumnSeqComponent implements OnInit {
   }
   
   saveColumnSeq(){
-    let userData = this.authService.userData();
     let sortedColumn = this.dataSource.map(t=>t.name);
     let payload = {
-      "columns": sortedColumn,
-      "username": userData.userName,
-      "wsid": userData.wsid,
+      "columns": sortedColumn, 
       "viewName": "Inventory Map"
     }
-    this.Api.SaveColumns(payload).subscribe((res:any) => {
-      // console.log(res);
+    this.iAdminApiService.SaveColumns(payload).subscribe((res:any) => {
       if(res.isExecuted){
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SaveColumns",res.responseMessage);
       }
       this.dialogRef.close('');
+      
     });
       
   }

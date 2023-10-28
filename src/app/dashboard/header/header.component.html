@@ -5,73 +5,23 @@
   <div class="breadcrumb-menu ps-1 ps-xl-3" style="height: 30px;">
 
 
-    <nav aria-label="breadcrumb" class="breadcrumb m-0">
+    <ul aria-label="breadcrumb" class="breadcrumb m-0">
       <li style="cursor:pointer;" *ngIf="isConfigUser" (click)="routeToLogin()">
         LogixPro
       </li>
       
       <ng-container *ngFor="let item of breadcrumbList; index as i;">      
-        <!-- && !isConfigUser  -->
-        <!-- [routerLink]="RouterLinkSet(i)"  -->
         <li *ngIf="i < (breadcrumbList.length-1) && !isConfigUser" class="breadcrumb-item"  style="cursor:pointer;" (click)="breadCrumbClick(item.menu,i)">
           {{item?.name}}
-          <!-- &nbsp; {{"."}} &nbsp; -->
         </li>
         
         <li *ngIf="i>=(breadcrumbList.length-1) " class="breadcrumb-item active" style="cursor:pointer;" (click)="breadCrumbClick(item.menu)">
           {{item.name}}
         </li>
       </ng-container>      
-    </nav>
-  </div>
-  <!-- <div class="breadcrumb-menu ps-3" style="height: 30px;">
-    <nav aria-label="breadcrumb" class="breadcrumb m-0">
-      <li class="breadcrumb-item" style="cursor:pointer;">PickPro
-      </li>
-      <li class="breadcrumb-item" style="cursor:pointer;">Admin
-      </li>
-      <li class="breadcrumb-item" style="cursor:pointer;">Home
-      </li>
-
-    </nav>
-
-  </div> -->
-  <!-- <div class="breadcrumb-menu ps-3" style="height: 30px;">
-    <nav aria-label="breadcrumb" class="breadcrumb m-0">
-      <li class="breadcrumb-item" style="cursor:pointer;">PickPro
-      </li>
-      <li class="breadcrumb-item" style="cursor:pointer;">Admin
-      </li>
-      <li class="breadcrumb-item" style="cursor:pointer;">Home
-      </li>
-
-    </nav>
-
-  </div> -->
-  <span class="full-spacer"></span>
-
-  <!-- <div class="row mr-2 ml-auto">
-    <ul class="row m-0 align-items-center">
-      <li>
-        <button mat-button [matMenuTriggerFor]="menu" class="user mt-2 d-flex align-items-center">
-          <mat-icon>dashboard</mat-icon>
-
-          Apps
-          <mat-icon class="user-image-icon ml-1">keyboard_arrow_down</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item>
-            <mat-icon>assignment_ind</mat-icon>
-            Profile
-          </button>
-          <button mat-menu-item>
-            <mat-icon>exit_to_app</mat-icon>
-            Logout
-          </button>
-        </mat-menu>
-      </li>
     </ul>
-  </div> -->
+  </div>
+  <span class="full-spacer"></span>
   <div class="row mr-2 ml-auto">
     <ul class="row m-0 align-items-center">
       <li>
@@ -100,15 +50,9 @@
       </li>
     </ul>
   </div>
-  <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon class="material-symbols-outlined">settings</mat-icon>
-  </button> -->
 
 
 </mat-toolbar>
-<!-- <mat-progress-bar *ngIf="loading" style="display: flex; justify-content: center; align-items: center;height: 10px;" color="warn"
-  mode="indeterminate">
-</mat-progress-bar> -->
 <div class="overlay" *ngIf="spinnerService.visibility | async" style="z-index: 999999;">
   <div class="center">
     <mat-spinner [diameter]="50"></mat-spinner>

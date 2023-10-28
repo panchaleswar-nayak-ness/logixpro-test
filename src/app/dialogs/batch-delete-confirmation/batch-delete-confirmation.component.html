@@ -13,7 +13,6 @@
         <p class="prompt-message py-4 mb-0 ">
             <b>{{message}}</b>
         </p>
-        <!-- <p class="bold text-danger mb-4">This action can not be redone.</p> -->
         <div class="br-14 px-4 py-3 checkbox-background mb-4">
           <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary">I understand data cannot be recovered</mat-checkbox>
         </div>
@@ -22,9 +21,5 @@
     <mat-dialog-actions class="d-flex flex-column justify-content-center">
       <button (click)="onConfirmdelete()" class=" prompt-action-danger-button mb-3 w-100 btn-lg"  [disabled]="isChecked" mat-stroked-button >Ok</button>
       <button  class=" mb-3 w-100 btn-lg" (click)="CancelPopup()" mat-stroked-button >Cancel</button>
-      
-      <!-- <button class="mat-button-base prompt-action-basic-button" mat-button mat-dialog-close>
-        Close
-      </button> -->
     </mat-dialog-actions>
   </div>

@@ -2,25 +2,24 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
   Component,
   OnInit,
-  AfterViewInit,
   ViewChild,
   Input,
   SimpleChanges,
   EventEmitter,
-  Output,
-  ChangeDetectionStrategy,
-  TemplateRef,
+  Output
 } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { MatDialog } from '@angular/material/dialog';
 import { BatchManagerDetailViewComponent } from '../../dialogs/batch-manager-detail-view/batch-manager-detail-view.component';
 import { Subscription } from 'rxjs';
 import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-batch-order-list',
@@ -48,7 +47,7 @@ export class BatchOrderListComponent implements OnInit {
       this.transType = event;
     }
   }
-
+  public iAdminApiService: IAdminApiService;
   @Input() displayedColumns: any;
   @Input() orderStatus: any;
   @Input() extraField: any;
@@ -62,10 +61,14 @@ export class BatchOrderListComponent implements OnInit {
     private sharedService: SharedService,
     private _liveAnnouncer: LiveAnnouncer,
     private router: Router,
+    private adminApiService: AdminApiService,
     private Api: ApiFuntions,
     private authService: AuthService,
-    private dialog: MatDialog
-  ) {}
+    private global:GlobalService
+  ) {
+    
+   this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -113,17 +116,24 @@ export class BatchOrderListComponent implements OnInit {
 
   addOrders(order: any) {
     order.fixedTote = this.fixedTote >= 10 ? 1 : this.fixedTote++;
-    order.toteNumber =
-      this.toteNumber <= 10 ? this.toteNumber++ : (this.toteNumber = 1); // tote number increment till 10 after 10 restarts to 1
+  
+    if (this.toteNumber <= 10) {
+      this.toteNumber++;
+    } else {
+      this.toteNumber = 1;
+    }
+  
+    order.toteNumber = this.toteNumber;
+  
     this.addOrderEmitter.emit(order);
   }
-
+  
   addRemoveAllOrder() {
     this.addRemoveAll.emit();
   }
 
   openView(element) {
-    let userRights=JSON.parse(localStorage.getItem('userRights') || '');
+    let userRights=JSON.parse(localStorage.getItem('userRights')??'');
     let permissions=userRights.includes('Order Status')
 
     if (permissions) {
@@ -141,23 +151,26 @@ export class BatchOrderListComponent implements OnInit {
   switchToOS(order, transType) {
     let payload = {
       order: order,
-      transType: transType,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      transType: transType
     };
-    this.Api
+    this.iAdminApiService
       .DetailView(payload)
       .subscribe((res: any) => {
         const { data, isExecuted } = res;
         if (isExecuted && data.length > 0) {
           this.openBatchViewDetail(data);
-        } else {
+        }
+        else {
+          
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("DetailView",res.responseMessage);
+
         }
       });
   }
 
   openBatchViewDetail(detailData?): void {
-    const dialogRef = this.dialog.open(BatchManagerDetailViewComponent, {
+    const dialogRef:any = this.global.OpenDialog(BatchManagerDetailViewComponent, {
       width: '1100px',
       autoFocus: '__non_existing_element__',
       disableClose:true,

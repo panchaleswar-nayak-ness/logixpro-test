@@ -2,14 +2,18 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-set-item-location',
   templateUrl: './set-item-location.component.html',
-  styleUrls: ['./set-item-location.component.scss'],
+  styleUrls: [],
 })
 export class SetItemLocationComponent implements OnInit {
   @ViewChild('itm_nmb') itm_nmb: ElementRef;
@@ -27,14 +31,21 @@ export class SetItemLocationComponent implements OnInit {
   location: any;
   itemInvalid=false;
   invMapID;
+  public iAdminApiService: IAdminApiService;
+  public iCommonAPI : ICommonApi;
+
   constructor(
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private toastr: ToastrService,
+    
     private Api:ApiFuntions,
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
 
   ) {
+    this.iAdminApiService = adminApiService;
     this.itemNumber = data.itemNumber;
+    this.iCommonAPI = commonAPI;
   }
   getFloatLabelValueLocation(): FloatLabelType {
     return this.floatLabelControlLocation.value || 'autoLocation';
@@ -61,18 +72,16 @@ export class SetItemLocationComponent implements OnInit {
   }
   validateItem(){
     let payLoad = {
-      itemNumber: this.itemNumber,
-        username: this.data.userName,
-        wsid: this.data.wsid,
+      itemNumber: this.itemNumber
       };
       setTimeout(() => {
         
    
-      this.Api
+      this.commonAPI
         .ItemExists(payLoad)
         .subscribe(
-          (res: any) => {
-            if(res && res.isExecuted){
+          {next:(res: any) => {
+            if(res?.isExecuted){
               if(res.data===''){
                 
                 this.itemInvalid=true
@@ -84,19 +93,13 @@ export class SetItemLocationComponent implements OnInit {
               }
        
             }
-            // this.searchAutocompleteItemNum = res.data;
           },
-          (error) => {}
+          error:(error) => {}}
         );
       }, 500);
   }
   ngOnInit(): void {
     this.autocompleteGetLocation();
-    // this.searchByOrderNumber
-    //   .pipe(debounceTime(600), distinctUntilChanged())
-    //   .subscribe((value) => {
-    //     this.autocompleteGetItem();
-    //   });
 
     this.searchByItemNumber
       .pipe(debounceTime(600), distinctUntilChanged())
@@ -108,34 +111,19 @@ export class SetItemLocationComponent implements OnInit {
     this.itm_nmb.nativeElement.focus();
   }
 
-  // getItemLocation(){
-
-  //   let payload={
-  //     itemNumber:  this.itemNumber,
-  //     username: this.data.userName,
-  //     wsid: this.data.wsid,
-  //   }
-
-  //   this.transactionService.get(payload,'/Admin/GetLocations',true).subscribe((res:any)=>{
-  //     if(res && res.data){
-  //       this.searchAutocompleteListItem=res.data
-
-  //     }
-  //   })
-  // }
   async autocompleteGetLocation() {
     let searchPayload = {
       itemNumber: this.itemNumber,
       username: this.data.userName,
       wsid: this.data.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .GetLocations(searchPayload)
       .subscribe(
-        (res: any) => {
+        {next: (res: any) => {
           this.searchAutocompleteList = res.data;
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
 
@@ -143,17 +131,15 @@ export class SetItemLocationComponent implements OnInit {
     let searchPayload = {
       itemNumber: this.itemNumber,
       beginItem: '---',
-      isEqual: false,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      isEqual: false
     };
-    this.Api
+    this.commonAPI
       .SearchItem(searchPayload)
       .subscribe(
-        (res: any) => {
+        {next: (res: any) => {
           this.searchAutocompleteListItem = res.data;
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
   ngOnDestroy() {

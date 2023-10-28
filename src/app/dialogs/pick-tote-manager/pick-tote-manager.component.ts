@@ -1,9 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {  MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { startWith } from 'rxjs/internal/operators/startWith';
@@ -13,12 +13,15 @@ import { AuthService } from '../../../app/init/auth.service';
 import { AddFilterFunction } from '../add-filter-function/add-filter-function.component';
 import labels from '../../labels/labels.json';
 import { DeleteConfirmationComponent } from '../../../app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { MatSelect, MatSelectChange } from '@angular/material/select';
+import { MatSelect } from '@angular/material/select';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatOption } from '@angular/material/core';
 import { MatSort } from '@angular/material/sort';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {
   name: string;
@@ -30,15 +33,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
   { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
   { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
   { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  // { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  // { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  // { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  // { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  // { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  // { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  // { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  // { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  // { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
 ];
 
 @Component({
@@ -189,19 +183,22 @@ export class PickToteManagerComponent implements OnInit {
   @ViewChild('filterBatchTrans') filterBatchTrans: MatPaginator;
   @ViewChild('zoneBatchOrder') zoneBatchOrder: MatPaginator;
   @ViewChild('zoneBatchTrans') zoneBatchTrans: MatPaginator;
-  // @ViewChild('batchByZonePaginator', {read: true}) batchByZonePaginator: MatPaginator;
   @ViewChild('batchByZonePaginator', { static: false })
   set paginator(value: MatPaginator) {
     this.batchByZoneSource.paginator = value;
   }
+  public iinductionManagerApi:IInductionManagerApiService;
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    
+    private inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { }
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
     this.savedFilterList = [];
@@ -222,21 +219,22 @@ export class PickToteManagerComponent implements OnInit {
 
 
   pickBatchZonesSelect() {
-    let paylaod = {
-      "wsid": this.userData.wsid,
+    let paylaod = { 
     }
-    this.Api.PickBatchZonesSelect(paylaod).subscribe(res => {
-      if (res.data) {
+    this.iinductionManagerApi.PickBatchZonesSelect(paylaod).subscribe(res => {
+      if (res.isExecuted && res.data) {
         this.batchByZoneData = res.data
         this.batchByZoneSource = new MatTableDataSource<any>(this.batchByZoneData);
-        // this.batchByZoneSource.paginator = this.batchByZonePaginator;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PickBatchZonesSelect",res.responseMessage);
+
       }
     });
   }
 
-  ngAfterViewInit() {
-    // this.batchByZoneSource.paginator = this.batchByZonePaginator;
-    
+  ngAfterViewInit() {    
     setTimeout(()=>{
       this.field_focus.nativeElement.focus();  
     }, 500);
@@ -244,18 +242,22 @@ export class PickToteManagerComponent implements OnInit {
 
   getSavedFilters() {
     let paylaod = {
-      "filter": "",
-      "wsid": this.userData.wsid,
+      "filter": "", 
     }
-    this.Api.PickBatchFilterTypeAhead(paylaod).subscribe((res) => {
-      if (res.data) {
+    this.iinductionManagerApi.PickBatchFilterTypeAhead(paylaod).subscribe((res) => {
+      if (res.isExecuted && res.data) {
         
         this.savedFilterList = res.data;
         this.filteredOptions = this.savedFilter.valueChanges.pipe(
           startWith(""),
-          map(value => (typeof value === "string" ? value : value)),
+          map(value => (value)),
           map(name => (name ? this._filter(name) : this.savedFilterList.slice()))
         );
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PickBatchFilterTypeAhead",res.responseMessage);
+
       }
     });
   }
@@ -310,7 +312,7 @@ export class PickToteManagerComponent implements OnInit {
   }
   onFilterAction(option: any) {
     if (option.value === 'add_new_filter') {
-      const dialogRef = this.dialog.open(AddFilterFunction, {
+      const dialogRef:any = this.global.OpenDialog(AddFilterFunction, {
         height: 'auto',
         width: '500px',
         autoFocus: '__non_existing_element__'
@@ -329,7 +331,7 @@ export class PickToteManagerComponent implements OnInit {
       });
     }
     if (option.value === 'rename') {
-      const dialogRef = this.dialog.open(AddFilterFunction, {
+      const dialogRef:any = this.global.OpenDialog(AddFilterFunction, {
         height: 'auto',
         width: '500px',
         data: {
@@ -346,7 +348,7 @@ export class PickToteManagerComponent implements OnInit {
       });
     }
     if (option.value === 'set_default') {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '480px',
         data: {
@@ -358,15 +360,16 @@ export class PickToteManagerComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result === 'Yes') {
           let paylaod = {
-            "Description": this.savedFilter.value,
-            "wsid": this.userData.wsid
+            "Description": this.savedFilter.value, 
           }
-          this.Api.PickBatchDefaultFilterMark(paylaod).subscribe(res => {
+          this.iinductionManagerApi.PickBatchDefaultFilterMark(paylaod).subscribe(res => {
             if (res.isExecuted) {
-              this.toastr.success(labels.alert.update, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              }); 
+              this.global.ShowToastr('success',labels.alert.update, 'Success!'); 
+            }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("PickBatchDefaultFilterMark",res.responseMessage);
+
             }
           });
         }
@@ -376,25 +379,26 @@ export class PickToteManagerComponent implements OnInit {
      
     }
     if (option.value === 'clear_default') {
-      let paylaod = {
-        "wsid": this.userData.wsid
+      let paylaod = { 
       }
-      this.Api.PickBatchDefaultFilterClear(paylaod).subscribe(res => {
+      this.iinductionManagerApi.PickBatchDefaultFilterClear(paylaod).subscribe(res => {
         if (res.isExecuted) {
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
           const matSelect: MatSelect = option.source;
           matSelect.writeValue(null);
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickBatchDefaultFilterClear",res.responseMessage);
+
+
         }
       });
     }
     if (option.value === 'view_default') {
-      let paylaod = {
-        "wsid": this.userData.wsid
+      let paylaod = { 
       }
-      this.Api.PickBatchDefaultFilterSelect(paylaod).subscribe(res => {
+      this.iinductionManagerApi.PickBatchDefaultFilterSelect(paylaod).subscribe(res => {
         if (res.data) {
           
           this.savedFilter.setValue(res.data);
@@ -405,10 +409,8 @@ export class PickToteManagerComponent implements OnInit {
           this.pickBatchFilterOrderData(res.data);
         }
         else {
-          this.toastr.error('No filter is marked as default.', 'Warning!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error','No filter is marked as default.', 'Warning!');
+          console.log("PickBatchDefaultFilterSelect",res.responseMessage);
         }
         const matSelect: MatSelect = option.source;
         matSelect.writeValue(null);
@@ -416,7 +418,7 @@ export class PickToteManagerComponent implements OnInit {
 
     }
     if (option.value === 'delete_selected_filter') {
-      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
@@ -425,20 +427,21 @@ export class PickToteManagerComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result === 'Yes') {
           let paylaod = {
-            "Description": this.savedFilter.value,
-            "wsid": this.userData.wsid
+            "Description": this.savedFilter.value, 
           }
-          this.Api.PickBatchFilterBatchDelete(paylaod).subscribe(res => {
+          this.iinductionManagerApi.PickBatchFilterBatchDelete(paylaod).subscribe(res => {
             if (res.isExecuted) {
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
               this.savedFilterList = this.savedFilterList.filter(item => item !== this.savedFilter.value);
               this.savedFilter.setValue('');
               this.savedFilClosed();
               const matSelect: MatSelect = option.source;
               matSelect.writeValue(null);
+            }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("PickBatchFilterBatchDelete",res.responseMessage);
+
             }
 
           });
@@ -469,26 +472,29 @@ export class PickToteManagerComponent implements OnInit {
         "BatchType": "",
         "UseDefFilter": 0,
         "UseDefZone": 0,
-        "RP": false,
-        "WSID": "TESTWSID"
+        "RP": false, 
       }
-      this.Api.OrdersFilterZoneSelect(payload).subscribe(res => {
-        if (res.data) {
+      this.iinductionManagerApi.OrdersFilterZoneSelect(payload).subscribe(res => {
+        if (res.isExecuted && res.data) {
           res.data.map(val => {
             this.FILTER_BATCH_DATA.push({ 'orderNumber': val.orderNumber, 'reqDate': val.reqDate, 'priority': val.priority, isSelected: false });
           });
           if (this.data.allOrders.length > 0) {
             const selectedArr = this.FILTER_BATCH_DATA.filter(element => this.data.allOrders.includes(element.orderNumber));
             
-            selectedArr.map(ele => {
+            selectedArr.forEach(ele => {
               ele.isSelected = true
               this.selectedOrders.push(ele.orderNumber);
             });
             this.selectedOrders = [...new Set(this.selectedOrders)];
-            // this.onOrderSelect(selectedArr[selectedArr.length -1]);
           }
           this.filterBatchOrders = new MatTableDataSource<any>(this.FILTER_BATCH_DATA);
           this.filterBatchOrders.paginator = this.filterBatchOrder;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("OrdersFilterZoneSelect",res.responseMessage);
+
         }
       });
     }
@@ -499,11 +505,10 @@ export class PickToteManagerComponent implements OnInit {
         "BatchType": type,
         "UseDefFilter": 0,
         "UseDefZone": 0,
-        "RP": rp,
-        "WSID": "TESTWSID"
+        "RP": rp, 
       }
-      this.Api.OrdersFilterZoneSelect(payload).subscribe(res => {
-        if (res.data) {
+      this.iinductionManagerApi.OrdersFilterZoneSelect(payload).subscribe(res => {
+        if (res.isExecuted && res.data) {
           ;
           res.data.map(val => {
             this.FILTER_BATCH_DATA_ZONE.push({ 'orderNumber': val.orderNumber, 'reqDate': val.reqDate, 'priority': val.priority, isSelected: false });
@@ -511,11 +516,10 @@ export class PickToteManagerComponent implements OnInit {
           if (this.data.allOrders.length > 0) {
             const selectedArr = this.FILTER_BATCH_DATA_ZONE.filter(element => this.data.allOrders.includes(element.orderNumber));
             
-            selectedArr.map(ele => {
+            selectedArr.forEach(ele => {
               ele.isSelected = true
               this.selectedOrders.push(ele.orderNumber);
             });
-            // this.onOrderSelect(selectedArr[selectedArr.length -1]);
             this.selectedOrders = [...new Set(this.selectedOrders)];
             this.allSelectOrders = this.selectedOrders;
           }
@@ -523,12 +527,18 @@ export class PickToteManagerComponent implements OnInit {
           this.filterBatchOrdersZone.paginator = this.zoneBatchOrder;
           this.TabIndex = 1;
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("OrdersFilterZoneSelect",res.responseMessage);
+
+
+        }
       });
     }
 
   }
 
-  viewReplenishZoneRecord(viewReplenish = "", element: any, rp: any) {
+  viewReplenishZoneRecord(element: any, rp: any, viewReplenish = "") {
     if (viewReplenish == "") {
       this.ordersFilterZoneSelect(element.zone, true, element.type);
 
@@ -541,7 +551,7 @@ export class PickToteManagerComponent implements OnInit {
 
   onOrderSelect(row: any) {
     if (this.selectedOrders.includes(row.orderNumber)) {
-      this.FILTER_BATCH_DATA.filter(val => {
+      this.FILTER_BATCH_DATA.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = false;
           this.filterOrderTransactionSource = [];
@@ -555,13 +565,11 @@ export class PickToteManagerComponent implements OnInit {
       }
     }
     else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
-      this.toastr.error('No open totes in batch', 'Batch is Filled.', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','No open totes in batch', 'Batch is Filled.');
+      console.log("includes");
     }
     else {
-      this.FILTER_BATCH_DATA.map(v => {
+      this.FILTER_BATCH_DATA.forEach(v => {
         if (this.selectedOrders.includes(v.orderNumber)) {
           v.isSelected = true;
         }
@@ -571,8 +579,7 @@ export class PickToteManagerComponent implements OnInit {
       });
       this.tempHoldEle = row; 
 
-      // this.selectedOrders.push(row.orderNumber);
-      this.FILTER_BATCH_DATA.filter(val => {
+      this.FILTER_BATCH_DATA.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = true;
         }
@@ -585,18 +592,21 @@ export class PickToteManagerComponent implements OnInit {
         "eRow": 10,
         "SortColumnNumber": 0,
         "SortOrder": "asc",
-        "Filter": "1=1",
-        "Username": this.userData.username,
-        "wsid": this.userData.wsid,
+        "Filter": "1=1", 
       }
-      this.Api.PickToteTransDT(paylaod).subscribe((res) => {
-        // if (res.data.length > 0) {
-        ;
+      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+        if(res)
+        {
+          this.filterOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
+          this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
+          this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickToteTransDT",res.responseMessage);
 
-        this.filterOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
-        this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
-        this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
-        // }
+        }
+        
       });
     }
     
@@ -606,7 +616,7 @@ export class PickToteManagerComponent implements OnInit {
 
   onOrderSelectZone(row: any) {
     if (this.selectedOrders.includes(row.orderNumber)) {
-      this.FILTER_BATCH_DATA_ZONE.filter(val => {
+      this.FILTER_BATCH_DATA_ZONE.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = false;
           this.zoneOrderTransactionSource = [];
@@ -621,13 +631,10 @@ export class PickToteManagerComponent implements OnInit {
       }
     }
     else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
-      this.toastr.error('No open totes in batch', 'Batch is Filled.', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','No open totes in batch', 'Batch is Filled.');
     }
     else {
-      this.FILTER_BATCH_DATA_ZONE.map(v => {
+      this.FILTER_BATCH_DATA_ZONE.forEach(v => {
         if (this.selectedOrders.includes(v.orderNumber)) {
           v.isSelected = true;
         }
@@ -637,8 +644,7 @@ export class PickToteManagerComponent implements OnInit {
       });
       this.tempHoldEle = row;
 
-      // this.selectedOrders.push(row.orderNumber);
-      this.FILTER_BATCH_DATA_ZONE.filter(val => {
+      this.FILTER_BATCH_DATA_ZONE.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = true;
         }
@@ -651,29 +657,31 @@ export class PickToteManagerComponent implements OnInit {
         "eRow": 10,
         "SortColumnNumber": 0,
         "SortOrder": "asc",
-        "Filter": "1=1",
-        "Username": this.userData.username,
-        "wsid": this.userData.wsid,
+        "Filter": "1=1", 
       }
-      this.Api.PickToteTransDT(paylaod).subscribe((res) => {
-        // if (res.data) {
-        this.zoneOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
-        this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
-        this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
-        // }
+      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+        if(res)
+        {
+          this.zoneOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
+          this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
+          this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickToteTransDT",res.responseMessage);
+        }
+        
       });
     }
 
   }
   pickBatchFilterOrderData(filter: string | null) {
     let paylaod = {
-      "filter": filter,
-      "wsid": this.userData.wsid,
+      "filter": filter, 
     }
-    this.Api.PickBatchFilterOrderData(paylaod).subscribe(res => {
-      // console.log(res.data);
+    this.iinductionManagerApi.PickBatchFilterOrderData(paylaod).subscribe(res => {
 
-      if (res.data) {
+      if (res.isExecuted && res.data) {
         this.FILTER_DATA = [];
         this.ORDER_BY_DATA = [];
         this.pickBatchFilter = res.data.pickBatchFilter
@@ -684,11 +692,14 @@ export class PickToteManagerComponent implements OnInit {
           this.onAddFilter(this.pickBatchFilter);
         }
 
-        if (!this.pickBatchOrder) {
-          // this.onAddOrderBy();
-        } else {
+        if (this.pickBatchOrder) {
           this.onAddOrderBy(this.pickBatchOrder);
         }
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PickBatchFilterOrderData",res.responseMessage);
+
       }
     });
   }
@@ -715,7 +726,7 @@ export class PickToteManagerComponent implements OnInit {
       this.onCloseAllPickToteManager();
     }
     if (option === 'unselect_all_orders') {
-      this.FILTER_BATCH_DATA.map(ele => {
+      this.FILTER_BATCH_DATA.forEach(ele => {
         ele.isSelected = false;
         ele.priority = '';
         this.selectedOrders = [];
@@ -750,7 +761,7 @@ export class PickToteManagerComponent implements OnInit {
       this.onCloseAllPickToteManager();
     }
     if (option === 'unselect_all_orders') {
-      this.FILTER_BATCH_DATA_ZONE.map(ele => {
+      this.FILTER_BATCH_DATA_ZONE.forEach(ele => {
         ele.isSelected = false;
         ele.priority = '';
         this.selectedOrders = [];
@@ -765,14 +776,13 @@ export class PickToteManagerComponent implements OnInit {
           this.selectedOrders.push(this.tempHoldEle.orderNumber);
         }
       }
-      // this.selectedOrders.push(this.tempHoldEle.orderNumber);
       this.onCloseAllPickToteManager();
     }
     this.orderActionRefreshZone();
   }
   onViewOrderLineZone(event) {
     let orderNum = '';
-    this.FILTER_BATCH_DATA_ZONE.map(val => {
+    this.FILTER_BATCH_DATA_ZONE.forEach(val => {
       orderNum += val.orderNumber + ','
     })
 
@@ -784,21 +794,23 @@ export class PickToteManagerComponent implements OnInit {
         "eRow": 10,
         "SortColumnNumber": 0,
         "SortOrder": "asc",
-        "Filter": "1=1",
-        "Username": this.userData.username,
-        "wsid": this.userData.wsid,
+        "Filter": "1=1", 
       }
-      this.Api.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
           this.zoneOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
           this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
           this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickToteTransDT",res.responseMessage);
+        }
       });
     }
     if (event.value === 'vSelectedOrderZone') {
       orderNum = '';
-      this.FILTER_BATCH_DATA_ZONE.map(val => {
+      this.FILTER_BATCH_DATA_ZONE.forEach(val => {
         if (val.isSelected) {
           orderNum += val.orderNumber + ','
         }
@@ -811,15 +823,18 @@ export class PickToteManagerComponent implements OnInit {
           "eRow": 10,
           "SortColumnNumber": 0,
           "SortOrder": "asc",
-          "Filter": "1=1",
-          "Username": this.userData.username,
-          "wsid": this.userData.wsid,
+          "Filter": "1=1", 
         }
-        this.Api.PickToteTransDT(paylaod).subscribe((res) => {
+        this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
             this.zoneOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
             this.zoneOrderTransactionSource.paginator = this.zoneBatchTrans;
             this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("PickToteTransDT",res.responseMessage);
+
           }
         });
       }
@@ -832,33 +847,36 @@ export class PickToteManagerComponent implements OnInit {
   }
   onViewOrderLineFilter(event) {
     let orderNum = '';
-    this.FILTER_BATCH_DATA.map(val => {
+    this.FILTER_BATCH_DATA.forEach(val => {
       orderNum += val.orderNumber + ','
     })
 
     if (event.value === 'vAllOrderFilter') {
       let paylaod = {
         "Draw": 0,
-        "OrderNumber": orderNum ? orderNum : 'EAGLES',
+        "OrderNumber": orderNum ?? 'EAGLES',
         "sRow": 1,
         "eRow": 10,
         "SortColumnNumber": 0,
         "SortOrder": "asc",
-        "Filter": "1=1",
-        "Username": this.userData.username,
-        "wsid": this.userData.wsid,
+        "Filter": "1=1", 
       }
-      this.Api.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
           this.filterOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
           this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
           this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
         }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickToteTransDT",res.responseMessage);
+
+        }
       });
     }
     if (event.value === 'vSelectedOrderFilter') {
       orderNum = '';
-      this.FILTER_BATCH_DATA.map(val => {
+      this.FILTER_BATCH_DATA.forEach(val => {
         if (val.isSelected) {
           orderNum += val.orderNumber + ','
         }
@@ -871,15 +889,18 @@ export class PickToteManagerComponent implements OnInit {
           "eRow": 10,
           "SortColumnNumber": 0,
           "SortOrder": "asc",
-          "Filter": "1=1",
-          "Username": this.userData.username,
-          "wsid": this.userData.wsid,
+          "Filter": "1=1", 
         }
-        this.Api.PickToteTransDT(paylaod).subscribe((res) => {
+        this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
             this.filterOrderTransactionSource = new MatTableDataSource<any>(res.data.pickToteManTrans);
             this.filterOrderTransactionSource.paginator = this.filterBatchTrans;
             this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("PickToteTransDT",res.responseMessage);
+
           }
         });
       }
@@ -893,10 +914,7 @@ export class PickToteManagerComponent implements OnInit {
 
   onSaveSingleFilter(element: any) {
     if (element.value === '') {
-      this.toastr.error('Some of the inputs are missing values. Cannot add row to filter.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Some of the inputs are missing values. Cannot add row to filter.', 'Error!');
     }
     else {
       let payload = {
@@ -905,37 +923,37 @@ export class PickToteManagerComponent implements OnInit {
         "Criteria": element.criteria,
         "Value": element.value,
         "AndOr": element.andOr,
-        "Description": this.savedFilter.value,
-        "wsid": this.userData.wsid,
+        "Description": this.savedFilter.value, 
       }
-      this.FILTER_DATA.map(val => {
-
-        // console.log(val);
-        
+      this.FILTER_DATA.forEach(val => {        
         
         if (val.is_db) {
-          this.Api.PickBatchFilterUpdate(payload).subscribe(res => {
+          this.iinductionManagerApi.PickBatchFilterUpdate(payload).subscribe(res => {
             if (res.isExecuted) {
               this.isFilterAdd = true;
-              this.toastr.success(labels.alert.update, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.update, 'Success!');
               this.filterSeq = element.sequence;
               this.pickBatchFilterOrderData(this.savedFilter.value);
+            }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("PickBatchFilterUpdate",res.responseMessage);
+
             }
           });
         }
         else {
-          this.Api.PickBatchFilterInsert(payload).subscribe(res => {
+          this.iinductionManagerApi.PickBatchFilterInsert(payload).subscribe(res => {
             if (res.isExecuted) {
               this.isFilterAdd = true;
-              this.toastr.success(labels.alert.success, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.success, 'Success!');
               this.filterSeq = element.sequence;
               this.pickBatchFilterOrderData(this.savedFilter.value);
+            }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("PickBatchFilterInsert",res.responseMessage);
+
             }
           });
         }
@@ -950,16 +968,17 @@ export class PickToteManagerComponent implements OnInit {
         "Sequence": element.sequence,
         "Field": element.field,
         "Order": element.sortOrder,
-        "Description": this.savedFilter.value,
-        "wsid": this.userData.wsid,
+        "Description": this.savedFilter.value, 
       }
-      this.Api.PickBatchOrderUpdate(payload).subscribe(res => {
+      this.iinductionManagerApi.PickBatchOrderUpdate(payload).subscribe(res => {
         if (res.isExecuted) {
           this.isOrderByAdd = true;
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickBatchOrderUpdate",res.responseMessage);
+
         }
       });
     }
@@ -968,18 +987,19 @@ export class PickToteManagerComponent implements OnInit {
         "Sequence": element.sequence,
         "Field": element.field,
         "Order": element.sortOrder,
-        "Description": this.savedFilter.value,
-        "wsid": this.userData.wsid,
+        "Description": this.savedFilter.value, 
       }
-      this.Api.PickBatchOrderInsert(payload).subscribe(res => {
+      this.iinductionManagerApi.PickBatchOrderInsert(payload).subscribe(res => {
         if (res.isExecuted) {
           this.isOrderByAdd = true;
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           element.id = res.data;
           this.orderBySeq = element.sequence;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PickBatchOrderInsert",res.responseMessage);
+
         }
       });
     }
@@ -990,14 +1010,9 @@ export class PickToteManagerComponent implements OnInit {
 
     let res: any = [];
     this.orderBydataSource.filteredData.map( (item) => {
-      var existItem = res.find((x: any) => x.sequence == item.sequence);
+      let existItem = res.find((x: any) => x.sequence == item.sequence);
       if (existItem) {
-        // console.log("item already exist");
-        // console.log(existItem);
-        this.toastr.error('Can\'t have conflicting sequences within the order rows. A new sequence has been provided', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Can\'t have conflicting sequences within the order rows. A new sequence has been provided', 'Error!');
         element.sequence = +existItem.sequence + 1;
       }
       else {
@@ -1007,7 +1022,7 @@ export class PickToteManagerComponent implements OnInit {
 
   }
   onDeleteSingleFilter(element: any) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -1017,24 +1032,25 @@ export class PickToteManagerComponent implements OnInit {
       if (result === 'Yes') {
         let payload = {
           "Sequence": element.sequence,
-          "Description": this.savedFilter.value,
-          "wsid": this.userData.wsid,
+          "Description": this.savedFilter.value, 
         }
-        this.Api.PickBatchFilterDelete(payload).subscribe(res => {
+        this.iinductionManagerApi.PickBatchFilterDelete(payload).subscribe(res => {
           if (res.isExecuted) {
             this.isFilterAdd = true;
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.pickBatchFilterOrderData(this.savedFilter.value);
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("PickBatchFilterDelete",res.responseMessage);
+
           }
         });
       }
     });
   }
   onDeleteSingleOrder(element: any) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -1046,17 +1062,18 @@ export class PickToteManagerComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'Yes') {
         let payload = {
-          "id": element.id,
-          "wsid": this.userData.wsid,
+          "id": element.id, 
         }
-        this.Api.PickBatchOrderDelete(payload).subscribe(res => {
+        this.iinductionManagerApi.PickBatchOrderDelete(payload).subscribe(res => {
           if (res.isExecuted) {
             this.isFilterAdd = true;
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.pickBatchFilterOrderData(this.savedFilter.value);
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("PickBatchOrderDelete",res.responseMessage);
+
           }
         });
       }
@@ -1077,18 +1094,15 @@ export class PickToteManagerComponent implements OnInit {
       }
 
     }
-    else {
-      // console.log(this.allSelectOrders);
-      if (this.allSelectOrders.length > 0) {
+    else if (this.allSelectOrders.length > 0) {
+      
         selectedObj = this.FILTER_BATCH_DATA_ZONE.filter(element => this.allSelectOrders.includes(element.orderNumber));
         selectedObj = [...new Map(selectedObj.map(item => [item.orderNumber, item])).values()]
 
         let orderNumbers = new Set(selectedObj.map(d => d.orderNumber));
         currentObjArr = [...selectedObj, ...this.data.resultObj.filter(d => !orderNumbers.has(d.orderNumber))];
-      }
+      
     }
-    // console.log(currentObjArr);
-
     this.dialogRef.close(currentObjArr);
   }
 
@@ -1097,7 +1111,7 @@ export class PickToteManagerComponent implements OnInit {
   }
 
   onSelectBatchZone(row) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '480px',
       data: {
@@ -1110,20 +1124,14 @@ export class PickToteManagerComponent implements OnInit {
       if (result === 'Yes') {
         let payload = {
           "zone": row.zone,
-          "type": row.type,
-          "wsid": this.userData.wsid,
+          "type": row.type, 
         }
-        this.Api.PickBatchZoneDefaultMark(payload).subscribe(res => {
+        this.iinductionManagerApi.PickBatchZoneDefaultMark(payload).subscribe(res => {
           if (res.isExecuted) {
-            this.toastr.success(labels.alert.update, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.update, 'Success!');
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("PickBatchZoneDefaultMark",res.responseMessage);
           }
         });
       }
@@ -1131,12 +1139,6 @@ export class PickToteManagerComponent implements OnInit {
 
   }
 
-  tabChange(event:any){
-    console.log(event);
-    if(event.index == 1){
-      // this.onViewOrderLineFilter({value:'vSelectedOrderFilter'});
-    }
-  }
 }
 
 

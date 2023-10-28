@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-filter-tote',
   templateUrl: './filter-tote.component.html',
-  styleUrls: ['./filter-tote.component.scss']
+  styleUrls: []
 })
 export class FilterToteComponent implements OnInit {
   @ViewChildren('input_focus', { read: ElementRef }) input_focus: QueryList<ElementRef>;

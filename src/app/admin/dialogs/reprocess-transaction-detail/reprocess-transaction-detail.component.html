@@ -23,20 +23,6 @@
         <mat-checkbox color="primary" formControlName="emergency" checked  >Emergency</mat-checkbox>
         </div>
         </div>
-       
-              <!-- <mat-form-field appearance="outline" style=" width: 100%;">
-                <mat-label>Username</mat-label>
-                <input  type="text" matInput placeholder="Enter Username" formControlName="username" maxlength="50" required />
-                <mat-icon matPrefix style="color: #090948;" >account_circle</mat-icon>
-              </mat-form-field> -->
-              <!-- <mat-hint class="error-message" style="color: red;font-size: 14px;"
-                *ngIf="addLoginForm.controls['username'].invalid && (addLoginForm.controls['username'].dirty || addLoginForm.controls['username'].touched)">
-                Username is required
-              </mat-hint>
-            </div>
-                <div class="d-flex justify-content-center my-3">
-                  <button class="form-button-submit w-100" [disabled]="!addLoginForm.valid" mat-flat-button color="primary">Login</button>
-                </div> -->
         <div class="row">
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
@@ -59,14 +45,12 @@
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Serial Number</mat-label>
-                    <!-- (keydown)="onNumberValueChange()" (keyup)="onNumberValueChange()" (change)="onNumberValueChange()" (keypress)="onNumberValueChange()" // ADD these function for Number only field  -->
                     <input matInput maxlength="50" type="text" value="Label" formControlName="serialNumber" >
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Lot number</mat-label>
-                    <!-- (keydown)="onNumberValueChange()" (keyup)="onNumberValueChange()" (change)="onNumberValueChange()" (keypress)="onNumberValueChange()"    // ADD these function for Number only field-->
                     <input matInput maxlength="50" type="text" value="Label" formControlName="lotNumber">
                 </mat-form-field>
             </div>
@@ -74,11 +58,6 @@
 
         <div class="row">
             <div class="col-xl-3">
-                <!-- <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Expiration Date</mat-label>
-                    <input matInput type="text" value="Label"  formControlName="expirationDate">
-                </mat-form-field> -->
-
 
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                     <mat-label>Expiration Date</mat-label>
@@ -87,12 +66,6 @@
                     <mat-datepicker-toggle matSuffix [for]="start" ngDefaultControl></mat-datepicker-toggle>
                     <mat-datepicker #start></mat-datepicker>
                 </mat-form-field>
-
-
-
-
-
-
 
             </div>
             <div class="col-xl-3">
@@ -108,11 +81,6 @@
                 </mat-form-field>
             </div>
             <div class="col-xl-3">
-                <!-- <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Required Date</mat-label>
-                    <input matInput type="text" value="Label" formControlName="requiredDate">
-                </mat-form-field> -->
-
 
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                     <mat-label>Required Date</mat-label>

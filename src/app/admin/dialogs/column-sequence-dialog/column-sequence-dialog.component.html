@@ -15,7 +15,6 @@
                         Unordered Columns
                     </div>
                     <div class="card-body py-0 example-container">
-                        <!-- <ng-scrollbar style="height: 53vh" cdkScrollable mat-dialog-content> -->
                             <div cdkScrollable scrollViewport  class="custom-scrollbar" style="height: 53vh; -webkit-overflow-scrolling: touch;">
                                 <mat-list cdkDropList [cdkDropListData]="unorderedCol" class="example-list"
                                     (cdkDropListDropped)="drop($event)" class="zones-list g-card-list list-style-1"
@@ -38,7 +37,6 @@
     
                                 </mat-list>
                         </div>
-                        <!-- </ng-scrollbar> -->
                     </div>
                 </div>
 
@@ -49,7 +47,6 @@
                         Default Columns
                     </div>
                     <div class="card-body py-0 example-container">
-                        <!-- <ng-scrollbar style="height: 53vh" mat-dialog-content> -->
                             <div cdkScrollable scrollViewport class="custom-scrollbar" style="height: 53vh; -webkit-overflow-scrolling: touch;">
                                 <mat-list cdkDropList [cdkDropListData]="defaultCol" class="example-list"
                                     (cdkDropListDropped)="drop($event)" class="zones-list g-card-list list-style-1"
@@ -72,7 +69,6 @@
                                 </mat-list>
                           
                             </div>
-                        <!-- </ng-scrollbar> -->
                     </div>
                 </div>
 
@@ -92,16 +88,3 @@
             Default</button>
     </div>
 </mat-dialog-actions>
-
-<!-- 
-<mat-list-item role="listitem">
-    <span class="list-label zone-list-label d-flex align-items-center">
-        <mat-icon class="me-2" matTooltip="Drag"
-            matTooltipPosition="left">drag_indicator</mat-icon>
-        <span>{{col}}</span>
-    </span>
-    <button mat-icon-button aria-label="Remove Function" matTooltip="Remove"
-        matTooltipPosition="right">
-        <mat-icon class="icon-circle-cancel">close</mat-icon>
-    </button>
-</mat-list-item> -->

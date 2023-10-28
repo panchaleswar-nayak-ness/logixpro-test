@@ -10,9 +10,6 @@
               <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
               <span class="ps-2 w-100">Warning! Setting the user name and password fields will set this connection to use SQL Authentication.To use Windows Authentication make sure these fields are empty.</span>
           </div>
-  <!-- <div mat-dialog-content> -->
-    <!-- <ng-scrollbar style="height: 400px;"> -->
-      <!-- <div class="px-3"> -->
   
   
   
@@ -25,7 +22,6 @@
       <mat-form-field class="mb-3 w-100" appearance="outline">
         <mat-label>Password</mat-label>
         <input [(ngModel)]="password"  [type]="toggle_password ? 'password' : 'text'" [value]="password" matInput   [maxLength]="32">
-        <!-- <mat-icon matPrefix style="color: #090948;">lock</mat-icon> -->
         <button type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
           <mat-icon>{{toggle_password ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
@@ -40,8 +36,3 @@
         <button (click)="clearLoginInfo()" mat-stroked-button class="form-button-submit btn-lg w-100 mb-3" color="primary">Clear Login Info</button>
         
       </mat-dialog-actions>
-  
-  <!-- </div> -->
-  <!-- </ng-scrollbar> -->
-  <!-- </div> -->
-  

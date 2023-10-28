@@ -1,13 +1,15 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import {MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { AddNewEmployeeComponent } from '../../dialogs/add-new-employee/add-new-employee.component';
-import { NgForm } from '@angular/forms';
-import { AdminEmployeeLookupResponse, IEmployee } from 'src/app/Iemployee'; 
+
+
+import {  IEmployee } from 'src/app/Iemployee'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 // employee_details table data
 
@@ -31,30 +33,41 @@ export class EmployeesLookupComponent implements OnInit {
   highlight(row) {
     this.selectedRowIndex = row.id;
   }
-
+  public iAdminApiService: IAdminApiService;
   // table initialization
   displayedColumns: string[] = ['lastName', 'firstName', 'mi', 'username'];
-  constructor(private _liveAnnouncer: LiveAnnouncer, private dialog: MatDialog, private employeeService: ApiFuntions, private authService: AuthService) { }
+  constructor(private _liveAnnouncer: LiveAnnouncer, private global : GlobalService,  
+    private adminApiService: AdminApiService,
+    private employeeService: ApiFuntions, private authService: AuthService) { 
+      this.iAdminApiService = adminApiService;
+
+    }
 
   @ViewChild(MatSort) sort: MatSort;
   employees_details_data: [] = [];
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   ngOnInit(): void {
     this.userData = this.authService.userData();
-    this.env = JSON.parse(localStorage.getItem('env') || '');
+    this.env = JSON.parse(localStorage.getItem('env') ?? '');
     this.EmployeeLookUp();
 
   }
 EmployeeLookUp(LastName:any = "",IsLoader=true){
   
   this.emp = {
-    "lastName": LastName,
-    "userName": this.userData.userName,
-    "wsid": this.userData.wsid
+    "lastName": LastName, 
   };
-  this.employeeService.getAdminEmployeeLookup(this.emp,false)
-    .subscribe((response: any) => { 
-      this.employee_data_source = new MatTableDataSource(response.data.employees);
+  this.iAdminApiService.getAdminEmployeeLookup(this.emp,false)
+    .subscribe((response: any) => {
+      if(response.isExecuted && response.data)
+      {
+        this.employee_data_source = new MatTableDataSource(response.data.employees);
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getAdminEmployeeLookup",response.responseMessage);
+      } 
+      
     });
 }
   ngAfterViewInit() {

@@ -1,13 +1,14 @@
 import { Component, OnInit, ElementRef, Renderer2, ViewChildren, QueryList, } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import labels from '../../labels/labels.json'
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 @Component({
   selector: 'app-printers',
@@ -15,8 +16,6 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./printers.component.scss']
 })
 export class PrintersComponent implements OnInit {
-  // @ViewChildren('printerNameInput', { read: ElementRef }) printerNameInputs: QueryList<ElementRef>;
-  // @ViewChildren('printerNameInput', { read: ElementRef }) printerNameInputs: QueryList<ElementRef>;
   @ViewChildren('printerNameInput', { read: ElementRef }) printerNameInputs: QueryList<ElementRef>;
 
 
@@ -26,17 +25,19 @@ export class PrintersComponent implements OnInit {
   userData: any;
   allPinters: any[] = [];
   addingNew = false;
-
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
-    private dialog: MatDialog,
-    private Api: ApiFuntions,
-    private authService: AuthService,
-    private toastr: ToastrService,
-    private renderer: Renderer2,
     private global:GlobalService,
+    private Api: ApiFuntions,
+    public globalConfigApi: GlobalConfigApiService,
+    private authService: AuthService,
+    
+    private renderer: Renderer2, 
     private router: Router
     
-  ) { }
+  ) { 
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -45,12 +46,7 @@ export class PrintersComponent implements OnInit {
   }
 
   GetAllPrinters() {
-    let payload = {
-      "userName": this.userData.userName,
-      "wsid": this.userData.wsid,
-      "appName": ""
-    };
-    this.Api.GetAllPrinters(payload).subscribe((res: any) => {
+    this.iGlobalConfigApi.GetAllPrinters().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.allPinters = res.data;
         this.allPinters.forEach((element: any) => {
@@ -60,6 +56,10 @@ export class PrintersComponent implements OnInit {
           element.currentprinterAdd = element.printerAdd;
           element.currentlabelPrinter = element.labelPrinter;
         });
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetAllPrinters",res.responseMessage);
       }
     });
   }
@@ -73,66 +73,54 @@ export class PrintersComponent implements OnInit {
 
   getServiceStatus(loader: boolean = false) {
     let payload: any = {};
-    this.Api.StatusPrintService(payload).subscribe((res: any) => {
+    this.iGlobalConfigApi.StatusPrintService(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.running = res.data;
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("StatusPrintService",res.responseMessage);
       }
     });
   }
 
   startService(loader: boolean = false) {
     let payload: any = {};
-    this.Api.StartPrintService(payload).subscribe((res: any) => {
+    this.iGlobalConfigApi.StartPrintService(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.running = true;
-        this.toastr.success("Service start was successful.", 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',"Service start was successful.", 'Success!');
       }
       else {
-        this.toastr.error("Service start was unsuccessful. Please try again or contact Scott Tech for support.", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',"Service start was unsuccessful. Please try again or contact Scott Tech for support.", 'Error!');
       }
     });
   }
 
   stopService(loader: boolean = false) {
     let payload: any = {};
-    this.Api.StopPrintService(payload).subscribe((res: any) => {
+    this.iGlobalConfigApi.StopPrintService(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.running = false;
-        this.toastr.success("Service stop was successful.", 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',"Service stop was successful.", 'Success!');
       }
       else {
-        this.toastr.error("Service stop encountered an error. Please try again or contact Scott Tech for support.", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',"Service stop encountered an error. Please try again or contact Scott Tech for support.", 'Error!');
+        console.log("StopPrintService",res.responseMessage);
       }
     });
   }
 
   restartService(loader: boolean = false) {
     let payload: any = {};
-    this.Api.RestartPrintService(payload).subscribe((res: any) => {
+    this.iGlobalConfigApi.RestartPrintService(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.running = true;
-        this.toastr.success("Service restart was successful.", 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',"Service restart was successful.", 'Success!');
       }
       else {
-        this.toastr.error("Service restart was unsuccessful. Please try again or contact Scott Tech for support.", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',"Service restart was unsuccessful. Please try again or contact Scott Tech for support.", 'Error!');
+        console.log("RestartPrintService",res.responseMessage);
       }
     });
   }
@@ -142,7 +130,7 @@ export class PrintersComponent implements OnInit {
   }
 
   RemovePrinter(printer: any) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -163,18 +151,13 @@ export class PrintersComponent implements OnInit {
           let payload = {
             "printerName": printer.printer
           };
-          this.Api.deletePrinter(payload).subscribe((res: any) => {
+          this.iGlobalConfigApi.deletePrinter(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
               this.allPinters = this.allPinters.filter((item: any) => item.currentPrinter != printer.currentPrinter);
             } else {
-              this.toastr.error("Delete Failed", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"Delete Failed", 'Error!');
+              console.log("deletePrinter",res.responseMessage);
             }
           });
         }
@@ -213,25 +196,19 @@ export class PrintersComponent implements OnInit {
       let payload = {
         "printerName": printer.printer,
         "printerString": printer.printerAdd,
-        "label": printer.labelPrinter == 'Yes' ? true : false
+        "label": printer.labelPrinter == 'Yes' 
       };
-      this.Api.InsertNewPrinter(payload).subscribe((res: any) => {
-        debugger
+      this.iGlobalConfigApi.InsertNewPrinter(payload).subscribe((res: any) => {
         if (res.isExecuted) {
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
           printer.isNew = false;
           printer.currentPrinter = printer.printer;
           printer.currentprinterAdd = printer.printerAdd;
           printer.currentlabelPrinter = printer.labelPrinter;
           this.addingNew = false;
         } else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("InsertNewPrinter",res.responseMessage);
         }
       });
     }
@@ -240,22 +217,17 @@ export class PrintersComponent implements OnInit {
         "currentPrinter": printer.currentPrinter,
         "newPrinter": printer.printer,
         "printerString": printer.printerAdd,
-        "label": printer.labelPrinter == 'Yes' ? true : false
+        "label": printer.labelPrinter == 'Yes'
       };
-      this.Api.UpdateCurrentPrinter(payload).subscribe((res: any) => {
+      this.iGlobalConfigApi.UpdateCurrentPrinter(payload).subscribe((res: any) => {
         if (res.isExecuted) {
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
           printer.currentPrinter = printer.printer;
           printer.currentprinterAdd = printer.printerAdd;
           printer.currentlabelPrinter = printer.labelPrinter;
         } else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("UpdateCurrentPrinter",res.responseMessage);
         }
       });
     }
@@ -263,13 +235,10 @@ export class PrintersComponent implements OnInit {
 
   Print(printer: any) {
     if (printer.printer.trim() == '' || printer.printerAdd.trim() == '') {
-      this.toastr.error("Must specify name and address to print!", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Must specify name and address to print!", 'Error!');
     } 
     else {
-      let dialogRef2 = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -280,8 +249,7 @@ export class PrintersComponent implements OnInit {
       });
       dialogRef2.afterClosed().subscribe((result) => {
         if (result == 'Yes') {
-          // window.location.reload();
-          this.global.Print(`FileName:TestPrint|islabel:${printer.labelPrinter == 'Yes' ? true : false}|PrinterName:${printer.printer}|PrinterAddress:${printer.printerAdd}`,'lbl'); 
+          this.global.Print(`FileName:TestPrint|islabel:${printer.labelPrinter == 'Yes'}|PrinterName:${printer.printer}|PrinterAddress:${printer.printerAdd}`,'lbl'); 
         }
       });
     }

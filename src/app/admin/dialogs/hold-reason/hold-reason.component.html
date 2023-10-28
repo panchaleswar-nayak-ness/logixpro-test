@@ -18,8 +18,6 @@
                     <textarea #order_text [(ngModel)]="reason"  formControlName="reason" name="name" required  matInput style="min-height: 100px ;" maxlength="255"></textarea>
                 </mat-form-field>
             </div>
-            <!-- <mat-error *ngIf="reason.value">Please Type Reason</mat-error> -->
-
             <div class="d-flex justify-content-end pt-3">
                 <button style="flex:1" (click)="onSubmit()" [disabled]="!reason" mat-flat-button color="primary" class="button-primary btn-lg"
                     cdkFocusInitial>Hold

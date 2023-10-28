@@ -1,13 +1,15 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { SharedService } from 'src/app/services/shared.service'; 
 import labels from '../../labels/labels.json';
-import { MatDialog } from '@angular/material/dialog';
 import { LicensingInvalidComponent } from 'src/app/admin/dialogs/licensing-invalid/licensing-invalid.component';
 import { Subject, takeUntil } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {
   position: string;
@@ -63,29 +65,16 @@ export class LicensingComponent implements OnInit {
     this.sideBarOpen = !this.sideBarOpen;
   }
 
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row.position + 1
-    }`;
-  }
-  radioLabel(row?: PeriodicElement): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row.position + 1
-    }`;
-  }
+  public  iGlobalConfigApi: IGlobalConfigApi
   constructor(
     private Api: ApiFuntions,
     private sharedService: SharedService,
-    private toastr: ToastrService,
-    private dialog: MatDialog
-  ) {}
+    
+    public globalConfigApi: GlobalConfigApiService,
+    private global:GlobalService
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+  }
 
   ngOnInit(): void {
     let appData = this.sharedService.getApp();
@@ -98,26 +87,28 @@ export class LicensingComponent implements OnInit {
   }
   async getAppLicense() {
     // get can access
-    this.Api.AppLicense().subscribe(
-      (res: any) => {
-        if (res && res.data) {
+    this.iGlobalConfigApi.AppLicense().subscribe(
+      {next: (res: any) => {
+        if (res?.data) {
           this.licAppData = res.data;
           this.convertToObj();
 
           this.sharedService.setApp(this.licAppData);
         }
+        else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("AppLicense",res.responseMessage);
+        }
       },
-      (error) => {}
+      error: (error) => {}}
     );
   }
   onInputValueChange(event, item, index) {
     this.dataSource.filteredData[index]['isButtonDisable'] = false;
-    // this.connectionStringData[index].isSqlButtonDisable = false;
   }
   convertToObj() {
     const arrayOfObjects: any = [];
     for (const key of Object.keys(this.licAppData)) {
-      // arrayOfObjects.push({ key, value: this.licAppData[key] });
       arrayOfObjects.push({
         appname: this.licAppData[key].info.name,
         displayname: this.licAppData[key].info.displayName,
@@ -138,20 +129,17 @@ export class LicensingComponent implements OnInit {
       DisplayName:item.displayname,
       AppName: item.appname
     };
-    this.Api
+    this.iGlobalConfigApi
       .ValidateLicenseSave(payload)
       .subscribe(
-        (res: any) => {
+        {next: (res: any) => {
           if (res.isExecuted) {
             this.getAppLicense();
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
           }else if(!res.isExecuted){
            
 
-            let dialogRef = this.dialog.open(LicensingInvalidComponent, {
+            let dialogRef:any = this.global.OpenDialog(LicensingInvalidComponent, {
               width: '550px',
               autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -169,13 +157,14 @@ export class LicensingComponent implements OnInit {
                 this.getAppLicense();
               });
           }
+          else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ValidateLicenseSave",res.responseMessage);
+          }
         },
-        (error) => {
-          this.toastr.error(labels.alert.went_worng, 'Error!!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
-        }
+        error: (error) => {
+          this.global.ShowToastr('error',labels.alert.went_worng, 'Error!!');
+        }}
       );
   }
   addLincenseRow() {

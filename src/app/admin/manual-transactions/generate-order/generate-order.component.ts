@@ -1,8 +1,7 @@
-import { SelectionModel } from '@angular/cdk/collections';
+import { } from '@angular/cdk/collections';
 import { Component, ElementRef, OnInit, ViewChild, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
-import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
@@ -14,6 +13,9 @@ import { AddNewTransactionToOrderComponent } from '../../dialogs/add-new-transac
 import { DeleteConfirmationManualTransactionComponent } from '../../dialogs/delete-confirmation-manual-transaction/delete-confirmation-manual-transaction.component';
 import { ManualTransPostConfirmComponent } from '../../dialogs/manual-trans-post-confirm/manual-trans-post-confirm.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
  
 
 @Component({
@@ -50,17 +52,20 @@ export class GenerateOrderComponent implements OnInit {
   @Input() set tab(event : any) {
     if (event) { 
       setTimeout(()=>{
-        this.searchBoxField.nativeElement.focus();
+        this.searchBoxField?.nativeElement.focus();
       }, 500);
     }
   }
+  public iAdminApiService: IAdminApiService;
 
   constructor(
     private authService: AuthService,
     private Api: ApiFuntions,
-    private dialog: MatDialog
+    private adminApiService: AdminApiService,
+    private global:GlobalService
   ) {
     this.userData = this.authService.userData();
+    this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
@@ -74,7 +79,6 @@ export class GenerateOrderComponent implements OnInit {
     this.searchByInput
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
-        // if (this.orderNumber === '') return;
         this.autocompleteSearchColumn();
         this.getOrderTableData();
       });      
@@ -112,20 +116,25 @@ export class GenerateOrderComponent implements OnInit {
   public dataSource: any = new MatTableDataSource();
 
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
   async autocompleteSearchColumn() {
     let searchPayload = {
       orderNumber: this.orderNumber,
       transType: this.transType,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .ManualOrderTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
-          this.searchAutocompleteList = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ManualOrderTypeAhead",res.responseMessage);
+          }
         },
         (error) => {}
       );
@@ -137,7 +146,7 @@ export class GenerateOrderComponent implements OnInit {
       this.selectedOption &&
       this.selectedOption === 'add_new_transaction'
     ) {
-      const dialogRef = this.dialog.open(AddNewTransactionToOrderComponent, {
+      const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
         height: 'auto',
         width: '100vw',
         autoFocus: '__non_existing_element__',
@@ -147,8 +156,6 @@ export class GenerateOrderComponent implements OnInit {
           itemNumber:this.itemNumberForInsertion,
           orderNumber: this.orderNumber,
           transactionType: this.transType,
-          userName: this.userData.userName,
-          wsid: this.userData.wsid,
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
@@ -156,7 +163,6 @@ export class GenerateOrderComponent implements OnInit {
         if (res.isExecuted) {
           this.selectedOrder=this.orderNumber
           this.getOrderTableData();
-          // this.clearFields()
         }
       });
     } else if (
@@ -164,7 +170,7 @@ export class GenerateOrderComponent implements OnInit {
       this.selectedOption &&
       this.selectedOption === 'delete_order'
     ) {
-      const dialogRef = this.dialog.open(
+      const dialogRef:any = this.global.OpenDialog(
         DeleteConfirmationManualTransactionComponent,
         {
           height: 'auto',
@@ -175,8 +181,6 @@ export class GenerateOrderComponent implements OnInit {
             mode: 'delete-order',
             heading: 'Delete Order',
             message: `Are you sure you want to remove order: ${this.orderNumber} ? This will  remove all manual transaction for this order`,
-            userName: this.userData.userName,
-            wsid: this.userData.wsid,
             orderNumber:this.orderNumber
           },
         }
@@ -196,7 +200,7 @@ export class GenerateOrderComponent implements OnInit {
       this.selectedOption &&
       this.selectedOption === 'post_order'
     ) {
-      const dialogRef = this.dialog.open(ManualTransPostConfirmComponent, {
+      const dialogRef:any = this.global.OpenDialog(ManualTransPostConfirmComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -209,7 +213,6 @@ export class GenerateOrderComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
-        // this.clearFields()
         this.clearMatSelectList()
         if (res.isExecuted) {
           this.clearFields();
@@ -218,9 +221,7 @@ export class GenerateOrderComponent implements OnInit {
       });
     }
   }
-  searchData() {
-  this.selectedOrder=this.orderNumber
-  }
+
   clearFields(){
     this.orderNumber='';
     this.selectedOrder='';
@@ -231,14 +232,7 @@ export class GenerateOrderComponent implements OnInit {
   }
   editTransaction(element){
 
-
-// JSON.stringify(element.batchPickID)
-// JSON.stringify(element.hostTransactionID)
-// JSON.stringify(element.lineNumber)
-// JSON.stringify(element.lineSequence)
-// JSON.stringify(element.priority)
-// JSON.stringify(element.toteID)
-  const dialogRef = this.dialog.open(AddNewTransactionToOrderComponent, {
+  const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
         height: 'auto',
         width: '100vw',
         autoFocus: '__non_existing_element__',
@@ -246,8 +240,6 @@ export class GenerateOrderComponent implements OnInit {
         data: {
           mode:'edit-transaction',
           item:element,
-          userName: this.userData.userName,
-          wsid: this.userData.wsid,
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
@@ -263,7 +255,7 @@ export class GenerateOrderComponent implements OnInit {
     if (!this.dataSource || event.direction == '') return;
 
     let index;
-    this.displayedColumns.find((x, i) => {
+    this.displayedColumns.forEach((x, i) => {
       if (x === event.active) {
         index = i;
       }
@@ -276,17 +268,15 @@ export class GenerateOrderComponent implements OnInit {
 
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-    // this.customPagination.startIndex =  e.pageIndex
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
 
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
-    // this.length = e.length;
     this.customPagination.recordsPerPage = e.pageSize;
 
     this.getOrderTableData();
   }
   deleteTransaction(element?) {
-    const dialogRef = this.dialog.open(
+    const dialogRef:any = this.global.OpenDialog(
       DeleteConfirmationManualTransactionComponent,
       {
         height: 'auto',
@@ -297,20 +287,17 @@ export class GenerateOrderComponent implements OnInit {
           mode: 'delete-trans',
           heading: 'Delete Selected Transaction',
           message: 'Delete this transaction',
-          userName: this.userData.userName,
-          wsid: this.userData.wsid,
           element: element,
         },
       }
     );
     dialogRef.afterClosed().subscribe((res) => {
       this.clearMatSelectList()
-      // if (res.isExecuted) {
         this.getOrderTableData();
-      // }
     });
   }
-  getOrderTableData() {
+  getOrderTableData(ordernumber:any =null) {
+    if(ordernumber) this.orderNumber = ordernumber;
     let payload = {
       orderNumber: this.orderNumber,
       transactionType: this.transType,
@@ -319,44 +306,11 @@ export class GenerateOrderComponent implements OnInit {
       length: this.customPagination.recordsPerPage,
       orderColumn: this.sortCol,
       sortOrder: this.sortOrder,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .GernerateOrderTable(payload)
       .subscribe(
         (res: any) => {
-          // let dummy_data = [
-          //   {
-
-          //     itemNumber: 2,
-          //     TransactionQuantity: '2',
-          //     LineNumber: '2',
-          //     LineSequence: '2',
-          //     Priority: '2',
-          //     RequiredDate: '2/2/222',
-          //     LotNumber: '1',
-          //     ExpirationDate: '2/2/222',
-          //     SerialNumber: '',
-          //     Warehouse: '',
-          //     BatchPickID: '',
-          //     Notes: '',
-          //     ToteNumber: '',
-          //     HostTransactionID: '',
-          //     Emergency: '',
-          //     UserField1: '',
-          //     UserField2: '',
-          //     UserField3: '',
-          //     UserField4: '',
-          //     UserField5: '',
-          //     UserField6: '',
-          //     UserField7: '',
-          //     UserField8: '',
-          //     UserField9: '',
-          //     UserField10: '',
-          //     actions:''
-          //   },
-          // ];
           if (res.isExecuted) {
             if(res.data.orderTable && res.data.orderTable.length>0){
               this.isPost=true;
@@ -372,16 +326,17 @@ export class GenerateOrderComponent implements OnInit {
             }else{
               this.isPost=false;
             }
-            this.dataSource = new MatTableDataSource(res.data && res.data.orderTable);
-            this.itemNumberForInsertion=res.data && res.data.orderTable && res.data.orderTable[0] &&res.data.orderTable[0].itemNumber
+            this.dataSource = new MatTableDataSource(res?.data?.orderTable);
+            this.itemNumberForInsertion= res?.data?.orderTable[0]?.itemNumber
+          }
+          else{
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("GernerateOrderTable",res.responseMessage);
           }
         },
         (error) => {}
       );
   }
-onSelectionChange(event){
-  // this.clearFields();
-}
   ngOnDestroy() {
     this.searchByInput.unsubscribe();
   }

@@ -1,16 +1,17 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ILogin, ILoginInfo } from './Ilogin'; 
-import { FormControl, FormGroup, Validators, } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import labels from '../labels/labels.json'
-import { MatDialog } from '@angular/material/dialog';
+import { Component, ElementRef,  ViewChild } from '@angular/core';
+import { ILogin} from './Ilogin'; 
+import { FormControl} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { SpinnerService } from '../init/spinner.service';
 import { AuthService } from '../init/auth.service'; 
 import packJSON from '../../../package.json'
 import { SharedService } from '../services/shared.service';
-import { ApiFuntions } from '../services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IUserAPIService } from '../services/user-api/user-api-interface';
+import { UserApiService } from '../services/user-api/user-api.service';
+import { GlobalService } from '../common/services/global.service';
 
 @Component({
   selector: 'login',
@@ -29,16 +30,21 @@ export class LoginComponent {
   applicationData: any = [];
   isAppAccess=false;
   info:any=  {};
+  public  iGlobalConfigApi: IGlobalConfigApi;
+  public iUserApi : IUserAPIService;
   constructor(
-    public api: ApiFuntions,
+    public userApi : UserApiService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr: ToastrService,
-    private dialog: MatDialog,
+    
+    private global:GlobalService,
     public loader: SpinnerService,
+    public globalConfigApi: GlobalConfigApiService,
     private auth: AuthService, 
     private sharedService: SharedService,
   ) { 
+    this.iGlobalConfigApi = globalConfigApi;
+    this.iUserApi = userApi;
     this.url = this.router.url;
   }
 
@@ -48,9 +54,10 @@ export class LoginComponent {
 
   addLoginForm:any = {};
 
-enterUserName(){
-  this.passwordInput.nativeElement.focus();
-}
+  enterUserName(){
+    this.passwordInput.nativeElement.focus();
+  }
+
   public noWhitespaceValidator(control: FormControl) {
     const isSpace = (control.value || '').match(/\s/g);
     return isSpace ? { 'whitespace': true } : null;
@@ -61,9 +68,8 @@ enterUserName(){
     this.addLoginForm.username = this.addLoginForm.username?.replace(/\s/g, "")||null;
     this.addLoginForm.password = this.addLoginForm.password?.replace(/\s/g, "")||null;
     this.login = this.addLoginForm;
-    // const workStation:any = JSON?.parse(localStorage?.getItem('workStation') || '');
     this.login.wsid = "TESTWSID";
-    this.api
+    this.iUserApi
       .login(this.login)
       .subscribe((response: any) => {
         const exe = response.isExecuted
@@ -77,18 +83,14 @@ enterUserName(){
           }
           let userRights = response.data.userRights;
           userRights = this.addCustomPermission(userRights);
-          // this.addLoginForm.reset(); // replaced to api response 
           localStorage.setItem('user', JSON.stringify(data));
           localStorage.setItem('userRights', JSON.stringify(userRights));
        
           this.getAppLicense(response.data.wsid); 
           if(localStorage.getItem('LastRoute')){  
-              var url =   '/#'+localStorage.getItem('LastRoute');
+              let url =   '/#'+localStorage.getItem('LastRoute');
               window.location.href = url;
-              window.location.reload();
-             
-            //  this.router.navigateByUrl("/#/"+localStorage.getItem('LastRoute') || "");
-            
+              window.location.reload();            
           } else {
             window.location.href = "/#/dashboard"
             window.location.reload();
@@ -96,46 +98,29 @@ enterUserName(){
           // ----default app redirection ----
           // this.getDefaultApp(response.data.wsid);
           // ----end default app redirection ----
-
-
-
-
-          // this.router.navigate(['/dashboard']);
         }
         else {
           const errorMessage = response.responseMessage;
-          this.toastr.error(errorMessage?.toString(), 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',errorMessage?.toString(), 'Error!');
+          console.log("login",response.responseMessage);
         }
 
 
       });
   }
-
-
  
   CompanyInfo(){
-    var obj:any = { 
-    }
-    this.api
-    .CompanyInfo()
-    .subscribe((response: any) => {
-      this.info = response.data;
+    this.iUserApi.CompanyInfo().subscribe((response: any) => {
+      if (response.isExecuted && response.data) {
+        this.info = response.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.error('Error: CompanyInfo request failed');
+      }
     });
   }
-  ngAfterContentInit(): void {
-    // setTimeout(() => {
-    //   this.addLoginForm.get("username")?.setValue('');
-    //   this.addLoginForm.get("password")?.setValue('');
-    // }, 2000);
-    
-  }
-
 
   ngOnInit() {
-
     this.version = packJSON.version;
     let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : "";
     localStorage.clear();
@@ -146,51 +131,60 @@ enterUserName(){
       this.router.navigate(['/dashboard']);
     }
     else{
-      this.api.getSecurityEnvironment().subscribe((res:any) => {
-        this.env = res.data.securityEnvironment;
+      this.iUserApi.getSecurityEnvironment().subscribe((res:any) => {
+        if(res?.isExecuted)
+        {
+          this.env = res.data.securityEnvironment;
         if(this.env){
           const { workStation } = res.data;
           localStorage.setItem('env', JSON.stringify(this.env));
           localStorage.setItem('workStation', JSON.stringify(workStation));
         }
         else{
-          this.toastr.error('Kindly contact to administrator', 'Workstation is not set!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
+          
         }
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("getSecurityEnvironment",res.responseMessage);
+        }
+        
       });
     }
    this.CompanyInfo();
-    
-
   }
 
 
     
   // moved getAppLicense,convertToObj ,sortAppsData,appNameDictionary & setMenuData from Menu Component to handle access to the Apps on login
   getAppLicense(wsid) {
-    let userData=JSON.parse(localStorage.getItem('user') || '{}');
+    let userData=JSON.parse(localStorage.getItem('user')?? '{}');
     let payload = {
       workstationid: userData.wsid,
     };
-    this.api.AppNameByWorkstation(payload)
+    this.iGlobalConfigApi.AppNameByWorkstation(payload)
       .subscribe(
         (res: any) => {
-          if (res && res.data) {
+          if (res?.data) {
             this.convertToObj(res.data);
             localStorage.setItem('availableApps',JSON.stringify(this.applicationData))
             this.sharedService.setMenuData(this.applicationData)
             this.getDefaultApp(wsid);
           }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("AppNameByWorkstation",res.responseMessage);
+
+          }
         },
         (error) => {}
       );
   }
+
   convertToObj(data) {
     data.wsAllAppPermission.forEach((item,i) => {
       for (const key of Object.keys(data.appLicenses)) {
-        // arrayOfObjects.push({ key, value: this.licAppData[key] });
         if (item.includes(key)  && data.appLicenses[key].isLicenseValid) {
           this.applicationData.push({
             appname: data.appLicenses[key].info.name,
@@ -198,7 +192,6 @@ enterUserName(){
             license: data.appLicenses[key].info.licenseString,
             numlicense: data.appLicenses[key].numLicenses,
             info: this.appNameDictionary(item),
-            // status: data[key].isLicenseValid ? 'Valid' : 'Invalid',
             appurl: data.appLicenses[key].info.url,
             isButtonDisable: true,
           });
@@ -210,7 +203,7 @@ enterUserName(){
   }
   sortAppsData() {
     this.applicationData.sort(function (a, b) {
-      var nameA = a.info?.name?.toLowerCase(),
+      let nameA = a.info?.name?.toLowerCase(),
         nameB = b.info?.name?.toLowerCase();
       if (nameA < nameB)
         //sort string ascending
@@ -295,52 +288,35 @@ enterUserName(){
     let paylaod={
       workstationid: wsid
     }
-     this.api.workstationdefaultapp(paylaod).subscribe(
+     this.iGlobalConfigApi.workstationdefaultapp(paylaod).subscribe(
   (res: any) => {
-  
-    if (res && res.data) {
-     this.checkAppAcess(res.data)
-
-     }
-    else{
-      localStorage.setItem('isAppVerified',JSON.stringify({appName:'',isVerified:true}))
-      // this.addLoginForm.reset();
-      if(localStorage.getItem('LastRoute')){
-        localStorage.removeItem('LastRoute');
-      }
-      else{
-        this.router.navigate(['/dashboard']);
-      }	
+    if(res)
+    {
+      if (res.data) {
+        this.checkAppAcess(res.data)
+   
+        }
+       else{
+         localStorage.setItem('isAppVerified',JSON.stringify({appName:'',isVerified:true}))
+         if(localStorage.getItem('LastRoute')){
+           localStorage.removeItem('LastRoute');
+         }
+         else{
+           this.router.navigate(['/dashboard']);
+         }	
+       }
     }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("workstationdefaultapp",res.responseMessage);
+    }
+  
+   
   },
   (error) => {}
 );
 
   }
-
-  // checkAppAcess(appName){
-  //   this.applicationData.find(el=>{
-  //     if(el.appname===appName || this.isAppAccess){
-  //       this.isAppAccess=true
-  //     }else{
-  //       this.isAppAccess=false;
-  //     }
-
-   
-  //   })
-       
-  //   if(this.isAppAccess){
-  //     localStorage.setItem('isAppVerified',JSON.stringify({appName:appName,isVerified:true}))
-  //     this.redirection(appName)
-  //     // this.addLoginForm.reset();
-      
-      
-  //   }else{
-  //   //  this.sharedService.updateAppVerification({appName:appName,isVerified:false})
-  //   localStorage.setItem('isAppVerified',JSON.stringify({appName:appName,isVerified:false}))
-  //     this.router.navigate(['/dashboard']);
-  //   }
-  // }
 
   checkAppAcess(appName){
     this.applicationData.find(el=>{
@@ -357,13 +333,9 @@ enterUserName(){
       localStorage.setItem('isAppVerified',JSON.stringify({appName:appName,isVerified:true}))
       let lastRoute = localStorage.getItem('LastRoute')
       console.log(lastRoute)
-      lastRoute?this.router.navigate([lastRoute]):this.redirection(appName)
-        
-      // this.addLoginForm.reset();
-      
+      lastRoute?this.router.navigate([lastRoute]):this.redirection(appName)      
       
     }else{
-    //  this.sharedService.updateAppVerification({appName:appName,isVerified:false})
     localStorage.setItem('isAppVerified',JSON.stringify({appName:appName,isVerified:false}))
       this.router.navigate(['/dashboard']);
     }
@@ -403,7 +375,7 @@ enterUserName(){
   }
 
   changePass() {
-    let dialogRef = this.dialog.open(ChangePasswordComponent, {
+    let dialogRef:any = this.global.OpenDialog(ChangePasswordComponent, {
       height: 'auto',
       width: '500px',
       autoFocus: '__non_existing_element__',
@@ -425,19 +397,7 @@ enterUserName(){
       'Admin Menu',
       'FlowRack Replenish',
       'Markout',
-
-      //Admin Menus
       'Dashboard',
-      // 'Inventory Map',
-      // 'Batch Manager',
-      // 'Reports',
-      // 'Location Assignment',
-      // 'Cycle Count Manager',
-      // 'Move Items',
-      // 'Transaction Journal',
-      // 'Dashboard',
-      // 'Dashboard',
-      // 'Dashboard',
     ];
     localStorage.setItem('customPerm', JSON.stringify(customPerm));
     return [...userRights, ...customPerm];

@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { AdminRoutingModule } from './admin-routing.module'; 
 import { AdminComponent } from './admin.component';
 import { MaterialModule } from '../material-module';
 import { GeneralModule } from '../gen-module';
 import { CdkTableModule} from '@angular/cdk/table';
 
-//Employees Components
 import { EmployeesComponent } from './employees/employees.component';
 import { EmployeesLookupComponent } from './employees/employees-lookup/employees-lookup.component';
 import { EmployeePickupLevelComponent } from './employees/employee-pickup-level/employee-pickup-level.component';
@@ -17,7 +15,6 @@ import { AssignedFunctionsComponent } from './employees/assigned-functions/assig
 import { UnassignedFunctionsComponent, filterUnassignedFunc } from './employees/unassigned-functions/unassigned-functions.component';
 import { StatisticsLookupComponent } from './employees/statistics-lookup/statistics-lookup.component';
 
-//Dialogs
 import { AddNewEmployeeComponent } from './dialogs/add-new-employee/add-new-employee.component';
 import { AddZoneComponent } from './dialogs/add-zone/add-zone.component';
 import { DeleteConfirmationComponent } from './dialogs/delete-confirmation/delete-confirmation.component';
@@ -31,7 +28,6 @@ import { AddInvMapLocationComponent } from './dialogs/add-inv-map-location/add-i
 import { WarehouseComponent } from './dialogs/warehouse/warehouse.component';
 import { SetColumnSeqComponent } from './dialogs/set-column-seq/set-column-seq.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 import { CellSizeComponent } from './dialogs/cell-size/cell-size.component';
 import { VelocityCodeComponent } from './dialogs/velocity-code/velocity-code.component';
@@ -47,8 +43,6 @@ import { BatchManagerComponent } from './batch-manager/batch-manager.component';
 import { BatchDeleteComponent } from './batch-manager/batch-delete/batch-delete.component';
 import { BatchOrderListComponent } from './batch-manager/batch-order-list/batch-order-list.component';
 import { BatchSelectedOrdersComponent } from './batch-manager/batch-selected-orders/batch-selected-orders.component';
-//import { KitItemsComponent } from './inventory-master/kit-items/kit-items.component';
-//import { InventoryLocationComponent } from './inventory-master/inventory-location/inventory-location.component';
 import { CycleCountsComponent } from './cycle-counts/cycle-counts.component';
 import { CCDiscrepanciesComponent } from './cycle-counts/ccdiscrepancies/ccdiscrepancies.component';
 import { CCCountQueueComponent } from './cycle-counts/cccount-queue/cccount-queue.component';
@@ -62,8 +56,6 @@ import { LocationAssignmentComponent } from './location-assignment/location-assi
 import { CountComponent } from './location-assignment/count/count.component';
 import { PickComponent } from './location-assignment/pick/pick.component';
 import { PutAwayComponent } from './location-assignment/put-away/put-away.component';
-//import { WeighScaleComponent } from './inventory-master/weigh-scale/weigh-scale.component';
-//import { InventoryMasterOtherComponent } from './inventory-master/inventory-master-other/inventory-master-other.component';
 import { DetailComponent } from './inventory-master/detail/detail.component';
 import { KitItemComponent } from './inventory-master/kit-item/kit-item.component';
 import { LocationComponent } from './inventory-master/location/location.component';
@@ -90,9 +82,6 @@ import { TranCarouselLzoneComponent } from './transaction/order-status/tran-caro
 import { TranOffCarouselLzoneComponent } from './transaction/order-status/tran-off-carousel-lzone/tran-off-carousel-lzone.component';
 import { TranOrderListComponent } from './transaction/order-status/tran-order-list/tran-order-list.component';
 import { OpenTransactionOnHoldComponent } from './transaction/open-transaction/open-transaction-on-hold/open-transaction-on-hold.component';
-// import { MatDatepickerModule } from '@angular/material/datepicker';
-// import { MatNativeDateModule } from '@angular/material/core';
-// import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DeleteConfirmationTransactionComponent } from './dialogs/delete-confirmation-transaction/delete-confirmation-transaction.component';
 import { ReprocessedTransactionComponent } from './transaction/reprocessed-transaction/reprocessed-transaction.component';
@@ -136,7 +125,6 @@ import { SystemReplenishmentComponent } from './system-replenishment/system-repl
 import { SrNewOrderComponent } from './system-replenishment/sr-new-order/sr-new-order.component';
 import { FilterItemNumbersComponent } from './dialogs/filter-item-numbers/filter-item-numbers.component';
 import { SrCurrentOrderComponent } from './system-replenishment/sr-current-order/sr-current-order.component';
-import { SortPipe } from '../init/sort.pipe';
 import { LaLocationAssignmentQuantitiesComponent } from './dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
 import { MoveItemsComponent } from './move-items/move-items.component';
 import { AdminPreferencesComponent } from './admin-preferences/admin-preferences.component';
@@ -170,189 +158,225 @@ import { LookupUserTwoSetupComponent } from './admin-preferences/system-preferen
 import { LookupUserOneSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-user-one-setup/lookup-user-one-setup.component';
 import { LookupAdjustmentLookupSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-adjustment-lookup-setup/lookup-adjustment-lookup-setup.component';
 import { LookupToteSetupComponent } from './admin-preferences/system-preferences/sp-lookup-lists/lookup-tote-setup/lookup-tote-setup.component';
+import { SharedComponentsModule } from "../common/globalComponents/shared-components.module";
+import { QuarantineDialogComponent } from './dialogs/quarantine-dialog/quarantine-dialog.component';
+import { UnquarantineDialogComponent } from './dialogs/unquarantine-dialog/unquarantine-dialog.component';
+import { LocationDetailsComponent } from './move-items/location-details/location-details.component';
+import { MoveLocationsComponent } from './move-items/move-locations/move-locations.component';
+import { SrInputFieldsComponent } from './system-replenishment/sr-current-order/sr-input-fields/sr-input-fields.component';
+import { SrNewInputFieldsComponent } from './system-replenishment/sr-new-order/sr-new-input-fields/sr-new-input-fields.component';
+import { CountOrderSelectionComponentComponent } from './location-assignment/count/count-order-selection-component/count-order-selection-component.component';
+import { CountSelectOrdersComponentComponent } from './location-assignment/count/count-select-orders-component/count-select-orders-component.component';
 
-
+import { CompanyInfoComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/company-info-component/company-info-component.component';
+import { SystemLogicPreferencesComponent } from './admin-preferences/system-preferences/sp-general-setup/system-logic-preferences/system-logic-preferences.component';
+import { PodSetupComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/pod-setup-component/pod-setup-component.component';
+import { EmployeesInformationComponent } from './employees/employees-information/employees-information.component';
+import { EmployeesSettingsComponent } from './employees/employees-settings/employees-settings.component';
+import { GroupsAssignedFunctionsCompComponent } from './employees/groups-assigned-functions-comp/groups-assigned-functions-comp.component';
+import { GroupsEmployeesGroupManagementComponent } from './employees/groups-employees-group-management/groups-employees-group-management.component';
+import { RtSelectedTransactionInfoComponent } from './transaction/reprocess-transaction/rt-selected-transaction-info/rt-selected-transaction-info.component';
+import { PickSelectOrdersComponentComponent } from './location-assignment/pick/pick-select-orders-component/pick-select-orders-component.component';
+import { PutAwaySelectOrdersComponentComponent } from './location-assignment/put-away/put-away-select-orders-component/put-away-select-orders-component.component';
+import { SelectOrderComponentComponent } from './manual-transactions/generate-order/select-order-component/select-order-component.component';
+import { GtLocationComponent } from './manual-transactions/generate-transaction/gt-location/gt-location.component';
+import { GtItemDetailsComponent } from './manual-transactions/generate-transaction/gt-item-details/gt-item-details.component';
+import { GtTransactionDetailsComponent } from './manual-transactions/generate-transaction/gt-transaction-details/gt-transaction-details.component';
 
 @NgModule({
-  declarations: [
-    AdminComponent,
-    EmployeesComponent,
-    EmployeesLookupComponent,
-    EmployeePickupLevelComponent,
-    GroupsAllowedComponent,
-    GroupsLookupComponent,
-    AssignedFunctionsComponent,
-    UnassignedFunctionsComponent,
-    filterUnassignedFunc,
-    StatisticsLookupComponent,
-    AddNewEmployeeComponent,
-    AddZoneComponent,
-    DeleteConfirmationComponent,
-    AddLocationComponent,
-    AddPickuplevelsComponent,
-    AddGroupAllowedComponent,
-    AddNewGroupComponent,
-    FunctionAllocationComponent,
-    InventoryMapComponent,
-    AddInvMapLocationComponent,
-    WarehouseComponent,
-    SetColumnSeqComponent,
-    CellSizeComponent,
-    VelocityCodeComponent,
-    InventoryMasterComponent,
-    ItemNumberComponent,
-    ItemCategoryComponent,
-    PrintRangeComponent,
-    UnitMeasureComponent,
-    ItemSetupComponent,
-    QuarantineConfirmationComponent,
-    AdjustQuantityComponent,
-    BatchManagerComponent,
-    BatchDeleteComponent,
-    BatchOrderListComponent,
-    BatchSelectedOrdersComponent,
-   // KitItemsComponent,
-  //  InventoryLocationComponent,
-    CycleCountsComponent,
-    CCDiscrepanciesComponent,
-    CCCountQueueComponent,
-    CreateCountsComponent,
-    CreateTransactionComponent,
-    CountQueueComponent,
-    ImportFieldMappingComponent,
-    ReelTrackingComponent,
-    ScanCodesComponent,
-    LocationAssignmentComponent,
-    CountComponent,
-    PickComponent,
-    PutAwayComponent,
-  //  WeighScaleComponent,
- //   InventoryMasterOtherComponent,
-    DetailComponent,
-    KitItemComponent,
-    LocationComponent,
-    ReelTrackingComponent,
-    ScanCodesComponent,
-    WeightScaleComponent,
-    OthersComponent,
-    GroupAllowedComponent,
-    SearchPipe,
-    customFuncAllowedSearch,
-    CloneGroupComponent,
-    UpdateDescriptionComponent,
-    CreateBatchConfirmationComponent,
-    CreateBatchComponent,
-    TransactionComponent,
-    OpenTransactionComponent,
-    OpenTransactionFiltersComponent,
-    OpenTransactionDataTableComponent,
-    TransactionHistoryComponent,
-    TransactionHistoryFiltersComponent,
-    TransactionHistoryListComponent,
-    OrderStatusComponent,
-    TranSelectOrderComponent,
-    TranCarouselLzoneComponent,
-    TranOffCarouselLzoneComponent,
-    TranOrderListComponent,
-    OpenTransactionOnHoldComponent,
-    DeleteConfirmationTransactionComponent,
-    ReprocessedTransactionComponent,
-    ReprocessTransactionComponent,
-    TranInReprocessComponent,
-    ReprocessChoiceComponent,
-    ItemNumUpdateConfirmationComponent,
-    ScanTypeCodeComponent,
-    ColumnSequenceDialogComponent,
-    SearchFilterPipe,
-    GlobalConfigSetSqlComponent,
-    SendTranHistoryComponent,
-    ReprocessTransactionDetailComponent,
-    HoldReasonComponent,
-    ClearAppGlobalconfigComponent,
-    LicensingInvalidComponent,
-    SqlAuthConfirmationComponent,
-    ManualTransactionsComponent,
-    GenerateOrderComponent,
-    AddNewTransactionToOrderComponent,
-    DeleteConfirmationManualTransactionComponent,
-    ManualTransPostConfirmComponent,
-    GenerateTransactionComponent,
-    SetItemLocationComponent,
-    SupplierItemIdComponent,
-    TemporaryManualOrderNumberAddComponent,
-    ItemExistGenerateOrderComponent,
-    EmptyFieldsComponent,
-    UserFieldsEditComponent,
-    PostManualTransactionComponent,
-    InvalidQuantityComponent,
-    FilterToteComponent,
-    CCBCreateCountsComponent,
-    CCBCountQueueComponent,
-    CreateCountBatchesComponent,
-    BatchManagerDetailViewComponent,
-    InputSpacesPreventDirective,
-    BmToteidEntryComponent,
-    SystemReplenishmentComponent,
-    SrNewOrderComponent,
-    FilterItemNumbersComponent,
-    SrCurrentOrderComponent,
-    SortPipe,
-    LaLocationAssignmentQuantitiesComponent,
-    MoveItemsComponent,
-    AdminPreferencesComponent,
-    WorkstationPreferencesComponent,
-    SystemPreferencesComponent,
-    SpGeneralSetupComponent,
-    SpLocationZonesComponent,
-    SpFieldNameMappingComponent,
-    SpDevicePreferenceComponent,
-    AddNewDeviceComponent,
-    SpBulkHandheldSettingComponent,
-    SpLightTreeSetupComponent,
-    SpScanVerificationSetupComponent,
-    ScanVerificationDefaultsComponent,
-    LocationNameComponent,
-    KanbanZoneAllocationConflictComponent,
-    WpWorkstationSetupComponent,
-    DeAllocateOrdersComponent,
-    ReportsComponent,
-    WpBulkZonesComponent,
-    WpPodSetupComponent,
-    BasicReportsAndLabelsComponent,
-    CustomReportsAndLabelsComponent,
-    AddNotesComponent,
-    WpPickLevelsComponent,
-    WpCustomAppsComponent,
-    WpMiscellaneousSettingsComponent,
-    WpSortBarSetupComponent,
-    SpLookupListsComponent,
-    LookupUserTwoSetupComponent,
-    LookupUserOneSetupComponent,
-    LookupAdjustmentLookupSetupComponent,
-    LookupToteSetupComponent,
-
-  ],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    MaterialModule,
-    GeneralModule,
-    CdkTableModule,
-    DragDropModule,
-    MatInputModule,
-    // MatNativeDateModule,
-    // MatFormFieldModule,
-    ToastrModule.forRoot({
-      timeOut: 2000,
-      extendedTimeOut: 0,
-      iconClasses: {
-        error: 'toast-error',
-        info: 'toast-info',
-        success: 'toast-success',
-        warning: 'toast-warning',
-      }
-    })
-  ],
- 
+    declarations: [
+        AdminComponent,
+        EmployeesComponent,
+        EmployeesLookupComponent,
+        EmployeePickupLevelComponent,
+        GroupsAllowedComponent,
+        GroupsLookupComponent,
+        AssignedFunctionsComponent,
+        UnassignedFunctionsComponent,
+        filterUnassignedFunc,
+        StatisticsLookupComponent,
+        AddNewEmployeeComponent,
+        AddZoneComponent,
+        DeleteConfirmationComponent,
+        AddLocationComponent,
+        AddPickuplevelsComponent,
+        AddGroupAllowedComponent,
+        AddNewGroupComponent,
+        FunctionAllocationComponent,
+        InventoryMapComponent,
+        AddInvMapLocationComponent,
+        WarehouseComponent,
+        SetColumnSeqComponent,
+        CellSizeComponent,
+        VelocityCodeComponent,
+        InventoryMasterComponent,
+        ItemNumberComponent,
+        ItemCategoryComponent,
+        PrintRangeComponent,
+        UnitMeasureComponent,
+        ItemSetupComponent,
+        QuarantineConfirmationComponent,
+        AdjustQuantityComponent,
+        BatchManagerComponent,
+        BatchDeleteComponent,
+        BatchOrderListComponent,
+        BatchSelectedOrdersComponent,
+        CycleCountsComponent,
+        CCDiscrepanciesComponent,
+        CCCountQueueComponent,
+        CreateCountsComponent,
+        CreateTransactionComponent,
+        CountQueueComponent,
+        ImportFieldMappingComponent,
+        ReelTrackingComponent,
+        ScanCodesComponent,
+        LocationAssignmentComponent,
+        CountComponent,
+        PickComponent,
+        PutAwayComponent,
+        DetailComponent,
+        KitItemComponent,
+        LocationComponent,
+        ReelTrackingComponent,
+        ScanCodesComponent,
+        WeightScaleComponent,
+        OthersComponent,
+        GroupAllowedComponent,
+        SearchPipe,
+        customFuncAllowedSearch,
+        CloneGroupComponent,
+        UpdateDescriptionComponent,
+        CreateBatchConfirmationComponent,
+        CreateBatchComponent,
+        TransactionComponent,
+        OpenTransactionComponent,
+        OpenTransactionFiltersComponent,
+        OpenTransactionDataTableComponent,
+        TransactionHistoryComponent,
+        TransactionHistoryFiltersComponent,
+        TransactionHistoryListComponent,
+        OrderStatusComponent,
+        TranSelectOrderComponent,
+        TranCarouselLzoneComponent,
+        TranOffCarouselLzoneComponent,
+        TranOrderListComponent,
+        OpenTransactionOnHoldComponent,
+        DeleteConfirmationTransactionComponent,
+        ReprocessedTransactionComponent,
+        ReprocessTransactionComponent,
+        TranInReprocessComponent,
+        ReprocessChoiceComponent,
+        ItemNumUpdateConfirmationComponent,
+        ScanTypeCodeComponent,
+        ColumnSequenceDialogComponent,
+        SearchFilterPipe,
+        GlobalConfigSetSqlComponent,
+        SendTranHistoryComponent,
+        ReprocessTransactionDetailComponent,
+        HoldReasonComponent,
+        ClearAppGlobalconfigComponent,
+        LicensingInvalidComponent,
+        SqlAuthConfirmationComponent,
+        ManualTransactionsComponent,
+        GenerateOrderComponent,
+        AddNewTransactionToOrderComponent,
+        DeleteConfirmationManualTransactionComponent,
+        ManualTransPostConfirmComponent,
+        GenerateTransactionComponent,
+        SetItemLocationComponent,
+        SupplierItemIdComponent,
+        TemporaryManualOrderNumberAddComponent,
+        ItemExistGenerateOrderComponent,
+        EmptyFieldsComponent,
+        UserFieldsEditComponent,
+        PostManualTransactionComponent,
+        InvalidQuantityComponent,
+        FilterToteComponent,
+        CCBCreateCountsComponent,
+        CCBCountQueueComponent,
+        CreateCountBatchesComponent,
+        BatchManagerDetailViewComponent,
+        InputSpacesPreventDirective,
+        BmToteidEntryComponent,
+        SystemReplenishmentComponent,
+        SrNewOrderComponent,
+        FilterItemNumbersComponent,
+        SrCurrentOrderComponent,
+        LaLocationAssignmentQuantitiesComponent,
+        MoveItemsComponent,
+        AdminPreferencesComponent,
+        WorkstationPreferencesComponent,
+        SystemPreferencesComponent,
+        SpGeneralSetupComponent,
+        SpLocationZonesComponent,
+        SpFieldNameMappingComponent,
+        SpDevicePreferenceComponent,
+        AddNewDeviceComponent,
+        SpBulkHandheldSettingComponent,
+        SpLightTreeSetupComponent,
+        SpScanVerificationSetupComponent,
+        ScanVerificationDefaultsComponent,
+        LocationNameComponent,
+        KanbanZoneAllocationConflictComponent,
+        WpWorkstationSetupComponent,
+        DeAllocateOrdersComponent,
+        ReportsComponent,
+        WpBulkZonesComponent,
+        WpPodSetupComponent,
+        BasicReportsAndLabelsComponent,
+        CustomReportsAndLabelsComponent,
+        AddNotesComponent,
+        WpPickLevelsComponent,
+        WpCustomAppsComponent,
+        WpMiscellaneousSettingsComponent,
+        WpSortBarSetupComponent,
+        SpLookupListsComponent,
+        LookupUserTwoSetupComponent,
+        LookupUserOneSetupComponent,
+        LookupAdjustmentLookupSetupComponent,
+        LookupToteSetupComponent,
+        QuarantineDialogComponent,
+        UnquarantineDialogComponent,
+        LocationDetailsComponent,
+        MoveLocationsComponent,
+        SrInputFieldsComponent,
+        SrNewInputFieldsComponent,
+        CountOrderSelectionComponentComponent,
+        CountSelectOrdersComponentComponent,
+        CompanyInfoComponentComponent,
+        SystemLogicPreferencesComponent,
+        PodSetupComponentComponent,
+        EmployeesInformationComponent,
+        EmployeesSettingsComponent,
+        GroupsAssignedFunctionsCompComponent,
+        GroupsEmployeesGroupManagementComponent,
+        RtSelectedTransactionInfoComponent,
+        PickSelectOrdersComponentComponent,
+        PutAwaySelectOrdersComponentComponent,
+        SelectOrderComponentComponent,
+        GtLocationComponent,
+        GtItemDetailsComponent,
+        GtTransactionDetailsComponent,
+    ],
+    imports: [
+        CommonModule,
+        AdminRoutingModule,
+        MaterialModule,
+        GeneralModule,
+        CdkTableModule,
+        DragDropModule,
+        MatInputModule,
+        ToastrModule.forRoot({
+            timeOut: 2000,
+            extendedTimeOut: 0,
+            iconClasses: {
+                error: 'toast-error',
+                info: 'toast-info',
+                success: 'toast-success',
+                warning: 'toast-warning',
+            }
+        }),
+        SharedComponentsModule,
+    ]
 })
 export class AdminModule { }

@@ -5,10 +5,11 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 @Component({
   selector: 'app-order-status',
   templateUrl: './order-status.component.html',
-  styleUrls: ['./order-status.component.scss'],
+  styleUrls: [],
 })
 export class OrderStatusComponent implements OnInit {
   orderNoEvent: Event;
+  @Input() TabIndex:any;
   toteIdEvent: Event;
   openOrderEvent: Event;
   completeOrderEvent: Event;
@@ -32,7 +33,6 @@ export class OrderStatusComponent implements OnInit {
   ngOnInit(): void {
 
     this.userData = this.authService.userData();
-    // this.autocompleteSearchColumn();
   }
   onClearFromStatus(event: Event) {
     this.clearEvent = event;

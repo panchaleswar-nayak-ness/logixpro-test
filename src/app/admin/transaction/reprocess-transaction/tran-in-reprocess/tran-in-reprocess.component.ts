@@ -1,8 +1,10 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { SharedService } from 'src/app/services/shared.service';
 import { AuthService } from '../../../../../app/init/auth.service'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-tran-in-reprocess',
@@ -21,6 +23,7 @@ export class TranInReprocessComponent implements OnInit {
   public itemNumber : string = '';
   public orderNumber : string = '';
   public history : boolean = false;
+  public iAdminApiService: IAdminApiService;
   @Output() reprocessSelectionEvent = new EventEmitter<string>();
   @Output() radioChangeEvent = new EventEmitter<any>();
   @Output() reasonFilterEvent = new EventEmitter<string>();
@@ -31,15 +34,15 @@ export class TranInReprocessComponent implements OnInit {
 
   constructor(
     private Api: ApiFuntions,
+    private global : GlobalService,
     private authService: AuthService,
+    private adminApiService: AdminApiService,
     private sharedService:SharedService
-
-  ) { }
+  ) {   this.iAdminApiService = adminApiService; }
 
   ngOnInit(): void {
     this.selectedOptionChange.emit(this.selectedOption);
     this.userData = this.authService.userData();
-    // this.OSFieldFilterNames();
     this.getFilteredList();
     this.sharedService.updateReprocessObserver.subscribe(selectedOrder => {
       this.orderNumber='';
@@ -55,11 +58,6 @@ export class TranInReprocessComponent implements OnInit {
        });
   }
 
-  // public OSFieldFilterNames() { 
-  //   this.Api.ColumnAlias().subscribe((res: any) => {
-  //     this.fieldNames = res.data;
-  //   })
-  // }
   radioButtonChange(event) {
 
     this.orderNumber='';
@@ -92,8 +90,6 @@ export class TranInReprocessComponent implements OnInit {
      this.filterCleared.emit('cleared');
      this.getFilteredList();
      this.getItemList();
-    //  this.reprocessSelectionEvent.emit('reprocess');
-    //  this.reasonFilterEvent.emit('none');
     }else{
       this.getFilteredList();
      this.getItemList();
@@ -115,13 +111,15 @@ export class TranInReprocessComponent implements OnInit {
     let payload = {
       "ItemNumber": this.itemNumber,
       "OrderNumber": this.orderNumber,
-      "History": this.history,
-      "username":  this.userData.userName,
-      "wsid": this.userData.wsid
+      "History": this.history, 
     }
-    this.Api.ReprocessTypeahead(payload).subscribe(res => {
-      // console.log(res);
-      this.orderList = res.data;
+    this.iAdminApiService.ReprocessTypeahead(payload).subscribe(res => {
+      if (res.data) {
+        this.orderList = res.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ReprocessTypeahead",res.responseMessage);
+      }
     });
   }
 
@@ -131,19 +129,21 @@ export class TranInReprocessComponent implements OnInit {
   }
   listSelected(event?){ 
     this.selectedItemNum.emit(this.itemNumber);
-    // this.getItemList();
   }
   getItemList(){
     let payload = {
       "ItemNumber": this.itemNumber,
       "OrderNumber": this.orderNumber,
-      "History": this.history,
-      "username":  this.userData.userName,
-      "wsid": this.userData.wsid
+      "History": this.history, 
     }
-    this.Api.ReprocessTypeahead(payload).subscribe(res => {
-      // console.log(res.data);
-      this.itemNumberList = res.data;
+    this.iAdminApiService.ReprocessTypeahead(payload).subscribe(res => {
+      if (res.data) {
+        this.itemNumberList = res.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ReprocessTypeahead",res.responseMessage);
+        
+      }
     });
   }
 

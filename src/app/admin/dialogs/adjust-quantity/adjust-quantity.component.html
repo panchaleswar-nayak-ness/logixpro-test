@@ -86,11 +86,6 @@
             <div class="error" *ngIf="hasError('quantity', 'required')">This field is required.</div>
         </div>
         <div class="col-6">
-            <!-- <mat-form-field class="d-block w-100 readonly" appearance="outline">
-                <mat-label>Reason For Adjustment</mat-label>
-                <input matInput class="readonly" value="itemNumber"   name="locationNumber"
-                    readonly>
-            </mat-form-field> -->
             <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <mat-label>Reason For Adjustment</mat-label>
                 <input   placeholder="Reason For Adjustment" aria-label="Reason For Adjustment" matInput
@@ -107,9 +102,7 @@
     </div>
 
     <mat-dialog-actions>
-        <!-- <button mat-stroked-button color="warn" class="button-primary btn-lg" (click)="initializeDataSet()">Clear</button> -->
         <button style="flex: 1;"  type="submit" mat-flat-button class="btn-lg" color="primary" [disabled]="!isValid()">Save Changes</button>
-        <!-- <button type="submit" style="flex: 1;" mat-flat-button class="button-primary btn-lg" color="primary" [disabled]="!isValid()">Save Changes</button> -->
     </mat-dialog-actions>
 </form>
 

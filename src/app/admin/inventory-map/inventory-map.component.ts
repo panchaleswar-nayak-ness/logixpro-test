@@ -1,38 +1,30 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSelect, MatSelectChange } from '@angular/material/select';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSelect} from '@angular/material/select';
+import { MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router,RoutesRecognized } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { Router} from '@angular/router';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject';
-import { SpinnerService } from '../../../app/init/spinner.service';
 import { AuthService } from '../../init/auth.service';
 import { AddInvMapLocationComponent } from '../dialogs/add-inv-map-location/add-inv-map-location.component';
 import { AdjustQuantityComponent } from '../dialogs/adjust-quantity/adjust-quantity.component';
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
 import { QuarantineConfirmationComponent } from '../dialogs/quarantine-confirmation/quarantine-confirmation.component';
-import { SetColumnSeqComponent } from '../dialogs/set-column-seq/set-column-seq.component';  
-import { filter, pairwise } from 'rxjs/operators';
 import { ColumnSequenceDialogComponent } from '../dialogs/column-sequence-dialog/column-sequence-dialog.component';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ContextMenuFiltersService } from '../../../app/init/context-menu-filters.service';
-import { MatMenuTrigger} from '@angular/material/menu';
-import { InputFilterComponent } from '../../dialogs/input-filter/input-filter.component';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { RouteHistoryService } from 'src/app/services/route-history.service';
 import { PrintRangeComponent } from '../dialogs/print-range/print-range.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from '../inventory-master/current-tab-data-service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 
 const INVMAP_DATA = [
@@ -75,10 +67,7 @@ const INVMAP_DATA = [
 @Component({
   selector: 'app-inventory-map',
   templateUrl: './inventory-map.component.html',
-  styleUrls: ['./inventory-map.component.scss'],
-  host: {
-    "(window:click)": "onClick()"
-  }
+  styleUrls: ['./inventory-map.component.scss']
 })
 
 export class InventoryMapComponent implements OnInit {
@@ -114,7 +103,7 @@ export class InventoryMapComponent implements OnInit {
   payload: any;
 
   searchAutocompleteList: any;
-
+  public iAdminApiService: IAdminApiService;
   public columnValues: any = [];
   public itemList: any;
   public filterLoc:any = 'Nothing';
@@ -126,7 +115,6 @@ export class InventoryMapComponent implements OnInit {
   myroute:any;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  // @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('matRef') matRef: MatSelect;
   @ViewChild('viewAllLocation') customTemplate: TemplateRef<any>;
@@ -134,95 +122,32 @@ export class InventoryMapComponent implements OnInit {
 
   //---------------------for mat menu start ----------------------------
 
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-
-  contextMenuPosition = { x: '0px', y: '0px' };
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: {SelectedItem: SelectedItem, FilterColumnName : FilterColumnName, FilterConditon: FilterConditon, FilterItemType : FilterItemType }};
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  onClick() {
-    this.trigger.closeMenu();
-  }
-
-  public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
-      // this.displayedColumns.filter((item,i)=>{
-      //   if(item.colHeader==='userField1'){
-      //     this.displayedColumns[i].colDef= this.fieldNames.userField1
-      //   }else if(item.colHeader==='userField2'){
-      //     this.displayedColumns[i].colDef= this.fieldNames.userField2
-      //   }
-      // })
-    })
-  }
-  ClearFilters()
-  {
-    this.FilterString = "";
-    this.initializeApi();
-    this.getContentData();
-  }
-  
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef =  this.dialog.open(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data:{
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement:TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => { 
-      if(result.SelectedColumn){
-        this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition,result.Type)
-      }
-    }
-    );
-  }
-
-  getType(val) : string
-  {
-     return this.filterService.getType(val);
-  }
- 
   FilterString : string = "1 = 1";
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
-    if (SelectedItem != undefined) {
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-    }
-    this.FilterString = this.FilterString != "" ? this.FilterString : "1 = 1";
+
+  optionSelected(filter : string) {
+    this.FilterString = filter;
     this.initializeApi();
-    this.getContentData();
+    this.getContentData();    
   }
 
  //---------------------for mat menu End ----------------------------
  previousUrl: string;
   constructor(
-    private dialog: MatDialog,
-    private authService: AuthService,
-    private Api: ApiFuntions,
-    private toastr: ToastrService, 
     private global:GlobalService,
+    private authService: AuthService,
+    public adminApiService: AdminApiService,
+    private dialog:MatDialog,
     private router: Router,
-    private loader: SpinnerService,
-    private _liveAnnouncer: LiveAnnouncer,
-    private filterService:ContextMenuFiltersService,
     private routeHistoryService: RouteHistoryService,
     private currentTabDataService: CurrentTabDataService,
-    private route: ActivatedRoute
+    private contextMenuService : TableContextMenuService
   ) {
     this.previousUrl = this.routeHistoryService.getPreviousUrl();
- 
+    this.iAdminApiService = adminApiService;
     
     if(this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ){
       this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ;
@@ -232,15 +157,11 @@ export class InventoryMapComponent implements OnInit {
       }
       this.isSearchColumn = true;
     }
-    else {
-      
-      if (this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP])
+    else if (this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP])
       {
           this.ApplySavedItem();
           this.isSearchColumn = true;
       }
-    }
- 
     if(router.url == '/OrderManager/InventoryMap'){
       this.transHistory = true;
     }
@@ -249,24 +170,6 @@ export class InventoryMapComponent implements OnInit {
     }
 
 
-    // router.events
-    //   .pipe(
-    //     filter((evt: any) => evt instanceof RoutesRecognized),
-    //     pairwise()
-    //   )
-    //   .subscribe((events: RoutesRecognized[]) => {
-      
-    //     if (events[0].urlAfterRedirects == '/InductionManager/Admin') { 
-    //       localStorage.setItem('routeFromInduction','true')
-    //         // this.showReprocess=false;
-    //         // this.showReprocessed=false;
-         
-    //     }else{ 
-    //       localStorage.setItem('routeFromInduction','false')
-    //       // this.showReprocess=true;
-    //       // this.showReprocessed=true;
-    //     }
-    //   });
   }
 
   ngOnInit(): void {
@@ -283,12 +186,24 @@ export class InventoryMapComponent implements OnInit {
     this.initializeApi();
     this.getColumnsData(true);
 
-   //  this.getContentData();
 
 
 
   }
 
+  public OSFieldFilterNames() { 
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
+      if(res.isExecuted && res.data)
+      {
+        this.fieldNames = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+
+      }
+    })
+  }
 
   ngAfterViewInit() {
     this.setStorage =localStorage.getItem('routeFromInduction')
@@ -302,9 +217,6 @@ export class InventoryMapComponent implements OnInit {
       this.myroute = true
 
     }
-    //if (this.currentTabDataService.savedItem['inventory-map'])
-     // this.dataSource = this.currentTabDataService.savedItem['inventory-map'];
-  //  this.routeFromIM=JSON.parse(this.setStorage)
     }
   pageEvent: PageEvent;
 
@@ -314,9 +226,7 @@ export class InventoryMapComponent implements OnInit {
     this.customPagination.startIndex =  e.pageSize*e.pageIndex
 
     this.customPagination.endIndex =  (e.pageSize*e.pageIndex + e.pageSize)
-   // this.length = e.length;
     this.customPagination.recordsPerPage = e.pageSize;
-   // this.pageIndex = e.pageIndex;
 
    this.dataSource.sort = this.sort;
 
@@ -330,15 +240,12 @@ export class InventoryMapComponent implements OnInit {
   }
 
   initializeApi(){
-    // debugger
     this.userData = this.authService.userData();
     if(this.FilterString == "")
     {
       this.FilterString = "1 = 1"
     }
-    this.payload = {
-     "username": this.userData.userName,
-     "wsid": this.userData.wsid,
+    this.payload = { 
      "oqa": this.filterLoc,
      "searchString": this.columnSearch.searchValue,
      "searchColumn": this.columnSearch.searchColumn.colDef,
@@ -350,12 +257,10 @@ export class InventoryMapComponent implements OnInit {
    }
   }
   getColumnsData(isInit: boolean=false) {
-    let payload = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+    let payload = { 
       "tableName": "Inventory Map"
     }
-    this.Api.getSetColumnSeq(payload).pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
+    this.iAdminApiService.getSetColumnSeq(payload).pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
       this.displayedColumns = INVMAP_DATA;
 
       if(res.data){
@@ -364,10 +269,8 @@ export class InventoryMapComponent implements OnInit {
         this.columnValues.push('actions');
         this.getContentData(isInit);
       } else {
-        this.toastr.error('Something went wrong', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Something went wrong', 'Error!');
+        console.log("getSetColumnSeq",res.responseMessage);
       }
     });
   }
@@ -386,16 +289,13 @@ export class InventoryMapComponent implements OnInit {
     };
   }
   getContentData(isInit: boolean = false){
-    // debugger
-    this.Api.getInventoryMap(this.payload).pipe(takeUntil(this.onDestroy$)).subscribe((res: any) => {
-      // console.log(res.data);
+    this.iAdminApiService.getInventoryMap(this.payload).pipe(takeUntil(this.onDestroy$)).subscribe((res: any) => {
       this.itemList =  res.data?.inventoryMaps?.map((arr => {
         return {'itemNumber': arr.itemNumber, 'desc': arr.description}
       }))
        
       this.detailDataInventoryMap= res.data?.inventoryMaps;
       this.dataSource = new MatTableDataSource(res.data?.inventoryMaps);
-  //  this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.RecordSavedItem();
     
@@ -405,7 +305,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   addLocDialog() { 
-    let dialogRef = this.dialog.open(AddInvMapLocationComponent, {
+    let dialogRef:any = this.global.OpenDialog(AddInvMapLocationComponent, {
       height: 'auto',
       width: '100%',
       autoFocus: '__non_existing_element__',
@@ -427,7 +327,7 @@ export class InventoryMapComponent implements OnInit {
   inventoryMapAction(actionEvent: any) {
     if (actionEvent.value === 'set_column_sq') {
 
-      let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
         height: 'auto',
         width: '960px',
         disableClose: true,
@@ -441,27 +341,10 @@ export class InventoryMapComponent implements OnInit {
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((result) => {
           this.clearMatSelectList();
-          // this.selectedVariable='';
-          if (result && result.isExecuted) {
+          if (result?.isExecuted) {
             this.getColumnsData();
           }
         });
-      // let dialogRef = this.dialog.open(SetColumnSeqComponent, {
-      //   height: '700px',
-      //   width: '600px',
-      //   autoFocus: '__non_existing_element__',
-    
-      //   data: {
-      //     mode: actionEvent.value,
-      //     tableName:'Inventory Map'
-      //   }
-      // })
-      // dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-      //   this.clearMatSelectList();
-      //   if(result!='close'){
-      //     this.getContentData();
-      //   }
-      // })
     }
   }
 
@@ -475,7 +358,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   viewAllLocDialog(): void {
-    const dialogRef = this.dialog.open(this.customTemplate, {
+    const dialogRef:any = this.global.OpenDialog(this.customTemplate, {
        width: '560px',
        autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -492,7 +375,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   edit(event: any){
-    let dialogRef = this.dialog.open(AddInvMapLocationComponent, {
+    let dialogRef:any = this.global.OpenDialog(AddInvMapLocationComponent, {
       height: 'auto',
       width: '100%',
       autoFocus: '__non_existing_element__',
@@ -515,10 +398,9 @@ export class InventoryMapComponent implements OnInit {
     })
   }
 
-  delete(event: any){
-    
+  delete(event: any){ 
     if(event.itemQuantity > 0){
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '786px',
         data: {
@@ -527,18 +409,19 @@ export class InventoryMapComponent implements OnInit {
         autoFocus: '__non_existing_element__'
       });
     }
-    else{
+    else{ 
       let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
         autoFocus: '__non_existing_element__',
       disableClose:true,
         data: {
+          action: 'delete',
           mode: 'delete-inventory-map',
           id: event.invMapID
-        //  grp_data: grp_data
         }
       })
+      debugger
       dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
   
         this.getContentData();
@@ -549,7 +432,7 @@ export class InventoryMapComponent implements OnInit {
 
 
   quarantine(event){
-    let dialogRef = this.dialog.open(QuarantineConfirmationComponent, {
+    let dialogRef:any = this.global.OpenDialog(QuarantineConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -557,7 +440,6 @@ export class InventoryMapComponent implements OnInit {
       data: {
         mode: 'inventory-map-quarantine',
         id: event.invMapID
-     //   grp_data: grp_data
       }
     })
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
@@ -568,7 +450,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   unQuarantine(event){
-    let dialogRef = this.dialog.open(QuarantineConfirmationComponent, {
+    let dialogRef:any = this.global.OpenDialog(QuarantineConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -576,7 +458,6 @@ export class InventoryMapComponent implements OnInit {
       data: {
         mode: 'inventory-map-unquarantine',
         id: event.invMapID
-     //   grp_data: grp_data
       }
     })
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
@@ -591,7 +472,7 @@ export class InventoryMapComponent implements OnInit {
     if(event.itemNumber == ""){
       return;
     }
-    let dialogRef = this.dialog.open(AdjustQuantityComponent, {
+    let dialogRef:any = this.global.OpenDialog(AdjustQuantityComponent, {
       height: 'auto',
       width: '800px',
       autoFocus: '__non_existing_element__',
@@ -608,25 +489,18 @@ export class InventoryMapComponent implements OnInit {
   }
 
   duplicate(event){
-    var obj:any = {
-      userName:this.userData.userName,
-      wsid:this.userData.wsid,
+    let obj:any = { 
       inventoryMapID:event.invMapID
     }
-  this.Api.duplicate(obj).pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
+  this.iAdminApiService.duplicate(obj).pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
     this.displayedColumns = INVMAP_DATA;
 
     if(res.data){
       this.getContentData();
-      this.toastr.success(res.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+      this.global.ShowToastr('success',res.responseMessage, 'Success!');
     } else {
-      this.toastr.error('Something went wrong', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Something went wrong', 'Error!');
+      console.log("duplicate",res.responseMessage);
     }
   });
 
@@ -634,7 +508,6 @@ export class InventoryMapComponent implements OnInit {
 
   viewInInventoryMaster(row){
 
-    // this.router.navigate(['/admin/inventoryMaster']);
 
 
     if( this.spliUrl[1] == 'OrderManager' ){
@@ -684,13 +557,16 @@ export class InventoryMapComponent implements OnInit {
   autocompleteSearchColumn(){
     let searchPayload = {
       "columnName": this.columnSearch.searchColumn.colDef,
-      "value": this.columnSearch.searchValue,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "value": this.columnSearch.searchValue
     }
-    this.Api.getSearchData(searchPayload).pipe(takeUntil(this.onDestroy$)).subscribe((res: any) => {
+    this.iAdminApiService.getSearchData(searchPayload).pipe(takeUntil(this.onDestroy$)).subscribe((res: any) => {
       if(res.data){
         this.searchAutocompleteList = res.data;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("getSearchData",res.responseMessage);
+
         }
 
     });
@@ -705,6 +581,7 @@ export class InventoryMapComponent implements OnInit {
     }else{
       this.isSearchColumn = true;
     }
+    
     this.searchAutocompleteList = [];
     if(this.columnSearch.searchValue){
       this.columnSearch.searchValue = '';
@@ -749,19 +626,8 @@ export class InventoryMapComponent implements OnInit {
   }
 
 
-  // announceSortChange(sortState: Sort) {
-  //   if (sortState.direction) {
-  //     this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-  //   } else {
-  //     this._liveAnnouncer.announce('Sorting cleared');
-  //   }
-  //   //this.employee_data_source.sort = this.sort;
-
-  //   this.dataSource.sort = this.sort;
-  // }
-
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
 
   ngOnDestroy() {
@@ -778,9 +644,6 @@ export class InventoryMapComponent implements OnInit {
 
 
  tranhistory(seletedRecord:any){
-  // this.router.navigate([]).then((result) => {
-  //   window.open(`/#/OrderManager/OrderStatus?type=TransactionHistory`, '_blank');
-  // });
 
   this.router.navigate([]).then((result) => {
       let url = `/#/OrderManager/OrderStatus?itemNumber=${seletedRecord.itemNumber}&type=TransactionHistory`;
@@ -789,7 +652,7 @@ export class InventoryMapComponent implements OnInit {
  }
 
  printRange(){
-  const dialogRef = this.dialog.open(PrintRangeComponent, {
+  this.global.OpenDialog(PrintRangeComponent, {
     height: 'auto',
     width: '932px',
     autoFocus: '__non_existing_element__'
@@ -798,8 +661,7 @@ export class InventoryMapComponent implements OnInit {
 
  printSelected(event: any){
   this.global.Print(`FileName:printIMReport|invMapID:${event.invMapID}|groupLikeLoc:false|beginLoc:|endLoc:|User:${this.userData.userName}`)
-  // window.location.href = `/#/report-view?file=FileName:printIMReport|invMapID:${event.invMapID}|groupLikeLoc:false|beginLoc:|endLoc:|User:${this.userData.userName}`
-  // window.location.reload(); 
+
 }
 
 selectRow(row: any) {

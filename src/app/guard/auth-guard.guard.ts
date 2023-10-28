@@ -1,10 +1,12 @@
  
 
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../init/auth.service';
 import { HttpClient } from '@angular/common/http'
 import { Location } from '@angular/common';
+import { CurrentTabDataService } from '../admin/inventory-master/current-tab-data-service';
+import { SharedService } from '../services/shared.service';
 
 
 @Injectable({ providedIn: 'root' })
@@ -13,12 +15,17 @@ export class AuthGuardGuard implements CanActivate {
   constructor(
     private router: Router,
     private activatedRoute:ActivatedRoute,
-    public authService: AuthService, private http: HttpClient, private location: Location
+    public authService: AuthService, private http: HttpClient, private location: Location,
+    private currentTabDataService:CurrentTabDataService,
+    private sharedService: SharedService
   ) {
 
   }
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) { 
+    const currentUrl: string = state.url;
+    const previousUrl: string = this.currentTabDataService.getPreviousUrl() ?? '';
+
     const pathSet = state.url.split('?')[0]; 
     if(pathSet.indexOf('/login') > -1) {
       if(this.authService.IsloggedIn()) {
@@ -45,11 +52,11 @@ export class AuthGuardGuard implements CanActivate {
     } 
   }
     if(pathSet.indexOf('/globalconfig') > -1){
-      if(!(pathSet.indexOf('/globalconfig/') > -1))    { this.router.navigate(['/globalconfig']);}  
+      if((pathSet.indexOf('/globalconfig/') <= -1))    { this.router.navigate(['/globalconfig']);}  
       if(this.authService.IsConfigLogin()) return true; else return false;
     }
     if (!this.ConfigJson?.length) {
-      var Storagepermission = JSON.parse(localStorage.getItem('Permission') || '[]');
+      let Storagepermission = JSON.parse(localStorage.getItem('Permission') ??  '[]');
       if (Storagepermission?.length) {
         this.ConfigJson = Storagepermission;
       } else {
@@ -64,11 +71,22 @@ export class AuthGuardGuard implements CanActivate {
     const userPermission = this.authService.userPermission(); 
     if (this.ConfigJson?.length) {
       
-      var permission = this.ConfigJson.find(x => x.path.toLowerCase() == pathSet.toLowerCase());
-      if(permission.Permission == true) return true;
+      let permission = this.ConfigJson.find(x => x.path.toLowerCase() == pathSet.toLowerCase());
+      if(permission.Permission) return true;
       
       else if (userPermission.filter(x => x.toLowerCase() == permission.Permission.toLowerCase()).length > 0) {
-        return true;
+        const isProceed = this.currentTabDataService.CheckTabOnRoute(currentUrl, previousUrl);
+        if (isProceed) 
+        {
+          this.currentTabDataService.setPreviousUrl(currentUrl);    
+          return true;
+        }          
+        else
+          {
+            this.sharedService.resetSidebar();
+            
+            return this.router.navigate(['/dashboard'], { queryParams: { error: 'multipletab'} });
+          }
       } else{ 
         window.location.href = '/#/login';
         return false;

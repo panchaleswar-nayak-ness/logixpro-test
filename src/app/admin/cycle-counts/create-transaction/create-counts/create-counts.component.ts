@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 
 
 export interface PeriodicElement {
@@ -26,7 +26,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './create-counts.component.html',
   styleUrls: ['./create-counts.component.scss']
 })
-export class CreateCountsComponent implements OnInit {
+export class CreateCountsComponent  {
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'ex', 'srno', 'action'];
   tableData = ELEMENT_DATA;
@@ -48,9 +48,5 @@ export class CreateCountsComponent implements OnInit {
   transType : string = 'Pick';
 
   
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+ 
 }

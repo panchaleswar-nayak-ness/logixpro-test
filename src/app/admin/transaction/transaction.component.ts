@@ -1,17 +1,18 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Router, RoutesRecognized } from '@angular/router';
-import { filter, pairwise } from 'rxjs/operators';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap  } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SharedService } from 'src/app/services/shared.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-transaction',
   templateUrl: './transaction.component.html',
-  styleUrls: ['./transaction.component.scss'],
+  styleUrls: [],
 })
 export class TransactionComponent implements OnInit, AfterViewInit {
   public TabIndex = 1;
@@ -29,32 +30,18 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   tabIndex$: Observable<any>;
   location$: Observable<any>;
   location: any;
+  public iAdminApiService: IAdminApiService;
   constructor(
     router: Router,
     private route: ActivatedRoute,
+    private adminApiService: AdminApiService,
     private sharedService: SharedService,
     public authService: AuthService,
+    private global : GlobalService,
     private Api: ApiFuntions,
   ) { 
-    // router.events
-    //   .pipe(
-    //     filter((evt: any) => evt instanceof RoutesRecognized),
-    //     pairwise()
-    //   )
-    //   .subscribe((events: RoutesRecognized[]) => {
-    //     if (events[0].urlAfterRedirects == '/InductionManager/Admin') {
-    //       localStorage.setItem('routeFromInduction','true')
-    //         // this.showReprocess=false;
-    //         // this.showReprocessed=false;
-    //     }else{
-    //       localStorage.setItem('routeFromInduction','false')
-    //       // this.showReprocess=true;
-    //       // this.showReprocessed=true;
-    //     }
-    //   });
-
-    //get absolute url 
-   if(router.url == '/OrderManager/OrderStatus'){
+    this.iAdminApiService = adminApiService;
+    if(router.url == '/OrderManager/OrderStatus'){
     this.TabIndex = 0;
    }
    else if(router.url == '/admin/transaction'){
@@ -77,11 +64,10 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     this.tabIndex$ = this.route.queryParamMap.pipe(
       map((params: ParamMap) => params.get('tabIndex')),
     );
-    var IsStatus = this.route.queryParamMap.pipe(
+    let IsStatus = this.route.queryParamMap.pipe(
       map((params: ParamMap) => params.get('IsOrderStatus')),
     );
     IsStatus.subscribe((param) => {
-      // debugger
       if (param!=null &&param != undefined) {
         this.IsOrderStatus = true;
       }else this.IsOrderStatus = false;
@@ -89,7 +75,6 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     this.tabIndex$.subscribe((param) => { 
       if (param) {
         this.TabIndex = 0;
-        // this.sharedService.updateOrderStatus(param)
       }
     });
     
@@ -142,7 +127,6 @@ export class TransactionComponent implements OnInit, AfterViewInit {
       if (param) {
         this.TabIndex = 2;
         this.sharedService.updateTransactionLocHistory(param);
-        // this.location=param;
       }
     });
   }
@@ -155,9 +139,16 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     this.TabIndex = (this.TabIndex + 1) % tabCount;
   }
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
+      if(res.isExecuted && res.data)
+      {
+        this.fieldNames = res.data;
       this.sharedService.updateFieldNames(this.fieldNames)
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
     })
   }
   switchToOrder(event) {

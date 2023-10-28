@@ -1,34 +1,37 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
-  MatDialog,
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
-import labels from '../../labels/labels.json';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-user-fields',
   templateUrl: './user-fields.component.html',
-  styleUrls: ['./user-fields.component.scss']
+  styleUrls: []
 })
 export class UserFieldsComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;
 
   public userData: any;
+  public iAdminApiService: IAdminApiService;
   userForm: FormGroup;
   fieldNames:any;
   constructor(public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public formBuilder: FormBuilder,
     private authService: AuthService,
-    private toast: ToastrService,
+    
+    private adminApiService: AdminApiService,
     private Api: ApiFuntions) {
-
+      this.iAdminApiService = adminApiService;
     this.userForm = this.formBuilder.group({
       userField1: new FormControl('', Validators.compose([])),
       userField2: new FormControl('', Validators.compose([])),
@@ -55,10 +58,16 @@ export class UserFieldsComponent implements OnInit {
   }
 
   public OSFieldFilterNames() { 
-    this.Api.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
-      this.setValues();
-      // this.sharedService.updateFieldNames(this.fieldNames)
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
+      if(res.isExecuted && res.data)
+      {
+        this.fieldNames = res.data;
+        this.setValues();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
     })
   }
   setValues() {
@@ -94,49 +103,6 @@ export class UserFieldsComponent implements OnInit {
     }
 
     this.dialogRef.close(userFields);
-    //   try {
-
-    //     const values = this.userForm.value;
-
-    //     var payload = { 
-    //       "transaction": this.data.id,
-    //       "userFields": [
-    //         values.userField1,
-    //         values.userField2,
-    //         values.userField3,
-    //         values.userField4,
-    //         values.userField5,
-    //         values.userField6,
-    //         values.userField7,
-    //         values.userField8,
-    //         values.userField9,
-    //         values.userField10
-    //       ],
-    //       "username": this.userData.userName,
-    //       "wsid": this.userData.wsid 
-    //     }
-
-    //     this.service.create(payload, '/Common/UserFieldMTSave').subscribe(
-    //       (res: any) => {
-    //         if (res.data && res.isExecuted) {
-    //           this.dialogRef.close();
-    //           this.toast.success(labels.alert.update, 'Success!',{
-    //             positionClass: 'toast-bottom-right',
-    //             timeOut:2000
-    //           });            
-    //         } else {
-    //           this.toast.error('Something went wrong', 'Error!', {
-    //             positionClass: 'toast-bottom-right',
-    //             timeOut: 2000,
-    //           });
-    //         }
-    //       },
-    //       (error) => { }
-    //     );
-    //   } catch (error) {
-    //     
-    //   }
-    // }
 
   }
 }

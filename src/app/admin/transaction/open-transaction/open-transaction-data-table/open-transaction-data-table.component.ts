@@ -1,26 +1,28 @@
 import {
   Component,
   OnInit,
-  TemplateRef,
-  ViewChild,
-  AfterViewInit,
+  
+  
+  
   Input,
-  SimpleChanges,
-  Output,
-  EventEmitter,
+  
+  
+  
 } from '@angular/core';
-import { MatSort, Sort } from '@angular/material/sort';
-import { MatPaginator, PageEvent } from '@angular/material/paginator'; 
+import { } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator'; 
 import { AuthService } from 'src/app/init/auth.service'; 
-import { Subject, takeUntil } from 'rxjs';
-import { ToastrService } from 'ngx-toastr'; 
-import { AddInvMapLocationComponent } from 'src/app/admin/dialogs/add-inv-map-location/add-inv-map-location.component';
-import { MatDialog } from '@angular/material/dialog';
-import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { QuarantineConfirmationComponent } from 'src/app/admin/dialogs/quarantine-confirmation/quarantine-confirmation.component';
-import { AdjustQuantityComponent } from 'src/app/admin/dialogs/adjust-quantity/adjust-quantity.component';
+import { } from 'rxjs';
+import {  } from 'ngx-toastr'; 
+import {  } from 'src/app/admin/dialogs/add-inv-map-location/add-inv-map-location.component';
+import {  } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import {  } from 'src/app/admin/dialogs/quarantine-confirmation/quarantine-confirmation.component';
+import {  } from 'src/app/admin/dialogs/adjust-quantity/adjust-quantity.component';
 import { HoldReasonComponent } from 'src/app/admin/dialogs/hold-reason/hold-reason.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 const TRNSC_DATA = [
   { colHeader: 'orderNumber', colDef: 'Order Number' },
@@ -43,7 +45,7 @@ const TRNSC_DATA = [
   styleUrls: ['./open-transaction-data-table.component.scss'],
 })
 export class OpenTransactionDataTableComponent
-  implements OnInit, AfterViewInit
+  implements OnInit
 {
   displayedColumns: string[] = [
     'orderNumber',
@@ -75,14 +77,15 @@ export class OpenTransactionDataTableComponent
   public sortCol: any = 5;
   public sortOrder: any = 'asc';
   public columnValues: any = [];
-  ngAfterViewInit() {}
+  public iAdminApiService: IAdminApiService;
   pageEvent: PageEvent;
   constructor(
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private authService: AuthService,
-    private dialog: MatDialog
+    private global:GlobalService
 
-  ) {}
+  ) {this.iAdminApiService = adminApiService;}
   @Input()
   set event(event: any) {
     if (event) {
@@ -100,7 +103,6 @@ export class OpenTransactionDataTableComponent
       endIndex: 10,
     };
     this.userData = this.authService.userData();
-    // this.datasource = new MatTableDataSource(this.employees_details_data);
     this.getContentData();
   }
 
@@ -111,25 +113,22 @@ export class OpenTransactionDataTableComponent
       eRow: this.customPagination.endIndex,
       sortColumnNumber:  this.sortCol,
       sortOrder: this.sortOrder,
-      username: this.userData.userName,
       identify: this.identify,
       reels: this.reels,
       orderItem: this.orderItem,
-      wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .HoldTransactionsData(this.payload)
       .subscribe(
         (res: any) => {
-          this.datasource = res.data.holdTransactions;
-          // this.getTransactionModelIndex();
-
-          // this.columnValues.push('actions');
-          // this.detailDataInventoryMap = res.data?.transactions;
-          // this.dataSource = new MatTableDataSource(res.data?.holdTransactions);
-          // //  this.dataSource.paginator = this.paginator;
-          // this.customPagination.total = res.data?.recordsFiltered;
-          // this.dataSource.sort = this.sort;
+          if(res.isExecuted && res.data)
+          {
+            this.datasource = res.data.holdTransactions;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("HoldTransactionsData",res.responseMessage);
+          }
         },
         (error) => {}
       );
@@ -143,7 +142,7 @@ export class OpenTransactionDataTableComponent
       return;
 
     let index;
-    this.displayedColumns.find((x, i) => {
+    this.displayedColumns.forEach((x, i) => {
       if (x === event.active) {
         index = i;
       }
@@ -155,18 +154,16 @@ export class OpenTransactionDataTableComponent
   }
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-    // this.customPagination.startIndex =  e.pageIndex
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
 
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
-    // this.length = e.length;
     this.customPagination.recordsPerPage = e.pageSize;
     
     this.getContentData();
   }
   holdDeallocate(row){
 
-    const dialogRef = this.dialog.open(HoldReasonComponent, {
+    const dialogRef:any = this.global.OpenDialog(HoldReasonComponent, {
       height: 'auto',
       width: '480px',
       data: {
@@ -174,7 +171,7 @@ export class OpenTransactionDataTableComponent
         reel:this.reels,
        
         orderItem: this.orderItem,
-        Order:this.identify==='Order Number'?true:false,
+        Order:this.identify==='Order Number',
         id:row.id
       },
     });

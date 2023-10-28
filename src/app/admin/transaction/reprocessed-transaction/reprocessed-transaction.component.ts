@@ -1,19 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
-import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from 'angular-routing';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/init/auth.service';
 import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dialog/column-sequence-dialog.component';
-import { SetColumnSeqComponent } from '../../dialogs/set-column-seq/set-column-seq.component'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 const TRNSC_DATA = [
   { colHeader: 'importDate', colDef: 'Import Date' },
@@ -53,6 +53,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   hideRequiredControl = new FormControl(false);
   searchBar = new Subject<string>();
   searchAutocompleteList: any;
+  public iAdminApiService: IAdminApiService;
   public sortCol:any=5;
   public sortOrder:any='asc';
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -81,25 +82,23 @@ export class ReprocessedTransactionComponent implements OnInit {
   constructor(
     private Api: ApiFuntions,
     private authService: AuthService,
-    private toastr: ToastrService,
-    private dialog: MatDialog
-  ) {}
+    private adminApiService: AdminApiService,
+    
+    private global:GlobalService
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.searchBar
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value) => {
-        // this.columnSearch.searchValue = value;
         if (!this.columnSearch.searchColumn.colDef){
           this.getContentData();
         }
         else{
           this.autocompleteSearchColumn();
         }
-
-        // if (!this.searchAutocompleteList.length) {
-        //   // this.getContentData();
-        // }
       });
 
     this.userData = this.authService.userData();
@@ -109,31 +108,23 @@ export class ReprocessedTransactionComponent implements OnInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-  // getColumnsData() {
-  //   this.displayedColumns = TRNSC_DATA;
-  //   this.getContentData();
-  // }
 
   getColumnsData() {
-    let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+    let payload = { 
       tableName: 'ReProcessed',
     };
-    this.Api.GetColumnSequence(payload).subscribe(
-      (res: any) => {
+    this.iAdminApiService.GetColumnSequence(payload).subscribe(
+      {next: (res: any) => {
         this.displayedColumns = TRNSC_DATA;
         if (res.data) {
           this.columnValues = res.data;
           this.getContentData();
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("GetColumnSequence",res.responseMessage);
         }
       },
-      (error) => {}
+      error: (error) => {}}
     );
   }
   clearMatSelectList(){
@@ -146,19 +137,22 @@ export class ReprocessedTransactionComponent implements OnInit {
       itemNumber: '',
       holds: false,
       orderStatusOrder: '',
-      app: 'Admin',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      app: 'Admin', 
     };
-    this.Api
+    this.iAdminApiService
       .TransactionModelIndex(paylaod)
       .subscribe(
-        (res: any) => {
-          this.columnValues = res.data?.reprocessedColumns;
-          // this.columnValues.push('actions');
-          // this.displayOrderCols=res.data.openTransactionColumns;
+        {next: (res: any) => {
+          if(res.isExecuted && res.data)
+          {
+            this.columnValues = res.data?.reprocessedColumns;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("TransactionModelIndex",res.responseMessage);
+          }
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
   getContentData() {   
@@ -169,22 +163,25 @@ export class ReprocessedTransactionComponent implements OnInit {
       start: this.customPagination.startIndex,
       length: this.customPagination.endIndex,
       sortColumnNumber: this.sortCol,
-      sortOrder: this.sortOrder,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      sortOrder: this.sortOrder, 
     };
-    this.Api
+    this.iAdminApiService
       .ReprocessedTransactionTable(this.payload)
       .subscribe(
-        (res: any) => {
-          // this.getTransactionModelIndex();
-          this.detailDataTransHistory = res.data?.transactions;
+        {next: (res: any) => {
+          if(res.isExecuted && res.data)
+          {
+            this.detailDataTransHistory = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
-          //  this.dataSource.paginator = this.paginator;
           this.customPagination.total = res.data?.recordsFiltered;
           this.dataSource.sort = this.sort;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ReprocessedTransactionTable",res.responseMessage);
+          }
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
   searchData(event) {
@@ -197,25 +194,30 @@ export class ReprocessedTransactionComponent implements OnInit {
     }
   }
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
 
   async autocompleteSearchColumn() {
     let searchPayload = {
       query: this.columnSearch.searchValue,
       tableName: 6,
-      column: this.columnSearch.searchColumn.colDef,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      column: this.columnSearch.searchColumn.colDef, 
     };
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
-        (res: any) => {
-          this.searchAutocompleteList = res.data;
+       { next: (res: any) => {
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
           this.getContentData();
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+          }
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
   sortChange(event) {
@@ -236,7 +238,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   actionDialog(opened: boolean) {
     if (!opened && this.selectedVariable) {
       this.sortCol=0;
-      let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
         height: 'auto',
         width: '960px',
         disableClose: true,
@@ -250,7 +252,7 @@ export class ReprocessedTransactionComponent implements OnInit {
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((result) => {
           this.clearMatSelectList();
-          if (result && result.isExecuted) {
+          if (result?.isExecuted) {
             this.getColumnsData();
           }
         });
@@ -258,15 +260,11 @@ export class ReprocessedTransactionComponent implements OnInit {
   }
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-    // this.customPagination.startIndex =  e.pageIndex
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
 
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
-    // this.length = e.length;
     this.customPagination.recordsPerPage = e.pageSize;
-    // this.pageIndex = e.pageIndex;
 
-    // this.initializeApi();
     this.getContentData();
   }
   ngOnDestroy() {
@@ -280,7 +278,6 @@ export class ReprocessedTransactionComponent implements OnInit {
   }
 
   resetFields(event?) {
-    // this.orderNo = '';
     this.columnSearch.searchValue = '';
     this.searchAutocompleteList = [];
     this.orderSelectionSearch = false

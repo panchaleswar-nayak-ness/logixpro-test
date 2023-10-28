@@ -28,9 +28,7 @@
                     </mat-autocomplete>
                   </mat-form-field>
                   <div class="error" *ngIf="hasError('controlName', 'required')">This field is required.</div>
-            <!-- </mat-form-field> -->
             <mat-dialog-actions align="end">
-                <!-- <button mat-button matDialogClose="no" color="danger">Cancel</button> -->
                 <button type="submit" mat-flat-button class="form-button-submit"
                     color="primary" [disabled]="!controlNameForm.valid">{{form_btn_label}}</button>
             </mat-dialog-actions>

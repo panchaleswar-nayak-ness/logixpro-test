@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-// import { EmployeesComponent } from './dashboard/employees/employees.component';
 import { MainComponent } from './dashboard/main/main.component';
 import { GlobalConfigComponent } from './global-config/global-config.component';
 import { AuthGuardGuard } from './guard/auth-guard.guard';
@@ -14,7 +13,6 @@ import { LicensingComponent } from './global-config/licensing/licensing.componen
 import { CcsifComponent } from './global-config/ccsif/ccsif.component';
 import { SteComponent } from './global-config/ste/ste.component';
 import { SteServicesComponent } from './global-config/ste-services/ste-services.component';
-import { FlowrackReplenishmentComponent } from './flowrack-replenishment/flowrack-replenishment.component';
 import { ImportExportComponent } from './import-export/import-export.component';
 
 import { WrdComponent } from './list-and-label/wrd/wrd.component';
@@ -91,66 +89,39 @@ const routes: Routes = [
         component: ImportExportComponent,
         canActivate: [AuthGuardGuard] 
       },
-      // {
-      //   path: 'FlowrackReplenishment',
-      //   component: FlowrackReplenishmentComponent,
-      //   canActivate: [AuthGuardGuard] 
-      // },
-      // {
-      //   path: 'globalconfig/dashboard',
-      //   component: MainComponent,
-      //   // canActivate:[AuthGuardGuard]
-      // },
-
       {
         path: 'admin',
         loadChildren: () =>
           import('./admin/admin.module').then((m) => m.AdminModule),
-        canActivate: [AuthGuardGuard],
+        canActivate: [],
       },
       { 
         path: 'InductionManager', 
         loadChildren: () => import('./induction-manager/induction-manager.module').then(m => m.InductionManagerModule),
-        canActivate:[AuthGuardGuard]
+        canActivate:[]
       },
       { 
         path: 'ConsolidationManager', 
         loadChildren: () => import('./consolidation-manager/consolidation-manager.module').then(m => m.ConsolidationManagerModule),
-        canActivate:[AuthGuardGuard]
+        canActivate:[]
       },
       { 
         path: 'OrderManager', 
         loadChildren: () => import('./order-manager/order-manager.module').then(m => m.OrderManagerModule),
-        canActivate:[AuthGuardGuard]
+        canActivate:[]
       },
       { 
         path: 'FlowrackReplenishment', 
         loadChildren: () => import('./flowrack-replenishment/flowrack-replenishment.module').then(m => m.FlowrackReplenishmentModule),
-        canActivate:[AuthGuardGuard]
+        canActivate:[]
       },
       { 
         path: '', 
         loadChildren: () => import('./list-and-label/list-and-label.module').then(m => m.ListAndLabelModule),
-        // canActivate:[AuthGuardGuard]
       },
     ]
 
   },  
-
-  // {
-  //   path:'dashboard',
-  //   component:DashboardComponent,
-  //   children: [
-  //     // {
-  //     //   path:''
-  //     // },
-  //     // {
-  //     //   path:'all-employees',
-  //     //   component:AllEmployeesComponentComponent
-  //     // }
-
-  //   ]
-  // },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -1,4 +1,3 @@
-<!-- <ng-scrollbar class="mat-table-scrollbar" style="height: 90vh;"> -->
   <div class="d-flex justify-content-between mb-4 align-items-center">
     <div style="width:48px"></div>
     <h1 class="m-0" mat-dialog-title>Pick Tote Manager - Select Order Number</h1>
@@ -19,19 +18,12 @@
 
   <ng-container *ngIf="isFilter=='filter'; else zone">
     <div class="card p-3">
-      <mat-tab-group (selectedTabChange)="tabChange($event)">
+      <mat-tab-group>
         <mat-tab label="Batch By Filters">
-          <!-- <ng-scrollbar style="height: 550px ;"> -->
             <div class="d-block" style="overflow: hidden;">
             <div class="my-3">
-              <h2 class="card-header-title mb-0 d-flex align-items-center">
-                <div class="mat-icon-wrap me-lg-3 me-2">
-                  <span class="material-symbols-outlined">
-                    filter_list
-                  </span>
-                </div>
-                <span>Filter Functions</span>
-              </h2>
+              <app-icon-heading-component heading="Filter Functions" icon="filter_list">
+              </app-icon-heading-component>
             </div>
             <div class="header-filter-bar mb-3">
               <div class="d-flex justify-content-between">
@@ -47,20 +39,6 @@
                       </div>
                     </mat-option>
                   </mat-autocomplete>
-
-
-                  <!-- <mat-autocomplete class="br-14" style="padding-bottom: 16px; padding-top: 16px;" autoActiveFirstOption #auto="matAutocomplete"
-                  (optionSelected)="loadZones($event)">
-
-
-                  <h6 class="card-header matAutoCompHeader stickyHeader"> <span style="padding: 0px 25px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;"> Location</span> <span style="padding: 0px 0px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">Zone</span></h6>
-                  <mat-option class="" *ngFor="let option of filteredOptions | async"
-                      [value]="option.locationName">
-                      <div class="loc_option">
-                          <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;" >{{option.locationName}}</span> <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">{{option.zone}}</span>
-                      </div>
-                  </mat-option>
-              </mat-autocomplete> -->
 
 
 
@@ -85,14 +63,8 @@
               <div class="col-xl-7 mb-xl-0 mb-3">
                 <div class="card p-3">
                   <div>
-                    <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3 me-2">
-                        <span class="material-symbols-outlined">
-                          filter_alt
-                        </span>
-                      </div>
-                      <span>Filter</span>
-                    </h2>
+                    <app-icon-heading-component heading="Filter" icon="filter_alt">
+                    </app-icon-heading-component>
                   </div>
                   <div class="d-flex gap-12 mb-2 justify-content-end">
                     <button mat-flat-button color="primary" class="add-icon-button" (click)="onAddFilter()" [disabled]="!isFilterAdd">
@@ -234,14 +206,8 @@
               <div class="col-xl-5">
                 <div class="card p-3">
                   <div>
-                    <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3 me-2">
-                        <span class="material-symbols-outlined">
-                          filter_frames
-                        </span>
-                      </div>
-                      <span>Order By</span>
-                    </h2>
+                    <app-icon-heading-component heading="Order By" icon="filter_frames">
+                    </app-icon-heading-component>
                   </div>
                   <div class="d-flex gap-12 mb-2 justify-content-end">
                     <button mat-flat-button color="primary" class="add-icon-button" (click)="onAddOrderBy();" [disabled]="!isOrderByAdd">
@@ -361,10 +327,8 @@
               </div>
             </div>
             </div>
-          <!-- </ng-scrollbar> -->
         </mat-tab>
         <mat-tab label="Batch Results">
-          <!-- <ng-scrollbar style="height: 550px ;"> -->
             <div class="d-block" style="overflow: hidden;">
             <div class="p-3">
               <div class="mb-2">
@@ -383,14 +347,8 @@
               <div class="col-xl-5 mb-xl-0 mb-3">
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3 me-2">
-                        <span class="material-symbols-outlined">
-                          filter_frames
-                        </span>
-                      </div>
-                      <span>Orders</span>
-                    </h2>
+                    <app-icon-heading-component heading="Orders" icon="filter_frames">
+                    </app-icon-heading-component>
                     <mat-form-field class="action-dropdown" appearance="outline">
                       <mat-label>Actions</mat-label>
                       <mat-select #orderRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderAction($event.value)">
@@ -452,14 +410,8 @@
               <div class="col-xl-7">
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3 me-2">
-                        <span class="material-symbols-outlined">
-                          dvr
-                        </span>
-                      </div>
-                      <span>Transactions</span>
-                    </h2>
+                    <app-icon-heading-component heading="Transactions" icon="dvr">
+                    </app-icon-heading-component>
                   </div>
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
                     <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 280px;">
@@ -483,7 +435,6 @@
               </div>
             </div>
             </div>
-          <!-- </ng-scrollbar> -->
         </mat-tab>
       </mat-tab-group>
     </div>
@@ -494,7 +445,6 @@
       <mat-tab-group [(selectedIndex)]="TabIndex">
         <mat-tab label="Batch By Zone">
           <div class="card br-14 table-responsive borderless px-0 mt-3">
-            <!-- <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 500px;"> -->
               <table mat-table [dataSource]="batchByZoneSource" class="w-100 table1">
 
                 <ng-container matColumnDef="default">
@@ -566,8 +516,8 @@
                       </button>
 
                       <mat-menu #appMenu="matMenu" xPosition="before">
-                        <button mat-menu-item (click)="viewReplenishZoneRecord('',element,true)"><b class="text-tertiary-900">View Replenish Orders</b></button>
-                        <button mat-menu-item (click)="viewReplenishZoneRecord('1',element,false)">View Non Replenish Orders</button>
+                        <button mat-menu-item (click)="viewReplenishZoneRecord(element,true,'')"><b class="text-tertiary-900">View Replenish Orders</b></button>
+                        <button mat-menu-item (click)="viewReplenishZoneRecord(element,false,'1')">View Non Replenish Orders</button>
                       </mat-menu>
                     </div>
                   </td>
@@ -578,7 +528,6 @@
                 <tr mat-row *matRowDef="let row; columns: batchByOrderColumns;" (click)="selection.toggle(row)">
                 </tr>
               </table>
-            <!-- </ng-scrollbar> -->
           </div>
           <div class="d-flex justify-content-start">
             <mat-paginator #batchByZonePaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
@@ -586,7 +535,6 @@
           </div>
         </mat-tab>
         <mat-tab label="Batch Results" class="b-result">
-          <!-- <ng-scrollbar style="height: 550px ;"> -->
             
             <div class="p-3">
               <div class="mb-2">
@@ -606,14 +554,8 @@
               <div class="col-xl-4 mb-xl-0 mb-3">
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3 me-2">
-                        <span class="material-symbols-outlined">
-                          filter_frames
-                        </span>
-                      </div>
-                      <span>Orders</span>
-                    </h2>
+                    <app-icon-heading-component heading="Orders" icon="filter_frames">
+                    </app-icon-heading-component>
                     <mat-form-field class="action-dropdown" appearance="outline">
                       <mat-label>Actions</mat-label>
                       <mat-select #orderZoneRef class="employees-action" placeholder="Actions" (selectionChange)="onChangeOrderActionZone($event.value)">
@@ -670,14 +612,8 @@
               <div class="col-xl-8">
                 <div class="card p-3">
                   <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="card-header-title mb-0 d-flex align-items-center">
-                      <div class="mat-icon-wrap me-lg-3 me-2">
-                        <span class="material-symbols-outlined">
-                          dvr
-                        </span>
-                      </div>
-                      <span>Transactions</span>
-                    </h2>
+                    <app-icon-heading-component heading="Transactions" icon="dvr">
+                    </app-icon-heading-component>
                   </div>
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
                     <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 280px;">
@@ -700,9 +636,7 @@
               </div>
             </div>
             </div>
-          <!-- </ng-scrollbar> -->
         </mat-tab>
       </mat-tab-group>
     </div>
   </ng-template>
-<!-- </ng-scrollbar> -->

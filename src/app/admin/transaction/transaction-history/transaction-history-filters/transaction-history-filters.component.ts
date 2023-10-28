@@ -1,10 +1,13 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { Subject, takeUntil, interval, Subscription, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/init/auth.service'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 let today = new Date();
 let year = today.getFullYear();
@@ -14,13 +17,14 @@ let backDate = new Date(year - 50, month, day);
 @Component({
   selector: 'app-transaction-history-filters',
   templateUrl: './transaction-history-filters.component.html',
-  styleUrls: ['./transaction-history-filters.component.scss'],
+  styleUrls: [],
 })
 export class TransactionHistoryFiltersComponent implements OnInit {
   @Output() startDate = new EventEmitter<any>();
   @Output() endDate = new EventEmitter<any>();
   @Output() orderNo = new EventEmitter<any>();
   @Output() resetDates = new EventEmitter<any>();
+  public iAdminApiService: IAdminApiService;
 
   @Output() clearData = new EventEmitter<Event>();
 
@@ -34,8 +38,12 @@ export class TransactionHistoryFiltersComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private adminApiService: AdminApiService,
+    private global : GlobalService,
     private Api:ApiFuntions
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -55,15 +63,14 @@ export class TransactionHistoryFiltersComponent implements OnInit {
     this.orderNo.emit(event);
   }
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
 
   resetToTodaysDate() {
     this.edate=new Date().toISOString()
     this.sdate=new Date().toISOString()
     this.orderNumber='';
-    // this.searchAutocompleteList.length=0;
-    this.searchAutocompleteList && this.searchAutocompleteList.length?this.searchAutocompleteList.length=0:'';
+    this.searchAutocompleteList = [];
     this.resetDates.emit({endDate : new Date().toISOString(),startDate : new Date().toISOString()})
     this.clearData.emit(event);
    
@@ -71,45 +78,38 @@ export class TransactionHistoryFiltersComponent implements OnInit {
 
   searchData(event) {
     this.onOrderNoChange(event);
-    // if (event == this.columnSearch.searchValue) return;
-    // if (
-    //   this.columnSearch.searchColumn ||
-    //   this.columnSearch.searchColumn == ''
-    // ) {
-    //   this.getContentData();
-    // }
   }
 
   async autocompleteSearchColumn() {
     let searchPayload = {
       query: this.orderNumber,
       tableName: 3,
-      column: 'Order Number',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      column: 'Order Number'
     };
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
-        (res: any) => {
-          this.searchAutocompleteList = res.data;
-          // this.getContentData();
+        {next: (res: any) => {
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+          }
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
   onDateChange(event: any): void {
-    // this.startdateChange.emit();
     this.sdate = new Date(event).toISOString();
     this.startDate.emit(event);
-    // this.getContentData();
   }
 
   onEndDateChange(event: any): void {
-    // this.enddateChange.emit();
     this.edate = new Date(event).toISOString();
     this.endDate.emit(event);
-    // this.getContentData();
   }
   ngOnDestroy() {
     this.searchByOrderNumber.unsubscribe();
@@ -120,11 +120,6 @@ export class TransactionHistoryFiltersComponent implements OnInit {
       this.orderNumber = 0;
     }
   }
-
-
-  // sendToParent(event:any){
-  //   this.childToParent.emit(event);
-  //   }
 
   clear(){
     this.orderNumber = ''

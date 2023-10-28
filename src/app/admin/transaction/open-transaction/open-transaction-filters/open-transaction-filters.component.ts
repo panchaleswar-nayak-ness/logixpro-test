@@ -1,17 +1,19 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { AuthService } from 'src/app/init/auth.service'; 
-import labels from '../../../../labels/labels.json';
 import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { SharedService } from 'src/app/services/shared.service';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-open-transaction-filters',
   templateUrl: './open-transaction-filters.component.html',
-  styleUrls: ['./open-transaction-filters.component.scss'],
+  styleUrls: [],
 })
 export class OpenTransactionFiltersComponent implements OnInit {
   @Output() nextScreen = new EventEmitter<string>();
@@ -31,13 +33,15 @@ export class OpenTransactionFiltersComponent implements OnInit {
     selectedCheck:'',
 
   }
+  public iAdminApiService: IAdminApiService;
   constructor(
     private authService: AuthService,
+    private adminApiService: AdminApiService,
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    private global : GlobalService,
+    
     private sharedService:SharedService
-  ) {}
-
+  ) { this.iAdminApiService = adminApiService;} 
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.searchDeb
@@ -50,7 +54,6 @@ export class OpenTransactionFiltersComponent implements OnInit {
         this.filterObjectForEvnt.selectedCheck=this.selectedCheck
 
         this.eventChangeEmitter(value)
-        // this.getContentData();
       });
       this.sharedService.fieldNameObserver.subscribe(item => {
         this.fieldNames=item;
@@ -60,11 +63,11 @@ export class OpenTransactionFiltersComponent implements OnInit {
     this.nextScreen.emit('complete');
   }
   radioChange(event){
-   if(event && event.value){
+   if(event?.value){
       this.eventChangeEmitter(event)
    }
   }
-  searchData() {}
+  
   selectedItem(event) {
     this.searchValue = '';
   }
@@ -85,25 +88,28 @@ export class OpenTransactionFiltersComponent implements OnInit {
     let searchPayload = {
       query: this.searchValue,
       tableName: 2,
-      column: this.selectedOption,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      column: this.selectedOption
     };
 
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
-        (res: any) => {
-          if (res && res.isExecuted) {
+        {next: (res: any) => {
+          if (res?.isExecuted) {
             this.autoCompleteSearchResult = res.data;
           }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+            
+          }
         },
-        (error) => {}
+        error: (error) => {}}
       );
   }
 
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
   ngOnDestroy() {
     this.searchDeb.unsubscribe();

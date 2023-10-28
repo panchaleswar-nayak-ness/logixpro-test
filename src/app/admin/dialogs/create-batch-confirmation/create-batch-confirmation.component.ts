@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, NgForm } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import {
   MatDialog,
@@ -8,11 +7,12 @@ import {
 } from '@angular/material/dialog';
 import { SharedService } from 'src/app/services/shared.service';
 import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-create-batch-confirmation',
   templateUrl: './create-batch-confirmation.component.html',
-  styleUrls: ['./create-batch-confirmation.component.scss'],
+  styleUrls: [],
 })
 export class CreateBatchConfirmationComponent implements OnInit {
   isChecked = true;
@@ -24,7 +24,8 @@ export class CreateBatchConfirmationComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CreateBatchConfirmationComponent>,
-    private dialog: MatDialog,
+    private global:GlobalService,
+    private dialog:MatDialog,
     private sharedService: SharedService
   ) {}
 
@@ -50,7 +51,7 @@ export class CreateBatchConfirmationComponent implements OnInit {
       this.sharedService.updateBatchManagerObject({isCreate:true})
 this.dialogRef.close();
       let dialogRefTote;
-      dialogRefTote = this.dialog.open(BmToteidEntryComponent, {
+      dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
         height: 'auto',
         width: '990px',
         autoFocus: '__non_existing_element__',
@@ -66,7 +67,7 @@ this.dialogRef.close();
       
     } else {
       let dialogRef;
-      dialogRef = this.dialog.open(CreateBatchConfirmationComponent, {
+      dialogRef = this.global.OpenDialog(CreateBatchConfirmationComponent, {
         height: 'auto',
         width: '550px',
         autoFocus: '__non_existing_element__',

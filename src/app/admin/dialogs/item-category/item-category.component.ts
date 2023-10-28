@@ -1,20 +1,17 @@
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { PrintRangeComponent } from '../print-range/print-range.component';
-import { ToastrService } from 'ngx-toastr'; 
+import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
-import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { Router } from '@angular/router';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-item-category',
   templateUrl: './item-category.component.html',
-  styleUrls: ['./item-category.component.scss']
+  styleUrls: []
 })
 export class  ItemCategoryComponent implements OnInit {
   @ViewChildren('category_category', { read: ElementRef }) category_category: QueryList<ElementRef>;
@@ -22,15 +19,16 @@ export class  ItemCategoryComponent implements OnInit {
   public userData: any;
   enableButton=[{index:-1,value:true}];
 
-  constructor(private dialog: MatDialog,
-              private api: ApiFuntions,
-              private authService: AuthService,
-              private toastr: ToastrService,
-              private renderer: Renderer2,
-              public dialogRef: MatDialogRef<any>,
-              private global:GlobalService,
-              public route: Router
-              ) {}
+  public iCommonAPI : ICommonApi;
+
+  constructor(
+    public commonAPI : CommonApiService,
+    private global:GlobalService,
+    private authService: AuthService,
+    private renderer: Renderer2,
+    public dialogRef: MatDialogRef<any>, 
+    public route: Router
+    ) { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -43,11 +41,10 @@ export class  ItemCategoryComponent implements OnInit {
   }
 
  getCategoryList(){ 
-    // this.enableButton.shift();
-    this.api.getCategory().subscribe((res) => {
+    this.iCommonAPI.getCategory().subscribe((res) => {
       this.category_list = res.data;
       this.enableButton=[];
-      for(var i=0;i<this.category_list.length;i++)
+      for(let i=0;i<this.category_list.length;i++)
       {
         this.category_list.fromDB = true;
         this.enableButton.push({index:i,value:true});
@@ -86,13 +83,10 @@ export class  ItemCategoryComponent implements OnInit {
     this.category_list.forEach(element => {
       if(element.category?.toLowerCase() == category?.toLowerCase() && element.subCategory?.toLowerCase() == subCategory?.toLowerCase() ) {
         cond = false;
-       this.toastr.error('Category cannot be saved. Category matches another entry. Save any pending changes before attempting to save this entry.', 'Error!', {
-         positionClass: 'toast-bottom-right',
-         timeOut: 2000
-       });
+       this.global.ShowToastr('error','Category cannot be saved. Category matches another entry. Save any pending changes before attempting to save this entry.', 'Error!');
    
       }  
-      return; 
+
     });
 
   } 
@@ -103,18 +97,18 @@ export class  ItemCategoryComponent implements OnInit {
         "category": category,
         "oldCategory": oldCat.toString(),
         "subCategory": subCategory,
-        "oldSubCategory": oldSubCat.toString(),
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "oldSubCategory": oldSubCat.toString()
       } 
       
-      this.api.saveCategory(paylaod).subscribe((res) => {
+      this.iCommonAPI.saveCategory(paylaod).subscribe((res) => {
         if(res.isExecuted){
           this.getCategoryList();
-        this.toastr.success(oldCat.toString()==''?labels.alert.success:labels.alert.update, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',oldCat.toString()==''?labels.alert.success:labels.alert.update, 'Success!');
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("saveCategory",res.responseMessage);
+
       }
       });
     }
@@ -123,7 +117,7 @@ export class  ItemCategoryComponent implements OnInit {
 
   dltCategory(category : any, subCategory : any){
 
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -168,8 +162,5 @@ export class  ItemCategoryComponent implements OnInit {
 
   openPrintRangeDialog(){
     this.global.Print(`FileName:printCategoriesReport`)
-    // this.dialogRef.close();
-    // window.location.href = `/#/report-view?file=FileName:printCategoriesReport`
-    // window.location.reload(); 
   }
 }

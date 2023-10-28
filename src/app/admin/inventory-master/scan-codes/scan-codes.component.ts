@@ -1,23 +1,26 @@
-import { Component, OnInit, TemplateRef, ViewChild,Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input,SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import labels from '../../../labels/labels.json'
 import { ScanTypeCodeComponent } from '../../dialogs/scan-type-code/scan-type-code.component';
 import { CustomValidatorService } from '../../../../app/init/custom-validator.service';
-import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { catchError, of } from 'rxjs';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-scan-codes',
   templateUrl: './scan-codes.component.html',
-  styleUrls: ['./scan-codes.component.scss']
+  styleUrls: []
 })
-export class ScanCodesComponent implements OnInit , OnChanges {
+export class ScanCodesComponent{
 
   displayedColumns: string[] = ['ScanCode', 'ScanType', 'ScanRange', 'StartPosition','CodeLength','Actions'];
 
@@ -33,27 +36,15 @@ export class ScanCodesComponent implements OnInit , OnChanges {
   sendNotification(e?) {
     this.notifyParent.emit(e);
   }
-  
+  public iAdminApiService: IAdminApiService;
 
   constructor( private api:ApiFuntions, private sharedService:SharedService,
-    private authService: AuthService, private toastr: ToastrService,  private dialog: MatDialog,private cusValidator: CustomValidatorService) {
-
+    private authService: AuthService,   private adminApiService: AdminApiService,private global:GlobalService,private dialog:MatDialog,private cusValidator: CustomValidatorService) {
+      this.iAdminApiService = adminApiService;
     this.userData = this.authService.userData();
- //   this.getScanTypeList();
 
   }
 
-  // getScanTypeList(){
-  //   let paylaod = {
-  //     "username": this.userData.userName,
-  //     "wsid": this.userData.wsid,
-  //   }
-  //   this.invMasterService.get(paylaod, '/Common/ScanCodeTypes').subscribe((res: any) => {
-  //     if (res.isExecuted) {
-  //       this.scanTypeList = res.data;
-  //     }
-  //   })
-  // }
   ngOnChanges(changes: SimpleChanges) {
       this.scanCodesList = [...this.scanCodes.controls['scanCode'].value];
       this.OldscanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
@@ -82,12 +73,9 @@ export class ScanCodesComponent implements OnInit , OnChanges {
     this.sharedService.updateInvMasterState(event,true)
   }
 
-  ngOnInit(): void {
-  }
+  
 
-  openPrintRangeDialog(){
 
-  }
   addCatRow(e: any){
     this.isAddRow=true
     this.scanCodesList.unshift({scanCode: '', scanType: '', scanRange: 'No', startPosition:0, codeLength:0,isDisabled:true});
@@ -100,7 +88,7 @@ export class ScanCodesComponent implements OnInit , OnChanges {
   dltCategory(item){
 
 
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
@@ -115,24 +103,17 @@ export class ScanCodesComponent implements OnInit , OnChanges {
           "scanType": item.scanType,
           "scanRange": item.scanRange,
           "startPosition": item.startPosition,
-          "codeLength": item.codeLength,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid,
+          "codeLength": item.codeLength, 
         }
-        this.api.DeleteScanCode(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.DeleteScanCode(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
             this.isAddRow=false
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             this.refreshScanCodeList();
           } else{
             
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("DeleteScanCode",res.responseMessage);
           }
         })
       } else{
@@ -155,39 +136,26 @@ export class ScanCodesComponent implements OnInit , OnChanges {
   saveCategory(item, scanCode, startPosition, codeLength, scanRange, scanType,index:any){ 
     let newRecord = true;
     if(scanCode=='') {
-      this.toastr.error('Scan code not saved, scan code field must not be empty.', 'Alert!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Scan code not saved, scan code field must not be empty.', 'Alert!');
       return;
     }
     if(startPosition=='') {
-      this.toastr.error('Scan code not saved,Start position field must be an integer.', 'Alert!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Scan code not saved,Start position field must be an integer.', 'Alert!');
       return;
     }
     if(codeLength=='') {
-      this.toastr.error('Scan code not saved, Scan code field must not be empty..', 'Alert!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Scan code not saved, Scan code field must not be empty..', 'Alert!');
       return;
     }
     this.scanCodes.controls['scanCode'].value.forEach(element => {
-      if(element.scanCode== scanCode || (element.startPosition== startPosition && element.scanType== scanType  && element.scanRange== scanRange && element.codeLength== codeLength)){
+      if((element.scanCode== scanCode || (element.startPosition== startPosition && element.scanType== scanType  && element.scanRange== scanRange && element.codeLength== codeLength)) && newRecord){
         newRecord = false;
-        return;
+       
       }
     });
 
     if(!newRecord || item.scanCode=='' ){
-      this.toastr.error('Already Exists', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
-      return;
+      this.global.ShowToastr('error','Already Exists', 'Error!');
     }
 
     else if(newRecord){
@@ -197,11 +165,9 @@ export class ScanCodesComponent implements OnInit , OnChanges {
       "scanType": scanType,
       "scanRange": scanRange,
       "startPosition": startPosition,
-      "codeLength": codeLength,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "codeLength": codeLength, 
     }
-    this.api.InsertScanCodes(paylaod).pipe(
+    this.iAdminApiService.InsertScanCodes(paylaod).pipe(
       catchError((error) => {
         // Handle the error here
         console.error('An error occurred while making the API call:', error);
@@ -211,25 +177,17 @@ export class ScanCodesComponent implements OnInit , OnChanges {
     ).subscribe((res: any) => {
       if (res.isExecuted) {
         this.isAddRow=false
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
         this.refreshScanCodeList();
         this.sendNotification();
       } 
       else if(res.isDuplicate){
-        this.toastr.error('New Scan Code not saved!  Ensure that the scan code being added is not a duplicate and try again.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','New Scan Code not saved!  Ensure that the scan code being added is not a duplicate and try again.', 'Error!');
         
       }
       else{
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("InsertScanCodes",res.responseMessage);
       }
     })
   } else if (item.scanCode!='') {
@@ -244,31 +202,22 @@ export class ScanCodesComponent implements OnInit , OnChanges {
       "oldStartPosition": this.OldscanCodesList[index].startPosition,
       "newStartPosition": startPosition,
       "oldCodeLength": this.OldscanCodesList[index].codeLength,
-      "newCodeLength": codeLength,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "newCodeLength": codeLength, 
     }
-    this.api.UpdateScanCodes(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.UpdateScanCodes(paylaod).subscribe((res: any) => {
       if (res.isExecuted) {
         this.isAddRow=false
-        this.toastr.success(labels.alert.success, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
         this.refreshScanCodeList();
       }else{
-        this.toastr.error('Already Exists', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Already Exists', 'Error!');
+        console.log("UpdateScanCodes",res.responseMessage);
       }
     })
   }
   }
   
-  changeScanType(e){
-  
-  }
+ 
   changeScanRange(item){
     if(item.scanRange == 'No'){
       item.startPosition = 0
@@ -279,11 +228,9 @@ export class ScanCodesComponent implements OnInit , OnChanges {
 
   refreshScanCodeList(){
     let paylaod = {
-      "itemNumber": this.scanCodes.controls['itemNumber'].value,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "itemNumber": this.scanCodes.controls['itemNumber'].value, 
     }
-    this.api.RefreshScanCodes(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.RefreshScanCodes(paylaod).subscribe((res: any) => {
       if (res.isExecuted) {
 
         this.scanCodes.controls['scanCode'].setValue([...res.data]);
@@ -295,12 +242,17 @@ export class ScanCodesComponent implements OnInit , OnChanges {
         
 
       }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("RefreshScanCodes",res.responseMessage);
+
+      }
     })
   }
 
 
   openScanTypePopup(item){
-    let dialogRef = this.dialog.open(ScanTypeCodeComponent, {
+    let dialogRef:any = this.global.OpenDialog(ScanTypeCodeComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',

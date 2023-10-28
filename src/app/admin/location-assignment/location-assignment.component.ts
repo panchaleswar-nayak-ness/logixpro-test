@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core'; 
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-location-assignment',
   templateUrl: './location-assignment.component.html',
-  styleUrls: ['./location-assignment.component.scss']
+  styleUrls: []
 })
 export class LocationAssignmentComponent implements OnInit {
 
@@ -13,11 +16,16 @@ export class LocationAssignmentComponent implements OnInit {
   pickLabel:string = "Pick (0)";
   putAwayLabel:string = "Put Away (0)";
   public userData: any;
+  public iAdminApiService: IAdminApiService;
 
   constructor(
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private authservice : AuthService,
-  ) {}
+    private global : GlobalService
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   public Tab;
 
@@ -28,10 +36,8 @@ export class LocationAssignmentComponent implements OnInit {
 
   getLabels(){
     let payload = {
-      "userName" : this.userData.userName,
-      "wsid": this.userData.wsid
     }
-    this.Api.GetTransactionTypeCounts(payload).subscribe((res =>{
+    this.iAdminApiService.GetTransactionTypeCounts(payload).subscribe((res =>{
       if (res.isExecuted && res.data) {
         res.data.forEach(item => {
           if (item.transactionType === "Count") {
@@ -42,6 +48,10 @@ export class LocationAssignmentComponent implements OnInit {
             this.putAwayLabel = `Put Away (${item.count})`;
           }
         });
+      }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetTransactionTypeCounts",res.responseMessage);
       } 
     }));
   }

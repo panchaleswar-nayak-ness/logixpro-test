@@ -4,28 +4,37 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpHeaders,
   HttpErrorResponse
 } from '@angular/common/http';
 import { catchError, Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth.service';
-import { ApiFuntions } from '../services/ApiFuntions';
 import { SpinnerService } from './spinner.service';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IUserAPIService } from '../services/user-api/user-api-interface';
+import { UserApiService } from '../services/user-api/user-api.service';
+import { GlobalService } from '../common/services/global.service';
 
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
+  public  iGlobalConfigApi: IGlobalConfigApi;
+  public iUserApi : IUserAPIService;
 
   constructor(
+	  public userApi : UserApiService,
     private router: Router,
-    private toastr: ToastrService,
-    private dialog: MatDialog,
+    private global: GlobalService,
+    private dialog:MatDialog,
     private authService: AuthService,
-    private api:ApiFuntions,
+    public globalConfigApi: GlobalConfigApiService,
     private spinnerService: SpinnerService
-    ) {}
+    ) {
+      this.iGlobalConfigApi = globalConfigApi;
+      this.iUserApi = userApi;
+    }  
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
       
       return next.handle(request).pipe(
@@ -39,34 +48,22 @@ export class HeaderInterceptor implements HttpInterceptor {
   private handleAuthError(err: HttpErrorResponse): Observable<any> { 
     if (err.status === 401) {
       
-      let userData = this.authService.userData();
-      let paylaod = {
-        "username": userData.userName,
-        "wsid": userData.wsid,
-      }      
-      
       if(this.router.url.split('?')[0] != '/report-view'){
       if(this.authService.isConfigUser()){
-          this.api.configLogout(paylaod).subscribe((res:any) => {
+          this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
             if (res.isExecuted) {       
               this.dialog.closeAll();
-              this.toastr.error('Token Expire', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error','Token Expire', 'Error!');
               this.router.navigate(['/globalconfig']);
             } else {
-              this.toastr.error(res.responseMessage, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',res.responseMessage, 'Error!');
+              console.log("configLogout",res.responseMessage);
             }
           });    
       } else {
-        this.api.Logout(paylaod).subscribe((res:any) => {
+        this.iUserApi.Logout().subscribe((res:any) => {
           if (res.isExecuted) {  
-            let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : "";
-            localStorage.clear();     
+            let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : ""; 
             if(lastRoute != ""){
               localStorage.setItem('LastRoute', lastRoute);
             } 
@@ -74,17 +71,12 @@ export class HeaderInterceptor implements HttpInterceptor {
               localStorage.setItem('LastRoute', this.router.url);
             }     
             this.dialog.closeAll();
-            this.toastr.error('Token Expire', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });  
-            if(!(this.router.url.indexOf('login') > -1)) localStorage.setItem('LastRoute', this.router.url);        
+            this.global.ShowToastr('error','Token Expire', 'Error!');  
+            if((this.router.url.indexOf('login') <= -1)) localStorage.setItem('LastRoute', this.router.url);        
             this.router.navigate(['/login']);    
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("Logout",res.responseMessage);
           }
         })
       }
@@ -94,10 +86,7 @@ export class HeaderInterceptor implements HttpInterceptor {
     throw err;
   }else if(err.status === 500){
     if(`${err.url}`.indexOf("insertnewprinter") > -1){
-      this.toastr.error(err.error.ResponseMessage, 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000,
-      }); 
+      this.global.ShowToastr('error',err.error.ResponseMessage, 'Error!'); 
     }
     this.spinnerService.hide();
   } 

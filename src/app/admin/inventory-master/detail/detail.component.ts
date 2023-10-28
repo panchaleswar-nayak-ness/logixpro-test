@@ -1,9 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from 'src/app/init/auth.service';
-import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { ItemCategoryComponent } from '../../dialogs/item-category/item-category.component';
 import { ItemNumberComponent } from '../../dialogs/item-number/item-number.component';
 import { UnitMeasureComponent } from '../../dialogs/unit-measure/unit-measure.component';
@@ -13,6 +11,9 @@ import { SharedService } from 'src/app/services/shared.service';
 import { Observable, Subscription } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../current-tab-data-service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-detail',
@@ -21,8 +22,9 @@ import { CurrentTabDataService } from '../current-tab-data-service';
 })
 export class DetailComponent implements OnInit {
   private eventsSubscription: Subscription;
-  @Input() events: Observable<String>;
+  @Input() events: Observable<string>;
   @Input() fieldNameDetails: any;
+  public iAdminApiService: IAdminApiService;
   @Input() details: FormGroup;  
   public userData: any;
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
@@ -39,9 +41,12 @@ export class DetailComponent implements OnInit {
     private router: Router,
     private sharedService:SharedService,
     private authService: AuthService, 
-    private dialog: MatDialog,    
+    private adminApiService: AdminApiService,
+    private global:GlobalService,    
     private currentTabDataService: CurrentTabDataService,
-    private toastr: ToastrService,) { }
+    ) {
+      this.iAdminApiService = adminApiService;
+     }
   
     ngOnChanges(changes: SimpleChanges) {
       if(changes['fieldNameDetails']){
@@ -54,7 +59,7 @@ export class DetailComponent implements OnInit {
   ngOnInit(): void {
      
     this.userData = this.authService.userData();
-    this.setVal = localStorage.getItem('routeFromOrderStatus') == 'true' ? true : false;
+    this.setVal = localStorage.getItem('routeFromOrderStatus') === 'true';
    
     this.spliUrl=this.router.url.split('/');
    
@@ -79,7 +84,7 @@ export class DetailComponent implements OnInit {
   }
   public openItemNumDialog() {
 
-    let dialogRef = this.dialog.open(ItemNumberComponent, {
+    let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -94,24 +99,19 @@ export class DetailComponent implements OnInit {
       if (result) { 
         let paylaod = {
           "oldItemNumber": this.details.controls['itemNumber'].value,
-          "newItemNumber": result,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "newItemNumber": result, 
         }
-        this.Api.UpdateItemNumber(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.UpdateItemNumber(paylaod).subscribe((res: any) => {
           this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY] = result;
 
-          // console.log(res.data);
           if (res.isExecuted) {
             this.details.patchValue({
               'itemNumber' : res.data.newItemNumber
             }); 
             this.sendNotification({newItemNumber: res.data.newItemNumber});
           } else {
-            this.toastr.error("Item Number Already Exists.", 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"Item Number Already Exists.", 'Error!');
+            console.log("UpdateItemNumber",res.responseMessage);
           }
         })
       }
@@ -120,7 +120,7 @@ export class DetailComponent implements OnInit {
   }
 
   public openDescriptionDialog() {
-    let dialogRef = this.dialog.open(UpdateDescriptionComponent, {
+    let dialogRef:any = this.global.OpenDialog(UpdateDescriptionComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -141,7 +141,7 @@ export class DetailComponent implements OnInit {
   }
 
   public opencategoryDialog() {
-    let dialogRef = this.dialog.open(ItemCategoryComponent, {
+    let dialogRef:any = this.global.OpenDialog(ItemCategoryComponent, {
       height: 'auto',
       width: '860px',
       autoFocus: '__non_existing_element__',
@@ -151,14 +151,14 @@ export class DetailComponent implements OnInit {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-        if(result.category!='' && result!=true)
-       { 
+      if(result.category!='' && result)
+      { 
         this.details.patchValue({        
           'category': result.category      
         });
       }
-        if(result.subCategory!='' && result!=true)
-        {
+      if(result.subCategory!='' && result)
+      {
         this.details.patchValue({            
           'subCategory': result.subCategory,        
         });
@@ -168,7 +168,7 @@ export class DetailComponent implements OnInit {
     })
   }
   public openUmDialog() { 
-    let dialogRef = this.dialog.open(UnitMeasureComponent, {
+    let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',
@@ -191,25 +191,7 @@ export class DetailComponent implements OnInit {
 
 
  RedirectInv(type){
-
-// if(this.details.controls['histCount'].value==0 || this.details.controls['openCount'].value==0 ||this.details.controls['procCount'].value==0 ) return
-
-
-//   if( this.spliUrl[1] == 'OrderManager' ){
-//     this.router.navigate([]).then((result) => {
-//       let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-//       window.open(url, '_blank');
-//     });
-//  }
-//  else {
-//   this.router.navigate([]).then((result) => {
-//     let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-//     window.open(url, '_blank');
-//   });
-
-//  }
-
-  if(this.setVal == true){
+  if(this.setVal){
     this.router.navigate([]).then((result) => {
       let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
       window.open(url, '_blank');

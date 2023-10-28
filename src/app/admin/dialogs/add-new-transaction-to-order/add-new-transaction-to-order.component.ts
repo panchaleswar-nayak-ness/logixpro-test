@@ -1,17 +1,16 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import labels from '../../../labels/labels.json';
 import { FloatLabelType } from '@angular/material/form-field';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ItemExistGenerateOrderComponent } from '../item-exist-generate-order/item-exist-generate-order.component';
 import { EmptyFieldsComponent } from '../empty-fields/empty-fields.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-add-new-transaction-to-order',
@@ -29,14 +28,20 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   hideRequiredControl = new FormControl(false);
   searchByInput: any = new Subject<string>();
   searchAutocompleteList: any=[];
+  public iAdminApiService: IAdminApiService;
+
+  public iCommonAPI : ICommonApi;
 
   constructor(
+    public commonAPI : CommonApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
-    private Api: ApiFuntions,
+    private global:GlobalService,
+    public adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+    this.iCommonAPI = commonAPI; 
+  }
   transactionInfo = new FormGroup({
     lineNumber: new FormControl(''),
     lineSequence: new FormControl(''),
@@ -62,13 +67,6 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   });
   ngOnInit(): void { 
     this.autocompleteSearchColumn();
-    // if(this.itemNumber==='')return
-    // this.searchByInput
-    // .pipe(debounceTime(400), distinctUntilChanged())
-    // .subscribe((value) => {
-   
-    //   this.autocompleteSearchColumn();
-    // });
     if (this.data.mode === 'edit-transaction') {
       this.itemNumber = this.data.item.itemNumber;
       this.requiredDate =this.data.item.requiredDate? new Date(this.data.item.requiredDate):'' ;
@@ -143,18 +141,16 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   }
   searchData(){
     let payload = {
-      itemNumber: this.itemNumber,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      itemNumber: this.itemNumber
     }
 
   
-      this.Api.ItemExists(payload)
+      this.iCommonAPI.ItemExists(payload)
       .subscribe(
         (res: any) => {
           if(res.isExecuted){
               if(res.data==''){
-                const dialogRef = this.dialog.open(ItemExistGenerateOrderComponent, {
+                const dialogRef:any = this.global.OpenDialog(ItemExistGenerateOrderComponent, {
                   height: 'auto',
                   width: '560px',
                   autoFocus: '__non_existing_element__',
@@ -168,6 +164,12 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                 });
               }
             
+          }
+          else {
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ItemExists",res.responseMessage);
+
           }
         },
         (error) => {
@@ -178,24 +180,22 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   }
   async autocompleteSearchColumn() {
     let searchPayload = {
-      // itemNumber: this.itemNumber,
-      // username: this.data.userName,
-      // wsid: this.data.wsid,
 
       itemNumber: this.itemNumber,
       beginItem:'---',
-      isEqual:false,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      isEqual:false
     };
-    this.Api
+    this.iCommonAPI
       .SearchItem(searchPayload)
       .subscribe(
         (res: any) => {
           if(res.data){
             this.searchAutocompleteList=res.data
-            // if( this.searchAutocompleteList.includes(res.data))return 
-            // this.searchAutocompleteList.push(res.data)
+          }
+          else {
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("SearchItem",res.responseMessage);
           }
      
         },
@@ -203,60 +203,19 @@ export class AddNewTransactionToOrderComponent implements OnInit {
       );
   }
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'auto';
+    return this.floatLabelControl.value ?? 'auto';
   }
 
-  onFocusOutItemNum(event){
-return
-    if(event.target.value==='')return
-    
-    let payload = {
-      itemNumber: this.itemNumber,
-      username: this.data.userName,
-      wsid: this.data.wsid,
-    }
-
-    setTimeout(() => {
-      this.Api.ItemExists(payload)
-      .subscribe(
-        (res: any) => {
-          if(res.isExecuted){
-              if(res.data==''){
-                const dialogRef = this.dialog.open(ItemExistGenerateOrderComponent, {
-                  height: 'auto',
-                  width: '560px',
-                  autoFocus: '__non_existing_element__',
-      disableClose:true,
-                  data: {
-                    itemNumber:this.itemNumber,
-                  },
-                });
-                dialogRef.afterClosed().subscribe((res) => {
-                 this.itemNumber=''
-                });
-              }
-            
-          }
-        },
-        (error) => {
-    
-        }
-      );
-    }, 500);
-   
-  }
   saveTransaction() {
     let payloadItem = {
-      itemNumber: this.itemNumber,
-      username: this.data.userName,
-      wsid: this.data.wsid,
+      itemNumber: this.itemNumber
     }
-    this.Api.ItemExists(payloadItem)
+    this.iCommonAPI.ItemExists(payloadItem)
     .subscribe(
       (res: any) => {
         if(res.isExecuted){
             if(res.data==''){
-              const dialogRef = this.dialog.open(ItemExistGenerateOrderComponent, {
+              const dialogRef:any = this.global.OpenDialog(ItemExistGenerateOrderComponent, {
                 height: 'auto',
                 width: '560px',
                 autoFocus: '__non_existing_element__',
@@ -270,7 +229,7 @@ return
               });
             }else{
               if(this.itemNumber===''  || this.quantity===0 || this.quantity<0){
-                const dialogRef = this.dialog.open(EmptyFieldsComponent, {
+                const dialogRef:any = this.global.OpenDialog(EmptyFieldsComponent, {
                   height: 'auto',
                   width: '560px',
                   autoFocus: '__non_existing_element__',
@@ -285,7 +244,6 @@ return
                 return
               }
               let payload = {
-                // itemNum: this.data.itemNumber,
                 transQty: this.quantity.toString(),
                 reqDate: this.requiredDate ? this.requiredDate.toISOString() : '',
                 expDate: this.expirationDate ? this.expirationDate.toISOString() : '',
@@ -309,68 +267,52 @@ return
                 userField7: this.transactionInfo.value.userField7,
                 userField8: this.transactionInfo.value.userField8,
                 userField9: this.transactionInfo.value.userField9,
-                userField10: this.transactionInfo.value.userField10,
-                username: this.data.userName,
-                wsid: this.data.wsid,
+                userField10: this.transactionInfo.value.userField10, 
               };
           
              
               // TransactionForOrderInsert
               if (this.data.mode === 'add-trans') {
-                (payload['orderNumber'] = this.data.orderNumber),
-                  (payload['transType'] = this.data.transactionType),
-                  (payload['itemNum'] = this.itemNumber);
+                  payload['orderNumber'] = this.data.orderNumber;
+                  payload['transType'] = this.data.transactionType;
+                  payload['itemNum'] = this.itemNumber;
               } else {
                 payload['itemNum'] = this.data.item.itemNumber;
                 payload['id'] = this.data.item.id;
               }
               if(this.data && this.data.mode === 'add-trans'){
-                this.Api.TransactionForOrderInsert(payload).subscribe(
+                this.iAdminApiService.TransactionForOrderInsert(payload).subscribe(
                   (res: any) => {
                     if (res.isExecuted) {
-                      this.toastr.success(labels.alert.success, 'Success!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000,
-                      });
+                      this.global.ShowToastr('success',labels.alert.success, 'Success!');
                       this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
                     } else {
-                      this.toastr.error(res.responseMessage, 'Error!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000,
-                      });
+                      
+                      this.global.ShowToastr('error',res.responseMessage, 'Error!');
                       this.dialogRef.close({ isExecuted: false });
+                      console.log("TransactionForOrderInsert",res.responseMessage);
                     }
                   },
                   (error) => {
-                    this.toastr.error('something went wrong!', 'Error!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
+                    this.global.ShowToastr('error','something went wrong!', 'Error!');
                     this.dialogRef.close({ isExecuted: false });
                   }
                 );
               } else{
-                this.Api.TransactionForOrderUpdate(payload).subscribe(
+                this.iAdminApiService.TransactionForOrderUpdate(payload).subscribe(
                   (res: any) => {
                     if (res.isExecuted) {
-                      this.toastr.success(labels.alert.success, 'Success!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000,
-                      });
+                      this.global.ShowToastr('success',labels.alert.success, 'Success!');
                       this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
                     } else {
-                      this.toastr.error(res.responseMessage, 'Error!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000,
-                      });
+                      
+                      this.global.ShowToastr('error',res.responseMessage, 'Error!');
                       this.dialogRef.close({ isExecuted: false });
+                      console.log("TransactionForOrderUpdate",res.responseMessage);
                     }
                   },
                   (error) => {
-                    this.toastr.error('something went wrong!', 'Error!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
+                    this.global.ShowToastr('error','something went wrong!', 'Error!');
                     this.dialogRef.close({ isExecuted: false });
                   }
                 );

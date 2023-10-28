@@ -1,28 +1,22 @@
 import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild,
+  Component, Input,
 } from '@angular/core';
 
 
 @Component({
   selector: 'app-transaction-history',
   templateUrl: './transaction-history.component.html',
-  styleUrls: ['./transaction-history.component.scss'],
+  styleUrls: [],
 })
-export class TransactionHistoryComponent implements OnInit {
+export class TransactionHistoryComponent {
   startDateEvent: Event;
   endDateEvent: Event;
   orderNoEvent:Event;
   resetDateEvent:Event;
-
+ @Input() TabIndex:any;
   clearEvent: Event;
 
-  constructor() {}
+  
   startDateChange(event: Event) {
     this.startDateEvent = event;
   }
@@ -35,8 +29,7 @@ export class TransactionHistoryComponent implements OnInit {
   resetDate(event: Event){
     this.resetDateEvent=event;
   }
-  ngOnInit(): void {
-  }
+  
   
 
   onClearFromStatus(event: Event) {

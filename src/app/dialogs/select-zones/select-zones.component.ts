@@ -1,9 +1,12 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit , Inject, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit , Inject} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
-import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
+
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {
   zone: string
@@ -21,6 +24,7 @@ export interface PeriodicElement {
 })
 export class SelectZonesComponent implements OnInit {
   isNewBatch=false;
+  public iinductionManagerApi:IInductionManagerApiService;
   ELEMENT_DATA = [{ zone: '',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
   displayedColumns: string[] = ['select', 'zone', 'locationdesc', 'locationtype', 'stagingzone' , 'flag'];
   dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
@@ -33,18 +37,9 @@ export class SelectZonesComponent implements OnInit {
 
 
   selectZone(row:any){
-
-    let obj = this.ELEMENT_DATA.find((o, i) => {
-      if (o.zone === row.zone) {
-        this.ELEMENT_DATA[i].selected = !this.ELEMENT_DATA[i].selected;
-        return true; // stop searching
-      }
-      else 
-      {
-        return false;
-      }
-    });
-
+    const index = this.ELEMENT_DATA.findIndex(o => o.zone === row.zone);
+    if (index !== -1) this.ELEMENT_DATA[index].selected = !this.ELEMENT_DATA[index].selected;
+    else console.log('Element not found:', row.zone);
   }
 
 
@@ -57,12 +52,12 @@ export class SelectZonesComponent implements OnInit {
 
   AllRecordsChecked()
   {
-    var selected=false;
-    for(var i=0;i<this.ELEMENT_DATA.length;i++)
+    let selected=false;
+    for (const element of this.ELEMENT_DATA) 
     {
-      if(!(this.ELEMENT_DATA[i].selected==false&&this.ELEMENT_DATA[i].available==false))
+      if(!(! element.selected && ! element.available))
       {
-        if(this.ELEMENT_DATA[i].selected==false)
+        if(!element.selected)
         {
           selected = false;
           break;
@@ -90,20 +85,12 @@ export class SelectZonesComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows($event:any) {
-    for(var i=0;i<this.ELEMENT_DATA.length;i++)
-    {
-      if(!(this.ELEMENT_DATA[i].selected==false&&this.ELEMENT_DATA[i].available==false))
+    for (const element of this.ELEMENT_DATA) {
+      if(!(!element.selected && !element.available))
       {
-        this.ELEMENT_DATA[i].selected=$event.checked;
+        element.selected=$event.checked;
       }
     }
-    
-    // if (this.isAllSelected()) {
-    //   this.selection.clear();
-    //   return;
-    // }
-    // console.log(this.dataSource.data);
-    // this.selection.select(...this.dataSource.data);
     this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
     
 
@@ -123,33 +110,28 @@ export class SelectZonesComponent implements OnInit {
   if(staging=="0")
   {
   //Auto select staging records
-  var recordExists=0;
-  for(var i=0;i<this.ELEMENT_DATA.length;i++)
+  let recordExists=0;
+  for (const element of this.ELEMENT_DATA) {
+  if(element.stagingZone=='False' && !(!element.selected && !element.available))
   {
-  if(this.ELEMENT_DATA[i].stagingZone=='False' && !(this.ELEMENT_DATA[i].selected==false&&this.ELEMENT_DATA[i].available==false))
-  {
-    this.ELEMENT_DATA[i].selected=true;
+    element.selected=true;
     recordExists=1;
   }
   
   }
   if(recordExists==0)
   {
-    this.toastr.error('No non staging zones', 'Error!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000,
-    });
+    this.global.ShowToastr('error','No non staging zones', 'Error!' );
   }
   }
   else 
   {
   //Auto select staging records
-  var recordExists=0;
-  for(var i=0;i<this.ELEMENT_DATA.length;i++)
+  let recordExists=0;
+  for (const element of this.ELEMENT_DATA) {
+  if(element.stagingZone!='False')
   {
-  if(this.ELEMENT_DATA[i].stagingZone!='False')
-  {
-    this.ELEMENT_DATA[i].selected=true;
+    element.selected=true;
     recordExists=1;
   }
   
@@ -157,10 +139,7 @@ export class SelectZonesComponent implements OnInit {
 
   if(recordExists==0)
   {
-    this.toastr.error('No staging zones', 'Error!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000,
-    });
+    this.global.ShowToastr('error','No staging zones', 'Error!' );
   }
   
   }
@@ -170,11 +149,10 @@ export class SelectZonesComponent implements OnInit {
   {
     let selectedRecords=[{zone:'',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
     selectedRecords.shift();
-    for(var i=0;i<this.ELEMENT_DATA.length;i++)
+    for (const element of this.ELEMENT_DATA) {
+    if(element.selected)
     {
-    if(this.ELEMENT_DATA[i].selected)
-    {
-    selectedRecords.push(this.ELEMENT_DATA[i]);
+    selectedRecords.push(element);
     }
     }
     this.dialogRef.close(selectedRecords);
@@ -188,59 +166,41 @@ export class SelectZonesComponent implements OnInit {
   getAvailableZones()
   {
     this.ELEMENT_DATA.length=0;
-    var payLoad =
+    let payLoad =
     {
       batchID: this.batchID,
       username: this.username,
       wsid: this.wsid
     };
-    this.Api.AvailableZone(payLoad).subscribe(
+    this.iinductionManagerApi.AvailableZone(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
         this.zoneDetails = res.data.zoneDetails; 
-        // console.log(this.alreadyAssignedZones);
-        for(var i=0;i<this.zoneDetails.length;i++)
-        {
-          
-          var isSelected = false;
-          
+        for (const zoneDetail of this.zoneDetails) {
+                    
           if(this.alreadyAssignedZones!=null && this.alreadyAssignedZones.length>0)
           {
-            let obj = this.alreadyAssignedZones.find((o) => {
-              if (o.zone == this.zoneDetails[i].zone) {
-                if(this.isNewBatch){
-                  isSelected=false
-                }else{
-                  isSelected = true;
-                }
-             
-                return true; // stop searching
-              }
-              else 
-              {
-                return false;
-              }
+            this.alreadyAssignedZones.find((o) => {
+              return o.zone == zoneDetail.zone;
             });
   
           }
           this.ELEMENT_DATA.push(
             { 
-              zone: this.zoneDetails[i].zone,
-              locationName:this.zoneDetails[i].locationName,
-              locationType:this.zoneDetails[i].locationType,
-              stagingZone:this.zoneDetails[i].stagingZone,
-              selected:this.zoneDetails[i].selected,
-              available: this.zoneDetails[i].available
+              zone: zoneDetail.zone,
+              locationName:zoneDetail.locationName,
+              locationType:zoneDetail.locationType,
+              stagingZone:zoneDetail.stagingZone,
+              selected:zoneDetail.selected,
+              available: zoneDetail.available
             }
             );
         }
         this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
 
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("AvailableZone",res.responseMessage);
         }
       },
       (error) => { }
@@ -248,7 +208,10 @@ export class SelectZonesComponent implements OnInit {
 
   }
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private Api: ApiFuntions , private toastr: ToastrService , public dialogRef: MatDialogRef<SelectZonesComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private Api: ApiFuntions 
+  ,  private inductionManagerApi: InductionManagerApiService, private global: GlobalService,public dialogRef: MatDialogRef<SelectZonesComponent>) {
+    this.iinductionManagerApi = inductionManagerApi;
+   }
 
   ngOnInit(): void {
     this.ELEMENT_DATA.length=0;

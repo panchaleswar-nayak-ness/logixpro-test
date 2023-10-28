@@ -1,16 +1,16 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
-import { SpinnerService } from '../../../../app/init/spinner.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 import labels from '../../../labels/labels.json';
-import { Api } from 'datatables.net';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-add-location',
   templateUrl: './add-location.component.html',
-  styleUrls: ['./add-location.component.scss']
+  styleUrls: []
 })
 export class AddLocationComponent implements OnInit {
   @ViewChild('start_location') start_location: ElementRef;
@@ -23,17 +23,16 @@ export class AddLocationComponent implements OnInit {
   startLocationList: any;
   endLocationList: any;
   isValid: boolean = false;
-
+  public iAdminApiService: IAdminApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, 
-    private dialog: MatDialog, 
+    private global:GlobalService, 
     private employeeService: ApiFuntions, 
-    private toastr: ToastrService,
-    private loader: SpinnerService,
+    public adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
-    
-    
-    ) {}
+    ) {
+      this.iAdminApiService = adminApiService;
+    }
 
   ngOnInit(): void {
     if(this.data.locationData){
@@ -106,40 +105,30 @@ export class AddLocationComponent implements OnInit {
       "startLocation": this.startLocation,
       "endLocation": this.endLocation,   
       "oldStartLocation":  this.data.locationData?.startLocation ?? '',    
-      "oldEndLocation": this.data.locationData?.endLocation ?? '',
+      "oldEndLocation": this.data.locationData?.endLocation ?? '' ,
       "username": this.data.userName,
       "wsid": "TESTWSID"
     }
     if(this.data.locationData){
-      this.employeeService.updateEmployeeLocation(payload).subscribe((res:any) => {
+      this.iAdminApiService.updateEmployeeLocation(payload).subscribe((res:any) => {
         if(res.isExecuted){
-          // this.dialog.closeAll();
           this.dialogRef.close('update');
-          this.toastr.success(labels.alert.update, 'Success!',{
-            positionClass: 'toast-bottom-right',
-            timeOut:2000
-         });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
         }else{
-          this.toastr.error(res.responseMessage, 'Error!',{
-            positionClass: 'toast-bottom-right',
-            timeOut:2000
-         });
+          
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("updateEmployeeLocation",res.responseMessage);
         }
    });
     }else{
-      this.employeeService.insertEmployeeLocation(payload).subscribe((res:any) => {
+      this.iAdminApiService.insertEmployeeLocation(payload).subscribe((res:any) => {
         if(res.isExecuted){
-          // this.dialog.closeAll();
           this.dialogRef.close('add');
-          this.toastr.success(labels.alert.success, 'Success!',{
-            positionClass: 'toast-bottom-right',
-            timeOut:2000
-         });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
         }else{
-          this.toastr.error(res.responseMessage, 'Error!',{
-            positionClass: 'toast-bottom-right',
-            timeOut:2000
-         });
+          
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("insertEmployeeLocation",res.responseMessage);
         }
    });
     }
