@@ -320,8 +320,10 @@ export class MoveItemsComponent implements OnInit {
 
   getMoveFromDetails(row, i?, type?) {
     let isMoveFromSelected = false;
+    console.log(row)
 
-    if (type === 'MoveTo') {
+    if (type === 'MoveTo') 
+    {
       this.dataSource._data._value.forEach((element, index) => {
         if (!element.isSelected) return;
         isMoveFromSelected = element.isSelected;
@@ -338,7 +340,7 @@ export class MoveItemsComponent implements OnInit {
         });
       }
 
-      this.invMapIDToItem = row.invMapID;
+      this.invMapIDToItem = row.inventoryMapID;
       this.to_warehouse = row.warehouse;
       this.to_location = row.location;
       this.to_locationShow = row.locationNumber;
@@ -351,7 +353,7 @@ export class MoveItemsComponent implements OnInit {
       this.to_serialNo = row.serialNumber;
       this.to_itemQuantity = row.itemQuantity;
       this.to_zone = row.zone;
-      this.invMapmoveToID = row.invMapID;
+      this.invMapmoveToID = row.inventoryMapID;
       this.isDedicated = row.dedicated ;
       this.fillQty = row.itemQuantity - row.maximumQuantity - row.quantityAllocatedPutAway;
       this.fillQtytoShow = this.fillQty;
@@ -360,7 +362,9 @@ export class MoveItemsComponent implements OnInit {
       this.isValidateMove = true;
       if (!row.isSelected) this.clearFields('MoveTo');
       else this.isMoveQty = false;
-    } else if (type === 'MoveFrom') {
+    } 
+    else if (type === 'MoveFrom') 
+    {
       this.dataSource._data._value[i].isSelected = !this.dataSource._data._value[i].isSelected;
       this.isRowSelected = !this.isRowSelected;
       
@@ -389,8 +393,8 @@ export class MoveItemsComponent implements OnInit {
         return;
       }
 
-      this.invMapIDToItem = row.invMapID;
-      this.invMapmoveFromID = row.invMapID;
+      // this.invMapIDToItem = row.invMapID;
+      this.invMapmoveFromID = row.inventoryMapID;
       this.from_warehouse = row.warehouse;
       this.from_location = row.location;
       this.from_locationShow = row.locationNumber;
@@ -616,13 +620,14 @@ export class MoveItemsComponent implements OnInit {
   }
 
   callCreateMoveTrans() {
+
     let payload = {
       moveFromID: this.invMapmoveFromID,
       moveToID: this.invMapmoveToID,
       moveFromItemNumber: this.from_itemNo,
       moveToItemNumber: this.to_itemNo,
       moveToZone: this.from_zone,
-      moveQty: this.from_itemQuantity,
+      moveQuantity: this.from_itemQuantity,
       requestedDate: this.reqDate,
       priority: this.from_priority,
       dedicateMoveTo: this.dedicateMoveTo,
@@ -641,16 +646,12 @@ export class MoveItemsComponent implements OnInit {
         this.getMoveItemList('MoveTo');
         this.clearFields('MoveFrom')
         this.clearFields('MoveTo')
-      }else{
+      } else {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');
         console.log("CreateMoveTransactions",res.responseMessage);
       }
     });
   }
-
-  // onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-  //   this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
-  // }
 
   optionSelected(filter : string) {
     if (this.tableType === 'MoveFrom') this.moveFromFilter = filter;
