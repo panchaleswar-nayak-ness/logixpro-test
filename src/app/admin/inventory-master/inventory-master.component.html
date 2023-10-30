@@ -38,105 +38,80 @@
                 <div class="d-block d-xl-flex g-mini-search-box gap-20 align-items-center w-100">
                   <div class="search-box mb-3 mb-xl-0 w-100" >
                     <mat-form-field class="w-100 bg-white br-14" appearance="fill">
-                      <span class="material-symbols-outlined icon-search">
-                        search
-                      </span>
-                      <input #alertInput [matAutocomplete]="searchauto" type="text" placeholder="Item No."
-                        aria-label="Search" matInput (blur)="handleFocusOut()" (keydown.enter)="$event.preventDefault();" (keyup)="getSearchList($event)" [value]="searchValue"
-                        maxlength="50" #autoFocusField>
-                         <button matSuffix *ngIf="searchValue" class="clear-btn"  (click)="searchValue = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                         <mat-autocomplete class="card custom-scroll panel-custom-scroll" #searchauto="matAutocomplete"
-                         (optionSelected)="onSearchSelect($event)">
-                         <h6 class="card-header matAutoCompHeader stickyHeader ps-4"> <span style="width:  30%;">Item No./Supp No./Supp
-                                 Code</span> <span style="width:  30%;">Description</span> <span style="width:  20%;">Category</span> <span
-                                 style="width:  20%;">Sub Category</span></h6>
-                         <mat-option *ngFor="let option of searchList" [value]="option.itemNumber" class="matAutoCompTableContent">
-                             <div class="loc_option">
-                                 <span
-                                     style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">{{option.itemNumber}}</span>
-                                 <span
-                                     style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;" matTooltip="{{option.description}}" matTooltipPosition="above">{{option.description}}</span>
-                                 <span
-                                     style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:20%; white-space: nowrap;">{{option.category}}</span>
-                                 <span
-                                     style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:20%; white-space: nowrap;">{{option.subCategory}}</span>
-                             </div>
-                         </mat-option>
-                     </mat-autocomplete>
-
+                      <span class="material-symbols-outlined icon-search">search</span>
+                      <input #alertInput [matAutocomplete]="searchauto" type="text" placeholder="Item No." aria-label="Search" matInput (blur)="handleFocusOut()" (keydown.enter)="$event.preventDefault();" (keyup)="getSearchList($event)" [value]="searchValue" maxlength="50" #autoFocusField>
+                      <button matSuffix *ngIf="searchValue" class="clear-btn"  (click)="searchValue = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                      <mat-autocomplete class="card custom-scroll panel-custom-scroll" #searchauto="matAutocomplete" (optionSelected)="onSearchSelect($event)">
+                        <h6 class="card-header matAutoCompHeader stickyHeader ps-4"> 
+                          <span style="width:  30%;">Item No./Supp No./Supp Code</span> 
+                          <span style="width:  30%;">Description</span> 
+                          <span style="width:  20%;">Category</span> 
+                          <span style="width:  20%;">Sub Category</span>
+                        </h6>
+                        <mat-option *ngFor="let option of searchList" [value]="option.itemNumber" class="matAutoCompTableContent">
+                            <div class="loc_option">
+                                <span style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">{{option.itemNumber}}</span>
+                                <span style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;" matTooltip="{{option.description}}" matTooltipPosition="above">{{option.description}}</span>
+                                <span style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:20%; white-space: nowrap;">{{option.category}}</span>
+                                <span style="padding: 10px 12px; text-overflow: ellipsis; overflow: hidden; width:20%; white-space: nowrap;">{{option.subCategory}}</span>
+                            </div>
+                        </mat-option>
+                      </mat-autocomplete>
                     </mat-form-field>
                   </div>
                   <div class="d-flex d-xl-block">
-                  <button mat-stroked-button color="warn" class="button-remove-all bg-white mb-3 mb-xl-0"
-                    (click)="clearSearchField()" style="flex:1">
-                    Clear
-                  </button>
+                    <button mat-stroked-button color="warn" class="button-remove-all bg-white mb-3 mb-xl-0" (click)="clearSearchField()" style="flex:1">Clear</button>
                   </div>
-
-                  <div class="br-14 d-flex align-items-center label label-yellow px-3 f-16 justify-content-center mb-3 mb-xl-0"
-                  *ngIf="this.getInvMasterData?.kitInventories.length>0" >
-                    Kit
+                  <div class="br-14 d-flex align-items-center label label-yellow px-3 f-16 justify-content-center mb-3 mb-xl-0" *ngIf="this.getInvMasterData?.kitInventories.length > 0">Kit</div>
+                  <div class="br-14 d-flex align-items-center label label-red px-3 f-16 justify-content-center mb-3 mb-xl-0" *ngIf="this.getInvMasterData?.itemQuarantined">Quarantine</div>
+                  <div class="w-100 d-flex d-xl-block">
+                    <mat-form-field class="action-dropdown custom-form-field-bg-white float-end" appearance="outline" style="flex:1">
+                        <mat-label>Actions</mat-label>
+                        <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="inventoryMapAction($event)" >
+                          <mat-option value="add_new_transaction" (click)="openAddItemDialog()">Add New Item</mat-option>
+                            <mat-option value="add_new_transaction" (click)="viewLocations()">View Item Location</mat-option>
+                            <mat-option value="add_new_transaction" [disabled]="!(this.currentPageItemNo)" (click)="deleteItem($event)">Delete Item</mat-option>
+                            <mat-option value="add_new_transaction"  *ngIf="invMaster.controls['itemQuarantined'].value == 0" (click)="quarantineDialog()">Quarantine Item</mat-option>
+                            <mat-option value="add_new_transaction" *ngIf="invMaster.controls['itemQuarantined'].value == 1" (click)="unquarantineDialog()">Un-Quarantine Item</mat-option>
+                        </mat-select>
+                        <span class="material-symbols-outlined icon-expand-more">expand_more</span> 
+                    </mat-form-field>
                   </div>
-                  <div class="br-14 d-flex align-items-center label label-red px-3 f-16 justify-content-center mb-3 mb-xl-0"
-                    *ngIf="this.getInvMasterData?.itemQuarantined">
-                    Quarantine
-                  </div>
-                    <div class="w-100 d-flex d-xl-block">
-                        <mat-form-field class="action-dropdown custom-form-field-bg-white float-end" appearance="outline" style="flex:1">
-                            <mat-label>Actions</mat-label>
-                            <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="inventoryMapAction($event)" >
-                              <mat-option value="add_new_transaction" (click)="openAddItemDialog()">Add New Item</mat-option>
-                                <mat-option value="add_new_transaction" (click)="viewLocations()">View Item Location</mat-option>
-                                <mat-option value="add_new_transaction" [disabled]="!(this.currentPageItemNo)" (click)="deleteItem($event)">Delete Item</mat-option>
-                                <mat-option value="add_new_transaction"  *ngIf="invMaster.controls['itemQuarantined'].value == 0" (click)="quarantineDialog()">Quarantine Item</mat-option>
-                                <mat-option value="add_new_transaction" *ngIf="invMaster.controls['itemQuarantined'].value == 1" (click)="unquarantineDialog()">Un-Quarantine Item</mat-option>
-                            </mat-select>
-                            <span class="material-symbols-outlined icon-expand-more">
-                                expand_more
-                            </span> 
-                        </mat-form-field>
-                    </div>
                 </div>
-                <div class="d-flex gap-12">
-                </div>
+                <div class="d-flex gap-12"></div>
               </div>
             </div>
             <div class="card bg-white bg-50 px-4 py-4 br-20 mb-3" style="min-height: 450px;">
-              <mat-tab-group   dynamicHeight (selectedTabChange)="tabChanged($event)" [(selectedIndex)]="tabIndex" >
+              <mat-tab-group  dynamicHeight (selectedTabChange)="tabChanged($event)" [(selectedIndex)]="tabIndex" >
                 <mat-tab label="Details">
                   <app-detail [events]="eventsSubject.asObservable()" [fieldNameDetails]="fieldNames" [details]="invMaster"  (notifyParent)="getNotification($event)"></app-detail>
                 </mat-tab>
                 <mat-tab label="Item Setup" >
                   <div class="remaining"></div> 
-                  <app-item-setup [itemSetup]="invMaster"  ></app-item-setup>
+                  <app-item-setup [itemSetup]="invMaster"></app-item-setup>
                 </mat-tab>
                 <mat-tab label="Kit Items" >
                   <div class="remaining"></div> 
-                  <app-kit-item [kitItem]="invMaster"   (notifyParent)="getNotification($event)"></app-kit-item>
+                  <app-kit-item [kitItem]="invMaster" (notifyParent)="getNotification($event)"></app-kit-item>
                 </mat-tab>
                 <mat-tab label="Location"  >
                   <div class="remaining"></div>
-
-                  <app-location [fieldNameDetails]="fieldNames" [count]="count" [location]="invMaster" 
-                    (notifyParent)="getNotification($event)"></app-location>
+                  <app-location [fieldNameDetails]="fieldNames" [count]="count" [location]="invMaster" (notifyParent)="getNotification($event)"></app-location>
                 </mat-tab>
                 <mat-tab label="Reel Tracking">
                   <app-reel-tracking  [events]="reelSubject.asObservable()" [reelTracking]="invMaster"></app-reel-tracking>
                 </mat-tab>
                 <mat-tab label="Scan Codes">
                   <div class="remaining"></div>
-
-                  <app-scan-codes [scanCodes]="invMaster"   (notifyParent)="getNotification($event)"></app-scan-codes>
+                  <app-scan-codes [scanCodes]="invMaster" (notifyParent)="getNotification($event)"></app-scan-codes>
                 </mat-tab>
                 <mat-tab label="Weigh Scale">
                   <div class="remaining"></div>
-
-                  <app-weight-scale [weighScale]="invMaster"  ></app-weight-scale>
+                  <app-weight-scale [weighScale]="invMaster"></app-weight-scale>
                 </mat-tab>
                 <mat-tab label="Other">
                   <div class="remaining"></div>
-
-                  <app-others [others]="invMaster"  ></app-others>
+                  <app-others [others]="invMaster"></app-others>
                 </mat-tab>
               </mat-tab-group>
             </div>
@@ -144,10 +119,7 @@
 
         </mat-card>
         <div class="d-flex gap-20 justify-content-end py-3">
-          <button [disabled]="saveDisabled" style="flex:1" mat-flat-button color="primary" class="btn-lg"
-            (click)="updateInventoryMaster()">
-            Save
-          </button>
+          <button [disabled]="saveDisabled" style="flex:1" mat-flat-button color="primary" class="btn-lg" (click)="updateInventoryMaster()">Save</button>
         </div>
       </div>
     </div>
@@ -165,15 +137,10 @@
         <mat-checkbox (change)="checkCheckBoxvalue($event)">Append Reprocess to Open Transactions?</mat-checkbox>
       </div>
       <div class="mb-3">
-        <button mat-flat-button color="warn" class="custom-btn button-delete-flat bg-white w-100 btn-lg"
-          [mat-dialog-close]="true">
-          Un-Quarantine
-        </button>
+        <button mat-flat-button color="warn" class="custom-btn button-delete-flat bg-white w-100 btn-lg" [mat-dialog-close]="true">Un-Quarantine</button>
       </div>
       <div>
-        <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false">
-          Cancel
-        </button>
+        <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="false">Cancel</button>
       </div>
     </div>
   </div>

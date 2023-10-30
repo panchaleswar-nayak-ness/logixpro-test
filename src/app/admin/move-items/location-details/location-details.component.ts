@@ -35,6 +35,7 @@ export class LocationDetailsComponent {
   @Input() fillQtytoShow : number = 0;
 
   @Output() setMoveQtyEmit = new EventEmitter();
+  @Output() setDedicatedEmit = new EventEmitter();
 
   @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
 
@@ -52,6 +53,10 @@ export class LocationDetailsComponent {
 
   setMoveQty() {
     this.setMoveQtyEmit.emit(this.from_itemQuantity);
+  }
+
+  setDedicated() {
+    this.setDedicatedEmit.emit(this.isDedicated);
   }
 
 }
