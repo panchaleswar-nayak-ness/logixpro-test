@@ -1241,8 +1241,8 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   clearMatSelectList() {
-    this.actionRef1.options.forEach((data: MatOption) => data.deselect());
-    this.actionRef.options.forEach((data: MatOption) => data.deselect());
+    this.actionRef1?.options.forEach((data: MatOption) => data.deselect());
+    this.actionRef?.options.forEach((data: MatOption) => data.deselect());
   }
 
   actionDialog(opened: boolean) {
