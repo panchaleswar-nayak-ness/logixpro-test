@@ -1163,9 +1163,6 @@ export class ProcessPutAwaysComponent implements OnInit {
                       }
                     });   
                   }
-                        
-                 
-                
                 } else {
                   this.global.ShowToastr('error','Something went wrong', 'Error!');
                   console.log("CompleteBatch",res.responseMessage);
