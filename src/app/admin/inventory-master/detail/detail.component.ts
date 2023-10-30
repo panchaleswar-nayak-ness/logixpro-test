@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-
 import { AuthService } from 'src/app/init/auth.service';
 import { ItemCategoryComponent } from '../../dialogs/item-category/item-category.component';
 import { ItemNumberComponent } from '../../dialogs/item-number/item-number.component';
@@ -9,7 +8,6 @@ import { UpdateDescriptionComponent } from '../../dialogs/update-description/upd
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/services/shared.service';
 import { Observable, Subscription } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../current-tab-data-service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
@@ -28,62 +26,45 @@ export class DetailComponent implements OnInit {
   @Input() details: FormGroup;  
   public userData: any;
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
+  
   sendNotification(e) {
-      this.notifyParent.emit(e);
+    this.notifyParent.emit(e);
   }
 
   public setVal: boolean = false;
   spliUrl;
   
-
-  constructor(   
-    private Api: ApiFuntions, 
+  constructor(
     private router: Router,
     private sharedService:SharedService,
     private authService: AuthService, 
-    private adminApiService: AdminApiService,
+    public adminApiService: AdminApiService,
     private global:GlobalService,    
     private currentTabDataService: CurrentTabDataService,
-    ) {
-      this.iAdminApiService = adminApiService;
-     }
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
   
-    ngOnChanges(changes: SimpleChanges) {
-      if(changes['fieldNameDetails']){
-        this.fieldNameDetails=changes['fieldNameDetails']
-        
-      }
-
-      
-      }
-  ngOnInit(): void {
-     
-    this.userData = this.authService.userData();
-    this.setVal = localStorage.getItem('routeFromOrderStatus') === 'true';
-   
-    this.spliUrl=this.router.url.split('/');
-   
-    this.eventsSubscription = this.events.subscribe((val) => {
-      if(val==='h' && this.details.controls['histCount'].value!=0){
-        this.RedirectInv('TransactionHistory')
-      }
-      if(val==='v' && this.details.controls['openCount'].value!=0){
-        this.RedirectInv('OpenTransaction')
-      }
-      if(val==='r' && this.details.controls['procCount'].value!=0){
-        this.RedirectInv('ReprocessTransaction')
-      }
-    
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['fieldNameDetails']) this.fieldNameDetails=changes['fieldNameDetails']; 
   }
 
-
+  ngOnInit(): void {
+    this.userData = this.authService.userData();
+    this.setVal = localStorage.getItem('routeFromOrderStatus') === 'true';
+    this.spliUrl=this.router.url.split('/');
+    this.eventsSubscription = this.events.subscribe((val) => {
+      if(val==='h' && this.details.controls['histCount'].value != 0) this.RedirectInv('TransactionHistory');
+      if(val==='v' && this.details.controls['openCount'].value != 0) this.RedirectInv('OpenTransaction');
+      if(val==='r' && this.details.controls['procCount'].value != 0) this.RedirectInv('ReprocessTransaction');
+    });
+  }
 
   handleInputChange(event: Event) {
     this.sharedService.updateInvMasterState(event,true)
   }
-  public openItemNumDialog() {
 
+  public openItemNumDialog() {
     let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
       height: 'auto',
       width: '560px',
@@ -94,7 +75,8 @@ export class DetailComponent implements OnInit {
         newItemNumber : '',
         addItem : false
       }
-    })
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) { 
         let paylaod = {
@@ -103,11 +85,8 @@ export class DetailComponent implements OnInit {
         }
         this.iAdminApiService.UpdateItemNumber(paylaod).subscribe((res: any) => {
           this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY] = result;
-
           if (res.isExecuted) {
-            this.details.patchValue({
-              'itemNumber' : res.data.newItemNumber
-            }); 
+            this.details.patchValue({ 'itemNumber' : res.data.newItemNumber }); 
             this.sendNotification({newItemNumber: res.data.newItemNumber});
           } else {
             this.global.ShowToastr('error',"Item Number Already Exists.", 'Error!');
@@ -115,8 +94,7 @@ export class DetailComponent implements OnInit {
           }
         })
       }
-
-    })
+    });
   }
 
   public openDescriptionDialog() {
@@ -128,16 +106,15 @@ export class DetailComponent implements OnInit {
       data: {
         description: this.details.controls['description'].value,
       }
-    })
+    });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.sharedService.updateInvMasterState(result,true)
         this.details.patchValue({
           'description' : result.description
         });
-
       }
-    })
+    });
   }
 
   public opencategoryDialog() {
@@ -149,32 +126,19 @@ export class DetailComponent implements OnInit {
       data: {
         mode: '',
       }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      // if(result.category!='' && result)
-      // { 
-      //   this.details.patchValue({        
-      //     'category': result.category      
-      //   });
-      // }
-      // if(result.subCategory!='' && result)
-      // {
-      //   this.details.patchValue({            
-      //     'subCategory': result.subCategory,        
-      //   });
-      // } 
-      console.log(result);
-      
+    });
+
+    dialogRef.afterClosed().subscribe(result => {      
       if (result && result != true) {
         this.details.patchValue({        
           'category': result.category,
           'subCategory': result.subCategory
         });
       }
-      
       this.sharedService.updateInvMasterState(result, true)
     })
   }
+
   public openUmDialog() { 
     let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
       height: 'auto',
@@ -197,28 +161,27 @@ export class DetailComponent implements OnInit {
     })
   }
 
+  RedirectInv(type){
+    if(this.setVal){
+      this.router.navigate([]).then((result) => {
+        let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
+        window.open(url, '_blank');
+      });
+    }
+    else if(this.spliUrl[1] == 'InductionManager'){
+      this.router.navigate([]).then((result) => {
+        let url = '/#/InductionManager/Admin/TransactionJournal?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
+        window.open(url, '_blank');
+      });
+    }
+    else{
+      this.router.navigate([]).then((result) => {
+        let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
+        window.open(url, '_blank');
+      });
+    }
+  }
 
- RedirectInv(type){
-  if(this.setVal){
-    this.router.navigate([]).then((result) => {
-      let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-      window.open(url, '_blank');
-    });
-  }
-  else if(this.spliUrl[1] == 'InductionManager'){
-    this.router.navigate([]).then((result) => {
-      let url = '/#/InductionManager/Admin/TransactionJournal?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-      window.open(url, '_blank');
-    });
-  }
-  else{
-    this.router.navigate([]).then((result) => {
-      let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-      window.open(url, '_blank');
-    });
-  }
-
-  }
   ngOnDestroy() {
     this.eventsSubscription.unsubscribe();
   }
