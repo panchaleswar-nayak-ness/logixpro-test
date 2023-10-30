@@ -68,11 +68,12 @@ openUnitOfMeasureDialogue() {
   dialogRef.afterClosed().subscribe((res) => {
     this.uom = res;
     this.clearMatSelectList();
+    this.onFieldChange(this.uom);
   });
 }
 
 clearMatSelectList(){
-  this.openAction.options.forEach((data: MatOption) => data.deselect());
+  this.openAction?.options.forEach((data: MatOption) => data.deselect());
 }
 
 openSupplierItemDialogue() {
