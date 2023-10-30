@@ -55,6 +55,7 @@
                                         #specialFeature maxlength="255" [value]="element.cells"
                                         (keydown)="callFun('onToteChange',$event,element.position,'1')"
                                         (keyup)="callFun('onToteChange',$event,element.position,'1')"
+                                        (onChange)="callFun('onToteChange',$event,element.position,'1')"
                                         (change)="callFun('onToteChange',$event,element.position,'1')"
                                         (keypress)="callFun('onToteChange',$event,element.position,'1')"
                                         (keypress)="callFun('onToteChange',$event,element.position,'1')">

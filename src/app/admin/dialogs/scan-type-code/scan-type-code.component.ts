@@ -68,7 +68,6 @@ export class ScanTypeCodeComponent implements OnInit {
   }
 
   saveScanCodeType(newScanCode : any, oldScanCode  : any) {
-    debugger
     let cond = true;
     this.scanTypeCode_list_Response.forEach(element => {
       if(element.toLowerCase() == newScanCode.toLowerCase() && cond) {

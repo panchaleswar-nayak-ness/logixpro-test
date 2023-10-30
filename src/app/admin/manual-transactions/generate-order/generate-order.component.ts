@@ -152,7 +152,6 @@ export class GenerateOrderComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
-        console.log("here");
       this.SelectOrderComponentComponent.clearMatSelectList()
         if (res.isExecuted) {
           this.selectedOrder=this.orderNumber

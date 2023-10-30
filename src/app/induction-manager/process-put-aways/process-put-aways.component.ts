@@ -145,7 +145,6 @@ export class ProcessPutAwaysComponent implements OnInit {
   onTabChange(event: MatTabChangeEvent) {
     // This method will be called whenever the user changes the selected tab
     const newIndex = event.index;
-    console.log('Tab changed to index:', newIndex);
     if(newIndex===1){
       
       setTimeout(() => {
@@ -156,7 +155,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       this.autocompleteSearchColumnItem2();
     }else if(newIndex===0){
       setTimeout(() => {
-      this.batchFocus.nativeElement.focus();
+      this.batchFocus?.nativeElement.focus();
           
         }, 100);
     }
@@ -203,7 +202,6 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   callFunTotes(event:any){
-    debugger;
     if(event.funName == "gridAction"){
       this.gridAction(event.funParam1);
     }
@@ -737,9 +735,15 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   onToteChange($event, position, cells = '') {
-    if (cells == '')
-      if (this.ELEMENT_DATA[position - 1].toteid != $event.target.value) this.ELEMENT_DATA[position - 1].toteid = $event.target.value;
-    else if (this.ELEMENT_DATA[position - 1].cells != $event.target.value) this.ELEMENT_DATA[position - 1].cells = $event.target.value;
+    if (cells == '') {
+      if (this.ELEMENT_DATA[position - 1].toteid != $event.target.value) {
+        this.ELEMENT_DATA[position - 1].toteid = $event.target.value;
+      }
+    } else if (this.ELEMENT_DATA[position - 1].cells != $event.target.value) {
+       
+        this.ELEMENT_DATA[position - 1].cells = $event.target.value;
+      
+    }
   }
 
   async autocompleteSearchColumnItem() {
@@ -1157,7 +1161,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                         this.clearFormAndTable();
                         this.selectedIndex = 0;
                         setTimeout(() => {
-                        this.batchFocus.nativeElement.focus();
+                        this.batchFocus?.nativeElement.focus();
                           
                         }, 100);
                       }

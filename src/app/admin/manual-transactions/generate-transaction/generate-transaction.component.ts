@@ -548,7 +548,6 @@ export class GenerateTransactionComponent implements OnInit {
       dialogRef.afterClosed().subscribe((res) => {
         this.clearMatSelectList();
         if(res){
-          console.log("here");
           this.updateTransactionFunction();
         }
       });
