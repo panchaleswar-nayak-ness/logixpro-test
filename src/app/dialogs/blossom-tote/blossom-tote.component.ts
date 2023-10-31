@@ -37,8 +37,10 @@ export class BlossomToteComponent implements OnInit {
     this.userData = this.authService.userData();
     this.imPreferences=this.global.getImPreferences();
   }
-  ngAfterViewChecked(): void {
-    this.tote_focus.nativeElement.focus();
+  ngAfterViewInit(): void {
+    setTimeout(()=>{
+      this.tote_focus.nativeElement.focus();
+    }, 200);
   }
   updateNxtTote() { 
     

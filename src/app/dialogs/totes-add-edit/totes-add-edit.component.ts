@@ -173,7 +173,7 @@ export class TotesAddEditComponent implements OnInit {
     });
   }
   
-  saveTote(toteID:any,cells:any,oldToteID:any,isInserted:any,index:any)
+ async saveTote(toteID:any,cells:any,oldToteID:any,isInserted:any,index:any)
   { 
       let oldTote = "";
       let updateMessage="Update Successful";
@@ -186,36 +186,28 @@ export class TotesAddEditComponent implements OnInit {
         toteID: toteID,
         cells: cells
       }
-      this.iAdminApiService.ToteSetupInsert(searchPayload).subscribe(
-        (res: any) => {
+      try{
+      let res:any  = await this.iAdminApiService.ToteSetupInsert(searchPayload); 
           if (res.data && res.isExecuted) {
             this.global.ShowToastr('success',isInserted=="1"?updateMessage:res.responseMessage, 'Success!');
             this.dataSourceManagedTotes.data[index]['isDuplicate']=false
             this.isRowAdded=false;
           this.getTotes();
           } else {
-            this.dataSourceManagedTotes.data[index]['isDuplicate']=true
-       
-        
+            this.dataSourceManagedTotes.data[index]['isDuplicate']=true ;
             this.global.ShowToastr('error',"Cannot set the selected tote because it is already set in the batch.", 'Error!');
-            console.log("ToteSetupInsert",res.responseMessage);
-          }
-        },
-        (error) => { 
-          this.dataSourceManagedTotes.data[index]['isDuplicate']=true
-         
-            this.global.ShowToastr('error',"Cannot set the selected tote because it is already set in the batch.", 'Error!');
-       
-          
-          
-        }
-      );
+          } 
+     }
+     catch(err){
+      this.dataSourceManagedTotes.data[index]['isDuplicate']=true ;
+      this.global.ShowToastr('error',"Cannot set the selected tote because it is already set in the batch.", 'Error!');
+     }
     
     
   }
 
   deleteTote(toteID:any,index)
-  {  //jhgjhgfhgfh
+  {
     const dialogRef:any =  this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',

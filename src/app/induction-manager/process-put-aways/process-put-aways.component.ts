@@ -851,7 +851,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
     this.applyStripIfApplicable();
 
-    if (this.cell == this.toteQuantity) {
+    if (this.cell <= this.toteQuantity) {
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '50vw',
@@ -886,6 +886,7 @@ export class ProcessPutAwaysComponent implements OnInit {
               selectIfOne: this.processPutAwayIndex.imPreference.selectIfOne,
               defaultPutAwayQuantity: this.processPutAwayIndex.imPreference.defaultPutAwayQuantity,
               autoForwardReplenish: this.processPutAwayIndex.imPreference.autoForwardReplenish,
+              imPreference: this.processPutAwayIndex.imPreference,
               propFields:this.fieldNames
             }
           }); 
@@ -972,6 +973,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           selectIfOne: this.processPutAwayIndex.imPreference.selectIfOne,
           defaultPutAwayQuantity: this.processPutAwayIndex.imPreference.defaultPutAwayQuantity,
           autoForwardReplenish: this.processPutAwayIndex.imPreference.autoForwardReplenish,
+          imPreference: this.processPutAwayIndex.imPreference,
           propFields:this.fieldNames
         }
       });

@@ -17,6 +17,8 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { FloatLabelType } from '@angular/material/form-field';
 
 
 export interface InventoryMapDataStructure {
@@ -137,6 +139,17 @@ export class AddInvMapLocationComponent implements OnInit {
   unitOFMeasure  
   itemNumberScroll:any = "vertical";
 
+  floatLabelControl: any = new FormControl('uf1' as FloatLabelType);
+  floatLabelControlShipName: any = new FormControl('uf2' as FloatLabelType);
+  hideRequiredControl = new FormControl(false);
+  hideRequiredControlShipName = new FormControl(false);
+  shipVia;
+  shipToName;
+  searchByShipVia: any = new Subject<string>();
+  searchByShipName: any = new Subject<string>();
+  searchAutocompleteShipVia: any = [];
+  searchAutocompleteShipName: any = [];
+  isInputDisabled:boolean=false;
   public iCommonAPI : ICommonApi;
 
   constructor(
@@ -211,6 +224,18 @@ export class AddInvMapLocationComponent implements OnInit {
 
     });
 
+      this.searchByShipVia
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe((value) => {
+        debugger
+        this.autocompleteSearchColumn();
+      });
+    
+      this.searchByShipName
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe((value) => {
+        this.autocompleteSearchColumnShipName();
+      });  
 
 
   }
@@ -239,12 +264,14 @@ export class AddInvMapLocationComponent implements OnInit {
       this.addInvMapLocation.get('item')?.disable();
       this.addInvMapLocation.get('maxQuantity')?.disable();
       this.addInvMapLocation.get('minQuantity')?.disable();
-
-    
+      this.addInvMapLocation.get('clear')?.disable();
+      this.isInputDisabled=true;
     }
-    this.location_name.nativeElement.focus();
+    this.location_name?.nativeElement.focus();
   }
-
+  onClearFieldDisable(): boolean {
+    return !this.searchItemNumbers;
+  }
   clearFields() {
     this.addInvMapLocation.patchValue({
       'userField1': '',
@@ -348,7 +375,7 @@ export class AddInvMapLocationComponent implements OnInit {
       item: [this.getDetailInventoryMapData.itemNumber || '', [Validators.maxLength(50)]],
       itemQuantity: new FormControl({value:this.getDetailInventoryMapData.itemQuantity || '',disabled:this.getDetailInventoryMapData.itemNumber ===''}),
       description: [this.getDetailInventoryMapData.description || ""],
-      
+      clear:new FormControl({ value: this.getDetailInventoryMapData.itemNumber || 0, disabled: true }),
       cell: [this.getDetailInventoryMapData.cellSize || ''],
       velocity: [this.getDetailInventoryMapData.goldenZone || ''],
       maxQuantity: [this.getDetailInventoryMapData.maxQuantity || 0, [Validators.maxLength(9)]],
@@ -457,59 +484,63 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   loadWarehouse() {
-    let dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
-      height: 'auto',
-      width: '640px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'addlocation',
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      ;
+    if (!this.isInputDisabled) {
+      let dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
+        height: 'auto',
+        width: '640px',
+        autoFocus: '__non_existing_element__',
+        disableClose:true,
+        data: {
+          mode: 'addlocation',
+        }
+      })
+      dialogRef.afterClosed().subscribe(result => {
+        ;
 
-      if (result !== true && result !== false) {
-        this.addInvMapLocation.controls['warehouse'].setValue(result);
-      }
-      if (result == 'clear') {
-        this.addInvMapLocation.controls['warehouse'].setValue('');
-      }
-    })
+        if (result !== true && result !== false) {
+          this.addInvMapLocation.controls['warehouse'].setValue(result);
+        }
+        if (result == 'clear') {
+          this.addInvMapLocation.controls['warehouse'].setValue('');
+        }
+      })
+    }
   }
   loadCellSize() {
-
-    let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
-      height: 'auto',
-      width: '660px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'cell-size',
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== true && result !== false) {
-        this.addInvMapLocation.controls['cell'].setValue(result);
-      }
-    })
+    if (!this.isInputDisabled) {
+      let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
+        height: 'auto',
+        width: '660px',
+        autoFocus: '__non_existing_element__',
+        disableClose:true,
+        data: {
+          mode: 'cell-size',
+        }
+      })
+      dialogRef.afterClosed().subscribe(result => {
+        if (result !== true && result !== false) {
+          this.addInvMapLocation.controls['cell'].setValue(result);
+        }
+      })
+    }
   }
   loadVelocityCode() {
-    let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
-      height: 'auto',
-      width: '660px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'cell-size',
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== true && result !== false) {
-        this.addInvMapLocation.controls['velocity'].setValue(result);
-      }
-
-    })
+    if (!this.isInputDisabled) {
+      let dialogRef: any = this.global.OpenDialog(VelocityCodeComponent, {
+        height: 'auto',
+        width: '660px',
+        autoFocus: '__non_existing_element__',
+        disableClose: true,
+        data: {
+          mode: 'cell-size',
+        },
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result !== true && result !== false) {
+          this.addInvMapLocation.controls['velocity'].setValue(result);
+        }
+      });
+    }
   }
 
   private _filter(value: any): string[] {
@@ -599,5 +630,48 @@ export class AddInvMapLocationComponent implements OnInit {
   }
   focusoutmethod(){
     this.itemNumberScroll = "vertical";
+  }
+
+
+  getFloatLabelValue(): FloatLabelType {
+    return this.floatLabelControl.value || 'uf1';
+  }
+  getFloatLabelValueItem(): FloatLabelType {
+    return this.floatLabelControlShipName.value || 'uf2';
+  }
+
+  async autocompleteSearchColumn() {
+    let searchPayload = {
+      value: this.shipVia,
+      uFs: 1
+    };
+    this.iCommonAPI
+      .UserFieldTypeAhead(searchPayload)
+      .subscribe(
+        (res: any) => {
+          this.searchAutocompleteShipVia = res.data;
+        },
+        (error) => {}
+      );
+  }
+
+  async autocompleteSearchColumnShipName() {
+    let searchPayload = {
+      value: this.shipToName,
+      uFs: 2
+    };
+    this.iCommonAPI
+      .UserFieldTypeAhead(searchPayload)
+      .subscribe(
+        (res: any) => {
+          this.searchAutocompleteShipName = res.data;
+        },
+        (error) => {}
+      );
+  }
+
+  ngOnDestroy() {
+    this.searchByShipVia.unsubscribe();
+    this.searchByShipName.unsubscribe();
   }
 }

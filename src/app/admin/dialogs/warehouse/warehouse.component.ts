@@ -1,11 +1,9 @@
 import { Component, ElementRef, Inject, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-
 import { Subject, takeUntil } from 'rxjs'; 
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component'
-import { Router } from '@angular/router';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -25,31 +23,25 @@ export class WarehouseComponent implements OnInit {
   @ViewChild('inputEl') public inputEl: ElementRef;
   enableButton = [{ index: -1, value: true }];
 
-
   public iCommonAPI : ICommonApi;
 
   constructor(
     public commonAPI : CommonApiService,
     private authService: AuthService,
-    
     public dialogRef: MatDialogRef<any>,
     private global:GlobalService,
-    private router: Router,
     private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { this.iCommonAPI = commonAPI; }
+  ) { 
+    this.iCommonAPI = commonAPI; 
+  }
 
 
   ngOnInit(): void {
-    // console.log(this.data)
     this.userData = this.authService.userData();
     this.getWarehouse();
-    if( this.data.check == 'fromReelDetail'  ){
-       this.disableBtn =true
-    }
-    else{
-      this.disableBtn =false
-    }
+    if(this.data.check == 'fromReelDetail') this.disableBtn =true
+    else this.disableBtn =false;
   }
 
   deleteWH(warehosue: any) { 
@@ -84,9 +76,9 @@ export class WarehouseComponent implements OnInit {
       for (let i = 0; i < this.warehouse_list.length; i++) {
         this.enableButton.push({ index: i, value: true });
       }
-
     });
   }
+
   addwhRow(row: any) {
     this.warehouse_list.unshift([]);
     this.enableButton.push({ index: -1, value: true })
@@ -99,17 +91,17 @@ export class WarehouseComponent implements OnInit {
       }
     });
   }
+
   enableDisableButton(i: any) {
     this.enableButton[i].value = false;
   }
-  saveWareHouse(warehosue: any, oldWh: any) {
 
+  saveWareHouse(warehosue: any, oldWh: any) {
     let cond = true;
     this.warehouse_list.forEach(element => {
       if (element == warehosue && cond) {
         cond = false
         this.global.ShowToastr('error','Conflict: Warehouse cannot be saved! Another warehouse matches the current. Please save any pending changes before attempting to save this entry.', 'Error!');
-       
       }
     });
     if (cond) {
@@ -130,21 +122,19 @@ export class WarehouseComponent implements OnInit {
       });
     }
   }
+
   dltWareHouse(warehosue: any) {
-    let paylaod = {
-      "warehouse": warehosue
-    }
+    let paylaod = { "warehouse": warehosue }
     this.iCommonAPI.dltWareHouse(paylaod).subscribe((res) => {
       this.global.ShowToastr('success',labels.alert.delete, 'Success!');
-
       this.getWarehouse();
-
     });
   }
 
   selectWearHouse(selectedWh: any) {
     this.dialogRef.close(selectedWh);
   }
+
   clearWareHouse() {
     this.dialogRef.close('clear');
   }

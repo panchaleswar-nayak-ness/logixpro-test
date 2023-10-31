@@ -1731,13 +1731,13 @@ public SetReprocessIds(body: any ) {
   }
   return this.Api.SetReprocessIds(payload);
 } 
-public ToteSetupInsert(body:any) { 
+public async ToteSetupInsert(body:any) { 
   const payload = {
     username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
-  return this.Api.ToteSetupInsert(payload);
+  return await this.Api.ToteSetupInsert(payload);
 }
 public ToteSetupDelete(body:any) { 
   const payload = {

@@ -471,8 +471,9 @@ export class ApiFuntions {
   public DeleteSerialNumber(body:any): Observable<any> { 
     return this.ApiBase.Post("/Induction/serialnumber",body);
   }
-  public ToteSetupInsert(body:any): Observable<any> { 
-    return this.ApiBase.Post("/Admin/totesetup",body);
+  public async ToteSetupInsert(body:any) { 
+     return await this.ApiBase.PostAsync("/Admin/totesetup",body);
+    
   }
   public ToteSetupDelete(body:any): Observable<any> { 
     return this.ApiBase.Delete("/Admin/totesetup",body);
