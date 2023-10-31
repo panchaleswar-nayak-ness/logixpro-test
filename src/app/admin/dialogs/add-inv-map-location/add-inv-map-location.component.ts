@@ -136,7 +136,7 @@ export class AddInvMapLocationComponent implements OnInit {
   myroute2:boolean=true;
   unitOFMeasure  
   itemNumberScroll:any = "vertical";
-
+  isInputDisabled:boolean=false;
   public iCommonAPI : ICommonApi;
 
   constructor(
@@ -239,12 +239,14 @@ export class AddInvMapLocationComponent implements OnInit {
       this.addInvMapLocation.get('item')?.disable();
       this.addInvMapLocation.get('maxQuantity')?.disable();
       this.addInvMapLocation.get('minQuantity')?.disable();
-
-    
+      this.addInvMapLocation.get('clear')?.disable();
+      this.isInputDisabled=true;
     }
-    this.location_name.nativeElement.focus();
+    this.location_name?.nativeElement.focus();
   }
-
+  onClearFieldDisable(): boolean {
+    return !this.searchItemNumbers;
+  }
   clearFields() {
     this.addInvMapLocation.patchValue({
       'userField1': '',
@@ -348,7 +350,7 @@ export class AddInvMapLocationComponent implements OnInit {
       item: [this.getDetailInventoryMapData.itemNumber || '', [Validators.maxLength(50)]],
       itemQuantity: new FormControl({value:this.getDetailInventoryMapData.itemQuantity || '',disabled:this.getDetailInventoryMapData.itemNumber ===''}),
       description: [this.getDetailInventoryMapData.description || ""],
-      
+      clear:new FormControl({ value: this.getDetailInventoryMapData.itemNumber || 0, disabled: true }),
       cell: [this.getDetailInventoryMapData.cellSize || ''],
       velocity: [this.getDetailInventoryMapData.goldenZone || ''],
       maxQuantity: [this.getDetailInventoryMapData.maxQuantity || 0, [Validators.maxLength(9)]],
