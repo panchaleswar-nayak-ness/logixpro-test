@@ -40,6 +40,7 @@ openAction: any;
 @Output() openSetItemLocationDialogue :EventEmitter<any> = new EventEmitter();
 @Output()  onFormFieldFocusOut :EventEmitter<any> = new EventEmitter();
 openNotes(){
+  if (this.orderNumber == '' || !this.item) return;
   const dialogRef:any = this.global.OpenDialog(AddNotesComponent, {
     height: 'auto',
     width: '560px',

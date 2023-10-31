@@ -484,59 +484,63 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   loadWarehouse() {
-    let dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
-      height: 'auto',
-      width: '640px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'addlocation',
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      ;
+    if (!this.isInputDisabled) {
+      let dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
+        height: 'auto',
+        width: '640px',
+        autoFocus: '__non_existing_element__',
+        disableClose:true,
+        data: {
+          mode: 'addlocation',
+        }
+      })
+      dialogRef.afterClosed().subscribe(result => {
+        ;
 
-      if (result !== true && result !== false) {
-        this.addInvMapLocation.controls['warehouse'].setValue(result);
-      }
-      if (result == 'clear') {
-        this.addInvMapLocation.controls['warehouse'].setValue('');
-      }
-    })
+        if (result !== true && result !== false) {
+          this.addInvMapLocation.controls['warehouse'].setValue(result);
+        }
+        if (result == 'clear') {
+          this.addInvMapLocation.controls['warehouse'].setValue('');
+        }
+      })
+    }
   }
   loadCellSize() {
-
-    let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
-      height: 'auto',
-      width: '660px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'cell-size',
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== true && result !== false) {
-        this.addInvMapLocation.controls['cell'].setValue(result);
-      }
-    })
+    if (!this.isInputDisabled) {
+      let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
+        height: 'auto',
+        width: '660px',
+        autoFocus: '__non_existing_element__',
+        disableClose:true,
+        data: {
+          mode: 'cell-size',
+        }
+      })
+      dialogRef.afterClosed().subscribe(result => {
+        if (result !== true && result !== false) {
+          this.addInvMapLocation.controls['cell'].setValue(result);
+        }
+      })
+    }
   }
   loadVelocityCode() {
-    let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
-      height: 'auto',
-      width: '660px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'cell-size',
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== true && result !== false) {
-        this.addInvMapLocation.controls['velocity'].setValue(result);
-      }
-
-    })
+    if (!this.isInputDisabled) {
+      let dialogRef: any = this.global.OpenDialog(VelocityCodeComponent, {
+        height: 'auto',
+        width: '660px',
+        autoFocus: '__non_existing_element__',
+        disableClose: true,
+        data: {
+          mode: 'cell-size',
+        },
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result !== true && result !== false) {
+          this.addInvMapLocation.controls['velocity'].setValue(result);
+        }
+      });
+    }
   }
 
   private _filter(value: any): string[] {
