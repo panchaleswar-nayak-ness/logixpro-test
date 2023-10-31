@@ -19,6 +19,7 @@ import { IInductionManagerApiService } from 'src/app/services/induction-manager-
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -806,11 +807,26 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   selectTotePosOrID(col : string, value : string) {
     let data = this.totes.filter((e: any) => e[col] == value?.toString());
-    if (data.length > 0)
+    if (data.length > 0) {  
       this.toteForm.patchValue({
         toteID   : data[0].toteID,
         totePos  : data[0].totesPosition,
-      }); 
+      });
+
+      if (data[0].cells <= data[0].toteQuantity) {
+        const dialogRef : any = this.global.OpenDialog(AlertConfirmationComponent, {
+          height: 'auto',
+          width: '50vw',
+          autoFocus: '__non_existing_element__',
+          disableClose: true,
+          data: {
+            message: "The Tote you've selected is already marked as full. Putting the item in this tote will go over define cells",
+            heading: 'Assign Transaction To Selected Tote',
+            disableCancel: true
+          },
+        });
+      }
+    }
   }
 
 }
