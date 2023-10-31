@@ -113,7 +113,7 @@
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                   <input matInput
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" type="text"
-                    #specialFeature maxlength="255" [(ngModel)]="cellID">
+                    #specialFeature maxlength="6" [(ngModel)]="cellID">
                 </mat-form-field>
               </div>
             </td>
@@ -177,7 +177,7 @@
               <div class="pe-2">
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
 
-                  <input matInput type="text" #specialFeature maxlength="255" [value]="element.cells"
+                  <input matInput type="text" #specialFeature maxlength="6" [value]="element.cells"
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                     (keydown)="onToteChange($event,i,'1')" (keyup)="onToteChange($event,i,'1')"
                     (change)="onToteChange($event,i,'1')" (keypress)="onToteChange($event,i,'1')"

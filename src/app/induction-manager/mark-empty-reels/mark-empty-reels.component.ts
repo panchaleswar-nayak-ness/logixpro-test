@@ -207,7 +207,7 @@ export class MarkEmptyReelsComponent implements OnInit {
     }
   }
   ngAfterViewInit() {
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
     this.scannedSerialList.sort = this.sort;
   }
 }

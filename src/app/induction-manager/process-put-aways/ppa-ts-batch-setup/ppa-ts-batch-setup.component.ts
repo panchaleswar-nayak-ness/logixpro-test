@@ -14,7 +14,7 @@ export class PpaTsBatchSetupComponent {
   floatLabelControlItem: any = new FormControl('item' as FloatLabelType);
   @Input() cellSize = '0';
   @Input() batchId = '';
-  public status = 'Not Processed';
+  @Input() status;
   searchByItem: any = new Subject<string>();
   @Input() searchAutocompleteItemNum: any = [];
   @Input() assignedZones = '';

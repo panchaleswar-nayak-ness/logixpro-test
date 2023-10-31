@@ -335,7 +335,6 @@ export class DeAllocateOrdersComponent implements OnInit {
         }
       });
     }
-
   }
   deAllocateAll(){
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
@@ -350,7 +349,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       if (res === 'Yes') {
         let payload = {
-          "orderNumber": '', 
+          "orderNumber": "ALL", 
         }
         this.iAdminApiService.DeAllocateOrder(payload).subscribe((res=>{
           if(res.isExecuted){

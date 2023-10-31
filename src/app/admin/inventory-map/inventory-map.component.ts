@@ -421,7 +421,6 @@ export class InventoryMapComponent implements OnInit {
           id: event.invMapID
         }
       })
-      debugger
       dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
   
         this.getContentData();

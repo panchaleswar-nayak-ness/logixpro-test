@@ -24,8 +24,8 @@ export class CommonApiService implements ICommonApi{
   saveCellSize(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
-      wsid: this.userData.wsid,
+			username: this.userData.userName,
+     		 wsid: this.userData.wsid,
 			...payloadParams 
 		}
 
@@ -35,7 +35,7 @@ export class CommonApiService implements ICommonApi{
   dltCellSize(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -50,7 +50,7 @@ export class CommonApiService implements ICommonApi{
   saveCategory(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -61,7 +61,7 @@ export class CommonApiService implements ICommonApi{
   dltCategory(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -76,7 +76,7 @@ export class CommonApiService implements ICommonApi{
   saveUnitOfMeasure(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -87,7 +87,7 @@ export class CommonApiService implements ICommonApi{
   dltUnitOfMeasure(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -98,7 +98,7 @@ export class CommonApiService implements ICommonApi{
   SearchItem(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -109,7 +109,7 @@ export class CommonApiService implements ICommonApi{
   LocationEnd(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -120,7 +120,7 @@ export class CommonApiService implements ICommonApi{
   LocationBegin(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -135,7 +135,7 @@ export class CommonApiService implements ICommonApi{
   CodeTypeSave(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -146,7 +146,7 @@ export class CommonApiService implements ICommonApi{
   ScanCodeTypeDelete(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -161,7 +161,7 @@ export class CommonApiService implements ICommonApi{
   CategoryDelete(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -172,7 +172,7 @@ export class CommonApiService implements ICommonApi{
   getSearchedItem(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -183,7 +183,7 @@ export class CommonApiService implements ICommonApi{
   ItemExists(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -194,7 +194,7 @@ export class CommonApiService implements ICommonApi{
   SupplierItemIDInfo(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -205,30 +205,28 @@ export class CommonApiService implements ICommonApi{
   UserFieldGetByID(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
-      wsid: this.userData.wsid,
+			username: this.userData.userName,
+      		wsid: this.userData.wsid,
 			...payloadParams 
 		}
-
 		return this.Api.UserFieldGetByID(payload);
 	}
 
   UserFieldTypeAhead(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
-      wsid: this.userData.wsid,
+			username: this.userData.userName,
+      		wsid: this.userData.wsid,
 			...payloadParams 
 		}
-
 		return this.Api.UserFieldTypeAhead(payload);
 	}
 
   UserFieldMTSave(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
-      wsid: this.userData.wsid,
+			username: this.userData.userName,
+     	 wsid: this.userData.wsid,
 			...payloadParams 
 		}
 
@@ -238,7 +236,7 @@ export class CommonApiService implements ICommonApi{
   SupplierItemTypeAhead(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -249,7 +247,7 @@ export class CommonApiService implements ICommonApi{
   updateAppName(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -260,7 +258,7 @@ export class CommonApiService implements ICommonApi{
   saveWareHouse(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -271,7 +269,7 @@ export class CommonApiService implements ICommonApi{
   dltWareHouse(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -286,7 +284,7 @@ export class CommonApiService implements ICommonApi{
   saveVelocityCode(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}
@@ -297,7 +295,7 @@ export class CommonApiService implements ICommonApi{
   dltVelocityCode(payloadParams : any) {
     this.userData = this.authService.userData();
 		const payload = {
-			username: this.userData.username,
+			username: this.userData.userName,
       wsid: this.userData.wsid,
 			...payloadParams 
 		}

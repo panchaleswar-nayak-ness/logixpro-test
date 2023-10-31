@@ -1004,16 +1004,8 @@ public getLocZTypeInvMap(body?: any ): Observable<any> {
 public getSearchedItem(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Common/searchitem`, Body);
 } 
-public updateInventoryMap(body: any ,mapID?): Observable<any> {
-  body.inventoryMapID= mapID?.invMapID ?? 0;
-  body.masterInventoryMapID=mapID?.masterInvMapID ?? 0;
-   const asArray = Object.entries(body); 
-   const filtered = asArray.filter(([key, value]) =>  value != ''); 
-   let payload = Object.fromEntries(filtered); 
-   let userData = this.authService.userData(); 
-    payload['username'] = userData.userName;
-    payload["wsid"] =userData.wsid;
-  return this.ApiBase.Put(`/Admin/inventorymap`, payload);
+public updateInventoryMap(body: any ,mapID?): Observable<any> {  
+  return this.ApiBase.Put(`/Admin/inventorymap`, body);
 } 
   
 public createInventoryMap(body?:any): Observable<any> {

@@ -23,12 +23,12 @@
     <div class="col-xl-6">
         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
             <mat-label>Move Qty</mat-label>
-            <input [disabled]="isMoveQty" [NumbersOnly]="true" [(ngModel)]="from_itemQuantity" type="number" placeholder="Search" matInput maxlength="255">
+            <input [disabled]="isMoveQty" [NumbersOnly]="true" [(ngModel)]="from_itemQuantity" (ngModelChange)="setMoveQty()" type="number" placeholder="Search" matInput maxlength="255">
         </mat-form-field>
     </div>
     <div class="col-xl-6">
         <div class="mb-3">
-            <mat-checkbox class="px-2" [(ngModel)]="isDedicated" color="primary">Dedicated?</mat-checkbox>
+            <mat-checkbox class="px-2" [(ngModel)]="isDedicated" (ngModelChange)="setDedicated()" color="primary">Dedicated?</mat-checkbox>
         </div>
     </div>
 </div>

@@ -32,12 +32,13 @@ isInvalid = false;
 
 openAction: any;
 @Input() userData :any ="";
-transactionID: any ="";
+@Input() transactionID: any ;
 
 @Output() getSupplierItemInfo: EventEmitter<any> = new EventEmitter();
 @Output() getLocationData: EventEmitter<any> = new EventEmitter();
 @Output() fieldValuesChanged = new EventEmitter<any>();
 @Output() openSetItemLocationDialogue :EventEmitter<any> = new EventEmitter();
+@Output()  onFormFieldFocusOut :EventEmitter<any> = new EventEmitter();
 openNotes(){
   const dialogRef:any = this.global.OpenDialog(AddNotesComponent, {
     height: 'auto',
@@ -52,6 +53,7 @@ openNotes(){
   dialogRef.afterClosed().subscribe((res) => {
     if(res){
       this.notes=res
+      this.onFieldChange(this.notes);
     }
   });
 }
@@ -67,22 +69,12 @@ openUnitOfMeasureDialogue() {
   dialogRef.afterClosed().subscribe((res) => {
     this.uom = res;
     this.clearMatSelectList();
+    this.onFieldChange(this.uom);
   });
 }
 
 clearMatSelectList(){
-  this.openAction.options.forEach((data: MatOption) => data.deselect());
-}
-
-onFormFieldFocusOut() {
-  // Implement your custom validation logic here
-  // For example, check if the input is valid, and if not, set isInvalid to true
-  this.isInvalid = !this.isValidInput(); // Change isValidInput() to your validation logic
-}
-
-isValidInput(): boolean {
-  // Implement your validation logic here
-  return true; // Return true if the input is valid, false otherwise
+  this.openAction?.options.forEach((data: MatOption) => data.deselect());
 }
 
 openSupplierItemDialogue() {
@@ -103,6 +95,7 @@ openSupplierItemDialogue() {
     this.supplierID = res.supplierID;
     this.getSupplierItemInfo.emit();
     this.clearMatSelectList();
+    this.onFieldChange(this.supplierID);
   });
 }
 
@@ -119,6 +112,7 @@ openUserFieldsEditDialogue() {
       wsid: this.userData.wsid,
       fieldNames:this.columns
     },
+    
   });
   dialogRef.afterClosed().subscribe((res) => {
     this.clearMatSelectList();
@@ -128,11 +122,10 @@ openUserFieldsEditDialogue() {
 onFieldChange(fieldName: string) {
   const fieldValues = {
     orderNumber: this.orderNumber,
-    item: this.item,
     columns: this.columns,
     itemNumber: this.itemNumber,
     supplierID: this.supplierID,
-    expDate: new Date(this.expDate),
+    expDate: this.expDate,
     revision: this.revision,
     description: this.description,
     lotNumber: this.lotNumber,
@@ -142,8 +135,7 @@ onFieldChange(fieldName: string) {
     userData:this.userData
   };
   fieldValues[fieldName] = this[fieldName];
-  this.fieldValuesChanged.emit(fieldValues);
-  
+  this.fieldValuesChanged.emit(fieldValues)
 }
 
 }

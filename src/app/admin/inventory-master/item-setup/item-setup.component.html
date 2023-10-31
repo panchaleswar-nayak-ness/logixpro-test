@@ -68,7 +68,7 @@
           </div>
           <mat-form-field class="custom-form-field" appearance="outline" *ngIf="this.itemSetup.controls['fifo'].value == true">
             <mat-label>FIFO Date</mat-label>
-            <mat-select formControlName="fifoDate">
+            <mat-select formControlName="fifoDate" (selectionChange)="handleInputChange($event.value)">
               <mat-option value="Put Away Date">Put Away Date</mat-option>
               <mat-option value="Expiration Date">Expiration Date</mat-option>
             </mat-select>

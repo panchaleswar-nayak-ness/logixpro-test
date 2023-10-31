@@ -80,7 +80,7 @@ export class CellSizeComponent implements OnInit {
       if(isInserted!=1)
       {
         this.cellsize_list.forEach(element => {
-          if (element.cells.toLowerCase() == cell.toLowerCase() && !cond) {
+          if (element.cells.toLowerCase() == cell.toLowerCase() && cond) {
             cond = false;
             this.global.ShowToastr('error','Cell Size already exists. Ensure any pending changes are saved before attempting to save this entry.', 'Error!');
           }

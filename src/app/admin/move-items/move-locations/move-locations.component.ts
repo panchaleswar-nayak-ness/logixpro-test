@@ -49,7 +49,7 @@ export class MoveLocationsComponent {
   }
 
   onChangeLocation(event) {
-    this.onChangeLocationEmit.emit();
+    this.onChangeLocationEmit.emit(this.viewAll);
   }
 
   tabChanged(event) {

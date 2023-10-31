@@ -1,7 +1,7 @@
 <div class="d-xl-flex gap-12 align-items-center">
   <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
     <mat-label>Select</mat-label>
-    <mat-select class="employees-action" [(ngModel)]="this.searchCol" (selectionChange)="selectionChange($event.value)" [compareWith]="compareObjects" (keyup.enter)="colKeyUpEnter($event)">
+    <mat-select class="employees-action" [(ngModel)]="this.searchCol" (selectionChange)="selectionChange($event.value)" (keyup.enter)="colKeyUpEnter($event)">
       <mat-option value=""></mat-option>
       <mat-option *ngFor="let item of tableColumns | sort:'colDef':false" [value]="item.colDef">
         {{item.colDef}}

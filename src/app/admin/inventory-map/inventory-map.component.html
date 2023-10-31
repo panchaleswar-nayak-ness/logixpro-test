@@ -17,7 +17,7 @@
                     [searchCol]="this.columnSearch.searchColumn.colDef"
                     (selectionChangeEvent)="this.columnSearch.searchColumn.colDef = $event; searchColumn()"
                     (colKeyUpEnterEvent)="searchColumn()"
-                    (searchKeyUpEvent)="autocompleteSearchColumn()"
+                    (searchKeyUpEvent)="this.columnSearch.searchValue = $event;autocompleteSearchColumn()"
                     (searchKeyUpEnterEvent)="searchData()"
                     (clearInputFieldEvent)="this.columnSearch.searchColumn.colDef = '';  this.columnSearch.searchValue = ''; reset()"
                     [searchString]="this.columnSearch.searchValue"

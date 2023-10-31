@@ -1,6 +1,6 @@
 <mat-tab-group dynamicHeight [(selectedIndex)]="selectedIndex" (selectedTabChange)="onTabChange($event)">
     <mat-tab label="Tote Setup">
-      <app-ppa-ts-batch-setup (funCall)="callFunBatchSetup($event)" [batchId]="batchId" [assignedZones]="assignedZones" [cellSize]="cellSize" [searchAutocompleteItemNum]="searchAutocompleteItemNum"></app-ppa-ts-batch-setup>
+      <app-ppa-ts-batch-setup (funCall)="callFunBatchSetup($event)" [batchId]="batchId" [assignedZones]="assignedZones" [cellSize]="cellSize" [searchAutocompleteItemNum]="searchAutocompleteItemNum" [status]='status' ></app-ppa-ts-batch-setup>
       <app-ppa-ts-totes (funCall)="callFunTotes($event)" [actionDropDown]="actionDropDown" [toteID]="toteID" [dataSource]="dataSource" [displayedColumns]="displayedColumns" [selection]="selection"></app-ppa-ts-totes>
       <div class="d-flex">
         <button mat-flat-button color="primary" class="primary-button btn-lg w-100" style="min-width: 150px;" (click)="processIfZoneSelected()">

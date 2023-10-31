@@ -89,9 +89,9 @@
 
     <app-gt-item-details [item]="item" [itemNumber]="itemNumber" [orderNumber]="orderNumber" [columns]="columns"
         [supplierID]="supplierID" [expDate]="expDate" [revision]="revision" [description]="description"
-        [lotNumber]="lotNumber" [uom]="uom" [notes]="notes" [serialNumber]="serialNumber"
+        [lotNumber]="lotNumber" [uom]="uom" [notes]="notes" [serialNumber]="serialNumber" [transactionID]="transactionID"
         (getLocationData)="getLocationData()" (getSupplierItemInfo)="getSupplierItemInfo()" [userData]="userData"
-        (fieldValuesChanged)="onFieldValuesChanged($event)"
+        (fieldValuesChanged)="onFieldValuesChanged($event)"  (onFormFieldFocusOut)="onFormFieldFocusOut()"
         (openSetItemLocationDialogue)="openSetItemLocationDialogue()"> </app-gt-item-details>
 
     <app-gt-transaction-details [emergency]="emergency" [item]="item" [transType]="transType" [reqDate]="reqDate"

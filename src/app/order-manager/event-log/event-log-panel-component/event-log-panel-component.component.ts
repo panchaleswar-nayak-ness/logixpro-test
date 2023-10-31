@@ -48,6 +48,8 @@ export class EventLogPanelComponentComponent {
     this.eventLocation = "";
     this.userName = "";
     this.message = "";
+    this.eventCode='';
+    this.eventType='';
     this.clearFiltersEmit.emit();
   }
 

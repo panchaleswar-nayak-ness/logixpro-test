@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-location-details',
@@ -34,9 +34,10 @@ export class LocationDetailsComponent {
   @Input() to_serialNo : string = '';
   @Input() fillQtytoShow : number = 0;
 
+  @Output() setMoveQtyEmit = new EventEmitter();
+  @Output() setDedicatedEmit = new EventEmitter();
+
   @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
-
-
 
   restrictTo4Digits(): void {
     const inputElement = this.myInput.nativeElement;
@@ -48,6 +49,14 @@ export class LocationDetailsComponent {
 
   onBlurPriority(){
     if(this.from_priority === undefined || this.from_priority === null) this.from_priority=0;
+  }
+
+  setMoveQty() {
+    this.setMoveQtyEmit.emit(this.from_itemQuantity);
+  }
+
+  setDedicated() {
+    this.setDedicatedEmit.emit(this.isDedicated);
   }
 
 }

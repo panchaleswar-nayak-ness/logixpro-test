@@ -17,7 +17,7 @@ export class AdminApiService implements IAdminApiService {
     }
   public TransactionQtyReplenishmentUpdate(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -25,7 +25,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public ReplenishmentsByDelete(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -33,7 +33,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public DeleteRangeBegin(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -41,7 +41,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public DeleteRangeEnd(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -49,7 +49,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public SystemReplenishNewTA(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -57,7 +57,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public ReplenishmentsIncludeAllUpdate(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -65,7 +65,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public ReplenishmentsIncludeUpdate(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -73,7 +73,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public ProcessReplenishments(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -81,7 +81,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public ReplenishmentInsert(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -89,7 +89,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public SystemReplenishmentNewTable(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -97,7 +97,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public SystemReplenishmentTable(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -105,7 +105,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public ReplenishReportSearchTA(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -113,7 +113,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public SystemReplenishmentCount(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -121,7 +121,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public FiltersItemNumInsert(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -132,7 +132,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public LocationAssignmentOrderInsert(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -140,7 +140,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetLocationAssignmentPickTable(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -148,7 +148,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetTransactionTypeCounts(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -156,7 +156,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public EventLogTable(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -164,7 +164,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public EventLogTypeAhead(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -172,7 +172,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public EventRangeDelete(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -180,7 +180,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public SelectedEventDelete(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -188,7 +188,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public DeleteKit(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -196,7 +196,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public InsertKit(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -204,7 +204,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public UpdateKit(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -212,7 +212,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetColumnSequence(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -221,7 +221,7 @@ export class AdminApiService implements IAdminApiService {
 
   public GeneralPreferenceSave(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -239,7 +239,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public FieldNameSave(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -247,7 +247,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public RemoveccQueueRow(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -261,7 +261,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetCCQueue(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -269,7 +269,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetMoveItemsTable(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -278,7 +278,7 @@ export class AdminApiService implements IAdminApiService {
 
   public CreateMoveTransactions(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -286,7 +286,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public CycleCountQueueInsert(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -294,7 +294,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public BatchResultTable(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -307,7 +307,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public QuantitySelected(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -315,7 +315,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetCCCountToCostTypeAhead(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -323,7 +323,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetCCCategoryTypeAhead(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -331,7 +331,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetCCDescriptionTypeAhead(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -339,7 +339,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public CountOrdersDelete(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -347,7 +347,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public UpdateReelQuantity(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -355,7 +355,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public UpdateReelAll(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -363,7 +363,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public RefreshRTS(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -371,7 +371,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public UpdateScanCodes(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -379,7 +379,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public DeleteScanCode(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -387,7 +387,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public InsertScanCodes(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -395,7 +395,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public RefreshScanCodes(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -403,7 +403,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public getSearchData(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -411,7 +411,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public duplicate(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -419,7 +419,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public getInventoryMap(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -427,7 +427,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public getSetColumnSeq(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -435,7 +435,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public SelectBatchesDeleteDrop(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -443,7 +443,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public BatchDeleteAll(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -451,7 +451,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public PickToteIDUpdate(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -459,7 +459,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public BatchInsert(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -467,7 +467,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public DetailView(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -475,7 +475,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public BatchManagerOrder(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -483,7 +483,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetBatchManager(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -497,7 +497,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public Stats(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -505,7 +505,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public Lookup(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -513,7 +513,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public Controlname(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -521,7 +521,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public Groupname(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -529,7 +529,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public Groupnames(body: any) {
     const payload = {
-      // username: this.userData.username,
+      // username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -537,7 +537,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public Employee(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -545,7 +545,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public DeleteEmployee(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -553,7 +553,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public UpdateEmployee(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -561,7 +561,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public EmployeeDetails(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -569,7 +569,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public Inventorymasterdata(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -577,7 +577,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public location(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -585,7 +585,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetInventory(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -593,7 +593,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetInventoryItemNumber(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -601,7 +601,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetInventoryMasterData(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -609,7 +609,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public UpdateInventoryMaster(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -617,7 +617,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public UpdateItemNumber(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -625,7 +625,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public AddNewItem(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -633,7 +633,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public NextItemNumber(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -641,7 +641,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetInventoryMasterLocation(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -649,7 +649,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public DeleteItem(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -657,7 +657,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public UpdateInventoryMasterOTQuarantine(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -665,7 +665,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public UpdateInventoryMasterOTUnQuarantine(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -673,7 +673,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public GetLocationTable(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -681,7 +681,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public PreviousItemNumber(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -690,7 +690,7 @@ export class AdminApiService implements IAdminApiService {
 
   public getEmployeeData(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -706,7 +706,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public getUserRights(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -714,7 +714,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public getAdminEmployeeLookup(body: any, isLoader) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -722,7 +722,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public employeeStatsInfo(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -730,7 +730,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public saveAdminEmployee(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -758,7 +758,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public cloneGroup(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -775,7 +775,7 @@ export class AdminApiService implements IAdminApiService {
 
   public getControlName(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -784,7 +784,7 @@ export class AdminApiService implements IAdminApiService {
 
   public updateControlName(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -800,7 +800,7 @@ export class AdminApiService implements IAdminApiService {
 
   public submitControlResponse(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -821,7 +821,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public updateEmployeeZone(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -841,7 +841,7 @@ export class AdminApiService implements IAdminApiService {
   //AllAccess
   public insertAllAccess(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -851,7 +851,7 @@ export class AdminApiService implements IAdminApiService {
   //EmployeeLocation
   public insertEmployeeLocation(body: any) {
     const payload = {
-      // username: this.userData.username,
+      // username: this.userData.userName,
       // wsid: this.userData.wsid,
       ...body
     }
@@ -860,7 +860,7 @@ export class AdminApiService implements IAdminApiService {
 
   public updateEmployeeLocation(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -877,7 +877,7 @@ export class AdminApiService implements IAdminApiService {
  
   public insertPickLevels(body: any) {
     const payload = {
-      // username: this.userData.username,
+      // username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -886,7 +886,7 @@ export class AdminApiService implements IAdminApiService {
 
   public updatePickLevels(body: any) {
     const payload = {
-      // username: this.userData.username,
+      // username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -903,14 +903,14 @@ export class AdminApiService implements IAdminApiService {
 
   public updateAccessGroup(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
     return this.Api.updateAccessGroup(payload);
   }  public insertGroup(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -919,14 +919,14 @@ export class AdminApiService implements IAdminApiService {
 
   public insertGroupFunctions(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
     return this.Api.insertGroupFunctions(payload);
   }  public getFunctionByGroup(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -935,7 +935,7 @@ export class AdminApiService implements IAdminApiService {
 
   public updateEmployeesInGroup(body: any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -950,7 +950,7 @@ export class AdminApiService implements IAdminApiService {
   }
   public getItemNumDetail(body: any ) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -999,7 +999,7 @@ export class AdminApiService implements IAdminApiService {
   
 public TransactionHistoryTable(body: any){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1007,7 +1007,7 @@ public TransactionHistoryTable(body: any){
 } 
 public TransactionModelIndex(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1015,7 +1015,7 @@ public TransactionModelIndex(body: any ){
 } 
 public NextSuggestedTransactions(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1023,7 +1023,7 @@ public NextSuggestedTransactions(body: any ){
 } 
 public ReprocessTypeahead(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1031,7 +1031,7 @@ public ReprocessTypeahead(body: any ){
 } 
 public ReprocessedTransactionTable(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1039,7 +1039,7 @@ public ReprocessedTransactionTable(body: any ){
 } 
 public TransactionForOrderInsert(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1047,7 +1047,7 @@ public TransactionForOrderInsert(body: any ){
 } 
 public TransactionForOrderUpdate(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1055,7 +1055,7 @@ public TransactionForOrderUpdate(body: any ){
 }  
 public ReprocessedTransactionHistoryTable(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1063,7 +1063,7 @@ public ReprocessedTransactionHistoryTable(body: any ){
 }  
 public ReprocessTransactionTable(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1071,7 +1071,7 @@ public ReprocessTransactionTable(body: any ){
 } 
 public OrderToPost(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1079,7 +1079,7 @@ public OrderToPost(body: any ){
 }  
 public ReprocessIncludeSet(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1088,7 +1088,7 @@ public ReprocessIncludeSet(body: any ){
 
 public SetAllReprocessColumn(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1096,7 +1096,7 @@ public SetAllReprocessColumn(body: any ){
 }  
 public ReprocessTransactionData(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1107,7 +1107,7 @@ public PostReprocessTransaction(body: any ){
 } 
 public OrderNumberNext(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1115,7 +1115,7 @@ public OrderNumberNext(body: any ){
 } 
 public ScanValidateOrder(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1123,7 +1123,7 @@ public ScanValidateOrder(body: any ){
 } 
 public DeleteOrder(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1131,7 +1131,7 @@ public DeleteOrder(body: any ){
 } 
 public OrderStatusData(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1139,7 +1139,7 @@ public OrderStatusData(body: any ){
 } 
 public OpenTransactionTable(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1147,7 +1147,7 @@ public OpenTransactionTable(body: any ){
 } 
 public HoldTransactionsData(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1155,7 +1155,7 @@ public HoldTransactionsData(body: any ){
 }  
 public UpdateTransaction(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1163,7 +1163,7 @@ public UpdateTransaction(body: any ){
 } 
 public LocationData(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1171,7 +1171,7 @@ public LocationData(body: any ){
 } 
 public PostTransaction(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1179,7 +1179,7 @@ public PostTransaction(body: any ){
 } 
 public ManualTransactionTypeAhead(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1187,7 +1187,7 @@ public ManualTransactionTypeAhead(body: any ){
 }  
 public TransactionInfo(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1195,7 +1195,7 @@ public TransactionInfo(body: any ){
 } 
 public TransactionDelete(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1203,7 +1203,7 @@ public TransactionDelete(body: any ){
 } 
 public TransactionForOrderDelete(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1211,7 +1211,7 @@ public TransactionForOrderDelete(body: any ){
 } 
 public DeallocateTransactions(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1219,7 +1219,7 @@ public DeallocateTransactions(body: any ){
 } 
 public TransactionByID(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1227,7 +1227,7 @@ public TransactionByID(body: any ){
 } 
 public GernerateOrderTable(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1235,7 +1235,7 @@ public GernerateOrderTable(body: any ){
 } 
 public ManualOrderTypeAhead(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1244,7 +1244,7 @@ public ManualOrderTypeAhead(body: any ){
  
 public NewTransactionSave(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1252,7 +1252,7 @@ public NewTransactionSave(body: any ){
 }
 public GetLocations(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1260,7 +1260,7 @@ public GetLocations(body: any ){
 }
 public ManualOrdersPost(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1269,7 +1269,7 @@ public ManualOrdersPost(body: any ){
  
 public SendCompletedToTH(body: any ){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1278,7 +1278,7 @@ public SendCompletedToTH(body: any ){
 
 public GetColumnSequenceDetail(body:any){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1286,7 +1286,7 @@ public GetColumnSequenceDetail(body:any){
 }
 public DeleteColumns(body:any){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1294,7 +1294,7 @@ public DeleteColumns(body:any){
 }
 public SaveColumns(body:any){
       const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1303,7 +1303,7 @@ public SaveColumns(body:any){
 
 public AllocatedOrders(body:any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1311,7 +1311,7 @@ public AllocatedOrders(body:any) {
 }
 public AllocatedItems(body:any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1319,7 +1319,7 @@ public AllocatedItems(body:any) {
 }
 public AllAllocatedOrders(body:any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1327,7 +1327,7 @@ public AllAllocatedOrders(body:any) {
 }
 public OrderItemsTable(body:any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1335,7 +1335,7 @@ public OrderItemsTable(body:any) {
 }
 public DeAllocateOrder(body:any) {
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1343,7 +1343,7 @@ public DeAllocateOrder(body:any) {
 } 
 public SaveTransaction(body:any){
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1351,7 +1351,7 @@ public SaveTransaction(body:any){
 } 
 public ReprocessTransactionDelete(body:any){ 
     const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1360,7 +1360,7 @@ public ReprocessTransactionDelete(body:any){
 
 public deleteInventoryMap(body:any){ 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1369,7 +1369,7 @@ public deleteInventoryMap(body:any){
 
 public quarantineInventoryMap(body:any){ 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1378,7 +1378,7 @@ public quarantineInventoryMap(body:any){
 
 public unQuarantineInventoryMap(body:any){ 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1386,7 +1386,7 @@ public unQuarantineInventoryMap(body:any){
 } 
 public DevicePreferencesDelete(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1395,7 +1395,7 @@ public DevicePreferencesDelete(body){
 
 public GetCartonFlow(body?: any) { 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1404,7 +1404,7 @@ public GetCartonFlow(body?: any) {
 
 public UpdateCartonFlow(body){     
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1413,7 +1413,7 @@ public UpdateCartonFlow(body){
 
 public DevicePreferencesTable(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1421,7 +1421,7 @@ public DevicePreferencesTable(body){
 }
 public LocationNamesSave(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1430,7 +1430,7 @@ public LocationNamesSave(body){
 
 public DeleteLocationNames(body:any){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1440,7 +1440,7 @@ public DeleteLocationNames(body:any){
  
 public ZoneDevicePreferencesUpdateAll(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1448,7 +1448,7 @@ public ZoneDevicePreferencesUpdateAll(body){
 }
 public DeviceInformation(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1456,7 +1456,7 @@ public DeviceInformation(body){
 }
 public DevicePreference(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1464,7 +1464,7 @@ public DevicePreference(body){
 }
 public LocationZoneSave(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1473,7 +1473,7 @@ public LocationZoneSave(body){
 
   public LocationZoneDelete(body:any){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1481,7 +1481,7 @@ public LocationZoneSave(body){
 }
 public LocationZoneNewSave(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1509,7 +1509,7 @@ public getToteCell() {
 }
 public Getcustomreports(body) { 
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
@@ -1517,7 +1517,7 @@ public Getcustomreports(body) {
 }
 public Getreportdetails(body) { 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1525,7 +1525,7 @@ public Getreportdetails(body) {
 } 
 public selShipComp(body) { 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1533,7 +1533,7 @@ public selShipComp(body) {
 }   
 public updateAdjustlookup(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1542,7 +1542,7 @@ public updateAdjustlookup(body){
 
 public deleteAdjustmentLookup(body:any) {
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
@@ -1551,7 +1551,7 @@ public deleteAdjustmentLookup(body:any) {
 
 public userfieldlookup(body ) {
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1559,7 +1559,7 @@ public userfieldlookup(body ) {
 }
 public updateuserfieldlookup(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1568,7 +1568,7 @@ public updateuserfieldlookup(body){
 
 public deleteUserfieldLookUp(body:any) {
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
@@ -1577,7 +1577,7 @@ public deleteUserfieldLookUp(body:any) {
 
 public totesetup(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1586,7 +1586,7 @@ public totesetup(body){
 
 public deleteTote(body:any) {
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
@@ -1597,7 +1597,7 @@ public deleteTote(body:any) {
 
 public cleartote(body) {
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1606,7 +1606,7 @@ public cleartote(body) {
  
 public basicreportdetails(body) { 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1614,7 +1614,7 @@ public basicreportdetails(body) {
 } 
 public ReportFieldsExps(body) { 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1622,7 +1622,7 @@ public ReportFieldsExps(body) {
 } 
 public reportfieldvalues(body) { 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1630,7 +1630,7 @@ public reportfieldvalues(body) {
 } 
 public ReportTitles(body) { 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1638,7 +1638,7 @@ public ReportTitles(body) {
 } 
 public changefilter(body) { 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1647,7 +1647,7 @@ public changefilter(body) {
  
 public importFile(body){ 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1656,7 +1656,7 @@ public importFile(body){
 
 public validateNewDesign(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1664,7 +1664,7 @@ public validateNewDesign(body){
 }
 public getLLDesignerNewDesign(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1672,7 +1672,7 @@ public getLLDesignerNewDesign(body){
 }
 public restoreDesign(body){
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1681,7 +1681,7 @@ public restoreDesign(body){
 
 public deleteReport(body:any) {
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
@@ -1690,7 +1690,7 @@ public deleteReport(body:any) {
 
 public pushReportChanges(body) { 
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1699,7 +1699,7 @@ public pushReportChanges(body) {
 
 public updatereportDetails(body) {
      const payload = {
-      username: this.userData.username,
+      username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
@@ -1707,7 +1707,7 @@ public updatereportDetails(body) {
 }
 public CommonExport(body) {
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
@@ -1716,7 +1716,7 @@ public CommonExport(body) {
 
 public async CommonPrint(body)  {
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
@@ -1725,7 +1725,7 @@ public async CommonPrint(body)  {
 
 public SetReprocessIds(body: any ) {
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
@@ -1733,7 +1733,7 @@ public SetReprocessIds(body: any ) {
 } 
 public ToteSetupInsert(body:any) { 
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
@@ -1741,7 +1741,7 @@ public ToteSetupInsert(body:any) {
 }
 public ToteSetupDelete(body:any) { 
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
@@ -1752,7 +1752,7 @@ public ToteSetup() {
 }
 public UpdateOSPriority(body: any ) {
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }
@@ -1760,7 +1760,7 @@ public UpdateOSPriority(body: any ) {
 } 
 public DeleteOrderStatus(body: any ) {
   const payload = {
-    username: this.userData.username,
+    username: this.userData.userName,
     wsid: this.userData.wsid,
     ...body
   }

@@ -86,7 +86,6 @@ export class UserFieldsEditComponent implements OnInit {
       transaction: this.data.transID,
       userFields: userFields
     };
-
     this.iCommonAPI.UserFieldMTSave(payload).subscribe((res:any)=>{
       if(res.isExecuted){
              this.global.ShowToastr('success',labels.alert.success, 'Success!');
@@ -130,7 +129,6 @@ export class UserFieldsEditComponent implements OnInit {
       .subscribe((res: any) => {
         if (res?.data) {
           let item = res.data;
-
           this.shipVia = item.userField1 ?? "";
           this.shipToName = item.userField2 ?? "";
           this.shipToLine1 = item.userField3 ?? "";

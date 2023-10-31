@@ -83,7 +83,7 @@ export class CrossDockTransactionComponent implements OnInit {
   }
 
   clearMatSelectList(){
-    this.openAction.options.forEach((data: MatOption) => data.deselect());
+    this.openAction?.options.forEach((data: MatOption) => data.deselect());
   }
 
   openTotesDialogue(position: any) {

@@ -420,6 +420,6 @@ export class TotesAddEditComponent implements OnInit {
     this.imPreferences=this.global.getImPreferences();
   }
   ngAfterViewInit(): void {
-    this.field_focus.nativeElement.focus();
+    this.field_focus?.nativeElement.focus();
   }
 }

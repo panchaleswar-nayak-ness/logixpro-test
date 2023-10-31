@@ -135,6 +135,6 @@ export class PalletReceivingComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {});
   }
   ngAfterViewInit() {
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
   }
 }

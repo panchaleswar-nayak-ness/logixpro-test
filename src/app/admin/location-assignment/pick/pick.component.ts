@@ -68,7 +68,7 @@ export class PickComponent implements OnInit {
     this.GetLocationAssignmentPickTable();
   }
   ngAfterViewInit() {
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
   }
 
   GetLocationAssignmentPickTable(loader: boolean = false) {

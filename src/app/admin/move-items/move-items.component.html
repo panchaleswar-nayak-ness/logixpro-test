@@ -28,7 +28,10 @@
                 [to_cellSize]="to_cellSize"
                 [to_lotNo]="to_lotNo"
                 [to_serialNo]="to_serialNo"
-                [fillQtytoShow]="fillQtytoShow"></app-location-details>
+                [fillQtytoShow]="fillQtytoShow"
+                
+                (setMoveQtyEmit)="from_itemQuantity = $event"
+                (setDedicatedEmit)="isDedicated = $event"></app-location-details>
             </mat-card-content>
         </mat-card>
     </div>
@@ -51,7 +54,7 @@
                     [paginator]="paginator"
                     [paginatorTo]="paginatorTo"
                     [paginators]="paginators"
-                    (onChangeLocationEmit)="this.getMoveItemList('MoveTo');"
+                    (onChangeLocationEmit)="viewAll = $event; this.getMoveItemList('MoveTo');"
                     (tabChangedEmit)="tabChanged($event)"
                     (sortChangeEmit)="sortChange($event)"
                     (clearItemNumEmit)="clearItemNum()"

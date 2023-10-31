@@ -108,7 +108,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
     this.ApplySavedItem();
   }
 
@@ -243,7 +243,7 @@ export class ConsolidationComponent implements OnInit {
           switch (res.data) {
             case "DNE":
               this.global.ShowToastr('error',"Consolidation The Order/Tote that you entered is invalid or no longer exists in the system.", 'Error!');
-              this.searchBoxField.nativeElement.focus();
+              this.searchBoxField?.nativeElement.focus();
               break;
 
             case "Conflict":
@@ -711,7 +711,7 @@ export class ConsolidationComponent implements OnInit {
 
   openCmOrderNo() {
     this.clearpagedata();
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
     this.disableConButts();
     this.RecordSavedItem();
   }
@@ -799,7 +799,7 @@ export class ConsolidationComponent implements OnInit {
 
   focusOnOrderNum() {
     setTimeout(() => {
-      this.searchBoxField.nativeElement.focus();
+      this.searchBoxField?.nativeElement.focus();
     }, 100);
   }
   navigateToOrder() {

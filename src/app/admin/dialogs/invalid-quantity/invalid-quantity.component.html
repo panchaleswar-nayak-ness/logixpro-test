@@ -16,6 +16,7 @@
       </div>
     </mat-dialog-content>
     <mat-dialog-actions class="d-flex flex-column justify-content-center">
-      <button  class=" prompt-action-danger-button mb-3 w-100 btn-lg" mat-stroked-button  mat-dialog-close>Ok</button>
+      <button  class=" prompt-action-danger-button mb-3 w-100 btn-lg" mat-stroked-button  mat-dialog-close (click)="returnOk()">Ok</button>
+      <button  class=" prompt-action-basic-button mb-3 w-100 btn-lg" mat-stroked-button  mat-dialog-close (click)="returnCancel()">Cancel</button>
     </mat-dialog-actions>
   </div>

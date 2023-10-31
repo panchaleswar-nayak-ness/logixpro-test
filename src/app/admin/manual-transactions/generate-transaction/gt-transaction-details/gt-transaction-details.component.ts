@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 
@@ -8,12 +8,14 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: []
 })
 export class GtTransactionDetailsComponent {
+  inputField: any;
 
   constructor(
     private global: GlobalService,
   ) {
 
   }
+
   @Input() item: any ="";
   @Input() emergency: any ="";
   @Input() transType: any ="";
@@ -42,10 +44,7 @@ export class GtTransactionDetailsComponent {
       autoFocus: '__non_existing_element__',
       disableClose: true,
       data: {
-        userName: this.userData.userName,
-        wsid: this.userData.wsid,
         supplierID: this.supplierID,
-
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
@@ -53,10 +52,13 @@ export class GtTransactionDetailsComponent {
 
         this.wareHouse = res;
         this.warehouseSensitivity = 'False';
+        this.onFieldChange(this.wareHouse);
       } else if (res && res === 'clear') {
         this.wareHouse = '';
+        this.onFieldChange(this.wareHouse);
       }
     });
+    
   }
 
   // limit number to 9 digits
@@ -76,7 +78,7 @@ onFieldChange(fieldName: string) {
     userData:this.userData,
     emergency: this.emergency,  
     transType: this.transType,
-    reqDate: new Date(this.reqDate),
+    reqDate: this.reqDate,
     wareHouse: this.wareHouse,
     toteID: this.toteID,
     priority: this.priority,
@@ -87,8 +89,6 @@ onFieldChange(fieldName: string) {
     transQuantity: this.transQuantity,
     warehouseSensitivity: this.warehouseSensitivity 
   };
-  
-
   fieldValues[fieldName] = this[fieldName];
   this.fieldValuesChanged.emit(fieldValues);
 }

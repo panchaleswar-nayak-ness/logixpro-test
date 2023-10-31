@@ -68,7 +68,7 @@ fieldNames:any;
     
   }
   ngAfterViewInit(): void {
-    this.field_focus.nativeElement.focus();
+    this.field_focus?.nativeElement.focus();
   }
   updateRemaining(){
     let total = this.partsInducted;

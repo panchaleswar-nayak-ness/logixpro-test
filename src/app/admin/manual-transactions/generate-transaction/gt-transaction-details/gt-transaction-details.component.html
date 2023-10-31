@@ -27,7 +27,7 @@
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline"
                     [class.mat-form-field-invalid]="isInvalid">
                     <mat-label>Required Date</mat-label>
-                    <input [disabled]="!item" maxlength="11" matInput [matDatepicker]="requiredDate"
+                    <input  [disabled]="!item" maxlength="11" matInput [matDatepicker]="requiredDate"
                         [(ngModel)]="reqDate" (focusout)="this.onFormFieldFocusOut.emit()" (ngModelChange)="onFieldChange(reqDate)">
                     <mat-datepicker-toggle matSuffix [for]="requiredDate" ngDefaultControl></mat-datepicker-toggle>
                     <mat-datepicker #requiredDate></mat-datepicker>
@@ -84,7 +84,7 @@
                 <mat-form-field (click)="openWareHouse()" class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Warehouse</mat-label>
                     <input readonly [disabled]="!item" [(ngModel)]="wareHouse" matInput type="text" maxlength="255"
-                        value="Value" (ngModelChange)="onFieldChange(wareHouse)">
+                        value="Value">
                     <span matSuffix>
                         <mat-icon
                             style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>

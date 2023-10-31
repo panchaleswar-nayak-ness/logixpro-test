@@ -35,7 +35,6 @@ onPageLoad(event: Event) {
   ngOnInit() {
 
     this.broadCast.checkLastTab(() => {
-      console.log('This is the last open tab');
     });
 
     window.addEventListener('beforeunload', () => {
