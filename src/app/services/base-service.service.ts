@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core'; 
 import { environment } from '../../environments/environment';
-import {  Observable } from 'rxjs';  
+import {  Observable, lastValueFrom } from 'rxjs';  
 
 
 @Injectable({
@@ -41,7 +41,18 @@ export class BaseService {
         })
         .toPromise();
     }
-  
+    async PostAsync(apiUrl: string,model: any): Promise<any> { 
+      let res;
+      try {
+        res =  await lastValueFrom(this.http
+          .post<any>(environment.apiUrl + apiUrl, model, { headers: this.GetHeaders() }));
+         
+        } catch (err) {
+          console.log(err);
+          res = null;
+        }
+      return res;
+    }
     public Post(endPoint: string,reqPaylaod: any) { 
         return this.http.post<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
             headers: this.GetHeaders(),
