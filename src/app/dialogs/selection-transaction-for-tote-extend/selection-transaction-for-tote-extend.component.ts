@@ -666,6 +666,72 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     } catch (error) {}
   }
 
+  taskComplete(values : any) {
+    let payload2 = {
+      "otid": this.data.otid,
+      "splitQty": values.splitQty || 0, 
+      "qty": values.toteQty,
+      "toteID": values.toteID,
+      "batchID": this.data.batchID,
+      "item": values.itemNumber,
+      "uF1": values.userField1,
+      "uF2": values.userField2,
+      "lot": values.lotNumber,
+      "ser": values.serialNumber,
+      "totePos": values.totePos ? parseInt(values.totePos) : 0,
+      "cell": values.cellSize,
+      "warehouse": values.warehouse,
+      "expDate": values.expirationDate,
+      "revision": "",
+      "zone": values.zone,
+      "carousel": values.carousel,
+      "row": values.row,
+      "shelf": values.shelf,
+      "bin": values.bin,
+      "invMapID": values.invMapID,
+      "locMaxQty": values.maximumQuantity ? parseInt(values.maximumQuantity) : 0,
+      "reel": false,
+      "dedicate": values.dedicated,
+      "orderNumber": values.orderNumber
+    }
+    
+    this.iinductionManagerApi.TaskComplete(payload2).subscribe(
+      (res: any) => {
+        if (res.data && res.isExecuted) {
+          let OTID = res.data
+          if(this.imPreferences.autoPrintPutAwayLabels) {
+            let numLabel = 1;
+            if(this.imPreferences.requestNumberOfPutAwayLabels && this.imPreferences.printDirectly) {
+              // here pop up will be implemented which will ask for number of labels
+              let dialogRef:any = this.global.OpenDialog(PaPrintLabelConfirmationComponent, {
+                height: 'auto',
+                width: '560px',
+                autoFocus: '__non_existing_element__',
+                disableClose:true,
+              });
+
+              dialogRef.afterClosed().subscribe((result) => {
+                if(result > 0)
+                  if(!this.imPreferences.printDirectly) window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+                  else for (let i = 0; i < result; i++) this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`);
+              });
+
+            }
+            else if (numLabel > 0)
+              if(!this.imPreferences.printDirectly) window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+              else for (let i = 0; i < numLabel; i++) this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`);
+          }
+          this.dialogRef.close("Task Completed");
+          this.global.ShowToastr('success',labels.alert.update, 'Success!' );            
+        } else {
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("TaskComplete",res.responseMessage);
+        }
+      },
+      (error) => { }
+    );
+  }
+
   complete(values : any) {
 
     if (!this.validationPopups({...values, type : 1})) return;
@@ -681,72 +747,28 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {                                                              
+      if (result == 'Yes') {
         if (values.toteQty <= 0) this.global.ShowToastr('error','Quantity should be greater 0', 'Error!');
         else {
-          let payload2 = {
-            "otid": this.data.otid,
-            "splitQty": 0, 
-            "qty": values.toteQty,
-            "toteID": values.toteID,
-            "batchID": this.data.batchID,
-            "item": values.itemNumber,
-            "uF1": values.userField1,
-            "uF2": values.userField2,
-            "lot": values.lotNumber,
-            "ser": values.serialNumber,
-            "totePos": values.totePos ? parseInt(values.totePos) : 0,
-            "cell": values.cellSize,
-            "warehouse": values.warehouse,
-            "expDate": values.expirationDate,
-            "revision": "",
-            "zone": values.zone,
-            "carousel": values.carousel,
-            "row": values.row,
-            "shelf": values.shelf,
-            "bin": values.bin,
-            "invMapID": values.invMapID,
-            "locMaxQty": values.maximumQuantity ? parseInt(values.maximumQuantity) : 0,
-            "reel": false,
-            "dedicate": values.dedicated,
-            "orderNumber": values.orderNumber
-          }
-          
-          this.iinductionManagerApi.TaskComplete(payload2).subscribe(
-            (res: any) => {
-              if (res.data && res.isExecuted) {
-                let OTID = res.data
-                if(this.imPreferences.autoPrintPutAwayLabels) {
-                  let numLabel = 1;
-                  if(this.imPreferences.requestNumberOfPutAwayLabels && this.imPreferences.printDirectly) {
-                    // here pop up will be implemented which will ask for number of labels
-                    let dialogRef:any = this.global.OpenDialog(PaPrintLabelConfirmationComponent, {
-                      height: 'auto',
-                      width: '560px',
-                      autoFocus: '__non_existing_element__',
-                      disableClose:true,
-                    });
 
-                    dialogRef.afterClosed().subscribe((result) => {
-                      if(result > 0)
-                        if(!this.imPreferences.printDirectly) window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-                        else for (let i = 0; i < result; i++) this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`);
-                    });
+          let splitQty = 0;
+          if (this.imPreferences.splitShortPutAway && parseInt(values.toteQty) < parseInt(values.transactionQuantity) && this.data.otid != '') {
 
-                  }
-                  else if (numLabel > 0)
-                    if(!this.imPreferences.printDirectly) window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-                    else for (let i = 0; i < numLabel; i++) this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`);
-                }
-                this.dialogRef.close("Task Completed");
-                this.global.ShowToastr('success',labels.alert.update, 'Success!' );            
-              } else {
-                this.global.ShowToastr('error','Something went wrong', 'Error!');
-                console.log("TaskComplete",res.responseMessage);
-              }
-            },
-            (error) => { }
-          );
+            let dialogRef : any = this.global.OpenDialog(ConfirmationDialogComponent, {
+              height: 'auto',
+              width: '560px',
+              autoFocus: '__non_existing_element__',
+              disableClose:true,
+              data: {
+                message: 'This transaction quantity is greater than the assigned quantity.  Click OK if you will receive more of this order/item.  Click Cancel to mark this transaction as received short.',
+              },
+            });
+
+            dialogRef.afterClosed().subscribe((result) => {
+              if (result == 'Yes') splitQty = parseInt(values.transactionQuantity) - parseInt(values.toteQty);
+              this.taskComplete({ splitQty : splitQty, ...values });
+            });
+          } else this.taskComplete(values);      
         }                      
       }
     });

@@ -886,6 +886,7 @@ export class ProcessPutAwaysComponent implements OnInit {
               selectIfOne: this.processPutAwayIndex.imPreference.selectIfOne,
               defaultPutAwayQuantity: this.processPutAwayIndex.imPreference.defaultPutAwayQuantity,
               autoForwardReplenish: this.processPutAwayIndex.imPreference.autoForwardReplenish,
+              imPreference: this.processPutAwayIndex.imPreference,
               propFields:this.fieldNames
             }
           }); 
@@ -972,6 +973,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           selectIfOne: this.processPutAwayIndex.imPreference.selectIfOne,
           defaultPutAwayQuantity: this.processPutAwayIndex.imPreference.defaultPutAwayQuantity,
           autoForwardReplenish: this.processPutAwayIndex.imPreference.autoForwardReplenish,
+          imPreference: this.processPutAwayIndex.imPreference,
           propFields:this.fieldNames
         }
       });
