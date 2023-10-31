@@ -147,14 +147,14 @@ export class KitItemComponent implements OnInit, OnChanges {
 
   saveKit(newItem: any, e: any) {
 
-    if (!e.itemNumber || !e.kitQuantity) {            
-      this.global.ShowToastr('error',"Please fill required fields", 'Error!');
-      return;
-    }
-
     if (parseInt(e.kitQuantity) <= 0) {
       this.global.ShowToastr('error',"Qty must be greater than 0", 'Error!');
       return;        
+    }
+
+    if (!e.itemNumber || !e.kitQuantity) {            
+      this.global.ShowToastr('error',"Please fill required fields", 'Error!');
+      return;
     }
 
     let newRecord = true;

@@ -851,7 +851,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
     this.applyStripIfApplicable();
 
-    if (this.cell == this.toteQuantity) {
+    if (this.cell <= this.toteQuantity) {
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '50vw',

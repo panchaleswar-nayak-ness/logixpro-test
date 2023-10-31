@@ -86,7 +86,7 @@ export class LookupUserTwoSetupComponent implements OnInit {
       if(res.isExecuted){
         this.AddBtn = false
         ele.oldVal = ele.currentVal
-        this.global.ShowToastr('success',`Saved Successfully`, 'Error!');
+        this.global.ShowToastr('success',`Saved Successfully`, 'Success!');
       }
       else{
         
