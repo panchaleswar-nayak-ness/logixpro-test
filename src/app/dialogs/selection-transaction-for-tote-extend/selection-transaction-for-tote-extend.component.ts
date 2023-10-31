@@ -555,6 +555,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         userName: this.userData.userName,
         wsid: this.userData.wsid,
         supplierID: values.supplierItemID,
+        check: 'fromReelDetail'
       },
     });
     dialogRef.afterClosed().subscribe((res) => {      
