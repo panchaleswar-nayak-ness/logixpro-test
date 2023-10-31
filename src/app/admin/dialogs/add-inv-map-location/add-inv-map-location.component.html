@@ -152,7 +152,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
-                                <mat-form-field class="d-block w-100 " appearance="outline" (click)="loadVelocityCode()">
+                                <mat-form-field class="d-block w-100 " appearance="outline" (click)="loadVelocityCode()" >
                                     <mat-label>Velocity Code</mat-label>
                                     <input matInput formControlName="velocity" name="velocity" readonly #velCodeVal>
                                     <span matSuffix>
@@ -248,7 +248,7 @@
                                 <mat-label>{{fieldNames?.itemNumber}}</mat-label>
                                 <input  maxlength="50"  aria-label="Item Number" matInput (focus)="focusinmethod()" (focusout)="focusoutmethod()"
                                     formControlName="item" [matAutocomplete]="itemNumAuto" [(ngModel)]="searchItemNumbers" #searchItam (keyup)="searchItemNumber($event,searchItam)">
-                                    <button matSuffix *ngIf="searchItemNumbers" class="clear-btn" type="button" (click)="[searchItemNumbers='',clearFields()]"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                                    <button matSuffix *ngIf="searchItemNumbers && !isInputDisabled" name="clear" class="clear-btn" type="button" (click)="[searchItemNumbers='',clearFields()]"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                                     <mat-autocomplete class="br-14" style="padding-bottom: 16px; padding-top: 16px;" #itemNumAuto="matAutocomplete" (optionSelected)="loadItemDetails($event.option.value)">
                                         <h6 class="card-header matAutoCompHeader stickyHeader"> <span style="padding: 0px 25px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">Item Number</span>
                                             <span style="padding: 0px 25px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;">Description</span></h6>
