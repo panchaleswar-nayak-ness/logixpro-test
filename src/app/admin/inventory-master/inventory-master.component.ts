@@ -247,7 +247,7 @@ export class InventoryMasterComponent implements OnInit {
   ngAfterViewInit() {
     this.setVal = localStorage.getItem('routeFromOrderStatus') === 'true';
     this.itemNumberParam$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('itemNumber')), );
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
     this.itemNumberParam$.subscribe((param) => { 
       if (param) {
         this.searchValue = param;

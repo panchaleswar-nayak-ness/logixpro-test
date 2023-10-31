@@ -53,6 +53,7 @@ openNotes(){
   dialogRef.afterClosed().subscribe((res) => {
     if(res){
       this.notes=res
+      this.onFieldChange(this.notes);
     }
   });
 }
@@ -94,6 +95,7 @@ openSupplierItemDialogue() {
     this.supplierID = res.supplierID;
     this.getSupplierItemInfo.emit();
     this.clearMatSelectList();
+    this.onFieldChange(this.supplierID);
   });
 }
 

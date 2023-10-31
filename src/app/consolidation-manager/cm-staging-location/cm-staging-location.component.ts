@@ -51,7 +51,7 @@ export class CmStagingLocationComponent {
   }
 
   ngAfterViewInit() {
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
   }
   
   async SearchToteAndLocation(){ 

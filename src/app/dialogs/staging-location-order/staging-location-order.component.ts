@@ -15,7 +15,7 @@ export class StagingLocationOrderComponent {
   
 
   ngAfterViewInit(): void {
-    this.field_focus.nativeElement.focus();
+    this.field_focus?.nativeElement.focus();
   }
 async SubmitOrder(){ 
   if(this.Order) this.dialogRef.close(this.Order);  

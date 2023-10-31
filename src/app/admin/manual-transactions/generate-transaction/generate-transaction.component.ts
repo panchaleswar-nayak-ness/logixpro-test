@@ -110,7 +110,7 @@ export class GenerateTransactionComponent implements OnInit {
     );
   }
   clearMatSelectList() {
-    this.openAction.options.forEach((data: MatOption) => data.deselect());
+    this.openAction?.options.forEach((data: MatOption) => data.deselect());
   }
 
   generateTranscAction(event: any) {
@@ -613,7 +613,7 @@ export class GenerateTransactionComponent implements OnInit {
 
   ngAfterViewInit() {
     this.autocompleteSearchColumn();
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
   }
   isInvalid = false;
   onFormFieldFocusOut() {

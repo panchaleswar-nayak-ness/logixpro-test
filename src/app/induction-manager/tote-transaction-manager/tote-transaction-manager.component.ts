@@ -315,7 +315,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   }
 
   ngAfterViewInit() {
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
   }
 
   test(){

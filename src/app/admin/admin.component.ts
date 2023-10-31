@@ -336,7 +336,7 @@ export class AdminComponent implements OnInit {
   backAdminAction() {
   this.isLookUp = !this.isLookUp;
   setTimeout(()=>{
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
 
   }, 500);
 

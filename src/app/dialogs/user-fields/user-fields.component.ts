@@ -54,7 +54,7 @@ export class UserFieldsComponent implements OnInit {
     this.OSFieldFilterNames();
   }
   ngAfterViewInit(): void {
-    this.field_focus.nativeElement.focus();
+    this.field_focus?.nativeElement.focus();
   }
 
   public OSFieldFilterNames() { 

@@ -73,7 +73,7 @@ EmployeeLookUp(LastName:any = "",IsLoader=true){
   ngAfterViewInit() {
     this.employee_data_source.sort = this.sort;
     setTimeout(()=>{
-      this.searchBoxField.nativeElement.focus();  
+      this.searchBoxField?.nativeElement.focus();  
     }, 500);
 
   }

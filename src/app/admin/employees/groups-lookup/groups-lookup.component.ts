@@ -54,7 +54,7 @@ export class GroupsLookupComponent implements OnInit {
   @Input() set tab(event : any) {
     if (event) {
       setTimeout(()=>{
-        this.searchBoxField.nativeElement.focus(); 
+        this.searchBoxField?.nativeElement.focus(); 
       }, 500);
     }
   }

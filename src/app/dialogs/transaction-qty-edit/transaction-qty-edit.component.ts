@@ -35,7 +35,7 @@ export class TransactionQtyEditComponent implements OnInit {
   }
  
   ngAfterViewInit(): void {
-    this.field_focus.nativeElement.focus();
+    this.field_focus?.nativeElement.focus();
   }
   // transactionQuantityChange(value: any) {
   //   let high:any = this.data.availableQuantity > this.data.replenishmentQuantity ? this.data.replenishmentQuantity : this.data.availableQuantity;

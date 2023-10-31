@@ -75,7 +75,7 @@ private adminApiService: AdminApiService,
     this.OSFieldFilterNames();
   }
   ngAfterViewInit(): void {
-    this.field_focus.nativeElement.focus();
+    this.field_focus?.nativeElement.focus();
   }
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {

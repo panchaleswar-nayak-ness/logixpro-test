@@ -128,7 +128,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.field_focus.nativeElement.focus();
+    this.field_focus?.nativeElement.focus();
   }
 
   public OSFieldFilterNames() { 
