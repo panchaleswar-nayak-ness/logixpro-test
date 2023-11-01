@@ -254,6 +254,8 @@ export class ProcessPicksComponent implements OnInit {
   }
 
   createToteSetupTable(pickBatchQuantity: any) {
+    this.pickType = 'MixedZones';
+    this.TOTE_SETUP = [];
     for (let index = 0; index < pickBatchQuantity; index++) {
       this.TOTE_SETUP.push({ position: index + 1, toteID: '', orderNumber: '', priority: '' },);
     }
