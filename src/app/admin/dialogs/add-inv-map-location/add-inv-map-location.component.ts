@@ -85,7 +85,8 @@ export class AddInvMapLocationComponent implements OnInit {
   routeFromIM: boolean = false;
   routeFromOM: boolean = false;
   searchItemNumbers
-
+  warehouseSensitive: boolean;
+  dateSensitive: boolean;
   @ViewChild('cellSizeVal') cellSizeVal: ElementRef;
   @ViewChild('velCodeVal') velCodeVal: ElementRef;
   @ViewChild('location_name') location_name: ElementRef;
@@ -184,7 +185,6 @@ export class AddInvMapLocationComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.fieldNames=this.data?.fieldName;
-    console.log(this.data.detailData)
     if (this.data.detailData) {
       this.getDetailInventoryMapData = this.data.detailData;
       this.zone = this.getDetailInventoryMapData.zone;
@@ -223,11 +223,9 @@ export class AddInvMapLocationComponent implements OnInit {
       
 
     });
-
       this.searchByShipVia
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
-        debugger
         this.autocompleteSearchColumn();
       });
     
@@ -424,7 +422,7 @@ export class AddInvMapLocationComponent implements OnInit {
     let value = this.addInvMapLocation.controls['zone'].value + this.addInvMapLocation.controls['carousel'].value + this.addInvMapLocation.controls['row'].value + this.addInvMapLocation.controls['shelf'].value + this.addInvMapLocation.controls['bin'].value;
     this.addInvMapLocation.controls['locationNumber'].setValue(value);
   }
-  onSubmit(form: FormGroup) { 
+  onSubmit(form: FormGroup) {
     let invMapIDs={
       invMapID:this.getDetailInventoryMapData.invMapID,
       masterInvMapID:this.getDetailInventoryMapData.masterInvMapID
@@ -435,29 +433,37 @@ export class AddInvMapLocationComponent implements OnInit {
             this.clickSubmit = false;
             this.iAdminApiService.updateInventoryMap(form.value,invMapIDs).subscribe((res) => {
               this.clickSubmit = true;
-              
-              if (res.isExecuted) {
-                this.global.ShowToastr('success',"Your details have been updated", 'Success!');
-
-                this.dialog.closeAll()
-              }
-
-              else {
-
-                
-                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-                console.log("updateInventoryMap",res.responseMessage);
-
-              }
+                if(this.warehouseSensitive && res.data.warehouse == ''){
+                  this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
+                  return
+                }
+                if(this.dateSensitive && res.data.dateSensitive == ''){
+                  this.global.ShowToastr('error',"Item is date sensitive. Please set date sensitive before saving.", 'Warning!');
+                  return
+                }
+                if (res.isExecuted) {
+                  this.global.ShowToastr('success',"Your details have been updated", 'Success!');
+                  this.dialog.closeAll()
+                }
+                else {
+                  this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                  console.log("updateInventoryMap",res.responseMessage);
+                }
             });
           } else {
             this.clickSubmit = false;
             this.iAdminApiService.createInventoryMap(form.value).subscribe((res) => {
               this.clickSubmit = true;
-              
+              if(this.warehouseSensitive && res.data.warehouse == ''){
+                this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
+                return
+              }
+              if(this.dateSensitive && res.data.dateSensitive == ''){
+                this.global.ShowToastr('error',"Item is date sensitive. Please set date sensitive before saving.", 'Warning!');
+                return
+              }
               if (res.isExecuted) {
                 this.global.ShowToastr('success',"Your details have been added", 'Success!');
-
                 this.dialog.closeAll()
               }
 
@@ -575,9 +581,12 @@ export class AddInvMapLocationComponent implements OnInit {
 
     this.iAdminApiService.getItemNumDetail(payload).subscribe((res) => {
       if (res.isExecuted) {
+        this.warehouseSensitive=res.data.warehouseSensitive;
+        this.dateSensitive=res.data.dateSensitive;
         this.unitOFMeasure =res.data.unitOfMeasure 
         let match = '';
         let expected = '';
+        
         if (cellSizeVal != res.data.cellSize && res.data.cellSize) {
           match += 'Cell Size';
           expected += ' Expecting Cell Size: ' + res.data.cellSize;
