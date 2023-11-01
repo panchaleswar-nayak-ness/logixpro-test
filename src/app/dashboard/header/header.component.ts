@@ -60,16 +60,22 @@ constructor(
       
    this.isConfigUser=  this.authService.isConfigUser()
     router.events.subscribe((val: any) => {
+      this.breadcrumbList = [];
       if(!this.global.changesConfirmation){
-
-        this.breadcrumbList = [];
         if(!this.authService.isConfigUser()){
-            this.breadcrumbList.push({
+          this.breadcrumbList.push({
               name:'LogixPro',
               menu: '',
               value:'/dashboard'
             })
           }
+      }else{
+          this.breadcrumbList.push({
+              name:'LogixPro',
+              menu: '',
+              value:'/dashboard'
+            })
+      
       }
   
       if(val instanceof NavigationEnd){
@@ -107,7 +113,7 @@ constructor(
     
          
          this.titleService.setTitle(`LogixPro  ${element.toLowerCase() !='adminprefrences'? this.capitalizeFirstLetter(element).replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2"):'Preferences'}`);
-         
+          
         this.breadcrumbList.push({
           name: element.toLowerCase() !='adminprefrences'? this.capitalizeFirstLetter(element).replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2"):'Preferences',
           menu: element,
@@ -192,8 +198,7 @@ constructor(
       for (let i = 0; i <= index; i++) {
         if(this.breadcrumbList[i].menu!='') Url += this.breadcrumbList[i].value; 
       }   
-       this.router.navigate([Url]);
-        
+       this.router.navigate([Url]); 
        this.sharedService.BroadCastMenuUpdate(Url.toString());
     }  
     if (!menu) {
@@ -201,8 +206,7 @@ constructor(
       this.router.navigate(['/dashboard']);
       this.sharedService.resetSidebar();
 
-      let filter = this.breadcrumbList.filter(e => e.name == "Dashboard");
-
+      let filter = this.breadcrumbList.filter(e => e.name == "Dashboard"); 
       if (filter.length == 0) {
         this.breadcrumbList.push({
           name:'Dashboard',
