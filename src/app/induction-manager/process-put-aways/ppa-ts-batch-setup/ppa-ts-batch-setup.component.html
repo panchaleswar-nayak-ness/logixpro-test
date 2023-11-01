@@ -12,8 +12,13 @@
                             [hideRequiredMarker]="hideRequiredControlItem.value">
                             <mat-label>Batch ID</mat-label>
 
-                            <input #batchFocus (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
-                                [(ngModel)]="batchId" [matAutocomplete]="item"
+                            <input 
+                                #batchFocus 
+                                (keydown.shift.enter)="$event.preventDefault()" 
+                                matInput 
+                                type="text"
+                                [(ngModel)]="batchId" 
+                                [matAutocomplete]="item"
                                 (ngModelChange)="this.searchByItem.next($event)"
                                 (keyup)="callFun('batchIdKeyup',undefined)">
                             <button matSuffix *ngIf="batchId" class="clear-btn"

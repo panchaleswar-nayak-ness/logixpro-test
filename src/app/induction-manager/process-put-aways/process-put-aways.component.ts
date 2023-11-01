@@ -63,9 +63,9 @@ export class ProcessPutAwaysComponent implements OnInit {
   imPreferences:any;
   public assignedZonesArray = [{ zone: '' }];
   searchAutocompleteItemNum: any = [];
-  searchByItem: any = new Subject<string>();
-  floatLabelControlItem: any = new FormControl('item' as FloatLabelType);
-  hideRequiredControlItem = new FormControl(false);
+  searchByItem2: any = new Subject<string>();
+  floatLabelControlItem2: any = new FormControl('item2' as FloatLabelType);
+  hideRequiredControlItem2 = new FormControl(false);
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('matRef') matRef: MatSelect;
@@ -169,14 +169,10 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.getProcessPutAwayIndex();
     this.OSFieldFilterNames();
     this.imPreferences=this.global.getImPreferences();
-    this.searchByItem
+    this.searchByItem2
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
-        if (value == 1) {
-          this.autocompleteSearchColumnItem2();
-        } else {
-          this.autocompleteSearchColumnItem();
-        }
+        this.autocompleteSearchColumnItem2();
       });
   }
 
@@ -310,8 +306,8 @@ export class ProcessPutAwaysComponent implements OnInit {
     );
   }
 
-  getFloatLabelValueItem(): FloatLabelType {
-    return this.floatLabelControlItem.value || 'item';
+  getFloatLabelValueItem2(): FloatLabelType {
+    return this.floatLabelControlItem2.value || 'item2';
   }
 
   gridAction(action: any) {
