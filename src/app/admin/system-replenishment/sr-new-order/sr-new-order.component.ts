@@ -341,7 +341,7 @@ export class SrNewOrderComponent implements OnInit {
           });
           dialogRef2.afterClosed().subscribe((result) => {
             if (result == 'Yes') {
-              alert('The print service is currently offline');
+              this.global.Print(`FileName:printReprocessTransactions|History:0|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`);
             }
           });
         }
