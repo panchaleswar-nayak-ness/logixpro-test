@@ -5,7 +5,7 @@
                 <mat-form-field class="w-100 custom-form-field custom-form-field-bg-white" appearance="outline">
                     <mat-label>Order Number/Tote</mat-label>
                     <input type="text" aria-label="Search" [(ngModel)]="OrderNumberTote" (keypress)="StagingLocsOrderNum($event)" matInput #autoFocusField>
-                    <button matSuffix *ngIf="OrderNumberTote" class="clear-btn"  (click)="OrderNumberTote= ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                    <button matSuffix *ngIf="OrderNumberTote" class="clear-btn"  (click)="OrderNumberTote= ''; clearAll();"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                 </mat-form-field>
             </div>
         </div>

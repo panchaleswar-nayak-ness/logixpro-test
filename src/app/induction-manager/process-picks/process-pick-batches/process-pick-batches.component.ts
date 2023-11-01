@@ -125,7 +125,7 @@ export class ProcessPickBatchesComponent   {
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
 
 
-      if (!result) {
+      if (result) {
         if (result.length > 0) {
           this.allOrders = result;
           this.TOTE_SETUP.forEach((element, key) => {
