@@ -241,7 +241,8 @@ globalErrorMsg() {
       return  this.dialog.open(component, {
           height: item.height?item.height:'auto',
           width: item.width ? item.width:'600px',
-        disableClose:item.disableClose ?? true,
+          disableClose:item.disableClose ?? true,
+          autoFocus: item.autoFocus || '__non_existing_element__',
           data: item.data,
         });
       }

@@ -20,14 +20,20 @@
             <div class="card p-3 mb-2">
               <div class="row align-items-center">
                 <div class="col-xl-4">
-                  <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
+                  <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline"
+                  [floatLabel]="getFloatLabelValueItem2()"
+                  [hideRequiredMarker]="hideRequiredControlItem2.value">
                     <mat-label>Batch ID</mat-label>
                     
-                    <input  (keydown.shift.enter)="$event.preventDefault()" matInput 
-                        [(ngModel)]="batchId2" [matAutocomplete]="item2"
-                        (click)="searchByItem.next(1)"
-                        type="text" #batchVal
-                        (ngModelChange)="this.searchByItem.next(1)" (focusout)="onFocusOutBatchID(batchVal.value)">
+                    <input 
+                        (keydown.shift.enter)="$event.preventDefault()" 
+                        matInput 
+                        [(ngModel)]="batchId2"
+                        [matAutocomplete]="item2"
+                        type="text" 
+                        #batchVal
+                        (ngModelChange)="this.searchByItem2.next($event)" 
+                        (focusout)="onFocusOutBatchID(batchVal.value)">
                         <button matSuffix *ngIf="batchId2" class="clear-btn" (click)=" batchId2 = ''" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
 
                     <mat-autocomplete class="card custom-scroll" #item2="matAutocomplete">

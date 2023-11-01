@@ -1654,13 +1654,8 @@ public importFile(body){
   return this.Api.importFile(payload);
 }
 
-public validateNewDesign(body){
-     const payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
-      ...body
-    }
-  return this.Api.validateNewDesign(payload);
+public validateNewDesign(body){ 
+  return this.Api.validateNewDesign(body);
 }
 public getLLDesignerNewDesign(body){
      const payload = {
