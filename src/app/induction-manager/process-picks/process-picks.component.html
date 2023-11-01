@@ -24,7 +24,7 @@
                                 <mat-label>Batch ID</mat-label>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
                                     [(ngModel)]="batchID" #batch_id required="required">
-                                    <button matSuffix *ngIf="batchID" class="clear-btn"  (click)="batchID= ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                                    <button matSuffix *ngIf="batchID" class="clear-btn"  (click)="batchID= '';createToteSetupTable(pickBatchQuantity)"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             </mat-form-field>
                         </div>
                     </div>

@@ -56,7 +56,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.NewDesignTestData = result ?? this.NewDesignTestData;
+      this.NewDesignTestData = result ? result : '';
     }
     );
   }
@@ -101,7 +101,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
     // have to convert later
 
     if(valid){
-      
+      debugger
       this.iAdminApiService.validateNewDesign(newParams).subscribe((res=>{
         if(!res.data){
           this.global.ShowToastr('error',`Validation for adding a new report failed with an unknown error.  Please contact Scott Tech for support if this persists.`, 'Error!');
