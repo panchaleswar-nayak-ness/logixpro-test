@@ -430,6 +430,10 @@ export class AddInvMapLocationComponent implements OnInit {
         if (this.clickSubmit) {
           if (this.data.detailData) {
             this.clickSubmit = false;
+            if(!this.zoneChecker(form.value.zone, form.value.location)){
+              this.global.ShowToastr('error',"Zone and Location need be set via the dropdown in order to save.", 'Warning!');
+              return
+            }
             if(this.warehouseSensitive && form.value.warehouse == ''){
               this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
               return
@@ -559,11 +563,14 @@ export class AddInvMapLocationComponent implements OnInit {
   }
   loadZones(zone: any) {
     this.zoneList = this.locZoneList.filter(option => option.locationName.includes(zone.option.value));
-    this.addInvMapLocation.controls['zone'].setValue(this.zoneList[0].zone);
-    this.updateItemNumber('zone', this.zoneList[0].zone);
-
+    this.addInvMapLocation.controls['zone'].setValue(this.zoneList[0]?.zone);
+    this.updateItemNumber('zone', this.zoneList[0]?.zone);
   }
-
+  
+  zoneChecker(zone, location) { //To check if the zone and location are selected from dropdown.
+    return this.locZoneList.some(item => item.zone === zone && item.locationName === location);
+  }
+  
 
   loadItemDetails(item: any) {
     this.itemNumberList.forEach(val => {
@@ -611,7 +618,7 @@ export class AddInvMapLocationComponent implements OnInit {
   updateItemNumber(col?: string, val?: any) {
 
     if (col === 'zone') {
-      this.zone = val.toString();
+      this.zone = val?.toString();
     }
     if (col === 'carousel') {
       this.carousel = val.toString();
