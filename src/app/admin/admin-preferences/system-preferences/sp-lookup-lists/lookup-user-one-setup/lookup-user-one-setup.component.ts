@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { catchError, of } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
@@ -17,6 +17,7 @@ import { SharedService } from 'src/app/services/shared.service';
 export class LookupUserOneSetupComponent implements OnInit {
   userF1List :any = new MatTableDataSource([]);
   AddBtn;
+  @Input() label;
   fieldNames:any;
   public iAdminApiService: IAdminApiService;
   constructor(private Api:ApiFuntions,
@@ -96,10 +97,6 @@ export class LookupUserOneSetupComponent implements OnInit {
     }))
   }
 
-
-
-
-
   deleteUserF1(ele){
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
@@ -108,7 +105,7 @@ export class LookupUserOneSetupComponent implements OnInit {
       disableClose:true,
       data: {
         action: 'delete',
-        actionMessage:` ${ele.currentVal} from the Adjustment Reason lookup list. `
+        actionMessage:` ${ele.currentVal} from the ${this.label} `
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
@@ -122,9 +119,7 @@ export class LookupUserOneSetupComponent implements OnInit {
           if(res.isExecuted){
             this.getUserFeild1()
           }
-
           else {
-            
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
             console.log("deleteUserfieldLookUp",res.responseMessage);
           }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { catchError, of } from 'rxjs';
@@ -17,6 +17,7 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class LookupUserTwoSetupComponent implements OnInit {
 
+  @Input() label;
   userF2List :any = new MatTableDataSource([]);
   AddBtn;
   public iAdminApiService: IAdminApiService;
@@ -108,7 +109,7 @@ export class LookupUserTwoSetupComponent implements OnInit {
       disableClose:true,
       data: {
         action: 'delete',
-        actionMessage:` ${ele.currentVal} from the Adjustment Reason lookup list. `
+        actionMessage:` ${ele.currentVal} from the ${this.label} `
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
