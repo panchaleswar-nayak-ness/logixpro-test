@@ -59,7 +59,7 @@ export class ChangePasswordComponent implements OnInit {
           else this.global.ShowToastr('error',responseMessage?.toString(), 'Error!');
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr('error', res.responseMessage, 'Error!');
           console.log("changePassword",res.responseMessage);
         }
         
