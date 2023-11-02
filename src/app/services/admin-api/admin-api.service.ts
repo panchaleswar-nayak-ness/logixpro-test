@@ -971,8 +971,7 @@ export class AdminApiService implements IAdminApiService {
     body.inventoryMapID= mapID?.invMapID ?? 0;
     body.masterInventoryMapID=mapID?.masterInvMapID ?? 0;
      const asArray = Object.entries(body); 
-     const filtered = asArray.filter(([key, value]) =>  value != ''); 
-     let payload = Object.fromEntries(filtered); 
+     let payload = Object.fromEntries(asArray); 
      let userData = this.authService.userData(); 
       payload['username'] = userData.userName;
       payload["wsid"] =userData.wsid;
