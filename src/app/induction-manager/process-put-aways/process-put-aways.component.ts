@@ -26,6 +26,9 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { SharedService } from 'src/app/services/shared.service';
+import { Router } from '@angular/router';
+import { QueryParams } from 'angular-routing';
 
 
 export interface PeriodicElement {
@@ -132,6 +135,9 @@ export class ProcessPutAwaysComponent implements OnInit {
     public inductionManagerApi: InductionManagerApiService,
     public adminApiService: AdminApiService,
     private _liveAnnouncer: LiveAnnouncer,
+    private router:Router,
+    private sharedService:SharedService,
+
   ) { this.iAdminApiService = adminApiService;
     this.iinductionManagerApi = inductionManagerApi;}
   ngAfterViewInit() {
@@ -901,11 +907,11 @@ export class ProcessPutAwaysComponent implements OnInit {
                     heading: ''
                   },
                 });
-          
                 dialogRef.afterClosed().subscribe((result) => {
                   if(result){
                     this.ifAllowed=false;
-                    window.open(`/#/InductionManager/Admin/InventoryMaster?addItemNumber=${this.inputValue}`, '_self');
+                    this.router.navigate([`/InductionManager/Admin/InventoryMaster`] ,{ queryParams: { addItemNumber:this.inputValue } });
+                    this.sharedService.updateLoadMenuFunction(`/InductionManager/Admin/InventoryMaster`.toString()); 
     
                   }
                   
@@ -989,11 +995,11 @@ export class ProcessPutAwaysComponent implements OnInit {
                 heading: ''
               },
             });
-      
             dialogRef.afterClosed().subscribe((result) => {
               if(result){
                 this.ifAllowed=false;
-                window.open(`/#/InductionManager/Admin/InventoryMaster?addItemNumber=${this.inputValue}`, '_self');
+                this.router.navigate([`/InductionManager/Admin/InventoryMaster`] ,{ queryParams: { addItemNumber:this.inputValue } });
+                this.sharedService.updateLoadMenuFunction(`/InductionManager/Admin/InventoryMaster`.toString()); 
               }
             });
             return

@@ -130,7 +130,7 @@ export class SideNavComponent implements OnInit {
                 this.sharedService?.sideMenuHideObserver?.subscribe(menu => {
                   this.isMenuHide = menu;   
                 });
-                this.sharedService?.SidebarMenupdate?.subscribe((data: any) => {
+                this.sharedService?.SidebarMenupdate?.subscribe((data: any) => { 
                   let Menuobj = this.menus.find(x=>x.route == data);
                   if(Menuobj==null&&this.authService.UserPermissonByFuncName('Admin Menu')) Menuobj = this.adminMenus.find(x=>x.route == data);
                   this.loadMenus(Menuobj);
@@ -255,7 +255,7 @@ export class SideNavComponent implements OnInit {
 
     this.sharedService.updateMenuFromInside.subscribe((menuOpen)=>{
          
-         this.loadMenus(menuOpen)
+         this.loadMenus({route:menuOpen})
     })
   }
 
@@ -273,9 +273,10 @@ redirect(){
   }
 
   loadMenus(menu: any) {
-    if(this.global.changesConfirmation){
-      return
-    }
+     
+    // if(this.global.changesConfirmation && !IsActive){
+    //   return
+    // }
         this.sharedService.updateLoggedInUser(this.userData.userName,this.userData.wsid,menu.route);
     if (!menu) {
       menu = {route : '/dashboard'};      
