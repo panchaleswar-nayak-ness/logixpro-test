@@ -108,7 +108,7 @@
                     <th mat-header-cell *matHeaderCellDef > Weight </th>
                     <td mat-cell *matCellDef="let element"> 
                         <mat-form-field class="custom-form-field w-60" appearance="outline">
-                            <input matInput type="text" readonly="false" [(ngModel)]="element.weight" [disabled]="shippingComp" >
+                            <input matInput type="number" readonly="false" [(ngModel)]="element.weight" [disabled]="shippingComp" >
                         </mat-form-field>
                     </td>
                 </ng-container> 
@@ -156,7 +156,7 @@
                     <th mat-header-cell *matHeaderCellDef> Cube </th>
                     <td mat-cell *matCellDef="let element"> 
                         <mat-form-field class="custom-form-field w-60" appearance="outline">
-                            <input matInput type="text" readonly="false" [(ngModel)]="element.cube" [disabled]="shippingComp" >
+                            <input matInput type="number" readonly="false" [(ngModel)]="element.cube" [disabled]="shippingComp" >
                         </mat-form-field>
                     </td>
                 </ng-container>    
