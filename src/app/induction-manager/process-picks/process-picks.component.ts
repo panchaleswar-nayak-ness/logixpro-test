@@ -223,6 +223,7 @@ export class ProcessPicksComponent implements OnInit {
 
       if (res.isExecuted && res.data)
       {
+        this.imPreferences = res?.data?.imPreference;
 
       this.countInfo = res.data.countInfo;
       this.pickBatchesList = res.data.pickBatches;
