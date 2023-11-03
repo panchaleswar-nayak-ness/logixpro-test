@@ -153,6 +153,7 @@ export class AddInvMapLocationComponent implements OnInit {
   isInputDisabled:boolean=false;
   public iCommonAPI : ICommonApi;
 
+
   constructor(
     public commonAPI : CommonApiService,
     private global:GlobalService,
@@ -171,6 +172,7 @@ export class AddInvMapLocationComponent implements OnInit {
       this.headerLable = 'Add Location';
     } else if (data.mode == "editInvMapLocation") {
       this.headerLable = 'Update Location';
+      this.loadItemDetails(this.data.detailData.itemNumber);
     }
 
     if(this.router.url=="/InductionManager/Admin/InventoryMap" || this.router.url=="/OrderManager/InventoryMap"){
@@ -179,7 +181,6 @@ export class AddInvMapLocationComponent implements OnInit {
     }
 
     this.iCommonAPI = commonAPI;
-
   }
 
   ngOnInit(): void {
@@ -195,7 +196,6 @@ export class AddInvMapLocationComponent implements OnInit {
       this.itemDescription = this.getDetailInventoryMapData.description;
       this.quantity = this.getDetailInventoryMapData.itemQuantity; 
       this.unitOFMeasure = this.getDetailInventoryMapData.unitOfMeasure; 
-      
       this.updateItemNumber();
       this.initializeDataSet();
     } else {
@@ -399,7 +399,6 @@ export class AddInvMapLocationComponent implements OnInit {
       locationNumber: [this.getDetailInventoryMapData.locationNumber || '',],
       locationID: [this.getDetailInventoryMapData.locationID || ''],
       altLight: [this.getDetailInventoryMapData.altLight || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]]
-
       //velocity
     });
   }
@@ -431,16 +430,20 @@ export class AddInvMapLocationComponent implements OnInit {
         if (this.clickSubmit) {
           if (this.data.detailData) {
             this.clickSubmit = false;
+            if(!this.zoneChecker(form.value.zone, form.value.location)){
+              this.global.ShowToastr('error',"Zone and Location need be set via the dropdown in order to save.", 'Warning!');
+              return
+            }
+            if(this.warehouseSensitive && form.value.warehouse == ''){
+              this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
+              return
+            }
+            if(this.dateSensitive && form.value.dateSensitive == ''){
+              this.global.ShowToastr('error',"Item is date sensitive. Please set date sensitive before saving.", 'Warning!');
+              return
+            }
             this.iAdminApiService.updateInventoryMap(form.value,invMapIDs).subscribe((res) => {
               this.clickSubmit = true;
-                if(this.warehouseSensitive && res.data.warehouse == ''){
-                  this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
-                  return
-                }
-                if(this.dateSensitive && res.data.dateSensitive == ''){
-                  this.global.ShowToastr('error',"Item is date sensitive. Please set date sensitive before saving.", 'Warning!');
-                  return
-                }
                 if (res.isExecuted) {
                   this.global.ShowToastr('success',"Your details have been updated", 'Success!');
                   this.dialog.closeAll()
@@ -452,16 +455,16 @@ export class AddInvMapLocationComponent implements OnInit {
             });
           } else {
             this.clickSubmit = false;
+            if(this.warehouseSensitive && form.value.warehouse == ''){
+              this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
+              return
+            }
+            if(this.dateSensitive && form.value.dateSensitive == ''){
+              this.global.ShowToastr('error',"Item is date sensitive. Please set date sensitive before saving.", 'Warning!');
+              return
+            }
             this.iAdminApiService.createInventoryMap(form.value).subscribe((res) => {
               this.clickSubmit = true;
-              if(this.warehouseSensitive && res.data.warehouse == ''){
-                this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
-                return
-              }
-              if(this.dateSensitive && res.data.dateSensitive == ''){
-                this.global.ShowToastr('error',"Item is date sensitive. Please set date sensitive before saving.", 'Warning!');
-                return
-              }
               if (res.isExecuted) {
                 this.global.ShowToastr('success',"Your details have been added", 'Success!');
                 this.dialog.closeAll()
@@ -560,10 +563,15 @@ export class AddInvMapLocationComponent implements OnInit {
   }
   loadZones(zone: any) {
     this.zoneList = this.locZoneList.filter(option => option.locationName.includes(zone.option.value));
-    this.addInvMapLocation.controls['zone'].setValue(this.zoneList[0].zone);
-    this.updateItemNumber('zone', this.zoneList[0].zone);
-
+    this.addInvMapLocation.controls['zone'].setValue(this.zoneList[0]?.zone);
+    this.updateItemNumber('zone', this.zoneList[0]?.zone);
   }
+  
+  zoneChecker(zone, location) { //To check if the zone and location are selected from dropdown.
+    return this.locZoneList.some(item => item.zone === zone && item.locationName === location);
+  }
+  
+
   loadItemDetails(item: any) {
     this.itemNumberList.forEach(val => {
       if (val.itemNumber === item) {
@@ -572,11 +580,12 @@ export class AddInvMapLocationComponent implements OnInit {
     })
     let payload = {
       "itemNumber": item,
-      "zone": this.addInvMapLocation.get('zone')?.value
+      "zone": this.addInvMapLocation?.get('zone')?.value
     }
+    
 
-    const cellSizeVal = this.cellSizeVal.nativeElement.value
-    const velCodeVal = this.velCodeVal.nativeElement.value
+    const cellSizeVal = this.cellSizeVal?.nativeElement.value
+    const velCodeVal = this.velCodeVal?.nativeElement.value
     
 
     this.iAdminApiService.getItemNumDetail(payload).subscribe((res) => {
@@ -609,7 +618,7 @@ export class AddInvMapLocationComponent implements OnInit {
   updateItemNumber(col?: string, val?: any) {
 
     if (col === 'zone') {
-      this.zone = val.toString();
+      this.zone = val?.toString();
     }
     if (col === 'carousel') {
       this.carousel = val.toString();
@@ -624,6 +633,7 @@ export class AddInvMapLocationComponent implements OnInit {
       this.bin = val.toString();
     }
     this.autoFillLocNumber = this.zone + this.carousel + this.row + this.shelf + this.bin;
+
   }
 
 
