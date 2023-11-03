@@ -95,7 +95,7 @@ export class TableContextMenuComponentComponent {
  
   onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) 
   {
-    if (this.componentName == 'invMap' || this.componentName == 'moveItem' || this.componentName == 'sysRepCurOrd' || this.componentName == 'sysRepNewOrd' 
+    if (this.componentName == 'InvMap' || this.componentName == 'moveItem' || this.componentName == 'sysRepCurOrd' || this.componentName == 'sysRepNewOrd' 
         || this.componentName == 'omCreateOrd' || this.componentName == 'omOrderManager' || this.componentName == 'eventLog' || this.componentName == 'toteTransManager')
     {
       if(SelectedItem != undefined) {

@@ -15,7 +15,7 @@
         </div>
         <span>Order Number: {{orderNumber}} is marked as Shipping Complete</span>
     </div>
-    <div *ngIf="(shipComp==''||shipComp==null) && (confPackEnable != '' && confPackEnable != null && confPackEnable!='Disable')" class="mat-card d-flex mat-elevation-z g-card br-14 label-green w-100 mb-2">
+    <div *ngIf="(shipComp==''||shipComp==null) && (confPackEnable != '' && confPackEnable != null && confPackEnable=='Disable')" class="mat-card d-flex mat-elevation-z g-card br-14 label-green w-100 mb-2">
         <div class="mat-icon me-lg-3">
             <span class="material-symbols-outlined">
                 info
