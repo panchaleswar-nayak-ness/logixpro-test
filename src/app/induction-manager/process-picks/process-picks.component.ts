@@ -261,6 +261,7 @@ export class ProcessPicksComponent implements OnInit {
       this.TOTE_SETUP.push({ position: index + 1, toteID: '', orderNumber: '', priority: '' },);
     }
     this.dataSource = new MatTableDataSource<any>(this.TOTE_SETUP);
+    this.allOrders = [];
   }
 
   private _filter(name: string): any[] {

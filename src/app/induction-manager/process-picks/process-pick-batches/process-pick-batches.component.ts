@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ViewOrdersComponent } from 'src/app/dialogs/view-orders/view-orders.component';
 import { takeUntil } from 'rxjs';
@@ -32,6 +32,12 @@ export class ProcessPickBatchesComponent   {
   constructor(private global:GlobalService,
     private authService: AuthService) { 
     this.userData = this.authService.userData();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void{
+    if (changes['allOrders']) {
+      this.allOrders = changes['allOrders']?.currentValue;
+    }
   }
 
   openWorkstationZone() {
