@@ -93,19 +93,18 @@ export class TableContextMenuComponentComponent {
      return this.filterService.getType(val);
   }
  
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
+  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) 
+  {
     if (this.componentName == 'invMap' || this.componentName == 'moveItem' || this.componentName == 'sysRepCurOrd' || this.componentName == 'sysRepNewOrd' 
         || this.componentName == 'omCreateOrd' || this.componentName == 'omOrderManager' || this.componentName == 'eventLog' || this.componentName == 'toteTransManager')
     {
       if(SelectedItem != undefined) {
-        this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
         this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
       }
       this.filterString = this.filterString != "" ? this.filterString : "1 = 1";
     } 
     else if(this.componentName == 'deAllOrd' || this.componentName == 'openTransOnHold' || this.componentName == 'transOrders' || this.componentName == 'transHistory') 
     {
-      this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
       if(FilterColumnName != "" || Condition == "clear") {
         this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
         this.filterString = this.filterString != "" ? this.filterString : "1=1";
@@ -114,5 +113,4 @@ export class TableContextMenuComponentComponent {
     
     this.optionSelected.emit(this.filterString);
   }
-
 }
