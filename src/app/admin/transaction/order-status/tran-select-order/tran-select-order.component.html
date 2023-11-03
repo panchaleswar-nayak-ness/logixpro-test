@@ -50,7 +50,7 @@
               </span>
               <input  (keyup.enter)="selectOrderByTote()" (keyup)="getNextItemNo($event)" type="text" placeholder="Search" aria-label="Number" matInput [disabled]="!columnSelect"
                 [(ngModel)]='searchField' [matAutocomplete]="auto">
-                <button matSuffix *ngIf="searchField" class="clear-btn"  (click)="searchField = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                <button matSuffix *ngIf="searchField" class="clear-btn"  (click)="searchField = ''; clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
               <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
                 <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
                   {{option}}
