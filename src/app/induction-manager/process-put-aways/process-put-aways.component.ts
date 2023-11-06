@@ -94,7 +94,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   searchAutocompleteItemNum2: any = [];
   dataSource2: any= new MatTableDataSource<any>([]);
 
-  inputType = "any";
+  inputType = "Any";
   inputValue = "";
 
   nextPos: any;
