@@ -26,8 +26,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './cm-shipping.component.html',
   styleUrls: ['./cm-shipping.component.scss']
 })
-export class CmShippingComponent implements OnInit {
-  @ViewChild('freight_focus') freight_focus: ElementRef;
+export class CmShippingComponent implements OnInit { 
   IsLoading: any = false;
   displayedColumns: string[] = ['containerID',  'carrier', 'trackingNum', 'action'];
   tableData = ELEMENT_DATA;
@@ -42,95 +41,79 @@ export class CmShippingComponent implements OnInit {
 
   constructor(
     public consolidationAPI : ConsolidationApiService,
-    private authService: AuthService, 
-    private global:GlobalService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<CmShippingComponent>) 
-  {
+    private authService : AuthService,
+    private global : GlobalService,
+    @Inject(MAT_DIALOG_DATA) public data : any,
+    public dialogRef : MatDialogRef<CmShippingComponent>
+  ) {
     this.orderNumber = this.data.orderNumber;
     this.userData = this.authService.userData();
     this.IconsolidationAPI = consolidationAPI;
   }
 
   ngOnInit(): void { 
-
     this.shippingData = [];
     this.carriers = [];
-     
     this.shippingComp = false;
     this.ShippingIndex();
   }
-  ngAfterViewInit(): void {
-    this.freight_focus.nativeElement.focus();
+  ngAfterViewInit(): void { 
   }
-  async ShippingIndex() {  
+
+  async ShippingIndex() {
     if (this.orderNumber != "") {
-      let obj: any = {
-        orderNumber: this.orderNumber
-      }
+      let obj: any = { orderNumber: this.orderNumber };
       this.IsLoading = true;
       this.IconsolidationAPI.ShippingIndex(obj).subscribe((res: any) => {
         if(res.isExecuted)
-        {
           if (res?.data) {
             this.shippingData = res.data.shippingData;
             this.carriers = res.data.carriers;
             this.shippingPreferences = res.data.shippingPreferences;
-            let indx=0;
+            let indx = 0;
             for (let key in this.shippingPreferences) { 
               if((this.displayedColumns.indexOf(key) <= -1) && this.shippingPreferences[key]){
-            this.displayedColumns.splice((3+indx), 0, key);
-            indx=indx+1;
+                this.displayedColumns.splice((3 + indx), 0, key);
+                indx = indx + 1;
               }
             }
-           this.shippingComp = res.data.shippingComp;
+            this.shippingComp = res.data.shippingComp;
             this.orderNumber = res.data.orderNumber;
             this.IsLoading = false; 
-          }else{  
-            this.IsLoading = false;
-          } 
-        }
+          } else this.IsLoading = false;
         else {
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
           console.log("ShippingIndex",res.responseMessage);
         }
-      
       });
     }
-   
   }
+
   setNumericInRange(low: number, high: number | null): void {
     const element = document.getElementById('input') as HTMLInputElement;
     let value: any = element.value;
-    while ((!$.isNumeric(value) && value.length > 0) || (parseInt(value) > high! && high !== null)) {
-      value = value.substring(0, value.length - 1);
-    };
-    if (low !== null && value < low && value.trim() !== '') {
-      value = low.toString();
-    }
+    while ((!$.isNumeric(value) && value.length > 0) || (parseInt(value) > high! && high !== null)) value = value.substring(0, value.length - 1);
+    if (low !== null && value < low && value.trim() !== '') value = low.toString();
     element.value = value;
   }
 
-  async DeleteItem(element: any,i:any=null) {
-    let obj: any =
-    {
+  async DeleteItem(element : any,i : any = null) {
+    let obj: any = {
       id: element.id,
       orderNumber: this.orderNumber,
       contId: element.containerID,
       carrier: element.carrier,
       trackingNum: element.trackingNum
-    }
+    };
     this.IconsolidationAPI.ShipmentItemDelete(obj).subscribe((res: any) => {
-      if (res?.isExecuted) {
-        this.shippingData = this.shippingData.slice(0,i);
-      }
+      if (res?.isExecuted) this.shippingData = this.shippingData.slice(0,i);
       else {
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         console.log("ShipmentItemDelete",res.responseMessage);
-
       }
     });
   }
+
   async updateShipmentItem(element: any) {
     let obj: any = {
       id: element.id,
@@ -144,12 +127,12 @@ export class CmShippingComponent implements OnInit {
       "width": element.width ? element.width : 0,
       "height": element.height ? element.height : 0,
       "cube": element.cube
-    }
-    this.IconsolidationAPI.ShipmentItemUpdate(obj).subscribe((res: any) => {
-    });
+    };
+    this.IconsolidationAPI.ShipmentItemUpdate(obj).subscribe((res: any) => {});
   }
+
   async ShippingCompShip() {
-    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
+    let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -161,59 +144,47 @@ export class CmShippingComponent implements OnInit {
   
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'Yes') { 
-      let obj: any = {
-        orderNumber: this.orderNumber
-      }
-      this.IconsolidationAPI.SelCountOfOpenTransactionsTemp(obj).subscribe((res: any) => {
-        if (res.isExecuted) {
-          if (res.data == -1) {
-            this.global.ShowToastr('error',"An error has occurred", "Error");
-          } else if (res.data == 0) {
-            //call function to complete shipment
-            this.completeShipment();
-          } else {
-            //for temp
-            let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
-              height: 'auto',
-              width: '560px',
-              autoFocus: '__non_existing_element__',
-      disableClose:true,
-              data: {
-                message: "Back Orders exist for this order number. Still complete shipment?",
-              },
-            });
-          
-            dialogRef.afterClosed().subscribe((result) => {
-              if (result == 'Yes') {  
-              this.completeShipment();
-            }})
+        let obj: any = { orderNumber: this.orderNumber };
+        this.IconsolidationAPI.SelCountOfOpenTransactionsTemp(obj).subscribe((res: any) => {
+          if (res.isExecuted) {
+            if (res.data == -1) this.global.ShowToastr('error',"An error has occurred", "Error");
+            else if (res.data == 0) this.completeShipment();
+            else {
+              let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
+                height: 'auto',
+                width: '560px',
+                autoFocus: '__non_existing_element__',
+                disableClose:true,
+                data: {
+                  message: "Back Orders exist for this order number. Still complete shipment?",
+                },
+              });
+            
+              dialogRef.afterClosed().subscribe((result) => { if (result == 'Yes') this.completeShipment(); });
+            }
           }
-        }
-        else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("SelCountOfOpenTransactionsTemp",res.responseMessage);
-
-        }
-      });
-    
-    }});
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("SelCountOfOpenTransactionsTemp",res.responseMessage);
+          }
+        });
+      }
+    });
  
 
   }
-  async completeShipment() {
 
-    let obj: any = {
-      orderNumber: this.orderNumber
-    }
+  async completeShipment() {
+    let obj: any = { orderNumber: this.orderNumber };
     this.IconsolidationAPI.CompleteShipment(obj).subscribe((res: any) => {
-      if (res?.isExecuted) {
-        this.global.ShowToastr('success',`Order Number: ${this.orderNumber} is marked as Shipping Complete`, "Success");
-      } else {
+      if (res?.isExecuted) this.global.ShowToastr('success',`Order Number: ${this.orderNumber} is marked as Shipping Complete`, "Success");
+      else {
         this.global.ShowToastr('error',"An error has occurred", "Error");
         console.log("CompleteShipment",res.responseMessage);
       }
     });
   }
+
   openCmAddNewItem() {
     let dialogRef:any = this.global.OpenDialog(CmAddNewItemToShipmentComponent, {
       height: 'auto',
