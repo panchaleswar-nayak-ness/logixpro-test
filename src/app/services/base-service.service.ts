@@ -22,7 +22,8 @@ export class BaseService {
    
         return this.http.get<any>(`${environment.apiUrl}${endPoint}`,{
             headers: this.GetHeaders(),
-            params:queryParams
+            params:queryParams,
+            withCredentials: true
           }); 
         
     }
@@ -37,7 +38,8 @@ export class BaseService {
       return await this.http
         .get<any>(`${environment.apiUrl}${endPoint}`,  {
           headers: this.GetHeaders(),
-          params:queryParams
+          params:queryParams,
+          withCredentials: true
         })
         .toPromise();
     }
@@ -56,17 +58,20 @@ export class BaseService {
     public Post(endPoint: string,reqPaylaod: any) { 
         return this.http.post<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
             headers: this.GetHeaders(),
+            withCredentials: true
           });
     }
     public PostFormData(endPoint: string,reqPaylaod: any) { 
         return this.http.post<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
             headers: this.GetHeadersFormData(),
+            withCredentials: true
           });
     }
 
     public Put(endPoint: string,reqPaylaod: any) { 
         return this.http.put<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
             headers: this.GetHeaders(),
+            withCredentials: true
           });
     }
     
@@ -78,7 +83,8 @@ export class BaseService {
        
         return this.http.delete<any>(`${environment.apiUrl}${endPoint}`, {
             headers: this.GetHeaders(),
-            params:queryParams
+            params:queryParams,
+            withCredentials: true
           });
     } 
     
