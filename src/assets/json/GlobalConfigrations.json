@@ -24,7 +24,7 @@
         "Permission": "Admin Release Orders"
     },
     {
-        "path": "/FlowrackReplenishment",
+        "path": "/FlowrackReplenish",
         "Permission": "FlowRack Replenish"
     },
     {
@@ -219,11 +219,11 @@
     },
 
     {
-        "path": "/FlowrackReplenishment/Preferences",
+        "path": "/FlowrackReplenish/Preferences",
         "Permission": "Preferences"
     },
     {
-        "path": "/FlowrackReplenishment/Flowrack",
+        "path": "/FlowrackReplenish/Flowrack",
         "Permission": "Preferences"
     } 
  

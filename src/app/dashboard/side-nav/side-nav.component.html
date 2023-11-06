@@ -17,7 +17,7 @@
     <ng-container *ngFor="let childMenu of childMenus;let i = index">
       
       <mat-list-item 
-        routerLinkActive="{{ (childMenu.route != '/InductionManager' && childMenu.route != '/InductionManager/Admin' && childMenu.route != '/OrderManager' && childMenu.route != '/FlowrackReplenishment' && childMenu.route != '/ConsolidationManager'  && childMenu.route != '/admin') ? 'active' : ''}}" 
+        routerLinkActive="{{ (childMenu.route != '/InductionManager' && childMenu.route != '/InductionManager/Admin' && childMenu.route != '/OrderManager' && childMenu.route != '/FlowrackReplenish' && childMenu.route != '/ConsolidationManager'  && childMenu.route != '/admin') ? 'active' : ''}}" 
         routerLink="{{childMenu.route}}" (click)="isMenuHide ? redirect() : loadMenus(childMenu)"
         [disabled]="childMenu.permission != true ? (isAuthorized(childMenu.permission) || childMenu.route==='#'):false"
         [queryParams]="childMenu.paramsObj"

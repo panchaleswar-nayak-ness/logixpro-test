@@ -111,7 +111,7 @@ const routes: Routes = [
         canActivate:[]
       },
       { 
-        path: 'FlowrackReplenishment', 
+        path: 'FlowrackReplenish', 
         loadChildren: () => import('./flowrack-replenishment/flowrack-replenishment.module').then(m => m.FlowrackReplenishmentModule),
         canActivate:[]
       },

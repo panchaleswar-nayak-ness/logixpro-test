@@ -86,7 +86,7 @@ constructor(
 
         let withoutParam = res.split('?')[0]
         let splittedArray = withoutParam.split('/'); 
-          if(splittedArray[0]==='FlowrackReplenishment'){
+          if(splittedArray[0]==='FlowrackReplenish'){
             splittedArray[0]='FlowrackReplenish'
           }
         splittedArray.forEach((element,i) => {
@@ -193,6 +193,7 @@ constructor(
   }
 
   breadCrumbClick(menu,index:any = null) { 
+    debugger
      if(index != null){ 
       let Url = "";  
       for (let i = 0; i <= index; i++) {
