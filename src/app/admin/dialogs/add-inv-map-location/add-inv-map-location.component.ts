@@ -486,6 +486,17 @@ export class AddInvMapLocationComponent implements OnInit {
 
   }
 
+  itemNumberFocusOut(event: any) {
+    if(this.itemNumberList && this.itemNumberList.length > 0){
+      this.warehouseSensitive =  this.itemNumberList[0].warehouseSensitive;
+      this.dateSensitive =  this.itemNumberList[0].dateSensitive;
+      this.addInvMapLocation.controls['description'].setValue(this.itemNumberList[0].description ?? '');
+    }
+    else{
+      this.searchItemNumbers = "";
+    }
+  }
+
   get f() {
     return this.addInvMapLocation.controls;
   }
