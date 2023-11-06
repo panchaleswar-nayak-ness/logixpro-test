@@ -455,6 +455,10 @@ export class AddInvMapLocationComponent implements OnInit {
             });
           } else {
             this.clickSubmit = false;
+            if(!this.zoneChecker(form.value.zone, form.value.location)){
+              this.global.ShowToastr('error',"Zone and Location need be set via the dropdown in order to save.", 'Warning!');
+              return
+            }
             if(this.warehouseSensitive && form.value.warehouse == ''){
               this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
               return
