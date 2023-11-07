@@ -177,8 +177,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   orderNumber: string = '';
   toteId: string = '';
   public iAdminApiService: IAdminApiService;
-  sdate: any = backDate.toISOString();
-  edate: any = new Date().toISOString();
+  sdate: any = new Date()
+  edate: any = new Date()
   public transType: any = [
     {
       type: 'All Transactions',
@@ -488,8 +488,8 @@ this.router.navigate([]).then((result) => {
   }
 
   resetToTodaysDate() {
-    this.edate = new Date().toISOString();
-    this.sdate = new Date().toISOString();
+    this.edate = new Date()
+    this.sdate = new Date()
     this.columnSearch.searchColumn.colDef='';
     this.columnSearch.searchValue='';
     this.orderNumber='';
@@ -540,8 +540,8 @@ this.router.navigate([]).then((result) => {
   getContentData(isInit: boolean = false) {
     this.payload = {
       draw: 0,
-      sDate: this.sdate,
-      eDate: this.edate,
+      sDate: this.sdate.toLocaleString(),
+      eDate: this.edate.toLocaleString(),
       transType: this.transTypeSelect,
       transStatus: this.transStatusSelect,
       searchString: this.columnSearch.searchValue,
@@ -670,7 +670,7 @@ this.router.navigate([]).then((result) => {
     this.resetColumn();
     this.resetFields();
     this.startdateChange.emit();
-    this.sdate = new Date(event).toISOString();
+    this.sdate = new Date(event);
     this.getContentData();
   }
 
@@ -678,7 +678,7 @@ this.router.navigate([]).then((result) => {
     this.resetColumn();
     this.resetFields();
     this.enddateChange.emit();
-    this.edate = new Date(event).toISOString();
+    this.edate = new Date(event);
     this.getContentData();
   }
   selectStatus(event) {

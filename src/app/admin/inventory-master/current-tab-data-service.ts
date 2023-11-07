@@ -47,7 +47,7 @@ export class CurrentTabDataService {
         console.log("MultiTabs | Removed: "+previousTab);
         this.RemoveTabOnRoute(previousTab);
         this.setPreviousUrl('selectedTab_'+currentTab);
-        return true; // No redirect to dashboard.
+        return false; // No redirect to dashboard.
       }
       else if (currentTab !== previousTab) {
         console.log("MultiTabs | Removed: "+previousTab);

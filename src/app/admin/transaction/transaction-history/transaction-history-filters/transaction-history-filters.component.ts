@@ -31,8 +31,8 @@ export class TransactionHistoryFiltersComponent implements OnInit {
   searchByOrderNumber = new Subject<string>();
   orderNumber: any;
   searchAutocompleteList: any;
-  sdate: any = backDate.toISOString();
-  edate: any = new Date().toISOString();
+  sdate: any = new Date();
+  edate: any = new Date();
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   public userData: any;
 
@@ -67,11 +67,11 @@ export class TransactionHistoryFiltersComponent implements OnInit {
   }
 
   resetToTodaysDate() {
-    this.edate=new Date().toISOString()
-    this.sdate=new Date().toISOString()
+    this.edate=new Date()
+    this.sdate=new Date()
     this.orderNumber='';
     this.searchAutocompleteList = [];
-    this.resetDates.emit({endDate : new Date().toISOString(),startDate : new Date().toISOString()})
+    this.resetDates.emit({endDate : new Date(),startDate : new Date()})
     this.clearData.emit(event);
    
   }
@@ -103,12 +103,12 @@ export class TransactionHistoryFiltersComponent implements OnInit {
       );
   }
   onDateChange(event: any): void {
-    this.sdate = new Date(event).toISOString();
+    this.sdate = new Date(event);
     this.startDate.emit(this.sdate);
   }
 
   onEndDateChange(event: any): void {
-    this.edate = new Date(event).toISOString();
+    this.edate = new Date(event);
     this.endDate.emit(this.edate);
   }
   ngOnDestroy() {

@@ -101,8 +101,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public dataSource: any = new MatTableDataSource();
   @Input() TabIndex:any;
   public detailDataTransHistory: any;
-  public startDate: any = backDate.toISOString();
-  public endDate: any = new Date().toISOString();
+  public startDate: any = new Date().toLocaleString();
+  public endDate: any = new Date().toLocaleString();
   public orderNo: any;
   public payload: any;
   public sortCol: any = 0;
@@ -341,8 +341,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   getContentData() {
     let payload = {
       draw: 0,
-      sDate: this.startDate,
-      eDate: this.endDate,
+      sDate: this.startDate.toLocaleString(),
+      eDate: this.endDate.toLocaleString(),
       searchString: this.columnSearch.searchValue,
       searchColumn: this.selectedDropdown,
       start: this.customPagination.startIndex,
