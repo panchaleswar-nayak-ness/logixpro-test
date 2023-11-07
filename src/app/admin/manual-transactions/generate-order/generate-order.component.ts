@@ -236,7 +236,6 @@ export class GenerateOrderComponent implements OnInit {
         this.SelectOrderComponentComponent?.clearMatSelectList()
         if (res.isExecuted) {
           this.getOrderTableData();
-          this.clearFields();
         }
       });
   }
