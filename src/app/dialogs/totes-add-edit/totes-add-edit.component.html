@@ -28,7 +28,7 @@
         <input #field_focus type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
           [(ngModel)]='fromTote' [matAutocomplete]="auto1"
           (keyup)="searchAutocompleteListFilter1()" (ngModelChange)="searchAutocompleteListFilter1()">
-          <button matSuffix *ngIf="fromTote" class="clear-btn"  (click)="fromTote=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+          <button matSuffix *ngIf="fromTote" class="clear-btn"  (click)="fromTote='';searchAutocompleteListFilter1()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
         <mat-autocomplete #auto1="matAutocomplete"  #autocompleteInventory1>
           <h6 class="card-header matAutoCompHeader  "><span style="margin-left:5%;width:  140px;">Tote ID</span><span style="width: 43%;" >Cells</span> </h6>
   
@@ -52,7 +52,7 @@
         <input type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
           [(ngModel)]='toTote' [matAutocomplete]="auto2" [disabled]="!fromTote"
           (keyup)="searchAutocompleteListFilter2()" (ngModelChange)="searchAutocompleteListFilter2()">
-          <button matSuffix *ngIf="toTote" class="clear-btn"  (click)="toTote=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+          <button matSuffix *ngIf="toTote" class="clear-btn"  (click)="toTote='';searchAutocompleteListFilter2()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
           <mat-autocomplete #auto2="matAutocomplete"  #autocompleteInventory2>
             <h6 class="card-header matAutoCompHeader stickyHeader "><span style="margin-left:5%;width:  140px;">Tote ID</span><span style="width: 43%;" >Cells</span> </h6>
     
