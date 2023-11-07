@@ -31,7 +31,7 @@ export class TransactionHistoryFiltersComponent implements OnInit {
   searchByOrderNumber = new Subject<string>();
   orderNumber: any;
   searchAutocompleteList: any;
-  sdate: any = new Date();
+  sdate: any = new Date(1973,10,7);
   edate: any = new Date();
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   public userData: any;

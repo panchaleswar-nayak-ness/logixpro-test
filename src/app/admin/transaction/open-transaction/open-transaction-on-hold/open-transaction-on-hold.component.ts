@@ -89,11 +89,6 @@ const TRNSC_DATA = [
   { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
   { colHeader: 'emergency', colDef: 'Emergency' },
 ];
-let today = new Date();
-let year = today.getFullYear();
-let month = today.getMonth();
-let day = today.getDate();
-let backDate = new Date(year - 50, month, day);
 @Component({
   selector: 'app-open-transaction-on-hold',
   templateUrl: './open-transaction-on-hold.component.html',
@@ -177,7 +172,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   orderNumber: string = '';
   toteId: string = '';
   public iAdminApiService: IAdminApiService;
-  sdate: any = new Date()
+  sdate: any = new Date(1973,10,7);
   edate: any = new Date()
   public transType: any = [
     {

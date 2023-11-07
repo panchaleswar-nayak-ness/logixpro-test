@@ -193,7 +193,6 @@ constructor(
   }
 
   breadCrumbClick(menu,index:any = null) { 
-    debugger
      if(index != null){ 
       let Url = "";  
       for (let i = 0; i <= index; i++) {
