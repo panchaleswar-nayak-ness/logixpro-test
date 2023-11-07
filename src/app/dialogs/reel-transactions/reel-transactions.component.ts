@@ -340,7 +340,8 @@ CreateReels(){
                                   if(this.imPreferences.printDirectly){
                                     this.PrintCrossDock();
                                   }else{
-                                    window.open(`/#/report-view?file=FileName:PrintReelLabels|OTID:[]|SN:${this.generateReelAndSerial.data[0].reel_serial_number}|Order:${this.data.hvObj.order}|Item:${this.itemNumber}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                                    window.open(`/#/report-view?file=FileName:PrintReelLabels|OTID:[]|SN:${this.generateReelAndSerial.data[0].reel_serial_number}|Order:${this.data.hvObj.order}|Item:${this.itemNumber}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+                                    this.dialogRef.close(SNs[0]);
                                   }
                                   
                                   
