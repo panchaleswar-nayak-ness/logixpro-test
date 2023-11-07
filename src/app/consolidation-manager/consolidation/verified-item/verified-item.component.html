@@ -71,7 +71,7 @@
                         </td>
                     </tr>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns_2" style=" background-color: #F9F9FF;"></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns_2" style=" background-color: var(--clr-table-header);"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns_2;"></tr>
                 </table>
             </ng-scrollbar>
