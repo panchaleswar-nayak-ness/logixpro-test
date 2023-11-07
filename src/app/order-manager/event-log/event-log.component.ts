@@ -5,15 +5,16 @@ import { OmEventLogEntryDetailComponent } from 'src/app/dialogs/om-event-log-ent
 import { AuthService } from 'src/app/init/auth.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { ToastrService } from 'ngx-toastr';
 import labels from '../../labels/labels.json';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 @Component({
   selector: 'app-event-log',
@@ -24,7 +25,7 @@ export class EventLogComponent implements OnInit {
 
   displayedColumns: string[] = ['dateStamp', 'message', 'eventCode', 'nameStamp', 'eventType', 'eventLocation', 'notes', 'transactionID','actions'];
   dataSourceList: any;
-
+  public iAdminApiService: IAdminApiService;
   ignoreDateRange: boolean = false;
   startDate:any = "";
   endDate:any = "";
@@ -66,23 +67,26 @@ export class EventLogComponent implements OnInit {
   isAdmin: boolean = false;
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
     private authService: AuthService,
-    private toastr: ToastrService,
-    private global:GlobalService,
+    private contextMenuService : TableContextMenuService,
+    private dialog:MatDialog,
     private filterService: ContextMenuFiltersService,
+    private adminApiService: AdminApiService,
     private datepipe: DatePipe,
     private router: Router
-  ) { }
+  ) {
+    this.iAdminApiService = adminApiService;
+   }
 
   event(e:any){
     this.resetPagination();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   ngOnInit(): void {
-    this.isAdmin = this.router.url == "/OrderManager/EventLog" ? false : true;
+    this.isAdmin = !(this.router.url == "/OrderManager/EventLog");
     this.userData = this.authService.userData();
     this.startDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
@@ -95,7 +99,7 @@ export class EventLogComponent implements OnInit {
 
   onIgnoreDateRange(ob: MatCheckboxChange) {
     this.resetPagination();
-    this.eventLogTable();
+    this.eventLogTable(ob);
   }
 
   clearFilters() {
@@ -105,12 +109,14 @@ export class EventLogComponent implements OnInit {
     this.eventLocation = "";
     this.userName = "";
     this.message = "";
+    this.eventCode='';
+    this.eventType='';
     this.resetPagination();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   openOmEventLogEntryDetail(element: any) {
-    let dialogRef = this.dialog.open(OmEventLogEntryDetailComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmEventLogEntryDetailComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -119,12 +125,12 @@ export class EventLogComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.eventLogTable(true);
+        this.eventLogTable();
       }
     });
   }
 
-  eventLogTable(loader: boolean = false) {
+  eventLogTable(obj?:any) {
     let payload: any = {
       "draw": 0,
       "start": this.start,
@@ -135,14 +141,12 @@ export class EventLogComponent implements OnInit {
       "eventLocation": this.eventLocation,
       "transStatus": this.eventCode,
       "transType": this.eventType,
-      "sDate": !this.ignoreDateRange ? this.startDate: new Date(new Date().setFullYear(1990)),
-      "eDate": !this.ignoreDateRange ? this.endDate : new Date(),
+      "sDate": !obj?.checked ? this.startDate: new Date(new Date().setFullYear(1990)),
+      "eDate": !obj?.checked ? this.endDate : new Date(),
       "nameStamp": this.userName,
       "filter": this.filterString,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
     };
-    this.eventLogTableSubscribe = this.Api.EventLogTable(payload).subscribe((res: any) => {
+    this.eventLogTableSubscribe = this.iAdminApiService.EventLogTable(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.tableData = res.data.openEvents;
         this.recordsTotal = res.data.recordsTotal;
@@ -159,7 +163,7 @@ export class EventLogComponent implements OnInit {
   search(event: any, key: any) {
     this[key] = event.option.value;
     this.resetPagination();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   resetPagination() {
@@ -172,7 +176,7 @@ export class EventLogComponent implements OnInit {
     this.eventLogTypeAheadSubscribe.unsubscribe();
     this.eventLogTypeAhead(columnName, message, true);
     this.eventLogTableSubscribe.unsubscribe();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   eventLogTypeAhead(columnName: any, message: any, loader: boolean = false) {
@@ -182,30 +186,33 @@ export class EventLogComponent implements OnInit {
       "columnName": columnName,
       "sDate": "2022-06-04T00:00:00.597Z",
       "eDate": "2023-06-05T00:00:00.597Z",
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
     }
-    this.eventLogTypeAheadSubscribe = this.Api.EventLogTypeAhead(payload).subscribe((res: any) => {
-      if (res.isExecuted && res.data && message != "") {
-        this.searchAutocompleteList = res.data.sort();
+    this.eventLogTypeAheadSubscribe = this.iAdminApiService.EventLogTypeAhead(payload).subscribe((res: any) => {
+      if(res.isExecuted)
+      {
+        if (res.data && message != "") {
+          this.searchAutocompleteList = res.data.sort();
+        }
       }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("EventLogTypeAhead",res.responseMessage);
+      }
+      
     });
   }
 
   refresh() {
     this.resetPagination();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   deleteRange() { 
     if(this.startDate > this.endDate){
-      this.toastr.error('Start date must be before end date!', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Start date must be before end date!', 'Error!');
       return;
     }
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -223,23 +230,16 @@ export class EventLogComponent implements OnInit {
           "endDate": this.endDate,
           "message": this.message,
           "eLocation": this.eventLocation,
-          "nStamp": this.userName,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "nStamp": this.userName
         }
-        this.Api.EventRangeDelete(payload).subscribe((res: any) => {
+        this.iAdminApiService.EventRangeDelete(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.resetPagination();
-            this.eventLogTable(true);
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.eventLogTable();
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("EventRangeDelete",res.responseMessage);
           }
         });
       }
@@ -259,55 +259,24 @@ export class EventLogComponent implements OnInit {
   paginatorChange(event: PageEvent) {
     this.start = event.pageSize * event.pageIndex;
     this.length = event.pageSize;
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
-    if (SelectedItem != undefined) {
-      this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-      this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-    }
-    this.filterString= this.filterString != "" ? this.filterString : "1 = 1";
+  optionSelected(filter : string) {
+    this.filterString = filter;
     this.resetPagination();
-    this.eventLogTable(true);
-  }
-
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => {
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
-    }
-    );
+    this.eventLogTable();  
   }
 
   announceSortChange(e: any) {
     this.sortColumn = this.sortMapping.filter((item: any) => item.value == e.active)[0].sortValue;
     this.sortOrder = e.direction;
     this.resetPagination();
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 
   exportRange(){
@@ -341,7 +310,7 @@ export class EventLogComponent implements OnInit {
   }
 
   clear(){
-    this.eventLogTable(true);
+    this.eventLogTable();
   }
 }
 

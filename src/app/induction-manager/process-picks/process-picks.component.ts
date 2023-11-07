@@ -1,16 +1,14 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, HostListener,OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BlossomToteComponent } from 'src/app/dialogs/blossom-tote/blossom-tote.component';
-import { ToastrService } from 'ngx-toastr';
+
 import { Observable } from 'rxjs/internal/Observable';
 import { AuthService } from '../../../app/init/auth.service';
 import { FormControl } from '@angular/forms';
 import { startWith } from 'rxjs/internal/operators/startWith';
-import { PickToteManagerComponent } from 'src/app/dialogs/pick-tote-manager/pick-tote-manager.component';
-import { ViewOrdersComponent } from 'src/app/dialogs/view-orders/view-orders.component';
-import { WorkstationZonesComponent } from 'src/app/dialogs/workstation-zones/workstation-zones.component';
+import { PickToteManagerComponent } from 'src/app/dialogs/pick-tote-manager/pick-tote-manager.component'; 
+
 import { map, Subject, takeUntil } from 'rxjs';
 import labels from '../../labels/labels.json';
 import { MatSelect } from '@angular/material/select';
@@ -19,6 +17,8 @@ import { SharedService } from 'src/app/services/shared.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-process-picks',
@@ -51,10 +51,10 @@ export class ProcessPicksComponent implements OnInit {
   orderEmpty = false;
   filteredOptions: Observable<any[]>;
   filteredOrderNum: Observable<any[]>;
-  displayedColumns: string[] = ['position', 'toteid', 'orderno', 'priority', 'other'];
+
   dataSource: any;
-  nxtToteID: any;
-  selection = new SelectionModel<any>(true, []);
+  public iinductionManagerApi:IInductionManagerApiService;
+  nxtToteID: any; 
   onDestroy$: Subject<boolean> = new Subject();
   @ViewChild('batchPickID') batchPickID: TemplateRef<any>;
   @ViewChild('processSetup') processSetup: TemplateRef<any>;
@@ -64,16 +64,19 @@ export class ProcessPicksComponent implements OnInit {
   pickBatchesCrossbtn
   imPreferences: any;
   public ifAllowed: boolean = false
-  orderInput: any;
+
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private Api: ApiFuntions,
-    private toastr: ToastrService,
+    
+    private dialog:MatDialog,
     private authService: AuthService,
     private router: Router,
-    private global: GlobalService,
+    private inductionManagerApi: InductionManagerApiService, 
     private sharedService: SharedService
-  ) { }
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -82,138 +85,8 @@ export class ProcessPicksComponent implements OnInit {
     this.getAllOrders();
     this.isBatchIdFocus = true;
   }
-  async printExisting(type) {
-
-
-    let positionList: any[] = [];
-    let toteIds: any[] = [];
-    let OrderNumList: any[] = [];
-    this.dataSource?._data?._value.forEach(element => {
-      if (element.position) positionList.push(element.position);
-      if (element.toteID) toteIds.push(element.toteID);
-      if (element.orderNumber) OrderNumList.push(element.orderNumber);
-    });
-    
-    if (!this.pickBatchesCrossbtn) {
-      this.toastr.error('Please select a Batch ID to print', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      })
-    } else {
-
-      if (type === 'PrintTote') {
-        if (this.imPreferences.printDirectly) {
-          await this.global.Print(`FileName:PrintPrevIMPickBatchToteLabel|BatchID:${this.pickBatches.value}`, 'lbl')
-
-        } else {
-          window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchToteLabel|BatchID:${this.pickBatches.value}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-
-        }
-      }
-      if (type === 'PrintPickLabel') {
-        if (this.imPreferences.printDirectly) {
-        await  this.global.Print(`FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, 'lbl')
-        } else {
-          window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-
-        }
-
-
-      }
-      if (type === 'PrintPickList') {
-
-
-        if (this.imPreferences.printDirectly) {
-          await   this.global.Print(`FileName:PrintPrevIMPickBatchList|BatchID:${this.pickBatches.value}`);
-
-        } else {
-          window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchList|BatchID:${this.pickBatches.value}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-
-        }
-
-
-      }
-      if (type === 'PrintCase') {
-
-
-        if (this.imPreferences.printDirectly) {
-          await  this.global.Print(`FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, 'lbl');
-
-        } else {
-          window.open(`/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-
-        }
-
-
-      }
-      if (type === 'PrintBatch') {
-
-
-        if (this.imPreferences.printDirectly) {
-          await   this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${this.pickBatches.value}`);
-
-        } else {
-          window.open(`/#/report-view?file=FileName:PrintPrevPickBatchList|BatchID:${this.pickBatches.value}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-
-        }
-
-
-      }
-    }
-  }
- async printToteLabels(row) {
-    console.log(row);
-    let positionList: any = [];
-    let toteList: any = [];
-    let orderNumberList: any = [];
-
-    if (row.toteID === "" || row.orderNumber === "") {
-      this.toastr.error('Missing data from the desired print row', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      })
-    } else {
-
-      positionList.push(row.position)
-      toteList.push(row.toteID)
-      orderNumberList.push(row.orderNumber)
-
-      if (this.imPreferences.printDirectly) {
-        await   this.global.Print(`FileName:PrintPrevIMPickToteLabelButt|Positions:${positionList}|ToteIDs:${toteList}|OrderNums:${orderNumberList}`, 'lbl');
-
-      } else {
-        window.open(`/#/report-view?file=FileName:PrintPrevIMPickToteLabelButt|Positions:${positionList}|ToteIDs:${toteList}|OrderNums:${orderNumberList}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-
-      }
-
-    }
-  }
-async  printPickLabels(row) {
-    let positionList: any = [];
-    let toteList: any = [];
-    let orderNumberList: any = [];
-    if (row.toteID === "" || row.orderNumber === "") {
-      this.toastr.error('Missing data from the desired print row', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      })
-    } else {
-      positionList.push(row.position)
-      toteList.push(row.toteID)
-      orderNumberList.push(row.orderNumber)
-
-      if (this.imPreferences.printDirectly) {
-        await  this.global.Print(`FileName:PrintPrevIMPickItemLabel|Positions:${positionList}|ToteIDs:${toteList}|OrderNums:${orderNumberList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`, 'lbl');
-
-      } else {
-        window.open(`/#/report-view?file=FileName:PrintPrevIMPickItemLabel|Positions:${positionList}|ToteIDs:${toteList}|OrderNums:${orderNumberList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-
-      }
-
-
-
-    }
-  }
+  
+ 
  async printPick(type) {
     const counter = this.dataSource._data?._value?.length
     let PositionList: any = [];
@@ -232,16 +105,10 @@ async  printPickLabels(row) {
     this.orderEmpty = this.dataSource?._data?._value.some(element => element.orderNumber != "");
     if (type === 'PrintTote') {
       if (!this.toteEmpty) {
-        this.toastr.error('Please enter in at least 1 tote id', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in at least 1 tote id', 'Error!')
       }
       else if (!this.orderEmpty) {
-        this.toastr.error('Please enter in at least 1 order number', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in at least 1 order number', 'Error!')
       }
       else {
         if (this.imPreferences.printDirectly) {
@@ -258,20 +125,11 @@ async  printPickLabels(row) {
     }
     if (type === 'PrintPickLabel') {
       if (this.batchID === '') {
-        this.toastr.error('Please enter in a batch id', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in a batch id', 'Error!')
       } else if (!this.toteEmpty) {
-        this.toastr.error('Please enter in at least 1 tote id', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in at least 1 tote id', 'Error!')
       } else if (!this.orderEmpty) {
-        this.toastr.error('Please enter in at least 1 order number', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in at least 1 order number', 'Error!')
       } else {
         if (this.imPreferences.printDirectly) {
           await  this.global.Print(`FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`);
@@ -286,37 +144,31 @@ async  printPickLabels(row) {
     }
     if (type === 'PrintPickList') {
       if (!this.toteEmpty) {
-        this.toastr.error('Please enter in at least 1 tote id', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error','Please enter in at least 1 tote id', 'Error!')
       }
       else if (!this.orderEmpty) {
-        this.toastr.error('Please enter in at least 1 order number', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
-      } else {
-        if (this.imPreferences.printDirectly) {
+        this.global.ShowToastr('error','Please enter in at least 1 order number', 'Error!')
+      } else  if (this.imPreferences.printDirectly) {
           await  this.global.Print(`FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`);
 
         } else {
           window.open(`/#/report-view?file=FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
         }
-
-
-      }
     }
   }
   getAllOrders() {
     let paylaod = {
-      "OrderView": 'All',
-      "wsid": this.userData.wsid,
+      "OrderView": 'All', 
     }
-    this.Api.OrdersInZone(paylaod).subscribe((res) => {
+    this.iinductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
       if (res.data) {
         this.orderNumberList = res.data
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("OrdersInZone",res.responseMessage);
+
       }
       this.filteredOrderNum = this.orderNumber.valueChanges.pipe(
         startWith(""),
@@ -326,58 +178,7 @@ async  printPickLabels(row) {
     });
   }
 
-  ifOrderExits(orderNum: any) {
-    let isBatchFull;
-    this.TOTE_SETUP.map(obj => {
-      isBatchFull = false;
-      if (obj.orderNumber != '') {
-        isBatchFull = true;
-      }
-    });
-    if (isBatchFull) {
-      this.toastr.error('No open totes in batch', 'Batch is Filled.', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
-      this.orderNumber.setValue('');
-      return;
-    }
-    if (orderNum != '') {
-      const val = this.orderNumberList.includes(orderNum);
-      if (!val) {
-        let zone = '';
-        this.allZones.map(i => {
-          zone += i + ' ';
-        })
-        this.toastr.error(`Order ${orderNum} does not have a line go to Zones: ${zone} `, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
-        this.orderNumber.setValue('');
-        return;
-      }
-      else {
-        const isOrderNumExists = this.TOTE_SETUP.filter(val => {
-          return val.orderNumber == orderNum
-        });
-        if (isOrderNumExists.length > 0) {
-          this.orderNumber.setValue('');
-        } else {
-          for (let element of this.TOTE_SETUP) {
-            if (element.orderNumber === '') {
-              element.orderNumber = orderNum;
-              this.orderNumber.setValue('');
-              break;
-            }
-          }
-
-        }
-
-      }
-
-    }
-
-  }
+  
 
   ngAfterViewChecked(): void {
     if (this.isBatchIdFocus) {
@@ -401,24 +202,29 @@ async  printPickLabels(row) {
   }
 
   getAllZones() {
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+    let paylaod = { 
     }
-    this.Api.WSPickZoneSelect(paylaod).subscribe((res) => {
+    this.iinductionManagerApi.WSPickZoneSelect(paylaod).subscribe((res) => {
       if (res.data) {
         this.allZones = res.data;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("WSPickZoneSelect",res.responseMessage);
       }
     });
   }
 
   pickToteSetupIndex() {
     return new Promise((resolve, reject) => {
-    let paylaod = {
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+    let paylaod = { 
     }
-    this.Api.PickToteSetupIndex(paylaod).subscribe(res => {
+    this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
+
+      if (res.isExecuted && res.data)
+      {
+        this.imPreferences = res?.data?.imPreference;
+
       this.countInfo = res.data.countInfo;
       this.pickBatchesList = res.data.pickBatches;
       this.pickBatchQuantity = res.data.imPreference.pickBatchQuantity;
@@ -437,16 +243,25 @@ async  printPickLabels(row) {
         
       );
       resolve(res?.data?.imPreference);
+
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PickToteSetupIndex",res.responseMessage);
+
+      }
     });
 
   });
   }
 
   createToteSetupTable(pickBatchQuantity: any) {
+    this.pickType = 'MixedZones';
+    this.TOTE_SETUP = [];
     for (let index = 0; index < pickBatchQuantity; index++) {
       this.TOTE_SETUP.push({ position: index + 1, toteID: '', orderNumber: '', priority: '' },);
     }
     this.dataSource = new MatTableDataSource<any>(this.TOTE_SETUP);
+    this.allOrders = [];
   }
 
   private _filter(name: string): any[] {
@@ -468,7 +283,7 @@ async  printPickLabels(row) {
     });
 
     if (filledTote) {
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -497,7 +312,7 @@ async  printPickLabels(row) {
     else {
       this.batchWithID = false;
     }
-    const dialogRef = this.dialog.open(this.batchPickID, {
+    const dialogRef:any = this.global.OpenDialog(this.batchPickID, {
       width: 'auto',
       autoFocus: '__non_existing_element__',
       disableClose: true,
@@ -505,16 +320,15 @@ async  printPickLabels(row) {
     dialogRef.afterClosed().subscribe(() => {
       if (this.dialogClose) {
         if (val === 'batchWithID') {
-          this.Api.NextBatchID().subscribe(res => {
+          this.iinductionManagerApi.NextBatchID().subscribe(res => {
             this.batchID = res.data;
-            let payload = {
-              "wsid": this.userData.wsid,
+            let payload = { 
               "type": this.pickType
             }
             if (!this.useInZonePickScreen) {
               if (!this.usePickBatchManager) {
                 if (this.autoPickOrderSelection) {
-                  this.Api.FillOrderNumber(payload).subscribe(res => {
+                  this.iinductionManagerApi.FillOrderNumber(payload).subscribe(res => {
                     this.TOTE_SETUP.forEach((element, key) => {
                       element.orderNumber = res.data[key];
                     });
@@ -548,20 +362,17 @@ async  printPickLabels(row) {
         }
         else {
           if (this.batchID === '') {
-            this.toastr.error('Batch id is required.', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error','Batch id is required.', 'Error!');
+            console.log("NextBatchID");
           }
           else {
-            let payload = {
-              "wsid": this.userData.wsid,
+            let payload = { 
               "type": this.pickType
             }
             if (!this.useInZonePickScreen) {
               if (!this.usePickBatchManager) {
                 if (this.autoPickOrderSelection) {
-                  this.Api.FillOrderNumber(payload).subscribe(res => {
+                  this.iinductionManagerApi.FillOrderNumber(payload).subscribe(res => {
                     this.TOTE_SETUP.forEach((element, key) => {
                       element.orderNumber = res.data[key];
                     });
@@ -588,19 +399,7 @@ async  printPickLabels(row) {
     });
   }
 
-  onViewOrder(ele: any) {
-    if (ele.orderNumber) {
-      this.router.navigate([]).then((result) => {
-        window.open(`/#/InductionManager/Admin/TransactionJournal?orderStatus=${ele.orderNumber}`, '_blank');
-      });
-    }
-    else {
-      this.toastr.error('Please enter in an order number.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
-    }
-  }
+
 
 
   confirmAddBatchDialog() {
@@ -614,13 +413,10 @@ async  printPickLabels(row) {
 
   openPickToteDialogue() {
     if (!this.batchID) {
-      this.toastr.error('Batch ID cannot be empty when opening the pick batch manager.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Batch ID cannot be empty when opening the pick batch manager.', 'Error!');
     }
     else {
-      const dialogRef = this.dialog.open(PickToteManagerComponent, {
+      const dialogRef:any = this.global.OpenDialog(PickToteManagerComponent, {
         height: 'auto',
         maxWidth: '95vw',
         width: '95vw',
@@ -658,132 +454,82 @@ async  printPickLabels(row) {
 
   }
 
-  openViewOrdersDialogue(viewType: any) {
-    const dialogRef = this.dialog.open(ViewOrdersComponent, {
-      height: 'auto',
-      width: '100vw',
-      data: {
-        viewType: viewType,
-        pickBatchQuantity: this.pickBatchQuantity,
-        allOrders: this.allOrders,
-      },
-      autoFocus: '__non_existing_element__'
-    });
-    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-
-
-      if (result && result != true) {
-        if (result.length > 0) {
-          this.allOrders = result;
-          this.TOTE_SETUP.forEach((element, key) => {
-            element.orderNumber = result[key] ?? '';
-          });
-        }
-        else {
-          this.allOrders = []
-          this.TOTE_SETUP.forEach((element) => {
-            element.orderNumber = '';
-          });
-        }
-
-      }
-
-    })
-  }
-
   openBlossomToteDialogue() {
-    this.dialog.open(BlossomToteComponent, {
+    this.global.OpenDialog(BlossomToteComponent, {
       height: 'auto',
       width: '786px',
       autoFocus: '__non_existing_element__'
     });
   }
 
-  openWorkstationZone() {
-    let dialogRef = this.dialog.open(WorkstationZonesComponent, {
-      height: 'auto',
-      width: '750px',
-      autoFocus: '__non_existing_element__',
-      disableClose: true,
+  
 
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.getAllZones();
-      }
-    })
-  }
 
-  isValidOrderNumber(element: any) {
-    let payload = {
-      "OrderNumber": element.orderNumber
-    }
-    this.Api.ValidateOrderNumber(payload).subscribe(res => {
-      if (res.data === 'Invalid') {
-        this.toastr.error('This is not a vaild order number for this pick batch.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
-        element.orderNumber = ''
-      }
-    });
-  }
 
   onToteAction(val: any) {
-    if (val.value === 'fill_all_tote') {
-      this.getAllToteIds();
+    switch (val.value) {
+      case 'fill_all_tote':
+        this.getAllToteIds();
+        break;
+      case 'fill_next_tote':
+        this.getNextToteId();
+        break;
+      case 'clear_all_totes':
+        this.clearAllTotes();
+        break;
+      case 'clear_all_orders':
+        this.clearAllOrders();
+        break;
+      default:
+          break;
     }
-    else if (val.value === 'fill_next_tote') {
-      this.getNextToteId();
-    }
-    else if (val.value === 'clear_all_totes') {
-      this.clearAllTotes();
-    }
-    else if (val.value === 'clear_all_orders') {
-      this.clearAllOrders();
-    }
-
     const matSelect: MatSelect = val.source;
     matSelect.writeValue(null);
   }
 
   getAllToteIds(autoToteIds: boolean = false) {
-    this.Api.NextTote().subscribe(res => {
-      this.nxtToteID = res.data;
-      this.TOTE_SETUP.forEach((element, key) => {
-        if (!element.toteID) {
-          element.toteID = this.nxtToteID;
-          this.nxtToteID = this.nxtToteID + 1;
-        }
-        if (autoToteIds) {
-          element.toteID = this.nxtToteID;
-          this.nxtToteID = this.nxtToteID + 1;
-        }
-      });
-      this.updateNxtTote();
+    this.iinductionManagerApi.NextTote().subscribe(res => {
+      if(res.isExecuted && res.data)
+      {
+        this.nxtToteID = res.data;
+        this.TOTE_SETUP.forEach((element, key) => {
+          if (!element.toteID) {
+            element.toteID = this.nxtToteID;
+            this.nxtToteID = this.nxtToteID + 1;
+          }
+          if (autoToteIds) {
+            element.toteID = this.nxtToteID;
+            this.nxtToteID = this.nxtToteID + 1;
+          }
+        });
+        this.updateNxtTote();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("NextTote",res.responseMessage);
+      }
+     
     });
 
   }
 
   updateNxtTote() {
     let updatePayload = {
-      "tote": this.nxtToteID,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "tote": this.nxtToteID, 
     }
-    this.Api.NextToteUpdate(updatePayload).subscribe(res => {
+    this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
-        this.toastr.error('Something is wrong.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error','Something is wrong.', 'Error!');
+        console.log("NextToteUpdate",res.responseMessage);
       }
 
     });
   }
   getNextToteId() {
-    this.Api.NextTote().subscribe(res => {
-      this.nxtToteID = res.data;
+    this.iinductionManagerApi.NextTote().subscribe(res => {
+      if(res.isExecuted && res.data)
+      {
+        this.nxtToteID = res.data;
       for (let element of this.TOTE_SETUP) {
         if (element.toteID === '') {
           element.toteID = this.nxtToteID;
@@ -792,6 +538,11 @@ async  printPickLabels(row) {
         }
       }
       this.updateNxtTote();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("NextTote",res.responseMessage);
+      }
     });
   }
 
@@ -809,22 +560,7 @@ async  printPickLabels(row) {
     this.allOrders = [];
   }
 
-  checkDuplicateTote(val: any, i: any) {
-    for (let index = 0; index < this.TOTE_SETUP.length; index++) {
-      const element = this.TOTE_SETUP[index];
-      if (val.toteID !== '') {
-        if (element.toteID == val.toteID && index != i) {
-          this.TOTE_SETUP[i].toteID = "";
-          this.toastr.error('This tote id is already in this batch. Enter a new one', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
-          break;
-        }
-      }
-    }
-
-  }
+ 
 
  async previewWindow(url): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -848,11 +584,19 @@ async  printPickLabels(row) {
 
 
   fillNextToteID(i: any) {
-    this.Api.NextTote().subscribe(res => {
-      this.nxtToteID = res.data;
-      this.TOTE_SETUP[i].toteID = this.nxtToteID;
-      this.nxtToteID = this.nxtToteID + 1;
-      this.updateNxtTote();
+    this.iinductionManagerApi.NextTote().subscribe(res => {
+      if (res.isExecuted && res.data)
+      {
+        this.nxtToteID = res.data;
+        this.TOTE_SETUP[i].toteID = this.nxtToteID;
+        this.nxtToteID = this.nxtToteID + 1;
+        this.updateNxtTote();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("NextTote",res.responseMessage);
+      }
+     
     });
   }
 
@@ -863,14 +607,14 @@ async  printPickLabels(row) {
   }
 
   confirmProcessSetup() {
-    this.dialog.open(this.processSetup, {
+    this.global.OpenDialog(this.processSetup, {
       width: '450px',
       autoFocus: '__non_existing_element__',
       disableClose: true,
     });
   }
   alertPopUpBlocked() {
-    this.dialog.open(this.popupBlocked, {
+    this.global.OpenDialog(this.popupBlocked, {
       width: '450px',
       height: 'auto',
       minHeight: 'auto',
@@ -880,10 +624,7 @@ async  printPickLabels(row) {
   }
  async onPrcessBatch() {
     if (!this.batchID) {
-      this.toastr.error('Please enter in a batch id to proccess.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Please enter in a batch id to proccess.', 'Error!');
       this.dialog.closeAll();
       return
     }
@@ -897,18 +638,12 @@ async  printPickLabels(row) {
       OrderNumbers.push(obj.orderNumber?.toString() ?? '');
     });
     if (this.TOTE_SETUP.filter(e => e.toteID).length == 0) {
-      this.toastr.error('Please enter in at least 1 tote id to process.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Please enter in at least 1 tote id to process.', 'Error!');
       this.dialog.closeAll();
       return
     }
     if (this.TOTE_SETUP.filter(e => e.orderNumber).length == 0) {
-      this.toastr.error('Please enter in at least 1 order number to process.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Please enter in at least 1 order number to process.', 'Error!');
       this.dialog.closeAll();
       return
     }
@@ -920,12 +655,10 @@ async  printPickLabels(row) {
         Positions,
         ToteIDs,
         OrderNumbers,
-        "BatchID": this.batchID,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "BatchID": this.batchID
       }
 
-      this.Api.InZoneSetupProcess(paylaod).subscribe(res => {
+      this.iinductionManagerApi.InZoneSetupProcess(paylaod).subscribe(res => {
         if (res.isExecuted) {
           let btId = this.batchID
           this.dialog.closeAll();
@@ -943,16 +676,11 @@ async  printPickLabels(row) {
           this.InZoneProcessPrintPref(btId);
 
 
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
         }
         else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("InZoneSetupProcess",res.responseMessage);
         }
       });
     }
@@ -961,12 +689,10 @@ async  printPickLabels(row) {
         Positions,
         ToteIDs,
         OrderNumbers,
-        "BatchID": this.batchID,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "BatchID": this.batchID, 
         'Count': 0
       }
-      this.Api.PickToteSetupProcess(paylaod).subscribe(res => {
+      this.iinductionManagerApi.PickToteSetupProcess(paylaod).subscribe(res => {
         if (res.isExecuted) {
           let batId = this.batchID
           this.dialog.closeAll();
@@ -977,10 +703,7 @@ async  printPickLabels(row) {
           });
           this.batchID = '';
 
-          this.toastr.success(labels.alert.success, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.success, 'Success!');
 
           // AUTO PRINT PREFERENCES CONDITIONS ON PICK TOTE SETUP 
 
@@ -992,10 +715,8 @@ async  printPickLabels(row) {
 
         }
         else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("PickToteSetupProcess",res.responseMessage);
         }
       });
     }
@@ -1007,22 +728,22 @@ async  printPickLabels(row) {
 
   async ProcessPickPrintPref(Positions, ToteIDs, OrderNumbers, batchId) {
     try {
-      let isWindowClosed: any = null;
-      let isAnyWindowOpen = false;
+      let _isWindowClosed: any = null;
+      let _isAnyWindowOpen = false;
       if (this.imPreferences.autoPrintPickToteLabels) {
 
         if (this.imPreferences.printDirectly) {
           await  this.global.Print(`FileName:PrintPrevPickToteLabel|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}|BatchID:${batchId}`, 'lbl');
         } else {
-          isAnyWindowOpen = true;
-          isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickToteLabel|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}|BatchID:${batchId}`);
+          _isAnyWindowOpen = true;
+          _isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickToteLabel|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}|BatchID:${batchId}`);
         }
         if (this.imPreferences.autoPrintOffCarouselPickList) {
           if (this.imPreferences.printDirectly) {
             await   this.global.Print(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
-          } else if (isWindowClosed) {
-            isAnyWindowOpen = true;
-            isWindowClosed = await this.previewWindow(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
+          } else if (_isWindowClosed) {
+            _isAnyWindowOpen = true;
+            _isWindowClosed = await this.previewWindow(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
           }
         }
 
@@ -1031,8 +752,8 @@ async  printPickLabels(row) {
         if (this.imPreferences.printDirectly) {
           await   this.global.Print(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
         } else {
-          isAnyWindowOpen = true;
-          isWindowClosed = await this.previewWindow(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
+          _isAnyWindowOpen = true;
+          _isWindowClosed = await this.previewWindow(`FileName:PrintPrevOffCarPickList|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}`);
         }
 
       }else if (this.imPreferences.autoPrintCaseLabel) {
@@ -1040,8 +761,8 @@ async  printPickLabels(row) {
           await  this.global.Print(`FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`, 'lbl');
         }
 
-        else if (isAnyWindowOpen) {
-          if (isWindowClosed) {
+        else if (_isAnyWindowOpen) {
+          if (_isWindowClosed) {
             window.open(`/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
           }
         } else {
@@ -1086,11 +807,9 @@ async  printPickLabels(row) {
           if (this.imPreferences.printDirectly) {
             await this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           } else if (isWindowClosed) {
-            isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
+            await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           }
         }
-
-
       }
      else if (this.imPreferences.autoPrintOffCarouselPickList) {
 
@@ -1111,7 +830,7 @@ async  printPickLabels(row) {
           if (this.imPreferences.printDirectly) {
             await this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           } else if (isWindowClosed) {
-            isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
+            await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           }
         }
       }
@@ -1126,11 +845,9 @@ async  printPickLabels(row) {
           if (this.imPreferences.printDirectly) {
             await this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           } else if (isWindowClosed) {
-            isWindowClosed = await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
+            await this.previewWindow(`FileName:PrintPrevPickBatchList|BatchID:${batchId}`);
           }
         }
-
-
       }
       else  if (this.imPreferences.autoPrintPickBatchList) {
         if (this.imPreferences.printDirectly) {

@@ -5,17 +5,14 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort} from '@angular/material/sort';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ToastrService } from 'ngx-toastr';
+
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
-import { MatDialog } from '@angular/material/dialog';
-import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { SharedService } from 'src/app/services/shared.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 @Component({
   selector: 'app-de-allocate-orders',
@@ -35,7 +32,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     isChecked: boolean = false;
     orderNumbersList:any=[];
     
-    ELEMENT_DATA: any[] =[
+    ELEMENT_DATA: any[] = [
       {trans_type: 'Count', order_no: '1202122', priority: '36', required_date: '11/02/2022 11:58 AM', user_field_1: 'Treat with care'},
       {trans_type: 'Count', order_no: '1202122', priority: '36', required_date: '11/02/2022 11:58 AM', user_field_1: 'Treat with care'},
       {trans_type: 'Count', order_no: '1202122', priority: '36', required_date: '11/02/2022 11:58 AM', user_field_1: 'Treat with care'},
@@ -60,7 +57,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   order;
   deallocateSelectedBtn = true
   onViewOrder=true;
-
+  public iAdminApiService: IAdminApiService;
 // pagination and sorting for orderView
   pageEventOrder: PageEvent;
   startRowOrder = 0;
@@ -85,13 +82,14 @@ export class DeAllocateOrdersComponent implements OnInit {
   searchByItem: any = new Subject<string>();
   public searchedItemOrder: any = [];
 
-  constructor(public authService: AuthService,
-    private Api:ApiFuntions,
-    private _liveAnnouncer: LiveAnnouncer,
-    private toastr: ToastrService,
-    private dialog: MatDialog,
-    private sharedService:SharedService,
-    private filterService: ContextMenuFiltersService) { }
+  constructor(
+    public authService: AuthService,
+    public adminApiService: AdminApiService,
+    private global:GlobalService,
+    private contextMenuService : TableContextMenuService
+    ) { 
+      this.iAdminApiService = adminApiService;
+    }
 
   ngOnInit(): void {
     this.userData = this.authService.userData()
@@ -109,23 +107,37 @@ export class DeAllocateOrdersComponent implements OnInit {
   async autocompleteSearchColumnItem() {
     if(this.chooseSearchType == 'Order Number'){
       let payload = {
-        "orderNumber": this.TypeValue,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "orderNumber": this.TypeValue, 
       }
   
-      this.Api.AllocatedOrders(payload).subscribe((res: any) => {
-        this.searchedItemOrder = res.data
+      this.iAdminApiService.AllocatedOrders(payload).subscribe((res: any) => {
+        if(res.isExecuted && res.data)
+        {
+          this.searchedItemOrder = res.data
+
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("AllocatedOrders",res.responseMessage);
+
+        }
       });
     }
     else if(this.chooseSearchType == 'Item Number'){
       let payload = {
-        "itemNumber": this.TypeValue,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "itemNumber": this.TypeValue, 
       }
-      this.Api.AllocatedItems(payload).subscribe((res: any) => {
-        this.searchedItemOrder = res.data
+      this.iAdminApiService.AllocatedItems(payload).subscribe((res: any) => {
+        if(res.isExecuted && res.data)
+        {
+          this.searchedItemOrder = res.data
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("AllocatedItems",res.responseMessage);
+
+        }
+        
       });
     }
 
@@ -140,16 +152,20 @@ export class DeAllocateOrdersComponent implements OnInit {
       let payload = {
         "orderNumber": this.chooseSearchType == 'Order Number'?this.TypeValue:'',
         "itemNumber": this.chooseSearchType == 'Item Number'?this.TypeValue:'',
-        "transType": this.transactionType, 
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
+        "transType": this.transactionType,  
       }
-      this.Api.AllAllocatedOrders(payload).subscribe((res=>{
+      this.iAdminApiService.AllAllocatedOrders(payload).subscribe((res=>{
 
         const orderNamesResponseObj = res.data.map((value, index) => {
+          
      if(this.orderNumbersList.includes(value)){
       return {  name: value,isChecked:true ,isRowSelected:false};
-          }else{
+          }
+          
+          else
+          
+          {
+
             return {  name: value,isChecked:false ,isRowSelected:false};
           }
          
@@ -179,13 +195,15 @@ export class DeAllocateOrdersComponent implements OnInit {
         "displayFilter": "All",
         "orderNum": "",
         "warehouse": "",
-        "filter": this.FilterString,
-        "username": "1234",
-        "wsid": "TESTWSID"
+        "filter": this.FilterString 
       }
-      this.Api.OrderItemsTable(payload).subscribe((res=>{
-        res.data.openTransactions.forEach((item,i)=>{
-          if(this.orderNumbersList.includes(item.orderNumber)){
+      this.iAdminApiService.OrderItemsTable(payload).subscribe((res=>{
+        if(res.isExecuted)
+        {
+          res.data.openTransactions.forEach((item,i)=>
+        {
+          if(this.orderNumbersList.includes(item.orderNumber))
+          {
             res.data.openTransactions[i].isDeallocate=true
           }else{
             res.data.openTransactions[i].isDeallocate=false
@@ -193,6 +211,14 @@ export class DeAllocateOrdersComponent implements OnInit {
         })
         this.orderItemTransactions.data = res.data.openTransactions
         this.pageLength= res.data.recordsTotal
+
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("OrderItemsTable",res.responseMessage);
+
+        }
+        
       }))
     }
     else{
@@ -211,26 +237,30 @@ export class DeAllocateOrdersComponent implements OnInit {
         "displayFilter": "spec",
         "orderNum":  this.order.name,
         "warehouse": "",
-        "filter":  this.FilterString,
-        "username": "1234",
-        "wsid": "TESTWSID"
+        "filter":  this.FilterString, 
       }
-      this.Api.OrderItemsTable(payload).subscribe((res=>{
-        res.data.openTransactions.forEach((item,i)=>{
-          if(this.orderNumbersList.includes(item.orderNumber)){
-            res.data.openTransactions[i].isDeallocate=true
-          }else{
-            res.data.openTransactions[i].isDeallocate=false
-          }
-        })
+      this.iAdminApiService.OrderItemsTable(payload).subscribe((res=>{
+        if(res.isExecuted)
+        {
+          res.data.openTransactions.forEach((item,i)=>{
+            if(this.orderNumbersList.includes(item.orderNumber)){
+              res.data.openTransactions[i].isDeallocate=true
+            }else{
+              res.data.openTransactions[i].isDeallocate=false
+            }
+          })
+  
+          
+          this.orderItemTransactions.data = res.data.openTransactions
+          this.pageLength= res.data.recordsTotal
+          this.dublicateTransaction =  res.data.openTransactions
+          this.dublicateRecords = res.data.recordsTotal
 
-        
-        this.orderItemTransactions.data = res.data.openTransactions
-        this.pageLength= res.data.recordsTotal
-        this.dublicateTransaction =  res.data.openTransactions
-        this.dublicateRecords = res.data.recordsTotal
-
-        
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("OrderItemsTable",res.responseMessage);
+        }
       }))
     }
 
@@ -271,7 +301,7 @@ export class DeAllocateOrdersComponent implements OnInit {
 
   deAllocateOrder(){
     if(this.orderNumbersList.length != 0){
-      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '600px',
         autoFocus: '__non_existing_element__',
@@ -285,36 +315,29 @@ export class DeAllocateOrdersComponent implements OnInit {
         if (res === 'Yes') {
           let deallocate = this.orderNumbersList.toString()
           let payload = {
-            "orderNumber": deallocate,
-            "userName": this.userData.userName,
-            "wsid": this.userData.wsid
+            "orderNumber": deallocate, 
           }
-          this.Api.DeAllocateOrder(payload).subscribe((res=>{
+          this.iAdminApiService.DeAllocateOrder(payload).subscribe((res=>{
             if(res.isExecuted){
               this.actions = ''
-              this.toastr.success("De-Allocated successfully", 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',"De-Allocated successfully", 'Success!' );
               this.deallocateSelectedBtn = true
               this.orderNumbersList.length=0
                 this.getAllOrder()
                 this.orderItemTable()
             }
             else{
-              this.toastr.error('Order De-Allocation Not Successfull', 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              
+              this.global.ShowToastr('error','Order De-Allocation Not Successfull', 'Error!');
+              console.log("DeAllocateOrder",res.responseMessage);
             }
           }))
         }
       });
     }
-
   }
   deAllocateAll(){
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
@@ -326,26 +349,20 @@ export class DeAllocateOrdersComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       if (res === 'Yes') {
         let payload = {
-          "orderNumber": '',
-          "userName": this.userData.userName,
-          "wsid": this.userData.wsid
+          "orderNumber": "ALL", 
         }
-        this.Api.DeAllocateOrder(payload).subscribe((res=>{
+        this.iAdminApiService.DeAllocateOrder(payload).subscribe((res=>{
           if(res.isExecuted){
-            this.toastr.success("De-Allocated successfully", 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',"De-Allocated successfully", 'Success!');
             this.deallocateSelectedBtn = true
               this.getAllOrder()
               this.orderItemTable()
               this.actions = ''
           }
           else{
-            this.toastr.error('Order De-Allocation Not Successfull', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            
+            this.global.ShowToastr('error','Order De-Allocation Not Successfull', 'Error!');
+            console.log("DeAllocateOrder",res.responseMessage);
           }
         }))
       }
@@ -494,53 +511,15 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.pageLength=0
   }
 
-
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
-  FilterString: string = "1 = 1";
-
-
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
+  FilterString : string = "1 = 1";
 
-    this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-    if(FilterColumnName != "" || Condition == "clear"){
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-      this.FilterString = this.FilterString != "" ? this.FilterString : "1=1";
-      this.orderItemTable();
-    }
-  }
-
-
-
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => {
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
-    }
-    );
+  optionSelected(filter : string) {
+    this.FilterString = filter;
+    this.orderItemTable();    
   }
 
   clear(){

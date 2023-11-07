@@ -43,7 +43,7 @@
                         <td mat-cell *matCellDef="let element; let i = index">
                             <mat-form-field class="custom-form-field w-100" style="padding-right: 15px;" appearance="outline">
                                 <mat-select [(ngModel)]="element.scanRange"  #scanRange  
-                                    (selectionChange)="changeScanRange(element)">
+                                    (selectionChange)="scanCodesList[i].isDisabled=false;changeScanRange(element)">
                                     <mat-option *ngFor="let val of scanRangeList" [value]="val">{{val}}</mat-option>
                                 </mat-select>
                             </mat-form-field>

@@ -1,11 +1,9 @@
 import { Component, ElementRef, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../../app/init/auth.service'; 
-import { MatDialog} from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
 import { ItemNumberComponent } from '../dialogs/item-number/item-number.component';
 import { FormBuilder,  FormGroup, Validators } from '@angular/forms';
 import labels from '../../labels/labels.json'
-import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
@@ -13,17 +11,18 @@ import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autoc
 import { SpinnerService } from 'src/app/init/spinner.service';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { KitItemComponent } from './kit-item/kit-item.component';
-import { ConfirmationGuard } from 'src/app/guard/confirmation-guard.guard';
 import { ScanCodesComponent } from './scan-codes/scan-codes.component';
 import { MatTabGroup } from '@angular/material/tabs';
 import { Subject } from 'rxjs';
 import { SharedService } from 'src/app/services/shared.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { CurrentTabDataService } from './current-tab-data-service';
-
-
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
+import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
 
 @Component({
   selector: 'app-inventory-master',
@@ -41,6 +40,7 @@ export class InventoryMasterComponent implements OnInit {
   public invData: any;
   public getInvMasterData: any;
   public invMasterLocations: any;
+  public iAdminApiService: IAdminApiService;
   public isDialogOpen = false;
   public fieldNames:any;
   public isParameter=false;
@@ -52,12 +52,8 @@ export class InventoryMasterComponent implements OnInit {
   public currentPageItemNo: any = '';
   searchList: any;
   public _searchValue: any = '';
-  get searchValue(): any {
-     return this._searchValue;
-  }
-  set searchValue(value: any) {
-    this._searchValue = value;
-  }
+  get searchValue(): any { return this._searchValue; }
+  set searchValue(value: any) { this._searchValue = value; }
   isDataFound = false;
   isDataFoundCounter = 0;
   saveDisabled = true;
@@ -84,20 +80,18 @@ export class InventoryMasterComponent implements OnInit {
   IstabChange: boolean = false; 
   columns:any={};
   constructor(
-    private api: ApiFuntions,
     private authService: AuthService,
-    private dialog: MatDialog,
+    public adminApiService: AdminApiService,
+    private global:GlobalService,
     private fb: FormBuilder,
-    private toastr: ToastrService,
     private router: Router,
     private spinnerService: SpinnerService,
     private route: ActivatedRoute,
-    private confirmationGuard: ConfirmationGuard,
     private sharedService: SharedService,
     private currentTabDataService: CurrentTabDataService
   ) {
+    this.iAdminApiService = adminApiService;
   }
-  @ViewChild('quarantineAction') quarantineTemp: TemplateRef<any>;
   @ViewChild('UNquarantineAction') unquarantineTemp: TemplateRef<any>;
   @ViewChild('propertiesChanged') propertiesChanged: TemplateRef<any>;
   @ViewChild(KitItemComponent) kititemcom: KitItemComponent;
@@ -126,6 +120,7 @@ export class InventoryMasterComponent implements OnInit {
       event.preventDefault();
       this.clearSearchField();
     }
+
     if (!this.isInputField(target) && event.key === 'd') {
       event.preventDefault();
       if (this.isDialogOpen || this.searchValue === '') return
@@ -134,26 +129,24 @@ export class InventoryMasterComponent implements OnInit {
 
     if (!this.isInputField(target) && event.key === 'e') {
       event.preventDefault();
-
       this.tabGroup.selectedIndex = 0;
     }
+
     if (!this.isInputField(target) && event.key === 'k') {
       event.preventDefault();
-
       this.tabGroup.selectedIndex = 2;
     }
 
     if (!this.isInputField(target) && event.key === 'l') {
       event.preventDefault();
-
       this.tabGroup.selectedIndex = 3;
     }
 
     if (!this.isInputField(target) && event.key === 'o') {
       event.preventDefault();
-
       this.tabGroup.selectedIndex = 7;
     }
+
     if (!this.isInputField(target) && event.key === 'q') {
       event.preventDefault();
       if (this.isDialogOpen || this.searchValue === '') return
@@ -164,18 +157,22 @@ export class InventoryMasterComponent implements OnInit {
       event.preventDefault();
       this.tabGroup.selectedIndex = 4;
     }
+
     if (!this.isInputField(target) && event.key === 's') {
       event.preventDefault();
       this.tabGroup.selectedIndex = 5;
     }
+
     if (!this.isInputField(target) && event.key === 'i') {
       event.preventDefault();
       this.tabGroup.selectedIndex = 1;
     }
+
     if (!this.isInputField(target) && event.key === 'w') {
       event.preventDefault();
       this.tabGroup.selectedIndex = 6;
     }
+
     if (!this.isInputField(target) && event.key === 'h') {
       event.preventDefault();
       if (this.tabGroup.selectedIndex != 0) return
@@ -187,6 +184,7 @@ export class InventoryMasterComponent implements OnInit {
       if (this.tabGroup.selectedIndex != 0) return
       this.eventsSubject.next('v');
     }
+
     if (!this.isInputField(target) && event.key === 'r') {
       event.preventDefault();
       if (this.tabGroup.selectedIndex != 0) return
@@ -204,68 +202,52 @@ export class InventoryMasterComponent implements OnInit {
     return element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.isContentEditable;
   }
 
-  @ViewChild('alertInput', { read: MatAutocompleteTrigger })
-  autoComplete: MatAutocompleteTrigger;
+  @ViewChild('alertInput', { read: MatAutocompleteTrigger }) autoComplete: MatAutocompleteTrigger;
   @ViewChild(MatAutocompleteTrigger) autocompleteTrigger!: MatAutocompleteTrigger;
-
   @ViewChild("searchauto", { static: false }) autocompleteOpened: MatAutocomplete;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
   public setVal: boolean = false;
+
   async ngOnInit() {
     const paramName = this.route.snapshot.queryParamMap.get('itemNumber');
     let initialValue;
     this.userData = this.authService.userData();
     this.initialzeIMFeilds();
     this.ApplySavedItem();
-    console.log('applied value',this.searchValue)
-    if(!paramName ){
-      console.log('1',this.searchValue)
-      if(this.searchValue!=''){
+
+    if(!paramName) {
+      if(this.searchValue != ''){
         this.getInventory(true,this.searchValue);
         this.OSFieldFilterNames();
-      }else{
-        initialValue=await this.getInitialItem();
+      } else {
+        initialValue = await this.getInitialItem();
         if(initialValue){
          this.getInventory(true);
          this.OSFieldFilterNames();
+        }
       }
-   
-      }
-  
-    }else{
-      console.log('isParam',this.searchValue)
+    } else {
       this.getInventory(true,paramName);
       this.OSFieldFilterNames();
     }
-  
 
-    this.route
-      .paramMap
-      .subscribe(params => { 
-      });
+    this.route.paramMap.subscribe(params => {});
     this.spliUrl=this.router.url.split('/');
-
-
-    
   }
-
 
   clearMatSelectList(){
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
   
-
   scrollEvent = (event: any): void => {
     if (this.autoComplete.panelOpen) this.autoComplete.updatePosition();
   }
+
   ngAfterViewInit() {
     this.setVal = localStorage.getItem('routeFromOrderStatus') === 'true';
-    this.itemNumberParam$ = this.route.queryParamMap.pipe(
-      map((params: ParamMap) => params.get('itemNumber')),
-    );
-    this.searchBoxField.nativeElement.focus();
-
+    this.itemNumberParam$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('itemNumber')), );
+    this.searchBoxField?.nativeElement.focus();
     this.itemNumberParam$.subscribe((param) => { 
       if (param) {
         this.searchValue = param;
@@ -273,34 +255,21 @@ export class InventoryMasterComponent implements OnInit {
         this.getInvMasterDetail(this.searchValue)
       }
     });
-    this.addItemNumberParam$ = this.route.queryParamMap.pipe(
-      map((params: ParamMap) => params.get('addItemNumber')),
-    );
+    this.addItemNumberParam$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('addItemNumber')),);
     this.addItemNumberParam$.subscribe((param) => { 
       if (param) {
-          this.addItemNumber=param
-          this.openAddItemDialog();
+        this.addItemNumber=param
+        this.openAddItemDialog();
       }
     });
-
     this.sharedService.invMasterParentObserver.subscribe(evt => {
-
-      if (evt.isEnable) {
-        this.saveDisabled = false;
-      } else {
-        this.saveDisabled = true;
-      }
-
-
-
-    })
+      if (evt.isEnable) this.saveDisabled = false;
+      else this.saveDisabled = true;
+    });
   }
 
   async initialzeIMFeilds() {
-
-    
     this.invMaster = this.fb.group({
-
       itemNumber: [this.getInvMasterData?.itemNumber || '', [Validators.required, Validators.maxLength(50)]],
       supplierItemID: [this.getInvMasterData?.supplierItemID || '', [Validators.maxLength(50)]],
       description: [this.getInvMasterData?.description || '', [Validators.maxLength(255)]],
@@ -321,7 +290,6 @@ export class InventoryMasterComponent implements OnInit {
       openCount: [this.getInvMasterData?.openCount || 0, [Validators.required]],
       histCount: [this.getInvMasterData?.histCount || 0, [Validators.required]],
       procCount: [this.getInvMasterData?.procCount || 0, [Validators.required]],
-
 
       primaryPickZone: [this.getInvMasterData?.primaryPickZone.toLowerCase() || ''],
       secondaryPickZone: [this.getInvMasterData?.secondaryPickZone.toLowerCase()||''],
@@ -357,177 +325,168 @@ export class InventoryMasterComponent implements OnInit {
 
       kitInventories: [this.getInvMasterData?.kitInventories || '', [Validators.required]],
 
-
-
       includeInAutoRTSUpdate: [this.getInvMasterData?.includeInAutoRTSUpdate || false, [Validators.required]],
       minimumRTSReelQuantity: [this.getInvMasterData?.minimumRTSReelQuantity || 0, [Validators.maxLength(9), Validators.required]],
 
-
-
       scanCode: [this.getInvMasterData?.scanCode || '', [Validators.required]],
-
 
       avgPieceWeight: [this.getInvMasterData?.avgPieceWeight || 0, [Validators.required]],
       sampleQuantity: [this.getInvMasterData?.sampleQuantity || 0, [Validators.required]],
       minimumUseScaleQuantity: [this.getInvMasterData?.minimumUseScaleQuantity || 0, [Validators.required]],
       useScale: [this.getInvMasterData?.useScale || false, [Validators.required]],
 
-
-
       unitCost: [this.getInvMasterData?.unitCost || 0, [Validators.required, Validators.maxLength(11), Validators.pattern("^[0-9]*$")]],
       manufacturer: [this.getInvMasterData?.manufacturer || '', [Validators.maxLength(50)]],
       specialFeatures: [this.getInvMasterData?.specialFeatures || '', [Validators.maxLength(255)]],
 
-
       inventoryTable: [this.invMasterLocations?.inventoryTable || '', [Validators.required]],
       count: [this.invMasterLocations?.count || '', [Validators.required]],
-
 
       wsid: [this.userData?.wsid || '', [Validators.required]],
       username: [this.userData?.userName || '', [Validators.required]],
 
       itemQuarantined: [this.getInvMasterData?.itemQuarantined || '', [Validators.required]],
 
-
       supplierName: ['']
     });
     let CopyObject = JSON.stringify(this.invMaster.value);
     this.OldinvMaster = JSON.parse(CopyObject || '{}');
   }
+
   onSubmit(form: FormGroup) { 
   }
+
   public getInventory(init: boolean= false,param?) {
     let paylaod1 = {
-      "itemNumber": param??this.currentPageItemNo,
+      "itemNumber": param ?? this.currentPageItemNo,
     }
 
-    this.api.GetInventoryItemNumber(paylaod1).subscribe((res:any)=>{
-      
+    this.iAdminApiService.GetInventoryItemNumber(paylaod1).subscribe((res:any) => {
       this.RecordSavedItem();
       if(res.isExecuted){
         this.currentPageItemNo = res.data
         this.getInsertedItemNumber(res.data, init)
       }
       else{
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("GetInventoryItemNumber",res.responseMessage);
       }
     })
 
   }
+
   ApplySavedItem() {
-    
     if(this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ) return;
     this.searchValue = this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY]?.searchValue || '';
-
   }
+
   RecordSavedItem() {
     this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY]= {
         searchValue: this.searchValue 
     };
   }
 
-
   getInsertedItemNumber(currentPageItemNumber, init: boolean= false){
     let paylaod = {
       "itemNumber": currentPageItemNumber,
       "app": "",
-      "newItem": false,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "newItem": false
     }
-    this.api.GetInventory(paylaod).subscribe((res: any) => {
-      
-      if (currentPageItemNumber == '') {
-        currentPageItemNumber = res.data?.firstItemNumber;
+    this.iAdminApiService.GetInventory(paylaod).subscribe((res: any) => {
+      if(res.isExecuted)
+      {
+        if (currentPageItemNumber == '') this.global.ShowToastr('error', 'No Data Found.', 'Error!');
+        this._searchValue = currentPageItemNumber;
+        this.paginationData = {
+          total: res.data?.filterCount.total,
+          position: res.data?.filterCount.pos,
+          itemNumber: res.data?.filterCount.itemNumber,
+        }
+        this.saveDisabled = true;
+        this.getInvMasterDetail(currentPageItemNumber);
+        this.getInvMasterLocations(currentPageItemNumber);
       }
-      this._searchValue = currentPageItemNumber;
-      this.paginationData = {
-        total: res.data?.filterCount.total,
-        position: res.data?.filterCount.pos,
-        itemNumber: res.data?.filterCount.itemNumber,
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetInventory",res.responseMessage);
       }
-      this.saveDisabled = true;
-      this.getInvMasterDetail(currentPageItemNumber);
-      this.getInvMasterLocations(currentPageItemNumber);
     });
   }
   
   async getInvMasterDetail(itemNum: any,shouldExecute = true): Promise<void> {
     if(!shouldExecute) return;
-    let paylaod = {
-      "itemNumber": itemNum,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
-    };
 
+    let paylaod = { "itemNumber": itemNum };
     try {
-      const res: any = await this.api.GetInventoryMasterData(paylaod).toPromise();
+      const res: any = await this.iAdminApiService.GetInventoryMasterData(paylaod).toPromise();
       this.getInvMasterData = res.data;
- 
       await this.initialzeIMFeilds();
-    } catch (error) {
-    }
-    this.api.GetInventoryMasterData(paylaod).subscribe((res: any) => {
-      res.data['scanCode'] = res.data['scanCode'].map(item => {
-        return { ...item, isDisabled: true };
-      })
-      this.getInvMasterData = res.data;
-      
+    } catch (error) {}
 
-      this.initialzeIMFeilds();
-    })
+    this.iAdminApiService.GetInventoryMasterData(paylaod).subscribe((res: any) => {
+      if(res.isExecuted && res.data) {
+        res.data['scanCode'] = res.data['scanCode'].map(item => { return { ...item, isDisabled: true } });
+        this.getInvMasterData = res.data;
+        this.initialzeIMFeilds();
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetInventoryMasterData",res.responseMessage);
+      }
+    });
   }
+
   private getChangedProperties(): string[] {
     let changedProperties: any = [];
-
     Object.keys(this.invMaster.controls).forEach((name) => {
       const currentControl = this.invMaster.controls[name];
-
-      if (currentControl.dirty) {
-        changedProperties.push(name);
-      }
+      if (currentControl.dirty) changedProperties.push(name);
     });
 
     return changedProperties;
   }
+
   public OSFieldFilterNames() { 
-    this.api.ColumnAlias().subscribe((res: any) => {
-      this.columns = res.data;
-      this.fieldNames=this.columns
-    })
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.columns = res.data;
+        this.fieldNames=this.columns
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
+    });
   }
+
   public getInvMasterLocations(itemNum: any, pageSize?, startIndex?, sortingColumnName?, sortingOrder?) {
-    
     let paylaod = {
       "draw": 0,
       "itemNumber": itemNum,
-      "start": startIndex ?? 0,
-      "length": pageSize ??5,
+      "start": startIndex || 0,
+      "length": pageSize || 5,
       "sortColumnNumber": sortingColumnName ?? 0,
-      "sortOrder": sortingOrder ?? "",
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "sortOrder": sortingOrder ?? ""
     }
-    this.api.GetInventoryMasterLocation(paylaod).subscribe((res: any) => {
-      // this.invMasterLocations ='asdsad';
-      this.invMaster.get('inventoryTable')?.setValue(res.data.inventoryTable);
-      this.count = res.data.count 
-      this.initialzeIMFeilds();
-    })
+    this.iAdminApiService.GetInventoryMasterLocation(paylaod).subscribe((res: any) => {
+      if(res.isExecuted && res.data) {
+        this.invMaster.get('inventoryTable')?.setValue(res.data.inventoryTable);
+        this.count = res.data.count 
+        this.initialzeIMFeilds();
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetInventoryMasterLocation",res.responseMessage);
+      }
+    });
   }
 
   public getLocationTable(stockCode: any) {
-    let paylaod = {
-      "stockCode": stockCode,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
-    }
-    this.api.GetLocationTable(paylaod).subscribe((res: any) => {
-      this.locationTable = res.data;
-    })
+    let paylaod = { "stockCode": stockCode }
+    this.iAdminApiService.GetLocationTable(paylaod).subscribe((res: any) => {
+      if (res.isExecuted && res.data) this.locationTable = res.data;
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetLocationTable",res.responseMessage);
+      }
+    });
   }
 
   nextPage() {
@@ -535,19 +494,24 @@ export class InventoryMasterComponent implements OnInit {
       let paylaod = {
         "itemNumber": this.currentPageItemNo,
         "filter": "1=1",
-        "firstItem": 1,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "firstItem": 1
       }
-      this.api.NextItemNumber(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.NextItemNumber(paylaod).subscribe((res: any) => {
+        if (res.isExecuted && res.data)
+        {
         this.currentPageItemNo = res.data;
         this.searchValue = this.currentPageItemNo;
         this.getInventory();
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("NextItemNumber",res.responseMessage);
+          
+        }
       })
     }
 
   }
-
 
   prevPage(init?) {
    
@@ -556,16 +520,27 @@ export class InventoryMasterComponent implements OnInit {
       let paylaod = {
         "itemNumber": this.currentPageItemNo,
         "filter": "1=1",
-        "firstItem":init?0:1,
-        "username": this.userData.userName,
-        "wsid": this.userData.wsid,
+        "firstItem":init?0:1
       }
-      this.api.PreviousItemNumber(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.PreviousItemNumber(paylaod).subscribe((res: any) => {
+        if(res.isExecuted && res.data)
+        {
         this.currentPageItemNo = res.data;
         this.searchValue = this.currentPageItemNo;
 
         this.getInventory(init);
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("PreviousItemNumber",res.responseMessage);
+
+        }
       })
+    }
+    else{
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("PreviousItemNumber");
+
     }
 
   }
@@ -581,23 +556,29 @@ export class InventoryMasterComponent implements OnInit {
     let paylaod = {
       "itemNumber": this.currentPageItemNo,
       "filter": "1=1",
-      "firstItem":0,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
+      "firstItem":0
     }
 
-    this.api.PreviousItemNumber(paylaod).subscribe((res: any) => {
-
-   
+    this.iAdminApiService.PreviousItemNumber(paylaod).subscribe((res: any) => {
+      if(res.isExecuted && res.data)
+      {
       this.currentPageItemNo = res.data;
       this.searchValue = this.currentPageItemNo;
       resolve(this.currentPageItemNo)
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PreviousItemNumber",res.responseMessage);
+
+
+      }
 
     })
    
   })
 
   }
+
   updateInventoryMasterValidate() {
     if (this.invMaster.value?.avgPieceWeight == null || this.invMaster.value?.avgPieceWeight < 0 || this.invMaster.value?.avgPieceWeight > 99999999999) {
       return false;
@@ -619,27 +600,22 @@ export class InventoryMasterComponent implements OnInit {
       this.invMaster.patchValue({
         'bulkGoldZone': this.invMaster.value?.bulkVelocity,
         'CfGoldZone': this.invMaster.value?.cfVelocity,
-        'splitCase':this.invMaster.value.splitCase,
-        'active': this.invMaster.value.active
+        'splitCase':this.invMaster.value.splitCase || false,
+        'active': this.invMaster.value.active || false
       }); 
       if(!this.invMaster.value.secondaryPickZone){
         this.invMaster.value['secondaryPickZone'] = '';
       }
-      this.api.UpdateInventoryMaster(this.invMaster.value).subscribe((res: any) => {
+      this.iAdminApiService.UpdateInventoryMaster(this.invMaster.value).subscribe((res: any) => {
         if (res.isExecuted) {
           this.saveDisabled = true;
           this.ifAllowed = false;
           this.getInventory();
-          this.toastr.success(labels.alert.update, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('success',labels.alert.update, 'Success!');
         } else {
           this.saveDisabled = false
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("UpdateInventoryMaster",res.responseMessage);
         }
       })
       this.OldinvMaster = { ...this.invMaster.value };
@@ -649,17 +625,15 @@ export class InventoryMasterComponent implements OnInit {
   public updateItemNumber(form: any) {
     let paylaod = {
       "oldItemNumber": form.oldItemNumber,
-      "newItemNumber": form.newItemNumber,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "newItemNumber": form.newItemNumber 
     }
-    this.api.UpdateItemNumber(paylaod).subscribe((res: any) => {
+    this.iAdminApiService.UpdateItemNumber(paylaod).subscribe((res: any) => {
     })
   }
 
   public openAddItemDialog() {
     this.isDialogOpen = true
-    let dialogRef = this.dialog.open(ItemNumberComponent, {
+    let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -680,38 +654,32 @@ export class InventoryMasterComponent implements OnInit {
         const { itemNumber, description } = result;
         let paylaod = {
           "itemNumber": itemNumber,
-          "description": description,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "description": description
         }
-        this.api.AddNewItem(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.AddNewItem(paylaod).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.toastr.success(labels.alert.success, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.success, 'Success!');
             this.currentPageItemNo = itemNumber;
             this.getInventory();
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("AddNewItem",res.responseMessage);
           }
         })
       } 
 
     });
   }
+
   inventoryMapAction(event:any){
     this.clearMatSelectList();
-
   }
+
   deleteItem($event) {
     this.isDialogOpen = true
     let itemToDelete = this.currentPageItemNo
 
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -723,39 +691,26 @@ export class InventoryMasterComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       this.isDialogOpen = false
       if (res == 'Yes') {
-
-       
-
         let paylaod = {
           "itemNumber": itemToDelete,
-          "append": true,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "append": true
         }
-        this.api.DeleteItem(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.DeleteItem(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(labels.alert.delete, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
             let paylaodNextItemNumber = {
               "itemNumber": this.currentPageItemNo,
               "filter": "1=1",
-              "firstItem": 1,
-              "username": this.userData.userName,
-              "wsid": this.userData.wsid,
+              "firstItem": 1
             }
-            this.api.NextItemNumber(paylaodNextItemNumber).subscribe((res: any) => {
+            this.iAdminApiService.NextItemNumber(paylaodNextItemNumber).subscribe((res: any) => {
               this.currentPageItemNo = res.data;
               this.searchValue = this.currentPageItemNo;
               this.getInventory();
             })
-            
           } else {
-            this.toastr.error('Delete failed!  Item exists in Inventory Map.  Please deallocate item from Inventory Map location(s) before deleting.', 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error','Delete failed!  Item exists in Inventory Map.  Please deallocate item from Inventory Map location(s) before deleting.', 'Error!');
+            console.log("DeleteItem",res.responseMessage);
           }
         })
       }
@@ -764,7 +719,7 @@ export class InventoryMasterComponent implements OnInit {
 
   quarantineDialog(): void {
     this.isDialogOpen = true
-    const dialogRef = this.dialog.open(this.quarantineTemp, {
+    const dialogRef:any = this.global.OpenDialog(QuarantineDialogComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -774,22 +729,15 @@ export class InventoryMasterComponent implements OnInit {
       if (x) {
         let paylaod = {
           "itemNumber": this.currentPageItemNo,
-          "append": true,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "append": true
         }
-        this.api.UpdateInventoryMasterOTQuarantine(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.UpdateInventoryMasterOTQuarantine(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
             this.getInventory();
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("UpdateInventoryMasterOTQuarantine",res.responseMessage);
           }
         })
       }
@@ -802,7 +750,7 @@ export class InventoryMasterComponent implements OnInit {
 
   unquarantineDialog(): void {
     this.isDialogOpen = false
-    const dialogRef = this.dialog.open(this.unquarantineTemp, {
+    const dialogRef:any = this.global.OpenDialog(UnquarantineDialogComponent, {
       width: '450px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -811,57 +759,62 @@ export class InventoryMasterComponent implements OnInit {
       this.isDialogOpen = true
       if (x) {
         let paylaod = {
-          "itemNumber": this.currentPageItemNo,
-          "append": this.append,
-          "username": this.userData.userName,
-          "wsid": this.userData.wsid
+          "itemNumber": this?.currentPageItemNo,
+          "append": this.append
         }
-        this.api.UpdateInventoryMasterOTUnQuarantine(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.UpdateInventoryMasterOTUnQuarantine(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
             this.getInventory();
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("UpdateInventoryMasterOTUnQuarantine",res.responseMessage);
           }
         })
       }
     })
   }
 
-
   viewLocations() {
     this.RecordSavedItem();
-    if (this.setVal == true) {
-      this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
-    }
-    else {
-      if(this.spliUrl[1] == 'InductionManager'){
-        this.router.navigate(['/InductionManager/Admin/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
-      }
-      else{
-        this.router.navigate(['/admin/inventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
-      }
-    }
+    if (this.setVal) this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
+    else if (this.spliUrl[1] == 'InductionManager') this.router.navigate(['/InductionManager/Admin/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
+    else this.router.navigate(['/admin/inventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
   }
-
 
   handleFocusOut() {
     if (!this.isDataFound && this.isDataFoundCounter > 0) {
       this.isDataFoundCounter = 0;
-      this.toastr.error('Value undefined Does not exist!', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','Value undefined Does not exist!', 'Error!');
     }
   }
+
+  updateSearchList(stockCode : any) {
+    let payload = {
+      "stockCode": stockCode
+    }
+    this.iAdminApiService.GetLocationTable(payload).subscribe((res: any) => {
+      if(res.isExecuted)
+      {
+        if (res.data?.length) {
+          this.searchList = res.data;
+          this.isDataFound = true;
+          this.isDataFoundCounter = 0;
+          this.saveDisabled = true;
+        } else {
+          this.isDataFound = false;
+          this.isDataFoundCounter = 1;
+          this.saveDisabled = false;
+        }
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetLocationTable",res.responseMessage);
+      }
+    });
+  }
+
   getSearchList(e: any):void {
-    
     e.stopPropagation();
     if (e.key === 'Enter') {
       this.autocompleteTrigger.closePanel();
@@ -869,26 +822,8 @@ export class InventoryMasterComponent implements OnInit {
       this.currentPageItemNo =e.currentTarget.value;
       this.getInventory();
     }
-
     this.searchValue = e.currentTarget.value;
-    let paylaod = {
-      "stockCode": e.currentTarget.value,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid,
-    }
-    this.api.GetLocationTable(paylaod).subscribe((res: any) => {
-      if (res.data?.length) {
-
-        this.searchList = res.data;
-        this.isDataFound = true;
-        this.isDataFoundCounter = 0;
-        this.saveDisabled = true;
-      } else {
-        this.isDataFound = false;
-        this.isDataFoundCounter = 1;
-        this.saveDisabled = false;
-      }
-    });
+    this.updateSearchList(e.currentTarget.value);
   }
 
   onSearchSelect(e: any) {
@@ -898,34 +833,29 @@ export class InventoryMasterComponent implements OnInit {
   }
 
   clearSearchField() {
-
     this.searchValue = '';
   }
-  getNotification(e: any) {
 
+  getNotification(e: any) {
     if (e?.newItemNumber) {
       this.currentPageItemNo = e.newItemNumber;
+      this.updateSearchList(e.newItemNumber);
       this.getInventory();
-    } else if (e?.refreshLocationGrid) {
-      this.getInvMasterLocations(this.currentPageItemNo);
-    } else if (e?.locationPageSize) {  
-
-      this.getInvMasterLocations(this.currentPageItemNo, e.locationPageSize, e.startIndex);
-    } else if (e?.sortingColumn) {
-      this.getInvMasterLocations(this.currentPageItemNo, '', '', e.sortingColumn, e.sortingSeq);
-    } else {
-      this.getInventory();
-    }
+    } 
+    else if (e?.refreshLocationGrid) this.getInvMasterLocations(this.currentPageItemNo);
+    else if (e?.locationPageSize) this.getInvMasterLocations(this.currentPageItemNo, e.locationPageSize, e.startIndex);
+    else if (e?.sortingColumn) this.getInvMasterLocations(this.currentPageItemNo, '', '', e.sortingColumn, e.sortingSeq);
+    else this.getInventory();
     this.isDisabledSubmit = false;
-
   }
+
   kitItemChecks() {
     let IsReturn: any = false;
     if (this.kititemcom.kitItemsList.length) {
       for (let i = 0; i < this.kititemcom.kitItemsList.length; i++) {
         for (let key in this.OldinvMaster.kitInventories[0]) {
           if (this.OldinvMaster.kitInventories[i] && this.OldinvMaster.kitInventories[i][key] == this.kititemcom.kitItemsList[i][key]) {
-
+            continue;
           } else {
             IsReturn = true;
             break;
@@ -935,13 +865,14 @@ export class InventoryMasterComponent implements OnInit {
     }
     return IsReturn;
   }
+
   ScanCodesChecks() {
     let IsReturn: any = false;
     if (this.ScanCodesCom.scanCodesList.length) {
       for (let i = 0; i < this.ScanCodesCom.scanCodesList.length; i++) {
         for (let key in this.ScanCodesCom.scanCodesList[0]) {
           if (this.OldinvMaster.scanCode[i] && this.OldinvMaster.scanCode[i][key] == this.ScanCodesCom.scanCodesList[i][key]) {
-
+            continue;
           } else { 
             IsReturn = true;
             break;
@@ -951,6 +882,7 @@ export class InventoryMasterComponent implements OnInit {
     }
     return IsReturn;
   }
+
   getChangesCheck() {
    let IsReturn: any = false;
     for (let key in this.invMaster.value) {
@@ -983,7 +915,6 @@ export class InventoryMasterComponent implements OnInit {
       if (IsCheck) { 
         this.ConfirmationDialog(tab.index);
         this.tabIndex = this.PrevtabIndex;
-
       }
       else if (tab.index == 2 || tab.index == 5) {
         this.saveDisabled = true;
@@ -1004,7 +935,7 @@ export class InventoryMasterComponent implements OnInit {
   }
 
   async ConfirmationDialog(tabIndex) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       data: {
@@ -1040,8 +971,6 @@ export class InventoryMasterComponent implements OnInit {
   @HostListener('document:keyup', ['$event'])
   documentClick(event: MouseEvent) {
     let IsCheck = this.getChangesCheck();
-    if (IsCheck) {
-      this.ifAllowed = true;
-    }
+    if (IsCheck) this.ifAllowed = true;
   }
 }

@@ -1,7 +1,7 @@
 <mat-tab-group id="loop" class="my-component" [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabChanged($event)"
   class="mat-tab-group mat-primary">
   <mat-tab tabindex="10" label="Open Transactions Onhold">
-    <app-open-transaction-on-hold (returnToOrder)="returnToOrder($event)" (back)="returnFromComp($event)"></app-open-transaction-on-hold>
+    <app-open-transaction-on-hold [TabIndex]="TabIndex" (returnToOrder)="returnToOrder($event)" (back)="returnFromComp($event)"></app-open-transaction-on-hold>
   </mat-tab>
 
   <mat-tab label="Open Transactions " >

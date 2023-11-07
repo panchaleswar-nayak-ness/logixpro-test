@@ -7,7 +7,9 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
-import { ApiFuntions } from '../services/ApiFuntions';
+import { IAdminApiService } from '../services/admin-api/admin-api-interface';
+import { AdminApiService } from '../services/admin-api/admin-api.service';
+import { GlobalService } from '../common/services/global.service';
 
 @Component({
   selector: 'app-admin',
@@ -75,7 +77,7 @@ export class AdminComponent implements OnInit {
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
   ];
 
-
+  public iAdminApiService: IAdminApiService;
 
   public displayedColumns: string[] = [
     'zone',
@@ -88,10 +90,12 @@ export class AdminComponent implements OnInit {
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   constructor(
     public authService: AuthService, 
-    private api:ApiFuntions,
-    private _liveAnnouncer: LiveAnnouncer,
-   
-  ) {}
+    private global : GlobalService,
+    public adminApiService: AdminApiService,
+    private _liveAnnouncer: LiveAnnouncer
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
   inventoryDetail = new FormGroup({
     item: new FormControl({ value: '', disabled: true }),
     description: new FormControl({ value: '', disabled: true }),
@@ -156,24 +160,32 @@ export class AdminComponent implements OnInit {
     }
   }
   public OSFieldFilterNames() { 
-    this.api.ColumnAlias().subscribe((res: any) => {
-      this.fieldNames = res.data;
-    })
+    this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
+      if (res.data) {
+        this.fieldNames = res.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("ColumnAlias",res.responseMessage);
+      }
+    });
   }
   async autocompleteSearchColumn() {
     let searchPayload = {
      
-      stockCode:this.searchValue,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      stockCode:this.searchValue, 
     };
 
-    this.api.location(searchPayload).subscribe({
+    this.iAdminApiService.location(searchPayload).subscribe({
       next: (res: any) => {
-        this.searchAutocompleteList = res.data;
+        if (res.data) {
+          this.searchAutocompleteList = res.data;
+        } else {
+          
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("location",res.responseMessage);
+          
+        }
       },
-      error: (error) => {},
-      
     });
   }
   getFloatLabelValue(): FloatLabelType {
@@ -190,13 +202,11 @@ export class AdminComponent implements OnInit {
 
   getInvDetailsList() {
     let payload = {
-      itemNumber: this.searchValue,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      itemNumber: this.searchValue, 
     };
-    this.api.Inventorymasterdata(payload).subscribe({
+    this.iAdminApiService.Inventorymasterdata(payload).subscribe({
       next: (res: any) => {
-        if (res.isExecuted) {
+        if (res.isExecuted && res.data) {
           const data = res.data;
           this.inventoryDetail.get("item")?.setValue(data?.itemNumber);
           this.inventoryDetail.get("description")?.setValue(data?.description);
@@ -232,7 +242,7 @@ export class AdminComponent implements OnInit {
           this.inventoryDetail.get("replenishmentPoint")?.setValue(data?.reorderPoint);
           this.inventoryDetail.get("replenishmentLevel")?.setValue(data?.replenishmentLevel);
           this.inventoryDetail.get("includeRTSUpdate")?.setValue(data?.includeInAutoRTSUpdate ? 'Yes' : 'No');
-          this.inventoryDetail.get("fifo")?.setValue(data && data?.fifo ? 'Yes' : 'No');
+          this.inventoryDetail.get("fifo")?.setValue(data?.fifo ? 'Yes' : 'No');
           this.inventoryDetail.get("dateSensitive")?.setValue(data?.dateSensitive ? 'Yes' : 'No');
           this.inventoryDetail.get("wareHouseSensitive")?.setValue(data?.warehouseSensitive ? 'Yes' : 'No');
           this.inventoryDetail.get("active")?.setValue(data?.active ? 'Yes' : 'No');
@@ -240,6 +250,11 @@ export class AdminComponent implements OnInit {
           this.inventoryDetail.get("bulkVelocity")?.setValue(data?.bulkVelocity);
           this.inventoryDetail.get("useScale")?.setValue(data?.useScale ? 'Yes' : 'No');
           this.inventoryDetail.get("splitCase")?.setValue(data?.splitCase ? 'Yes' : 'No');
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("Inventorymasterdata",res.responseMessage);
+
         }
       },
       error: (error) => {},
@@ -280,12 +295,15 @@ export class AdminComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
   getAdminMenu() { 
-    this.api.GetAdminMenu().subscribe((res: any) => {
+    this.iAdminApiService.GetAdminMenu().subscribe((res: any) => {
+      if(res.isExecuted && res.data)
+      {
         if ( res?.data?.totalOrders) {
           this.dataSource = new MatTableDataSource(
             res.data.totalOrders.orderTable
           );
         }
+        
         if (res?.data?.totalOrders?.adminValues) {
           let item = res.data.totalOrders.adminValues;
           this.picksOpen = item.openPicks;
@@ -302,6 +320,15 @@ export class AdminComponent implements OnInit {
 
           this.reprocessOpen = item.reprocess;
         }
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetAdminMenu",res.responseMessage);
+
+      }
+        
+        
       });
   }
   isLookUp = false;
@@ -309,7 +336,7 @@ export class AdminComponent implements OnInit {
   backAdminAction() {
   this.isLookUp = !this.isLookUp;
   setTimeout(()=>{
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
 
   }, 500);
 

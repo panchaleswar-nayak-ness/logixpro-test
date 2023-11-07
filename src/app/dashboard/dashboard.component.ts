@@ -3,6 +3,8 @@ import { IEmployee,EmployeeObject,AdminEmployeeLookupResponse,AccessGroupObject 
 import { Router } from '@angular/router';
 import { ApiFuntions } from '../services/ApiFuntions';
 import { SharedService } from '../services/shared.service';
+import { IAdminApiService } from '../services/admin-api/admin-api-interface';
+import { AdminApiService } from '../services/admin-api/admin-api.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -12,9 +14,11 @@ export class DashboardComponent  {
   sideBarOpen: boolean = true;
   emp: IEmployee;
   empRes:EmployeeObject;
+  public iAdminApiService: IAdminApiService;
   breadcrumbList: any = [];
   isMenuHide:any=false;
-  constructor(public employeeService: ApiFuntions,  public router: Router,private sharedService:SharedService) {
+  constructor(public employeeService: ApiFuntions,  public router: Router,private adminApiService: AdminApiService,private sharedService:SharedService) {
+    this.iAdminApiService = adminApiService;
     this.sharedService.SideBarMenu.subscribe(menu => {
       this.sideBarOpen = menu;   
     });
@@ -43,12 +47,8 @@ export class DashboardComponent  {
   //Employees
 
   //get employee
-  getEmployee() {
-    this.emp = {
-    "userName": "1234",
-    "wsid": "TESTWSID"
-    };
-this.employeeService.getEmployeeData(this.emp)
+  getEmployee() { 
+this.iAdminApiService.getEmployeeData(this.emp)
 .subscribe((response: EmployeeObject) => {
   
 
@@ -63,11 +63,9 @@ this.employeeService.getEmployeeData(this.emp)
       "startDate": "2019-10-27",
       "endDate": "2020-10-27",
       "startRow": 1,
-      "draw": 10,
-      "userName": "string",
-      "wsid": "string"
+      "draw": 10
     };
-this.employeeService.employeeStatsInfo(this.emp)
+this.iAdminApiService.employeeStatsInfo(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
   
 
@@ -78,11 +76,9 @@ this.employeeService.employeeStatsInfo(this.emp)
 //delete employee Lookup
 deleteEmployee() {
   this.emp = {
-    "userName": "asifadmin12",
-    "deleteBy": "1234",
-    "wsid": "TESTWSID"
+    "deleteBy": "1234"
   };
-this.employeeService.deleteAdminEmployee(this.emp)
+this.iAdminApiService.deleteAdminEmployee(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -94,8 +90,7 @@ this.employeeService.deleteAdminEmployee(this.emp)
 
 //update employee Lookup
 updateEmployee() {
-  this.emp = {
-    "userName": "asifadmin",
+  this.emp = { 
     "lastName": "Ahmed",
     "firstName": "admin",
     "mi": "",
@@ -103,10 +98,9 @@ updateEmployee() {
     "maximumOrders": 10,
     "accessLevel": "",
     "groupName": "",
-    "emailAddress": "aa@gmail.com",
-    "wsid": "TESTWID"
+    "emailAddress": "aa@gmail.com"
   };
-this.employeeService.updateAdminEmployee(this.emp)
+this.iAdminApiService.updateAdminEmployee(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -122,12 +116,10 @@ this.employeeService.updateAdminEmployee(this.emp)
 
 //get control name
 getControlName() {
-  this.emp = {
-    "userName": "1234",
-    "wsid": "TESTWSID",
+  this.emp = {  
     "filter": "%"
   };
-this.employeeService.getControlName(this.emp)
+this.iAdminApiService.getControlName(this.emp)
 .subscribe((response: EmployeeObject) => {
 
 
@@ -142,7 +134,7 @@ updateControlName() {
    "controlName": "Admin Create Orders",
   "newValue": true
   };
-this.employeeService.updateControlName(this.emp)
+this.iAdminApiService.updateControlName(this.emp)
 .subscribe((response: EmployeeObject) => {
 
 
@@ -154,10 +146,9 @@ this.employeeService.updateControlName(this.emp)
 //delete control name
 deleteControlName() {
   this.emp = {
-  "controlName": "Admin Create Orders",
-  "userName": "1234"
+  "controlName": "Admin Create Orders" 
   };
-this.employeeService.deleteControlName(this.emp)
+this.iAdminApiService.deleteControlName(this.emp)
 .subscribe((response: EmployeeObject) => {
 
 
@@ -169,10 +160,9 @@ this.employeeService.deleteControlName(this.emp)
 //submit control name
 submitControlName() {
   this.emp = {
-  "controlName": "Admin Create Orders",
-  "userName": "1234"
+  "controlName": "Admin Create Orders" 
   };
-this.employeeService.submitControlResponse(this.emp)
+this.iAdminApiService.submitControlResponse(this.emp)
 .subscribe((response: EmployeeObject) => {
 
 
@@ -186,12 +176,11 @@ this.employeeService.submitControlResponse(this.emp)
 // updateEmployeeZone
 
 updateEmployeeZone() {
-  this.emp = {
-  "userName": "1234",
+  this.emp = { 
   "zone": "01",
 
   };
-this.employeeService.updateEmployeeZone(this.emp)
+this.iAdminApiService.updateEmployeeZone(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -203,12 +192,11 @@ this.employeeService.updateEmployeeZone(this.emp)
 //deleteEmployeeZone
 
 deleteEmployeeZone() {
-  this.emp = {
-  "userName": "1234",
+  this.emp = { 
   "zone": "01",
 
   };
-this.employeeService.deleteEmployeeZone(this.emp)
+this.iAdminApiService.deleteEmployeeZone(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -233,7 +221,7 @@ this.employeeService.deleteEmployeeZone(this.emp)
 
 
 getZones() { 
-this.employeeService.getZones()
+this.iAdminApiService.getZones()
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -246,12 +234,10 @@ this.employeeService.getZones()
 //InsertAllAccess
 
 insertAllAccess() {
-  this.emp = {
-  "userName": "1234",
-  "access": "Administrator",
-  "wsid": "TESTWID"
+  this.emp = { 
+  "access": "Administrator" 
   };
-this.employeeService.insertAllAccess(this.emp)
+this.iAdminApiService.insertAllAccess(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -263,12 +249,11 @@ this.employeeService.insertAllAccess(this.emp)
 //EmployeeLocation
 
 insertEmployeeLocation() {
-  this.emp = {
-  "userName": "1234",
+  this.emp = { 
   "startLocation": "01",
   "endLocation": "05"
   };
-this.employeeService.insertEmployeeLocation(this.emp)
+this.iAdminApiService.insertEmployeeLocation(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -278,14 +263,13 @@ this.employeeService.insertEmployeeLocation(this.emp)
 }
 
 updateEmployeeLocation() {
-  this.emp = {
-    "userName": "1234",
+  this.emp = { 
     "startLocation": "02",
     "endLocation": "05",
     "oldStartLocation": "01",
     "oldEndLocation": "05"
   };
-this.employeeService.updateEmployeeLocation(this.emp)
+this.iAdminApiService.updateEmployeeLocation(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -295,12 +279,11 @@ this.employeeService.updateEmployeeLocation(this.emp)
 }
 
 deleteEmployeeLocation() {
-  this.emp = {
-    "userName": "1234",
+  this.emp = { 
     "startLocation": "02",
     "endLocation": "05"
   };
-this.employeeService.deleteEmployeeLocation(this.emp)
+this.iAdminApiService.deleteEmployeeLocation(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -311,14 +294,13 @@ this.employeeService.deleteEmployeeLocation(this.emp)
 
 //PickLevels
 insertPickLevels() {
-  this.emp = {
-    "userName": "1234",
+  this.emp = { 
     "wsid": "TESTWID",
     "levelID": "01",
     "startShelf": "01",
     "endShelf": "05"
   };
-this.employeeService.insertPickLevels(this.emp)
+this.iAdminApiService.insertPickLevels(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -329,14 +311,13 @@ this.employeeService.insertPickLevels(this.emp)
 
 
 updatePickLevels() {
-  this.emp = {
-    "userName": "1234",
+  this.emp = { 
     "wsid": "TESTWID",
     "levelID": "01",
     "startShelf": "01",
     "endShelf": "05"
   };
-this.employeeService.updatePickLevels(this.emp)
+this.iAdminApiService.updatePickLevels(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -346,14 +327,13 @@ this.employeeService.updatePickLevels(this.emp)
 }
 
 deletePickLevels() {
-  this.emp = {
-    "userName": "1234",
+  this.emp = { 
     "wsid": "TESTWID",
     "levelID": "01",
     "startShelf": "01",
     "endShelf": "05"
   };
-this.employeeService.deletePickLevels(this.emp)
+this.iAdminApiService.deletePickLevels(this.emp)
 .subscribe((response: AdminEmployeeLookupResponse) => {
 
 
@@ -366,12 +346,11 @@ this.employeeService.deletePickLevels(this.emp)
 //UpdateAccessGroup
 
 updateAccessGroup() {
-  this.emp = {
-    "userName": "1234",
+  this.emp = { 
     "group": "Administrator"
 
   };
-this.employeeService.updateAccessGroup(this.emp)
+this.iAdminApiService.updateAccessGroup(this.emp)
 .subscribe((response: AccessGroupObject) => {
 
 
@@ -382,13 +361,12 @@ this.employeeService.updateAccessGroup(this.emp)
 //Group
 
 insertGroup() {
-  this.emp = {
-    "userName": "1234",
+  this.emp = { 
     "wsid": "TESTWID",
     "GroupName": "Group Test"
 
   };
-this.employeeService.updateAccessGroup(this.emp)
+this.iAdminApiService.updateAccessGroup(this.emp)
 .subscribe((response: AccessGroupObject) => {
 
 

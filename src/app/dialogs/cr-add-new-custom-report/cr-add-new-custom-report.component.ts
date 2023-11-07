@@ -1,11 +1,14 @@
 import { Component, ElementRef, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CrEditDesignTestDataComponent } from '../cr-edit-design-test-data/cr-edit-design-test-data.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { ToastrService } from 'ngx-toastr';
+
 import { catchError, of } from 'rxjs';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { CrDesignFilenameConfirmationComponent } from '../cr-design-filename-confirmation/cr-design-filename-confirmation.component';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-cr-add-new-custom-report',
@@ -24,17 +27,20 @@ export class CrAddNewCustomReportComponent implements OnInit {
   appendstring
   AddNewColumns
   AddNewColumnscheck = false
-  
+  public iAdminApiService: IAdminApiService;
   AddNewFilePresent = false
   RestoreAll = false
   CurrentFilename
   @ViewChildren('serialTemp') serialInputs: QueryList<any>;
   constructor( 
     @Inject(MAT_DIALOG_DATA) public data: any,
-              private dialog: MatDialog,
+              private global:GlobalService,
                private api:ApiFuntions,
-              private toastr :ToastrService,
-              public dialogRef: MatDialogRef<any>) { }
+              
+              private adminApiService: AdminApiService,
+              public dialogRef: MatDialogRef<any>) { 
+                this.iAdminApiService = adminApiService;
+              }
 
   ngOnInit(): void {
      this.listOfFileName = this.data.ListReports
@@ -43,14 +49,14 @@ export class CrAddNewCustomReportComponent implements OnInit {
     this.desc_focus.nativeElement.focus();
   }
   openEditDesign() {
-    const dialogRef = this.dialog.open(CrEditDesignTestDataComponent, {
+    const dialogRef:any = this.global.OpenDialog(CrEditDesignTestDataComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.NewDesignTestData = result ? result : this.NewDesignTestData
+      this.NewDesignTestData = result ? result : '';
     }
     );
   }
@@ -77,10 +83,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
   let valid = true;
   for (let x = 0; x < newParams.length - 1; x++) {
       if (newParams[x] == ''||newParams[x] == undefined) {
-        this.toastr.error(`${fields[x]} must not be left blank!`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',`${fields[x]} must not be left blank!`, 'Error!');
         valid = false;
         break;
       }
@@ -89,10 +92,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       const exists = this.isFileNameAlreadyExists(newParams[1]);
      
       if (exists) {
-        this.toastr.error(`Filename must be unique!`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error',`Filename must be unique!`, 'Error!');
         valid = false;
     };
 
@@ -101,13 +101,10 @@ export class CrAddNewCustomReportComponent implements OnInit {
     // have to convert later
 
     if(valid){
-      
-      this.api.validateNewDesign(newParams).subscribe((res=>{
+      debugger
+      this.iAdminApiService.validateNewDesign(newParams).subscribe((res=>{
         if(!res.data){
-          this.toastr.error(`Validation for adding a new report failed with an unknown error.  Please contact Scott Tech for support if this persists.`, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error',`Validation for adding a new report failed with an unknown error.  Please contact Scott Tech for support if this persists.`, 'Error!');
         }
         else{
           this.appendstring = this.buildAppendString('File warnings:', res.data.fileObj.errs)
@@ -159,22 +156,16 @@ export class CrAddNewCustomReportComponent implements OnInit {
               // appName: $('#AppName').val()
           };
 
-          this.api.getLLDesignerNewDesign(obj).pipe(
+          this.iAdminApiService.getLLDesignerNewDesign(obj).pipe(
             catchError((error) => {
               // Handle the error here
-              this.toastr.error("An error occured while retrieving data.", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"An error occured while retrieving data.", 'Error!');
               // Return a fallback value or trigger further error handling if needed
               return of({ isExecuted: false });
             })
           ).subscribe((res=>{
             this.dialogRef.close(obj);
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',res.responseMessage, 'Success!');
           }))
           }
         }
@@ -196,14 +187,12 @@ export class CrAddNewCustomReportComponent implements OnInit {
       dataType:  this.NewDesignDataType,
       outputType:  this.NewOutputType == 'Report' ? 2 : 1,
       exportFilename: this.NewExportFilename,
-      all: all ? all : false
+      all: all || false
   };
-  this.api.restoreDesign(obj).subscribe(res=>{
+  this.iAdminApiService.restoreDesign(obj).subscribe(res=>{
     if(!res.data){
-      this.toastr.error("Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!');
+      console.log("restoreDesign",res.responseMessage);
     }
     else{
       // remaining
@@ -214,7 +203,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
   }
 
   DeleteExistingdesign(){
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '560px',
       data: {
@@ -232,12 +221,10 @@ export class CrAddNewCustomReportComponent implements OnInit {
           "keepFile": false,
           "contentRootPath": ""
         }
-        this.api.deleteReport(payload).subscribe(res=>{
+        this.iAdminApiService.deleteReport(payload).subscribe(res=>{
           if (!res.data) {
-            this.toastr.error("Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.", 'Error!');
+            console.log("deleteReport",res.responseMessage);
         } else {
           this.saveNew()
         };
@@ -259,8 +246,8 @@ export class CrAddNewCustomReportComponent implements OnInit {
     let appendstring = '';
     if (errors.length > 0) {
         appendstring +=  title ;
-        for (let y = 0; y < errors.length; y++) {
-            appendstring +=   errors[y] ;
+        for (const error of errors) {
+            appendstring += error ;
         };
     };
     return appendstring;
@@ -286,7 +273,7 @@ validateInputs() {
 
 
   openCrDesignFilenameConfirmation() {
-    const dialogRef = this.dialog.open(CrDesignFilenameConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(CrDesignFilenameConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',

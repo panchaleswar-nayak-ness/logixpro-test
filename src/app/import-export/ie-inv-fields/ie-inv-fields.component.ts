@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-ie-inv-fields',
@@ -35,7 +35,7 @@ export class IeInvFieldsComponent {
     dataSourceList:any
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) { }
 
 

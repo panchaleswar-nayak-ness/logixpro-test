@@ -1,12 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { FrNumpadComponent } from '../../dialogs/fr-numpad/fr-numpad.component'; 
 import { AuthService } from '../../init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete'; 
 import { SharedService } from '../../services/shared.service';
-import { ApiFuntions } from '../../services/ApiFuntions';
+import { IFlowRackReplenishApi } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api-interface';
+import { FlowRackReplenishApiService } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-fr-flowrack-replenishment',
@@ -15,6 +16,9 @@ import { ApiFuntions } from '../../services/ApiFuntions';
 })
 
 export class FrFlowrackReplenishmentComponent implements OnInit {
+
+  public iFlowRackReplenishApi : IFlowRackReplenishApi;
+
   public userData: any;
   public itemQtyRow: boolean = true;
   public LocationRow: boolean = true;
@@ -41,11 +45,13 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   @ViewChild('ord_focus') ord_focus: ElementRef;
 
 
-  constructor(private dialog: MatDialog, 
+  constructor(private global:GlobalService, 
     private authservice: AuthService,
     private sharedService: SharedService,
-    private Api:ApiFuntions,
-    private toastr: ToastrService) { }
+    
+    public flowRackReplenishApi : FlowRackReplenishApiService) {
+      this.iFlowRackReplenishApi = flowRackReplenishApi;
+    }
 
   ngOnInit(): void {
     this.userData = this.authservice.userData()
@@ -65,11 +71,21 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   }
 
   cartonFlow() {
-    let payload = {
-      "WSID": this.userData.wsid,
-    }
-    this.Api.wslocation(payload).subscribe((res) => {
-      this.zone = res.data == 'No'||res.data == ''||res.data == null ? 'This workstation is not assigned to a zone' : res.data
+    this.iFlowRackReplenishApi.wslocation({}).subscribe((res) => {
+      if (res.isExecuted)
+      {
+        if (res.data == 'No'||res.data == ''||res.data == null){
+          this.zone='This workstation is not assigned to a zone';
+        }
+        else{
+          this.zone=res.data;
+        }
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("wslocation",res.responseMessage);
+      }
+
       
     })
   }
@@ -138,64 +154,62 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
       let payload = {
         "ItemNumber": this.itemnumscan,
       }
-      this.Api.CFData(payload).subscribe((res => {
-        if (res.data != '') {
-          this.itemnumscan = res.data
-          let payload = {
-            "itemNumber": this.itemnumscan,
-            "wsid": this.userData.wsid
-          }
-          this.Api.ItemLocation(payload).subscribe((res => {
-            if (res.data.length < 1) {
-              this.locationSuggestions = [];
-              let payload = {
-                "wsid": this.userData.wsid
+      this.iFlowRackReplenishApi.CFData(payload).subscribe((res => {
+        if(res.isExecuted)
+        {
+          if (res.data != '') {
+            this.itemnumscan = res.data
+            let payload = {
+              "itemNumber": this.itemnumscan
+            }
+            this.iFlowRackReplenishApi.ItemLocation(payload).subscribe((res => {
+              if (res.data.length < 1) {
+                this.locationSuggestions = [];
+                this.iFlowRackReplenishApi.openlocation({}).subscribe((res => {
+                  if (res.data.length < 1) {
+                    this.global.ShowToastr('error',"There are no open locations.", 'Error!');
+                    this.LocationRow = true;
+                    this.itemLocation = ''
+                  }
+                  else {
+                    this.global.ShowToastr('error',"No Locations found for Item Number, Scan or Select an open Location.", 'Error!');
+                    console.log("findItemLocation",res.responseMessage);
+                    this.locationSuggestions = res.data
+                    this.LocationRow = false;
+  
+  
+                    setTimeout(() => {
+                      this.itemLocationFocus.nativeElement.focus();
+                      this.itemLocationFocus.nativeElement.select();
+                    }, 0);
+                  }
+                }))
               }
-              this.Api.openlocation(payload).subscribe((res => {
-                if (res.data.length < 1) {
-                  this.toastr.error("There are no open locations.", 'Error!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000
-                  });
-                  this.LocationRow = true;
-                  this.itemLocation = ''
-                }
-                else {
-                  this.toastr.error("No Locations found for Item Number, Scan or Select an open Location.", 'Error!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000
-                  });
-                  this.locationSuggestions = res.data
-                  this.LocationRow = false;
-
-
-                  setTimeout(() => {
-                    this.itemLocationFocus.nativeElement.focus();
-                    this.itemLocationFocus.nativeElement.select();
-                  }, 0);
-                }
-              }))
-            }
-            else {
-              this.locationSuggestions = res.data
-            }
-            this.LocationRow = false;
-            this.itemLocation = res.data[0].location;
-            setTimeout(() => {
-              this.itemLocationFocus.nativeElement.focus();
-              this.itemLocationFocus.nativeElement.select();
-            }, 0);
-          }))
-
+              else {
+                this.locationSuggestions = res.data
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("ItemLocation",res.responseMessage);
+              }
+              this.LocationRow = false;
+              this.itemLocation = res.data[0].location;
+              setTimeout(() => {
+                this.itemLocationFocus.nativeElement.focus();
+                this.itemLocationFocus.nativeElement.select();
+              }, 0);
+            }))
+  
+          }
+          else {
+            this.itemnumscan = '';
+            this.global.ShowToastr('error',"This item does not exist in Inventory Master for this carton flow zone.", 'Error!');
+            this.clearAllFields()
+          }
         }
         else {
-          this.itemnumscan = '';
-          this.toastr.error("This item does not exist in Inventory Master for this carton flow zone.", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
-          this.clearAllFields()
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("CFData",res.responseMessage);
         }
+      
       }))
 
     }
@@ -209,29 +223,34 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   onLocationSelected(location) {
     let payload = {
       "itemNumber": this.itemnumscan,
-      "Input": this.itemLocation,
-      "wsid": this.userData.wsid,
+      "Input": this.itemLocation
     }
-    this.Api.verifyitemlocation( payload).subscribe((res => {
-      if (res.data) {
-        this.itemQtyRow = false;
-        this.calculator = false
-        this.openCal()
+    this.iFlowRackReplenishApi.verifyitemlocation( payload).subscribe((res => {
+      if(res.isExecuted)
+      {
+        if (res.data) {
+          this.itemQtyRow = false;
+          this.calculator = false
+          this.openCal()
+        }
+        else if (!res.data) {
+          this.autocompleteTrigger.closePanel()
+          this.clearLocationField()
+          this.LocationRow = true;
+          this.global.ShowToastr('error',"Location Unavailable.", 'Error!');
+          console.log("onLocationSelected",res.responseMessage);
+        }
       }
-      else if (!res.data) {
-        this.autocompleteTrigger.closePanel()
-        this.clearLocationField()
-        this.LocationRow = true;
-        this.toastr.error("Location Unavailable.", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("verifyitemlocation",res.responseMessage);
       }
+    
     }))
   }
   
   openCal() { 
-    const dialogRef = this.dialog.open(FrNumpadComponent, {
+    const dialogRef:any = this.global.OpenDialog(FrNumpadComponent, {
       width: '480px',
       minWidth: '480px',
       autoFocus: '__non_existing_element__',
@@ -290,17 +309,11 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
 
   updateItemQuantity() {
     if (this.itemQty <= 0) {
-      this.toastr.error("Quantity must be greater than zero.", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Quantity must be greater than zero.", 'Error!');
     }
 
     else if (this.itemQty == '') { 
-      this.toastr.error("Please enter a quantity.", 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Please enter a quantity.", 'Error!');
     }
 
     else {
@@ -308,35 +321,33 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
       let payload = {
         "itemNumber": this.itemnumscan,
         "Input": this.itemLocation,
-        "Quantity": this.itemQty,
-        "wsid": this.userData.wsid,
+        "Quantity": this.itemQty
       }
-      this.Api.verifyitemquantity(payload).subscribe((res => {
+      this.iFlowRackReplenishApi.verifyitemquantity(payload).subscribe((res => {
         if (res.data) {
           let payload = {
             "itemNumber": this.itemnumscan,
             "Input": this.itemLocation,
-            "Quantity": this.itemQty,
-            "wsid": this.userData.wsid,
+            "Quantity": this.itemQty
           }
 
-          this.Api.itemquantity(payload).subscribe((res => {
+          this.iFlowRackReplenishApi.itemquantity(payload).subscribe((res => {
             if (res.isExecuted) {
-              this.toastr.success('Item Quantity Added', 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success','Item Quantity Added', 'Success!');
               this.resetForm()
+            }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("itemquantity",res.responseMessage);
+
             }
           }))
         }
         else {
           this.itemQty = '';
           this.itemQtyFocus.nativeElement.select()
-          this.toastr.error("The quantity was not entered due to an error in the Inventory Map", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"The quantity was not entered due to an error in the Inventory Map", 'Error!');
+          console.log("updateItemQuantity",res.responseMessage);
         }
 
       }))
@@ -344,21 +355,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   }
 
   getAppLicense() {
-    let payload = {
-      workstationid: this.userData.wsid,
-    };
-    this.Api
-      .AppNameByWorkstation(payload)
-      .subscribe(
-        (res: any) => {
-          if (res?.data) {
-            this.convertToObj(res.data);
-            localStorage.setItem('availableApps',JSON.stringify(this.applicationData)) 
-            this.sharedService.setMenuData(this.applicationData)
-          }
-        },
-        (error) => {}
-      );
+      this.userData.wsid
   }
   
   convertToObj(data) {

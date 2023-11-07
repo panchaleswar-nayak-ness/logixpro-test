@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { catchError, of } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
@@ -15,13 +17,18 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class LookupUserTwoSetupComponent implements OnInit {
 
+  @Input() label;
   userF2List :any = new MatTableDataSource([]);
-  AddBtn
+  AddBtn;
+  public iAdminApiService: IAdminApiService;
   fieldNames:any;
   constructor(private Api:ApiFuntions,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
-    public authService: AuthService,private sharedService:SharedService) { }
+    private global:GlobalService,
+    
+    private adminApiService: AdminApiService,
+    public authService: AuthService,private sharedService:SharedService) { 
+      this.iAdminApiService = adminApiService;
+    }
     
   ngOnInit(): void {
     this.getUserFeild2()
@@ -35,7 +42,7 @@ export class LookupUserTwoSetupComponent implements OnInit {
     let payload = {
       "userField":2
     }
-    this.Api.userfieldlookup(payload).subscribe(res=>{
+    this.iAdminApiService.userfieldlookup(payload).subscribe(res=>{
       
       if(res.isExecuted){
         this.userF2List = res.data
@@ -50,6 +57,12 @@ export class LookupUserTwoSetupComponent implements OnInit {
         this.userF2List = new MatTableDataSource(tempuserF2);
     
       }
+
+      else {
+        
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("userfieldlookup",res.responseMessage);
+      }
     })
   }
 
@@ -63,7 +76,7 @@ export class LookupUserTwoSetupComponent implements OnInit {
       "newValue": ele.currentVal,
       "userField": 2
     }
-    this.Api.updateuserfieldlookup(payload).pipe(
+    this.iAdminApiService.updateuserfieldlookup(payload).pipe(
     
       catchError((error) => {
         return of({ isExecuted: false });
@@ -74,16 +87,12 @@ export class LookupUserTwoSetupComponent implements OnInit {
       if(res.isExecuted){
         this.AddBtn = false
         ele.oldVal = ele.currentVal
-        this.toastr.success(`Saved Successfully`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('success',`Saved Successfully`, 'Success!');
       }
       else{
-        this.toastr.error(`Field is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        
+        this.global.ShowToastr('error',`Field is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!');
+        console.log("userfieldlookup",res.responseMessage);
       }
     }))
   }
@@ -93,14 +102,14 @@ export class LookupUserTwoSetupComponent implements OnInit {
 
 
   deleteUserF2(ele){
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
       data: {
         action: 'delete',
-        actionMessage:` ${ele.currentVal} from the Adjustment Reason lookup list. `
+        actionMessage:` ${ele.currentVal} from the ${this.label} `
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
@@ -110,9 +119,15 @@ export class LookupUserTwoSetupComponent implements OnInit {
           "value":  ele.currentVal,
           "userField": 2
         }
-        this.Api.deleteUserfieldLookUp(payload).subscribe((res=>{ 
+        this.iAdminApiService.deleteUserfieldLookUp(payload).subscribe((res=>{ 
           if(res.isExecuted){
             this.getUserFeild2()
+          }
+          else {
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("deleteUserfieldLookUp",res.responseMessage);
+
           }
         }))
       }

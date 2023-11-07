@@ -1,10 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/init/auth.service';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
 @Component({
   selector: 'app-la-location-assignment-quantities',
@@ -20,17 +22,20 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
   public putaway:any = 0
   public listLabel:any;
   public listLabelFPZ:any;
-  
+  public iAdminApiService: IAdminApiService;
 
-  constructor(private dialog: MatDialog,
+  constructor( 
              @Inject(MAT_DIALOG_DATA) public data: any,
              private Api: ApiFuntions,
              private authservice : AuthService,
+             private adminApiService: AdminApiService,
              public dialogRef: MatDialogRef<any>,
              private router: Router,
-             private toastr: ToastrService, 
+              
              private global:GlobalService
-             ) { }
+             ) { 
+              this.iAdminApiService = adminApiService;
+             }
 
   ngOnInit(): void {
     this.userData = this.authservice.userData()
@@ -39,33 +44,34 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
 
   getTotalValues(){
     this.totalCount = this.data.totalCount;
-
     this.totalCount.forEach(item => {
-      if (item.transactionType === "Count") {
-        this.count = item.count;
-      } else if (item.transactionType === "Pick") {
-        this.pick = item.count;
-      } else if (item.transactionType === "Put Away") {
-        this.putaway = item.count;
+      switch (item.transactionType) {
+        case "Count":
+          this.count = item.count;
+          break;
+        case "Pick":
+          this.pick = item.count;
+          break;
+        case "Put Away":
+          this.putaway = item.count;
+          break;
+        default:
+          break;
       }
     });
 
   }
 
   viewOrderSelection(event:any,index?){
-    
-    this.Api.GetLocAssCountTable().subscribe((res:any)=>{
+    this.iAdminApiService.GetLocAssCountTable().subscribe((res:any)=>{
       if(res.isExecuted){
         res.data.tabIndex = index
         this.dialogRef.close(res.data);  
       }
       else{
-        this.toastr.error(res.responseMessage, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        })
+        this.global.ShowToastr('error',res.responseMessage, 'Error!')
+        console.log("GetLocAssCountTable",res.responseMessage);
       }
-      
     })
   }
 

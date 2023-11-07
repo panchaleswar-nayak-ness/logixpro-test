@@ -432,9 +432,8 @@
           <div class="d-flex align-items-center mb-2">
             <mat-form-field class="w-100 action-dropdown custom-form-field-bg-white" appearance="outline">
               <mat-label>Tote ID</mat-label>
-              <mat-select formControlName="toteID" class="employees-action">
+              <mat-select formControlName="toteID" class="employees-action" (selectionChange)="selectTotePosOrID('toteID', $event.value)">
                 <mat-option *ngFor="let tote of totes" value="{{tote.toteID}}">{{tote.toteID}}</mat-option>
-                <!-- <mat-option value="back">Back</mat-option> -->
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more
@@ -446,9 +445,8 @@
           <div class="d-flex align-items-center mb-2">
             <mat-form-field class="w-100 action-dropdown custom-form-field-bg-white" appearance="outline">
               <mat-label>Tote Position</mat-label>
-              <mat-select formControlName="totePos" class="employees-action">
-                <mat-option *ngFor="let tote of totes"
-                  value="{{tote.totesPosition}}">{{tote.totesPosition}}</mat-option>
+              <mat-select formControlName="totePos" class="employees-action" (selectionChange)="selectTotePosOrID('totesPosition', $event.value)">
+                <mat-option *ngFor="let tote of totes" value="{{tote.totesPosition}}">{{tote.totesPosition}}</mat-option>
               </mat-select>
               <span class="material-symbols-outlined icon-expand-more">
                 expand_more

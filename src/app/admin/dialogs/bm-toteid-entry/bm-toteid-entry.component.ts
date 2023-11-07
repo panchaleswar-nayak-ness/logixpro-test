@@ -1,14 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-bm-toteid-entry',
@@ -19,16 +16,17 @@ export class BmToteidEntryComponent implements OnInit {
   selectedList: any;
   nextToteID: any;
   userData: any;
+  public iAdminApiService: IAdminApiService;
+
   constructor(
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
-    private api: ApiFuntions,
+    private global:GlobalService,
+    public adminApiService: AdminApiService,
     private authService: AuthService,
-    private toastr: ToastrService
-  ) {
+   ) {
     this.selectedList = data.selectedOrderList;
-
+    this.iAdminApiService = adminApiService;
     this.nextToteID = data.nextToteID; 
   }
 
@@ -44,7 +42,7 @@ export class BmToteidEntryComponent implements OnInit {
     this.selectedList[index]['createNextToteID'] = undefined;
   }
   createNextTote() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '786px',
       data: {
@@ -66,7 +64,7 @@ export class BmToteidEntryComponent implements OnInit {
 
   submitOrder() {
     if (this.selectedList.find((o) => o.createNextToteID === undefined)) {
-      const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '786px',
         data: {
@@ -89,25 +87,19 @@ export class BmToteidEntryComponent implements OnInit {
     });
 
     let paylaod = {
-      orders: orders,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      orders: orders
     };
 
-    this.api
+    this.iAdminApiService
       .PickToteIDUpdate(paylaod)
       .subscribe((res: any) => {
         if (res.isExecuted) {
-          this.toastr.success(res.responseMessage, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success',res.responseMessage, 'Success!');
           this.dialogRef.close(true);
         } else {
-          this.toastr.error(res.responseMessage, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          
+          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          console.log("PickToteIDUpdate",res.responseMessage);
         }
       });
   }

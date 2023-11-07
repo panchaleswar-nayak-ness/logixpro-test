@@ -1,0 +1,115 @@
+<div class="row mt-4 mx-0">
+    <div class="col-xl-6">
+      <div class="card p-3 mb-4" style="padding-bottom: 1px !important">
+        <div class="row align-items-center">
+          <div class="col-xl-6">
+            <mat-form-field
+              class="action-dropdown custom-form-field-bg-white w-100 mb-2"
+              appearance="outline"
+            >
+              <mat-label>Import Job Type</mat-label>
+              <mat-select class="employees-action">
+                <mat-option value="123456">123456789cc</mat-option>
+                <mat-option value="987654">987654789cc</mat-option>
+                <mat-option value="147852">147852789cc</mat-option>
+              </mat-select>
+              <span class="material-symbols-outlined icon-expand-more">
+                expand_more
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-6">
+            <mat-form-field
+              class="action-dropdown custom-form-field-bg-white w-100 mb-2"
+              appearance="outline"
+            >
+              <mat-label>Export Job Type</mat-label>
+              <mat-select class="employees-action">
+                <mat-option value="123456">123456789cc</mat-option>
+                <mat-option value="987654">987654789cc</mat-option>
+                <mat-option value="147852">147852789cc</mat-option>
+              </mat-select>
+              <span class="material-symbols-outlined icon-expand-more">
+                expand_more
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-6 mt-1">
+            <button
+              mat-flat-button
+              class="btn-regular w-100 mb-3"
+              color="primary"
+              (click)="IeImportAllDialog()"
+            >
+              <mat-label>Import All</mat-label>
+            </button>
+          </div>
+          <div class="col-xl-6 mt-1">
+            <button
+              mat-flat-button
+              class="btn-regular w-100 mb-3"
+              color="primary"
+            >
+              <mat-label> Export All</mat-label>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-6">
+      <div class="card p-3 mb-3" style="padding-bottom: 1px !important">
+        <div class="row align-items-center">
+          
+          <div class="col-xl-6">
+            <mat-form-field
+              class="custom-form-field w-100 mb-3"
+              appearance="outline"
+            >
+              <mat-label>From</mat-label>
+              <input matInput type="text" />
+            </mat-form-field>
+          </div>
+
+         
+          <div class="col-xl-6">
+            <mat-form-field
+              class="custom-form-field w-100 mb-3"
+              appearance="outline"
+            >
+              <mat-label>To</mat-label>
+              <input matInput type="text" />
+            </mat-form-field>
+          </div>
+
+
+
+          <div class="col-xl-6">
+            <mat-form-field
+              class="action-dropdown custom-form-field-bg-white w-100 mb-2"
+              appearance="outline"
+            >
+              <mat-label>Export Type</mat-label>
+              <mat-select class="employees-action">
+                <mat-option value="123456">123456789cc</mat-option>
+                <mat-option value="987654">987654789cc</mat-option>
+                <mat-option value="147852">147852789cc</mat-option>
+              </mat-select>
+              <span class="material-symbols-outlined icon-expand-more">
+                expand_more
+              </span>
+            </mat-form-field>
+          </div>
+
+
+          <div class="col-xl-6">
+            <div class="d-flex justify-content-between mb-2">
+              Export Data Range<mat-slide-toggle color="primary">
+              </mat-slide-toggle>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>

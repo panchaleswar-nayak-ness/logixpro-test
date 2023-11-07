@@ -7,11 +7,18 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from '../../../../app/init/auth.service';
 import { AdjustQuantityComponent } from '../adjust-quantity/adjust-quantity.component';
 import { Router } from '@angular/router';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { FloatLabelType } from '@angular/material/form-field';
 
 
 export interface InventoryMapDataStructure {
@@ -78,7 +85,8 @@ export class AddInvMapLocationComponent implements OnInit {
   routeFromIM: boolean = false;
   routeFromOM: boolean = false;
   searchItemNumbers
-
+  warehouseSensitive: boolean;
+  dateSensitive: boolean;
   @ViewChild('cellSizeVal') cellSizeVal: ElementRef;
   @ViewChild('velCodeVal') velCodeVal: ElementRef;
   @ViewChild('location_name') location_name: ElementRef;
@@ -126,26 +134,45 @@ export class AddInvMapLocationComponent implements OnInit {
   headerLable: any;
   userData: any;
   FromOm:boolean=false;
-
+  public iAdminApiService: IAdminApiService;
   myroute1:boolean=true;
   myroute2:boolean=true;
   unitOFMeasure  
   itemNumberScroll:any = "vertical";
 
+  floatLabelControl: any = new FormControl('uf1' as FloatLabelType);
+  floatLabelControlShipName: any = new FormControl('uf2' as FloatLabelType);
+  hideRequiredControl = new FormControl(false);
+  hideRequiredControlShipName = new FormControl(false);
+  shipVia;
+  shipToName;
+  searchByShipVia: any = new Subject<string>();
+  searchByShipName: any = new Subject<string>();
+  searchAutocompleteShipVia: any = [];
+  searchAutocompleteShipName: any = [];
+  isInputDisabled:boolean=false;
+  public iCommonAPI : ICommonApi;
+
+
   constructor(
-    private dialog: MatDialog,
+    public commonAPI : CommonApiService,
+    private global:GlobalService,
+    private dialog:MatDialog,
     private fb: FormBuilder,
     private Api: ApiFuntions,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
+    private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>,
     private router: Router
   ) {
+    this.iAdminApiService = adminApiService;
     if (data.mode == "addInvMapLocation") {
       this.headerLable = 'Add Location';
     } else if (data.mode == "editInvMapLocation") {
       this.headerLable = 'Update Location';
+      this.loadItemDetails(this.data.detailData.itemNumber);
     }
 
     if(this.router.url=="/InductionManager/Admin/InventoryMap" || this.router.url=="/OrderManager/InventoryMap"){
@@ -153,12 +180,12 @@ export class AddInvMapLocationComponent implements OnInit {
       this.myroute2=false;
     }
 
+    this.iCommonAPI = commonAPI;
   }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.fieldNames=this.data?.fieldName;
-    console.log(this.data.detailData)
     if (this.data.detailData) {
       this.getDetailInventoryMapData = this.data.detailData;
       this.zone = this.getDetailInventoryMapData.zone;
@@ -169,7 +196,6 @@ export class AddInvMapLocationComponent implements OnInit {
       this.itemDescription = this.getDetailInventoryMapData.description;
       this.quantity = this.getDetailInventoryMapData.itemQuantity; 
       this.unitOFMeasure = this.getDetailInventoryMapData.unitOfMeasure; 
-      
       this.updateItemNumber();
       this.initializeDataSet();
     } else {
@@ -178,15 +204,36 @@ export class AddInvMapLocationComponent implements OnInit {
     this.searchItemNumbers = this.getDetailInventoryMapData.itemNumber;
 
 
-    this.Api.getLocZTypeInvMap().subscribe((res) => {
-      this.locZoneList = res.data; 
+    this.iAdminApiService.getLocZTypeInvMap({}).subscribe((res) => {
+      if(res.isExecuted && res.data)
+      {
+        this.locZoneList = res.data; 
       this.filteredOptions = this.addInvMapLocation.controls['location'].valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value || '')),
       );
 
-    });
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getLocZTypeInvMap",res.responseMessage);
 
+
+      }
+      
+
+    });
+      this.searchByShipVia
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe((value) => {
+        this.autocompleteSearchColumn();
+      });
+    
+      this.searchByShipName
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe((value) => {
+        this.autocompleteSearchColumnShipName();
+      });  
 
 
   }
@@ -215,12 +262,14 @@ export class AddInvMapLocationComponent implements OnInit {
       this.addInvMapLocation.get('item')?.disable();
       this.addInvMapLocation.get('maxQuantity')?.disable();
       this.addInvMapLocation.get('minQuantity')?.disable();
-
-    
+      this.addInvMapLocation.get('clear')?.disable();
+      this.isInputDisabled=true;
     }
-    this.location_name.nativeElement.focus();
+    this.location_name?.nativeElement.focus();
   }
-
+  onClearFieldDisable(): boolean {
+    return !this.searchItemNumbers;
+  }
   clearFields() {
     this.addInvMapLocation.patchValue({
       'userField1': '',
@@ -261,13 +310,10 @@ export class AddInvMapLocationComponent implements OnInit {
   adjustQuantity() {
     if(this.addInvMapLocation.value.item == '') return;
     if(this.getDetailInventoryMapData.itemNumber == ''){
-      this.toastr.error('No item found at the location specified.  Ensure that the entry selected has been saved since an item was assigned to it.', 'Error!', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','No item found at the location specified.  Ensure that the entry selected has been saved since an item was assigned to it.', 'Error!');
       return;
     }
-    let dialogRef = this.dialog.open(AdjustQuantityComponent, {
+    let dialogRef:any = this.global.OpenDialog(AdjustQuantityComponent, {
       height: 'auto',
       width: '800px',
       autoFocus: '__non_existing_element__',
@@ -277,7 +323,7 @@ export class AddInvMapLocationComponent implements OnInit {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-      if (result != true) {
+      if (!result) {
 
         this.addInvMapLocation.patchValue({
           'itemQuantity': result
@@ -301,11 +347,9 @@ export class AddInvMapLocationComponent implements OnInit {
     let payload = {
       "itemNumber": itemNum.value.toString(),
       "beginItem": "---",
-      "isEqual": false,
-      "username": this.userData.userName,
-      "wsid": this.userData.wsid
+      "isEqual": false
     }
-    this.Api.getSearchedItem(payload).subscribe(res => {
+    this.iCommonAPI.getSearchedItem(payload).subscribe(res => {
       if (res.data.length > 0) {
         this.itemNumberList = res.data;
       }
@@ -329,7 +373,7 @@ export class AddInvMapLocationComponent implements OnInit {
       item: [this.getDetailInventoryMapData.itemNumber || '', [Validators.maxLength(50)]],
       itemQuantity: new FormControl({value:this.getDetailInventoryMapData.itemQuantity || '',disabled:this.getDetailInventoryMapData.itemNumber ===''}),
       description: [this.getDetailInventoryMapData.description || ""],
-      
+      clear:new FormControl({ value: this.getDetailInventoryMapData.itemNumber || 0, disabled: true }),
       cell: [this.getDetailInventoryMapData.cellSize || ''],
       velocity: [this.getDetailInventoryMapData.goldenZone || ''],
       maxQuantity: [this.getDetailInventoryMapData.maxQuantity || 0, [Validators.maxLength(9)]],
@@ -355,7 +399,6 @@ export class AddInvMapLocationComponent implements OnInit {
       locationNumber: [this.getDetailInventoryMapData.locationNumber || '',],
       locationID: [this.getDetailInventoryMapData.locationID || ''],
       altLight: [this.getDetailInventoryMapData.altLight || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]]
-
       //velocity
     });
   }
@@ -378,7 +421,7 @@ export class AddInvMapLocationComponent implements OnInit {
     let value = this.addInvMapLocation.controls['zone'].value + this.addInvMapLocation.controls['carousel'].value + this.addInvMapLocation.controls['row'].value + this.addInvMapLocation.controls['shelf'].value + this.addInvMapLocation.controls['bin'].value;
     this.addInvMapLocation.controls['locationNumber'].setValue(value);
   }
-  onSubmit(form: FormGroup) { 
+  onSubmit(form: FormGroup) {
     let invMapIDs={
       invMapID:this.getDetailInventoryMapData.invMapID,
       masterInvMapID:this.getDetailInventoryMapData.masterInvMapID
@@ -387,30 +430,51 @@ export class AddInvMapLocationComponent implements OnInit {
         if (this.clickSubmit) {
           if (this.data.detailData) {
             this.clickSubmit = false;
-            this.Api.updateInventoryMap(form.value,invMapIDs).subscribe((res) => {
+            if(!this.zoneChecker(form.value.zone, form.value.location)){
+              this.global.ShowToastr('error',"Zone and Location need be set via the dropdown in order to save.", 'Warning!');
+              return
+            }
+            if(this.warehouseSensitive && form.value.warehouse == ''){
+              this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
+              return
+            }
+            if(this.dateSensitive && form.value.dateSensitive == ''){
+              this.global.ShowToastr('error',"Item is date sensitive. Please set date sensitive before saving.", 'Warning!');
+              return
+            }
+            this.iAdminApiService.updateInventoryMap(form.value,invMapIDs).subscribe((res) => {
               this.clickSubmit = true;
-              
-              if (res.isExecuted) {
-                this.toastr.success("Your details have been updated", 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
-
-                this.dialog.closeAll()
-              }
+                if (res.isExecuted) {
+                  this.global.ShowToastr('success',"Your details have been updated", 'Success!');
+                  this.dialog.closeAll()
+                }
+                else {
+                  this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                  console.log("updateInventoryMap",res.responseMessage);
+                }
             });
           } else {
             this.clickSubmit = false;
-            this.Api.createInventoryMap(form.value).subscribe((res) => {
+            if(this.warehouseSensitive && form.value.warehouse == ''){
+              this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
+              return
+            }
+            if(this.dateSensitive && form.value.dateSensitive == ''){
+              this.global.ShowToastr('error',"Item is date sensitive. Please set date sensitive before saving.", 'Warning!');
+              return
+            }
+            this.iAdminApiService.createInventoryMap(form.value).subscribe((res) => {
               this.clickSubmit = true;
-              
               if (res.isExecuted) {
-                this.toastr.success("Your details have been added", 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
-
+                this.global.ShowToastr('success',"Your details have been added", 'Success!');
                 this.dialog.closeAll()
+              }
+
+              else {
+                
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("createInventoryMap",res.responseMessage);
+
               }
             });
           }
@@ -429,59 +493,63 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   loadWarehouse() {
-    let dialogRef = this.dialog.open(WarehouseComponent, {
-      height: 'auto',
-      width: '640px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'addlocation',
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      ;
+    if (!this.isInputDisabled) {
+      let dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
+        height: 'auto',
+        width: '640px',
+        autoFocus: '__non_existing_element__',
+        disableClose:true,
+        data: {
+          mode: 'addlocation',
+        }
+      })
+      dialogRef.afterClosed().subscribe(result => {
+        ;
 
-      if (result !== true && result !== false) {
-        this.addInvMapLocation.controls['warehouse'].setValue(result);
-      }
-      if (result == 'clear') {
-        this.addInvMapLocation.controls['warehouse'].setValue('');
-      }
-    })
+        if (result !== true && result !== false) {
+          this.addInvMapLocation.controls['warehouse'].setValue(result);
+        }
+        if (result == 'clear') {
+          this.addInvMapLocation.controls['warehouse'].setValue('');
+        }
+      })
+    }
   }
   loadCellSize() {
-
-    let dialogRef = this.dialog.open(CellSizeComponent, {
-      height: 'auto',
-      width: '660px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'cell-size',
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== true && result !== false) {
-        this.addInvMapLocation.controls['cell'].setValue(result);
-      }
-    })
+    if (!this.isInputDisabled) {
+      let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
+        height: 'auto',
+        width: '660px',
+        autoFocus: '__non_existing_element__',
+        disableClose:true,
+        data: {
+          mode: 'cell-size',
+        }
+      })
+      dialogRef.afterClosed().subscribe(result => {
+        if (result !== true && result !== false) {
+          this.addInvMapLocation.controls['cell'].setValue(result);
+        }
+      })
+    }
   }
   loadVelocityCode() {
-    let dialogRef = this.dialog.open(VelocityCodeComponent, {
-      height: 'auto',
-      width: '660px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        mode: 'cell-size',
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== true && result !== false) {
-        this.addInvMapLocation.controls['velocity'].setValue(result);
-      }
-
-    })
+    if (!this.isInputDisabled) {
+      let dialogRef: any = this.global.OpenDialog(VelocityCodeComponent, {
+        height: 'auto',
+        width: '660px',
+        autoFocus: '__non_existing_element__',
+        disableClose: true,
+        data: {
+          mode: 'cell-size',
+        },
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result !== true && result !== false) {
+          this.addInvMapLocation.controls['velocity'].setValue(result);
+        }
+      });
+    }
   }
 
   private _filter(value: any): string[] {
@@ -495,10 +563,15 @@ export class AddInvMapLocationComponent implements OnInit {
   }
   loadZones(zone: any) {
     this.zoneList = this.locZoneList.filter(option => option.locationName.includes(zone.option.value));
-    this.addInvMapLocation.controls['zone'].setValue(this.zoneList[0].zone);
-    this.updateItemNumber('zone', this.zoneList[0].zone);
-
+    this.addInvMapLocation.controls['zone'].setValue(this.zoneList[0]?.zone);
+    this.updateItemNumber('zone', this.zoneList[0]?.zone);
   }
+  
+  zoneChecker(zone, location) { //To check if the zone and location are selected from dropdown.
+    return this.locZoneList.some(item => item.zone === zone && item.locationName === location);
+  }
+  
+
   loadItemDetails(item: any) {
     this.itemNumberList.forEach(val => {
       if (val.itemNumber === item) {
@@ -507,18 +580,22 @@ export class AddInvMapLocationComponent implements OnInit {
     })
     let payload = {
       "itemNumber": item,
-      "zone": this.addInvMapLocation.get('zone')?.value
+      "zone": this.addInvMapLocation?.get('zone')?.value
     }
-
-    const cellSizeVal = this.cellSizeVal.nativeElement.value
-    const velCodeVal = this.velCodeVal.nativeElement.value
     
 
-    this.Api.getItemNumDetail(payload).subscribe((res) => {
+    const cellSizeVal = this.cellSizeVal?.nativeElement.value
+    const velCodeVal = this.velCodeVal?.nativeElement.value
+    
+
+    this.iAdminApiService.getItemNumDetail(payload).subscribe((res) => {
       if (res.isExecuted) {
+        this.warehouseSensitive=res.data.warehouseSensitive;
+        this.dateSensitive=res.data.dateSensitive;
         this.unitOFMeasure =res.data.unitOfMeasure 
         let match = '';
         let expected = '';
+        
         if (cellSizeVal != res.data.cellSize && res.data.cellSize) {
           match += 'Cell Size';
           expected += ' Expecting Cell Size: ' + res.data.cellSize;
@@ -527,11 +604,12 @@ export class AddInvMapLocationComponent implements OnInit {
           if (match != '') { match += ', Velocity Code'; expected += ' and Velocity Code: ' + res.data.velocityCode } else { match += 'Velocity Code'; expected += 'Velocity Code: ' + res.data.velocityCode };
         };
         if (match != '') {
-          this.toastr.info('Provided ' + match + ' do not match Inventory Master.' + expected + ' for specified Item and Zone', 'Info!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('info','Provided ' + match + ' do not match Inventory Master.' + expected + ' for specified Item and Zone', 'Info!');
         }
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("getItemNumDetail",res.responseMessage);
       }
 
     });
@@ -540,7 +618,7 @@ export class AddInvMapLocationComponent implements OnInit {
   updateItemNumber(col?: string, val?: any) {
 
     if (col === 'zone') {
-      this.zone = val.toString();
+      this.zone = val?.toString();
     }
     if (col === 'carousel') {
       this.carousel = val.toString();
@@ -555,6 +633,7 @@ export class AddInvMapLocationComponent implements OnInit {
       this.bin = val.toString();
     }
     this.autoFillLocNumber = this.zone + this.carousel + this.row + this.shelf + this.bin;
+
   }
 
 
@@ -564,14 +643,54 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   @HostListener('unloaded')
-  ngOnDestroy() {
-    
-  }
 
   focusinmethod(){
     this.itemNumberScroll = "";
   }
   focusoutmethod(){
     this.itemNumberScroll = "vertical";
+  }
+
+
+  getFloatLabelValue(): FloatLabelType {
+    return this.floatLabelControl.value || 'uf1';
+  }
+  getFloatLabelValueItem(): FloatLabelType {
+    return this.floatLabelControlShipName.value || 'uf2';
+  }
+
+  async autocompleteSearchColumn() {
+    let searchPayload = {
+      value: this.shipVia,
+      uFs: 1
+    };
+    this.iCommonAPI
+      .UserFieldTypeAhead(searchPayload)
+      .subscribe(
+        (res: any) => {
+          this.searchAutocompleteShipVia = res.data;
+        },
+        (error) => {}
+      );
+  }
+
+  async autocompleteSearchColumnShipName() {
+    let searchPayload = {
+      value: this.shipToName,
+      uFs: 2
+    };
+    this.iCommonAPI
+      .UserFieldTypeAhead(searchPayload)
+      .subscribe(
+        (res: any) => {
+          this.searchAutocompleteShipName = res.data;
+        },
+        (error) => {}
+      );
+  }
+
+  ngOnDestroy() {
+    this.searchByShipVia.unsubscribe();
+    this.searchByShipName.unsubscribe();
   }
 }

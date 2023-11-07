@@ -8,12 +8,15 @@ import { MaterialModule } from '../material-module';
 import { GeneralModule } from '../gen-module';
 import { OmOrderManagerComponent } from './om-order-manager/om-order-manager.component';
 import { OmPreferencesComponent } from './om-preferences/om-preferences.component';
+import { SharedComponentsModule } from '../common/globalComponents/shared-components.module';
+import { EventLogPanelComponentComponent } from './event-log/event-log-panel-component/event-log-panel-component.component';
 
 @NgModule({
   declarations: [
     EventLogComponent,
     OmOrderManagerComponent,
-    OmPreferencesComponent
+    OmPreferencesComponent,
+    EventLogPanelComponentComponent
    
     
   ],
@@ -22,7 +25,8 @@ import { OmPreferencesComponent } from './om-preferences/om-preferences.componen
     OrderManagerRoutingModule,
     MaterialModule,
     GeneralModule,
-    CdkTableModule
+    CdkTableModule,
+    SharedComponentsModule
   ]
 })
 export class OrderManagerModule { }

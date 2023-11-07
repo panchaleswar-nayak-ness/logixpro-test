@@ -1,20 +1,23 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import {
-  MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
+ 
 import labels from '../../../labels/labels.json';
 import { SqlAuthConfirmationComponent } from '../sql-auth-confirmation/sql-auth-confirmation.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+
 
 @Component({
   selector: 'app-global-config-set-sql',
   templateUrl: './global-config-set-sql.component.html',
   styleUrls: [],
 })
-export class GlobalConfigSetSqlComponent implements OnInit {
+export class GlobalConfigSetSqlComponent {
   @ViewChild('user_name') user_name: ElementRef;
   form_heading = 'SQL Auth Username and Password';
   userName: any ;
@@ -22,22 +25,21 @@ export class GlobalConfigSetSqlComponent implements OnInit {
   message:string='';
   connectionName:any;
   public toggle_password = true;
+  public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public dialogRef: MatDialogRef<any>,
-    private toastr: ToastrService,
-    private Api:ApiFuntions
+    
+    private Api:ApiFuntions,
+    public globalConfigApi: GlobalConfigApiService
   ) {
-
+    this.iGlobalConfigApi = globalConfigApi;
     this.userName=data.userName
     this.password=data.password;
     this.connectionName=data.ConnectionName;
   }
 
-  ngOnInit(): void {
-   
-  }
   ngAfterViewInit() {
     this.user_name.nativeElement.focus();
   }
@@ -50,7 +52,7 @@ export class GlobalConfigSetSqlComponent implements OnInit {
       this.message='Username and Password are set. This will set this connection for SQL Authentication. Press OK to set this';
 
     }
-    const dialogRef = this.dialog.open(SqlAuthConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(SqlAuthConfirmationComponent, {
       height: 'auto',
       width: '560px',
       data:{
@@ -66,25 +68,24 @@ export class GlobalConfigSetSqlComponent implements OnInit {
           UserName: this.userName,
           Password: this.password,
         };
-        this.Api
+        this.iGlobalConfigApi
           .ConnectionUserPasswordUpdate(payload)
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.toastr.success(labels.alert.success, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',labels.alert.success, 'Success!');
                 this.dialogRef.close({isExecuted:true})
     
               }
+              else {
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("ConnectionUserPasswordUpdate",res.responseMessage);
+              }
             },
             (error) => {
-              this.toastr.success(labels.alert.went_worng, 'Errpr!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',labels.alert.went_worng, 'Errpr!');
               this.dialogRef.close({isExecuted:true})
+              console.log("(error) => ConnectionUserPasswordUpdate");
     
             }
           );

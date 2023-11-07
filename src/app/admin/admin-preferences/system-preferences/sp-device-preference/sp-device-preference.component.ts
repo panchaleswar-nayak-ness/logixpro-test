@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table'; 
-import { ToastrService } from 'ngx-toastr';
+
 import { AddNewDeviceComponent } from 'src/app/admin/dialogs/add-new-device/add-new-device.component';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
@@ -19,6 +21,7 @@ export class SpDevicePreferenceComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public userData: any;
   pageEvent: PageEvent;
+  public iAdminApiService: IAdminApiService;
   sortCol = 0;
   sortDir = 'asc';
   customPagination: any = {
@@ -46,10 +49,13 @@ export class SpDevicePreferenceComponent implements OnInit {
   constructor(
     private Api: ApiFuntions,
     public authService: AuthService,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
+    private global:GlobalService,
+    private adminApiService: AdminApiService,
+    
     private sharedService: SharedService
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -72,25 +78,30 @@ export class SpDevicePreferenceComponent implements OnInit {
       length: this.customPagination.recordsPerPage,
       column: this.sortCol,
       sortDir: this.sortDir,
-      zone: '',
-      userName: this.userData.userName,
-      wsid: this.userData.wsid,
+      zone: '', 
     };
 
 
-    this.Api.DevicePreferencesTable(payload)
+    this.iAdminApiService.DevicePreferencesTable(payload)
     .subscribe((res: any) => {
-      console.log(res);
+      
 
       if (res?.data?.devicePreferences) {
         this.dataSource = new MatTableDataSource(res.data.devicePreferences);
         this.customPagination.total = res.data?.recordsFiltered;
       }
+
+      else
+      {
+        
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("LocationZone", res.responseMessage);
+      }
     });
   }
 
   addEditNewDevice(item?, isEdit = false) {
-    let dialogRef = this.dialog.open(AddNewDeviceComponent, {
+    let dialogRef:any = this.global.OpenDialog(AddNewDeviceComponent, {
       height: 'auto',
       width: '960px',
       autoFocus: '__non_existing_element__',
@@ -114,7 +125,7 @@ export class SpDevicePreferenceComponent implements OnInit {
     this.getDevicePrefTable();
   }
   deleteAllOrders(deviceID) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -126,24 +137,17 @@ export class SpDevicePreferenceComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
         let payload = {
-          deviceID: deviceID,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          deviceID: deviceID, 
         };
-        this.Api
+        this.iAdminApiService
           .DevicePreferencesDelete(payload)
           .subscribe((res: any) => {
             if (res.isExecuted) {
-              this.toastr.success(res.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success',res.responseMessage, 'Success!');
               this.getDevicePrefTable();
             } else {
-              this.toastr.error(res.responseMessage, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('error',res.responseMessage, 'Error!');
+              console.log("DevicePreferencesDelete",res.responseMessage);
             }
           });
       }

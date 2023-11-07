@@ -15,12 +15,14 @@ import { AuthService } from 'src/app/init/auth.service';
 import { } from 'rxjs';
 import {  } from 'ngx-toastr'; 
 import {  } from 'src/app/admin/dialogs/add-inv-map-location/add-inv-map-location.component';
-import { MatDialog } from '@angular/material/dialog';
 import {  } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import {  } from 'src/app/admin/dialogs/quarantine-confirmation/quarantine-confirmation.component';
 import {  } from 'src/app/admin/dialogs/adjust-quantity/adjust-quantity.component';
 import { HoldReasonComponent } from 'src/app/admin/dialogs/hold-reason/hold-reason.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 const TRNSC_DATA = [
   { colHeader: 'orderNumber', colDef: 'Order Number' },
@@ -75,14 +77,15 @@ export class OpenTransactionDataTableComponent
   public sortCol: any = 5;
   public sortOrder: any = 'asc';
   public columnValues: any = [];
-  
+  public iAdminApiService: IAdminApiService;
   pageEvent: PageEvent;
   constructor(
     private Api: ApiFuntions,
+    private adminApiService: AdminApiService,
     private authService: AuthService,
-    private dialog: MatDialog
+    private global:GlobalService
 
-  ) {}
+  ) {this.iAdminApiService = adminApiService;}
   @Input()
   set event(event: any) {
     if (event) {
@@ -110,17 +113,22 @@ export class OpenTransactionDataTableComponent
       eRow: this.customPagination.endIndex,
       sortColumnNumber:  this.sortCol,
       sortOrder: this.sortOrder,
-      username: this.userData.userName,
       identify: this.identify,
       reels: this.reels,
       orderItem: this.orderItem,
-      wsid: this.userData.wsid,
     };
-    this.Api
+    this.iAdminApiService
       .HoldTransactionsData(this.payload)
       .subscribe(
         (res: any) => {
-          this.datasource = res.data.holdTransactions;
+          if(res.isExecuted && res.data)
+          {
+            this.datasource = res.data.holdTransactions;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("HoldTransactionsData",res.responseMessage);
+          }
         },
         (error) => {}
       );
@@ -155,7 +163,7 @@ export class OpenTransactionDataTableComponent
   }
   holdDeallocate(row){
 
-    const dialogRef = this.dialog.open(HoldReasonComponent, {
+    const dialogRef:any = this.global.OpenDialog(HoldReasonComponent, {
       height: 'auto',
       width: '480px',
       data: {

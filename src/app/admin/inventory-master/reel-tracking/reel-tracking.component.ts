@@ -1,12 +1,14 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup} from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog'; 
+import { FormGroup} from '@angular/forms'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { MinReelQtyComponent } from 'src/app/dialogs/min-reel-qty/min-reel-qty.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { Observable, Subscription } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 @Component({
@@ -17,12 +19,16 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class ReelTrackingComponent implements OnInit {
   isChecked = false;
   btnDisabled : boolean = false;
+  public iAdminApiService: IAdminApiService;
 
-  constructor(private dialog: MatDialog,
+  constructor(private global:GlobalService,
     private api: ApiFuntions,
     private authService: AuthService,
     private sharedService:SharedService,
-    private toastr: ToastrService) { }
+    private adminApiService: AdminApiService,
+    ) { 
+      this.iAdminApiService = adminApiService;
+    }
 
   @ViewChild('addItemAction') addItemTemp: TemplateRef<any>;
   @Input() reelTracking: FormGroup;
@@ -52,38 +58,29 @@ export class ReelTrackingComponent implements OnInit {
   let payload = {
     "itemNumber": this.reelTracking.controls['itemNumber'].value,
     "minimumRTS": this.reelTracking.controls['minimumRTSReelQuantity'].value,
-    "includeAutoRTS": event.checked,
-    "username": this.userData.userName,
-    "wsid": this.userData.wsid
+    "includeAutoRTS": event.checked, 
  }
-  this.api.UpdateReelQuantity(payload).subscribe((res:any)=>{
-
-    
+  this.iAdminApiService.UpdateReelQuantity(payload).subscribe((res:any)=>{
     if(res.isExecuted){
       this.sharedService.updateInvMasterState(event,true)
        
       if(event.checked){
-        this.toastr.success(res.responseMessage, 'Success!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('success',res.responseMessage, 'Success!');
         
       }
       this.btnDisabled = false;
   }
   else if (res.responseMessage != 'Update Successful'){
     
-    this.toastr.error("Changes not saved!  Please reenter the information.", 'Error!', {
-      positionClass: 'toast-bottom-right',
-      timeOut: 2000
-    });
+    this.global.ShowToastr('error',"Changes not saved!  Please reenter the information.", 'Error!');
+    console.log("UpdateReelQuantity",res.responseMessage);
   }
   })
 
   
  }
  updateReelQty(): void {
-    const dialogRef = this.dialog.open(MinReelQtyComponent, {
+    const dialogRef:any = this.global.OpenDialog(MinReelQtyComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -99,38 +96,30 @@ export class ReelTrackingComponent implements OnInit {
 
         let payload = {
           rtsAmount: result.minDollarRTS,
-          rtsQuantity: result.thresholdQty,
-          username: this.userData.userName,
-          wsid: this.userData.wsid
+          rtsQuantity: result.thresholdQty, 
         }
-        this.api.UpdateReelAll(payload).subscribe((res:any)=>{
+        this.iAdminApiService.UpdateReelAll(payload).subscribe((res:any)=>{
 
           if(res.isExecuted){
 
             let payload2 = {
-              "itemNumber": this.reelTracking.controls['itemNumber'].value,
-              "username": this.userData.userName,
-              "wsid": this.userData.wsid
+              "itemNumber": this.reelTracking.controls['itemNumber'].value, 
            }
 
-            this.api.RefreshRTS(payload2).subscribe((res:any)=>{
+            this.iAdminApiService.RefreshRTS(payload2).subscribe((res:any)=>{
               if (res.isExecuted) {
                 this.reelTracking.patchValue({
                   'minimumRTSReelQuantity' : res.data[0]
                 });
               } else {
-                this.toastr.error(res.responseMessage, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000
-                });
+                this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                console.log("RefreshRTS",res.responseMessage);
               }              
             });            
             
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            console.log("UpdateReelAll",res.responseMessage);
           }
 
           

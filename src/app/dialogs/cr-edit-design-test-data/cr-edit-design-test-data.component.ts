@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -9,18 +9,18 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class CrEditDesignTestDataComponent {
 
   @ViewChild('desc_focus') desc_focus: ElementRef;
-
+  Text:any;
   constructor(  
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     ) { }
 
   ngAfterViewInit(): void {
-    this.desc_focus.nativeElement.value = this.data;
+    this.Text = this.data ? this.data : '';
     this.desc_focus.nativeElement.focus();
   }
   getDesignTestData(){
-    this.dialogRef.close(this.desc_focus.nativeElement.value);
+    this.dialogRef.close(this.Text);
   }
 
   

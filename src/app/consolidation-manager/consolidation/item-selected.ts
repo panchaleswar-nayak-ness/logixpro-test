@@ -1,9 +1,10 @@
-import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Router } from "angular-routing";
-import { ToastrService } from "ngx-toastr"; 
 import { AuthService } from "src/app/init/auth.service";
 import { Component, Inject, OnInit } from "@angular/core";
-import { ApiFuntions } from "src/app/services/ApiFuntions";
+import { IConsolidationApi } from "src/app/services/consolidation-api/consolidation-api-interface";
+import { ConsolidationApiService } from "src/app/services/consolidation-api/consolidation-api.service";
+import { GlobalService } from "src/app/common/services/global.service";
 
 @Component({
     template: ''
@@ -30,9 +31,16 @@ export class ItemSelected implements OnInit {
         {key: '0', value: 'Any Code'},
         {key: '6', value: 'Tote ID'},
       ];
-    constructor(private dialog: MatDialog, private toastr: ToastrService,
-        private router: Router,   private authService: AuthService,private Api:ApiFuntions,
-        @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+      public IconsolidationAPI : IConsolidationApi;
+
+      constructor(
+        public consolidationAPI : ConsolidationApiService,
+        private global:GlobalService, 
+        
+        private router: Router,   
+        private authService: AuthService,
+        @Inject(MAT_DIALOG_DATA) public data: any) { this.IconsolidationAPI = consolidationAPI; }
 
     ngOnInit(): void {
         
@@ -49,15 +57,18 @@ export class ItemSelected implements OnInit {
         let payload = {
             "orderNumber": this.IdentModal ,
             "column": this.ColLabel,
-            "columnValue": this.data.ColLabel,
-            "username": this.userData.userName,
-            "wsid": this.userData.wsid
+            "columnValue": this.data.ColLabel
         }
 
-        this.Api.ItemModelData(payload).subscribe((res=>{
-
-            this.itemSelectTable = res;
-        }))
+        this.IconsolidationAPI.ItemModelData(payload).subscribe((res=>{
+            if (res.isExecuted && res) {
+                this.itemSelectTable = res;
+              }
+              else {
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("ItemModelData",res.responseMessage);
+              }
+            }));
     }
 
     filterOption() {
@@ -74,16 +85,12 @@ export class ItemSelected implements OnInit {
             let id = row.id;
 
             let payload = {
-                "id": id,
-                "username": this.userData.userName,
-                "wsid": this.userData.wsid
+                "id": id
             }
-            this.Api.VerifyItemPost(payload).subscribe((res: any) => {
+            this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
                 if (!res.isExecuted) {
-                    this.toastr.error(res.responseMessage, 'Error!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000
-                    });
+                    this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                    console.log("VerifyItemPost",res.responseMessage);
 
                 }
 
@@ -109,17 +116,13 @@ export class ItemSelected implements OnInit {
         this.itemSelectTable.forEach((row) => {
                 let id = row.id;
                 let payload = {
-                    "id": id,
-                    "username": this.userData.userName,
-                    "wsid": this.userData.wsid
+                    "id": id
                 }
 
-                this.Api.VerifyItemPost(payload).subscribe((res: any) => {
+                this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
                     if (!res.isExecuted) {
-                        this.toastr.error(res.responseMessage, 'Error!', {
-                            positionClass: 'toast-bottom-right',
-                            timeOut: 2000
-                        });
+                        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                        console.log("VerifyItemPost",res.responseMessage);
 
                     }
 

@@ -1,0 +1,23 @@
+<div class="row align-items-center">
+    <div class="col-6">
+      <app-icon-heading-component heading="Assigned Functions" icon="assignment_turned_in">
+      </app-icon-heading-component>
+    </div>
+    <div class="col-6">
+      <button mat-flat-button class="form-button-submit" color="primary" style="float: right;"
+        (click)="saveAssignedFunc()" [disabled]="!isGroupLookUp">Save</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-xl-6">
+      <app-unassigned-functions (addFunction)="addPermission($event)"
+        [unassignedFunctions]="unassignedFunctions"
+        [isGroupLookUp]="isGroupLookUp"></app-unassigned-functions>
+    </div>
+    <div class="col-12 col-xl-6">
+
+      <app-assigned-functions (removeFunction)="removePermission($event)"
+        [assignedFunctions]="assignedFunctions" [isGroupLookUp]="isGroupLookUp"></app-assigned-functions>
+
+    </div>
+  </div>

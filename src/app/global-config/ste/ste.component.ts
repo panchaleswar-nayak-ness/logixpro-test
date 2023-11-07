@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
+import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
 
 @Component({
   selector: 'app-ste',
@@ -11,7 +13,14 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class SteComponent implements OnInit {
   sideBarOpen: boolean = true;
   Status:any = 'Offline';
-  constructor( public dialog: MatDialog,    public Api: ApiFuntions,private toastr:ToastrService) { }
+  public  iGlobalConfigApi: IGlobalConfigApi;
+  constructor( 
+    public globalConfigApi: GlobalConfigApiService,
+    public global:GlobalService,    
+    public Api: ApiFuntions) 
+    { 
+      this.iGlobalConfigApi = globalConfigApi;
+    }
 
   ngOnInit(): void {
     this.CheckStatus();
@@ -24,34 +33,22 @@ export class SteComponent implements OnInit {
     if (changeType == 'start' || changeType == 'restart') {
         if (success) {
             this.Status = 'Online';
-            this.toastr.success('Service ' + changeType + ' was successful.','Success', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success','Service ' + changeType + ' was successful.','Success');
         } else {
           this.Status = 'Offline'; 
-          this.toastr.error('Service ' + changeType + ' was unsuccessful.  Please try again or contact Scott Tech for support.','Error', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Service ' + changeType + ' was unsuccessful.  Please try again or contact Scott Tech for support.','Error');
         };
     } else {
       this.Status = 'Offline'; 
         if (success) {
-          this.toastr.success('Service stop was successful.','Success', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success','Service stop was successful.','Success');
         } else {
-          this.toastr.error('Service stop encountered an error.  Please try again or contact Scott Tech for support.','Error', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Service stop encountered an error.  Please try again or contact Scott Tech for support.','Error');
         };
     };
 };
   // ConfirmationPopup(msg:any) {
-  //   const dialogRef  = this.dialog.open(ConfirmationDialogComponent, {
+  //   const dialogRef  = this.global.OpenDialog(ConfirmationDialogComponent, {
   //     height: 'auto',
   //     width: '560px',
   //     autoFocus: '__non_existing_element__',
@@ -69,11 +66,11 @@ export class SteComponent implements OnInit {
   async STEToggle(){  
     try{ 
       if(this.Status != 'Online'){
-      this.Api.startSTEService().subscribe((res: any) => {
+      this.iGlobalConfigApi.startSTEService().subscribe((res: any) => {
         if(res.data) this.ServiceStatus('start',res.data);
       }) 
     }else  {
-      this.Api.stopSTEService().subscribe((res: any) => {
+      this.iGlobalConfigApi.stopSTEService().subscribe((res: any) => {
         if(res.data) this.ServiceStatus('stop',res.data);
       })
     }
@@ -84,7 +81,7 @@ export class SteComponent implements OnInit {
 async STERestart(){  
   try{
     this.Status = 'Pending'; 
-    this.Api.RestartSTEService().subscribe((res: any) => {
+    this.iGlobalConfigApi.RestartSTEService().subscribe((res: any) => {
       if(res.data) this.ServiceStatus('restart',res.data);
     })
    
@@ -93,7 +90,7 @@ async STERestart(){
   }
 }
 async CheckStatus(){
-  this.Api.ServiceStatusSTE().subscribe((res: any) => {
+  this.iGlobalConfigApi.ServiceStatusSTE().subscribe((res: any) => {
     if(res.data) this.Status = 'Online';
     else this.Status = 'Offline';
   })

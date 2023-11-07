@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core'; 
 import { environment } from '../../environments/environment';
-import {  Observable } from 'rxjs';  
+import {  Observable, lastValueFrom } from 'rxjs';  
 
 
 @Injectable({
@@ -22,7 +22,8 @@ export class BaseService {
    
         return this.http.get<any>(`${environment.apiUrl}${endPoint}`,{
             headers: this.GetHeaders(),
-            params:queryParams
+            params:queryParams,
+            withCredentials: true
           }); 
         
     }
@@ -37,25 +38,40 @@ export class BaseService {
       return await this.http
         .get<any>(`${environment.apiUrl}${endPoint}`,  {
           headers: this.GetHeaders(),
-          params:queryParams
+          params:queryParams,
+          withCredentials: true
         })
         .toPromise();
     }
-  
+    async PostAsync(apiUrl: string,model: any): Promise<any> { 
+      let res;
+      try {
+        res =  await lastValueFrom(this.http
+          .post<any>(environment.apiUrl + apiUrl, model, { headers: this.GetHeaders() }));
+         
+        } catch (err) {
+          console.log(err);
+          res = null;
+        }
+      return res;
+    }
     public Post(endPoint: string,reqPaylaod: any) { 
         return this.http.post<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
             headers: this.GetHeaders(),
+            withCredentials: true
           });
     }
     public PostFormData(endPoint: string,reqPaylaod: any) { 
         return this.http.post<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
             headers: this.GetHeadersFormData(),
+            withCredentials: true
           });
     }
 
     public Put(endPoint: string,reqPaylaod: any) { 
         return this.http.put<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
             headers: this.GetHeaders(),
+            withCredentials: true
           });
     }
     
@@ -67,7 +83,8 @@ export class BaseService {
        
         return this.http.delete<any>(`${environment.apiUrl}${endPoint}`, {
             headers: this.GetHeaders(),
-            params:queryParams
+            params:queryParams,
+            withCredentials: true
           });
     } 
     

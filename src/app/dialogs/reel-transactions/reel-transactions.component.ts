@@ -1,12 +1,14 @@
 import { Component, ElementRef, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { ReelDetailComponent } from '../reel-detail/reel-detail.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-reel-transactions',
@@ -40,13 +42,16 @@ fieldNames:any;
   fromReelCheck:any
   reel:any
   oldIncluded:any
-
+  public iinductionManagerApi:IInductionManagerApiService;
   @ViewChild('noOfReeltemp') noOfReeltemp: ElementRef
   @ViewChild('serialTemp') serialTemp: ElementRef
   @ViewChildren('serialTemp') serialInputs: QueryList<any>;
   
-  constructor(private dialog: MatDialog,public dialogRef: MatDialogRef<ReelTransactionsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,private toastr: ToastrService,private global:GlobalService) { }
+  constructor(private global:GlobalService,public dialogRef: MatDialogRef<ReelTransactionsComponent>,
+    private inductionManagerApi: InductionManagerApiService,
+    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,) {
+      this.iinductionManagerApi = inductionManagerApi;
+     }
 
   ngOnInit(): void {
     this.itemNumber = this.data.itemObj.number
@@ -63,7 +68,7 @@ fieldNames:any;
     
   }
   ngAfterViewInit(): void {
-    this.field_focus.nativeElement.focus();
+    this.field_focus?.nativeElement.focus();
   }
   updateRemaining(){
     let total = this.partsInducted;
@@ -79,7 +84,7 @@ fieldNames:any;
 
   ReelDetailDialogue() {
     
-    const dialogRef = this.dialog.open(ReelDetailComponent, {
+    const dialogRef:any = this.global.OpenDialog(ReelDetailComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',
@@ -121,7 +126,7 @@ fieldNames:any;
     let payload = {
       "numReels": this.noOfReels
     }
-    this.Api.NextSerialNumber(payload).subscribe({next: (res: any)=>{
+    this.iinductionManagerApi.NextSerialNumber(payload).subscribe({next: (res: any)=>{
       if (res.data && res.isExecuted){
         const dataArray: any[] = [];
         for (let x = 0; x < this.noOfReels; x++){
@@ -136,10 +141,8 @@ fieldNames:any;
 
       }
       else {
-        this.toastr.error('Something went wrong', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','Something went wrong', 'Error!');
+        console.log("NextSerialNumber",res.responseMessage);
       }
     },
     error: (error) => {}}
@@ -186,7 +189,7 @@ fieldNames:any;
   }
 
   reeloverviewsubmit(){
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '560px',
       data: {
@@ -198,10 +201,7 @@ fieldNames:any;
     dialogRef.afterClosed().subscribe((result) => {
       if(result){
         if(this.generateReelAndSerial.data.length == 0){
-          this.toastr.error("You must provide at least one reel transaction in order to create reels.", 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',"You must provide at least one reel transaction in order to create reels.", 'Error!');
         }
         else{
           let numUnassigned =this.partsNotAssigned;
@@ -216,7 +216,7 @@ fieldNames:any;
     })
   }
 ConfirmNoOFReel(numUnassigned){
-  const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+  const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
     height: 'auto',
     width: '560px',
     data: {
@@ -269,10 +269,7 @@ CreateReels(){
                 if(SNs.includes('')){
                   this.validateInputs();
                   this.serialTemp.nativeElement.blur()
-                  this.toastr.error("You must provide a serial number for each reel transaction.", 'Error!', {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000
-                  });
+                  this.global.ShowToastr('error',"You must provide a serial number for each reel transaction.", 'Error!');
                   return
                 }
                 
@@ -281,16 +278,13 @@ CreateReels(){
             
                    const hasDuplicatesFlag = this.findDuplicateValue( SNs);
                    if(hasDuplicatesFlag){
-                    this.toastr.error('You must provide a unique serial number for each reel transaction.  Serial ' + hasDuplicatesFlag + ' is duplicated.', 'Error!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000
-                    });
+                    this.global.ShowToastr('error','You must provide a unique serial number for each reel transaction.  Serial ' + hasDuplicatesFlag + ' is duplicated.', 'Error!' );
                     return
                    }
                 let payload = {
                   SerialNumbers:SNs
                 }
-                this.Api.ValidateSn(payload).subscribe((res:any)=>{
+                this.iinductionManagerApi.ValidateSn(payload).subscribe((res:any)=>{
                   if (res.data && res.isExecuted){
                     let errs = '';
                     for (let x = 0; x < res.data.length; x++) {
@@ -298,7 +292,7 @@ CreateReels(){
                             errs += (SNs[x] + ' is invalid because it is already allocated ' + (res.data[x].reason == 'OT' ? 'to a Put Away in Open Transactions.' : 'in Inventory Map') );
                            
 
-                            const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+                            const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
                               height: 'auto',
                               width: '560px',
                               data: {
@@ -315,30 +309,23 @@ CreateReels(){
                           };
                     };
                     if(errs != ''){
-                      this.toastr.error('The following serial numbers have problems and could not be assigned' , 'Error!', {
-                        positionClass: 'toast-bottom-right',
-                        timeOut: 2000,
-                      });
+                      this.global.ShowToastr('error','The following serial numbers have problems and could not be assigned' , 'Error!');
                     }
                     else{
                      let payload = {
                       "item": this.itemNumber,
                       "reels":reels
-                    }
-                    console.log(payload)
+                    } 
                     
-                      this.Api.ReelsCreate(payload).subscribe((res=>{
+                      this.iinductionManagerApi.ReelsCreate(payload).subscribe((res=>{
                         if(res.data && res.isExecuted){
                             if(res.data.lenghth<=0){
-                              this.toastr.error('There was an error while attempting to save the new reels.  See the error log for details.', 'Error!', {
-                                positionClass: 'toast-bottom-right',
-                                timeOut: 2000,
-                              });
+                              this.global.ShowToastr('error','There was an error while attempting to save the new reels.  See the error log for details.', 'Error!' );
                             }
                             else  {
                               this.createdReel = res.data
                               // print functionality will be implemented here
-                              const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+                              const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
                                 height: 'auto',
                                 width: '560px',
                                 data: {
@@ -349,8 +336,12 @@ CreateReels(){
                               });
                               dialogRef.afterClosed().subscribe((result) => {
                                 if(result){
-                                  this.checkSNS = SNs[0]
-                                  this.PrintCrossDock()
+                                  this.checkSNS = SNs[0];
+                                  if(this.imPreferences.printDirectly){
+                                    this.PrintCrossDock();
+                                  }else{
+                                    window.open(`/#/report-view?file=FileName:PrintReelLabels|OTID:[]|SN:${this.generateReelAndSerial.data[0].reel_serial_number}|Order:${this.data.hvObj.order}|Item:${this.itemNumber}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                                  }
                                   
                                   
                                 }
@@ -362,20 +353,16 @@ CreateReels(){
                             }
                         }
                         else{
-                          this.toastr.error(res.responseMessage, 'Error!', {
-                            positionClass: 'toast-bottom-right',
-                            timeOut: 2000,
-                          });
+                          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                          console.log("ReelsCreate",res.responseMessage);
                         }
                       }));
                     }
             
                   }
                   else {
-                    this.toastr.error('Something went wrong', 'Error!', {
-                      positionClass: 'toast-bottom-right',
-                      timeOut: 2000,
-                    });
+                    this.global.ShowToastr('error','Something went wrong', 'Error!');
+                    
                   }
                 });
 
@@ -398,7 +385,7 @@ let res:any =   this.global.Print(`FileName:PrintReelLabels|OTID:${this.createdR
 }
 
  async showConfirmationDialog(message,callback) {
-  const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+  const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
     height: 'auto',
     width: '560px',
     autoFocus: '__non_existing_element__',
@@ -419,15 +406,13 @@ let res:any =   this.global.Print(`FileName:PrintReelLabels|OTID:${this.createdR
     let payload = {
       "numReels": 1
     }
-    this.Api.NextSerialNumber(payload).subscribe({next: (res: any)=>{
+    this.iinductionManagerApi.NextSerialNumber(payload).subscribe({next: (res: any)=>{
       if (res.data && res.isExecuted){
         this.generateReelAndSerial.data[index].reel_serial_number=res.data+ '-RT';
       }
       else {
-        this.toastr.error('Something went wrong', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('error','Something went wrong', 'Error!');
+        console.log("NextSerialNumber",res.responseMessage);
       }
     },
     error: (error) => {}}

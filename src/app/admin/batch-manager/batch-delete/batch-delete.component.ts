@@ -8,12 +8,13 @@ import {
   Input,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
- 
 import { AuthService } from '../../../../app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-batch-delete',
@@ -36,6 +37,7 @@ export class BatchDeleteComponent implements OnInit {
     },
   ];
   _batchList: any = [];
+  public iAdminApiService: IAdminApiService;
   get batchList(): any {
     return this._batchList;
   }
@@ -61,12 +63,14 @@ export class BatchDeleteComponent implements OnInit {
   }
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     private api: ApiFuntions,
+    private dialog:MatDialog,
     public authService: AuthService,
-    private toastr: ToastrService,
+    private adminApiService: AdminApiService,
+    
     private currentTabDataService : CurrentTabDataService,
-  ) {}
+  ) { this.iAdminApiService = adminApiService;}
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -83,11 +87,9 @@ export class BatchDeleteComponent implements OnInit {
   getBatch(type: any) {
     try {
       let paylaod = {
-        transType: type,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        transType: type
       };
-      this.api
+      this.iAdminApiService
         .SelectBatchesDeleteDrop(paylaod)
         .subscribe((res: any) => {
           this.batchList = [];
@@ -96,6 +98,12 @@ export class BatchDeleteComponent implements OnInit {
             res.data.forEach((i: any) => {
               if(i) this.batchList.push(i);
             });
+          }
+          else{
+            
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("SelectBatchesDeleteDrop",res.responseMessage);
+
           }
         });
       this.RecordSavedItem();
@@ -131,12 +139,10 @@ export class BatchDeleteComponent implements OnInit {
     let payload = {
       batchID: id,
       identity: 2,
-      transType: type,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      transType: type
     };
     if (this.batchID !== 'All Transaction') {
-      let dialogRef = this.dialog.open(this.dltActionTemplate, {
+      let dialogRef:any = this.global.OpenDialog(this.dltActionTemplate, {
         width: '550px',
         autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -149,48 +155,52 @@ export class BatchDeleteComponent implements OnInit {
           } else {
             payload.identity = 1;
           }
-          this.api
+          this.iAdminApiService
             .BatchDeleteAll(payload)
             .subscribe((res: any) => {
               if (res.isExecuted) {
                 this.currentTabDataService.savedItem[this.currentTabDataService.BATCH_MANAGER_DELETE] = undefined; 
                 this.ngOnInit();
-                this.toastr.success(res.responseMessage, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',res.responseMessage, 'Success!');
                 this.deleteEmitter.emit(res);
                 this.batchID = "";
                 this.dltType = "";
+              }
+              else{
+                
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("BatchDeleteAll",res.responseMessage);
               }
             });
         }
       });
     } else {
       payload.identity = 2;
-      const dialogRef = this.dialog.open(this.dltByTransactionTemplate, {
+      const dialogRef:any = this.global.OpenDialog(this.dltByTransactionTemplate, {
         width: '550px',
         autoFocus: '__non_existing_element__',
       disableClose:true,
       });
       dialogRef.afterClosed().subscribe((res) => {
         if (this.dltType === 'batch_tote_trans') {
-          this.api
+          this.iAdminApiService
             .BatchDeleteAll(payload)
             .subscribe((res: any) => {
               if (res.isExecuted) {
                 this.currentTabDataService.savedItem[this.currentTabDataService.BATCH_MANAGER_DELETE] = undefined; 
                 this.ngOnInit();
-                this.toastr.success(res.responseMessage, 'Success!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('success',res.responseMessage, 'Success!');
                 this.deleteEmitter.emit(res.data);
                 this.batchID = "";
                 this.dltType = "";
               }
+              else {
+                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                console.log("BatchDeleteAll",res.responseMessage);
+              }
             });
         }
+        
       });
     }
     this.isChecked = false;

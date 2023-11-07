@@ -5,200 +5,243 @@ import { CrAddNewCustomReportComponent } from 'src/app/dialogs/cr-add-new-custom
 import { CrDeleteConfirmationComponent } from 'src/app/dialogs/cr-delete-confirmation/cr-delete-confirmation.component';
 import { CrEditDesignTestDataComponent } from 'src/app/dialogs/cr-edit-design-test-data/cr-edit-design-test-data.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { ToastrService } from 'ngx-toastr';
+
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-custom-reports-and-labels',
   templateUrl: './custom-reports-and-labels.component.html',
-  styleUrls: ['./custom-reports-and-labels.component.scss']
+  styleUrls: ['./custom-reports-and-labels.component.scss'],
 })
 export class CustomReportsAndLabelsComponent implements OnInit {
   @ViewChild('matRef') matRef: MatSelect;
 
-  Detail:any = {};
-  ListReports:any = [];
-  reportTitles:any = [];
-  IsSystemReport:boolean = true;
-  sysTitles:any = [];
-  olddetail
-  currentApp
-  constructor(private api:ApiFuntions,private route:Router,private dialog: MatDialog, private toastr :ToastrService,private router: Router,public global:GlobalService) { 
+  Detail: any = {};
+  ListReports: any = [];
+  reportTitles: any = [];
+  IsSystemReport: boolean = true;
+  sysTitles: any = [];
+  olddetail;
+  currentApp;
+  public iAdminApiService: IAdminApiService;
+
+  constructor(
+    private api: ApiFuntions,
+    private adminApiService: AdminApiService,
+    private route: Router,
+    private dialog: MatDialog,
+    private router: Router,
+    public global: GlobalService
+  ) {
+    this.iAdminApiService = adminApiService;
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        let spliUrl=event.url.split('/');
-
-        if(spliUrl[1]=='admin'){
-          this.currentApp = 'Admin'
+        let spliUrl = event.url.split('/');
+        switch (spliUrl[1]) {
+          case 'admin':
+            this.currentApp = 'Admin';
+            break;
+          case 'OrderManager':
+            this.currentApp = 'OM';
+            break;
+          case 'InductionManager':
+            this.currentApp = 'IM';
+            break;
+          case 'ConsolidationManager':
+            this.currentApp = 'CM';
+            break;
+          default:
+             break;
         }
-        else if(spliUrl[1]=='OrderManager'){
-          this.currentApp = 'OM'
-        }
-        else if(spliUrl[1]=='InductionManager'){
-          this.currentApp = 'IM'
-        }
-        else if(spliUrl[1]=='ConsolidationManager'){
-          this.currentApp = 'CM'
-        }
-     }
-      });
+      }
+    });
   }
 
   ngOnInit(): void {
-  this.Getcustomreports();
-
+    this.Getcustomreports();
   }
-  ChangeReport(IsSysBolean:boolean){
-    this.Detail = {}
+  ChangeReport(IsSysBolean: boolean) {
+    this.Detail = {};
     this.IsSystemReport = IsSysBolean;
-    if(this.IsSystemReport) this.ListReports = this.sysTitles;
+    if (this.IsSystemReport) this.ListReports = this.sysTitles;
     else this.ListReports = this.reportTitles;
-    console.log(this.ListReports)
+    console.log(this.ListReports);
   }
-  Getcustomreports(){
-
+  Getcustomreports() {
     let payload = {
-      'app':this.currentApp
-    }
-    this.api.Getcustomreports(payload).subscribe((res:any)=>{
-      this.sysTitles = res?.data?.reportTitles?.sysTitles;
-      this.reportTitles = res?.data?.reportTitles?.reportTitles;
-      this.sysTitles.forEach((object) => {
-        object.isSelected = false;
-      });
-      this.reportTitles.forEach((object) => {
-        object.isSelected = false;
-      });
-
-      console.log(this.sysTitles)
-      console.log(this.reportTitles)
-
-      if(this.IsSystemReport || this.IsSystemReport == undefined) this.ListReports = this.sysTitles;
-      else this.ListReports = this.reportTitles;
-      
-    })
-  }
-  OpenListAndLabel(route){
-    window.open(`/#/${route}?file=${this.Detail.fileName.replace(".","-")}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-  }
-
-  clearMatSelectList(){
-    this.matRef.options.forEach((data: MatOption) => data.deselect());
-  }
-  openAction(event:any){
-    this.clearMatSelectList();
-  }
-  SelectedFile:any;
-
-  Getreportdetails(file,index?){
-    console.log(file)
-    this.ListReports.forEach((item,i)=>{
-      if(i===index){
-        if(item.isSelected){
-          item.isSelected=false;
+      app: this.currentApp,
+    };
+    this.iAdminApiService.Getcustomreports(payload).subscribe((res: any) => {
+      if(res.isExecuted && res.data)
+      {
+        this.sysTitles = res?.data?.reportTitles?.sysTitles;
+        this.reportTitles = res?.data?.reportTitles?.reportTitles;
+        this.sysTitles.forEach((object) => {
+          object.isSelected = false;
+        });
+        this.reportTitles.forEach((object) => {
+          object.isSelected = false;
+        });
+  
+        console.log(this.sysTitles);
+        console.log(this.reportTitles);
+  
+        if (this.IsSystemReport || this.IsSystemReport == undefined)
+        {
+          this.ListReports = this.sysTitles;
         }
-        else{
-          item.isSelected=true
+        else {
+          this.ListReports = this.reportTitles;
         }
 
-      }else{
-        item.isSelected=false;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("Getcustomreports",res.responseMessage);
+
       }
       
-    })
+     
+    });
+  }
+  OpenListAndLabel(route) {
+    window.open(
+      `/#/${route}?file=${this.Detail.fileName.replace('.', '-')}`,
+      '_blank',
+      'width=' +
+        screen.width +
+        ',height=' +
+        screen.height +
+        ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+    );
+  }
 
-      this.olddetail = file; 
-    if(this.SelectedFile == file){
-      
+  clearMatSelectList() {
+    this.matRef.options.forEach((data: MatOption) => data.deselect());
+  }
+  openAction(event: any) {
+    this.clearMatSelectList();
+  }
+  SelectedFile: any;
+
+  Getreportdetails(file, index?) {
+    
+    this.ListReports.forEach((item, i) => {
+      if (i === index) {
+        if (item.isSelected) {
+          item.isSelected = false;
+        } else {
+          item.isSelected = true;
+        }
+      } else {
+        item.isSelected = false;
+      }
+    });
+
+    this.olddetail = file;
+    if (this.SelectedFile == file) {
       this.Detail = {};
       this.SelectedFile = null;
       return 1;
     }
     this.SelectedFile = file;
 
-     let obj : any = {
-      FileName:file
-    }
-    this.api.Getreportdetails(obj).subscribe((res:any)=>{
-      this.Detail = res.data[0];
-    })
-   
+    let obj: any = {
+      FileName: file,
+    };
+    this.iAdminApiService.Getreportdetails(obj).subscribe((res: any) => {
+      if(res.isExecuted && res.data)
+      {
+        this.Detail = res.data[0];
+
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("Getreportdetails",res.responseMessage);
+
+      }
+
+      
+    });
+
     return 1;
   }
 
   openEditDesign() {
-    const dialogRef = this.dialog.open(CrEditDesignTestDataComponent, {
-      height: 'auto',
-      width: '932px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data:this.Detail.testData ? this.Detail.testData : "" 
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(result)  
-      if(result )    
-      this.Detail.testData = result
-      this.saveInput()
-    }
+    const dialogRef: any = this.global.OpenDialog(
+      CrEditDesignTestDataComponent,
+      {
+        height: 'auto',
+        width: '932px',
+        autoFocus: '__non_existing_element__',
+        disableClose: true,
+        data: this.Detail.testData ? this.Detail.testData : '',
+      }
     );
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      if (result) this.Detail.testData = result;
+      this.saveInput();
+    });
   }
   CrAddNewCustomReportDialogue() {
-    const dialogRef = this.dialog.open(CrAddNewCustomReportComponent, {
-      height: 'auto',
-      width: '932px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data : {
-        ListReports:this.ListReports
+    const dialogRef: any = this.global.OpenDialog(
+      CrAddNewCustomReportComponent,
+      {
+        height: 'auto',
+        width: '932px',
+        autoFocus: '__non_existing_element__',
+        disableClose: true,
+        data: {
+          ListReports: this.ListReports,
+        },
       }
-    });
+    );
 
     dialogRef.afterClosed().subscribe((result) => {
-    if(!result){
-      console.log(result,'obj')
-      console.log(this.IsSystemReport)      
-      console.log(this.ListReports)  
-      
-      this.Getcustomreports()
-      this.Getreportdetails(result.filename)
-    }
-    }
-    );
+      if (!result) {
+        console.log(result, 'obj');
+        console.log(this.IsSystemReport);
+        console.log(this.ListReports);
+
+        this.Getcustomreports();
+        this.Getreportdetails(result.filename);
+      }
+    });
   }
   openDeleteDialogue() {
-    const dialogRef = this.dialog.open(CrDeleteConfirmationComponent, {
-      height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    });
+    const dialogRef: any = this.global.OpenDialog(
+      CrDeleteConfirmationComponent,
+      {
+        height: 'auto',
+        width: '560px',
+        autoFocus: '__non_existing_element__',
+        disableClose: true,
+      }
+    );
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result,'delete')   
-      if(result == 'permanent' ||result == 'keep')  {
-      
+      console.log(result, 'delete');
+      if (result == 'permanent' || result == 'keep') {
         let payload = {
-          "filename": this.Detail.fileName,
-          "keepFile": result === 'keep' ? true : result === 'permanent',
-          "wsid": "",
-          "username": "",
-          "contentRootPath": ""
-        }
-        this.api.deleteReport(payload).subscribe(res=>{
+          filename: this.Detail.fileName,
+          keepFile: result === 'keep' ? true : result === 'permanent',
+          wsid: '',
+          username: '',
+          contentRootPath: '',
+        };
+        this.iAdminApiService.deleteReport(payload).subscribe((res) => {
           if (!res.data) {
-            this.toastr.error("Unexpected error occurred.  If this persists please contact Scott Tech for support.", 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('error',"Unexpected error occurred.  If this persists please contact Scott Tech for support.", 'Error!');
+            console.log("deleteReport",res.responseMessage);
         } else {
           this.Getcustomreports()
           this.Detail= {}
-          this.toastr.success(`File Deleted Successfully`, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('success',`File Deleted Successfully`, 'Success!');
 
         };
         })
@@ -214,100 +257,98 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       // No file selected, handle the case if needed
       return;
     }
-    if(file.name == this.Detail.fileName){
+    if (file.name == this.Detail.fileName) {
       const formData = new FormData();
       formData.append('file', file);
-  
-  
+
       // Replace 'your_upload_endpoint' with the server's API endpoint to handle file upload
-      this.api.importFile(formData).subscribe(
+      this.iAdminApiService.importFile(formData).subscribe(
         (response) => {
-          this.toastr.success(`File successfully uploaded`, 'Success!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr(
+            'success',
+            `File successfully uploaded`,
+            'Success!'
+          );
           // Handle the response from the server after file upload, if needed
           console.log(response);
         },
         (error) => {
-          this.toastr.error(error, 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error', error, 'Error!');
           // Handle error if the file upload fails
           console.error(error);
         }
       );
+    } else {
+      this.global.ShowToastr(
+        'error',
+        `Uploaded filename ${file.name} must match report filename ${this.Detail.fileName}`,
+        'Error!'
+      );
     }
-    else{
-      this.toastr.error(`Uploaded filename ${file.name} must match report filename ${this.Detail.fileName}`, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
-    }
-
-
   }
 
-  pushReports(){
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+  pushReports() {
+    const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '500px',
       data: {
-        message: 'Do you wish to give all workstations your version of this report?',
+        message:
+          'Do you wish to give all workstations your version of this report?',
         heading: '',
       },
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if(result){
+      if (result) {
         let payload = {
-          FileName:this.Detail.fileName
-        }
-        this.api.pushReportChanges(payload).subscribe(res=>{
-          console.log(res)
-          if(res.isExecuted){
-            this.toastr.success( `Changes have been successfully pushed to the other workstations`, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+          FileName: this.Detail.fileName,
+        };
+        this.iAdminApiService.pushReportChanges(payload).subscribe((res) => {
+          console.log(res);
+          if (res.isExecuted) {
+            this.global.ShowToastr(
+              'success',
+              `Changes have been successfully pushed to the other workstations`,
+              'Success!'
+            );
+          } else {
+            this.global.ShowToastr(
+              'error',
+              `Error has occured while pushing changes to the other worksations`,
+              'Error!'
+            );
+            console.log("pushReportChanges",res.responseMessage);
           }
-          else{
-            this.toastr.error( `Error has occured while pushing changes to the other worksations`, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
-          }
-        })
-      }
-      else{
-        return
+        });
+      } else {
+        return;
       }
     });
   }
 
+  saveInput() {
+    if (this.Detail.outputType == undefined) return;
+    let payload = {
+      oldfilename: this.olddetail,
+      newfilename: this.Detail.fileName,
+      description: this.Detail.description,
+      datasource: this.Detail.testData,
+      output: this.Detail.outputType,
+      testDataType: this.Detail.testDataType,
+      eFilename: this.Detail.exportFileName,
+    };
 
-  saveInput(){
-    if(this.Detail.outputType == undefined) return
-   let payload =  {
-      "oldfilename": this.olddetail,
-      "newfilename": this.Detail.fileName,
-      "description":this.Detail.description ,
-      "datasource": this.Detail.testData,
-      "output": this.Detail.outputType,
-      "testDataType": this.Detail.testDataType,
-      "eFilename":this.Detail.exportFileName ,
-    }
-
-    this.api.updatereportDetails(payload).subscribe(res=>{
-      if(!res.isExecuted){
-        this.toastr.error("Unexpected error occurred. Changes Not Saved", 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+    this.iAdminApiService.updatereportDetails(payload).subscribe((res) => {
+      if (!res.isExecuted) {
+        this.global.ShowToastr(
+          'error',
+          'Unexpected error occurred. Changes Not Saved',
+          'Error!'
+        );
+        console.log("updatereportDetails",res.responseMessage);
       }
-    })
+    });
   }
 }

@@ -10,6 +10,6 @@ export class TransferFilePathComponent {
 
   
   ngAfterViewInit(): void {
-    this.field_focus.nativeElement.focus();
+    this.field_focus?.nativeElement.focus();
   }
 }

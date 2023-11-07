@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { catchError, of } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-lookup-adjustment-lookup-setup',
@@ -15,12 +17,16 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class LookupAdjustmentLookupSetupComponent implements OnInit {
   userData
 adjustmentLookUp :any = new MatTableDataSource([]);
+public iAdminApiService: IAdminApiService;
 AdjustLookupInput
 AddBtn = false
   constructor(private Api:ApiFuntions,
-              private dialog: MatDialog,
-              private toastr: ToastrService,
-              public authService: AuthService,) { }
+              private global:GlobalService,
+              private adminApiService: AdminApiService,
+              
+              public authService: AuthService,) { 
+                this.iAdminApiService = adminApiService;
+              }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -28,9 +34,9 @@ AddBtn = false
   }
 
   getadjustmentlookup(){
-    this.Api.adjustmentlookup().subscribe(res=>{
+    this.iAdminApiService.adjustmentlookup().subscribe(res=>{
       
-      if(res.isExecuted){
+      if(res.isExecuted && res.data){
         this.adjustmentLookUp = res.data
         // console.log(this.adjustmentLookUp)
         let tempAdjustLookUp:any = [];
@@ -42,7 +48,14 @@ AddBtn = false
           tempAdjustLookUp.push(obj)
         });
         this.adjustmentLookUp = new MatTableDataSource(tempAdjustLookUp);
+        
       }
+      else 
+      {
+        
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("adjustmentlookup", res.responseMessage);
+      } 
     })
   }
 
@@ -52,7 +65,7 @@ AddBtn = false
       "oldValue":ele.oldVal,
       "newValue":ele.currentVal
     }
-    this.Api.updateAdjustlookup(payload).pipe(
+    this.iAdminApiService.updateAdjustlookup(payload).pipe(
     
       catchError((error) => {
         return of({ isExecuted: false });
@@ -63,16 +76,12 @@ AddBtn = false
       if(res.isExecuted){
         this.AddBtn = false
         ele.oldVal = ele.currentVal
-        this.toastr.success(`Saved Successfully`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        this.global.ShowToastr('success',`Saved Successfully`, 'Error!');
       }
       else{
-        this.toastr.error(`Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
+        
+        this.global.ShowToastr('error',`Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!');
+        console.log("LocationZone", res.responseMessage);
       }
     }))
   }
@@ -95,7 +104,7 @@ AddBtn = false
 
 
   deleteAdjust(ele){
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
@@ -111,9 +120,13 @@ AddBtn = false
         let payload = {
           "reason": ele.currentVal
         }
-        this.Api.deleteAdjustmentLookup(payload).subscribe((res=>{ 
+        this.iAdminApiService.deleteAdjustmentLookup(payload).subscribe((res=>{ 
           if(res.isExecuted){
             this.getadjustmentlookup()
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("deleteAdjustmentLookup",res.responseMessage);
           }
         }))
       }

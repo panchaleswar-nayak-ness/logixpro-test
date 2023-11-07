@@ -1,10 +1,12 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import labels from '../../labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-short-transaction',
@@ -12,22 +14,25 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: []
 })
 export class ShortTransactionComponent implements OnInit {
-
+  public iinductionManagerApi:IInductionManagerApiService;
   selectedTransaction: any;
   toteQuantity: any;
   @ViewChild('toteQty') toteQty: ElementRef;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private toastr: ToastrService,
-    private dialog: MatDialog,
+    
+    private global:GlobalService,
+    private inductionManagerApi: InductionManagerApiService,
     private Api: ApiFuntions,
     public dialogRef: MatDialogRef<ShortTransactionComponent>,
     private globalService: GlobalService
-  ) { }
+  ) { 
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   restrictKeyboard(event: KeyboardEvent) {
-    const isNumericInput = event.key.match(/^[0-9]+$/);
+    const isNumericInput = (/^\d+$/).exec(event.key);
     if (!isNumericInput && event.key !== "Backspace") {
       event.preventDefault();
     }
@@ -46,13 +51,10 @@ export class ShortTransactionComponent implements OnInit {
   ShortTransaction() {
     if (this.toteQuantity >= 0 && this.toteQuantity < this.selectedTransaction.transactionQuantity) {
       if(!this.globalService.checkDecimal(this.toteQuantity)){
-        this.toastr.error("Tote Quantity can not be in decimal", 'Error', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000
-        });
+        this.global.ShowToastr('error',"Tote Quantity can not be in decimal", 'Error');
         return;
       }
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -69,29 +71,21 @@ export class ShortTransactionComponent implements OnInit {
             "shortQuantity": this.toteQuantity,
             "shortMethod": "Complete"
           }
-          this.Api.shortTransaction(payload).subscribe((res: any) => {
+          this.iinductionManagerApi.shortTransaction(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialogRef.close(res);
-              this.toastr.success(labels.alert.update, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.update, 'Success!');
             }
             else {
-              this.toastr.error("An error occured when shorting this transaction", 'Error', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"An error occured when shorting this transaction", 'Error');
+              console.log("shortTransaction",res.responseMessage);
             }
           });
         }
       });
     }
     else {
-      this.toastr.error("Please enter a quantity that is greater than or equal to 0 and less than the transaction qty", 'Invalid Qty Entered', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error',"Please enter a quantity that is greater than or equal to 0 and less than the transaction qty", 'Invalid Qty Entered');
       this.toteQuantity = undefined;
     }
   }

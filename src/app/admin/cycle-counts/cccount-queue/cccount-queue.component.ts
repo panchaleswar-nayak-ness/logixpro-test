@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component } from '@angular/core';
 import { ImportFieldMappingComponent } from '../import-field-mapping/import-field-mapping.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 export interface PeriodicElement {
@@ -29,10 +29,10 @@ export class CCCountQueueComponent{
   tableData = ELEMENT_DATA;
 
 
-  constructor(private dialog: MatDialog,) { }
+  constructor(private global:GlobalService) { }
 
   importFieldMapping(){
-    let dialogRef = this.dialog.open(ImportFieldMappingComponent, {
+    let dialogRef:any = this.global.OpenDialog(ImportFieldMappingComponent, {
       height: '650px',
       width: '800px',
       autoFocus: '__non_existing_element__',

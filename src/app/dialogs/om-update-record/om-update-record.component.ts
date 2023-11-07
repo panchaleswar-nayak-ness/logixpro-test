@@ -69,7 +69,7 @@ export class OmUpdateRecordComponent implements OnInit {
 
     const values = this.orderForm.value;
 
-    let dialogRef = this.dialog.open(OmChangesConfirmationComponent, {
+    let dialogRef:any = this.globalService.OpenDialog(OmChangesConfirmationComponent, {
       height: 'auto',
       width: '932px',
       autoFocus: '__non_existing_element__',

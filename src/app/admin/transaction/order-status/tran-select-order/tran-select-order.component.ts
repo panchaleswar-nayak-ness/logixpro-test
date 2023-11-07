@@ -1,4 +1,3 @@
-import { HttpContext, HttpHeaders } from '@angular/common/http';
 import {
   Component,
   EventEmitter,
@@ -8,22 +7,22 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
-import { ToastrService } from 'ngx-toastr';
-import {
-  
-  
-  Subject,
-  Subscription,
-} from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { AuthService } from 'src/app/init/auth.service';
-import { BYPASS_LOG } from 'src/app/init/http-interceptor'; 
 import { SharedService } from 'src/app/services/shared.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { ActivatedRoute } from '@angular/router';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+
+class info {
+  title: string;
+  value: string;
+  colorClass: string;
+}
 
 @Component({
   selector: 'app-tran-select-order',
@@ -61,39 +60,50 @@ export class TranSelectOrderComponent implements OnInit {
   searchAutocompleteListOrderNumber: any = [];
   public userData: any;
 
+  info: info[] =  [
+    { title: 'Complete', value: this.completeOrder, colorClass: 'Compete-cart' },
+    { title: 'Re-process', value: this.reprocessOrder, colorClass: 'Reprocess-card' },
+    { title: 'Open', value: this.openOrder, colorClass: 'Open-card' },
+    { title: 'Order type', value: this.orderTypeOrder, colorClass: 'Order-type' },
+    { title: 'Total-lines', value: this.totalLinesOrder, colorClass: 'Total-lines' },
+    { title: 'Current Status', value: this.currentStatusOrder, colorClass: 'Current-status' }
+  ];
+
   @Output() deleteEvent = new EventEmitter<Event>();
 
   @Input() set openOrderEvent(event: Event) {
     if (event) {
       this.openOrder = event;
+      this.info[2].value = this.openOrder;
     }
   }
-
   @Input() set completeOrderEvent(event: Event) {
     if (event) {
       this.completeOrder = event;
+      this.info[0].value = this.completeOrder;
     }
   }
   @Input() set reprocessOrderEvent(event: Event) {
     if (event) {
       this.reprocessOrder = event;
+      this.info[1].value = this.reprocessOrder;
     }
   }
-
   @Input() set orderTypeOrderEvent(event: Event) {
     if (event) {
       this.orderTypeOrder = event;
+      this.info[3].value = this.orderTypeOrder;
     }
   }
-
   @Input() set totalLinesOrderEvent(event: Event) {
     if (event) {
-      // this.totalLinesOrder = event;   // getting it from shared service
+      this.info[4].value = this.totalLinesOrder;
     }
   }
   @Input() set currentStatusOrderEvent(event: Event) {
     if (event) {
       this.currentStatusOrder = event;
+      this.info[5].value = this.currentStatusOrder;
     }
   }
   @Input()
@@ -104,15 +114,17 @@ export class TranSelectOrderComponent implements OnInit {
       this.clear();
     }
   }
+  public iAdminApiService: IAdminApiService;
   constructor(
     public authService: AuthService,
-    private Api:ApiFuntions,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
+    private global:GlobalService,
+    public adminApiService: AdminApiService,
     private sharedService: SharedService,
     private currentTabDataService: CurrentTabDataService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['orderStatNextData']) {
       this.searchAutocompleteListOrderNumber =
@@ -211,19 +223,27 @@ export class TranSelectOrderComponent implements OnInit {
          })
     );
 
+    
+
   }
 
   getNextItemNo(event:any){
-     
-      if(event.target.value==''){
-         this.resetLines();
-            this.columnSelect = '';
-      }
+    if(event.target.value==''){
+      this.resetLines();
+      this.columnSelect = '';
+    }
     this.autocompleteSearchColumn();
     this.onOrderNoChange();
   }
 
   resetLines() {
+    this.info[0].value = '0';
+    this.info[1].value = '0';
+    this.info[2].value = '0';
+    this.info[3].value = '-';
+    this.info[4].value = '0';
+    this.info[5].value = '-';
+
     this.openOrder = 0;
     this.completeOrder = 0;
     this.reprocessOrder = 0;
@@ -276,10 +296,8 @@ export class TranSelectOrderComponent implements OnInit {
     let paylaod = {
       OrderNumber: this.searchField,
       TotalLines: JSON.stringify(this.totalLinesOrder),
-      UserName: this.userData.userName,
-      WSID: this.userData.wsid,
     };
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -304,31 +322,41 @@ export class TranSelectOrderComponent implements OnInit {
     let searchPayload;
     if (this.columnSelect == 'Order Number') {
       searchPayload = {
-        orderNumber: this.searchField,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        orderNumber: this.searchField
       };
     } else {
       searchPayload = {
         query: this.searchField,
         tableName: 1,
-        column: this.columnSelect,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        column: this.columnSelect
       };
     }
  
    if( this.columnSelect == 'Order Number'){
-    this.Api.OrderNumberNext(searchPayload).subscribe(
+    this.iAdminApiService.OrderNumberNext(searchPayload).subscribe(
       {next: (res: any) => {
-        this.searchAutocompleteList = res.data;
+        if(res.isExecuted && res.data)
+        {
+          this.searchAutocompleteList = res.data;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("OrderNumberNext",res.responseMessage);
+        }
       },
       error: (error) => {}}
     );
    }else{
-    this.Api.NextSuggestedTransactions(searchPayload).subscribe(
+    this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe(
       {next: (res: any) => {
-        this.searchAutocompleteList = res.data;
+        if(res.isExecuted && res.data)
+        {
+          this.searchAutocompleteList = res.data;
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("NextSuggestedTransactions",res.responseMessage);
+        }
       },
       error: (error) => {}}
     );

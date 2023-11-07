@@ -1,6 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormControl } from '@angular/forms';
@@ -8,6 +7,9 @@ import { Observable } from 'rxjs';
 import { EmployeeObject} from 'src/app/Iemployee';  
 import { AuthService } from '../../../../app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 
 export interface GroupsDetails {
@@ -52,12 +54,14 @@ export class GroupsLookupComponent implements OnInit {
   @Input() set tab(event : any) {
     if (event) {
       setTimeout(()=>{
-        this.searchBoxField.nativeElement.focus(); 
+        this.searchBoxField?.nativeElement.focus(); 
       }, 500);
     }
   }
-
-  constructor(private _liveAnnouncer: LiveAnnouncer, private dialog: MatDialog, private employeeService: ApiFuntions, private authService: AuthService) { }
+  public iAdminApiService: IAdminApiService;
+  constructor(private _liveAnnouncer: LiveAnnouncer, private global : GlobalService, private adminApiService: AdminApiService, private employeeService: ApiFuntions, private authService: AuthService) { 
+    this.iAdminApiService = adminApiService;
+  }
 
   @ViewChild(MatSort) sort: MatSort;
   groups_details_data: any = [];
@@ -100,7 +104,7 @@ export class GroupsLookupComponent implements OnInit {
 
 
   // openGroupDialog() {
-  //   let dialogRef = this.dialog.open(AddNewGroupComponent, {
+  //   let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
   //     height: 'auto',
   //     width: '560px',
   //     autoFocus: '__non_existing_element__',
@@ -118,15 +122,21 @@ export class GroupsLookupComponent implements OnInit {
   }
 
   public loadEmpData(){
-    this.emp = {
-      "userName": this.userData.userName,
-      "wsid": this.userData.wsid
+    this.emp = { 
     };
-    this.employeeService.getEmployeeData(this.emp)
+    this.iAdminApiService.getEmployeeData(this.emp)
       .subscribe((response: EmployeeObject) => {
-        this.employees_res = response
+        if(response.isExecuted)
+        {
+          this.employees_res = response
         this.groups_details_data = this.employees_res.data.allGroups
         this.group_data_source = new MatTableDataSource(this.groups_details_data);
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("getEmployeeData",response.responseMessage);
+        }
+        
       });
 
   }

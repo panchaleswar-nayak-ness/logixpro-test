@@ -1,17 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
-import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/init/auth.service';
 import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 const TRNSC_DATA = [
   { colHeader: 'importDate', colDef: 'Import Date' },
@@ -51,6 +53,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   hideRequiredControl = new FormControl(false);
   searchBar = new Subject<string>();
   searchAutocompleteList: any;
+  public iAdminApiService: IAdminApiService;
   public sortCol:any=5;
   public sortOrder:any='asc';
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -79,9 +82,12 @@ export class ReprocessedTransactionComponent implements OnInit {
   constructor(
     private Api: ApiFuntions,
     private authService: AuthService,
-    private toastr: ToastrService,
-    private dialog: MatDialog
-  ) {}
+    private adminApiService: AdminApiService,
+    
+    private global:GlobalService
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.searchBar
@@ -104,22 +110,18 @@ export class ReprocessedTransactionComponent implements OnInit {
   }
 
   getColumnsData() {
-    let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+    let payload = { 
       tableName: 'ReProcessed',
     };
-    this.Api.GetColumnSequence(payload).subscribe(
+    this.iAdminApiService.GetColumnSequence(payload).subscribe(
       {next: (res: any) => {
         this.displayedColumns = TRNSC_DATA;
         if (res.data) {
           this.columnValues = res.data;
           this.getContentData();
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("GetColumnSequence",res.responseMessage);
         }
       },
       error: (error) => {}}
@@ -135,15 +137,20 @@ export class ReprocessedTransactionComponent implements OnInit {
       itemNumber: '',
       holds: false,
       orderStatusOrder: '',
-      app: 'Admin',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      app: 'Admin', 
     };
-    this.Api
+    this.iAdminApiService
       .TransactionModelIndex(paylaod)
       .subscribe(
         {next: (res: any) => {
-          this.columnValues = res.data?.reprocessedColumns;
+          if(res.isExecuted && res.data)
+          {
+            this.columnValues = res.data?.reprocessedColumns;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("TransactionModelIndex",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );
@@ -156,18 +163,23 @@ export class ReprocessedTransactionComponent implements OnInit {
       start: this.customPagination.startIndex,
       length: this.customPagination.endIndex,
       sortColumnNumber: this.sortCol,
-      sortOrder: this.sortOrder,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      sortOrder: this.sortOrder, 
     };
-    this.Api
+    this.iAdminApiService
       .ReprocessedTransactionTable(this.payload)
       .subscribe(
         {next: (res: any) => {
-          this.detailDataTransHistory = res.data?.transactions;
+          if(res.isExecuted && res.data)
+          {
+            this.detailDataTransHistory = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
           this.customPagination.total = res.data?.recordsFiltered;
           this.dataSource.sort = this.sort;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("ReprocessedTransactionTable",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );
@@ -189,16 +201,21 @@ export class ReprocessedTransactionComponent implements OnInit {
     let searchPayload = {
       query: this.columnSearch.searchValue,
       tableName: 6,
-      column: this.columnSearch.searchColumn.colDef,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      column: this.columnSearch.searchColumn.colDef, 
     };
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
        { next: (res: any) => {
-          this.searchAutocompleteList = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
           this.getContentData();
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );
@@ -221,7 +238,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   actionDialog(opened: boolean) {
     if (!opened && this.selectedVariable) {
       this.sortCol=0;
-      let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
         height: 'auto',
         width: '960px',
         disableClose: true,

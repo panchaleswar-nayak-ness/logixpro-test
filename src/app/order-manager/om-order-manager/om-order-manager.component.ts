@@ -3,15 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { OmCreateOrdersComponent } from 'src/app/dialogs/om-create-orders/om-create-orders.component';
 import { OmUpdateRecordComponent } from 'src/app/dialogs/om-update-record/om-update-record.component'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { ColumnSequenceDialogComponent } from 'src/app/admin/dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
@@ -21,6 +19,11 @@ import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -119,17 +122,23 @@ export class OmOrderManagerComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  public iOrderManagerApi :  IOrderManagerAPIService;
+  public iAdminApiService: IAdminApiService;
   constructor(private dialog          : MatDialog,
-              private _liveAnnouncer  : LiveAnnouncer,
-              private toastr          : ToastrService,
-              private Api       : ApiFuntions,
+              private _liveAnnouncer  : LiveAnnouncer, 
+              private Api             : ApiFuntions,
+              public orderManagerApi  : OrderManagerApiService,
+              private adminApiService: AdminApiService,
               public authService      : AuthService,
               public globalService    : GlobalService,
               private filterService   : ContextMenuFiltersService,
               private currentTabDataService: CurrentTabDataService,
               private global:GlobalService,
-              private router: Router) { }
+              private contextMenuService : TableContextMenuService,
+              private router: Router) {
+                this.iOrderManagerApi = orderManagerApi; 
+                this.iAdminApiService = adminApiService; 
+              }
 
   @ViewChild('btnRef') buttonRef: MatButton;
 
@@ -155,16 +164,14 @@ export class OmOrderManagerComponent implements OnInit {
   }  
 
   getOMIndex() { 
-    this.Api.OrderManagerPreferenceIndex().subscribe(
+    this.iOrderManagerApi.OrderManagerPreferenceIndex().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.OMIndex = res.data;
           if ( res.data?.preferences) this.maxOrders = res.data.preferences[0].maxOrders;
         } else {
-          this.toastr.error('Something went wrong', 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000,
-          });
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("OrderManagerPreferenceIndex",res.responseMessage);
         }
       },
       (error) => { }
@@ -173,12 +180,10 @@ export class OmOrderManagerComponent implements OnInit {
 
   getColumnSequence() {
     let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
       tableName: 'Order Manager'
     };
 
-    this.Api.GetColumnSequence(payload).subscribe((res: any) => {
+    this.iAdminApiService.GetColumnSequence(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.displayedColumns = res.data;        
         this.displayedColumns.push( 'actions');
@@ -187,11 +192,15 @@ export class OmOrderManagerComponent implements OnInit {
         this.colList = this.colList.sort();
         this.searchCol = this.colList[0];
       }
+      else{
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetColumnSequence",res.responseMessage);
+      }
     });
   }
 
   selectColumnSequence() {
-    let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
       height: 'auto',
       width: '960px',
       disableClose: true,
@@ -222,8 +231,6 @@ export class OmOrderManagerComponent implements OnInit {
       if(this.FilterString == "") this.FilterString = "1 = 1";
   
       let payload = {
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
         col: this.column,
         whereClause: this.case,
         colVal1: val1 ,
@@ -236,30 +243,28 @@ export class OmOrderManagerComponent implements OnInit {
       };
       
   
-      this.Api.FillOrderManTempData(payload).pipe(
+      this.iOrderManagerApi.FillOrderManTempData(payload).pipe(
         catchError((error) => {
           // Handle the error here
           
-  this.toastr.error("Something went wrong" ,'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+  this.global.ShowToastr('error',"Something went wrong" ,'Error!');
           // Return a fallback value or trigger further error handling if needed
           return of({ isExecuted: false });
         })
       ).subscribe((res: any) => {
         if (res.isExecuted) this.fillTable();
-        else this.toastr.error("An Error occured while retrieving data.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        else this.global.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
       });
     }catch(ex){
 
-      this.toastr.error("Something went wrong" ,'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"Something went wrong" ,'Error!');
     }
     
   }
 
   fillTable(loader : boolean = false) {
     let payload2 = {
-      username: this.userData.userName,
       user: this.userData.userName,
-      wsid: this.userData.wsid,
       startRow: this.customPagination.startIndex == 0 ? this.customPagination.startIndex.toString() : (this.customPagination.startIndex + 1).toString(),
       endRow: this.customPagination.endIndex.toString(),
       sortCol: this.sortColumn.columnName,
@@ -268,14 +273,22 @@ export class OmOrderManagerComponent implements OnInit {
       searchString: this.searchTxt,
     }; 
 
-    this.Api.SelectOrderManagerTempDTNew(payload2).subscribe((res: any) => {
-      this.orderTable = new MatTableDataSource(res.data?.transactions);
-      this.customPagination.total = res.data?.recordsFiltered;
-      this.totalRecords = res.data?.recordsFiltered;
+    this.iOrderManagerApi.SelectOrderManagerTempDTNew(payload2).subscribe((res: any) => {
+      if(res)
+      {
+        this.orderTable = new MatTableDataSource(res.data?.transactions);
+        this.customPagination.total = res.data?.recordsFiltered;
+        this.totalRecords = res.data?.recordsFiltered;
       
       this.RecordSavedItem();
 
       this.orderTable.sort = this.sort;
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("SelectOrderManagerTempDTNew",res.responseMessage);
+      }
+      
     });   
   }
 
@@ -331,9 +344,9 @@ export class OmOrderManagerComponent implements OnInit {
   deleteViewed() {
     
     if (this.orderType == "Open") {
-      this.toastr.error("You can only delete pending transactions.", 'Warning!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"You can only delete pending transactions.", 'Warning!');
     } else {
-      let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -347,15 +360,17 @@ export class OmOrderManagerComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => {
         if (result == 'Yes') {
           let payload = {
-            username: this.userData.userName,
             user: this.userData.userName,
-            wsid: this.userData.wsid,
             viewType: this.viewType
           };
       
-          this.Api.OMOTPendDelete(payload).subscribe((res: any) => {
+          this.iOrderManagerApi.OMOTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.getOrders();
+            }
+            else{
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("OMOTPendDelete",res.responseMessage)
             }
           });
         }
@@ -370,13 +385,13 @@ export class OmOrderManagerComponent implements OnInit {
 
   displayRecords() {
     if ((this.column == "Import Date" || this.column == "Required Date" || this.column == "Priority") && this.case == "Like") 
-      this.toastr.error("Cannot use the 'Like' option with Required Date, Import Date, or Priority column options", 'Warning!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"Cannot use the 'Like' option with Required Date, Import Date, or Priority column options", 'Warning!');
     else this.getOrders();
     this.RecordSavedItem();
   }
 
   updateRecord(ele : any) {
-    let dialogRef = this.dialog.open(OmUpdateRecordComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmUpdateRecordComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -397,36 +412,34 @@ export class OmOrderManagerComponent implements OnInit {
 
   openOrderStatus(ele : any, fromTable : boolean) {
     if((this.value1 == "" || this.column != "Order Number") && !fromTable){
-      this.toastr.error("You must select an Order Number to view the order status.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"You must select an Order Number to view the order status.", 'Error!');
     }
-    else{
-      if (!fromTable){
-        this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${this.value1 ? this.value1 : ''}`);
-      } 
-      else {
-        
-          this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${ele.orderNumber ? ele.orderNumber : ''}`);
-      } 
-    }
+    else if (!fromTable){
+      this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${this.value1 ? this.value1 : ''}`);
+    } 
+    else {
+      
+        this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${ele.orderNumber ? ele.orderNumber : ''}`);
+    } 
   }
 
   releaseViewed() {
     if (this.orderTable.data.length == 0) {
-      this.toastr.error("No Transactions match your current filters to release.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"No Transactions match your current filters to release.", 'Error!');
       return
     }
     if (this.orderType == 'Open') {
-      this.toastr.error("This orders you are viewing have already been released.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"This orders you are viewing have already been released.", 'Error!');
       return
     }
     if (!this.OMIndex.preferences[0].allowInProc) {
-      this.toastr.error("You may not release an Order that is already in progress.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+      this.global.ShowToastr('error',"You may not release an Order that is already in progress.", 'Error!');
       return
     }
 
     if (!this.OMIndex.preferences[0].allowPartRel && this.totalRecords > -1 || this.FilterString != '1 = 1') {      
 
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -440,16 +453,18 @@ export class OmOrderManagerComponent implements OnInit {
         if (result == 'Yes') {
 
           let payload = {
-            username: this.userData.userName,
-            wsid: this.userData.wsid,
             val: this.viewType,
             page: 'Order Manager'
           };
       
-          this.Api.ReleaseOrders(payload).subscribe((res: any) => {
+          this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.getOrders();
               this.clearSearch();
+            }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("ReleaseOrders",res.responseMessage);
             }
           });
           
@@ -457,12 +472,13 @@ export class OmOrderManagerComponent implements OnInit {
           this.clearSearch();
           this.FilterString = "";
           this.fillTable();
+          
         }
       });
 
     } else {
 
-      let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -476,16 +492,18 @@ export class OmOrderManagerComponent implements OnInit {
         if (result == 'Yes') {
 
           let payload = {
-            username: this.userData.userName,
-            wsid: this.userData.wsid,
             val: this.viewType,
             page: 'Order Manager'
           };
       
-          this.Api.ReleaseOrders(payload).subscribe((res: any) => {
+          this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.getOrders();
               this.clearSearch();
+            }
+            else{
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("ReleaseOrders",res.responseMessage);
             }
           });
           
@@ -544,7 +562,7 @@ export class OmOrderManagerComponent implements OnInit {
   }
 
   openOmCreateOrders() { 
-    let dialogRef = this.dialog.open(OmCreateOrdersComponent, { 
+    let dialogRef:any = this.global.OpenDialog(OmCreateOrdersComponent, { 
       height: 'auto',
       width: '1424px',
       autoFocus: '__non_existing_element__',
@@ -564,60 +582,24 @@ export class OmOrderManagerComponent implements OnInit {
     this.fillTable();
   }
 
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
-
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: {SelectedItem: SelectedItem, FilterColumnName : FilterColumnName, FilterConditon: FilterConditon, FilterItemType : FilterItemType }};
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef =  this.dialog.open(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data:{
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement:TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => { 
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition,result.Type)
-    }
-    );
-  }
+  FilterString : string = "1 = 1";
 
-  getType(val) : string {
-     return this.filterService.getType(val);
-  }
-
-  FilterString : string = "";
-
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
-    if (SelectedItem != undefined) {
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem,FilterColumnName,Condition,Type);
-    }
+  optionSelected(filter : string) {
     this.customPagination.startIndex = 0;
     this.paginator.pageIndex = 0;
-    this.FilterString = this.FilterString != "" ? this.FilterString : "1 = 1";
+    this.FilterString = filter;
     this.getOrders();
   }
 
   async deleteTemp(){
     let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
       appName: ""
     }
-    await this.Api.OrderManagerTempDelete(payload).toPromise();
+    await this.iOrderManagerApi.OrderManagerTempDelete(payload).toPromise();
   }
 
   actionDialog(matEvent: MatSelectChange) {

@@ -121,12 +121,10 @@
             <h6 class="text-tertiary-900"><b>Quantity</b></h6>
             <div class="d-flex gap-20 justify-content-center flex-wrap">
               <div class="employees text-center">
-                <p class="counter-count mb-1 bg-primary-900">{{details.controls['totalQuantity'].value  }}</p>
-                <p class="employee-p text-tertiary-900 mb-1  ">Total</p>
+                <app-stats-circle value="{{details.controls['totalQuantity'].value}}" title="Total"></app-stats-circle>
               </div>
               <div class="customer text-center">
-                <p class="counter-count mb-1 bg-primary-900">{{this.details.controls['wipCount'].value }}</p>
-                <p class="customer-p text-tertiary-900 mb-1  ">WIP</p>
+                <app-stats-circle value="{{this.details.controls['wipCount'].value}}" title="WIP"></app-stats-circle>
               </div>
             </div>
           </div>
@@ -138,12 +136,10 @@
             <h6 class="text-tertiary-900"><b>Allocated</b></h6>
             <div class="d-flex gap-20 justify-content-center flex-wrap">
               <div class="employees text-center">
-                <p class="counter-count mb-1 bg-primary-900">{{this.details.controls['totalPicks'].value }}</p>
-                <p class="employee-p text-tertiary-900 mb-1  ">Picks</p>
+                <app-stats-circle value="{{this.details.controls['totalPicks'].value}}" title="Picks"></app-stats-circle>
               </div>
               <div class="customer text-center">
-                <p class="counter-count mb-1 bg-primary-900">{{this.details.controls['totalPuts'].value }}</p>
-                <p class="customer-p text-tertiary-900 mb-1  ">PutAway</p>
+                <app-stats-circle value="{{this.details.controls['totalPuts'].value}}" title="PutAway"></app-stats-circle>
               </div>
             </div>
           </div>
@@ -155,22 +151,19 @@
             <h6 class="text-tertiary-900"><b>Transaction</b></h6>
             <div class="d-flex gap-20 justify-content-center flex-wrap">
               <div class="employees text-center">
-                <p class="counter-count mb-1 bg-primary-900">{{this.details.controls['openCount'].value }}</p>
-                <p class="employee-p text-tertiary-900 mb-1  ">Open</p>
+                <app-stats-circle value="{{this.details.controls['openCount'].value}}" title="Open"></app-stats-circle>
                 <button (click)="RedirectInv('OpenTransaction')" mat-flat-button color="button-default" [disabled]="this.details.controls['openCount'].value==0" [class.disabledBtn] = "this.details.controls['openCount'].value==0" class="default-btn   btn-md  " >
                   View
                 </button>
               </div>
               <div class="customer text-center">
-                <p class="counter-count mb-1 bg-primary-900">{{this.details.controls['histCount'].value }}</p>
-                <p class="customer-p text-tertiary-900 mb-1  ">History</p>
+                <app-stats-circle value="{{this.details.controls['histCount'].value}}" title="History"></app-stats-circle>
                 <button (click)="RedirectInv('TransactionHistory')" mat-flat-button color="button-default" [disabled]="this.details.controls['histCount'].value==0" [class.disabledBtn] = "this.details.controls['histCount'].value==0" class="default-btn   btn-md  " >
                   View
                 </button>
               </div>
               <div class="customer text-center">
-                <p class="counter-count mb-1 bg-primary-900">{{this.details.controls['procCount'].value }}</p>
-                <p class="customer-p text-tertiary-900 mb-1  ">Reprocess</p>
+                <app-stats-circle value="{{this.details.controls['procCount'].value}}" title="Reprocess"></app-stats-circle>
                 <button (click)="RedirectInv('ReprocessTransaction')" mat-flat-button color="button-default" [class.disabledBtn] = "this.details.controls['procCount'].value==0"  [disabled]="this.details.controls['procCount'].value==0" class="default-btn  btn-md  " >
                   View
                 </button>

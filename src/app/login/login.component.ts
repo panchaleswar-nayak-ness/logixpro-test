@@ -1,16 +1,17 @@
 import { Component, ElementRef,  ViewChild } from '@angular/core';
 import { ILogin} from './Ilogin'; 
 import { FormControl} from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { SpinnerService } from '../init/spinner.service';
 import { AuthService } from '../init/auth.service'; 
 import packJSON from '../../../package.json'
 import { SharedService } from '../services/shared.service';
-import { ApiFuntions } from '../services/ApiFuntions';
-import { StylesService } from '../styles.service';
+import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IUserAPIService } from '../services/user-api/user-api-interface';
+import { UserApiService } from '../services/user-api/user-api.service';
+import { GlobalService } from '../common/services/global.service';
 
 @Component({
   selector: 'login',
@@ -29,21 +30,22 @@ export class LoginComponent {
   applicationData: any = [];
   isAppAccess=false;
   info:any=  {};
-  themeToggle : boolean = false;
+
+  public iGlobalConfigApi: IGlobalConfigApi;
+  public iUserApi : IUserAPIService;
 
   constructor(
-    public api: ApiFuntions,
+    public userApi : UserApiService,
     private router: Router,
-    private route: ActivatedRoute,
-    private toastr: ToastrService,
-    private dialog: MatDialog,
+    private global:GlobalService,
     public loader: SpinnerService,
+    public globalConfigApi: GlobalConfigApiService,
     private auth: AuthService, 
-    private sharedService: SharedService,
-    private stylesService: StylesService
+    private sharedService: SharedService
   ) { 
+    this.iGlobalConfigApi = globalConfigApi;
+    this.iUserApi = userApi;
     this.url = this.router.url;
-    // this.checkCurState(); 
   }
 
   removeReadOnly(){  
@@ -52,9 +54,10 @@ export class LoginComponent {
 
   addLoginForm:any = {};
 
-enterUserName(){
-  this.passwordInput.nativeElement.focus();
-}
+  enterUserName(){
+    this.passwordInput.nativeElement.focus();
+  }
+
   public noWhitespaceValidator(control: FormControl) {
     const isSpace = (control.value || '').match(/\s/g);
     return isSpace ? { 'whitespace': true } : null;
@@ -66,7 +69,7 @@ enterUserName(){
     this.addLoginForm.password = this.addLoginForm.password?.replace(/\s/g, "")||null;
     this.login = this.addLoginForm;
     this.login.wsid = "TESTWSID";
-    this.api
+    this.iUserApi
       .login(this.login)
       .subscribe((response: any) => {
         const exe = response.isExecuted
@@ -98,31 +101,26 @@ enterUserName(){
         }
         else {
           const errorMessage = response.responseMessage;
-          this.toastr.error(errorMessage?.toString(), 'Error!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error',errorMessage?.toString(), 'Error!');
+          console.log("login",response.responseMessage);
         }
 
 
       });
   }
-
-
  
   CompanyInfo(){
-    let obj:any = { 
-    }
-    this.api
-    .CompanyInfo()
-    .subscribe((response: any) => {
-      this.info = response.data;
+    this.iUserApi.CompanyInfo().subscribe((response: any) => {
+      if (response.isExecuted && response.data) {
+        this.info = response.data;
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.error('Error: CompanyInfo request failed');
+      }
     });
   }
 
-
   ngOnInit() {
-
     this.version = packJSON.version;
     let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : "";
     localStorage.clear();
@@ -133,35 +131,37 @@ enterUserName(){
       this.router.navigate(['/dashboard']);
     }
     else{
-      this.api.getSecurityEnvironment().subscribe((res:any) => {
-        this.env = res.data.securityEnvironment;
+      this.iUserApi.getSecurityEnvironment().subscribe((res:any) => {
+        if(res?.isExecuted)
+        {
+          this.env = res.data.securityEnvironment;
         if(this.env){
           const { workStation } = res.data;
           localStorage.setItem('env', JSON.stringify(this.env));
           localStorage.setItem('workStation', JSON.stringify(workStation));
         }
         else{
-          this.toastr.error('Kindly contact to administrator', 'Workstation is not set!', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 2000
-          });
+          this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
+          
         }
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("getSecurityEnvironment",res.responseMessage);
+        }
+        
       });
     }
    this.CompanyInfo();
-    
-
   }
 
-
-    
   // moved getAppLicense,convertToObj ,sortAppsData,appNameDictionary & setMenuData from Menu Component to handle access to the Apps on login
   getAppLicense(wsid) {
     let userData=JSON.parse(localStorage.getItem('user')?? '{}');
     let payload = {
       workstationid: userData.wsid,
     };
-    this.api.AppNameByWorkstation(payload)
+    this.iGlobalConfigApi.AppNameByWorkstation(payload)
       .subscribe(
         (res: any) => {
           if (res?.data) {
@@ -170,10 +170,16 @@ enterUserName(){
             this.sharedService.setMenuData(this.applicationData)
             this.getDefaultApp(wsid);
           }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("AppNameByWorkstation",res.responseMessage);
+
+          }
         },
         (error) => {}
       );
   }
+
   convertToObj(data) {
     data.wsAllAppPermission.forEach((item,i) => {
       for (const key of Object.keys(data.appLicenses)) {
@@ -193,6 +199,7 @@ enterUserName(){
     this.sortAppsData();
     
   }
+
   sortAppsData() {
     this.applicationData.sort(function (a, b) {
       let nameA = a.info?.name?.toLowerCase(),
@@ -204,6 +211,7 @@ enterUserName(){
       return 0; //default return value (no sorting)
     });
   }
+
   appNameDictionary(appName) {
     let routes = [
       {
@@ -280,22 +288,30 @@ enterUserName(){
     let paylaod={
       workstationid: wsid
     }
-     this.api.workstationdefaultapp(paylaod).subscribe(
+     this.iGlobalConfigApi.workstationdefaultapp(paylaod).subscribe(
   (res: any) => {
-  
-    if (res?.data) {
-     this.checkAppAcess(res.data)
-
-     }
-    else{
-      localStorage.setItem('isAppVerified',JSON.stringify({appName:'',isVerified:true}))
-      if(localStorage.getItem('LastRoute')){
-        localStorage.removeItem('LastRoute');
-      }
-      else{
-        this.router.navigate(['/dashboard']);
-      }	
+    if(res)
+    {
+      if (res.data) {
+        this.checkAppAcess(res.data)
+   
+        }
+       else{
+         localStorage.setItem('isAppVerified',JSON.stringify({appName:'',isVerified:true}))
+         if(localStorage.getItem('LastRoute')){
+           localStorage.removeItem('LastRoute');
+         }
+         else{
+           this.router.navigate(['/dashboard']);
+         }	
+       }
     }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("workstationdefaultapp",res.responseMessage);
+    }
+  
+   
   },
   (error) => {}
 );
@@ -324,6 +340,7 @@ enterUserName(){
       this.router.navigate(['/dashboard']);
     }
   }
+
   redirection(appName){
 
     switch (appName) {
@@ -359,7 +376,7 @@ enterUserName(){
   }
 
   changePass() {
-    let dialogRef = this.dialog.open(ChangePasswordComponent, {
+    let dialogRef:any = this.global.OpenDialog(ChangePasswordComponent, {
       height: 'auto',
       width: '500px',
       autoFocus: '__non_existing_element__',
@@ -370,6 +387,7 @@ enterUserName(){
 
     });
   }
+
   private addCustomPermission(userRights: any) {
     let customPerm = [
       'Home',
@@ -386,29 +404,4 @@ enterUserName(){
     localStorage.setItem('customPerm', JSON.stringify(customPerm));
     return [...userRights, ...customPerm];
   }
-
-  toggleStyles(checked: boolean): void {
-    let stylesheet;
-    if (checked) {
-      stylesheet = './assets/design-system-HC/styles-hhc.css';
-      localStorage.setItem('Theme', 'HighContrast');
-    } else {
-      stylesheet = './assets/design-system/styles-normal.css';
-      localStorage.setItem('Theme', 'Normal');
-    }
-    this.stylesService.setStylesheet(stylesheet);
-  }
-
-  checkCurState(){
-    const theme = localStorage.getItem('Theme');
-    if (theme == 'HighContrast') {
-      this.themeToggle = true;
-      this.toggleStyles(true);
-    }
-    else {
-      this.themeToggle = false;
-      this.toggleStyles(false);
-    }
-  }
-
 }

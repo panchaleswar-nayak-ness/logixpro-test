@@ -1,10 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 
 @Component({
   selector: 'app-om-changes-confirmation',
@@ -17,13 +19,14 @@ export class OmChangesConfirmationComponent implements OnInit {
 
   orderForm   : FormGroup;
 
+  public iOrderManagerApi :  IOrderManagerAPIService;
   constructor(private dialog          : MatDialog,
-              public dialogRef        : MatDialogRef<OmChangesConfirmationComponent>,
-              private toastr           : ToastrService,
-              public formBuilder      : FormBuilder,
+              public dialogRef        : MatDialogRef<OmChangesConfirmationComponent>, 
+              public formBuilder      : FormBuilder, 
               private authService     : AuthService,
               public globalService    : GlobalService,
               private Api : ApiFuntions,
+              public orderManagerApi  : OrderManagerApiService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.orderForm = this.formBuilder.group({
@@ -43,7 +46,8 @@ export class OmChangesConfirmationComponent implements OnInit {
       emergency      : new FormControl({ value: false, disabled : data.emergencyDis }, Validators.compose([])),
       label          : new FormControl({ value: false, disabled : data.labelDis }, Validators.compose([])),
     });
-
+    this.iOrderManagerApi = orderManagerApi;
+   
   }
 
   ngOnInit(): void {
@@ -54,8 +58,6 @@ export class OmChangesConfirmationComponent implements OnInit {
     try {
 
       let payload = {
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
         viewType: this.data.viewType,
         orderType: this.data.orderType,
         id: this.data.order.id.toString(),
@@ -91,14 +93,15 @@ export class OmChangesConfirmationComponent implements OnInit {
         checkLabel: this.orderForm.controls['label'].value,        
       };
   
-      this.Api.OrderManagerRecordUpdate(payload).subscribe((res: any) => {
+      this.iOrderManagerApi.OrderManagerRecordUpdate(payload).subscribe((res: any) => {
         if (res.isExecuted) {
           this.dialogRef.close({
             isExecuted: true,
             clickDisplayRecord: true,
           });
         }
-        else this.toastr.error("An Error occured while retrieving data.", 'Error!', { positionClass: 'toast-bottom-right', timeOut: 2000 });
+        else this.globalService.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
+        console.log("OrderManagerRecordUpdate",res.responseMessage);
       });
 
     } catch (error) {    

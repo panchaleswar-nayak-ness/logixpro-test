@@ -1,12 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog'; 
-import { ToastrService } from 'ngx-toastr';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'; 
+
 import { AuthService } from 'src/app/init/auth.service';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { Sort, MatSort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-mark-empty-reels',
@@ -18,6 +20,7 @@ export class MarkEmptyReelsComponent implements OnInit {
   lastScanned;
   lastScannedList: any = [];
   notifyMessage = '';
+  public iinductionManagerApi:IInductionManagerApiService;
   itemInvalid = false;
   itemEmpty = false;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
@@ -28,13 +31,15 @@ export class MarkEmptyReelsComponent implements OnInit {
   userData;
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
     public Api:ApiFuntions,
-    public toastService: ToastrService,
+    
+    private inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     private _liveAnnouncer: LiveAnnouncer,
   ) {
     this.scannedSerialList = new MatTableDataSource();
+    this.iinductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -52,11 +57,9 @@ export class MarkEmptyReelsComponent implements OnInit {
     } else {
       // validate serial
       let payload = {
-        serialNumber: this.scanSerial,
-        username: this.userData.userName,
-        wsid: this.userData.wsid,
+        serialNumber: this.scanSerial, 
       };
-      this.Api
+      this.iinductionManagerApi
         .ValidateSerialNumber(payload) //validate tote
         .subscribe(
           (response: any) => {
@@ -90,6 +93,10 @@ export class MarkEmptyReelsComponent implements OnInit {
                   break;
               }
             }
+            else {
+              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              console.log("ValidateSerialNumber");
+            }
           },
           (error) => {
             console.error('An error occurred:', error);
@@ -101,7 +108,7 @@ export class MarkEmptyReelsComponent implements OnInit {
     }
   }
   removeRow(index: number, el) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
@@ -136,7 +143,7 @@ export class MarkEmptyReelsComponent implements OnInit {
     );
   }
   markReelAsEmpty() {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
@@ -159,31 +166,23 @@ export class MarkEmptyReelsComponent implements OnInit {
           //  Renmoves all serial numbers from list
 
           let payload = {
-            serialNumbers: serialNumbersArr,
-            username: this.userData.userName,
-            wsid: this.userData.wsid,
+            serialNumbers: serialNumbersArr, 
           };
-          this.Api
+          this.iinductionManagerApi
             .DeleteSerialNumber(payload) //validate tote
             .subscribe((response: any) => {
               if (response.isExecuted) {
-                this.toastService.success(
+                this.global.ShowToastr('success',
                   response.responseMessage,
-                  'Success!',
-                  {
-                    positionClass: 'toast-bottom-right',
-                    timeOut: 2000,
-                  }
+                  'Success!' 
                 );
                 this.itemInvalid = false;
                 this.itemEmpty = false;
                 this.scannedSerialList = new MatTableDataSource();
                 this.lastScannedList.length = 0;
               } else {
-                this.toastService.error(response.responseMessage, 'Error!', {
-                  positionClass: 'toast-bottom-right',
-                  timeOut: 2000,
-                });
+                this.global.ShowToastr('error',response.responseMessage, 'Error!');
+                console.log("DeleteSerialNumber");
               }
             });
         }
@@ -208,7 +207,7 @@ export class MarkEmptyReelsComponent implements OnInit {
     }
   }
   ngAfterViewInit() {
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
     this.scannedSerialList.sort = this.sort;
   }
 }

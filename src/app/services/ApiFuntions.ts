@@ -471,8 +471,9 @@ export class ApiFuntions {
   public DeleteSerialNumber(body:any): Observable<any> { 
     return this.ApiBase.Post("/Induction/serialnumber",body);
   }
-  public ToteSetupInsert(body:any): Observable<any> { 
-    return this.ApiBase.Post("/Admin/totesetup",body);
+  public async ToteSetupInsert(body:any) { 
+     return await this.ApiBase.PostAsync("/Admin/totesetup",body);
+    
   }
   public ToteSetupDelete(body:any): Observable<any> { 
     return this.ApiBase.Delete("/Admin/totesetup",body);
@@ -1004,16 +1005,8 @@ public getLocZTypeInvMap(body?: any ): Observable<any> {
 public getSearchedItem(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Common/searchitem`, Body);
 } 
-public updateInventoryMap(body: any ,mapID?): Observable<any> {
-  body.inventoryMapID= mapID?.invMapID ?? 0;
-  body.masterInventoryMapID=mapID?.masterInvMapID ?? 0;
-   const asArray = Object.entries(body); 
-   const filtered = asArray.filter(([key, value]) =>  value != ''); 
-   let payload = Object.fromEntries(filtered); 
-   let userData = this.authService.userData(); 
-    payload['username'] = userData.userName;
-    payload["wsid"] =userData.wsid;
-  return this.ApiBase.Put(`/Admin/inventorymap`, payload);
+public updateInventoryMap(body: any ,mapID?): Observable<any> {  
+  return this.ApiBase.Put(`/Admin/inventorymap`, body);
 } 
   
 public createInventoryMap(body?:any): Observable<any> {
@@ -1106,8 +1099,8 @@ public SetAllReprocessColumn(Body: any ): Observable<any> {
 public ReprocessTransactionData(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Admin/reprocesstransactiondata`, Body);
 } 
-public PostReprocessTransaction(Body: any ): Observable<any> {
-  return this.ApiBase.Get(`/Admin/postreprocesstransaction`, Body);
+public PostReprocessTransaction(): Observable<any> {
+  return this.ApiBase.Get(`/Admin/postreprocesstransaction`);
 } 
 public OrderNumberNext(Body: any ): Observable<any> {
   return this.ApiBase.Get(`/Admin/ordernumbernext`, Body);
@@ -1248,14 +1241,8 @@ public ReprocessTransactionDelete(payload:any): Observable<any>{
   return this.ApiBase.Post(`/Admin/reprocesstransaction`, payload);
 }
 
-public updateAppName(userName:any, wsid:any, appName:any = ''): Observable<any> {
-  
-    let payLoad = {
-      "userName":userName,
-      "wsid": wsid,
-      "appName":appName   
-    }; 
-    return this.ApiBase.Post(`/Common/UserAppNameAdd`, payLoad,);           
+public updateAppName(payLoad:any): Observable<any> {
+    return this.ApiBase.Post(`/Common/UserAppNameAdd`, payLoad);           
 }
 
 public saveWareHouse(body: any): Observable<any> { 
@@ -1276,7 +1263,7 @@ public quarantineInventoryMap(reqPaylaod:any): Observable<any>{
 public unQuarantineInventoryMap(reqPaylaod:any): Observable<any>{ 
   return this.ApiBase.Put(`/Admin/inventorymapotUnquarantine`, reqPaylaod);
 } 
-public getVelocityCode(body?: any): Observable<any> { 
+public getVelocityCode(): Observable<any> { 
   return this.ApiBase.Get(`/Common/velocitycode`);
 }
 public saveVelocityCode(body: any): Observable<any> { 

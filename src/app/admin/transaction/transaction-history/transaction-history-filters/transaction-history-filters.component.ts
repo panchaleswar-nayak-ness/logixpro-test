@@ -5,6 +5,9 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/init/auth.service'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 let today = new Date();
 let year = today.getFullYear();
@@ -21,6 +24,7 @@ export class TransactionHistoryFiltersComponent implements OnInit {
   @Output() endDate = new EventEmitter<any>();
   @Output() orderNo = new EventEmitter<any>();
   @Output() resetDates = new EventEmitter<any>();
+  public iAdminApiService: IAdminApiService;
 
   @Output() clearData = new EventEmitter<Event>();
 
@@ -34,8 +38,12 @@ export class TransactionHistoryFiltersComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private adminApiService: AdminApiService,
+    private global : GlobalService,
     private Api:ApiFuntions
-  ) {}
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -76,27 +84,32 @@ export class TransactionHistoryFiltersComponent implements OnInit {
     let searchPayload = {
       query: this.orderNumber,
       tableName: 3,
-      column: 'Order Number',
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      column: 'Order Number'
     };
-    this.Api
+    this.iAdminApiService
       .NextSuggestedTransactions(searchPayload)
       .subscribe(
         {next: (res: any) => {
-          this.searchAutocompleteList = res.data;
+          if(res.isExecuted && res.data)
+          {
+            this.searchAutocompleteList = res.data;
+          }
+          else {
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            console.log("NextSuggestedTransactions",res.responseMessage);
+          }
         },
         error: (error) => {}}
       );
   }
   onDateChange(event: any): void {
     this.sdate = new Date(event).toISOString();
-    this.startDate.emit(event);
+    this.startDate.emit(this.sdate);
   }
 
   onEndDateChange(event: any): void {
     this.edate = new Date(event).toISOString();
-    this.endDate.emit(event);
+    this.endDate.emit(this.edate);
   }
   ngOnDestroy() {
     this.searchByOrderNumber.unsubscribe();

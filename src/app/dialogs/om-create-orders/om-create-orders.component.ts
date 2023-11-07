@@ -1,18 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { OmAddRecordComponent } from '../om-add-record/om-add-record.component';
-import {  } from '../om-add-transaction/om-add-transaction.component';
-import {  } from '../om-edit-transaction/om-edit-transaction.component';
 import { OmUserFieldDataComponent } from '../om-user-field-data/om-user-field-data.component';
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/init/auth.service';
 import { Router } from '@angular/router'; 
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import labels from '../../labels/labels.json';
 import { MatAutocomplete } from '@angular/material/autocomplete';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { InputFilterComponent } from '../input-filter/input-filter.component';
 import { ColumnSequenceDialogComponent } from 'src/app/admin/dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -22,6 +17,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 @Component({
   selector: 'app-om-create-orders',
@@ -32,7 +32,7 @@ export class OmCreateOrdersComponent implements OnInit {
   omPreferences:any;
   @ViewChild('ord_focus') ord_focus: ElementRef;
   displayedColumns: any[] = [];
-
+  public iAdminApiService: IAdminApiService;
   sequenceKeyMapping:any = [
     {sequence: 'Transaction Type',key:'transactionType'},
     {sequence: 'Order Number',key:'orderNumber'},
@@ -89,26 +89,28 @@ export class OmCreateOrdersComponent implements OnInit {
   otcreatecount: any = 0;
   orderNumberSearchList: any;
   @ViewChild("searchauto", { static: false }) autocompleteOpened: MatAutocomplete;
-  @ViewChild('trigger') trigger: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
-  FilterString: string = "";
   selectedTransaction: any = {};
   selectedFilterColumn: string = "";
   selectedFilterString: string;
   @ViewChild(MatSort) sort1: MatSort;
   @ViewChild('paginator1') paginator1: MatPaginator;
+  public iOrderManagerApi :  IOrderManagerAPIService;
 
   constructor(
-    private dialog: MatDialog,
-    private toastr: ToastrService,
+    private global:GlobalService,
+    private contextMenuService : TableContextMenuService,
     private authService: AuthService,
     private router: Router,
     public dialogRef: MatDialogRef<OmCreateOrdersComponent>,
     private Api: ApiFuntions,
-    private global:GlobalService,
+    private adminApiService: AdminApiService,
+    public orderManagerApi  : OrderManagerApiService, 
     private filterService: ContextMenuFiltersService,
     private _liveAnnouncer: LiveAnnouncer
-  ) { }
+  ) { 
+    this.iOrderManagerApi = orderManagerApi;
+   this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -117,7 +119,7 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   openOmAddRecord() {
-    let dialogRef = this.dialog.open(OmAddRecordComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
       autoFocus: '__non_existing_element__',
@@ -136,7 +138,7 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   openOmEditTransaction(element: any) {
-    let dialogRef = this.dialog.open(OmAddRecordComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
       autoFocus: '__non_existing_element__',
@@ -173,7 +175,7 @@ export class OmCreateOrdersComponent implements OnInit {
     if(!element.orderNumber && this.tableData.filteredData.length == 1){
       element = this.tableData.filteredData[0];
     }
-    let dialogRef = this.dialog.open(OmAddRecordComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
       autoFocus: '__non_existing_element__',
@@ -194,7 +196,7 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   openOmUserFieldData() {
-    let dialogRef = this.dialog.open(OmUserFieldDataComponent, {
+    let dialogRef:any = this.global.OpenDialog(OmUserFieldDataComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
@@ -208,12 +210,19 @@ export class OmCreateOrdersComponent implements OnInit {
 
   createOrdersDT(loader: boolean = false) {
     if (this.createOrdersDTPayload.orderNumber.trim() != '') {
-      this.Api.CreateOrdersDT(this.createOrdersDTPayload).subscribe((res: any) => {
-        if (res.isExecuted && res.data) {
-          this.tableData = new MatTableDataSource(res.data);  
-          this.tableData.paginator = this.paginator1;
-        } else { 
-          this.tableData = new MatTableDataSource(); 
+      this.iOrderManagerApi.CreateOrdersDT(this.createOrdersDTPayload).subscribe((res: any) => {
+        if(res.isExecuted)
+        {
+          if (res.data) {
+            this.tableData = new MatTableDataSource(res.data);  
+            this.tableData.paginator = this.paginator1;
+          } else { 
+            this.tableData = new MatTableDataSource();
+          }
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("CreateOrdersDT",res.responseMessage);
         }
       });
     }
@@ -231,14 +240,11 @@ export class OmCreateOrdersComponent implements OnInit {
 
   releaseOrders() {
     if (this.AllowInProc == "False" && this.otcreatecount > 0) {
-      this.toastr.error('"You may not release an Order that is already in progress', 'Release Transactions', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','"You may not release an Order that is already in progress', 'Release Transactions');
       return;
     }
     
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -253,14 +259,15 @@ export class OmCreateOrdersComponent implements OnInit {
         let payload = {
           "val": this.createOrdersDTPayload.orderNumber,
           "page": "Create Orders",
-          "wsid": this.userData.wsid
         };
-        this.Api.ReleaseOrders(payload).subscribe((res: any) => {
+        this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.toastr.success("Order Released Successfully!", 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000
-            });
+            this.global.ShowToastr('success',"Order Released Successfully!", 'Success!');
+          }
+          else {
+            this.global.ShowToastr('success',"Order Released Successfully!", 'Success!');
+            console.log("ReleaseOrders",res.responseMessage);
+
           } 
           this.createOrdersDTPayload.orderNumber = '';
           this.createOrdersDT();
@@ -286,15 +293,12 @@ export class OmCreateOrdersComponent implements OnInit {
 
   deleteViewed() {
     if (this.tableData.length == 0) {
-      this.toastr.error('There are currently no records within the table', 'Warning', {
-        positionClass: 'toast-bottom-right',
-        timeOut: 2000
-      });
+      this.global.ShowToastr('error','There are currently no records within the table', 'Warning');
     }
     else {
       let ids = [];
       ids = this.tableData.filteredData.map(x => x.id.toString());
-      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
@@ -310,24 +314,18 @@ export class OmCreateOrdersComponent implements OnInit {
           let payload = {
             "ids": ids,
             "user": this.userData.userName,
-            "wsid": this.userData.wsid
           };
-          this.Api.OTPendDelete(payload).subscribe((res: any) => {
+          this.iOrderManagerApi.OTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
-              this.toastr.success(labels.alert.delete, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
               this.createOrdersDTPayload.filter = "1 = 1";
               this.selectedFilterColumn = '';
               this.selectedFilterString = '';
               this.createOrdersDT();
               dialogRef.close();
             } else {
-              this.toastr.error("An error has occurred while deleting the viewed records", 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000
-              });
+              this.global.ShowToastr('error',"An error has occurred while deleting the viewed records", 'Error!');
+              console.log("OTPendDelete",res.responseMessage);
             }
           });
         }
@@ -336,7 +334,7 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   selectColumnSequence() {
-    let dialogRef = this.dialog.open(ColumnSequenceDialogComponent, {
+    let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
       height: 'auto',
       width: '960px',
       disableClose: true,
@@ -356,12 +354,15 @@ export class OmCreateOrdersComponent implements OnInit {
     if (this.createOrdersDTPayload.orderNumber.trim() != '') {
       let payload = {
         "orderNumber": this.createOrdersDTPayload.orderNumber,
-        "userName": this.userData.userName,
-        "wsid": this.userData.wsid
       }
-      this.Api.CreateOrderTypeahead(payload).subscribe((res: any) => {
+      this.iOrderManagerApi.CreateOrderTypeahead(payload).subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.orderNumberSearchList = res.data.sort();
+        }
+        else {
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("CreateOrderTypeahead",res.responseMessage);
+
         }
       });
       if(searchData){
@@ -380,53 +381,20 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.trigger.menuData = { item: { SelectedItem: SelectedItem, FilterColumnName: FilterColumnName, FilterConditon: FilterConditon, FilterItemType: FilterItemType } };
-    this.trigger.menu?.focusFirstItem('mouse');
-    this.trigger.openMenu();
+    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
   }
 
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
-    if (SelectedItem != undefined) {
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-    }
-    this.createOrdersDTPayload.filter = this.FilterString != "" ? this.FilterString : "1 = 1";
+  optionSelected(filter : string) {
+    this.createOrdersDTPayload.filter = filter;
     this.paginator1.pageIndex = 0;
-    this.createOrdersDT(true);
-  }
-
-  getType(val): string {
-    return this.filterService.getType(val);
-  }
-
-  InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
-    const dialogRef = this.dialog.open(InputFilterComponent, {
-      height: 'auto',
-      width: '480px',
-      data: {
-        FilterColumnName: FilterColumnName,
-        Condition: Condition,
-        TypeOfElement: TypeOfElement
-      },
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-    })
-    dialogRef.afterClosed().subscribe((result) => { 
-      this.onContextMenuCommand(result.SelectedItem, result.SelectedColumn, result.Condition, result.Type)
-    }
-    );
+    this.createOrdersDT(true);   
   }
 
   getColumnSequence(refresh: boolean = false) {
     let payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
       tableName: 'Order Manager Create'
     };
-    this.Api.GetColumnSequence(payload).subscribe((res: any) => {
+    this.iAdminApiService.GetColumnSequence(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.filterColumnNames = JSON.parse(JSON.stringify(res.data));
         this.sortedFilterColumnNames = [...this.filterColumnNames.sort()];
@@ -437,6 +405,11 @@ export class OmCreateOrdersComponent implements OnInit {
         }});
         this.displayedColumns.push('actions');
         if(refresh) this.createOrdersDT();
+      }
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("GetColumnSequence",res.responseMessage);
+
       }
     });
   }

@@ -10,14 +10,12 @@ export class ContextMenuFiltersService {
     SelectedColumnFormat: string = "";
 
     onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) : string {
-      
       if(Condition == "clear")
       {
         this.FilterString = "";
       }
       else
       {
-        
         this.SelectedColumnFormat = this.getSelectedColumnFormat(Type,FilterColumnName)
         this.ConditionSymbol = this.getConditionSymbol(Condition);
         this.SelectedItemFormat =  this.getSelectedItemFormat(Type,SelectedItem,Condition)

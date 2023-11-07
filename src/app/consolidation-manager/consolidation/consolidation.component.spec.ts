@@ -16,7 +16,7 @@ import { MatSelectChange } from '@angular/material/select';
 fdescribe('ConsolidationComponent', () => {
   let component: ConsolidationComponent;
   let fixture: ComponentFixture<ConsolidationComponent>;
-  let dialog: MatDialog;
+  let global:GlobalService;
   let matSelectChangeMock: MatSelectChange;
 
   beforeEach(async () => {

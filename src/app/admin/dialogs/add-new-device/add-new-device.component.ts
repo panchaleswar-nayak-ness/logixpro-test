@@ -5,13 +5,16 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component'; 
+import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
-import { ToastrService } from 'ngx-toastr';
+
 import { SharedService } from 'src/app/services/shared.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { catchError, of } from 'rxjs';
+import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-add-new-device',
@@ -22,8 +25,9 @@ export class AddNewDeviceComponent implements OnInit {
   @ViewChild('first_address') first_address: ElementRef;
   headerLable = 'Devices-Add Edit, Delete';
   newDeviceForm: FormGroup;
-  newDeviceID=0;
+  newDeviceID = 0;
   isEdit: boolean = false;
+  public iAdminApiService: IAdminApiService;
   item: any;
   interFaceType = 'Other';
   zoneList = [];
@@ -55,15 +59,18 @@ export class AddNewDeviceComponent implements OnInit {
   public userData: any;
   constructor(
     public dialogRef: MatDialogRef<AddNewDeviceComponent>,
-    private dialog: MatDialog,
+    private global: GlobalService,
     private fb: FormBuilder,
+    private dialog: MatDialog,
     private Api: ApiFuntions,
     public authService: AuthService,
-    private toastr: ToastrService,
+    private adminApiService: AdminApiService,
+
     private sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.isEdit = data?.isEdit;
+    this.iAdminApiService = adminApiService;
     this.item = data?.item;
   }
 
@@ -113,7 +120,7 @@ export class AddNewDeviceComponent implements OnInit {
         item.pairKey,
       ];
       let shown = this.showDPTypeFields();
-      if (this.data?.item && this.data.item.deviceID != 0 || this.newDeviceID !=0 ) {
+      if (this.data?.item && this.data.item.deviceID != 0 || this.newDeviceID != 0) {
         switch (shown) {
           case 'WMI JMIF':
             preferences = preferences.concat(this.JMIF);
@@ -141,28 +148,25 @@ export class AddNewDeviceComponent implements OnInit {
             break;
         }
       }
-      let newdeviceID = this.newDeviceID>0?this.newDeviceID:0
+      let newdeviceID = this.newDeviceID > 0 ? this.newDeviceID : 0
       let paylaod = {
         DeviceID:
-        this.data?.item && this.data.item.deviceID
-          ? this.data.item.deviceID
-          : newdeviceID,
-          shown: shown,
-          Preference: preferences,
+          this.data?.item && this.data.item.deviceID
+            ? this.data.item.deviceID
+            : newdeviceID,
+        shown: shown,
+        Preference: preferences,
       };
-      
-      this.Api
+
+      this.iAdminApiService
         .DevicePreference(paylaod)
         .subscribe((res: any) => {
           if (res.isExecuted) {
-            this.toastr.success(res.responseMessage, 'Success!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+            this.global.ShowToastr('success', res.responseMessage, 'Success!');
 
             if (res.data != 0) {
-              this.newDeviceID=res.data;
-              
+              this.newDeviceID = res.data;
+
               this.getDeviceInformation(res.data);
             }
             if (type === 'close') {
@@ -170,10 +174,9 @@ export class AddNewDeviceComponent implements OnInit {
             }
             this.sharedService.updateDevicePref({ response: true });
           } else {
-            this.toastr.error(res.responseMessage, 'Error!', {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            });
+
+            this.global.ShowToastr('error', res.responseMessage, 'Error!');
+            console.log("DevicePreference", res.responseMessage);
           }
         });
     }
@@ -264,36 +267,38 @@ export class AddNewDeviceComponent implements OnInit {
       this.dialog.closeAll();
       return;
     }
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+    const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
         action: 'delete',
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
+        let deviceID;
+        if (this.data?.item) {
+          deviceID = this.data.item.deviceID;
+        } else if (this.newDeviceID > 0) {
+          deviceID = this.newDeviceID;
+        } else {
+          deviceID = 0;
+        }
         let payload = {
-          deviceID: this.data?.item  ? this.data.item.deviceID : this.newDeviceID > 0? this.newDeviceID:0,
-          username: this.userData.userName,
-          wsid: this.userData.wsid,
+          deviceID: deviceID
         };
-        this.Api
+        this.iAdminApiService
           .DevicePreferencesDelete(payload)
           .subscribe((res: any) => {
             if (res.isExecuted) {
-              this.toastr.success(res.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+              this.global.ShowToastr('success', res.responseMessage, 'Success!');
               this.dialogRef.close('Yes');
             } else {
-              this.toastr.error(res.responseMessage, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+
+              this.global.ShowToastr('error', res.responseMessage, 'Error!');
+              console.log("DevicePreferencesDelete", res.responseMessage);
             }
           });
       }
@@ -303,49 +308,46 @@ export class AddNewDeviceComponent implements OnInit {
   getDeviceInformation(deviceID?) {
     let con = this.data?.item ? this.data.item.deviceID : 0;
     let payload = {
-      deviceID: deviceID ? deviceID : con,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
+      deviceID: deviceID || con
     };
 
-    this.Api
+    this.iAdminApiService
       .DeviceInformation(payload).pipe(
         catchError((error) => {
           // Handle the error here
           console.error('An error occurred while making the API call:', error);
-          
+
           // Return a fallback value or trigger further error handling if needed
           return of({ isExecuted: false });
         })
       )
       .subscribe((res: any) => {
-        if(res.isExecuted){
+        if (res.isExecuted) {
 
-       
-        this.zoneList = res?.data && res.data ? res.data.zoneList : [];
-        this.controllerTypeList =
-          res?.data && res.data ? res.data.controllerTypeList : [];
-        this.deviceModelList = res?.data && res.data ? res.data.deviceModelList : [];
-        this.newDeviceForm.controls['hostIP'].setValue(res.data.hostIPAddress);
-        this.newDeviceForm.controls['hostPort'].setValue(res.data.hostPort);
-        this.newDeviceForm.controls['workstationName'].setValue(
-          res.data.workstationName
-        );
-        this.newDeviceForm.controls['COMPort'].setValue(res.data.hostPCComPort);
-        this.newDeviceForm.controls['Baud'].setValue(res.data.baudRate);
-        this.newDeviceForm.controls['StopBit'].setValue(res.data.stopBit);
-        this.newDeviceForm.controls['Parity'].setValue(res.data.parity);
-      }else{
-        this.toastr.error('An Error occured while retrieving data.', 'Error!', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 2000,
-        });
-      }
+
+          this.zoneList = res?.data && res.data ? res.data.zoneList : [];
+          this.controllerTypeList =
+            res?.data && res.data ? res.data.controllerTypeList : [];
+          this.deviceModelList = res?.data && res.data ? res.data.deviceModelList : [];
+          this.newDeviceForm.controls['hostIP'].setValue(res.data.hostIPAddress);
+          this.newDeviceForm.controls['hostPort'].setValue(res.data.hostPort);
+          this.newDeviceForm.controls['workstationName'].setValue(
+            res.data.workstationName
+          );
+          this.newDeviceForm.controls['COMPort'].setValue(res.data.hostPCComPort);
+          this.newDeviceForm.controls['Baud'].setValue(res.data.baudRate);
+          this.newDeviceForm.controls['StopBit'].setValue(res.data.stopBit);
+          this.newDeviceForm.controls['Parity'].setValue(res.data.parity);
+        } else {
+
+          this.global.ShowToastr('error', 'An Error occured while retrieving data.', 'Error!');
+          console.log("DeviceInformation", res.responseMessage);
+        }
       });
   }
 
   openAlertDialog(message) {
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '786px',
       data: {
@@ -354,9 +356,9 @@ export class AddNewDeviceComponent implements OnInit {
         disableCancel: true,
       },
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
   }
 
   getCompName() {
@@ -365,7 +367,7 @@ export class AddNewDeviceComponent implements OnInit {
 
   showDPTypeFields() {
     let ctype = this.newDeviceForm.controls['controllerType'].value;
-    
+
 
     let shown = '';
     if (
@@ -391,15 +393,13 @@ export class AddNewDeviceComponent implements OnInit {
   }
 
   updateAllDevices(type) {
-    let payload = {   
+    let payload = {
       zone: this.newDeviceForm.controls['zone'].value,
       hostport: this.newDeviceForm.controls['COMPort'].value,
       baud: this.newDeviceForm.controls['Baud'].value,
       parity: this.newDeviceForm.controls['Parity'].value,
       word: this.newDeviceForm.controls['WordLength'].value,
       stopbit: this.newDeviceForm.controls['StopBit'].value,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
 
     let message = '';
@@ -414,7 +414,7 @@ export class AddNewDeviceComponent implements OnInit {
         ' and Zone: ' +
         this.newDeviceForm.controls['zone'].value;
     }
-    const dialogRef = this.dialog.open(AlertConfirmationComponent, {
+    const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '786px',
       data: {
@@ -423,25 +423,21 @@ export class AddNewDeviceComponent implements OnInit {
         disableCancel: true,
       },
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.Api
+        this.iAdminApiService
           .ZoneDevicePreferencesUpdateAll(payload)
           .subscribe((res: any) => {
             if (res.isExecuted) {
-              
-              this.toastr.success(res.responseMessage, 'Success!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+
+              this.global.ShowToastr('success', res.responseMessage, 'Success!');
               this.sharedService.updateDevicePref({ response: true });
             } else {
-              this.toastr.error(res.responseMessage, 'Error!', {
-                positionClass: 'toast-bottom-right',
-                timeOut: 2000,
-              });
+
+              this.global.ShowToastr('error', res.responseMessage, 'Error!');
+              console.log("ZoneDevicePreferencesUpdateAll", res.responseMessage);
             }
           });
       }

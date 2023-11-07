@@ -1,10 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { FormControl, FormGroup} from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 
 @Component({
   selector: 'app-om-preferences',
@@ -15,12 +17,15 @@ export class OmPreferencesComponent implements OnInit {
   userData: any;
   filtersForm: FormGroup;
   @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
+  public iOrderManagerApi :  IOrderManagerAPIService;
   constructor(
     private Api: ApiFuntions,
+    public orderManagerApi  : OrderManagerApiService,
     private authService: AuthService,
-    private toastr: ToastrService,
+    
     private global:GlobalService
   ) {
+    this.iOrderManagerApi = orderManagerApi;
     this.userData = this.authService.userData();
 
     this.filtersForm = new FormGroup({
@@ -49,7 +54,6 @@ export class OmPreferencesComponent implements OnInit {
       );
   }
   restrictTo10Digits(event: KeyboardEvent): void {
-    debugger
     const inputElement = this.myInput.nativeElement;
     let value = inputElement.value.replace(/\D/g, ''); // Remove non-digit characters 
     if (parseInt(value) > 2147483647) {
@@ -73,7 +77,7 @@ export class OmPreferencesComponent implements OnInit {
   }
   getPreferences() {
     
-    this.Api
+    this.iOrderManagerApi
       .OrderManagerPreferenceIndex()
       .subscribe((response: any) => {
         if (response.isExecuted) {
@@ -103,7 +107,10 @@ export class OmPreferencesComponent implements OnInit {
             response.data.customAdminText ? response.data.customAdminText : ''
           );      
         }
-        
+        else{
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          console.log("OrderManagerPreferenceIndex",response.responseMessage);
+        }
       });
   }
   setPreferences() {
@@ -127,23 +134,18 @@ export class OmPreferencesComponent implements OnInit {
       customAdmin: this.filtersForm.controls['custReportsMenuApp']?.value,
       customAdminText: this.filtersForm.controls['custReportsMenuText'].value,
       printDirectly: this.filtersForm.controls['printDirect'].value,
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
     };
-    this.Api
+    this.iOrderManagerApi
       .OrderManagerPreferenceUpdate(payload)
       .subscribe((response: any) => {
         if (response.isExecuted) {
           this.global.updateOmPref();
         } else {
-          this.toastr.error(
+          this.global.ShowToastr('error',
             'Error',
-            'An Error Occured while trying to update',
-            {
-              positionClass: 'toast-bottom-right',
-              timeOut: 2000,
-            }
+            'An Error Occured while trying to update'
           );
+          console.log("OrderManagerPreferenceUpdate",response.responseMessage);
         }
       });
   }

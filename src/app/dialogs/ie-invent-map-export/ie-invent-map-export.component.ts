@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-ie-invent-map-export',
@@ -23,7 +23,7 @@ export class IeInventMapExportComponent  {
 
 
   constructor(
-    private dialog: MatDialog,
+    private global:GlobalService,
   ) { }
 
 
