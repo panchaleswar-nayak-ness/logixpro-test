@@ -23,8 +23,8 @@ table{
 
   }
   .Current-status{
-    background-color: #F2F2FF;
-    color:#090948;
+    background-color: var(--clr-primary-10);
+    color:var(--clr-tertiary-900);
     border-radius: 100px;
     position: absolute;
     padding: 10px;

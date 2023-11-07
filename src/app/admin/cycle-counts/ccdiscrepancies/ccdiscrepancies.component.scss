@@ -30,5 +30,5 @@
   }
 
   :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline{
-    background-color: #F2F2FF !important;
+    background-color: var(--clr-primary-10) !important;
   }

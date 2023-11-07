@@ -10,6 +10,7 @@ import { AuthService } from '../init/auth.service';
 import packJSON from '../../../package.json'
 import { SharedService } from '../services/shared.service';
 import { ApiFuntions } from '../services/ApiFuntions';
+import { StylesService } from '../styles.service';
 
 @Component({
   selector: 'login',
@@ -28,6 +29,8 @@ export class LoginComponent {
   applicationData: any = [];
   isAppAccess=false;
   info:any=  {};
+  themeToggle : boolean = false;
+
   constructor(
     public api: ApiFuntions,
     private router: Router,
@@ -37,8 +40,10 @@ export class LoginComponent {
     public loader: SpinnerService,
     private auth: AuthService, 
     private sharedService: SharedService,
+    private stylesService: StylesService
   ) { 
     this.url = this.router.url;
+    // this.checkCurState(); 
   }
 
   removeReadOnly(){  
@@ -380,6 +385,30 @@ enterUserName(){
     ];
     localStorage.setItem('customPerm', JSON.stringify(customPerm));
     return [...userRights, ...customPerm];
+  }
+
+  toggleStyles(checked: boolean): void {
+    let stylesheet;
+    if (checked) {
+      stylesheet = './assets/design-system-HC/styles-hhc.css';
+      localStorage.setItem('Theme', 'HighContrast');
+    } else {
+      stylesheet = './assets/design-system/styles-normal.css';
+      localStorage.setItem('Theme', 'Normal');
+    }
+    this.stylesService.setStylesheet(stylesheet);
+  }
+
+  checkCurState(){
+    const theme = localStorage.getItem('Theme');
+    if (theme == 'HighContrast') {
+      this.themeToggle = true;
+      this.toggleStyles(true);
+    }
+    else {
+      this.themeToggle = false;
+      this.toggleStyles(false);
+    }
   }
 
 }

@@ -1,5 +1,5 @@
 ::ng-deep .toast-info::before {
-    background: rgba(26, 26, 211, 0.1)!important
+    background: rgba(var(--clr-primary-rgb-500), 0.1)!important
   }
 
 
@@ -12,7 +12,7 @@
         border-radius: 8px;
         th, td{
             vertical-align: middle;
-            border-bottom: 1px solid #fff;
+            border-bottom: 1px solid var(--clr-pure-white);
             padding-right: 10px;
             &:first-child{
                 padding-left: 20px !important;
@@ -32,13 +32,13 @@
       }
       
 .selected {
-    background-color: #5555EC !important;
+    background-color: var(--clr-primary-300) !important;
     border-radius: 0px !important;
 
-    color: #fff;
+    color: var(--clr-pure-white);
     // &:before{
     //   content: '';
-    //   background-color: #5555EC;
+    //   background-color: var(--clr-primary-300);
     //   height: 100%;
     //   width: 100%;
     //   position: absolute;
@@ -92,14 +92,14 @@ table.custom-action-clickable-table tr{
   right: 14px;
   bottom: 0;
   cursor: pointer;
-  color:#fff;
+  color:var(--clr-pure-white);
   border-radius: 8px !important;
   margin-left:15px;
 }
 
 table.custom-action-clickable-table tr:hover{
         transition: 0.3s ease all;
-        color: #fff !important;
+        color: var(--clr-pure-white) !important;
         background: var(--clr-primary-300);
         position: relative;
         border-radius: 8px !important;
@@ -108,11 +108,11 @@ table.custom-action-clickable-table tr:hover{
 }
 
 table.custom-action-clickable-table tr:hover td{
-  color: #fff !important;
+  color: var(--clr-pure-white) !important;
   border: none;
 }
 .scroll-color{
-  --scrollbar-track-color: #fff !important;
+  --scrollbar-track-color: var(--clr-pure-white) !important;
   // --scrollbar-thumb-color: rgb(200, 200, 200) !important;
   --scrollbar-padding: 0px;
   // --scrollbar-size: 10px;

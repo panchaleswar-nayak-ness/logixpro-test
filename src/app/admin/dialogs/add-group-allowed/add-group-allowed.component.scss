@@ -13,7 +13,7 @@
   
     &::-webkit-scrollbar-thumb {
       border-radius: 4px;
-      background-color: #D7D7F9;
+      background-color: var(--clr-tertiary-50);
     }
   
     &::-webkit-scrollbar-track {

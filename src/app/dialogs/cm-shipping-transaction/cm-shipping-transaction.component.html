@@ -134,7 +134,7 @@
                             </td>
                         </tr>
 
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style=" background-color: #F9F9FF;"></tr>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style=" background-color: var(--clr-table-header);"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
                     </table>
                 </ng-scrollbar>

@@ -4,7 +4,7 @@ table{
         white-space: nowrap;
         th, td{
             vertical-align: middle;
-            border-bottom: 1px solid #fff;
+            border-bottom: 1px solid var(--clr-pure-white);
             &:first-child{
                 padding-left: 20px !important;
             }

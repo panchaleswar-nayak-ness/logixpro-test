@@ -1,6 +1,6 @@
 <div *ngIf="!isConfigUser">
 
-  <mat-nav-list *ngIf="isParentMenu">
+  <mat-nav-list *ngIf="isParentMenu && dynamicMenu.length > 0">
     <ng-container *ngFor="let menu of dynamicMenu;let i = index">
     
       <mat-list-item routerLinkActive="active" routerLink="{{menu.route}}" (click)="isMenuHide ? redirect() : loadMenus(menu)"
@@ -13,7 +13,7 @@
     </ng-container>
   </mat-nav-list>
 
-  <mat-nav-list *ngIf="isChildMenu">
+  <mat-nav-list *ngIf="isChildMenu && childMenus.length > 0">
     <ng-container *ngFor="let childMenu of childMenus;let i = index">
       
       <mat-list-item 
@@ -38,7 +38,7 @@
 
 </div>
 <div *ngIf="isConfigUser">
-<mat-nav-list *ngIf="isChildMenu">
+<mat-nav-list *ngIf="isChildMenu && childMenus.length > 0">
   <ng-container *ngFor="let childMenu of childMenus;">
     <mat-list-item routerLinkActive="active"  [queryParams]="{tabIndex: 0}" [disabled]=" childMenu.route==='#'"a routerLink="{{childMenu.route}}" (click)="isMenuHide ? redirect() : loadMenus(childMenu)">
       <span mat-list-icon class="material-symbols-outlined">

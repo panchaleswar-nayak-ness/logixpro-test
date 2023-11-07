@@ -35,7 +35,7 @@
     
                 <button style="margin-right: 12px; padding: 6px 15px;
                 border-radius: 14px;
-                border: 1px solid #D7D7F9 !important;" mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 br-14" >
+                border: 1px solid var(--clr-tertiary-50) !important;" mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 br-14" >
                   <mat-icon>print</mat-icon>
                   Print
                 </button>
@@ -46,7 +46,7 @@
 
                 <button style="margin-right: 12px; padding: 6px 15px;
                 border-radius: 14px;
-                border: 1px solid #D7D7F9 !important;"  mat-stroked-button color="primary" class="br-14 bg-white primary-btn" >
+                border: 1px solid var(--clr-tertiary-50) !important;"  mat-stroked-button color="primary" class="br-14 bg-white primary-btn" >
                     <span class="material-symbols-outlined">
                       filter_list
                     </span>
@@ -104,7 +104,7 @@
                 </td>
               </ng-container>
           
-              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style=" background-color: #F9F9FF;"></tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style=" background-color: var(--clr-table-header);"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
         </ng-scrollbar>

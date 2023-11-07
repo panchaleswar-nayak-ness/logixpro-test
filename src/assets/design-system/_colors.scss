@@ -32,33 +32,33 @@ $primary-rgb-900: 0, 0, 128 !default;
 
 // start secondary-color-vairables
 
-$secondary-10: #FBF2FF !default;
-$secondary-50: #F6E1FE !default;
-$secondary-100: #F0D0FC !default;
-$secondary-200: #E4AEF8 !default;
-$secondary-300: #D791F0 !default;
-$secondary-400: #C877E6 !default;
-$secondary-500: #B863D7 !default;
-$secondary-600: #A551C4 !default;
-$secondary-700: #9042AC !default;
-$secondary-800: #773490 !default;
-$secondary-900: #5F2873 !default;
+$secondary-10: #F9F2FF !default;
+$secondary-50: #F0E1FE !default;
+$secondary-100: #E7D0FC !default;
+$secondary-200: #D5AEF8 !default;
+$secondary-300: #C491F0 !default;
+$secondary-400: #B277E6 !default;
+$secondary-500: #A163D7 !default;
+$secondary-600: #8E51C4 !default;
+$secondary-700: #7B42AC !default;
+$secondary-800: #653490 !default;
+$secondary-900: #502873 !default;
 
 // end secondary-color-vairables
 
 // start Secondary-color-RGB-vairables
 
-$secondary-rgb-10: 251, 242, 255 !default;
-$secondary-rgb-50: 246, 225, 254 !default;
-$secondary-rgb-100: 240, 208, 252 !default;
-$secondary-rgb-200: 228, 174, 248 !default;
-$secondary-rgb-300: 215, 145, 240 !default;
-$secondary-rgb-400: 200, 119, 230 !default;
-$secondary-rgb-500: 184, 99, 215 !default;
-$secondary-rgb-600: 165, 81, 196 !default;
-$secondary-rgb-700: 144, 66, 172 !default;
-$secondary-rgb-800: 119, 52, 144 !default;
-$secondary-rgb-900: 95, 40, 115 !default;
+$secondary-rgb-10: 249, 242, 255 !default;
+$secondary-rgb-50: 240, 225, 254 !default;
+$secondary-rgb-100: 231, 208, 252 !default;
+$secondary-rgb-200: 213, 174, 248 !default;
+$secondary-rgb-300: 196, 145, 240 !default;
+$secondary-rgb-400: 178, 119, 230 !default;
+$secondary-rgb-500: 161, 99, 215 !default;
+$secondary-rgb-600: 142, 81, 196 !default;
+$secondary-rgb-700: 123, 66, 172 !default;
+$secondary-rgb-800: 101, 52, 144 !default;
+$secondary-rgb-900: 80, 40, 115 !default;
 
 // end Secondary-color-RGB-vairables
 
@@ -117,6 +117,22 @@ $chrome-rgb-700: 98, 98, 115 !default;
 $chrome-rgb-900: 23, 23, 26 !default;
 
 // end chrome-color-RGB-vairables
+
+$success:#1D865C !default;
+$warning:#FFC458 !default;
+$danger:#DE2654 !default;
+
+$success-rgb:29, 134, 92 !default;
+$warning-rgb:255, 196, 88 !default;
+$danger-rgb:222, 38, 84 !default;
+
+$pure-white:#ffffff !default;
+$pure-black:#000000 !default;
+
+$pure-white-rgb:255, 255, 255 !default;
+$pure-black-rgb:0, 0, 0 !default;
+
+$table-header-color:#f9f9ff;
 
 
 $colors:(
@@ -216,8 +232,34 @@ $colors:(
     "700": $chrome-rgb-700,
     "900": $chrome-rgb-900
   ),
+  danger:(
+    "shade":$danger
+  ),
+  success:(
+    "shade":$success
+  ),
+  warning:(
+    "shade":$warning
+  ),
+  danger-rgb:(
+    "shade":$danger-rgb
+  ),
+  success-rgb:(
+    "shade":$success-rgb
+  ),
+  warning-rgb:(
+    "shade":$warning-rgb
+  ),
+  pure:(
+    "white":$pure-white,
+    "black":$pure-black
+  ),
+  pure-rgb:(
+    "white":$pure-white-rgb,
+    "black":$pure-black-rgb
+  ),
+  table:(
+    "header":$table-header-color
+  )
 );
 
-$success:#1D865C;
-$warning:#FFC458;
-$danger:#DE2654;

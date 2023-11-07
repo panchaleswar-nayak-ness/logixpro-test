@@ -1,7 +1,7 @@
 .success-button {
     width: 72px;
     height: 20px;
-    color: #1d865c;
+    color: var(--clr-success-shade);
     background: rgba(29, 134, 92, 0.15);
     border-radius: 14px;
     padding: 4px 12px;
@@ -9,7 +9,7 @@
   }
   .delete-button {
     color:white!important;
-    background-color: #DE2654!important;
+    background-color: var(--clr-danger-shade)!important;
   }
   
   .disabled-button {
@@ -41,13 +41,13 @@
    
   }
   .Total-lines{
-    background-color: #F2F2FF;
-    color:#090948
+    background-color: var(--clr-primary-10);
+    color:var(--clr-tertiary-900)
    
   }
   .Current-status{
-    background-color: #F2F2FF;
-    color:#090948;
+    background-color: var(--clr-primary-10);
+    color:var(--clr-tertiary-900);
     font-size: 12px!important;
    
   }

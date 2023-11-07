@@ -24,7 +24,7 @@
                             <mat-form-field class="custom-form-field w-100" style="padding-right: 15px;" appearance="outline"
                                 (click)="openAddItemNumDialog(element)">
                                 <span matSuffix>
-                                    <mat-icon style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
+                                    <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
                                 </span>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text" readonly
                                     #itemNum name="{{element.itemNumber}}" [(ngModel)]="element.itemNumber" required>
@@ -37,7 +37,7 @@
                             <mat-form-field class="custom-form-field w-100" style="padding-right: 15px;" appearance="outline"
                                 (click)="openDescriptionDialog(element)">
                                 <span matSuffix>
-                                    <mat-icon style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
+                                    <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
                                 </span>
                                 <input (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
                                     name="{{element.description}}" [(ngModel)]="element.description"
@@ -88,7 +88,7 @@
                         </td>
                     </tr>
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
-                        style=" background-color: #F9F9FF;"></tr>
+                        style=" background-color: var(--clr-table-header);"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="border: 0px;"></tr>
                 </table>
             </ng-scrollbar>

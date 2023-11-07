@@ -364,7 +364,7 @@
 
 
                                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
-                                            style=" background-color: #F9F9FF;"></tr>
+                                            style=" background-color: var(--clr-table-header);"></tr>
                                         <tr mat-row *matRowDef="let element; columns: displayedColumns; let i = index"  (click)="getMoveFromDetails(element,i,'MoveFrom')"
                                             [ngClass]="{ 'highlight-row': isQuantityGreater(element.quantityAllocatedPick) }">
                                         </tr>
@@ -525,7 +525,7 @@
 
 
                                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
-                                            style=" background-color: #F9F9FF;"></tr>
+                                            style=" background-color: var(--clr-table-header);"></tr>
                                         <tr mat-row *matRowDef="let element; columns: displayedColumns; let i = index" (click)="getMoveFromDetails(element,i,'MoveTo')"
                                             [ngClass]="{ 'highlight-row': isQuantityGreater(element.quantityAllocatedPick) }">
                                         </tr>

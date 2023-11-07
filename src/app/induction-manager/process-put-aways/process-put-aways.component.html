@@ -150,7 +150,7 @@
                             <div class="pe-2 d-flex gap-12 align-items-center">
                               <mat-form-field class="custom-form-field w-100" appearance="outline" (click)="element.locked ? false : openTotesDialogue(element.position,i)">
                                 <span matSuffix>
-                                    <mat-icon style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
+                                    <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
                                   </span>
                                 <input matInput readonly="readonly" type="text" #specialFeature maxlength="255" [value]="element.toteid" (keydown)="onToteChange($event,element.position)" (keyup)="onToteChange($event,element.position)" (change)="onToteChange($event,element.position)" (keypress)="onToteChange($event,element.position)"  (keypress)="onToteChange($event,element.position)">
                               </mat-form-field>   

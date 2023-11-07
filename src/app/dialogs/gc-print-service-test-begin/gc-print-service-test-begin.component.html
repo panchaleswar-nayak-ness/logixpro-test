@@ -52,7 +52,7 @@
                                 </td>
                             </tr>
     
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style=" background-color: #F9F9FF;"></tr>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style=" background-color: var(--clr-table-header);"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>
                     </ng-scrollbar>
@@ -117,7 +117,7 @@
                                 </td>
                             </tr>
     
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true" style=" background-color: #F9F9FF;"></tr>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true" style=" background-color: var(--clr-table-header);"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
                         </table>
                     </ng-scrollbar>

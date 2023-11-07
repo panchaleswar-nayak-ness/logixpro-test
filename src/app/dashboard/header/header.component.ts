@@ -11,6 +11,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatDialog } from '@angular/material/dialog';
 import { DPrinterSetupComponent } from 'src/app/dialogs/d-printer-setup/d-printer-setup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { StylesService } from 'src/app/styles.service';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +28,10 @@ export class HeaderComponent implements OnInit {
   configUser:any;
 isConfigUser
 statusTab;
+
+themeToggle : boolean = false;
+themeRadio : string = 'Normal';
+
   constructor(
     private dialog: MatDialog,
     private router: Router,
@@ -38,11 +43,14 @@ statusTab;
     private titleService: Title,
     private breakpointObserver: BreakpointObserver,
     private global:GlobalService,
+    private stylesService: StylesService
     ) {
+      this.checkCurState(); 
       let width=0;
       this.breakpointSubscription = this.breakpointObserver.observe([Breakpoints.Small,Breakpoints.Large])
       .subscribe((state: BreakpointState) => {
            width = window.innerWidth;    
+           
       })
       
    this.isConfigUser=  this.authService.isConfigUser()
@@ -279,6 +287,36 @@ statusTab;
       disableClose:true,
     });
 
+  }
+
+  toggleStyles(checked: boolean): void {
+    let stylesheet;
+    if (checked) {
+      stylesheet = './assets/design-system-HC/styles-hhc.css';
+      localStorage.setItem('Theme', 'HighContrast');
+    } else {
+      stylesheet = './assets/design-system/styles-normal.css';
+      localStorage.setItem('Theme', 'Normal');
+    }
+    this.stylesService.setStylesheet(stylesheet);
+  }
+
+  checkCurState(){
+    const theme = localStorage.getItem('Theme') || 'Normal';
+    this.themeRadio = theme;
+    this.selectTheme(theme);
+  }
+
+  selectTheme(theme: string): void {
+    if (theme == 'High Contrast 1a') this.setTheme(theme, './assets/design-system/styles-hc-v1.css');
+    else if (theme == 'High Contrast 1b') this.setTheme(theme, './assets/design-system/styles-hc-v2.css');
+    else if (theme == 'High Contrast 2') this.setTheme(theme, './assets/design-system/styles-hhc.css');
+    else this.setTheme(theme, './assets/design-system/styles-normal.css');
+  }
+
+  setTheme(theme : string, stylesheet : string) {
+    localStorage.setItem('Theme', theme);
+    this.stylesService.setStylesheet(stylesheet);
   }
  
 }

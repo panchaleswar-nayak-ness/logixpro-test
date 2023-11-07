@@ -8,18 +8,21 @@ import { BroadcastService } from './init/broadcast.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: [],
+  styleUrls: ['../assets/design-system/d-main.scss'],
 })
 export class AppComponent implements OnInit {
   userData;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private browserCloseService: BrowserCloseService,
     private api:ApiFuntions,
-    private broadCast:BroadcastService
-  ) {}
+    private broadCast:BroadcastService,
+  ) 
+  { 
+  }
 
 
   @HostListener('window:beforeunload', ['$event'])
