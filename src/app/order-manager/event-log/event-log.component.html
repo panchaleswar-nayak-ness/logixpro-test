@@ -9,11 +9,11 @@
 [eventType]="eventType"
 [userName]="userName"
 (dateEmit)="startDate = $event.startDate; endDate = $event.endDate; event($event)"
-(ignoreDateRangeEmit)="onIgnoreDateRange($event)"
+(ignoreDateRangeEmit)="onIgnoreDateRange($event);"
 (autocompleteSearchColumnEmit)="autocompleteSearchColumn($event.colName, $event.msg)"
 (eventLogTypeAheadEmit)="eventLogTypeAhead($event.colName, $event.msg,$event.loader)"
 (searchEmit)="search($event.event, $event.msg)"
-(clearEmit)="clear()"
+(clearEmit)="clear($event); "
 (clearFiltersEmit)="clearFilters()">
 </app-event-log-panel-component>
 

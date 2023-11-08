@@ -31,7 +31,7 @@
                     <input type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto1"
                         [(ngModel)]="message" maxlength="255" (keyup)="autocompleteSearchColumn('Message',message)"
                         (focus)="eventLogTypeAhead('Message',message,true)">
-                        <button matSuffix *ngIf="message" class="clear-btn"  (click)=" message = '';clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <button matSuffix *ngIf="message" class="clear-btn"  (click)=" message = '';clear('Message')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="search($event,'message')"
                         #autocompleteMesaage>
                         <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
@@ -53,7 +53,7 @@
                         [(ngModel)]="eventLocation" maxlength="255"
                         (keyup)="autocompleteSearchColumn('Event Location',eventLocation)"
                         (focus)="eventLogTypeAhead('Event Location',eventLocation,true)">
-                        <button matSuffix *ngIf="eventLocation" class="clear-btn"  (click)=" eventLocation = '';clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <button matSuffix *ngIf="eventLocation" class="clear-btn"  (click)=" eventLocation = '';clear('Event Location')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="search($event,'eventLocation')"
                         #autocompleteEventLocation>
                         <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
@@ -78,7 +78,7 @@
                         [(ngModel)]="eventCode" maxlength="255"
                         (keyup)="autocompleteSearchColumn('Event Code',eventCode)"
                         (focus)="eventLogTypeAhead('Event Code',eventCode,true)">
-                        <button matSuffix *ngIf="eventCode" class="clear-btn"  (click)=" eventCode = '';clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <button matSuffix *ngIf="eventCode" class="clear-btn"  (click)=" eventCode = '';clear('Event Code')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto3="matAutocomplete" (optionSelected)="search($event,'eventCode')"
                         #autocompleteEventCode>
                         <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
@@ -99,7 +99,7 @@
                         [(ngModel)]="eventType" maxlength="255"
                         (keyup)="autocompleteSearchColumn('Event Type',eventType)"
                         (focus)="eventLogTypeAhead('Event Type',eventType,true)">
-                        <button matSuffix *ngIf="eventType" class="clear-btn"  (click)=" eventType = '';clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <button matSuffix *ngIf="eventType" class="clear-btn"  (click)=" eventType = '';clear('Event Type')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto4="matAutocomplete" (optionSelected)="search($event,'eventType')"
                         #autocompleteEventType>
                         <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">
@@ -120,7 +120,7 @@
                         [(ngModel)]="userName" maxlength="255" (keyup)="autocompleteSearchColumn('Name Stamp',userName)"
                         (focus)="eventLogTypeAhead('Name Stamp',userName,true)">
 
-                        <button matSuffix *ngIf="userName" class="clear-btn"  (click)=" userName = '';clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <button matSuffix *ngIf="userName" class="clear-btn"  (click)=" userName = '';clear('Username')"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                     <mat-autocomplete #auto5="matAutocomplete" (optionSelected)="search($event,'userName')"
                         #autocompleteUsername>
                         <mat-option *ngFor="let option of searchAutocompleteList" [value]="option">

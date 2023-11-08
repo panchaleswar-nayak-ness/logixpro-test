@@ -24,8 +24,9 @@ export class EventLogPanelComponentComponent {
   @Output() searchEmit : EventEmitter<{event : any, msg : string}> = new EventEmitter();
   @Output() clearEmit = new EventEmitter();
   @Output() clearFiltersEmit = new EventEmitter();
-
+  ignoreDate: any;
   onIgnoreDateRange(event) {
+    this.ignoreDate=event;
     this.ignoreDateRangeEmit.emit(event);
   }
   event(){
@@ -40,16 +41,18 @@ export class EventLogPanelComponentComponent {
   search(event, msg){
     this.searchEmit.emit({event, msg});
   }
-  clear(){
-    this.clearEmit.emit();
+  clear(field:any = ""){
+    this.clearEmit.emit(field);
   }
   clearFilters(){
-    this.message = "";
     this.eventLocation = "";
     this.userName = "";
     this.message = "";
     this.eventCode='';
     this.eventType='';
+    console.log(this.ignoreDate);
+    this.ignoreDateRangeEmit.emit(this.ignoreDate);
+    this.dateEmit.emit({ startDate : this.startDate, endDate : this.endDate });
     this.clearFiltersEmit.emit();
   }
 
