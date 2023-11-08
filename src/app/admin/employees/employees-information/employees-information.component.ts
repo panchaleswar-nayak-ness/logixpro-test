@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-employees-information',
@@ -11,15 +13,20 @@ export class EmployeesInformationComponent{
   @Input() env : string = '';
   @Input() empData;
 
+  @ViewChild('matRef') matRef: MatSelect;
+
   @Output() backEmpActionEmit = new EventEmitter();
   @Output() actionDialogEmit = new EventEmitter<{ value, empData, event }>();
   @Output() openDialogEmit = new EventEmitter();
   @Output() printEmpListEmit = new EventEmitter();
   @Output() updateIsLookUpEmit = new EventEmitter();
 
-
+  clearMatSelectList(){
+    this.matRef.options.forEach((data: MatOption) => data.deselect());
+  }
 
   backEmpAction() {
+    this.clearMatSelectList();
     this.backEmpActionEmit.emit();
   }
 

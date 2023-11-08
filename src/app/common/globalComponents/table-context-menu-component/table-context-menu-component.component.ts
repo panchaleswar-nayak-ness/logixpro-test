@@ -43,6 +43,7 @@ export class TableContextMenuComponentComponent {
   filterString : string = "1 = 1";
   
   @Input() componentName : string = "";
+  
   @Output() optionSelected = new EventEmitter<string>();
 
   @ViewChild('trigger') trigger: MatMenuTrigger;
@@ -59,8 +60,6 @@ export class TableContextMenuComponentComponent {
     });
 
   }
-
-  
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault();
