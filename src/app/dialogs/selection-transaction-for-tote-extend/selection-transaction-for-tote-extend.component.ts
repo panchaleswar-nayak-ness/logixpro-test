@@ -41,9 +41,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   fieldNames:any;
   imPreferences:any;
 
+
   public iinductionManagerApi : IInductionManagerApiService;
   public iAdminApiService : IAdminApiService;
   public iCommonAPI : ICommonApi;
+  overReciept: any;
+ 
   
   constructor(
     public commonAPI : CommonApiService,
@@ -112,13 +115,13 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       toteID                            : new FormControl('', Validators.compose([])),
       totePos                           : new FormControl('', Validators.compose([])),
       toteCells                         : new FormControl({value : '', disabled : true}, Validators.compose([])),
-      toteQty                           : new FormControl(0, Validators.compose([])),
+      toteQty                           : new FormControl({ value: 0, disabled: false}, Validators.compose([])),
 
       invMapID                          : new FormControl(0, Validators.compose([])),
       dedicated                         : new FormControl(false, Validators.compose([])),
     });
   }
-
+  
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.OSFieldFilterNames();
@@ -126,6 +129,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.getVelocityCodeList();
     this.getDetails();    
     this.imPreferences=this.global.getImPreferences();
+    this.pickToteSetupIndex();
   }
 
   ngAfterViewInit(): void {
@@ -694,7 +698,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       "locMaxQty": values.maximumQuantity ? parseInt(values.maximumQuantity) : 0,
       "reel": false,
       "dedicate": values.dedicated,
-      "orderNumber": values.orderNumber
+      "orderNumber": values.orderNumber,
     }
     
     this.iinductionManagerApi.TaskComplete(payload2).subscribe(
@@ -732,6 +736,26 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       },
       (error) => { }
     );
+  }
+
+  pickToteSetupIndex() {
+    return new Promise(() => {
+    let paylaod = { 
+    }
+    this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
+      if (res.isExecuted && res.data){
+        this.imPreferences = res?.data?.imPreference;
+        this.overReciept= res.data.imPreference.dontAllowOverReceipt;
+        const toteQtyControl = this.toteForm?.get('toteQty');
+        if (this.overReciept && toteQtyControl) {
+          toteQtyControl.disable();
+        }
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PickToteSetupIndex",res.responseMessage);
+      }
+    });
+  });
   }
 
   complete(values : any) {
