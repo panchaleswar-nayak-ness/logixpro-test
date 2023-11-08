@@ -40,7 +40,7 @@ export class HeaderInterceptor implements HttpInterceptor {
       return next.handle(request).pipe(
         catchError((error, caught) => {
           this.handleAuthError(error);
-          return of(error);
+          throw error;
         }) as any
       );
     }

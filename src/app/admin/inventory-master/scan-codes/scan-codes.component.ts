@@ -196,7 +196,13 @@ export class ScanCodesComponent{
           this.global.ShowToastr('error','Already Exists', 'Error!');
           console.log("UpdateScanCodes",res.responseMessage);
         }
-      });
+      },
+      (error) => {
+        const { isExecuted, ResponseMessage } = error.error;
+        if (!isExecuted && ResponseMessage.indexOf('PRIMARY KEY') != -1) this.global.ShowToastr('error','Already Exists', 'Error!');
+        else console.log("UpdateScanCodes",error.responseMessage);
+      }
+      );
     }
   }
   
