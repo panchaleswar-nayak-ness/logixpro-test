@@ -747,9 +747,8 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         this.imPreferences = res?.data?.imPreference;
         this.overReciept= res.data.imPreference.dontAllowOverReceipt;
         const toteQtyControl = this.toteForm?.get('toteQty');
-        if (this.overReciept && toteQtyControl) {
-          toteQtyControl.disable();
-        }
+        this.overReciept ? toteQtyControl?.disable() :toteQtyControl?.enable();
+        
       } else {
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         console.log("PickToteSetupIndex",res.responseMessage);
