@@ -26,7 +26,7 @@ export class EventLogComponent implements OnInit {
   displayedColumns: string[] = ['dateStamp', 'message', 'eventCode', 'nameStamp', 'eventType', 'eventLocation', 'notes', 'transactionID','actions'];
   dataSourceList: any;
   public iAdminApiService: IAdminApiService;
-  ignoreDateRange: boolean = false;
+  ignoreDateRange: boolean ;
   startDate:any = "";
   endDate:any = "";
   message: string = "";
@@ -82,7 +82,7 @@ export class EventLogComponent implements OnInit {
 
   event(e:any){
     this.resetPagination();
-    this.eventLogTable();
+    this.eventLogTable(this.objIgnoreDateRange);
   }
 
   ngOnInit(): void {
@@ -90,21 +90,22 @@ export class EventLogComponent implements OnInit {
     this.userData = this.authService.userData();
     this.startDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
-    this.eventLogTable();
+    this.eventLogTable(this.objIgnoreDateRange);
   }
-
+  
+  
   ngOnDestroy() {
     this.eventLogTableSubscribe.unsubscribe();
   }
-
+  objIgnoreDateRange : any;
   onIgnoreDateRange(ob: MatCheckboxChange) {
+    this.objIgnoreDateRange=ob;
     this.resetPagination();
     this.eventLogTable(ob);
   }
 
   clearFilters() {
-    this.startDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
-    this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+    console.log(this.objIgnoreDateRange);
     this.message = "";
     this.eventLocation = "";
     this.userName = "";
@@ -112,7 +113,7 @@ export class EventLogComponent implements OnInit {
     this.eventCode='';
     this.eventType='';
     this.resetPagination();
-    this.eventLogTable();
+    this.eventLogTable(this.objIgnoreDateRange);
   }
 
   openOmEventLogEntryDetail(element: any) {
@@ -125,12 +126,12 @@ export class EventLogComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.eventLogTable();
+        this.eventLogTable(this.objIgnoreDateRange);
       }
     });
   }
 
-  eventLogTable(obj?:any) {
+  eventLogTable(obj:any) {
     let payload: any = {
       "draw": 0,
       "start": this.start,
@@ -163,7 +164,7 @@ export class EventLogComponent implements OnInit {
   search(event: any, key: any) {
     this[key] = event.option.value;
     this.resetPagination();
-    this.eventLogTable();
+    this.eventLogTable(this.objIgnoreDateRange);
   }
 
   resetPagination() {
@@ -176,7 +177,7 @@ export class EventLogComponent implements OnInit {
     this.eventLogTypeAheadSubscribe.unsubscribe();
     this.eventLogTypeAhead(columnName, message, true);
     this.eventLogTableSubscribe.unsubscribe();
-    this.eventLogTable();
+    this.eventLogTable(this.objIgnoreDateRange);
   }
 
   eventLogTypeAhead(columnName: any, message: any, loader: boolean = false) {
@@ -204,7 +205,7 @@ export class EventLogComponent implements OnInit {
 
   refresh() {
     this.resetPagination();
-    this.eventLogTable();
+    this.eventLogTable(this.objIgnoreDateRange);
   }
 
   deleteRange() { 
@@ -235,7 +236,7 @@ export class EventLogComponent implements OnInit {
         this.iAdminApiService.EventRangeDelete(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
             this.resetPagination();
-            this.eventLogTable();
+            this.eventLogTable(this.objIgnoreDateRange);
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
@@ -259,7 +260,7 @@ export class EventLogComponent implements OnInit {
   paginatorChange(event: PageEvent) {
     this.start = event.pageSize * event.pageIndex;
     this.length = event.pageSize;
-    this.eventLogTable();
+    this.eventLogTable(this.objIgnoreDateRange);
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
@@ -269,14 +270,14 @@ export class EventLogComponent implements OnInit {
   optionSelected(filter : string) {
     this.filterString = filter;
     this.resetPagination();
-    this.eventLogTable();  
+    this.eventLogTable(this.objIgnoreDateRange);  
   }
 
   announceSortChange(e: any) {
     this.sortColumn = this.sortMapping.filter((item: any) => item.value == e.active)[0].sortValue;
     this.sortOrder = e.direction;
     this.resetPagination();
-    this.eventLogTable();
+    this.eventLogTable(this.objIgnoreDateRange);
   }
 
   exportRange(){
@@ -309,8 +310,23 @@ export class EventLogComponent implements OnInit {
     return element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.isContentEditable;
   }
 
-  clear(){
-    this.eventLogTable();
+  clear(field:any = ""){
+    if(field=='Event Location'){
+      this.eventLocation='';
+    }
+    else if(field=='Message'){
+      this.message='';
+    }
+    else if(field=='Username'){
+      this.userName='';
+    }
+    else if(field=='Event Code'){
+      this.eventCode='';
+    }
+    else if(field=='Event Type'){
+      this.eventType='';
+    }
+    this.eventLogTable(this.objIgnoreDateRange);
   }
 }
 
