@@ -83,11 +83,6 @@ const TRNSC_DATA = [
   { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
   { colHeader: 'emergency', colDef: 'Emergency' },
 ];
-let today = new Date();
-let year = today.getFullYear();
-let month = today.getMonth();
-let day = today.getDate();
-let backDate = new Date(year - 50, month, day);
 @Component({
   selector: 'app-transaction-history-list',
   templateUrl: './transaction-history-list.component.html',
@@ -101,8 +96,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public dataSource: any = new MatTableDataSource();
   @Input() TabIndex:any;
   public detailDataTransHistory: any;
-  public startDate: any = backDate.toISOString();
-  public endDate: any = new Date().toISOString();
+  public startDate: any = new Date(1973,10,7).toLocaleString();
+  public endDate: any = new Date().toLocaleString();
   public orderNo: any;
   public payload: any;
   public sortCol: any = 0;
@@ -203,6 +198,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       });
 
     this.getColumnsData();
+    
   }
 
   ngAfterViewInit() {
@@ -341,8 +337,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   getContentData() {
     let payload = {
       draw: 0,
-      sDate: this.startDate,
-      eDate: this.endDate,
+      sDate: this.startDate.toLocaleString(),
+      eDate: this.endDate.toLocaleString(),
       searchString: this.columnSearch.searchValue,
       searchColumn: this.selectedDropdown,
       start: this.customPagination.startIndex,

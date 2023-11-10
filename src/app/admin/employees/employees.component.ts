@@ -1,10 +1,9 @@
-import {Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import {MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import {FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators'; 
 import { IEmployee } from 'src/app/Iemployee';
-import { MatDialog} from '@angular/material/dialog';
 import { AddNewEmployeeComponent } from '../dialogs/add-new-employee/add-new-employee.component';
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
@@ -16,7 +15,6 @@ import { AuthService } from '../../../app/init/auth.service';
 import { SpinnerService } from '../../../app/init/spinner.service';
 import { MatOption } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GroupsLookupComponent } from './groups-lookup/groups-lookup.component';
 import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -99,16 +97,13 @@ export class EmployeesComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private employeeService: ApiFuntions, 
     private global:GlobalService,
-    private adminApiService: AdminApiService,
-    private zone: NgZone,
+    public adminApiService: AdminApiService,
     public router: Router,
-    public laoder: SpinnerService,
-    private dialog:MatDialog
-    ) {  
-      this.iAdminApiService = adminApiService;
-    }
+    public laoder: SpinnerService
+  ) {  
+    this.iAdminApiService = adminApiService;
+  }
 
   clearMatSelectList(){
     this.matRef.options.forEach((data: MatOption) => data.deselect());
@@ -185,6 +180,7 @@ export class EmployeesComponent implements OnInit {
 
 
   }
+
   reloadData(){
     const emp_data = {
       "user":  this.grp_data,
@@ -212,6 +208,7 @@ export class EmployeesComponent implements OnInit {
         
       });
   }
+
   addPermission(event:any){
     if(typeof( event.function) == 'string'){
       this.unassignedFunctions = this.unassignedFunctions.filter(name => name !== event.function);
@@ -225,6 +222,7 @@ export class EmployeesComponent implements OnInit {
 
     }
   }
+
   removePermission(event:any){ 
     if(typeof(event.function) == 'string'){
       this.assignedFunctions = this.assignedFunctions.filter(name => name !== event.function);
@@ -238,6 +236,7 @@ export class EmployeesComponent implements OnInit {
 
     }
   }
+
   saveAssignedFunc(){
 
     let assignFunc = {
@@ -260,6 +259,7 @@ export class EmployeesComponent implements OnInit {
 
       });
   }
+
   updateGrpLookUp(event?: any) {
     this.grpData = {};
     this.grpData = event.groupData;
@@ -298,9 +298,6 @@ export class EmployeesComponent implements OnInit {
    this.env =  JSON.parse(localStorage.getItem('env') ?? '');
    this.getEmployeeData();
   }
-
-  
-
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -377,18 +374,17 @@ export class EmployeesComponent implements OnInit {
   }
   
   backEmpAction(){
-    this.clearMatSelectList();
     this.clearInput();
     this.isLookUp = false;
     this.lookUpEvnt=false
-      this.employee_fetched_zones = [];
-      this.location_data_source = [];
-      this.groupAllowedList = [];
-      this.max_orders = '';
-      this.matRef.options.forEach((data: MatOption) => data.deselect());
-      this.isTabChanged=true;
-      this.demo1TabIndex = 0;
+    this.employee_fetched_zones = [];
+    this.location_data_source = [];
+    this.groupAllowedList = [];
+    this.max_orders = '';
+    this.isTabChanged=true;
+    this.demo1TabIndex = 0;
   }
+
   actionGroupDialog(event: any, grp_data: any, matEvent: MatSelectChange) { 
     if (event === 'edit') {
       let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
@@ -484,6 +480,7 @@ export class EmployeesComponent implements OnInit {
       }
     });
   }
+
   getEmployeeDetails(){
     const emp_data = {};
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)

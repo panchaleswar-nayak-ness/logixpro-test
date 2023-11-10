@@ -224,7 +224,7 @@ export class LoginComponent {
       },
       {
         appName: 'FlowRackReplenish',
-        route: '/FlowrackReplenishment',
+        route: '/FlowrackReplenish',
         iconName: 'schema',
         name: 'FlowRack Replenishment',
         updateMenu: '',
@@ -347,7 +347,7 @@ export class LoginComponent {
         this.router.navigate(['/#']);
         break;
       case 'FlowRackReplenish':
-        this.router.navigate(['/FlowrackReplenishment']);
+        this.router.navigate(['/FlowrackReplenish']);
         break;
         case 'ICSAdmin':
         this.router.navigate(['/admin']);

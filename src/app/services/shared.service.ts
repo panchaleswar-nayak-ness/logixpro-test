@@ -167,7 +167,7 @@ export class SharedService {
 
   updateLoggedInUser(userName: any, wsid: any, menu: any) {
     let appName: any;
-    if (menu.includes('/FlowrackReplenishment')) appName = 'FlowrackReplenishment';
+    if (menu.includes('/FlowrackReplenish')) appName = 'FlowrackReplenish';
     if (menu.includes('/admin')) appName = 'Admin';
     if (menu.includes('/InductionManager')) appName = 'Induction Manager';
     if (menu.includes('/ConsolidationManager')) appName = 'Consolidation Manager';

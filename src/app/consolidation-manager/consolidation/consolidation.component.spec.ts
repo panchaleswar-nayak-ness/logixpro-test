@@ -10,8 +10,9 @@ import { ConsolidationManagerService } from '../consolidation-manager.service';
 import { PageEvent } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
 import { MatSelectChange } from '@angular/material/select';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 fdescribe('ConsolidationComponent', () => {
   let component: ConsolidationComponent;

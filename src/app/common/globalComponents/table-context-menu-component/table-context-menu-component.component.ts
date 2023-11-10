@@ -1,4 +1,4 @@
-import { Component, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
@@ -12,7 +12,7 @@ import { Operations } from './../../types/CommonTypes';
   templateUrl: './table-context-menu-component.component.html',
   styleUrls: []
 })
-export class TableContextMenuComponentComponent {
+export class TableContextMenuComponentComponent implements OnInit{
 
   public OperationTypes = OperationTypes;
 
@@ -43,6 +43,7 @@ export class TableContextMenuComponentComponent {
   filterString : string = "1 = 1";
   
   @Input() componentName : string = "";
+  
   @Output() optionSelected = new EventEmitter<string>();
 
   @ViewChild('trigger') trigger: MatMenuTrigger;
@@ -52,15 +53,24 @@ export class TableContextMenuComponentComponent {
     private filterService : ContextMenuFiltersService,
     public contextMenuService : TableContextMenuService
   ) {
-
-    contextMenuService.contextMenuObserver.subscribe(() => {
-      const { event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType } = contextMenuService;
-      this.onContextMenu(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
-    });
-
   }
 
-  
+  ngOnInit(): void {
+    this.contextMenuService.contextMenuObserver.subscribe(() => {
+      const { event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType } = this.contextMenuService;
+      this.onContextMenu(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    });
+  }
+
+  onMenuOpened(): void {
+    this.filterString = "1 = 1";
+    this.trigger.closeMenu();
+  }
+
+  onMenuClosed(): void {
+    this.filterString = "1 = 1";
+    this.trigger.closeMenu();
+  }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault();

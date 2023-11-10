@@ -26,9 +26,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './cm-shipping.component.html',
   styleUrls: ['./cm-shipping.component.scss']
 })
-export class CmShippingComponent implements OnInit {
-  @ViewChild('freight_focus') freight_focus: ElementRef;
-
+export class CmShippingComponent implements OnInit { 
   IsLoading: any = false;
   displayedColumns: string[] = ['containerID',  'carrier', 'trackingNum', 'action'];
   tableData = ELEMENT_DATA;
@@ -59,9 +57,7 @@ export class CmShippingComponent implements OnInit {
     this.shippingComp = false;
     this.ShippingIndex();
   }
-
-  ngAfterViewInit(): void {
-    this.freight_focus.nativeElement.focus();
+  ngAfterViewInit(): void { 
   }
 
   async ShippingIndex() {

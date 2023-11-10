@@ -7,7 +7,7 @@
 
         <div class="row align-items-center">
             <div class="col-xxl-7">
-                <div class="d-block d-xl-flex gap-12 align-items-center">
+                <div class="d-block d-xl-flex align-items-center">
                     <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
                         <mat-label>{{startSelectFilterLabel}}</mat-label>
                         <mat-select id="SelectFilter" class="employees-action" [value]="startSelectFilter" (selectionChange)="getSelected($event)">
@@ -18,26 +18,26 @@
                         </span>
                     </mat-form-field>
 
-                    <span class="v-br d-none d-xl-flex mb-3">-</span>
+                    <span class="v-br d-none d-xl-flex mb-3 px-1">-</span>
                     <div class="d-flex g-mini-search-box w-100 mb-3 ">
-                        <mat-form-field class="w-100 bg-white br-8 " appearance="fill">
+                        <mat-form-field class="w-100 bg-white br-8 " style="min-width: 218px;" appearance="fill">
                             <span class="material-symbols-outlined icon-search">
                                 Search
                             </span>
                             <input type="text" placeholder="Search" aria-label="Search" matInput (keydown)="filtervalue($event)" [(ngModel)]="filterValue"[matAutocomplete]="item" (ngModelChange)="this.searchByItem.next($event)">
                             <button matSuffix *ngIf="filterValue" class="clear-btn"  (click)="filterValue = '';this.autocompleteSearchColumnItem()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                            <mat-autocomplete  class="card custom-scroll"  #item="matAutocomplete"  > 
+                            <mat-autocomplete  class="card custom-scroll"  #item="matAutocomplete"  panelWidth="auto" > 
                                 <h6 class ="card-header matAutoCompHeader ">
-                                  <span style="width:  140px;">Value</span> 
-                                  <span style="width:  140px;">Line Number</span> 
-                                  <span style="width:  140px;">Line Status</span> 
+                                  <span class="pe-4" style="white-space: nowrap;">Value</span> 
+                                  <span style="width: 120px; white-space: nowrap;">Line Number</span> 
+                                  <span style="width: 150px; white-space: nowrap;">Line Status</span> 
                                 </h6> 
-                                <ng-scrollbar style="height:350px">
+                                <ng-scrollbar style="height:350px;" >
                                   <mat-option *ngFor="let option of searchAutocompleteItemNum"  class="matAutoCompTableContent" style="line-height: 24px; height:auto; min-height: auto!important; padding: 12px 16px; overflow: unset;">
                                     <div class="loc_option"  (click)="getRow(option.value)" >
-                                      <span  class="searchColumn" style="width:  140px;">{{option.value}}</span> 
-                                      <span  class="searchColumn" style="width:  140px; white-space: normal;">{{option.lineNumber}}</span> 
-                                      <span  class="searchColumn" style="width:  140px; white-space: normal;">{{option.lineStatus}}</span> 
+                                      <span  class="searchColumn pe-4">{{option.value}}</span> 
+                                      <span  class="searchColumn" style="width: 120px; white-space: normal;">{{option.lineNumber}}</span> 
+                                      <span  class="searchColumn" style="width: 150px; white-space: normal;">{{option.lineStatus}}</span> 
                                     </div>
                                   </mat-option>
                                 </ng-scrollbar>

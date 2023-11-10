@@ -148,7 +148,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   saveKit(newItem: any, e: any) {
 
     if (parseInt(e.kitQuantity) <= 0) {
-      this.global.ShowToastr('error',"Qty must be greater than 0", 'Error!');
+      this.global.ShowToastr('error',"Kit Quantity should be greater than 0", 'Error!');
       return;        
     }
 

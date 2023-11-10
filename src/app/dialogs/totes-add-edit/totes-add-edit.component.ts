@@ -46,7 +46,8 @@ export class TotesAddEditComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;
   @ViewChildren('category_category', { read: ElementRef }) category_category: QueryList<ElementRef>;
   isRowAdded=false;
-  floatLabelControl = new FormControl('auto' as FloatLabelType);
+  floatLabelControl1 = new FormControl('auto' as FloatLabelType);
+  floatLabelControl2 = new FormControl('auto' as FloatLabelType);
   ELEMENT_DATA_TOTE = [{toteID:"" , cells:"" , position: 1 ,oldToteID:"",isInserted:1,isDuplicate:false,isEdit:false}];
   displayedColumns: string[] = [ 'actions','zone', 'locationdesc'];
   alreadySavedTotesList:any;
@@ -59,14 +60,17 @@ export class TotesAddEditComponent implements OnInit {
   public iinductionManagerApi:IInductionManagerApiService;
   toteID="";
   cellID="";
-  fromTote;
+  fromTote:any;
   toTote;
   userData:any;
   searchAutocompleteList:any;
+  searchAutocompleteListFiltered1:any;
+  searchAutocompleteListFiltered2:any;
   hideRequiredControl = new FormControl(false);
   imPreferences:any;
   onDestroy$: Subject<boolean> = new Subject();
-  @ViewChild(MatAutocompleteTrigger) autocompleteInventory: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger) autocompleteInventory1: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger) autocompleteInventory2: MatAutocompleteTrigger;
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -142,8 +146,11 @@ export class TotesAddEditComponent implements OnInit {
 
     this.selection.select(...this.dataSource.data);
   }
-  getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value ?? 'auto';
+  getFloatLabelValue1(): FloatLabelType {
+    return this.floatLabelControl1.value ?? 'auto';
+  }
+  getFloatLabelValue2(): FloatLabelType {
+    return this.floatLabelControl2.value ?? 'auto';
   }
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: PeriodicElement): string {
@@ -166,6 +173,8 @@ export class TotesAddEditComponent implements OnInit {
       if(res.isExecuted){
         if(res.data){
           this.searchAutocompleteList = res.data;
+          this.searchAutocompleteListFiltered1 = res.data;
+          this.searchAutocompleteListFiltered2 = res.data;
         }
       }
     
@@ -413,5 +422,12 @@ export class TotesAddEditComponent implements OnInit {
   }
   ngAfterViewInit(): void {
     this.field_focus?.nativeElement.focus();
+  }
+
+  searchAutocompleteListFilter1(){
+    this.searchAutocompleteListFiltered1 = this.searchAutocompleteList.filter((str:any) => str.toteID.startsWith(this.fromTote));
+  }
+  searchAutocompleteListFilter2(){
+    this.searchAutocompleteListFiltered2 = this.searchAutocompleteList.filter((str:any) => str.toteID.startsWith(this.toTote));
   }
 }

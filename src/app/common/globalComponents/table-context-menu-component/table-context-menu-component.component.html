@@ -1,6 +1,6 @@
 <div #trigger="matMenuTrigger" style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x" [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenuFilter"></div>
 
-<mat-menu #contextMenuFilter="matMenu">
+<mat-menu #contextMenuFilter="matMenu" (menuOpened)="onMenuOpened()"  (menuClosed)="onMenuClosed()">
   <ng-template matMenuContent let-item="item">
     <ng-container *ngFor="let con of matMenuContentItem">
       <button mat-menu-item (click)="onContextMenuCommand(item.SelectedItem, item.FilterColumnName, con.condition, getType(item.SelectedItem))" 
@@ -16,7 +16,7 @@
   </ng-template>
 </mat-menu>
 
-<mat-menu #InputFiltersList="matMenu">
+<mat-menu #InputFiltersList="matMenu" (menuOpened)="onMenuOpened()"  (menuClosed)="onMenuClosed()">
   <ng-template matMenuContent let-category="category">
     <ng-container *ngFor="let item of matMenuContentCategory">
         <button mat-menu-item (click)="InputFilterSearch(category.FilterColumnName, item.condition, getType(category.SelectedItem))" 

@@ -1,9 +1,16 @@
-table{
-    th,td{
-      white-space: nowrap;
-      padding-right: 12px;
-    }
+table {
+
+  th,
+  td {
+    white-space: nowrap;
+    padding-right: 12px;
   }
-  btn-regular{
-min-height: 48px;
-  }
+}
+
+btn-regular {
+  min-height: 48px;
+}
+
+.custom-form-field{
+  min-width: 250px;
+}

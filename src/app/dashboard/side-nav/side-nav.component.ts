@@ -30,7 +30,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'fact_check', title: 'Work Manager', route: '#' ,permission: 'Work Manager'},
     { icon: 'insert_chart', title: 'Consolidation Manager', route: '/ConsolidationManager' ,permission: 'Consolidation Manager'},
     { icon: 'pending_actions', title: 'Order Manager', route: '/OrderManager' ,permission: 'Order Manager'},
-    { icon: 'schema', title: 'FlowRack Replenishment', route: '/flowrack',permission: 'FlowRack Replenish' }
+    { icon: 'schema', title: 'FlowRack Replenishment', route: '/FlowrackReplenish',permission: 'FlowRack Replenish' }
   ];
   globalMenus: any = [
     { icon: 'door_front', title: 'Home', route: '/globalconfig/home' ,permission: true},
@@ -107,9 +107,9 @@ export class SideNavComponent implements OnInit {
   ];
 
   flowrackReplenishmentMenus: any = [
-    { icon: 'arrow_back', title: 'Flowrack Replenish', route: '/FlowrackReplenishment', class: 'back-class' , permission: 'FlowRack Replenish'},
-    { icon: 'schema', title: 'Flowrack Replenishment', route: '/FlowrackReplenishment/Flowrack' ,permission:'FlowRack Replenish'},
-    { icon: 'tune', title: 'Preferences ', route: '/FlowrackReplenishment/Preferences' ,permission:'FlowRack Replenish'},
+    { icon: 'arrow_back', title: 'Flowrack Replenish', route: '/FlowrackReplenish', class: 'back-class' , permission: 'FlowRack Replenish'},
+    { icon: 'schema', title: 'Flowrack Replenishment', route: '/FlowrackReplenish/Flowrack' ,permission:'FlowRack Replenish'},
+    { icon: 'tune', title: 'Preferences ', route: '/FlowrackReplenish/Preferences' ,permission:'FlowRack Replenish'},
   ];
   
 
@@ -212,12 +212,12 @@ export class SideNavComponent implements OnInit {
         this.childMenus = this.consolidationMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
-      }else if(InvadminMenu.menu === 'FlowrackReplenishment'){
+      }else if(InvadminMenu.menu === 'FlowrackReplenish'){
         let splittedRoute=InvadminMenu.route.split('/');
         if(splittedRoute[2]===undefined){
           this.flowrackReplenishmentMenus[0].route='/dashboard'
         }else{
-          this.flowrackReplenishmentMenus[0].route='/FlowrackReplenishment'
+          this.flowrackReplenishmentMenus[0].route='/FlowrackReplenish'
         }
       }
     });
@@ -308,7 +308,7 @@ redirect(){
         this.isChildMenu = true;
         return;
       }
-      if (['/dashboard','/FlowrackReplenishment'].indexOf(menu.route) > -1) {
+      if (['/dashboard','/FlowrackReplenish'].indexOf(menu.route) > -1) {
         this.isParentMenu = true;
         this.isChildMenu = false;
       }
@@ -371,12 +371,12 @@ redirect(){
       this.isChildMenu = true;
     }  
     
-    if (menu.route.includes('/FlowrackReplenishment')) {
+    if (menu.route.includes('/FlowrackReplenish')) {
       let splittedRoute=menu.route.split('/');
       if(splittedRoute[2]===undefined){
         this.flowrackReplenishmentMenus[0].route='/dashboard'
       }else{
-        this.flowrackReplenishmentMenus[0].route='/FlowrackReplenishment'
+        this.flowrackReplenishmentMenus[0].route='/FlowrackReplenish'
         
       }
       this.childMenus = this.flowrackReplenishmentMenus;

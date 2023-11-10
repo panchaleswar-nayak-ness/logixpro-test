@@ -142,7 +142,7 @@ export class MainComponent implements OnInit {
       },
       {
         appName: 'FlowRackReplenish',
-        route: '/FlowrackReplenishment',
+        route: '/FlowrackReplenish',
         iconName: 'schema',
         name: 'FlowRack Replenishment',
         updateMenu: 'FlowReplenishment',

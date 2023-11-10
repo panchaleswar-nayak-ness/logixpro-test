@@ -86,7 +86,7 @@ constructor(
 
         let withoutParam = res.split('?')[0]
         let splittedArray = withoutParam.split('/'); 
-          if(splittedArray[0]==='FlowrackReplenishment'){
+          if(splittedArray[0]==='FlowrackReplenish'){
             splittedArray[0]='FlowrackReplenish'
           }
         splittedArray.forEach((element,i) => {
