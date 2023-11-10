@@ -74,8 +74,8 @@ export class ScanCodesComponent{
   }
 
   addCatRow(e: any){
-    this.isAddRow=true
-    this.scanCodesList.unshift({scanCode: '', scanType: '', scanRange: 'No', startPosition:0, codeLength:0,isDisabled:true});
+    this.isAddRow = true;
+    this.scanCodesList.unshift({scanCode: '', scanType: '', scanRange: 'No', startPosition:0, codeLength:0, isDisabled:true, isAddedNew : true});
     this.scanCodesList = [...this.scanCodesList];
     this.OldscanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
   }
@@ -118,7 +118,7 @@ export class ScanCodesComponent{
   }
 
   saveCategory(item, scanCode, startPosition, codeLength, scanRange, scanType, index:any) { 
-    let newRecord = true;
+    let newRecord = item.isAddedNew || false;
 
     if(scanCode == '') {
       this.global.ShowToastr('error','Scan code not saved, scan code field must not be empty.', 'Alert!');
@@ -134,17 +134,6 @@ export class ScanCodesComponent{
       this.global.ShowToastr('error','Scan code not saved, Scan code field must not be empty..', 'Alert!');
       return;
     }
-
-    this.scanCodes.controls['scanCode'].value.forEach((element, i) => {
-      if((element.scanCode == scanCode || (element.startPosition == startPosition && element.scanType == scanType && element.scanRange == scanRange && element.codeLength == codeLength)) && newRecord) {
-        newRecord = false;
-      }
-    });
-
-    // if(!newRecord || item.scanCode == '') {
-    //   this.global.ShowToastr('error','Already Exists', 'Error!');
-    //   return;
-    // }
 
     if(newRecord) {
       let paylaod = {
@@ -201,6 +190,7 @@ export class ScanCodesComponent{
         const { isExecuted, ResponseMessage } = error.error;
         if (!isExecuted && ResponseMessage.indexOf('PRIMARY KEY') != -1) this.global.ShowToastr('error','Already Exists', 'Error!');
         else console.log("UpdateScanCodes",error.responseMessage);
+        this.refreshScanCodeList();
       }
       );
     }
@@ -220,7 +210,7 @@ export class ScanCodesComponent{
     this.iAdminApiService.RefreshScanCodes(paylaod).subscribe((res: any) => {
       if (res.isExecuted) {
         this.scanCodes.controls['scanCode'].setValue([...res.data]);
-        res.data=res.data.map(item => { return { ...item, isDisabled: true }; })
+        res.data = res.data.map(item => { return { ...item, isDisabled: true, isAddedNew : false }; })
         this.scanCodesList = res.data;
         this.OldscanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
       } else {
