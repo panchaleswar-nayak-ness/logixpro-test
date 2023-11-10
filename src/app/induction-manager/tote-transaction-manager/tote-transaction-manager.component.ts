@@ -77,7 +77,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   dataSourceList: any;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
-
+  IsActiveTrigger:boolean = false;
 
   constructor(
     private global:GlobalService,
@@ -297,7 +297,11 @@ public iinductionManagerApi:IInductionManagerApiService;
   }
   
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    event.preventDefault()
+    this.IsActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
   }
 
   FilterString : string = "1 = 1";
@@ -305,6 +309,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   optionSelected(filter : string) {
     this.FilterString = filter;
     this.getToteTrans();  
+    this.IsActiveTrigger = false;
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

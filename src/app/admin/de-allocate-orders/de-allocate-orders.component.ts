@@ -66,7 +66,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   sortColOrder = 0
   sortOrder ='asc'
 
-
+  IsActiveTrigger:boolean =false;
 // pagination and sorting for transaction View
   pageEventTransaction: PageEvent;
   startRowTransaction = 0;
@@ -511,8 +511,12 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.pageLength=0
   }
 
-  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
+    event.preventDefault();
+    this.IsActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
   }
 
   FilterString : string = "1 = 1";
@@ -520,6 +524,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   optionSelected(filter : string) {
     this.FilterString = filter;
     this.orderItemTable();    
+    this.IsActiveTrigger = false;
   }
 
   clear(){

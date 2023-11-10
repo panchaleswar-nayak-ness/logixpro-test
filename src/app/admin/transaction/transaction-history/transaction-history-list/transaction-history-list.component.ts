@@ -90,6 +90,7 @@ const TRNSC_DATA = [
 })
 export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   @ViewChild('matRef') matRef: MatSelect;
+  IsActiveTrigger:boolean =false;
   public columnValues: any = [];
   public userData: any;
   public displayedColumns: any;
@@ -446,8 +447,12 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
+    event.preventDefault()
+    this.IsActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
   }
 
   FilterString : string = "1 = 1";
@@ -456,6 +461,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     this.FilterString = filter;
     this.resetPagination();
     this.getContentData();   
+  this.IsActiveTrigger= false;
   }
 
   resetPagination(){

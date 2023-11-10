@@ -43,7 +43,7 @@
 
           <div class="card br-14 table-responsive my-3" *ngIf="columnValues?.length>0 && displayedColumns">
             <ng-scrollbar class="mat-table-scrollbar" style="height: 575px;" track="all">
-              <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+              <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" >
 
                 <ng-container matColumnDef="{{col.colDef}}" *ngFor="let col of displayedColumns; let indexOfelement=index;">
                   <th class="header" mat-header-cell  *matHeaderCellDef mat-sort-header style="width:auto; padding: 5px 12px;">{{ col.colDef === 'User Field1' ? fieldNames && fieldNames.userField1 : col.colDef === 'User Field2' ? fieldNames && fieldNames.userField2:col.colDef }}</th>
@@ -95,7 +95,7 @@
   </div>
 </div>
 
-<app-table-context-menu-component (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="IsActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'InvMap'"></app-table-context-menu-component>
 
 <ng-template #viewAllLocation>
   <div class="d-flex justify-content-between mb-4 align-items-center">

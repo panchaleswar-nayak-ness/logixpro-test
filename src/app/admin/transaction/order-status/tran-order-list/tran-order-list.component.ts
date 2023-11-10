@@ -188,6 +188,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     }
   }
   // Emitters
+  IsActiveTrigger:boolean =false;
   @Output() openOrders = new EventEmitter<any>();
   @Output() completeOrders = new EventEmitter<any>();
   @Output() reprocessOrders = new EventEmitter<any>();
@@ -694,7 +695,11 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    event.preventDefault()
+    this.IsActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
   }
 
   FilterString : string = "1 = 1";
@@ -703,6 +708,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.FilterString = filter;
     this.resetPagination();
     this.getContentData();    
+    this.IsActiveTrigger = false;
   }
 
   resetPagination(){

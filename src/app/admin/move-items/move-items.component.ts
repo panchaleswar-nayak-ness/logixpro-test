@@ -53,6 +53,7 @@ const TRNSC_DATA = [
   styleUrls: ['./move-items.component.scss'],
 })
 export class MoveItemsComponent implements OnInit {
+  IsActiveTrigger:boolean =false;
   paginator: MatPaginator;
   paginatorTo: MatPaginator;
   paginators: QueryList<MatPaginator>;
@@ -141,7 +142,7 @@ export class MoveItemsComponent implements OnInit {
   itemNumberSearch = new Subject<string>();
   hideRequiredControl = new FormControl(false);
   searchAutocompletItemNo: any = [];
-  public itemnumscan: any = '';
+  public itemnumscan: any = ''; 
 
   public iCommonAPI : ICommonApi;
   
@@ -659,6 +660,7 @@ export class MoveItemsComponent implements OnInit {
     this.resetFromFilters();
     this.resetPaginationFrom();
     this.getMoveItemList(this.tableType);  
+    this.IsActiveTrigger = false;
   }
 
   resetPagination() {

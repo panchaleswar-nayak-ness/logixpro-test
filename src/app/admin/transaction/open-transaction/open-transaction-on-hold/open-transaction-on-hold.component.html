@@ -201,7 +201,7 @@
                 <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 400px;"
                     pointerEventsMethod="scrollbar">
 
-                    <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort
+                    <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort 
                         (matSortChange)="sortChange($event)">
 
                         <ng-container style="display: table-row;" [matColumnDef]="col.colDef"
@@ -288,4 +288,4 @@
     <!-- Datatable End -->
 </div>
 
-<app-table-context-menu-component *ngIf="TabIndex==1" (optionSelected)="optionSelected($event)" [componentName]="'openTransOnHold'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="TabIndex==1 && IsActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'openTransOnHold'"></app-table-context-menu-component>

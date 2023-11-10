@@ -58,7 +58,7 @@ export class OmOrderManagerComponent implements OnInit {
   searchCol : string = "";
   searchTxt : string = "";
   totalRecords:any;
-  
+  IsActiveTrigger:boolean =false;
   allColumns : any = [
     { colHeader: "transactionType", colDef: "Transaction Type" },
     { colHeader: "orderNumber", colDef: "Order Number" },
@@ -583,7 +583,11 @@ export class OmOrderManagerComponent implements OnInit {
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    event.preventDefault()
+    this.IsActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
   }
 
   FilterString : string = "1 = 1";
@@ -593,6 +597,7 @@ export class OmOrderManagerComponent implements OnInit {
     this.paginator.pageIndex = 0;
     this.FilterString = filter;
     this.getOrders();
+    this.IsActiveTrigger = false;
   }
 
   async deleteTemp(){
