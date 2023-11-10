@@ -80,7 +80,7 @@ export class ScanCodesComponent{
     this.OldscanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
   }
 
-  dltCategory(item){
+  dltCategory(item, index : number){
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
@@ -90,7 +90,7 @@ export class ScanCodesComponent{
 
     dialogRef.afterClosed().subscribe(result => {
      if(result === 'Yes'){
-      if(item.scanCode){
+      if(item.scanCode) {
         let paylaod = {
           "itemNumber": this.scanCodes.controls['itemNumber'].value,
           "scanCode": item.scanCode,
@@ -109,9 +109,10 @@ export class ScanCodesComponent{
             console.log("DeleteScanCode",res.responseMessage);
           }
         })
-      } else{
-        this.isAddRow=false
-        this.scanCodesList.shift();
+      } else {
+        this.isAddRow = false;
+        // this.scanCodesList.shift();
+        this.scanCodesList = this.scanCodesList.slice(index + 1, this.scanCodesList.length);
       }
      }
     });
