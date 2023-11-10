@@ -41,10 +41,7 @@
           <div class="px-3 mb-2 text-tertiary-900">
             <div class="text-14 text-chrome-600 my-1">Theme Options</div>
             <mat-radio-group class="d-flex flex-column text-14" color="primary" aria-label="Select an option" (change)="selectTheme($event.value)" [value]="themeRadio">
-              <mat-radio-button class="mb-1" value="Normal">Standard</mat-radio-button>
-              <mat-radio-button class="mb-1" value="High Contrast 1a">High Contrast 1</mat-radio-button>
-              <mat-radio-button class="mb-1" value="High Contrast 1b">High Contrast 2</mat-radio-button>
-              <mat-radio-button class="mb-1" value="High Contrast 2">High Contrast 3</mat-radio-button>
+              <mat-radio-button *ngFor="let theme of themes" class="mb-1" [value]="theme.value">{{ theme.name }}</mat-radio-button>
             </mat-radio-group>
             </div>
           <button mat-menu-item (click)="openPrintSetting()">

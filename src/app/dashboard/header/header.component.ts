@@ -16,6 +16,10 @@ import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global
 import { IUserAPIService } from 'src/app/services/user-api/user-api-interface';
 import { UserApiService } from 'src/app/services/user-api/user-api.service';
 
+export interface ITheme {
+  name : string
+  value : number
+}
 
 @Component({
   selector: 'app-header',
@@ -30,13 +34,19 @@ export class HeaderComponent {
   breadcrumbList: any = [];
   userData: any;
   configUser:any;
-  public iInductionManagerApi : IInductionManagerApiService;
   isConfigUser
   statusTab;
 
-  themeToggle : boolean = false;
-  themeRadio : string = 'Normal';
+  themes : ITheme[] = [
+    { name : 'Standard', value : 0 },
+    { name : 'High Contrast 1', value : 1 },
+    { name : 'High Contrast 2', value : 2 },
+    { name : 'High Contrast 3', value : 3 }
+  ];
 
+  themeRadio : number = 0;
+
+  public iInductionManagerApi : IInductionManagerApiService;
   public iGlobalConfigApi: IGlobalConfigApi;
   public iUserApi : IUserAPIService;
 
@@ -136,10 +146,9 @@ export class HeaderComponent {
     });
    }
 
-   capitalizeFirstLetter(string) {
+  capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-
 
   setImPreferences(){
     const imPreference = localStorage.getItem('InductionPreference');
@@ -153,57 +162,57 @@ export class HeaderComponent {
     }
 
   }
+
   ngOnInit(): void {
     this.loading = false;
     this.userData = JSON.parse(localStorage.getItem('user') ?? '{}');
-    this.configUser = JSON.parse(localStorage.getItem('userConfig') ?? '{}'); 
-    if(this.router.url.indexOf('globalconfig') > -1){
-      this.ConfigUserLogin =  true;
-    }else {
+    this.configUser = JSON.parse(localStorage.getItem('userConfig') ?? '{}');
+    if(this.router.url.indexOf('globalconfig') > -1) this.ConfigUserLogin =  true;
+    else {
       this.ConfigUserLogin =  false; 
       this.userData = this.authService.userData(); 
       if(this.userData.wsid) this.GetWorkStatPrinters();
       this.setImPreferences();
     }
-      this.userData = this.authService.userData(); 
-    
-
+    this.userData = this.authService.userData(); 
+    this.checkCurState();
   }
 
   GetWorkStatPrinters(){
-    this.iGlobalConfigApi.GetWorkStatPrinters().subscribe((res:any)=>{ 
+    this.iGlobalConfigApi.GetWorkStatPrinters().subscribe((res:any) => {
       localStorage.setItem("SelectedReportPrinter",res.data.reportPrinter);
-       localStorage.setItem("SelectedLabelPrinter",res.data.labelPrinter);
-    })
+      localStorage.setItem("SelectedLabelPrinter",res.data.labelPrinter);
+    });
   }
+
   ngAfterViewInit() {
-      this.sharedService.breadCrumObserver.subscribe((res: any) => { 
+    this.sharedService.breadCrumObserver.subscribe((res: any) => { 
       this.statusTab = res.tab.textLabel;
       this.breadcrumbList[this.breadcrumbList.length-1].name = this.statusTab
-    } )
+    });
   }
 
   toggleSidebar() {
     this.toggleSidebarForMe.emit();
   }
+
   routeToLogin(){
     this.router.navigate(['/login']);
   }
 
   breadCrumbClick(menu,index:any = null) { 
-     if(index != null){ 
+     if(index != null) { 
       let Url = "";  
       for (let i = 0; i <= index; i++) {
         if(this.breadcrumbList[i].menu!='') Url += this.breadcrumbList[i].value; 
       }   
-       this.router.navigate([Url]); 
-       this.sharedService.BroadCastMenuUpdate(Url.toString());
+      this.router.navigate([Url]); 
+      this.sharedService.BroadCastMenuUpdate(Url.toString());
     }  
-    if (!menu) {
+    if(!menu) {
       // Reverts side bar to it's orignal state 
       this.router.navigate(['/dashboard']);
       this.sharedService.resetSidebar();
-
       let filter = this.breadcrumbList.filter(e => e.name == "Dashboard"); 
       if (filter.length == 0) {
         this.breadcrumbList.push({
@@ -216,57 +225,38 @@ export class HeaderComponent {
   }
 
   logout(){    
-    if(this.authService.isConfigUser()){
+    if(this.authService.isConfigUser()) {
       this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
-        if (res.isExecuted) 
-        {
-          window.location.href = "/#/globalconfig"; 
-        }
-        else 
-        {
+        if (res.isExecuted) window.location.href = "/#/globalconfig"; 
+        else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
           console.log("configLogout",res.responseMessage);
         }
-      })
-     
-    }else{
+      });
+    } else {
       this.iUserApi.Logout().subscribe((res:any) => {
-        if (res.isExecuted) 
-        { 
-          window.location.href = "/#/login";
-        }
-        else 
-        {
+        if (res.isExecuted) window.location.href = "/#/login";
+        else {
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
           console.log("Logout",res.responseMessage);
         }
-      })
-    }
-  
-
-  }
-
-  
-  getViewportDimensions(): void {
-    this.breakpointObserver.observe([Breakpoints.Small])
-      .subscribe((state: BreakpointState) => {
-        if (state.matches) {
-          // Small viewport dimensions
-          const width = window.innerWidth;
-          const height = window.innerHeight;
-
-         
-          console.log(`Viewport dimensions: ${width} x ${height}`);
-        } else {
-          // Large viewport dimensions
-          // ...
-        }
       });
-  }
-  ngOnDestroy(): void {
-    if (this.breakpointSubscription) {
-      this.breakpointSubscription.unsubscribe();
     }
+  }
+
+  getViewportDimensions(): void {
+    this.breakpointObserver.observe([Breakpoints.Small]).subscribe((state: BreakpointState) => {
+      if (state.matches) {
+        // Small viewport dimensions
+        // const width = window.innerWidth;
+        // const height = window.innerHeight;
+        // console.log(`Viewport dimensions: ${width} x ${height}`);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.breakpointSubscription) this.breakpointSubscription.unsubscribe();
   }
 
   openPrintSetting(){
@@ -276,36 +266,25 @@ export class HeaderComponent {
       autoFocus: '__non_existing_element__',
       disableClose:true,
     });
-
   }
 
-  toggleStyles(checked: boolean): void {
-    let stylesheet;
-    if (checked) {
-      stylesheet = './assets/design-system-HC/styles-hhc.css';
-      localStorage.setItem('Theme', 'HighContrast');
-    } else {
-      stylesheet = './assets/design-system/styles-normal.css';
-      localStorage.setItem('Theme', 'Normal');
-    }
-    this.stylesService.setStylesheet(stylesheet);
-  }
-
-  checkCurState(){
-    const theme = localStorage.getItem('Theme') || 'Normal';
+  checkCurState() {
+    const { userName } = this.authService.userData();
+    const theme = this.global.getCookie(`${userName}-Theme`) ? parseInt(this.global.getCookie(`${userName}-Theme`)) : 0;
     this.themeRadio = theme;
     this.selectTheme(theme);
   }
 
-  selectTheme(theme: string): void {
-    if (theme == 'High Contrast 1a') this.setTheme(theme, './assets/design-system/styles-hc-v1.css');
-    else if (theme == 'High Contrast 1b') this.setTheme(theme, './assets/design-system/styles-hc-v2.css');
-    else if (theme == 'High Contrast 2') this.setTheme(theme, './assets/design-system/styles-hhc.css');
+  selectTheme(theme: number): void {
+    if (theme == 1) this.setTheme(theme, './assets/design-system/styles-hc-v1.css');
+    else if (theme == 2) this.setTheme(theme, './assets/design-system/styles-hc-v2.css');
+    else if (theme == 3) this.setTheme(theme, './assets/design-system/styles-hhc.css');
     else this.setTheme(theme, './assets/design-system/styles-normal.css');
   }
 
-  setTheme(theme : string, stylesheet : string) {
-    localStorage.setItem('Theme', theme);
+  setTheme(theme : number, stylesheet : string) {
+    const { userName } = this.authService.userData();
+    this.global.setCookie(`${userName}-Theme`, theme.toString(), 525600);
     this.stylesService.setStylesheet(stylesheet);
   }
  
