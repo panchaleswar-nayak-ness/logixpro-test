@@ -815,7 +815,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       });
 
       if (data[0].cells <= data[0].toteQuantity) {
-        const dialogRef : any = this.global.OpenDialog(AlertConfirmationComponent, {
+        this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
           width: '50vw',
           autoFocus: '__non_existing_element__',

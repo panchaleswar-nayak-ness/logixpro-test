@@ -28,8 +28,6 @@ import { IInductionManagerApiService } from 'src/app/services/induction-manager-
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { Router } from '@angular/router';
-import { QueryParams } from 'angular-routing';
-
 
 export interface PeriodicElement {
   position: string;

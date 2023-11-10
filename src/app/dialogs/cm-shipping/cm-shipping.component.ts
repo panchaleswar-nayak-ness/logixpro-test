@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/init/auth.service';
 import { CmAddNewItemToShipmentComponent } from '../cm-add-new-item-to-shipment/cm-add-new-item-to-shipment.component';
@@ -56,8 +56,6 @@ export class CmShippingComponent implements OnInit {
     this.carriers = [];
     this.shippingComp = false;
     this.ShippingIndex();
-  }
-  ngAfterViewInit(): void { 
   }
 
   async ShippingIndex() {

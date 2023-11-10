@@ -273,11 +273,7 @@ redirect(){
   }
 
   loadMenus(menu: any) {
-     
-    // if(this.global.changesConfirmation && !IsActive){
-    //   return
-    // }
-        this.sharedService.updateLoggedInUser(this.userData.userName,this.userData.wsid,menu.route);
+    this.sharedService.updateLoggedInUser(this.userData.userName,this.userData.wsid,menu.route);
     if (!menu) {
       menu = {route : '/dashboard'};      
     }

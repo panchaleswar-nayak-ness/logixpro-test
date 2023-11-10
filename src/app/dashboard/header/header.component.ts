@@ -2,7 +2,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { SpinnerService } from '../../../app/init/spinner.service'; 
 import { Router,NavigationEnd  } from '@angular/router';
 import { AuthService } from '../../../app/init/auth.service';
-
 import { SharedService } from 'src/app/services/shared.service'; 
 import { Title } from '@angular/platform-browser';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
@@ -141,16 +140,11 @@ constructor(
 
   setImPreferences(){
     const imPreference = localStorage.getItem('InductionPreference');
-    if (imPreference) {
-      const parsedData = JSON.parse(imPreference);
-    } else {
-
- let paylaod = { 
-    }
-    this.iInductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
+    if (imPreference) {} 
+    else {
+      let paylaod = {};
+      this.iInductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
       localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
-
-
     });
     }
 

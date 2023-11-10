@@ -111,7 +111,6 @@ export class ScanCodesComponent{
         })
       } else {
         this.isAddRow = false;
-        // this.scanCodesList.shift();
         this.scanCodesList = this.scanCodesList.slice(index + 1, this.scanCodesList.length);
       }
      }
