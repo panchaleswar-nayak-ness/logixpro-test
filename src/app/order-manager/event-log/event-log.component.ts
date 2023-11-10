@@ -65,7 +65,7 @@ export class EventLogComponent implements OnInit {
   ];
 
   isAdmin: boolean = false;
-
+  IsActiveTrigger:boolean =false;
   constructor(
     private global:GlobalService,
     private Api: ApiFuntions,
@@ -264,13 +264,17 @@ export class EventLogComponent implements OnInit {
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    event.preventDefault()
+    this.IsActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
   }
 
   optionSelected(filter : string) {
     this.filterString = filter;
     this.resetPagination();
-    this.eventLogTable(this.objIgnoreDateRange);  
+    this.eventLogTable(this.objIgnoreDateRange);     this.IsActiveTrigger = false; 
   }
 
   announceSortChange(e: any) {

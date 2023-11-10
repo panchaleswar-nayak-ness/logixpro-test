@@ -140,4 +140,4 @@
 </div>
 
 
-<app-table-context-menu-component (optionSelected)="optionSelected($event)" [componentName]="'toteTransManager'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="IsActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'toteTransManager'"></app-table-context-menu-component>

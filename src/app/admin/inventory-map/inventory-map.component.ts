@@ -77,6 +77,7 @@ export class InventoryMapComponent implements OnInit {
   setStorage;
   fieldNames:any;
   routeFromIM:boolean=false;
+  IsActiveTrigger:boolean =false;
   routeFromOM:boolean=false;
   public displayedColumns: any ;
   public dataSource: any = [];
@@ -123,7 +124,11 @@ export class InventoryMapComponent implements OnInit {
   //---------------------for mat menu start ----------------------------
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    event.preventDefault()
+    this.IsActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
   }
 
   FilterString : string = "1 = 1";
@@ -132,6 +137,7 @@ export class InventoryMapComponent implements OnInit {
     this.FilterString = filter;
     this.initializeApi();
     this.getContentData();    
+    this.IsActiveTrigger = false;
   }
 
  //---------------------for mat menu End ----------------------------

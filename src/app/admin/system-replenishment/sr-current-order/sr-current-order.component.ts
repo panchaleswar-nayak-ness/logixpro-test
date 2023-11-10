@@ -74,6 +74,7 @@ export class SrCurrentOrderComponent implements OnInit {
   noOfPicks: number = 0;
   noOfPutAways: number = 0;
   public userData: any;
+  IsActiveTrigger:boolean =false;
   tablePayloadObj: any = {
     draw: 0,
     start: 0,
@@ -196,7 +197,11 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    event.preventDefault()
+    this.IsActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
   }
 
   FilterString : string = "1 = 1";
@@ -205,6 +210,7 @@ export class SrCurrentOrderComponent implements OnInit {
     this.tablePayloadObj.filter = filter;
     this.resetPagination();
     this.newReplenishmentOrders();    
+    this.IsActiveTrigger = false;
   }
 
   hideRequiredControl = new FormControl(false);

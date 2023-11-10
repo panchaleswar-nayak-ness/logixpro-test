@@ -30,6 +30,7 @@ export class SrNewOrderComponent implements OnInit {
   filteredTableData: any = [];
   public userData: any;
   kanban: boolean = false;
+  IsActiveTrigger:boolean =false;
   numberSelectedRep: number = 0;
   tablePayloadObj: any = {
     draw: 0,
@@ -91,13 +92,18 @@ export class SrNewOrderComponent implements OnInit {
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    event.preventDefault()
+    this.IsActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
   }
 
   optionSelected(filter : string) {
     this.tablePayloadObj.filter = filter;
     this.resetPagination();
     this.newReplenishmentOrders(); 
+    this.IsActiveTrigger = false;
   }
 
   hideRequiredControl = new FormControl(false);

@@ -13,8 +13,7 @@ export class MoveLocationsComponent {
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
 
-  @Input() itemSelected : boolean = false;
-  
+  @Input() itemSelected : boolean = false; 
   @Input() itemNo : string = "";
   @Input() viewAll : boolean = false;
   @Input() isViewAll : boolean = false;
@@ -39,6 +38,8 @@ export class MoveLocationsComponent {
   @Output() sortChangeToItemsEmit = new EventEmitter();
   @Output() handlePageEventToEmit = new EventEmitter();
   @Output() itemNumberSearchEmit = new EventEmitter();
+  @Output() ActiveTrigger = new EventEmitter<any>();
+  
 
   constructor(
     private contextMenuService : TableContextMenuService
@@ -89,7 +90,11 @@ export class MoveLocationsComponent {
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    event.preventDefault()
+    this.ActiveTrigger.emit(true);
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
   }
 
   isQuantityGreater(quantity: number): boolean {

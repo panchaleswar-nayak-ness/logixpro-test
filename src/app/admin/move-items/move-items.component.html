@@ -63,6 +63,7 @@
                     (getMoveFromDetailsEmit)="getMoveFromDetails($event.element, $event.i, $event.tableName)"
                     (sortChangeToItemsEmit)="sortChangeToItems($event)"
                     (handlePageEventToEmit)="handlePageEventTo($event)"
+                    (ActiveTrigger)="IsActiveTrigger = $event"
                     (itemNumberSearchEmit)="itemNo = $event;this.itemNumberSearch.next($event)">
                 </app-move-locations>
             </mat-card-content>
@@ -74,4 +75,4 @@
 </div>
 
 
-<app-table-context-menu-component (optionSelected)="optionSelected($event)" [componentName]="'moveItem'"></app-table-context-menu-component>
+<app-table-context-menu-component ngIf="IsActiveTrigger"  (optionSelected)="optionSelected($event)" [componentName]="'moveItem'"></app-table-context-menu-component>

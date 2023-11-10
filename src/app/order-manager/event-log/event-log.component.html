@@ -170,4 +170,4 @@
     </mat-card-content>
 </mat-card>
 
-<app-table-context-menu-component (optionSelected)="optionSelected($event)" [componentName]="'eventLog'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="IsActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'eventLog'"></app-table-context-menu-component>

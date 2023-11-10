@@ -32,6 +32,7 @@ export class OmCreateOrdersComponent implements OnInit {
   omPreferences:any;
   @ViewChild('ord_focus') ord_focus: ElementRef;
   displayedColumns: any[] = [];
+  IsActiveTrigger:boolean =false;
   public iAdminApiService: IAdminApiService;
   sequenceKeyMapping:any = [
     {sequence: 'Transaction Type',key:'transactionType'},
@@ -381,13 +382,18 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    event.preventDefault()
+    this.IsActiveTrigger = true;
+    setTimeout(() => {
+      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    }, 100);
   }
 
   optionSelected(filter : string) {
     this.createOrdersDTPayload.filter = filter;
     this.paginator1.pageIndex = 0;
     this.createOrdersDT(true);   
+    this.IsActiveTrigger = false;
   }
 
   getColumnSequence(refresh: boolean = false) {
