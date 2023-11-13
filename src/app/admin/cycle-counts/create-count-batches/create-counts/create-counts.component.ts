@@ -25,7 +25,7 @@ import { CommonApiService } from 'src/app/services/common-api/common-api.service
 export class CCBCreateCountsComponent implements OnInit {
   public userData: any;
   @ViewChild('matRefAction') matRefAction: MatSelect;
-
+  InputText:any;
   selectedTabIndex: number = 0;
   orderNumber;
   countType: string = '';
