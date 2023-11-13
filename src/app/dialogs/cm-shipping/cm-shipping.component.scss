@@ -5,3 +5,8 @@ table{
       border:0
     }
   } 
+
+.counter-none::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}  
