@@ -229,8 +229,6 @@ constructor(
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value) => {
         
-        if (value === '') return;
-
         this.getTypeAheads('FromItem');
         this.fillData();
       });
@@ -239,8 +237,6 @@ constructor(
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value) => {
         
-        if (value === '') return;
-
         this.getTypeAheads('ToItem');
         this.fillData();
       });
