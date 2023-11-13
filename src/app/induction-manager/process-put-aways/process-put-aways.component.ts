@@ -334,6 +334,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   getRow(batchID) {
     let payLoad = { batchID: this.batchId2 };    
+    this.batchId = this.batchId2;
     this.iinductionManagerApi.BatchTotes(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
