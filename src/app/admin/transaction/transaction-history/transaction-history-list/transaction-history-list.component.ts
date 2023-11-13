@@ -97,8 +97,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public dataSource: any = new MatTableDataSource();
   @Input() TabIndex:any;
   public detailDataTransHistory: any;
-  public startDate: any = new Date(1973,10,7).toLocaleString();
-  public endDate: any = new Date().toLocaleString();
+  public startDate: any = new Date(1973,10,7).toLocaleDateString();
+  public endDate: any = new Date().toLocaleDateString();
   public orderNo: any;
   public payload: any;
   public sortCol: any = 0;
@@ -127,7 +127,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     }
   }
   @Input() set resetEvent(event: any) {
-    if (event) {
+    if (event) { 
       this.startDate = event.endDate;
       this.endDate = event.startDate;
       this.getContentData();
@@ -194,7 +194,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       .subscribe((value) => {
  
 
-        this.autocompleteSearchColumn();
+        this.autocompleteSearchColumn(); 
           this.getContentData();
       });
 
@@ -296,6 +296,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
           this.displayedColumns = TRNSC_DATA;
           if (res.data) {
             this.columnValues = res.data;
+            
             this.getContentData();
           } else {
             this.global.ShowToastr('error','Something went wrong', 'Error!');
