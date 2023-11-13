@@ -218,10 +218,12 @@ constructor(
   }
 
   logout(){    
+    
     if(this.authService.isConfigUser()){
       this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
         if (res.isExecuted) 
         {
+          localStorage.clear();
           window.location.href = "/#/globalconfig"; 
         }
         else 
