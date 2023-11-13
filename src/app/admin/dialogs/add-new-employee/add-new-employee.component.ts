@@ -132,7 +132,7 @@ ChangePassword(data){
   async onSubmit(form: FormGroup) {
     if (form.valid) {
       this.cleanForm(form);
-      form.value.active = Boolean(JSON.parse(form.value.active));
+      form.value.active = Boolean(JSON.parse(form.value.active || "false"));
       
       if (this.data?.mode === 'edit') {
         form.value.wsid = "TESTWID"; 
