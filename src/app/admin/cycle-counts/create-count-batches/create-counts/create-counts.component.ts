@@ -109,8 +109,14 @@ export class CCBCreateCountsComponent implements OnInit {
     'actions',
   ];
   dataSourceList: any;
-  fromLocationCrossbtn
-  toLocationCrossbtn
+  fromLocationCrossbtn:any;
+  toLocationCrossbtn:any;
+  fromItemCrossbtn:any;
+  toItemCrossbtn:any;
+  descriptionCrossbtn:any;
+  categoryCrossbtn:any;
+  fromCostCrossbtn:any;
+  toCostCrossbtn:any;
   public iCommonAPI : ICommonApi;
 
 constructor(
@@ -199,8 +205,6 @@ constructor(
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value) => {
         
-        if (value === '') return;
-
         this.getTypeAheads('Description');
         this.fillData();
       });
@@ -245,8 +249,8 @@ constructor(
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value) => {
 
-        if (value === '') return;
-      this.filtersForm.controls['category'].setValue(value);
+        // if (value === '') return;
+        this.filtersForm.controls['category'].setValue(value);
 
         this.getTypeAheads('Category');
         this.fillData();
@@ -256,9 +260,6 @@ constructor(
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value) => {
         
-
-        if (value === '') return;
-
         this.getTypeAheads('BeginCost');
         this.fillData();
       });
@@ -267,9 +268,6 @@ constructor(
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value) => {
         
-
-        if (value === '') return;
-
         this.getTypeAheads('EndCost');
         this.fillData();
       });
@@ -307,7 +305,7 @@ constructor(
     this.filtersForm.controls['costEnd'].setValue('');
     this.filtersForm.controls['warehouse'].setValue('');
 
-
+    
     this.fillData();
   }
   getTypeAheads(type) {
@@ -517,8 +515,8 @@ constructor(
         this.filtersForm.value.putEnd === ''
           ? new Date()
           : this.filtersForm.value.putEnd,
-      costStart: this.filtersForm.value.costStart,
-      costEnd: this.filtersForm.value.costEnd,
+      costStart: this.filtersForm.value.costStart || "",
+      costEnd: this.filtersForm.value.costEnd || "",
       warehouseFilter: this.warehouse,
     };
   }
@@ -543,13 +541,14 @@ constructor(
         toItem: this.filtersForm.value.toItem
           ? this.filtersForm.value.toItem
           : '',
-        description: this.filtersForm.value.description,
+        description: this.filtersForm.value.description || "",
         category: this.filtersForm.value.category
           ? this.filtersForm.value.category
           : '',
         subCategory: this.subCategory ? this.subCategory : '',
         notCounted:
           this.filtersForm.value.notCounted === '' ||
+          this.filtersForm.value.notCounted === undefined ||
           this.filtersForm.value.notCounted === null
             ? new Date()
             : this.filtersForm.value.notCounted,
@@ -573,8 +572,8 @@ constructor(
           this.filtersForm.value.putEnd === null
             ? new Date()
             : this.filtersForm.value.putEnd,
-        costStart: this.filtersForm.value.costStart,
-        costEnd: this.filtersForm.value.costEnd,
+        costStart: this.filtersForm.value.costStart || "",
+        costEnd: this.filtersForm.value.costEnd || "",
         warehouseFilter: this.warehouse,
       } ;  
     this.iAdminApiService.BatchResultTable(queryData).subscribe(

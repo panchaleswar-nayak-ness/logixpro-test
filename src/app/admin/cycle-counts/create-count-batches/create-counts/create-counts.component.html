@@ -49,11 +49,10 @@
         <form [formGroup]="filtersForm">
 
             <div class="row align-items-center" [ngSwitch]="selection">
+
                 <!--  search by location  -->
                 <ng-container *ngSwitchCase="'LocationRange'">
                     <div class="col-xl-3">
-
-
                         <mat-form-field [floatLabel]="getFloatLabelValue()"
                         [hideRequiredMarker]="hideRequiredControl.value"
                         class="custom-form-field w-100  mb-2" appearance="outline">
@@ -61,10 +60,7 @@
                         <input [matAutocomplete]="fromLocation" (ngModelChange)="this.fromLocationTA.next($event)"
                             formControlName="fromLocation" matInput  type="text"
                             maxlength="50" [(ngModel)]="fromLocationCrossbtn">
-
-                            <button matSuffix *ngIf="fromLocationCrossbtn" class="clear-btn" (click)=" fromLocationCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
-
-                            
+                        <button matSuffix *ngIf="fromLocationCrossbtn" class="clear-btn" (click)=" fromLocationCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
                         <mat-autocomplete #fromLocation="matAutocomplete">
                             <mat-option *ngFor="let option of searchAutocompleteFromLocation" [value]="option">
                                 {{option}}
@@ -72,10 +68,7 @@
                         </mat-autocomplete>
                         </mat-form-field>
                     </div>
-
                     <div class="col-xl-3">
-
-
                         <mat-form-field [floatLabel]="getFloatLabelValue()"
                         [hideRequiredMarker]="hideRequiredControl.value"
                         class="custom-form-field w-100  mb-2" appearance="outline">
@@ -83,7 +76,7 @@
                         <input [matAutocomplete]="toLocation" (ngModelChange)="this.toLocationTA.next($event)"
                             formControlName="toLocation" matInput type="text"
                             maxlength="50" [(ngModel)]="toLocationCrossbtn">
-                            <button matSuffix *ngIf="toLocationCrossbtn" class="clear-btn" (click)=" toLocationCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
+                        <button matSuffix *ngIf="toLocationCrossbtn" class="clear-btn" (click)=" toLocationCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
                         <mat-autocomplete #toLocation="matAutocomplete">
                             <mat-option *ngFor="let option of searchAutocompleteToLocation" [value]="option">
                                 {{option}}
@@ -91,16 +84,10 @@
                         </mat-autocomplete>
                         </mat-form-field>
                     </div>
-
-                 
                 </ng-container>
 
-            
-
                 <!--  search by item  -->
-
                 <ng-container *ngSwitchCase="'ItemNumber'">
-
                     <div class="col-xl-3">
                         <mat-form-field [floatLabel]="getFloatLabelValue()"
                         [hideRequiredMarker]="hideRequiredControl.value"
@@ -108,26 +95,24 @@
                         <mat-label>From Item Number</mat-label>
                         <input [matAutocomplete]="fromItem" (ngModelChange)="this.fromItemTA.next($event)"
                             formControlName="fromItem" matInput class=" " type="text"
-                            maxlength="50">
+                            maxlength="50" [(ngModel)]="fromItemCrossbtn">
+                        <button matSuffix *ngIf="fromItemCrossbtn" class="clear-btn" (click)=" fromItemCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
                         <mat-autocomplete #fromItem="matAutocomplete">
                             <mat-option *ngFor="let option of searchAutocompleteFromItem" [value]="option.itemNumber">
                                 {{option.itemNumber}}
                             </mat-option>
                         </mat-autocomplete>
                      </mat-form-field>
-
                     </div>
-
                     <div class="col-xl-3">
-
-
                         <mat-form-field [floatLabel]="getFloatLabelValue()"
                         [hideRequiredMarker]="hideRequiredControl.value"
                         class="custom-form-field w-100  mb-2" appearance="outline">
                         <mat-label>To Item Number</mat-label>
                         <input [matAutocomplete]="toItem" (ngModelChange)="this.toItemTA.next($event)"
                             formControlName="toItem" matInput class=" " type="text"
-                            maxlength="50">
+                            maxlength="50" [(ngModel)]="toItemCrossbtn">
+                        <button matSuffix *ngIf="toItemCrossbtn" class="clear-btn" (click)=" toItemCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
                         <mat-autocomplete #toItem="matAutocomplete">
                             <mat-option *ngFor="let option of searchAutocompleteToItem" [value]="option.itemNumber">
                                 {{option.itemNumber}}
@@ -135,12 +120,10 @@
                         </mat-autocomplete>
                     </mat-form-field>
                     </div>
-
                 </ng-container>
 
                 <!-- search by description -->
                 <ng-container *ngSwitchCase="'Description'">
-
                     <div class="col-xl-6">
                         <mat-form-field [floatLabel]="getFloatLabelValue()"
                             [hideRequiredMarker]="hideRequiredControl.value"
@@ -148,39 +131,28 @@
                             <mat-label>Decription</mat-label>
                             <input [matAutocomplete]="auto" (ngModelChange)="this.descriptionTA.next($event)"
                                 formControlName="description" matInput class=" " type="text"
-                                maxlength="255">
+                                maxlength="255" [(ngModel)]="descriptionCrossbtn">
+                            <button matSuffix *ngIf="descriptionCrossbtn" class="clear-btn" (click)=" descriptionCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
                             <mat-autocomplete #auto="matAutocomplete">
                                 <mat-option *ngFor="let option of searchAutocompleteDescription" [value]="option">
                                     {{option}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
-
                     </div>
-
-
                 </ng-container>
 
                 <!-- search by category -->
                 <ng-container *ngSwitchCase="'Category'">
-
-
                     <div class="col-xl-3">
-
-
                         <mat-form-field [floatLabel]="getFloatLabelValue()"
                             [hideRequiredMarker]="hideRequiredControl.value"
                             class="custom-form-field w-100  mb-2" appearance="outline">
                             <mat-label>Category</mat-label>
                             <input [matAutocomplete]="auto" (ngModelChange)="this.categoryTA.next($event)"
-                                formControlName="category" matInput class=" " type="text" maxlength="50">
+                                formControlName="category" matInput class=" " type="text" maxlength="50" [(ngModel)]="categoryCrossbtn">
+                            <button matSuffix *ngIf="categoryCrossbtn" class="clear-btn" (click)=" categoryCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             <mat-autocomplete #auto="matAutocomplete"  >
-                               
-                               
-                               
-                               
-                               
-                               
                                 <h6 class="ctl_name ac-dropdown-label">
                                     <span style="width:70%">Category</span> <span style="width:30%">Sub Category</span>
                                 </h6>
@@ -192,57 +164,41 @@
                                     </div>
                                 </mat-option>
                             </mat-autocomplete>
-
-
-
-
-
-
-
                         </mat-form-field>
                     </div>
                     <div class="col-xl-3">
                         <mat-form-field class="custom-form-field w-100  mb-2 " appearance="outline">
                             <mat-label>Sub Category</mat-label>
                             <input [disabled]="true"  [(ngModel)]="subCategory" readonly formControlName="subCategory"
-                                 matInput  class=" readonly" type="text" maxlength="50">
+                                 matInput  class=" readonly" type="text" maxlength="50" >
                         </mat-form-field>
                     </div>
-
-
                 </ng-container>
 
                 <!-- search by not counted since -->
                 <ng-container *ngSwitchCase="'NotCountedSince'">
-
                     <div class="col-xl-6">
                         <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
                             <mat-label>Select Date</mat-label>
                             <input matInput (ngModelChange)="this.searchField.next($event)"
                                 (ngModelChange)="this.searchField.next($event)" formControlName="notCounted"
-                                [matDatepicker]="notCounted">
+                                [matDatepicker]="notCounted" >
                             <mat-datepicker-toggle matSuffix [for]="notCounted"
                                 ngDefaultControl></mat-datepicker-toggle>
                             <mat-datepicker #notCounted></mat-datepicker>
                         </mat-form-field>
                     </div>
-
-
                 </ng-container>
 
                 <!-- search by pickdate range -->
                 <ng-container *ngSwitchCase="'PickedRange'">
-
                     <div class="col-xl-3">
                         <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
                             <mat-label>From Date</mat-label>
-                                <input matInput type="datetime-local" (ngModelChange)="this.searchField.next($event)" formControlName="pickedStart" id="completionDate" [ngModel] = "localCompleteDate"
+                            <input matInput type="datetime-local" (ngModelChange)="this.searchField.next($event)" formControlName="pickedStart" id="completionDate" [ngModel] = "localCompleteDate"
                                 placeholder="yyyy-MM-ddTHH:mm" class="form-control"  />
                         </mat-form-field>
-
-                        
                     </div>
-
                     <div class="col-xl-3">
                         <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
                             <mat-label>To Date</mat-label>
@@ -250,13 +206,10 @@
                             placeholder="yyyy-MM-ddTHH:mm">
                         </mat-form-field>
                     </div>
-
-
                 </ng-container>
 
                 <!-- search by putaway range -->
                 <ng-container *ngSwitchCase="'PutAwayRange'">
-
                     <div class="col-xl-3">
                         <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
                             <mat-label>From Date</mat-label>
@@ -265,7 +218,6 @@
                             placeholder="yyyy-MM-ddTHH:mm" >
                         </mat-form-field>
                     </div>
-
                     <div class="col-xl-3">
                         <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
                             <mat-label>To Date</mat-label>
@@ -274,44 +226,33 @@
                             placeholder="yyyy-MM-ddTHH:mm" >
                         </mat-form-field>
                     </div>
-
-
                 </ng-container>
 
                 <!-- search by cost range -->
                 <ng-container *ngSwitchCase="'CostRange'">
-
-
-
-
-
                     <div class="col-xl-3">
-
                         <mat-form-field [floatLabel]="getFloatLabelValue()"
                             [hideRequiredMarker]="hideRequiredControl.value"
                             class="custom-form-field w-100  mb-2" appearance="outline">
                             <mat-label>From Cost</mat-label>
                             <input  [NumbersOnly]="true" [matAutocomplete]="fromCost" (ngModelChange)="this.beginCostTA.next($event)"
-                                formControlName="costStart" matInput class=" " type="text" maxlength="50">
+                                formControlName="costStart" matInput class=" " type="text" maxlength="50" [(ngModel)]="fromCostCrossbtn">
+                            <button matSuffix *ngIf="fromCostCrossbtn" class="clear-btn" (click)=" fromCostCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             <mat-autocomplete #fromCost="matAutocomplete">
                                 <mat-option *ngFor="let option of searchAutocompletBeginCost" [value]="math.trunc(option).toString()">
                                     {{math.trunc(option)}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
-
-
-
                     </div>
-
                     <div class="col-xl-3">
-
                         <mat-form-field [floatLabel]="getFloatLabelValue()"
                             [hideRequiredMarker]="hideRequiredControl.value"
                             class="custom-form-field w-100  mb-2" appearance="outline">
                             <mat-label>To Cost</mat-label>
                             <input  [NumbersOnly]="true" [matAutocomplete]="toCost" (ngModelChange)="this.endCostTA.next($event)"
-                                formControlName="costEnd" matInput class=" " type="text" maxlength="50">
+                                formControlName="costEnd" matInput class=" " type="text" maxlength="50" [(ngModel)]="toCostCrossbtn">
+                            <button matSuffix *ngIf="toCostCrossbtn" class="clear-btn" (click)=" toCostCrossbtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                             <mat-autocomplete #toCost="matAutocomplete">
                                 <mat-option *ngFor="let option of searchAutocompletEndCost" [value]="math.trunc(option).toString()">
                                     {{math.trunc(option)}}
@@ -319,8 +260,6 @@
                             </mat-autocomplete>
                         </mat-form-field>
                     </div>
-
-
                 </ng-container>
 
                 <div class="col-xl-6">

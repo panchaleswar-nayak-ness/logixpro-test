@@ -142,8 +142,7 @@ export class GroupsLookupComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.group_data_source?.filteredData?.push({groupName:this.updateGrpTable});
-    
+    // this.group_data_source?.filteredData?.push({groupName:this.updateGrpTable});
   }
 
 
