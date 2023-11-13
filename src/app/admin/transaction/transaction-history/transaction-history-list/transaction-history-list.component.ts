@@ -97,8 +97,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public dataSource: any = new MatTableDataSource();
   @Input() TabIndex:any;
   public detailDataTransHistory: any;
-  public startDate: any = new Date(1973,10,7).toLocaleDateString();
-  public endDate: any = new Date().toLocaleDateString();
+  public startDate: any = new Date(1973,10,7);
+  public endDate: any = new Date();
   public orderNo: any;
   public payload: any;
   public sortCol: any = 0;
@@ -176,7 +176,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     private sharedService:SharedService,
     private filterService: ContextMenuFiltersService
   ) {
-    this.userData = this.authService.userData();
+    this.userData = this.authService.userData(); 
     this.iAdminApiService = adminApiService;
   }
 
@@ -337,6 +337,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   }
 
   getContentData() {
+    debugger
     let payload = {
       draw: 0,
       sDate: this.startDate.toLocaleDateString(),
