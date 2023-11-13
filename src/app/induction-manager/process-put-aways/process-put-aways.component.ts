@@ -270,6 +270,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.status = 'Not Processed';
     this.assignedZones = '';
     this.ELEMENT_DATA.length = 0;
+    debugger
     this.dataSource = [];
     this.assignedZonesArray.length=0;   // after deleting zones array reset to select zones 
     this.batchId2 = "";
@@ -332,7 +333,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   getRow(batchID) {
-    let payLoad = { batchID: batchID };    
+    let payLoad = { batchID: this.batchId2 };    
     this.iinductionManagerApi.BatchTotes(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
@@ -358,6 +359,7 @@ export class ProcessPutAwaysComponent implements OnInit {
               } catch (e) { }
             }
           }
+          debugger
           this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
@@ -675,6 +677,7 @@ export class ProcessPutAwaysComponent implements OnInit {
             this.currentToteID++;
           }
         }
+        debugger
         this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
       }
     });
@@ -703,6 +706,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         this.currentToteID++;
       }
     }
+    debugger
     this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
     this.updateNxtTote();
   }
@@ -1392,11 +1396,11 @@ async clearBatchData(){
   }
 
   clear(){
-    this.autocompleteSearchColumnItem()
     this.batchId = ''
     this.status = ''; 
-      this.assignedZones = '';
-    this.dataSource = []
+    this.assignedZones = '';
+    this.dataSource = new MatTableDataSource<any>([]);
+    this.autocompleteSearchColumnItem();
   }
 
   }
