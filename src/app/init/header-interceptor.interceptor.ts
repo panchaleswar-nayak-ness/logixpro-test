@@ -52,9 +52,10 @@ export class HeaderInterceptor implements HttpInterceptor {
       if(this.authService.isConfigUser()){
           this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
             if (res.isExecuted) {       
+              debugger
               this.dialog.closeAll();
               this.global.ShowToastr('error','Token Expire', 'Error!');
-              this.router.navigate(['/globalconfig']);
+              window.location.href = "/#/globalconfig"; 
             } else {
               this.global.ShowToastr('error',res.responseMessage, 'Error!');
               console.log("configLogout",res.responseMessage);

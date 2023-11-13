@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
@@ -25,7 +25,7 @@ export class PpaTsBatchSetupComponent  implements OnInit{
   @Output() funCall = new EventEmitter<any>();
 
   public iinductionManagerApi:IInductionManagerApiService;
-
+ 
   constructor( 
     private global:GlobalService, 
     public inductionManagerApi: InductionManagerApiService,
@@ -42,13 +42,9 @@ export class PpaTsBatchSetupComponent  implements OnInit{
   }
 
   callFun(funName:any,funParam:any){
+    debugger
     this.funCall.emit({funName:funName,funParam:funParam});
-    if(funName == 'clear'){
-      this.status = '';
-      this.cellSize = '0';
-      this.assignedZones = '';
-      this.batchId = '';
-    }
+   
   }
 
   getFloatLabelValueItem(): FloatLabelType {

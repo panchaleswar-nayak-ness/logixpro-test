@@ -1,10 +1,10 @@
 <mat-tab-group dynamicHeight [(selectedIndex)]="selectedIndex" (selectedTabChange)="onTabChange($event)">
-    <mat-tab label="Tote Setup">
+    <mat-tab label="Tote Setup">   
       <app-ppa-ts-batch-setup (funCall)="callFunBatchSetup($event)" [batchId]="batchId" [assignedZones]="assignedZones" [cellSize]="cellSize" [searchAutocompleteItemNum]="searchAutocompleteItemNum" [status]='status' ></app-ppa-ts-batch-setup>
       <app-ppa-ts-totes (funCall)="callFunTotes($event)" [actionDropDown]="actionDropDown" [toteID]="toteID" [dataSource]="dataSource" [displayedColumns]="displayedColumns" [selection]="selection"></app-ppa-ts-totes>
       <div class="d-flex">
         <button mat-flat-button color="primary" class="primary-button btn-lg w-100" style="min-width: 150px;" (click)="processIfZoneSelected()">
-          Process Batch
+          Process Batch 
         </button>
       </div>
     </mat-tab>
@@ -23,7 +23,7 @@
                   <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline"
                   [floatLabel]="getFloatLabelValueItem2()"
                   [hideRequiredMarker]="hideRequiredControlItem2.value">
-                    <mat-label>Batch ID</mat-label>
+                    <mat-label>Batch ID </mat-label>
                     
                     <input 
                         (keydown.shift.enter)="$event.preventDefault()" 

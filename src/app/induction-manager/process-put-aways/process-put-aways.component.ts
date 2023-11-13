@@ -183,13 +183,15 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   callFunBatchSetup(event:any){
-    if(event.funName == "batchIdKeyup"){
+    if(event.funName == "batchIdKeyup"){ 
       this.batchIdKeyup();
     }
     else if (event.funName == "clear"){
+      debugger
       this.clear();
     }
-    else if (event.funName == "getRow"){
+    else if (event.funName == "getRow"){ 
+      this.batchId = event.funParam;
       this.getRow(event.funParam);
     }
     else if (event.funName == "createNewBatch"){
@@ -334,6 +336,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.iinductionManagerApi.BatchTotes(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
+          debugger
           if (res.data.length > 0) this.status = "Processed";
           else this.status = "Not Processed";
           this.ELEMENT_DATA.length = 0;
@@ -425,10 +428,11 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
   
   onFocusOutBatchID(val) {
+    debugger
     if (val) {
       try {
         setTimeout(() => {
-          let payload = { batchID: this.batchId2 }
+          let payload = { batchID: val }
           this.iinductionManagerApi.BatchExist(payload).subscribe((res: any) => {
             if(res?.isExecuted)
             {
@@ -752,7 +756,9 @@ export class ProcessPutAwaysComponent implements OnInit {
     let searchPayload = { batchID: this.batchId };
     this.iinductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
       (res: any) => {
-        if (res.isExecuted &&  res.data) this.searchAutocompleteItemNum = res.data;
+        if (res.isExecuted &&  res.data){
+          this.searchAutocompleteItemNum = res.data; 
+        } 
         else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
           console.log("BatchIDTypeAhead",res.responseMessage);
@@ -762,6 +768,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     );
   }
 async clearBatchData(){
+  debugger
   this.batchId2 = '';
   this.inputValue = '';
   this.inputType = 'Any';
@@ -1385,9 +1392,11 @@ async clearBatchData(){
   }
 
   clear(){
-    this.batchId = ''
-    this.dataSource = []
     this.autocompleteSearchColumnItem()
+    this.batchId = ''
+    this.status = ''; 
+      this.assignedZones = '';
+    this.dataSource = []
   }
 
   }
