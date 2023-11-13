@@ -483,8 +483,8 @@ this.router.navigate([]).then((result) => {
   }
 
   resetToTodaysDate() {
-    this.edate = new Date()
-    this.sdate = new Date()
+    this.edate = new Date();
+    this.sdate = new Date();
     this.columnSearch.searchColumn.colDef='';
     this.columnSearch.searchValue='';
     this.orderNumber='';
@@ -535,8 +535,8 @@ this.router.navigate([]).then((result) => {
   getContentData(isInit: boolean = false) {
     this.payload = {
       draw: 0,
-      sDate: this.sdate.toLocaleString(),
-      eDate: this.edate.toLocaleString(),
+      sDate: this.sdate.toLocaleDateString(),
+      eDate: this.edate.toLocaleDateString(),
       transType: this.transTypeSelect,
       transStatus: this.transStatusSelect,
       searchString: this.columnSearch.searchValue,
