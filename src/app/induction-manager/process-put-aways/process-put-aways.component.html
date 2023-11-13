@@ -34,7 +34,7 @@
                         #batchVal
                         (ngModelChange)="this.searchByItem2.next($event)" 
                         (focusout)="onFocusOutBatchID(batchVal.value)">
-                        <button matSuffix *ngIf="batchId2" class="clear-btn" (click)=" batchId2 = ''" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
+                        <button matSuffix *ngIf="batchId2" class="clear-btn" (click)="clearBatchData()" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
 
                     <mat-autocomplete class="card custom-scroll" #item2="matAutocomplete">
             

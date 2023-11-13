@@ -761,7 +761,17 @@ export class ProcessPutAwaysComponent implements OnInit {
       (error) => { }
     );
   }
-
+async clearBatchData(){
+  this.batchId2 = '';
+  this.inputValue = '';
+  this.inputType = 'Any';
+  this.nextPutLoc ='';
+  this.nextPos ='';
+  this.nextCell ='';
+  this.postion = ''
+  this.tote = ''
+  this.dataSource2 = new MatTableDataSource<any>([]);
+}
   async autocompleteSearchColumnItem2() {
     let searchPayload = {
       batchID: this.batchId2, 

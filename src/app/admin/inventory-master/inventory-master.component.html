@@ -119,7 +119,7 @@
 
         </mat-card>
         <div class="d-flex gap-20 justify-content-end py-3">
-          <button [disabled]="saveDisabled" style="flex:1" mat-flat-button color="primary" class="btn-lg" (click)="updateInventoryMaster()">Save</button>
+          <button [disabled]="saveDisabled || ([2,3,5].indexOf(tabIndex) > -1 )" style="flex:1" mat-flat-button color="primary" class="btn-lg" (click)="updateInventoryMaster()">Save</button>
         </div>
       </div>
     </div>

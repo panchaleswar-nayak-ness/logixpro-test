@@ -43,6 +43,12 @@ export class PpaTsBatchSetupComponent  implements OnInit{
 
   callFun(funName:any,funParam:any){
     this.funCall.emit({funName:funName,funParam:funParam});
+    if(funName == 'clear'){
+      this.status = '';
+      this.cellSize = '0';
+      this.assignedZones = '';
+      this.batchId = '';
+    }
   }
 
   getFloatLabelValueItem(): FloatLabelType {
