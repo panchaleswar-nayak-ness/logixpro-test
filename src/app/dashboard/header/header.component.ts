@@ -217,8 +217,7 @@ constructor(
     }    
   }
 
-  logout(){    
-    
+  logout(){     
     if(this.authService.isConfigUser()){
       this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
         if (res.isExecuted) 
