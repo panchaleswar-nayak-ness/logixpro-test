@@ -338,8 +338,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   getContentData() {
     let payload = {
       draw: 0,
-      sDate: this.startDate.toLocaleString(),
-      eDate: this.endDate.toLocaleString(),
+      sDate: this.startDate.toLocaleDateString(),
+      eDate: this.endDate.toLocaleDateString(),
       searchString: this.columnSearch.searchValue,
       searchColumn: this.selectedDropdown,
       start: this.customPagination.startIndex,
