@@ -108,6 +108,9 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   // Global
   processPutAwayIndex: any;
+  zoneDetails: any;
+  alreadyAssignedZones: null;
+  autoAssignAllZones: any;
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -171,6 +174,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   ngOnInit(): void {
     this.ELEMENT_DATA.length = 0;
     this.userData = this.authService.userData();
+    this.pickToteSetupIndex();
     this.getCurrentToteID();
     this.getProcessPutAwayIndex();
     this.OSFieldFilterNames();
@@ -617,7 +621,13 @@ export class ProcessPutAwaysComponent implements OnInit {
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.batchId = res.data;
-          this.openSelectZonesDialogue();
+          if(this.autoAssignAllZones){
+            this.getAvailableZones();
+            this.updateZones();
+          }
+          else{
+            this.openSelectZonesDialogue();
+          }
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
           console.log("NextBatchID",res.responseMessage);
@@ -1380,5 +1390,67 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.autocompleteSearchColumnItem()
   }
 
+
+  AvailableZones:any;
+   
+  getAvailableZones()
+  {
+    let payLoad =
+    {
+      batchId: this.batchId,
+    };
+    this.iinductionManagerApi.AvailableZone(payLoad).subscribe(
+      (res: any) => {
+        if (res.data && res.isExecuted) {
+          console.log(res.data);
+        this.zoneDetails = res.data.zoneDetails; 
+        this.AvailableZones=res.data
+        let result=res.data.zoneDetails;
+        if (result) {
+          let zones = 'Zones:';
+          this.assignedZonesArray = res.data;
+          for (const element of result) {
+            zones = zones + ' ' + element.zone;
+          }
+          this.assignedZones = zones;
+        }
+        } else {
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("AvailableZone",res.responseMessage);
+        }
+      },
+      (error) => { }
+    );
+
+  }
+  selectedRecords:any;
+  updateZones()
+  {
+    this.selectedRecords=[{zone:'',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
+    this.selectedRecords.shift();
+    for (const element of this.AvailableZones.zoneDetails) {
+      this.selectedRecords.push(element);
+    }
+
   }
 
+
+  pickToteSetupIndex() {
+    return new Promise(() => {
+    let paylaod = { 
+    }
+    this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
+      if (res.isExecuted && res.data){
+        this.imPreferences = res?.data?.imPreference;
+        this.autoAssignAllZones=this.imPreferences.autoAssignAllZones;
+        console.log(res.data);
+      } else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log("PickToteSetupIndex",res.responseMessage);
+      }
+    });
+  });
+  }
+
+
+}
