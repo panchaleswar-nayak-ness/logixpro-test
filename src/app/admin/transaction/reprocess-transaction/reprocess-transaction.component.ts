@@ -360,6 +360,10 @@ export class ReprocessTransactionComponent implements OnInit {
     if(evt === 'cleared') {
       this.setResetValues();
       this.isHistory ? this.getHistoryData() : this.getContentData("1");
+      this.createdBy = '';
+      this.transactionDateTime = '';
+      this.reason = '';
+      this.reasonMessage = '';
     }
     else {
       this.itemNumber='';
