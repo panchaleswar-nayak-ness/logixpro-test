@@ -66,9 +66,7 @@ export class OmUpdateRecordComponent implements OnInit {
   }
 
   openOmChangesConfirm() {
-
     const values = this.orderForm.value;
-
     let dialogRef:any = this.globalService.OpenDialog(OmChangesConfirmationComponent, {
       height: 'auto',
       width: '932px',
@@ -91,8 +89,8 @@ export class OmUpdateRecordComponent implements OnInit {
         user8Dis   : (values.user8 == this.data.userField8),
         user9Dis   : (values.user9 == this.data.userField9),
         user10Dis  : (values.user10 == this.data.userField10),        
-        emergencyDis: (values.emergency.toLowerCase() == 'true' && !this.data.emergency) || (values.emergency.toLowerCase() == 'false' && this.data.emergency ),
-        labelDis    : (values.label == 'True' && !this.data.label ) || (values.label == 'False' && this.data.label ),        
+        emergencyDis: (this.strToBool(values.emergency) == this.data.emergency),
+        labelDis    : (this.strToBool(values.label) == this.data.label),        
       }
     });
 
@@ -101,6 +99,11 @@ export class OmUpdateRecordComponent implements OnInit {
         this.dialogRef.close(result);
       }
     });
+  }
+
+  strToBool(str:string){
+    if(str == "True" || str == "true") return true;
+    else return false;
   }
 
   ngAfterViewInit(): void {

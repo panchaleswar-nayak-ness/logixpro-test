@@ -90,7 +90,7 @@ export class ScanCodesComponent{
 
     dialogRef.afterClosed().subscribe(result => {
      if(result === 'Yes'){
-      if(item.scanCode) {
+      if(item.scanCode && !item.isAddedNew) {
         let paylaod = {
           "itemNumber": this.scanCodes.controls['itemNumber'].value,
           "scanCode": item.scanCode,
