@@ -111,6 +111,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   zoneDetails: any;
   alreadyAssignedZones: null;
   autoAssignAllZones: any;
+  zoneArray: any;
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -507,7 +508,9 @@ export class ProcessPutAwaysComponent implements OnInit {
           heading: 'Error'
         },
       });
-    } else this.processBath();
+    } else {
+      this.processBath();
+    };
   }
 
   processBath() {
@@ -629,7 +632,6 @@ export class ProcessPutAwaysComponent implements OnInit {
           this.batchId = res.data;
           if(this.autoAssignAllZones){
             this.getAvailableZones();
-            this.updateZones();
           }
           else{
             this.openSelectZonesDialogue();
@@ -1415,7 +1417,7 @@ async clearBatchData(){
 
 
   AvailableZones:any;
-   
+  zoneAssignArray:any;
   getAvailableZones()
   {
     let payLoad =
@@ -1430,15 +1432,19 @@ async clearBatchData(){
         let result=res.data.zoneDetails;
         if (result) {
           let zones = 'Zones:';
+          this.zoneAssignArray = [];
           for (let i = 0; i < this.zoneDetails.length; i++) {
-            this.assignedZonesArray = res.data;
-            if (this.zoneDetails[i].available !== false) {
-              for (const element of result) {
-                zones = zones + ' ' + element.zone;
-              }
+            if (this.zoneDetails[i].available) {
+              this.zoneDetails[i].selected=true;
+              this.zoneAssignArray[i]=this.zoneDetails[i];
+              zones = zones + ' ' + this.zoneDetails[i].zone;
               this.assignedZones = zones;
             }
+            else{
+              this.zoneDetails[i].selected=false;
+            }
           }
+          this.assignedZonesArray= this.zoneAssignArray;
         }
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
@@ -1447,6 +1453,7 @@ async clearBatchData(){
       },
       (error) => { }
     );
+    this.updateZones();
   }
 
   selectedRecords:any;
@@ -1468,7 +1475,6 @@ async clearBatchData(){
       if (res.isExecuted && res.data){
         this.imPreferences = res?.data?.imPreference;
         this.autoAssignAllZones=this.imPreferences.autoAssignAllZones;
-        console.log(res.data);
       } else {
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         console.log("PickToteSetupIndex",res.responseMessage);
