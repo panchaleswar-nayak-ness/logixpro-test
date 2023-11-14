@@ -177,7 +177,6 @@ export class SelectZonesComponent implements OnInit {
         if (res.data && res.isExecuted) {
         this.zoneDetails = res.data.zoneDetails; 
         for (const zoneDetail of this.zoneDetails) {
-                    
           if(this.alreadyAssignedZones!=null && this.alreadyAssignedZones.length>0)
           {
             this.alreadyAssignedZones.find((o) => {
@@ -220,6 +219,8 @@ export class SelectZonesComponent implements OnInit {
     this.isNewBatch=this.data.isNewBatch;
     this.wsid=this.data.wsid;
     this.alreadyAssignedZones = this.data.assignedZones;
+    console.log(this.data);
+    console.log(this.alreadyAssignedZones);
     this.getAvailableZones();
   }
   
