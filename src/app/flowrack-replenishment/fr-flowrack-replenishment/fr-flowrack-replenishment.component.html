@@ -14,8 +14,8 @@
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field  clear-btn-init w-100  mb-3" appearance="outline">
                     <mat-label>Scan Item</mat-label>
-                    <input  #ord_focus matInput type="text" [(ngModel)]="itemnumscan" (keyup)="findItemLocation($event)" #autoFocusField (ngModelChange)="scanItemChange()">
-                    <button matSuffix *ngIf="itemnumscan != ''" class="clear-btn" (click)="clearItemNum()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                    <input  #ord_focus matInput type="text" [(ngModel)]="itemNumScan" (keyup)="findItemLocation($event)" #autoFocusField (ngModelChange)="scanItemChange()">
+                    <button matSuffix *ngIf="itemNumScan != ''" class="clear-btn" (click)="clearItemNum()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                 </mat-form-field>
             </div>
             <div class="col-xl-4" >
@@ -23,8 +23,8 @@
                    
                     <mat-label>Select Location</mat-label>
                   
-                  <input matInput type="text" [disabled]="LocationRow" [(ngModel)]="itemLocation" [matAutocomplete]="auto" (keypress)="locationchange($event)" (ngModelChange)="locationchange($event)" #itemLocationFocus>
-                  <mat-autocomplete class="card custom-scroll"  #auto="matAutocomplete" (optionActivated)="values($event)" (optionSelected)="locationchangeSelect($event)" >                            
+                  <input matInput type="text" [disabled]="locationRow" [(ngModel)]="itemLocation" [matAutocomplete]="auto" (keypress)="locationChange($event)" (ngModelChange)="locationChange($event)" #itemLocationFocus>
+                  <mat-autocomplete class="card custom-scroll"  #auto="matAutocomplete" (optionActivated)="values()" (optionSelected)="locationChangeSelect($event)" >                            
                     <h6 class ="card-header matAutoCompHeader ">
                       <span style="width:  140px;">Location</span> 
                       <span style="width:  140px;">Item Quantity</span> 
