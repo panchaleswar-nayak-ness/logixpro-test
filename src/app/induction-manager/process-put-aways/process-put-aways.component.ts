@@ -1409,14 +1409,10 @@ export class ProcessPutAwaysComponent implements OnInit {
           for (let i = 0; i < this.zoneDetails.length; i++) {
             this.assignedZonesArray = res.data;
             if (this.zoneDetails[i].available !== false) {
-              this.assignedZonesArray.length++;
               for (const element of result) {
                 zones = zones + ' ' + element.zone;
               }
               this.assignedZones = zones;
-            }
-            else{
-             
             }
           }
         }
@@ -1437,7 +1433,6 @@ export class ProcessPutAwaysComponent implements OnInit {
     for (const element of this.AvailableZones?.zoneDetails) {
         this.selectedRecords.push(element);
     }
-
   }
 
 
