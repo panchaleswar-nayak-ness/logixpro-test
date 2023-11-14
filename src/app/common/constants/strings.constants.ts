@@ -1,21 +1,41 @@
 export const StringAssignments = {
-    WorkstationNotAssignedToZone: 'This workstation is not assigned to a zone'
+    WorkstationNotAssignedToZone: 'This workstation is not assigned to a zone',
 };
+
+export const StringConditions = {
+    SupplierItemID:'Supplier Item ID',
+    WaitingReprocess:'Waiting Reprocess',
+    NotCompleted: 'Not Completed',
+    NotAssigned: 'Not Assigned',
+    No: 'No',
+    Yes: 'Yes'
+}
 
 export const ResponseStrings = {
     No: 'No',
     Empty: '',
-    Null: null
+    Null: null,
+    DNE: 'DNE',
+    Conflict: 'Conflict',
+    Error: 'Error',
+    All: 'all',
+    Modal: 'modal'
 }
 
 export const ToasterType = {
     Error: 'error',
-    Success: 'success'
+    Success: 'success',
+    Info: 'info'
 }
 
 export const ToasterTitle = {
     Error: 'Error!',
-    Success: 'Success!'
+    Success: 'Success!',
+    Alert: 'Alert!'
+}
+
+export const ConfirmationMessages = {
+    UnverfiedItemsLeft:'There are still unverfied items. Coninue the preview?'
 }
 
 export const ToasterMessages = {
@@ -26,7 +46,15 @@ export const ToasterMessages = {
     QuantityMustGreaterZero: 'Quantity must be greater than zero.',
     EnterQuantity: 'Please enter a quantity.',
     ItemQuantityAdded: 'Item Quantity Added',
-    QuantityErrorInventoryMap: 'The quantity was not entered due to an error in the Inventory Map'
+    QuantityErrorInventoryMap: 'The quantity was not entered due to an error in the Inventory Map',
+    ConsolidationOrderInvalid:'Consolidation The Order/Tote that you entered is invalid or no longer exists in the system.',
+    ValueMatchToToteOrder:'The Value you Entered matched a Tote and Order Number, select one to Continue.',
+    ErrorWhileRetrievingData:'An Error occured while retrieving data.',
+    ErrorOccured:'Error has occured',
+    ConsolidatedAllItemsInOrder:'You have consolidated all items in this order',
+    ItemNotCompleted: "The selected item has not yet been completed and can't be verified at this time",
+    ItemNotInOrder:'Item not in order or has already been consolidated',
+    NoUnverfiedItems: 'There are no unverfied items'
 }
 
 export const AppNames = {
@@ -47,6 +75,8 @@ export const AppRoutes = {
     FlowrackReplenish: '/FlowrackReplenish',
     Hash: '#',
     OrderManager: '/OrderManager',
+    AdminTransaction:'/#/admin/transaction',
+    ReportView:'/#/report-view'
 }
 
 export const AppIcons = {

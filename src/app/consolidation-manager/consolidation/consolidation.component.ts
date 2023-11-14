@@ -21,7 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
-import { LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringAssignments, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 
 @Component({
@@ -203,7 +203,7 @@ export class ConsolidationComponent implements OnInit {
             this.startSelectFilter = e.key;
           }
         });
-        if (this.startSelectFilterLabel == 'Supplier Item ID') {
+        if (this.startSelectFilterLabel == StringConditions.SupplierItemID) {
           this.isItemVisible = false;
           this.displayedColumns_1.shift()
           this.displayedColumns_1.unshift('supplierItemID')
@@ -217,7 +217,7 @@ export class ConsolidationComponent implements OnInit {
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ConsolidationIndex",res.responseMessage);
       }
     }
@@ -235,53 +235,41 @@ export class ConsolidationComponent implements OnInit {
       if (res.isExecuted) {
         if ((typeof res.data == 'string')) {
           switch (res.data) {
-            case "DNE":
-              this.global.ShowToastr('error',"Consolidation The Order/Tote that you entered is invalid or no longer exists in the system.", 'Error!');
+            case ResponseStrings.DNE:
+              this.global.ShowToastr(ToasterType.Error,ToasterMessages.ConsolidationOrderInvalid, ToasterTitle.Error);
               this.searchBoxField?.nativeElement.focus();
               break;
-
-            case "Conflict":
+            case ResponseStrings.Conflict:
               this.openCmOrderToteConflict()
-              this.global.ShowToastr('error',"The Value you Entered matched a Tote and Order Number, select one to Continue.", 'Error!');
+              this.global.ShowToastr(ToasterType.Error,ToasterMessages.ValueMatchToToteOrder, ToasterTitle.Error);
               break;
-
-            case "Error":
-              this.global.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
+            case ResponseStrings.Error:
+              this.global.ShowToastr(ToasterType.Error,ToasterMessages.ErrorWhileRetrievingData, ToasterTitle.Error);
               break;
           }
-
         }
         else {
           this.btnEnable();
           this.open = res.data.openLinesCount;
           this.completed = res.data.completedLinesCount;
           this.backOrder = res.data.reprocessLinesCount;
-
           this.tableData_1 = new MatTableDataSource(res.data.consolidationTable);
           this.tableData_2 = new MatTableDataSource(res.data.consolidationTable2);
           this.stageTable = new MatTableDataSource(res.data.stageTable);
-          let z: any[] = [];
-
-
-
-          z = this.tableData_1.data.filter((element) => element.lineStatus == 'Waiting Reprocess')
+          let waitingReprocessData: any[] = [];
+          waitingReprocessData = this.tableData_1.data.filter((element) => element.lineStatus == StringConditions.WaitingReprocess)
           let data = this.tableData_2.data;
-          data.push(...z);
+          data.push(...waitingReprocessData);
           this.tableData_2 = new MatTableDataSource(data);
-
           this.tableData_1.data = this.tableData_1.data.filter((el) => {
-            return !z.includes(el)
+            return !waitingReprocessData.includes(el)
           })
-
-
           this.tableData_1.paginator = this.paginator;
           this.tableData_2.paginator = this.paginator2;
           this.stageTable.paginator = this.paginator3;
-
           let payload = {
             "orderNumber": curValue
           }
-
           this.IconsolidationAPI.ShippingButtSet(payload).subscribe((res: any) => {
             if(res.isExecuted)
             {
@@ -294,73 +282,67 @@ export class ConsolidationComponent implements OnInit {
                 this.shippingBtn = true;
               }
               else {
-                this.global.ShowToastr('error','Error has occured', 'Error!');
+                this.global.ShowToastr(ToasterType.Error,ToasterMessages.ErrorOccured, ToasterTitle.Error);
               }
             }
             else {
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
               console.log("ShippingButtSet",res.responseMessage);
-
             }
           })
         }
       }
       else {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
         console.log("ConsolidationData",res.responseMessage);
       }
-      
       this.recordSavedItem();
     })
   }
 
   verifyAll() {
-
     let IDS: any = [];
     this.tableData_1.data.forEach((row: any) => {
-      if (row.lineStatus != "Not Completed" && row.lineStatus != "Not Assigned") {
+      if (row.lineStatus != StringConditions.NotCompleted && row.lineStatus != StringConditions.NotAssigned) {
         IDS.push(row.id.toString())
       }
     });
     let payload = {
-      "iDs":
-        IDS
+      "iDs":IDS
     }
     this.IconsolidationAPI.VerifyAllItemPost(payload).subscribe((res: any) => {
       if (!res.isExecuted) {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
         console.log("VerifyAllItemPost",res.responseMessage);
       }
       else {
-        let z: any[] = [];
+        let tempData: any[] = [];
         this.tableData_1.data.forEach((row: any) => {
           // check if the value at row.itemNumber exists in the IDS array using the indexOf method. 
           if (IDS.indexOf(row.id.toString()) != -1) {
-            z.push(row)
+            tempData.push(row)
           }
         });
         let data = this.tableData_2.data;
-        data.push(...z);
+        data.push(...tempData);
         this.tableData_2 = new MatTableDataSource(data);
         this.tableData_1.paginator = this.paginator
         this.tableData_2.paginator = this.paginator2;
         this.tableData_1.data = this.tableData_1.data.filter((el) => {
-          return !z.includes(el)
+          return !tempData.includes(el)
         })
-
         if (this.tableData_1.data.length == 0) {
-          this.global.ShowToastr('info','You have consolidated all items in this order', 'Alert!');
+          this.global.ShowToastr(ToasterType.Info,ToasterMessages.ConsolidatedAllItemsInOrder, ToasterTitle.Alert);
         }
       }
     })
   }
 
   unverifyAll() {
-
-    let z: any = [];
-    z = this.tableData_2.data.filter((element) => element.lineStatus != 'Waiting Reprocess')
+    let tempData: any = [];
+    tempData = this.tableData_2.data.filter((element) => element.lineStatus != StringConditions.WaitingReprocess)
     let IDS: any = [];
-    z.forEach((row: any) => {
+    tempData.forEach((row: any) => {
       IDS.push(row.id.toString())
     }
     )
@@ -368,24 +350,19 @@ export class ConsolidationComponent implements OnInit {
       "iDs": IDS
     }
     this.IconsolidationAPI.UnVerifyAll(payload).subscribe((res: any) => {
-
       if (!res.isExecuted) {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
         console.log("UnVerifyAll",res.responseMessage);
-
       }
       else {
-        this.tableData_1.data = this.tableData_1.data.concat(z);
-
+        this.tableData_1.data = this.tableData_1.data.concat(tempData);
         this.tableData_2.data = this.tableData_2.data.filter((el) => {
-          return !z.includes(el)
+          return !tempData.includes(el)
         })
         this.tableData_1.paginator = this.paginator
         this.tableData_2.paginator = this.paginator2;
       }
-
     })
-
   }
 
   verifyLine(element: any, Index?: any) {
@@ -401,15 +378,13 @@ export class ConsolidationComponent implements OnInit {
       status = element.lineStatus;
       id = element.id;
     }
-
-    if (status == "Not Completed" || status == "Not Assigned") {
-      this.global.ShowToastr('error',"The selected item has not yet been completed and can't be verified at this time", 'Error!');
+    if (status == StringConditions.NotCompleted || status == StringConditions.NotAssigned) {
+      this.global.ShowToastr(ToasterType.Error,ToasterMessages.ItemNotCompleted, ToasterTitle.Error);
     }
     else {
       let payload = {
         "id": id
       }
-
       this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
         if (res.isExecuted) {
           if (Index != undefined) {
@@ -432,26 +407,20 @@ export class ConsolidationComponent implements OnInit {
             this.tableData_1.paginator = this.paginator;
             this.tableData_2.paginator = this.paginator2;
           }
-
         }
         else {
-          this.global.ShowToastr('error',res.responseMessage, 'Error!')
+          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error)
           console.log("VerifyItemPost",res.responseMessage);
         }
-
       })
     }
   }
 
   unverifyLine(element) {
-
-
     let id = element.id;
     let status = element.lineStatus;
     let index = this.tableData_2.data.indexOf(element)
-
-
-    if (status == 'Waiting Reprocess') {
+    if (status == StringConditions.WaitingReprocess) {
       return;
     }
     else {
@@ -470,17 +439,15 @@ export class ConsolidationComponent implements OnInit {
           this.tableData_2.paginator = this.paginator2;
         }
         else {
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
           console.log("DeleteVerified",res.responseMessage);
         }
       })
     }
-
-
   }
 
   getFilterValue(event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode == KeyboardCodes.ENTER) {
       this.checkDuplicatesForVerify(this.filterValue);
     }
     this.recordSavedItem();
@@ -503,25 +470,21 @@ export class ConsolidationComponent implements OnInit {
       }
     });
     return { index: index, valueCount: valueCount }
-
   }
 
   checkDuplicatesForVerify(val) {
     let columnIndex = this.startSelectFilter;
     let result: any;
     if (columnIndex == 0) {
-
       this.filterOption.forEach((e: any) => {
         result = this.checkVerifyType(val);
       });
-
     }
     else
       result = this.checkVerifyType(val);
-
     // desturcturing
     const { verifyItems, blindVerifyItems } = this.consolidationIndex.cmPreferences;
-    if (result.valueCount >= 1 && verifyItems == 'No' && blindVerifyItems == 'No') {
+    if (result.valueCount >= 1 && verifyItems == StringConditions.No && blindVerifyItems == StringConditions.No) {
       const dialogRef:any = this.global.OpenDialog(CmItemSelectedComponent, {
         height: 'auto',
         width: '899px',
@@ -535,7 +498,6 @@ export class ConsolidationComponent implements OnInit {
           tableData_2: this.tableData_2.data,
         }
       });
-
       dialogRef.afterClosed().subscribe(result => {
         if (result?.isExecuted) {
           this.getTableData(this.typeValue);
@@ -543,11 +505,10 @@ export class ConsolidationComponent implements OnInit {
       })
     }
     else if (result.valueCount >= 1) {
-
       this.verifyLine(val, result.index)
     }
     else {
-      this.global.ShowToastr('error','Item not in order or has already been consolidated', 'error!');
+      this.global.ShowToastr(ToasterType.Error,ToasterMessages.ItemNotInOrder, ToasterTitle.Error);
     }
   }
 
@@ -559,7 +520,6 @@ export class ConsolidationComponent implements OnInit {
         this.startSelectFilterLabel = e.value;
       }
     });
-
     if (event.value == 2) {
       this.isItemVisible = false;
       this.displayedColumns_1.shift()
@@ -572,7 +532,6 @@ export class ConsolidationComponent implements OnInit {
       this.displayedColumns_1.shift()
       this.displayedColumns_1.unshift('itemNumber')
     }
-    
     this.recordSavedItem();
   }
 
@@ -612,7 +571,6 @@ export class ConsolidationComponent implements OnInit {
     this.open = 0;
     this.completed = 0;
     this.backOrder = 0;
-
     this.paginator.pageIndex = 0;
     this.paginator2.pageIndex = 0;
     this.paginator3.pageIndex = 0;
@@ -625,27 +583,17 @@ export class ConsolidationComponent implements OnInit {
       "value": this.filterValue ? this.filterValue : '',
       "orderNumber": this.typeValue
     }
-
     this.IconsolidationAPI.ConsoleItemsTypeAhead(payload).pipe(
-
       catchError((error) => {
-
         // Handle the error here
-
-        this.global.ShowToastr('error',"An error occured while retrieving data.", 'Error!');
+        this.global.ShowToastr(ToasterType.Error,ToasterMessages.ErrorWhileRetrievingData, ToasterTitle.Error);
         console.log("ConsoleItemsTypeAhead");
-
-
         // Return a fallback value or trigger further error handling if needed
-
         return of({ isExecuted: false });
-
       })
-
     ).subscribe((res: any) => {
       this.searchAutoCompleteItemNum = res.data;
     });
-
   }
 
   getRow(filtervalue) {
@@ -677,7 +625,6 @@ export class ConsolidationComponent implements OnInit {
         orderNum: this.typeValue ? this.typeValue : '2909782A',
       }
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result?.isExecuted) {
         this.getTableData(this.typeValue);
@@ -692,13 +639,11 @@ export class ConsolidationComponent implements OnInit {
       autoFocus: '__non_existing_element__',
       disableClose:true,
       data: { orderNumber: this.typeValue }
-
     })
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.getTableData(this.typeValue);
       }
-
     })
   }
 
@@ -720,51 +665,35 @@ export class ConsolidationComponent implements OnInit {
         stagingTable: this.stageTable?.data ? this.stageTable.data : []
       }
     });
-
     dialogRef.afterClosed().subscribe(result => {
       this.focusOnOrderNum();
     });
   }
 
   openCmItemSelected() {
-    let dialogRef:any = this.global.OpenDialog(CmItemSelectedComponent, {
+    this.global.OpenDialog(CmItemSelectedComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
       disableClose:true,
-
-    })
-    dialogRef.afterClosed().subscribe(result => {
-
-
     })
   }
 
   openCmSelectTransaction() {
-    let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingSelectTransactionComponent, {
+    this.global.OpenDialog(CmConfirmAndPackingSelectTransactionComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
       disableClose:true,
-
-    })
-    dialogRef.afterClosed().subscribe(result => {
-
-
     })
   }
 
   openCmPrintOptions() {
-    let dialogRef:any = this.global.OpenDialog(CmPrintOptionsComponent, {
+    this.global.OpenDialog(CmPrintOptionsComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
-
-    })
-    dialogRef.afterClosed().subscribe(result => {
-
-
     })
   }
 
@@ -789,15 +718,14 @@ export class ConsolidationComponent implements OnInit {
     })
   }
 
-
   focusOnOrderNum() {
     setTimeout(() => {
       this.searchBoxField?.nativeElement.focus();
     }, 100);
   }
-  navigateToOrder() {
-    window.location.href = `/#/admin/transaction?orderStatus=${this.typeValue ? this.typeValue : ''}&IsOrderStatus=true`;
 
+  navigateToOrder() {
+    window.location.href = `${AppRoutes.AdminTransaction}?orderStatus=${this.typeValue ? this.typeValue : ''}&IsOrderStatus=true`;
   }
 
   printPreviewNonVerified(print = true) {
@@ -806,11 +734,11 @@ export class ConsolidationComponent implements OnInit {
         this.global.Print(`FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`)
       }
       else{
-        window.open(`/#/report-view?file=FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+        window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
       }
     }
     else {
-      this.global.ShowToastr('error',"There are no unverfied items", 'Error!');
+      this.global.ShowToastr(ToasterType.Error,ToasterMessages.NoUnverfiedItems, ToasterTitle.Error);
     }
   }
 
@@ -820,25 +748,25 @@ export class ConsolidationComponent implements OnInit {
         height: 'auto',
         width: '786px',
         data: {
-          message: 'There are still unverfied items. Coninue the preview?'
+          message: ConfirmationMessages.UnverfiedItemsLeft
         },
         autoFocus: '__non_existing_element__',
       disableClose:true,
       });
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === StringConditions.Yes) {
           this.IconsolidationAPI.ShowCMPackPrintModal({ orderNumber: this.typeValue }).subscribe((res: any) => {
-            if (res.isExecuted && res.data == "all") {
+            if (res.isExecuted && res.data == ResponseStrings.All) {
               if(print){
                 this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
               }
               else{
-                window.open(`/#/report-view?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
               }
-            } else if (res.isExecuted && res.data == "modal") {
+            } else if (res.isExecuted && res.data == ResponseStrings.Modal) {
               this.showCmPackPrintModal(true, this.typeValue,print);
             } else {
-              this.global.ShowToastr('error',"Error has occured","Error");
+              this.global.ShowToastr(ToasterType.Error,ToasterMessages.ErrorOccured,ToasterTitle.Error);
               console.log("ShowCMPackPrintModal",res.responseMessage);
             }
           });
@@ -847,17 +775,17 @@ export class ConsolidationComponent implements OnInit {
     }
     else {
       this.IconsolidationAPI.ShowCMPackPrintModal({ orderNumber: this.typeValue }).subscribe((res: any) => {
-        if (res.isExecuted && res.data == "all") {
+        if (res.isExecuted && res.data == ResponseStrings.All) {
           if(print){
             this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
           }
           else{
-            window.open(`/#/report-view?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+            window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
           }
-        } else if (res.isExecuted && res.data == "modal") {
+        } else if (res.isExecuted && res.data == ResponseStrings.Modal) {
           this.showCmPackPrintModal(true, this.typeValue,print);
         } else {
-          this.global.ShowToastr('error',"Error has occured","Error");
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.ErrorOccured,ToasterTitle.Error);
           console.log("ShowCMPackPrintModal",res.responseMessage);
         }
       });
