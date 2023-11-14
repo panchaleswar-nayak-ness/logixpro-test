@@ -8,9 +8,9 @@
                 <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
                     <mat-label>Actions</mat-label>
                     <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="openAction($event)">
-                        <mat-option value="0" [disabled]="stagingbtn" (click)="!stagingbtn && this.stageTable.data.length > 0 ? openCmOrderNumber() : ''"> Staging Location</mat-option>
-                        <mat-option value="1" [disabled]="packingbtn" (click)="!packingbtn ? openPacking() : ''">Packing</mat-option>
-                        <mat-option value="2" [disabled]="shippingbtb" (click)="!shippingbtb ? openCmShipping() : ''">Shipping</mat-option>
+                        <mat-option value="0" [disabled]="stagingBtn" (click)="!stagingBtn && this.stageTable.data.length > 0 ? openCmOrderNumber() : ''"> Staging Location</mat-option>
+                        <mat-option value="1" [disabled]="packingBtn" (click)="!packingBtn ? openPacking() : ''">Packing</mat-option>
+                        <mat-option value="2" [disabled]="shippingBtn" (click)="!shippingBtn ? openCmShipping() : ''">Shipping</mat-option>
                         <mat-option value="3" (click)="navigateToOrder()">Order Status</mat-option>
                         <mat-option value="4" [disabled]="printButtons" (click)="printPreviewPackList()">Print Packaging List</mat-option>
                         <mat-option value="5" [disabled]="printButtons" (click)="printPreviewPackList(false)">Preview Packaging List</mat-option>
@@ -29,8 +29,8 @@
                     <div class="d-flex flex-wrap">
                         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                             <mat-label class="pe-2">Order Number/Tote ID</mat-label>
-                            <input matInput class="" type="text" maxlength="50" [(ngModel)]="TypeValue" (keypress)="enterOrderID($event)" #autoFocusField>
-                            <button matSuffix *ngIf="TypeValue" class="clear-btn"  (click)="openCmOrderNo()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                            <input matInput class="" type="text" maxlength="50" [(ngModel)]="typeValue" (keypress)="enterOrderID($event)" #autoFocusField>
+                            <button matSuffix *ngIf="typeValue" class="clear-btn"  (click)="openCmOrderNo()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         </mat-form-field>
                     </div>
                     <div class="d-flex flex-wrap">
@@ -114,10 +114,10 @@
             [filterOption]="filterOption" 
             [filterValue]="filterValue" 
             [tableData_1]="tableData_1" 
-            [isitemVisible]="isitemVisible" 
-            [issupplyVisible]="issupplyVisible" 
-            [verifybtn]="verifybtn"  
-            [searchAutocompleteItemNum]="searchAutocompleteItemNum" 
+            [isItemVisible]="isItemVisible" 
+            [isSupplyVisible]="isSupplyVisible" 
+            [verifyBtn]="verifyBtn"  
+            [searchAutoCompleteItemNum]="searchAutoCompleteItemNum" 
             [displayedColumns_1]="displayedColumns_1"  
             (selected)="getSelected($event)" 
             (filterVal)="filtervalue($event)" 
@@ -132,7 +132,7 @@
         <app-verified-item
             [displayedColumns_2]="displayedColumns_2"  
             [tableData_2]="tableData_2"  
-            [unverifybtn]="unverifybtn"
+            [unverifyBtn]="unverifyBtn"
             (unverifyal)="unVerifyAll()"
             (unverify)="unverifyLine($event)">
         </app-verified-item>

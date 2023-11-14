@@ -16,10 +16,10 @@ export class UnverifiedItemComponent implements OnInit {
   @Input() filterOption:any; 
   @Input() filterValue:any; 
   @Input() tableData_1:any; 
-  @Input() isitemVisible:any; 
-  @Input() issupplyVisible:any; 
-  @Input() verifybtn:any; 
-  @Input() searchAutocompleteItemNum:any; 
+  @Input() isItemVisible:any; 
+  @Input() isSupplyVisible:any; 
+  @Input() verifyBtn:any; 
+  @Input() searchAutoCompleteItemNum:any; 
   @Input() displayedColumns_1:any;  
 
   @Output() selected = new EventEmitter<any>();

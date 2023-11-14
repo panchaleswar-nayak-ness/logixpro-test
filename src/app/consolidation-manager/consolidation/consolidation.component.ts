@@ -37,7 +37,6 @@ export class ConsolidationComponent implements OnInit {
   @ViewChild('paginator2') paginator2: MatPaginator;
   @ViewChild('paginator3') paginator3: MatPaginator;
 
-
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
   public startSelectFilter: any;
@@ -47,28 +46,26 @@ export class ConsolidationComponent implements OnInit {
   public open: number = 0;
   public completed: number = 0;
   public backOrder: number = 0;
-  public TypeValue: any
+  public typeValue: any
   public userData: any;
   public filterValue: any;
   public consolidationIndex: any;
-  public IdentModal: any;
   public nextOrderbtn: boolean = false;
-  public unverifybtn: boolean = true;
-  public verifybtn: boolean = true;
-  public packingbtn: boolean = true;
-  public stagingbtn: boolean = true;
-  public shippingbtb: boolean = true;
-  public orderstatusbtn: boolean = false;
+  public unverifyBtn: boolean = true;
+  public verifyBtn: boolean = true;
+  public packingBtn: boolean = true;
+  public stagingBtn: boolean = true;
+  public shippingBtn: boolean = true;
   public printButtons: boolean = true;
   public type: any = '';
   @ViewChild('matRef') matRef: MatSelect;
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
-  public isitemVisible: boolean = true;
-  public issupplyVisible: boolean = false;
+  public isItemVisible: boolean = true;
+  public isSupplyVisible: boolean = false;
 
-  searchAutocompleteItemNum: any = [];
+  searchAutoCompleteItemNum: any = [];
 
   displayedColumns: string[] = ['toteID', 'complete', 'stagingLocation', 'stagedBy', 'stagedDate'];
   stageTable = new MatTableDataSource<any>([]);
@@ -91,8 +88,8 @@ export class ConsolidationComponent implements OnInit {
 
   public IconsolidationAPI : IConsolidationApi;
 
-  constructor(private global:GlobalService,
-    
+  constructor(
+    private global:GlobalService,
     public consolidationAPI : ConsolidationApiService, 
     public authService: AuthService,
     private currentTabDataService: CurrentTabDataService,
@@ -103,8 +100,6 @@ export class ConsolidationComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.ConsolidationIndex()
-    
-
   }
 
   ngAfterViewInit() {
@@ -123,7 +118,7 @@ export class ConsolidationComponent implements OnInit {
       this.stageTable = item.stageTable;
       this.tableData_1 = item.tableData_1;
       this.tableData_2 = item.tableData_2;
-      this.TypeValue = item.TypeValue;
+      this.typeValue = item.typeValue;
       this.dataSource = item.dataSource;
       return true;
     }
@@ -137,7 +132,7 @@ export class ConsolidationComponent implements OnInit {
       stageTable : this.stageTable,
       tableData_1 : this.tableData_1,
       tableData_2 : this.tableData_2,
-      TypeValue : this.TypeValue,
+      typeValue : this.typeValue,
       dataSource : this.dataSource
  
     }
@@ -184,15 +179,15 @@ export class ConsolidationComponent implements OnInit {
   }
 
   enterOrderID(event) {
-    this.TypeValue = event.target.value;
+    this.typeValue = event.target.value;
     if (event.keyCode == 13) {
-      this.getTableData("", this.TypeValue);
+      this.getTableData("", this.typeValue);
     }
   }
 
   ConsolidationIndex() {
     let payload = {
-      "orderNumber": this.TypeValue
+      "orderNumber": this.typeValue
     }
 
     this.IconsolidationAPI.ConsolidationIndex(payload).subscribe((res: any) => {
@@ -208,14 +203,14 @@ export class ConsolidationComponent implements OnInit {
         });
 
         if (this.startSelectFilterLabel == 'Supplier Item ID') {
-          this.isitemVisible = false;
+          this.isItemVisible = false;
           this.displayedColumns_1.shift()
           this.displayedColumns_1.unshift('supplierItemID')
-          this.issupplyVisible = true;
+          this.isSupplyVisible = true;
         }
         else {
-          this.isitemVisible = true;
-          this.issupplyVisible = false;
+          this.isItemVisible = true;
+          this.isSupplyVisible = false;
           this.displayedColumns_1.shift()
           this.displayedColumns_1.unshift('itemNumber')
         }
@@ -229,9 +224,9 @@ export class ConsolidationComponent implements OnInit {
     )
   }
 
-  getTableData(type: any, TypeValue: any) {
+  getTableData(type: any, typeValue: any) {
     this.ConsolidationIndex();
-    let curValue = TypeValue;
+    let curValue = typeValue;
     let payload = {
       "type": this.type,
       "selValue": curValue
@@ -293,11 +288,11 @@ export class ConsolidationComponent implements OnInit {
             {
               if (res.data == 1) {
                 this.enableConButts()
-                this.shippingbtb = false;
+                this.shippingBtn = false;
               }
               else if (res.data == 0) {
                 this.enableConButts()
-                this.shippingbtb = true;
+                this.shippingBtn = true;
               }
               else {
                 this.global.ShowToastr('error','Error has occured', 'Error!');
@@ -534,7 +529,7 @@ export class ConsolidationComponent implements OnInit {
         autoFocus: '__non_existing_element__',
       disableClose:true,
         data: {
-          IdentModal: this.TypeValue,
+          IdentModal: this.typeValue,
           ColLabel: this.startSelectFilterLabel,
           ColumnModal: val,
           tableData_1: this.tableData_1.data,
@@ -544,7 +539,7 @@ export class ConsolidationComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result?.isExecuted) {
-          this.getTableData('', this.TypeValue);
+          this.getTableData('', this.typeValue);
         }
       })
     }
@@ -567,14 +562,14 @@ export class ConsolidationComponent implements OnInit {
     });
 
     if (event.value == 2) {
-      this.isitemVisible = false;
+      this.isItemVisible = false;
       this.displayedColumns_1.shift()
       this.displayedColumns_1.unshift('supplierItemID')
-      this.issupplyVisible = true;
+      this.isSupplyVisible = true;
     }
     else {
-      this.isitemVisible = true;
-      this.issupplyVisible = false;
+      this.isItemVisible = true;
+      this.isSupplyVisible = false;
       this.displayedColumns_1.shift()
       this.displayedColumns_1.unshift('itemNumber')
     }
@@ -583,30 +578,30 @@ export class ConsolidationComponent implements OnInit {
   }
 
   btnEnable() {
-    this.verifybtn = false;
-    this.unverifybtn = false;
+    this.verifyBtn = false;
+    this.unverifyBtn = false;
   }
 
   btnDisable() {
-    this.verifybtn = true;
-    this.unverifybtn = true;
+    this.verifyBtn = true;
+    this.unverifyBtn = true;
   }
 
   enableConButts() {
     this.nextOrderbtn = false;
-    this.stagingbtn = false;
-    this.packingbtn = false;
-    this.verifybtn = false;
-    this.unverifybtn = false;
+    this.stagingBtn = false;
+    this.packingBtn = false;
+    this.verifyBtn = false;
+    this.unverifyBtn = false;
     this.printButtons = false;
   }
 
   disableConButts() {
     this.nextOrderbtn = true;
-    this.stagingbtn = true;
-    this.packingbtn = true;
-    this.verifybtn = true;
-    this.unverifybtn = true;
+    this.stagingBtn = true;
+    this.packingBtn = true;
+    this.verifyBtn = true;
+    this.unverifyBtn = true;
     this.printButtons = true;
   }
 
@@ -614,7 +609,7 @@ export class ConsolidationComponent implements OnInit {
     this.tableData_1.data = [];
     this.tableData_2.data = [];
     this.stageTable.data = [];
-    this.TypeValue = '';
+    this.typeValue = '';
     this.open = 0;
     this.completed = 0;
     this.backOrder = 0;
@@ -629,7 +624,7 @@ export class ConsolidationComponent implements OnInit {
     let payload = {
       "column": this.startSelectFilter,
       "value": this.filterValue ? this.filterValue : '',
-      "orderNumber": this.TypeValue
+      "orderNumber": this.typeValue
     }
 
     this.IconsolidationAPI.ConsoleItemsTypeAhead(payload).pipe(
@@ -649,7 +644,7 @@ export class ConsolidationComponent implements OnInit {
       })
 
     ).subscribe((res: any) => {
-      this.searchAutocompleteItemNum = res.data;
+      this.searchAutoCompleteItemNum = res.data;
     });
 
   }
@@ -665,11 +660,11 @@ export class ConsolidationComponent implements OnInit {
       width: '96vw',
       autoFocus: '__non_existing_element__',
       disableClose:true,
-      data: { orderNumber: this.TypeValue }
+      data: { orderNumber: this.typeValue }
     })
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getTableData(null, this.TypeValue);
+        this.getTableData(null, this.typeValue);
       }
     })
   }
@@ -681,13 +676,13 @@ export class ConsolidationComponent implements OnInit {
       autoFocus: '__non_existing_element__',
       disableClose:true,
       data: {
-        orderNum: this.TypeValue ? this.TypeValue : '2909782A',
+        orderNum: this.typeValue ? this.typeValue : '2909782A',
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result?.isExecuted) {
-        this.getTableData("", this.TypeValue);
+        this.getTableData("", this.typeValue);
       }
     });
   }
@@ -698,12 +693,12 @@ export class ConsolidationComponent implements OnInit {
       width: '96vw',
       autoFocus: '__non_existing_element__',
       disableClose:true,
-      data: { orderNumber: this.TypeValue }
+      data: { orderNumber: this.typeValue }
 
     })
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getTableData(null, this.TypeValue);
+        this.getTableData(null, this.typeValue);
       }
 
     })
@@ -723,7 +718,7 @@ export class ConsolidationComponent implements OnInit {
       autoFocus: '__non_existing_element__',
       disableClose:true,
       data: {
-        orderNumber: this.TypeValue,
+        orderNumber: this.typeValue,
         stagingTable: this.stageTable?.data ? this.stageTable.data : []
       }
     });
@@ -792,7 +787,7 @@ export class ConsolidationComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(result => {
       this.type = result;
-      if (this.type) this.getTableData(null, this.TypeValue);
+      if (this.type) this.getTableData(null, this.typeValue);
     })
   }
 
@@ -803,17 +798,17 @@ export class ConsolidationComponent implements OnInit {
     }, 100);
   }
   navigateToOrder() {
-    window.location.href = `/#/admin/transaction?orderStatus=${this.TypeValue ? this.TypeValue : ''}&IsOrderStatus=true`;
+    window.location.href = `/#/admin/transaction?orderStatus=${this.typeValue ? this.typeValue : ''}&IsOrderStatus=true`;
 
   }
 
   printPreviewNonVerified(print = true) {
     if (this.tableData_1?.filteredData && this.tableData_1.filteredData.length > 0) {
       if(print){
-        this.global.Print(`FileName:PrintPrevNotVerified|OrderNum:${this.TypeValue}|WSID:${this.userData.wsid}`)
+        this.global.Print(`FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`)
       }
       else{
-        window.open(`/#/report-view?file=FileName:PrintPrevNotVerified|OrderNum:${this.TypeValue}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+        window.open(`/#/report-view?file=FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
       }
     }
     else {
@@ -834,16 +829,16 @@ export class ConsolidationComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result === 'Yes') {
-          this.IconsolidationAPI.ShowCMPackPrintModal({ orderNumber: this.TypeValue }).subscribe((res: any) => {
+          this.IconsolidationAPI.ShowCMPackPrintModal({ orderNumber: this.typeValue }).subscribe((res: any) => {
             if (res.isExecuted && res.data == "all") {
               if(print){
-                this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.TypeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
+                this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
               }
               else{
-                window.open(`/#/report-view?file=FileName:PrintPrevCMPackList|OrderNum:${this.TypeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                window.open(`/#/report-view?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
               }
             } else if (res.isExecuted && res.data == "modal") {
-              this.showCmPackPrintModal(true, this.TypeValue,print);
+              this.showCmPackPrintModal(true, this.typeValue,print);
             } else {
               this.global.ShowToastr('error',"Error has occured","Error");
               console.log("ShowCMPackPrintModal",res.responseMessage);
@@ -853,16 +848,16 @@ export class ConsolidationComponent implements OnInit {
       });
     }
     else {
-      this.IconsolidationAPI.ShowCMPackPrintModal({ orderNumber: this.TypeValue }).subscribe((res: any) => {
+      this.IconsolidationAPI.ShowCMPackPrintModal({ orderNumber: this.typeValue }).subscribe((res: any) => {
         if (res.isExecuted && res.data == "all") {
           if(print){
-            this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.TypeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
+            this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
           }
           else{
-            window.open(`/#/report-view?file=FileName:PrintPrevCMPackList|OrderNum:${this.TypeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+            window.open(`/#/report-view?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
           }
         } else if (res.isExecuted && res.data == "modal") {
-          this.showCmPackPrintModal(true, this.TypeValue,print);
+          this.showCmPackPrintModal(true, this.typeValue,print);
         } else {
           this.global.ShowToastr('error',"Error has occured","Error");
           console.log("ShowCMPackPrintModal",res.responseMessage);

@@ -11,7 +11,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 export class VerifiedItemComponent  {
   @Input() displayedColumns_2:any;  
   @Input() tableData_2:any;  
-  @Input() unverifybtn:any;  
+  @Input() unverifyBtn:any;  
   @Output() unverify = new EventEmitter<any>(); 
   @Output()  unverifyal= new EventEmitter<any>();  
   @ViewChild('paginator2') paginator2: MatPaginator; 
