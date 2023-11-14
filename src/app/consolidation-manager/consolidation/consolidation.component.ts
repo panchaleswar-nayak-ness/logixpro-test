@@ -21,6 +21,8 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
+import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 
 @Component({
   selector: 'app-consolidation',
@@ -86,6 +88,9 @@ export class ConsolidationComponent implements OnInit {
     { key: '9', value: 'User Field 1' },
   ];
 
+  hideRow = true;
+  firstTable = true;
+
   public IconsolidationAPI : IConsolidationApi;
 
   constructor(
@@ -99,16 +104,15 @@ export class ConsolidationComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
-    this.ConsolidationIndex()
+    this.getConsolidationIndex()
   }
 
   ngAfterViewInit() {
     this.searchBoxField?.nativeElement.focus();
-    this.ApplySavedItem();
+    this.applySavedItem();
   }
 
-  
-  ApplySavedItem() {
+  applySavedItem() {
     if (this.currentTabDataService.savedItem[this.currentTabDataService.CONSOLIDATION])
     {
       let item= this.currentTabDataService.savedItem[this.currentTabDataService.CONSOLIDATION];
@@ -124,7 +128,8 @@ export class ConsolidationComponent implements OnInit {
     }
     return false;
   }
-  RecordSavedItem() {
+
+  recordSavedItem() {
     this.currentTabDataService.savedItem[this.currentTabDataService.CONSOLIDATION]= {
       open : this.open,
       completed : this.completed,
@@ -134,32 +139,31 @@ export class ConsolidationComponent implements OnInit {
       tableData_2 : this.tableData_2,
       typeValue : this.typeValue,
       dataSource : this.dataSource
- 
     }
   }
-
-  hideRow = true;
-  firstTable = true;
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.tableData_1.sort = this.sort1;
   }
-  openAction(event:any){
+
+  openAction(){
     this.clearMatSelectList();
   }
+
   clearMatSelectList(){
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
+
   announceSortChange2(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.tableData_2.sort = this.sort2;
   }
@@ -168,7 +172,7 @@ export class ConsolidationComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.stageTable.sort = this.sort3;
   }
@@ -180,28 +184,25 @@ export class ConsolidationComponent implements OnInit {
 
   enterOrderID(event) {
     this.typeValue = event.target.value;
-    if (event.keyCode == 13) {
-      this.getTableData("", this.typeValue);
+    if (event.keyCode == KeyboardCodes.ENTER) {
+      this.getTableData(this.typeValue);
     }
   }
 
-  ConsolidationIndex() {
+  getConsolidationIndex() {
     let payload = {
       "orderNumber": this.typeValue
     }
-
     this.IconsolidationAPI.ConsolidationIndex(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.consolidationIndex = res.data;
         this.startSelectFilterLabel = this.consolidationIndex.cmPreferences.defaultLookupType;
         this.packListSort = this.consolidationIndex.cmPreferences.packingListSort;
-
         this.filterOption.forEach((e: any) => {
           if (e.value == this.startSelectFilterLabel) {
             this.startSelectFilter = e.key;
           }
         });
-
         if (this.startSelectFilterLabel == 'Supplier Item ID') {
           this.isItemVisible = false;
           this.displayedColumns_1.shift()
@@ -218,20 +219,18 @@ export class ConsolidationComponent implements OnInit {
       else {
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         console.log("ConsolidationIndex",res.responseMessage);
-
       }
     }
     )
   }
 
-  getTableData(type: any, typeValue: any) {
-    this.ConsolidationIndex();
+  getTableData(typeValue: any) {
+    this.getConsolidationIndex();
     let curValue = typeValue;
     let payload = {
       "type": this.type,
       "selValue": curValue
     }
-
     this.IconsolidationAPI.ConsolidationData(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         if ((typeof res.data == 'string')) {
@@ -311,7 +310,7 @@ export class ConsolidationComponent implements OnInit {
         console.log("ConsolidationData",res.responseMessage);
       }
       
-      this.RecordSavedItem();
+      this.recordSavedItem();
     })
   }
 
@@ -356,7 +355,7 @@ export class ConsolidationComponent implements OnInit {
     })
   }
 
-  unVerifyAll() {
+  unverifyAll() {
 
     let z: any = [];
     z = this.tableData_2.data.filter((element) => element.lineStatus != 'Waiting Reprocess')
@@ -480,14 +479,14 @@ export class ConsolidationComponent implements OnInit {
 
   }
 
-  filtervalue(event) {
+  getFilterValue(event) {
     if (event.keyCode == 13) {
-      this.CheckDuplicatesForVerify(this.filterValue);
+      this.checkDuplicatesForVerify(this.filterValue);
     }
-    this.RecordSavedItem();
+    this.recordSavedItem();
   }
 
-  checkVerifyType(columnIndex, val) {
+  checkVerifyType(val) {
     let filterVal = this.filterValue
     this.filterValue = '';
     if (val != undefined) {
@@ -507,18 +506,18 @@ export class ConsolidationComponent implements OnInit {
 
   }
 
-  CheckDuplicatesForVerify(val) {
+  checkDuplicatesForVerify(val) {
     let columnIndex = this.startSelectFilter;
     let result: any;
     if (columnIndex == 0) {
 
       this.filterOption.forEach((e: any) => {
-        result = this.checkVerifyType(e.key, val);
+        result = this.checkVerifyType(val);
       });
 
     }
     else
-      result = this.checkVerifyType(columnIndex, val);
+      result = this.checkVerifyType(val);
 
     // desturcturing
     const { verifyItems, blindVerifyItems } = this.consolidationIndex.cmPreferences;
@@ -539,7 +538,7 @@ export class ConsolidationComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result?.isExecuted) {
-          this.getTableData('', this.typeValue);
+          this.getTableData(this.typeValue);
         }
       })
     }
@@ -574,7 +573,7 @@ export class ConsolidationComponent implements OnInit {
       this.displayedColumns_1.unshift('itemNumber')
     }
     
-    this.RecordSavedItem();
+    this.recordSavedItem();
   }
 
   btnEnable() {
@@ -605,7 +604,7 @@ export class ConsolidationComponent implements OnInit {
     this.printButtons = true;
   }
 
-  clearpagedata() {
+  clearPageData() {
     this.tableData_1.data = [];
     this.tableData_2.data = [];
     this.stageTable.data = [];
@@ -619,7 +618,7 @@ export class ConsolidationComponent implements OnInit {
     this.paginator3.pageIndex = 0;
   }
 
-  async autocompleteSearchColumnItem(val:any = null) {
+  async autoCompleteSearchColumnItem(val:any = null) {
     if(val) this.filterValue = val;
     let payload = {
       "column": this.startSelectFilter,
@@ -650,8 +649,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   getRow(filtervalue) {
-
-    this.CheckDuplicatesForVerify(filtervalue);
+    this.checkDuplicatesForVerify(filtervalue);
   }
 
   openCmShipping() {
@@ -664,7 +662,7 @@ export class ConsolidationComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getTableData(null, this.typeValue);
+        this.getTableData(this.typeValue);
       }
     })
   }
@@ -682,7 +680,7 @@ export class ConsolidationComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result?.isExecuted) {
-        this.getTableData("", this.typeValue);
+        this.getTableData(this.typeValue);
       }
     });
   }
@@ -698,17 +696,17 @@ export class ConsolidationComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getTableData(null, this.typeValue);
+        this.getTableData(this.typeValue);
       }
 
     })
   }
 
   openCmOrderNo() {
-    this.clearpagedata();
+    this.clearPageData();
     this.searchBoxField?.nativeElement.focus();
     this.disableConButts();
-    this.RecordSavedItem();
+    this.recordSavedItem();
   }
 
   openCmOrderNumber() {
@@ -787,7 +785,7 @@ export class ConsolidationComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(result => {
       this.type = result;
-      if (this.type) this.getTableData(null, this.typeValue);
+      if (this.type) this.getTableData(this.typeValue);
     })
   }
 

@@ -7,7 +7,7 @@
             <div>
                 <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
                     <mat-label>Actions</mat-label>
-                    <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="openAction($event)">
+                    <mat-select #matRef class="employees-action" placeholder="Actions" (selectionChange)="openAction()">
                         <mat-option value="0" [disabled]="stagingBtn" (click)="!stagingBtn && this.stageTable.data.length > 0 ? openCmOrderNumber() : ''"> Staging Location</mat-option>
                         <mat-option value="1" [disabled]="packingBtn" (click)="!packingBtn ? openPacking() : ''">Packing</mat-option>
                         <mat-option value="2" [disabled]="shippingBtn" (click)="!shippingBtn ? openCmShipping() : ''">Shipping</mat-option>
@@ -120,10 +120,10 @@
             [searchAutoCompleteItemNum]="searchAutoCompleteItemNum" 
             [displayedColumns_1]="displayedColumns_1"  
             (selected)="getSelected($event)" 
-            (filterVal)="filtervalue($event)" 
+            (filterVal)="getFilterValue($event)" 
             (verify)="verifyLine($event)"  
             (verifyal)="verifyAll()" 
-            (autocomplete)="autocompleteSearchColumnItem($event)" 
+            (autocomplete)="autoCompleteSearchColumnItem($event)" 
             (Row)="getRow($event)">
         </app-unverified-item>
     </div>
@@ -133,7 +133,7 @@
             [displayedColumns_2]="displayedColumns_2"  
             [tableData_2]="tableData_2"  
             [unverifyBtn]="unverifyBtn"
-            (unverifyal)="unVerifyAll()"
+            (unverifyal)="unverifyAll()"
             (unverify)="unverifyLine($event)">
         </app-verified-item>
     </div>

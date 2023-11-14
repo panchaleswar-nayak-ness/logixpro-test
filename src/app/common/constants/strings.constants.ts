@@ -88,3 +88,7 @@ export const AppPermissions = {
     OrderManager: 'Order Manager',
     WorkManager: 'Work Manager'
 }
+
+export const LiveAnnouncerMessage = {
+    SortingCleared: 'Sorting cleared'
+}
