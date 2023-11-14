@@ -40,7 +40,8 @@
             </div>
             <div class="col-xl-3 d-xl-flex d-block align-items-end justify-content-end">
                 <div class="mx-auto mx-xl-0">
-                    <button type="button" mat-flat-button color="secondary" class="secondary-btn btn-regular mb-3 px-0 w-100" style="color:#1A1AD3;" (click)="clickToHide()"> {{ firstTable == true ? 'Hide Order Detail' : 'Show Order Detail' }}</button>
+                <button type="button" mat-flat-button color="secondary" class="secondary-btn btn-regular mb-3 px-0 w-100"
+                    style="color:var(--clr-primary-500);" (click)="clickToHide()"> {{ firstTable == true ? 'Hide Order Detail' : 'Show Order Detail' }}</button>
                 </div>
             </div>
         </div>
@@ -89,7 +90,9 @@
                                 <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data available in table.</td>
                             </tr>
 
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style=" background-color: #F9F9FF;"></tr>
+                           
+                            
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style=" background-color: var(--clr-table-header);"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>
                     </ng-scrollbar>

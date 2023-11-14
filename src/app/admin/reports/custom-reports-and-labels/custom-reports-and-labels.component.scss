@@ -18,7 +18,7 @@
         &:hover {
             border-radius: 8px;
             transition: 0.2s ease all;
-            color: #fff;
+            color: var(--clr-pure-white);
             background: var(--clr-primary-300);
         }
     }
@@ -28,7 +28,7 @@
 .selected {
     border-radius: 8px;
     transition: 0.3s ease all;
-    color: #fff;
+    color: var(--clr-pure-white);
     background: var(--clr-primary-300);
 
 

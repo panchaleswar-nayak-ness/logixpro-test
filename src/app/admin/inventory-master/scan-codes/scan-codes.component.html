@@ -30,7 +30,7 @@
                                     (click)="openScanTypePopup(element)">
                                     <span matSuffix>
                                         <mat-icon
-                                            style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
+                                            style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
                                     </span>
                                     <input (input)="scanCodesList[i].isDisabled=false" readonly
                                         class="__grab_cursor readonly" matInput type="text" name="{{element.scanType}}"
@@ -97,7 +97,7 @@
                         </td>
                     </tr>
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
-                        style=" background-color: #F9F9FF;"></tr>
+                        style=" background-color: var(--clr-table-header);"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="border: 0px;"></tr>
                 </table>
             </ng-scrollbar>

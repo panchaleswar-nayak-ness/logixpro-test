@@ -522,7 +522,7 @@
             <ng-container matColumnDef="actions" stickyEnd>
                 <th mat-header-cell *matHeaderCellDef style="border: 0;height: 66px; padding-left:65px;">
                 </th>
-                <td mat-cell *matCellDef="let element" style="border: 0; padding-left: 24px; background: #fff;" >
+                <td mat-cell *matCellDef="let element" style="border: 0; padding-left: 24px; background: var(--clr-pure-white);" >
                   <div class="d-flex justify-content-end">
                   <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline">
                     <mat-icon>more_horiz</mat-icon>
@@ -541,7 +541,7 @@
                 </td>
             </tr>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" style=" background-color: #F9F9FF;"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" style=" background-color: var(--clr-table-header);"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
         </table>
     </ng-scrollbar>

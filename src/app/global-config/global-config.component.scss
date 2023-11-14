@@ -6,7 +6,7 @@
 
   /* Tertiary 900 */
 
-  background: #090948;
+  background: var(--clr-tertiary-900);
   overflow: hidden;
   &::before{
     content: '';
@@ -32,7 +32,7 @@
   align-items: center;
   letter-spacing: -0.4px;
 
-  color: #FFFFFF;
+  color: var(--clr-pure-white);
 }
 
 .account_login {
@@ -47,7 +47,7 @@
   align-items: center;
   letter-spacing: -0.4px;
 
-  color: #090948;
+  color: var(--clr-tertiary-900);
 }
 ::ng-deep .mat-form-field {
   font-size: 15px; // example

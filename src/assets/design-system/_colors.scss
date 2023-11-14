@@ -14,7 +14,23 @@ $primary-900: #000080 !default;
 
 // end primary-color-vairables
 
-// start primary-color-vairables
+// start primary-color-RGB-vairables
+
+$primary-rgb-10: 242, 242, 255 !default;
+$primary-rgb-50: 214, 214, 253 !default;
+$primary-rgb-100: 186, 186, 250 !default;
+$primary-rgb-200: 132, 132, 244 !default;
+$primary-rgb-300: 85, 85, 236 !default;
+$primary-rgb-400: 50, 50, 225 !default;
+$primary-rgb-500: 26, 26, 211 !default;
+$primary-rgb-600: 13, 13, 196 !default;
+$primary-rgb-700: 8, 8, 176 !default;
+$primary-rgb-800: 3, 3, 152 !default;
+$primary-rgb-900: 0, 0, 128 !default;
+
+// end primary-color-RGB-vairables
+
+// start secondary-color-vairables
 
 $secondary-10: #F9F2FF !default;
 $secondary-50: #F0E1FE !default;
@@ -28,9 +44,25 @@ $secondary-700: #7B42AC !default;
 $secondary-800: #653490 !default;
 $secondary-900: #502873 !default;
 
-// end primary-color-vairables
+// end secondary-color-vairables
 
-// start primary-color-vairables
+// start Secondary-color-RGB-vairables
+
+$secondary-rgb-10: 249, 242, 255 !default;
+$secondary-rgb-50: 240, 225, 254 !default;
+$secondary-rgb-100: 231, 208, 252 !default;
+$secondary-rgb-200: 213, 174, 248 !default;
+$secondary-rgb-300: 196, 145, 240 !default;
+$secondary-rgb-400: 178, 119, 230 !default;
+$secondary-rgb-500: 161, 99, 215 !default;
+$secondary-rgb-600: 142, 81, 196 !default;
+$secondary-rgb-700: 123, 66, 172 !default;
+$secondary-rgb-800: 101, 52, 144 !default;
+$secondary-rgb-900: 80, 40, 115 !default;
+
+// end Secondary-color-RGB-vairables
+
+// start tertiary-color-vairables
 
 $tertiary-10: #F2F2FF !default;
 $tertiary-50: #D7D7F9 !default;
@@ -44,7 +76,23 @@ $tertiary-700: #1C1C8A !default;
 $tertiary-800: #111169 !default;
 $tertiary-900: #090948 !default;
 
-// end primary-color-vairables
+// end tertiary-color-vairables
+
+// start tertiary-color-RGB-vairables
+
+$tertiary-rgb-10: 242, 242, 255 !default;
+$tertiary-rgb-50: 215, 215, 249 !default;
+$tertiary-rgb-100: 190, 190, 244 !default;
+$tertiary-rgb-200: 150, 150, 235 !default;
+$tertiary-rgb-300: 114, 114, 223 !default;
+$tertiary-rgb-400: 85, 85, 208 !default;
+$tertiary-rgb-500: 61, 61, 189 !default;
+$tertiary-rgb-600: 42, 42, 166 !default;
+$tertiary-rgb-700: 28, 28, 138 !default;
+$tertiary-rgb-800: 17, 17, 105 !default;
+$tertiary-rgb-900: 9, 9, 72 !default;
+
+// end tertiary-color-RGB-vairables
 
 // start chrome-color-vairables
 
@@ -57,6 +105,34 @@ $chrome-700: #626273 !default;
 $chrome-900: #17171A !default;
 
 // end chrome-color-vairables
+
+// start chrome-color-RGB-vairables
+
+$chrome-rgb-50: 245, 245, 250 !default;
+$chrome-rgb-100: 235, 235, 245 !default;
+$chrome-rgb-200: 221, 221, 237 !default;
+$chrome-rgb-300: 206, 206, 224 !default;
+$chrome-rgb-600: 139, 139, 163 !default;
+$chrome-rgb-700: 98, 98, 115 !default;
+$chrome-rgb-900: 23, 23, 26 !default;
+
+// end chrome-color-RGB-vairables
+
+$success:#1D865C !default;
+$warning:#FFC458 !default;
+$danger:#DE2654 !default;
+
+$success-rgb:29, 134, 92 !default;
+$warning-rgb:255, 196, 88 !default;
+$danger-rgb:222, 38, 84 !default;
+
+$pure-white:#ffffff !default;
+$pure-black:#000000 !default;
+
+$pure-white-rgb:255, 255, 255 !default;
+$pure-black-rgb:0, 0, 0 !default;
+
+$table-header-color:#f9f9ff;
 
 
 $colors:(
@@ -108,9 +184,82 @@ $colors:(
     "700": $chrome-700,
     "900": $chrome-900
   ),
+  primary-rgb:(
+    "10": $primary-rgb-10,
+    "50": $primary-rgb-50,
+    "100": $primary-rgb-100,
+    "200": $primary-rgb-200,
+    "300": $primary-rgb-300,
+    "400": $primary-rgb-400,
+    "500": $primary-rgb-500,
+    "600": $primary-rgb-600,
+    "700": $primary-rgb-700,
+    "800": $primary-rgb-800,
+    "900": $primary-rgb-900
+  ),
+  secondary-rgb:(
+    "10": $secondary-rgb-10,
+    "50": $secondary-rgb-50,
+    "100": $secondary-rgb-100,
+    "200": $secondary-rgb-200,
+    "300": $secondary-rgb-300,
+    "400": $secondary-rgb-400,
+    "500": $secondary-rgb-500,
+    "600": $secondary-rgb-600,
+    "700": $secondary-rgb-700,
+    "800": $secondary-rgb-800,
+    "900": $secondary-rgb-900
+  ),
+  tertiary-rgb:(
+    "10": $tertiary-rgb-10,
+    "50": $tertiary-rgb-50,
+    "100": $tertiary-rgb-100,
+    "200": $tertiary-rgb-200,
+    "300": $tertiary-rgb-300,
+    "400": $tertiary-rgb-400,
+    "500": $tertiary-rgb-500,
+    "600": $tertiary-rgb-600,
+    "700": $tertiary-rgb-700,
+    "800": $tertiary-rgb-800,
+    "900": $tertiary-rgb-900
+  ),
+  chrome-rgb:(
+    "50": $chrome-rgb-50,
+    "100": $chrome-rgb-100,
+    "200": $chrome-rgb-200,
+    "300": $chrome-rgb-300,
+    "600": $chrome-rgb-600,
+    "700": $chrome-rgb-700,
+    "900": $chrome-rgb-900
+  ),
+  danger:(
+    "shade":$danger
+  ),
+  success:(
+    "shade":$success
+  ),
+  warning:(
+    "shade":$warning
+  ),
+  danger-rgb:(
+    "shade":$danger-rgb
+  ),
+  success-rgb:(
+    "shade":$success-rgb
+  ),
+  warning-rgb:(
+    "shade":$warning-rgb
+  ),
+  pure:(
+    "white":$pure-white,
+    "black":$pure-black
+  ),
+  pure-rgb:(
+    "white":$pure-white-rgb,
+    "black":$pure-black-rgb
+  ),
+  table:(
+    "header":$table-header-color
+  )
 );
-
-$success:#1D865C;
-$warning:#FFC458;
-$danger:#DE2654;
 

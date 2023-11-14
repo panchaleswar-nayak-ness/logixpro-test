@@ -48,7 +48,7 @@
         white-space: nowrap;" mat-cell *matCellDef="let element"> {{element.username}} </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" style="background-color: #F9F9FF;"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" style="background-color: var(--clr-table-header);"></tr>
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" [attr.colspan]="displayedColumns.length">
           No data matching the filter.

@@ -23,6 +23,8 @@
   </div>
   <span class="full-spacer"></span>
   <div class="row mr-2 ml-auto">
+    <div class="d-flex align-items-center">
+    <!-- <div class="p-2 px-3 br-14"><mat-slide-toggle (change)="toggleStyles($event.checked)" color="primary" [checked]="themeToggle">High Contrast</mat-slide-toggle></div> -->
     <ul class="row m-0 align-items-center">
       <li>
         <button mat-button [matMenuTriggerFor]="menu" class="user">
@@ -36,6 +38,12 @@
           <mat-icon class="user-image-icon" style="height: 18px ;">keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #menu="matMenu" class="custom mat-menu-panel " xPosition="before">
+          <div class="px-3 mb-2 text-tertiary-900">
+            <div class="text-14 text-chrome-600 my-1">Theme Options</div>
+            <mat-radio-group class="d-flex flex-column text-14" color="primary" aria-label="Select an option" (change)="selectTheme($event.value)" [value]="themeRadio">
+              <mat-radio-button *ngFor="let theme of themes" class="mb-1" [value]="theme.value">{{ theme.name }}</mat-radio-button>
+            </mat-radio-group>
+            </div>
           <button mat-menu-item (click)="openPrintSetting()">
             <mat-icon class="material-symbols-outlined">
               print
@@ -46,9 +54,11 @@
             <mat-icon>exit_to_app</mat-icon>
             Logout
           </button>
+          
         </mat-menu>
       </li>
     </ul>
+  </div>
   </div>
 
 
