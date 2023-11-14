@@ -5,6 +5,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
@@ -27,6 +28,8 @@ export class SelectionTransactionForToteComponent implements OnInit {
 
   public lowerBound=1;
   public upperBound=2;
+
+  showBtnNewPutAwayForSameSKU : boolean = true;
 
   public iinductionManagerApi:IInductionManagerApiService;
 
@@ -155,10 +158,17 @@ export class SelectionTransactionForToteComponent implements OnInit {
           }
             
           this.transactionTable = res.data.transactionTable;
-          
+
           if (res.data.success == "0") {
             this.dialogRef.close("NO");
             return;
+          }
+
+          if (this.data.imPreference.purchaseOrderRequired && this.transactionTable.length > 0) {
+            this.showBtnNewPutAwayForSameSKU = false;
+          } else if(this.data.imPreference.purchaseOrderRequired && this.transactionTable.length == 0) {
+            this.global.ShowToastr('error',`No open Put Aways available for this ${this.inputType != 'Any' ? this.inputType : ''}`, 'Error!');
+            this.dialogRef.close()
           }
 
           if (this.data.selectIfOne && res.data.transactionTable.length == 1) this.selectOrder(this.transactionTable[0].id, res.data.itemNumber, this.transactionTable[0]);

@@ -169,6 +169,9 @@ export class AdminPrefrencesComponent implements OnInit {
       defaultPutAwayPriority: new FormControl(0, Validators.compose([])),
       defaultPutAwayQuantity: new FormControl(0, Validators.compose([])),
       putAwayInductionScreen: new FormControl('', Validators.compose([])),
+      dontAllowOverReceipt: new FormControl(false, Validators.compose([])),
+      autoAssignAllZones: new FormControl(false, Validators.compose([])),
+      purchaseOrderRequired: new FormControl(false, Validators.compose([])),
 
       // Print Settings
       autoPrintCrossDockLabel: new FormControl(false, Validators.compose([])),
@@ -290,6 +293,9 @@ export class AdminPrefrencesComponent implements OnInit {
                 defaultPutAwayPriority: values.defaultPutAwayPriority,
                 defaultPutAwayQuantity: values.defaultPutAwayQuantity,
                 putAwayInductionScreen: values.putAwayInductionScreen,
+                dontAllowOverReceipt: values.dontAllowOverReceipt,
+                autoAssignAllZones: values.autoAssignAllZones,
+                purchaseOrderRequired: values.purchaseOrderRequired,
 
                 // Print Settings
                 autoPrintCrossDockLabel: values.autoPrintCrossDockLabel,
@@ -349,7 +355,6 @@ export class AdminPrefrencesComponent implements OnInit {
       const values = this.preferencesForm.value;
       let payLoad = {};
       let endPoint = '';
-
       if (type == 1) {
         payLoad = {
           AutoPickOrder: values.autoPickOrderSelection,
@@ -385,8 +390,10 @@ export class AdminPrefrencesComponent implements OnInit {
           AutoPrintCaseLabel: values.autoPrintCaseLabel,
           ShortMethod: values.shortMethod,
           WSID: this.userData.wsid,
+          DontAllowOverReceipt:values.dontAllowOverReceipt,
+          AutoAssignAllZones:values.autoAssignAllZones,
+          PurchaseOrderRequired:values.purchaseOrderRequired
         };
-
         endPoint = '/Induction/imsytemsettings';
       } else if (type == 2) {
         payLoad = {
@@ -448,7 +455,7 @@ export class AdminPrefrencesComponent implements OnInit {
 
         endPoint = '/Induction/imprintsettings';
       }
-
+      console.log("here",payLoad);
       this.iInductionManagerApi.DynamicMethod(payLoad, endPoint).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {

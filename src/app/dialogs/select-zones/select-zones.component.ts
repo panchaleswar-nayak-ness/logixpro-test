@@ -34,7 +34,8 @@ export class SelectZonesComponent implements OnInit {
   wsid="";
   zoneDetails :any;
   alreadyAssignedZones :any;
-
+  imPreferences: any;
+  autoAssignAllZones: any;
 
   selectZone(row:any){
     const index = this.ELEMENT_DATA.findIndex(o => o.zone === row.zone);
@@ -163,21 +164,19 @@ export class SelectZonesComponent implements OnInit {
     this.dialogRef.close();
   }
 
+
   getAvailableZones()
   {
     this.ELEMENT_DATA.length=0;
     let payLoad =
     {
       batchID: this.batchID,
-      username: this.username,
-      wsid: this.wsid
     };
     this.iinductionManagerApi.AvailableZone(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
         this.zoneDetails = res.data.zoneDetails; 
         for (const zoneDetail of this.zoneDetails) {
-                    
           if(this.alreadyAssignedZones!=null && this.alreadyAssignedZones.length>0)
           {
             this.alreadyAssignedZones.find((o) => {
@@ -220,11 +219,10 @@ export class SelectZonesComponent implements OnInit {
     this.isNewBatch=this.data.isNewBatch;
     this.wsid=this.data.wsid;
     this.alreadyAssignedZones = this.data.assignedZones;
+    console.log(this.data);
+    console.log(this.alreadyAssignedZones);
     this.getAvailableZones();
-
-
-
-    
   }
+  
 
 }
