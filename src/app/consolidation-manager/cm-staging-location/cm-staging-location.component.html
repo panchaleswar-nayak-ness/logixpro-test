@@ -5,9 +5,9 @@
     </div>
     <div class="card bg-light-blue bg-50 br-none px-4 py-4 br-14 mb-3">
         <app-SLSearchOrderNumberTote
-            [OrderNumberTote]="this.OrderNumberTote"
+            [orderNumberTote]="this.orderNumberTote"
             (clearAllEvent)="clearAll()"
-            (stagingOrderNumEvent)="OrderNumberTote = $event.ordTote; StagingLocsOrderNum($event.event)"
+            (stagingOrderNumEvent)="orderNumberTote = $event.ordTote; stagingLocsOrderNum($event.event)"
         ></app-SLSearchOrderNumberTote>
     </div>
     <div class="card br-14 p-4">
@@ -18,8 +18,8 @@
                         <span class="material-symbols-outlined icon-search">
                             Search
                         </span>
-                        <input type="text" placeholder="Search" aria-label="Search" (input)="SearchToteAndLocation()" matInput  [(ngModel)]="stagingLocation">
-                        <button matSuffix *ngIf="stagingLocation" class="clear-btn"  (click)="stagingLocation= '';SearchToteAndLocation()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                        <input type="text" placeholder="Search" aria-label="Search" (input)="searchToteAndLocation()" matInput  [(ngModel)]="stagingLocation">
+                        <button matSuffix *ngIf="stagingLocation" class="clear-btn"  (click)="stagingLocation= '';searchToteAndLocation()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete>
                             <mat-option>
                             </mat-option>
@@ -29,7 +29,7 @@
             </div>
             <div class="col">
                 <div class="d-flex d-xl-block gap-12 justify-content-end mb-3">
-                    <button style="flex: 1 auto;" mat-stroked-button color="warn" class=" float-end btn-regular px-4 button-remove-all-w-stroke" (click)="UnstageAll()">
+                    <button style="flex: 1 auto;" mat-stroked-button color="warn" class=" float-end btn-regular px-4 button-remove-all-w-stroke" (click)="unstageAll()">
                         Unstage All
                     </button>
                 </div>
@@ -38,7 +38,7 @@
         <div class="card br-14 table-responsive borderless">
             <ng-scrollbar class="mat-table-scrollbar" style="height:340px" track="all">
 
-                <table class="w-100 table-borderless" mat-table [dataSource]="stagetables" matSort>
+                <table class="w-100 table-borderless" mat-table [dataSource]="stageTables" matSort>
                     <ng-container matColumnDef="select" >
                         <th mat-header-cell *matHeaderCellDef> Tote ID </th>
                         <td mat-cell *matCellDef="let element">

@@ -8,7 +8,10 @@ export const StringConditions = {
     NotCompleted: 'Not Completed',
     NotAssigned: 'Not Assigned',
     No: 'No',
-    Yes: 'Yes'
+    Yes: 'Yes',
+    Enter: 'Enter',
+    Event: 'event',
+    Click: 'click'
 }
 
 export const ResponseStrings = {
@@ -19,7 +22,11 @@ export const ResponseStrings = {
     Conflict: 'Conflict',
     Error: 'Error',
     All: 'all',
-    Modal: 'modal'
+    Modal: 'modal',
+    DNENP: 'DNENP',
+    Fail: 'Fail',
+    INVALID: 'INVALID',
+    Redirect: 'Redirect'
 }
 
 export const ToasterType = {
@@ -31,7 +38,9 @@ export const ToasterType = {
 export const ToasterTitle = {
     Error: 'Error!',
     Success: 'Success!',
-    Alert: 'Alert!'
+    Alert: 'Alert!',
+    Consolidation: 'Consolidation!',
+    Staging: 'Staging!'
 }
 
 export const ConfirmationMessages = {
@@ -56,7 +65,9 @@ export const ToasterMessages = {
     ItemNotInOrder:'Item not in order or has already been consolidated',
     NoUnverfiedItems: 'There are no unverfied items',
     ErrorOccuredTryingToRemoveAll:'An Error Occured while trying to remove all data, check the event log for more information',
-    ErrorWhileSave:'An Error Occured while trying to save'
+    ErrorWhileSave:'An Error Occured while trying to save',
+    OrderInvalid:'The Order/Tote that you entered is invalid or no longer exists in the system.',
+    InvalidLocation:'The Location entered was not valid'
 }
 
 export const AppNames = {
@@ -78,7 +89,8 @@ export const AppRoutes = {
     Hash: '#',
     OrderManager: '/OrderManager',
     AdminTransaction:'/#/admin/transaction',
-    ReportView:'/#/report-view'
+    ReportView:'/#/report-view',
+    Logon:'/#/Logon/'
 }
 
 export const AppIcons = {
