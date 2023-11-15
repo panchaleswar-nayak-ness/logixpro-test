@@ -1,13 +1,10 @@
 <mat-tab-group dynamicHeight>
     <mat-tab label="Consolidation">
-   <app-preferences-consolidation (consolidationEvnt)="getPreferences()" [pref]="preferencesData"></app-preferences-consolidation>
+        <app-preferences-consolidation (consolidationEvnt)="getPreferences()"
+            [pref]="preferencesData"></app-preferences-consolidation>
     </mat-tab>
-
-
-
-    <!-- Shipping tab -->
     <mat-tab label="Shipping">
-     <app-preferences-shipping  (shippingEvnt)="getPreferences()"  [shippingData]="preferencesData" ></app-preferences-shipping>
+        <app-preferences-shipping (shippingEvnt)="getPreferences()"
+            [shippingData]="preferencesData"></app-preferences-shipping>
     </mat-tab>
-
 </mat-tab-group>

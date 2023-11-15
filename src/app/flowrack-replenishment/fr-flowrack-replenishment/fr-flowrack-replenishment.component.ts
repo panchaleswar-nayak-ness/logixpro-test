@@ -320,7 +320,8 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   }
 
   getAppLicense() {
-      this.userData.wsid
+    const wsidValue = this.userData.wsid; // Assigning to a variable
+    console.log(wsidValue);
   }
   
   convertToObj(data) {

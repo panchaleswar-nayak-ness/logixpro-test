@@ -1,10 +1,7 @@
-import { } from '@angular/cdk/collections';
 import { Component, ElementRef, OnInit, ViewChild, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatOption } from '@angular/material/core';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSelect } from '@angular/material/select';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
@@ -61,8 +58,7 @@ export class GenerateOrderComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private Api: ApiFuntions,
-    private adminApiService: AdminApiService,
+    public adminApiService: AdminApiService,
     private global:GlobalService
   ) {
     this.userData = this.authService.userData();

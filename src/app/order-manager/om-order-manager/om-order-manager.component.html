@@ -164,52 +164,15 @@
     <mat-card-content>
         <div class="row">
             <div class="col-xl-5">
-                <!-- <div class="d-xl-flex d-block gap-12 align-items-center mb-3">
-                    
-                    
-                    <mat-form-field class="action-dropdown d-xl-flex d-block mb-3 mb-xl-0" appearance="outline">
-                        <mat-select class="employees-action" placeholder="Select" [(ngModel)]="searchCol" (selectionChange)="fillTable()">
-                            <mat-option *ngFor="let col of colList" [value]="col">{{col}}</mat-option>                            
-                        </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more ">
-                            expand_more
-                        </span>
-    
-                    </mat-form-field>
-                    <span class="v-br bold d-none d-xl-block">-</span>
-                    <div class="d-flex g-mini-search-box" style="flex:1">
-                        <mat-form-field class="w-100 bg-white br-8" appearance="fill">
-                            <span class="material-symbols-outlined icon-search">
-                                search
-                            </span>
-                            <input type="text" placeholder="Search" [(ngModel)]="searchTxt" (input)="fillTable(true)" aria-label="Number" matInput>
-                            <button matSuffix *ngIf="searchTxt" class="clear-btn" (click)=" searchTxt='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
-                        </mat-form-field>
-                    </div>
-                </div> -->
-                <!-- <app-column-filter-component 
-                [tableColumns]="this.displayedColumns" 
-                [searchCol]="this.columnSearch.searchColumn.colDef"
-                (selectionChangeEvent)="this.columnSearch.searchColumn.colDef = $event; searchColumn()"
-                (colKeyUpEnterEvent)="searchColumn()"
-                (searchKeyUpEvent)="autocompleteSearchColumn()"
-                (searchKeyUpEnterEvent)="searchData()"
-                (clearInputFieldEvent)="this.columnSearch.searchColumn.colDef = '';  this.columnSearch.searchValue = ''; reset()"
-                [searchString]="this.columnSearch.searchValue"
-                [searchAutocompleteList]="this.searchAutocompleteList"
-                (optionSelectedEvent)="this.columnSearch.searchValue = $event; searchData()">
-                </app-column-filter-component> -->
-
                 <app-column-filter-component
-                [tableColumns]="this.allColumns" 
-                [searchCol]="this.allColumns.colDef"
-                (selectionChangeEvent)="this.searchCol = ($event).toString(); fillTable()"
-                (colKeyUpEnterEvent)="fillTable()"
-                (searchKeyUpEvent)="this.searchTxt = $event; fillTable(true)"
-                (clearInputFieldEvent)="searchTxt=''"
-                [searchString]="this.allColumns.searchValue"
-               >
-                ></app-column-filter-component>
+                    [tableColumns]="this.allColumns" 
+                    [searchCol]="this.allColumns.colDef"
+                    (selectionChangeEvent)="this.searchCol = ($event).toString(); fillTable()"
+                    (colKeyUpEnterEvent)="fillTable()"
+                    (searchKeyUpEvent)="this.searchTxt = $event; fillTable(true)"
+                    (clearInputFieldEvent)="searchTxt=''"
+                    [searchString]="this.allColumns.searchValue">
+                </app-column-filter-component>
             </div>
             <div class="col-xl-5 offset-xl-2">
                 <div class="d-xl-flex d-block justify-content-end mb-3">

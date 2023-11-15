@@ -4,7 +4,7 @@
         <!-- Main Section Option (Import Export) -->
     
         <div class="col-xl-3 col-lg-6">
-          <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" 
+          <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
           routerLink="/ConsolidationManager/Consolidation"
           (click)="updateMenu('consolidationManager', '/ConsolidationManager/Consolidation')">
             <a class="main-section-option-link" href="#"></a>
@@ -16,7 +16,7 @@
         </div>
   
         <div class="col-xl-3 col-lg-6"  >
-          <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option" 
+          <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
           routerLink="/ConsolidationManager/StagingLocations"
           (click)="updateMenu('consolidationManager', '/ConsolidationManager/StagingLocations')">
             <a class="main-section-option-link" href="#"></a>
@@ -32,7 +32,7 @@
         <div class="col-xl-3 col-lg-6" 
         [ngClass]="isAuthorized('Consolidation Mgr Admin') ? 'isDivDisabled' : ''"
         >
-          <div matRipple [matRippleColor]="tab_hover_color" routerLink="Preferences"  class="main-section-option bg-white" (click)="updateMenu('consolidationManager', '/ConsolidationManager/Preferences')">
+          <div matRipple [matRippleColor]="tabHoverColor" routerLink="Preferences"  class="main-section-option bg-white" (click)="updateMenu('consolidationManager', '/ConsolidationManager/Preferences')">
             <a class="main-section-option-link" href="#"></a>
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
@@ -45,7 +45,7 @@
   
         <div class="col-xl-3 col-lg-6" 
         [ngClass]="isAuthorized('Consolidation Mgr Admin') ? 'isDivDisabled' : ''">
-          <div matRipple [matRippleColor]="tab_hover_color" routerLink="Reports" class="main-section-option bg-white" (click)="updateMenu('consolidationManager', '/ConsolidationManager/Reports')">
+          <div matRipple [matRippleColor]="tabHoverColor" routerLink="Reports" class="main-section-option bg-white" (click)="updateMenu('consolidationManager', '/ConsolidationManager/Reports')">
             <a class="main-section-option-link" href="/ConsolidationManager/Reports"></a>
             <div class="main-section-icon">
               <span class="material-symbols-outlined">
@@ -59,7 +59,7 @@
         <div class="col-xl-3 col-lg-6" 
         [ngClass]="isAuthorized('Order Status') ? 'isDivDisabled' : ''"
         >
-          <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option bg-white"
+          <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option bg-white"
           routerLink="/ConsolidationManager/OrderStatus" [queryParams]="{IsOrderStatus:true}" >
             <a class="main-section-option-link" href="#"></a>
             <div class="main-section-icon">

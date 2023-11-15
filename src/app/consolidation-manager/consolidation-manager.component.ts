@@ -9,19 +9,19 @@ import { AuthService } from '../init/auth.service';
 })
 export class ConsolidationManagerComponent {
 
-  tab_hover_color:string = '#cf9bff3d';
+  tabHoverColor:string = '#cf9bff3d';
 
-  constructor(private sharedService: SharedService,
-              public authService: AuthService,) { }
-
-
+  constructor(
+    private sharedService: SharedService,
+    public authService: AuthService
+    ) { }
 
   updateMenu(menu = '', route = ''){   
     this.sharedService.updateInductionAdminMenu({menu , route});
-
   }
+
   isAuthorized(controlName:any) {
     return !this.authService.isAuthorized(controlName);
- }
+  }
 
 }

@@ -8,7 +8,10 @@ export const StringConditions = {
     NotCompleted: 'Not Completed',
     NotAssigned: 'Not Assigned',
     No: 'No',
-    Yes: 'Yes'
+    Yes: 'Yes',
+    Enter: 'Enter',
+    Event: 'event',
+    Click: 'click'
 }
 
 export const ResponseStrings = {
@@ -19,7 +22,11 @@ export const ResponseStrings = {
     Conflict: 'Conflict',
     Error: 'Error',
     All: 'all',
-    Modal: 'modal'
+    Modal: 'modal',
+    DNENP: 'DNENP',
+    Fail: 'Fail',
+    INVALID: 'INVALID',
+    Redirect: 'Redirect'
 }
 
 export const ToasterType = {
@@ -32,6 +39,8 @@ export const ToasterTitle = {
     Error: 'Error!',
     Success: 'Success!',
     Alert: 'Alert!',
+    Consolidation: 'Consolidation!',
+    Staging: 'Staging!',
     NoRows: 'No Rows'
 }
 
@@ -82,7 +91,8 @@ export const AppRoutes = {
     Hash: '#',
     OrderManager: '/OrderManager',
     AdminTransaction:'/#/admin/transaction',
-    ReportView:'/#/report-view'
+    ReportView:'/#/report-view',
+    Logon:'/#/Logon/'
 }
 
 export const AppIcons = {
@@ -127,6 +137,40 @@ export const AppPermissions = {
 
 export const LiveAnnouncerMessage = {
     SortingCleared: 'Sorting cleared'
+}
+
+export const CMConsolidationPreferences = {
+    DefPackList: 'defPackList',
+    BlindVerify: 'blindVerify',
+    VerifyEach: 'verifyEach',
+    PackingList: 'packingList',
+    PrintUnVerified: 'printUnVerified',
+    PrintVerified: 'printVerified',
+    DefLookType: 'defLookType',
+    BackOrders: 'backOrders',
+    NonPickPro: 'nonPickpro',
+    EmailPackSlip: 'emailPackSlip',
+    ValidateStaingLocs: 'validateStaingLocs'
+}
+
+export const CMShippingPreferences = {
+    AllowShip: 'allowShip',
+    AllowPack: 'allowPack',
+    PrintCont: 'printCont',
+    PrintOrd: 'printOrd',
+    PrintContLabel: 'printContLabel',
+    ContIDText: 'contIDText',
+    ContID: 'contID',
+    ConfirmPack: 'confirmPack',
+    ConfirmQTY: 'confirmQTY',
+    Freight: 'freight',
+    Freight1: 'freight1',
+    Freight2: 'freight2',
+    Weight: 'weight',
+    Length: 'length',
+    Width: 'width',
+    Height: 'height',
+    Cube: 'cube'
 }
 
 export const ApiEndpoints = {
