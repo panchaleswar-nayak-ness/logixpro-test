@@ -83,6 +83,9 @@ export const ToasterMessages = {
     InvalidLocation:'The Location entered was not valid',
     ErrorOccuredTryingToRemoveAll:'An Error Occured while trying to remove all data, check the event log for more information',
     StartDateMustBeBeforeEndDate: 'Start date must be before end date!',
+    BlankZone:'Zone may not be left blank.  Zone will not be saved until this is fixed.',
+    SequenceMustEqualOrGreaterZero:'Sequence must be an integer greater than or equal to 0.  Zone will not be saved until this is fixed',
+    DuplicateZone:'Zone is currently set to be a duplicate. Zone will not be saved until this is fixed',
     ErrorOccuredPalletSetup:'An error occurred processing this pallet setup',
     PalletProcessed:'Pallet was processed',
     EnterBatchIdtoProcess:'Please enter in a batch id to proccess.',
@@ -220,6 +223,11 @@ export const KeyboardKeys = {
     E: 'e',
     R: 'r'
 }
+export const zoneType={
+    carousel:'carousel',
+    cartonFlow:'cartonFlow',
+    includePick:'includePick'
+}
 
 export const alertMessage = {
     SerialNoNotExistsMsg: 'Serial Number Does Not Exist',
@@ -243,3 +251,4 @@ export const showNotificationMessage ={
     ItemNotExists:'This item does not exist in Inventory',
     ToteAlreadyExists:'This tote id already exists in Open Transactions'
 }
+
