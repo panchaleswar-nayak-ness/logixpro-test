@@ -1,12 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
- 
+
 import { AuthService } from 'src/app/init/auth.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { ToasterMessages, ToasterTitle, ToasterType, showNotificationHeading, showNotificationMessage } from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-pallet-receiving',
   templateUrl: './pallet-receiving.component.html',
@@ -20,7 +20,6 @@ export class PalletReceivingComponent implements OnInit {
   public iInductionManagerApi:IInductionManagerApiService;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   constructor(
-    public Api: ApiFuntions,
     public inductionManagerApi : InductionManagerApiService,
     private authService: AuthService,
     public global:GlobalService,
@@ -45,13 +44,13 @@ export class PalletReceivingComponent implements OnInit {
       this.processForm.value.quantity === ''
     ) {
       this.showNotification(
-        'Fields Missing',
-        'Not all the fields were filled out. Please fill them out'
+        showNotificationHeading.FieldsMissing,
+        showNotificationMessage.FieldsFill
       );
     } else if (this.processForm.value.quantity <= 0) {
       this.showNotification(
-        'Invalid Quantity',
-        'An invalid quantity was entered. Please enter a quantity greater than 0'
+        showNotificationHeading.InvalidQuantity,
+        showNotificationMessage.InvalidQuantity
       );
     } else {
       // validate Tote
@@ -79,30 +78,30 @@ export class PalletReceivingComponent implements OnInit {
                     .ProcessPallet(payload)
                     .subscribe((response: any) => {
                       if (response.isExecuted) {
-                        this.global.ShowToastr('success',
-                          'Pallet was processed',
-                          'Success!' 
+                        this.global.ShowToastr(ToasterType.Success,
+                          ToasterMessages.PalletProcessed,
+                          ToasterTitle.Success 
                         );
 
                         this.resetForm();
                       } else {
-                        this.global.ShowToastr('error',
-                          'An error occurred processing this pallet setup',
-                          'Error!' 
+                        this.global.ShowToastr(ToasterType.Error,
+                          ToasterMessages.ErrorOccuredPalletSetup,
+                          ToasterType.Error
                         );
                       }
                     });
                 } else {
                   this.showNotification(
-                    'Invalid Item Entered',
-                    'This item does not exist in Inventory'
+                    showNotificationHeading.InvalidItemEntered,
+                    showNotificationMessage.ItemNotExists
                   );
                 }
               });
           } else {
             this.showNotification(
-              'Invalid Tote Entered',
-              'This tote id already exists in Open Transactions'
+              showNotificationHeading.InvalidToteEntered,
+              showNotificationMessage.ToteAlreadyExists
             );
             console.log("ValidateTote");
           }

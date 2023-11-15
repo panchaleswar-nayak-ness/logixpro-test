@@ -18,7 +18,7 @@
                     <div class="col-xl-4">
                         <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                             <mat-label>Scan Serial Number</mat-label>
-                            <input matInput (keydown.enter)="scanSerialEvent($event)" [(ngModel)]="scanSerial"  #autoFocusField>
+                            <input matInput (keydown.enter)="scanSerialEvent()" [(ngModel)]="scanSerial"  #autoFocusField>
                             <button matSuffix *ngIf="scanSerial" class="clear-btn" (click)=" scanSerial='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
 
                         </mat-form-field>
