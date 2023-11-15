@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-
+import {  StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-pod-setup-component',
   templateUrl: './pod-setup-component.component.html',
@@ -14,44 +14,44 @@ export class PodSetupComponentComponent implements OnInit{
   public iAdminApiService: IAdminApiService;
   userData: any;
   orderosrts: any;
-FieldNames: ReadonlyMap<unknown,unknown>;
+fieldNames: ReadonlyMap<unknown,unknown>;
   constructor(    
-    public authService: AuthService,private global : GlobalService, private adminApiService: AdminApiService,private Api:ApiFuntions) {
+    public authService: AuthService,private global : GlobalService, private adminApiService: AdminApiService) {
     this.iAdminApiService = adminApiService;
     this.userData = authService.userData();
    }
    ngOnInit(): void {
-    this.OSFieldFilterNames();
+    this.osFieldFilterNames();
   }
-  public OSFieldFilterNames() { 
+  public osFieldFilterNames() { 
     this.iAdminApiService.OSFieldFilterNames().subscribe((res: any) => {
       if(res.isExecuted && res.data)
       {
-        this.FieldNames = res.data;
+        this.fieldNames = res.data;
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterTitle.Error, this.global.globalErrorMsg(), ToasterType.Error);
         console.log("OSFieldFilterNames",res.responseMessage);
       }
     })
   }
 
-  CompanyObj: any = {}
+  companyObj: any = {}
 
   payload(){
     const payload:any = {
       "preference": [
-        this.CompanyObj.orderSort,this.CompanyObj.cartonFlowDisplay,this.CompanyObj.autoDisplayImage
+        this.companyObj.orderSort,this.companyObj.cartonFlowDisplay,this.companyObj.autoDisplayImage
       ],
       "panel": 4,
     }; 
-    this.SaveForm(payload); 
+    this.saveForm(payload); 
   }
-  async SaveForm(payload){ 
+  async saveForm(payload){ 
     this.iAdminApiService.GeneralPreferenceSave(payload).subscribe((res: any) => { 
     })
   }
-  async GetOrderSort(){
+  async getOrderSort(){
     this.iAdminApiService.ordersort().subscribe((res:any)=>{
       
       if(res.isExecuted && res.data)
@@ -60,7 +60,7 @@ FieldNames: ReadonlyMap<unknown,unknown>;
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterTitle.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ordersort",res.responseMessage);
 
       }

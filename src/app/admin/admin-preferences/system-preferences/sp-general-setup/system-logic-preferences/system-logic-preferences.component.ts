@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-system-logic-preferences',
   templateUrl: './system-logic-preferences.component.html',
@@ -13,17 +13,15 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 export class SystemLogicPreferencesComponent implements OnInit{
   public iAdminApiService: IAdminApiService;
   userData: any;
-  FieldNames: any;
-  orderosrts: any;
   constructor(    
     public authService: AuthService, private global : GlobalService,private adminApiService: AdminApiService,private Api:ApiFuntions) {
     this.iAdminApiService = adminApiService;
     this.userData = authService.userData();
    }
    ngOnInit(): void {
-    this.CompanyInfo();
+    this.companyInfo();
   }
-  public CompanyInfo() {
+  public companyInfo() {
     this.iAdminApiService.AdminCompanyInfo().subscribe((res: any) => {
       
       if(res.isExecuted && res.data)
@@ -32,7 +30,7 @@ export class SystemLogicPreferencesComponent implements OnInit{
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("AdminCompanyInfo",res.responseMessage);
 
       }
@@ -62,10 +60,10 @@ export class SystemLogicPreferencesComponent implements OnInit{
       "username": this.userData.userName,
       "wsid": this.userData.wsid
     }; 
-    this.SaveForm(payload);
+    this.saveForm(payload);
   }
 
-  async SaveForm(payload){ 
+  async saveForm(payload){ 
     this.iAdminApiService.GeneralPreferenceSave(payload).subscribe((res: any) => { 
     })
   }

@@ -75,7 +75,10 @@ export const ToasterMessages = {
     OrderInvalid:'The Order/Tote that you entered is invalid or no longer exists in the system.',
     InvalidLocation:'The Location entered was not valid',
     ErrorOccuredTryingToRemoveAll:'An Error Occured while trying to remove all data, check the event log for more information',
-    StartDateMustBeBeforeEndDate: 'Start date must be before end date!'
+    StartDateMustBeBeforeEndDate: 'Start date must be before end date!',
+    BlankZone:'Zone may not be left blank.  Zone will not be saved until this is fixed.',
+    SequenceMustEqualOrGreaterZero:'Sequence must be an integer greater than or equal to 0.  Zone will not be saved until this is fixed',
+    DuplicateZone:'Zone is currently set to be a duplicate. Zone will not be saved until this is fixed'
 }
 
 export const AppNames = {
@@ -198,4 +201,9 @@ export const KeyboardKeys = {
     D: 'd',
     E: 'e',
     R: 'r'
+}
+export const zoneType={
+    carousel:'carousel',
+    cartonFlow:'cartonFlow',
+    includePick:'includePick'
 }
