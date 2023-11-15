@@ -54,7 +54,9 @@ export const ToasterMessages = {
     ConsolidatedAllItemsInOrder:'You have consolidated all items in this order',
     ItemNotCompleted: "The selected item has not yet been completed and can't be verified at this time",
     ItemNotInOrder:'Item not in order or has already been consolidated',
-    NoUnverfiedItems: 'There are no unverfied items'
+    NoUnverfiedItems: 'There are no unverfied items',
+    ErrorOccuredTryingToRemoveAll:'An Error Occured while trying to remove all data, check the event log for more information',
+    ErrorWhileSave:'An Error Occured while trying to save'
 }
 
 export const AppNames = {
@@ -121,4 +123,38 @@ export const AppPermissions = {
 
 export const LiveAnnouncerMessage = {
     SortingCleared: 'Sorting cleared'
+}
+
+export const CMConsolidationPreferences = {
+    DefPackList: 'defPackList',
+    BlindVerify: 'blindVerify',
+    VerifyEach: 'verifyEach',
+    PackingList: 'packingList',
+    PrintUnVerified: 'printUnVerified',
+    PrintVerified: 'printVerified',
+    DefLookType: 'defLookType',
+    BackOrders: 'backOrders',
+    NonPickPro: 'nonPickpro',
+    EmailPackSlip: 'emailPackSlip',
+    ValidateStaingLocs: 'validateStaingLocs'
+}
+
+export const CMShippingPreferences = {
+    AllowShip: 'allowShip',
+    AllowPack: 'allowPack',
+    PrintCont: 'printCont',
+    PrintOrd: 'printOrd',
+    PrintContLabel: 'printContLabel',
+    ContIDText: 'contIDText',
+    ContID: 'contID',
+    ConfirmPack: 'confirmPack',
+    ConfirmQTY: 'confirmQTY',
+    Freight: 'freight',
+    Freight1: 'freight1',
+    Freight2: 'freight2',
+    Weight: 'weight',
+    Length: 'length',
+    Width: 'width',
+    Height: 'height',
+    Cube: 'cube'
 }

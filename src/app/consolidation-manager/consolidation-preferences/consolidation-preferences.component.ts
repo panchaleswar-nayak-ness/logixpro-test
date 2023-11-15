@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/init/auth.service';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 import { CmCarriersAddDeleteEditComponent } from 'src/app/dialogs/cm-carriers-add-delete-edit/cm-carriers-add-delete-edit.component';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-consolidation-preferences',
@@ -12,32 +13,29 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: [],
 })
 export class ConsolidationPreferencesComponent implements OnInit {
+
   userData: any;
-  preferencesData:any;
+  preferencesData: any;
   private subscription: Subscription = new Subscription();
-  public IconsolidationAPI : IConsolidationApi;
+  public IconsolidationAPI: IConsolidationApi;
+
   constructor(
-    public consolidationAPI : ConsolidationApiService,
+    public consolidationAPI: ConsolidationApiService,
     private authService: AuthService,
-    public global:GlobalService
+    public global: GlobalService
   ) {
     this.userData = this.authService.userData();
     this.IconsolidationAPI = consolidationAPI;
-   
   }
+
   openCmCarriers() {
-    let dialogRef:any = this.global.OpenDialog(CmCarriersAddDeleteEditComponent, {
+    this.global.OpenDialog(CmCarriersAddDeleteEditComponent, {
       height: 'auto',
       width: '720px',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
-     
+      disableClose: true,
     })
-    dialogRef.afterClosed().subscribe(result => {
-      
-      
-    })
-   }
+  }
 
   ngOnInit(): void {
     this.getPreferences();
@@ -48,22 +46,19 @@ export class ConsolidationPreferencesComponent implements OnInit {
       type: '',
       value: ''
     };
-
     this.IconsolidationAPI
       .ConsoleDataSB(payload)
       .subscribe((res) => {
         if (res.isExecuted) {
           this.preferencesData = res.data.cmPreferences;
-   
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("ConsoleDataSB",res.responseMessage);
-
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("ConsoleDataSB", res.responseMessage);
         }
-        
       });
   }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
