@@ -1,6 +1,4 @@
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog"; 
-
-
 import { AuthService } from "src/app/init/auth.service";
 import { Component, Inject, OnInit, ViewChild } from "@angular/core"; 
 import { MatTableDataSource } from "@angular/material/table";
@@ -17,58 +15,40 @@ import { GlobalService } from "src/app/common/services/global.service";
   styleUrls: ['./cm-item-selected.component.scss']
 })
 export class CmItemSelectedComponent implements OnInit {
+
   public startSelectFilter: any;
-  public tableData_1: any;
-  public tableData_2: any;
-
-  public IdentModal:any;
-  public ColLabel:any;
-  public ColumnModal:any;
-
+  public unverifiedItems: any;
+  public verifiedItems: any;
+  public identModal:any;
+  public colLabel:any;
+  public columnModal:any;
   userData: any;
-
-
-  ELEMENT_DATA: any[] =[
-    {tote_id: '30022', location: 'Work 2141',  staged_by: 'Main 52', staged_date: 'Jan-25-2023'},
-    {tote_id: '30022', location: 'Work 2141',  staged_by: 'Main 52', staged_date: 'Jan-25-2023'},
-    {tote_id: '30022', location: 'Work 2141',  staged_by: 'Main 52', staged_date: 'Jan-25-2023'},
-    {tote_id: '30022', location: 'Work 2141',  staged_by: 'Main 52', staged_date: 'Jan-25-2023'},
-
-  ];
-
- displayedColumns: string[] = ['itemNumber', 'warehouse', 'completedQuantity', 'toteID', 'serialNumber', 'userField1','lotNumber','actions'];
- itemSelectTable:any
- dataSourceList:any
-
- @ViewChild(MatSort) sort: MatSort;
-
- @ViewChild('paginator') paginator: MatPaginator;
+  displayedColumns: string[] = ['itemNumber', 'warehouse', 'completedQuantity', 'toteID', 'serialNumber', 'userField1','lotNumber','actions'];
+  itemSelectTable:any
+  dataSourceList:any
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('paginator') paginator: MatPaginator;
  
- public IconsolidationAPI : IConsolidationApi;
+  public IconsolidationAPI : IConsolidationApi;
 
- constructor(
+  constructor(
     public consolidationAPI : ConsolidationApiService,
     private global:GlobalService, 
-     
-    // private Api:ApiFuntions, 
     private authService: AuthService, 
-     @Inject(MAT_DIALOG_DATA) public data: any,
-     public dialogRef: MatDialogRef<CmItemSelectedComponent>,
-     private _liveAnnouncer: LiveAnnouncer) {
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<CmItemSelectedComponent>,
+    private _liveAnnouncer: LiveAnnouncer) {
       this.IconsolidationAPI = consolidationAPI;
       }
 
   ngOnInit(): void {
         this.userData = this.authService.userData();
-        this.IdentModal = this.data.IdentModal;
-        this.ColLabel = this.data.ColLabel
-        this.ColumnModal = this.data.ColumnModal;
-        this.tableData_1 = this.data.tableData_1;
-        this.tableData_2 = this.data.tableData_2;
-
-
+        this.identModal = this.data.identModal;
+        this.colLabel = this.data.colLabel
+        this.columnModal = this.data.columnModal;
+        this.unverifiedItems = this.data.unverifiedItems;
+        this.verifiedItems = this.data.verifiedItems;
         this.getItemSelectedData();
-
   }
 
   announceSortChange(sortState: Sort) {
@@ -78,30 +58,25 @@ export class CmItemSelectedComponent implements OnInit {
       this._liveAnnouncer.announce('Sorting cleared');
     }
     this.itemSelectTable.sort = this.sort;
-    
   }
 
   
   getItemSelectedData(){
     let payload = {
-        "orderNumber": this.IdentModal ,
-        "column": this.ColLabel,
-        "columnValue":  this.ColumnModal
+        "orderNumber": this.identModal ,
+        "column": this.colLabel,
+        "columnValue":  this.columnModal
     }
-
-
     this.IconsolidationAPI.ItemModelData(payload).subscribe((res=>{
       if(res.isExecuted && res.data)
       {
         this.itemSelectTable= new MatTableDataSource(res.data);
         this.itemSelectTable.paginator = this.paginator;
-
       }
       else {
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         console.log("ItemModelData",res.responseMessage);
       }
-        
     }))
 }
 
@@ -150,7 +125,7 @@ verifyAll(){
         }
     });
     
-    let tabID = this.tableData_1.filter((el) => IDS.has(el.id))
+    let tabID = this.unverifiedItems.filter((el) => IDS.has(el.id))
                                .map((row) => row.id.toString());
     
     let payload = {

@@ -18,7 +18,7 @@
 
         <div class="card br-14 borderless px-0 mt-2" style="overflow-x: auto;">
             <ng-scrollbar track="all" class="mat-table-scrollbar " style="height: 400px">
-                <table class="w-100 table-borderless" mat-table #matSort2="matSort" matSort [dataSource]="tableData_2" (matSortChange)="announceSortChange2($event)">
+                <table class="w-100 table-borderless" mat-table #sort="matSort" matSort [dataSource]="verifiedItems" (matSortChange)="announceSortChange2($event)">
                     <ng-container matColumnDef="itemNumber">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Item No. </th>
                         <td mat-cell *matCellDef="let element">{{element.itemNumber}}</td>
@@ -66,19 +66,19 @@
                     </ng-container>
                     
                     <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell " [attr.colspan]="displayedColumns_2.length">
+                        <td class="mat-cell " [attr.colspan]="verifiedItemsColumns.length">
                           No data available in table.
                         </td>
                     </tr>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns_2" style=" background-color: var(--clr-table-header);"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns_2;"></tr>
+                    <tr mat-header-row *matHeaderRowDef="verifiedItemsColumns" style=" background-color: var(--clr-table-header);"></tr>
+                    <tr mat-row *matRowDef="let row; columns: verifiedItemsColumns;"></tr>
                 </table>
             </ng-scrollbar>
         </div>
 
         <div class="d-flex justify-content-between bg-white">
-            <mat-paginator #paginator2 showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons > </mat-paginator>
+            <mat-paginator #paginator showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons > </mat-paginator>
         </div>
     </mat-card-content>
 </mat-card>

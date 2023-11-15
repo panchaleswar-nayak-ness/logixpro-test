@@ -60,7 +60,7 @@
 
         <div class="card br-14 borderless px-0" style="overflow-x: auto;">
             <ng-scrollbar track="all" class="mat-table-scrollbar " style="height: 400px">
-                <table class="w-100 table-borderless" mat-table #matSort1="matSort" matSort [dataSource]="tableData_1" (matSortChange)="announceSortChange($event)">
+                <table class="w-100 table-borderless" mat-table #matSort="matSort" matSort [dataSource]="unverifiedItems" (matSortChange)="announceSortChange($event)">
                     <ng-container matColumnDef="itemNumber"   [style.visibility]="isItemVisible ? 'visible' : 'hidden'"  >
                         <th mat-header-cell *matHeaderCellDef mat-sort-header > Item No. </th>
                         <td mat-cell *matCellDef="let element" >{{element.itemNumber}}</td>
@@ -107,13 +107,13 @@
                         </td>
                     </ng-container>
                     <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell " [attr.colspan]="displayedColumns_1.length">
+                        <td class="mat-cell " [attr.colspan]="unverifiedItemsColumns.length">
                           No data available in table.
                         </td>
                     </tr>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns_1" style=" background-color: var(--clr-table-header);"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns_1;"></tr>
+                    <tr mat-header-row *matHeaderRowDef="unverifiedItemsColumns" style=" background-color: var(--clr-table-header);"></tr>
+                    <tr mat-row *matRowDef="let row; columns: unverifiedItemsColumns;"></tr>
                 </table>
             </ng-scrollbar>
         </div>

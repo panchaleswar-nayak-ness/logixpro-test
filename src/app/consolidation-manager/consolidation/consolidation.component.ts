@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
-
 import { AuthService } from '../../../app/init/auth.service';
 import { CmConfirmAndPackingSelectTransactionComponent } from 'src/app/dialogs/cm-confirm-and-packing-select-transaction/cm-confirm-and-packing-select-transaction.component';
 import { CmConfirmAndPackingComponent } from 'src/app/dialogs/cm-confirm-and-packing/cm-confirm-and-packing.component';
@@ -21,7 +20,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
-import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringAssignments, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 
 @Component({
@@ -29,16 +28,13 @@ import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
   templateUrl: './consolidation.component.html',
   styleUrls: ['./consolidation.component.scss']
 })
+
 export class ConsolidationComponent implements OnInit {
 
-  @ViewChild('matSort1') sort1: MatSort;
-  @ViewChild('matSort2') sort2: MatSort;
-  @ViewChild('matSort3') sort3: MatSort;
-
-  @ViewChild('paginator') paginator: MatPaginator;
-  @ViewChild('paginator2') paginator2: MatPaginator;
-  @ViewChild('paginator3') paginator3: MatPaginator;
-
+  @ViewChild('stageSort') stageSort: MatSort;
+  @ViewChild('unverifiedItemsPaginator') unverifiedItemsPaginator: MatPaginator;
+  @ViewChild('verifiedItemsPaginator') verifiedItemsPaginator: MatPaginator;
+  @ViewChild('stagePaginator') stagePaginator: MatPaginator;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
   public startSelectFilter: any;
@@ -69,14 +65,14 @@ export class ConsolidationComponent implements OnInit {
 
   searchAutoCompleteItemNum: any = [];
 
-  displayedColumns: string[] = ['toteID', 'complete', 'stagingLocation', 'stagedBy', 'stagedDate'];
+  stageColumns: string[] = ['toteID', 'complete', 'stagingLocation', 'stagedBy', 'stagedDate'];
   stageTable = new MatTableDataSource<any>([]);
 
-  displayedColumns_1: string[] = ['itemNumber', 'lineStatus', 'lineNumber', 'completedQuantity', 'toteID', 'serialNumber', 'userField1', 'actions'];
-  tableData_1 = new MatTableDataSource<any>([]);
+  unverifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'lineNumber', 'completedQuantity', 'toteID', 'serialNumber', 'userField1', 'actions'];
+  unverifiedItems = new MatTableDataSource<any>([]);
 
-  displayedColumns_2: string[] = ['itemNumber', 'lineStatus', 'supplierItemID', 'lineNumber', 'completedQuantity', 'toteID', 'serialNumber', 'userField1', 'actions'];
-  tableData_2 = new MatTableDataSource<any>([]);
+  verifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'supplierItemID', 'lineNumber', 'completedQuantity', 'toteID', 'serialNumber', 'userField1', 'actions'];
+  verifiedItems = new MatTableDataSource<any>([]);
 
   filterOption: any = [
     { key: '0', value: 'Any Code' },
@@ -98,7 +94,7 @@ export class ConsolidationComponent implements OnInit {
     public consolidationAPI : ConsolidationApiService, 
     public authService: AuthService,
     private currentTabDataService: CurrentTabDataService,
-    private _liveAnnouncer: LiveAnnouncer) {
+    private liveAnnouncer: LiveAnnouncer) {
       this.IconsolidationAPI = consolidationAPI;
      }
 
@@ -120,8 +116,8 @@ export class ConsolidationComponent implements OnInit {
       this.completed = item.completed;
       this.backOrder = item.backOrder;
       this.stageTable = item.stageTable;
-      this.tableData_1 = item.tableData_1;
-      this.tableData_2 = item.tableData_2;
+      this.unverifiedItems = item.unverifiedItems;
+      this.verifiedItems = item.verifiedItems;
       this.typeValue = item.typeValue;
       this.dataSource = item.dataSource;
       return true;
@@ -135,20 +131,11 @@ export class ConsolidationComponent implements OnInit {
       completed : this.completed,
       backOrder : this.backOrder,
       stageTable : this.stageTable,
-      tableData_1 : this.tableData_1,
-      tableData_2 : this.tableData_2,
+      unverifiedItems : this.unverifiedItems,
+      verifiedItems : this.verifiedItems,
       typeValue : this.typeValue,
       dataSource : this.dataSource
     }
-  }
-
-  announceSortChange(sortState: Sort) {
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
-    }
-    this.tableData_1.sort = this.sort1;
   }
 
   openAction(){
@@ -159,22 +146,13 @@ export class ConsolidationComponent implements OnInit {
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
 
-  announceSortChange2(sortState: Sort) {
+  announceSortChangeStage(sortState: Sort) {
     if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+      this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
+      this.liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
-    this.tableData_2.sort = this.sort2;
-  }
-
-  announceSortChange3(sortState: Sort) {
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
-    }
-    this.stageTable.sort = this.sort3;
+    this.stageTable.sort = this.stageSort;
   }
 
   clickToHide() {
@@ -205,15 +183,15 @@ export class ConsolidationComponent implements OnInit {
         });
         if (this.startSelectFilterLabel == StringConditions.SupplierItemID) {
           this.isItemVisible = false;
-          this.displayedColumns_1.shift()
-          this.displayedColumns_1.unshift('supplierItemID')
+          this.unverifiedItemsColumns.shift()
+          this.unverifiedItemsColumns.unshift('supplierItemID')
           this.isSupplyVisible = true;
         }
         else {
           this.isItemVisible = true;
           this.isSupplyVisible = false;
-          this.displayedColumns_1.shift()
-          this.displayedColumns_1.unshift('itemNumber')
+          this.unverifiedItemsColumns.shift()
+          this.unverifiedItemsColumns.unshift('itemNumber')
         }
       }
       else {
@@ -253,20 +231,20 @@ export class ConsolidationComponent implements OnInit {
           this.open = res.data.openLinesCount;
           this.completed = res.data.completedLinesCount;
           this.backOrder = res.data.reprocessLinesCount;
-          this.tableData_1 = new MatTableDataSource(res.data.consolidationTable);
-          this.tableData_2 = new MatTableDataSource(res.data.consolidationTable2);
+          this.unverifiedItems = new MatTableDataSource(res.data.consolidationTable);
+          this.verifiedItems = new MatTableDataSource(res.data.consolidationTable2);
           this.stageTable = new MatTableDataSource(res.data.stageTable);
           let waitingReprocessData: any[] = [];
-          waitingReprocessData = this.tableData_1.data.filter((element) => element.lineStatus == StringConditions.WaitingReprocess)
-          let data = this.tableData_2.data;
+          waitingReprocessData = this.unverifiedItems.data.filter((element) => element.lineStatus == StringConditions.WaitingReprocess)
+          let data = this.verifiedItems.data;
           data.push(...waitingReprocessData);
-          this.tableData_2 = new MatTableDataSource(data);
-          this.tableData_1.data = this.tableData_1.data.filter((el) => {
+          this.verifiedItems = new MatTableDataSource(data);
+          this.unverifiedItems.data = this.unverifiedItems.data.filter((el) => {
             return !waitingReprocessData.includes(el)
           })
-          this.tableData_1.paginator = this.paginator;
-          this.tableData_2.paginator = this.paginator2;
-          this.stageTable.paginator = this.paginator3;
+          this.unverifiedItems.paginator = this.unverifiedItemsPaginator;
+          this.verifiedItems.paginator = this.verifiedItemsPaginator;
+          this.stageTable.paginator = this.stagePaginator;
           let payload = {
             "orderNumber": curValue
           }
@@ -302,7 +280,7 @@ export class ConsolidationComponent implements OnInit {
 
   verifyAll() {
     let IDS: any = [];
-    this.tableData_1.data.forEach((row: any) => {
+    this.unverifiedItems.data.forEach((row: any) => {
       if (row.lineStatus != StringConditions.NotCompleted && row.lineStatus != StringConditions.NotAssigned) {
         IDS.push(row.id.toString())
       }
@@ -317,21 +295,21 @@ export class ConsolidationComponent implements OnInit {
       }
       else {
         let tempData: any[] = [];
-        this.tableData_1.data.forEach((row: any) => {
+        this.unverifiedItems.data.forEach((row: any) => {
           // check if the value at row.itemNumber exists in the IDS array using the indexOf method. 
           if (IDS.indexOf(row.id.toString()) != -1) {
             tempData.push(row)
           }
         });
-        let data = this.tableData_2.data;
+        let data = this.verifiedItems.data;
         data.push(...tempData);
-        this.tableData_2 = new MatTableDataSource(data);
-        this.tableData_1.paginator = this.paginator
-        this.tableData_2.paginator = this.paginator2;
-        this.tableData_1.data = this.tableData_1.data.filter((el) => {
+        this.verifiedItems = new MatTableDataSource(data);
+        this.unverifiedItems.paginator = this.unverifiedItemsPaginator
+        this.verifiedItems.paginator = this.verifiedItemsPaginator;
+        this.unverifiedItems.data = this.unverifiedItems.data.filter((el) => {
           return !tempData.includes(el)
         })
-        if (this.tableData_1.data.length == 0) {
+        if (this.unverifiedItems.data.length == 0) {
           this.global.ShowToastr(ToasterType.Info,ToasterMessages.ConsolidatedAllItemsInOrder, ToasterTitle.Alert);
         }
       }
@@ -340,7 +318,7 @@ export class ConsolidationComponent implements OnInit {
 
   unverifyAll() {
     let tempData: any = [];
-    tempData = this.tableData_2.data.filter((element) => element.lineStatus != StringConditions.WaitingReprocess)
+    tempData = this.verifiedItems.data.filter((element) => element.lineStatus != StringConditions.WaitingReprocess)
     let IDS: any = [];
     tempData.forEach((row: any) => {
       IDS.push(row.id.toString())
@@ -355,12 +333,12 @@ export class ConsolidationComponent implements OnInit {
         console.log("UnVerifyAll",res.responseMessage);
       }
       else {
-        this.tableData_1.data = this.tableData_1.data.concat(tempData);
-        this.tableData_2.data = this.tableData_2.data.filter((el) => {
+        this.unverifiedItems.data = this.unverifiedItems.data.concat(tempData);
+        this.verifiedItems.data = this.verifiedItems.data.filter((el) => {
           return !tempData.includes(el)
         })
-        this.tableData_1.paginator = this.paginator
-        this.tableData_2.paginator = this.paginator2;
+        this.unverifiedItems.paginator = this.unverifiedItemsPaginator
+        this.verifiedItems.paginator = this.verifiedItemsPaginator;
       }
     })
   }
@@ -370,11 +348,11 @@ export class ConsolidationComponent implements OnInit {
     let status: any;
     let id: any;
     if (Index != undefined) {
-      id = this.tableData_1.data[Index].id;
-      status = this.tableData_1.data[Index].lineStatus;
+      id = this.unverifiedItems.data[Index].id;
+      status = this.unverifiedItems.data[Index].lineStatus;
     }
     else {
-      index = this.tableData_1.data.indexOf(element);
+      index = this.unverifiedItems.data.indexOf(element);
       status = element.lineStatus;
       id = element.id;
     }
@@ -388,24 +366,24 @@ export class ConsolidationComponent implements OnInit {
       this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
         if (res.isExecuted) {
           if (Index != undefined) {
-            let data = this.tableData_2.data;
-            data.push({ ...this.tableData_1.data[Index] });
-            this.tableData_2 = new MatTableDataSource(data);
-            let data2 = this.tableData_1.data;
+            let data = this.verifiedItems.data;
+            data.push({ ...this.unverifiedItems.data[Index] });
+            this.verifiedItems = new MatTableDataSource(data);
+            let data2 = this.unverifiedItems.data;
             data2.splice(Index, 1);
-            this.tableData_1 = new MatTableDataSource(data2);
-            this.tableData_1.paginator = this.paginator;
-            this.tableData_2.paginator = this.paginator2;
+            this.unverifiedItems = new MatTableDataSource(data2);
+            this.unverifiedItems.paginator = this.unverifiedItemsPaginator;
+            this.verifiedItems.paginator = this.verifiedItemsPaginator;
           }
           else {
-            let data = this.tableData_2.data;
-            data.push({ ...this.tableData_1.data[index] });
-            this.tableData_2 = new MatTableDataSource(data);
-            let data2 = this.tableData_1.data;
+            let data = this.verifiedItems.data;
+            data.push({ ...this.unverifiedItems.data[index] });
+            this.verifiedItems = new MatTableDataSource(data);
+            let data2 = this.unverifiedItems.data;
             data2.splice(index, 1);
-            this.tableData_1 = new MatTableDataSource(data2);
-            this.tableData_1.paginator = this.paginator;
-            this.tableData_2.paginator = this.paginator2;
+            this.unverifiedItems = new MatTableDataSource(data2);
+            this.unverifiedItems.paginator = this.unverifiedItemsPaginator;
+            this.verifiedItems.paginator = this.verifiedItemsPaginator;
           }
         }
         else {
@@ -419,7 +397,7 @@ export class ConsolidationComponent implements OnInit {
   unverifyLine(element) {
     let id = element.id;
     let status = element.lineStatus;
-    let index = this.tableData_2.data.indexOf(element)
+    let index = this.verifiedItems.data.indexOf(element)
     if (status == StringConditions.WaitingReprocess) {
       return;
     }
@@ -429,14 +407,14 @@ export class ConsolidationComponent implements OnInit {
       }
       this.IconsolidationAPI.DeleteVerified(payload).subscribe((res: any) => {
         if (res.isExecuted) {
-          let data2 = this.tableData_1.data;
-          data2.push({ ...this.tableData_2.data[index] });
-          this.tableData_1 = new MatTableDataSource(data2);
-          let data = this.tableData_2.data;
+          let data2 = this.unverifiedItems.data;
+          data2.push({ ...this.verifiedItems.data[index] });
+          this.unverifiedItems = new MatTableDataSource(data2);
+          let data = this.verifiedItems.data;
           data.splice(index, 1);
-          this.tableData_2 = new MatTableDataSource(data);
-          this.tableData_1.paginator = this.paginator;
-          this.tableData_2.paginator = this.paginator2;
+          this.verifiedItems = new MatTableDataSource(data);
+          this.unverifiedItems.paginator = this.unverifiedItemsPaginator;
+          this.verifiedItems.paginator = this.verifiedItemsPaginator;
         }
         else {
           this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
@@ -461,7 +439,7 @@ export class ConsolidationComponent implements OnInit {
     }
     let valueCount = 0;
     let index;
-     this.tableData_1.data.some((obj, i) => {
+     this.unverifiedItems.data.some((obj, i) => {
       for (let key in obj) {
         if (obj[key] === filterVal) {
           index = i;
@@ -491,11 +469,11 @@ export class ConsolidationComponent implements OnInit {
         autoFocus: '__non_existing_element__',
       disableClose:true,
         data: {
-          IdentModal: this.typeValue,
-          ColLabel: this.startSelectFilterLabel,
-          ColumnModal: val,
-          tableData_1: this.tableData_1.data,
-          tableData_2: this.tableData_2.data,
+          identModal: this.typeValue,
+          colLabel: this.startSelectFilterLabel,
+          columnModal: val,
+          unverifiedItems: this.unverifiedItems.data,
+          verifiedItems: this.verifiedItems.data,
         }
       });
       dialogRef.afterClosed().subscribe(result => {
@@ -522,15 +500,15 @@ export class ConsolidationComponent implements OnInit {
     });
     if (event.value == 2) {
       this.isItemVisible = false;
-      this.displayedColumns_1.shift()
-      this.displayedColumns_1.unshift('supplierItemID')
+      this.unverifiedItemsColumns.shift()
+      this.unverifiedItemsColumns.unshift('supplierItemID')
       this.isSupplyVisible = true;
     }
     else {
       this.isItemVisible = true;
       this.isSupplyVisible = false;
-      this.displayedColumns_1.shift()
-      this.displayedColumns_1.unshift('itemNumber')
+      this.unverifiedItemsColumns.shift()
+      this.unverifiedItemsColumns.unshift('itemNumber')
     }
     this.recordSavedItem();
   }
@@ -564,16 +542,16 @@ export class ConsolidationComponent implements OnInit {
   }
 
   clearPageData() {
-    this.tableData_1.data = [];
-    this.tableData_2.data = [];
+    this.unverifiedItems.data = [];
+    this.verifiedItems.data = [];
     this.stageTable.data = [];
     this.typeValue = '';
     this.open = 0;
     this.completed = 0;
     this.backOrder = 0;
-    this.paginator.pageIndex = 0;
-    this.paginator2.pageIndex = 0;
-    this.paginator3.pageIndex = 0;
+    this.unverifiedItemsPaginator.pageIndex = 0;
+    this.verifiedItemsPaginator.pageIndex = 0;
+    this.stagePaginator.pageIndex = 0;
   }
 
   async autoCompleteSearchColumnItem(val:any = null) {
@@ -729,7 +707,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   printPreviewNonVerified(print = true) {
-    if (this.tableData_1?.filteredData && this.tableData_1.filteredData.length > 0) {
+    if (this.unverifiedItems?.filteredData && this.unverifiedItems.filteredData.length > 0) {
       if(print){
         this.global.Print(`FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`)
       }
@@ -743,7 +721,7 @@ export class ConsolidationComponent implements OnInit {
   }
 
   printPreviewPackList(print = true) {
-    if (this.tableData_1?.filteredData && this.tableData_1.filteredData.length > 0) {
+    if (this.unverifiedItems?.filteredData && this.unverifiedItems.filteredData.length > 0) {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '786px',

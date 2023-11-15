@@ -9,33 +9,34 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
   templateUrl: './unverified-item.component.html',
   styleUrls: ['./unverified-item.component.scss']
 })
+
 export class UnverifiedItemComponent implements OnInit {
 
-  @Input() startSelectFilterLabel:any;
-  @Input() startSelectFilter:any;
-  @Input() filterOption:any; 
-  @Input() filterValue:any; 
-  @Input() tableData_1:any; 
-  @Input() isItemVisible:any; 
-  @Input() isSupplyVisible:any; 
-  @Input() verifyBtn:any; 
-  @Input() searchAutoCompleteItemNum:any; 
-  @Input() displayedColumns_1:any;  
+  @Input() startSelectFilterLabel: any;
+  @Input() startSelectFilter: any;
+  @Input() filterOption: any;
+  @Input() filterValue: any;
+  @Input() unverifiedItems: any;
+  @Input() isItemVisible: any;
+  @Input() isSupplyVisible: any;
+  @Input() verifyBtn: any;
+  @Input() searchAutoCompleteItemNum: any;
+  @Input() unverifiedItemsColumns: any;
 
   @Output() selected = new EventEmitter<any>();
   @Output() filterVal = new EventEmitter<any>();
-  @Output() verify = new EventEmitter<any>(); 
-  @Output() verifyal= new EventEmitter<any>(); 
-  @Output() autocomplete= new EventEmitter<any>(); 
-  @Output() Row= new EventEmitter<any>();  
-  
+  @Output() verify = new EventEmitter<any>();
+  @Output() verifyAllEmit = new EventEmitter<any>();
+  @Output() autoComplete = new EventEmitter<any>();
+  @Output() row = new EventEmitter<any>();
+
   searchByItem: any = new Subject<string>();
 
   @ViewChild('paginator') paginator: MatPaginator;
-  @ViewChild('matSort1') sort1: MatSort;
+  @ViewChild('matSort') sort: MatSort;
 
   constructor(
-    private _liveAnnouncer: LiveAnnouncer
+    private liveAnnouncer: LiveAnnouncer
   ) { }
 
   ngOnInit(): void {
@@ -43,37 +44,37 @@ export class UnverifiedItemComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.tableData_1.sort = this.sort1;
-    this.tableData_1.paginator = this.paginator;
+    this.unverifiedItems.sort = this.sort;
+    this.unverifiedItems.paginator = this.paginator;
   }
 
-  getSelected($event:any){
+  getSelected($event: any) {
     this.selected.emit($event);
   }
 
-  filtervalue($event:any){
+  filtervalue($event: any) {
     this.filterVal.emit($event);
   }
 
-  verifyLine(element: any, Index?: any){
+  verifyLine(element: any) {
     this.verify.emit(element);
   }
 
   announceSortChange(sortState: Sort) {
-    if(sortState.direction) this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    else this._liveAnnouncer.announce('Sorting cleared');
-    this.tableData_1.sort = this.sort1;
+    if (sortState.direction) this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    else this.liveAnnouncer.announce('Sorting cleared');
+    this.unverifiedItems.sort = this.sort;
   }
 
-  verifyAll(){
-    this.verifyal.emit(true);
+  verifyAll() {
+    this.verifyAllEmit.emit(true);
   }
 
-  getRow(val:any){
-    this.Row.emit(val);
+  getRow(val: any) {
+    this.row.emit(val);
   }
 
-  autocompleteSearchColumnItem(){
-    this.autocomplete.emit(this.filterValue)
+  autocompleteSearchColumnItem() {
+    this.autoComplete.emit(this.filterValue)
   }
 }

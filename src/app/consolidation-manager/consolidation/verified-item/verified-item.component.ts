@@ -9,33 +9,39 @@ import { MatSort, Sort } from '@angular/material/sort';
   styleUrls: ['./verified-item.component.scss']
 })
 export class VerifiedItemComponent  {
-  @Input() displayedColumns_2:any;  
-  @Input() tableData_2:any;  
+
+  @Input() verifiedItemsColumns:any;  
+  @Input() verifiedItems:any;  
   @Input() unverifyBtn:any;  
   @Output() unverify = new EventEmitter<any>(); 
-  @Output()  unverifyal= new EventEmitter<any>();  
-  @ViewChild('paginator2') paginator2: MatPaginator; 
-  @ViewChild('matSort2') sort2: MatSort;
-  constructor(private _liveAnnouncer: LiveAnnouncer) { }
+  @Output()  unverifyAllEmit = new EventEmitter<any>();  
+  @ViewChild('paginator') paginator: MatPaginator; 
+  @ViewChild('sort') sort: MatSort;
+
+  constructor(
+    private liveAnnouncer: LiveAnnouncer
+    ) { }
 
   
   ngOnChanges(){
-    this.tableData_2.sort = this.sort2;
-    this.tableData_2.paginator = this.paginator2;
+    this.verifiedItems.sort = this.sort;
+    this.verifiedItems.paginator = this.paginator;
   }
   
   announceSortChange2(sortState: Sort) {
     if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+      this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this.liveAnnouncer.announce('Sorting cleared');
     }
-    this.tableData_2.sort = this.sort2;
+    this.verifiedItems.sort = this.sort;
   }
+
   unVerifyAll(){
-    this.unverifyal.emit(true);
+    this.unverifyAllEmit.emit(true);
   }
-  unverifyLine(element: any, Index?: any){
+
+  unverifyLine(element: any){
     this.unverify.emit(element);
   }
 }
