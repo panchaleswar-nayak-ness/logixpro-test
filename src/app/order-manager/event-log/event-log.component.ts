@@ -10,11 +10,11 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-event-log',
@@ -47,10 +47,11 @@ export class EventLogComponent implements OnInit {
   eventLogTableSubscribe: any;
   eventLogTypeAheadSubscribe: any;
 
-  searchAutocompleteList: any;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  searchAutoCompleteList: any;
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('trigger') trigger: MatMenuTrigger;
+
   contextMenuPosition = { x: '0px', y: '0px' };
 
   sortMapping: any = [
@@ -65,20 +66,21 @@ export class EventLogComponent implements OnInit {
   ];
 
   isAdmin: boolean = false;
-  IsActiveTrigger:boolean =false;
+
+  isActiveTrigger:boolean =false;
+
   constructor(
-    private global:GlobalService,
-    private Api: ApiFuntions,
+    private global: GlobalService,
     private authService: AuthService,
     private contextMenuService : TableContextMenuService,
-    private dialog:MatDialog,
+    private dialog: MatDialog,
     private filterService: ContextMenuFiltersService,
-    private adminApiService: AdminApiService,
+    public adminApiService: AdminApiService,
     private datepipe: DatePipe,
     private router: Router
   ) {
     this.iAdminApiService = adminApiService;
-   }
+  }
 
   event(e:any){
     this.resetPagination();
@@ -93,11 +95,12 @@ export class EventLogComponent implements OnInit {
     this.eventLogTable(this.objIgnoreDateRange);
   }
   
-  
   ngOnDestroy() {
     this.eventLogTableSubscribe.unsubscribe();
   }
+
   objIgnoreDateRange : any;
+
   onIgnoreDateRange(ob: MatCheckboxChange) {
     this.objIgnoreDateRange=ob;
     this.resetPagination();
@@ -105,7 +108,6 @@ export class EventLogComponent implements OnInit {
   }
 
   clearFilters() {
-    console.log(this.objIgnoreDateRange);
     this.message = "";
     this.eventLocation = "";
     this.userName = "";
@@ -124,11 +126,8 @@ export class EventLogComponent implements OnInit {
       disableClose:true,
       data: { data: element }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.eventLogTable(this.objIgnoreDateRange);
-      }
-    });
+
+    dialogRef.afterClosed().subscribe(result => { if (result) this.eventLogTable(this.objIgnoreDateRange); });
   }
 
   eventLogTable(obj:any) {
@@ -142,7 +141,7 @@ export class EventLogComponent implements OnInit {
       "eventLocation": this.eventLocation,
       "transStatus": this.eventCode,
       "transType": this.eventType,
-      "sDate": !obj?.checked ? this.startDate: new Date(new Date().setFullYear(1990)),
+      "sDate": !obj?.checked ? this.startDate : new Date(new Date().setFullYear(1990)),
       "eDate": !obj?.checked ? this.endDate : new Date(),
       "nameStamp": this.userName,
       "filter": this.filterString,
@@ -172,7 +171,7 @@ export class EventLogComponent implements OnInit {
     this.paginator.pageIndex = 0;
   }
 
-  autocompleteSearchColumn(columnName: any, message: any) {
+  autoCompleteSearchColumn(columnName: any, message: any) {
     this.resetPagination();
     this.eventLogTypeAheadSubscribe.unsubscribe();
     this.eventLogTypeAhead(columnName, message, true);
@@ -181,7 +180,7 @@ export class EventLogComponent implements OnInit {
   }
 
   eventLogTypeAhead(columnName: any, message: any, loader: boolean = false) {
-    this.searchAutocompleteList = [];
+    this.searchAutoCompleteList = [];
     let payload: any = {
       "message": message,
       "columnName": columnName,
@@ -189,17 +188,11 @@ export class EventLogComponent implements OnInit {
       "eDate": "2023-06-05T00:00:00.597Z",
     }
     this.eventLogTypeAheadSubscribe = this.iAdminApiService.EventLogTypeAhead(payload).subscribe((res: any) => {
-      if(res.isExecuted)
-      {
-        if (res.data && message != "") {
-          this.searchAutocompleteList = res.data.sort();
-        }
-      }
+      if(res.isExecuted) if (res.data && message != "") this.searchAutoCompleteList = res.data.sort();
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("EventLogTypeAhead",res.responseMessage);
       }
-      
     });
   }
 
@@ -210,9 +203,10 @@ export class EventLogComponent implements OnInit {
 
   deleteRange() { 
     if(this.startDate > this.endDate){
-      this.global.ShowToastr('error','Start date must be before end date!', 'Error!');
+      this.global.ShowToastr(ToasterType.Error, 'Start date must be before end date!', ToasterTitle.Error);
       return;
     }
+
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
@@ -224,6 +218,7 @@ export class EventLogComponent implements OnInit {
         action: 'delete'
       },
     });
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
         let payload: any = {
@@ -237,9 +232,9 @@ export class EventLogComponent implements OnInit {
           if (res.isExecuted && res.data) {
             this.resetPagination();
             this.eventLogTable(this.objIgnoreDateRange);
-            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
           } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
             console.log("EventRangeDelete",res.responseMessage);
           }
         });
@@ -265,16 +260,15 @@ export class EventLogComponent implements OnInit {
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault()
-    this.IsActiveTrigger = true;
-    setTimeout(() => {
-      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
-    }, 100);
+    this.isActiveTrigger = true;
+    setTimeout(() => this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType), 100);
   }
 
   optionSelected(filter : string) {
     this.filterString = filter;
     this.resetPagination();
-    this.eventLogTable(this.objIgnoreDateRange);     this.IsActiveTrigger = false; 
+    this.eventLogTable(this.objIgnoreDateRange);
+    this.isActiveTrigger = false; 
   }
 
   announceSortChange(e: any) {
@@ -314,22 +308,12 @@ export class EventLogComponent implements OnInit {
     return element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.isContentEditable;
   }
 
-  clear(field:any = ""){
-    if(field=='Event Location'){
-      this.eventLocation='';
-    }
-    else if(field=='Message'){
-      this.message='';
-    }
-    else if(field=='Username'){
-      this.userName='';
-    }
-    else if(field=='Event Code'){
-      this.eventCode='';
-    }
-    else if(field=='Event Type'){
-      this.eventType='';
-    }
+  clear(field : any = "") {
+    if(field=='Event Location') this.eventLocation='';
+    else if(field=='Message') this.message='';
+    else if(field=='Username') this.userName='';
+    else if(field=='Event Code') this.eventCode='';
+    else if(field=='Event Type') this.eventType='';
     this.eventLogTable(this.objIgnoreDateRange);
   }
 }

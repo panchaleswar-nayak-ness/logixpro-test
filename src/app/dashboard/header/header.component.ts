@@ -152,13 +152,12 @@ export class HeaderComponent {
 
   setImPreferences(){
     const imPreference = localStorage.getItem('InductionPreference');
-    if (imPreference) {
-      // const parsedData = JSON.parse(imPreference);
-    } else {
+    if (imPreference) {} 
+    else {
       let paylaod = {};
       this.iInductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
-        localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
-      });
+      localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
+    });
     }
 
   }

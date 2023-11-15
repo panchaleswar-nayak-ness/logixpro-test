@@ -394,7 +394,6 @@ export class MoveItemsComponent implements OnInit {
         return;
       }
 
-      // this.invMapIDToItem = row.invMapID;
       this.invMapmoveFromID = row.inventoryMapID;
       this.from_warehouse = row.warehouse;
       this.from_location = row.location;

@@ -71,7 +71,7 @@ export class AuthGuardGuard implements CanActivate {
     const userPermission = this.authService.userPermission(); 
     if (this.ConfigJson?.length) {
       
-      var permission = this.ConfigJson.find(x => x.path.toLowerCase() == pathSet.toLowerCase());
+      let permission = this.ConfigJson.find(x => x.path.toLowerCase() == pathSet.toLowerCase());
       if(permission.Permission == true) return true;
       
       else if (userPermission.filter(x => x.toLowerCase() == permission.Permission.toLowerCase()).length > 0) {
