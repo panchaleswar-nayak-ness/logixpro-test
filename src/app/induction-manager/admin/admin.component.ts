@@ -12,8 +12,6 @@ export class AdminComponent  {
 
   constructor(private sharedService: SharedService) { }
 
-  
-
   updateMenu(menu = '', route = '') {    
     this.sharedService.updateInductionAdminMenu({menu , route});
   }

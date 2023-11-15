@@ -31,7 +31,8 @@ export const ToasterType = {
 export const ToasterTitle = {
     Error: 'Error!',
     Success: 'Success!',
-    Alert: 'Alert!'
+    Alert: 'Alert!',
+    NoRows: 'No Rows'
 }
 
 export const ConfirmationMessages = {
@@ -54,7 +55,12 @@ export const ToasterMessages = {
     ConsolidatedAllItemsInOrder:'You have consolidated all items in this order',
     ItemNotCompleted: "The selected item has not yet been completed and can't be verified at this time",
     ItemNotInOrder:'Item not in order or has already been consolidated',
-    NoUnverfiedItems: 'There are no unverfied items'
+    NoUnverfiedItems: 'There are no unverfied items',
+    SomethingWentWrong:'Something went wrong',
+    DefaultSuperBatchSizeError:'Default Super Batch Size must be greater than 1',
+    NoOpenTransactionsBatch:"No open transactions for the entered batch",
+    NoOpenTranscationTote:"No open transaction for that tote in the batch",
+    ErrorOccuredTranscation: "An error occured completing this transaction"
 }
 
 export const AppNames = {
@@ -121,4 +127,16 @@ export const AppPermissions = {
 
 export const LiveAnnouncerMessage = {
     SortingCleared: 'Sorting cleared'
+}
+
+export const ApiEndpoints = {
+    IMSytemSettings: '/Induction/imsytemsettings',
+    RTSUserData: '/Induction/rtsuserdata',
+    IMMIScSetup:'/Induction/immiscsetup',
+    IMPrintSettings: '/Induction/imprintsettings'
+}
+
+export const superBatchFilterListName = {
+    ToteID: 'Tote ID',
+    OrderNo: 'Order Number'
 }

@@ -8,10 +8,10 @@ import {
 
 import { AuthService } from 'src/app/init/auth.service'; 
 import labels from '../../labels/labels.json';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { ApiEndpoints, ToasterMessages, ToasterTitle, ToasterType,superBatchFilterListName } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-admin-prefrences',
@@ -125,14 +125,14 @@ export class AdminPrefrencesComponent implements OnInit {
   public iInductionManagerApi:IInductionManagerApiService;
   constructor(
     private authService: AuthService,
-    private Api: ApiFuntions,
     public inductionManagerApi: InductionManagerApiService,
     public formBuilder: FormBuilder,
-    
     private global:GlobalService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
     this.preferencesForm = this.formBuilder.group({
+
+
       // System Settings
       useDefault: new FormControl('', Validators.compose([])),
       pickBatchQuantity: new FormControl(0, Validators.compose([])),
@@ -175,14 +175,14 @@ export class AdminPrefrencesComponent implements OnInit {
       autoPrintPickLabels: new FormControl(false, Validators.compose([])),
       pickLabelsOnePerQty: new FormControl(false, Validators.compose([])),
       autoPrintPickToteLabels: new FormControl(false, Validators.compose([])),
-      autoPrintPutAwayToteLabels: new FormControl(
-        false,
-        Validators.compose([])
+      autoPrintPutAwayToteLabels: new FormControl(false, Validators.compose([])
       ),
+
       autoPrintOffCarouselPickList: new FormControl(
         false,
         Validators.compose([])
       ),
+      
       autoPrintOffCarouselPutAwayList: new FormControl(
         false,
         Validators.compose([])
@@ -227,7 +227,6 @@ export class AdminPrefrencesComponent implements OnInit {
 
   getPreferences() {
     try {
-      
       this.iInductionManagerApi
         .PreferenceIndex()
         .subscribe(
@@ -237,14 +236,14 @@ export class AdminPrefrencesComponent implements OnInit {
               const reelVal = res.data.rtUserFieldData[0];
               if (values.superBatchByToteID) {
                 this.superBatchFilterList = [
-                  { id: 1, name: 'Tote ID' },
-                  { id: 0, name: 'Order Number' },
+                  { id: 1, name: superBatchFilterListName.ToteID },
+                  { id: 0, name: superBatchFilterListName.OrderNo },
                 ];
                 this.preferencesForm.get('superBatchFilter')?.setValue('1');
               } else {
                 this.superBatchFilterList = [
-                  { id: 0, name: 'Order Number' },
-                  { id: 1, name: 'Tote ID' },
+                  { id: 0, name: superBatchFilterListName.OrderNo },
+                  { id: 1, name: superBatchFilterListName.ToteID },
                 ];
                 this.preferencesForm.get('superBatchFilter')?.setValue('0');
               }
@@ -334,7 +333,7 @@ export class AdminPrefrencesComponent implements OnInit {
                 orderNoPrefix: reelVal.orderNumberPrefix,
               });
             } else {
-              this.global.ShowToastr('error','Something went wrong', 'Error!');
+              this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong,ToasterTitle.Error);
               console.log("PreferenceIndex",res.responseMessage);
             }
           },
@@ -387,7 +386,7 @@ export class AdminPrefrencesComponent implements OnInit {
           WSID: this.userData.wsid,
         };
 
-        endPoint = '/Induction/imsytemsettings';
+        endPoint = ApiEndpoints.IMSytemSettings;
       } else if (type == 2) {
         payLoad = {
           User1: values.userField1,
@@ -403,7 +402,7 @@ export class AdminPrefrencesComponent implements OnInit {
           OrderNumPre: values.orderNoPrefix,
           WSID: this.userData.wsid,
         };
-        endPoint = '/Induction/rtsuserdata';
+        endPoint = ApiEndpoints.RTSUserData;
       } else if (type == 3) {
         if (event?.checked) {
           this.preferencesForm.get('inductionLocation')?.enable();
@@ -414,7 +413,7 @@ export class AdminPrefrencesComponent implements OnInit {
         }
 
         if(values.defaultSuperBatchSize<2){
-          this.global.ShowToastr('error','Default Super Batch Size must be greater than 1', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.DefaultSuperBatchSizeError, ToasterTitle.Error);
           return 
         }
         
@@ -428,7 +427,7 @@ export class AdminPrefrencesComponent implements OnInit {
           superBatchFilt: values.superBatchFilter === '1',
           WSID: this.userData.wsid,
         };
-        endPoint = '/Induction/immiscsetup';
+        endPoint = ApiEndpoints.IMMIScSetup;
       } else {
         payLoad = {
           AutoPrintCross: values.autoPrintCrossDockLabel,
@@ -446,16 +445,16 @@ export class AdminPrefrencesComponent implements OnInit {
           WSID: this.userData.wsid,
         };
 
-        endPoint = '/Induction/imprintsettings';
+        endPoint = ApiEndpoints.IMPrintSettings;
       }
 
       this.iInductionManagerApi.DynamicMethod(payLoad, endPoint).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
               this.global.updateImPreferences()
-            this.global.ShowToastr('success',labels.alert.update, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log("DynamicMethod",res.responseMessage);
           }
         },
@@ -472,13 +471,12 @@ export class AdminPrefrencesComponent implements OnInit {
 
           this.preferencesForm.get('inductionLocation')?.setValue(res.data);
           this.updatePreferences(3);
-          this.global.ShowToastr('success',labels.alert.update, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("CompName",res.responseMessage);
         }
-      },
-      (error) => {}
+      }
     );
   }
   checkDBQ() {
