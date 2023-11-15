@@ -4,13 +4,13 @@
 [endDate]="endDate"
 [message]="message"
 [eventLocation]="eventLocation"
-[searchAutocompleteList]="searchAutocompleteList"
+[searchAutocompleteList]="searchAutoCompleteList"
 [eventCode]="eventCode"
 [eventType]="eventType"
 [userName]="userName"
 (dateEmit)="startDate = $event.startDate; endDate = $event.endDate; event($event)"
 (ignoreDateRangeEmit)="onIgnoreDateRange($event);"
-(autocompleteSearchColumnEmit)="autocompleteSearchColumn($event.colName, $event.msg)"
+(autoCompleteSearchColumnEmit)="autoCompleteSearchColumn($event.colName, $event.msg)"
 (eventLogTypeAheadEmit)="eventLogTypeAhead($event.colName, $event.msg,$event.loader)"
 (searchEmit)="search($event.event, $event.msg)"
 (clearEmit)="clear($event); "
@@ -45,15 +45,17 @@
             <ng-scrollbar class="mat-table-scrollbar" style="height:545px" track="all">
                 <table class="w-100 table-borderless" mat-table matSort [dataSource]="tableData" (matSortChange)="announceSortChange($event)">
 
+                    <caption>Log Table</caption>
+
                     <ng-container matColumnDef="dateStamp">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
                         <td mat-cell *matCellDef="let element"
-                        #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.dateStamp" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
-                [matTooltipDisabled]="element.dateStamp && element.dateStamp.length>=20?false:true"
-                        (dblclick)="openOmEventLogEntryDetail(element)"
-                        (contextmenu)="onContextMenu($event, element.dateStamp, 'Date Stamp')"
-                        >{{element.dateStamp}}</td>
+                            #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.dateStamp" 
+                            style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
+                            [matTooltipDisabled]="element.dateStamp && element.dateStamp.length>=20?false:true"
+                            (dblclick)="openOmEventLogEntryDetail(element)"
+                            (contextmenu)="onContextMenu($event, element.dateStamp, 'Date Stamp')">
+                        {{element.dateStamp}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="message">
@@ -170,4 +172,4 @@
     </mat-card-content>
 </mat-card>
 
-<app-table-context-menu-component *ngIf="IsActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'eventLog'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'eventLog'"></app-table-context-menu-component>
