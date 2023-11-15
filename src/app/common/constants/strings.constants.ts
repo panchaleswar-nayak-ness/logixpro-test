@@ -69,7 +69,11 @@ export const ToasterMessages = {
     DefaultSuperBatchSizeError:'Default Super Batch Size must be greater than 1',
     NoOpenTransactionsBatch:"No open transactions for the entered batch",
     NoOpenTranscationTote:"No open transaction for that tote in the batch",
-    ErrorOccuredTranscation: "An error occured completing this transaction"
+    ErrorOccuredTranscation: "An error occured completing this transaction",
+    ErrorWhileSave:'An Error Occured while trying to save',
+    OrderInvalid:'The Order/Tote that you entered is invalid or no longer exists in the system.',
+    InvalidLocation:'The Location entered was not valid',
+    ErrorOccuredTryingToRemoveAll:'An Error Occured while trying to remove all data, check the event log for more information',
 }
 
 export const AppNames = {
