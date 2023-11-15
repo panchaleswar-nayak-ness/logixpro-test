@@ -14,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-event-log',
@@ -74,7 +74,7 @@ export class EventLogComponent implements OnInit {
     private authService: AuthService,
     private contextMenuService : TableContextMenuService,
     private dialog: MatDialog,
-    private filterService: ContextMenuFiltersService,
+    public filterService: ContextMenuFiltersService,
     public adminApiService: AdminApiService,
     private datepipe: DatePipe,
     private router: Router
@@ -82,13 +82,13 @@ export class EventLogComponent implements OnInit {
     this.iAdminApiService = adminApiService;
   }
 
-  event(e:any){
+  event(){
     this.resetPagination();
     this.eventLogTable(this.objIgnoreDateRange);
   }
 
   ngOnInit(): void {
-    this.isAdmin = !(this.router.url == "/OrderManager/EventLog");
+    this.isAdmin = this.router.url != AppRoutes.OrderManagerEventLog;
     this.userData = this.authService.userData();
     this.startDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
@@ -102,7 +102,7 @@ export class EventLogComponent implements OnInit {
   objIgnoreDateRange : any;
 
   onIgnoreDateRange(ob: MatCheckboxChange) {
-    this.objIgnoreDateRange=ob;
+    this.objIgnoreDateRange = ob;
     this.resetPagination();
     this.eventLogTable(ob);
   }
@@ -203,7 +203,7 @@ export class EventLogComponent implements OnInit {
 
   deleteRange() { 
     if(this.startDate > this.endDate){
-      this.global.ShowToastr(ToasterType.Error, 'Start date must be before end date!', ToasterTitle.Error);
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.StartDateMustBeBeforeEndDate, ToasterTitle.Error);
       return;
     }
 
@@ -214,7 +214,7 @@ export class EventLogComponent implements OnInit {
       disableClose:true,
       data: {
         mode: 'delete-event-log',
-        ErrorMessage: 'Are you sure you want to delete all Event Log entries with specified date, message, event location and name stamp filters?',
+        ErrorMessage: ConfirmationMessages.EventLogDeleteWithRange,
         action: 'delete'
       },
     });
@@ -285,20 +285,20 @@ export class EventLogComponent implements OnInit {
   @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) { 
     const target = event.target as HTMLElement;
-    if (!this.isInputField(target) && event.key === 'c') {
+    if (!this.isInputField(target) && event.key === KeyboardKeys.C) {
       event.preventDefault();
       this.clearFilters();
     }
-    if (!this.isInputField(target) && event.key === 'd' && this.isAdmin) {
+    if (!this.isInputField(target) && event.key === KeyboardKeys.D && this.isAdmin) {
       event.preventDefault();
       if(this.dialog.openDialogs.length > 0) return;
       this.deleteRange();
     }
-    if (!this.isInputField(target) && event.key === 'e') {
+    if (!this.isInputField(target) && event.key === KeyboardKeys.E) {
       event.preventDefault();
       this.exportRange();
     }
-    if (!this.isInputField(target) && event.key === 'r') {
+    if (!this.isInputField(target) && event.key === KeyboardKeys.R) {
       event.preventDefault();
       this.refresh();
     }

@@ -45,7 +45,8 @@ export const ToasterTitle = {
 }
 
 export const ConfirmationMessages = {
-    UnverfiedItemsLeft:'There are still unverfied items. Coninue the preview?'
+    UnverfiedItemsLeft:'There are still unverfied items. Coninue the preview?',
+    EventLogDeleteWithRange: 'Are you sure you want to delete all Event Log entries with specified date, message, event location and name stamp filters?'
 }
 
 export const ToasterMessages = {
@@ -74,6 +75,7 @@ export const ToasterMessages = {
     OrderInvalid:'The Order/Tote that you entered is invalid or no longer exists in the system.',
     InvalidLocation:'The Location entered was not valid',
     ErrorOccuredTryingToRemoveAll:'An Error Occured while trying to remove all data, check the event log for more information',
+    StartDateMustBeBeforeEndDate: 'Start date must be before end date!'
 }
 
 export const AppNames = {
@@ -94,6 +96,7 @@ export const AppRoutes = {
     FlowrackReplenish: '/FlowrackReplenish',
     Hash: '#',
     OrderManager: '/OrderManager',
+    OrderManagerEventLog: '/OrderManager/EventLog',
     AdminTransaction:'/#/admin/transaction',
     ReportView:'/#/report-view',
     Logon:'/#/Logon/'
@@ -187,4 +190,12 @@ export const ApiEndpoints = {
 export const superBatchFilterListName = {
     ToteID: 'Tote ID',
     OrderNo: 'Order Number'
+}
+export const KeyboardKeys = {
+    A: 'a',
+    B: 'b',
+    C: 'c',
+    D: 'd',
+    E: 'e',
+    R: 'r'
 }
