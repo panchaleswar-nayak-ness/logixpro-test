@@ -19,7 +19,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppPermissions, AppRoutes, ToasterTitle, ToasterType, localStorageKeys } from 'src/app/common/constants/strings.constants';
+import { AppPermissions, AppRoutes, DialogConstants, LiveAnnouncerMessage, ToasterTitle, ToasterType, localStorageKeys } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-order-list',
@@ -29,16 +29,16 @@ import { AppPermissions, AppRoutes, ToasterTitle, ToasterType, localStorageKeys 
 export class BatchOrderListComponent implements OnInit {
 
   private subscription: Subscription = new Subscription();
-  tableData: any;
+  batchOrderDataTable: any;
   toteNumber: number = 1;
   userData: any;
   transType: any;
   max: any;
   selectedOrderLength: any = 0;
   @Input() set orderListData(val: any) {
-    this.tableData = new MatTableDataSource(val);
-    this.tableData.paginator = this.paginator;
-    this.tableData.sort = this.sort;
+    this.batchOrderDataTable = new MatTableDataSource(val);
+    this.batchOrderDataTable.paginator = this.paginator;
+    this.batchOrderDataTable.sort = this.sort;
   }
   @Input()
   set transTypeEvent(event: Event) {
@@ -81,7 +81,7 @@ export class BatchOrderListComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['orderListData']) {
-      this.tableData['_data']['_value'] =
+      this.batchOrderDataTable['_data']['_value'] =
         changes['orderListData']['currentValue'];
     }
     if (changes['extraField']) {
@@ -90,13 +90,13 @@ export class BatchOrderListComponent implements OnInit {
   }
 
   appendMax() {
-    let dataLength = this.tableData['_data']['_value'].length
+    let dataLength = this.batchOrderDataTable['_data']['_value'].length
     this.max = parseInt(this.extraField) - this.selectedOrderLength;
     if (this.max > dataLength) {
       this.max = dataLength
     }
     for (let index = 0; index < this.max; index++) {
-      this.addOrders(this.tableData['_data']['_value'][index])
+      this.addOrders(this.batchOrderDataTable['_data']['_value'][index])
     }
   }
 
@@ -104,7 +104,7 @@ export class BatchOrderListComponent implements OnInit {
     if (sortState.direction) {
       this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this.liveAnnouncer.announce('Sorting cleared');
+      this.liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
   }
 
@@ -160,7 +160,7 @@ export class BatchOrderListComponent implements OnInit {
   openBatchViewDetail(detailData?): void {
     this.global.OpenDialog(BatchManagerDetailViewComponent, {
       width: '1100px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: detailData,
     });

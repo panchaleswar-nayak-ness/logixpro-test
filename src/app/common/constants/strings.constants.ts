@@ -12,7 +12,9 @@ export const TransactionType = {
     Count: 'Count'
 }
 export const DialogConstants = {
-    auto: 'auto'
+    auto: 'auto',
+    close: 'close',
+    autoFocus:'__non_existing_element__' 
 }
 export const StringConditions = {
     SupplierItemID:'Supplier Item ID',
@@ -40,7 +42,9 @@ export const StringConditions = {
     Invalid: 'Invalid',
     orderTypeOpen: 'Open',
     ResetField:'resetField',
-    isAdd:'isAdd'
+    isAdd:'isAdd',
+    filterLoc:'Nothing',
+    True:'true'
 }
 
 export const ResponseStrings = {
@@ -137,6 +141,7 @@ export const ToasterMessages = {
     ToteIdAlreadyInBatch:'This tote id is already in this batch. Enter a new one',
     MissingDataFromPrint:'Missing data from the desired print row',
     DeletePendingTransaction: 'You can only delete pending transactions.',
+    ItemNumberExists:'Item Number Already Exists.'
 }
 
 export const AppNames = {
@@ -147,7 +152,8 @@ export const AppNames = {
     ImportExport: 'ImportExport',
     Markout: 'Markout',
     OrderManager: 'OrderManager',
-    WorkManager: 'WorkManager'
+    WorkManager: 'WorkManager',
+    InductionManager:'InductionManager'
 }
 
 export const AppRoutes = {
@@ -160,7 +166,10 @@ export const AppRoutes = {
     OrderManagerEventLog: '/OrderManager/EventLog',
     AdminTransaction:'/#/admin/transaction',
     ReportView:'/#/report-view',
-    Logon:'/#/Logon/'
+    Logon:'/#/Logon/',
+    OrderManagerInventoryMap:'/OrderManager/InventoryMap',
+    AdminInventoryMap:'/admin/inventoryMap',
+    InductionManagerInventoryMap:'/InductionManager/Admin/InventoryMap'
 }
 
 export const AppIcons = {
