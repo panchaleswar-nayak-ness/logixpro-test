@@ -38,7 +38,9 @@ export const StringConditions = {
     PickPickLabel:'PrintPickLabel',
     PrintTote: 'PrintTote',
     Invalid: 'Invalid',
-    orderTypeOpen: 'Open'
+    orderTypeOpen: 'Open',
+    ResetField:'resetField',
+    isAdd:'isAdd'
 }
 
 export const ResponseStrings = {
