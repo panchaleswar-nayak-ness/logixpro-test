@@ -2,6 +2,16 @@ export const StringAssignments = {
     WorkstationNotAssignedToZone: 'This workstation is not assigned to a zone',
 };
 
+export const localStorageKeys = {
+    UserRights : 'userRights'
+}
+
+export const TransactionType = {
+    Pick: 'Pick',
+    PutAway: 'Put Away',
+    Count: 'Count'
+}
+
 export const StringConditions = {
     SupplierItemID:'Supplier Item ID',
     WaitingReprocess:'Waiting Reprocess',
@@ -11,11 +21,18 @@ export const StringConditions = {
     Yes: 'Yes',
     Enter: 'Enter',
     Event: 'event',
-    Click: 'click'
+    Click: 'click',
+    Add: 'add',
+    Remove: 'remove',
+    BatchToteTrans: 'batch_tote_trans',
+    BatchTote: 'batch_tote',
+    AllTransaction: 'All Transaction',
+    Batch: 'Batch'
 }
 
 export const ResponseStrings = {
     No: 'No',
+    Yes: 'Yes',
     Empty: '',
     Null: null,
     DNE: 'DNE',
@@ -44,7 +61,15 @@ export const ToasterTitle = {
     NoRows: 'No Rows'
 }
 
+export const ConfirmationHeadings = {
+    BatchManager: 'Batch Manager'
+}
+
 export const ConfirmationMessages = {
+    NoOrdersSelected: 'No Orders Selected.',
+    BatchIDMustBeSpecified: 'Batch ID must be specified.',
+    ClickOkToPrintBatchReport:'Click Ok to print a Batch Report for the selected orders?',
+    ClickOkToPrintItemLabels:'Click Ok to print item labels for the selected batch orders?',
     UnverfiedItemsLeft:'There are still unverfied items. Coninue the preview?',
     EventLogDeleteWithRange: 'Are you sure you want to delete all Event Log entries with specified date, message, event location and name stamp filters?'
 }
@@ -139,7 +164,8 @@ export const AppPermissions = {
     ImportExport: 'Import Export',
     Markout: 'Markout',
     OrderManager: 'Order Manager',
-    WorkManager: 'Work Manager'
+    WorkManager: 'Work Manager',
+    OrderStatus: 'Order Status'
 }
 
 export const LiveAnnouncerMessage = {
