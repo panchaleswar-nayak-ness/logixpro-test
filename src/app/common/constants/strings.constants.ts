@@ -47,6 +47,7 @@ export const ResponseStrings = {
     Conflict: 'Conflict',
     Error: 'Error',
     All: 'all',
+    AllCaps:'All',
     Modal: 'modal',
     DNENP: 'DNENP',
     Fail: 'Fail',
