@@ -23,9 +23,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 export class WorkstationZonesComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;
 
-  public velocity_code_list: any[] = [];
-  public velocity_code_list_Res: any;
-  public currentVelocity = "";
+  public velocityCodeList: any[] = [];
   onDestroy$: Subject<boolean> = new Subject();
   public userData: any;
   public selectedZone: any = '';
@@ -44,7 +42,7 @@ export class WorkstationZonesComponent implements OnInit {
   }
 
   validateZone(){
-    if(this.velocity_code_list.filter((x:any) => x.zone.toLowerCase() == this.selectedZone.trim().toLowerCase()).length > 0){
+    if(this.velocityCodeList.filter((x:any) => x.zone.toLowerCase() == this.selectedZone.trim().toLowerCase()).length > 0){
       this.global.ShowToastr('error',"This Zone is already selected for this workstation", 'Error!');
       return false;
     }
@@ -125,11 +123,11 @@ export class WorkstationZonesComponent implements OnInit {
   getVelocity() {
     let paylaod = { 
     }
-    this.velocity_code_list = [];
+    this.velocityCodeList = [];
     this.iinductionManagerApi.WSPickZoneSelect(paylaod).subscribe((res) => {
       if (res.isExecuted && res.data) {
         res.data.map(val => {
-          this.velocity_code_list.push({ 'zone': val, isSaved: true })
+          this.velocityCodeList.push({ 'zone': val, isSaved: true })
         })
       }
       else {
@@ -142,7 +140,7 @@ export class WorkstationZonesComponent implements OnInit {
   getAllZoneList() {
     let paylaod = { 
     }
-    this.velocity_code_list = [];
+    this.velocityCodeList = [];
     this.iinductionManagerApi.LocationZonesSelect(paylaod).subscribe((res) => {
       if (res.isExecuted && res.data) {
         this.zones = res.data;
@@ -213,7 +211,7 @@ export class WorkstationZonesComponent implements OnInit {
       })
 
     } else {
-      this.velocity_code_list.shift();
+      this.velocityCodeList.shift();
     }
   }
 
@@ -261,7 +259,7 @@ export class WorkstationZonesComponent implements OnInit {
   }
 
   closeBatchDialog(){
-    this.dialogRef.close(this.velocity_code_list);
+    this.dialogRef.close(this.velocityCodeList);
   }
 
 }

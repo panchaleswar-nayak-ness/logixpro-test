@@ -22,7 +22,7 @@
         </mat-form-field>
     </div>
     <div class="col-xl-4">
-        <button [disabled]="velocity_code_list.length == 0" mat-flat-button color="warn" class="btn-regular w-100" (click)="clearAllZones()">Clear All Zones</button>
+        <button [disabled]="velocityCodeList.length == 0" mat-flat-button color="warn" class="btn-regular w-100" (click)="clearAllZones()">Clear All Zones</button>
     </div>  
 </div>
 <div class="warehouse">
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                 </ng-container>
-                <ng-container *ngFor="let vlcode of velocity_code_list;let i = index">
+                <ng-container *ngFor="let vlcode of velocityCodeList;let i = index">
                     <div class="d-flex align-items-center mb-3">
                         <div class="container w-100">
                             <div class="row">

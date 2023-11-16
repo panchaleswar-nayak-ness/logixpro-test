@@ -32,7 +32,7 @@ fieldNames:any;
   partsInducted:any;
   partsNotAssigned:any;
   noOfReels:any
-  AutoGenerateReel:any =false
+  autoGenerateReel:any =false
   HiddenInputValue:any
   generatedReelQty:any
   imPreferences:any;
@@ -120,7 +120,7 @@ fieldNames:any;
   }
 
   OpenReelSerial(){
-    this.AutoGenerateReel = true
+    this.autoGenerateReel = true
     let partsPerReel = Math.floor(this.partsInducted / this.noOfReels);
 
     let payload = {
@@ -243,15 +243,12 @@ validateInputs() {
 }
 CreateReels(){
   let reels:any = [];
-                let rc$;
-                let SNs:any[] = [];
-                let sn = '';
-                
+                let serialNos:any[] = [];
                 
                 this.generateReelAndSerial.data.forEach((element)=>{
 
                   
-                  SNs.push(element.reel_serial_number)
+                  serialNos.push(element.reel_serial_number)
             
                   reels.push({
                     "SerialNumber": element.reel_serial_number,
@@ -266,7 +263,7 @@ CreateReels(){
                 })
                 })
                 this.validateInputs();
-                if(SNs.includes('')){
+                if(serialNos.includes('')){
                   this.validateInputs();
                   this.serialTemp.nativeElement.blur()
                   this.global.ShowToastr('error',"You must provide a serial number for each reel transaction.", 'Error!');
@@ -276,20 +273,20 @@ CreateReels(){
 
 
             
-                   const hasDuplicatesFlag = this.findDuplicateValue( SNs);
+                   const hasDuplicatesFlag = this.findDuplicateValue( serialNos);
                    if(hasDuplicatesFlag){
                     this.global.ShowToastr('error','You must provide a unique serial number for each reel transaction.  Serial ' + hasDuplicatesFlag + ' is duplicated.', 'Error!' );
                     return
                    }
                 let payload = {
-                  SerialNumbers:SNs
+                  SerialNumbers:serialNos
                 }
                 this.iinductionManagerApi.ValidateSn(payload).subscribe((res:any)=>{
                   if (res.data && res.isExecuted){
                     let errs = '';
                     for (let x = 0; x < res.data.length; x++) {
                         if (!res.data[x].valid) {
-                            errs += (SNs[x] + ' is invalid because it is already allocated ' + (res.data[x].reason == 'OT' ? 'to a Put Away in Open Transactions.' : 'in Inventory Map') );
+                            errs += (serialNos[x] + ' is invalid because it is already allocated ' + (res.data[x].reason == 'OT' ? 'to a Put Away in Open Transactions.' : 'in Inventory Map') );
                            
 
                             const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
@@ -336,18 +333,18 @@ CreateReels(){
                               });
                               dialogRef.afterClosed().subscribe((result) => {
                                 if(result){
-                                  this.checkSNS = SNs[0];
+                                  this.checkSNS = serialNos[0];
                                   if(this.imPreferences.printDirectly){
                                     this.PrintCrossDock();
                                   }else{
                                     window.open(`/#/report-view?file=FileName:PrintReelLabels|OTID:[]|SN:${this.generateReelAndSerial.data[0].reel_serial_number}|Order:${this.data.hvObj.order}|Item:${this.itemNumber}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-                                    this.dialogRef.close(SNs[0]);
+                                    this.dialogRef.close(serialNos[0]);
                                   }
                                   
                                   
                                 }
                                 else{
-                                  this.dialogRef.close(SNs[0]);
+                                  this.dialogRef.close(serialNos[0]);
                                 }
                                 
                               })
