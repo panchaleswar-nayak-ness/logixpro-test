@@ -148,23 +148,26 @@ export const AppNames = {
     ICSAdmin: 'ICSAdmin',
     ConsolidationManager: 'Consolidation Manager',
     Induction: 'Induction',
+    InductionManager: 'InductionManager',
     FlowRackReplenish: 'FlowRackReplenish',
     ImportExport: 'ImportExport',
     Markout: 'Markout',
     OrderManager: 'OrderManager',
-    WorkManager: 'WorkManager',
-    InductionManager:'InductionManager'
+    WorkManager: 'WorkManager'
 }
 
 export const AppRoutes = {
     Admin: '/admin',
     ConsolidationManager: '/ConsolidationManager',
     InductionManager: '/InductionManager',
+    InductionManagerAdminInvMap: '/InductionManager/Admin/InventoryMaster',
     FlowrackReplenish: '/FlowrackReplenish',
     Hash: '#',
     OrderManager: '/OrderManager',
     OrderManagerEventLog: '/OrderManager/EventLog',
+    OrderManagerOrderStatus: '/OrderManager/OrderStatus',
     AdminTransaction:'/#/admin/transaction',
+    AdminInventoryMaster:'/admin/inventoryMaster',
     ReportView:'/#/report-view',
     Logon:'/#/Logon/',
     OrderManagerInventoryMap:'/OrderManager/InventoryMap',
@@ -312,9 +315,19 @@ export const Column = {
     ImportDate: 'Import Date',
     RequiredDate: 'Required Date',
     Priority: 'Priority',
-    OrderNumber: 'Order Number'
+    OrderNumber: 'Order Number',
+    ItemNumber: 'Item Number'
 }
 
 export const Case = {
     Like: 'Like'
+}
+
+export const Mode = {
+    HoldTransactions: 'hold-trans',
+    DeleteTransaction: 'delete-transaction'
+}
+
+export const TableName = {
+    OpenTransactions: 'Open Transactions'
 }

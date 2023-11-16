@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { AuthService } from 'src/app/init/auth.service';
-import {
-  ITransactionModelIndex,
-} from 'src/app/interface/transaction'; 
+import { ITransactionModelIndex } from 'src/app/interface/transaction'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
@@ -14,44 +12,48 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 export class OpenTransactionComponent implements OnInit {
   transactions;
   userData: any;
-  @Input() TabIndex:any;
   transactionIndex: ITransactionModelIndex;
   selectedIndex: number = 0;
   event: any;
-  @Output() emitOrderTab = new EventEmitter<string>();
   displayOrderCols: any = []; 
+
+  @Input() tabIndex:any;
+
+  @Output() emitOrderTab = new EventEmitter<string>();
+
   constructor(
-    private Api:ApiFuntions,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
   }
-  nexScreen(event) {
+
+  nexScreen() {
     this.previousStep();
   }
+
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
     this.selectedIndex = tabChangeEvent.index;
   }
-  returnFromComp(event) {
+
+  returnFromComp() {
     this.nextStep();
   }
-  returnToOrder(event) {
+
+  returnToOrder() {
    this.emitOrderTab.emit()
   }
+
   nextStep() {
-    if (this.selectedIndex != 2) {
-      this.selectedIndex = this.selectedIndex + 1;
-    }
+    if(this.selectedIndex != 2) this.selectedIndex = this.selectedIndex + 1;
   }
+
   onFilterChange(event: any) {
     this.event = event;
   }
-  previousStep() {
-    if (this.selectedIndex != 0) {
-      this.selectedIndex = this.selectedIndex - 1;
-    }
 
+  previousStep() {
+    if (this.selectedIndex != 0) this.selectedIndex = this.selectedIndex - 1;
   }
 }
