@@ -35,6 +35,7 @@ export const StringConditions = {
     PrintPickList:'PrintPickList',
     PickPickLabel:'PrintPickLabel',
     PrintTote: 'PrintTote',
+    Invalid: 'Invalid',
     orderTypeOpen: 'Open'
 }
 
@@ -119,7 +120,7 @@ export const ToasterMessages = {
     EnterBatchIdtoProcess:'Please enter in a batch id to proccess.',
     EnterBatchId:'Please enter in a batch id',
     EnterToteId:'Please enter in at least 1 tote id to process.',
-    EnterOrderNo:'Please enter in at least 1 order number to process.',
+    EnterOneOrderNoToProcess:'Please enter in at least 1 order number to process.',
     PopupBlocked:'Popup was blocked by the browser.',
     EnterOneTote:'Please enter in at least 1 tote id',
     EnterOneOrder:'Please enter in at least 1 order number',
@@ -127,6 +128,10 @@ export const ToasterMessages = {
     BatchIDCannotBeEmpty:'Batch ID cannot be empty when opening the pick batch manager.',
     NoOpenTote:'No open totes in batch',
     SelectBatchID:'Please select a Batch ID to print',
+    EnterOrderNo:'Please enter in an order number.',
+    InvalidOrderNo:'This is not a vaild order number for this pick batch.',
+    ToteIdAlreadyInBatch:'This tote id is already in this batch. Enter a new one',
+    MissingDataFromPrint:'Missing data from the desired print row',
     DeletePendingTransaction: 'You can only delete pending transactions.',
 }
 

@@ -263,7 +263,7 @@ export class ProcessPicksComponent implements OnInit {
   }
 
   @HostListener('click')
-  documentClick(event: MouseEvent) {
+  documentClick() {
     this.global.changesConfirmation = true;
     this.ifAllowed = true;
   }
@@ -732,7 +732,7 @@ export class ProcessPicksComponent implements OnInit {
     if (this.TOTE_SETUP.filter((e) => e.orderNumber).length == 0) {
       this.global.ShowToastr(
         ToasterType.Error,
-        ToasterMessages.EnterOrderNo,
+        ToasterMessages.EnterOneOrderNoToProcess,
         ToasterTitle.Error
       );
       this.dialog.closeAll();
