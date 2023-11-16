@@ -12,7 +12,9 @@ export const TransactionType = {
     Count: 'Count'
 }
 export const DialogConstants = {
-    auto: 'auto'
+    auto: 'auto',
+    close: 'close',
+    autoFocus:'__non_existing_element__' 
 }
 export const StringConditions = {
     SupplierItemID:'Supplier Item ID',
