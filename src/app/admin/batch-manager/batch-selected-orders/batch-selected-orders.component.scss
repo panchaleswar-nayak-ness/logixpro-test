@@ -27,37 +27,3 @@
 .custom-menu {
   width: 200px; /* Set your desired width */
 }
-// :host ::ng-deep .mat-menu-panel {
-//   width: auto !important;
-//   min-width: fit-content !important;
-//   max-width: unset !important;
-// }
-
-// ::ng-deep .menu-button {
-//   display: inline-block;
-// }
-// ::ng-deep .menu-panel {
-//   display: flex;
-//   flex-direction: column;
-//   min-width: unset !important;
-//   width: auto !important;
-// }
-// :ng-deep .menu-panel .mat-menu-content {
-//   width: auto !important;
-// }
-
-
-// .menu-container {
-//    position: relative;
-//    display: inline-block;
-//  }
- 
-//  .menu-button {
-//    width: 100%;
-//  }
- 
-//  .menu-panel {
-//    position: absolute;
-//    width: 100%;
-//    max-width: none !important;
-//  }

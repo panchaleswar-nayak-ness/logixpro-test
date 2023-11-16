@@ -43,6 +43,7 @@ export const StringConditions = {
     orderTypeOpen: 'Open',
     ResetField:'resetField',
     isAdd:'isAdd',
+    filterLoc:'Nothing',
     True:'true'
 }
 
@@ -151,7 +152,8 @@ export const AppNames = {
     ImportExport: 'ImportExport',
     Markout: 'Markout',
     OrderManager: 'OrderManager',
-    WorkManager: 'WorkManager'
+    WorkManager: 'WorkManager',
+    InductionManager:'InductionManager'
 }
 
 export const AppRoutes = {
@@ -164,7 +166,10 @@ export const AppRoutes = {
     OrderManagerEventLog: '/OrderManager/EventLog',
     AdminTransaction:'/#/admin/transaction',
     ReportView:'/#/report-view',
-    Logon:'/#/Logon/'
+    Logon:'/#/Logon/',
+    OrderManagerInventoryMap:'/OrderManager/InventoryMap',
+    AdminInventoryMap:'/admin/inventoryMap',
+    InductionManagerInventoryMap:'/InductionManager/Admin/InventoryMap'
 }
 
 export const AppIcons = {
