@@ -162,6 +162,7 @@ input:-webkit-autofill {
 .mat-icon-button.mat-primary,
 .mat-stroked-button.mat-primary {
   color: var(--clr-primary-500);
+  background: var(--clr-pure-white);
   // border: 1px solid var(--clr-primary-500);
 }
 
@@ -1578,7 +1579,7 @@ button.default-btn {
 }
 .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-label {
   mat-label {
-    background: var(--clr-pure-white);
+    background: rgba(var(--clr-pure-rgb-white),0.6);
   }
 }
 
@@ -1586,21 +1587,22 @@ button.default-btn {
   background-color: rgba(var(--clr-tertiary-rgb-10),  0.25) !important
 }
 
-.custom-form-field-bg-white {
+.custom-form-field-bg-white{
+&.mat-focused, .mat-form-field-disabled {
   .mat-form-field-outline {
     background: var(--clr-pure-white);
     border-radius: 14px;
   }
-
-
-
-
-
   .mat-form-field-label {
     background: var(--clr-pure-white);
     border-radius: 999px;
     width: auto !important;
   }
+  mat-label{
+    background: var(--clr-pure-white);
+    border-radius: 999px;
+  }
+}
 }
 .btn-init.custom-form-field.mat-form-field-appearance-outline {
   .mat-form-field-suffix {
@@ -1613,9 +1615,9 @@ button.default-btn {
   }
 }
 
-.custom-form-field-bg-white.mat-form-field-disabled .mat-form-field-label mat-label {
-  background: var(--clr-tertiary-10);
-}
+// .custom-form-field-bg-white.mat-form-field-disabled .mat-form-field-label mat-label {
+//   background: var(--clr-tertiary-10);
+// }
 
 .custom-form-field.mat-form-field-appearance-outline {
   .mat-form-field-prefix {
@@ -2356,7 +2358,7 @@ button.default-btn {
   .mat-expansion-panel-header-title {
     color: var(--clr-tertiary-900);
     font-size:16px;
-    font-weight: 600;
+    // font-weight: 600;
   }
   
   .mat-expansion-panel-header-description,
@@ -2378,7 +2380,15 @@ button.default-btn {
   }
   
   .mat-expansion-panel-header.mat-expanded {
-    height: 64px
+    height: 64px;
+    &::before{
+      content: '';
+    border-bottom: 1px solid var(--clr-chrome-50);
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    transition: all 0.3s;
+    margin-bottom: 20px;
+  }
   }
 
   .mat-accordion .mat-expansion-panel:not(.mat-expanded), 

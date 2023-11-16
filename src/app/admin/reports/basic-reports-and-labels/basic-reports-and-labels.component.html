@@ -36,7 +36,7 @@
                         </span>
                     </mat-form-field>
                     <ng-container *ngFor="let title of reportTitles; let i = index">
-                        <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
+                        <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline">
                           <mat-label>Report Title #{{ i + 1 }}</mat-label>
                           <input matInput type="text" [(ngModel)]="reportData[i]" (change)="ReportTitles()" maxlength="50">
                         </mat-form-field>

@@ -227,7 +227,7 @@
 .mat-expansion-panel-header {
   font-family: 'Mulish', sans-serif;
   font-size: 15px;
-  font-weight: 500
+  /* font-weight: 500 */
 }
 
 .mat-expansion-panel-content {
