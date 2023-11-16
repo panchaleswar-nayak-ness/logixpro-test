@@ -5,13 +5,12 @@ import {
   FormBuilder,
   Validators,
 } from '@angular/forms';
-
-import { AuthService } from 'src/app/init/auth.service'; 
+import { AuthService } from 'src/app/init/auth.service';
 import labels from '../../labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
-import { ApiEndpoints, ToasterMessages, ToasterTitle, ToasterType,superBatchFilterListName } from 'src/app/common/constants/strings.constants';
+import { ApiEndpoints, ToasterMessages, ToasterTitle, ToasterType, superBatchFilterListName } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-admin-prefrences',
@@ -22,10 +21,10 @@ export class AdminPrefrencesComponent implements OnInit {
 
   @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
   @ViewChild('maxNumber') maxNumber: ElementRef<HTMLInputElement>;
-  
-  public userData: any;
+
+
   preferencesForm: FormGroup;
-  trackIndIsDisable = false;
+
   shortMethodList: any = [
     {
       id: 'Complete Short',
@@ -122,12 +121,12 @@ export class AdminPrefrencesComponent implements OnInit {
   ];
 
   superBatchFilterList: any;
-  public iInductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
   constructor(
     private authService: AuthService,
     public inductionManagerApi: InductionManagerApiService,
     public formBuilder: FormBuilder,
-    private global:GlobalService
+    private global: GlobalService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
     this.preferencesForm = this.formBuilder.group({
@@ -182,7 +181,7 @@ export class AdminPrefrencesComponent implements OnInit {
         false,
         Validators.compose([])
       ),
-      
+
       autoPrintOffCarouselPutAwayList: new FormControl(
         false,
         Validators.compose([])
@@ -219,12 +218,12 @@ export class AdminPrefrencesComponent implements OnInit {
       orderNoPrefix: new FormControl('', Validators.compose([])),
     });
   }
-
+  public userData: any;
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.getPreferences();
   }
-
+  trackIndIsDisable = false;
   getPreferences() {
     try {
       this.iInductionManagerApi
@@ -333,13 +332,13 @@ export class AdminPrefrencesComponent implements OnInit {
                 orderNoPrefix: reelVal.orderNumberPrefix,
               });
             } else {
-              this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong,ToasterTitle.Error);
-              console.log("PreferenceIndex",res.responseMessage);
+              this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+              console.log("PreferenceIndex", res.responseMessage);
             }
           },
-          (error) => {}
+          (error) => { }
         );
-    } catch (error) { 
+    } catch (error) {
     }
   }
 
@@ -407,16 +406,16 @@ export class AdminPrefrencesComponent implements OnInit {
         if (event?.checked) {
           this.preferencesForm.get('inductionLocation')?.enable();
           this.trackIndIsDisable = false;
-        } else if(event && !event.checked) {
+        } else if (event && !event.checked) {
           this.preferencesForm.get('inductionLocation')?.disable();
           this.trackIndIsDisable = true;
         }
 
-        if(values.defaultSuperBatchSize<2){
-          this.global.ShowToastr(ToasterType.Error,ToasterMessages.DefaultSuperBatchSizeError, ToasterTitle.Error);
-          return 
+        if (values.defaultSuperBatchSize < 2) {
+          this.global.ShowToastr(ToasterType.Error, "Default Super Batch Size must be greater than 1", ToasterTitle.Error);
+          return
         }
-        
+
         payLoad = {
           TrackInductTrans: values.trackInductionLocation,
           InductLoc: this.preferencesForm.get('inductionLocation')?.value,
@@ -451,30 +450,30 @@ export class AdminPrefrencesComponent implements OnInit {
       this.iInductionManagerApi.DynamicMethod(payLoad, endPoint).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
-              this.global.updateImPreferences()
-            this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
+            this.global.updateImPreferences()
+            this.global.ShowToastr(ToasterType.Success, "Your details have been updated", ToasterTitle.Success);
           } else {
-            this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-            console.log("DynamicMethod",res.responseMessage);
+            this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+            console.log("DynamicMethod", res.responseMessage);
           }
         },
-        (error) => {}
+        (error) => { }
       );
-    } catch (error) { 
+    } catch (error) {
     }
   }
   getCompName() {
-    
+
     this.iInductionManagerApi.CompName().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
 
           this.preferencesForm.get('inductionLocation')?.setValue(res.data);
           this.updatePreferences(3);
-          this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
+          this.global.ShowToastr(ToasterType.Success, "Your details have been updated", ToasterTitle.Success);
         } else {
-          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-          console.log("CompName",res.responseMessage);
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+          console.log("CompName", res.responseMessage);
         }
       }
     );
@@ -493,7 +492,7 @@ export class AdminPrefrencesComponent implements OnInit {
     let value = inputElement.value.replace(/\D/g, ''); // Remove non-digit characters
     if (parseInt(value) > 2147483647) {
       value = value.slice(0, 10);
-    } 
+    }
     inputElement.value = value;
   }
 
