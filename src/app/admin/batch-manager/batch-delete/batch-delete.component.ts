@@ -10,12 +10,11 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../../app/init/auth.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../../inventory-master/current-tab-data-service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StringConditions, ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-delete',
@@ -50,8 +49,8 @@ export class BatchDeleteComponent implements OnInit {
   isChecked = true;
   public userData: any;
   public dltType: any;
-  @ViewChild('deleteAction') dltActionTemplate: TemplateRef<any>;
-  @ViewChild('deleteByTransaction') dltByTransactionTemplate: TemplateRef<any>;
+  @ViewChild('deleteAction') deleteActionTemplate: TemplateRef<any>;
+  @ViewChild('deleteByTransaction') deleteByTransactionTemplate: TemplateRef<any>;
   @Output() transTypeEmitter = new EventEmitter<any>();
   @Output() deleteEmitter = new EventEmitter<any>();
   @Input()
@@ -144,9 +143,9 @@ export class BatchDeleteComponent implements OnInit {
       transType: type
     };
     if (this.batchID !== StringConditions.AllTransaction) {
-      let dialogRef: any = this.global.OpenDialog(this.dltActionTemplate, {
+      let dialogRef: any = this.global.OpenDialog(this.deleteActionTemplate, {
         width: '550px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe(() => {
@@ -176,9 +175,9 @@ export class BatchDeleteComponent implements OnInit {
       });
     } else {
       payload.identity = 2;
-      const dialogRef: any = this.global.OpenDialog(this.dltByTransactionTemplate, {
+      const dialogRef: any = this.global.OpenDialog(this.deleteByTransactionTemplate, {
         width: '550px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe((res) => {
@@ -205,7 +204,7 @@ export class BatchDeleteComponent implements OnInit {
     this.isChecked = false;
   }
 
-  onDltOptions(dltType: any) {
+  onDeleteOptions(dltType: any) {
     this.dltType = dltType;
     this.dialog.closeAll();
   }

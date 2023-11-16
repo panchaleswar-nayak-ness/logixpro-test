@@ -32,7 +32,7 @@ export class OmCreateOrdersComponent implements OnInit {
   omPreferences:any;
   @ViewChild('ord_focus') ord_focus: ElementRef;
   displayedColumns: any[] = [];
-  IsActiveTrigger:boolean =false;
+  isActiveTrigger:boolean =false;
   public iAdminApiService: IAdminApiService;
   sequenceKeyMapping:any = [
     {sequence: 'Transaction Type',key:'transactionType'},
@@ -86,7 +86,7 @@ export class OmCreateOrdersComponent implements OnInit {
   };
   tableData: any = [];
   userData: any;
-  AllowInProc: any = 'False';
+  allowInProc: any = 'False';
   otcreatecount: any = 0;
   orderNumberSearchList: any;
   @ViewChild("searchauto", { static: false }) autocompleteOpened: MatAutocomplete;
@@ -240,7 +240,7 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   releaseOrders() {
-    if (this.AllowInProc == "False" && this.otcreatecount > 0) {
+    if (this.allowInProc == "False" && this.otcreatecount > 0) {
       this.global.ShowToastr('error','"You may not release an Order that is already in progress', 'Release Transactions');
       return;
     }
@@ -383,7 +383,7 @@ export class OmCreateOrdersComponent implements OnInit {
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault()
-    this.IsActiveTrigger = true;
+    this.isActiveTrigger = true;
     setTimeout(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
     }, 100);
@@ -393,7 +393,7 @@ export class OmCreateOrdersComponent implements OnInit {
     this.createOrdersDTPayload.filter = filter;
     this.paginator1.pageIndex = 0;
     this.createOrdersDT(true);   
-    this.IsActiveTrigger = false;
+    this.isActiveTrigger = false;
   }
 
   getColumnSequence(refresh: boolean = false) {

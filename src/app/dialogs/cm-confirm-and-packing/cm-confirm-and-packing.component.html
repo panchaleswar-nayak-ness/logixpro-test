@@ -6,7 +6,7 @@
     </button>
 </div>
 <div mat-dialog-content>
-    <ng-container *ngIf="!IsLoading">
+    <ng-container *ngIf="!isLoading">
     <div *ngIf="shipComp!=''&&shipComp!=null" class="mat-card d-flex mat-elevation-z g-card br-14 label-red w-100 mb-2">
         <div class="mat-icon me-lg-3">
             <span class="material-symbols-outlined">
@@ -243,9 +243,9 @@
                             </td>
                         </ng-container>
 
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns_1" style=" background-color: var(--clr-table-header);">
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsForItems" style=" background-color: var(--clr-table-header);">
                         </tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns_1;" (click)="selectRow(row)"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsForItems;" (click)="selectRow(row)"></tr>
                     </table>
                 </ng-scrollbar>
             </div>

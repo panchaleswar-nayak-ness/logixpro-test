@@ -16,7 +16,6 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 export class BlossomToteComponent implements OnInit {
   @ViewChild('tote_focus') tote_focus: ElementRef;
   public userData: any;
-  TOTE_SETUP: any = [];
   public iinductionManagerApi:IInductionManagerApiService;
 
   nxtToteID: any;

@@ -118,14 +118,14 @@ verifyLine(index) {
 }
 
 verifyAll(){
-    let IDS = new Set();
+    let itemLineStatus = new Set();
     this.itemSelectTable.data.forEach((row:any)=>{
         if (!["Not Completed", "Not Assigned", "Waiting Reprocess"].includes(row.lineStatus)) {
-            IDS.add(row.id);
+          itemLineStatus.add(row.id);
         }
     });
     
-    let tabID = this.unverifiedItems.filter((el) => IDS.has(el.id))
+    let tabID = this.unverifiedItems.filter((el) => itemLineStatus.has(el.id))
                                .map((row) => row.id.toString());
     
     let payload = {
