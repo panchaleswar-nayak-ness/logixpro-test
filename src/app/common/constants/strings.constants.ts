@@ -11,7 +11,9 @@ export const TransactionType = {
     PutAway: 'Put Away',
     Count: 'Count'
 }
-
+export const DialogConstants = {
+    auto: 'auto'
+}
 export const StringConditions = {
     SupplierItemID:'Supplier Item ID',
     WaitingReprocess:'Waiting Reprocess',
