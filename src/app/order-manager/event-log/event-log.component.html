@@ -1,20 +1,20 @@
 <app-event-log-panel-component 
-[ignoreDateRange]="ignoreDateRange"
-[startDate]="startDate"
-[endDate]="endDate"
-[message]="message"
-[eventLocation]="eventLocation"
-[searchAutocompleteList]="searchAutoCompleteList"
-[eventCode]="eventCode"
-[eventType]="eventType"
-[userName]="userName"
-(dateEmit)="startDate = $event.startDate; endDate = $event.endDate; event()"
-(ignoreDateRangeEmit)="onIgnoreDateRange($event);"
-(autoCompleteSearchColumnEmit)="autoCompleteSearchColumn($event.colName, $event.msg)"
-(eventLogTypeAheadEmit)="eventLogTypeAhead($event.colName, $event.msg,$event.loader)"
-(searchEmit)="search($event.event, $event.msg)"
-(clearEmit)="clear($event); "
-(clearFiltersEmit)="clearFilters()">
+    [ignoreDateRange]="ignoreDateRange"
+    [startDate]="startDate"
+    [endDate]="endDate"
+    [message]="message"
+    [eventLocation]="eventLocation"
+    [searchAutocompleteList]="searchAutoCompleteList"
+    [eventCode]="eventCode"
+    [eventType]="eventType"
+    [userName]="userName"
+    (dateEmit)="startDate = $event.startDate; endDate = $event.endDate; event()"
+    (ignoreDateRangeEmit)="onIgnoreDateRange($event);"
+    (autoCompleteSearchColumnEmit)="autoCompleteSearchColumn($event.colName, $event.msg)"
+    (eventLogTypeAheadEmit)="eventLogTypeAhead($event.colName, $event.msg,$event.loader)"
+    (searchEmit)="search($event.event, $event.msg)"
+    (clearEmit)="clear($event); "
+    (clearFiltersEmit)="clearFilters()">
 </app-event-log-panel-component>
 
 <mat-card class="mat-elevation-z g-card mb-3 mt-2" style="height: 100%;">
@@ -61,78 +61,78 @@
                     <ng-container matColumnDef="message">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Message </th>
                         <td mat-cell *matCellDef="let element" 
-                        #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.message" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
-                [matTooltipDisabled]="element.message && element.message.length>=20?false:true"
-                        (dblclick)="openOmEventLogEntryDetail(element)"
-                        (contextmenu)="onContextMenu($event, element.message, 'Message')"
-                        >{{element.message}}</td>
+                            #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.message" 
+                            style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
+                            [matTooltipDisabled]="element.message && element.message.length>=20?false:true"
+                            (dblclick)="openOmEventLogEntryDetail(element)"
+                            (contextmenu)="onContextMenu($event, element.message, 'Message')">
+                        {{element.message}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="eventCode">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Event Code </th>
                         <td mat-cell *matCellDef="let element" 
-                        #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.eventCode" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
-                [matTooltipDisabled]="element.eventCode && element.eventCode.length>=20?false:true"
-                        (dblclick)="openOmEventLogEntryDetail(element)"
-                        (contextmenu)="onContextMenu($event, element.eventCode, 'Event Code')"
-                        >{{element.eventCode}}</td>
+                            #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.eventCode" 
+                            style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
+                            [matTooltipDisabled]="element.eventCode && element.eventCode.length>=20?false:true"
+                            (dblclick)="openOmEventLogEntryDetail(element)"
+                            (contextmenu)="onContextMenu($event, element.eventCode, 'Event Code')">
+                        {{element.eventCode}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="nameStamp">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
                         <td mat-cell *matCellDef="let element" 
-                        #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.nameStamp" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
-                [matTooltipDisabled]="element.nameStamp && element.nameStamp.length>=20?false:true"
-                        (dblclick)="openOmEventLogEntryDetail(element)"
-                        (contextmenu)="onContextMenu($event, element.nameStamp, 'Name Stamp')"
-                        >{{element.nameStamp}}</td>
+                            #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.nameStamp" 
+                            style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
+                            [matTooltipDisabled]="element.nameStamp && element.nameStamp.length>=20?false:true"
+                            (dblclick)="openOmEventLogEntryDetail(element)"
+                            (contextmenu)="onContextMenu($event, element.nameStamp, 'Name Stamp')">
+                        {{element.nameStamp}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="eventType">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Event Type </th>
                         <td mat-cell *matCellDef="let element" 
-                        #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.eventType" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
-                [matTooltipDisabled]="element.eventType && element.eventType.length>=20?false:true"
-                        (dblclick)="openOmEventLogEntryDetail(element)"
-                        (contextmenu)="onContextMenu($event, element.eventType, 'Event Type')"
-                        >{{element.eventType}}</td>
+                            #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.eventType" 
+                            style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
+                            [matTooltipDisabled]="element.eventType && element.eventType.length>=20?false:true"
+                            (dblclick)="openOmEventLogEntryDetail(element)"
+                            (contextmenu)="onContextMenu($event, element.eventType, 'Event Type')">
+                        {{element.eventType}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="eventLocation">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Event Location </th>
                         <td mat-cell *matCellDef="let element" 
-                        #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.eventLocation" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
-                [matTooltipDisabled]="element.eventLocation && element.eventLocation.length>=20?false:true"
-                        (dblclick)="openOmEventLogEntryDetail(element)"
-                        (contextmenu)="onContextMenu($event, element.eventLocation, 'Event Location')"
-                        >{{element.eventLocation}}</td>
+                            #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.eventLocation" 
+                            style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
+                            [matTooltipDisabled]="element.eventLocation && element.eventLocation.length>=20?false:true"
+                            (dblclick)="openOmEventLogEntryDetail(element)"
+                            (contextmenu)="onContextMenu($event, element.eventLocation, 'Event Location')">
+                        {{element.eventLocation}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="notes">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Notes </th>
                         <td mat-cell *matCellDef="let element" 
-                        #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.notes" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
-                [matTooltipDisabled]="element.notes && element.notes.length>=20?false:true"
-                        (dblclick)="openOmEventLogEntryDetail(element)"
-                        (contextmenu)="onContextMenu($event, element.notes, 'Notes')"
-                        >{{element.notes}}</td>
+                            #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.notes" 
+                            style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
+                            [matTooltipDisabled]="element.notes && element.notes.length>=20?false:true"
+                            (dblclick)="openOmEventLogEntryDetail(element)"
+                            (contextmenu)="onContextMenu($event, element.notes, 'Notes')">
+                        {{element.notes}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="transactionID">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Trans ID </th>
                         <td mat-cell *matCellDef="let element" 
-                        #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.transactionID" 
-                style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
-                [matTooltipDisabled]="element.transactionID && element.transactionID.length>=20?false:true"
-                        (dblclick)="openOmEventLogEntryDetail(element)"
-                        (contextmenu)="onContextMenu($event, element.transactionID, 'Transaction ID')"
-                        >{{element.transactionID}}</td>
+                            #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.transactionID" 
+                            style="text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;"
+                            [matTooltipDisabled]="element.transactionID && element.transactionID.length>=20?false:true"
+                            (dblclick)="openOmEventLogEntryDetail(element)"
+                            (contextmenu)="onContextMenu($event, element.transactionID, 'Transaction ID')">
+                        {{element.transactionID}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="actions" stickyEnd>
@@ -159,14 +159,7 @@
         </div>
 
         <div class="d-flex justify-content-start bg-white align-items-center">
-            <mat-paginator 
-            [pageSizeOptions]="[10,15,20,25,50,100]"
-            [length]="recordsFiltered" 
-            [pageSize]="length" 
-            [disabled]="tableData.length == 0"
-            (page)="paginatorChange($event)"
-            showFirstLastButtons
-            ></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[10,15,20,25,50,100]" [length]="recordsFiltered" [pageSize]="length" [disabled]="tableData.length == 0" (page)="paginatorChange($event)" showFirstLastButtons></mat-paginator>
             <mat-label class="text-14 mat-paginator" *ngIf="recordsTotal > recordsFiltered">(filtered from {{recordsTotal}} total entries)</mat-label>
         </div>
     </mat-card-content>

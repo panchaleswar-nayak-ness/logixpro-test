@@ -1,15 +1,15 @@
 table{
-th{
-    white-space: nowrap;
-    padding-right: 12px;
-}
+    th{
+        white-space: nowrap;
+        padding-right: 12px;
+    }
 
-th,td{
-    padding-right: 15px;
-    padding-left: 10px;
-}
+    th,td{
+        padding-right: 15px;
+        padding-left: 10px;
+    }
 }
 
 input::-webkit-calendar-picker-indicator {
     cursor: pointer;
-  }
+}

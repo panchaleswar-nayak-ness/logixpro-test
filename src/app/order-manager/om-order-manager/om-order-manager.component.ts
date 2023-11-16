@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { OmCreateOrdersComponent } from 'src/app/dialogs/om-create-orders/om-create-orders.component';
 import { OmUpdateRecordComponent } from 'src/app/dialogs/om-update-record/om-update-record.component'; 
 import { AuthService } from 'src/app/init/auth.service';
-
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -24,6 +23,7 @@ import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -58,7 +58,7 @@ export class OmOrderManagerComponent implements OnInit {
   searchCol : string = "";
   searchTxt : string = "";
   totalRecords:any;
-  IsActiveTrigger:boolean =false;
+  isActiveTrigger:boolean =false;
   allColumns : any = [
     { colHeader: "transactionType", colDef: "Transaction Type" },
     { colHeader: "orderNumber", colDef: "Order Number" },
@@ -122,29 +122,29 @@ export class OmOrderManagerComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  public iOrderManagerApi :  IOrderManagerAPIService;
-  public iAdminApiService: IAdminApiService;
-  constructor(private dialog          : MatDialog,
-              private _liveAnnouncer  : LiveAnnouncer, 
-              private Api             : ApiFuntions,
-              public orderManagerApi  : OrderManagerApiService,
-              private adminApiService: AdminApiService,
-              public authService      : AuthService,
-              public globalService    : GlobalService,
-              private filterService   : ContextMenuFiltersService,
-              private currentTabDataService: CurrentTabDataService,
-              private global:GlobalService,
-              private contextMenuService : TableContextMenuService,
-              private router: Router) {
-                this.iOrderManagerApi = orderManagerApi; 
-                this.iAdminApiService = adminApiService; 
-              }
-
   @ViewChild('btnRef') buttonRef: MatButton;
 
+  public iOrderManagerApi :  IOrderManagerAPIService;
+  public iAdminApiService: IAdminApiService;
+
+  constructor(
+    public orderManagerApi  : OrderManagerApiService,
+    public adminApiService: AdminApiService,
+    public authService      : AuthService,
+    public globalService    : GlobalService,
+    private filterService   : ContextMenuFiltersService,
+    private currentTabDataService: CurrentTabDataService,
+    private global:GlobalService,
+    private contextMenuService : TableContextMenuService,
+    private router: Router
+  ) {
+    this.iOrderManagerApi = orderManagerApi; 
+    this.iAdminApiService = adminApiService; 
+  }
+
   ngAfterViewInit() {
-  this.getColumnSequence();
-  this.ApplySavedItem();
+    this.getColumnSequence();
+    this.ApplySavedItem();
   }
 
   async ngOnInit(): Promise<void> {
@@ -155,10 +155,8 @@ export class OmOrderManagerComponent implements OnInit {
       endIndex: 20
     }    
     this.userData = this.authService.userData();
-  
     await this.deleteTemp();
     this.getOMIndex();
- 
     this.fillTable();
     this.omPreferences=this.global.getOmPreferences();
   }  
@@ -170,7 +168,7 @@ export class OmOrderManagerComponent implements OnInit {
           this.OMIndex = res.data;
           if ( res.data?.preferences) this.maxOrders = res.data.preferences[0].maxOrders;
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("OrderManagerPreferenceIndex",res.responseMessage);
         }
       },
@@ -179,44 +177,37 @@ export class OmOrderManagerComponent implements OnInit {
   }
 
   getColumnSequence() {
-    let payload = {
-      tableName: 'Order Manager'
-    };
-
+    let payload = { tableName: RouteNames.OrderManager };
     this.iAdminApiService.GetColumnSequence(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.displayedColumns = res.data;        
         this.displayedColumns.push( 'actions');
-        
         this.colList = res.data.filter(x => x != 'actions');
         this.colList = this.colList.sort();
         this.searchCol = this.colList[0];
       }
       else{
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetColumnSequence",res.responseMessage);
       }
     });
   }
 
   selectColumnSequence() {
-    let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
+    let dialogRef: any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
       height: 'auto',
       width: '960px',
       disableClose: true,
       data: {
         mode: event,
-        tableName: 'Order Manager',
+        tableName: RouteNames.OrderManager,
       },
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.isExecuted) this.getColumnSequence();
-    });
+    dialogRef.afterClosed().subscribe((result) => { if (result?.isExecuted) this.getColumnSequence(); });
   }
 
   getOrders() {
-    
-    try{
+    try {
       let val1 : any, val2 : any;
 
       if (this.column.indexOf('Date') > -1) {
@@ -226,7 +217,6 @@ export class OmOrderManagerComponent implements OnInit {
         val1 = this.value1;
         val2 = this.value2;      
       }
-  
   
       if(this.FilterString == "") this.FilterString = "1 = 1";
   
@@ -242,27 +232,23 @@ export class OmOrderManagerComponent implements OnInit {
         filter: this.FilterString
       };
       
-  
       this.iOrderManagerApi.FillOrderManTempData(payload).pipe(
         catchError((error) => {
           // Handle the error here
-          
-  this.global.ShowToastr('error',"Something went wrong" ,'Error!');
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           // Return a fallback value or trigger further error handling if needed
           return of({ isExecuted: false });
         })
       ).subscribe((res: any) => {
         if (res.isExecuted) this.fillTable();
-        else this.global.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
+        else this.global.ShowToastr(ToasterType.Error, ToasterMessages.ErrorWhileRetrievingData, ToasterTitle.Error);
       });
-    }catch(ex){
-
-      this.global.ShowToastr('error',"Something went wrong" ,'Error!');
+    } catch(ex) {
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
     }
-    
   }
 
-  fillTable(loader : boolean = false) {
+  fillTable() {
     let payload2 = {
       user: this.userData.userName,
       startRow: this.customPagination.startIndex == 0 ? this.customPagination.startIndex.toString() : (this.customPagination.startIndex + 1).toString(),
@@ -274,28 +260,21 @@ export class OmOrderManagerComponent implements OnInit {
     }; 
 
     this.iOrderManagerApi.SelectOrderManagerTempDTNew(payload2).subscribe((res: any) => {
-      if(res)
-      {
+      if(res) {
         this.orderTable = new MatTableDataSource(res.data?.transactions);
         this.customPagination.total = res.data?.recordsFiltered;
         this.totalRecords = res.data?.recordsFiltered;
-      
-      this.RecordSavedItem();
-
-      this.orderTable.sort = this.sort;
-      }
-      else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.RecordSavedItem();
+        this.orderTable.sort = this.sort;
+      } else {
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("SelectOrderManagerTempDTNew",res.responseMessage);
       }
-      
     });   
   }
-
   
   ApplySavedItem() {
-    if (this.currentTabDataService.savedItem[this.currentTabDataService.ORDER_MANAGER])
-    {
+    if (this.currentTabDataService.savedItem[this.currentTabDataService.ORDER_MANAGER]) {
       let item= this.currentTabDataService.savedItem[this.currentTabDataService.ORDER_MANAGER];
       this.column = item.column;
       this.value1D = item.value1D;
@@ -314,6 +293,7 @@ export class OmOrderManagerComponent implements OnInit {
     }
     return false;
   }
+
   RecordSavedItem() {
     this.currentTabDataService.savedItem[this.currentTabDataService.ORDER_MANAGER]= {
       column : this.column,
@@ -329,28 +309,25 @@ export class OmOrderManagerComponent implements OnInit {
       orderType : this.orderType,
       searchCol : this.searchCol,
       orderTable : this.orderTable
-	  
     }
   }
   
   handlePageEvent(e: PageEvent) { 
-    this.customPagination.startIndex =  e.pageSize*e.pageIndex
-    this.customPagination.endIndex =  (e.pageSize*e.pageIndex + e.pageSize)
+    this.customPagination.startIndex = e.pageSize * e.pageIndex;
+    this.customPagination.endIndex = (e.pageSize * e.pageIndex + e.pageSize);
     this.customPagination.recordsPerPage = e.pageSize;
     this.orderTable.sort = this.sort;
     this.getOrders();
   }
 
   deleteViewed() {
-    
-    if (this.orderType == "Open") {
-      this.global.ShowToastr('error',"You can only delete pending transactions.", 'Warning!');
-    } else {
+    if (this.orderType == StringConditions.orderTypeOpen) this.global.ShowToastr(ToasterType.Error, ToasterMessages.DeletePendingTransaction, ToasterTitle.Warning);
+    else {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
-      disableClose:true,
+        disableClose:true,
         data: {
           ErrorMessage: 'Are you sure you want to delete all viewed orders?',
           action: 'delete'
@@ -358,18 +335,16 @@ export class OmOrderManagerComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe((result) => {
-        if (result == 'Yes') {
+        if (result == StringConditions.Yes) {
           let payload = {
             user: this.userData.userName,
             viewType: this.viewType
           };
       
           this.iOrderManagerApi.OMOTPendDelete(payload).subscribe((res: any) => {
-            if (res.isExecuted) {
-              this.getOrders();
-            }
-            else{
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            if (res.isExecuted) this.getOrders();
+            else {
+              this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
               console.log("OMOTPendDelete",res.responseMessage)
             }
           });
@@ -380,12 +355,12 @@ export class OmOrderManagerComponent implements OnInit {
   }
 
   callDisplayRecords(e : KeyboardEvent) {
-    if (e.key == "Enter") this.displayRecords();
+    if (e.key == KeyboardKeys.Enter) this.displayRecords();
   }
 
   displayRecords() {
-    if ((this.column == "Import Date" || this.column == "Required Date" || this.column == "Priority") && this.case == "Like") 
-      this.global.ShowToastr('error',"Cannot use the 'Like' option with Required Date, Import Date, or Priority column options", 'Warning!');
+    if ((this.column == Column.ImportDate || this.column == Column.RequiredDate || this.column == Column.Priority) && this.case == Case.Like) 
+      this.global.ShowToastr(ToasterType.Error, "Cannot use the 'Like' option with Required Date, Import Date, or Priority column options", ToasterTitle.Error);
     else this.getOrders();
     this.RecordSavedItem();
   }
@@ -403,37 +378,26 @@ export class OmOrderManagerComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => { 
-      if(result.isExecuted && result.clickDisplayRecord) {
-        this.displayRecords();
-      }
-    });
+    dialogRef.afterClosed().subscribe(result => { if(result.isExecuted && result.clickDisplayRecord) this.displayRecords(); });
   }
 
   openOrderStatus(ele : any, fromTable : boolean) {
-    if((this.value1 == "" || this.column != "Order Number") && !fromTable){
-      this.global.ShowToastr('error',"You must select an Order Number to view the order status.", 'Error!');
-    }
-    else if (!fromTable){
-      this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${this.value1 ? this.value1 : ''}`);
-    } 
-    else {
-      
-        this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${ele.orderNumber ? ele.orderNumber : ''}`);
-    } 
+    if((this.value1 == "" || this.column != Column.OrderNumber) && !fromTable) this.global.ShowToastr(ToasterType.Error, "You must select an Order Number to view the order status.", ToasterTitle.Error);
+    else if (!fromTable) this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${this.value1 ? this.value1 : ''}`);
+    else this.router.navigateByUrl(`/OrderManager/OrderStatus?orderStatus=${ele.orderNumber ? ele.orderNumber : ''}`);
   }
 
   releaseViewed() {
     if (this.orderTable.data.length == 0) {
-      this.global.ShowToastr('error',"No Transactions match your current filters to release.", 'Error!');
+      this.global.ShowToastr(ToasterType.Error,"No Transactions match your current filters to release.", ToasterTitle.Error);
       return
     }
     if (this.orderType == 'Open') {
-      this.global.ShowToastr('error',"This orders you are viewing have already been released.", 'Error!');
+      this.global.ShowToastr(ToasterType.Error,"This orders you are viewing have already been released.", ToasterTitle.Error);
       return
     }
     if (!this.OMIndex.preferences[0].allowInProc) {
-      this.global.ShowToastr('error',"You may not release an Order that is already in progress.", 'Error!');
+      this.global.ShowToastr(ToasterType.Error,"You may not release an Order that is already in progress.", ToasterTitle.Error);
       return
     }
 
@@ -584,7 +548,7 @@ export class OmOrderManagerComponent implements OnInit {
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault()
-    this.IsActiveTrigger = true;
+    this.isActiveTrigger = true;
     setTimeout(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
     }, 100);
@@ -597,7 +561,7 @@ export class OmOrderManagerComponent implements OnInit {
     this.paginator.pageIndex = 0;
     this.FilterString = filter;
     this.getOrders();
-    this.IsActiveTrigger = false;
+    this.isActiveTrigger = false;
   }
 
   async deleteTemp(){

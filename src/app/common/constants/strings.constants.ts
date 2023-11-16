@@ -17,7 +17,8 @@ export const StringConditions = {
     PrintCase: 'PrintCase',
     PrintPickList:'PrintPickList',
     PickPickLabel:'PrintPickLabel',
-    PrintTote: 'PrintTote'
+    PrintTote: 'PrintTote',
+    orderTypeOpen: 'Open'
 }
 
 export const ResponseStrings = {
@@ -45,6 +46,7 @@ export const ToasterTitle = {
     Error: 'Error!',
     Success: 'Success!',
     Alert: 'Alert!',
+    Warning: 'Warning!',
     Consolidation: 'Consolidation!',
     Staging: 'Staging!',
     NoRows: 'No Rows',
@@ -99,7 +101,7 @@ export const ToasterMessages = {
     BatchIDCannotBeEmpty:'Batch ID cannot be empty when opening the pick batch manager.',
     NoOpenTote:'No open totes in batch',
     SelectBatchID:'Please select a Batch ID to print',
-
+    DeletePendingTransaction: 'You can only delete pending transactions.',
 }
 
 export const AppNames = {
@@ -215,15 +217,17 @@ export const superBatchFilterListName = {
     ToteID: 'Tote ID',
     OrderNo: 'Order Number'
 }
+
 export const KeyboardKeys = {
     A: 'a',
     B: 'b',
     C: 'c',
     D: 'd',
     E: 'e',
-    R: 'r'
+    R: 'r',
+    Enter: 'Enter'
 }
-export const zoneType={
+export const zoneType = {
     carousel:'carousel',
     cartonFlow:'cartonFlow',
     includePick:'includePick'
@@ -238,17 +242,34 @@ export const alertMessage = {
     
 } 
 
-export const showNotificationHeading ={
+export const showNotificationHeading = {
     FieldsMissing:'Fields Missing',
     InvalidQuantity:'Invalid Quantity',
     InvalidItemEntered:'Invalid Item Entered',
     InvalidToteEntered:'Invalid Tote Entered'
 }
 
-export const showNotificationMessage ={
+export const showNotificationMessage = {
     FieldsFill:'Not all the fields were filled out. Please fill them out',
     InvalidQuantity:'An invalid quantity was entered. Please enter a quantity greater than 0',
     ItemNotExists:'This item does not exist in Inventory',
     ToteAlreadyExists:'This tote id already exists in Open Transactions'
 }
 
+export const FieldName = {
+    EventLocation: 'Event Location',
+    Message: 'Message',
+    Username: 'Username',
+    EventCode: 'Event Code',
+    EventType: 'Event Type'
+}
+export const Column = {
+    ImportDate: 'Import Date',
+    RequiredDate: 'Required Date',
+    Priority: 'Priority',
+    OrderNumber: 'Order Number'
+}
+
+export const Case = {
+    Like: 'Like'
+}
