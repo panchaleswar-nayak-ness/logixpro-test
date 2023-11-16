@@ -11,7 +11,9 @@ export const TransactionType = {
     PutAway: 'Put Away',
     Count: 'Count'
 }
-
+export const DialogConstants = {
+    auto: 'auto'
+}
 export const StringConditions = {
     SupplierItemID:'Supplier Item ID',
     WaitingReprocess:'Waiting Reprocess',
@@ -19,6 +21,7 @@ export const StringConditions = {
     NotAssigned: 'Not Assigned',
     No: 'No',
     Yes: 'Yes',
+    AddCaps: 'Add',
     Enter: 'Enter',
     Event: 'event',
     Click: 'click',
@@ -35,7 +38,10 @@ export const StringConditions = {
     PickPickLabel:'PrintPickLabel',
     PrintTote: 'PrintTote',
     Invalid: 'Invalid',
-    orderTypeOpen: 'Open'
+    orderTypeOpen: 'Open',
+    ResetField:'resetField',
+    isAdd:'isAdd',
+    True:'true'
 }
 
 export const ResponseStrings = {
@@ -133,6 +139,7 @@ export const ToasterMessages = {
     ToteIdAlreadyInBatch:'This tote id is already in this batch. Enter a new one',
     MissingDataFromPrint:'Missing data from the desired print row',
     DeletePendingTransaction: 'You can only delete pending transactions.',
+    ItemNumberExists:'Item Number Already Exists.'
 }
 
 export const AppNames = {
