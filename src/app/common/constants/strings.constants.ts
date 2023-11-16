@@ -40,7 +40,8 @@ export const StringConditions = {
     Invalid: 'Invalid',
     orderTypeOpen: 'Open',
     ResetField:'resetField',
-    isAdd:'isAdd'
+    isAdd:'isAdd',
+    True:'true'
 }
 
 export const ResponseStrings = {
@@ -137,6 +138,7 @@ export const ToasterMessages = {
     ToteIdAlreadyInBatch:'This tote id is already in this batch. Enter a new one',
     MissingDataFromPrint:'Missing data from the desired print row',
     DeletePendingTransaction: 'You can only delete pending transactions.',
+    ItemNumberExists:'Item Number Already Exists.'
 }
 
 export const AppNames = {
