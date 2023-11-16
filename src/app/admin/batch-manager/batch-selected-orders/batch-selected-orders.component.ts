@@ -20,7 +20,7 @@ import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/c
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { ConfirmationHeadings, ConfirmationMessages, ResponseStrings, StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-selected-orders',
@@ -30,14 +30,14 @@ import { ConfirmationHeadings, ConfirmationMessages, ResponseStrings, StringCond
 
 export class BatchSelectedOrdersComponent implements OnInit {
   public userData: any;
-  tableData: any;
+  batchOrderDataTable: any;
   transType: any;
   pickToTotes: boolean;
   nextToteID: any;
   @Input() set selectedOrderList(val: any) {
-    this.tableData = new MatTableDataSource(val);
-    this.tableData.paginator = this.paginator;
-    this.tableData.sort = this.sort;
+    this.batchOrderDataTable = new MatTableDataSource(val);
+    this.batchOrderDataTable.paginator = this.paginator;
+    this.batchOrderDataTable.sort = this.sort;
   }
   @Input() displayedColumns: any;
   @Input() batchManagerSettings: any;
@@ -86,7 +86,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     let toteLimit = 0;
     if (changes['selectedOrderList']) {
-      this.tableData['_data']['_value'].forEach((element) => {
+      this.batchOrderDataTable['_data']['_value'].forEach((element) => {
         if (toteLimit < 10) {
           toteLimit++;
         } else {
@@ -95,7 +95,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
         element['toteNumber'] = toteLimit;
       });
       this.sharedService.updateBatchManagerObject({
-        selectedOrderLength: this.tableData['_data']['_value'].length,
+        selectedOrderLength: this.batchOrderDataTable['_data']['_value'].length,
       });
     }
     if (changes['isAutoBatch']) {
@@ -112,14 +112,14 @@ export class BatchSelectedOrdersComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
   }
 
   printReport(type) {
     if (type === StringConditions.Batch) {
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '786px',
         autoFocus: '__non_existing_element__',
         disableClose: true,
@@ -131,7 +131,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       dialogRef.afterClosed().subscribe((res) => {
         if (res === ResponseStrings.Yes) {
           let ordersArr: any = [];
-          this.tableData._data._value.forEach(element => {
+          this.batchOrderDataTable._data._value.forEach(element => {
             ordersArr.push(element.orderNumber)
           });
           this.global.Print(`FileName:PrintBatchReport|TransType:${this.transType}|Orders:${ordersArr.length > 0 ? ordersArr : ''}|BatchID:${this.nextOrderNumber}`)
@@ -139,7 +139,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       });
     } else {
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '786px',
         autoFocus: '__non_existing_element__',
         disableClose: true,
@@ -151,7 +151,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       dialogRef.afterClosed().subscribe((res) => {
         if (res === ResponseStrings.Yes) {
           let ordersArr: any = [];
-          this.tableData._data._value.forEach(element => {
+          this.batchOrderDataTable._data._value.forEach(element => {
             ordersArr.push(element.orderNumber)
           });
           this.global.Print(`FileName:PrintBatchLabel|TransType:${this.transType}|Orders:${ordersArr.length > 0 ? ordersArr : ''}`, 'lbl')
@@ -166,7 +166,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
 
   createBatch() {
     let iBactchData: any[] = [];
-    this.tableData.data.map((order: any) => {
+    this.batchOrderDataTable.data.map((order: any) => {
       let result = [
         order.orderNumber.toString(),
         this.isAutoBatch
@@ -203,14 +203,14 @@ export class BatchSelectedOrdersComponent implements OnInit {
   }
 
   addRemoveAllOrder() {
-    if (this.tableData['_data']['_value'].length == 0) return;
+    if (this.batchOrderDataTable['_data']['_value'].length == 0) return;
     this.addRemoveAll.emit();
   }
 
   createBatchDialog() {
     if (this.nextOrderNumber === '') {
       const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '786px',
         data: {
           message: ConfirmationMessages.BatchIDMustBeSpecified,
@@ -220,9 +220,9 @@ export class BatchSelectedOrdersComponent implements OnInit {
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe((result) => { });
-    } else if (this.tableData.data.length == 0) {
+    } else if (this.batchOrderDataTable.data.length == 0) {
       const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '786px',
         data: {
           message: ConfirmationMessages.NoOrdersSelected,
@@ -235,7 +235,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
     } else {
       let dialogRef;
       dialogRef = this.global.OpenDialog(CreateBatchConfirmationComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '550px',
         autoFocus: '__non_existing_element__',
         disableClose: true,
@@ -243,7 +243,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
           pickToTotes: this.pickToTotes,
           transType: this.transType,
           nextToteID: this.nextToteID,
-          selectedOrderList: this.tableData['_data']['_value'],
+          selectedOrderList: this.batchOrderDataTable['_data']['_value'],
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
