@@ -10,39 +10,39 @@ import { StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'sr
   templateUrl: './process-pick-batches.component.html',
   styleUrls: []
 })
-export class ProcessPickBatchesComponent   {
+export class ProcessPickBatchesComponent {
   orderInput: any;
   public userData: any;
-@Input() pickBatchQuantity:any;
-@Input() useInZonePickScreen:any;
-@Input() onDestroy$:any;
-@Input() filteredOptions:any;
-@Input() allOrders:any;
-@Input() TOTE_SETUP:any;
-@Input() filteredOrderNum:any;
-@Input() orderNumberList:any;
-@Input() orderNumber:any;
-@Input() allZones:any;
-@Input() dataSource:any;
-@Input() pickBatchesCrossbtn:any;
-@Input() pickBatches:any;
-@Input() imPreferences:any;
+  @Input() pickBatchQuantity: any;
+  @Input() useInZonePickScreen: any;
+  @Input() onDestroy$: any;
+  @Input() filteredOptions: any;
+  @Input() allOrders: any;
+  @Input() TOTE_SETUP: any;
+  @Input() filteredOrderNum: any;
+  @Input() orderNumberList: any;
+  @Input() orderNumber: any;
+  @Input() allZones: any;
+  @Input() dataSource: any;
+  @Input() pickBatchesCrossbtn: any;
+  @Input() pickBatches: any;
+  @Input() imPreferences: any;
 
 
-@Output() workstationzone = new EventEmitter<any>();
-  constructor(private global:GlobalService,
-    private authService: AuthService) { 
+  @Output() workstationzone = new EventEmitter<any>();
+  constructor(private global: GlobalService,
+    private authService: AuthService) {
     this.userData = this.authService.userData();
   }
 
-  ngOnChanges(changes: SimpleChanges): void{
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes['allOrders']) {
       this.allOrders = changes['allOrders']?.currentValue;
     }
   }
 
   openWorkstationZone() {
-    let dialogRef:any = this.global.OpenDialog(WorkstationZonesComponent, {
+    let dialogRef: any = this.global.OpenDialog(WorkstationZonesComponent, {
       height: 'auto',
       width: '750px',
       autoFocus: '__non_existing_element__',
@@ -56,9 +56,9 @@ export class ProcessPickBatchesComponent   {
     })
   }
   async printExisting(type) {
-    
+
     if (!this.pickBatchesCrossbtn) {
-      this.global.ShowToastr(ToasterType.Error,ToasterMessages.SelectBatchID, ToasterTitle.Error)
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.SelectBatchID, ToasterTitle.Error)
     } else {
 
       if (type === StringConditions.PrintTote) {
@@ -72,7 +72,7 @@ export class ProcessPickBatchesComponent   {
       }
       if (type === StringConditions.PickPickLabel) {
         if (this.imPreferences.printDirectly) {
-        await  this.global.Print(`FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, 'lbl')
+          await this.global.Print(`FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, 'lbl')
         } else {
           window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
         }
@@ -81,7 +81,7 @@ export class ProcessPickBatchesComponent   {
 
 
         if (this.imPreferences.printDirectly) {
-          await   this.global.Print(`FileName:PrintPrevIMPickBatchList|BatchID:${this.pickBatches.value}`);
+          await this.global.Print(`FileName:PrintPrevIMPickBatchList|BatchID:${this.pickBatches.value}`);
 
         } else {
           window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchList|BatchID:${this.pickBatches.value}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
@@ -94,7 +94,7 @@ export class ProcessPickBatchesComponent   {
 
 
         if (this.imPreferences.printDirectly) {
-          await  this.global.Print(`FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, 'lbl');
+          await this.global.Print(`FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, 'lbl');
 
         } else {
           window.open(`/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
@@ -107,7 +107,7 @@ export class ProcessPickBatchesComponent   {
 
 
         if (this.imPreferences.printDirectly) {
-          await   this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${this.pickBatches.value}`);
+          await this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${this.pickBatches.value}`);
 
         } else {
           window.open(`/#/report-view?file=FileName:PrintPrevPickBatchList|BatchID:${this.pickBatches.value}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
@@ -119,7 +119,7 @@ export class ProcessPickBatchesComponent   {
     }
   }
   openViewOrdersDialogue(viewType: any) {
-    const dialogRef:any = this.global.OpenDialog(ViewOrdersComponent, {
+    const dialogRef: any = this.global.OpenDialog(ViewOrdersComponent, {
       height: 'auto',
       width: '100vw',
       data: {
@@ -159,7 +159,7 @@ export class ProcessPickBatchesComponent   {
       }
     });
     if (isBatchFull) {
-      this.global.ShowToastr(ToasterType.Error,ToasterMessages.NoOpenTote, ToasterTitle.BatchFilled);
+      this.global.ShowToastr(ToasterType.Error, ToasterMessages.NoOpenTote, ToasterTitle.BatchFilled);
       this.orderNumber.setValue('');
       return;
     }
@@ -170,7 +170,7 @@ export class ProcessPickBatchesComponent   {
         this.allZones.map(i => {
           zone += i + ' ';
         })
-        this.global.ShowToastr(ToasterType.Error,`Order ${orderNum} does not have a line go to Zones: ${zone} `, ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, `Order ${orderNum} does not have a line go to Zones: ${zone} `, ToasterTitle.Error);
         this.orderNumber.setValue('');
         return;
       }
@@ -192,8 +192,6 @@ export class ProcessPickBatchesComponent   {
         }
 
       }
-
     }
-
   }
 }
