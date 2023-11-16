@@ -14,7 +14,7 @@ import { CurrentTabDataService } from '../../inventory-master/current-tab-data-s
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StringConditions, ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-delete',
@@ -145,7 +145,7 @@ export class BatchDeleteComponent implements OnInit {
     if (this.batchID !== StringConditions.AllTransaction) {
       let dialogRef: any = this.global.OpenDialog(this.deleteActionTemplate, {
         width: '550px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe(() => {
@@ -177,7 +177,7 @@ export class BatchDeleteComponent implements OnInit {
       payload.identity = 2;
       const dialogRef: any = this.global.OpenDialog(this.deleteByTransactionTemplate, {
         width: '550px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe((res) => {

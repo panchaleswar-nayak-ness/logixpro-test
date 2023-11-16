@@ -19,7 +19,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppPermissions, AppRoutes, LiveAnnouncerMessage, ToasterTitle, ToasterType, localStorageKeys } from 'src/app/common/constants/strings.constants';
+import { AppPermissions, AppRoutes, DialogConstants, LiveAnnouncerMessage, ToasterTitle, ToasterType, localStorageKeys } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-order-list',
@@ -160,7 +160,7 @@ export class BatchOrderListComponent implements OnInit {
   openBatchViewDetail(detailData?): void {
     this.global.OpenDialog(BatchManagerDetailViewComponent, {
       width: '1100px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: detailData,
     });

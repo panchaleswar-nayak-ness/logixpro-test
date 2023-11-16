@@ -121,7 +121,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: DialogConstants.auto,
         width: '786px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           message: ConfirmationMessages.ClickOkToPrintBatchReport,
@@ -141,7 +141,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: DialogConstants.auto,
         width: '786px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           message: ConfirmationMessages.ClickOkToPrintItemLabels,
@@ -216,7 +216,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
           message: ConfirmationMessages.BatchIDMustBeSpecified,
           heading: ConfirmationHeadings.BatchManager,
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe((result) => { });
@@ -228,7 +228,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
           message: ConfirmationMessages.NoOrdersSelected,
           heading: ConfirmationHeadings.BatchManager,
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe((result) => { });
@@ -237,7 +237,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       dialogRef = this.global.OpenDialog(CreateBatchConfirmationComponent, {
         height: DialogConstants.auto,
         width: '550px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           pickToTotes: this.pickToTotes,
