@@ -169,7 +169,7 @@
                     [searchCol]="this.allColumns.colDef"
                     (selectionChangeEvent)="this.searchCol = ($event).toString(); fillTable()"
                     (colKeyUpEnterEvent)="fillTable()"
-                    (searchKeyUpEvent)="this.searchTxt = $event; fillTable(true)"
+                    (searchKeyUpEvent)="this.searchTxt = $event; fillTable()"
                     (clearInputFieldEvent)="searchTxt=''"
                     [searchString]="this.allColumns.searchValue">
                 </app-column-filter-component>
@@ -243,4 +243,4 @@
     </mat-card-content>
 </mat-card>
 
-<app-table-context-menu-component *ngIf="IsActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'omOrderManager'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'omOrderManager'"></app-table-context-menu-component>

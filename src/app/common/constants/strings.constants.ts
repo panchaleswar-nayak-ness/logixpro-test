@@ -2,6 +2,16 @@ export const StringAssignments = {
     WorkstationNotAssignedToZone: 'This workstation is not assigned to a zone',
 };
 
+export const localStorageKeys = {
+    UserRights : 'userRights'
+}
+
+export const TransactionType = {
+    Pick: 'Pick',
+    PutAway: 'Put Away',
+    Count: 'Count'
+}
+
 export const StringConditions = {
     SupplierItemID:'Supplier Item ID',
     WaitingReprocess:'Waiting Reprocess',
@@ -12,17 +22,25 @@ export const StringConditions = {
     Enter: 'Enter',
     Event: 'event',
     Click: 'click',
+    Add: 'add',
+    Remove: 'remove',
+    BatchToteTrans: 'batch_tote_trans',
+    BatchTote: 'batch_tote',
+    AllTransaction: 'All Transaction',
+    Batch: 'Batch',
     BatchWithID:'batchWithID',
     PrintBatch:'PrintBatch',
     PrintCase: 'PrintCase',
     PrintPickList:'PrintPickList',
     PickPickLabel:'PrintPickLabel',
     PrintTote: 'PrintTote',
-    Invalid: 'Invalid'
+    Invalid: 'Invalid',
+    orderTypeOpen: 'Open'
 }
 
 export const ResponseStrings = {
     No: 'No',
+    Yes: 'Yes',
     Empty: '',
     Null: null,
     DNE: 'DNE',
@@ -46,13 +64,22 @@ export const ToasterTitle = {
     Error: 'Error!',
     Success: 'Success!',
     Alert: 'Alert!',
+    Warning: 'Warning!',
     Consolidation: 'Consolidation!',
     Staging: 'Staging!',
     NoRows: 'No Rows',
     BatchFilled: 'Batch is Filled.'
 }
 
+export const ConfirmationHeadings = {
+    BatchManager: 'Batch Manager'
+}
+
 export const ConfirmationMessages = {
+    NoOrdersSelected: 'No Orders Selected.',
+    BatchIDMustBeSpecified: 'Batch ID must be specified.',
+    ClickOkToPrintBatchReport:'Click Ok to print a Batch Report for the selected orders?',
+    ClickOkToPrintItemLabels:'Click Ok to print item labels for the selected batch orders?',
     UnverfiedItemsLeft:'There are still unverfied items. Coninue the preview?',
     EventLogDeleteWithRange: 'Are you sure you want to delete all Event Log entries with specified date, message, event location and name stamp filters?'
 }
@@ -103,9 +130,8 @@ export const ToasterMessages = {
     EnterOrderNo:'Please enter in an order number.',
     InvalidOrderNo:'This is not a vaild order number for this pick batch.',
     ToteIdAlreadyInBatch:'This tote id is already in this batch. Enter a new one',
-    MissingDataFromPrint:'Missing data from the desired print row'
-    
-
+    MissingDataFromPrint:'Missing data from the desired print row',
+    DeletePendingTransaction: 'You can only delete pending transactions.',
 }
 
 export const AppNames = {
@@ -169,7 +195,8 @@ export const AppPermissions = {
     ImportExport: 'Import Export',
     Markout: 'Markout',
     OrderManager: 'Order Manager',
-    WorkManager: 'Work Manager'
+    WorkManager: 'Work Manager',
+    OrderStatus: 'Order Status'
 }
 
 export const LiveAnnouncerMessage = {
@@ -221,15 +248,17 @@ export const superBatchFilterListName = {
     ToteID: 'Tote ID',
     OrderNo: 'Order Number'
 }
+
 export const KeyboardKeys = {
     A: 'a',
     B: 'b',
     C: 'c',
     D: 'd',
     E: 'e',
-    R: 'r'
+    R: 'r',
+    Enter: 'Enter'
 }
-export const zoneType={
+export const zoneType = {
     carousel:'carousel',
     cartonFlow:'cartonFlow',
     includePick:'includePick'
@@ -244,17 +273,34 @@ export const alertMessage = {
     
 } 
 
-export const showNotificationHeading ={
+export const showNotificationHeading = {
     FieldsMissing:'Fields Missing',
     InvalidQuantity:'Invalid Quantity',
     InvalidItemEntered:'Invalid Item Entered',
     InvalidToteEntered:'Invalid Tote Entered'
 }
 
-export const showNotificationMessage ={
+export const showNotificationMessage = {
     FieldsFill:'Not all the fields were filled out. Please fill them out',
     InvalidQuantity:'An invalid quantity was entered. Please enter a quantity greater than 0',
     ItemNotExists:'This item does not exist in Inventory',
     ToteAlreadyExists:'This tote id already exists in Open Transactions'
 }
 
+export const FieldName = {
+    EventLocation: 'Event Location',
+    Message: 'Message',
+    Username: 'Username',
+    EventCode: 'Event Code',
+    EventType: 'Event Type'
+}
+export const Column = {
+    ImportDate: 'Import Date',
+    RequiredDate: 'Required Date',
+    Priority: 'Priority',
+    OrderNumber: 'Order Number'
+}
+
+export const Case = {
+    Like: 'Like'
+}

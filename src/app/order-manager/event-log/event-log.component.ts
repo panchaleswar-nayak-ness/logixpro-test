@@ -14,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppRoutes, ConfirmationMessages, KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, FieldName, KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-event-log',
@@ -25,7 +25,6 @@ export class EventLogComponent implements OnInit {
 
   displayedColumns: string[] = ['dateStamp', 'message', 'eventCode', 'nameStamp', 'eventType', 'eventLocation', 'notes', 'transactionID','actions'];
   dataSourceList: any;
-  public iAdminApiService: IAdminApiService;
   ignoreDateRange: boolean ;
   startDate:any = "";
   endDate:any = "";
@@ -39,14 +38,12 @@ export class EventLogComponent implements OnInit {
   filterString: string = "1 = 1";
   sortColumn: number = 0;
   sortOrder: string = "desc";
-
   userData: any;
   tableData: any = [];
   recordsTotal: any;
   recordsFiltered: any;
   eventLogTableSubscribe: any;
   eventLogTypeAheadSubscribe: any;
-
   searchAutoCompleteList: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -66,8 +63,9 @@ export class EventLogComponent implements OnInit {
   ];
 
   isAdmin: boolean = false;
+  isActiveTrigger: boolean = false;
 
-  isActiveTrigger:boolean =false;
+  public iAdminApiService: IAdminApiService;
 
   constructor(
     private global: GlobalService,
@@ -309,11 +307,11 @@ export class EventLogComponent implements OnInit {
   }
 
   clear(field : any = "") {
-    if(field=='Event Location') this.eventLocation='';
-    else if(field=='Message') this.message='';
-    else if(field=='Username') this.userName='';
-    else if(field=='Event Code') this.eventCode='';
-    else if(field=='Event Type') this.eventType='';
+    if(field == FieldName.EventLocation) this.eventLocation = '';
+    else if(field == FieldName.Message) this.message = '';
+    else if(field == FieldName.Username) this.userName = '';
+    else if(field == FieldName.EventCode) this.eventCode = '';
+    else if(field == FieldName.EventType) this.eventType = '';
     this.eventLogTable(this.objIgnoreDateRange);
   }
 }
