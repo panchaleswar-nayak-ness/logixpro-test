@@ -19,6 +19,7 @@ import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
+import { DialogConstants, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 
 export interface InventoryMapDataStructure {
@@ -56,7 +57,7 @@ export interface InventoryMapDataStructure {
   laserY: string;
   locationNumber: string;
   rn: string;
-  velocity: string; // additional field
+  velocity: string;
   altLight: string;
 }
 @Component({
@@ -126,7 +127,7 @@ export class AddInvMapLocationComponent implements OnInit {
     locationNumber: '',
     rn: '',
     altLight: '',
-    velocity: '' //additional field
+    velocity: ''
   };
 
 
@@ -210,12 +211,12 @@ export class AddInvMapLocationComponent implements OnInit {
         this.locZoneList = res.data; 
       this.filteredOptions = this.addInvMapLocation.controls['location'].valueChanges.pipe(
         startWith(''),
-        map(value => this._filter(value || '')),
+        map(value => this.filterLocalZoneList(value || '')),
       );
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getLocZTypeInvMap",res.responseMessage);
 
 
@@ -225,13 +226,13 @@ export class AddInvMapLocationComponent implements OnInit {
     });
       this.searchByShipVia
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
+      .subscribe(() => {
         this.autocompleteSearchColumn();
       });
     
       this.searchByShipName
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
+      .subscribe(() => {
         this.autocompleteSearchColumnShipName();
       });  
 
@@ -310,13 +311,13 @@ export class AddInvMapLocationComponent implements OnInit {
   adjustQuantity() {
     if(this.addInvMapLocation.value.item == '') return;
     if(this.getDetailInventoryMapData.itemNumber == ''){
-      this.global.ShowToastr('error','No item found at the location specified.  Ensure that the entry selected has been saved since an item was assigned to it.', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'No item found at the location specified.  Ensure that the entry selected has been saved since an item was assigned to it.', ToasterTitle.Error);
       return;
     }
     let dialogRef:any = this.global.OpenDialog(AdjustQuantityComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '800px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         id: this.getDetailInventoryMapData.invMapID
@@ -399,7 +400,6 @@ export class AddInvMapLocationComponent implements OnInit {
       locationNumber: [this.getDetailInventoryMapData.locationNumber || '',],
       locationID: [this.getDetailInventoryMapData.locationID || ''],
       altLight: [this.getDetailInventoryMapData.altLight || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]]
-      //velocity
     });
   }
 
@@ -413,7 +413,7 @@ export class AddInvMapLocationComponent implements OnInit {
 
   }
 
-  onMaxChange($event) {
+  onMaxChange() {
     this.addInvMapLocation.get("minQuantity")?.setValue("0");
   }
 
@@ -431,52 +431,52 @@ export class AddInvMapLocationComponent implements OnInit {
           if (this.data.detailData) {
             this.clickSubmit = false;
             if(!this.zoneChecker(form.value.zone, form.value.location)){
-              this.global.ShowToastr('error',"Zone and Location need be set via the dropdown in order to save.", 'Warning!');
+              this.global.ShowToastr(ToasterType.Error,"Zone and Location need be set via the dropdown in order to save.", ToasterTitle.Warning);
               return
             }
             if(this.warehouseSensitive && form.value.warehouse == ''){
-              this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
+              this.global.ShowToastr(ToasterType.Error,"The selected item is warehouse sensitive.  Please set a warehouse to continue.", ToasterTitle.Warning);
               return
             }
             if(this.dateSensitive && form.value.dateSensitive == ''){
-              this.global.ShowToastr('error',"Item is date sensitive. Please set date sensitive before saving.", 'Warning!');
+              this.global.ShowToastr(ToasterType.Error,"Item is date sensitive. Please set date sensitive before saving.", ToasterTitle.Warning);
               return
             }
             this.iAdminApiService.updateInventoryMap(form.value,invMapIDs).subscribe((res) => {
               this.clickSubmit = true;
                 if (res.isExecuted) {
-                  this.global.ShowToastr('success',"Your details have been updated", 'Success!');
+                  this.global.ShowToastr(ToasterType.Success,"Your details have been updated", ToasterTitle.Success);
                   this.dialog.closeAll()
                 }
                 else {
-                  this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                  this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
                   console.log("updateInventoryMap",res.responseMessage);
                 }
             });
           } else {
             this.clickSubmit = false;
             if(!this.zoneChecker(form.value.zone, form.value.location)){
-              this.global.ShowToastr('error',"Zone and Location need be set via the dropdown in order to save.", 'Warning!');
+              this.global.ShowToastr(ToasterType.Error,"Zone and Location need be set via the dropdown in order to save.", ToasterTitle.Warning);
               return
             }
             if(this.warehouseSensitive && form.value.warehouse == ''){
-              this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
+              this.global.ShowToastr(ToasterType.Error,"The selected item is warehouse sensitive.  Please set a warehouse to continue.", ToasterTitle.Warning);
               return
             }
             if(this.dateSensitive && form.value.dateSensitive == ''){
-              this.global.ShowToastr('error',"Item is date sensitive. Please set date sensitive before saving.", 'Warning!');
+              this.global.ShowToastr(ToasterType.Error,"Item is date sensitive. Please set date sensitive before saving.", ToasterTitle.Warning );
               return
             }
             this.iAdminApiService.createInventoryMap(form.value).subscribe((res) => {
               this.clickSubmit = true;
               if (res.isExecuted) {
-                this.global.ShowToastr('success',"Your details have been added", 'Success!');
+                this.global.ShowToastr(ToasterType.Success,"Your details have been added", ToasterTitle.Success);
                 this.dialog.closeAll()
               }
 
               else {
                 
-                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
                 console.log("createInventoryMap",res.responseMessage);
 
               }
@@ -486,7 +486,7 @@ export class AddInvMapLocationComponent implements OnInit {
 
   }
 
-  itemNumberFocusOut(event: any) {
+  itemNumberFocusOut() {
     if(this.itemNumberList && this.itemNumberList.length > 0){
       this.warehouseSensitive =  this.itemNumberList[0].warehouseSensitive;
       this.dateSensitive =  this.itemNumberList[0].dateSensitive;
@@ -510,7 +510,7 @@ export class AddInvMapLocationComponent implements OnInit {
   loadWarehouse() {
     if (!this.isInputDisabled) {
       let dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '640px',
         autoFocus: '__non_existing_element__',
         disableClose:true,
@@ -533,9 +533,9 @@ export class AddInvMapLocationComponent implements OnInit {
   loadCellSize() {
     if (!this.isInputDisabled) {
       let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '660px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           mode: 'cell-size',
@@ -551,9 +551,9 @@ export class AddInvMapLocationComponent implements OnInit {
   loadVelocityCode() {
     if (!this.isInputDisabled) {
       let dialogRef: any = this.global.OpenDialog(VelocityCodeComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '660px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           mode: 'cell-size',
@@ -567,14 +567,10 @@ export class AddInvMapLocationComponent implements OnInit {
     }
   }
 
-  private _filter(value: any): string[] {
+  private filterLocalZoneList(value: any): string[] {
     const filterValue = value.toLowerCase();
 
     return this.locZoneList.filter(option => option.locationName.toLowerCase().includes(filterValue));
-  }
-  private _filterItemNum(value: any): string[] {
-    const filterValue = value.toLowerCase();
-    return this.itemNumberList.filter(option => option.itemNumber.toLowerCase().includes(filterValue));
   }
   loadZones(zone: any) {
     this.zoneList = this.locZoneList.filter(option => option.locationName.includes(zone.option.value));
@@ -623,7 +619,7 @@ export class AddInvMapLocationComponent implements OnInit {
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getItemNumDetail",res.responseMessage);
       }
 
@@ -654,7 +650,7 @@ export class AddInvMapLocationComponent implements OnInit {
 
 
   dialogClose() {
-    this.dialogRef.close('close');
+    this.dialogRef.close(DialogConstants.close);
   }
 
   @HostListener('unloaded')
@@ -685,7 +681,9 @@ export class AddInvMapLocationComponent implements OnInit {
         (res: any) => {
           this.searchAutocompleteShipVia = res.data;
         },
-        (error) => {}
+        (error) => {
+          console.log(error);
+        }
       );
   }
 
@@ -700,7 +698,9 @@ export class AddInvMapLocationComponent implements OnInit {
         (res: any) => {
           this.searchAutocompleteShipName = res.data;
         },
-        (error) => {}
+        (error) => {
+          console.log(error);
+        }
       );
   }
 
