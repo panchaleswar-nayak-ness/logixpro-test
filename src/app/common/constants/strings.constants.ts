@@ -27,7 +27,13 @@ export const StringConditions = {
     BatchToteTrans: 'batch_tote_trans',
     BatchTote: 'batch_tote',
     AllTransaction: 'All Transaction',
-    Batch: 'Batch'
+    Batch: 'Batch',
+    BatchWithID:'batchWithID',
+    PrintBatch:'PrintBatch',
+    PrintCase: 'PrintCase',
+    PrintPickList:'PrintPickList',
+    PickPickLabel:'PrintPickLabel',
+    PrintTote: 'PrintTote'
 }
 
 export const ResponseStrings = {
@@ -58,7 +64,8 @@ export const ToasterTitle = {
     Alert: 'Alert!',
     Consolidation: 'Consolidation!',
     Staging: 'Staging!',
-    NoRows: 'No Rows'
+    NoRows: 'No Rows',
+    BatchFilled: 'Batch is Filled.'
 }
 
 export const ConfirmationHeadings = {
@@ -100,7 +107,24 @@ export const ToasterMessages = {
     OrderInvalid:'The Order/Tote that you entered is invalid or no longer exists in the system.',
     InvalidLocation:'The Location entered was not valid',
     ErrorOccuredTryingToRemoveAll:'An Error Occured while trying to remove all data, check the event log for more information',
-    StartDateMustBeBeforeEndDate: 'Start date must be before end date!'
+    StartDateMustBeBeforeEndDate: 'Start date must be before end date!',
+    BlankZone:'Zone may not be left blank.  Zone will not be saved until this is fixed.',
+    SequenceMustEqualOrGreaterZero:'Sequence must be an integer greater than or equal to 0.  Zone will not be saved until this is fixed',
+    DuplicateZone:'Zone is currently set to be a duplicate. Zone will not be saved until this is fixed',
+    ErrorOccuredPalletSetup:'An error occurred processing this pallet setup',
+    PalletProcessed:'Pallet was processed',
+    EnterBatchIdtoProcess:'Please enter in a batch id to proccess.',
+    EnterBatchId:'Please enter in a batch id',
+    EnterToteId:'Please enter in at least 1 tote id to process.',
+    EnterOrderNo:'Please enter in at least 1 order number to process.',
+    PopupBlocked:'Popup was blocked by the browser.',
+    EnterOneTote:'Please enter in at least 1 tote id',
+    EnterOneOrder:'Please enter in at least 1 order number',
+    BatchIDRequired: 'Batch id is required.',
+    BatchIDCannotBeEmpty:'Batch ID cannot be empty when opening the pick batch manager.',
+    NoOpenTote:'No open totes in batch',
+    SelectBatchID:'Please select a Batch ID to print',
+
 }
 
 export const AppNames = {
@@ -225,3 +249,32 @@ export const KeyboardKeys = {
     E: 'e',
     R: 'r'
 }
+export const zoneType={
+    carousel:'carousel',
+    cartonFlow:'cartonFlow',
+    includePick:'includePick'
+}
+
+export const alertMessage = {
+    SerialNoNotExistsMsg: 'Serial Number Does Not Exist',
+    ErrorValidatingSerialNoMsg: 'There was an error validating serial number',
+    EnterSerialNo: 'Please enter a serial number',
+    SerialNoAlreadyScan: 'Serial Number already scanned',
+    DeleteMessage:'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.'
+    
+} 
+
+export const showNotificationHeading ={
+    FieldsMissing:'Fields Missing',
+    InvalidQuantity:'Invalid Quantity',
+    InvalidItemEntered:'Invalid Item Entered',
+    InvalidToteEntered:'Invalid Tote Entered'
+}
+
+export const showNotificationMessage ={
+    FieldsFill:'Not all the fields were filled out. Please fill them out',
+    InvalidQuantity:'An invalid quantity was entered. Please enter a quantity greater than 0',
+    ItemNotExists:'This item does not exist in Inventory',
+    ToteAlreadyExists:'This tote id already exists in Open Transactions'
+}
+
