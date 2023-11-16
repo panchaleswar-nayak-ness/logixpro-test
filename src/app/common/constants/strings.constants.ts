@@ -19,6 +19,7 @@ export const StringConditions = {
     NotAssigned: 'Not Assigned',
     No: 'No',
     Yes: 'Yes',
+    AddCaps: 'Add',
     Enter: 'Enter',
     Event: 'event',
     Click: 'click',
