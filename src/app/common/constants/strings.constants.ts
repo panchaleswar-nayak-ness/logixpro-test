@@ -50,7 +50,8 @@ export const StringConditions = {
     Completed: 'Completed',
     on: 'on',
     off: 'off',
-    EntireOrder:'Entire Order'
+    EntireOrder:'Entire Order',
+    currentValue : 'currentValue'
 }
 
 export const ResponseStrings = {

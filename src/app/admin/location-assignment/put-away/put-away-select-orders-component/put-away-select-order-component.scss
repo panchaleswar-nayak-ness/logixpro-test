@@ -1,0 +1,12 @@
+.put-away-card{
+    text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap
+}
+.put-away-card-borderless{
+    overflow-x: auto;
+}
+.put-table-card{
+    height:550px;
+}
+.warn-button{
+   flex:1;
+}

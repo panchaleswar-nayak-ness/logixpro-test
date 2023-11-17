@@ -11,7 +11,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 @Component({
   selector: 'app-process-pick-totes',
   templateUrl: './process-pick-totes.component.html',
-  styleUrls: []
+  styleUrls: ['./process-pick-totes.component.scss']
 })
 export class ProcessPickTotesComponent {
   @Output() ToteAction = new EventEmitter<any>();

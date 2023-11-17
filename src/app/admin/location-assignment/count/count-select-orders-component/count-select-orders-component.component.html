@@ -12,8 +12,8 @@
               <span class="material-symbols-outlined icon-search">
                 search
               </span>
-              <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50"  [(ngModel)]="searchOrder1" (ngModelChange)="applyFilter1($event)">
-              <button *ngIf="searchOrder1 != ''" matSuffix class="clear-btn" (click)="searchOrder1 = ''; this.rightTable.filter = searchOrder1;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+              <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50"  [(ngModel)]="searchOrderRight" (ngModelChange)="applyFilter1($event)">
+              <button *ngIf="searchOrderRight != ''" matSuffix class="clear-btn" (click)="searchOrderRight = ''; this.rightTable.filter = searchOrderRight;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
             </mat-form-field>
           </div>
         </div>
@@ -21,15 +21,15 @@
 
         <div class="col-xl-6">
          <div class="d-xl-block d-flex justify-content-end">
-          <button mat-stroked-button color="warn" class="button-add-all mb-3 float-end" (click)="deleteItem()" style="flex:1">
+          <button mat-stroked-button color="warn" class="button-add-all mb-3 float-end count-strocket-button" (click)="deleteItem()" >
             Remove All
           </button>
         </div>
       </div>
       </div>
 
-      <div class="card br-14 borderless" style="overflow-x: auto;"> 
-        <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding" style="height:550px" track="all">
+      <div class="card br-14 borderless count-card" > 
+        <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding count-table-scrollbar"  track="all">
         <table mat-table #table2 [dataSource]="rightTable" class="w-100" matSort #matSort="matSort" 
         (matSortChange)="announceSortChange1($event)"  #matSort1="matSort">
 

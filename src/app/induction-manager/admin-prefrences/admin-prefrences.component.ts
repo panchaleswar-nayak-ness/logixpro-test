@@ -6,7 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from 'src/app/init/auth.service';
-import labels from '../../labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
@@ -336,7 +335,6 @@ export class AdminPrefrencesComponent implements OnInit {
               console.log("PreferenceIndex", res.responseMessage);
             }
           },
-          (error) => { }
         );
     } catch (error) {
     }
@@ -457,7 +455,6 @@ export class AdminPrefrencesComponent implements OnInit {
             console.log("DynamicMethod", res.responseMessage);
           }
         },
-        (error) => { }
       );
     } catch (error) {
     }
@@ -504,5 +501,4 @@ export class AdminPrefrencesComponent implements OnInit {
     }
     inputElement.value = value;
   }
-
 }

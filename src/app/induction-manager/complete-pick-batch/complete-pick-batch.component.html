@@ -46,9 +46,8 @@
                 <app-icon-heading-component heading="Batch Info" icon="list_alt">
                 </app-icon-heading-component>
             </div>
-
-            <div class="card br-14  borderless" style="overflow-x: auto;">
-                <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding" style="height:545px" track="all">
+            <div class="card br-14  borderless mainDivCard-style">
+                <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding matScrolbar-style" track="all">
                     <table mat-table [dataSource]="tableData" class="w-100" matSort #matSort="matSort" (matSortChange)="announceSortChange($event)">
 
                         <ng-container matColumnDef="order_no">

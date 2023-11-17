@@ -4,7 +4,7 @@ import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: []
+  styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent  {
 
