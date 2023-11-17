@@ -21,7 +21,6 @@ export class OmChangePriorityComponent implements OnInit {
   public Newpriority:number;
   userData: any;
   constructor(
-    private sharedService: SharedService,
     private adminApiService: AdminApiService,
     private global:GlobalService,
     public dialogRef: MatDialogRef<OmChangePriorityComponent>,

@@ -21,10 +21,6 @@ export class OpenTransPickMappingComponent {
       dataSourceList:any
   
 
-  constructor(
-    private global:GlobalService,
-  ) { }
- 
   ngAfterViewInit(): void {
     this.opcol_focus.nativeElement.focus();
   }

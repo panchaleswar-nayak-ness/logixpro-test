@@ -29,8 +29,6 @@ export class CmShipEditQtyComponent implements OnInit {
     public consolidationAPI : ConsolidationApiService,
     private global:GlobalService,
     public dialogRef: MatDialogRef<CmShipEditQtyComponent>,
-    
-    // private Api: ApiFuntions,
     private authService: AuthService,
     public globalService: GlobalService,
     @Inject(MAT_DIALOG_DATA) public data: any) { this.IconsolidationAPI = consolidationAPI; }
@@ -99,6 +97,7 @@ export class CmShipEditQtyComponent implements OnInit {
         }
       });
     } catch (error) { 
+      console.log(error);
     }
   }
 

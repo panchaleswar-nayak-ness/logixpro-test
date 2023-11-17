@@ -4,27 +4,24 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-ie-manage-data-trans-field-map',
   templateUrl: './ie-manage-data-trans-field-map.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class IeManageDataTransFieldMapComponent {
   @ViewChild('autoFocusField') autoFocusField: ElementRef;
-  ELEMENT_DATA: any[] =[
-    {container_id: '1202122'},
-    {container_id: '1202123'},
-    {container_id: '1202124'},
-    {container_id: '1202125'},
-    {container_id: '1202126'},
-    {container_id: '1202127'},
-    
-  ]
+  ELEMENT_DATA: any[] = [
+    { container_id: '1202122' },
+    { container_id: '1202123' },
+    { container_id: '1202124' },
+    { container_id: '1202125' },
+    { container_id: '1202126' },
+    { container_id: '1202127' },
+  ];
 
-    displayedColumns: string[] = ['container_id','field_type','actions'];
-    tableData = this.ELEMENT_DATA
-    dataSourceList:any
+  displayedColumns: string[] = ['container_id', 'field_type', 'actions'];
+  tableData = this.ELEMENT_DATA;
+  dataSourceList: any;
 
-  constructor(
-    private global:GlobalService,
-  ) { }
+  constructor(private global: GlobalService) {}
 
   ngAfterViewInit(): void {
     this.autoFocusField.nativeElement.focus();

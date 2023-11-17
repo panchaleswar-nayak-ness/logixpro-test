@@ -14,8 +14,7 @@ export class MinReelQtyComponent  {
 
   constructor(
     public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private confirmationglobal:GlobalService
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
  

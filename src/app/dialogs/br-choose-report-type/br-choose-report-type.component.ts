@@ -26,7 +26,3 @@ export class BrChooseReportTypeComponent{
   }
   }
 
-function BrChooseReportTypeDialogue() {
-  throw new Error('Function not implemented.');
-}
-

@@ -8,7 +8,6 @@ import {
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
@@ -28,7 +27,6 @@ export class ChooseLocationComponent implements OnInit {
   selectedLocation : any;
 
   constructor(
-              private Api:ApiFuntions,
               private inductionManagerApi: InductionManagerApiService,
               private authService: AuthService,
               private global: GlobalService,
@@ -43,7 +41,7 @@ export class ChooseLocationComponent implements OnInit {
     this.autocompleteSearchColumnItem();
     this.searchByItem
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
+      .subscribe(() => {
         this.autocompleteSearchColumnItem();
       });
   }
@@ -81,7 +79,7 @@ export class ChooseLocationComponent implements OnInit {
             console.log("BatchLocationTypeAhead",res.responseMessage);
           }
         },
-        (error) => {}
+        () => {}
       );      
     } catch (error) { 
     }    
@@ -103,7 +101,7 @@ export class ChooseLocationComponent implements OnInit {
             console.log("ReserveLocation",res.responseMessage);
           }
         },
-        (error) => {}
+        () => {}
       );      
     } catch (error) { 
     }

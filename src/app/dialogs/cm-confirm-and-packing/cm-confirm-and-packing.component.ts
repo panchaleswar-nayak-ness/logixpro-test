@@ -47,7 +47,6 @@ displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   'tra
  public IconsolidationAPI : IConsolidationApi;
  
  constructor(
-    // private Api:ApiFuntions,
     public consolidationAPI : ConsolidationApiService,
     public authService: AuthService,
     

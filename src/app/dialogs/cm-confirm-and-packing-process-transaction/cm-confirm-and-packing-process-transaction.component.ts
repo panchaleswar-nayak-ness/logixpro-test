@@ -118,12 +118,6 @@ openShipEditQuantity() {
   });
 }
 
-// async SplitLineProcModal(){
-//   // split modal open
-// }
-// async AdjustQauntModal(){
-//   // openAdjustQuant Modal
-// }
   //will update the desired record(s) and go thorugh confirm proccess
   async DoneModal(){
     let id = this.confPackProcTable[0].sT_ID;
@@ -144,7 +138,6 @@ openShipEditQuantity() {
         let index = this.confPackTransTable.findIndex(x=>x.active);
         this.confPackTransTable[index].containerID = this.contID;
         this.confPackTransTable[index].complete = true;
-        // this.confPackTransTable[index].invalidate() 
           let emit = '';
         if (this.confPackTransTable.length == 1) {
           emit = 'ConfirmedPacked';

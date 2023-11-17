@@ -83,7 +83,7 @@
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                         <mat-label>Item Number</mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.itemNumber"
-                            (keyup)="searchItem(true)" [matAutocomplete]="searchauto" maxlength="50" (focusout)="itemNumberFocusOut($event)" maxlength="50"
+                            (keyup)="searchItem()" [matAutocomplete]="searchauto" maxlength="50" (focusout)="itemNumberFocusOut($event)" maxlength="50"
                             (focus)="focusinmethod()" (focusout)="focusoutmethod()">
                         <mat-autocomplete class="card custom-scroll" #searchauto="matAutocomplete"
                             (optionSelected)="onSearchSelect($event)">

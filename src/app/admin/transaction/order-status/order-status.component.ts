@@ -9,7 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 })
 export class OrderStatusComponent implements OnInit {
   orderNoEvent: Event;
-  @Input() TabIndex:any;
+  @Input() tabIndex:any;
   toteIdEvent: Event;
   openOrderEvent: Event;
   completeOrderEvent: Event;
