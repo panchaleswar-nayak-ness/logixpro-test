@@ -61,10 +61,15 @@ mat-row, mat-header-row, mat-footer-row{
   }
 }
 
+.custom-header-cell {
+  border: 0;
+  height: 67px;
+  padding-left: 65px;
+  border-bottom: 1px solid var(--clr-tertiary-50);
+}
 
-//OVAIS FIXES
-
-// mat-row, mat-header-row, mat-footer-row{
-//   display: table-row;
-//   white-space: nowrap;
-// }
+.custom-cell {
+  border: 0;
+  padding-left: 24px;
+  background: var(--clr-pure-white);
+}

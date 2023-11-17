@@ -1,18 +1,16 @@
-<mat-tab-group id="loop" class="my-component" [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabChanged($event)"
-  class="mat-tab-group mat-primary">
+<mat-tab-group id="loop" class="my-component" [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabChanged($event)" class="mat-tab-group mat-primary">
   <mat-tab tabindex="10" label="Open Transactions Onhold">
-    <app-open-transaction-on-hold [TabIndex]="TabIndex" (returnToOrder)="returnToOrder($event)" (back)="returnFromComp($event)"></app-open-transaction-on-hold>
+    <app-open-transaction-on-hold [tabIndex]="tabIndex" (returnToOrder)="returnToOrder()" (back)="returnFromComp()"></app-open-transaction-on-hold>
   </mat-tab>
-
-  <mat-tab label="Open Transactions " >
+  <mat-tab label="Open Transactions">
         <div class="row align-items-center">
           <div class="col-12">
-            <app-open-transaction-filters (eventChange)="onFilterChange($event)"(nextScreen)="nexScreen($event)"></app-open-transaction-filters>
+            <app-open-transaction-filters (eventChange)="onFilterChange($event)"(nextScreen)="nexScreen()"></app-open-transaction-filters>
           </div>
         </div>
         <div class="row align-items-center">
           <div class="col-12">
-            <app-open-transaction-data-table  [event]="event" ></app-open-transaction-data-table>
+            <app-open-transaction-data-table [event]="event"></app-open-transaction-data-table>
           </div>
         </div>
   </mat-tab>
