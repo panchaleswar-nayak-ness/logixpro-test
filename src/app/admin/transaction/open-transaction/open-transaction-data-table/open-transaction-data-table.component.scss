@@ -1,9 +1,11 @@
 .btn-custom-color-blue{
     color:var(--clr-primary-500)
 }
+
 .paginator-left-align{
     float: left, !important;
 }
+
 .mat-table {
     th {
       white-space: nowrap;
@@ -16,4 +18,15 @@
       white-space: nowrap;
       padding-right: 12px;
     }
-  }
+}
+
+.custom-scrollbar {
+  height: 300px !important; // Adjust as needed
+}
+
+.custom-header-cell {
+  border: 0;
+  height: 67px;
+  padding-left: 65px;
+  border-bottom: 1px solid var(--clr-tertiary-50); // Adjust the color as needed
+}

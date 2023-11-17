@@ -75,15 +75,15 @@ export class CmShipEditQtyComponent implements OnInit {
       this.IconsolidationAPI.ShipQTYShipTransUpdate(payLoad).subscribe((res:any)=>{
         if (res.isExecuted) {
 
-          let Exists = false;
+          let exists = false;
           for (let i of this.data.reasons) {
             if (i == this.adjustReason) {
-              Exists = true;
+              exists = true;
               break;
             };
           };
 
-          if (!Exists) this.data.reasons.push(this.adjustReason)
+          if (!exists) this.data.reasons.push(this.adjustReason)
           
           this.dialogRef.close({
             isExecuted: true,

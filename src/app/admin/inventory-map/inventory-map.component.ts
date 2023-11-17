@@ -25,44 +25,10 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { AppNames, AppRoutes, StringConditions } from 'src/app/common/constants/strings.constants';
 
 
-const INVMAP_DATA = [
-  { colHeader: "locationID", colDef: "Alternate Light" },
-  { colHeader: "bin", colDef: "Bin" },
-  { colHeader: "carousel", colDef: "Carousel" },
-  { colHeader: "cellSize", colDef: "Cell Size" },
-  { colHeader: "dateSensitive", colDef: "Date Sensitive" },
-  { colHeader: "dedicated", colDef: "Dedicated" },
-  { colHeader: "description", colDef: "Description" },
-  { colHeader: "expirationDate", colDef: "Expiration Date" },
- 
-  { colHeader: "invMapID", colDef: "Inv Map ID" },
-  { colHeader: "itemNumber", colDef: "Item Number" },
-  { colHeader: "itemQuantity", colDef: "Item Quantity" },
-  { colHeader: "laserX", colDef: "Laser X" },
-  { colHeader: "laserY", colDef: "Laser Y" },
-  { colHeader: "location", colDef: "Location" },
-  { colHeader: "locationNumber", colDef: "Location Number" },
-  { colHeader: "lotNumber", colDef: "Lot Number" },
-  { colHeader: "masterInvMapID", colDef: "Master Inv Map ID" },
-  { colHeader: "masterLocation", colDef: "Master Location" },
-  { colHeader: "maxQuantity", colDef: "Maximum Quantity" },
-  { colHeader: "minQuantity", colDef: "Min Quantity" },
-  { colHeader: "putAwayDate", colDef: "Put Away Date" },
-  { colHeader: "quantityAllocatedPick", colDef: "Quantity Allocated Pick" },
-  { colHeader: "quantityAllocatedPutAway", colDef: "Quantity Allocated Put Away" },
-  { colHeader: "revision", colDef: "Revision" },
-  { colHeader: "row", colDef: "Row" },
-  { colHeader: "serialNumber", colDef: "Serial Number" },
-  { colHeader: "shelf", colDef: "Shelf" },
-  { colHeader: "unitOfMeasure", colDef: "Unit of Measure" },
-  { colHeader: "userField1", colDef: "User Field1" },
-  { colHeader: "userField2", colDef: "User Field2" },
-  { colHeader: "goldenZone", colDef: "Velocity Code" },
-  { colHeader: "warehouse", colDef: "Warehouse" },
-  { colHeader: "zone", colDef: "Zone" },
-];
+
 
 @Component({
   selector: 'app-inventory-map',
@@ -71,6 +37,41 @@ const INVMAP_DATA = [
 })
 
 export class InventoryMapComponent implements OnInit {
+   INVMAP_DATA = [
+    { colHeader: "locationID", colDef: "Alternate Light" },
+    { colHeader: "bin", colDef: "Bin" },
+    { colHeader: "carousel", colDef: "Carousel" },
+    { colHeader: "cellSize", colDef: "Cell Size" },
+    { colHeader: "dateSensitive", colDef: "Date Sensitive" },
+    { colHeader: "dedicated", colDef: "Dedicated" },
+    { colHeader: "description", colDef: "Description" },
+    { colHeader: "expirationDate", colDef: "Expiration Date" },
+    { colHeader: "invMapID", colDef: "Inv Map ID" },
+    { colHeader: "itemNumber", colDef: "Item Number" },
+    { colHeader: "itemQuantity", colDef: "Item Quantity" },
+    { colHeader: "laserX", colDef: "Laser X" },
+    { colHeader: "laserY", colDef: "Laser Y" },
+    { colHeader: "location", colDef: "Location" },
+    { colHeader: "locationNumber", colDef: "Location Number" },
+    { colHeader: "lotNumber", colDef: "Lot Number" },
+    { colHeader: "masterInvMapID", colDef: "Master Inv Map ID" },
+    { colHeader: "masterLocation", colDef: "Master Location" },
+    { colHeader: "maxQuantity", colDef: "Maximum Quantity" },
+    { colHeader: "minQuantity", colDef: "Min Quantity" },
+    { colHeader: "putAwayDate", colDef: "Put Away Date" },
+    { colHeader: "quantityAllocatedPick", colDef: "Quantity Allocated Pick" },
+    { colHeader: "quantityAllocatedPutAway", colDef: "Quantity Allocated Put Away" },
+    { colHeader: "revision", colDef: "Revision" },
+    { colHeader: "row", colDef: "Row" },
+    { colHeader: "serialNumber", colDef: "Serial Number" },
+    { colHeader: "shelf", colDef: "Shelf" },
+    { colHeader: "unitOfMeasure", colDef: "Unit of Measure" },
+    { colHeader: "userField1", colDef: "User Field1" },
+    { colHeader: "userField2", colDef: "User Field2" },
+    { colHeader: "goldenZone", colDef: "Velocity Code" },
+    { colHeader: "warehouse", colDef: "Warehouse" },
+    { colHeader: "zone", colDef: "Zone" },
+  ];
   onDestroy$: Subject<boolean> = new Subject();
   hideRequiredControl = new FormControl(false);
   floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -107,13 +108,13 @@ export class InventoryMapComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   public columnValues: any = [];
   public itemList: any;
-  public filterLoc:any = 'Nothing';
+  public filterLoc:any = StringConditions.filterLoc;
   public isSearchColumn:boolean = false;
   spliUrl;
 
   detailDataInventoryMap: any;
   transHistory:boolean = false;
-  myroute:any;
+  inventoryRoute:any;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -131,10 +132,10 @@ export class InventoryMapComponent implements OnInit {
     }, 100);
   }
 
-  FilterString : string = "1 = 1";
+  filterString : string = "1 = 1";
 
   optionSelected(filter : string) {
-    this.FilterString = filter;
+    this.filterString = filter;
     this.initializeApi();
     this.getContentData();    
     this.IsActiveTrigger = false;
@@ -165,13 +166,13 @@ export class InventoryMapComponent implements OnInit {
     }
     else if (this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP])
       {
-          this.ApplySavedItem();
+          this.applySavedItem();
           this.isSearchColumn = true;
       }
-    if(router.url == '/OrderManager/InventoryMap'){
+    if(router.url == AppRoutes.OrderManagerInventoryMap){
       this.transHistory = true;
     }
-    else if(router.url == '/admin/inventoryMap' || '/InductionManager/Admin/InventoryMap'){
+    else if(router.url ==AppRoutes.AdminInventoryMap  || AppRoutes.InductionManagerInventoryMap){
       this.transHistory = false;
     }
 
@@ -190,7 +191,7 @@ export class InventoryMapComponent implements OnInit {
 
     this.OSFieldFilterNames();
     this.initializeApi();
-    this.getColumnsData(true);
+    this.getColumnsData();
 
 
 
@@ -216,11 +217,11 @@ export class InventoryMapComponent implements OnInit {
  
     this.spliUrl=this.router.url.split('/'); 
 
-    if( this.spliUrl[1] == 'InductionManager' || this.spliUrl[1] == 'OrderManager' ){
-       this.myroute =false
+    if( this.spliUrl[1] == AppNames.InductionManager || this.spliUrl[1] == AppNames.OrderManager ){
+       this.inventoryRoute =false
     }
     else {
-      this.myroute = true
+      this.inventoryRoute = true
 
     }
     }
@@ -247,9 +248,9 @@ export class InventoryMapComponent implements OnInit {
 
   initializeApi(){
     this.userData = this.authService.userData();
-    if(this.FilterString == "")
+    if(this.filterString == "")
     {
-      this.FilterString = "1 = 1"
+      this.filterString = "1 = 1"
     }
     this.payload = { 
      "oqa": this.filterLoc,
@@ -259,42 +260,42 @@ export class InventoryMapComponent implements OnInit {
      "sRow":  this.customPagination.startIndex,
      "eRow": this.customPagination.endIndex,
      "sortOrder": this.sortColumn.sortOrder,
-     "filter": this.FilterString
+     "filter": this.filterString
    }
   }
-  getColumnsData(isInit: boolean=false) {
+  getColumnsData() {
     let payload = { 
       "tableName": "Inventory Map"
     }
     this.iAdminApiService.getSetColumnSeq(payload).pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
-      this.displayedColumns = INVMAP_DATA;
+      this.displayedColumns = this.INVMAP_DATA;
 
       if(res.data){
         this.columnValues =  res.data;
 
         this.columnValues.push('actions');
-        this.getContentData(isInit);
+        this.getContentData();
       } else {
         this.global.ShowToastr('error','Something went wrong', 'Error!');
         console.log("getSetColumnSeq",res.responseMessage);
       }
     });
   }
-  ApplySavedItem() {
+  applySavedItem() {
     if(this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ) return;
     
     this.dataSource = this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP].dataSource;
     this.columnSearch = this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP].columnSearch;
     this.filterLoc= this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP].filterLoc;
   }
-  RecordSavedItem() {
+  recordSavedItem() {
     this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP]= {
       dataSource: this.dataSource,
       columnSearch: this.columnSearch,
       filterLoc: this.filterLoc
     };
   }
-  getContentData(isInit: boolean = false){
+  getContentData(){
     this.iAdminApiService.getInventoryMap(this.payload).pipe(takeUntil(this.onDestroy$)).subscribe((res: any) => {
       this.itemList =  res.data?.inventoryMaps?.map((arr => {
         return {'itemNumber': arr.itemNumber, 'desc': arr.description}
@@ -303,7 +304,7 @@ export class InventoryMapComponent implements OnInit {
       this.detailDataInventoryMap= res.data?.inventoryMaps;
       this.dataSource = new MatTableDataSource(res.data?.inventoryMaps);
       this.dataSource.sort = this.sort;
-      this.RecordSavedItem();
+      this.recordSavedItem();
     
       this.customPagination.total = res.data?.recordsFiltered;
 
@@ -498,7 +499,7 @@ export class InventoryMapComponent implements OnInit {
       inventoryMapID:event.invMapID
     }
   this.iAdminApiService.duplicate(obj).pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
-    this.displayedColumns = INVMAP_DATA;
+    this.displayedColumns = this.INVMAP_DATA;
 
     if(res.data){
       this.getContentData();
@@ -559,7 +560,7 @@ export class InventoryMapComponent implements OnInit {
    
   }
 
-  autocompleteSearchColumn(){
+  autoCompleteSearchColumn(){
     let searchPayload = {
       "columnName": this.columnSearch.searchColumn.colDef,
       "value": this.columnSearch.searchValue
@@ -594,7 +595,7 @@ export class InventoryMapComponent implements OnInit {
       this.getContentData();
     }
   }
-  closeautoMenu()
+  closeAutoMenu()
   {
     this.autocompleteInventory.closePanel(); 
   }
@@ -648,7 +649,7 @@ export class InventoryMapComponent implements OnInit {
  }
 
 
- tranhistory(seletedRecord:any){
+ tranHistory(seletedRecord:any){
 
   this.router.navigate([]).then((result) => {
       let url = `/#/OrderManager/OrderStatus?itemNumber=${seletedRecord.itemNumber}&type=TransactionHistory`;

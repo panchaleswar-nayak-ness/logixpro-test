@@ -68,14 +68,14 @@
     </mat-form-field>
 </div>
 
-<div class="card br-14 p-4 mb-3" *ngIf="AddNewColumnscheck">
+<div class="card br-14 p-4 mb-3" *ngIf="addNewColumnsCheck">
     <div class="row align-items-center">
                 <p class="text-tertiary-900 mb-3"> Columns in the first result test:</p>
 
-                <div class="col-xl-4" *ngFor="let item of AddNewColumns">
+                <div class="col-xl-4" *ngFor="let item of addNewColumns">
                     
 
-                     <ul *ngIf="AddNewColumnscheck" class="text-tertiary-900 bold p-0">
+                     <ul *ngIf="addNewColumnsCheck" class="text-tertiary-900 bold p-0">
                         <ng-container >
                           <li >
                             {{ item}}

@@ -1,4 +1,3 @@
-
 <form [formGroup]="preferencesForm">
 
   <mat-tab-group dynamicHeight>
@@ -16,17 +15,17 @@
               <div class="pb-1">
                 <mat-radio-group formControlName="useDefault" (change)="updatePreferences(1)"
                   class="d-flex flex-wrap align-items-center gap-12" aria-label="Select an option">
-  
+
                   <mat-radio-button class="p-2" value="filter" color="primary"
                     matTooltip="Sets if custom filter or zone is to be used in pick batch manager">
                     Use Default Filter
                   </mat-radio-button>
-  
+
                   <mat-radio-button class="p-2" color="primary" value="zone"
                     matTooltip="Sets if custom filter or zone is to be used in pick batch manager">
                     Use Default Zone
                   </mat-radio-button>
-  
+
                 </mat-radio-group>
               </div>
             </div>
@@ -60,67 +59,66 @@
 
             <div class="col-xl-6">
               <div class="gap-12 mb-2">
-                  <div class="col-12 d-flex justify-content-between mb-2">
-                    Select if One: <mat-slide-toggle (change)="updatePreferences(1)" formControlName="selectIfOne"
-                      class="primary" color="primary" 
-                      matTooltip="Controls if transaction select screen is opened if only one transaction exists. If Checked, will auto select an existing transaction if it is the last one"></mat-slide-toggle>
-                  </div>
-                  <div class="col-12 d-flex justify-content-between mb-2">
-                    Validate Totes: <mat-slide-toggle (change)="updatePreferences(1)" formControlName="validateTotes"
-                      color="primary" matTooltip="Controls if Tote IDs need to be validated"></mat-slide-toggle>
-                  </div>
-                  <div class="col-12 d-flex justify-content-between mb-2">
-                    Auto Forward Replenish: <mat-slide-toggle (change)="updatePreferences(1)"
-                      formControlName="autoForwardReplenish" color="primary"
-                      matTooltip="Toggles if Auto Forward Replenishments will be displayed"></mat-slide-toggle>
-                  </div>
-                  <div class="col-12 d-flex justify-content-between mb-2">
-                    Create Item Master: <mat-slide-toggle (change)="updatePreferences(1)"
-                      formControlName="createItemMaster" color="primary"
-                      matTooltip="Toggles if new items can be created if they do not exist from put away batch manager"></mat-slide-toggle>
-                  </div>
-                  <div class="col-12 d-flex justify-content-between mb-2">
-                    Strip Scan: <mat-slide-toggle (change)="updatePreferences(1)" formControlName="stripScan"
-                      color="primary"
-                      matTooltip="Controls if characters are to be removed from scans"></mat-slide-toggle>
-                  </div>
+                <div class="col-12 d-flex justify-content-between mb-2">
+                  Select if One: <mat-slide-toggle (change)="updatePreferences(1)" formControlName="selectIfOne"
+                    class="primary" color="primary"
+                    matTooltip="Controls if transaction select screen is opened if only one transaction exists. If Checked, will auto select an existing transaction if it is the last one"></mat-slide-toggle>
+                </div>
+                <div class="col-12 d-flex justify-content-between mb-2">
+                  Validate Totes: <mat-slide-toggle (change)="updatePreferences(1)" formControlName="validateTotes"
+                    color="primary" matTooltip="Controls if Tote IDs need to be validated"></mat-slide-toggle>
+                </div>
+                <div class="col-12 d-flex justify-content-between mb-2">
+                  Auto Forward Replenish: <mat-slide-toggle (change)="updatePreferences(1)"
+                    formControlName="autoForwardReplenish" color="primary"
+                    matTooltip="Toggles if Auto Forward Replenishments will be displayed"></mat-slide-toggle>
+                </div>
+                <div class="col-12 d-flex justify-content-between mb-2">
+                  Create Item Master: <mat-slide-toggle (change)="updatePreferences(1)"
+                    formControlName="createItemMaster" color="primary"
+                    matTooltip="Toggles if new items can be created if they do not exist from put away batch manager"></mat-slide-toggle>
+                </div>
+                <div class="col-12 d-flex justify-content-between mb-2">
+                  Strip Scan: <mat-slide-toggle (change)="updatePreferences(1)" formControlName="stripScan"
+                    color="primary" matTooltip="Controls if characters are to be removed from scans"></mat-slide-toggle>
+                </div>
               </div>
             </div>
           </div>
-            <div class="row" *ngIf="preferencesForm.value.stripScan">
+          <div class="row" *ngIf="preferencesForm.value.stripScan">
 
-              <div class="col-xl-4">
-                <div class="d-flex gap-12 mb-2">
-                  <mat-form-field class="custom-form-field w-100 shorting" appearance="outline">
-                    <mat-label>Strip Side</mat-label>
-                    <mat-select formControlName="stripSide" (selectionChange)="updatePreferences(1)"
-                      matTooltip="Remove characters from left or right side of scan">
-                      <mat-option *ngFor="let ss of stripSideList" value="{{ss.id}}">
-                        {{ss.name}}
-                      </mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
+            <div class="col-xl-4">
+              <div class="d-flex gap-12 mb-2">
+                <mat-form-field class="custom-form-field w-100 shorting" appearance="outline">
+                  <mat-label>Strip Side</mat-label>
+                  <mat-select formControlName="stripSide" (selectionChange)="updatePreferences(1)"
+                    matTooltip="Remove characters from left or right side of scan">
+                    <mat-option *ngFor="let ss of stripSideList" value="{{ss.id}}">
+                      {{ss.name}}
+                    </mat-option>
+                  </mat-select>
+                  <span class="material-symbols-outlined icon-expand-more">
+                    expand_more
+                  </span>
+                </mat-form-field>
               </div>
-              
-
-              <div class="col-xl-4">
-                <div class="d-flex gap-12 mb-2">
-                  <mat-form-field class="custom-form-field w-100" appearance="outline">
-                    <mat-label>Strip Number</mat-label>
-                    <input (focusout)="updatePreferences(1)" formControlName="stripNumber"
-                      (keydown.shift.enter)="$event.preventDefault()" matInput type="number"
-                      onKeyPress="if(this.value.length==10 || event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;"
-                      matTooltip="Number of characters to remove" />
-                  </mat-form-field>
-                </div>
-              </div>
-
             </div>
-          
+
+
+            <div class="col-xl-4">
+              <div class="d-flex gap-12 mb-2">
+                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                  <mat-label>Strip Number</mat-label>
+                  <input (focusout)="updatePreferences(1)" formControlName="stripNumber"
+                    (keydown.shift.enter)="$event.preventDefault()" matInput type="number"
+                    onKeyPress="if(this.value.length==10 || event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;"
+                    matTooltip="Number of characters to remove" />
+                </mat-form-field>
+              </div>
+            </div>
+
+          </div>
+
 
         </mat-card-content>
       </mat-card>
@@ -189,26 +187,26 @@
             </div>
           </div>
 
-            <div class="row">
-              <div class="col-xl-4">
-                <div class="d-flex gap-12 mb-2">
-                  <mat-form-field class="custom-form-field w-100" appearance="outline">
-                    <mat-label>Pick Order Sort</mat-label>
-                    <mat-select formControlName="orderSort" (selectionChange)="updatePreferences(1)"
-                      matTooltip="Default sort used for selecting pick batch orders">
-                      <mat-option *ngFor="let os of pickOrderSortList" value="{{os.id}}">
-                        {{os.name}}
-                      </mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
+          <div class="row">
+            <div class="col-xl-4">
+              <div class="d-flex gap-12 mb-2">
+                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                  <mat-label>Pick Order Sort</mat-label>
+                  <mat-select formControlName="orderSort" (selectionChange)="updatePreferences(1)"
+                    matTooltip="Default sort used for selecting pick batch orders">
+                    <mat-option *ngFor="let os of pickOrderSortList" value="{{os.id}}">
+                      {{os.name}}
+                    </mat-option>
+                  </mat-select>
+                  <span class="material-symbols-outlined icon-expand-more">
+                    expand_more
+                  </span>
+                </mat-form-field>
               </div>
             </div>
+          </div>
 
-          
+
         </mat-card-content>
       </mat-card>
     </mat-tab>
@@ -248,49 +246,51 @@
             </div>
           </div>
 
-            <div class="row mb-3">
+          <div class="row mb-3">
 
-              <div class="col-xl-4">
-                <div class="d-flex gap-12 mb-2">
-                  <mat-form-field class="custom-form-field w-100 shorting" appearance="outline">
-                    <mat-label>Default Put Away Scan Type</mat-label>
-                    <mat-select formControlName="defaultPutAwayScanType" (selectionChange)="updatePreferences(1)">
-                      <mat-option *ngFor="let st of defaultPutAwayScanTypeList" value="{{st.id}}">
-                        {{st.name}}
-                      </mat-option>
-                    </mat-select>
-                    <span class="material-symbols-outlined icon-expand-more">
-                      expand_more
-                    </span>
-                  </mat-form-field>
-                </div>
+            <div class="col-xl-4">
+              <div class="d-flex gap-12 mb-2">
+                <mat-form-field class="custom-form-field w-100 shorting" appearance="outline">
+                  <mat-label>Default Put Away Scan Type</mat-label>
+                  <mat-select formControlName="defaultPutAwayScanType" (selectionChange)="updatePreferences(1)">
+                    <mat-option *ngFor="let st of defaultPutAwayScanTypeList" value="{{st.id}}">
+                      {{st.name}}
+                    </mat-option>
+                  </mat-select>
+                  <span class="material-symbols-outlined icon-expand-more">
+                    expand_more
+                  </span>
+                </mat-form-field>
               </div>
-
-              <div class="col-xl-4">
-                <div class="d-flex gap-12 mb-2">
-                  <mat-form-field class="custom-form-field w-100" appearance="outline">
-                    <mat-label>Default Put Away Prioirity</mat-label>
-                    <input #myInput  (focusout)="updatePreferences(1)" formControlName="defaultPutAwayPriority" (input)="restrictTo10Digits()" 
-                      (keydown.shift.enter)="$event.preventDefault()" matInput type="number"
-                      onKeyPress="if(this.value.length==10 || event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;" />
-                  </mat-form-field>
-                </div>
-              </div>
-
-              <div class="col-xl-4">
-                <div class="d-flex gap-12 mb-2">
-                  <mat-form-field class="custom-form-field w-100" appearance="outline">
-                    <mat-label>Default Put Away Quantity</mat-label>
-                    <input  (input)="restrictTo10Digits()" (focusout)="updatePreferences(1)" formControlName="defaultPutAwayQuantity"
-                      (keydown.shift.enter)="$event.preventDefault()" matInput type="number"
-                      onKeyPress="if(this.value.length==10 || event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;" />
-                  </mat-form-field>
-                </div>
-              </div>
-
             </div>
 
-          
+            <div class="col-xl-4">
+              <div class="d-flex gap-12 mb-2">
+                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                  <mat-label>Default Put Away Prioirity</mat-label>
+                  <input #myInput (focusout)="updatePreferences(1)" formControlName="defaultPutAwayPriority"
+                    (input)="restrictTo10Digits()" (keydown.shift.enter)="$event.preventDefault()" matInput
+                    type="number"
+                    onKeyPress="if(this.value.length==10 || event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;" />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-xl-4">
+              <div class="d-flex gap-12 mb-2">
+                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                  <mat-label>Default Put Away Quantity</mat-label>
+                  <input (input)="restrictTo10Digits()" (focusout)="updatePreferences(1)"
+                    formControlName="defaultPutAwayQuantity" (keydown.shift.enter)="$event.preventDefault()" matInput
+                    type="number"
+                    onKeyPress="if(this.value.length==10 || event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;" />
+                </mat-form-field>
+              </div>
+            </div>
+
+          </div>
+
+
         </mat-card-content>
       </mat-card>
     </mat-tab>
@@ -358,19 +358,20 @@
             </div>
           </div>
 
-            <div class="row">
-              <div class="col-xl-4">
-                <div class="d-flex gap-12 mb-2">
-                  <mat-form-field class="custom-form-field w-100" appearance="outline">
-                    <mat-label>Max Number of Put Away Labels</mat-label>
-                    <input (focusout)="updatePreferences(0)" #maxNumber   (keyup)="restrictTo309Digits($event)"  formControlName="maxNumberOfPutAwayLabels" 
-                      (keydown.shift.enter)="$event.preventDefault()" matInput type="number" [NumbersOnly]="true"
-                      onKeypress="if(this.value.length == 309 ||  event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;" />
-                  </mat-form-field>
-                </div>
+          <div class="row">
+            <div class="col-xl-4">
+              <div class="d-flex gap-12 mb-2">
+                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                  <mat-label>Max Number of Put Away Labels</mat-label>
+                  <input (focusout)="updatePreferences(0)" #maxNumber (keyup)="restrictTo309Digits($event)"
+                    formControlName="maxNumberOfPutAwayLabels" (keydown.shift.enter)="$event.preventDefault()" matInput
+                    type="number" [NumbersOnly]="true"
+                    onKeypress="if(this.value.length == 309 ||  event.keyCode == 101 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 69) return false;" />
+                </mat-form-field>
               </div>
             </div>
-          
+          </div>
+
         </mat-card-content>
       </mat-card>
     </mat-tab>
@@ -389,7 +390,8 @@
             <div class="col-xl-4">
               <div class="d-flex justify-content-between mb-3">
                 <span>Track Induction Location:</span>
-                <mat-slide-toggle  (change)="updatePreferences(3,$event)" formControlName="trackInductionLocation"  checked color="primary"></mat-slide-toggle>
+                <mat-slide-toggle (change)="updatePreferences(3,$event)" formControlName="trackInductionLocation"
+                  checked color="primary"></mat-slide-toggle>
               </div>
             </div>
 
@@ -397,56 +399,60 @@
               <div class="d-flex align-items-center justify-content-between">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                   <mat-label class="pe-2">Induction Location:</mat-label>
-                  <input (change)="updatePreferences(3)" formControlName="inductionLocation" type="text"   matInput>
+                  <input (change)="updatePreferences(3)" formControlName="inductionLocation" type="text" matInput>
                 </mat-form-field>
               </div>
             </div>
             <div class="col-xl-4">
-            <div class="d-block d-xl-flex align-items-center justify-content-between mb-3">
-              <button type="submit" mat-flat-button class="btn-regular w-100" (click)="getCompName()" [disabled]="trackIndIsDisable"  color="primary">Use Computer Name</button>
+              <div class="d-block d-xl-flex align-items-center justify-content-between mb-3">
+                <button type="submit" mat-flat-button class="btn-regular w-100" (click)="getCompName()"
+                  [disabled]="trackIndIsDisable" color="primary">Use Computer Name</button>
+              </div>
             </div>
           </div>
+
+          <div class="row align-items-center">
+            <div class="col-xl-4">
+              <div class="d-flex justify-content-between mb-3">
+                <span>Stage Using BulkPro:</span>
+                <mat-slide-toggle (change)="updatePreferences(3)" formControlName="stageUsingBulk" checked
+                  color="primary"></mat-slide-toggle>
+              </div>
+            </div>
+
+            <div class="col-xl-4">
+              <div class="d-flex align-items-center justify-content-between">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                  <mat-label class="pe-2">Stage Velocity Code:</mat-label>
+                  <input (change)="updatePreferences(3)" formControlName="stageVelocityCode" type="text" matInput>
+                </mat-form-field>
+              </div>
+            </div>
+
+
           </div>
 
           <div class="row align-items-center">
-              <div class="col-xl-4">
-                <div class="d-flex justify-content-between mb-3">
-                  <span>Stage Using BulkPro:</span>
-                  <mat-slide-toggle (change)="updatePreferences(3)" formControlName="stageUsingBulk"  checked color="primary"></mat-slide-toggle>
-                </div>
+            <div class="col-xl-4">
+              <div class="d-flex justify-content-between mb-3">
+                <span>Confirm Super Batch:</span>
+                <mat-slide-toggle (change)="updatePreferences(3)" formControlName="confirmSuperBatch" checked
+                  color="primary"></mat-slide-toggle>
               </div>
+            </div>
 
-              <div class="col-xl-4">
-                <div class="d-flex align-items-center justify-content-between">
-                  <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label class="pe-2">Stage Velocity Code:</mat-label>
-                    <input (change)="updatePreferences(3)" formControlName="stageVelocityCode" type="text" matInput>
-                  </mat-form-field>
-                </div>
+            <div class="col-xl-4">
+              <div class="d-flex align-items-center justify-content-between">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                  <mat-label class="pe-2">Default Super Batch Size:</mat-label>
+                  <input (change)="updatePreferences(3)" formControlName="defaultSuperBatchSize" type="number"
+                    [NumbersOnly]="true" matInput>
+                </mat-form-field>
               </div>
-
-            
-          </div>
-
-          <div class="row align-items-center">
-              <div class="col-xl-4">
-                <div class="d-flex justify-content-between mb-3">
-                  <span>Confirm Super Batch:</span>
-                  <mat-slide-toggle (change)="updatePreferences(3)" formControlName="confirmSuperBatch"  checked color="primary"></mat-slide-toggle>
-                </div>
-              </div>
-
-              <div class="col-xl-4">
-                <div class="d-flex align-items-center justify-content-between">
-                  <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label class="pe-2">Default Super Batch Size:</mat-label>
-                    <input (change)="updatePreferences(3)" formControlName="defaultSuperBatchSize" type="number"  [NumbersOnly]="true" matInput>
-                  </mat-form-field>
-                </div>
-              </div>
+            </div>
 
 
-           
+
           </div>
 
 
@@ -454,7 +460,7 @@
           <div class="row align-items-center">
             <div class="col-xl-4">
               <div class="align-items-center justify-content-between">
-               <h4 class="text-16 mb-3"> <b>Super Batch Filter:</b> </h4>
+                <h4 class="text-16 mb-3"> <b>Super Batch Filter:</b> </h4>
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                   <mat-label>Default Filter:</mat-label>
                   <mat-select formControlName="superBatchFilter" (selectionChange)="updatePreferences(3)">
@@ -476,11 +482,11 @@
       </mat-card>
 
     </mat-tab>
-    
+
     <mat-tab label="Reel Tracking">
       <mat-card class="mat-elevation-z g-card mt-3 mb-4 p-4">
         <mat-card-content>
-      
+
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="card-header-title mb-3 d-flex align-items-center">
               <div class="mat-icon-wrap me-lg-3 m-2">
@@ -489,80 +495,82 @@
               <span>Reel Tracking</span>
             </h2>
           </div>
-          <p class="bold px-2 mb-3">Enter text into any field below to have it inserted into the "Pick" transaction that is automatically created when a Return To Stock (RTS) of a "Reel Tracking" item is below the "Minimum RTS Reel Quantity":</p>
+          <p class="bold px-2 mb-3">Enter text into any field below to have it inserted into the "Pick" transaction that
+            is automatically created when a Return To Stock (RTS) of a "Reel Tracking" item is below the "Minimum RTS
+            Reel Quantity":</p>
 
           <div class="row">
             <div class="col-xl-4">
               <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>User Field 1</mat-label>
-                <input  (change)="updatePreferences(2)" formControlName="userField1" matInput type="text"  >
+                <input (change)="updatePreferences(2)" formControlName="userField1" matInput type="text">
               </mat-form-field>
             </div>
             <div class="col-xl-4">
               <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>User Field 2</mat-label>
-                <input (change)="updatePreferences(2)" formControlName="userField2" matInput type="text"  >
+                <input (change)="updatePreferences(2)" formControlName="userField2" matInput type="text">
               </mat-form-field>
             </div>
             <div class="col-xl-4">
               <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>User Field 3</mat-label>
-                <input (change)="updatePreferences(2)" formControlName="userField3" matInput type="text"  >
+                <input (change)="updatePreferences(2)" formControlName="userField3" matInput type="text">
               </mat-form-field>
             </div>
             <div class="col-xl-4">
               <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>User Field 4</mat-label>
-                <input (change)="updatePreferences(2)" formControlName="userField4" matInput type="text"  >
+                <input (change)="updatePreferences(2)" formControlName="userField4" matInput type="text">
               </mat-form-field>
             </div>
             <div class="col-xl-4">
               <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>User Field 5</mat-label>
-                <input (change)="updatePreferences(2)" formControlName="userField5" matInput type="text"  >
+                <input (change)="updatePreferences(2)" formControlName="userField5" matInput type="text">
               </mat-form-field>
             </div>
             <div class="col-xl-4">
               <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>User Field 6</mat-label>
-                <input (change)="updatePreferences(2)" formControlName="userField6" matInput type="text"  >
+                <input (change)="updatePreferences(2)" formControlName="userField6" matInput type="text">
               </mat-form-field>
             </div>
             <div class="col-xl-4">
               <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>User Field 7</mat-label>
-                <input (change)="updatePreferences(2)" formControlName="userField7" matInput type="text"  >
+                <input (change)="updatePreferences(2)" formControlName="userField7" matInput type="text">
               </mat-form-field>
             </div>
             <div class="col-xl-4">
               <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>User Field 8</mat-label>
-                <input (change)="updatePreferences(2)" formControlName="userField8" matInput type="text"  >
+                <input (change)="updatePreferences(2)" formControlName="userField8" matInput type="text">
               </mat-form-field>
             </div>
             <div class="col-xl-4">
               <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>User Field 9</mat-label>
-                <input (change)="updatePreferences(2)" formControlName="userField9" matInput type="text"  >
+                <input (change)="updatePreferences(2)" formControlName="userField9" matInput type="text">
               </mat-form-field>
             </div>
             <div class="col-xl-4">
               <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>User Field 10</mat-label>
-                <input (change)="updatePreferences(2)" formControlName="userField10" matInput type="text"  >
+                <input (change)="updatePreferences(2)" formControlName="userField10" matInput type="text">
               </mat-form-field>
             </div>
             <div class="col-xl-4">
               <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                 <mat-label>Order Number Prefix</mat-label>
-                <input (change)="updatePreferences(2)" formControlName="orderNoPrefix" matInput type="text"  >
+                <input (change)="updatePreferences(2)" formControlName="orderNoPrefix" matInput type="text">
               </mat-form-field>
             </div>
           </div>
         </mat-card-content>
       </mat-card>
     </mat-tab>
-  
+
   </mat-tab-group>
 
 </form>

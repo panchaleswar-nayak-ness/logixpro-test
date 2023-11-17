@@ -4,7 +4,7 @@
     </mat-tab>
     <ng-container *ngIf="authService.UserPermissonByFuncName('Transaction Journal') || authService.UserPermissonByFuncName('Admin Transaction Journal')"   >
     <mat-tab label="Open Transactions" *ngIf="!IsOrderStatus" >
-        <app-open-transaction [TabIndex]="TabIndex" (emitOrderTab)="switchToOrder($event)" ></app-open-transaction>
+        <app-open-transaction [tabIndex]="TabIndex" (emitOrderTab)="switchToOrder($event)" ></app-open-transaction>
     </mat-tab>
     <mat-tab label="Transaction History" *ngIf="!IsOrderStatus">
         <app-transaction-history [TabIndex]="TabIndex"></app-transaction-history>

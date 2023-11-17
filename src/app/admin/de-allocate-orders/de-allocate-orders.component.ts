@@ -13,6 +13,7 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { ResponseStrings } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-de-allocate-orders',
@@ -28,7 +29,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   ]
     isOrderSelected=true;
     displayedColumns_1: string[] = ['select','order_no'];
-    tableData_1 =[]
+   
     isChecked: boolean = false;
     orderNumbersList:any=[];
     
@@ -51,7 +52,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   public orderNumber = '';
   public chooseSearchType:any;
   public TypeValue:any;
-  transactionType:any = 'All'
+  transactionType:any = ResponseStrings.AllCaps;
   step
   isOrder = true;
   order;
