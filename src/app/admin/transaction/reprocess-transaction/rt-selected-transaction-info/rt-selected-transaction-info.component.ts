@@ -13,6 +13,7 @@ export class RtSelectedTransactionInfoComponent {
   @Input() reasonMessage = "";
   @Input() isEnabled = true;
   @Input() isHistory = true;
+  
   @Output() openReprocessTransactionDialogueEmitter = new EventEmitter<any>();
   @Output() openReasonDialogEmitter = new EventEmitter<any>();
 

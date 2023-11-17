@@ -17,75 +17,77 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 
-const TRNSC_DATA = [
-  { colHeader: 'id', colDef: 'ID' },
-  { colHeader: 'importDate', colDef: 'Import Date' },
-  { colHeader: 'importBy', colDef: 'Import By' },
-  { colHeader: 'importFileName', colDef: 'Import Filename' },
-  { colHeader: 'transactionType', colDef: 'Transaction Type' },
-  { colHeader: 'orderNumber', colDef: 'Order Number' },
-  { colHeader: 'lineNumber', colDef: 'Line Number' },
-  { colHeader: 'lineSequence', colDef: 'Line Sequence' },
-  { colHeader: 'priority', colDef: 'Priority' },
-  { colHeader: 'requiredDate', colDef: 'Required Date' },
-  { colHeader: 'itemNumber', colDef: 'Item Number' },
-  { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
-  { colHeader: 'lotNumber', colDef: 'Lot Number' },
-  { colHeader: 'expirationDate', colDef: 'Expiration Date' },
-  { colHeader: 'serialNumber', colDef: 'Serial Number' },
-  { colHeader: 'description', colDef: 'Description' },
-  { colHeader: 'revision', colDef: 'Revision' },
-  { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
-  { colHeader: 'location', colDef: 'Location' },
-  { colHeader: 'wareHouse', colDef: 'Warehouse' },
-  { colHeader: 'zone', colDef: 'Zone' },
-  { colHeader: 'carousel', colDef: 'Carousel' },
-  { colHeader: 'row', colDef: 'Row' },
-  { colHeader: 'shelf', colDef: 'Shelf' },
-  { colHeader: 'bin', colDef: 'Bin' },
-  { colHeader: 'invMapID', colDef: 'Inv Map ID' },
-  { colHeader: 'completedDate', colDef: 'Completed Date' },
-  { colHeader: 'completedBy', colDef: 'Completed By' },
-  { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
-  { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
-  { colHeader: 'notes', colDef: 'Notes' },
-  { colHeader: 'exportFileName', colDef: 'Export File Name' },
-  { colHeader: 'exportDate', colDef: 'Export Date' },
-  { colHeader: 'exportedBy', colDef: 'Exported By' },
-  { colHeader: 'exportBatchID', colDef: 'Export Batch ID' },
-  { colHeader: 'tableType', colDef: 'Table Type' },
-  { colHeader: 'statusCode', colDef: 'Status Code' },
-  { colHeader: 'masterRecord', colDef: 'Master Record' },
-  { colHeader: 'masterRecordID', colDef: 'Master Record ID' },
-  { colHeader: 'label', colDef: 'Label' },
-  { colHeader: 'inProcess', colDef: 'In Process' },
-  { colHeader: 'userField1', colDef: 'User Field1' },
-  { colHeader: 'userField2', colDef: 'User Field2' },
-  { colHeader: 'userField3', colDef: 'User Field3' },
-  { colHeader: 'userField4', colDef: 'User Field4' },
-  { colHeader: 'userField5', colDef: 'User Field5' },
-  { colHeader: 'userField6', colDef: 'User Field6' },
-  { colHeader: 'userField7', colDef: 'User Field7' },
-  { colHeader: 'userField8', colDef: 'User Field8' },
-  { colHeader: 'userField9', colDef: 'User Field9' },
-  { colHeader: 'userField10', colDef: 'User Field10' },
-  { colHeader: 'toteID', colDef: 'Tote ID' },
-  { colHeader: 'toteNumber', colDef: 'Tote Number' },
-  { colHeader: 'cell', colDef: 'Cell' },
-  { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
-  { colHeader: 'emergency', colDef: 'Emergency' },
-  { colHeader: 'reasonMessage', colDef: 'Reason Message' },
-  { colHeader: 'dateStamp', colDef: 'Date Stamp' },
-  { colHeader: 'reason', colDef: 'Reason' },
-  { colHeader: 'nameStamp', colDef: 'Name Stamp' },
-  { colHeader: 'blank', colDef: 'blank' },
-];
+
 @Component({
   selector: 'app-reprocess-transaction',
   templateUrl: './reprocess-transaction.component.html',
   styleUrls: ['./reprocess-transaction.component.scss'],
 })
 export class ReprocessTransactionComponent implements OnInit {
+  TRNSC_DATA = [
+    { colHeader: 'id', colDef: 'ID' },
+    { colHeader: 'importDate', colDef: 'Import Date' },
+    { colHeader: 'importBy', colDef: 'Import By' },
+    { colHeader: 'importFileName', colDef: 'Import Filename' },
+    { colHeader: 'transactionType', colDef: 'Transaction Type' },
+    { colHeader: 'orderNumber', colDef: 'Order Number' },
+    { colHeader: 'lineNumber', colDef: 'Line Number' },
+    { colHeader: 'lineSequence', colDef: 'Line Sequence' },
+    { colHeader: 'priority', colDef: 'Priority' },
+    { colHeader: 'requiredDate', colDef: 'Required Date' },
+    { colHeader: 'itemNumber', colDef: 'Item Number' },
+    { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
+    { colHeader: 'lotNumber', colDef: 'Lot Number' },
+    { colHeader: 'expirationDate', colDef: 'Expiration Date' },
+    { colHeader: 'serialNumber', colDef: 'Serial Number' },
+    { colHeader: 'description', colDef: 'Description' },
+    { colHeader: 'revision', colDef: 'Revision' },
+    { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
+    { colHeader: 'location', colDef: 'Location' },
+    { colHeader: 'wareHouse', colDef: 'Warehouse' },
+    { colHeader: 'zone', colDef: 'Zone' },
+    { colHeader: 'carousel', colDef: 'Carousel' },
+    { colHeader: 'row', colDef: 'Row' },
+    { colHeader: 'shelf', colDef: 'Shelf' },
+    { colHeader: 'bin', colDef: 'Bin' },
+    { colHeader: 'invMapID', colDef: 'Inv Map ID' },
+    { colHeader: 'completedDate', colDef: 'Completed Date' },
+    { colHeader: 'completedBy', colDef: 'Completed By' },
+    { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
+    { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
+    { colHeader: 'notes', colDef: 'Notes' },
+    { colHeader: 'exportFileName', colDef: 'Export File Name' },
+    { colHeader: 'exportDate', colDef: 'Export Date' },
+    { colHeader: 'exportedBy', colDef: 'Exported By' },
+    { colHeader: 'exportBatchID', colDef: 'Export Batch ID' },
+    { colHeader: 'tableType', colDef: 'Table Type' },
+    { colHeader: 'statusCode', colDef: 'Status Code' },
+    { colHeader: 'masterRecord', colDef: 'Master Record' },
+    { colHeader: 'masterRecordID', colDef: 'Master Record ID' },
+    { colHeader: 'label', colDef: 'Label' },
+    { colHeader: 'inProcess', colDef: 'In Process' },
+    { colHeader: 'userField1', colDef: 'User Field1' },
+    { colHeader: 'userField2', colDef: 'User Field2' },
+    { colHeader: 'userField3', colDef: 'User Field3' },
+    { colHeader: 'userField4', colDef: 'User Field4' },
+    { colHeader: 'userField5', colDef: 'User Field5' },
+    { colHeader: 'userField6', colDef: 'User Field6' },
+    { colHeader: 'userField7', colDef: 'User Field7' },
+    { colHeader: 'userField8', colDef: 'User Field8' },
+    { colHeader: 'userField9', colDef: 'User Field9' },
+    { colHeader: 'userField10', colDef: 'User Field10' },
+    { colHeader: 'toteID', colDef: 'Tote ID' },
+    { colHeader: 'toteNumber', colDef: 'Tote Number' },
+    { colHeader: 'cell', colDef: 'Cell' },
+    { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
+    { colHeader: 'emergency', colDef: 'Emergency' },
+    { colHeader: 'reasonMessage', colDef: 'Reason Message' },
+    { colHeader: 'dateStamp', colDef: 'Date Stamp' },
+    { colHeader: 'reason', colDef: 'Reason' },
+    { colHeader: 'nameStamp', colDef: 'Name Stamp' },
+    { colHeader: 'blank', colDef: 'blank' },
+  ];
+
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
 
@@ -100,16 +102,16 @@ export class ReprocessTransactionComponent implements OnInit {
   public itemList: any;
   transTypeSelect = 'All Transactions';
   transStatusSelect = 'All Transactions';
-  trueString='true';
-  switchTrueString=false;
-  falseString='false';
-  switchFalseString=false;
-  searchFieldsTrueFalse=['Label','Emergency','In Process','Master Record'];
+  trueString = 'true';
+  switchTrueString = false;
+  falseString = 'false';
+  switchFalseString = false;
+  searchFieldsTrueFalse = ['Label','Emergency','In Process','Master Record'];
   isReprocessedChecked = {flag:false};
   isCompleteChecked = {flag:false};
   isHistoryChecked = {flag:false};
   isHold = false;
-  queryString:any='';
+  queryString:any = '';
   deleteReplenishment=true;
   deleteSelected=false;
   print=false;
@@ -701,7 +703,7 @@ export class ReprocessTransactionComponent implements OnInit {
     };
     this.iAdminApiService.GetColumnSequence(payload).subscribe({
       next: (res: any) => {
-        this.displayedColumns = TRNSC_DATA;
+        this.displayedColumns = this.TRNSC_DATA;
         if (res.data) {
           this.columnValues = res.data;
           this.getContentData();
