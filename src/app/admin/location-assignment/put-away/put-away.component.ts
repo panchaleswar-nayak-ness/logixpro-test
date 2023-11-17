@@ -45,7 +45,7 @@ export class PutAwayComponent implements OnInit {
   @ViewChild('paginator1') paginator1: MatPaginator;
   @ViewChild('paginator2') paginator2: MatPaginator;
 
-  filterValue1:string = '';
+  LeftfilterValue:string = '';
   filterValue2:string = '';
   public iAdminApiService: IAdminApiService;
   constructor(
@@ -87,14 +87,14 @@ export class PutAwayComponent implements OnInit {
     this.tableData1 = new MatTableDataSource(this.tableData1.data);
     this.tableData1.paginator = this.paginator1;
     this.tableData1.sort = this.sort1;
-    this.tableData1.filter = this.filterValue1.trim().toLowerCase();
+    this.tableData1.filter = this.LeftfilterValue.trim().toLowerCase();
   }
 
   remove(order: any) {
     this.tableData1 = new MatTableDataSource(this.tableData1.data.concat(order));
     this.tableData1.paginator = this.paginator1;
     this.tableData1.sort = this.sort1;
-    this.tableData1.filter = this.filterValue1.trim().toLowerCase();
+    this.tableData1.filter = this.LeftfilterValue.trim().toLowerCase();
 
     let index:any = this.tableData2.data.findIndex(x => x.orderNumber == order.orderNumber);
     this.tableData2.data.splice(index,1);
@@ -113,14 +113,14 @@ export class PutAwayComponent implements OnInit {
     this.tableData1 = new MatTableDataSource([]);
     this.tableData1.paginator = this.paginator1;
     this.tableData1.sort = this.sort1;
-    this.tableData1.filter = this.filterValue1.trim().toLowerCase();
+    this.tableData1.filter = this.LeftfilterValue.trim().toLowerCase();
   }
 
   removeAll() {
     this.tableData1 = new MatTableDataSource(this.tableData1.data.concat(this.tableData2.data));
     this.tableData1.paginator = this.paginator1;
     this.tableData1.sort = this.sort1;
-    this.tableData1.filter = this.filterValue1.trim().toLowerCase();
+    this.tableData1.filter = this.LeftfilterValue.trim().toLowerCase();
 
     this.tableData2 = new MatTableDataSource([]);
     this.tableData2.paginator = this.paginator2;
