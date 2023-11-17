@@ -1587,6 +1587,10 @@ button.default-btn {
 }
 
 .custom-form-field-bg-white{
+  .mat-form-field-outline {
+    background: var(--clr-pure-white);
+    border-radius: 14px;
+  }
 &.mat-focused, .mat-form-field-disabled {
   .mat-form-field-outline {
     background: var(--clr-pure-white);
