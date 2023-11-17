@@ -1,12 +1,15 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MatOption } from '@angular/material/core';
 import {
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { MatOption } from '@angular/material/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
- 
+
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { BatchDeleteComponent } from '../batch-delete/batch-delete.component';
 import { MarkToteFullComponent } from '../mark-tote-full/mark-tote-full.component';
@@ -17,7 +20,6 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
-
 @Component({
   selector: 'app-tote-transaction-view',
   templateUrl: './tote-transaction-view.component.html',
@@ -26,34 +28,33 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 export class ToteTransactionViewComponent implements OnInit {
   @ViewChild('field_focus') field_focus: ElementRef;
 
-  
   batchID: any;
   tote: any;
   toteID: any;
   selectedOption: any;
-  cell:any;
-  isData:any;
+  cell: any;
+  isData: any;
   @ViewChild('actionRef') actionRef: MatSelect;
   pageEvent: PageEvent;
-  public sortCol:any=0;
-  public sortOrder:any='asc';
+  public sortCol: any = 0;
+  public sortOrder: any = 'asc';
   customPagination: any = {
     total: '',
     recordsPerPage: 10,
     startIndex: 1,
     endIndex: 10,
   };
-  IMPreferences:any;
-  zoneLabels:any;
-  imPreferences:any;
-  public iInductionManagerApi:IInductionManagerApiService;
+  IMPreferences: any;
+  zoneLabels: any;
+  imPreferences: any;
+  public iInductionManagerApi: IInductionManagerApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<any>, 
+    public dialogRef: MatDialogRef<any>,
     private Api: ApiFuntions,
-    private global:GlobalService,
-    
-    public inductionManagerApi: InductionManagerApiService,
+    private global: GlobalService,
+
+    public inductionManagerApi: InductionManagerApiService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
   }
@@ -62,16 +63,16 @@ export class ToteTransactionViewComponent implements OnInit {
     this.batchID = this.data.batchID;
     this.tote = this.data.tote;
     this.toteID = this.data.toteID;
-    this.cell=this.data.cell;
-    this.IMPreferences=this.data.IMPreferences;
+    this.cell = this.data.cell;
+    this.IMPreferences = this.data.IMPreferences;
     this.zoneLabels = this.data.zoneLabels;
     this.getTransactionTable();
-    this.imPreferences=this.global.getImPreferences();
+    this.imPreferences = this.global.getImPreferences();
   }
   ngAfterViewInit(): void {
     this.field_focus?.nativeElement.focus();
   }
-  
+
   displayedColumns: string[] = [
     'cell',
     'itemNumber',
@@ -80,14 +81,19 @@ export class ToteTransactionViewComponent implements OnInit {
     'hostTransactionID',
     'other',
   ];
-  dataSource:any;
+  dataSource: any;
 
   clearMatSelectList() {
     this.actionRef.options.forEach((data: MatOption) => data.deselect());
   }
 
   sortChange(event) {
-    if (!this.dataSource._data._value || event.direction=='' || event.direction==this.sortOrder) return;
+    if (
+      !this.dataSource._data._value ||
+      event.direction == '' ||
+      event.direction == this.sortOrder
+    )
+      return;
     let index;
     this.displayedColumns.forEach((x, i) => {
       if (x === event.active) {
@@ -99,7 +105,6 @@ export class ToteTransactionViewComponent implements OnInit {
     this.sortOrder = event.direction;
     this.getTransactionTable();
   }
-
 
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
@@ -114,46 +119,47 @@ export class ToteTransactionViewComponent implements OnInit {
     let payLoad = {
       toteNumber: this.tote,
       batchID: this.batchID,
-      sRow:  this.customPagination.startIndex,
+      sRow: this.customPagination.startIndex,
       eRow: this.customPagination.endIndex,
       sortColumn: this.sortCol,
       sortOrder: this.sortOrder,
     };
 
-    this.iInductionManagerApi.TransTableView(payLoad).subscribe((res:any)=>{
-      if (res.isExecuted)
-      {
-        if(res?.data){
-          this.isData=true
-  
-        this.dataSource = new MatTableDataSource<any>(res.data);
-  
-        }else{
-          this.isData=false
+    this.iInductionManagerApi.TransTableView(payLoad).subscribe(
+      (res: any) => {
+        if (res.isExecuted) {
+          if (res?.data) {
+            this.isData = true;
+
+            this.dataSource = new MatTableDataSource<any>(res.data);
+          } else {
+            this.isData = false;
+          }
+        } else {
+          this.global.ShowToastr(
+            'error',
+            this.global.globalErrorMsg(),
+            'Error!'
+          );
+          console.log('TransTableView', res.responseMessage);
         }
-
-      }
-      else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("TransTableView",res.responseMessage);
-
-      }
-    }, (error) => {})
+      },
+      (error) => {}
+    );
   }
   actionDialog(opened: boolean) {
     if (!opened && this.selectedOption && this.selectedOption === 'clearTote') {
-      const dialogRef:any = this.global.OpenDialog(BatchDeleteComponent, {
+      const dialogRef: any = this.global.OpenDialog(BatchDeleteComponent, {
         height: 'auto',
         width: '50vw',
         autoFocus: '__non_existing_element__',
-      disableClose:true,
+        disableClose: true,
         data: {
-          deleteAllDisable:true,
+          deleteAllDisable: true,
           batchId: this.batchID,
           toteId: this.toteID,
           userName: this.data.userName,
           wsid: this.data.wsid,
-          
         },
       });
       dialogRef.afterClosed().subscribe((res) => {
@@ -167,11 +173,11 @@ export class ToteTransactionViewComponent implements OnInit {
       this.selectedOption === 'fullTote'
     ) {
       this.clearMatSelectList();
-      const dialogRef:any = this.global.OpenDialog(MarkToteFullComponent, {
+      const dialogRef: any = this.global.OpenDialog(MarkToteFullComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
-      disableClose:true,
+        disableClose: true,
         data: {
           mode: 'add-trans',
           message: 'Click OK to mark this Tote as being Full',
@@ -184,21 +190,30 @@ export class ToteTransactionViewComponent implements OnInit {
           let payLoad = {
             toteNumber: this.tote,
             cell: this.cell,
-            batchID: this.batchID, 
+            batchID: this.batchID,
           };
 
           this.iInductionManagerApi.MarkToteFull(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
-                this.global.ShowToastr('success',labels.alert.success, 'Success!');
+                this.global.ShowToastr(
+                  'success',
+                  labels.alert.success,
+                  'Success!'
+                );
               } else {
-                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
-                console.log("MarkToteFull",res.responseMessage);
+                this.global.ShowToastr(
+                  'error',
+                  labels.alert.went_worng,
+                  'Error!'
+                );
+                console.log('MarkToteFull', res.responseMessage);
               }
             },
-            (error) => {}
+            (error) => {
+              console.log(error);
+            }
           );
-          
         }
       });
     } else if (
@@ -222,14 +237,13 @@ export class ToteTransactionViewComponent implements OnInit {
     }
   }
 
-  clear(type,item) {
-   
-    let itemId=item.id
-    const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
+  clear(type, item) {
+    let itemId = item.id;
+    const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
         message:
           type === 'clear'
@@ -243,69 +257,120 @@ export class ToteTransactionViewComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
-        let payLoad={
-          id:itemId,
+        let payLoad = {
+          id: itemId,
           username: this.data.userName,
           wsid: this.data.wsid,
-        }
-        let baseUrl=type==='clear'?'/Induction/ClearItemFromTote':'/Induction/DeAllocateItemFromTote'
-        this.iInductionManagerApi.DynamicMethod(payLoad,baseUrl).subscribe((res:any)=>{
-          if (res?.isExecuted) {
-            this.global.ShowToastr('success',labels.alert.success, 'Success!');
-            this.getTransactionTable();
-          } else {
-            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
-            console.log("DynamicMethod",res.responseMessage);
-          }
-        })
+        };
+        let baseUrl =
+          type === 'clear'
+            ? '/Induction/ClearItemFromTote'
+            : '/Induction/DeAllocateItemFromTote';
+        this.iInductionManagerApi
+          .DynamicMethod(payLoad, baseUrl)
+          .subscribe((res: any) => {
+            if (res?.isExecuted) {
+              this.global.ShowToastr(
+                'success',
+                labels.alert.success,
+                'Success!'
+              );
+              this.getTransactionTable();
+            } else {
+              this.global.ShowToastr(
+                'error',
+                labels.alert.went_worng,
+                'Error!'
+              );
+              console.log('DynamicMethod', res.responseMessage);
+            }
+          });
       }
     });
   }
 
-  print(type:any){
-    if(type == 'tote-label'){
-      if(this.imPreferences.printDirectly){
-        this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:|ZoneLab:${this.zoneLabels}|ID:${this.dataSource?.filteredData[0]?.id}|BatchID:${this.batchID}|TransType:Put Away`)
-      }else{
-        window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:|ZoneLab:${this.zoneLabels}|ID:${this.dataSource?.filteredData[0]?.id}|BatchID:${this.batchID}|TransType:Put Away`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+  print(type: any) {
+    if (type == 'tote-label') {
+      if (this.imPreferences.printDirectly) {
+        this.global.Print(
+          `FileName:PrintPrevToteContentsLabel|ToteID:|ZoneLab:${this.zoneLabels}|ID:${this.dataSource?.filteredData[0]?.id}|BatchID:${this.batchID}|TransType:Put Away`
+        );
+      } else {
+        window.open(
+          `/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:|ZoneLab:${this.zoneLabels}|ID:${this.dataSource?.filteredData[0]?.id}|BatchID:${this.batchID}|TransType:Put Away`,
+          '_blank',
+          'width=' +
+            screen.width +
+            ',height=' +
+            screen.height +
+            ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+        );
       }
-    }
-    else if(type == 'item-label'){
-
-      if(this.imPreferences.printDirectly){
-        this.global.Print(`FileName:PrintPrevToteItemLabel|ID:-1|BatchID:${this.batchID}|ToteNum:${this.tote}`)
-      }else{
-        window.open(`/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:-1|BatchID:${this.batchID}|ToteNum:${this.tote}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+    } else if (type == 'item-label') {
+      if (this.imPreferences.printDirectly) {
+        this.global.Print(
+          `FileName:PrintPrevToteItemLabel|ID:-1|BatchID:${this.batchID}|ToteNum:${this.tote}`
+        );
+      } else {
+        window.open(
+          `/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:-1|BatchID:${this.batchID}|ToteNum:${this.tote}`,
+          '_blank',
+          'width=' +
+            screen.width +
+            ',height=' +
+            screen.height +
+            ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+        );
       }
-    }
-    else if(type == 'tote-contents'){
-      if(this.imPreferences.printDirectly){
-        this.global.Print(`FileName:PrintPrevToteTransViewCont|BatchID:${this.batchID}|ToteNum:${this.tote}`)
-      }else{
-        window.open(`/#/report-view?file=FileName:PrintPrevToteTransViewCont|BatchID:${this.batchID}|ToteNum:${this.tote}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+    } else if (type == 'tote-contents') {
+      if (this.imPreferences.printDirectly) {
+        this.global.Print(
+          `FileName:PrintPrevToteTransViewCont|BatchID:${this.batchID}|ToteNum:${this.tote}`
+        );
+      } else {
+        window.open(
+          `/#/report-view?file=FileName:PrintPrevToteTransViewCont|BatchID:${this.batchID}|ToteNum:${this.tote}`,
+          '_blank',
+          'width=' +
+            screen.width +
+            ',height=' +
+            screen.height +
+            ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+        );
       }
     }
   }
 
-  printToteLabel(){
+  printToteLabel() {
     let ID = this.dataSource?.filteredData[0]?.id;
-    if(this.imPreferences.printDirectly){
-      this.global.Print(`FileName:PrintPrevToteItemLabel|ID:${ID}|BatchID:${this.batchID}|ToteNum:${this.tote}`)
-    }else{
-      window.open(`/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:${ID}|BatchID:${this.batchID}|ToteNum:${this.tote}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+    if (this.imPreferences.printDirectly) {
+      this.global.Print(
+        `FileName:PrintPrevToteItemLabel|ID:${ID}|BatchID:${this.batchID}|ToteNum:${this.tote}`
+      );
+    } else {
+      window.open(
+        `/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:${ID}|BatchID:${this.batchID}|ToteNum:${this.tote}`,
+        '_blank',
+        'width=' +
+          screen.width +
+          ',height=' +
+          screen.height +
+          ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+      );
     }
   }
 
   selectRow(row: any) {
-    this.dataSource.filteredData.forEach(element => {
-      if(row != element){
+    this.dataSource.filteredData.forEach((element) => {
+      if (row != element) {
         element.selected = false;
       }
     });
-    const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
+    const selectedRow = this.dataSource.filteredData.find(
+      (x: any) => x === row
+    );
     if (selectedRow) {
       selectedRow.selected = !selectedRow.selected;
     }
   }
-
 }

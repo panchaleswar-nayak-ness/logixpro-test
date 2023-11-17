@@ -4,30 +4,26 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-print-replen-labels',
   templateUrl: './print-replen-labels.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class PrintReplenLabelsComponent {
-
   constructor(
-    private dialog:MatDialog,
-    public dialogRef: MatDialogRef<PrintReplenLabelsComponent>,
-  ) { }
+    private dialog: MatDialog,
+    public dialogRef: MatDialogRef<PrintReplenLabelsComponent>
+  ) {}
 
- 
-
-  printLabelsForCurrentDisplay(){
+  printLabelsForCurrentDisplay() {
     this.dialog.closeAll();
     this.dialogRef.close({});
   }
 
-  printLabelsForUnprintedReplens(){
+  printLabelsForUnprintedReplens() {
     this.dialog.closeAll();
     this.dialogRef.close({});
   }
 
-  printLabelsForAllReplens(){
+  printLabelsForAllReplens() {
     this.dialog.closeAll();
     this.dialogRef.close({});
   }
-
 }

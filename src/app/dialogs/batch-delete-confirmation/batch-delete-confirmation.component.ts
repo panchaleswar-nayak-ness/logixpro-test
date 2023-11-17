@@ -68,7 +68,7 @@ export class BatchDeleteConfirmationComponent {
                 this.dialogRef.close({isExecuted:false});
               }
             },
-            (error) => {}
+            () => {}
           );
       } else {
         this.dialogRef.close({isExecuted:false});

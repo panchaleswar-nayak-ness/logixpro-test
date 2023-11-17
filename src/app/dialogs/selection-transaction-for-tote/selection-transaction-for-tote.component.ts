@@ -171,7 +171,9 @@ export class SelectionTransactionForToteComponent implements OnInit {
           console.log("TransactionForTote",res.ResponseMessage);
         }
       },
-      (error) => {}
+      (error) => {
+        console.log(error);
+      }
     );
   }
 

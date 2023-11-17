@@ -190,7 +190,7 @@ export class OmAddRecordComponent implements OnInit {
     this.oTTempUpdatePayload.userField10 = this.userFieldData.userField10;
   }
 
-  getUserFieldData(loader: boolean = false) {
+  getUserFieldData() {
     this.iOrderManagerApi.UserFieldData().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.userFieldData = res.data[0];
@@ -203,7 +203,7 @@ export class OmAddRecordComponent implements OnInit {
     });
   }
 
-  async save(loader: boolean = false) { 
+  async save() { 
     if (this.oTTempUpdatePayload.orderNumber.trim() == '' || this.oTTempUpdatePayload.itemNumber.trim() == '' || this.oTTempUpdatePayload.transType.trim() == '') {
       this.global.ShowToastr('error',"Order Number, Item Number and Transaction Type must be completed in order to continue.", 'Warning!');
     }
@@ -246,7 +246,7 @@ export class OmAddRecordComponent implements OnInit {
     }
   }
 
-  searchItem(loader: boolean = false) {
+  searchItem() {
     if (this.oTTempUpdatePayload.itemNumber.trim() != '') {
       let payload = {
         "appName": "",
