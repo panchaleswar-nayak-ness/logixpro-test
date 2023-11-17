@@ -25,9 +25,8 @@ import { CommonApiService } from 'src/app/services/common-api/common-api.service
 export class CCBCreateCountsComponent implements OnInit {
   public userData: any;
   @ViewChild('matRefAction') matRefAction: MatSelect;
-  InputText:any;
   selectedTabIndex: number = 0;
-  orderNumber;
+  orderNumber: any;
   countType: string = '';
   completeDate: Date;
   localCompleteDate: string;
@@ -181,7 +180,7 @@ constructor(
   updateQueCountEvent(obj) {
     this.eventChange.emit(obj);
   }
-  onChangeDemo(e, type) {
+  onChangeDemo(e:any, type:any) {
     if (type === 'empty') {
       this.filtersForm.controls['includeEmpty'].setValue(e.checked);
     } else {
@@ -756,15 +755,12 @@ constructor(
     this.beginCostTA.unsubscribe();
     this.endCostTA.unsubscribe();
   }
-
   checkvalue(event){
     if(event != 'LocationRange'){ 
       this.location = true;
-      
     }
     else{
       this.location = false;
     }
-
   }
 }

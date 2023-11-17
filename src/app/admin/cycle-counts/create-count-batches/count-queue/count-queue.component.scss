@@ -1,14 +1,26 @@
-
-.mat-table {
-  th {
-    white-space: nowrap;
-    padding-right: 10px;
+.cardBorder{
+  overflow-x: auto;
+  .mat-table-scrollbar , .table-bar{
+    height: 400px;
+    th {
+      white-space: nowrap;
+      padding-right: 10px;
+    }
+    .th-align{
+      text-align: right
+    }
+    .td-align{
+      text-align: right
+    }
+    td {
+      max-width: 15ch;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding-right:15px;
+    }
   }
-  td {
-    max-width: 15ch;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    padding-right:15px;
-  }
+}
+.cc-count-button{
+  flex: 1;
 }

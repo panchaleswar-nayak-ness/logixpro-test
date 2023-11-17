@@ -156,7 +156,9 @@ export const AppRoutes = {
     OrderManagerEventLog: '/OrderManager/EventLog',
     AdminTransaction:'/#/admin/transaction',
     ReportView:'/#/report-view',
-    Logon:'/#/Logon/'
+    Logon:'/#/Logon/',
+    AdminCreateCounts: '/admin/createCounts',
+    AdminCreateCountBatches: '/admin/createCountBatches'
 }
 
 export const AppIcons = {
