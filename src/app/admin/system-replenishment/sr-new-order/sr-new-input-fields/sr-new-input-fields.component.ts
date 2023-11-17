@@ -12,8 +12,6 @@ export class SrNewInputFieldsComponent {
   @Output() onChangeKanbanEmit = new EventEmitter();
   @Output() createNewOrdersListEmit = new EventEmitter();
 
- 
-
   onChangeKanban(event) {
     this.onChangeKanbanEmit.emit(event);
   }
@@ -21,5 +19,4 @@ export class SrNewInputFieldsComponent {
   createNewOrdersList() {
     this.createNewOrdersListEmit.emit(this.kanban);
   }
-
 }

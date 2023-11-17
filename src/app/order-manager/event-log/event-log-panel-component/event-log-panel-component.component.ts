@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-event-log-panel-component',
   templateUrl: './event-log-panel-component.component.html',
-  styleUrls: []
+  styleUrls: ['./event-log-panel-component.component.scss']
 })
 export class EventLogPanelComponentComponent {
 

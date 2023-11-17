@@ -16,6 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-new-order',
@@ -24,13 +25,13 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 })
 export class SrNewOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
- @Input() TabIndex:any;
+ @Input() tabIndex:any;
   displayedColumns: string[] = ['Item Number', 'Description', 'Warehouse', 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', 'action'];
   tableData: any = [];
   filteredTableData: any = [];
   public userData: any;
   kanban: boolean = false;
-  IsActiveTrigger:boolean =false;
+  isActiveTrigger:boolean =false;
   numberSelectedRep: number = 0;
   tablePayloadObj: any = {
     draw: 0,
@@ -93,7 +94,7 @@ export class SrNewOrderComponent implements OnInit {
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault()
-    this.IsActiveTrigger = true;
+    this.isActiveTrigger = true;
     setTimeout(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
     }, 100);
@@ -103,7 +104,7 @@ export class SrNewOrderComponent implements OnInit {
     this.tablePayloadObj.filter = filter;
     this.resetPagination();
     this.newReplenishmentOrders(); 
-    this.IsActiveTrigger = false;
+    this.isActiveTrigger = false;
   }
 
   hideRequiredControl = new FormControl(false);
@@ -162,7 +163,7 @@ export class SrNewOrderComponent implements OnInit {
           this.filteredTableData = JSON.parse(JSON.stringify(this.tableData));
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("SystemReplenishmentNewTable",res.responseMessage);
 
         } 
@@ -333,7 +334,7 @@ export class SrNewOrderComponent implements OnInit {
     this.iAdminApiService.ProcessReplenishments(paylaod).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         if(res.responseMessage == "Update Successful"){
-          this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
         }
         if(res.responseMessage == "Reprocess"){
           let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -354,7 +355,7 @@ export class SrNewOrderComponent implements OnInit {
         this.newReplenishmentOrders();
         this.replenishmentsProcessed.emit();
       } else {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
         console.log("ProcessReplenishments",res.responseMessage);
       }
     });
@@ -382,7 +383,7 @@ export class SrNewOrderComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.newReplenishmentOrders();
       } else {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
         console.log("ReplenishmentsIncludeUpdate",res.responseMessage);
       }
     });
@@ -401,9 +402,9 @@ export class SrNewOrderComponent implements OnInit {
         this.newReplenishmentOrders();
       } 
         else if (replenish){
-          this.global.ShowToastr('error',"No items available to replenish.", 'Error!');
+          this.global.ShowToastr(ToasterType.Error,"No items available to replenish.", ToasterTitle.Error);
         }else{
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr(ToasterType.Error ,res.responseMessage, ToasterTitle.Error);
           console.log("ReplenishmentsIncludeAllUpdate",res.responseMessage);
         }
       
@@ -421,7 +422,7 @@ export class SrNewOrderComponent implements OnInit {
         this.searchAutocompleteList = res.data.sort();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("SystemReplenishNewTA",res.responseMessage);
 
       }

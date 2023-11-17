@@ -27,7 +27,7 @@
                     </mat-form-field>
 
                     <span class="v-br d-none d-xl-block">-</span>
-                    <div class="d-xl-flex g-mini-search-box mb-3 mb-xl-0 col-xl-3" style="flex:1">
+                    <div class="d-xl-flex g-mini-search-box mb-3 mb-xl-0 col-xl-3 divSearchBox-style">
                         <mat-form-field class="w-100 bg-white br-8" appearance="fill"
                             [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value"
                             (keyup.enter)="closeautoMenu()">
@@ -90,9 +90,8 @@
                 </mat-form-field>
             </div>
         </div>
-
         <div class="card br-14 table-responsive borderless">
-            <ng-scrollbar class="mat-table-scrollbar" style="height:550px" track="all">
+            <ng-scrollbar class="mat-table-scrollbar mat-tabScrollbar-style" track="all">
 
                 <table class="w-100 table-borderless" mat-table [dataSource]="filteredTableData" matSort
                     (matSortChange)="announceSortChange($event)">
@@ -108,8 +107,8 @@
 
                     <!-- Action Column -->
                     <ng-container matColumnDef="action" stickyEnd>
-                        <th mat-header-cell *matHeaderCellDef style="border: 0;height: 66px; padding-left:65px;"></th>
-                        <td mat-cell *matCellDef="let seletedRecord" style="border: 0; padding-left: 24px; background: var(--clr-pure-white);">
+                        <th class="matHeaderCellDef-style" mat-header-cell *matHeaderCellDef></th>
+                        <td class="matCellDef-style" mat-cell *matCellDef="let seletedRecord">
                             <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline">
                                 <mat-icon>more_horiz</mat-icon>
                             </button>
@@ -126,11 +125,7 @@
                             No data available in table.
                         </td>
                     </tr>
-
-
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true"
-                        style=" background-color: var(--clr-table-header);"></tr>
+                    <tr class="matHeaderRowDef-style" mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns2;" (click)="selectRow(row)"></tr>
                 </table>
 
@@ -145,7 +140,7 @@
     </mat-card-content>
 </mat-card>
 
-<app-table-context-menu-component *ngIf="TabIndex == 1 && IsActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'sysRepCurOrd'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="TabIndex == 1 && isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'sysRepCurOrd'"></app-table-context-menu-component>
 
 <ng-template #deleteSelectedConfirm>
     <div class="mat-modal-wrap text-center">
@@ -156,8 +151,8 @@
                         delete
                     </span>
                 </div>
-                <p class="prompt-message py-1 mb-0 text-error ">
-                    <b style="font-size: 22px;">Delete Order: {{this.selectedOrder.orderNumber}}</b>
+                <p class="prompt-message py-1 mb-0 text-error">
+                    <b class="deleteOrderBoldStyle">Delete Order: {{this.selectedOrder.orderNumber}}</b>
                 </p>
                 <p class="prompt-message py-3 mb-2 ">
                     Delete All transactions for Order: {{this.selectedOrder.orderNumber}}. This will delete all

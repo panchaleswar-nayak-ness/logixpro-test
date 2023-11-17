@@ -1,4 +1,4 @@
-<mat-card class="mat-elevation-z g-card mb-3 mt-2" style="height: 100%;">
+<mat-card class="mat-elevation-z g-card mb-3 mt-2 h-100">
     <mat-card-content>
         <div class="d-flex align-items-center flex-wrap mb-3">
             
@@ -12,7 +12,7 @@
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>Start Date</mat-label>
-                    <input matInput [(ngModel)]="startDate" type="date" (change)="event()" [disabled]="ignoreDateRange" style="cursor: text;">
+                    <input matInput [(ngModel)]="startDate" type="date" (change)="event()" [disabled]="ignoreDateRange" class="cursor-text">
                     
                 </mat-form-field>
             </div>
@@ -20,7 +20,7 @@
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                     <mat-label>End Date</mat-label>
-                    <input matInput [(ngModel)]="endDate" type="date" (change)="event()" [disabled]="ignoreDateRange" style="cursor: text;">
+                    <input matInput [(ngModel)]="endDate" type="date" (change)="event()" [disabled]="ignoreDateRange" class="cursor-text">
                 </mat-form-field>
             </div>
 

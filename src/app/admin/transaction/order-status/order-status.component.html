@@ -1,17 +1,44 @@
 <div class="container-fluid p-0 pt-2" style="height: auto;">
   <div class="row">
     <div class="col-xl-5 mb-3">
-      <app-tran-select-order [clearFromListEvent]="clearFromList" (deleteEvent)="onChange($event)" (clearData)="onClearFromStatus($event)"  (orderNo)="orderNoChange($event)" (toteId)="toteIdChange($event)"
-        [openOrderEvent]="openOrderEvent" [orderTypeOrderEvent]="orderTypeOrderEvent" [orderStatNextData]="orderStatusNext" [completeOrderEvent]="completeOrderEvent" [reprocessOrderEvent]="reprocessOrderEvent" [totalLinesOrderEvent]="totalLinesOrderEvent" [currentStatusOrderEvent]="currentStatusOrderEvent" ></app-tran-select-order>
+      <app-tran-select-order 
+        [clearFromListEvent]="clearFromList" 
+        (deleteEvent)="onChange($event)" 
+        (clearData)="onClearFromStatus($event)"  
+        (orderNo)="orderNoChange($event)" 
+        (toteId)="toteIdChange($event)"
+        [openOrderEvent]="openOrderEvent" 
+        [orderTypeOrderEvent]="orderTypeOrderEvent" 
+        [orderStatNextData]="orderStatusNext" 
+        [completeOrderEvent]="completeOrderEvent" 
+        [reprocessOrderEvent]="reprocessOrderEvent" 
+        [totalLinesOrderEvent]="totalLinesOrderEvent" 
+        [currentStatusOrderEvent]="currentStatusOrderEvent">
+      </app-tran-select-order>
     </div>
     <div class="col-xl-7 mb-3">
-     
-      <app-tran-carousel-lzone [clearEvent]="clearEvent"  [locationZonesEvent]="locationZonesEvent"></app-tran-carousel-lzone>
+      <app-tran-carousel-lzone 
+        [clearEvent]="clearEvent" 
+        [locationZonesEvent]="locationZonesEvent">
+      </app-tran-carousel-lzone>
     </div>
   </div>
   <div class="row mb-3">
     <div class="col-12">
-      <app-tran-order-list [TabIndex]="TabIndex" [deleteEvnt]="event" [clearEvent]="clearEvent"  (clearFromListChange)="onClearList($event)"   (currentStatus)="currentStatusOrderChange($event)" (totalLinesOrders)="totalLinesOrderChange($event)" (orderTypeOrders)="orderTypeOrderChange($event)"  (reprocessOrders)="reprocessOrderChange($event)"  (completeOrders)="completeOrderChange($event)"   (locationZones)="locationZones($event)" (openOrders)="openOrderChange($event)"
-        [orderNoEvent]="orderNoEvent" [toteIdEvent]="toteIdEvent"  ></app-tran-order-list>
+      <app-tran-order-list 
+        [TabIndex]="tabIndex" 
+        [deleteEvnt]="event" 
+        [clearEvent]="clearEvent"  
+        (clearFromListChange)="onClearList($event)"   
+        (currentStatus)="currentStatusOrderChange($event)" 
+        (totalLinesOrders)="totalLinesOrderChange($event)" 
+        (orderTypeOrders)="orderTypeOrderChange($event)"  
+        (reprocessOrders)="reprocessOrderChange($event)"  
+        (completeOrders)="completeOrderChange($event)"   
+        (locationZones)="locationZones($event)" 
+        (openOrders)="openOrderChange($event)"
+        [orderNoEvent]="orderNoEvent" 
+        [toteIdEvent]="toteIdEvent">
+      </app-tran-order-list>
     </div>
   </div>

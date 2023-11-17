@@ -5,7 +5,7 @@ import { AuthService } from '../init/auth.service';
 @Component({
   selector: 'app-consolidation-manager',
   templateUrl: './consolidation-manager.component.html',
-  styleUrls: []
+  styleUrls: ['./consolidation-manager.component.scss']
 })
 export class ConsolidationManagerComponent {
 
