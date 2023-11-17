@@ -478,7 +478,7 @@
   <button mat-stroked-button color="primary" class="btn-lg" (click)="onNoClick()">
     Choose a Different Transaction
   </button>
-  <button mat-stroked-button color="primary" class="btn-lg" (click)="forSameSKU()">
+  <button mat-stroked-button color="primary" class="btn-lg" (click)="forSameSKU()" *ngIf="!data.imPreference.purchaseOrderRequired">
     New Put Away For Same SKU
   </button>
   <button mat-flat-button color="primary" class="btn-lg" style="flex:1" (click)="completeTransaction()">
