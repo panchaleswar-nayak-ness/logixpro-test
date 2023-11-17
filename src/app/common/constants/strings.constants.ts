@@ -18,6 +18,7 @@ export const DialogConstants = {
 }
 export const StringConditions = {
     SupplierItemID:'Supplier Item ID',
+    ToteID: 'Tote ID',
     WaitingReprocess:'Waiting Reprocess',
     NotCompleted: 'Not Completed',
     NotAssigned: 'Not Assigned',
@@ -44,7 +45,12 @@ export const StringConditions = {
     ResetField:'resetField',
     isAdd:'isAdd',
     filterLoc:'Nothing',
-    True:'true'
+    True:'true',
+    InProgress: 'In Progress',
+    Completed: 'Completed',
+    on: 'on',
+    off: 'off',
+    EntireOrder:'Entire Order'
 }
 
 export const ResponseStrings = {
@@ -168,6 +174,7 @@ export const AppRoutes = {
     OrderManagerEventLog: '/OrderManager/EventLog',
     OrderManagerOrderStatus: '/OrderManager/OrderStatus',
     AdminTransaction:'/#/admin/transaction',
+    AdminTrans:'/admin/transaction',
     AdminInventoryMaster:'/admin/inventoryMaster',
     ReportView:'/#/report-view',
     Logon:'/#/Logon/',
@@ -276,6 +283,7 @@ export const KeyboardKeys = {
     R: 'r',
     Enter: 'Enter'
 }
+
 export const zoneType = {
     carousel:'carousel',
     cartonFlow:'cartonFlow',
@@ -288,7 +296,6 @@ export const alertMessage = {
     EnterSerialNo: 'Please enter a serial number',
     SerialNoAlreadyScan: 'Serial Number already scanned',
     DeleteMessage:'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.'
-    
 } 
 
 export const showNotificationHeading = {
@@ -317,7 +324,8 @@ export const Column = {
     RequiredDate: 'Required Date',
     Priority: 'Priority',
     OrderNumber: 'Order Number',
-    ItemNumber: 'Item Number'
+    ItemNumber: 'Item Number',
+    ToteID: 'Tote ID'
 }
 
 export const Case = {
@@ -326,7 +334,8 @@ export const Case = {
 
 export const Mode = {
     HoldTransactions: 'hold-trans',
-    DeleteTransaction: 'delete-transaction'
+    DeleteTransaction: 'delete-transaction',
+    DeleteOrderStatus: 'delete-order-status'
 }
 
 export const TableName = {
