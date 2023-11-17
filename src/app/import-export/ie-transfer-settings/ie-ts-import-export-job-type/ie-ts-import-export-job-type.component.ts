@@ -5,7 +5,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-ie-ts-import-export-job-type',
   templateUrl: './ie-ts-import-export-job-type.component.html',
-  styleUrls: []
+  styleUrls: ['./ie-ts-import-export-job-type.component.scss']
 })
 export class IeTsImportExportJobTypeComponent {
 
