@@ -25,11 +25,11 @@ export class CrAddNewCustomReportComponent implements OnInit {
   NewExportFilename
   listOfFileName
   appendstring
-  AddNewColumns
-  AddNewColumnscheck = false
+  addNewColumns
+  addNewColumnsCheck = false
   public iAdminApiService: IAdminApiService;
-  AddNewFilePresent = false
-  RestoreAll = false
+  addNewFilePresent = false
+  restoreAll = false
   CurrentFilename
   @ViewChildren('serialTemp') serialInputs: QueryList<any>;
   constructor( 
@@ -117,32 +117,32 @@ export class CrAddNewCustomReportComponent implements OnInit {
           
           if(res.data.sqlObj?.columns.length != 0){
             console.log(res.data.sqlObj?.columns.length)
-            this.AddNewColumns = res.data.sqlObj.columns 
-            this.AddNewColumnscheck = true
+            this.addNewColumns = res.data.sqlObj.columns 
+            this.addNewColumnsCheck = true
           }else{
-            this.AddNewColumnscheck = false
+            this.addNewColumnsCheck = false
 
           }
 
-          // this.AddNewColumns = this.buildAppendString('Columns in the first resultset:', res.data.sqlObj.columns) + resultSetString
+          // this.addNewColumns = this.buildAppendString('Columns in the first resultset:', res.data.sqlObj.columns) + resultSetString
          
           // if the file is present already we need to deal with it before we can continue
           
           if (res.data.fileObj.canAddFileToDefaultTable) {
-            this.AddNewFilePresent = true
-            this.RestoreAll = true
+            this.addNewFilePresent = true
+            this.restoreAll = true
             this.openCrDesignFilenameConfirmation()
             this.CurrentFilename = newParams[1]
         } else if (res.data.fileObj.canAddFileToWSTable) {
-          this.AddNewFilePresent = true
-          this.RestoreAll = false
+          this.addNewFilePresent = true
+          this.restoreAll = false
           this.openCrDesignFilenameConfirmation()
           this.CurrentFilename = newParams[1]
         }
         //  else we don't have a file already and we need to check that there are no errors that need to be dealt with
          else{
-          this.AddNewFilePresent = false
-          this.RestoreAll = false
+          this.addNewFilePresent = false
+          this.restoreAll = false
           this.CurrentFilename = ''
           if(this.appendstring.length == 0){
             let  obj = {
@@ -278,7 +278,7 @@ validateInputs() {
       autoFocus: '__non_existing_element__',
       disableClose:true,
       data:{
-        restore:this.RestoreAll
+        restore:this.restoreAll
       }
     });
     dialogRef.afterClosed().subscribe((result) => {

@@ -13,6 +13,7 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { ResponseStrings } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-de-allocate-orders',
@@ -28,7 +29,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   ]
     isOrderSelected=true;
     displayedColumns_1: string[] = ['select','order_no'];
-    tableData_1 =[]
+   
     isChecked: boolean = false;
     orderNumbersList:any=[];
     
@@ -51,7 +52,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   public orderNumber = '';
   public chooseSearchType:any;
   public TypeValue:any;
-  transactionType:any = 'All'
+  transactionType:any = ResponseStrings.AllCaps;
   step
   isOrder = true;
   order;
@@ -66,7 +67,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   sortColOrder = 0
   sortOrder ='asc'
 
-  IsActiveTrigger:boolean =false;
+  isActiveTrigger:boolean =false;
 // pagination and sorting for transaction View
   pageEventTransaction: PageEvent;
   startRowTransaction = 0;
@@ -97,14 +98,12 @@ export class DeAllocateOrdersComponent implements OnInit {
     .pipe(debounceTime(400), distinctUntilChanged())
     .subscribe((value) => {
       this.getAllOrder()
-      this.autocompleteSearchColumnItem()
+      this.autoCompleteSearchColumnItem()
     });
     this.getAllOrder()
   } 
-  clearMatSelectList(){
-    this.matRefAction.options.forEach((data: MatOption) => data.deselect());
-  }
-  async autocompleteSearchColumnItem() {
+  
+  async autoCompleteSearchColumnItem() {
     if(this.chooseSearchType == 'Order Number'){
       let payload = {
         "orderNumber": this.TypeValue, 
@@ -142,6 +141,9 @@ export class DeAllocateOrdersComponent implements OnInit {
     }
 
   } 
+  clearMatSelectList(){
+    this.matRefAction.options.forEach((data: MatOption) => data.deselect());
+  }
   deAllocAction(event:any){
     this.clearMatSelectList();
 
@@ -223,7 +225,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     }
     else{
       if(isPagination){
-        this.resetpaginationOrder()
+        this.resetPaginationOrder()
       }
       
      
@@ -269,7 +271,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   check(e){
     this.chooseSearchType = e
     this.searchedItemOrder.length = 0
-    this.resetpaginationOrder()
+    this.resetPaginationOrder()
     this.orderItemTransactions.data = []
   }
 
@@ -279,7 +281,7 @@ export class DeAllocateOrdersComponent implements OnInit {
 
 
   ordertransaction(row,index){
-   this.resetpaginationOrder()
+   this.resetPaginationOrder()
     this.orderNameList.data[index].isRowSelected=!this.orderNameList.data[index].isRowSelected;
     this.orderNameList.data.forEach((item,i)=>{
       if(index===i)return
@@ -489,7 +491,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   }
 
 
-  resetpaginationOrder(){
+  resetPaginationOrder(){
     this.startRowOrder = 0;
     this.endRowOrder = 10;
     this.recordsPerPageOrder = 10;
@@ -513,7 +515,7 @@ export class DeAllocateOrdersComponent implements OnInit {
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
     event.preventDefault();
-    this.IsActiveTrigger = true;
+    this.isActiveTrigger = true;
     setTimeout(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
     }, 100);
@@ -524,7 +526,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   optionSelected(filter : string) {
     this.FilterString = filter;
     this.orderItemTable();    
-    this.IsActiveTrigger = false;
+    this.isActiveTrigger = false;
   }
 
   clear(){

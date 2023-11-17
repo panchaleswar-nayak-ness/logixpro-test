@@ -31,17 +31,17 @@ export class CmConfirmAndPackingComponent implements OnInit {
   @ViewChild(MatSort) sort1: MatSort;
   @ViewChild('MatSort2') sort2: MatSort;
   confPackEnable:any; 
-  IsLoading:boolean = false;
+  isLoading:boolean = false;
   contID:any; 
   reasons:any[]=[];
   shipComp:any;
-  PrintPrefs:any={}; 
-  IsDisabled:boolean  = false;
+  printPrefs:any={}; 
+  isDisabled:boolean  = false;
  displayedColumns: string[] = ['toteID', 'stagingLocation']; 
 userData:any={}; 
 @ViewChild('paginator1') paginator1: MatPaginator;
 @ViewChild('paginator2') paginator2: MatPaginator;
-displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transactionQuantity', 'completedQuantity', 'containerID',
+displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transactionQuantity', 'completedQuantity', 'containerID',
  'shipQuantity', 'complete']; 
 
  public IconsolidationAPI : IConsolidationApi;
@@ -63,7 +63,7 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
   }
 
   ngOnInit(): void {
-    this.IsLoading = true;
+    this.isLoading = true;
     this.toteTable = []; 
     this.transTable = [];
     this.contIDDrop = [];
@@ -71,7 +71,7 @@ displayedColumns_1: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transacti
     this.contID = null;
     this.reasons = [];
     this.shipComp = null;
-    this.PrintPrefs = {};  
+    this.printPrefs = {};  
       this.ConfirmAndPackingIndex(); 
    
   }
@@ -169,8 +169,8 @@ if(this.orderNumber != ""){
    
     this.reasons = res.data.adjustmentReason;
     this.shipComp = res.data.confPackShipComp;
-    this.PrintPrefs = res.data.confPackPrintPrefs; 
-    this.IsLoading = false; 
+    this.printPrefs = res.data.confPackPrintPrefs; 
+    this.isLoading = false; 
     this.toteTable =  new MatTableDataSource(res.data.confPackToteTable);
     this.transTable =  new MatTableDataSource(res.data.confPackShipTransTable);
     this.toteTable.paginator = this.paginator1;
@@ -359,7 +359,7 @@ if(searchCount == 0){
 }
 }
 async ConfirmedPacked() {
-  this.IsDisabled = true; 
+  this.isDisabled = true; 
   this.contID = null;
 };
 

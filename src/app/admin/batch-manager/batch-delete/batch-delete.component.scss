@@ -1,7 +1,13 @@
-.custom-button-width{
+.custom-button {
     width: 90% !important;
+    flex: 1 auto;
 }
+
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
     background-color: white;
     border-radius: 17px;
-  }
+}
+
+.heading-22 {
+    font-size: 22px;
+}

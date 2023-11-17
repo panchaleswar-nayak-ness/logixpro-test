@@ -23,7 +23,6 @@ itemNumber: any;
 contID: any;
 id:  any;
 userData:any = {};
-IsSelectModal: boolean = false;
 public IconsolidationAPI : IConsolidationApi;
 constructor(
   private global:GlobalService,

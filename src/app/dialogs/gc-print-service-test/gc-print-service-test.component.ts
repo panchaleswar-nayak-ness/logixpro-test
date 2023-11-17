@@ -14,11 +14,10 @@ export class GcPrintServiceTestComponent {
   displayedColumns: any[] = ['select'];
   dataSource = (this.ELEMENT_DATA);
  
-  ELEMENT_DATA_1 = [{ select:"Xerox Lists"},
+  PRINTER_DATA = [{ select:"Xerox Lists"},
   { select:"CutePDF"},
   { select:"Jon Desktop"}];
-  displayedColumns_1: any[] = ['select'];
-  dataSource_1 = (this.ELEMENT_DATA);
+  displayedColumnsForSelect: any[] = ['select'];
 
 
   constructor(private global:GlobalService) { }

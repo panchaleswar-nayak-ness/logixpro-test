@@ -91,7 +91,7 @@
         <div class="card br-14 borderless px-0" style="overflow-x: auto;">
             <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 260px">
                 <table class="w-100 table-borderless" mat-table #matSort3="matSort" matSort
-                    [dataSource]="this.ELEMENT_DATA_1">
+                    [dataSource]="this.PRINTER_DATA">
 
                     <ng-container matColumnDef="select">
                         <th mat-header-cell *matHeaderCellDef>
@@ -104,7 +104,7 @@
                             </mat-checkbox>
                         </td>
                     </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns_1; sticky:true"></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsForSelect; sticky:true"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;">
                     </tr>
                 </table>

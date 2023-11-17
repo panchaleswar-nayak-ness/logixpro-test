@@ -48,15 +48,15 @@ export class PickToteManagerComponent implements OnInit {
   filteredOptions: Observable<any[]>;
   savedFilter = new FormControl('');
   userData: any;
-  FILTER_DATA: any[] = [];
-  ORDER_BY_DATA: any[] = [];
-  FILTER_BATCH_DATA: any[] = [];
-  FILTER_BATCH_DATA_ZONE: any[] = [];
+  filterData: any[] = [];
+  orderByData: any[] = [];
+  filterBatchData: any[] = [];
+  filterBatchDataZone: any[] = [];
   useDefaultFilter;
   useDefaultZone;
   batchByZoneData: any[] = [];
   F_ORDER_TRANS: any[] = [];
-  TabIndex: number = 0;
+  tabIndex: number = 0;
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -204,9 +204,9 @@ export class PickToteManagerComponent implements OnInit {
     this.savedFilterList = [];
     this.userData = this.authService.userData();
     this.getSavedFilters();
-    this.dataSource = new MatTableDataSource<any>(this.FILTER_DATA);
-    this.dataSource1 = new MatTableDataSource<any>(this.FILTER_DATA);
-    this.orderBydataSource = new MatTableDataSource<any>(this.ORDER_BY_DATA);
+    this.dataSource = new MatTableDataSource<any>(this.filterData);
+    this.dataSource1 = new MatTableDataSource<any>(this.filterData);
+    this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
     this.pickBatchZonesSelect();
     if (this.data.useDefaultFilter) {
       this.isFilter = 'filter'
@@ -272,29 +272,29 @@ export class PickToteManagerComponent implements OnInit {
   onAddFilter(filterData?: any) { 
     if (filterData) {
       filterData.map(obj => {
-        this.FILTER_DATA.push({ sequence: obj.sequence, field: obj.field, criteria: obj.criteria, value: obj.value, andOr: obj.andOr, isSaved: true,is_db: true });
+        this.filterData.push({ sequence: obj.sequence, field: obj.field, criteria: obj.criteria, value: obj.value, andOr: obj.andOr, isSaved: true,is_db: true });
         this.filterSeq = obj.sequence
       });
-      this.dataSource = new MatTableDataSource<any>(this.FILTER_DATA);
+      this.dataSource = new MatTableDataSource<any>(this.filterData);
     }
     else {
-      this.FILTER_DATA.push({ sequence: this.filterSeq + 1, field: 'Emergency', criteria: 'Equals', value: '', andOr: 'And', isSaved: false });
+      this.filterData.push({ sequence: this.filterSeq + 1, field: 'Emergency', criteria: 'Equals', value: '', andOr: 'And', isSaved: false });
 
-      this.dataSource = new MatTableDataSource<any>(this.FILTER_DATA);
+      this.dataSource = new MatTableDataSource<any>(this.filterData);
       this.isFilterAdd = false;
     }
   }
   onAddOrderBy(filterData?: any) {
     if (filterData) {
       filterData.map(obj => {
-        this.ORDER_BY_DATA.push({ id: obj.id, sequence: obj.sequence, field: obj.field, sortOrder: obj.order, isSaved: true });
+        this.orderByData.push({ id: obj.id, sequence: obj.sequence, field: obj.field, sortOrder: obj.order, isSaved: true });
         this.orderBySeq = obj.sequence
       });
-      this.orderBydataSource = new MatTableDataSource<any>(this.ORDER_BY_DATA);
+      this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
     }
     else {
-      this.ORDER_BY_DATA.push({ sequence: this.orderBySeq + 1, field: 'Emergency', sortOrder: 'DESC', isSaved: false });
-      this.orderBydataSource = new MatTableDataSource<any>(this.ORDER_BY_DATA);
+      this.orderByData.push({ sequence: this.orderBySeq + 1, field: 'Emergency', sortOrder: 'DESC', isSaved: false });
+      this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
       this.isOrderByAdd = false;
     }
   }
@@ -462,7 +462,7 @@ export class PickToteManagerComponent implements OnInit {
   }
   ordersFilterZoneSelect(zone = "", rp = false, type = "") {
     let payload;
-    this.FILTER_BATCH_DATA_ZONE = [];
+    this.filterBatchDataZone = [];
     this.filterOrderTransactionSource = [];
     this.zoneOrderTransactionSource = [];
     if (zone == "") {
@@ -477,10 +477,10 @@ export class PickToteManagerComponent implements OnInit {
       this.iinductionManagerApi.OrdersFilterZoneSelect(payload).subscribe(res => {
         if (res.isExecuted && res.data) {
           res.data.map(val => {
-            this.FILTER_BATCH_DATA.push({ 'orderNumber': val.orderNumber, 'reqDate': val.reqDate, 'priority': val.priority, isSelected: false });
+            this.filterBatchData.push({ 'orderNumber': val.orderNumber, 'reqDate': val.reqDate, 'priority': val.priority, isSelected: false });
           });
           if (this.data.allOrders.length > 0) {
-            const selectedArr = this.FILTER_BATCH_DATA.filter(element => this.data.allOrders.includes(element.orderNumber));
+            const selectedArr = this.filterBatchData.filter(element => this.data.allOrders.includes(element.orderNumber));
             
             selectedArr.forEach(ele => {
               ele.isSelected = true
@@ -488,7 +488,7 @@ export class PickToteManagerComponent implements OnInit {
             });
             this.selectedOrders = [...new Set(this.selectedOrders)];
           }
-          this.filterBatchOrders = new MatTableDataSource<any>(this.FILTER_BATCH_DATA);
+          this.filterBatchOrders = new MatTableDataSource<any>(this.filterBatchData);
           this.filterBatchOrders.paginator = this.filterBatchOrder;
         }
         else {
@@ -511,10 +511,10 @@ export class PickToteManagerComponent implements OnInit {
         if (res.isExecuted && res.data) {
           ;
           res.data.map(val => {
-            this.FILTER_BATCH_DATA_ZONE.push({ 'orderNumber': val.orderNumber, 'reqDate': val.reqDate, 'priority': val.priority, isSelected: false });
+            this.filterBatchDataZone.push({ 'orderNumber': val.orderNumber, 'reqDate': val.reqDate, 'priority': val.priority, isSelected: false });
           });
           if (this.data.allOrders.length > 0) {
-            const selectedArr = this.FILTER_BATCH_DATA_ZONE.filter(element => this.data.allOrders.includes(element.orderNumber));
+            const selectedArr = this.filterBatchDataZone.filter(element => this.data.allOrders.includes(element.orderNumber));
             
             selectedArr.forEach(ele => {
               ele.isSelected = true
@@ -523,9 +523,9 @@ export class PickToteManagerComponent implements OnInit {
             this.selectedOrders = [...new Set(this.selectedOrders)];
             this.allSelectOrders = this.selectedOrders;
           }
-          this.filterBatchOrdersZone = new MatTableDataSource<any>(this.FILTER_BATCH_DATA_ZONE);
+          this.filterBatchOrdersZone = new MatTableDataSource<any>(this.filterBatchDataZone);
           this.filterBatchOrdersZone.paginator = this.zoneBatchOrder;
-          this.TabIndex = 1;
+          this.tabIndex = 1;
         }
         else {
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
@@ -551,7 +551,7 @@ export class PickToteManagerComponent implements OnInit {
 
   onOrderSelect(row: any) {
     if (this.selectedOrders.includes(row.orderNumber)) {
-      this.FILTER_BATCH_DATA.forEach(val => {
+      this.filterBatchData.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = false;
           this.filterOrderTransactionSource = [];
@@ -569,7 +569,7 @@ export class PickToteManagerComponent implements OnInit {
       console.log("includes");
     }
     else {
-      this.FILTER_BATCH_DATA.forEach(v => {
+      this.filterBatchData.forEach(v => {
         if (this.selectedOrders.includes(v.orderNumber)) {
           v.isSelected = true;
         }
@@ -579,7 +579,7 @@ export class PickToteManagerComponent implements OnInit {
       });
       this.tempHoldEle = row; 
 
-      this.FILTER_BATCH_DATA.forEach(val => {
+      this.filterBatchData.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = true;
         }
@@ -616,7 +616,7 @@ export class PickToteManagerComponent implements OnInit {
 
   onOrderSelectZone(row: any) {
     if (this.selectedOrders.includes(row.orderNumber)) {
-      this.FILTER_BATCH_DATA_ZONE.forEach(val => {
+      this.filterBatchDataZone.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = false;
           this.zoneOrderTransactionSource = [];
@@ -634,7 +634,7 @@ export class PickToteManagerComponent implements OnInit {
       this.global.ShowToastr('error','No open totes in batch', 'Batch is Filled.');
     }
     else {
-      this.FILTER_BATCH_DATA_ZONE.forEach(v => {
+      this.filterBatchDataZone.forEach(v => {
         if (this.selectedOrders.includes(v.orderNumber)) {
           v.isSelected = true;
         }
@@ -644,7 +644,7 @@ export class PickToteManagerComponent implements OnInit {
       });
       this.tempHoldEle = row;
 
-      this.FILTER_BATCH_DATA_ZONE.forEach(val => {
+      this.filterBatchDataZone.forEach(val => {
         if (val.orderNumber === row.orderNumber) {
           val.isSelected = true;
         }
@@ -682,8 +682,8 @@ export class PickToteManagerComponent implements OnInit {
     this.iinductionManagerApi.PickBatchFilterOrderData(paylaod).subscribe(res => {
 
       if (res.isExecuted && res.data) {
-        this.FILTER_DATA = [];
-        this.ORDER_BY_DATA = [];
+        this.filterData = [];
+        this.orderByData = [];
         this.pickBatchFilter = res.data.pickBatchFilter
         this.pickBatchOrder = res.data.pickBatchOrder
         if (!this.pickBatchFilter) {
@@ -707,26 +707,26 @@ export class PickToteManagerComponent implements OnInit {
     if (!this.savedFilter.value) {
       this.isFilterAdd = false;
       this.isOrderByAdd = false;
-      this.FILTER_DATA = [];
-      this.ORDER_BY_DATA = [];
-      this.orderBydataSource = new MatTableDataSource<any>(this.ORDER_BY_DATA);
-      this.dataSource = new MatTableDataSource<any>(this.FILTER_DATA);
+      this.filterData = [];
+      this.orderByData = [];
+      this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
+      this.dataSource = new MatTableDataSource<any>(this.filterData);
     }
 
   }
   onChangeOrderAction(option: any) {
     if (option === 'fill_top_orders') {
       for (let index = 0; index < this.data.pickBatchQuantity; index++) {
-        if (this.FILTER_BATCH_DATA[index]) {
-          this.FILTER_BATCH_DATA[index].isSelected = true;
-          this.selectedOrders.push(this.FILTER_BATCH_DATA[index].orderNumber);
+        if (this.filterBatchData[index]) {
+          this.filterBatchData[index].isSelected = true;
+          this.selectedOrders.push(this.filterBatchData[index].orderNumber);
         }
       }
       this.isOrderSelect = false;
       this.onCloseAllPickToteManager();
     }
     if (option === 'unselect_all_orders') {
-      this.FILTER_BATCH_DATA.forEach(ele => {
+      this.filterBatchData.forEach(ele => {
         ele.isSelected = false;
         ele.priority = '';
         this.selectedOrders = [];
@@ -752,16 +752,16 @@ export class PickToteManagerComponent implements OnInit {
   onChangeOrderActionZone(option: any) {
     if (option === 'fill_top_orders') {
       for (let index = 0; index < this.data.pickBatchQuantity; index++) {
-        if (this.FILTER_BATCH_DATA_ZONE[index]) {
-          this.FILTER_BATCH_DATA_ZONE[index].isSelected = true;
-          this.selectedOrders.push(this.FILTER_BATCH_DATA_ZONE[index].orderNumber);
+        if (this.filterBatchDataZone[index]) {
+          this.filterBatchDataZone[index].isSelected = true;
+          this.selectedOrders.push(this.filterBatchDataZone[index].orderNumber);
         }
       }
       this.isOrderSelectZone = true;
       this.onCloseAllPickToteManager();
     }
     if (option === 'unselect_all_orders') {
-      this.FILTER_BATCH_DATA_ZONE.forEach(ele => {
+      this.filterBatchDataZone.forEach(ele => {
         ele.isSelected = false;
         ele.priority = '';
         this.selectedOrders = [];
@@ -782,7 +782,7 @@ export class PickToteManagerComponent implements OnInit {
   }
   onViewOrderLineZone(event) {
     let orderNum = '';
-    this.FILTER_BATCH_DATA_ZONE.forEach(val => {
+    this.filterBatchDataZone.forEach(val => {
       orderNum += val.orderNumber + ','
     })
 
@@ -810,7 +810,7 @@ export class PickToteManagerComponent implements OnInit {
     }
     if (event.value === 'vSelectedOrderZone') {
       orderNum = '';
-      this.FILTER_BATCH_DATA_ZONE.forEach(val => {
+      this.filterBatchDataZone.forEach(val => {
         if (val.isSelected) {
           orderNum += val.orderNumber + ','
         }
@@ -847,7 +847,7 @@ export class PickToteManagerComponent implements OnInit {
   }
   onViewOrderLineFilter(event) {
     let orderNum = '';
-    this.FILTER_BATCH_DATA.forEach(val => {
+    this.filterBatchData.forEach(val => {
       orderNum += val.orderNumber + ','
     })
 
@@ -876,7 +876,7 @@ export class PickToteManagerComponent implements OnInit {
     }
     if (event.value === 'vSelectedOrderFilter') {
       orderNum = '';
-      this.FILTER_BATCH_DATA.forEach(val => {
+      this.filterBatchData.forEach(val => {
         if (val.isSelected) {
           orderNum += val.orderNumber + ','
         }
@@ -925,7 +925,7 @@ export class PickToteManagerComponent implements OnInit {
         "AndOr": element.andOr,
         "Description": this.savedFilter.value, 
       }
-      this.FILTER_DATA.forEach(val => {        
+      this.filterData.forEach(val => {        
         
         if (val.is_db) {
           this.iinductionManagerApi.PickBatchFilterUpdate(payload).subscribe(res => {
@@ -1086,7 +1086,7 @@ export class PickToteManagerComponent implements OnInit {
     let currentObjArr: any = [];
     if (this.isFilter === 'filter') {
       if (this.allSelectOrders.length > 0) {
-        selectedObj = this.FILTER_BATCH_DATA.filter(element => this.allSelectOrders.includes(element.orderNumber));
+        selectedObj = this.filterBatchData.filter(element => this.allSelectOrders.includes(element.orderNumber));
         selectedObj = [...new Map(selectedObj.map(item => [item.orderNumber, item])).values()]
 
         let orderNumbers = new Set(selectedObj.map(d => d.orderNumber));
@@ -1096,7 +1096,7 @@ export class PickToteManagerComponent implements OnInit {
     }
     else if (this.allSelectOrders.length > 0) {
       
-        selectedObj = this.FILTER_BATCH_DATA_ZONE.filter(element => this.allSelectOrders.includes(element.orderNumber));
+        selectedObj = this.filterBatchDataZone.filter(element => this.allSelectOrders.includes(element.orderNumber));
         selectedObj = [...new Map(selectedObj.map(item => [item.orderNumber, item])).values()]
 
         let orderNumbers = new Set(selectedObj.map(d => d.orderNumber));
