@@ -14,6 +14,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { SelectOrderComponentComponent } from './select-order-component/select-order-component.component';
+import { DialogConstants, ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
  
 
 @Component({
@@ -25,7 +26,7 @@ export class GenerateOrderComponent implements OnInit {
 
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   @ViewChild('SelectOrderComponentComponent') SelectOrderComponentComponent: SelectOrderComponentComponent;
-  transType: any = 'Pick';
+  transType: any = TransactionType.Pick;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
   userData: any;
@@ -104,7 +105,7 @@ export class GenerateOrderComponent implements OnInit {
     'UserField10',
     'actions',
   ];
-  public dataSource: any = new MatTableDataSource();
+  public generateOrderDataSource: any = new MatTableDataSource();
 
 
   async autocompleteSearchColumn() {
@@ -121,11 +122,10 @@ export class GenerateOrderComponent implements OnInit {
             this.searchAutocompleteList = res.data;
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("ManualOrderTypeAhead",res.responseMessage);
           }
-        },
-        (error) => {}
+        }
       );
   }
 
@@ -136,9 +136,9 @@ export class GenerateOrderComponent implements OnInit {
       selectedOption === 'add_new_transaction'
     ) {
       const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '100vw',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'add-trans',
@@ -162,9 +162,9 @@ export class GenerateOrderComponent implements OnInit {
       const dialogRef:any = this.global.OpenDialog(
         DeleteConfirmationManualTransactionComponent,
         {
-          height: 'auto',
+          height: DialogConstants.auto,
           width: '560px',
-          autoFocus: '__non_existing_element__',
+          autoFocus: DialogConstants.autoFocus,
       disableClose:true,
           data: {
             mode: 'delete-order',
@@ -190,9 +190,9 @@ export class GenerateOrderComponent implements OnInit {
       selectedOption === 'post_order'
     ) {
       const dialogRef:any = this.global.OpenDialog(ManualTransPostConfirmComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           userName:this.userData.userName,
@@ -219,9 +219,9 @@ export class GenerateOrderComponent implements OnInit {
   editTransaction(element){
 
   const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '100vw',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode:'edit-transaction',
@@ -237,7 +237,7 @@ export class GenerateOrderComponent implements OnInit {
   }
 
   sortChange(event) {
-    if (!this.dataSource || event.direction == '') return;
+    if (!this.generateOrderDataSource || event.direction == '') return;
 
     let index;
     this.displayedColumns.forEach((x, i) => {
@@ -264,9 +264,9 @@ export class GenerateOrderComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(
       DeleteConfirmationManualTransactionComponent,
       {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'delete-trans',
@@ -276,7 +276,7 @@ export class GenerateOrderComponent implements OnInit {
         },
       }
     );
-    dialogRef.afterClosed().subscribe((res) => {
+    dialogRef.afterClosed().subscribe(() => {
       this.SelectOrderComponentComponent?.clearMatSelectList()
         this.getOrderTableData();
     });
@@ -311,15 +311,14 @@ export class GenerateOrderComponent implements OnInit {
             }else{
               this.isPost=false;
             }
-            this.dataSource = new MatTableDataSource(res?.data?.orderTable);
+            this.generateOrderDataSource = new MatTableDataSource(res?.data?.orderTable);
             this.itemNumberForInsertion= res?.data?.orderTable[0]?.itemNumber
           }
           else{
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("GernerateOrderTable",res.responseMessage);
           }
-        },
-        (error) => {}
+        }
       );
   }
   ngOnDestroy() {
@@ -333,12 +332,12 @@ export class GenerateOrderComponent implements OnInit {
   }
 
   selectRow(row: any) {
-    this.dataSource.filteredData.forEach(element => {
+    this.generateOrderDataSource.filteredData.forEach(element => {
       if(row != element){
         element.selected = false;
       }
     });
-    const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
+    const selectedRow = this.generateOrderDataSource.filteredData.find((x: any) => x === row);
     if (selectedRow) {
       selectedRow.selected = !selectedRow.selected;
     }
