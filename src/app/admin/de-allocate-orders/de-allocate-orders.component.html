@@ -81,7 +81,7 @@
             <div class="row">
                 <div class="col-xl-5">
                     <div class="d-block d-xl-flex gap-12 align-items-center ">
-                        <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline" style="flex:1">
+                        <mat-form-field class="action-dropdown w-100 mb-3 matFormFeild1" appearance="outline">
                             <mat-label>{{chooseSearchType}}</mat-label>
                             <mat-select class="employees-action" [(ngModel)]="chooseSearchType"
                                 (ngModelChange)="check($event)" [disabled]="step == 'transaction'">
@@ -107,8 +107,8 @@
                                         class="text-20 text-chrome-600">cancel</mat-icon></button>
                                 <mat-autocomplete class="card custom-scroll" #item="matAutocomplete"
                                     (optionSelected)="optionSelect($event)">
-                                    <h6 class="card-header matAutoCompHeader ">
-                                        <span style="width:  140px;">{{chooseSearchType}}</span>
+                                    <h6 class="card-header matAutoCompHeader chooseSearchType-style">
+                                        <span >{{chooseSearchType}}</span>
 
                                     </h6>
                                     <ng-scrollbar class="height-350">
@@ -127,7 +127,7 @@
                 </div>
                 <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
                     <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
-                        <mat-form-field class="action-dropdown mb-3" appearance="outline" style="flex:1 auto">
+                        <mat-form-field class="action-dropdown mb-3 matFormFeild2" appearance="outline">
                             <mat-label>Action</mat-label>
                             <mat-select class="employees-action" #matRefAction [(ngModel)]="actions"
                                 (selectionChange)="deAllocAction($event)">
@@ -145,9 +145,9 @@
             </div>
 
             <div class="row">
-                <div class="col-xl-3" [hidden]="step =='transaction'">
+                <div class="col-xl-3" *ngIf="step !='transaction'">
 
-                    <div class="card br-14  borderless mb-4 mb-xl-0" style="overflow-x: auto;">
+                    <div class="card br-14  borderless mb-4 mb-xl-0 cardbr-style">
                         <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding height-550" track="all">
                             <table mat-table [dataSource]="orderNameList" class="w-100 "
                                 [ngClass]="orderNameList.data.length>0  ? 'custom-action-clickable-table' : ''" matSort
@@ -189,7 +189,7 @@
 
                 <div class="col-xl-9" [ngClass]="step == 'transaction' ? 'col-xl-12' : 'col-xl-9'">
 
-                    <div class="card br-14 borderless" style="overflow-x: auto;">
+                    <div class="card br-14 borderless cardbr-style">
                         <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding height-550" track="all">
                             <table mat-table [dataSource]="orderItemTransactions" class="w-100" #matSort1="matSort"
                                 matSort (matSortChange)="sortChange($event)">

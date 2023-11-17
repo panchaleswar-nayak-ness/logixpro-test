@@ -16,6 +16,7 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ccb-create-counts',
@@ -317,9 +318,8 @@ constructor(
 
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("GetCCDescriptionTypeAhead",res.responseMessage);
-
           }
           
         });
@@ -340,7 +340,7 @@ constructor(
 
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("GetCCCategoryTypeAhead",res.responseMessage);
 
           }
@@ -376,7 +376,7 @@ constructor(
             }
           } else {
             
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("GetCCCountToCostTypeAhead");
           }
         });
@@ -447,18 +447,18 @@ constructor(
           // If the data is not returned, show an error message
           else {
             
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
             console.log("GetCountBatches",res.responseMessage);
           }
         },
         // If the request is not successful, show an error message
         (error) => {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
         }
       );
     } catch (error) {
       // If the code cannot be run, show an error message
-      this.global.ShowToastr('error','Something went wrong', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
     }
   }
 
@@ -584,12 +584,12 @@ constructor(
           }
         } else {
           
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
           console.log("BatchResultTable",res.responseMessage);
         }
       },
       (err) => {
-        this.global.ShowToastr('error','Something went wrong', 'Error!');
+        this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
       }
     );
   }
@@ -625,20 +625,20 @@ constructor(
             // Check if the response is a success
             if (res.data && res.isExecuted) {
               // Display a success message
-              this.global.ShowToastr('success','Order Deleted', 'Success!');
+              this.global.ShowToastr(ToasterType.Success,'Order Deleted', ToasterTitle.Success);
               this.getWareAndCurOrd();
 
               this.orderNumber = '';
               // Get the orders again
             } else {
               // Display an error message
-              this.global.ShowToastr('error','Something went wrong', 'Error!');
+              this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
             }
           },
           // This function will be called if there is an error
           (error: any) => {
             // Display an error message
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
           }
         );
       }
@@ -657,7 +657,7 @@ constructor(
           this.updateQueCountEvent(res.data);
         } else {
           
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
           console.log("CycleCountQueueInsert",res.responseMessage);
         }
       },
@@ -703,9 +703,9 @@ constructor(
                         }
                       } else {
                         
-                        this.global.ShowToastr('error',
+                        this.global.ShowToastr(ToasterType.Error,
                           'Something went wrong',
-                          'Error!' 
+                          ToasterTitle.Error 
                         );
                         console.log("CycleCountQueueInsert",res.responseMessage);
                       }
