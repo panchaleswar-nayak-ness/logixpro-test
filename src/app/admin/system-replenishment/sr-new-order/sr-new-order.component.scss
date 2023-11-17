@@ -37,3 +37,29 @@
       white-space: nowrap;
     }
   }
+
+  .searchBoxDiv-style{
+    flex:1 !important;
+    
+  }
+
+  .mattableScrollbar-style{
+    height:635px !important;
+    .matIcon-style{
+      color:var(--clr-tertiary-900); transform: rotate(45deg);
+    }
+    .matHeaderCellDef-style{
+      border: 0 !important;
+      height: 66px !important; 
+      padding-left:65px !important;
+    }
+    .matCellDef-style{
+      border: 0 !important; 
+      padding-left: 24px !important; 
+      background: var(--clr-pure-white) !important;
+    }
+    .matHeaderRowDef-style{
+      background-color: var(--clr-table-header);
+    }
+  }
+

@@ -11,7 +11,7 @@ import { SrDeleteOrderComponent } from 'src/app/dialogs/sr-delete-order/sr-delet
   styleUrls: ['./system-replenishment.component.scss']
 })
 export class SystemReplenishmentComponent {
-  TabIndex:any = 0;
+  tabIndex:any = 0;
   constructor(private global:GlobalService) { }
 
   refreshCurrentOrders:Subject<any> = new Subject();
