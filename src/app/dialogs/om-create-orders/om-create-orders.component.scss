@@ -3,41 +3,5 @@ table{
       white-space: nowrap;
       padding-right: 12px;
       border:0;
-    //   &:last-child{
-    //     float: right;
-    //   }
     }
   }
-
-  // .selected {
-  //   // background-color: var(--clr-primary-300) !important;
-
-  //   color: #fff;
-  //   &:before{
-  //     content: '';
-  //     background-color: var(--clr-primary-300);
-  //     height: 100%;
-  //     width: 100%;
-  //     position: absolute;
-  //     left: 0px;
-  //     top: 0px;
-  //     z-index: -1;
-      
-  //   }
-  //   &:first-child{
-  //     &:before{
-  //     border-top-left-radius: 8px;
-  //     border-bottom-left-radius: 8px;
-  //     margin-left: 8px;
-  //     }
-  //   }
-  //   &:last-child{
-  //     &:before{
-  //     border-top-right-radius: 8px;
-  //     border-bottom-right-radius: 8px;
-  //     right: 12px;
-  //     left: auto;
-  //     }
-  //   }
-    
-  // }

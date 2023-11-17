@@ -1,6 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
- 
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  Inject,
+} from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
@@ -9,28 +15,31 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-ship-edit-con-id',
   templateUrl: './cm-ship-edit-con-id.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class CmShipEditConIdComponent implements OnInit {
   @ViewChild('cont_id') cont_id: ElementRef;
   public userData: any;
 
-  containerID : string = '';
+  containerID: string = '';
 
-  clearContainerIDBtn : boolean = true;
-  setContainerIDBtn : boolean = false;
+  clearContainerIDBtn: boolean = true;
+  setContainerIDBtn: boolean = false;
 
-  @ViewChild('conID') conID : ElementRef;
+  @ViewChild('conID') conID: ElementRef;
 
-  public IconsolidationAPI : IConsolidationApi;
+  public IconsolidationAPI: IConsolidationApi;
 
   constructor(
-    public consolidationAPI : ConsolidationApiService,
-    private global:GlobalService,
+    public consolidationAPI: ConsolidationApiService,
+    private global: GlobalService,
     public dialogRef: MatDialogRef<CmShipEditConIdComponent>,
-    
+
     private authService: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: any) { this.IconsolidationAPI = consolidationAPI; }
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.IconsolidationAPI = consolidationAPI;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -40,9 +49,9 @@ export class CmShipEditConIdComponent implements OnInit {
     this.cont_id.nativeElement.focus();
   }
   validateContainerID() {
-    if (this.containerID != '') {      
+    if (this.containerID != '') {
       this.setContainerIDBtn = true;
-    } else {      
+    } else {
       this.setContainerIDBtn = false;
     }
   }
@@ -54,7 +63,7 @@ export class CmShipEditConIdComponent implements OnInit {
   }
 
   focusConID() {
-    setTimeout(()=>{
+    setTimeout(() => {
       this.conID.nativeElement.focus();
     }, 500);
   }
@@ -62,26 +71,31 @@ export class CmShipEditConIdComponent implements OnInit {
   setContainerID() {
     try {
       let payLoad = {
-        stid : this.data.order.sT_ID,
-        containerID: this.containerID
+        stid: this.data.order.sT_ID,
+        containerID: this.containerID,
       };
 
-      this.IconsolidationAPI.ContainerIdSingleShipTransUpdate(payLoad).subscribe(
+      this.IconsolidationAPI.ContainerIdSingleShipTransUpdate(
+        payLoad
+      ).subscribe(
         (res: any) => {
           if (res.isExecuted) {
             this.dialogRef.close({
               isExecuted: true,
-              containerID: this.containerID
+              containerID: this.containerID,
             });
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
-            console.log("ContainerIdSingleShipTransUpdate",res.responseMessage);
+            this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+            console.log(
+              'ContainerIdSingleShipTransUpdate',
+              res.responseMessage
+            );
           }
         },
-        (error) => { }
+        (error) => {
+          console.log(error);
+        }
       );
-    } catch (error) { 
-    }
+    } catch (error) {}
   }
-
 }

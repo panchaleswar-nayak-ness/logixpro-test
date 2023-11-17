@@ -1,7 +1,16 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, ElementRef, Inject, OnInit, ViewChild, Renderer2, ViewChildren, QueryList } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+  Renderer2,
+  ViewChildren,
+  QueryList,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog'; 
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/init/auth.service';
 
 import { DeleteConfirmationComponent } from '../../admin/dialogs/delete-confirmation/delete-confirmation.component';
@@ -26,51 +35,67 @@ export interface PeriodicElement {
 }
 
 export interface ToteElement {
-  toteID:string,
-  cells:string,
-  position:number,
-  oldToteID:string,
-  isInserted:number
+  toteID: string;
+  cells: string;
+  position: number;
+  oldToteID: string;
+  isInserted: number;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'}
-];
 
 @Component({
   selector: 'app-totes-add-edit',
   templateUrl: './totes-add-edit.component.html',
-  styleUrls: ['./totes-add-edit.component.scss']
+  styleUrls: ['./totes-add-edit.component.scss'],
 })
 export class TotesAddEditComponent implements OnInit {
+  
+  ELEMENT_DATA: PeriodicElement[] = [
+    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+  ];
   @ViewChild('field_focus') field_focus: ElementRef;
-  @ViewChildren('category_category', { read: ElementRef }) category_category: QueryList<ElementRef>;
-  isRowAdded=false;
+  @ViewChildren('category_category', { read: ElementRef })
+  category_category: QueryList<ElementRef>;
+  isRowAdded = false;
   floatLabelControl1 = new FormControl('auto' as FloatLabelType);
   floatLabelControl2 = new FormControl('auto' as FloatLabelType);
-  ELEMENT_DATA_TOTE = [{toteID:"" , cells:"" , position: 1 ,oldToteID:"",isInserted:1,isDuplicate:false,isEdit:false}];
-  displayedColumns: string[] = [ 'actions','zone', 'locationdesc'];
-  alreadySavedTotesList:any;
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  dataSourceManagedTotes = new MatTableDataSource<ToteElement>(this.ELEMENT_DATA_TOTE);
+  ELEMENT_DATA_TOTE = [
+    {
+      toteID: '',
+      cells: '',
+      position: 1,
+      oldToteID: '',
+      isInserted: 1,
+      isDuplicate: false,
+      isEdit: false,
+    },
+  ];
+  displayedColumns: string[] = ['actions', 'zone', 'locationdesc'];
+  alreadySavedTotesList: any;
+  dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
+  dataSourceManagedTotes = new MatTableDataSource<ToteElement>(
+    this.ELEMENT_DATA_TOTE
+  );
   selection = new SelectionModel<PeriodicElement>(true, []);
-  position:any;
-  isIMPath=false;
+  position: any;
+  isIMPath = false;
   public iAdminApiService: IAdminApiService;
-  public iinductionManagerApi:IInductionManagerApiService;
-  toteID="";
-  cellID="";
-  fromTote:any;
+  public iinductionManagerApi: IInductionManagerApiService;
+  toteID = '';
+  cellID = '';
+  fromTote: any;
   toTote;
-  userData:any;
-  searchAutocompleteList:any;
-  searchAutocompleteListFiltered1:any;
-  searchAutocompleteListFiltered2:any;
+  userData: any;
+  searchAutocompleteList: any;
+  searchAutocompleteListFiltered1: any;
+  searchAutocompleteListFiltered2: any;
   hideRequiredControl = new FormControl(false);
-  imPreferences:any;
+  imPreferences: any;
   onDestroy$: Subject<boolean> = new Subject();
-  @ViewChild(MatAutocompleteTrigger) autocompleteInventory1: MatAutocompleteTrigger;
-  @ViewChild(MatAutocompleteTrigger) autocompleteInventory2: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger)
+  autocompleteInventory1: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger)
+  autocompleteInventory2: MatAutocompleteTrigger;
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -78,64 +103,81 @@ export class TotesAddEditComponent implements OnInit {
     return numSelected === numRows;
   }
 
-  addRow()
-  {
-    this.isRowAdded=true;
-    this.ELEMENT_DATA_TOTE.unshift({toteID:"" , cells:"" , position: this.ELEMENT_DATA_TOTE.length-1 ,oldToteID:"",isInserted:0,isDuplicate:false,isEdit:false});
-    this.dataSourceManagedTotes = new MatTableDataSource<any>(this.ELEMENT_DATA_TOTE);
+  addRow() {
+    this.isRowAdded = true;
+    this.ELEMENT_DATA_TOTE.unshift({
+      toteID: '',
+      cells: '',
+      position: this.ELEMENT_DATA_TOTE.length - 1,
+      oldToteID: '',
+      isInserted: 0,
+      isDuplicate: false,
+      isEdit: false,
+    });
+    this.dataSourceManagedTotes = new MatTableDataSource<any>(
+      this.ELEMENT_DATA_TOTE
+    );
     const lastIndex = this.ELEMENT_DATA_TOTE.length - 1;
 
     setTimeout(() => {
       const inputElements = this.category_category.toArray();
       if (inputElements.length > lastIndex) {
-        const inputElement = inputElements[lastIndex].nativeElement as HTMLInputElement;
+        const inputElement = inputElements[lastIndex]
+          .nativeElement as HTMLInputElement;
         this.renderer.selectRootElement(inputElement).focus();
       }
     });
   }
-  printTote(type,element){
+  printTote(type, element) {
     let ident = 0;
     let sTote = '';
     let eTote = '';
     let batch = '';
     let ToteID = element?.toteID;
-    if (type.toLowerCase() == "tote") {
+    if (type.toLowerCase() == 'tote') {
       //print single tote id
       sTote = ' ';
       eTote = ' ';
       batch = ' ';
-  } else if (type.toLowerCase() == 'batch') {
+    } else if (type.toLowerCase() == 'batch') {
       // print batch
       ToteID = ' ';
       sTote = ' ';
       eTote = ' ';
-  } else {
+    } else {
       //print range tote id
       ident = 1;
       ToteID = ' ';
       batch = ' ';
-  }
- 
-
-
-
-    this.global.Print(`FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`,'lbl');
-
     }
-  printRange(){
+
+    this.global.Print(
+      `FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`,
+      'lbl'
+    );
+  }
+  printRange() {
     let ident = 1;
-   let ToteID = '';
+    let ToteID = '';
     let batch = '';
     let sTote = this.fromTote;
     let eTote = this.toTote;
 
-    if(this.imPreferences.printDirectly){
-      this.global.Print(`FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`)
-
-    }else{
-      window.open(`/#/report-view?file=FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+    if (this.imPreferences.printDirectly) {
+      this.global.Print(
+        `FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`
+      );
+    } else {
+      window.open(
+        `/#/report-view?file=FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`,
+        '_blank',
+        'width=' +
+          screen.width +
+          ',height=' +
+          screen.height +
+          ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+      );
     }
-
   }
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
@@ -157,277 +199,289 @@ export class TotesAddEditComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.position + 1
+    }`;
   }
-  autocompleteSearchColumn(){
-    
-    this.iinductionManagerApi.GetFromToteTypeAhead().pipe(takeUntil(this.onDestroy$)).pipe(
-      catchError((error) => {
-        // Handle the error here
-        this.global.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
-        // Return a fallback value or trigger further error handling if needed
-        console.log("GetFromToteTypeAhead");
-        return of({ isExecuted: false });
-      })
-    ).subscribe((res: any) => {
-      if(res.isExecuted){
-        if(res.data){
-          this.searchAutocompleteList = res.data;
-          this.searchAutocompleteListFiltered1 = res.data;
-          this.searchAutocompleteListFiltered2 = res.data;
+  autocompleteSearchColumn() {
+    this.iinductionManagerApi
+      .GetFromToteTypeAhead()
+      .pipe(takeUntil(this.onDestroy$))
+      .pipe(
+        catchError((error) => {
+          // Handle the error here
+          this.global.ShowToastr(
+            'error',
+            'An Error occured while retrieving data.',
+            'Error!'
+          );
+          // Return a fallback value or trigger further error handling if needed
+          console.log('GetFromToteTypeAhead');
+          return of({ isExecuted: false });
+        })
+      )
+      .subscribe((res: any) => {
+        if (res.isExecuted) {
+          if (res.data) {
+            this.searchAutocompleteList = res.data;
+            this.searchAutocompleteListFiltered1 = res.data;
+            this.searchAutocompleteListFiltered2 = res.data;
+          }
         }
-      }
-    
-
-    });
-  }
-  
- async saveTote(toteID:any,cells:any,oldToteID:any,isInserted:any,index:any)
-  { 
-      let oldTote = "";
-      let updateMessage="Update Successful";
-      if(isInserted=="1")
-      {
-        oldTote = oldToteID;
-      }
-      let searchPayload = {
-        oldToteID: oldTote,
-        toteID: toteID,
-        cells: cells
-      }
-      try{
-      let res:any  = await this.iAdminApiService.ToteSetupInsert(searchPayload); 
-          if (res.data && res.isExecuted) {
-            this.global.ShowToastr('success',isInserted=="1"?updateMessage:res.responseMessage, 'Success!');
-            this.dataSourceManagedTotes.data[index]['isDuplicate']=false
-            this.isRowAdded=false;
-          this.getTotes();
-          } else {
-            this.dataSourceManagedTotes.data[index]['isDuplicate']=true ;
-            this.global.ShowToastr('error',"Cannot set the selected tote because it is already set in the batch.", 'Error!');
-          } 
-     }
-     catch(err){
-      this.dataSourceManagedTotes.data[index]['isDuplicate']=true ;
-      this.global.ShowToastr('error',"Cannot set the selected tote because it is already set in the batch.", 'Error!');
-     }
-    
-    
+      });
   }
 
-  deleteTote(toteID:any,index)
-  {
-    const dialogRef:any =  this.global.OpenDialog(DeleteConfirmationComponent, {
+  async saveTote(
+    toteID: any,
+    cells: any,
+    oldToteID: any,
+    isInserted: any,
+    index: any
+  ) {
+    let oldTote = '';
+    let updateMessage = 'Update Successful';
+    if (isInserted == '1') {
+      oldTote = oldToteID;
+    }
+    let searchPayload = {
+      oldToteID: oldTote,
+      toteID: toteID,
+      cells: cells,
+    };
+    try {
+      let res: any = await this.iAdminApiService.ToteSetupInsert(searchPayload);
+      if (res.data && res.isExecuted) {
+        this.global.ShowToastr(
+          'success',
+          isInserted == '1' ? updateMessage : res.responseMessage,
+          'Success!'
+        );
+        this.dataSourceManagedTotes.data[index]['isDuplicate'] = false;
+        this.isRowAdded = false;
+        this.getTotes();
+      } else {
+        this.dataSourceManagedTotes.data[index]['isDuplicate'] = true;
+        this.global.ShowToastr(
+          'error',
+          'Cannot set the selected tote because it is already set in the batch.',
+          'Error!'
+        );
+      }
+    } catch (err) {
+      this.dataSourceManagedTotes.data[index]['isDuplicate'] = true;
+      this.global.ShowToastr(
+        'error',
+        'Cannot set the selected tote because it is already set in the batch.',
+        'Error!'
+      );
+    }
+  }
+
+  deleteTote(toteID: any, index) {
+    const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
         mode: '',
         action: 'delete',
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if(result=='Yes')
-      {
-
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'Yes') {
         const data = this.dataSourceManagedTotes.data;
-        if(data[index]['isDuplicate'] || data[index]['isInserted']==0 ){
-          data.splice(index,1)
-          this.dataSourceManagedTotes.data=data
-          console.log( this.dataSourceManagedTotes.data);
-          this.isRowAdded=false
-        }else{
+        if (data[index]['isDuplicate'] || data[index]['isInserted'] == 0) {
+          data.splice(index, 1);
+          this.dataSourceManagedTotes.data = data;
+          console.log(this.dataSourceManagedTotes.data);
+          this.isRowAdded = false;
+        } else {
           let deleteTote = {
-            toteID: toteID
-          }
+            toteID: toteID,
+          };
           this.iAdminApiService.ToteSetupDelete(deleteTote).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
-                this.global.ShowToastr('success',"Deleted successfuly", 'Success!');
-                this.isRowAdded=false;
-                let isUnsavedItem=false
-                this.dataSourceManagedTotes.data.forEach(obj=>{
-                  if(obj.isInserted===0){
-                    isUnsavedItem=true
-                  }else {
-                    isUnsavedItem=false
+                this.global.ShowToastr(
+                  'success',
+                  'Deleted successfuly',
+                  'Success!'
+                );
+                this.isRowAdded = false;
+                let isUnsavedItem = false;
+                this.dataSourceManagedTotes.data.forEach((obj) => {
+                  if (obj.isInserted === 0) {
+                    isUnsavedItem = true;
+                  } else {
+                    isUnsavedItem = false;
                   }
-                })
-                if(isUnsavedItem){
+                });
+                if (isUnsavedItem) {
                   this.getTotes(this.dataSourceManagedTotes.data);
-                }else{
+                } else {
                   this.getTotes();
                 }
-               
-        
               } else {
-                this.global.ShowToastr('error',"Already exists", 'Error!');
-                console.log("ToteSetupDelete",res.responseMessage);
+                this.global.ShowToastr('error', 'Already exists', 'Error!');
+                console.log('ToteSetupDelete', res.responseMessage);
               }
             },
-            (error) => { }
+            (error) => {}
           );
         }
-        
-      
-
-
       }
-
-    })
+    });
   }
 
-  getTotes(item?)
-  {
-    let items:any;
-    if(item){
-      items=JSON.parse(JSON.stringify(item))
+  getTotes(item?) {
+    let items: any;
+    if (item) {
+      items = JSON.parse(JSON.stringify(item));
     }
-    this.ELEMENT_DATA_TOTE.length=0;
+    this.ELEMENT_DATA_TOTE.length = 0;
     this.iAdminApiService.ToteSetup().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.ELEMENT_DATA_TOTE = res.data;
-          for(let value of this.ELEMENT_DATA_TOTE)
-          {
+          for (let value of this.ELEMENT_DATA_TOTE) {
             value.isInserted = 1;
             value.isDuplicate = false;
-            value.oldToteID   = value.toteID
-            value.isEdit   = false
+            value.oldToteID = value.toteID;
+            value.isEdit = false;
           }
-          if(items){
-            this.ELEMENT_DATA_TOTE.push(items[items.length-1])
-            this.isRowAdded=true;
+          if (items) {
+            this.ELEMENT_DATA_TOTE.push(items[items.length - 1]);
+            this.isRowAdded = true;
           }
-          this.dataSourceManagedTotes = new MatTableDataSource<any>(this.ELEMENT_DATA_TOTE);
+          this.dataSourceManagedTotes = new MatTableDataSource<any>(
+            this.ELEMENT_DATA_TOTE
+          );
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
-          console.log("ToteSetup",res.responseMessage);
+          this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+          console.log('ToteSetup', res.responseMessage);
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
-  onToteChange($event,position,cells="")
-  {
-    this.ELEMENT_DATA_TOTE[(position)].isEdit =true;
-  if(cells=="")
-  {
-    if(this.ELEMENT_DATA_TOTE[(position)].toteID!=$event.target.value)
-    {
-      this.ELEMENT_DATA_TOTE[(position)].toteID = $event.target.value;
+  onToteChange($event, position, cells = '') {
+    this.ELEMENT_DATA_TOTE[position].isEdit = true;
+    if (cells == '') {
+      if (this.ELEMENT_DATA_TOTE[position].toteID != $event.target.value) {
+        this.ELEMENT_DATA_TOTE[position].toteID = $event.target.value;
+      }
+    } else if (this.ELEMENT_DATA_TOTE[position].cells != $event.target.value) {
+      this.ELEMENT_DATA_TOTE[position].cells = $event.target.value;
+    }
+  }
+
+  selectTote(toteIDs = null, cells = null, isManagedTote = false) {
+    if (!isManagedTote) {
+      if (this.toteID === '') return;
     }
 
-  }
-  else if(this.ELEMENT_DATA_TOTE[(position)].cells!=$event.target.value) 
-  {
-    
-    
-    
-    this.ELEMENT_DATA_TOTE[(position)].cells = $event.target.value;
-    
-
-  }
-  
-  }
-
-  selectTote(toteIDs=null,cells=null,isManagedTote=false)
-  {    
-    if(!isManagedTote){
-      if(this.toteID==='')return
-    }
-  
-    let exists=false;
-    for(let i=0; i < this.alreadySavedTotesList?.length; i++)
-    {
-      if(toteIDs==null)
-      {
-        if(this.alreadySavedTotesList[i].toteid==this.toteID)
-        {
-          exists=true;
+    let exists = false;
+    for (let i = 0; i < this.alreadySavedTotesList?.length; i++) {
+      if (toteIDs == null) {
+        if (this.alreadySavedTotesList[i].toteid == this.toteID) {
+          exists = true;
           break;
         }
+      } else if (this.alreadySavedTotesList[i].toteid == toteIDs) {
+        exists = true;
+        break;
       }
-      else if (this.alreadySavedTotesList[i].toteid==toteIDs)
-      {                
-        
-        
-          exists=true;
-          break;
-        
-      }
-
     }
 
-    if(exists)
-    {
-      this.global.ShowToastr('error',"Cannot set the selected tote because it is already set in the batch.", 'Error!');
-    }
-    else 
-    {
+    if (exists) {
+      this.global.ShowToastr(
+        'error',
+        'Cannot set the selected tote because it is already set in the batch.',
+        'Error!'
+      );
+    } else {
       let selectedTote;
-      if(toteIDs == null && cells == null)
-      {
+      if (toteIDs == null && cells == null) {
         if (!this.cellID) {
-          this.global.ShowToastr('error',"Cannot set the selected tote because it is cells is empty.", 'Error!');
+          this.global.ShowToastr(
+            'error',
+            'Cannot set the selected tote because it is cells is empty.',
+            'Error!'
+          );
           return;
         }
-        selectedTote = { toteID : this.toteID, cellID : this.cellID, position : this.position };
+        selectedTote = {
+          toteID: this.toteID,
+          cellID: this.cellID,
+          position: this.position,
+        };
         this.dialogRef.close(selectedTote);
-      }
-      else 
-      {
+      } else {
         if (!cells) {
-          this.global.ShowToastr('error',"Cannot set the selected tote because it is cells is empty.", 'Error!');
+          this.global.ShowToastr(
+            'error',
+            'Cannot set the selected tote because it is cells is empty.',
+            'Error!'
+          );
           return;
         }
-        selectedTote = { toteID : toteIDs, cellID : cells, position : this.position }; 
-        this.isRowAdded=false;
+        selectedTote = {
+          toteID: toteIDs,
+          cellID: cells,
+          position: this.position,
+        };
+        this.isRowAdded = false;
         this.dialogRef.close(selectedTote);
       }
     }
-
-    
   }
 
   displayedColumns1: string[] = ['select', 'zone', 'locationdesc', 'options'];
-  dataSource1 = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource1 = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
   selection1 = new SelectionModel<PeriodicElement>(true, []);
 
-  constructor(public dialogRef: MatDialogRef<TotesAddEditComponent>,
-    private inductionManagerApi: InductionManagerApiService,private adminApiService: AdminApiService,private route: ActivatedRoute,private location: Location,private renderer: Renderer2,
-    @Inject(MAT_DIALOG_DATA) public data : any,private authService: AuthService,private Api:ApiFuntions,private global:GlobalService) {
-      this.iAdminApiService = adminApiService;
-      let pathArr= this.location.path().split('/')
-      this.isIMPath=pathArr[pathArr.length-1]==='ImToteManager'
-      this.iinductionManagerApi = inductionManagerApi;
-    
-      
-      
-     }
-
-   
+  constructor(
+    public dialogRef: MatDialogRef<TotesAddEditComponent>,
+    private inductionManagerApi: InductionManagerApiService,
+    private adminApiService: AdminApiService,
+    private route: ActivatedRoute,
+    private location: Location,
+    private renderer: Renderer2,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private authService: AuthService,
+    private Api: ApiFuntions,
+    private global: GlobalService
+  ) {
+    this.iAdminApiService = adminApiService;
+    let pathArr = this.location.path().split('/');
+    this.isIMPath = pathArr[pathArr.length - 1] === 'ImToteManager';
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
-    this.ELEMENT_DATA_TOTE.length=0;
+    this.ELEMENT_DATA_TOTE.length = 0;
     this.position = this.data.position;
     this.userData = this.authService.userData();
     this.alreadySavedTotesList = this.data.alreadySavedTotes;
     this.cellID = this.data.defaultCells ? this.data.defaultCells : 0;
     this.getTotes();
     this.autocompleteSearchColumn();
-    this.imPreferences=this.global.getImPreferences();
+    this.imPreferences = this.global.getImPreferences();
   }
   ngAfterViewInit(): void {
     this.field_focus?.nativeElement.focus();
   }
 
-  searchAutocompleteListFilter1(){
-    this.searchAutocompleteListFiltered1 = this.searchAutocompleteList.filter((str:any) => str.toteID.startsWith(this.fromTote));
+  searchAutocompleteListFilter1() {
+    this.searchAutocompleteListFiltered1 = this.searchAutocompleteList.filter(
+      (str: any) => str.toteID.startsWith(this.fromTote)
+    );
   }
-  searchAutocompleteListFilter2(){
-    this.searchAutocompleteListFiltered2 = this.searchAutocompleteList.filter((str:any) => str.toteID.startsWith(this.toTote));
+  searchAutocompleteListFilter2() {
+    this.searchAutocompleteListFiltered2 = this.searchAutocompleteList.filter(
+      (str: any) => str.toteID.startsWith(this.toTote)
+    );
   }
 }

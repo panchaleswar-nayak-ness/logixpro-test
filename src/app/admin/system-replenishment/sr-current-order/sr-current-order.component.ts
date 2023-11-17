@@ -21,6 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-current-order',
@@ -74,7 +75,7 @@ export class SrCurrentOrderComponent implements OnInit {
   noOfPicks: number = 0;
   noOfPutAways: number = 0;
   public userData: any;
-  IsActiveTrigger:boolean =false;
+  isActiveTrigger:boolean =false;
   tablePayloadObj: any = {
     draw: 0,
     start: 0,
@@ -198,19 +199,19 @@ export class SrCurrentOrderComponent implements OnInit {
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault()
-    this.IsActiveTrigger = true;
+    this.isActiveTrigger = true;
     setTimeout(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
     }, 100);
   }
 
-  FilterString : string = "1 = 1";
+  filterString : string = "1 = 1";
 
   optionSelected(filter : string) {
     this.tablePayloadObj.filter = filter;
     this.resetPagination();
     this.newReplenishmentOrders();    
-    this.IsActiveTrigger = false;
+    this.isActiveTrigger = false;
   }
 
   hideRequiredControl = new FormControl(false);
@@ -273,7 +274,7 @@ export class SrCurrentOrderComponent implements OnInit {
         this.filteredTableData = JSON.parse(JSON.stringify(this.tableData));
         this.systemReplenishmentCount(true);
       } else {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
         console.log("SystemReplenishmentTable",res.responseMessage);
       }
     });
@@ -577,11 +578,11 @@ export class SrCurrentOrderComponent implements OnInit {
   ReplenishmentsByDelete() {
     this.iAdminApiService.ReplenishmentsByDelete(this.repByDeletePayload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-        this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+        this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
         this.newReplenishmentOrders();
         this.replenishmentsDeleted.emit();
       } else {
-        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,labels.alert.went_worng, ToasterTitle.Error);
         this.dialog.closeAll();
         console.log("ReplenishmentsByDelete",res.responseMessage);
       }
@@ -599,7 +600,7 @@ export class SrCurrentOrderComponent implements OnInit {
         this.searchAutocompleteList = res.data.sort();
       }
       else{
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ReplenishReportSearchTA",res.responseMessage);
 
       }
@@ -621,7 +622,7 @@ export class SrCurrentOrderComponent implements OnInit {
         this.noOfPutAways = res.data.putCount;
       }
       else{
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("SystemReplenishmentCount",res.responseMessage);
 
       }

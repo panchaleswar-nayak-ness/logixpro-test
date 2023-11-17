@@ -119,19 +119,19 @@ export class DeleteRangeComponent implements OnInit {
     return this.floatLabelControlEnd.value ?? 'auto';
   }
 
-  changeBegin(event: any) {
+  changeBegin() {
     this.getSearchOptionsBeginSubscribe.unsubscribe();
     this.getSearchOptionsBegin();
     this.getSearchOptionsEndSubscribe.unsubscribe();
     this.getSearchOptionsEnd();
   }
 
-  changeEnd(event: any) {
+  changeEnd() {
     this.getSearchOptionsEndSubscribe.unsubscribe();
     this.getSearchOptionsEnd();
   }
 
-  showChange(event: any) {
+  showChange() {
     this.getSearchOptionsBegin();
     this.getSearchOptionsEnd();
   }

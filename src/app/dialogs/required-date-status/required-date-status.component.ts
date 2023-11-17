@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 
@@ -55,7 +54,7 @@ export class RequiredDateStatusComponent implements OnInit {
     { countToInduct: "1", reqDate: "12/14/2022", zone: "12" }
   ];
 
-  constructor(private Api:ApiFuntions,private inductionManagerApi: InductionManagerApiService) { 
+  constructor(private inductionManagerApi: InductionManagerApiService) { 
     this.iinductionManagerApi = inductionManagerApi;
   }
 

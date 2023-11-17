@@ -1,19 +1,26 @@
-<mat-tab-group dynamicHeight [(selectedIndex)]="TabIndex" (selectedTabChange)="onTabChanged($event);">
-    <mat-tab   label="Order Status">
-        <app-order-status [TabIndex]="TabIndex"></app-order-status>
+<mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex" (selectedTabChange)="onTabChanged($event);">
+    <mat-tab label="Order Status">
+        <app-order-status 
+            [tabIndex]="tabIndex">
+        </app-order-status>
     </mat-tab>
-    <ng-container *ngIf="authService.UserPermissonByFuncName('Transaction Journal') || authService.UserPermissonByFuncName('Admin Transaction Journal')"   >
-    <mat-tab label="Open Transactions" *ngIf="!IsOrderStatus" >
-        <app-open-transaction [tabIndex]="TabIndex" (emitOrderTab)="switchToOrder($event)" ></app-open-transaction>
-    </mat-tab>
-    <mat-tab label="Transaction History" *ngIf="!IsOrderStatus">
-        <app-transaction-history [TabIndex]="TabIndex"></app-transaction-history>
-    </mat-tab>
-    <mat-tab label="Reprocess Transactions" *ngIf="!showReprocess && !IsOrderStatus">
-        <app-reprocess-transaction ></app-reprocess-transaction >
-    </mat-tab> 
-    <mat-tab label="Reprocessed Transactions" *ngIf="!showReprocessed && !IsOrderStatus">
-        <app-reprocessed-transaction></app-reprocessed-transaction>
-    </mat-tab>
-</ng-container>
+    <ng-container *ngIf="authService.UserPermissonByFuncName('Transaction Journal') || authService.UserPermissonByFuncName('Admin Transaction Journal')">
+        <mat-tab label="Open Transactions" *ngIf="!IsOrderStatus" >
+            <app-open-transaction 
+                [tabIndex]="tabIndex" 
+                (emitOrderTab)="switchToOrder()">
+            </app-open-transaction>
+        </mat-tab>
+        <mat-tab label="Transaction History" *ngIf="!IsOrderStatus">
+            <app-transaction-history 
+                [TabIndex]="tabIndex">
+            </app-transaction-history>
+        </mat-tab>
+        <mat-tab label="Reprocess Transactions" *ngIf="!showReprocess && !IsOrderStatus">
+            <app-reprocess-transaction></app-reprocess-transaction >
+        </mat-tab> 
+        <mat-tab label="Reprocessed Transactions" *ngIf="!showReprocessed && !IsOrderStatus">
+            <app-reprocessed-transaction></app-reprocessed-transaction>
+        </mat-tab>
+    </ng-container>
 </mat-tab-group> 

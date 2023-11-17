@@ -4,7 +4,6 @@ import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confir
 import labels from '../../labels/labels.json';
 
 import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DatePipe } from '@angular/common';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -23,7 +22,6 @@ export class OmEventLogEntryDetailComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global:GlobalService,
-    private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     
     private dialog:MatDialog,

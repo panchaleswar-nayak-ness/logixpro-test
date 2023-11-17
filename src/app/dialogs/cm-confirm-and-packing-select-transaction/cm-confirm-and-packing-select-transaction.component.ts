@@ -95,16 +95,7 @@ openScanItem(ItemNumber:any,id: any) {
          
        
       }else {
-        //edit table
-        for (let x of this.confPackTransTable) {
-            let tabID = x.sT_ID;
-            if (id == tabID) {
-              // click active 
-            };
-        }; 
-  
-  
-  
+        
         if(this.preferencesData?.autoPrintContLabel){
           this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|contID:${this.contID}`);
         
@@ -117,7 +108,6 @@ openScanItem(ItemNumber:any,id: any) {
           this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
         
         }
-        //remove items from modal table here
         this.dialogRef.close('true');
       }
 
