@@ -9,7 +9,7 @@
             </div>
 
             <div class="row px-2">
-            <div class="col-xl-6">
+                <div class="col-xl-6">
                     <div class="d-flex justify-content-between align-items-center ">
                         <div>
                             <h2 class="f-16 bold mb-3 d-flex align-items-center">
@@ -18,48 +18,52 @@
                         </div>
 
                     </div>
-             <div class="mb-3">   
-                    <div>
-                        <mat-radio-group class="d-flex align-items-center gap-12 flex-wrap" aria-label="Select an option" [(ngModel)]="transactionType"   (change)="!isOrderSelected?orderItemTable($event,true):''" (change)="getAllOrder($event)">
-                            <mat-radio-button color="primary" value="All" [checked]="true"> 
-                                All Trans. Type
-                            </mat-radio-button>
-                            <mat-radio-button color="primary" value="Pick">
-                                Picks
-                            </mat-radio-button>
-                            <mat-radio-button color="primary" value="Put Aways">
-                                Put Aways
-                            </mat-radio-button>
-                        </mat-radio-group>
+                    <div class="mb-3">
+                        <div>
+                            <mat-radio-group class="d-flex align-items-center gap-12 flex-wrap"
+                                aria-label="Select an option" [(ngModel)]="transactionType"
+                                (change)="!isOrderSelected?orderItemTable($event,true):''"
+                                (change)="getAllOrder($event)">
+                                <mat-radio-button color="primary" value="All" [checked]="true">
+                                    All Trans. Type
+                                </mat-radio-button>
+                                <mat-radio-button color="primary" value="Pick">
+                                    Picks
+                                </mat-radio-button>
+                                <mat-radio-button color="primary" value="Put Aways">
+                                    Put Aways
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
                     </div>
-</div>
-</div>
+                </div>
 
-<div class="col-xl-6">
-    <div class="d-flex justify-content-between align-items-center ">
-        <div>
-            <h2 class="f-16 bold mb-3 d-flex align-items-center">
-                <span>Order View Options</span>
-            </h2>
-        </div>
+                <div class="col-xl-6">
+                    <div class="d-flex justify-content-between align-items-center ">
+                        <div>
+                            <h2 class="f-16 bold mb-3 d-flex align-items-center">
+                                <span>Order View Options</span>
+                            </h2>
+                        </div>
 
-    </div>
-<div class="mb-3">
-    <div>
-        <mat-radio-group class="d-flex align-items-center gap-12 flex-wrap" aria-label="Select an option"  (change)="dataChange($event)" >
-            <mat-radio-button color="primary" (click)="step='order'" value="spec"  [checked]="true" >
-                Orders
-            </mat-radio-button>
-            <mat-radio-button color="primary" (click)="step='transaction'" value="All">
-                Transactions
-            </mat-radio-button>
-        </mat-radio-group>
-    </div>
-</div>
-</div>
+                    </div>
+                    <div class="mb-3">
+                        <div>
+                            <mat-radio-group class="d-flex align-items-center gap-12 flex-wrap"
+                                aria-label="Select an option" (change)="dataChange($event)">
+                                <mat-radio-button color="primary" (click)="step='order'" value="spec" [checked]="true">
+                                    Orders
+                                </mat-radio-button>
+                                <mat-radio-button color="primary" (click)="step='transaction'" value="All">
+                                    Transactions
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                </div>
 
 
-</div>
+            </div>
         </mat-card-content>
     </mat-card>
 </div>
@@ -79,7 +83,8 @@
                     <div class="d-block d-xl-flex gap-12 align-items-center ">
                         <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline" style="flex:1">
                             <mat-label>{{chooseSearchType}}</mat-label>
-                            <mat-select class="employees-action" [(ngModel)]="chooseSearchType" (ngModelChange)="check($event)" [disabled]="step == 'transaction'">
+                            <mat-select class="employees-action" [(ngModel)]="chooseSearchType"
+                                (ngModelChange)="check($event)" [disabled]="step == 'transaction'">
                                 <mat-option value="Item Number">Item No.</mat-option>
                                 <mat-option value="Order Number">Order No.</mat-option>
                             </mat-select>
@@ -94,22 +99,27 @@
                                 <span class="material-symbols-outlined icon-search">
                                     Search
                                 </span>
-                                
-                                <input type="text" [disabled]="step == 'transaction'" [(ngModel)]="TypeValue" placeholder="Search" aria-label="Search" [matAutocomplete]="item" matInput (ngModelChange)="this.searchByItem.next($event)">
-                                <button matSuffix *ngIf="TypeValue" class="clear-btn"  (click)="clear()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                                <mat-autocomplete  class="card custom-scroll"  #item="matAutocomplete" (optionSelected)="optionSelect($event)" >                            
-                                    <h6 class ="card-header matAutoCompHeader ">
-                                        <span style="width:  140px;">{{chooseSearchType}}</span> 
-                                        
-                                      </h6> 
-                                    <ng-scrollbar style="height:350px">
-                                      <mat-option [value]="option" *ngFor="let option of searchedItemOrder"  class="matAutoCompTableContent" style="line-height: 24px; height:auto; min-height: auto!important; padding: 12px 16px; overflow: unset;">
-                                        <div class="loc_option"  >
-                                          <span  class="searchColumn" style="width:  140px;">{{option}}</span> 
-                                        </div>
-                                      </mat-option>
+
+                                <input type="text" [disabled]="step == 'transaction'" [(ngModel)]="TypeValue"
+                                    placeholder="Search" aria-label="Search" [matAutocomplete]="item" matInput
+                                    (ngModelChange)="this.searchByItem.next($event)">
+                                <button matSuffix *ngIf="TypeValue" class="clear-btn" (click)="clear()"><mat-icon
+                                        class="text-20 text-chrome-600">cancel</mat-icon></button>
+                                <mat-autocomplete class="card custom-scroll" #item="matAutocomplete"
+                                    (optionSelected)="optionSelect($event)">
+                                    <h6 class="card-header matAutoCompHeader ">
+                                        <span style="width:  140px;">{{chooseSearchType}}</span>
+
+                                    </h6>
+                                    <ng-scrollbar class="height-350">
+                                        <mat-option [value]="option" *ngFor="let option of searchedItemOrder"
+                                            class="matAutoCompTableContent searchedItemOrder">
+                                            <div class="loc_option">
+                                                <span class="searchColumn width-140">{{option}}</span>
+                                            </div>
+                                        </mat-option>
                                     </ng-scrollbar>
-                                  </mat-autocomplete>
+                                </mat-autocomplete>
                             </mat-form-field>
 
                         </div>
@@ -117,157 +127,193 @@
                 </div>
                 <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
                     <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
-                    <mat-form-field class="action-dropdown mb-3" appearance="outline" style="flex:1 auto">
-                        <mat-label>Action</mat-label>
-                        <mat-select class="employees-action" #matRefAction  [(ngModel)]="actions" (selectionChange)="deAllocAction($event)">
-                            <mat-option value="pagesNumber" (click)="deAllocateAll()">De-allocate All</mat-option>
-                            <mat-option value="set_column_sq" [disabled]="deallocateSelectedBtn" (click)="deAllocateOrder()">De-Allocate Selected</mat-option>
-                        </mat-select>
-                        <span class="material-symbols-outlined icon-expand-more">
-                            expand_more
-                        </span>
-                    </mat-form-field>
-                </div>
+                        <mat-form-field class="action-dropdown mb-3" appearance="outline" style="flex:1 auto">
+                            <mat-label>Action</mat-label>
+                            <mat-select class="employees-action" #matRefAction [(ngModel)]="actions"
+                                (selectionChange)="deAllocAction($event)">
+                                <mat-option value="pagesNumber" (click)="deAllocateAll()">De-allocate All</mat-option>
+                                <mat-option value="set_column_sq" [disabled]="deallocateSelectedBtn"
+                                    (click)="deAllocateOrder()">De-Allocate Selected</mat-option>
+                            </mat-select>
+                            <span class="material-symbols-outlined icon-expand-more">
+                                expand_more
+                            </span>
+                        </mat-form-field>
+                    </div>
 
                 </div>
             </div>
 
             <div class="row">
-            <div class="col-xl-3" [hidden]="step =='transaction'">
+                <div class="col-xl-3" [hidden]="step =='transaction'">
 
-            <div class="card br-14  borderless mb-4 mb-xl-0" style="overflow-x: auto;">
-                <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding" style="height:550px" track="all">
-                <table mat-table [dataSource]="orderNameList" class="w-100 " [ngClass]="orderNameList.data.length>0  ? 'custom-action-clickable-table' : ''" matSort #matSort="matSort">
+                    <div class="card br-14  borderless mb-4 mb-xl-0" style="overflow-x: auto;">
+                        <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding height-550" track="all">
+                            <table mat-table [dataSource]="orderNameList" class="w-100 "
+                                [ngClass]="orderNameList.data.length>0  ? 'custom-action-clickable-table' : ''" matSort
+                                #matSort="matSort">
 
-                    <ng-container matColumnDef="select">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Select
-                        </th>
-                        <td mat-cell *matCellDef="let element" [class.selected]="element.isRowSelected" >
-                            <mat-checkbox (change)="checked($event,element.name)" color="primary" [(ngModel)]="element.isChecked">
-                            </mat-checkbox>
-                        </td>
+                                <ng-container matColumnDef="select">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Select
+                                    </th>
+                                    <td mat-cell *matCellDef="let element" [class.selected]="element.isRowSelected">
+                                        <mat-checkbox (change)="checked($event,element.name)" color="primary"
+                                            [(ngModel)]="element.isChecked">
+                                        </mat-checkbox>
+                                    </td>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="order_no">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Order
+                                        No.
+                                    </th>
+                                    <td mat-cell *matCellDef="let element; index as i; "
+                                        [class.selected]="element.isRowSelected" (click)="ordertransaction(element,i)">
+                                        {{element.name}} </td>
+                                </ng-container>
+
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell " [attr.colspan]="displayedColumns.length">
+                                        No data available in table.
+                                    </td>
+                                </tr>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns_1 ;sticky: true"
+                                    style=" background-color: var(--clr-table-header);"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns_1; index as i"></tr>
+                            </table>
+                        </ng-scrollbar>
+                    </div>
+                </div>
+
+                <div class="col-xl-9" [ngClass]="step == 'transaction' ? 'col-xl-12' : 'col-xl-9'">
+
+                    <div class="card br-14 borderless" style="overflow-x: auto;">
+                        <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding height-550" track="all">
+                            <table mat-table [dataSource]="orderItemTransactions" class="w-100" #matSort1="matSort"
+                                matSort (matSortChange)="sortChange($event)">
+                                <ng-container matColumnDef="order_no">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Order
+                                        Number
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"
+                                        (contextmenu)="onContextMenu($event, element.orderNumber, 'Order Number')">
+                                        {{element.orderNumber}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="item_no">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Item
+                                        Number
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"
+                                        (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')">
+                                        {{element.itemNumber}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="description">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription>
+                                        Description
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"
+                                        (contextmenu)="onContextMenu($event, element.description, 'Description')">
+                                        {{element.description}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="priority">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription>
+                                        Priority
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"
+                                        (contextmenu)="onContextMenu($event, element.priority, 'Priority')">
+                                        {{element.priority}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="transactionQuantity">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription>
+                                        Transaction Quantity
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"
+                                        (contextmenu)="onContextMenu($event, element.transactionQuantity, 'Transaction Quantity')">
+                                        {{element.transactionQuantity}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="unitOfMeasure">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Unit of
+                                        Measure
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"
+                                        (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')">
+                                        {{element.unitOfMeasure}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="batchPickID">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Batch
+                                        ID
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"
+                                        (contextmenu)="onContextMenu($event, element.batchPickID, 'Batch ID')">
+                                        {{element.batchPickID}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="trans_type">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Trans
+                                        Type
+                                    </th>
+                                    <td mat-cell *matCellDef="let element"
+                                        (contextmenu)="onContextMenu($event, element.transactionType, 'Trans Type')">
+                                        {{element.transactionType}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="deallocate">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription>
+                                        De-Allocate
+                                    </th>
+                                    <td mat-cell *matCellDef="let element">
+
+                                        <mat-checkbox (change)="checked($event,element.orderNumber)" color="primary"
+                                            [(ngModel)]="element.isDeallocate" [disabled]="onViewOrder">
+                                        </mat-checkbox>
+                                    </td>
+                                </ng-container>
+
+
+
+
+
+
+                                <tr class="mat-row" *matNoDataRow (contextmenu)="onContextMenu($event, undefined, '')">
+                                    <td class="mat-cell " [attr.colspan]="displayedColumns.length">
+                                        No data available in table.
+                                    </td>
+                                </tr>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+                            </table>
+                        </ng-scrollbar>
+                    </div>
+                    <ng-container *ngIf="onViewOrder; else transaction">
+                        <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 100]" #paginator showFirstLastButtons
+                            [length]="pageLength" (page)="handlePageEventTo($event)"></mat-paginator>
                     </ng-container>
-              
+                    <ng-template #transaction>
+                        <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 100]" #paginator showFirstLastButtons
+                            [length]="pageLength" (page)="handlePageEventTansaction($event)"></mat-paginator>
+                    </ng-template>
+                    <div class="table-pagination d-flex justify-content-start">
 
-                      <ng-container matColumnDef="order_no" >
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Order No.
-                        </th>
-                        <td mat-cell  *matCellDef="let element; index as i; " [class.selected]="element.isRowSelected" (click)="ordertransaction(element,i)" 
-                        > {{element.name}} </td>
-                      </ng-container>
-
-                      <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell " [attr.colspan]="displayedColumns.length">
-                          No data available in table.
-                        </td>
-                      </tr>
-            
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns_1 ;sticky: true" style=" background-color: var(--clr-table-header);"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns_1; index as i"  
-                        ></tr>
-</table>
-</ng-scrollbar>
-</div>
+                    </div>
+                </div>
             </div>
 
-<div class="col-xl-9" [ngClass]="step == 'transaction' ? 'col-xl-12' : 'col-xl-9'"  >
-
-    <div class="card br-14 borderless" style="overflow-x: auto;" >
-        <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding" style="height:550px" track="all">
-        <table mat-table [dataSource]="orderItemTransactions" class="w-100" #matSort1="matSort" matSort      (matSortChange)="sortChange($event)">
-            <ng-container matColumnDef="order_no" >
-              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Order Number
-              </th>
-              <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element.orderNumber, 'Order Number')"> {{element.orderNumber}} </td>
-            </ng-container>
-            
-            <ng-container matColumnDef="item_no">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Item Number
-              </th>
-              <td mat-cell *matCellDef="let element"  (contextmenu)="onContextMenu($event, element.itemNumber, 'Item Number')"> {{element.itemNumber}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Description
-              </th>
-              <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element.description, 'Description')"> {{element.description}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="priority">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Priority
-              </th>
-              <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element.priority, 'Priority')"> {{element.priority}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="transactionQuantity">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Transaction Quantity
-              </th>
-              <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element.transactionQuantity, 'Transaction Quantity')"> {{element.transactionQuantity}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="unitOfMeasure">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Unit of Measure
-              </th>
-              <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element.unitOfMeasure, 'Unit of Measure')"> {{element.unitOfMeasure}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="batchPickID">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Batch ID
-              </th>
-              <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element.batchPickID, 'Batch ID')"> {{element.batchPickID}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="trans_type">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Trans Type
-                </th>
-                <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element.transactionType, 'Trans Type')"> {{element.transactionType}} </td>
-              </ng-container>
-
-            <ng-container matColumnDef="deallocate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> De-Allocate
-                </th>
-                <td mat-cell *matCellDef="let element" > 
-                   
-                    <mat-checkbox (change)="checked($event,element.orderNumber)" color="primary" [(ngModel)]="element.isDeallocate" [disabled]="onViewOrder" >
-                    </mat-checkbox> </td>
-              </ng-container>
-
-
-
-
-
-
-              <tr class="mat-row" *matNoDataRow   (contextmenu)="onContextMenu($event, undefined, '')">
-                <td class="mat-cell " [attr.colspan]="displayedColumns.length">
-                  No data available in table.
-                </td>
-              </tr>
-    
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    
-
-</table>
-</ng-scrollbar>
-</div>
-<ng-container *ngIf="onViewOrder; else transaction">
-    <mat-paginator [pageSize]="10"
-[pageSizeOptions]="[10, 20, 100]" #paginator  showFirstLastButtons  [length]="pageLength" (page)="handlePageEventTo($event)"></mat-paginator>
-</ng-container>
-<ng-template #transaction>
-<mat-paginator [pageSize]="10"
-[pageSizeOptions]="[10, 20, 100]" #paginator  showFirstLastButtons [length]="pageLength" (page)="handlePageEventTansaction($event)"></mat-paginator>
-</ng-template>
-<div class="table-pagination d-flex justify-content-start">
-
-</div>
-</div>
-</div>
-
-</mat-card-content>
-</mat-card>
+        </mat-card-content>
+    </mat-card>
 </div>
 
 
 
-<app-table-context-menu-component *ngIf="IsActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'deAllOrd'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)"
+    [componentName]="'deAllOrd'"></app-table-context-menu-component>
