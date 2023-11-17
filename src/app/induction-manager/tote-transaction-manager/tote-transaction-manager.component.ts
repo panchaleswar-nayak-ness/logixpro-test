@@ -15,6 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-tote-transaction-manager',
   templateUrl: './tote-transaction-manager.component.html',
@@ -186,7 +187,7 @@ public iinductionManagerApi:IInductionManagerApiService;
 
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("SelectToteTransManTable",res.responseMessage)
 
         }
@@ -209,7 +210,7 @@ public iinductionManagerApi:IInductionManagerApiService;
 
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("SelectBatchPickTA",res.responseMessage);
 
           }
@@ -228,10 +229,10 @@ public iinductionManagerApi:IInductionManagerApiService;
       .subscribe((res: any) => {
         if (res.isExecuted) {
           this.getToteTrans();
-          this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("ClearPickToteInfo",res.responseMessage);
 
         }

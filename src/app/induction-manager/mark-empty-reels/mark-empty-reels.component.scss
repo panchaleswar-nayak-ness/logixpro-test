@@ -27,3 +27,10 @@ table{
         padding-left: 10px;
     }
     }
+
+.ngScrolbar-style{
+    height:300px;
+    .tr-matHeaderRowDef-style{
+        background-color: var(--clr-table-header);
+    }
+}
