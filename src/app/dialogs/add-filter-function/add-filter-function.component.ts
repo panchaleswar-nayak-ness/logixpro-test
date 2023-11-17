@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
 import { AuthService } from '../../../app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -22,9 +21,7 @@ export class AddFilterFunction implements OnInit {
 
   constructor(
               public dialogRef: MatDialogRef<any>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private confirmationglobal:GlobalService,
-              private Api: ApiFuntions,
+              @Inject(MAT_DIALOG_DATA) public data: any,                            
               private global : GlobalService,
               private inductionManagerApi: InductionManagerApiService,
               private authService: AuthService

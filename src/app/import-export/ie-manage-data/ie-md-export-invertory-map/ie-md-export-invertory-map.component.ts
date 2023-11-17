@@ -6,7 +6,7 @@ import { IeManageDataTransFieldMapComponent } from 'src/app/dialogs/ie-manage-da
 @Component({
   selector: 'app-ie-md-export-invertory-map',
   templateUrl: './ie-md-export-invertory-map.component.html',
-  styleUrls: []
+  styleUrls: ['./ie-md-export-invertory-map.component.scss']
 })
 export class IeMdExportInvertoryMapComponent {
 

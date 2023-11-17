@@ -2,7 +2,6 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import labels from '../../labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
@@ -24,7 +23,6 @@ export class ShortTransactionComponent implements OnInit {
     
     private global:GlobalService,
     private inductionManagerApi: InductionManagerApiService,
-    private Api: ApiFuntions,
     public dialogRef: MatDialogRef<ShortTransactionComponent>,
     private globalService: GlobalService
   ) { 

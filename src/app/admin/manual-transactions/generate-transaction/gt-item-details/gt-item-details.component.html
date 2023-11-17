@@ -8,7 +8,7 @@
             
             <div class="col-xl-6">
             <div class="d-xl-block d-flex mb-3 w-100">
-            <button [disabled]="!item || this.orderNumber==''" mat-flat-button color="primary" class="btn-regular float-end" color="primary" (click)="openUserFieldsEditDialogue()" style="flex:1">
+            <button [disabled]="!item || this.orderNumber==''" mat-flat-button color="primary" class="btn-regular float-end view-user-fields" color="primary" (click)="openUserFieldsEditDialogue()">
                 View/Set User Fields
             </button>
         </div>
@@ -21,8 +21,7 @@
                     <mat-label>{{columns?.itemNumber}}</mat-label>
                     <input readonly [disabled]="!item || this.orderNumber==''"  [(ngModel)]="itemNumber" (ngModelChange)="onFieldChange(itemNumber)"  matInput type="text" maxlength="255" value="Value"> 
                     <span matSuffix>
-                        <mat-icon
-                            style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                        <mat-icon class="custom-icon">unfold_more</mat-icon>
                     </span>
                 </mat-form-field>
             </div>
@@ -32,8 +31,7 @@
                     <mat-label>Supplier Item ID</mat-label>
                     <input  [disabled]="!item" [(ngModel)]="supplierID"  matInput type="text" maxlength="255" value="Value" (ngModelChange)="onFieldChange(supplierID)" (ngModelChange)="onFieldChange(userData)">
                     <span matSuffix>
-                        <mat-icon
-                            style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                        <mat-icon class="custom-icon">unfold_more</mat-icon>
                     </span>
                 </mat-form-field>
             </div>
@@ -77,8 +75,7 @@
                     <mat-label>{{columns?.unitOfMeasure}}</mat-label>
                     <input readonly [disabled]="!item" [(ngModel)]="uom" matInput type="text" maxlength="255" value="Value" (ngModelChange)="onFieldChange(uom)">
                     <span matSuffix>
-                        <mat-icon
-                            style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                        <mat-icon class="custom-icon">unfold_more</mat-icon>
                     </span>
                 </mat-form-field>
             </div>
@@ -90,8 +87,7 @@
                     <mat-label>Notes</mat-label>
                     <input readonly [disabled]="!item" [(ngModel)]="notes" matInput type="text" maxlength="255" value="Value"  (ngModelChange)="onFieldChange(notes)" >
                     <span matSuffix>
-                        <mat-icon
-                            style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                        <mat-icon class="custom-icon">unfold_more</mat-icon>
                     </span>
                 </mat-form-field>
             </div>

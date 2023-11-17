@@ -440,9 +440,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             console.log("CheckForwardLocations",res.responseMessage);
           }
         },
-        (error) => {}
+        (error) => { console.log(error); }
       );      
-    } catch (error) {}    
+    } catch (error) {console.log(error); }    
   }
 
   findLocation(replenfwd : any, repQty : number) {
@@ -505,7 +505,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             console.log("FindLocation",res.responseMessage);
           }
         },
-        (error) => {}
+        (error) => { console.log(error); }
       );      
 
     } catch (error) {
@@ -656,7 +656,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                     console.log("CrossDock",res.responseMessage);
                   }
                 },
-                (error) => {}
+                (error) => { console.log(error); }
               );   
             }
           }

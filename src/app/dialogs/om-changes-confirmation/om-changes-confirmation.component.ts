@@ -4,7 +4,6 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 
@@ -25,7 +24,6 @@ export class OmChangesConfirmationComponent implements OnInit {
               public formBuilder      : FormBuilder, 
               private authService     : AuthService,
               public globalService    : GlobalService,
-              private Api : ApiFuntions,
               public orderManagerApi  : OrderManagerApiService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
 
@@ -104,7 +102,8 @@ export class OmChangesConfirmationComponent implements OnInit {
         console.log("OrderManagerRecordUpdate",res.responseMessage);
       });
 
-    } catch (error) {    
+    } catch (error) {   
+      console.log(error);
     }
   }
 

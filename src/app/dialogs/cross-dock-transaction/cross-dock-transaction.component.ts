@@ -1,4 +1,10 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ReprocessTransactionDetailViewComponent } from '../reprocess-transaction-detail-view/reprocess-transaction-detail-view.component';
 
@@ -8,7 +14,6 @@ import { Router } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
@@ -16,7 +21,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 @Component({
   selector: 'app-cross-dock-transaction',
   templateUrl: './cross-dock-transaction.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class CrossDockTransactionComponent implements OnInit {
   @ViewChild('complete_focus') complete_focus: ElementRef;
@@ -24,7 +29,7 @@ export class CrossDockTransactionComponent implements OnInit {
   public userId;
   public wsid;
   public warehouse;
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iinductionManagerApi: IInductionManagerApiService;
   crossDock: any;
   transactions: any;
   qtyToSubtract: number = 0;
@@ -36,31 +41,28 @@ export class CrossDockTransactionComponent implements OnInit {
   public lowerBound = 1;
   public upperBound = 5;
 
-  allocatedTotal:any;
-  backOrderTotal:any;
-  numberRecords:any;
+  allocatedTotal: any;
+  backOrderTotal: any;
+  numberRecords: any;
   public selectedRow;
   public selectedRowObj;
   public nxtToteID;
   public toteID;
   public loopIndex = -1;
-  imPreferences:any;
+  imPreferences: any;
   @ViewChild('openAction') openAction: MatSelect;
 
-
-
-  constructor(public router: Router, 
-              public dialogRef: MatDialogRef<CrossDockTransactionComponent>,  
-              private inductionManagerApi: InductionManagerApiService,
-              @Inject(MAT_DIALOG_DATA) public data: any, 
-              private Api:ApiFuntions, 
-              
-              private global:GlobalService) {
-                this.iinductionManagerApi = inductionManagerApi;
-               }
+  constructor(
+    public router: Router,
+    public dialogRef: MatDialogRef<CrossDockTransactionComponent>,
+    private inductionManagerApi: InductionManagerApiService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private global: GlobalService
+  ) {
+    this.iinductionManagerApi = inductionManagerApi;
+  }
 
   ngOnInit(): void {
-    
     this.itemWhse = this.data.itemWhse;
     this.userId = this.data.userId;
     this.wsid = this.data.wsid;
@@ -69,8 +71,7 @@ export class CrossDockTransactionComponent implements OnInit {
     this.batchID = this.data.batchID;
     this.zone = this.data.zone;
     this.description = this.data.description;
-    this.imPreferences=this.global.getImPreferences();
-    
+    this.imPreferences = this.global.getImPreferences();
 
     this.getCrossDock();
   }
@@ -82,34 +83,33 @@ export class CrossDockTransactionComponent implements OnInit {
     this.openTotesDialogue(i);
   }
 
-  clearMatSelectList(){
+  clearMatSelectList() {
     this.openAction?.options.forEach((data: MatOption) => data.deselect());
   }
 
   openTotesDialogue(position: any) {
-    const dialogRef:any = this.global.OpenDialog(TotesAddEditComponent, {
+    const dialogRef: any = this.global.OpenDialog(TotesAddEditComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data:
-      {
-        position: position
-      }
+      disableClose: true,
+      data: {
+        position: position,
+      },
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        if (result.toteID != "") {
+        if (result.toteID != '') {
           this.transactions[position].toteID = result.toteID.toString();
         }
       }
     });
   }
 
-  compQtyChange(val : any) {
+  compQtyChange(val: any) {
     if (parseInt(val.compQty) > 0) {
       this.selectedRowObj.completedQuantity = val.compQty;
-      this.openTotesDialogue(val.i); 
+      this.openTotesDialogue(val.i);
     }
   }
 
@@ -120,15 +120,20 @@ export class CrossDockTransactionComponent implements OnInit {
   }
 
   leftClick() {
-    this.lowerBound = (this.lowerBound - 5) <= 0 ? 1 : this.lowerBound - 5;
+    this.lowerBound = this.lowerBound - 5 <= 0 ? 1 : this.lowerBound - 5;
     this.upperBound = this.upperBound - 5;
-    if (this.upperBound < 5) { this.upperBound = 5; }
+    if (this.upperBound < 5) {
+      this.upperBound = 5;
+    }
     this.getCrossDock();
   }
 
   rightClick() {
     this.lowerBound = this.upperBound + 1;
-    this.upperBound = (this.lowerBound + 4) <= this.crossDock.numberRecords ? (this.lowerBound + 4) : this.crossDock.numberRecords;
+    this.upperBound =
+      this.lowerBound + 4 <= this.crossDock.numberRecords
+        ? this.lowerBound + 4
+        : this.crossDock.numberRecords;
     this.getCrossDock();
   }
 
@@ -136,238 +141,268 @@ export class CrossDockTransactionComponent implements OnInit {
     let payLoad = {
       sRow: this.lowerBound,
       eRow: this.upperBound,
-      itemWhse: [
-        this.itemWhse,
-        this.warehouse,
-        "1=1"
-      ],
+      itemWhse: [this.itemWhse, this.warehouse, '1=1'],
       username: this.userId,
-      wsid: this.wsid
+      wsid: this.wsid,
     };
 
-    this.iinductionManagerApi
-      .CrossDock(payLoad)
-      .subscribe(
-        (res: any) => {
-          if (res.data && res.isExecuted) {
-            this.crossDock = res.data;
-            this.transactions = res.data.transaction;
-            this.allocatedTotal = res.data.allocatedTotal;
-            this.backOrderTotal = res.data.backOrderTotal;
-            this.numberRecords = res.data.numberRecords;
-            this.upperBound = res.data.transaction.length < 5 ? res.data.numberRecords : 5; 
-          } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
-            console.log("CrossDock",res.responseMessage);
-          }
-        },
-        (error) => { }
-      );
+    this.iinductionManagerApi.CrossDock(payLoad).subscribe(
+      (res: any) => {
+        if (res.data && res.isExecuted) {
+          this.crossDock = res.data;
+          this.transactions = res.data.transaction;
+          this.allocatedTotal = res.data.allocatedTotal;
+          this.backOrderTotal = res.data.backOrderTotal;
+          this.numberRecords = res.data.numberRecords;
+          this.upperBound =
+            res.data.transaction.length < 5 ? res.data.numberRecords : 5;
+        } else {
+          this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+          console.log('CrossDock', res.responseMessage);
+        }
+      },
+      (error) => {}
+    );
   }
 
   refresh() {
     this.getCrossDock();
   }
 
-  openUserFieldsDialogue() { 
+  openUserFieldsDialogue() {
     if (this.selectedRowObj) {
-      const dialogRef:any = this.global.OpenDialog(UserFieldsComponent, {
+      const dialogRef: any = this.global.OpenDialog(UserFieldsComponent, {
         height: 'auto',
         width: '70vw',
         autoFocus: '__non_existing_element__',
-      disableClose:true,
-        data: this.selectedRowObj
-      })
+        disableClose: true,
+        data: this.selectedRowObj,
+      });
       dialogRef.afterClosed().subscribe((res) => {
-        this.selectedRowObj.userField1 = res.userField1
-        this.selectedRowObj.userField2 = res.userField2
-        this.selectedRowObj.userField3 = res.userField3
-        this.selectedRowObj.userField4 = res.userField4
-        this.selectedRowObj.userField5 = res.userField5
-        this.selectedRowObj.userField6 = res.userField6
-        this.selectedRowObj.userField7 = res.userField7
-        this.selectedRowObj.userField8 = res.userField8
-        this.selectedRowObj.userField9 = res.userField9
-        this.selectedRowObj.userField10 = res.userField10
+        this.selectedRowObj.userField1 = res.userField1;
+        this.selectedRowObj.userField2 = res.userField2;
+        this.selectedRowObj.userField3 = res.userField3;
+        this.selectedRowObj.userField4 = res.userField4;
+        this.selectedRowObj.userField5 = res.userField5;
+        this.selectedRowObj.userField6 = res.userField6;
+        this.selectedRowObj.userField7 = res.userField7;
+        this.selectedRowObj.userField8 = res.userField8;
+        this.selectedRowObj.userField9 = res.userField9;
+        this.selectedRowObj.userField10 = res.userField10;
 
-        this.clearMatSelectList()
-
+        this.clearMatSelectList();
       });
     }
-    
   }
 
-  getNxtToteIds() { 
+  getNxtToteIds() {
     if (this.loopIndex >= 0) {
-      this.iinductionManagerApi.NextTote().subscribe(res => {
-        if(res.isExecuted && res.data)
-        {
-          this.transactions[this.loopIndex].toteID = res.data  + '-RT';
+      this.iinductionManagerApi.NextTote().subscribe((res) => {
+        if (res.isExecuted && res.data) {
+          this.transactions[this.loopIndex].toteID = res.data + '-RT';
           this.nxtToteID = ++res.data;
           this.updateNxtTote();
-          this.clearMatSelectList()
+          this.clearMatSelectList();
+        } else {
+          this.global.ShowToastr(
+            'error',
+            this.global.globalErrorMsg(),
+            'Error!'
+          );
+          console.log('NextTote', res.responseMessage);
         }
-        else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("NextTote",res.responseMessage);
-        }
-        
       });
+    } else {
+      this.global.ShowToastr('error', 'Order must be selected.', 'Error!');
+      this.clearMatSelectList();
+      console.log('getNxtToteIds');
     }
-    else{
-      this.global.ShowToastr('error','Order must be selected.', 'Error!');
-      this.clearMatSelectList()
-      console.log("getNxtToteIds");
-      
-    }
-
   }
 
   updateNxtTote() {
     let updatePayload = {
-      "tote": this.nxtToteID,
+      tote: this.nxtToteID,
       username: this.userId,
-      wsid: this.wsid
-    }
-    this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
+      wsid: this.wsid,
+    };
+    this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe((res) => {
       if (!res.isExecuted) {
-        this.global.ShowToastr('error','Something is wrong.', 'Error!');
-        console.log("NextToteUpdate",res.responseMessage);
+        this.global.ShowToastr('error', 'Something is wrong.', 'Error!');
+        console.log('NextToteUpdate', res.responseMessage);
       }
-
     });
   }
 
   openReprocessTransactionViewDialogue() {
-    const dialogRef:any = this.global.OpenDialog(ReprocessTransactionDetailViewComponent, {
-      height: 'auto',
-      width: '70vw',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data:{
-        itemID:this.selectedRowObj.id
+    const dialogRef: any = this.global.OpenDialog(
+      ReprocessTransactionDetailViewComponent,
+      {
+        height: 'auto',
+        width: '70vw',
+        autoFocus: '__non_existing_element__',
+        disableClose: true,
+        data: {
+          itemID: this.selectedRowObj.id,
+        },
       }
-    })
+    );
     dialogRef.afterClosed().subscribe((res) => {
-      this.clearMatSelectList()
-    })
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close({ data : "Close", qtyToSubtract : this.qtyToSubtract });
-  }
-
-  submit() {
-    this.dialogRef.close({ data : "Submit", qtyToSubtract : this.qtyToSubtract });
-  }
-
-  viewOrderStatus() { 
-    this.clearMatSelectList();
-    this.router.navigate([]).then((result) => {
-      window.open(`/#/InductionManager/Admin/TransactionJournal?orderStatus=${this.selectedRowObj.orderNumber}`, '_blank');
+      this.clearMatSelectList();
     });
   }
 
-  OTRecID
-   
+  onNoClick(): void {
+    this.dialogRef.close({ data: 'Close', qtyToSubtract: this.qtyToSubtract });
+  }
+
+  submit() {
+    this.dialogRef.close({ data: 'Submit', qtyToSubtract: this.qtyToSubtract });
+  }
+
+  viewOrderStatus() {
+    this.clearMatSelectList();
+    this.router.navigate([]).then((result) => {
+      window.open(
+        `/#/InductionManager/Admin/TransactionJournal?orderStatus=${this.selectedRowObj.orderNumber}`,
+        '_blank'
+      );
+    });
+  }
+
+  OTRecID;
+
   compPick() {
     try {
-      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
         autoFocus: '__non_existing_element__',
-      disableClose:true,
+        disableClose: true,
         data: {
-          message: 'Click OK to complete this Cross Dock transaction.  The pick transaction will be posted as completed for the displayed quantity.  A matching put away record will be created for the Cross Dock quantity.',
+          message:
+            'Click OK to complete this Cross Dock transaction.  The pick transaction will be posted as completed for the displayed quantity.  A matching put away record will be created for the Cross Dock quantity.',
         },
       });
-  
+
       dialogRef.afterClosed().subscribe((result) => {
-        debugger
-      
+        debugger;
+
         if (result == 'Yes') {
           let payLoad = {
-            "pick": this.data.values.transactionQuantity,
-            "put": this.data.values.toteQty,
-            "reel": this.data.values.subCategory == 'reel tracking',
-            "ser": this.data.values.serialNumber,
-            "htid": this.transactions[this.selectedRow].hostTransactionID,
-            "rpid": this.transactions[this.selectedRow].id,
-            "otid": this.data.otid,
-            "item": this.data.values.itemNumber,
-            "uf1": this.transactions[this.selectedRow].userField1 ? this.transactions[this.selectedRow].userField1 : "",
-            "toteID": this.transactions[this.selectedRow].toteID,
-            "order": this.transactions[this.selectedRow].orderNumber,
-            "invMapID": this.data.values.invMapID,
-            "whse": this.data.values.warehouse,
-            "batch": this.data.values.batchID,
-            "username": this.userId,
-            "wsid": this.wsid
+            pick: this.data.values.transactionQuantity,
+            put: this.data.values.toteQty,
+            reel: this.data.values.subCategory == 'reel tracking',
+            ser: this.data.values.serialNumber,
+            htid: this.transactions[this.selectedRow].hostTransactionID,
+            rpid: this.transactions[this.selectedRow].id,
+            otid: this.data.otid,
+            item: this.data.values.itemNumber,
+            uf1: this.transactions[this.selectedRow].userField1
+              ? this.transactions[this.selectedRow].userField1
+              : '',
+            toteID: this.transactions[this.selectedRow].toteID,
+            order: this.transactions[this.selectedRow].orderNumber,
+            invMapID: this.data.values.invMapID,
+            whse: this.data.values.warehouse,
+            batch: this.data.values.batchID,
+            username: this.userId,
+            wsid: this.wsid,
           };
-    
+
           this.iinductionManagerApi.CompletePick(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
-               this.OTRecID = res.data
-                this.qtyToSubtract += this.selectedRowObj.completedQuantity ? parseInt(this.selectedRowObj.completedQuantity) : 0;
+                this.OTRecID = res.data;
+                this.qtyToSubtract += this.selectedRowObj.completedQuantity
+                  ? parseInt(this.selectedRowObj.completedQuantity)
+                  : 0;
                 this.getCrossDock();
 
-                if(this.imPreferences.autoPrintCrossDockLabel){
+                if (this.imPreferences.autoPrintCrossDockLabel) {
                   if (this.imPreferences.printDirectly) {
-                    this.PrintCrossDock()
+                    this.PrintCrossDock();
+                  } else {
+                    window.open(
+                      `/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`,
+                      '_blank',
+                      'width=' +
+                        screen.width +
+                        ',height=' +
+                        screen.height +
+                        ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+                    );
+                    this.global.ShowToastr(
+                      'success',
+                      'Pick Completed Successfully',
+                      'Success!'
+                    );
                   }
-                  else{
-                    window.open(`/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
-                    this.global.ShowToastr('success','Pick Completed Successfully', 'Success!');
-                  }
-                }
-                else{
-                  this.global.ShowToastr('success','Pick Completed Successfully', 'Success!');
+                } else {
+                  this.global.ShowToastr(
+                    'success',
+                    'Pick Completed Successfully',
+                    'Success!'
+                  );
                 }
               } else {
-                this.global.ShowToastr('error','Something went wrong', 'Error!');
-                console.log("CompletePick",res.responseMessage);
+                this.global.ShowToastr(
+                  'error',
+                  'Something went wrong',
+                  'Error!'
+                );
+                console.log('CompletePick', res.responseMessage);
               }
             },
             (error) => {}
-          );  
+          );
         }
       });
-      
-    } catch (error) { 
+    } catch (error) {}
+  }
+
+  PrintCrossDock() {
+    let res: any = this.global.Print(
+      `FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`
+    );
+
+    if (res) {
+      this.showConfirmationDialog(
+        'Click OK if the tote label printed correctly.',
+        (open) => {
+          if (!open) {
+            this.PrintCrossDock();
+          } else {
+            this.PrintCrossDockForLbl();
+          }
+        }
+      );
     }
   }
 
-  PrintCrossDock(){
-    let res:any =  this.global.Print(`FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`);
-     
-        if(res){
-      this.showConfirmationDialog('Click OK if the tote label printed correctly.',(open)=>{
-        if(!open){
-        this.PrintCrossDock();
-        }else{
-          this.PrintCrossDockForLbl();
+  PrintCrossDockForLbl() {
+    let res: any = this.global.Print(
+      `FileName:autoPrintCrossDock|tote:false|otid:${this.OTRecID}|ZoneLabel:${this.zone}`
+    );
+    if (res) {
+      this.showConfirmationDialog(
+        'Click OK if the item label printed correctly.',
+        (open) => {
+          if (!open) {
+            this.PrintCrossDockForLbl();
+          } else {
+            this.global.ShowToastr(
+              'success',
+              'Pick Completed Successfully',
+              'Success!'
+            );
+          }
         }
-      });
-        } 
+      );
+    }
   }
 
-
-   PrintCrossDockForLbl(){
-   let res:any =  this.global.Print(`FileName:autoPrintCrossDock|tote:false|otid:${this.OTRecID}|ZoneLabel:${this.zone}`);
-    if(res){
-      this.showConfirmationDialog('Click OK if the item label printed correctly.',(open)=>{
-      if(!open){
-        this.PrintCrossDockForLbl();
-      }else{
-        this.global.ShowToastr('success','Pick Completed Successfully', 'Success!');
-      }
-      });
-    } 
-  }
-
-  async showConfirmationDialog(message,callback) {
-    const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
+  async showConfirmationDialog(message, callback) {
+    const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
@@ -377,28 +412,32 @@ export class CrossDockTransactionComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if(result=='Yes'){
-        callback(true)
-      }else{
-        callback(false)
+      if (result == 'Yes') {
+        callback(true);
+      } else {
+        callback(false);
       }
-    })
+    });
   }
 
   completePick() {
     try {
-      debugger
+      debugger;
       if (!this.selectedRowObj.toteID) {
-        let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
-          height: 'auto',
-          width: '560px',
-          autoFocus: '__non_existing_element__',
-      disableClose:true,
-          data: {
-            message: 'Click OK to proceed without a tote ID. Click Cancel to provide a tote ID.',
-          },
-        });
-    
+        let dialogRef: any = this.global.OpenDialog(
+          ConfirmationDialogComponent,
+          {
+            height: 'auto',
+            width: '560px',
+            autoFocus: '__non_existing_element__',
+            disableClose: true,
+            data: {
+              message:
+                'Click OK to proceed without a tote ID. Click Cancel to provide a tote ID.',
+            },
+          }
+        );
+
         dialogRef.afterClosed().subscribe((result) => {
           if (result == 'Yes') {
             this.compPick();
@@ -407,25 +446,40 @@ export class CrossDockTransactionComponent implements OnInit {
       } else {
         this.compPick();
       }
-      
-    } catch (error) { 
-    }
+    } catch (error) {}
   }
 
-  print(type:any){
-
-    if(type == 'printtotelabel'){
-      if(this.imPreferences.printDirectly){
-        this.global.Print(`FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:${this.selectedRowObj.toteID}`)
-      }else{
-        window.open(`/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:${this.selectedRowObj.toteID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+  print(type: any) {
+    if (type == 'printtotelabel') {
+      if (this.imPreferences.printDirectly) {
+        this.global.Print(
+          `FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:${this.selectedRowObj.toteID}`
+        );
+      } else {
+        window.open(
+          `/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:${this.selectedRowObj.toteID}`,
+          '_blank',
+          'width=' +
+            screen.width +
+            ',height=' +
+            screen.height +
+            ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+        );
       }
-    }
-    else if(this.imPreferences.printDirectly){
-      this.global.Print(`FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`)
-    }
-    else{
-      window.open(`/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+    } else if (this.imPreferences.printDirectly) {
+      this.global.Print(
+        `FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`
+      );
+    } else {
+      window.open(
+        `/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`,
+        '_blank',
+        'width=' +
+          screen.width +
+          ',height=' +
+          screen.height +
+          ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
+      );
     }
   }
 }

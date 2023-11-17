@@ -12,3 +12,67 @@ table{
       padding-right: 15px;
     }
   }
+
+  .main-card{
+    height: 100%;
+    .heading-row{
+      margin-bottom: 12px;
+    }
+    .tr-matHeader{
+      background-color: var(--clr-table-header);
+    }
+  }
+
+  .ccount-category-style{
+    width:70% !important;
+  }
+  .ccount-subcategory-style{
+    width:30% !important;
+  }
+  .mat-option-style{
+    width:900px !important;
+    .span-option.category-style{
+      width:70%
+    }
+    .span-option.subCategory-style{
+      width:30% !important;
+    }
+  }
+  .cardDiv-style{
+    overflow-x: auto !important;
+    .ngscrollbar-style{
+      height: 300px !important;
+      .container_text-right{
+        text-align: right !important;
+        .td-celltext-right{
+          text-align: right !important;
+        }
+      }
+      .tr-matheader-style{
+        background-color: var(--clr-table-header) !important;
+      }
+    }
+  }
+  .span-orderNumber-style{
+    width:70% !important;
+  }
+  .span-EntriesNum-style{
+    width:30% !important;
+  }
+  .mat-option-style2{
+    width:900px !important;
+    .span-currItem.orderNumber-style{
+      width:70% !important;
+    }
+    .span-currItem.itemCount-style{
+      width:30% !important;
+    }
+  }
+  .mat-Insert_Into_Queue-style{
+    flex: 1;
+  }
+
+
+  
+
+

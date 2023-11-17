@@ -18,6 +18,7 @@ export const DialogConstants = {
 }
 export const StringConditions = {
     SupplierItemID:'Supplier Item ID',
+    ToteID: 'Tote ID',
     WaitingReprocess:'Waiting Reprocess',
     NotCompleted: 'Not Completed',
     NotAssigned: 'Not Assigned',
@@ -44,7 +45,12 @@ export const StringConditions = {
     ResetField:'resetField',
     isAdd:'isAdd',
     filterLoc:'Nothing',
-    True:'true'
+    True:'true',
+    InProgress: 'In Progress',
+    Completed: 'Completed',
+    on: 'on',
+    off: 'off',
+    EntireOrder:'Entire Order'
 }
 
 export const ResponseStrings = {
@@ -154,7 +160,8 @@ export const AppNames = {
     ImportExport: 'ImportExport',
     Markout: 'Markout',
     OrderManager: 'OrderManager',
-    WorkManager: 'WorkManager'
+    WorkManager: 'WorkManager',
+   
 }
 
 export const AppRoutes = {
@@ -168,9 +175,12 @@ export const AppRoutes = {
     OrderManagerEventLog: '/OrderManager/EventLog',
     OrderManagerOrderStatus: '/OrderManager/OrderStatus',
     AdminTransaction:'/#/admin/transaction',
+    AdminTrans:'/admin/transaction',
     AdminInventoryMaster:'/admin/inventoryMaster',
     ReportView:'/#/report-view',
     Logon:'/#/Logon/',
+    AdminCreateCounts: '/admin/createCounts',
+    AdminCreateCountBatches: '/admin/createCountBatches',
     OrderManagerInventoryMap:'/OrderManager/InventoryMap',
     AdminInventoryMap:'/admin/inventoryMap',
     InductionManagerInventoryMap:'/InductionManager/Admin/InventoryMap'
@@ -195,6 +205,7 @@ export const RouteNames = {
     Markout: 'Markout',
     OrderManager: 'Order Manager',
     WorkManager: 'Work Manager'
+
 }
 
 export const RouteUpdateMenu = {
@@ -276,6 +287,7 @@ export const KeyboardKeys = {
     R: 'r',
     Enter: 'Enter'
 }
+
 export const zoneType = {
     carousel:'carousel',
     cartonFlow:'cartonFlow',
@@ -288,7 +300,6 @@ export const alertMessage = {
     EnterSerialNo: 'Please enter a serial number',
     SerialNoAlreadyScan: 'Serial Number already scanned',
     DeleteMessage:'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.'
-    
 } 
 
 export const showNotificationHeading = {
@@ -317,7 +328,8 @@ export const Column = {
     RequiredDate: 'Required Date',
     Priority: 'Priority',
     OrderNumber: 'Order Number',
-    ItemNumber: 'Item Number'
+    ItemNumber: 'Item Number',
+    ToteID: 'Tote ID'
 }
 
 export const Case = {
@@ -326,7 +338,8 @@ export const Case = {
 
 export const Mode = {
     HoldTransactions: 'hold-trans',
-    DeleteTransaction: 'delete-transaction'
+    DeleteTransaction: 'delete-transaction',
+    DeleteOrderStatus: 'delete-order-status'
 }
 
 export const TableName = {

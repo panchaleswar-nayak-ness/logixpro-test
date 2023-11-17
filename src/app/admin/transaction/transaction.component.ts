@@ -4,10 +4,10 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SharedService } from 'src/app/services/shared.service';
 import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { AppRoutes, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-transaction',
@@ -15,7 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: [],
 })
 export class TransactionComponent implements OnInit, AfterViewInit {
-  public TabIndex = 1;
+  public tabIndex = 1;
   public userData: any;
   public showReprocess;
   public showReprocessed;
@@ -30,129 +30,101 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   tabIndex$: Observable<any>;
   location$: Observable<any>;
   location: any;
+
   public iAdminApiService: IAdminApiService;
+
   constructor(
     router: Router,
     private route: ActivatedRoute,
-    private adminApiService: AdminApiService,
+    public adminApiService: AdminApiService,
     private sharedService: SharedService,
     public authService: AuthService,
     private global : GlobalService,
-    private Api: ApiFuntions,
   ) { 
     this.iAdminApiService = adminApiService;
-    if(router.url == '/OrderManager/OrderStatus'){
-    this.TabIndex = 0;
-   }
-   else if(router.url == '/admin/transaction'){
-    this.TabIndex = 1;
-   }
-
+    if(router.url == AppRoutes.OrderManagerOrderStatus) this.tabIndex = 0;
+    else if(router.url == AppRoutes.AdminTrans) this.tabIndex = 1;
   }
-  ngAfterViewInit() {
-    
 
+  ngAfterViewInit() {
     this.setval = localStorage.getItem('routeFromInduction')
     this.showReprocess = JSON.parse(this.setval)
     this.showReprocessed = JSON.parse(this.setval)
 
-
-    this.orderStatus$ = this.route.queryParamMap.pipe(
-      map((params: ParamMap) => params.get('orderStatus')),
-    );
+    this.orderStatus$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('orderStatus')));
  
-    this.tabIndex$ = this.route.queryParamMap.pipe(
-      map((params: ParamMap) => params.get('tabIndex')),
-    );
-    let IsStatus = this.route.queryParamMap.pipe(
-      map((params: ParamMap) => params.get('IsOrderStatus')),
-    );
+    this.tabIndex$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('tabIndex')));
+    let IsStatus = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('IsOrderStatus')));
+    
     IsStatus.subscribe((param) => {
-      if (param!=null &&param != undefined) {
-        this.IsOrderStatus = true;
-      }else this.IsOrderStatus = false;
+      if (param!=null &&param != undefined) this.IsOrderStatus = true;
+      else this.IsOrderStatus = false;
     });
-    this.tabIndex$.subscribe((param) => { 
-      if (param) {
-        this.TabIndex = 0;
-      }
-    });
+
+    this.tabIndex$.subscribe((param) => { if (param) this.tabIndex = 0; });
     
     this.orderStatus$.subscribe((param) => { 
-      if(param!=null && param !== undefined){
-       
-        this.TabIndex = 0;
+      if(param != null && param !== undefined){
+        this.tabIndex = 0;
         this.sharedService.updateOrderStatus(param)
       }
     });
     
-    this.itemNumber$ = this.route.queryParamMap.pipe(
-      map((params: ParamMap) => params.get('itemNumber'))
-    );
+    this.itemNumber$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('itemNumber')));
 
-    this.itemNumber$.subscribe((param) => {
-      if (param) {
-        this.itemNumber=param;
-      }
-    });
+    this.itemNumber$.subscribe((param) => { if (param) this.itemNumber=param; });
 
-    this.type$ = this.route.queryParamMap.pipe(
-      map((params: ParamMap) => params.get('type'))
-    );
+    this.type$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('type')));
 
     this.type$.subscribe((param) => {
       if (param) {
         this.type=param;
 
         if(this.type==='OpenTransaction'){
-          this.TabIndex = 1;
+          this.tabIndex = 1;
           this.sharedService.updateItemTransaction(this.itemNumber);
-
-        }else if(this.type==='TransactionHistory'){
-          this.TabIndex = 2;
+        }
+        else if(this.type==='TransactionHistory'){
+          this.tabIndex = 2;
           this.sharedService.updateTransactionHistory(this.itemNumber);
         }
-      else if(this.type==='ReprocessTransaction'){
-        this.TabIndex = 3;
-        this.sharedService.updateTransactionReprocess(this.itemNumber);
-      }
+        else if(this.type==='ReprocessTransaction'){
+          this.tabIndex = 3;
+          this.sharedService.updateTransactionReprocess(this.itemNumber);
+        }
       }
     });
 
-    this.location$ = this.route.queryParamMap.pipe(
-      map((params: ParamMap) => params.get('location'))
-    );
+    this.location$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('location')));
 
     this.location$.subscribe((param) => {
       if (param) {
-        this.TabIndex = 2;
+        this.tabIndex = 2;
         this.sharedService.updateTransactionLocHistory(param);
       }
     });
   }
+
   ngOnInit(): void {
-    this.OSFieldFilterNames();
+    this.osFieldFilterNames();
   }
 
-  public demo1BtnClick() {
-    const tabCount = 3;
-    this.TabIndex = (this.TabIndex + 1) % tabCount;
-  }
-  public OSFieldFilterNames() { 
+  public osFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       if(res.isExecuted && res.data)
       {
         this.fieldNames = res.data;
-      this.sharedService.updateFieldNames(this.fieldNames)
+        this.sharedService.updateFieldNames(this.fieldNames)
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ColumnAlias",res.responseMessage);
       }
     })
   }
-  switchToOrder(event) {
-    this.TabIndex = 0;
+
+  switchToOrder() {
+    this.tabIndex = 0;
   }
 
   onTabChanged(event) {

@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from 'src/app/init/auth.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
@@ -24,8 +23,6 @@ export class BlossomToteComponent implements OnInit {
   imPreferences:any;
 
   constructor(private dialog:MatDialog,
-    
-    private Api: ApiFuntions,
     private inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     private global:GlobalService) {

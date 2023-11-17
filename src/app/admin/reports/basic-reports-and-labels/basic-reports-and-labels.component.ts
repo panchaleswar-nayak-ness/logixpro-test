@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions'; 
@@ -21,11 +22,11 @@ export class BasicReportsAndLabelsComponent implements OnInit {
   @ViewChild('matRef') matRef: MatSelect;
   reportTitles: any = [1,2,3,4]; 
   searchByInput: any = new Subject<string>();
-  ListFilterValue:any = [];
+  listFilterValue:any = [];
   oldFilterValue:any = [];
   fields:any = [];
-  public userData: any;
-  BasicReportModel:any = {};
+  
+  basicReportModel:any = {};
   reportData:any = {};
   ELEMENT_DATA: any[] =[
     {order_no: '1202122'},
@@ -60,7 +61,7 @@ export class BasicReportsAndLabelsComponent implements OnInit {
     currentApp
 
     public iAdminApiService: IAdminApiService;
-
+    public userData: any;
   constructor(private dialog: MatDialog,private api:ApiFuntions,private adminApiService: AdminApiService,private authService:AuthService,private route:Router,public global:GlobalService) {
     this.iAdminApiService = adminApiService;    
     this.userData = this.authService.userData(); 
@@ -88,8 +89,8 @@ export class BasicReportsAndLabelsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.BasicReportModel.ChooseReport = "";
-    this.Getcustomreports();
+    this.basicReportModel.ChooseReport = "";
+    this.getCustomReports();
     
   }
   clearMatSelectList(){
@@ -101,19 +102,19 @@ export class BasicReportsAndLabelsComponent implements OnInit {
   onFocusEmptyInput(i: number) {
     const inputValue = this.reportData[16 + i];
     if (!inputValue || inputValue === '') {
-      this.changefilter(this.reportData[4 + i], i);
+      this.changeFilter(this.reportData[4 + i], i);
     }
   }
 
 
   filterByItem(value : any,index){ 
-    this.ListFilterValue[index] = this.oldFilterValue[index].filter(x=> x.toString().toLowerCase().indexOf(value.toString().toLowerCase()) > -1);
+    this.listFilterValue[index] = this.oldFilterValue[index].filter(x=> x.toString().toLowerCase().indexOf(value.toString().toLowerCase()) > -1);
  
   }
 
   
   
-  Getcustomreports(){
+  getCustomReports(){
     let payload = {
       'app':this.currentApp
     }
@@ -124,12 +125,12 @@ export class BasicReportsAndLabelsComponent implements OnInit {
       this.reports.unshift('');
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("Getcustomreports",res.responseMessage);
       }
     })
   }
-  basicreportdetails(Report){
+  basicReportDetails(Report){
    let payload:any = {
     report:Report, 
     }
@@ -141,38 +142,38 @@ export class BasicReportsAndLabelsComponent implements OnInit {
       this.fields.unshift('');
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("basicreportdetails",res.responseMessage);
       }
     })
   }
-  async changefilter(column,index){
+  async changeFilter(column,index){
  
     let payload:any ={
-      reportName:this.BasicReportModel.ChooseReport,
+      reportName:this.basicReportModel.ChooseReport,
       column:column
     };
     this.iAdminApiService.changefilter(payload).subscribe((res:any)=>{
       if(res.isExecuted && res.data)
       {
-        this.ListFilterValue[index] = res.data;
+        this.listFilterValue[index] = res.data;
         this.oldFilterValue[index] = res.data;
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("changefilter",res.responseMessage);
       }
     })  
     
   }
-  ReportFieldsExps(item:any=null,index:any=null){
+  reportFieldsExps(item:any=null,index:any=null){
     if(item == 'fields'){
       this.reportData[10+index] = "";
       this.reportData[16+index] = "";
       this.reportData[22+index] = "";
     }
     let payload:any = {
-     report:this.BasicReportModel.ChooseReport, 
+     report:this.basicReportModel.ChooseReport, 
      fields:[],
      exps:[]
     };
@@ -187,23 +188,23 @@ export class BasicReportsAndLabelsComponent implements OnInit {
      })
    }
 
-   ValueSelect(event: MatAutocompleteSelectedEvent,index){ 
+   valueSelect(event: MatAutocompleteSelectedEvent,index){ 
     this.reportData[16+index]  = event.option.value;
-    this.reportfieldvalues(index,this.reportData[16+index]);
+    this.reportFieldValues(index,this.reportData[16+index]);
    }
    selectedIndex:number;
    selectedValue:string;
-   reportfieldvaluesChange(index,value){
+   reportFieldValuesChange(index,value){
       setTimeout(() => {
-        this.reportfieldvalues(index,value)        
+        this.reportFieldValues(index,value)        
       }, 1000);
    }
-reportfieldvalues(selectedIndex,selectedValue,IsRemove=false){
+reportFieldValues(selectedIndex,selectedValue,IsRemove=false){
   if(IsRemove || !(selectedIndex == this.selectedIndex && selectedValue == this.selectedIndex)){
     this.selectedIndex = selectedIndex;
     this.selectedValue =selectedValue;
   let payload:any = {
-    report:this.BasicReportModel.ChooseReport, 
+    report:this.basicReportModel.ChooseReport, 
     V1:[] ,
     V2:[]
    };
@@ -220,9 +221,9 @@ reportfieldvalues(selectedIndex,selectedValue,IsRemove=false){
    } 
     
   }
-ReportTitles(){
+reportPayloadTitles(){
   let payload:any = {
-    report:this.BasicReportModel.ChooseReport, 
+    report:this.basicReportModel.ChooseReport, 
     title:[]  
    };
     for(let i = 0;i<4;i++){
@@ -233,16 +234,16 @@ ReportTitles(){
      })
    }
 
-  OpenListAndLabel(){ 
-    window.open(`/#/report-view?file=${this.global.capitalizeAndRemoveSpaces(this.BasicReportModel.ChooseReport)+'-lst'}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+  openListAndLabel(){ 
+    window.open(`/#/report-view?file=${this.global.capitalizeAndRemoveSpaces(this.basicReportModel.ChooseReport)+'-lst'}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
   }
 Remove(index){ 
   this.reportData[16+index] = "";
   this.reportData[4+index] = "";
   this.reportData[10+index] = ""; 
-  this.ReportFieldsExps();
-  this.reportfieldvalues(index,"",true);
-  this.ReportTitles();
+  this.reportFieldsExps();
+  this.reportFieldValues(index,"",true);
+  this.reportPayloadTitles();
 }
 
 

@@ -4,12 +4,13 @@ import { AddNotesComponent } from 'src/app/admin/dialogs/add-notes/add-notes.com
 import { SupplierItemIdComponent } from 'src/app/admin/dialogs/supplier-item-id/supplier-item-id.component';
 import { UnitMeasureComponent } from 'src/app/admin/dialogs/unit-measure/unit-measure.component';
 import { UserFieldsEditComponent } from 'src/app/admin/dialogs/user-fields-edit/user-fields-edit.component';
+import { DialogConstants } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-gt-item-details',
   templateUrl: './gt-item-details.component.html',
-  styleUrls: []
+  styleUrls: ['./gt-item-details.component.scss',]
 })
 export class GtItemDetailsComponent {
 
@@ -42,9 +43,9 @@ openAction: any;
 openNotes(){
   if (this.orderNumber == '' || !this.item) return;
   const dialogRef:any = this.global.OpenDialog(AddNotesComponent, {
-    height: 'auto',
+    height: DialogConstants.auto,
     width: '560px',
-    autoFocus: '__non_existing_element__',
+    autoFocus: DialogConstants.autoFocus,
     disableClose:true,
     data:{
       notes:this.notes
@@ -62,9 +63,9 @@ openNotes(){
 openUnitOfMeasureDialogue() {
   if (this.orderNumber == '' || !this.item) return;
   const dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
-    height: 'auto',
+    height: DialogConstants.auto,
     width: '800px',
-    autoFocus: '__non_existing_element__',
+    autoFocus: DialogConstants.autoFocus,
     disableClose:true,
   });
   dialogRef.afterClosed().subscribe((res) => {
@@ -81,9 +82,9 @@ clearMatSelectList(){
 openSupplierItemDialogue() {
   if (this.orderNumber == '' || !this.item) return;
   const dialogRef:any = this.global.OpenDialog(SupplierItemIdComponent, {
-    height: 'auto',
+    height: DialogConstants.auto,
     width: '560px',
-    autoFocus: '__non_existing_element__',
+    autoFocus: DialogConstants.autoFocus,
     disableClose:true,
     data: {
       userName: this.userData.userName,
@@ -103,9 +104,9 @@ openSupplierItemDialogue() {
 
 openUserFieldsEditDialogue() {
   const dialogRef:any = this.global.OpenDialog(UserFieldsEditComponent, {
-    height: 'auto',
+    height: DialogConstants.auto,
     width: '800px',
-    autoFocus: '__non_existing_element__',
+    autoFocus: DialogConstants.autoFocus,
     disableClose:true,
     data: {
       transID: this.transactionID,
@@ -115,7 +116,7 @@ openUserFieldsEditDialogue() {
     },
     
   });
-  dialogRef.afterClosed().subscribe((res) => {
+  dialogRef.afterClosed().subscribe(() => {
     this.clearMatSelectList();
   });
 }

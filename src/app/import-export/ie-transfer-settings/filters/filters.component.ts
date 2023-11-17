@@ -3,7 +3,7 @@ import { Component, EventEmitter,Output } from '@angular/core';
 @Component({
   selector: 'app-filters',
   templateUrl: './filters.component.html',
-  styleUrls: []
+  styleUrls: ['./filters.component.scss']
 })
 export class FiltersComponent {
 

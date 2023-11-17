@@ -1,30 +1,35 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-ie-invent-map-export',
   templateUrl: './ie-invent-map-export.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
-export class IeInventMapExportComponent  {
+export class IeInventMapExportComponent {
+  ELEMENT_DATA: any[] = [
+    { mon: '' },
+    { mon: '' },
+    { mon: '' },
+    { mon: '' },
+    { mon: '' },
+  ];
 
-  ELEMENT_DATA: any[] =[
-    {mon: ''},
-    {mon: ''},
-    {mon: ''},
-    {mon: ''},
-    {mon: ''},
-    
-  ]
+  displayedColumns: string[] = [
+    'mon',
+    'tue',
+    'wed',
+    'thu',
+    'fri',
+    'sat',
+    'sun',
+    'export_hour',
+    'export_minute',
+    'am_pm',
+    'actions',
+  ];
+  tableData = this.ELEMENT_DATA;
+  dataSourceList: any;
 
-    displayedColumns: string[] = ['mon','tue','wed','thu','fri','sat','sun','export_hour','export_minute','am_pm','actions'];
-    tableData = this.ELEMENT_DATA
-    dataSourceList:any
-
-
-  constructor(
-    private global:GlobalService,
-  ) { }
-
-
+  constructor(private global: GlobalService) {}
 }

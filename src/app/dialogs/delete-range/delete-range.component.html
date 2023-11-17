@@ -12,7 +12,7 @@
             <mat-form-field class="action-dropdown w-100 mb-2" appearance="outline">
                 <mat-label>Filter</mat-label>
                 <mat-select class="employees-action" [(ngModel)]="repByDeletePayload.identity"
-                    (selectionChange)="showChange($event.value)">
+                    (selectionChange)="showChange()">
                     <mat-option value="Batch Pick ID">Batch Pick ID</mat-option>
                     <mat-option value="Pick Location">Pick Location</mat-option>
                     <mat-option value="Put Away Location">Put Away Location</mat-option>
@@ -27,7 +27,7 @@
             (keyup.enter)="closeautoMenuStart()" [floatLabel]="getFloatLabelValueStart()" [hideRequiredMarker]="hideRequiredControlStart.value" >
                 <mat-label>Begin</mat-label>
                 <input #del_focus matInput type="text" maxlength="50" [matAutocomplete]="auto"
-                    [(ngModel)]="repByDeletePayload.filter1" (keyup)="changeBegin($event)">
+                    [(ngModel)]="repByDeletePayload.filter1" (keyup)="changeBegin()">
                 <mat-autocomplete #auto="matAutocomplete" #autocompleteStart>
                     <mat-option *ngFor="let option of beginAutoCompleteList" [value]="option">
                         {{option}}
@@ -43,7 +43,7 @@
             (keyup.enter)="closeautoMenuEnd()" [floatLabel]="getFloatLabelValueEnd()"  [hideRequiredMarker]="hideRequiredControlEnd.value" >
                 <mat-label>End</mat-label>
                 <input matInput type="text" maxlength="50" [matAutocomplete]="auto2" 
-                    [(ngModel)]="repByDeletePayload.filter2" (keyup)="changeEnd($event)">
+                    [(ngModel)]="repByDeletePayload.filter2" (keyup)="changeEnd()">
                 <mat-autocomplete #auto2="matAutocomplete" #autocompleteEnd>
                     <mat-option *ngFor="let option of endAutoCompleteList" [value]="option">
                         {{option}}
