@@ -11,7 +11,7 @@ import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order
 @Component({
   selector: 'app-om-preferences',
   templateUrl: './om-preferences.component.html',
-  styleUrls: [],
+  styleUrls: ['./om-preferences.component.scss'],
 })
 export class OmPreferencesComponent implements OnInit {
   userData: any;
