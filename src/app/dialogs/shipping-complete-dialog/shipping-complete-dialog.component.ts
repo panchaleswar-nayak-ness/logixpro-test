@@ -11,12 +11,33 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-shipping-complete-dialog',
   templateUrl: './shipping-complete-dialog.component.html',
-  styleUrls: ['./shipping-complete-dialog.component.scss']
+  styleUrls: ['./shipping-complete-dialog.component.scss'],
 })
 export class ShippingCompleteDialogComponent implements OnInit {
-
-  displayedColumns1: string[] = ['itemNumber', 'lineNumber', 'toteID', 'transactionQuantity', 'completedQuantity', 'containerID', 'shipQuantity', 'completedTime'];
-  displayedColumns2: string[] = ['containerID', 'carrierName', 'trackingNumber', 'freight', 'freight1', 'freight2', 'weight', 'length', 'width', 'height', 'cube', 'completedTime'];
+  displayedColumns1: string[] = [
+    'itemNumber',
+    'lineNumber',
+    'toteID',
+    'transactionQuantity',
+    'completedQuantity',
+    'containerID',
+    'shipQuantity',
+    'completedTime',
+  ];
+  displayedColumns2: string[] = [
+    'containerID',
+    'carrierName',
+    'trackingNumber',
+    'freight',
+    'freight1',
+    'freight2',
+    'weight',
+    'length',
+    'width',
+    'height',
+    'cube',
+    'completedTime',
+  ];
   dataSourceList: any;
   tableData1: any = new MatTableDataSource([]);
   tableData2: any = new MatTableDataSource([]);
@@ -25,63 +46,68 @@ export class ShippingCompleteDialogComponent implements OnInit {
   @ViewChild('MatSort1') sort1: MatSort;
   @ViewChild('MatSort2') sort2: MatSort;
 
-  public IconsolidationAPI : IConsolidationApi;
+  public IconsolidationAPI: IConsolidationApi;
 
   constructor(
-    public consolidationAPI : ConsolidationApiService,
+    public consolidationAPI: ConsolidationApiService,
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _liveAnnouncer1: LiveAnnouncer,
-    private global : GlobalService,
-    private _liveAnnouncer2: LiveAnnouncer
-  ) { this.IconsolidationAPI = consolidationAPI; }
+    private liveAnnouncer1: LiveAnnouncer,
+    private global: GlobalService,
+    private liveAnnouncer2: LiveAnnouncer
+  ) {
+    this.IconsolidationAPI = consolidationAPI;
+  }
 
   ngOnInit(): void {
     this.viewShipping(this.data.orderNumber);
   }
 
   viewShipping(orderNumber: any, loader: boolean = false) {
-    this.IconsolidationAPI.viewShipping({ orderNum: orderNumber }).subscribe((res: any) => {
-      if (res.isExecuted)
-      {
-        if (res.data) {
-          this.tableData1 = new MatTableDataSource(res.data.packTable);
-          this.tableData1.paginator = this.paginator1;
-          this.tableData2 = new MatTableDataSource(res.data.shipTable);
-          this.tableData2.paginator = this.paginator2;
+    this.IconsolidationAPI.viewShipping({ orderNum: orderNumber }).subscribe(
+      (res: any) => {
+        if (res.isExecuted) {
+          if (res.data) {
+            this.tableData1 = new MatTableDataSource(res.data.packTable);
+            this.tableData1.paginator = this.paginator1;
+            this.tableData2 = new MatTableDataSource(res.data.shipTable);
+            this.tableData2.paginator = this.paginator2;
+          } else {
+            this.tableData1 = new MatTableDataSource([]);
+            this.tableData2 = new MatTableDataSource([]);
+          }
         } else {
-          this.tableData1 = new MatTableDataSource([]);
-          this.tableData2 = new MatTableDataSource([]);
+          this.global.ShowToastr(
+            'error',
+            this.global.globalErrorMsg(),
+            'Error!'
+          );
+          console.log('viewShipping', res.responseMessage);
         }
-
-
       }
-
-      else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("viewShipping",res.responseMessage);
-
-      }
-    });
+    );
   }
 
-  //Sorting
   announceSortChange1(sortState: Sort) {
-    sortState.active = this.displayedColumns1.filter((x: any) => x == sortState.active)[0];
+    sortState.active = this.displayedColumns1.filter(
+      (x: any) => x == sortState.active
+    )[0];
     if (sortState.direction) {
-      this._liveAnnouncer1.announce(`Sorted ${sortState.direction}ending`);
+      this.liveAnnouncer1.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer1.announce('Sorting cleared');
+      this.liveAnnouncer1.announce('Sorting cleared');
     }
     this.tableData1.sort = this.sort1;
   }
 
   announceSortChange2(sortState: Sort) {
-    sortState.active = this.displayedColumns2.filter((x: any) => x == sortState.active)[0];
+    sortState.active = this.displayedColumns2.filter(
+      (x: any) => x == sortState.active
+    )[0];
     if (sortState.direction) {
-      this._liveAnnouncer2.announce(`Sorted ${sortState.direction}ending`);
+      this.liveAnnouncer2.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer2.announce('Sorting cleared');
+      this.liveAnnouncer2.announce('Sorting cleared');
     }
     this.tableData2.sort = this.sort2;
   }

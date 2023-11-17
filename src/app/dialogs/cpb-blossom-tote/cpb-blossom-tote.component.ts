@@ -2,7 +2,6 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import labels from '../../labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
@@ -27,7 +26,6 @@ export class CpbBlossomToteComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     
     private global:GlobalService,
-    private Api: ApiFuntions,
     private inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<CpbBlossomToteComponent>,
     private globalService: GlobalService

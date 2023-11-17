@@ -9,7 +9,7 @@
                 [from_itemQuantity]="from_itemQuantity"
                 [isDedicated]="isDedicated"
 
-                [MoveFromDedicated]="MoveFromDedicated"
+                [moveFromDedicated]="moveFromDedicated"
                 [from_warehouse]="from_warehouse"
                 [from_locationShow]="from_locationShow"
                 [from_itemNo]="from_itemNo"
@@ -19,7 +19,7 @@
                 [from_lotNo]="from_lotNo"
                 [from_serialNo]="from_serialNo"
 
-                [MoveToDedicated]="MoveToDedicated"
+                [moveToDedicated]="moveToDedicated"
                 [to_warehouse]="to_warehouse"
                 [to_locationShow]="to_locationShow"
                 [to_itemNo]="to_itemNo"
@@ -37,7 +37,7 @@
     </div>
 
     <div class="col-xl-7">
-        <mat-card class="mat-elevation-z g-card mb-4" style="height: 97%">
+        <mat-card class="mat-elevation-z g-card mb-4 move-location-card">
             <mat-card-content>
                 <app-move-locations
                     [itemSelected]="itemSelected"
@@ -63,7 +63,7 @@
                     (getMoveFromDetailsEmit)="getMoveFromDetails($event.element, $event.i, $event.tableName)"
                     (sortChangeToItemsEmit)="sortChangeToItems($event)"
                     (handlePageEventToEmit)="handlePageEventTo($event)"
-                    (ActiveTrigger)="IsActiveTrigger = $event"
+                    (activeTrigger)="isActiveTrigger = $event"
                     (itemNumberSearchEmit)="itemNo = $event;this.itemNumberSearch.next($event)">
                 </app-move-locations>
             </mat-card-content>
@@ -71,8 +71,8 @@
     </div>
 </div>
 <div class="d-flex justify-content-end pt-3">
-    <button style="flex:1" mat-flat-button color="primary" [disabled]="!isValidateMove" class="  btn-lg" (click)="validateMove()">Create Move Transactions</button>
+    <button mat-flat-button color="primary" [disabled]="!isValidateMove" class="btn-lg btn-create" (click)="validateMove()">Create Move Transactions</button>
 </div>
 
 
-<app-table-context-menu-component *ngIf="IsActiveTrigger"  (optionSelected)="optionSelected($event)" [componentName]="'moveItem'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="isActiveTrigger"  (optionSelected)="optionSelected($event)" [componentName]="'moveItem'"></app-table-context-menu-component>

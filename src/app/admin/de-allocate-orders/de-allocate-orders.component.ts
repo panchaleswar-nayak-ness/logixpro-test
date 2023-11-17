@@ -13,7 +13,8 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ResponseStrings } from 'src/app/common/constants/strings.constants';
+import { ResponseStrings, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Toast } from 'ngx-toastr';
 
 @Component({
   selector: 'app-de-allocate-orders',
@@ -56,7 +57,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   step
   isOrder = true;
   order;
-  deallocateSelectedBtn = true
+  deallocateSelectedBtn = true;
   onViewOrder=true;
   public iAdminApiService: IAdminApiService;
 // pagination and sorting for orderView
@@ -64,8 +65,8 @@ export class DeAllocateOrdersComponent implements OnInit {
   startRowOrder = 0;
   endRowOrder = 10;
   recordsPerPageOrder = 10;
-  sortColOrder = 0
-  sortOrder ='asc'
+  sortColOrder = 0;
+  sortOrder ='asc';
 
   isActiveTrigger:boolean =false;
 // pagination and sorting for transaction View
@@ -73,11 +74,11 @@ export class DeAllocateOrdersComponent implements OnInit {
   startRowTransaction = 0;
   endRowTransaction = 10;
   recordsPerPageTransaction = 10;
-  sortColTransaction = 0
-  sortTransaction ='asc'
-  dublicateTransaction 
-  dublicateRecords 
-  actions=''
+  sortColTransaction = 0;
+  sortTransaction ='asc';
+  dublicateTransaction ;
+  dublicateRecords ;
+  actions='';
 
 
   searchByItem: any = new Subject<string>();
@@ -116,7 +117,7 @@ export class DeAllocateOrdersComponent implements OnInit {
 
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("AllocatedOrders",res.responseMessage);
 
         }
@@ -132,7 +133,7 @@ export class DeAllocateOrdersComponent implements OnInit {
           this.searchedItemOrder = res.data
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("AllocatedItems",res.responseMessage);
 
         }
@@ -216,7 +217,7 @@ export class DeAllocateOrdersComponent implements OnInit {
 
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("OrderItemsTable",res.responseMessage);
 
         }
@@ -260,7 +261,7 @@ export class DeAllocateOrdersComponent implements OnInit {
 
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("OrderItemsTable",res.responseMessage);
         }
       }))
@@ -322,7 +323,7 @@ export class DeAllocateOrdersComponent implements OnInit {
           this.iAdminApiService.DeAllocateOrder(payload).subscribe((res=>{
             if(res.isExecuted){
               this.actions = ''
-              this.global.ShowToastr('success',"De-Allocated successfully", 'Success!' );
+              this.global.ShowToastr(ToasterType.Success ,"De-Allocated successfully", ToasterTitle.Success );
               this.deallocateSelectedBtn = true
               this.orderNumbersList.length=0
                 this.getAllOrder()
@@ -330,7 +331,7 @@ export class DeAllocateOrdersComponent implements OnInit {
             }
             else{
               
-              this.global.ShowToastr('error','Order De-Allocation Not Successfull', 'Error!');
+              this.global.ShowToastr(ToasterType.Error,'Order De-Allocation Not Successfull', ToasterTitle.Error);
               console.log("DeAllocateOrder",res.responseMessage);
             }
           }))
@@ -355,7 +356,7 @@ export class DeAllocateOrdersComponent implements OnInit {
         }
         this.iAdminApiService.DeAllocateOrder(payload).subscribe((res=>{
           if(res.isExecuted){
-            this.global.ShowToastr('success',"De-Allocated successfully", 'Success!');
+            this.global.ShowToastr(ToasterType.Success,"De-Allocated successfully", ToasterTitle.Success);
             this.deallocateSelectedBtn = true
               this.getAllOrder()
               this.orderItemTable()
@@ -363,7 +364,7 @@ export class DeAllocateOrdersComponent implements OnInit {
           }
           else{
             
-            this.global.ShowToastr('error','Order De-Allocation Not Successfull', 'Error!');
+            this.global.ShowToastr(ToasterType.Error,'Order De-Allocation Not Successfull', ToasterTitle.Error);
             console.log("DeAllocateOrder",res.responseMessage);
           }
         }))
@@ -495,10 +496,10 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.startRowOrder = 0;
     this.endRowOrder = 10;
     this.recordsPerPageOrder = 10;
-    this.sortColOrder = 0
-    this.sortOrder ='asc'
+    this.sortColOrder = 0;
+    this.sortOrder ='asc';
     this.paginator.pageIndex=0;
-    this.pageLength=0
+    this.pageLength=0;
     
     
   }
@@ -507,10 +508,10 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.startRowTransaction = 0;
     this.endRowTransaction = 10;
     this.recordsPerPageTransaction = 10;
-    this.sortColTransaction = 0
-    this.sortTransaction ='asc'
+    this.sortColTransaction = 0;
+    this.sortTransaction ='asc';
     this.paginator.pageIndex=0;
-    this.pageLength=0
+    this.pageLength=0;
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 

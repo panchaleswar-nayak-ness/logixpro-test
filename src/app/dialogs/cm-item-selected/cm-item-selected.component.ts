@@ -80,15 +80,6 @@ export class CmItemSelectedComponent implements OnInit {
     }))
 }
 
-//  filterOption() {
-//     if (this.startSelectFilter == '2') {
-//         this.startSelectFilter = 1;
-//     }
-//     else {
-//         this.startSelectFilter = 2;
-//     }
-// }
-
 verifyLine(index) {
     let id = this.itemSelectTable.data[index].id;
 

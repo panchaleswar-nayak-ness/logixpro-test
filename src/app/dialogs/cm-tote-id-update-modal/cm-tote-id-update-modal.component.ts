@@ -11,11 +11,8 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
   styleUrls: []
 })
 export class CmToteIdUpdateModalComponent implements OnInit {
-
   public userData: any;
-
   containerID : string = '';
-
   clearContainerIDBtn : boolean = true;
   setContainerIDBtn : boolean = false;
 
@@ -25,8 +22,6 @@ export class CmToteIdUpdateModalComponent implements OnInit {
 
   constructor(private global:GlobalService,
               public dialogRef: MatDialogRef<CmToteIdUpdateModalComponent>,
-              
-              // private Api: ApiFuntions,
               public consolidationAPI : ConsolidationApiService,
               private authService: AuthService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -73,9 +68,12 @@ export class CmToteIdUpdateModalComponent implements OnInit {
             console.log("ContIDShipTransUpdate",res.responseMessage);
           }
         },
-        (error) => { }
+        (error) => { 
+          console.log(error);
+        }
       );
     } catch (error) { 
+      console.log(error);
     }
   }
 

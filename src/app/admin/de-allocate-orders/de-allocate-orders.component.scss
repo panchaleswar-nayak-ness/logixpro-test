@@ -98,5 +98,18 @@ table.custom-action-clickable-table tr:hover td {
 }
 
 .width-140{
-  width:  140px;
+  width:  140px !important;
+}
+
+.matFormFeild1{
+  flex:1 !important;
+}
+.chooseSearchType-style{
+  width: 140px !important;
+}
+.matFormFeild2{
+  flex:1 auto !important;
+}
+.cardbr-style{
+  overflow-x: auto !important;
 }

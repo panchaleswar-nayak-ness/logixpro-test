@@ -1,9 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit , Inject} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
-
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -203,13 +201,14 @@ export class SelectZonesComponent implements OnInit {
           console.log("AvailableZone",res.responseMessage);
         }
       },
-      (error) => { }
+      (error) => { 
+        console.log(error);
+      }
     );
 
   }
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private Api: ApiFuntions 
-  ,  private inductionManagerApi: InductionManagerApiService, private global: GlobalService,public dialogRef: MatDialogRef<SelectZonesComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,  private inductionManagerApi: InductionManagerApiService, private global: GlobalService,public dialogRef: MatDialogRef<SelectZonesComponent>) {
     this.iinductionManagerApi = inductionManagerApi;
    }
 
