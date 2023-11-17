@@ -38,7 +38,7 @@ export class MoveLocationsComponent {
   @Output() sortChangeToItemsEmit = new EventEmitter();
   @Output() handlePageEventToEmit = new EventEmitter();
   @Output() itemNumberSearchEmit = new EventEmitter();
-  @Output() ActiveTrigger = new EventEmitter<any>();
+  @Output() activeTrigger = new EventEmitter<any>();
   
 
   constructor(
@@ -91,7 +91,7 @@ export class MoveLocationsComponent {
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault()
-    this.ActiveTrigger.emit(true);
+    this.activeTrigger.emit(true);
     setTimeout(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
     }, 100);
