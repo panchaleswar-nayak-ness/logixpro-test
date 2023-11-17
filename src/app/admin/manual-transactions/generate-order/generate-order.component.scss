@@ -11,3 +11,15 @@
       padding-right: 12px;
     }
   }
+
+  .mat-table-scrollbar{
+    height: 350px;
+  }
+
+  .action-col{
+    border: 0;
+      height: 58px;
+      padding-left: 65px;
+      border-bottom: 1px solid var(--clr-tertiary-50);
+      width: 80px;
+  }

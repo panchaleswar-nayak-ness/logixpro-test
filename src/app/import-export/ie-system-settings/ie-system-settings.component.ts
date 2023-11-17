@@ -9,7 +9,7 @@ import { TransferFilePathComponent } from 'src/app/dialogs/transfer-file-path/tr
 @Component({
   selector: 'app-ie-system-settings',
   templateUrl: './ie-system-settings.component.html',
-  styleUrls: []
+  styleUrls: ['./ie-system-settings.component.scss']
 })
 export class IeSystemSettingsComponent {
 

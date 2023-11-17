@@ -18,6 +18,11 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import {
+  DialogConstants,
+  ToasterTitle,
+  ToasterType,
+} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-generate-transaction',
@@ -95,7 +100,7 @@ export class GenerateTransactionComponent implements OnInit {
   ngOnInit(): void {
     this.searchByInput
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
+      .subscribe(() => {
         this.autocompleteSearchColumn();
       });
     this.OSFieldFilterNames();
@@ -121,7 +126,11 @@ export class GenerateTransactionComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.columns = res.data;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
         console.log('ColumnAlias', res.responseMessage);
       }
     });
@@ -181,15 +190,14 @@ export class GenerateTransactionComponent implements OnInit {
             res.data.quantityAllocated[0].quantityAllocatedPutAway;
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('TransactionInfo', res.responseMessage);
           this.item = '';
         }
-      },
-      (error) => {}
+      }
     );
   }
   clear() {
@@ -219,28 +227,27 @@ export class GenerateTransactionComponent implements OnInit {
     let searchPayload = {
       transaction: this.orderNumber,
     };
-    this.iAdminApiService.ManualTransactionTypeAhead(searchPayload).subscribe(
-      (res: any) => {
+    this.iAdminApiService
+      .ManualTransactionTypeAhead(searchPayload)
+      .subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.searchAutocompleteList = res.data;
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('ManualTransactionTypeAhead', res.responseMessage);
         }
-      },
-      (error) => {}
-    );
+      });
   }
   openSetItemLocationDialogue() {
     if (this.orderNumber == '' || !this.item) return;
     const dialogRef: any = this.global.OpenDialog(SetItemLocationComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         userName: this.userData.userName,
@@ -276,8 +283,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.emergency = false;
   }
 
-
-  postTranscationFunction(type){
+  postTranscationFunction(type) {
     if (
       this.item === '' ||
       this.item === undefined ||
@@ -294,9 +300,9 @@ export class GenerateTransactionComponent implements OnInit {
       const dialogRef: any = this.global.OpenDialog(
         PostManualTransactionComponent,
         {
-          height: 'auto',
+          height: DialogConstants.auto,
           width: '560px',
-          autoFocus: '__non_existing_element__',
+          autoFocus: DialogConstants.autoFocus,
           disableClose: true,
           data: {
             message:
@@ -313,13 +319,14 @@ export class GenerateTransactionComponent implements OnInit {
             transactionID: this.transactionID,
           };
 
-          this.iAdminApiService.PostTransaction(payload).subscribe(
-            (res: any) => {
+          this.iAdminApiService
+            .PostTransaction(payload)
+            .subscribe((res: any) => {
               if (res?.isExecuted) {
                 this.global.ShowToastr(
-                  'success',
+                  ToasterType.Success,
                   labels.alert.success,
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.updateTrans();
                 if (type != 'save') {
@@ -329,9 +336,9 @@ export class GenerateTransactionComponent implements OnInit {
                 this.getRow({ id: this.transactionID }, type);
               } else {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   res.responseMessage,
-                  'Error!'
+                  ToasterTitle.Error
                 );
                 console.log('PostTransaction', res.responseMessage);
                 if (type != 'save') {
@@ -340,35 +347,28 @@ export class GenerateTransactionComponent implements OnInit {
                 this.invMapID = '';
                 this.getRow({ id: this.transactionID }, type);
               }
-            },
-            (error) => { }
-          );
+            });
         }
       });
     }
-    
   }
   postTransaction(type) {
-    if (
-      this.isLocation &&
-      this.transQuantity > this.totalQuantity
-    ) {
+    if (this.isLocation && this.transQuantity > this.totalQuantity) {
       const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe((res) => {
         this.clearMatSelectList();
         this.isQuantityConfirmation = res;
-        if(this.isQuantityConfirmation){
+        if (this.isQuantityConfirmation) {
           this.postTranscationFunction(type);
           this.updateTransactionFunction();
         }
       });
-    }
-    else {
+    } else {
       this.postTranscationFunction(type);
     }
   }
@@ -414,9 +414,9 @@ export class GenerateTransactionComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(
       DeleteConfirmationManualTransactionComponent,
       {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           mode: 'delete-manual-transaction',
@@ -441,33 +441,30 @@ export class GenerateTransactionComponent implements OnInit {
     let payload = {
       invMapID: this.invMapIDget,
     };
-    this.iAdminApiService.LocationData(payload).subscribe(
-      (res: any) => {
-        if (res?.isExecuted) {
-          let items = res.data.locationTables[0];
-          this.zone = items.zone;
-          this.isLocation = items.location;
-          this.carousel = items.carousel;
-          this.row = items.row;
-          this.shelf = items.shelf;
-          this.bin = items.bin;
-          this.totalQuantity = res.data.totalQuantity;
-          this.quantityAllocatedPick = res.data.pickQuantity;
-          this.quantityAllocatedPutAway = res.data.putQuantity;
-        } else {
-          this.global.ShowToastr(
-            'error',
-            this.global.globalErrorMsg(),
-            'Error!'
-          );
-          console.log('LocationData', res.responseMessage);
-        }
-      },
-      (error) => {}
-    );
+    this.iAdminApiService.LocationData(payload).subscribe((res: any) => {
+      if (res?.isExecuted) {
+        let items = res.data.locationTables[0];
+        this.zone = items.zone;
+        this.isLocation = items.location;
+        this.carousel = items.carousel;
+        this.row = items.row;
+        this.shelf = items.shelf;
+        this.bin = items.bin;
+        this.totalQuantity = res.data.totalQuantity;
+        this.quantityAllocatedPick = res.data.pickQuantity;
+        this.quantityAllocatedPutAway = res.data.putQuantity;
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
+        console.log('LocationData', res.responseMessage);
+      }
+    });
   }
 
-  updateTransactionFunction(){
+  updateTransactionFunction() {
     if (
       this.transQuantity === '0' ||
       this.transQuantity === 0 ||
@@ -478,7 +475,7 @@ export class GenerateTransactionComponent implements OnInit {
     } else if (this.warehouseSensitivity === 'True' && this.wareHouse == '') {
       this.transactionQtyInvalid = true;
       this.message = 'Specified Item Number must have a Warehouse';
-    }else {
+    } else {
       console.log(this.expDate);
       this.transactionQtyInvalid = false;
       //following sequence must follow to update
@@ -513,21 +510,19 @@ export class GenerateTransactionComponent implements OnInit {
         newValues: updateValsequence,
         transID: this.transactionID,
       };
-      this.iAdminApiService
-        .UpdateTransaction(payload)
-        .subscribe((res: any) => {
-          if (res?.isExecuted) {
-            this.global.ShowToastr(
-              'success',
-              labels.alert.success,
-              'Success!'
-            );
-            this.clearMatSelectList();
-          } else {
-            this.global.ShowToastr('error', res.responseMessage, 'Error!');
-            console.log('UpdateTransaction', res.responseMessage);
-          }
-        });
+      this.iAdminApiService.UpdateTransaction(payload).subscribe((res: any) => {
+        if (res?.isExecuted) {
+          this.global.ShowToastr('success', labels.alert.success, 'Success!');
+          this.clearMatSelectList();
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            res.responseMessage,
+            ToasterTitle.Error
+          );
+          console.log('UpdateTransaction', res.responseMessage);
+        }
+      });
     }
   }
 
@@ -537,21 +532,20 @@ export class GenerateTransactionComponent implements OnInit {
       this.isLocation &&
       this.transQuantity > this.totalQuantity
     ) {
-      this.isInvalidQuantityPopUp=true;
+      this.isInvalidQuantityPopUp = true;
       const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe((res) => {
         this.clearMatSelectList();
-        if(res){
+        if (res) {
           this.updateTransactionFunction();
         }
       });
-    }                                         
-    else {
+    } else {
       this.updateTransactionFunction();
     }
   }
@@ -578,7 +572,11 @@ export class GenerateTransactionComponent implements OnInit {
           this.transactionQtyInvalid = false;
         }
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
         console.log('SupplierItemIDInfo', res.responseMessage);
       }
     });
@@ -588,9 +586,9 @@ export class GenerateTransactionComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(
       TemporaryManualOrderNumberAddComponent,
       {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '1000px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           userName: this.userData.userName,

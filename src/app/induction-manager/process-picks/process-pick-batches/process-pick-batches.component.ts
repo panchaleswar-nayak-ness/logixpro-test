@@ -8,7 +8,7 @@ import { StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'sr
 @Component({
   selector: 'app-process-pick-batches',
   templateUrl: './process-pick-batches.component.html',
-  styleUrls: []
+  styleUrls: ['./process-pick-batches.component.scss']
 })
 export class ProcessPickBatchesComponent {
   orderInput: any;

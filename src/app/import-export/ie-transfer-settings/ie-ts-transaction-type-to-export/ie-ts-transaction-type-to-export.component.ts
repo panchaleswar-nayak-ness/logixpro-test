@@ -7,7 +7,7 @@ interface Actions {
 @Component({
   selector: 'app-ie-ts-transaction-type-to-export',
   templateUrl: './ie-ts-transaction-type-to-export.component.html',
-  styleUrls: []
+  styleUrls: ['./ie-ts-transaction-type-to-export.component.scss']
 })
 export class IeTsTransactionTypeToExportComponent {
 

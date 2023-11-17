@@ -8,6 +8,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-super-batch',
@@ -61,7 +62,7 @@ export class SuperBatchComponent implements OnInit {
         
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("SuperBatchIndex",res.responseMessage);
 
       }
@@ -79,7 +80,7 @@ export class SuperBatchComponent implements OnInit {
   }
   printBatchLabel(type){
     if(!this.printBatchLabels){
-      this.global.ShowToastr('error','Please Select a Batch ID to Print', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Please Select a Batch ID to Print', ToasterTitle.Error);
     }else{
       if(type=='printBatchLabels'){
     this.global.Print(`FileName:PrintSuperBatchLabel|ToteID:${this.printBatchLabels}`,'lbl');
@@ -110,9 +111,8 @@ export class SuperBatchComponent implements OnInit {
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ItemZoneDataSelect",res.responseMessage);
-
       }
       
     });
@@ -144,15 +144,15 @@ export class SuperBatchComponent implements OnInit {
       
       
     if (element.newToteID <= 1) {
-      this.global.ShowToastr('error','Must enter a tote id to batch orders', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Must enter a tote id to batch orders', ToasterTitle.Error);
       return;
     }
     if (element.orderToBatch <= 1) {
-      this.global.ShowToastr('error','Orders to Batch must be greater than 1 ', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Orders to Batch must be greater than 1 ', ToasterTitle.Error);
       return;
     }
     if (!element.newToteID) {
-      this.global.ShowToastr('error','Must enter a tote id to batch orders', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Must enter a tote id to batch orders', ToasterTitle.Error);
       return;
     }
 
@@ -195,10 +195,10 @@ export class SuperBatchComponent implements OnInit {
         this.iinductionManagerApi.TotePrintTableInsert({ "ToteID": element.newToteID.toString() }).subscribe(res => {
           if(res.isExecuted){
             this.superBatches.push(element.newToteID);
-            this.global.ShowToastr('success',labels.alert.success, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           }
           else{
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
             console.log("TotePrintTableInsert",res.responseMessage);
           }
 
@@ -206,7 +206,7 @@ export class SuperBatchComponent implements OnInit {
         this.getSuperBatchBy(this.type, this.itemNum);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("SuperBatchCreate");
       }
 
@@ -220,7 +220,7 @@ export class SuperBatchComponent implements OnInit {
   checkOTB(element: any, i : any) {
     if (element.orderToBatch <= 1) {
       this.dataSource[i].orderToBatch = 2;
-      this.global.ShowToastr('error','Orders to Batch must be greater than 1 ', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Orders to Batch must be greater than 1 ', ToasterTitle.Error);
     }
   }
 

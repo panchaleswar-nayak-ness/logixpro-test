@@ -15,7 +15,7 @@ import { MatSelect } from '@angular/material/select';
 export class SelectOrderComponentComponent implements OnInit {
   @ViewChild('matRef') matRef: MatSelect;
   @Input() orderNumber: string;
-  @Output() OrderTableData: EventEmitter<any> = new EventEmitter();
+  @Output() orderTableData: EventEmitter<any> = new EventEmitter();
   @Output() clear: EventEmitter<any> = new EventEmitter();
   @Output() transTypeEmitter: EventEmitter<any> = new EventEmitter();
   @Output() autocompleteSearchColumn: EventEmitter<any> = new EventEmitter();
