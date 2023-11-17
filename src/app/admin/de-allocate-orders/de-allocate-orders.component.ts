@@ -64,8 +64,8 @@ export class DeAllocateOrdersComponent implements OnInit {
   startRowOrder = 0;
   endRowOrder = 10;
   recordsPerPageOrder = 10;
-  sortColOrder = 0
-  sortOrder ='asc'
+  sortColOrder = 0;
+  sortOrder ='asc';
 
   isActiveTrigger:boolean =false;
 // pagination and sorting for transaction View

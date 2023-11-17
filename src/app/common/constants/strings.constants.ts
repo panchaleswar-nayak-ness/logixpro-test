@@ -171,6 +171,8 @@ export const AppRoutes = {
     AdminInventoryMaster:'/admin/inventoryMaster',
     ReportView:'/#/report-view',
     Logon:'/#/Logon/',
+    AdminCreateCounts: '/admin/createCounts',
+    AdminCreateCountBatches: '/admin/createCountBatches',
     OrderManagerInventoryMap:'/OrderManager/InventoryMap',
     AdminInventoryMap:'/admin/inventoryMap',
     InductionManagerInventoryMap:'/InductionManager/Admin/InventoryMap'
