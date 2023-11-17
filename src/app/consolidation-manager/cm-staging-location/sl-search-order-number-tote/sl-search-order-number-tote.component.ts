@@ -3,7 +3,7 @@ import { Component, EventEmitter, Output,Input } from '@angular/core';
 @Component({
   selector: 'app-SLSearchOrderNumberTote',
   templateUrl: './sl-search-order-number-tote.component.html',
-  styleUrls: []
+  styleUrls: ['./sl-search-order-number-tote.component.scss']
 })
 export class SLSearchOrderNumberToteComponent {
   

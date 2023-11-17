@@ -11,7 +11,7 @@ export class CountSelectOrdersComponentComponent {
  
     @ViewChild('paginator1') paginator1: MatPaginator; 
     @ViewChild('matSort1') sort1: MatSort;
-@Input() searchOrder1 : string='';
+@Input() searchOrderRight : string='';
 @Input() rightTable : any;
 @Input() displayedColumns1 : string[];
 @Output() applyFilter1Emit = new EventEmitter();
@@ -23,7 +23,7 @@ ngOnChanges() {
   this.rightTable.sort = this.sort1;
 }
 applyFilter1(filterValue){
-  this.applyFilter1Emit.emit(this.searchOrder1);
+  this.applyFilter1Emit.emit(this.searchOrderRight);
 }
 deleteItem(){
   this.deleteItemEmit.emit();

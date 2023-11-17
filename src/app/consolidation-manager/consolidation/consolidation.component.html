@@ -1,4 +1,4 @@
-<mat-card class="mat-elevation-z g-card mb-3 mt-2" style="height: 100%;">
+<mat-card class="mat-elevation-z g-card mb-3 mt-2 h-100">
     <mat-card-content>
         <div class="d-xl-flex d-block justify-content-between">
             
@@ -40,8 +40,8 @@
             </div>
             <div class="col-xl-3 d-xl-flex d-block align-items-end justify-content-end">
                 <div class="mx-auto mx-xl-0">
-                <button type="button" mat-flat-button color="secondary" class="secondary-btn btn-regular mb-3 px-0 w-100"
-                    style="color:var(--clr-primary-500);" (click)="clickToHide()"> {{ firstTable == true ? 'Hide Order Detail' : 'Show Order Detail' }}</button>
+                <button type="button" mat-flat-button color="secondary" class="secondary-btn btn-regular mb-3 px-0 w-100 text-primary-500"
+                     (click)="clickToHide()"> {{ firstTable == true ? 'Hide Order Detail' : 'Show Order Detail' }}</button>
                 </div>
             </div>
         </div>
@@ -56,8 +56,8 @@
             </div>
 
             <div class="col-lg-10">
-                <div class="card br-14 borderless px-0" style="overflow-x: auto;">
-                    <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 260px">
+                <div class="card br-14 borderless px-0 overflow-x-auto">
+                    <ng-scrollbar track="all" class="mat-table-scrollbar h-260">
                         <table class="w-100 table-borderless" mat-table #stageSort="matSort" matSort [dataSource]="stageTable" (matSortChange)="announceSortChangeStage($event)">
                             <ng-container matColumnDef="toteID">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Tote ID </th>
@@ -92,7 +92,7 @@
 
                            
                             
-                            <tr mat-header-row *matHeaderRowDef="stageColumns; sticky: true" style=" background-color: var(--clr-table-header);"></tr>
+                            <tr mat-header-row *matHeaderRowDef="stageColumns; sticky: true" class="table-header-clr"></tr>
                             <tr mat-row *matRowDef="let row; columns: stageColumns;"></tr>
                         </table>
                     </ng-scrollbar>

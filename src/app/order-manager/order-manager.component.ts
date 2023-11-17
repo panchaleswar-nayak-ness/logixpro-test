@@ -9,7 +9,7 @@ import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order
 @Component({
   selector: 'app-order-manager',
   templateUrl: './order-manager.component.html',
-  styleUrls: [],
+  styleUrls: ['./order-manager.component.scss'],
 })
 export class OrderManagerComponent implements OnInit {
   userData: any;

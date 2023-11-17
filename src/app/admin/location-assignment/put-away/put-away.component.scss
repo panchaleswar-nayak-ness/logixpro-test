@@ -14,3 +14,16 @@ table{
         }
     }
 }
+
+.put-away-component-card{
+    text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap
+}
+.put-away-overflow{
+    overflow-x: auto;
+}
+.put-away-button{
+    flex:1;
+}
+.put-away-scrollbar{
+height: 550px;
+}
