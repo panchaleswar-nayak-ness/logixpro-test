@@ -7,7 +7,7 @@ import { IFlowRackReplenishApi } from 'src/app/services/flowrackreplenish-api/fl
 import { FlowRackReplenishApiService } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AppIcons, AppNames, AppPermissions, AppRoutes, ResponseStrings, RouteNames, RouteUpdateMenu, StringAssignments, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
-
+import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 @Component({
   selector: 'app-fr-flowrack-replenishment',
   templateUrl: './fr-flowrack-replenishment.component.html',
@@ -108,7 +108,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   }
 
   locationChange(e) {
-    if (e.keyCode == 13) {      
+    if (e.keyCode == KeyboardCodes.ENTER) {      
       this.onLocationSelected()
     }
     this.clearQtyField()
@@ -130,7 +130,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   findItemLocation(event) {
     this.itemNumScan = event.target.value;
     this.clearQtyField();
-    if (event.keyCode == 13) {
+    if (event.keyCode == KeyboardCodes.ENTER) {
       this.locationRow = false;
       let payload = {
         "ItemNumber": this.itemNumScan,
@@ -187,7 +187,7 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
         }
       }))
     }
-    if(event.keyCode == 8){
+    if(event.keyCode == KeyboardCodes.BACKSPACE){
       if(!this.locationRow){
         this.itemNumScan = '';
       }
