@@ -154,7 +154,8 @@ export const AppNames = {
     ImportExport: 'ImportExport',
     Markout: 'Markout',
     OrderManager: 'OrderManager',
-    WorkManager: 'WorkManager'
+    WorkManager: 'WorkManager',
+   
 }
 
 export const AppRoutes = {
@@ -195,6 +196,7 @@ export const RouteNames = {
     Markout: 'Markout',
     OrderManager: 'Order Manager',
     WorkManager: 'Work Manager'
+
 }
 
 export const RouteUpdateMenu = {
