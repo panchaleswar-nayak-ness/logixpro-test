@@ -162,7 +162,6 @@ input:-webkit-autofill {
 .mat-icon-button.mat-primary,
 .mat-stroked-button.mat-primary {
   color: var(--clr-primary-500);
-  background: var(--clr-pure-white);
   // border: 1px solid var(--clr-primary-500);
 }
 
@@ -1588,6 +1587,10 @@ button.default-btn {
 }
 
 .custom-form-field-bg-white{
+  .mat-form-field-outline {
+    background: var(--clr-pure-white);
+    border-radius: 14px;
+  }
 &.mat-focused, .mat-form-field-disabled {
   .mat-form-field-outline {
     background: var(--clr-pure-white);
