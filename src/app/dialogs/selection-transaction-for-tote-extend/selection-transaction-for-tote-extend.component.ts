@@ -605,6 +605,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     try {
       const values = this.toteForm.value;
       if (!this.validationPopups({...values, type : 1})) return;
+      if(!this.validateOverReciept()) return;
 
       let payload = { zone: this.toteForm.value.zone };
       
@@ -670,6 +671,18 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
           }
         });
     } catch (error) {}
+  }
+
+  validateOverReciept(){
+    let toteQty = this.toteForm?.get('toteQty')?.value;
+    let transactionQuantity = this.toteForm?.get('transactionQuantity')?.value;
+    if(this.overReciept && toteQty > transactionQuantity){
+      this.global.ShowToastr("error","quantity cannot be greater than current transaction quantity","Error!");
+      return false;
+    }
+    else{
+      return true;
+    }
   }
 
   taskComplete(values : any) {
@@ -746,9 +759,6 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       if (res.isExecuted && res.data){
         this.imPreferences = res?.data?.imPreference;
         this.overReciept= res.data.imPreference.dontAllowOverReceipt;
-        const toteQtyControl = this.toteForm?.get('toteQty');
-        this.overReciept ? toteQtyControl?.disable() :toteQtyControl?.enable();
-        
       } else {
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         console.log("PickToteSetupIndex",res.responseMessage);
