@@ -25,7 +25,7 @@ export class CountOrderSelectionComponentComponent   {
     this.leftTable.paginator = this.paginator;
     this.leftTable.sort = this.sort;  
   }
-  applyFilter(filterValue){
+  applyFilter(){
     this.applyFilterEmit.emit(this.searchOrderLeft);
   }
   addOrdereDialog(){

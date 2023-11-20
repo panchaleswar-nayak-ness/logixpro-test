@@ -5,7 +5,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 @Component({
   selector: 'app-pick-select-orders-component',
   templateUrl: './pick-select-orders-component.component.html',
-  styleUrls: []
+  styleUrls: ['./pick-select-orders-component.component.scss']
 })
 export class PickSelectOrdersComponentComponent {
 
