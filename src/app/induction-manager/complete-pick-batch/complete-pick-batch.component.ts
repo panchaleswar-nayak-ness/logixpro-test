@@ -28,7 +28,7 @@ export class CompletePickBatchComponent{
   @ViewChild('BatchId') BatchIdField: ElementRef;
   @ViewChild('ToteId') ToteIdField: ElementRef;
   sortColumn: number = 1;
-  SortOrder: string = "asc";
+  sortOrder: string = "asc";
   startRow:number = 0;
   endRow:number = 10;
   totalTransactions: number = 0;
@@ -68,7 +68,7 @@ export class CompletePickBatchComponent{
       StartRow: this.startRow == 0 ? this.startRow : this.startRow + 1,
       EndRow: this.endRow,
       SortColumn: this.sortColumn,
-      SortOrder: this.SortOrder
+      SortOrder: this.sortOrder
     };
     if(this.batchId != ""){
       payload.BatchID = this.batchId;
@@ -230,7 +230,7 @@ export class CompletePickBatchComponent{
   announceSortChange(e: any) {
     console.log(e);
     this.sortColumn = this.sortColumns.filter((item: any) => item.tabelColName == e.active)[0].sortColumnNumber;
-    this.SortOrder = e.direction;
+    this.sortOrder = e.direction;
     this.startRow = 0;
     this.endRow = 10;
     this.paginator.pageIndex = 0;

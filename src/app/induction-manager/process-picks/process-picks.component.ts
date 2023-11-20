@@ -35,7 +35,7 @@ import {
   styleUrls: ['./process-picks.component.scss'],
 })
 export class ProcessPicksComponent implements OnInit {
-  TOTE_SETUP: any = [];
+  tote_Setup: any = [];
   dialogClose: boolean = false;
   public userData: any;
   batchID: any = '';
@@ -323,16 +323,16 @@ export class ProcessPicksComponent implements OnInit {
 
   createToteSetupTable(pickBatchQuantity: any) {
     this.pickType = 'MixedZones';
-    this.TOTE_SETUP = [];
+    this.tote_Setup = [];
     for (let index = 0; index < pickBatchQuantity; index++) {
-      this.TOTE_SETUP.push({
+      this.tote_Setup.push({
         position: index + 1,
         toteID: '',
         orderNumber: '',
         priority: '',
       });
     }
-    this.dataSource = new MatTableDataSource<any>(this.TOTE_SETUP);
+    this.dataSource = new MatTableDataSource<any>(this.tote_Setup);
     this.allOrders = [];
   }
 
@@ -352,7 +352,7 @@ export class ProcessPicksComponent implements OnInit {
 
   onAddBatch(val: string) {
     let filledTote: boolean = false;
-    this.TOTE_SETUP.map((obj) => {
+    this.tote_Setup.map((obj) => {
       if (obj.toteID !== '') {
         filledTote = true;
       }
@@ -403,7 +403,7 @@ export class ProcessPicksComponent implements OnInit {
                   this.iinductionManagerApi
                     .FillOrderNumber(payload)
                     .subscribe((res) => {
-                      this.TOTE_SETUP.forEach((element, key) => {
+                      this.tote_Setup.forEach((element, key) => {
                         element.orderNumber = res.data[key];
                       });
                     });
@@ -420,7 +420,7 @@ export class ProcessPicksComponent implements OnInit {
                   }
                 }
               }
-              this.TOTE_SETUP.map((obj) => {
+              this.tote_Setup.map((obj) => {
                 obj.toteID = '';
                 obj.orderNumber = '';
                 obj.priority = '';
@@ -448,7 +448,7 @@ export class ProcessPicksComponent implements OnInit {
                   this.iinductionManagerApi
                     .FillOrderNumber(payload)
                     .subscribe((res) => {
-                      this.TOTE_SETUP.forEach((element, key) => {
+                      this.tote_Setup.forEach((element, key) => {
                         element.orderNumber = res.data[key];
                       });
                     });
@@ -457,7 +457,7 @@ export class ProcessPicksComponent implements OnInit {
                   this.getAllToteIds(true);
                 }
               }
-              this.TOTE_SETUP.map((obj) => {
+              this.tote_Setup.map((obj) => {
                 obj.toteID = '';
                 obj.orderNumber = '';
               });
@@ -514,11 +514,11 @@ export class ProcessPicksComponent implements OnInit {
           } else {
             this.allOrders = [];
             this.resultObj = [];
-            this.TOTE_SETUP.forEach((element) => {
+            this.tote_Setup.forEach((element) => {
               element.orderNumber = '';
             });
           }
-          this.TOTE_SETUP.forEach((element, key) => {
+          this.tote_Setup.forEach((element, key) => {
             element.orderNumber = resultObj[key]?.orderNumber ?? '';
             element.priority = resultObj[key]?.priority ?? '';
           });
@@ -559,7 +559,7 @@ export class ProcessPicksComponent implements OnInit {
     this.iinductionManagerApi.NextTote().subscribe((res) => {
       if (res.isExecuted && res.data) {
         this.nxtToteID = res.data;
-        this.TOTE_SETUP.forEach((element, key) => {
+        this.tote_Setup.forEach((element, key) => {
           if (!element.toteID) {
             element.toteID = this.nxtToteID;
             this.nxtToteID = this.nxtToteID + 1;
@@ -600,7 +600,7 @@ export class ProcessPicksComponent implements OnInit {
     this.iinductionManagerApi.NextTote().subscribe((res) => {
       if (res.isExecuted && res.data) {
         this.nxtToteID = res.data;
-        for (let element of this.TOTE_SETUP) {
+        for (let element of this.tote_Setup) {
           if (element.toteID === '') {
             element.toteID = this.nxtToteID;
             this.nxtToteID = this.nxtToteID + 1;
@@ -620,13 +620,13 @@ export class ProcessPicksComponent implements OnInit {
   }
 
   clearAllTotes() {
-    this.TOTE_SETUP.forEach((element, key) => {
+    this.tote_Setup.forEach((element, key) => {
       element.toteID = '';
     });
   }
 
   clearAllOrders() {
-    this.TOTE_SETUP.forEach((element, key) => {
+    this.tote_Setup.forEach((element, key) => {
       element.orderNumber = '';
       element.priority = '';
     });
@@ -665,7 +665,7 @@ export class ProcessPicksComponent implements OnInit {
     this.iinductionManagerApi.NextTote().subscribe((res) => {
       if (res.isExecuted && res.data) {
         this.nxtToteID = res.data;
-        this.TOTE_SETUP[i].toteID = this.nxtToteID;
+        this.tote_Setup[i].toteID = this.nxtToteID;
         this.nxtToteID = this.nxtToteID + 1;
         this.updateNxtTote();
       } else {
@@ -680,8 +680,8 @@ export class ProcessPicksComponent implements OnInit {
   }
 
   clearOrderNumber(i: any) {
-    this.TOTE_SETUP[i].orderNumber = '';
-    this.TOTE_SETUP[i].priority = '';
+    this.tote_Setup[i].orderNumber = '';
+    this.tote_Setup[i].priority = '';
     this.allOrders[i] = '';
   }
 
@@ -715,12 +715,12 @@ export class ProcessPicksComponent implements OnInit {
     let Positions: any[] = [];
     let ToteIDs: any[] = [];
     let OrderNumbers: any[] = [];
-    this.TOTE_SETUP.map((obj) => {
+    this.tote_Setup.map((obj) => {
       Positions.push(obj.position?.toString() ?? '');
       ToteIDs.push(obj.toteID?.toString() ?? '');
       OrderNumbers.push(obj.orderNumber?.toString() ?? '');
     });
-    if (this.TOTE_SETUP.filter((e) => e.toteID).length == 0) {
+    if (this.tote_Setup.filter((e) => e.toteID).length == 0) {
       this.global.ShowToastr(
         ToasterType.Error,
         ToasterMessages.EnterToteId,
@@ -729,7 +729,7 @@ export class ProcessPicksComponent implements OnInit {
       this.dialog.closeAll();
       return;
     }
-    if (this.TOTE_SETUP.filter((e) => e.orderNumber).length == 0) {
+    if (this.tote_Setup.filter((e) => e.orderNumber).length == 0) {
       this.global.ShowToastr(
         ToasterType.Error,
         ToasterMessages.EnterOneOrderNoToProcess,
@@ -752,7 +752,7 @@ export class ProcessPicksComponent implements OnInit {
         if (res.isExecuted) {
           let btId = this.batchID;
           this.dialog.closeAll();
-          this.TOTE_SETUP.map((obj) => {
+          this.tote_Setup.map((obj) => {
             obj.toteID = '';
             obj.orderNumber = '';
             obj.priority = '';
@@ -791,7 +791,7 @@ export class ProcessPicksComponent implements OnInit {
           if (res.isExecuted) {
             let batId = this.batchID;
             this.dialog.closeAll();
-            this.TOTE_SETUP.map((obj) => {
+            this.tote_Setup.map((obj) => {
               obj.toteID = '';
               obj.orderNumber = '';
               obj.priority = '';
