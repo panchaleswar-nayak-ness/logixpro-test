@@ -18,7 +18,7 @@
             <div class="error" *ngIf="submit && !filterName">This field is required.</div>
         </div>
         <div class="d-flex justify-content-end pt-3">
-        <button [disabled]="!filter_name" mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="onNoClick(true, 'createNew')"  cdkFocusInitial>Submit</button>
+        <button [disabled]="!filterName" mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="onNoClick(true, 'createNew')"  cdkFocusInitial>Submit</button>
     </div>
     </div>
 

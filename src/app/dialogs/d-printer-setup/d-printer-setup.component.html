@@ -38,9 +38,9 @@
         </div>
         <div class="d-flex justify-content-end pt-3">
             <button type="submit"
-            [disabled]="!LabelPrinter || !ReportPrinter"
+            [disabled]="!labelPrinter || !reportPrinter"
             mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1"
-            (click)="UpdWSPrefsPrinters(ReportPrinter,LabelPrinter);ClosePopup();">Save</button>
+            (click)="UpdWSPrefsPrinters(reportPrinter,labelPrinter);ClosePopup();">Save</button>
         </div>
         
     </div>
