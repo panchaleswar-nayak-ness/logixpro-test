@@ -11,6 +11,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-zone',
@@ -118,7 +119,7 @@ export class AddZoneComponent implements OnInit {
               this.addUpdateZone(addZoneData, oldZone, mode)
             }
             else {
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
               console.log("deleteEmployeeZone",res.responseMessage);
             }
           });
@@ -139,10 +140,10 @@ export class AddZoneComponent implements OnInit {
     this.iAdminApiService.updateEmployeeZone(addZoneData).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialogRef.close({ data: addZoneData, mode: mode, oldZone: oldZone });
-        this.global.ShowToastr('success',labels.alert.success, 'Success!');
+        this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
       } else {
         
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
         console.log("updateEmployeeZone",res.responseMessage);
       }
     });

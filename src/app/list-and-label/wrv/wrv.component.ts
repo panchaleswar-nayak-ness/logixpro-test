@@ -11,14 +11,19 @@ import { SharedService } from 'src/app/services/shared.service';
 export class WrvComponent implements OnInit {
   env:string;
   file:string;
+  iframeSrc:string;
+
   @ViewChild('ListAndLabel', { static: true }) ListAndLabel: ElementRef;
   @ViewChild('myIframe', { static: true }) myIframeRef: ElementRef;
-  iframeSrc:string;
-  constructor(private route:ActivatedRoute,private sharedService:SharedService) {
- this.iframeSrc = `${this.env}/#/ListAndLabel/report-view?file=${this.file}`;  
+
+  constructor(
+    private route: ActivatedRoute,
+    private sharedService: SharedService
+  ) {
+    this.iframeSrc = `${this.env}/#/ListAndLabel/report-view?file=${this.file}`;  
     this.env = location.protocol + '//' + location.host; 
- 
-   } 
+  }
+
   ngOnInit(): void {
     let appd=JSON.parse(localStorage.getItem('availableApps') ?? '');
     this.sharedService.setMenuData(appd);
@@ -35,6 +40,7 @@ export class WrvComponent implements OnInit {
       
     }, 250);
   }
+
   generateHTMLAndAppend() { 
     const dynamicHtml = `
     <iframe style="width: 100%; height: 1000px;"  #myIframe src="${this.env}/#/report-view-iframe?file=${this.file}">
@@ -51,7 +57,5 @@ export class WrvComponent implements OnInit {
         console.log('Iframe URL does not match parent window URL. Closing the iframe...'); 
       }
   }
-}
- 
-
+  }
 }

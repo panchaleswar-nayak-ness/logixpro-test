@@ -93,7 +93,8 @@ export const ToasterTitle = {
     Consolidation: 'Consolidation!',
     Staging: 'Staging!',
     NoRows: 'No Rows',
-    BatchFilled: 'Batch is Filled.'
+    BatchFilled: 'Batch is Filled.',
+    Update: 'Update!'
 }
 
 export const ConfirmationHeadings = {
@@ -351,7 +352,22 @@ export const Case = {
 export const Mode = {
     HoldTransactions: 'hold-trans',
     DeleteTransaction: 'delete-transaction',
-    DeleteOrderStatus: 'delete-order-status'
+    DeleteZone: 'delete-zone',
+    DeletePickLevel: 'delete-picklevel',
+    DeleteLocation: 'delete-location',
+    DeleteConnectionString: 'delete-connection-string',
+    DeleteGroup: 'delete-group',
+    DeleteAllowedGroup: 'delete-allowed-group',
+    DeleteAllowedFunction: 'delete-allowed-funcation',
+    DeleteInvMap: 'delete-inventory-map',
+    DeleteEmp: 'delete-emp',
+    DeleteGrpAllowed: 'delete-grpallowed',
+    DeleteWarehouse: 'delete-warehouse',
+    DeleteVelocity: 'delete-velocity',
+    DeleteOrderStatus: 'delete-order-status',
+    DeleteCarrier: 'delete-carrier',
+    DeleteWorkstation: 'delete_workstation',
+    DeleteCategory: 'delete-category'
 }
 
 export const TableName = {

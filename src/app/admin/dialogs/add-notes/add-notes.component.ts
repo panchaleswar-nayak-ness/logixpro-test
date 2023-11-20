@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-add-notes',
   templateUrl: './add-notes.component.html',
-  styleUrls: []
+  styleUrls: ['./add-notes.component.scss']
 })
 export class AddNotesComponent {
   @ViewChild('notes_focus') notes_focus: ElementRef;

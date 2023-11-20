@@ -164,7 +164,7 @@ export class StatisticsLookupComponent implements OnInit {
     pet: ''
   };
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.dataSource.data = this.people;
     this.dataSource.filterPredicate = this.createFilter();
   }

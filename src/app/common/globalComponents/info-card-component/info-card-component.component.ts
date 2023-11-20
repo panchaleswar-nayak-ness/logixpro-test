@@ -6,10 +6,8 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./info-card-component.component.scss']
 })
 export class InfoCardComponentComponent {
-
   @Input() title : string= '';
   @Input() value : string= '-';
   @Input() colorClass : string;
-
 }
 
