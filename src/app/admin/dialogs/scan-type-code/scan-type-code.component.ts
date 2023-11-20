@@ -6,11 +6,12 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-scan-type-code',
   templateUrl: './scan-type-code.component.html',
-  styleUrls: []
+  styleUrls: ['./scan-type-code.component.scss']
 })
 export class ScanTypeCodeComponent implements OnInit {
   @ViewChildren('scan_code_type', { read: ElementRef }) scan_code_type: QueryList<ElementRef>;
@@ -47,7 +48,8 @@ export class ScanTypeCodeComponent implements OnInit {
   
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error
+        );
         console.log("ScanCodeTypes:", res);
         
       }
@@ -72,7 +74,8 @@ export class ScanTypeCodeComponent implements OnInit {
     this.scanTypeCode_list_Response.forEach(element => {
       if(element.toLowerCase() == newScanCode.toLowerCase() && cond) {
         cond = false;
-       this.global.ShowToastr('error','Already Exists', 'Error!');
+       this.global.ShowToastr(ToasterType.Error,'Already Exists', ToasterTitle.Error
+       );
       }   
     });
 
@@ -85,16 +88,19 @@ export class ScanTypeCodeComponent implements OnInit {
     this.iCommonAPI.CodeTypeSave(paylaod).subscribe((res) => {
       if(res.isExecuted){
         this.getScanCodeType();
-        this.global.ShowToastr('success',labels.alert.success, 'Success!');
+        this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success
+          );
       }
       else{
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error
+        );
         console.log("CodeTypeSave:", res.responseMessage);
       }
   
     });
   } else if(!newScanCode){
-    this.global.ShowToastr('error','Scan Codes cannot be empty', 'Error!');
+    this.global.ShowToastr(ToasterType.Error,'Scan Codes cannot be empty', ToasterTitle.Error
+    );
     console.log("CodeTypeSave");
   }
   }
@@ -122,10 +128,12 @@ export class ScanTypeCodeComponent implements OnInit {
           this.iCommonAPI.ScanCodeTypeDelete(paylaod).subscribe((res) => {
             if(res.isExecuted){
               this.getScanCodeType();
-            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success
+              );
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error
+            );
             console.log("ScanCodeTypeDelete:", res.responseMessage);
           }
           });
@@ -148,7 +156,8 @@ export class ScanTypeCodeComponent implements OnInit {
       }   
     });
     if(notselected){
-      this.global.ShowToastr('error','Please save the record first.', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Please save the record first.', ToasterTitle.Error
+      );
     }
 
   }

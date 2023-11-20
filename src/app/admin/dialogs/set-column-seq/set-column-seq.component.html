@@ -8,7 +8,7 @@
   <div cdkScrollable>
     <div class="outside" cdkScrollable>
       <div cdkDropList class="example-list" (cdkDropListDropped)="dropTable($event)">
-        <table mat-table #table [dataSource]="dataSource" style="width: 100%;" cdkDropList
+        <table class="mtTableSourceStyle" mat-table #table [dataSource]="dataSource" cdkDropList
           [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)">
           <ng-container matColumnDef="position">
             <th *matHeaderCellDef></th>

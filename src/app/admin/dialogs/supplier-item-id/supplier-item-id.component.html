@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="divWithClass"></div >
     <h1 class="m-0" mat-dialog-title>Supplier Item ID</h1>
 
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
@@ -27,15 +27,15 @@
 
             <mat-autocomplete class="card custom-scroll" #item="matAutocomplete" (optionSelected)="setItem($event)">
                 <h6 class ="card-header matAutoCompHeader ">
-                    <span style="width:  140px;">Supplier Item ID</span> 
-                    <span  style="width:  140px;">Description</span> 
-                    <span  style="width:  140px;">Item Number</span> 
+                    <span class="WSize140px" >Supplier Item ID</span> 
+                    <span class="WSize140px" >Description</span> 
+                    <span class="WSize140px" >Item Number</span> 
                 </h6>
                 <mat-option *ngFor="let option of searchAutocompleteItemNum" [value]="option.supplierItemID" class="matAutoCompTableContent">
                   <div class="loc_option"  (click)="getRow(option)" >
-                    <span  class="searchColumn" style="width:  140px;">{{option.supplierItemID}}</span> 
-                    <span title="{{option.description}}"  class="searchColumn" style="width:  140px; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;">{{option.description}}</span> 
-                    <span  class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span> 
+                    <span  class="searchColumn WSize140px">{{option.supplierItemID}}</span> 
+                    <span title="{{option.description}}"  class="searchColumn optionDescStyle">{{option.description}}</span> 
+                    <span  class="searchColumn WSize140px" >{{option.itemNumber}}</span> 
                 </div>
                 </mat-option>
               </mat-autocomplete>

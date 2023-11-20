@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
@@ -10,7 +11,7 @@ import { CommonApiService } from 'src/app/services/common-api/common-api.service
 @Component({
   selector: 'app-supplier-item-id',
   templateUrl: './supplier-item-id.component.html',
-  styleUrls: [],
+  styleUrls: ['./supplier-item-id.component.scss'],
 })
 export class SupplierItemIdComponent implements OnInit {
   @ViewChild('supplier_id') supplier_id: ElementRef;
@@ -59,11 +60,10 @@ export class SupplierItemIdComponent implements OnInit {
             this.searchAutocompleteItemNum = res.data;
           }
           else{
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("SupplierItemTypeAhead",res.responseMessage);
           }
         },
-        (error) => {}
       );
   }
   setItem(e) {

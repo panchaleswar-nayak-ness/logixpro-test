@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="addDivStyleC"></div>
     <h1 class="m-0" mat-dialog-title>Temporary Manual Order Number - Add New</h1>
 
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
@@ -63,16 +63,14 @@
                     <mat-autocomplete class="card custom-scroll" #item="matAutocomplete"
                         (optionSelected)="searchData($event)">
 
-                        <h6 class="card-header matAutoCompHeader "><span style="width:  140px;">Item Number</span> <span
-                                style="width:  140px;">Description</span> </h6>
+                        <h6 class="card-header matAutoCompHeader "><span class="WSize140px">Item Number</span> <span
+                            class="WSize140px">Description</span> </h6>
 
                         <mat-option *ngFor="let option of searchAutocompleteItemNum" [value]="option.itemNumber"
                             class="matAutoCompTableContent" (click)="$event.stopPropagation()">
                             <div class="loc_option">
-                                <span class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span> <span
-                                    class="searchColumn"
-                                    style="width:  140px; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
-                                    #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="option.description"
+                                <span class="searchColumn WSize140px">{{option.itemNumber}}</span> <span
+                                    class="searchColumn WSize140px descOptionStyleC" #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="option.description"
                                     [matTooltipDisabled]="option.description && option.description.length>=20?false:true">{{option.description}}</span>
                             </div>
                         </mat-option>
