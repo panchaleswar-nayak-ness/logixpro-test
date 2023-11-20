@@ -6,11 +6,12 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-location',
   templateUrl: './add-location.component.html',
-  styleUrls: []
+  styleUrls: ['./add-location.component.scss']
 })
 export class AddLocationComponent implements OnInit {
   @ViewChild('start_location') start_location: ElementRef;
@@ -113,10 +114,10 @@ export class AddLocationComponent implements OnInit {
       this.iAdminApiService.updateEmployeeLocation(payload).subscribe((res:any) => {
         if(res.isExecuted){
           this.dialogRef.close('update');
-          this.global.ShowToastr('success',labels.alert.update, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
         }else{
           
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
           console.log("updateEmployeeLocation",res.responseMessage);
         }
    });
@@ -124,10 +125,10 @@ export class AddLocationComponent implements OnInit {
       this.iAdminApiService.insertEmployeeLocation(payload).subscribe((res:any) => {
         if(res.isExecuted){
           this.dialogRef.close('add');
-          this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
         }else{
           
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
           console.log("insertEmployeeLocation",res.responseMessage);
         }
    });

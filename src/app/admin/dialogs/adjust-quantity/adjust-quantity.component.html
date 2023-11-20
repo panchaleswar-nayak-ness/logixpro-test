@@ -1,6 +1,6 @@
 
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="divWithClass"></div>
     <h1 class="m-0" mat-dialog-title>Adjust Quantity</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -102,7 +102,7 @@
     </div>
 
     <mat-dialog-actions>
-        <button style="flex: 1;"  type="submit" mat-flat-button class="btn-lg" color="primary" [disabled]="!isValid()">Save Changes</button>
+        <button type="submit" mat-flat-button class="btn-lg" color="primary flex-1" [disabled]="!isValid()">Save Changes</button>
     </mat-dialog-actions>
 </form>
 

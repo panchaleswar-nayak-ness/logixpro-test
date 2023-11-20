@@ -93,7 +93,8 @@ export const ToasterTitle = {
     Consolidation: 'Consolidation!',
     Staging: 'Staging!',
     NoRows: 'No Rows',
-    BatchFilled: 'Batch is Filled.'
+    BatchFilled: 'Batch is Filled.',
+    Update: 'Update!'
 }
 
 export const ConfirmationHeadings = {
