@@ -1,17 +1,18 @@
-<div class="unassigned-functions functions-list-wrap mt-3 p-3 br-14" style="border: 1px solid var(--clr-tertiary-50);">
+<div class="unassigned-functions functions-list-wrap mt-3 p-3 br-14 div-border">
   <div class="search-box zone-search-box">
     <div class="d-flex g-mini-search-box pb-4">
       <mat-form-field class="w-100" appearance="fill">
         <span class="material-symbols-outlined icon-search">
           search
         </span>
-        <input type="text" placeholder="Search Unassigned Function"
-          aria-label="Search Unassigned Function"  matInput [(ngModel)]="filterName" maxlength="50">
-      <button matSuffix *ngIf="filterName" class="clear-btn" (click)="clearFields()" ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-
+        <input type="text" placeholder="Search Unassigned Function" aria-label="Search Unassigned Function" matInput
+          [(ngModel)]="filterName" maxlength="50">
+        <button matSuffix *ngIf="filterName" class="clear-btn" (click)="clearFields()"><mat-icon
+            class="text-20 text-chrome-600">cancel</mat-icon></button>
       </mat-form-field>
     </div>
-    <button mat-stroked-button color="primary" class="button-add-all w-100 mb-3 justify-content-end" (click)="assignFunction(unassignedFunctions)" [disabled]="!isGroupLookUp">
+    <button mat-stroked-button color="primary" class="button-add-all w-100 mb-3 justify-content-end"
+      (click)="assignFunction(unassignedFunctions)" [disabled]="!isGroupLookUp">
       Add All
     </button>
     <div class="card w-100">
@@ -19,21 +20,21 @@
         Unassigned
       </div>
       <div class="card-body py-0 px-2">
-    <mat-list class="zones-list g-card-list list-style-1 pt-0" role="list">
-      <ng-scrollbar *ngIf="!filterValue" style="height: 380px" pointerEventsMethod="scrollbar">
-        <mat-list-item class="pt-2" role="listitem"  *ngFor="let groupname of unassignedFunctions | filterUnassignedFunc:filterName">
-          <span class="list-label zone-list-label">
-            {{groupname}}
-          </span>
-          <button mat-icon-button aria-label="Delete Function"  (click)="assignFunction(groupname)" matTooltip="Add" matTooltipPosition="above">
-            <mat-icon class="icon-circle-edit">add</mat-icon>
-          </button>
-        </mat-list-item>
-      </ng-scrollbar>
-
-    </mat-list>
+        <mat-list class="zones-list g-card-list list-style-1 pt-0" role="list">
+          <ng-scrollbar class="ng-scrollbar-height" *ngIf="!filterValue" pointerEventsMethod="scrollbar">
+            <mat-list-item class="pt-2" role="listitem"
+              *ngFor="let groupname of unassignedFunctions | filterUnassignedFunc:filterName">
+              <span class="list-label zone-list-label">
+                {{groupname}}
+              </span>
+              <button mat-icon-button aria-label="Delete Function" (click)="assignFunction(groupname)" matTooltip="Add"
+                matTooltipPosition="above">
+                <mat-icon class="icon-circle-edit">add</mat-icon>
+              </button>
+            </mat-list-item>
+          </ng-scrollbar>
+        </mat-list>
+      </div>
+    </div>
   </div>
-  </div>
-  </div>
-
 </div>
