@@ -19,7 +19,7 @@
     <div class="row">
       <div class="col-xxl-9">
         <div class="d-xl-flex gap-12 align-items-center">
-          <mat-form-field class="action-dropdown mb-3 w-100" appearance="outline" style="flex:1">
+          <mat-form-field class="action-dropdown mb-3 w-100 flex-1" appearance="outline">
             <mat-label>Select</mat-label>
             <mat-select class="employees-action" [(ngModel)]="columnSelect" (selectionChange)="actionDialog($event.value)">
               <mat-option selected value="Order Number">
@@ -36,7 +36,7 @@
           
           <span class="v-br mb-3 d-xl-block d-none">-</span>
 
-          <div class="d-flex g-mini-search-box mb-3" style="flex:1; min-width:40px">
+          <div class="d-flex g-mini-search-box mb-3 flex-grow-1 min-width-40px">
             <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value" style="min-width: 20px;">
               <span class="material-symbols-outlined icon-search">
                 Search
