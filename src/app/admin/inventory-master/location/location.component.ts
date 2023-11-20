@@ -10,7 +10,6 @@ import { MatSort } from '@angular/material/sort';
 })
 export class LocationComponent implements OnInit {
   @Input() fieldNameDetails: any;
-
   currentDir='asc';
   nextDir='desc';
   counter=0;
