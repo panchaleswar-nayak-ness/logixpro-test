@@ -12,7 +12,7 @@
               <span class="material-symbols-outlined icon-search">
                 search
               </span>
-              <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50"  [(ngModel)]="searchOrderRight" (ngModelChange)="applyFilter1($event)">
+              <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50"  [(ngModel)]="searchOrderRight" (ngModelChange)="applyFilterRight($event)">
               <button *ngIf="searchOrderRight != ''" matSuffix class="clear-btn" (click)="searchOrderRight = ''; this.rightTable.filter = searchOrderRight;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
             </mat-form-field>
           </div>
@@ -74,13 +74,13 @@
         </ng-container>
 
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell " [attr.colspan]="displayedColumns1.length">
+          <td class="mat-cell " [attr.colspan]="displayedColumnsSelectData.length">
             No data available in table.
           </td>
         </tr>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsSelectData"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsSelectData;"></tr>
         </table>
         </ng-scrollbar>
       </div>

@@ -5,6 +5,7 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { AddPickuplevelsComponent } from '../../dialogs/add-pickuplevels/add-pickuplevels.component';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { LiveAnnouncerMessage, StringConditions } from 'src/app/common/constants/strings.constants';
 
 
 export interface PickupLevelDetails {
@@ -15,13 +16,10 @@ export interface PickupLevelDetails {
   delete: string;
 }
 
-// employee_details table data
-
-
 @Component({
   selector: 'app-employee-pickup-level',
   templateUrl: './employee-pickup-level.component.html',
-  styleUrls: []
+  styleUrls: ['./employee-pickup-level.component.scss']
 })
 export class EmployeePickupLevelComponent{
   @Input() pickUplevels: any;
@@ -29,8 +27,8 @@ export class EmployeePickupLevelComponent{
   @Input() resetField: any;
   @Input() isAdd: boolean;
   @Output() relaodPickUpLvl = new EventEmitter<any>();
-  pickup_level_data: any = [];
-  pickup_level_data_source: any;
+  pickUpLevelData: any = [];
+  pickupLevelDataSource: any;
   searchPickLvl='';
   isLookup: boolean=false;
   constructor(private _liveAnnouncer: LiveAnnouncer, private global:GlobalService) {}
@@ -40,34 +38,31 @@ export class EmployeePickupLevelComponent{
 
    displayedColumns: string[] = ['pickLevel', 'startShelf', 'endShelf', 'edit'];
 
-
-
   ngOnChanges(changes: SimpleChanges): void { 
     if(this.pickUplevels){
       let max: number = Math.max(0,...this.pickUplevels.map(o => o.pickLevel));
       this.nextPickLvl = max+1;
     }
-   if(changes['resetField']?.currentValue){
+   if(changes[StringConditions.ResetField]?.currentValue){
     this.searchPickLvl='';
-    this.pickup_level_data_source.filter='';
-    this.pickup_level_data_source.length=0;
+    this.pickupLevelDataSource.filter='';
+    this.pickupLevelDataSource.length=0;
    }
-   
-    
-    this.pickup_level_data = this.pickUplevels;
-    this.pickup_level_data_source = new MatTableDataSource(this.pickup_level_data);
+       
+    this.pickUpLevelData = this.pickUplevels;
+    this.pickupLevelDataSource = new MatTableDataSource(this.pickUpLevelData);
 
-    if(changes['isAdd']?.currentValue){
+    if(changes[StringConditions.isAdd]?.currentValue){
   
-      this.isLookup=changes['isAdd']['currentValue'];
-     }else if(changes['isAdd'] && !changes['isAdd'].currentValue){
-      if(this.pickup_level_data?.length){
-        this.pickup_level_data.length=0;
+      this.isLookup=changes[StringConditions.isAdd][StringConditions.currentValue];
+     }else if(changes[StringConditions.isAdd] && !changes[StringConditions.isAdd].currentValue){
+      if(this.pickUpLevelData?.length){
+        this.pickUpLevelData.length=0;
       }
       this.searchPickLvl='';
-        this.pickup_level_data_source.filter='';
-      this.pickup_level_data_source=[];
-      this.isLookup=changes['isAdd']['currentValue'];
+        this.pickupLevelDataSource.filter='';
+      this.pickupLevelDataSource=[];
+      this.isLookup=changes[StringConditions.isAdd][StringConditions.currentValue];
    
      }
 
@@ -75,20 +70,20 @@ export class EmployeePickupLevelComponent{
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.pickup_level_data_source.filter = filterValue.trim().toLowerCase();
+    this.pickupLevelDataSource.filter = filterValue.trim().toLowerCase();
   }
   clear(){
     this.searchPickLvl='';
-    this.pickup_level_data_source.filter="";
+    this.pickupLevelDataSource.filter="";
   }
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
-    this.pickup_level_data_source.sort = this.sort;
+    this.pickupLevelDataSource.sort = this.sort;
   }
 
   pickUpLevelDialog(){

@@ -20,6 +20,8 @@ export const StringConditions = {
     SupplierItemID:'Supplier Item ID',
     ToteID: 'Tote ID',
     WaitingReprocess:'Waiting Reprocess',
+    Reprocess: 'Reprocess',
+    Complete: 'Complete',
     NotCompleted: 'Not Completed',
     NotAssigned: 'Not Assigned',
     No: 'No',
@@ -50,7 +52,14 @@ export const StringConditions = {
     Completed: 'Completed',
     on: 'on',
     off: 'off',
-    EntireOrder:'Entire Order'
+    EntireOrder:'Entire Order',
+    currentValue : 'currentValue',
+    history: 'history',
+    cleared: 'cleared',
+    set_column_sq : 'set_column_sq',
+    hold: 'hold',
+    reprocess: 'reprocess',
+    complete: 'complete'
 }
 
 export const ResponseStrings = {
@@ -343,5 +352,6 @@ export const Mode = {
 }
 
 export const TableName = {
-    OpenTransactions: 'Open Transactions'
+    OpenTransactions: 'Open Transactions',
+    OpenTransactionsTemp: 'Open Transactions Temp'
 }

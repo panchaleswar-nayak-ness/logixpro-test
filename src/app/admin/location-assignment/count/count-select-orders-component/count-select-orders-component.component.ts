@@ -9,11 +9,11 @@ import { MatSort, Sort } from '@angular/material/sort';
 })
 export class CountSelectOrdersComponentComponent {
  
-    @ViewChild('paginator1') paginator1: MatPaginator; 
-    @ViewChild('matSort1') sort1: MatSort;
+@ViewChild('paginator1') paginator1: MatPaginator; 
+@ViewChild('matSort1') sort1: MatSort;
 @Input() searchOrderRight : string='';
 @Input() rightTable : any;
-@Input() displayedColumns1 : string[];
+@Input() displayedColumnsSelectData : string[];
 @Output() applyFilter1Emit = new EventEmitter();
 @Output() deleteItemEmit = new EventEmitter();
 @Output() announceSortChange1Emit : EventEmitter<{ sortState : Sort }> = new EventEmitter();
@@ -22,7 +22,7 @@ ngOnChanges() {
   this.rightTable.paginator = this.paginator1;
   this.rightTable.sort = this.sort1;
 }
-applyFilter1(filterValue){
+applyFilterRight(filterValue){
   this.applyFilter1Emit.emit(this.searchOrderRight);
 }
 deleteItem(){
