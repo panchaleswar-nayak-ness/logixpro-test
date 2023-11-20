@@ -12,11 +12,11 @@ import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global
   styleUrls: []
 })
 export class DPrinterSetupComponent implements OnInit {
-  ReportPrinter:any;
-  LabelPrinter:any;
-  ListReportPrinter:any;
+  reportPrinter:any;
+  labelPrinter:any;
+  listReportPrinter:any;
   userData:any = {};
-  ListLabelPrinter:any;
+  listLabelPrinter:any;
   public  iGlobalConfigApi: IGlobalConfigApi;
   constructor(
     private dialog:MatDialog,
@@ -31,8 +31,8 @@ export class DPrinterSetupComponent implements OnInit {
 
   ngOnInit(): void { 
     this.getAllPrinters();
-      this.ReportPrinter = localStorage.getItem("SelectedReportPrinter");
-      this.LabelPrinter =   localStorage.getItem("SelectedLabelPrinter");
+      this.reportPrinter = localStorage.getItem("SelectedReportPrinter");
+      this.labelPrinter =   localStorage.getItem("SelectedLabelPrinter");
   }
 ClosePopup(){
   this.dialog.closeAll();
@@ -41,8 +41,8 @@ getAllPrinters(){
   this.iGlobalConfigApi.GetAllPrinters().subscribe((res:any)=>{
     if(res)
     {
-      this.ListLabelPrinter = res.data.filter(x=>x.label == "Able to Print Labels");
-      this.ListReportPrinter = res.data.filter(x=>x.label == "Not Able to Print Labels");
+      this.listLabelPrinter = res.data.filter(x=>x.label == "Able to Print Labels");
+      this.listReportPrinter = res.data.filter(x=>x.label == "Not Able to Print Labels");
     }
     else {
       this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');

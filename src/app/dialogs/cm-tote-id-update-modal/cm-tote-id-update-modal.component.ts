@@ -18,14 +18,14 @@ export class CmToteIdUpdateModalComponent implements OnInit {
 
   @ViewChild('conID') conID : ElementRef;
 
-  public IconsolidationAPI : IConsolidationApi;
+  public iConsolidationAPI : IConsolidationApi;
 
   constructor(private global:GlobalService,
               public dialogRef: MatDialogRef<CmToteIdUpdateModalComponent>,
               public consolidationAPI : ConsolidationApiService,
               private authService: AuthService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-                this.IconsolidationAPI = consolidationAPI;
+                this.iConsolidationAPI = consolidationAPI;
                }
 
   ngOnInit(): void {
@@ -55,7 +55,7 @@ export class CmToteIdUpdateModalComponent implements OnInit {
         contID: this.containerID
       };
 
-      this.IconsolidationAPI.ContIDShipTransUpdate(payLoad).subscribe(
+      this.iConsolidationAPI.ContIDShipTransUpdate(payLoad).subscribe(
         (res: any) => {
           if (res?.isExecuted) {
             this.dialogRef.close({

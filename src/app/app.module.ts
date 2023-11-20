@@ -62,8 +62,7 @@ import { CmShippingCarrierComponent } from './dialogs/cm-shipping-carrier/cm-shi
 import { OrderManagerComponent } from './order-manager/order-manager.component';
 import { CmAddNewItemToShipmentComponent } from './dialogs/cm-add-new-item-to-shipment/cm-add-new-item-to-shipment.component';
 import { CmPrintOptionsComponent } from './dialogs/cm-print-options/cm-print-options.component';
-import { CmOrderToteConflictComponent } from './dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
-import { SrReplenishmentProgressComponent } from './dialogs/sr-replenishment-progress/sr-replenishment-progress.component';
+import { CmOrderToteConflictComponent } from './dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component'; 
 import { OmEventLogEntryDetailComponent } from './dialogs/om-event-log-entry-detail/om-event-log-entry-detail.component';
 import { OmCreateOrdersComponent } from './dialogs/om-create-orders/om-create-orders.component';
 import { OmUpdateRecordComponent } from './dialogs/om-update-record/om-update-record.component';
@@ -71,9 +70,7 @@ import { OmAddRecordComponent } from './dialogs/om-add-record/om-add-record.comp
 import { OmEditTransactionComponent } from './dialogs/om-edit-transaction/om-edit-transaction.component';
 import { OmAddTransactionComponent } from './dialogs/om-add-transaction/om-add-transaction.component';
 import { OmChangesConfirmationComponent } from './dialogs/om-changes-confirmation/om-changes-confirmation.component';
-import { OmUserFieldDataComponent } from './dialogs/om-user-field-data/om-user-field-data.component';
-import { GcPrintServiceTestBeginComponent } from './dialogs/gc-print-service-test-begin/gc-print-service-test-begin.component';
-import { GcPrintServiceTestComponent } from './dialogs/gc-print-service-test/gc-print-service-test.component';
+import { OmUserFieldDataComponent } from './dialogs/om-user-field-data/om-user-field-data.component'; 
 import { OmChangePriorityComponent } from './dialogs/om-change-priority/om-change-priority.component';
 import { AuthGuard } from './init/AuthGuard.service';
 import { StagingLocationOrderComponent } from './dialogs/staging-location-order/staging-location-order.component';
@@ -173,8 +170,7 @@ import { IeMdExportInvertoryComponent } from './import-export/ie-manage-data/ie-
     OrderManagerComponent,
     CmAddNewItemToShipmentComponent,
     CmPrintOptionsComponent,
-    CmOrderToteConflictComponent,
-    SrReplenishmentProgressComponent,
+    CmOrderToteConflictComponent, 
     OmEventLogEntryDetailComponent,
     OmCreateOrdersComponent,
     OmUpdateRecordComponent,
@@ -182,9 +178,7 @@ import { IeMdExportInvertoryComponent } from './import-export/ie-manage-data/ie-
     OmEditTransactionComponent,
     OmAddTransactionComponent,
     OmChangesConfirmationComponent,
-    OmUserFieldDataComponent,
-    GcPrintServiceTestBeginComponent,
-    GcPrintServiceTestComponent,
+    OmUserFieldDataComponent, 
     OmChangePriorityComponent,
     StagingLocationOrderComponent,
     FrNumpadComponent,

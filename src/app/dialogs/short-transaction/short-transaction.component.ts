@@ -13,7 +13,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
   styleUrls: []
 })
 export class ShortTransactionComponent implements OnInit {
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi:IInductionManagerApiService;
   selectedTransaction: any;
   toteQuantity: any;
   @ViewChild('toteQty') toteQty: ElementRef;
@@ -26,7 +26,7 @@ export class ShortTransactionComponent implements OnInit {
     public dialogRef: MatDialogRef<ShortTransactionComponent>,
     private globalService: GlobalService
   ) { 
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   restrictKeyboard(event: KeyboardEvent) {
@@ -69,7 +69,7 @@ export class ShortTransactionComponent implements OnInit {
             "shortQuantity": this.toteQuantity,
             "shortMethod": "Complete"
           }
-          this.iinductionManagerApi.shortTransaction(payload).subscribe((res: any) => {
+          this.iInductionManagerApi.shortTransaction(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialogRef.close(res);
               this.global.ShowToastr('success',labels.alert.update, 'Success!');

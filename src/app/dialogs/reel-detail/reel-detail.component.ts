@@ -9,16 +9,15 @@ import { GlobalService } from 'src/app/common/services/global.service';
   templateUrl: './reel-detail.component.html',
   styleUrls: []
 })
-export class ReelDetailComponent implements OnInit {
-
-  ReelOrder:any;
-  ReelLot:any;
-  ReelExpDate:any;
-  ReelUF1:any;
-  ReelUF2:any;
-  ReelWarehouse:any;
-  ReelQty:any;
-  ReelNotes:any;
+export class ReelDetailComponent implements OnInit { 
+  reelOrder:any;
+  reelLot:any;
+  reelExpDate:any;
+  reelUF1:any;
+  reelUF2:any;
+  reelWarehouse:any;
+  reelQty:any;
+  reelNotes:any;
   wareHouseSensitivity:any;
   fieldNames:any;
 
@@ -34,25 +33,25 @@ export class ReelDetailComponent implements OnInit {
   ngOnInit(): void {
     this.fieldNames=this.data.propFields
     if(!this.data.fromtrans) {
-      this.ReelOrder = this.data.hvObj.order
-      this.ReelLot = this.data.hvObj.lot
-      this.ReelExpDate = this.data.hvObj.expdate
-      this.ReelUF1 = this.data.hvObj.uf1
-      this.ReelUF2 = this.data.hvObj.uf2
-      this.ReelWarehouse = this.data.hvObj.warehouse
-      this.ReelQty = this.data.gReelQty
-      this.ReelNotes = this.data.hvObj.notes
+      this.reelOrder = this.data.hvObj.order
+      this.reelLot = this.data.hvObj.lot
+      this.reelExpDate = this.data.hvObj.expdate
+      this.reelUF1 = this.data.hvObj.uf1
+      this.reelUF2 = this.data.hvObj.uf2
+      this.reelWarehouse = this.data.hvObj.warehouse
+      this.reelQty = this.data.gReelQty
+      this.reelNotes = this.data.hvObj.notes
       this.wareHouseSensitivity = this.data.itemObj.whseRequired
     }
     else {
-      this.ReelOrder = this.data.fromtrans.reelOrder
-      this.ReelLot = this.data.fromtrans.reelLot
-      this.ReelExpDate = this.data.fromtrans.reelExpDate
-      this.ReelUF1 = this.data.fromtrans.reelUF1
-      this.ReelUF2 = this.data.fromtrans.reelUF2
-      this.ReelWarehouse = this.data.fromtrans.reelWarehouse
-      this.ReelQty = this.data.gReelQty
-      this.ReelNotes = this.data.fromtrans.reelNotes
+      this.reelOrder = this.data.fromtrans.reelOrder
+      this.reelLot = this.data.fromtrans.reelLot
+      this.reelExpDate = this.data.fromtrans.reelExpDate
+      this.reelUF1 = this.data.fromtrans.reelUF1
+      this.reelUF2 = this.data.fromtrans.reelUF2
+      this.reelWarehouse = this.data.fromtrans.reelWarehouse
+      this.reelQty = this.data.gReelQty
+      this.reelNotes = this.data.fromtrans.reelNotes
       this.wareHouseSensitivity = this.data.itemObj.whseRequired
     }
   }
@@ -66,16 +65,16 @@ export class ReelDetailComponent implements OnInit {
     this.reelQuantitytemp.nativeElement.focus()
     if(this.wareHouseSensitivity) {
       this.wareHouseSensitivity = true;
-      if(!this.ReelWarehouse) setTimeout(() => { this.openWareHouse() }, 300);
+      if(!this.reelWarehouse) setTimeout(() => { this.openWareHouse() }, 300);
     }
     else {
-      this.ReelWarehouse = '';
+      this.reelWarehouse = '';
       this.wareHouseSensitivity = false;
     }
   }
 
   reelDetailSubmit(){
-    if(this.ReelQty == undefined || this.ReelQty == ""){
+    if(this.reelQty == undefined || this.reelQty == ""){
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '560px',
@@ -89,9 +88,9 @@ export class ReelDetailComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => { if(result) return; });
     }
     
-    if(this.ReelLot == '') this.ReelLot = 0;
+    if(this.reelLot == '') this.reelLot = 0;
 
-    if(this.wareHouseSensitivity && (this.ReelWarehouse == '') && this.ReelQty != undefined) {
+    if(this.wareHouseSensitivity && (this.reelWarehouse == '') && this.reelQty != undefined) {
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '560px',
@@ -103,35 +102,35 @@ export class ReelDetailComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe((result) => { if(result) this.openWareHouse(); });
-    } else if(this.wareHouseSensitivity && (this.ReelWarehouse != '') && this.ReelQty != undefined && this.ReelQty != "") {
+    } else if(this.wareHouseSensitivity && (this.reelWarehouse != '') && this.reelQty != undefined && this.reelQty != "") {
       let reelDetail = [
-        { reelQty:this.ReelQty },
+        { reelQty:this.reelQty },
         {
-          reelOrder: this.ReelOrder,
-          reelLot: this.ReelLot,
-          reelUF1: this.ReelUF1,
-          reelUF2: this.ReelUF2,
-          reelWarehouse: this.ReelWarehouse,
-          reelExpDate: this.ReelExpDate,
-          reelNotes: this.ReelNotes,
-          reelQty: this.ReelQty,
+          reelOrder: this.reelOrder,
+          reelLot: this.reelLot,
+          reelUF1: this.reelUF1,
+          reelUF2: this.reelUF2,
+          reelWarehouse: this.reelWarehouse,
+          reelExpDate: this.reelExpDate,
+          reelNotes: this.reelNotes,
+          reelQty: this.reelQty,
         }
       ];
       this.dialogRef.close(reelDetail);
     }
 
-    if(!this.wareHouseSensitivity && this.ReelQty != undefined && this.ReelQty != "") {
+    if(!this.wareHouseSensitivity && this.reelQty != undefined && this.reelQty != "") {
       let reelDetail = [
-        { reelQty:this.ReelQty },
+        { reelQty:this.reelQty },
         {
-          reelOrder: this.ReelOrder,
-          reelLot: this.ReelLot,
-          reelUF1: this.ReelUF1,
-          reelUF2: this.ReelUF2,
-          reelWarehouse: this.ReelWarehouse,
-          reelExpDate: this.ReelExpDate,
-          reelNotes: this.ReelNotes,
-          reelQty: this.ReelQty,
+          reelOrder: this.reelOrder,
+          reelLot: this.reelLot,
+          reelUF1: this.reelUF1,
+          reelUF2: this.reelUF2,
+          reelWarehouse: this.reelWarehouse,
+          reelExpDate: this.reelExpDate,
+          reelNotes: this.reelNotes,
+          reelQty: this.reelQty,
         }
       ];
       this.dialogRef.close(reelDetail);
@@ -152,10 +151,10 @@ export class ReelDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== true && result !== false) {
-        this.ReelWarehouse = result;
+        this.reelWarehouse = result;
         this.reelQuantitytemp.nativeElement.focus()
       }
-      if (result == 'clear') this.ReelWarehouse = '';
+      if (result == 'clear') this.reelWarehouse = '';
     });
   }
 

@@ -7,16 +7,16 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: [],
 })
 export class StagingLocationOrderComponent {
-  @ViewChild('field_focus') field_focus: ElementRef;
+  @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
-  Order: any;
+  order: any;
   constructor(public dialogRef: MatDialogRef<any>) {}
 
   ngAfterViewInit(): void {
-    this.field_focus?.nativeElement.focus();
+    this.fieldFocus?.nativeElement.focus();
   }
   async SubmitOrder() {
-    if (this.Order) this.dialogRef.close(this.Order);
+    if (this.order) this.dialogRef.close(this.order);
   }
   closeOrder() {
     this.dialogRef.close(false);

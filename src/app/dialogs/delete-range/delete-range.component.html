@@ -26,7 +26,7 @@
             <mat-form-field class="custom-form-field w-100" appearance="outline" 
             (keyup.enter)="closeautoMenuStart()" [floatLabel]="getFloatLabelValueStart()" [hideRequiredMarker]="hideRequiredControlStart.value" >
                 <mat-label>Begin</mat-label>
-                <input #del_focus matInput type="text" maxlength="50" [matAutocomplete]="auto"
+                <input #delFocus matInput type="text" maxlength="50" [matAutocomplete]="auto"
                     [(ngModel)]="repByDeletePayload.filter1" (keyup)="changeBegin()">
                 <mat-autocomplete #auto="matAutocomplete" #autocompleteStart>
                     <mat-option *ngFor="let option of beginAutoCompleteList" [value]="option">
@@ -55,7 +55,7 @@
             </mat-form-field>
         </div>
         <div class="d-flex justify-content-end pt-3">
-            <button style="flex:1" mat-flat-button color="warn" class="btn-lg w-100"
+            <button mat-flat-button color="warn" class="btn-lg w-100 flex-grow-1"
                 (click)="ReplenishmentsByDelete()">Delete</button>
         </div>
     </div>

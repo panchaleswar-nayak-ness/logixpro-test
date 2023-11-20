@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { GlobalService } from 'src/app/common/services/global.service';
+import { Component } from '@angular/core'; 
 
 @Component({
   selector: 'app-ie-invent-map-export',
@@ -7,7 +6,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: [],
 })
 export class IeInventMapExportComponent {
-  ELEMENT_DATA: any[] = [
+  elementData: any[] = [
     { mon: '' },
     { mon: '' },
     { mon: '' },
@@ -28,8 +27,8 @@ export class IeInventMapExportComponent {
     'am_pm',
     'actions',
   ];
-  tableData = this.ELEMENT_DATA;
+  tableData = this.elementData;
   dataSourceList: any;
 
-  constructor(private global: GlobalService) {}
+  constructor() {}
 }

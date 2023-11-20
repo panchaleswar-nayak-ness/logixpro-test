@@ -7,8 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: [],
 })
 export class CrDeleteConfirmationComponent {
-  constructor(public dialogRef: MatDialogRef<any>) {}
-
+  constructor(public dialogRef: MatDialogRef<any>) {} 
   deleteReport(check) {
     this.dialogRef.close(check);
   }

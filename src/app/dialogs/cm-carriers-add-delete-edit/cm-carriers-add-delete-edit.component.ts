@@ -13,16 +13,14 @@ export interface PeriodicElement {
   styleUrls: ['./cm-carriers-add-delete-edit.component.scss']
 })
 export class CmCarriersAddDeleteEditComponent{
-  ELEMENT_DATA: PeriodicElement[] = [
+  elementData: PeriodicElement[] = [
     {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
     {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
     {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
     {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
     {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  ];
-  
-  
+  ];  
   displayedColumns: string[] = ['select', 'action'];
-  periodicElementTable = this.ELEMENT_DATA;
+  periodicElementTable = this.elementData;
 
 }

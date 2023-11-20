@@ -25,7 +25,7 @@
             <div class="col-xl-6 ">
                 <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
                     <mat-label>Total Parts To Be Inducted</mat-label>
-                    <input #field_focus  matInput type="number" [(ngModel)]="partsInducted"  min=0 oninput="validity.valid||(value='');" (change)="updateRemaining()" >
+                    <input #fieldFocus  matInput type="number" [(ngModel)]="partsInducted"  min=0 oninput="validity.valid||(value='');" (change)="updateRemaining()" >
                 </mat-form-field>
             </div>
             <div class="col-xl-6 ">

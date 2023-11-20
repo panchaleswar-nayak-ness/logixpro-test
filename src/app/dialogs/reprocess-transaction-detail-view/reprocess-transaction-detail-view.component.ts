@@ -20,21 +20,21 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
   styleUrls: [],
 })
 export class ReprocessTransactionDetailViewComponent implements OnInit {
-  @ViewChild('field_focus') field_focus: ElementRef;
+  @ViewChild('fieldFocus') fieldFocus: ElementRef;
   itemID: any;
   userData: any;
   public iAdminApiService: IAdminApiService;
-  public iinductionManagerApi: IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
   fieldNames: any;
   constructor(
     private userService: AuthService,
     private global: GlobalService,
-    private inductionManagerApi: InductionManagerApiService,
-    private adminApiService: AdminApiService,
+    public inductionManagerApi: InductionManagerApiService,
+    public adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.iAdminApiService = adminApiService;
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
   reprocessInfo = new FormGroup({
     orderNumber: new FormControl({ value: '', disabled: true }),
@@ -79,7 +79,7 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
     this.OSFieldFilterNames();
   }
   ngAfterViewInit(): void {
-    this.field_focus?.nativeElement.focus();
+    this.fieldFocus?.nativeElement.focus();
   }
   public OSFieldFilterNames() {
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
@@ -94,7 +94,7 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
   getReprocessData() {
     let payLoad = { id: this.itemID };
 
-    this.iinductionManagerApi.RPDetails(payLoad).subscribe((res: any) => {
+    this.iInductionManagerApi.RPDetails(payLoad).subscribe((res: any) => {
       if (res?.isExecuted) {
         let item = res.data;
         this.reprocessInfo.controls.orderNumber.setValue(item.orderNumber);

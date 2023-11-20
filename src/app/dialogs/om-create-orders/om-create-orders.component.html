@@ -13,7 +13,7 @@
             <div class="col-xl-3">
                 <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-xl-0 mb-2" appearance="outline">
                     <mat-label>Order Number</mat-label>
-                    <input #ord_focus matInput value="value" type="text" [(ngModel)]="createOrdersDTPayload.orderNumber" 
+                    <input #ordfocus matInput value="value" type="text" [(ngModel)]="createOrdersDTPayload.orderNumber" 
                     (keyup)="searchItem(true)" (keyup.enter)="searchItem(true,true)" [matAutocomplete]="searchauto" maxlength="50" 
                     (focus)="focusinmethod()" (focusout)="focusoutmethod()">
                     <button matSuffix *ngIf="createOrdersDTPayload.orderNumber" class="clear-btn"  (click)="createOrdersDTPayload.orderNumber = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
