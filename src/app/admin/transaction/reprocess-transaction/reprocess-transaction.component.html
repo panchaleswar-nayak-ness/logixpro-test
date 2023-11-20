@@ -167,7 +167,7 @@
             </mat-card>
         </div>
         <div class="col-xl-4" [hidden]="isHistory">
-            <app-reprocess-choice (itemUpdatedEvent)="itemUpdatedEvent($event)" [reprocessCount]="orders"
+            <app-reprocess-choice (itemUpdatedEvent)="itemUpdatedEvent()" [reprocessCount]="orders"
                 [isEnabled]="isEnabled" [transactionID]="transactionID" [userData]="this.userData"
                 [isReprocessedChecked]="isReprocessedChecked" [isCompleteChecked]="isCompleteChecked"
                 [isHistoryChecked]="isHistoryChecked" [rOrder]="orderNumber" [rItem]="itemNumber"

@@ -4,7 +4,7 @@ import { AuthService } from '../../../../../app/init/auth.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-tran-in-reprocess',
@@ -14,6 +14,7 @@ import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.cons
 export class TranInReprocessComponent implements OnInit {
   selectedOption = "reprocess";
   reasonFilter = "none";
+
   @Input() selectedOrder: any;
 
   public userData : any;
@@ -61,7 +62,7 @@ export class TranInReprocessComponent implements OnInit {
   radioButtonChange(event) {
     this.orderNumber='';
     this.itemNumber='';
-    if(event.value === 'history') this.history = true;
+    if(event.value === StringConditions.history) this.history = true;
     else this.history = false;
     this.radioChangeEvent.emit({radioChange:true})
     this.reprocessSelectionEvent.emit(event.value);

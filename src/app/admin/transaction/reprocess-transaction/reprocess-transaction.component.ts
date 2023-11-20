@@ -16,6 +16,7 @@ import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/c
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -217,7 +218,7 @@ export class ReprocessTransactionComponent implements OnInit {
       if(this.searchFieldsTrueFalse.indexOf(this.columnSearch.searchColumn.colDef) > -1)
         if(RegExp(this.columnSearch.searchValue.toLowerCase()).exec(this.trueString)) this.switchTrueString=true;
         else if(RegExp(this.columnSearch.searchValue.toLowerCase()).exec(this.falseString)) this.switchTrueString=false;
-      this.autocompleteSearchColumn(false);
+      this.autoCompleteSearchColumn(false);
       this.getContentData();
     });
   }
@@ -226,15 +227,15 @@ export class ReprocessTransactionComponent implements OnInit {
     this.subscription.add(
       this.sharedService.reprocessItemObserver.subscribe(itemNo => {
         if(itemNo){
-          this.columnSearch.searchColumn.colDef='Item Number';
-          this.columnSearch.searchValue=itemNo;
+          this.columnSearch.searchColumn.colDef = Column.ItemNumber;
+          this.columnSearch.searchValue = itemNo;
         }
       })
     );
     this.dataSource.paginator = this.paginator;
   }
 
-  clearDelete(showOptions="")
+  clearDelete(showOptions = "")
   {
     if(showOptions==""){
       this.deleteReplenishment=true;
@@ -259,6 +260,7 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   selectedTransaction:any;
+
   getTransaction(row: any) {
     this.selectedTransaction = row;
     this.isEnabled = false;
@@ -266,33 +268,27 @@ export class ReprocessTransactionComponent implements OnInit {
     this.isReprocessedChecked.flag = row.reprocess != 'False';
     this.isCompleteChecked.flag = row.postAsComplete != 'False';
     this.isHistoryChecked.flag = row.sendToHistory != 'False';
-    this.itemNumber   = row.itemNumber;
-    this.orderNumber  = row.orderNumber;
+    this.itemNumber = row.itemNumber;
+    this.orderNumber = row.orderNumber;
     this.clearDelete("1");
   }
 
   getTransactionInfo(completeInfo: boolean) {
     if (!completeInfo) {
-      let payload = {
-        id: '' + this.transactionID + '', 
-      }
-      this.iAdminApiService.ReprocessTransactionData(payload).subscribe(
-        {next: (res: any) => {
+      let payload = { id: '' + this.transactionID + '' }
+      this.iAdminApiService.ReprocessTransactionData(payload).subscribe({
+        next: (res: any) => {
           if (res.data && res.isExecuted) {
             this.createdBy = res.data[0].nameStamp;
             this.transactionDateTime = res.data[0].dateStamp;
             this.reason = res.data[0].reason;
             this.reasonMessage = res.data[0].reasonMessage;
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log("ReprocessTransactionData",res.responseMessage);
           }
-        },
-        error: (error) => { }}
-      );
-    }
-    else {
-      //Get complete info for edit popup
+        }
+      });
     }
   }
 
@@ -301,18 +297,12 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   setQueryString() {
-    if(this.searchFieldsTrueFalse.indexOf(this.columnSearch.searchColumn.colDef) > -1 && this.switchTrueString){
-      this.queryString='1';
-    } 
-    else if(this.searchFieldsTrueFalse.indexOf(this.columnSearch.searchColumn.colDef) > -1 && !this.switchTrueString){
-      this.queryString='0';
-    } 
-    else {
-      this.queryString='';
-    }
+    if(this.searchFieldsTrueFalse.indexOf(this.columnSearch.searchColumn.colDef) > -1 && this.switchTrueString) this.queryString = '1';
+    else if(this.searchFieldsTrueFalse.indexOf(this.columnSearch.searchColumn.colDef) > -1 && !this.switchTrueString) this.queryString = '0';
+    else this.queryString = '';
   }
 
-  async autocompleteSearchColumn(isSearchByOrder: boolean = false) {
+  async autoCompleteSearchColumn(isSearchByOrder: boolean = false) {
    
     this.setQueryString();
 
@@ -321,7 +311,7 @@ export class ReprocessTransactionComponent implements OnInit {
       searchPayload = {
         query: this.orderNumber,
         tableName: 2,
-        column: 'Order Number',
+        column: Column.OrderNumber,
       };
     } else {
       searchPayload = {
@@ -330,28 +320,24 @@ export class ReprocessTransactionComponent implements OnInit {
         column: this.columnSearch.searchColumn.colDef, 
       };
     }
-    this.iAdminApiService
-      .NextSuggestedTransactions(searchPayload)
-      .subscribe(
-        {next: (res: any) => {
-          if(res.isExecuted && res.data)
-          {
-            if (isSearchByOrder) this.searchAutocompleteList = res.data;
-            else this.searchAutocompleteListByCol = res.data;
-          }
-          else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("NextSuggestedTransactions",res.responseMessage);
-          }
-        },
-        error: (error) => { }}
-      );
+    this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
+      next: (res: any) => {
+        if(res.isExecuted && res.data){
+          if (isSearchByOrder) this.searchAutocompleteList = res.data;
+          else this.searchAutocompleteListByCol = res.data;
+        } else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("NextSuggestedTransactions",res.responseMessage);
+        }
+      }
+    });
   }
 
   selectedOrderNumber(value: any) {
     this.orderNumber = value;
     this.isHistory ? this.getHistoryData() : this.getContentData();
   }
+  
   selectedItemNum(value: any) {
     this.itemNumber = value;
     this.isHistory ? this.getHistoryData() : this.getContentData();
@@ -416,17 +402,6 @@ export class ReprocessTransactionComponent implements OnInit {
             };
             break;
           case 'deleteBySelectedReason':
-            deletePayload = {
-              id: 0,
-              history: false,
-              reason: this.reason,
-              message: '',
-              dateStamp: '',
-              itemNumber: '',
-              orderNumber: '',
-              replenishments: false,
-            };
-            break;
           case 'deleteBySelectedMessage':
             deletePayload = {
               id: 0,
@@ -480,9 +455,9 @@ export class ReprocessTransactionComponent implements OnInit {
         }
         
         const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
-            height: 'auto',
+            height: DialogConstants.auto,
             width: '480px',
-            autoFocus: '__non_existing_element__',
+            autoFocus: DialogConstants.autoFocus,
             disableClose: true,
             data: {
               mode: '',
@@ -490,15 +465,15 @@ export class ReprocessTransactionComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((result) => {
-          if (result == 'Yes') {
+          if (result == StringConditions.Yes) {
             this.iAdminApiService.ReprocessTransactionDelete(deletePayload).subscribe((res: any) => {
               if (res.isExecuted) {
                 this.selectedVariable = '';
-                this.global.ShowToastr('success', labels.alert.update, 'Success!');
+                this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
                 this.getContentData('1');
                 this.getOrdersWithStatus();
               } 
-              else this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+              else this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             });
           } else this.selectedVariable = '';
         });
@@ -506,41 +481,33 @@ export class ReprocessTransactionComponent implements OnInit {
 
   actionDialog(opened: boolean) {
     if (this.selectedVariable != undefined) {
-      if (!opened && this.selectedVariable && this.selectedVariable === 'set_column_sq') {
-        let dialogRef: any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
-          height: 'auto',
+      if (!opened && this.selectedVariable && this.selectedVariable === StringConditions.set_column_sq) {
+        const dialogRef: any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
+          height: DialogConstants.auto,
           width: '960px',
           disableClose: true,
-          data: {
-            // mode: event,
-            tableName: 'Open Transactions Temp',
-          },
+          data: { tableName: TableName.OpenTransactionsTemp }
         });
 
         dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((result) => {
           this.selectedVariable = '';
           if (result?.isExecuted) this.getColumnsData();
         });
-      } else if (this.selectedVariable.includes('delete')) {
-        this.deleteReprocessTrans(opened);
-      }
+      } else if (this.selectedVariable.includes('delete')) this.deleteReprocessTrans(opened);
     }
   }
+
   sortChange(event) {
     if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
     let index;
-    this.columnValues.find((x, i) => {
-      if (x === event.active) index = i;
-    });
+    this.columnValues.find((x, i) => { if (x === event.active) index = i; });
     this.sortCol = index;
     this.sortOrder = event.direction;
     this.isHistory ? this.getHistoryData() : this.getContentData();
   }
 
   searchData() {
-    if (this.columnSearch.searchColumn || this.columnSearch.searchColumn == '') {
-      this.isHistory ? this.getHistoryData() : this.getContentData();
-    }
+    if (this.columnSearch.searchColumn || this.columnSearch.searchColumn == '') this.isHistory ? this.getHistoryData() : this.getContentData();
   }
 
   getFloatFormabelValue(): FloatLabelType {
@@ -549,7 +516,7 @@ export class ReprocessTransactionComponent implements OnInit {
 
   getProcessSelection(checkValues) {
     this.tableEvent = checkValues;
-    if (this.tableEvent === 'history') {
+    if (this.tableEvent === StringConditions.history) {
       this.isHistory = true;
       this.getHistoryData();
     }
@@ -560,7 +527,7 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   reasonFilterEvent(checkValues) {
-    if (checkValues === 'hold') {
+    if (checkValues === StringConditions.hold) {
       this.isHold = true;
       this.getContentData();
     }
@@ -575,59 +542,55 @@ export class ReprocessTransactionComponent implements OnInit {
       let message = "";
       let command = "";
 
-      if(event=='reprocess'){command = "reprocess"}
-      else if(event=='complete'){command = "complete"}
-      else if(event=='history'){command = "history"}
+      if(event == StringConditions.reprocess) { command = "reprocess" }
+      else if(event == StringConditions.complete) { command = "complete" }
+      else if(event == StringConditions.history) { command = "history" }
 
-      if(id==0) message = "Click ok to mark all transactions as " + command;
+      if(id == 0) message = "Click ok to mark all transactions as " + command;
       else message = "Click ok to unmark all transactions";
 
 
-      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
-        height: 'auto',
+      const dialogRef : any = this.global.OpenDialog(ConfirmationDialogComponent, {
+        height: DialogConstants.auto,
         width: '560px',
-        autoFocus: '__non_existing_element__',
-        disableClose:true,
-        data: {
-          message: message
-        }
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+        data: { message: message }
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        if(result=='Yes'){
+        if(result == StringConditions.Yes) {
           let MarkAsTrue = (id == 0);
           let column = "";
 
-          if (event == 'reprocess') column = 'Reprocess';
-          else if (event == 'complete') column = 'Post as Complete';
+          if (event == StringConditions.reprocess) column = 'Reprocess';
+          else if (event == StringConditions.complete) column = 'Post as Complete';
           else column = 'Send to History';
 
           let payload = {
             Column: column,
             MarkAsTrue: MarkAsTrue, 
-          }
+          };
           this.iAdminApiService.SetAllReprocessColumn(payload).subscribe({
             next: (res: any) => {
               if (res.data && res.isExecuted) { 
                 this.getContentData();
                 this.getOrdersWithStatus();
-                this.global.ShowToastr('success',labels.alert.update, 'Success!');
+                this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
               } else {
-                this.global.ShowToastr('error','Something went wrong', 'Error!');
+                this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
                 console.log("SetAllReprocessColumn",res.responseMessage);
               }
-            },
-            error: (error : Error) => { }
+            }
           });
         }
       });
     }
-    else 
-    {
-      let dialogRef:any = this.global.OpenDialog(FunctionAllocationComponent, {
-        height: 'auto',
+    else {
+      const dialogRef : any = this.global.OpenDialog(FunctionAllocationComponent, {
+        height: DialogConstants.auto,
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           target: 'unassigned',
@@ -635,27 +598,26 @@ export class ReprocessTransactionComponent implements OnInit {
         }
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-            let payloadForReprocess = {
-              id: id,
-              reprocess: 0,
-              postComplete: 0,
-              sendHistory: 0,
-              field: "", 
+      dialogRef.afterClosed().subscribe(() => {
+        let payloadForReprocess = {
+          id: id,
+          reprocess: 0,
+          postComplete: 0,
+          sendHistory: 0,
+          field: "", 
+        }
+        this.iAdminApiService.ReprocessIncludeSet(payloadForReprocess).subscribe({
+          next: (res: any) => {
+            if (res.data && res.isExecuted) {
+              this.getContentData();
+              this.getOrdersWithStatus();
+              this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
+            } else {
+              this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+              console.log("ReprocessIncludeSet",res.responseMessage);
             }
-            this.iAdminApiService.ReprocessIncludeSet(payloadForReprocess).subscribe({
-              next: (res: any) => {
-                if (res.data && res.isExecuted) {
-                  this.getContentData();
-                  this.getOrdersWithStatus();
-                  this.global.ShowToastr('success',labels.alert.update, 'Success!');
-                } else {
-                  this.global.ShowToastr('error','Something went wrong', 'Error!');
-                  console.log("ReprocessIncludeSet",res.responseMessage);
-                }
-              },
-              error: (error: Error) => { }
-            });
+          }
+        });
       });
     }
   }
@@ -672,15 +634,14 @@ export class ReprocessTransactionComponent implements OnInit {
           this.orders.completeOrders = res.data.complete;
           this.orders.historyOrders = res.data.history;
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
-          console.log("OrderToPost",res.responseMessage);
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+          console.log("OrderToPost", res.responseMessage);
         }
-      },
-      error: (error) => { }
+      }
     });
   }
 
-  itemUpdatedEvent(event: any) {
+  itemUpdatedEvent() {
     this.getContentData('1');
     this.getOrdersWithStatus();
     this.isEnabled = false; 
@@ -692,15 +653,13 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   selectOrder(row){
-    this.selectedOrderObj['orderNumber']=row.orderNumber;
-    this.selectedOrderObj['itemNumber']=row.itemNumber;
+    this.selectedOrderObj['orderNumber'] = row.orderNumber;
+    this.selectedOrderObj['itemNumber'] = row.itemNumber;
     this.sharedService.updateReprocess(this.selectedOrderObj)
   }
 
   getColumnsData() {
-    let payload = { 
-      tableName: 'Open Transactions Temp',
-    };
+    let payload = { tableName: TableName.OpenTransactionsTemp };
     this.iAdminApiService.GetColumnSequence(payload).subscribe({
       next: (res: any) => {
         this.displayedColumns = this.TRNSC_DATA;
@@ -708,46 +667,41 @@ export class ReprocessTransactionComponent implements OnInit {
           this.columnValues = res.data;
           this.getContentData();
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("GetColumnSequence",res.responseMessage);
         }
-      },
-      error: (error) => { }}
-    );
+      }
+    });
   }
 
-  getContentData(clear="") {
+  getContentData(clear = "") {
     this.rowClicked = "";
     let payload = {
       draw: 0,
-      searchString: this.queryString!=''?this.queryString:this.columnSearch.searchValue,
+      searchString: this.queryString != '' ? this.queryString : this.columnSearch.searchValue,
       searchColumn: this.columnSearch.searchColumn.colDef,
       start: this.customPagination.startIndex,
       length: this.customPagination.recordsPerPage,
-      orderNumber: clear==""?this.orderNumber:"",
+      orderNumber: clear == "" ? this.orderNumber : "",
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
-      itemNumber: clear==""?this.itemNumber:"" ,
+      itemNumber: clear == "" ? this.itemNumber : "",
       hold: this.isHold, 
     };
-    this.iAdminApiService
-      .ReprocessTransactionTable(payload)
-      .subscribe(
-        {next: (res: any) => {
-          if(res.isExecuted && res.data)
-          { 
+    this.iAdminApiService.ReprocessTransactionTable(payload).subscribe({
+      next: (res: any) => {
+        if(res.isExecuted && res.data) { 
           this.detailDataInventoryMap = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
           this.customPagination.total = res.data?.recordsFiltered;        
           this.dataSource.sort = this.sort;
-          }
-          else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("ReprocessTransactionTable",res.responseMessage);
-          }
-        },
-        error: (error) => { }}
-      );
+        }
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("ReprocessTransactionTable",res.responseMessage);
+        }
+      }
+    });
     this.clearTransactionData();
     this.clearDelete();
   }
@@ -765,22 +719,19 @@ export class ReprocessTransactionComponent implements OnInit {
       orderNumber: "",
       itemNumber: this.itemNumber, 
     };
-    this.iAdminApiService
-      .ReprocessedTransactionHistoryTable(payload)
-      .subscribe({
-        next: (res: any) => {
-          if (res.isExecuted && res.data) {
-            this.detailDataInventoryMap = res.data?.transactions;
-            this.dataSource = new MatTableDataSource(res.data?.transactions);
-            this.customPagination.total = res.data?.recordsFiltered;
-            this.dataSource.sort = this.sort;
-          } else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("ReprocessedTransactionHistoryTable",res.responseMessage);
-          }
-        },
-        error: (error) => { }
-      });
+    this.iAdminApiService.ReprocessedTransactionHistoryTable(payload).subscribe({
+      next: (res: any) => {
+        if (res.isExecuted && res.data) {
+          this.detailDataInventoryMap = res.data?.transactions;
+          this.dataSource = new MatTableDataSource(res.data?.transactions);
+          this.customPagination.total = res.data?.recordsFiltered;
+          this.dataSource.sort = this.sort;
+        } else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("ReprocessedTransactionHistoryTable", res.responseMessage);
+        }
+      }
+    });
     this.clearTransactionData();
   }
 

@@ -1,13 +1,11 @@
 import { Component, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-
 import labels from '../../../../labels/labels.json';
 import { SharedService } from '../../../../services/shared.service';
 import { MatSelect } from '@angular/material/select';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocess-choice',
@@ -74,8 +72,8 @@ export class ReprocessChoiceComponent  {
   }
 
   changeOrderStatus(status): void {
-    if (status == 'Reprocess') this.isCompleteChecked.flag = false;
-    else if (status == 'Complete') this.isReprocessedChecked.flag = false;
+    if (status == StringConditions.Reprocess) this.isCompleteChecked.flag = false;
+    else if (status == StringConditions.Complete) this.isReprocessedChecked.flag = false;
 
     let payload = {
       id: this.transactionID,
