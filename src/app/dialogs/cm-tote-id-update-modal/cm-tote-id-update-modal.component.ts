@@ -8,7 +8,7 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-tote-id-update-modal',
   templateUrl: './cm-tote-id-update-modal.component.html',
-  styleUrls: []
+  styleUrls: ['./cm-tote-id-update-modal.component.scss']
 })
 export class CmToteIdUpdateModalComponent implements OnInit {
   public userData: any;

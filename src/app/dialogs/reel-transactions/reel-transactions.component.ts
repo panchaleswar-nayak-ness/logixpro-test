@@ -24,7 +24,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 export class ReelTransactionsComponent implements OnInit {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
-  ELEMENT_DATA: any[] = [
+  elementData: any[] = [
     { reel_serial_number: '1202122', reel_part_quantity: '36' },
     { reel_serial_number: '1202122', reel_part_quantity: '36' },
     { reel_serial_number: '1202122', reel_part_quantity: '36' },

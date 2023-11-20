@@ -12,3 +12,12 @@ table{
 }
 
 
+::ng-deep.w-48px {
+    width: 48px;
+}
+::ng-deep .mat-icon-warehouse{
+    color:var(--clr-tertiary-900); transform: rotate(45deg);
+ }
+ ::ng-deep  .h-350{
+    height: 350px;
+ }

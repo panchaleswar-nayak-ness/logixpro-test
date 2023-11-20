@@ -1,6 +1,29 @@
-table{
-    th,td{
-        border:none;
+table {
+
+    th,
+    td {
+        border: none;
         white-space: nowrap;
     }
+}
+::ng-deep.w-48px {
+    width: 48px;
+}
+::ng-deep.max-height-75v {
+    max-height: 75vh
+}
+
+::ng-deep.table-shipping-th {
+    border: 0;
+    height: 66px;
+    padding-left: 65px;
+}
+::ng-deep.table-shipping-td {
+    border: 0;
+    padding-left: 24px;
+    background: #fff;
+}
+
+::ng-deep .table-shiping-tr  {
+    background-color: var(--clr-table-header);
 }

@@ -1,0 +1,12 @@
+table {
+    width: 100%;
+  }   
+::ng-deep.w-48px {
+  width: 48px;
+} 
+::ng-deep.h-500 {
+  height: 500px;
+} 
+::ng-deep.w-200 {
+  width: 200px;
+}

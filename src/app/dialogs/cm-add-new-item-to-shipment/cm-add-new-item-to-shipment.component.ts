@@ -8,7 +8,7 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-add-new-item-to-shipment',
   templateUrl: './cm-add-new-item-to-shipment.component.html',
-  styleUrls: []
+  styleUrls: ['./cm-add-new-item-to-shipment.component.scss']
 })
 export class CmAddNewItemToShipmentComponent{
   @ViewChild('contId') contId: ElementRef;

@@ -9,7 +9,7 @@ import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global
 @Component({
   selector: 'app-d-printer-setup',
   templateUrl: './d-printer-setup.component.html',
-  styleUrls: []
+  styleUrls: ['./d-printer-setup.component.scss']
 })
 export class DPrinterSetupComponent implements OnInit {
   reportPrinter:any;

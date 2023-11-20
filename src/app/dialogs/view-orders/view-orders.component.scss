@@ -1,4 +1,12 @@
 .selected {
     background-color: var(--clr-primary-300) !important;
     color: var(--clr-pure-white);
+  }::ng-deep  .h-280{
+    height: 280px;
+  }::ng-deep  .w-200{
+    width: 200px;
+  } 
+  ::ng-deep.w-48px {
+      width: 48px;
   }
+   

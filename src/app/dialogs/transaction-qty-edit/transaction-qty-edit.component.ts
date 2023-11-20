@@ -19,7 +19,7 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 @Component({
   selector: 'app-transaction-qty-edit',
   templateUrl: './transaction-qty-edit.component.html',
-  styleUrls: [],
+  styleUrls: ['./transaction-qty-edit.component.scss'],
 })
 export class TransactionQtyEditComponent implements OnInit {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;

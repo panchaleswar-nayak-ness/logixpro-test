@@ -17,7 +17,7 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-confirm-and-packing',
   templateUrl: './cm-confirm-and-packing.component.html',
-  styleUrls: []
+  styleUrls: ['./cm-confirm-and-packing.component.scss']
 })
 export class CmConfirmAndPackingComponent implements OnInit {
   @ViewChild('orderFocus') orderFocus: ElementRef;

@@ -21,7 +21,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 @Component({
   selector: 'app-cross-dock-transaction',
   templateUrl: './cross-dock-transaction.component.html',
-  styleUrls: [],
+  styleUrls: ['./cross-dock-transaction.component.scss'],
 })
 export class CrossDockTransactionComponent implements OnInit {
   @ViewChild('completefocus') completefocus: ElementRef;

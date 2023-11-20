@@ -10,7 +10,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 @Component({
   selector: 'app-blossom-tote',
   templateUrl: './blossom-tote.component.html',
-  styleUrls: []
+  styleUrls: ['./blossom-tote.component.scss']
 })
 export class BlossomToteComponent implements OnInit {
   @ViewChild('toteFocus') toteFocus: ElementRef;

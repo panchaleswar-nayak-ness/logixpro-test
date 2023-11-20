@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-pa-print-label-confirmation',
   templateUrl: './pa-print-label-confirmation.component.html',
-  styleUrls: [],
+  styleUrls: [ ],
 })
 export class PaPrintLabelConfirmationComponent {
   numberLabel: number = 0;

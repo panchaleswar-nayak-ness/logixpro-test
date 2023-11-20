@@ -11,7 +11,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-input-filter',
   templateUrl: './input-filter.component.html',
-  styleUrls: [],
+  styleUrls: ['./input-filter.component.scss'],
 })
 export class InputFilterComponent implements OnInit {
   @ViewChild('autFocus') autFocus: ElementRef;

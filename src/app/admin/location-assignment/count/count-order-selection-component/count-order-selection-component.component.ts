@@ -6,7 +6,7 @@ import { MatTable } from '@angular/material/table';
 @Component({
   selector: 'app-count-order-selection-component',
   templateUrl: './count-order-selection-component.component.html',
-  styleUrls: ['./count-order-selection-component.component.scss']
+  styleUrls: []
 })
 export class CountOrderSelectionComponentComponent   {
 

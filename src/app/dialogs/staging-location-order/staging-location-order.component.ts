@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-staging-location-order',
   templateUrl: './staging-location-order.component.html',
-  styleUrls: [],
+  styleUrls: ['./staging-location-order.component.scss'],
 })
 export class StagingLocationOrderComponent {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;

@@ -1,0 +1,20 @@
+.selected {
+  background-color: var(--clr-primary-300) !important;
+  color: var(--clr-pure-white);
+}
+
+::ng-deep.h-250 {
+  height: 250px;
+}
+
+::ng-deep.w-48px {
+  width: 48px;
+}
+
+::ng-deep.pl-64 {
+  padding-left: 64px;
+}
+
+::ng-deep.w-140 {
+  width: 140px;
+}

@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-print-replen-labels',
   templateUrl: './print-replen-labels.component.html',
-  styleUrls: [],
+  styleUrls: ['./print-replen-labels.component.scss'],
 })
 export class PrintReplenLabelsComponent {
   constructor(
