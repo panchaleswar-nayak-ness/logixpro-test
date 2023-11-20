@@ -18,7 +18,6 @@ export class UnassignedFunctionsComponent {
   employee_fetched_zones: string[] = [];
   filterName:any
 
-  constructor() {}
   public searchText: string;
 
   clearFields(){

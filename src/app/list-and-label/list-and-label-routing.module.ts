@@ -6,7 +6,6 @@ import { ListAndLabelComponent } from './list-and-label.component';
 
 const routes: Routes = [
   { path: '', component: ListAndLabelComponent },
-
   { path: 'report', component: WrdFrontendComponent },
   { path: 'report-view', component: WrvFrontendComponent }
 ];

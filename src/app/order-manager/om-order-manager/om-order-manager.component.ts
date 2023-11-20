@@ -6,13 +6,10 @@ import { AuthService } from 'src/app/init/auth.service';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
 import { ColumnSequenceDialogComponent } from 'src/app/admin/dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatButton } from '@angular/material/button';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
@@ -52,7 +49,7 @@ export class OmOrderManagerComponent implements OnInit {
   maxOrders : number = 0;
   transType : string = "Pick";
   viewType  : string = "Headers";
-  orderType : string = "Open";
+  orderType : string = StringConditions.orderTypeOpen;
 
   colList   : any = [];
   searchCol : string = "";
@@ -132,7 +129,6 @@ export class OmOrderManagerComponent implements OnInit {
     public adminApiService: AdminApiService,
     public authService      : AuthService,
     public globalService    : GlobalService,
-    private filterService   : ContextMenuFiltersService,
     private currentTabDataService: CurrentTabDataService,
     private global:GlobalService,
     private contextMenuService : TableContextMenuService,
@@ -392,7 +388,7 @@ export class OmOrderManagerComponent implements OnInit {
       this.global.ShowToastr(ToasterType.Error,"No Transactions match your current filters to release.", ToasterTitle.Error);
       return
     }
-    if (this.orderType == 'Open') {
+    if (this.orderType == StringConditions.orderTypeOpen) {
       this.global.ShowToastr(ToasterType.Error,"This orders you are viewing have already been released.", ToasterTitle.Error);
       return
     }
@@ -414,7 +410,7 @@ export class OmOrderManagerComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe((result) => {
-        if (result == 'Yes') {
+        if (result == StringConditions.Yes) {
 
           let payload = {
             val: this.viewType,
@@ -427,7 +423,7 @@ export class OmOrderManagerComponent implements OnInit {
               this.clearSearch();
             }
             else {
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
               console.log("ReleaseOrders",res.responseMessage);
             }
           });
@@ -453,7 +449,7 @@ export class OmOrderManagerComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe((result) => {
-        if (result == 'Yes') {
+        if (result == StringConditions.Yes) {
 
           let payload = {
             val: this.viewType,
@@ -466,7 +462,7 @@ export class OmOrderManagerComponent implements OnInit {
               this.clearSearch();
             }
             else{
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
               console.log("ReleaseOrders",res.responseMessage);
             }
           });

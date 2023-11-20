@@ -5,8 +5,10 @@ import { Directive, ElementRef, OnInit, Renderer2 } from '@angular/core';
 })
 export class ActionDisableDirective implements OnInit{
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-  }
+  constructor(
+    private elementRef: ElementRef, 
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {
     this.renderer.setAttribute(this.elementRef.nativeElement, "disabled", "true");

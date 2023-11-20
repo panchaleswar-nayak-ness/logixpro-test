@@ -16,19 +16,22 @@ table{
 }
 
 .pick-card{
-    text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap
+    text-overflow: ellipsis !important;
+     overflow: hidden !important; 
+    max-width: 20ch !important;
+     white-space: nowrap !important;
 
 }
 
 .pick-card-button{
-    flex:1;
+    flex:1 !important;
 }
 
 .pick-overflow{
-    overflow-x: auto;
+    overflow-x: auto !important;
 }
 
 .pick-height{
-height: 550px;
+height: 550px !important;
 
 }

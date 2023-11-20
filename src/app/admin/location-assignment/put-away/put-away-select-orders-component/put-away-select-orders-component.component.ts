@@ -5,7 +5,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 @Component({
   selector: 'app-put-away-select-orders-component',
   templateUrl: './put-away-select-orders-component.component.html',
-  styleUrls: []
+  styleUrls: ['./put-away-select-orders-component.scss']
 })
 export class PutAwaySelectOrdersComponentComponent {
 

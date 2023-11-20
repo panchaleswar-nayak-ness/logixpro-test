@@ -3,7 +3,7 @@
     <div class="prompt-wrap">
       <div class="d-flex justify-content-center prompt-icon-wrap">
         <ng-container>
-          <span *ngIf="btn_label == 'Add' else cancel" class="material-symbols-outlined prompt-icon-add">
+          <span *ngIf="btnLabel == 'Add' else cancel" class="material-symbols-outlined prompt-icon-add">
             add
           </span>
           <ng-template #cancel>
@@ -15,17 +15,15 @@
 
       </div>
       <p class="prompt-message py-4 mb-0">
-        {{dialog_msg}}
+        {{dialogMsg}}
       </p>
 
-      <h6 class="text-primary my-3 mb-5 {{btn_label == 'Add' ? 'text-primary' : 'text-danger'}}">{{btn_label == 'Add' ? 'Selected employees functions will be added once done' : 'This action can not be redone'}}</h6>
+      <h6 class="text-primary my-3 mb-5 {{btnLabel == 'Add' ? 'text-primary' : 'text-danger'}}">{{btnLabel == 'Add' ? 'Selected employees functions will be added once done' : 'This action can not be redone'}}</h6>
 
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="d-flex flex-column justify-content-center m-0 p-0">
-    <button [ngClass]="{'prompt-action-accent-button' : btn_label == 'Add', 'prompt-action-danger-button' : btn_label == 'Remove' }" class="mat-button-base btn-lg w-100 mb-3" mat-stroked-button mat-button
-      (click)="onConfirmAdd()" tabindex="1">{{btn_label}}</button>
-    <button class="mat-button-base prompt-action-basic-button btn-lg w-100" mat-button mat-dialog-close
-      tabindex="-1">Close</button>
+    <button [ngClass]="{'prompt-action-accent-button' : btnLabel == 'Add', 'prompt-action-danger-button' : btnLabel == 'Remove' }" class="mat-button-base btn-lg w-100 mb-3" mat-stroked-button mat-button (click)="onConfirmAdd()" tabindex="1">{{btnLabel}}</button>
+    <button class="mat-button-base prompt-action-basic-button btn-lg w-100" mat-button mat-dialog-close tabindex="-1">Close</button>
   </mat-dialog-actions>
 </div>

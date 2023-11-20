@@ -119,7 +119,7 @@ export class DetailComponent implements OnInit {
     });
   }
 
-  public opencategoryDialog() {
+  public openCategoryDialog() {
     let dialogRef:any = this.global.OpenDialog(ItemCategoryComponent, {
       height: DialogConstants.auto,
       width: '860px',
@@ -171,13 +171,13 @@ export class DetailComponent implements OnInit {
       });
     }
     else if(this.spliUrl[1] == 'InductionManager'){
-      this.router.navigate([]).then((result) => {
+      this.router.navigate([]).then(() => {
         let url = '/#/InductionManager/Admin/TransactionJournal?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
         window.open(url, '_blank');
       });
     }
     else{
-      this.router.navigate([]).then((result) => {
+      this.router.navigate([]).then(() => {
         let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
         window.open(url, '_blank');
       });
