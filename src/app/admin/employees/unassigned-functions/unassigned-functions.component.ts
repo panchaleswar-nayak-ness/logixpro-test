@@ -1,13 +1,10 @@
 import { Component, EventEmitter, Input,Output, Pipe, PipeTransform} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { GlobalService } from 'src/app/common/services/global.service';
-
-
 
 @Component({
   selector: 'app-unassigned-functions',
   templateUrl: './unassigned-functions.component.html',
-  styleUrls: []
+  styleUrls: ['unassigned-functions.component.scss']
 })
 export class UnassignedFunctionsComponent {
   @Input() unassignedFunctions: [];
@@ -21,7 +18,6 @@ export class UnassignedFunctionsComponent {
   employee_fetched_zones: string[] = [];
   filterName:any
 
-  constructor(private global:GlobalService) { }
   public searchText: string;
 
   clearFields(){
@@ -42,8 +38,6 @@ export class UnassignedFunctionsComponent {
   ngOnDestroy() {
     this.filterName = '';
   }
-
-
 }
 
 @Pipe({name: 'filterUnassignedFunc'})

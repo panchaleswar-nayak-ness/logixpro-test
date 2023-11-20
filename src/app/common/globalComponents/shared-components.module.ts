@@ -9,8 +9,6 @@ import { ColumnFilterComponentComponent } from './column-filter-component/column
 import { SortPipe } from 'src/app/init/sort.pipe';
 import { StatsCircleComponent } from './stats-circle/stats-circle.component';
 
-
-
 @NgModule({
   declarations: [
     TableContextMenuComponentComponent,
