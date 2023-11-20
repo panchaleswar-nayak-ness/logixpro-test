@@ -2,7 +2,7 @@
 
   <div class="col-xl-6"> 
     <app-count-order-selection-component [searchOrderLeft]="searchOrderLeft" [leftTable]="leftTable"
-      [displayedColumnsCountOrderData]="displayedColumnsLeft" (applyFilterEmit)="applyFilter($event)"
+      [displayedColumnsCountOrderData]="displayedColumnsLeft" (applyFilterEmit)="applyLeftFilter($event)"
       (addOrdereDialogEmit)="addOrdereDialog()" (announceSortChangeEmit)="announceSortChangeLeftTable($event.sortState)"
       (addEmit)="add($event)"></app-count-order-selection-component> 
   </div> 
@@ -10,7 +10,7 @@
     <app-count-select-orders-component [searchOrderRight]="searchOrderRight" [rightTable]="rightTable"
    
       [displayedColumnsSelectData]="displayedColumnsRight" (announceSortChange1Emit)="announceSortChangeRightTable($event.sortState)"
-      (applyFilter1Emit)="applyFilter1($event)" (deleteItemEmit)="deleteItem()"
+      (applyFilter1Emit)="applyRightFilter($event)" (deleteItemEmit)="deleteItem()"
       (removeEmit)="remove($event)"></app-count-select-orders-component> 
   </div> 
 </div>

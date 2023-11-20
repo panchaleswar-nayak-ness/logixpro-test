@@ -55,12 +55,8 @@ export class CountComponent implements OnInit {
 
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('paginator1') paginator1: MatPaginator;
-
- 
-
   @ViewChild('matSort') leftSort: MatSort;
   @ViewChild('matSort1') RightSort: MatSort;
-
   @ViewChild('deleteAction') quarantineTemp: TemplateRef<any>;
 
   @ViewChild('addOrder') addOrderTemp: TemplateRef<any>;
@@ -189,21 +185,20 @@ export class CountComponent implements OnInit {
   }
   
 
-  applyFilter(filterValue: string) {
+  applyLeftFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase(); 
     this.leftTable.filter = filterValue; 
   }
 
 
-  applyFilter1(filterValue: string) {
+  applyRightFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase(); 
     this.rightTable.filter = filterValue;
   }
   
   @ViewChild('table1') table1: MatTable<any>;
-
   @ViewChild('table2') table2: MatTable<any>;
 
 
