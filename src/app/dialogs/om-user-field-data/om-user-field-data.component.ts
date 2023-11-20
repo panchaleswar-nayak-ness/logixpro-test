@@ -10,7 +10,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-om-user-field-data',
   templateUrl: './om-user-field-data.component.html',
-  styleUrls: []
+  styleUrls: ['./om-user-field-data.component.scss']
 })
 export class OmUserFieldDataComponent implements OnInit {
   @ViewChild('userFocus') userFocus: ElementRef;

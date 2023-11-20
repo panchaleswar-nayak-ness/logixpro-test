@@ -3,4 +3,14 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+} 
+::ng-deep.w-48px {
+  width: 48px;
+}
+::ng-deep.height-65{
+height:65vh
+}
+::ng-deep.w-140{width: 140px;}
+::ng-deep.mt-5{
+    margin-top: 5px !important;
 }

@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Location Assignment</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -18,28 +18,28 @@
                     <mat-autocomplete class="card custom-scroll" #item="matAutocomplete">
             
                         <h6 class="card-header matAutoCompHeader">
-                            <span style="width:  190px;">Loc. Number</span> 
-                            <span style="width:  190px;">Whse</span> 
-                            <span style="width:  190px;">Loc.</span> 
-                            <span style="width:  140px;">Item #</span> 
-                            <span style="width:  140px;">Cell</span> 
-                            <span style="width:  140px;">Velocity</span> 
-                            <span style="width:  140px;">Stock</span> 
-                            <span style="width:  140px;">Max Qty</span> 
-                            <span style="width:  140px;">Qty Alloc</span> 
+                            <span class="w-190">Loc. Number</span> 
+                            <span class="w-190">Whse</span> 
+                            <span class="w-190">Loc.</span> 
+                            <span class="w-140">Item #</span> 
+                            <span class="w-140">Cell</span> 
+                            <span class="w-140">Velocity</span> 
+                            <span class="w-140">Stock</span> 
+                            <span class="w-140">Max Qty</span> 
+                            <span class="w-140">Qty Alloc</span> 
                         </h6>
                     
                         <mat-option *ngFor="let option of searchAutocompleteItemNum" [value]="option.locNum" class="matAutoCompTableContent">
                             <div class="loc_option" (click)="selectLoc(option)">
-                                <span class="searchColumn" style="width:  190px;">{{option.locNum}}</span> 
-                                <span class="searchColumn" style="width:  190px;">{{option.warehouse}}</span>
-                                <span class="searchColumn" style="width:  190px;">{{option.location}}</span>
-                                <span class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span>
-                                <span class="searchColumn" style="width:  140px;">{{option.cellSize}}</span>
-                                <span class="searchColumn" style="width:  140px;">{{option.velocity}}</span>
-                                <span class="searchColumn" style="width:  140px;">{{option.qty}}</span>
-                                <span class="searchColumn" style="width:  140px;">{{option.max}}</span>
-                                <span class="searchColumn" style="width:  140px;">{{option.qtyPut}}</span>
+                                <span class="searchColumn" class="w-190">{{option.locNum}}</span> 
+                                <span class="searchColumn" class="w-190">{{option.warehouse}}</span>
+                                <span class="searchColumn" class="w-190">{{option.location}}</span>
+                                <span class="searchColumn" class="w-140">{{option.itemNumber}}</span>
+                                <span class="searchColumn" class="w-140">{{option.cellSize}}</span>
+                                <span class="searchColumn" class="w-140">{{option.velocity}}</span>
+                                <span class="searchColumn" class="w-140">{{option.qty}}</span>
+                                <span class="searchColumn" class="w-140">{{option.max}}</span>
+                                <span class="searchColumn" class="w-140">{{option.qtyPut}}</span>
                             </div>
                         </mat-option>
 
@@ -55,7 +55,7 @@
     <button mat-stroked-button color="primary" class="btn-lg" [mat-dialog-close]="true">
         Close
     </button>
-    <button [disabled]="selectedLocation ? false : true" mat-flat-button color="primary" class="btn-lg" style="flex:1" (click)="submit()">
+    <button [disabled]="selectedLocation ? false : true" mat-flat-button color="primary" class="btn-lg flex-1"  (click)="submit()">
         Submit
     </button>
 </div>

@@ -11,7 +11,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 @Component({
   selector: 'app-om-event-log-entry-detail',
   templateUrl: './om-event-log-entry-detail.component.html',
-  styleUrls: []
+  styleUrls: ['./om-event-log-entry-detail.component.scss']
 })
 export class OmEventLogEntryDetailComponent implements OnInit {
 

@@ -6,15 +6,14 @@ import {
 } from '@angular/material/dialog';
 
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AuthService } from 'src/app/init/auth.service'; 
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-user-fields',
   templateUrl: './user-fields.component.html',
-  styleUrls: []
+  styleUrls: ['./user-fields.component.scss']
 })
 export class UserFieldsComponent implements OnInit {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;

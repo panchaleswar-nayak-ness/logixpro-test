@@ -7,7 +7,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-reel-detail',
   templateUrl: './reel-detail.component.html',
-  styleUrls: []
+  styleUrls: ['./reel-detail.component.scss']
 })
 export class ReelDetailComponent implements OnInit { 
   reelOrder:any;

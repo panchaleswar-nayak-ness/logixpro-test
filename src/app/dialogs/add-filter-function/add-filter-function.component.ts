@@ -9,7 +9,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-item-number',
   templateUrl: './add-filter-function.component.html',
-  styleUrls: []
+  styleUrls: ['./add-filter-function.component.scss']
 })
 export class AddFilterFunction implements OnInit {
   @ViewChild('filterFocus') filterFocus: ElementRef;
@@ -23,7 +23,7 @@ export class AddFilterFunction implements OnInit {
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global: GlobalService,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
     private authService: AuthService
   ) {
     this.iInductionManagerApi = inductionManagerApi;

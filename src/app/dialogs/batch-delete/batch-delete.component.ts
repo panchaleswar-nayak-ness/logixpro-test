@@ -9,7 +9,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-batch-delete',
   templateUrl: './batch-delete.component.html',
-  styleUrls: [],
+  styleUrls: ['./batch-delete.component.scss'],
 })
 export class BatchDeleteComponent implements OnInit {
   @ViewChild('batchIdFocus') batchIdFocus: ElementRef;

@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/init/auth.service';
 @Component({
   selector: 'app-cm-print-options',
   templateUrl: './cm-print-options.component.html',
-  styleUrls: [],
+  styleUrls: ['./cm-print-options.component.scss'],
 })
 export class CmPrintOptionsComponent implements OnInit {
   preview: any;

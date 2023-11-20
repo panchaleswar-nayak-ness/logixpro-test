@@ -9,7 +9,7 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-ship-edit-qty',
   templateUrl: './cm-ship-edit-qty.component.html',
-  styleUrls: []
+  styleUrls: ['./cm-ship-edit-qty.component.scss']
 })
 export class CmShipEditQtyComponent implements OnInit {
   @ViewChild('matInput') matInput: ElementRef;

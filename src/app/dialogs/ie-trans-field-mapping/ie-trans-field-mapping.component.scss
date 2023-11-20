@@ -12,3 +12,13 @@ table{
       padding-right: 15px;
     }
   }
+  ::ng-deep .w-48px {
+    width: 48px;
+  }
+  ::ng-deep .height-545 {
+      height: 545px;
+    }
+    
+    ::ng-deep  .table-settings-tr{
+        background-color: var(--clr-table-header);
+    }

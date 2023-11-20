@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Carriers - Add, Delete, Edit</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -13,7 +13,7 @@
     </button>
 </div>
 <div class="card br-14 table-responsive borderless">
-    <ng-scrollbar class="mat-table-scrollbar" style="height:345px" track="all">
+    <ng-scrollbar class="mat-table-scrollbar height-345" track="all">
         <table class="w-100 table-borderless" mat-table [dataSource]="periodicElementTable" matSort>
             <ng-container matColumnDef="select" sticky>
                 <th mat-header-cell *matHeaderCellDef> Carriers </th>
@@ -43,7 +43,7 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
-                style=" background-color: var(--clr-table-header);"></tr>
+               class="table-backcolor"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </ng-scrollbar>

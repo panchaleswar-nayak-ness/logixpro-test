@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-cm-order-tote-conflict',
   templateUrl: './cm-order-tote-conflict.component.html',
-  styleUrls: [],
+  styleUrls: ['./cm-order-tote-conflict.component.scss'],
 })
 export class CmOrderToteConflictComponent {
   order: any;

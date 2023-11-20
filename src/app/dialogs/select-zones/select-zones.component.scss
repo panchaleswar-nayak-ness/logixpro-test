@@ -26,4 +26,10 @@
     -webkit-hyphens: auto;
     hyphens: auto;
 }
+ ::ng-deep .h-60v{
+        height: 60vh;
+  }
+  ::ng-deep .w-48px{
+    width: 48px;
+}
   
