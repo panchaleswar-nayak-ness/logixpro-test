@@ -4,20 +4,17 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/init/auth.service'; 
 import { FormControl, FormGroup, Validators } from '@angular/forms'; 
 import labels from '../../../labels/labels.json';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-
-
-
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocess-transaction-detail',
   templateUrl: './reprocess-transaction-detail.component.html',
-  styleUrls: []
+  styleUrls: ['./reprocess-transaction-detail.component.scss']
 })
 export class ReprocessTransactionDetailComponent implements OnInit {
   @ViewChild('trans_qty') trans_qty: ElementRef;
@@ -43,9 +40,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private global: GlobalService,
     public dialogRef: MatDialogRef<any>, 
-    private Api:ApiFuntions, 
-     
-    private authService: AuthService,private adminApiService: AdminApiService) { this.iCommonAPI = commonAPI; 
+    private authService: AuthService,public adminApiService: AdminApiService) { this.iCommonAPI = commonAPI; 
     this.iAdminApiService = adminApiService;
   }
 
@@ -98,7 +93,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.fieldNames = res.data;
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ColumnAlias",res.responseMessage);
       }
 
@@ -108,13 +103,8 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
     let currentLotNumber = this.editTransactionForm.get("lotNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("lotNumber")?.value?.toString();
     let currentSerialNumber = this.editTransactionForm.get("serialNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("serialNumber")?.value?.toString();
-
-
-
     this.editTransactionForm.get("lotNumber")?.setValue(parseInt(currentLotNumber ?? '').toString());
     this.editTransactionForm.get("serialNumber")?.setValue(parseInt(currentSerialNumber ?? '').toString());
-
-
   }
 
   editTransaction() { 
@@ -279,7 +269,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
           console.log("TransactionByID",res.responseMessage);
         }
       },
-      error: (error) => { }}
+      }
     );
   }
 
