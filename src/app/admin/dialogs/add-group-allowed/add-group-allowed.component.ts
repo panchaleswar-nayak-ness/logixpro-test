@@ -21,7 +21,7 @@ export class AddGroupAllowedComponent implements OnInit {
   @ViewChild('control_name') control_name: ElementRef;
   form_heading: string = 'Add Group Allowed';
   form_btn_label: string = StringConditions.AddCaps;
-  GroupName: any;
+  groupName: any;
   public iAdminApiService: IAdminApiService;
   controlNameList: any[] = [];
   options: string[] = [];
@@ -88,11 +88,11 @@ export class AddGroupAllowedComponent implements OnInit {
     this.iAdminApiService.submitControlResponse(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialog.closeAll();
-        this.global.ShowToastr('success',labels.alert.success, 'Success!'); 
+        this.global.ShowToastr(ToasterType.Error,labels.alert.success, ToasterTitle.Error); 
       }
       else{
         
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("submitControlResponse",res.responseMessage);
       }
     });

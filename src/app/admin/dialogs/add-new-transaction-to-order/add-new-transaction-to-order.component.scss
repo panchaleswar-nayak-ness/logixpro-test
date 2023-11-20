@@ -2,3 +2,10 @@
     z-index: 9999;
 }
 ::ng-deep  .cdk-overlay-container { z-index: 9999; }
+
+.divWithClass{
+    width:48px !important;
+}
+.ngScrollbarclass-style{
+    height: 70vh !important;
+}

@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center" mat-dialog-title>
-    <div style="width:48px"></div>
+    <div class="column-sequence-card"></div>
     <h1 class="m-0" mat-dialog-title>Set Column Sequence</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
         <mat-icon class="close-icon">close</mat-icon>
@@ -15,7 +15,7 @@
                         Unordered Columns
                     </div>
                     <div class="card-body py-0 example-container">
-                            <div cdkScrollable scrollViewport  class="custom-scrollbar" style="height: 53vh; -webkit-overflow-scrolling: touch;">
+                            <div cdkScrollable scrollViewport  class="custom-scrollbar column-sequence-height" >
                                 <mat-list cdkDropList [cdkDropListData]="unorderedCol" class="example-list"
                                     (cdkDropListDropped)="drop($event)" class="zones-list g-card-list list-style-1"
                                     role="list">
@@ -47,7 +47,7 @@
                         Default Columns
                     </div>
                     <div class="card-body py-0 example-container">
-                            <div cdkScrollable scrollViewport class="custom-scrollbar" style="height: 53vh; -webkit-overflow-scrolling: touch;">
+                            <div cdkScrollable scrollViewport class="custom-scrollbar column-sequence-height" >
                                 <mat-list cdkDropList [cdkDropListData]="defaultCol" class="example-list"
                                     (cdkDropListDropped)="drop($event)" class="zones-list g-card-list list-style-1"
                                     role="list">
@@ -84,7 +84,7 @@
             Column</button>
         <button type="submit"  (click)="restoreCol()"  mat-stroked-button class="restore-to-default-btn form-button-submit btn-lg m-1 m-xl-0" color="primary">Restore To
             Default</button>
-        <button type="submit" (click)="save()"  mat-flat-button class="w-100 form-button-submit btn-lg m-1 m-xl-0" color="primary" style="flex:1">Save as
+        <button type="submit" (click)="save()"  mat-flat-button class="w-100 form-button-submit btn-lg m-1 m-xl-0 flex-grow-1" color="primary">Save as
             Default</button>
     </div>
 </mat-dialog-actions>

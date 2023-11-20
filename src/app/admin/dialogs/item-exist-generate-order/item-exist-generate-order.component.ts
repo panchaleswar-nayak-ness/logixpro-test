@@ -7,7 +7,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: []
 })
 export class ItemExistGenerateOrderComponent implements OnInit {
+  
   itemNumber;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>

@@ -6,7 +6,6 @@ import {
 
 import { AuthService } from 'src/app/init/auth.service';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -35,8 +34,7 @@ export class HoldReasonComponent implements OnInit {
     private adminApiService: AdminApiService,
     private global:GlobalService,
     public dialogRef: MatDialogRef<HoldReasonComponent>,
-    private authService: AuthService,
-    private Api: ApiFuntions,
+    private authService: AuthService
    ) {
     this.iAdminApiService = adminApiService;
   }

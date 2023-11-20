@@ -8,9 +8,6 @@ import { Component } from '@angular/core';
 export class ListAndLabelComponent {
   env:string;
   constructor() {
-     
     this.env = location.protocol + '//' + location.host; 
- 
-   }
-
+  }
 }

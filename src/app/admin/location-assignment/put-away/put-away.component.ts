@@ -7,10 +7,12 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/init/auth.service';
 import labels from '../../../labels/labels.json';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ConfirmationMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+
 
 @Component({
   selector: 'app-put-away',
@@ -129,7 +131,7 @@ export class PutAwayComponent implements OnInit {
 
   locationAssignment() {
     if (this.tableData2.data.length == 0) {
-      this.global.ShowToastr('error',"There were no orders selected for location assignment marking", 'No Orders Selected');
+      this.global.ShowToastr(ToasterType.Error,"There were no orders selected for location assignment marking", ConfirmationMessages.NoOrdersSelected);
     }
     else {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -152,9 +154,9 @@ export class PutAwayComponent implements OnInit {
             if (res.isExecuted && res.data) {
               this.tableData2 = new MatTableDataSource([]);
               this.tableData2.paginator = this.paginator2;
-              this.global.ShowToastr('success',labels.alert.success, 'Success!');
+              this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             } else {
-              this.global.ShowToastr('error',"There was an error marking these orders for location assignment", 'Error');
+              this.global.ShowToastr(ToasterType.Error,"There was an error marking these orders for location assignment", ToasterTitle.Error);
               console.log("LocationAssignmentOrderInsert",res.responseMessage);
             }
           });
