@@ -86,7 +86,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
                         <mat-label>Completed Qty</mat-label>
-                        <input [NumbersOnly]="true" #complete_focus  (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.completedQuantity}}" #compQty (focusout)="compQtyChange({ i, compQty : compQty.value })">
+                        <input [NumbersOnly]="true" #completefocus  (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.completedQuantity}}" #compQty (focusout)="compQtyChange({ i, compQty : compQty.value })">
 
                       </mat-form-field>
                 </div>

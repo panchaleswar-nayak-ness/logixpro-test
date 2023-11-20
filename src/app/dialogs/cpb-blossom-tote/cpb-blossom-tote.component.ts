@@ -13,24 +13,22 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
   styleUrls: ['./cpb-blossom-tote.component.scss']
 })
 export class CpbBlossomToteComponent implements OnInit {
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi:IInductionManagerApiService;
   displayedColumns: string[] = ['item_number', 'transaction_qty', 'qty_in_old_date'];
   toteId: any;
   transactions: any = [];
   newToteID: any = "";
   submitBlossomEnable = false;
-  @ViewChild('NewToteID') NewToteIDField: ElementRef;
-
-
+  @ViewChild('NewToteID') NewToteIDField: ElementRef; 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     
     private global:GlobalService,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<CpbBlossomToteComponent>,
     private globalService: GlobalService
   ) { 
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
 
   }
 
@@ -64,15 +62,14 @@ export class CpbBlossomToteComponent implements OnInit {
 
   newToteIdFocusOut() {
     if (this.newToteID != "") {
-      this.iinductionManagerApi.ValidateTote({ toteID: this.newToteID }).subscribe((res: any) => {
+      this.iInductionManagerApi.ValidateTote({ toteID: this.newToteID }).subscribe((res: any) => {
         if (res.isExecuted && res.data != "") {
           this.submitBlossomEnable = true;
         }
         else {
           this.newToteID = "";
           this.submitBlossomEnable = false;
-          this.global.ShowToastr('error',"This tote is currently assigned to another open order", 'Invalid Tote');
-          console.log("ValidateTote",res.responseMessage);
+          this.global.ShowToastr('error',"This tote is currently assigned to another open order", 'Invalid Tote'); 
         }
       });
     }
@@ -120,14 +117,13 @@ export class CpbBlossomToteComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'Yes') {
-        this.iinductionManagerApi.blossomTote(payload).subscribe((res: any) => {
+        this.iInductionManagerApi.blossomTote(payload).subscribe((res: any) => {
           if(res.isExecuted){
             this.dialogRef.close({newToteID:this.newToteID});
             this.global.ShowToastr('success',labels.alert.update, 'Success!');
           }
           else{
-            this.global.ShowToastr('error',"An error occured when blossoming this tote", 'Error');
-            console.log("blossomTote",res.responseMessage);
+            this.global.ShowToastr('error',"An error occured when blossoming this tote", 'Error'); 
           }
         });
       }

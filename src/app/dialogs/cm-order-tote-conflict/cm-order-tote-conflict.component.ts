@@ -7,10 +7,10 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: [],
 })
 export class CmOrderToteConflictComponent {
-  Order: any;
+  order: any;
   constructor(public dialogRef: MatDialogRef<any>) {}
 
   async SubmitOrder() {
-    if (this.Order) this.dialogRef.close(this.Order);
+    if (this.order) this.dialogRef.close(this.order);
   }
 }

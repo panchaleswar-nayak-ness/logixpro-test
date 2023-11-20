@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: [],
 })
 export class IeManageDataInvenMapTablesComponent {
-  ELEMENT_DATA: any[] = [{ inv_map_id: '1202122' }];
+  elementData: any[] = [{ inv_map_id: '1202122' }];
   displayedColumns: string[] = [
     'inv_map_id',
     'transaction_type',
@@ -25,6 +25,6 @@ export class IeManageDataInvenMapTablesComponent {
     'uf1',
     'uf2',
   ];
-  tableData = this.ELEMENT_DATA;
+  tableData = this.elementData;
   dataSourceList: any;
 }

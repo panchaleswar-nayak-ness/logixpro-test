@@ -11,7 +11,7 @@
             
                 <div class="flex-column mb-3">
                     <p class="bold">A order and tote were both found that match the entered value, select which value you entered</p> 
-                    <mat-radio-group aria-labelledby=""  [(ngModel)]="Order"
+                    <mat-radio-group aria-labelledby=""  [(ngModel)]="order"
                         class=" d-flex flex-column"> 
                         <mat-radio-button class=" mb-2"  value="Order Number" color="primary">Order Number</mat-radio-button>
                         <mat-radio-button class=" mb-2"  value="Tote ID"  color="primary">Tote ID</mat-radio-button> 
@@ -21,4 +21,4 @@
         </div>
     </div> 
     
-    <button style="flex:1" mat-flat-button color="primary" [disabled]="!Order" (click)="SubmitOrder()" class="btn-lg w-100">Submit</button>
+    <button style="flex:1" mat-flat-button color="primary" [disabled]="!order" (click)="SubmitOrder()" class="btn-lg w-100">Submit</button>

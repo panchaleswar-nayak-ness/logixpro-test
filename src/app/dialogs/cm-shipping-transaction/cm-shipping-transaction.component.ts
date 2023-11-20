@@ -5,8 +5,7 @@ import {
   ViewChild,
   Inject,
 } from '@angular/core';
-import {
-  MatDialog,
+import { 
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
@@ -20,8 +19,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { CmShipSplitLineComponent } from '../cm-ship-split-line/cm-ship-split-line.component';
 import { CmShipEditConIdComponent } from '../cm-ship-edit-con-id/cm-ship-edit-con-id.component';
 import { CmShipEditQtyComponent } from '../cm-ship-edit-qty/cm-ship-edit-qty.component';
-import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote-id-update-modal.component';
-import { Router } from '@angular/router';
+import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote-id-update-modal.component'; 
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
@@ -32,7 +30,7 @@ import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidat
   styleUrls: ['./cm-shipping-transaction.component.scss'],
 })
 export class CmShippingTransactionComponent implements OnInit {
-  @ViewChild('toteId_update') toteId_update: ElementRef;
+  @ViewChild('toteIdUpdate') toteIdUpdate: ElementRef;
   public userData: any;
 
   toteID: string = '';
@@ -56,16 +54,12 @@ export class CmShippingTransactionComponent implements OnInit {
   public IconsolidationAPI: IConsolidationApi;
 
   constructor(
-    public consolidationAPI: ConsolidationApiService,
-    private dialog: MatDialog,
-    public dialogRef: MatDialogRef<CmShippingTransactionComponent>,
-
-    // private Api: ApiFuntions,
+    public consolidationAPI: ConsolidationApiService, 
+    public dialogRef: MatDialogRef<CmShippingTransactionComponent>, 
     private authService: AuthService,
     private _liveAnnouncer: LiveAnnouncer,
     private global: GlobalService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private route: Router
+    @Inject(MAT_DIALOG_DATA) public data: any 
   ) {
     this.IconsolidationAPI = consolidationAPI;
   }
@@ -75,7 +69,7 @@ export class CmShippingTransactionComponent implements OnInit {
     this.getShippingTransactionIndex();
   }
   ngAfterViewInit(): void {
-    this.toteId_update.nativeElement.focus();
+    this.toteIdUpdate.nativeElement.focus();
   }
   // Call the GET API for the Shipping Transaction Index
   getShippingTransactionIndex() {

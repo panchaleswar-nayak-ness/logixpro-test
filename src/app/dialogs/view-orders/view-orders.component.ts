@@ -91,18 +91,16 @@ export class ViewOrdersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('paginatorTrans') paginatorTrans: MatPaginator;
   @ViewChild(MatSort) viewTransSort: MatSort;
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi:IInductionManagerApiService;
 
-  constructor(
-    private Api: ApiFuntions,
-    
+  constructor( 
     private authService: AuthService,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global: GlobalService,
     public dialogRef: MatDialogRef<any>
   ) { 
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -116,7 +114,7 @@ export class ViewOrdersComponent implements OnInit {
     let paylaod = {
       "OrderView": this.data.viewType, 
     }
-    this.iinductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
+    this.iInductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
       if (res.isExecuted && res.data)
       {
         if (res.data.length > 0) {
@@ -204,7 +202,7 @@ export class ViewOrdersComponent implements OnInit {
         "SortOrder": "asc",
         "Filter": "1=1", 
       }
-      this.iinductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
         if (res.isExecuted && res.data) {
           this.transData = res.data.pickToteManTrans;
           this.orderTransDataSource = new MatTableDataSource<any>(this.transData);

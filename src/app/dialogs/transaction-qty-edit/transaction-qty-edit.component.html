@@ -23,7 +23,7 @@
 
     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
         <mat-label>Transaction Quantity</mat-label>
-        <input matInput #field_focus type="number" [(ngModel)]="data.transactionQuantity" #tq [NumbersOnly]="true" (keyup)="transactionQuantityChange()">
+        <input matInput #fieldFocus type="number" [(ngModel)]="data.transactionQuantity" #tq [NumbersOnly]="true" (keyup)="transactionQuantityChange()">
     </mat-form-field>
 </div>
 

@@ -14,8 +14,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: [],
 })
 export class InputFilterComponent implements OnInit {
-  @ViewChild('aut_focus') aut_focus: ElementRef;
-  InputFiltersForm: FormGroup;
+  @ViewChild('autFocus') autFocus: ElementRef;
+  inputFiltersForm: FormGroup;
   text1: any;
   text2: any;
   SendData: any;
@@ -53,6 +53,6 @@ export class InputFilterComponent implements OnInit {
     this.dialogRef.close(dictionary);
   }
   ngAfterViewInit(): void {
-    this.aut_focus.nativeElement.focus();
+    this.autFocus.nativeElement.focus();
   }
 }

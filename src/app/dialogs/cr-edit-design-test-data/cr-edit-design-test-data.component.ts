@@ -7,18 +7,18 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: [],
 })
 export class CrEditDesignTestDataComponent {
-  @ViewChild('desc_focus') desc_focus: ElementRef;
-  Text: any;
+  @ViewChild('descfocus') descfocus: ElementRef;
+  text: any;
   constructor(
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngAfterViewInit(): void {
-    this.Text = this.data ? this.data : '';
-    this.desc_focus.nativeElement.focus();
+    this.text = this.data ? this.data : '';
+    this.descfocus.nativeElement.focus();
   }
   getDesignTestData() {
-    this.dialogRef.close(this.Text);
+    this.dialogRef.close(this.text);
   }
 }

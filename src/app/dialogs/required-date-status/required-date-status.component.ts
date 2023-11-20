@@ -15,7 +15,7 @@ export class RequiredDateStatusComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi:IInductionManagerApiService;
 
   ELEMENT_DATA: any[] = [
     { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },    
@@ -55,7 +55,7 @@ export class RequiredDateStatusComponent implements OnInit {
   ];
 
   constructor(private inductionManagerApi: InductionManagerApiService) { 
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -68,7 +68,7 @@ export class RequiredDateStatusComponent implements OnInit {
   }
 
   getReqDateDataSelect(){
-    this.iinductionManagerApi.ReqDateDataSelect().subscribe(res => {
+    this.iInductionManagerApi.ReqDateDataSelect().subscribe(res => {
       if (res?.isExecuted)
       {
         if(res.data.length > 0) {

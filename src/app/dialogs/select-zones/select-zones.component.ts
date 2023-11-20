@@ -22,10 +22,10 @@ export interface PeriodicElement {
 })
 export class SelectZonesComponent implements OnInit {
   isNewBatch=false;
-  public iinductionManagerApi:IInductionManagerApiService;
-  ELEMENT_DATA = [{ zone: '',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
+  public iInductionManagerApi:IInductionManagerApiService;
+  elementData = [{ zone: '',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
   displayedColumns: string[] = ['select', 'zone', 'locationdesc', 'locationtype', 'stagingzone' , 'flag'];
-  dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
+  dataSource = new MatTableDataSource<PeriodicElement>(this.elementData);
   selection = new SelectionModel<PeriodicElement>(true, []);
   batchID="";
   username="";
@@ -35,13 +35,12 @@ export class SelectZonesComponent implements OnInit {
 
 
   selectZone(row:any){
-    const index = this.ELEMENT_DATA.findIndex(o => o.zone === row.zone);
-    if (index !== -1) this.ELEMENT_DATA[index].selected = !this.ELEMENT_DATA[index].selected;
+    const index = this.elementData.findIndex(o => o.zone === row.zone);
+    if (index !== -1) this.elementData[index].selected = !this.elementData[index].selected;
     else console.log('Element not found:', row.zone);
   }
 
-
-  /** Whether the number of selected elements matches the total number of rows. */
+ 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -51,7 +50,7 @@ export class SelectZonesComponent implements OnInit {
   AllRecordsChecked()
   {
     let selected=false;
-    for (const element of this.ELEMENT_DATA) 
+    for (const element of this.elementData) 
     {
       if(!(! element.selected && ! element.available))
       {
@@ -71,7 +70,7 @@ export class SelectZonesComponent implements OnInit {
 
   isAllReadyAssigned()
   {
-    if(this.alreadyAssignedZones.length==this.ELEMENT_DATA.length)
+    if(this.alreadyAssignedZones.length==this.elementData.length)
     {
       return true;
     }
@@ -83,13 +82,13 @@ export class SelectZonesComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows($event:any) {
-    for (const element of this.ELEMENT_DATA) {
+    for (const element of this.elementData) {
       if(!(!element.selected && !element.available))
       {
         element.selected=$event.checked;
       }
     }
-    this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
+    this.dataSource = new MatTableDataSource<any>(this.elementData);
     
 
 
@@ -109,7 +108,7 @@ export class SelectZonesComponent implements OnInit {
   {
   //Auto select staging records
   let recordExists=0;
-  for (const element of this.ELEMENT_DATA) {
+  for (const element of this.elementData) {
   if(element.stagingZone=='False' && !(!element.selected && !element.available))
   {
     element.selected=true;
@@ -126,7 +125,7 @@ export class SelectZonesComponent implements OnInit {
   {
   //Auto select staging records
   let recordExists=0;
-  for (const element of this.ELEMENT_DATA) {
+  for (const element of this.elementData) {
   if(element.stagingZone!='False')
   {
     element.selected=true;
@@ -147,7 +146,7 @@ export class SelectZonesComponent implements OnInit {
   {
     let selectedRecords=[{zone:'',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
     selectedRecords.shift();
-    for (const element of this.ELEMENT_DATA) {
+    for (const element of this.elementData) {
     if(element.selected)
     {
     selectedRecords.push(element);
@@ -163,14 +162,14 @@ export class SelectZonesComponent implements OnInit {
 
   getAvailableZones()
   {
-    this.ELEMENT_DATA.length=0;
+    this.elementData.length=0;
     let payLoad =
     {
       batchID: this.batchID,
       username: this.username,
       wsid: this.wsid
     };
-    this.iinductionManagerApi.AvailableZone(payLoad).subscribe(
+    this.iInductionManagerApi.AvailableZone(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
         this.zoneDetails = res.data.zoneDetails; 
@@ -183,7 +182,7 @@ export class SelectZonesComponent implements OnInit {
             });
   
           }
-          this.ELEMENT_DATA.push(
+          this.elementData.push(
             { 
               zone: zoneDetail.zone,
               locationName:zoneDetail.locationName,
@@ -194,7 +193,7 @@ export class SelectZonesComponent implements OnInit {
             }
             );
         }
-        this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
+        this.dataSource = new MatTableDataSource<any>(this.elementData);
 
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
@@ -208,12 +207,13 @@ export class SelectZonesComponent implements OnInit {
 
   }
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,  private inductionManagerApi: InductionManagerApiService, private global: GlobalService,public dialogRef: MatDialogRef<SelectZonesComponent>) {
-    this.iinductionManagerApi = inductionManagerApi;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,  public inductionManagerApi: InductionManagerApiService, 
+  private global: GlobalService,public dialogRef: MatDialogRef<SelectZonesComponent>) {
+    this.iInductionManagerApi = inductionManagerApi;
    }
 
   ngOnInit(): void {
-    this.ELEMENT_DATA.length=0;
+    this.elementData.length=0;
     this.batchID = this.data.batchId;
     this.username= this.data.userId;
     this.isNewBatch=this.data.isNewBatch;
