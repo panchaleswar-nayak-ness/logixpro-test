@@ -37,10 +37,10 @@
               </mat-form-field>
         </div>
         <div class="d-flex justify-content-end pt-3">
-            <button type="submit" style="flex:1"
-            [disabled]="!labelPrinter || !reportPrinter"
-            mat-flat-button color="primary" class="btn-lg w-100"
-            (click)="UpdWSPrefsPrinters(reportPrinter,labelPrinter);ClosePopup();">Save</button>
+            <button type="submit"
+            [disabled]="!LabelPrinter || !ReportPrinter"
+            mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1"
+            (click)="UpdWSPrefsPrinters(ReportPrinter,LabelPrinter);ClosePopup();">Save</button>
         </div>
         
     </div>

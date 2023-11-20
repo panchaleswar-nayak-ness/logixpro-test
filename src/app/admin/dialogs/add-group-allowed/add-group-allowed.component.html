@@ -36,7 +36,7 @@
                   </mat-form-field>
                   <div class="error" *ngIf="hasError('controlName', 'required')">This field is required.</div>
             <mat-dialog-actions>
-                <button type="submit" mat-flat-button  class="btn-lg" style="flex: 1;"
+                <button type="submit" mat-flat-button  class="btn-lg flex-grow-1"
                     color="primary" [disabled]="!controlNameForm.valid">{{form_btn_label}}</button>
             </mat-dialog-actions>
 
