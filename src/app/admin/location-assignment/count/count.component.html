@@ -2,14 +2,14 @@
 
   <div class="col-xl-6"> 
     <app-count-order-selection-component [searchOrderLeft]="searchOrderLeft" [leftTable]="leftTable"
-      [displayedColumns]="displayedColumnsLeft" (applyFilterEmit)="applyFilter($event)"
+      [displayedColumnsCountOrderData]="displayedColumnsLeft" (applyFilterEmit)="applyFilter($event)"
       (addOrdereDialogEmit)="addOrdereDialog()" (announceSortChangeEmit)="announceSortChangeLeftTable($event.sortState)"
       (addEmit)="add($event)"></app-count-order-selection-component> 
   </div> 
   <div class="col-xl-6">  
     <app-count-select-orders-component [searchOrderRight]="searchOrderRight" [rightTable]="rightTable"
    
-      [displayedColumns1]="displayedColumnsRight" (announceSortChange1Emit)="announceSortChangeRightTable($event.sortState)"
+      [displayedColumnsSelectData]="displayedColumnsRight" (announceSortChange1Emit)="announceSortChangeRightTable($event.sortState)"
       (applyFilter1Emit)="applyFilter1($event)" (deleteItemEmit)="deleteItem()"
       (removeEmit)="remove($event)"></app-count-select-orders-component> 
   </div> 

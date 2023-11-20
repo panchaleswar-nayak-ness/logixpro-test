@@ -13,7 +13,7 @@ export class CountSelectOrdersComponentComponent {
     @ViewChild('matSort1') sort1: MatSort;
 @Input() searchOrderRight : string='';
 @Input() rightTable : any;
-@Input() displayedColumns1 : string[];
+@Input() displayedColumnsSelectData : string[];
 @Output() applyFilter1Emit = new EventEmitter();
 @Output() deleteItemEmit = new EventEmitter();
 @Output() announceSortChange1Emit : EventEmitter<{ sortState : Sort }> = new EventEmitter();

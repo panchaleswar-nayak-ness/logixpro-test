@@ -73,13 +73,13 @@
       </ng-container>
 
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell " [attr.colspan]="displayedColumns.length">
+        <td class="mat-cell " [attr.colspan]="displayedColumnsCountOrderData.length">
           No data available in table.
         </td>
       </tr>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsCountOrderData"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsCountOrderData;"></tr>
       </table>
     </ng-scrollbar>
   </div>

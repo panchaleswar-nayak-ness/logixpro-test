@@ -15,7 +15,7 @@ export class CountOrderSelectionComponentComponent   {
   @ViewChild('matSort') sort: MatSort;
   @Input() searchOrderLeft : string='';
   @Input() leftTable : any;
-  @Input() displayedColumns : string[];
+  @Input() displayedColumnsCountOrderData : string[];
   @Output() applyFilterEmit = new EventEmitter();
   @Output() addOrdereDialogEmit = new EventEmitter<any>();
   @Output() announceSortChangeEmit : EventEmitter<{ sortState : Sort }> = new EventEmitter();
