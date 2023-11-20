@@ -1,20 +1,25 @@
-.table1{
-    th{
-        white-space: nowrap ;
-        &:first-child{
+.table1 {
+    th {
+        white-space: nowrap;
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
-    td{
+
+    td {
         width: auto;
         padding-left: 12px;
-        &:first-child{
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
@@ -23,33 +28,39 @@
 .selected {
     background-color: var(--clr-primary-300) !important;
     color: var(--clr-pure-white);
-  }
+}
 
-.table2{
-    th{
-        white-space: nowrap ;
+.table2 {
+    th {
+        white-space: nowrap;
         padding-left: 12px;
-        &:first-child{
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
-    td{
-        white-space: nowrap ;
+
+    td {
+        white-space: nowrap;
         padding-left: 12px;
         max-width: 15ch;
         text-overflow: ellipsis;
         overflow: hidden;
-        &:first-child{
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
 }
+
 //   mat-table{
 //     display: table !important;
 //     mat-row{
@@ -81,34 +92,94 @@
 //     }
 //   }
 
-.stickyHeader{
+.stickyHeader {
     position: sticky;
     top: 0px;
     z-index: 200000000;
-  }
+}
 
-  
-table{
-    th{
-        white-space: nowrap ;
+
+table {
+    th {
+        white-space: nowrap;
         padding-left: 12px;
-        &:first-child{
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
-    td{
+
+    td {
         padding-left: 12px;
-        &:first-child{
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
 }
-// ::ng-deep .mat-dialog-content{
-//     min-height: 75vh;
-// }
+
+  ::ng-deep .w-170{
+     width: 170px;
+  }
+::ng-deep.w-48px {
+    width: 48px;
+}
+
+::ng-deep .w-100 {
+    width: 100px;
+}
+::ng-deep .h-280{
+    height: 280px;
+}
+::ng-deep .overflow-hidden{
+    overflow: hidden;
+} 
+
+::ng-deep .height-280 {
+    height: 280px
+}
+::ng-deep .w-160{
+    width: 160px;
+}
+::ng-deep .auto-com {
+    padding-bottom: 16px;
+    padding-top: 16px;
+}
+::ng-deep .h-180{
+    width: 180px;
+}
+::ng-deep .w-80{
+    width: 80px;
+}
+
+::ng-deep .span-batch {
+    padding: 0px 25px;
+    border: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+}
+::ng-deep .w-60{
+    width: 60px;
+}
+::ng-deep .w-90{
+    width:90px;
+}
+
+::ng-deep .span-option {
+    padding: 10px 12px;
+    border: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+}

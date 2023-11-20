@@ -1,15 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import {
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
- 
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import labels from '../../../labels/labels.json';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { Mode, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-delete-confirmation-manual-transaction',
@@ -20,13 +16,13 @@ export class DeleteConfirmationManualTransactionComponent {
   isChecked = true;
   heading: '';
   message: '';
+
   public iAdminApiService: IAdminApiService;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, 
-    
-    private Api: ApiFuntions,
     private global: GlobalService,
-    private adminApiService: AdminApiService,
+    public adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
   ) {
     this.iAdminApiService = adminApiService;
@@ -35,35 +31,30 @@ export class DeleteConfirmationManualTransactionComponent {
   }
 
   checkOptions(event: MatCheckboxChange): void {
-    if (event.checked) {
-      this.isChecked = false;
-    } else {
-      this.isChecked = true;
-    }
+    if (event.checked) this.isChecked = false;
+    else this.isChecked = true;
   }
 
   onConfirmdelete() {
-    if (this.data) {
-      if (this.data.mode === 'delete-trans') {
-        let payload = {
-          transID: this.data.element.id, 
-        };
+    if (this.data)
+      if (this.data.mode === Mode.DeleteTrans) {
+        let payload = { transID: this.data.element.id };
         this.iAdminApiService
           .TransactionDelete(payload)
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+                this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+                this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
                 this.dialogRef.close({ isExecuted: false });
                 console.log("TransactionDelete",res.responseMessage);
               }
             },
             (error) => {}
           );
-      } else if (this.data.mode === 'delete-order') {
+      } else if (this.data.mode === Mode.DeleteOrder) {
         let payload = {
           orderNumber: this.data.orderNumber, 
         };
@@ -72,29 +63,27 @@ export class DeleteConfirmationManualTransactionComponent {
           .subscribe(
             (res: any) => {
               if (res.isExecuted) {
-                this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+                this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
                 this.dialogRef.close({isExecuted:true})
               } else {
-                this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+                this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
                 this.dialogRef.close({isExecuted:false})
                 console.log("TransactionForOrderDelete",res.responseMessage);
-                
               }
             },
             (error) => {}
           );
-      }
-      else if (this.data.mode === 'delete-manual-transaction') { 
+      } else if (this.data.mode === Mode.DeleteManualTransaction) { 
         let payload = {
           transID: this.data.transID, 
         };
         this.iAdminApiService.TransactionDelete(payload).subscribe(
           (res: any) => {
             if (res?.isExecuted) {
-              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+              this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
               this.dialogRef.close({ isExecuted: true });
             }else{
-              this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+              this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
               this.dialogRef.close({ isExecuted: false });
               console.log("TransactionDelete",res.responseMessage);
             }
@@ -102,6 +91,5 @@ export class DeleteConfirmationManualTransactionComponent {
           (error) => {}
         );
       }
-    }
   }
 }

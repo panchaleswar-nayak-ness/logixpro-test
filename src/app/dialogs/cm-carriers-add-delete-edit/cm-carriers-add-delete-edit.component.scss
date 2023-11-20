@@ -4,4 +4,10 @@ table{
       padding-right: 12px;
       border:0;
     }
-  }
+  }::ng-deep.w-48px{
+  width: 48px;
+}::ng-deep.height-345{
+  height:345px
+}::ng-deep.table-backcolor{
+  background-color: var(--clr-table-header);
+}

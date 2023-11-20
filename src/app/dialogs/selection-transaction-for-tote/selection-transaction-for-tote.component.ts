@@ -9,7 +9,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-selection-transaction-for-tote',
   templateUrl: './selection-transaction-for-tote.component.html',
-  styleUrls: []
+  styleUrls: ['./selection-transaction-for-tote.component.scss']
 })
 export class SelectionTransactionForToteComponent implements OnInit {
   public userData;

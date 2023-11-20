@@ -7,7 +7,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-om-update-record',
   templateUrl: './om-update-record.component.html',
-  styleUrls: []
+  styleUrls: ['./om-update-record.component.scss']
 })
 export class OmUpdateRecordComponent implements OnInit {
   @ViewChild('ordFocus') ordFocus: ElementRef

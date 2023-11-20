@@ -15,7 +15,7 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-ship-edit-con-id',
   templateUrl: './cm-ship-edit-con-id.component.html',
-  styleUrls: [],
+  styleUrls: ['./cm-ship-edit-con-id.component.scss'],
 })
 export class CmShipEditConIdComponent implements OnInit {
   @ViewChild('contId') contId: ElementRef;

@@ -6,11 +6,12 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-bm-toteid-entry',
-  templateUrl: './bm-toteid-entry.component.html',
-  styleUrls: [],
+  templateUrl: './bm-toeid-entry.component.html',
+  styleUrls: ['./bm-toeid-entry.component.scss'],
 })
 export class BmToteidEntryComponent implements OnInit {
   selectedList: any;
@@ -94,11 +95,12 @@ export class BmToteidEntryComponent implements OnInit {
       .PickToteIDUpdate(paylaod)
       .subscribe((res: any) => {
         if (res.isExecuted) {
-          this.global.ShowToastr('success',res.responseMessage, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
           this.dialogRef.close(true);
         } else {
           
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
+          
           console.log("PickToteIDUpdate",res.responseMessage);
         }
       });

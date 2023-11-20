@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-ie-manage-data-inven-map-tables',
   templateUrl: './ie-manage-data-inven-map-tables.component.html',
-  styleUrls: [],
+  styleUrls: ['./ie-manage-data-inven-map-tables.component.scss'],
 })
 export class IeManageDataInvenMapTablesComponent {
   elementData: any[] = [{ inv_map_id: '1202122' }];

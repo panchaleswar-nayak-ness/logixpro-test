@@ -1,10 +1,10 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="div-width"></div>
 <h1 class="m-0" mat-dialog-title>Location Assignment Quantities</h1>
 <button mat-icon-button class="close-button dialog-close-button-fix" (click)="viewOrderSelection($event)">
     <mat-icon class="close-icon">close</mat-icon>
 </button>
-</div>
+</div> 
 
 <div class="custom bg-white bg-50 br-14">
       <div>
@@ -27,13 +27,12 @@
         </div>
          <div class="col text-center">
           <div class="employees text-center">
-            <app-stats-circle value="{{putaway}}" ></app-stats-circle>
+            <app-stats-circle value="{{putAway}}" ></app-stats-circle>
           </div>
           <button  mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 btn-sm backgroundColor " (click)="viewOrderSelection($event,2)">
             Put Away
           </button>
         </div>
-
       </div>
       </div>
   </div>

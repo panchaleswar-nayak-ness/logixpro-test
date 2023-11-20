@@ -16,3 +16,10 @@ table{
         }
     }
 }
+::ng-deep.w-48px {
+    width: 48px;
+  }
+  
+  ::ng-deep.h-310{
+    height: 310px;
+  }

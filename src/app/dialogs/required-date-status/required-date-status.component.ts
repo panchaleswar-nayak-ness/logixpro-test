@@ -17,7 +17,7 @@ export class RequiredDateStatusComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   public iInductionManagerApi:IInductionManagerApiService;
 
-  ELEMENT_DATA: any[] = [
+  elementData: any[] = [
     { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },    
     { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
     { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
@@ -54,7 +54,7 @@ export class RequiredDateStatusComponent implements OnInit {
     { countToInduct: "1", reqDate: "12/14/2022", zone: "12" }
   ];
 
-  constructor(private inductionManagerApi: InductionManagerApiService) { 
+  constructor(public inductionManagerApi: InductionManagerApiService) { 
     this.iInductionManagerApi = inductionManagerApi;
   }
 
@@ -75,7 +75,7 @@ export class RequiredDateStatusComponent implements OnInit {
           this.dataSource = new MatTableDataSource(res.data);
         }
         else {
-         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+         this.dataSource = new MatTableDataSource(this.elementData);
         }
 
       }

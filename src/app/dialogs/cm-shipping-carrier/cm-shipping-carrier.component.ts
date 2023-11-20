@@ -19,7 +19,7 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-shipping-carrier',
   templateUrl: './cm-shipping-carrier.component.html',
-  styleUrls: [],
+  styleUrls: ['./cm-shipping-carrier.component.scss'],
 })
 export class CmShippingCarrierComponent implements OnInit {
   @ViewChildren('carrierFocus', { read: ElementRef })

@@ -11,7 +11,7 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-confirm-and-packing-process-transaction',
   templateUrl: './cm-confirm-and-packing-process-transaction.component.html',
-  styleUrls: []
+  styleUrls: ['./cm-confirm-and-packing-process-transaction.component.scss']
 })
 export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
   displayedColumns: string[] = ['itemNumber', 'lineNumber', 'transactionQuantity', 'completedQuantity', 'shipQuantity'];

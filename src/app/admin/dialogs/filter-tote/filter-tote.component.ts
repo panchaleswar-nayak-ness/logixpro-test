@@ -7,21 +7,28 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: []
 })
 export class FilterToteComponent implements OnInit {
-  @ViewChildren('input_focus', { read: ElementRef }) input_focus: QueryList<ElementRef>;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<any>,private renderer: Renderer2) { }
+  @ViewChildren('input_focus', { read: ElementRef }) inputFocus: QueryList<ElementRef>;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    public dialogRef: MatDialogRef<any>,
+    private renderer: Renderer2
+  ) { }
+
   dateList:any;
   orderName;
+
   ngOnInit(): void {
-   
-    this.dateList=this.data.dates;
-      this.orderName=this.data.orderName
+    this.dateList = this.data.dates;
+    this.orderName = this.data.orderName
   }
 
-  ngAfterViewInit(){
-    const inputElements = this.input_focus.toArray();
+  ngAfterViewInit() {
+    const inputElements = this.inputFocus.toArray();
     const inputElement = inputElements[0].nativeElement as HTMLInputElement;
-      this.renderer.selectRootElement(inputElement).focus();
+    this.renderer.selectRootElement(inputElement).focus();
   }
+
   selectDate(date){
     this.dialogRef.close({ selectedDate: date });
   }

@@ -1,7 +1,32 @@
-table{
-    th,td{
-      white-space: nowrap;
-      padding-right: 12px;
-      border:0;
-    }
+table {
+
+  th,
+  td {
+    white-space: nowrap;
+    padding-right: 12px;
+    border: 0;
   }
+}
+::ng-deep.w-48px {
+  width: 48px;
+}
+::ng-deep.w-140 {
+  width: 140px;
+}::ng-deep.height-315 {
+  height: 315px;
+}::ng-deep.table-order-td {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 20ch;
+  white-space: nowrap;
+}::ng-deep.table-shiping-tr {
+  background-color: var(--clr-table-header);
+}::ng-deep.table-order-th {
+  border: 0;
+  height: 66px;
+  padding-left: 65px;
+}::ng-deep.table-td-div {
+  border: 0;
+  padding-left: 24px;
+  background: var(--clr-pure-white);
+}

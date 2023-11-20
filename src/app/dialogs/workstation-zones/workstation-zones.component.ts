@@ -23,7 +23,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-workstation-zones',
   templateUrl: './workstation-zones.component.html',
-  styleUrls: [],
+  styleUrls: ['./workstation-zones.component.scss'],
 })
 export class WorkstationZonesComponent implements OnInit {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;

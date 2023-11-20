@@ -8,7 +8,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-om-change-priority',
   templateUrl: './om-change-priority.component.html',
-  styleUrls: []
+  styleUrls: ['./om-change-priority.component.scss']
 })
 export class OmChangePriorityComponent implements OnInit {
   @ViewChild('newPri') newPri: ElementRef;
