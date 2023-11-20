@@ -6,7 +6,7 @@ import { MatTable } from '@angular/material/table';
 @Component({
   selector: 'app-count-order-selection-component',
   templateUrl: './count-order-selection-component.component.html',
-  styleUrls: []
+  styleUrls: ['./count-order-selection-component.component.scss']
 })
 export class CountOrderSelectionComponentComponent   {
 
@@ -25,7 +25,7 @@ export class CountOrderSelectionComponentComponent   {
     this.leftTable.paginator = this.paginator;
     this.leftTable.sort = this.sort;  
   }
-  applyFilter(filterValue){
+  applyFilter(){
     this.applyFilterEmit.emit(this.searchOrderLeft);
   }
   addOrdereDialog(){
