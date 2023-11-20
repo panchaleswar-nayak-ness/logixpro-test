@@ -9,7 +9,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 @Component({
   selector: 'app-ppa-ts-batch-setup',
   templateUrl: './ppa-ts-batch-setup.component.html',
-  styleUrls: []
+  styleUrls: ['./ppa-ts-batch-setup.component.scss']
 })
 export class PpaTsBatchSetupComponent  implements OnInit{
 
