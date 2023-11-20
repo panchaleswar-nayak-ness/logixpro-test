@@ -5,7 +5,7 @@ import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-others',
   templateUrl: './others.component.html',
-  styleUrls: []
+  styleUrls: ['./others.scss']
 })
 export class OthersComponent{
 
