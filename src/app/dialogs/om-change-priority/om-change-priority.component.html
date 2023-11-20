@@ -19,18 +19,18 @@
         <div class="col-12 mb-2">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <mat-label>Priority</mat-label>
-                <input matInput type="number" readonly="true" disabled="true" [(ngModel)]="Oldpriority">
+                <input matInput type="number" readonly="true" disabled="true" [(ngModel)]="oldpriority">
             </mat-form-field>
         </div>
         <div class="col-12">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <mat-label>Please Enter New Priority</mat-label>
-                <input #new_pri matInput type="number" [(ngModel)]="Newpriority" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = 
+                <input #newPri matInput type="number" [(ngModel)]="newpriority" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = 
                 !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" maxlength="10">
             </mat-form-field>
         </div>
         <div class="d-flex justify-content-end pt-3">
-            <button type="submit" style="flex:1" mat-flat-button color="primary" class="btn-lg w-100" (click)="updatepriority()">Save</button>
+            <button type="submit" mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1" (click)="updatepriority()">Save</button>
         </div>
         
     </div>

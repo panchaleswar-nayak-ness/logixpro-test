@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -23,79 +17,81 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { Column, DialogConstants, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
-const TRNSC_DATA = [
-  { colHeader: 'tH_ID', colDef: 'TH_ID' },
-  { colHeader: 'id', colDef: 'ID' },
-  { colHeader: 'importDate', colDef: 'Import Date' },
-  { colHeader: 'importBy', colDef: 'Import By' },
-  { colHeader: 'importFileName', colDef: 'Import Filename' },
-  { colHeader: 'transactionType', colDef: 'Transaction Type' },
-  { colHeader: 'orderNumber', colDef: 'Order Number' },
-  { colHeader: 'priority', colDef: 'Priority' },
-  { colHeader: 'itemNumber', colDef: 'Item Number' },
-  { colHeader: 'revision', colDef: 'Revision' },
-  { colHeader: 'lotNumber', colDef: 'Lot Number' },
-  { colHeader: 'expirationDate', colDef: 'Expiration Date' },
-  { colHeader: 'serialNumber', colDef: 'Serial Number' },
-  { colHeader: 'description', colDef: 'Description' },
-  { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
-  { colHeader: 'location', colDef: 'Location' },
-  { colHeader: 'wareHouse', colDef: 'Warehouse' },
-  { colHeader: 'zone', colDef: 'Zone' },
-  { colHeader: 'carousel', colDef: 'Carousel' },
-  { colHeader: 'row', colDef: 'Row' },
-  { colHeader: 'shelf', colDef: 'Shelf' },
-  { colHeader: 'bin', colDef: 'Bin' },
-  { colHeader: 'completedDate', colDef: 'Completed Date' },
-  { colHeader: 'completedBy', colDef: 'Completed By' },
-  { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
-  { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
-  { colHeader: 'notes', colDef: 'Notes' },
-  { colHeader: 'exportFileName', colDef: 'Export File Name' },
-  { colHeader: 'exportDate', colDef: 'Export Date' },
-  { colHeader: 'exportedBy', colDef: 'Exported By' },
-  { colHeader: 'exportBatchID', colDef: 'Export Batch ID' },
-  { colHeader: 'lineNumber', colDef: 'Line Number' },
-  { colHeader: 'lineSequence', colDef: 'Line Sequence' },
-  { colHeader: 'tableType', colDef: 'Table Type' },
-  { colHeader: 'userField1', colDef: 'User Field1' },
-  { colHeader: 'userField2', colDef: 'User Field2' },
-  { colHeader: 'userField3', colDef: 'User Field3' },
-  { colHeader: 'userField4', colDef: 'User Field4' },
-  { colHeader: 'userField5', colDef: 'User Field5' },
-  { colHeader: 'userField6', colDef: 'User Field6' },
-  { colHeader: 'useField7', colDef: 'User Field7' },
-  { colHeader: 'userField8', colDef: 'User Field8' },
-  { colHeader: 'userField9', colDef: 'User Field9' },
-  { colHeader: 'userField10', colDef: 'User Field10' },
-  { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
-  { colHeader: 'requiredDate', colDef: 'Required Date' },
-  { colHeader: 'statusCode', colDef: 'Status Code' },
-  { colHeader: 'masterRecord', colDef: 'Master Record' },
-  { colHeader: 'masterRecordID', colDef: 'Master Record ID' },
-  { colHeader: 'tH_ID', colDef: 'Inv Map ID' },
-  { colHeader: 'label', colDef: 'Label' },
-  { colHeader: 'inProcess', colDef: 'In Process' },
-  { colHeader: 'toteID', colDef: 'Tote ID' },
-  { colHeader: 'toteNumber', colDef: 'Tote Number' },
-  { colHeader: 'cell', colDef: 'Cell' },
-  { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
-  { colHeader: 'emergency', colDef: 'Emergency' },
-];
 @Component({
   selector: 'app-transaction-history-list',
   templateUrl: './transaction-history-list.component.html',
   styleUrls: ['./transaction-history-list.component.scss'],
 })
 export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
+  TRNSC_DATA = [
+    { colHeader: 'tH_ID', colDef: 'TH_ID' },
+    { colHeader: 'id', colDef: 'ID' },
+    { colHeader: 'importDate', colDef: 'Import Date' },
+    { colHeader: 'importBy', colDef: 'Import By' },
+    { colHeader: 'importFileName', colDef: 'Import Filename' },
+    { colHeader: 'transactionType', colDef: 'Transaction Type' },
+    { colHeader: 'orderNumber', colDef: 'Order Number' },
+    { colHeader: 'priority', colDef: 'Priority' },
+    { colHeader: 'itemNumber', colDef: 'Item Number' },
+    { colHeader: 'revision', colDef: 'Revision' },
+    { colHeader: 'lotNumber', colDef: 'Lot Number' },
+    { colHeader: 'expirationDate', colDef: 'Expiration Date' },
+    { colHeader: 'serialNumber', colDef: 'Serial Number' },
+    { colHeader: 'description', colDef: 'Description' },
+    { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
+    { colHeader: 'location', colDef: 'Location' },
+    { colHeader: 'wareHouse', colDef: 'Warehouse' },
+    { colHeader: 'zone', colDef: 'Zone' },
+    { colHeader: 'carousel', colDef: 'Carousel' },
+    { colHeader: 'row', colDef: 'Row' },
+    { colHeader: 'shelf', colDef: 'Shelf' },
+    { colHeader: 'bin', colDef: 'Bin' },
+    { colHeader: 'completedDate', colDef: 'Completed Date' },
+    { colHeader: 'completedBy', colDef: 'Completed By' },
+    { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
+    { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
+    { colHeader: 'notes', colDef: 'Notes' },
+    { colHeader: 'exportFileName', colDef: 'Export File Name' },
+    { colHeader: 'exportDate', colDef: 'Export Date' },
+    { colHeader: 'exportedBy', colDef: 'Exported By' },
+    { colHeader: 'exportBatchID', colDef: 'Export Batch ID' },
+    { colHeader: 'lineNumber', colDef: 'Line Number' },
+    { colHeader: 'lineSequence', colDef: 'Line Sequence' },
+    { colHeader: 'tableType', colDef: 'Table Type' },
+    { colHeader: 'userField1', colDef: 'User Field1' },
+    { colHeader: 'userField2', colDef: 'User Field2' },
+    { colHeader: 'userField3', colDef: 'User Field3' },
+    { colHeader: 'userField4', colDef: 'User Field4' },
+    { colHeader: 'userField5', colDef: 'User Field5' },
+    { colHeader: 'userField6', colDef: 'User Field6' },
+    { colHeader: 'useField7', colDef: 'User Field7' },
+    { colHeader: 'userField8', colDef: 'User Field8' },
+    { colHeader: 'userField9', colDef: 'User Field9' },
+    { colHeader: 'userField10', colDef: 'User Field10' },
+    { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
+    { colHeader: 'requiredDate', colDef: 'Required Date' },
+    { colHeader: 'statusCode', colDef: 'Status Code' },
+    { colHeader: 'masterRecord', colDef: 'Master Record' },
+    { colHeader: 'masterRecordID', colDef: 'Master Record ID' },
+    { colHeader: 'tH_ID', colDef: 'Inv Map ID' },
+    { colHeader: 'label', colDef: 'Label' },
+    { colHeader: 'inProcess', colDef: 'In Process' },
+    { colHeader: 'toteID', colDef: 'Tote ID' },
+    { colHeader: 'toteNumber', colDef: 'Tote Number' },
+    { colHeader: 'cell', colDef: 'Cell' },
+    { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
+    { colHeader: 'emergency', colDef: 'Emergency' },
+  ];
+
   @ViewChild('matRef') matRef: MatSelect;
-  IsActiveTrigger:boolean =false;
+  isActiveTrigger:boolean =false;
   public columnValues: any = [];
   public userData: any;
   public displayedColumns: any;
   public dataSource: any = new MatTableDataSource();
-  @Input() TabIndex:any;
+  @Input() tabIndex:any;
   public detailDataTransHistory: any;
   public startDate: any = new Date(1973,10,7);
   public endDate: any = new Date();
@@ -104,9 +100,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public sortCol: any = 0;
   public sortOrder: any = 'asc';
   selectedVariable: any;
-  selectedDropdown='';
-  public iAdminApiService: IAdminApiService;
-
+  selectedDropdown = '';
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
   searchBar = new Subject<string>();
@@ -141,8 +135,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   @Input()
   set clearEvent(event: Event) {
     if (event) {
-      this.selectedDropdown='';
-      this.columnSearch.searchValue = ''
+      this.selectedDropdown = '';
+      this.columnSearch.searchValue = '';
     }
   }
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -168,12 +162,15 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     columnName: 32,
     sortOrder: 'asc',
   };
+
+  public iAdminApiService: IAdminApiService;
+
   constructor(
     private authService: AuthService,
-    private contextMenuService : TableContextMenuService,
+    private contextMenuService: TableContextMenuService,
     public adminApiService: AdminApiService,
-    private global:GlobalService,
-    private sharedService:SharedService,
+    private global: GlobalService,
+    private sharedService: SharedService,
     private filterService: ContextMenuFiltersService
   ) {
     this.userData = this.authService.userData(); 
@@ -181,133 +178,109 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    
-
     this.customPagination = {
       total: '',
       recordsPerPage: 20,
       startIndex: 0,
       endIndex: 20,
     };
-    this.searchBar
-      .pipe(debounceTime(500), distinctUntilChanged())
-      .subscribe((value) => {
- 
-
-        this.autocompleteSearchColumn(); 
-          this.getContentData();
-      });
-
+    this.searchBar.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
+      this.autoCompleteSearchColumn(); 
+      this.getContentData();
+    });
     this.getColumnsData();
-    
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.subscription.add(
     this.sharedService.historyItemObserver.subscribe(itemNo => { 
-      if(itemNo){
-        this.selectedDropdown='Item Number';
-        this.columnSearch.searchValue=itemNo;
-       
-      }
-       })
-    )
-
-    this.subscription.add(
-    this.sharedService.reprocessItemObserver.subscribe(itemNo => { 
-      if(itemNo){
-        this.selectedDropdown='Item Number';
-        this.columnSearch.searchValue=itemNo;
-       
-      }
-       })
-    )
-
-    
-
-    this.subscription.add(
-      this.sharedService.historyLocObserver.subscribe(loc => {
-        if(loc){
-          this.selectedDropdown='Location';
-          this.columnSearch.searchValue=loc;        
+        if(itemNo) {
+          this.selectedDropdown = Column.ItemNumber;
+          this.columnSearch.searchValue = itemNo;
         }
       })
     );
 
+    this.subscription.add(
+      this.sharedService.reprocessItemObserver.subscribe(itemNo => { 
+        if(itemNo){
+          this.selectedDropdown = Column.ItemNumber;
+          this.columnSearch.searchValue = itemNo;
+        }
+      })
+    );
+
+    this.subscription.add(
+      this.sharedService.historyLocObserver.subscribe(loc => {
+        if(loc){
+          this.selectedDropdown = Column.Location;
+          this.columnSearch.searchValue = loc;        
+        }
+      })
+    );
   }
+
   clearMatSelectList(){
     this.matRef.options.forEach((data: MatOption) => data.deselect());
   }
+
   actionDialog(opened: boolean) {
-    if (!opened && this.selectedVariable === 'set_column_sq') {
-      this.sortCol=0;
-      let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
-        height: 'auto',
+    if (!opened && this.selectedVariable === StringConditions.set_column_sq) {
+      this.sortCol = 0;
+
+      const dialogRef : any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
+        height: DialogConstants.auto,
         width: '960px',
         disableClose: true,
         data: {
           mode: event,
-          tableName: 'Transaction History',
+          tableName: TableName.TransactionHistory,
         },
       });
-      dialogRef
-        .afterClosed()
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe((result) => {
-          this.clearMatSelectList();
-          this.selectedDropdown='';
-          if (result?.isExecuted) {
-            this.getColumnsData();
-          }
-        });
+
+      dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((result) => {
+        this.clearMatSelectList();
+        this.selectedDropdown = '';
+        if (result?.isExecuted) this.getColumnsData();
+      });
     }
   }
-  async autocompleteSearchColumn() {
+
+  async autoCompleteSearchColumn() {
     let searchPayload = {
       query: this.columnSearch.searchValue,
       tableName: 3,
       column: this.selectedDropdown,
     };
-    this.iAdminApiService
-      .NextSuggestedTransactions(searchPayload)
-      .subscribe(
-        {next: (res: any) => {
-          if(res.isExecuted && res.data)
-          {
-            this.searchAutocompleteList = res.data;
-          }
-          else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("NextSuggestedTransactions",res.responseMessage);
-          }
-        },
-        error: (error) => {}}
-      );
+    this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
+      next: (res: any) => {
+        if(res.isExecuted && res.data) this.searchAutocompleteList = res.data;
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("NextSuggestedTransactions",res.responseMessage);
+        }
+      }
+    });
   }
+
   getColumnsData() {
-    let payload = {
-      tableName: 'Transaction History',
-    };
-    this.iAdminApiService
-      .GetColumnSequence(payload)
-      .subscribe(
-        {next: (res: any) => {
-          this.displayedColumns = TRNSC_DATA;
-          if (res.data) {
-            this.columnValues = res.data;
-            
-            this.getContentData();
-          } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
-          }
-        },
-        error: (error) => {}}
-      );
+    let payload = { tableName: TableName.TransactionHistory };
+    this.iAdminApiService.GetColumnSequence(payload).subscribe({
+      next: (res: any) => {
+        this.displayedColumns = this.TRNSC_DATA;
+        if (res.data) {
+          this.columnValues = res.data;
+          this.getContentData();
+        } else this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+      }
+    });
   }
+
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
   }
+
   getTransactionModelIndex() {
     let paylaod = {
       viewToShow: 2,
@@ -315,29 +288,20 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       itemNumber: '',
       holds: false,
       orderStatusOrder: '',
-      app: 'Admin',
-      username: this.userData?.userName,
-      wsid:this.userData?.wsid,
+      app: RouteNames.Admin
     };
-    this.iAdminApiService
-      .TransactionModelIndex(paylaod)
-      .subscribe(
-        {next: (res: any) => {
-          if(res.isExecuted && res.data)
-          {
-            this.columnValues = res.data?.transactionHistoryColumns;
-          }
-          else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("TransactionModelIndex",res.responseMessage);
-          }
-        },
-        error: (error) => {}}
-      );
+    this.iAdminApiService.TransactionModelIndex(paylaod).subscribe({
+      next: (res: any) => {
+        if(res.isExecuted && res.data) this.columnValues = res.data?.transactionHistoryColumns;
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("TransactionModelIndex",res.responseMessage);
+        }
+      }
+    });
   }
 
   getContentData() {
-    debugger
     let payload = {
       draw: 0,
       sDate: this.startDate.toLocaleDateString(),
@@ -349,53 +313,43 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       orderNumber: this.orderNo,
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
-      filter: this.FilterString ,
-      username: this.userData?.userName,
-      wsid: this.userData?.wsid,
+      filter: this.filterString
     }; 
     
-    this.iAdminApiService
-      .TransactionHistoryTable(payload)
-      .subscribe(
-        {next: (res: any) => {
-          if(res.isExecuted && res.data)
-          {
-            this.detailDataTransHistory = res.data?.transactions;
+    this.iAdminApiService.TransactionHistoryTable(payload).subscribe({
+      next: (res: any) => {
+        if(res.isExecuted && res.data) {
+          this.detailDataTransHistory = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
           this.customPagination.total = res.data?.recordsFiltered;
           this.dataSource.sort = this.sort;
-          }
-          else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("TransactionHistoryTable",res.responseMessage);
-          }
-        },
-        error: (error) => {}}
-      );
+        } else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("TransactionHistoryTable",res.responseMessage);
+        }
+      }
+    });
   }
+
   searchData() {
-    if (
-      this.columnSearch.searchColumn ||
-      this.columnSearch.searchColumn == ''
-    ) {
-      this.getContentData();
-    }
+    if (this.columnSearch.searchColumn || this.columnSearch.searchColumn == '') this.getContentData();
   }
 
   resetColumn() {
     this.columnSearch.searchColumn.colDef = '';
   }
 
-  resetFields(event?) {
+  resetFields() {
     this.columnSearch.searchValue = '';
     this.searchAutocompleteList = [];
   }
-  selectStatus(event) {
+
+  selectStatus() {
     this.resetColumn();
     this.resetFields();
-
     this.getContentData();
   }
+
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
@@ -405,65 +359,50 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   }
 
   sortChange(event) {
-    if (
-      !this.dataSource._data._value ||
-      event.direction == '' ||
-      event.direction == this.sortOrder
-    )
-      return;
+    if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
 
     let index;
-    this.columnValues.find((x, i) => {
-      if (x === event.active) {
-        index = i;
-      }
-    });
-
+    this.columnValues.find((x, i) => { if (x === event.active) index = i; });
     this.sortCol = index;
     this.sortOrder = event.direction;
     this.getContentData();
   }
 
-
   ngOnDestroy() {
     this.searchBar.unsubscribe();
     this.subscription.unsubscribe();
   }
+
   onInputChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    if (Number(value) < 0) {
-      this.columnSearch.searchValue = 0;
-    }
+    if (Number(value) < 0) this.columnSearch.searchValue = 0;
   }
-
 
   @ViewChild('trigger') trigger: MatMenuTrigger;
 
   onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) { 
-    this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-    if(FilterColumnName != "" || Condition == "clear"){
-      this.FilterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
-      this.FilterString = this.FilterString != "" ? this.FilterString : "1=1";
+    this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
+    if(FilterColumnName != "" || Condition == "clear") {
+      this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
+      this.filterString = this.filterString != "" ? this.filterString : "1=1";
       this.resetPagination();
       this.getContentData();
     }
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
-    event.preventDefault()
-    this.IsActiveTrigger = true;
-    setTimeout(() => {
-      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
-    }, 100);
+    event.preventDefault();
+    this.isActiveTrigger = true;
+    setTimeout(() => this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType), 100);
   }
 
-  FilterString : string = "1 = 1";
+  filterString : string = "1 = 1";
 
   optionSelected(filter : string) {
-    this.FilterString = filter;
+    this.filterString = filter;
     this.resetPagination();
     this.getContentData();   
-  this.IsActiveTrigger= false;
+    this.isActiveTrigger = false;
   }
 
   resetPagination(){

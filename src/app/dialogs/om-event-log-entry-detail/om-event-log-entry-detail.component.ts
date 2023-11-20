@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component'; 
-import labels from '../../labels/labels.json';
-
+import labels from '../../labels/labels.json'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DatePipe } from '@angular/common';
@@ -60,8 +59,7 @@ export class OmEventLogEntryDetailComponent implements OnInit {
             this.dialog.closeAll();
             this.dialogRef.close(this.data);
           } else {
-            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
-            console.log("SelectedEventDelete",res.responseMessage);
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!'); 
           }
         });
       }

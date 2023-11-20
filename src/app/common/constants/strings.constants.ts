@@ -338,7 +338,10 @@ export const Column = {
     Priority: 'Priority',
     OrderNumber: 'Order Number',
     ItemNumber: 'Item Number',
-    ToteID: 'Tote ID'
+    ToteID: 'Tote ID',
+    LineNumber: 'Line Number',
+    LotNumber: 'Lot Number',
+    Location: 'Location'
 }
 
 export const Case = {
@@ -353,5 +356,7 @@ export const Mode = {
 
 export const TableName = {
     OpenTransactions: 'Open Transactions',
-    OpenTransactionsTemp: 'Open Transactions Temp'
+    OpenTransactionsTemp: 'Open Transactions Temp',
+    ReProcessed: 'ReProcessed',
+    TransactionHistory: 'Transaction History'
 }

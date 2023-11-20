@@ -53,3 +53,21 @@ tr{
   // --scrollbar-size: 10px;
   
   }
+
+.ng-scrollbar-height{
+  height: 860px !important;
+}
+
+.table-width{
+  width: 100% !important;
+}
+
+.mat-column-firstName, .mat-column-lastName, .mat-column-username{
+  max-width: 15ch;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.table-header-color{
+  background-color: var(--clr-table-header) !important; 
+}

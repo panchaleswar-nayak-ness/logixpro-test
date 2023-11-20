@@ -6,10 +6,10 @@ import { Component, ElementRef,  ViewChild } from '@angular/core';
   styleUrls: []
 })
 export class TransferFilePathComponent {
-  @ViewChild('field_focus') field_focus: ElementRef;
+  @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
   
   ngAfterViewInit(): void {
-    this.field_focus?.nativeElement.focus();
+    this.fieldFocus?.nativeElement.focus();
   }
 }

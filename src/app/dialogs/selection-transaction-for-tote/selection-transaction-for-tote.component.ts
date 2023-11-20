@@ -23,12 +23,10 @@ export class SelectionTransactionForToteComponent implements OnInit {
   public batchID;
   public itemNumber;
   public description;
-  public fieldNames;
-
+  public fieldNames; 
   public lowerBound=1;
-  public upperBound=2;
-
-  public iinductionManagerApi:IInductionManagerApiService;
+  public upperBound=2; 
+  public iInductionManagerApi:IInductionManagerApiService;
 
   constructor(
     private global: GlobalService,
@@ -36,7 +34,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
     public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
     ) { 
-      this.iinductionManagerApi = inductionManagerApi;
+      this.iInductionManagerApi = inductionManagerApi;
     }
 
   ngOnInit(): void {
@@ -57,7 +55,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
   selectOrder(id:any,itemNumber:any, val : any = []) {
     if (val.zone) {
       let payload = { zone: val.zone };
-      this.iinductionManagerApi.BatchByZone(payload).subscribe(
+      this.iInductionManagerApi.BatchByZone(payload).subscribe(
         (res: any) => {
           if (res.isExecuted) {
             if (!res.data) {
@@ -146,7 +144,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
         "1=1"
       ],
     };
-    this.iinductionManagerApi.TransactionForTote(getTransaction).subscribe(
+    this.iInductionManagerApi.TransactionForTote(getTransaction).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           if(res.data.subCategory == 'Reel Tracking' && res.data.inputType != 'Serial Number'){

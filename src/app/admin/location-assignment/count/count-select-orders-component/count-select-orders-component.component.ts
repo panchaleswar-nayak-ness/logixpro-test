@@ -22,7 +22,7 @@ ngOnChanges() {
   this.rightTable.paginator = this.paginator1;
   this.rightTable.sort = this.sort1;
 }
-applyFilterRight(filterValue){
+applyFilterRight(){
   this.applyFilter1Emit.emit(this.searchOrderRight);
 }
 deleteItem(){

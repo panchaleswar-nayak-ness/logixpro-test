@@ -7,22 +7,22 @@ import { MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
   styleUrls: []
 })
 export class BrChooseReportTypeComponent{
-  @ViewChild('exp_file') exp_file: ElementRef;
-  Type:string;
-  ExportFileName:string;
+  @ViewChild('expFile') expFile: ElementRef;
+  type:string;
+  exportFileName:string;
   constructor(public dialogRef: MatDialogRef<any>,    @Inject(MAT_DIALOG_DATA) public data: any) { 
     if(data.Name){
-      this.ExportFileName  = data.Name;  
+      this.exportFileName  = data.Name;  
     }else{
-      this.ExportFileName  = data.ReportName;  
+      this.exportFileName  = data.ReportName;  
     }
   }
   ngAfterViewInit(): void {
-    this.exp_file.nativeElement.focus();
+    this.expFile.nativeElement.focus();
   }
 
   ExportSubmit(){
-    this.dialogRef.close({ Type:this.Type,FileName:this.ExportFileName});
+    this.dialogRef.close({ Type:this.type,FileName:this.exportFileName});
   }
   }
 

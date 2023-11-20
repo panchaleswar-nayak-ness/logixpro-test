@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./fr-numpad.component.scss']
 })
 export class FrNumpadComponent implements OnInit {
-  @ViewChild('calc_focus') calc_focus: ElementRef;
+  @ViewChild('calcFocus') calcFocus: ElementRef;
 public itemQuantity :string = ''
 check:boolean = false
 check1:boolean = false
@@ -21,7 +21,7 @@ check1:boolean = false
   }
 
   ngAfterViewInit(): void {
-    this.calc_focus.nativeElement.focus();
+    this.calcFocus.nativeElement.focus();
   }
 
   pressNum(number){

@@ -8,9 +8,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CrEditDesignTestDataComponent } from '../cr-edit-design-test-data/cr-edit-design-test-data.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-
+import { CrEditDesignTestDataComponent } from '../cr-edit-design-test-data/cr-edit-design-test-data.component';  
 import { catchError, of } from 'rxjs';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { CrDesignFilenameConfirmationComponent } from '../cr-design-filename-confirmation/cr-design-filename-confirmation.component';
@@ -24,13 +22,13 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./cr-add-new-custom-report.component.scss'],
 })
 export class CrAddNewCustomReportComponent implements OnInit {
-  @ViewChild('desc_focus') desc_focus: ElementRef;
-  NewDescription;
-  NewFilename;
-  NewDesignTestData;
-  NewDesignDataType;
-  NewOutputType;
-  NewExportFilename;
+  @ViewChild('descFocus') descFocus: ElementRef;
+  newDescription;
+  newFilename;
+  newDesignTestData;
+  newDesignDataType;
+  newOutputType;
+  newExportFilename;
   listOfFileName;
   appendstring;
   addNewColumns;
@@ -42,10 +40,8 @@ export class CrAddNewCustomReportComponent implements OnInit {
   @ViewChildren('serialTemp') serialInputs: QueryList<any>;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private global: GlobalService,
-    private api: ApiFuntions,
-
-    private adminApiService: AdminApiService,
+    private global: GlobalService,  
+    public adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
   ) {
     this.iAdminApiService = adminApiService;
@@ -55,7 +51,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
     this.listOfFileName = this.data.ListReports;
   }
   ngAfterViewInit(): void {
-    this.desc_focus.nativeElement.focus();
+    this.descFocus.nativeElement.focus();
   }
   openEditDesign() {
     const dialogRef: any = this.global.OpenDialog(
@@ -68,18 +64,18 @@ export class CrAddNewCustomReportComponent implements OnInit {
       }
     );
     dialogRef.afterClosed().subscribe((result) => {
-      this.NewDesignTestData = result ? result : '';
+      this.newDesignTestData = result ? result : '';
     });
   }
 
   saveNew() {
     let newParams = [
-      this.NewDescription,
-      this.NewFilename,
-      this.NewDesignTestData,
-      this.NewDesignDataType,
-      this.NewOutputType,
-      this.NewExportFilename,
+      this.newDescription,
+      this.newFilename,
+      this.newDesignTestData,
+      this.newDesignDataType,
+      this.newOutputType,
+      this.newExportFilename,
     ];
 
     let fields = [
@@ -164,12 +160,12 @@ export class CrAddNewCustomReportComponent implements OnInit {
             this.CurrentFilename = '';
             if (this.appendstring.length == 0) {
               let obj = {
-                description: this.NewDescription,
-                filename: this.NewFilename,
-                dataSource: this.NewDesignTestData,
-                dataType: this.NewDesignDataType,
-                outputType: this.NewOutputType == 'Report' ? 2 : 1,
-                exportFilename: this.NewExportFilename,
+                description: this.newDescription,
+                filename: this.newFilename,
+                dataSource: this.newDesignTestData,
+                dataType: this.newDesignDataType,
+                outputType: this.newOutputType == 'Report' ? 2 : 1,
+                exportFilename: this.newExportFilename,
                 // appName: $('#AppName').val()
               };
 
@@ -204,12 +200,12 @@ export class CrAddNewCustomReportComponent implements OnInit {
 
   restoreDesign(filename, all?) {
     let obj = {
-      description: this.NewDescription,
-      filename: this.NewFilename,
-      dataSource: this.NewDesignTestData,
-      dataType: this.NewDesignDataType,
-      outputType: this.NewOutputType == 'Report' ? 2 : 1,
-      exportFilename: this.NewExportFilename,
+      description: this.newDescription,
+      filename: this.newFilename,
+      dataSource: this.newDesignTestData,
+      dataType: this.newDesignDataType,
+      outputType: this.newOutputType == 'Report' ? 2 : 1,
+      exportFilename: this.newExportFilename,
       all: all || false,
     };
     this.iAdminApiService.restoreDesign(obj).subscribe((res) => {
@@ -288,16 +284,16 @@ export class CrAddNewCustomReportComponent implements OnInit {
 
   setExtension() {
     if (
-      this.NewFilename.includes('.lst') ||
-      this.NewFilename.includes('.lbl')
+      this.newFilename.includes('.lst') ||
+      this.newFilename.includes('.lbl')
     ) {
-      let extensionIndex = this.NewFilename.indexOf('.');
-      this.NewFilename = this.NewFilename.slice(0, extensionIndex);
+      let extensionIndex = this.newFilename.indexOf('.');
+      this.newFilename = this.newFilename.slice(0, extensionIndex);
     }
-    if (this.NewOutputType == 'Report' && this.NewFilename != '') {
-      this.NewFilename = `${this.NewFilename}.lst`;
-    } else if (this.NewFilename != '' && this.NewOutputType == 'Label') {
-      this.NewFilename = `${this.NewFilename}.lbl`;
+    if (this.newOutputType == 'Report' && this.newFilename != '') {
+      this.newFilename = `${this.newFilename}.lst`;
+    } else if (this.newFilename != '' && this.newOutputType == 'Label') {
+      this.newFilename = `${this.newFilename}.lbl`;
     }
   }
 

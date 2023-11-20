@@ -22,7 +22,7 @@ import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface
   styleUrls: [],
 })
 export class TransactionQtyEditComponent implements OnInit {
-  @ViewChild('field_focus') field_focus: ElementRef;
+  @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
   public userData: any;
   public iAdminApiService: IAdminApiService;
@@ -43,7 +43,7 @@ export class TransactionQtyEditComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.field_focus?.nativeElement.focus();
+    this.fieldFocus?.nativeElement.focus();
   }
 
   transactionQuantityChange() {
@@ -76,8 +76,7 @@ export class TransactionQtyEditComponent implements OnInit {
           this.dialogRef.close(this.data);
         } else {
           this.globalService.ShowToastr('error', res.responseMessage, 'Error!');
-          this.dialog.closeAll();
-          console.log('TransactionQtyReplenishmentUpdate', res.responseMessage);
+          this.dialog.closeAll(); 
         }
       });
   }

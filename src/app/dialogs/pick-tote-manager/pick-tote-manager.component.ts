@@ -8,8 +8,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-
+import { MatTableDataSource } from '@angular/material/table'; 
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { startWith } from 'rxjs/internal/operators/startWith';
@@ -59,18 +58,15 @@ export class PickToteManagerComponent implements OnInit {
   filterBatchDataZone: any[] = [];
   useDefaultFilter;
   useDefaultZone;
-  batchByZoneData: any[] = [];
-  F_ORDER_TRANS: any[] = [];
+  batchByZoneData: any[] = []; 
   tabIndex: number = 0;
-
-  /** Whether the number of selected elements matches the total number of rows. */
+ 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
+ 
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
@@ -79,8 +75,7 @@ export class PickToteManagerComponent implements OnInit {
 
     this.selection.select(...this.dataSource.data);
   }
-
-  /** The label for the checkbox on the passed row */
+ 
   checkboxLabel(row?: PeriodicElement): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
@@ -425,15 +420,15 @@ export class PickToteManagerComponent implements OnInit {
   set paginator(value: MatPaginator) {
     this.batchByZoneSource.paginator = value;
   }
-  public iinductionManagerApi: IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
   constructor(
     private global: GlobalService,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -454,7 +449,7 @@ export class PickToteManagerComponent implements OnInit {
 
   pickBatchZonesSelect() {
     let paylaod = {};
-    this.iinductionManagerApi.PickBatchZonesSelect(paylaod).subscribe((res) => {
+    this.iInductionManagerApi.PickBatchZonesSelect(paylaod).subscribe((res) => {
       if (res.isExecuted && res.data) {
         this.batchByZoneData = res.data;
         this.batchByZoneSource = new MatTableDataSource<any>(
@@ -477,7 +472,7 @@ export class PickToteManagerComponent implements OnInit {
     let paylaod = {
       filter: '',
     };
-    this.iinductionManagerApi
+    this.iInductionManagerApi
       .PickBatchFilterTypeAhead(paylaod)
       .subscribe((res) => {
         if (res.isExecuted && res.data) {
@@ -635,7 +630,7 @@ export class PickToteManagerComponent implements OnInit {
           let paylaod = {
             Description: this.savedFilter.value,
           };
-          this.iinductionManagerApi
+          this.iInductionManagerApi
             .PickBatchDefaultFilterMark(paylaod)
             .subscribe((res) => {
               if (res.isExecuted) {
@@ -660,7 +655,7 @@ export class PickToteManagerComponent implements OnInit {
     }
     if (option.value === 'clear_default') {
       let paylaod = {};
-      this.iinductionManagerApi
+      this.iInductionManagerApi
         .PickBatchDefaultFilterClear(paylaod)
         .subscribe((res) => {
           if (res.isExecuted) {
@@ -679,7 +674,7 @@ export class PickToteManagerComponent implements OnInit {
     }
     if (option.value === 'view_default') {
       let paylaod = {};
-      this.iinductionManagerApi
+      this.iInductionManagerApi
         .PickBatchDefaultFilterSelect(paylaod)
         .subscribe((res) => {
           if (res.data) {
@@ -716,7 +711,7 @@ export class PickToteManagerComponent implements OnInit {
           let paylaod = {
             Description: this.savedFilter.value,
           };
-          this.iinductionManagerApi
+          this.iInductionManagerApi
             .PickBatchFilterBatchDelete(paylaod)
             .subscribe((res) => {
               if (res.isExecuted) {
@@ -769,7 +764,7 @@ export class PickToteManagerComponent implements OnInit {
         UseDefZone: 0,
         RP: false,
       };
-      this.iinductionManagerApi
+      this.iInductionManagerApi
         .OrdersFilterZoneSelect(payload)
         .subscribe((res) => {
           if (res.isExecuted && res.data) {
@@ -814,7 +809,7 @@ export class PickToteManagerComponent implements OnInit {
         UseDefZone: 0,
         RP: rp,
       };
-      this.iinductionManagerApi
+      this.iInductionManagerApi
         .OrdersFilterZoneSelect(payload)
         .subscribe((res) => {
           if (res.isExecuted && res.data) {
@@ -911,7 +906,7 @@ export class PickToteManagerComponent implements OnInit {
         SortOrder: 'asc',
         Filter: '1=1',
       };
-      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res) {
           this.filterOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -978,7 +973,7 @@ export class PickToteManagerComponent implements OnInit {
         SortOrder: 'asc',
         Filter: '1=1',
       };
-      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res) {
           this.zoneOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -1000,7 +995,7 @@ export class PickToteManagerComponent implements OnInit {
     let paylaod = {
       filter: filter,
     };
-    this.iinductionManagerApi
+    this.iInductionManagerApi
       .PickBatchFilterOrderData(paylaod)
       .subscribe((res) => {
         if (res.isExecuted && res.data) {
@@ -1117,7 +1112,7 @@ export class PickToteManagerComponent implements OnInit {
         SortOrder: 'asc',
         Filter: '1=1',
       };
-      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
           this.zoneOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -1151,7 +1146,7 @@ export class PickToteManagerComponent implements OnInit {
           SortOrder: 'asc',
           Filter: '1=1',
         };
-        this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+        this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
             this.zoneOrderTransactionSource = new MatTableDataSource<any>(
               res.data.pickToteManTrans
@@ -1188,7 +1183,7 @@ export class PickToteManagerComponent implements OnInit {
         SortOrder: 'asc',
         Filter: '1=1',
       };
-      this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
           this.filterOrderTransactionSource = new MatTableDataSource<any>(
             res.data.pickToteManTrans
@@ -1222,7 +1217,7 @@ export class PickToteManagerComponent implements OnInit {
           SortOrder: 'asc',
           Filter: '1=1',
         };
-        this.iinductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
+        this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
             this.filterOrderTransactionSource = new MatTableDataSource<any>(
               res.data.pickToteManTrans
@@ -1262,7 +1257,7 @@ export class PickToteManagerComponent implements OnInit {
       };
       this.filterData.forEach((val) => {
         if (val.is_db) {
-          this.iinductionManagerApi
+          this.iInductionManagerApi
             .PickBatchFilterUpdate(payload)
             .subscribe((res) => {
               if (res.isExecuted) {
@@ -1284,7 +1279,7 @@ export class PickToteManagerComponent implements OnInit {
               }
             });
         } else {
-          this.iinductionManagerApi
+          this.iInductionManagerApi
             .PickBatchFilterInsert(payload)
             .subscribe((res) => {
               if (res.isExecuted) {
@@ -1318,7 +1313,7 @@ export class PickToteManagerComponent implements OnInit {
         Order: element.sortOrder,
         Description: this.savedFilter.value,
       };
-      this.iinductionManagerApi
+      this.iInductionManagerApi
         .PickBatchOrderUpdate(payload)
         .subscribe((res) => {
           if (res.isExecuted) {
@@ -1340,7 +1335,7 @@ export class PickToteManagerComponent implements OnInit {
         Order: element.sortOrder,
         Description: this.savedFilter.value,
       };
-      this.iinductionManagerApi
+      this.iInductionManagerApi
         .PickBatchOrderInsert(payload)
         .subscribe((res) => {
           if (res.isExecuted) {
@@ -1389,7 +1384,7 @@ export class PickToteManagerComponent implements OnInit {
           Sequence: element.sequence,
           Description: this.savedFilter.value,
         };
-        this.iinductionManagerApi
+        this.iInductionManagerApi
           .PickBatchFilterDelete(payload)
           .subscribe((res) => {
             if (res.isExecuted) {
@@ -1427,7 +1422,7 @@ export class PickToteManagerComponent implements OnInit {
         let payload = {
           id: element.id,
         };
-        this.iinductionManagerApi
+        this.iInductionManagerApi
           .PickBatchOrderDelete(payload)
           .subscribe((res) => {
             if (res.isExecuted) {
@@ -1512,7 +1507,7 @@ export class PickToteManagerComponent implements OnInit {
           zone: row.zone,
           type: row.type,
         };
-        this.iinductionManagerApi
+        this.iInductionManagerApi
           .PickBatchZoneDefaultMark(payload)
           .subscribe((res) => {
             if (res.isExecuted) {

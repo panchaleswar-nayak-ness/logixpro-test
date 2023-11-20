@@ -25,7 +25,7 @@
         <mat-form-field class="custom-form-field w-100 mb-3 mb-xl-0" appearance="outline" [floatLabel]="getFloatLabelValue1()"
         [hideRequiredMarker]="hideRequiredControl.value"  >
         <mat-label>From Tote ID</mat-label>
-        <input #field_focus type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
+        <input #fieldFocus type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
           [(ngModel)]='fromTote' [matAutocomplete]="auto1"
           (keyup)="searchAutocompleteListFilter1()" (ngModelChange)="searchAutocompleteListFilter1()">
           <button matSuffix *ngIf="fromTote" class="clear-btn"  (click)="fromTote='';searchAutocompleteListFilter1()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
@@ -69,7 +69,7 @@
       </mat-form-field>
 
 
-        <div (click)="printRange()" class="d-flex d-xl-block"><button style="flex: 1 auto;" [disabled]="!fromTote && !toTote" type="submit" mat-flat-button class="float-end form-button-submit btn-regular" color="primary">Print
+        <div (click)="printRange()" class="d-flex d-xl-block"><button [disabled]="!fromTote && !toTote" type="submit" mat-flat-button class="float-end form-button-submit btn-regular flex-grow-1" color="primary">Print
             Range</button></div>
       </div>
     </div>

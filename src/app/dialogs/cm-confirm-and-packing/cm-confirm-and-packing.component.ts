@@ -20,13 +20,13 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
   styleUrls: []
 })
 export class CmConfirmAndPackingComponent implements OnInit {
-  @ViewChild('order_focus') order_focus: ElementRef;
+  @ViewChild('orderFocus') orderFocus: ElementRef;
   orderNumber:any ;
   preferencesData:any;
   toteTable:any;
-  ItemNumber:any;
+  itemNumber:any;
   transTable:any;
-  OldtransTable:any;
+  oldtransTable:any;
   contIDDrop:any[]=[];
   @ViewChild(MatSort) sort1: MatSort;
   @ViewChild('MatSort2') sort2: MatSort;
@@ -44,7 +44,7 @@ userData:any={};
 displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transactionQuantity', 'completedQuantity', 'containerID',
  'shipQuantity', 'complete']; 
 
- public IconsolidationAPI : IConsolidationApi;
+ public iConsolidationAPI : IConsolidationApi;
  
  constructor(
     public consolidationAPI : ConsolidationApiService,
@@ -58,7 +58,7 @@ displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   'tra
 
     this.userData = this.authService.userData();
     this.orderNumber = this.data.orderNumber;
-    this.IconsolidationAPI = consolidationAPI;
+    this.iConsolidationAPI = consolidationAPI;
   }
 
   ngOnInit(): void {
@@ -75,13 +75,13 @@ displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   'tra
    
   }
   ngAfterViewInit(): void {
-    this.order_focus.nativeElement.focus();
+    this.orderFocus.nativeElement.focus();
   }
   async NextContID(){ 
     let obj : any = {
       orderNumber: this.orderNumber
     };
-   this.IconsolidationAPI.SelContIDConfirmPack(obj).subscribe((res:any) => {
+   this.iConsolidationAPI.SelContIDConfirmPack(obj).subscribe((res:any) => {
     if(res.isExecuted)
     {
       if(res.data == ''){
@@ -107,7 +107,7 @@ displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   'tra
 
 
 async UnPack(id:any){  
-  this.IconsolidationAPI.ShipTransUnPackUpdate({id:id}).subscribe((res:any) => {
+  this.iConsolidationAPI.ShipTransUnPackUpdate({id:id}).subscribe((res:any) => {
     if(res)
     {
       if (res.data == "Fail") {
@@ -134,7 +134,7 @@ getPreferences() {
     value: ''
   };
 
-  this.IconsolidationAPI
+  this.iConsolidationAPI
     .ConsoleDataSB(payload)
     .subscribe((res) => {
       if (res.isExecuted && res.data) {
@@ -157,7 +157,7 @@ if(this.orderNumber != ""){
   let obj : any = {
     orderNumber: this.orderNumber
   };
- this.IconsolidationAPI.ConfirmAndPackingIndex(obj).subscribe((res:any) => {
+ this.iConsolidationAPI.ConfirmAndPackingIndex(obj).subscribe((res:any) => {
   if (res.isExecuted && res.data)
   {
     this.orderNumber = res.data.orderNumber;
@@ -202,7 +202,7 @@ async ClickConfirmAll(){
       orderNumber:this.orderNumber,
       containerID: this.contID
     };
-   this.IconsolidationAPI.ConfirmAllConfPack(obj).subscribe((res:any) => {
+   this.iConsolidationAPI.ConfirmAllConfPack(obj).subscribe((res:any) => {
     if(res)
     {
       if (res.data == "Fail") {
@@ -293,11 +293,11 @@ announceSortChange2(sortState: Sort) {
  }
  ItemKeyUp(){
   setTimeout(() => {
-    if(this.OldtransTable?.filteredData && this.OldtransTable?.filteredData?.length > 0){
-      this.transTable = new MatTableDataSource(this.OldtransTable.filteredData.filter(x=>  x.itemNumber.indexOf(this.ItemNumber) > -1));  
+    if(this.oldtransTable?.filteredData && this.oldtransTable?.filteredData?.length > 0){
+      this.transTable = new MatTableDataSource(this.oldtransTable.filteredData.filter(x=>  x.itemNumber.indexOf(this.itemNumber) > -1));  
     }else{
-      this.OldtransTable = this.transTable;
-      this.transTable = new MatTableDataSource(this.transTable.filteredData.filter(x=>  x.itemNumber.indexOf(this.ItemNumber) > -1));  
+      this.oldtransTable = this.transTable;
+      this.transTable = new MatTableDataSource(this.transTable.filteredData.filter(x=>  x.itemNumber.indexOf(this.itemNumber) > -1));  
     }
   }, 10);
  }
@@ -309,7 +309,7 @@ let contID;
 for (const item of this.transTable.filteredData) {
     let itemNum = item.itemNumber;
     let complete = item.complete;
-    if (this.ItemNumber.toLowerCase() == itemNum.toLowerCase() && !complete) {
+    if (this.itemNumber.toLowerCase() == itemNum.toLowerCase() && !complete) {
         searchCount += 1;
         id = item.sT_ID;
     };
@@ -324,7 +324,7 @@ if(searchCount == 0){
     containerID: this.contID,
     modal: ""
   };
- this.IconsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
+ this.iConsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
    
   if (res.data == "Fail") {
     this.global.ShowToastr('error','An error has occurred', 'Error!');

@@ -7,10 +7,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: [],
 })
 export class MarkToteFullComponent implements OnInit {
-  dialog_msg;
+  dialogMsg;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit(): void {
-    this.dialog_msg = this.data.message;
+    this.dialogMsg = this.data.message;
   }
 }

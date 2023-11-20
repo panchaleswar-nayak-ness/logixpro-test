@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./ie-ftp-settings.component.scss'],
 })
 export class IeFtpSettingsComponent {
-  ELEMENT_DATA: any[] = [
+  elementData: any[] = [
     { import_export: 'Export' },
     { import_export: 'Import' },
     { import_export: 'Export' },
@@ -27,6 +27,6 @@ export class IeFtpSettingsComponent {
     'ftp_readyfile',
     'actions',
   ];
-  tableData = this.ELEMENT_DATA;
+  tableData = this.elementData;
   dataSourceList: any;
 }

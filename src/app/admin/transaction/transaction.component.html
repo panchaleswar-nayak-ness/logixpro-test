@@ -5,21 +5,21 @@
         </app-order-status>
     </mat-tab>
     <ng-container *ngIf="authService.UserPermissonByFuncName('Transaction Journal') || authService.UserPermissonByFuncName('Admin Transaction Journal')">
-        <mat-tab label="Open Transactions" *ngIf="!IsOrderStatus" >
+        <mat-tab label="Open Transactions" *ngIf="!isOrderStatus" >
             <app-open-transaction 
                 [tabIndex]="tabIndex" 
                 (emitOrderTab)="switchToOrder()">
             </app-open-transaction>
         </mat-tab>
-        <mat-tab label="Transaction History" *ngIf="!IsOrderStatus">
+        <mat-tab label="Transaction History" *ngIf="!isOrderStatus">
             <app-transaction-history 
-                [TabIndex]="tabIndex">
+                [tabIndex]="tabIndex">
             </app-transaction-history>
         </mat-tab>
-        <mat-tab label="Reprocess Transactions" *ngIf="!showReprocess && !IsOrderStatus">
+        <mat-tab label="Reprocess Transactions" *ngIf="!showReprocess && !isOrderStatus">
             <app-reprocess-transaction></app-reprocess-transaction >
         </mat-tab> 
-        <mat-tab label="Reprocessed Transactions" *ngIf="!showReprocessed && !IsOrderStatus">
+        <mat-tab label="Reprocessed Transactions" *ngIf="!showReprocessed && !isOrderStatus">
             <app-reprocessed-transaction></app-reprocessed-transaction>
         </mat-tab>
     </ng-container>

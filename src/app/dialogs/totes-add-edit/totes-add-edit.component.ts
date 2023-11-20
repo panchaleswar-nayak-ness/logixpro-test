@@ -50,16 +50,16 @@ export interface ToteElement {
 })
 export class TotesAddEditComponent implements OnInit {
   
-  ELEMENT_DATA: PeriodicElement[] = [
+  elementData: PeriodicElement[] = [
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
   ];
-  @ViewChild('field_focus') field_focus: ElementRef;
+  @ViewChild('fieldFocus') fieldFocus: ElementRef;
   @ViewChildren('category_category', { read: ElementRef })
   category_category: QueryList<ElementRef>;
   isRowAdded = false;
   floatLabelControl1 = new FormControl('auto' as FloatLabelType);
   floatLabelControl2 = new FormControl('auto' as FloatLabelType);
-  ELEMENT_DATA_TOTE = [
+  elementDataTote = [
     {
       toteID: '',
       cells: '',
@@ -72,15 +72,15 @@ export class TotesAddEditComponent implements OnInit {
   ];
   displayedColumns: string[] = ['actions', 'zone', 'locationdesc'];
   alreadySavedTotesList: any;
-  dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
+  dataSource = new MatTableDataSource<PeriodicElement>(this.elementData);
   dataSourceManagedTotes = new MatTableDataSource<ToteElement>(
-    this.ELEMENT_DATA_TOTE
+    this.elementDataTote
   );
   selection = new SelectionModel<PeriodicElement>(true, []);
   position: any;
   isIMPath = false;
   public iAdminApiService: IAdminApiService;
-  public iinductionManagerApi: IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
   toteID = '';
   cellID = '';
   fromTote: any;
@@ -105,19 +105,19 @@ export class TotesAddEditComponent implements OnInit {
 
   addRow() {
     this.isRowAdded = true;
-    this.ELEMENT_DATA_TOTE.unshift({
+    this.elementDataTote.unshift({
       toteID: '',
       cells: '',
-      position: this.ELEMENT_DATA_TOTE.length - 1,
+      position: this.elementDataTote.length - 1,
       oldToteID: '',
       isInserted: 0,
       isDuplicate: false,
       isEdit: false,
     });
     this.dataSourceManagedTotes = new MatTableDataSource<any>(
-      this.ELEMENT_DATA_TOTE
+      this.elementDataTote
     );
-    const lastIndex = this.ELEMENT_DATA_TOTE.length - 1;
+    const lastIndex = this.elementDataTote.length - 1;
 
     setTimeout(() => {
       const inputElements = this.category_category.toArray();
@@ -204,7 +204,7 @@ export class TotesAddEditComponent implements OnInit {
     }`;
   }
   autocompleteSearchColumn() {
-    this.iinductionManagerApi
+    this.iInductionManagerApi
       .GetFromToteTypeAhead()
       .pipe(takeUntil(this.onDestroy$))
       .pipe(
@@ -339,23 +339,23 @@ export class TotesAddEditComponent implements OnInit {
     if (item) {
       items = JSON.parse(JSON.stringify(item));
     }
-    this.ELEMENT_DATA_TOTE.length = 0;
+    this.elementDataTote.length = 0;
     this.iAdminApiService.ToteSetup().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
-          this.ELEMENT_DATA_TOTE = res.data;
-          for (let value of this.ELEMENT_DATA_TOTE) {
+          this.elementDataTote = res.data;
+          for (let value of this.elementDataTote) {
             value.isInserted = 1;
             value.isDuplicate = false;
             value.oldToteID = value.toteID;
             value.isEdit = false;
           }
           if (items) {
-            this.ELEMENT_DATA_TOTE.push(items[items.length - 1]);
+            this.elementDataTote.push(items[items.length - 1]);
             this.isRowAdded = true;
           }
           this.dataSourceManagedTotes = new MatTableDataSource<any>(
-            this.ELEMENT_DATA_TOTE
+            this.elementDataTote
           );
         } else {
           this.global.ShowToastr('error', 'Something went wrong', 'Error!');
@@ -367,13 +367,13 @@ export class TotesAddEditComponent implements OnInit {
   }
 
   onToteChange($event, position, cells = '') {
-    this.ELEMENT_DATA_TOTE[position].isEdit = true;
+    this.elementDataTote[position].isEdit = true;
     if (cells == '') {
-      if (this.ELEMENT_DATA_TOTE[position].toteID != $event.target.value) {
-        this.ELEMENT_DATA_TOTE[position].toteID = $event.target.value;
+      if (this.elementDataTote[position].toteID != $event.target.value) {
+        this.elementDataTote[position].toteID = $event.target.value;
       }
-    } else if (this.ELEMENT_DATA_TOTE[position].cells != $event.target.value) {
-      this.ELEMENT_DATA_TOTE[position].cells = $event.target.value;
+    } else if (this.elementDataTote[position].cells != $event.target.value) {
+      this.elementDataTote[position].cells = $event.target.value;
     }
   }
 
@@ -439,29 +439,27 @@ export class TotesAddEditComponent implements OnInit {
   }
 
   displayedColumns1: string[] = ['select', 'zone', 'locationdesc', 'options'];
-  dataSource1 = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
+  dataSource1 = new MatTableDataSource<PeriodicElement>(this.elementData);
   selection1 = new SelectionModel<PeriodicElement>(true, []);
 
   constructor(
     public dialogRef: MatDialogRef<TotesAddEditComponent>,
-    private inductionManagerApi: InductionManagerApiService,
-    private adminApiService: AdminApiService,
-    private route: ActivatedRoute,
+    public inductionManagerApi: InductionManagerApiService,
+    public adminApiService: AdminApiService, 
     private location: Location,
     private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private authService: AuthService,
-    private Api: ApiFuntions,
+    private authService: AuthService, 
     private global: GlobalService
   ) {
     this.iAdminApiService = adminApiService;
     let pathArr = this.location.path().split('/');
     this.isIMPath = pathArr[pathArr.length - 1] === 'ImToteManager';
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
-    this.ELEMENT_DATA_TOTE.length = 0;
+    this.elementDataTote.length = 0;
     this.position = this.data.position;
     this.userData = this.authService.userData();
     this.alreadySavedTotesList = this.data.alreadySavedTotes;
@@ -471,7 +469,7 @@ export class TotesAddEditComponent implements OnInit {
     this.imPreferences = this.global.getImPreferences();
   }
   ngAfterViewInit(): void {
-    this.field_focus?.nativeElement.focus();
+    this.fieldFocus?.nativeElement.focus();
   }
 
   searchAutocompleteListFilter1() {

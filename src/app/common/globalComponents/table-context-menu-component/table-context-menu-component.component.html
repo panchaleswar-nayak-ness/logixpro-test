@@ -1,4 +1,4 @@
-<div #trigger="matMenuTrigger" style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x" [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenuFilter"></div>
+<div #trigger="matMenuTrigger" class="position-fixed invisible" [style.left]="contextMenuPosition.x" [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenuFilter"></div>
 
 <mat-menu #contextMenuFilter="matMenu" (menuOpened)="onMenuOpened()"  (menuClosed)="onMenuClosed()">
   <ng-template matMenuContent let-item="item">

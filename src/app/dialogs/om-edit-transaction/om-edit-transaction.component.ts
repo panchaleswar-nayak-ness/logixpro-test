@@ -6,9 +6,9 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   styleUrls: [],
 })
 export class OmEditTransactionComponent {
-  @ViewChild('proc_focus') proc_focus: ElementRef;
+  @ViewChild('procfocus') procfocus: ElementRef;
 
   ngAfterViewInit(): void {
-    this.proc_focus.nativeElement.focus();
+    this.procfocus.nativeElement.focus();
   }
 }

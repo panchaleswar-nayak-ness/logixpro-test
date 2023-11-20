@@ -22,8 +22,8 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
   styleUrls: [],
 })
 export class CmShippingCarrierComponent implements OnInit {
-  @ViewChildren('carrier_focus', { read: ElementRef })
-  carrier_focus: QueryList<ElementRef>;
+  @ViewChildren('carrierFocus', { read: ElementRef })
+  carrierFocus: QueryList<ElementRef>;
 
   userData: any;
   carrierList: any;
@@ -31,7 +31,7 @@ export class CmShippingCarrierComponent implements OnInit {
   disableAddField: boolean = false;
   disableEnable = [{ index: -1, value: false }];
   onDestroy$: Subject<boolean> = new Subject();
-  public IconsolidationAPI: IConsolidationApi;
+  public iConsolidationAPI: IConsolidationApi;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private authService: AuthService,
@@ -41,7 +41,7 @@ export class CmShippingCarrierComponent implements OnInit {
     private global: GlobalService,
     private renderer: Renderer2
   ) {
-    this.IconsolidationAPI = consolidationAPI;
+    this.iConsolidationAPI = consolidationAPI;
   }
 
   ngOnInit(): void {
@@ -64,7 +64,7 @@ export class CmShippingCarrierComponent implements OnInit {
         }
 
         setTimeout(() => {
-          const inputElements = this.carrier_focus.toArray();
+          const inputElements = this.carrierFocus.toArray();
           const inputElement = inputElements[0]
             .nativeElement as HTMLInputElement;
           this.renderer.selectRootElement(inputElement).focus();
@@ -81,7 +81,7 @@ export class CmShippingCarrierComponent implements OnInit {
     }
     const lastIndex = this.carrierList.length - 1;
     setTimeout(() => {
-      const inputElements = this.carrier_focus.toArray();
+      const inputElements = this.carrierFocus.toArray();
       if (inputElements.length > lastIndex) {
         const inputElement = inputElements[0].nativeElement as HTMLInputElement;
         this.renderer.selectRootElement(inputElement).focus();
@@ -103,7 +103,7 @@ export class CmShippingCarrierComponent implements OnInit {
       };
     }
 
-    this.IconsolidationAPI.CarrierSave(paylaod).subscribe((res: any) => {
+    this.iConsolidationAPI.CarrierSave(paylaod).subscribe((res: any) => {
       if (res.isExecuted) {
         this.global.ShowToastr('success', res.message, 'Success!');
         this.getCarrier();

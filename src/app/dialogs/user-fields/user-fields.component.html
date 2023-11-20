@@ -15,7 +15,7 @@
                 <div class="col-xl-6">
                     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
                         <mat-label>{{fieldNames?.userField1}}</mat-label>
-                        <textarea #field_focus formControlName="userField1" matInput type="text"></textarea>
+                        <textarea #fieldFocus formControlName="userField1" matInput type="text"></textarea>
                     </mat-form-field>
                 </div>
                 <div class="col-xl-6">
@@ -95,7 +95,7 @@
     <button mat-stroked-button color="primary" class="btn-lg" type="button" [mat-dialog-close]="true">
         Close
     </button>
-    <button mat-flat-button color="primary" class="btn-lg" style="flex:1" (click)="submit()">
+    <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="submit()">
         Submit
     </button>
 </div>
