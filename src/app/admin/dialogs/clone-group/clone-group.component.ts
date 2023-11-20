@@ -4,20 +4,21 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CustomValidatorService } from '../../../../app/init/custom-validator.service'; 
 import labels from '../../../labels/labels.json';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+
 
 @Component({
   selector: 'app-clone-group',
   templateUrl: './clone-group.component.html',
-  styleUrls: []
+  styleUrls: ['./clone-group.scss']
 })
 export class CloneGroupComponent implements OnInit {
-  @ViewChild('grp_name') grp_name: ElementRef;
-  cloneForm: FormGroup;
-  isValidForm: boolean = true;
+ 
+
   public iAdminApiService: IAdminApiService;
   constructor(
     private fb: FormBuilder, 
@@ -32,7 +33,8 @@ private adminApiService: AdminApiService,
     ) { 
       this.iAdminApiService = adminApiService;
     }
-
+    @ViewChild('grp_name') grp_name: ElementRef;
+    cloneForm: FormGroup;
   ngOnInit(): void {
     this.cloneForm = this.fb.group({
       group_name: ['', [Validators.required,this.noWhitespaceValidator, this.cusValidator.specialCharValidator]]
@@ -57,10 +59,10 @@ private adminApiService: AdminApiService,
     this.iAdminApiService.cloneGroup(payload).subscribe((res:any) => {
       if(res.isExecuted){
         this.dialog.closeAll();
-        this.global.ShowToastr('success',labels.alert.update, 'Success!');
+        this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterType.Success);
       }
       else{
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
         console.log("cloneGroup",res.responseMessage);
 
       }

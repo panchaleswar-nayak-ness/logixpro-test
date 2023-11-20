@@ -1,13 +1,13 @@
-<div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+<div class="d-flex justify-content-between mb-4 align-items-center ">
+    <div  class="batch-card-width"></div>
 <h2 class="card-header-title m-0">Batch Manager Detail View</h2>
 <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
     <mat-icon class="close-icon">close</mat-icon>
 </button>
 </div>
 
-<div class="card br-14 px-0 borderless" style="overflow-x: auto;">
-    <ng-scrollbar track="all" class="mat-table-scrollbar " style="height: 400px">
+<div class="card br-14 px-0 borderless batch-manager-card" >
+    <ng-scrollbar track="all" class="mat-table-scrollbar batch-height " >
     <table class="w-100" mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"> 
   
       <ng-container matColumnDef="item_no">
