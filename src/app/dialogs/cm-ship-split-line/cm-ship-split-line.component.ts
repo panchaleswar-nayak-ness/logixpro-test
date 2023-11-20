@@ -25,19 +25,17 @@ export class CmShipSplitLineComponent implements OnInit {
 
   @ViewChild('ssQty') ssQty: ElementRef;
 
-  public IconsolidationAPI: IConsolidationApi;
+  public iConsolidationAPI: IConsolidationApi;
 
   constructor(
     public consolidationAPI: ConsolidationApiService,
     private global: GlobalService,
-    public dialogRef: MatDialogRef<CmShipSplitLineComponent>,
-
-    // private Api: ApiFuntions,
+    public dialogRef: MatDialogRef<CmShipSplitLineComponent>, 
     private authService: AuthService,
     public globalService: GlobalService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.IconsolidationAPI = consolidationAPI;
+    this.iConsolidationAPI = consolidationAPI;
   }
 
   ngOnInit(): void {
@@ -69,7 +67,7 @@ export class CmShipSplitLineComponent implements OnInit {
         page: this.data.page,
       };
 
-      this.IconsolidationAPI.SplitLineTrans(payLoad).subscribe(
+      this.iConsolidationAPI.SplitLineTrans(payLoad).subscribe(
         (res: any) => {
           if (res.isExecuted && res.data) {
             let orderQty =
@@ -94,11 +92,11 @@ export class CmShipSplitLineComponent implements OnInit {
           }
         },
         (error) => {
-          console.log(error);
+          
         }
       );
     } catch (error) {
-      console.log(error);
+      
     }
   }
 }

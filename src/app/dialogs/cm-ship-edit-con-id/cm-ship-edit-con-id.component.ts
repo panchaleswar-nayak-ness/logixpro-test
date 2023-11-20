@@ -18,18 +18,13 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
   styleUrls: [],
 })
 export class CmShipEditConIdComponent implements OnInit {
-  @ViewChild('cont_id') cont_id: ElementRef;
-  public userData: any;
-
-  containerID: string = '';
-
+  @ViewChild('contId') contId: ElementRef;
+  public userData: any; 
+  containerID: string = ''; 
   clearContainerIDBtn: boolean = true;
-  setContainerIDBtn: boolean = false;
-
-  @ViewChild('conID') conID: ElementRef;
-
-  public IconsolidationAPI: IConsolidationApi;
-
+  setContainerIDBtn: boolean = false; 
+  @ViewChild('conID') conID: ElementRef; 
+  public IconsolidationAPI: IConsolidationApi; 
   constructor(
     public consolidationAPI: ConsolidationApiService,
     private global: GlobalService,
@@ -46,7 +41,7 @@ export class CmShipEditConIdComponent implements OnInit {
     this.focusConID();
   }
   ngAfterViewInit(): void {
-    this.cont_id.nativeElement.focus();
+    this.contId.nativeElement.focus();
   }
   validateContainerID() {
     if (this.containerID != '') {

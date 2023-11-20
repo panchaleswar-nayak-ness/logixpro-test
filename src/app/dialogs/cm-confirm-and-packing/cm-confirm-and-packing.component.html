@@ -45,7 +45,7 @@
                             <div class="col-xl-7 pe-xl-0">
                                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                                     <mat-label>Order Number</mat-label>
-                                    <input #order_focus matInput type="text" [(ngModel)]="orderNumber" disabled (keyup.enter)="ConfirmAndPackingIndex()"  >
+                                    <input #orderFocus matInput type="text" [(ngModel)]="orderNumber" disabled (keyup.enter)="ConfirmAndPackingIndex()"  >
                                 </mat-form-field>
                             </div>
                             <div class="col-xl-5">
@@ -173,7 +173,7 @@
 
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                     <mat-label>Scan Item No.</mat-label>
-                    <input matInput type="text" [(ngModel)]="ItemNumber"
+                    <input matInput type="text" [(ngModel)]="itemNumber"
                     (keyup)="ItemKeyUp()"
                     (keypress)="ScanItemNum($event)" 
                     [disabled]="(confPackEnable != null && confPackEnable != '') ">

@@ -42,7 +42,7 @@ export class CmShippingComponent implements OnInit {
   shippingComp: any = false;
   shippingPreferences: any = {};
 
-  public IconsolidationAPI: IConsolidationApi;
+  public iConsolidationAPI: IConsolidationApi;
 
   constructor(
     public consolidationAPI: ConsolidationApiService,
@@ -53,7 +53,7 @@ export class CmShippingComponent implements OnInit {
   ) {
     this.orderNumber = this.data.orderNumber;
     this.userData = this.authService.userData();
-    this.IconsolidationAPI = consolidationAPI;
+    this.iConsolidationAPI = consolidationAPI;
   }
 
   ngOnInit(): void {
@@ -67,7 +67,7 @@ export class CmShippingComponent implements OnInit {
     if (this.orderNumber != '') {
       let obj: any = { orderNumber: this.orderNumber };
       this.isLoading = true;
-      this.IconsolidationAPI.ShippingIndex(obj).subscribe((res: any) => {
+      this.iConsolidationAPI.ShippingIndex(obj).subscribe((res: any) => {
         if (res.isExecuted)
           if (res?.data) {
             this.shippingData = res.data.shippingData;
@@ -120,7 +120,7 @@ export class CmShippingComponent implements OnInit {
       carrier: element.carrier,
       trackingNum: element.trackingNum,
     };
-    this.IconsolidationAPI.ShipmentItemDelete(obj).subscribe((res: any) => {
+    this.iConsolidationAPI.ShipmentItemDelete(obj).subscribe((res: any) => {
       if (res?.isExecuted) this.shippingData = this.shippingData.slice(0, i);
       else {
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
@@ -143,7 +143,7 @@ export class CmShippingComponent implements OnInit {
       height: element.height ? element.height : 0,
       cube: element.cube,
     };
-    this.IconsolidationAPI.ShipmentItemUpdate(obj).subscribe((res: any) => {});
+    this.iConsolidationAPI.ShipmentItemUpdate(obj).subscribe((res: any) => {});
   }
 
   async ShippingCompShip() {
@@ -160,7 +160,7 @@ export class CmShippingComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'Yes') {
         let obj: any = { orderNumber: this.orderNumber };
-        this.IconsolidationAPI.SelCountOfOpenTransactionsTemp(obj).subscribe(
+        this.iConsolidationAPI.SelCountOfOpenTransactionsTemp(obj).subscribe(
           (res: any) => {
             if (res.isExecuted) {
               if (res.data == -1)
@@ -208,7 +208,7 @@ export class CmShippingComponent implements OnInit {
 
   async completeShipment() {
     let obj: any = { orderNumber: this.orderNumber };
-    this.IconsolidationAPI.CompleteShipment(obj).subscribe((res: any) => {
+    this.iConsolidationAPI.CompleteShipment(obj).subscribe((res: any) => {
       if (res?.isExecuted)
         this.global.ShowToastr(
           'success',

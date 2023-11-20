@@ -14,8 +14,7 @@ import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirma
 import { BatchDeleteComponent } from '../batch-delete/batch-delete.component';
 import { MarkToteFullComponent } from '../mark-tote-full/mark-tote-full.component';
 import labels from '../../labels/labels.json';
-import { PageEvent } from '@angular/material/paginator';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { PageEvent } from '@angular/material/paginator'; 
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
@@ -26,7 +25,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
   styleUrls: ['./tote-transaction-view.component.scss'],
 })
 export class ToteTransactionViewComponent implements OnInit {
-  @ViewChild('field_focus') field_focus: ElementRef;
+  @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
   batchID: any;
   tote: any;
@@ -44,16 +43,14 @@ export class ToteTransactionViewComponent implements OnInit {
     startIndex: 1,
     endIndex: 10,
   };
-  IMPreferences: any;
+  iMPreferences: any;
   zoneLabels: any;
   imPreferences: any;
   public iInductionManagerApi: IInductionManagerApiService;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<any>,
-    private Api: ApiFuntions,
-    private global: GlobalService,
-
+    public dialogRef: MatDialogRef<any>, 
+    private global: GlobalService, 
     public inductionManagerApi: InductionManagerApiService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
@@ -64,13 +61,13 @@ export class ToteTransactionViewComponent implements OnInit {
     this.tote = this.data.tote;
     this.toteID = this.data.toteID;
     this.cell = this.data.cell;
-    this.IMPreferences = this.data.IMPreferences;
+    this.iMPreferences = this.data.IMPreferences;
     this.zoneLabels = this.data.zoneLabels;
     this.getTransactionTable();
     this.imPreferences = this.global.getImPreferences();
   }
   ngAfterViewInit(): void {
-    this.field_focus?.nativeElement.focus();
+    this.fieldFocus?.nativeElement.focus();
   }
 
   displayedColumns: string[] = [

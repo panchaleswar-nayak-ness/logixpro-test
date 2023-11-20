@@ -1,6 +1,6 @@
 
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div  style="width:48px"></div>
     <h1 class="m-0" mat-dialog-title>{{ addItem ? 'Add new filter' : 'Edit filter'}}</h1>
 
     <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
@@ -13,12 +13,12 @@
         <div class="col-12 mb-2">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <mat-label>Filter Name</mat-label>
-                <input  #filter_focus matInput type="text" [(ngModel)]="filter_name" required maxlength="50" value="">
+                <input  #filterFocus matInput type="text" [(ngModel)]="filterName" required maxlength="50" value="">
             </mat-form-field>
-            <div class="error" *ngIf="submit && !filter_name">This field is required.</div>
+            <div class="error" *ngIf="submit && !filterName">This field is required.</div>
         </div>
         <div class="d-flex justify-content-end pt-3">
-        <button [disabled]="!filter_name" style="flex:1" mat-flat-button color="primary" class="btn-lg" (click)="onNoClick(true, 'createNew')"  cdkFocusInitial>Submit</button>
+        <button [disabled]="!filterName" style="flex:1" mat-flat-button color="primary" class="btn-lg" (click)="onNoClick(true, 'createNew')"  cdkFocusInitial>Submit</button>
     </div>
     </div>
 

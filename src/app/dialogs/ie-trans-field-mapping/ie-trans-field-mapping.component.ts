@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { GlobalService } from 'src/app/common/services/global.service';
+import { MatSort } from '@angular/material/sort'; 
 
 @Component({
   selector: 'app-ie-trans-field-mapping',
@@ -8,15 +7,14 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./ie-trans-field-mapping.component.scss'],
 })
 export class IeTransFieldMappingComponent {
-  ELEMENT_DATA: any[] = [
+  elementData: any[] = [
     { fields: '1202122' },
     { fields: '1202123' },
     { fields: '1202124' },
     { fields: '1202125' },
     { fields: '1202126' },
     { fields: '1202127' },
-  ];
-
+  ]; 
   displayedColumns: string[] = [
     'fields',
     'start_position',
@@ -28,9 +26,9 @@ export class IeTransFieldMappingComponent {
     'pad_field_left',
     'actions',
   ];
-  tableData = this.ELEMENT_DATA;
+  tableData = this.elementData;
   dataSourceList: any;
 
-  constructor(private global: GlobalService) {}
+  constructor( ) {}
   @ViewChild(MatSort) sort: MatSort;
 }

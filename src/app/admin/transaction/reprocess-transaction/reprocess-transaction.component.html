@@ -11,7 +11,7 @@
         <div class="col-xl-4">
             <app-rt-selected-transaction-info 
             (openReprocessTransactionDialogueEmitter)="openReprocessTransactionDialogue(transactionID)"
-            (openReasonDialogEmitter)="openReasonDialog(reasonMessage)"
+            (openReasonDialogEmitter)="openReasonDialog()"
             [createdBy]="createdBy"
             [transactionDateTime]="transactionDateTime"
             [reason]="reason"
@@ -40,7 +40,7 @@
                                 <app-column-filter-component 
                                     [tableColumns]="this.displayedColumns" 
                                     [searchCol]="this.columnSearch.searchColumn.colDef"
-                                    (selectionChangeEvent)="this.columnSearch.searchColumn.colDef = $event; resetFields($event)"
+                                    (selectionChangeEvent)="this.columnSearch.searchColumn.colDef = $event; resetFields()"
                                     (clearInputFieldEvent)="this.columnSearch.searchColumn.colDef = '';  this.columnSearch.searchValue = '';this.searchByColumn.next($event)"
                                     [searchString]="this.columnSearch.searchValue"
                                     [searchByInput]="this.searchByColumn"

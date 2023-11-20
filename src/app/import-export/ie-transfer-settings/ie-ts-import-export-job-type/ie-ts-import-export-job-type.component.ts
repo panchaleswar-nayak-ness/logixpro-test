@@ -9,7 +9,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class IeTsImportExportJobTypeComponent {
 
-  constructor(private global:GlobalService,) { }
+  constructor(private global:GlobalService) { }
 
  
   IeImportAllDialog(){

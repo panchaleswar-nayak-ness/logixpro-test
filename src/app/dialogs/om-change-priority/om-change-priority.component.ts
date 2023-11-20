@@ -1,9 +1,6 @@
-import { Component, OnInit , Inject, ViewChild, ElementRef} from '@angular/core';
-import { SharedService } from 'src/app/services/shared.service';
-
+import { Component, OnInit , Inject, ViewChild, ElementRef} from '@angular/core';  
 import { AuthService } from 'src/app/init/auth.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';  
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -14,19 +11,18 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: []
 })
 export class OmChangePriorityComponent implements OnInit {
-  @ViewChild('new_pri') new_pri: ElementRef;
+  @ViewChild('newPri') newPri: ElementRef;
   public orderNumber: any;
-  public Oldpriority:number;
+  public oldpriority:number;
   public iAdminApiService: IAdminApiService;
-  public Newpriority:number;
+  public newpriority:number;
   userData: any;
   constructor(
     private adminApiService: AdminApiService,
     private global:GlobalService,
     public dialogRef: MatDialogRef<OmChangePriorityComponent>,
     private authService: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private Api: ApiFuntions,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
    ) { 
     this.iAdminApiService = adminApiService;
   }
@@ -34,14 +30,14 @@ export class OmChangePriorityComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.orderNumber = this.data.orderNo;
-    this.Oldpriority = this.data.priorityTable;
+    this.oldpriority = this.data.priorityTable;
   }
 
   updatepriority(){
 
     let payload = {
       "orderNumber": this.orderNumber, 
-      "priority": this.Newpriority
+      "priority": this.newpriority
     }
 
     this.iAdminApiService.UpdateOSPriority(payload).subscribe((res: any) => {
@@ -49,14 +45,13 @@ export class OmChangePriorityComponent implements OnInit {
         this.dialogRef.close(res);
       }
       else{
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
-        console.log("UpdateOSPriority",res.responseMessage);
+        this.global.ShowToastr('error',res.responseMessage, 'Error!'); 
       }
     })
    
   }
  
   ngAfterViewInit(): void {
-    this.new_pri.nativeElement.focus();
+    this.newPri.nativeElement.focus();
   }
 }
