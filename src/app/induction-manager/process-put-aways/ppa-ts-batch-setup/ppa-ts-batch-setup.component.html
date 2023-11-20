@@ -27,17 +27,15 @@
 
                             <mat-autocomplete class="card custom-scroll" #item="matAutocomplete">
                                 <h6 class="card-header matAutoCompHeader ">
-                                    <span style="width:  140px;">Batch ID</span>
-                                    <span style="width:  140px;">Zone Label</span>
+                                    <span class="batchIDFont-style">Batch ID</span>
+                                    <span class="zoneLabelfont-style">Zone Label</span>
                                 </h6>
-                                <ng-scrollbar style="height:350px">
+                                <ng-scrollbar class="matScrollbar-style">
                                     <mat-option *ngFor="let option of searchAutocompleteItemNum"
-                                        [value]="option.batchID" class="matAutoCompTableContent"
-                                        style="line-height: 24px; height:auto; min-height: auto!important; padding: 12px 16px; overflow: unset;">
+                                        [value]="option.batchID" class="matAutoCompTableContent matAutoCTableContent-styling">
                                         <div class="loc_option" (click)="callFun('getRow',option.batchID)">
-                                            <span class="searchColumn" style="width:  140px;">{{option.batchID}}</span>
-                                            <span class="searchColumn"
-                                                style="width:  140px; white-space: normal;">{{option.zoneLabel}}</span>
+                                            <span class="searchColumn batchIDFont-style">{{option.batchID}}</span>
+                                            <span class="searchColumn zoneLabelfont-style">{{option.zoneLabel}}</span>
                                         </div>
                                     </mat-option>
                                 </ng-scrollbar>

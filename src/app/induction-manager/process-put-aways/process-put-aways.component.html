@@ -3,7 +3,7 @@
       <app-ppa-ts-batch-setup (funCall)="callFunBatchSetup($event)" [batchId]="batchId" [assignedZones]="assignedZones" [cellSize]="cellSize" [searchAutocompleteItemNum]="searchAutocompleteItemNum" [status]='status' ></app-ppa-ts-batch-setup>
       <app-ppa-ts-totes (funCall)="callFunTotes($event)" [actionDropDown]="actionDropDown" [toteID]="toteID" [dataSource]="dataSource" [displayedColumns]="displayedColumns" [selection]="selection"></app-ppa-ts-totes>
       <div class="d-flex">
-        <button mat-flat-button color="primary" class="primary-button btn-lg w-100" style="min-width: 150px;" (click)="processIfZoneSelected()">
+        <button mat-flat-button color="primary" class="primary-button btn-lg w-100 ProcessBatchBtnStyle" (click)="processIfZoneSelected()">
           Process Batch 
         </button>
       </div>
@@ -39,15 +39,15 @@
                     <mat-autocomplete class="card custom-scroll" #item2="matAutocomplete">
             
                       <h6 class="card-header matAutoCompHeader">
-                        <span style="width: 140px;">Batch ID</span>
-                        <span style="width: 140px;">Zone Label</span>
+                        <span class="batchID-style">Batch ID</span>
+                        <span class="zoneLabel-style">Zone Label</span>
                       </h6>
                     
-                      <ng-scrollbar style="height:350px">
-                        <mat-option *ngFor="let option of searchAutocompleteItemNum2" [value]="option.batchID" class="matAutoCompTableContent" style="line-height: 24px; height:auto; min-height: auto!important; padding: 12px 16px; overflow: unset;">
+                      <ng-scrollbar class="ngScrollbar-font">
+                        <mat-option *ngFor="let option of searchAutocompleteItemNum2" [value]="option.batchID" class="matAutoCompTableContent matAutoTableContent-styling">
                           <div class="loc_option" (click)="fillToteTable(option.batchID)">
-                            <span class="searchColumn" style="width: 140px;">{{option.batchID}}</span> 
-                            <span class="searchColumn" style="width:  140px; white-space: normal;">{{option.zoneLabel}}</span> 
+                            <span class="searchColumn batchIDFont-style">{{option.batchID}}</span> 
+                            <span class="searchColumn zoneLabelfont-style">{{option.zoneLabel}}</span> 
                           </div>
                         </mat-option>
                       </ng-scrollbar>                      
@@ -173,13 +173,13 @@
             </div>
           </div>
           <div class="card br-14 table-responsive borderless px-0 mb-3">
-            <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 540px;">
+            <ng-scrollbar track="all" class="mat-table-scrollbar matTabScrollbar-style">
 
 
               <table mat-table [dataSource]="dataSource2" class="w-100 table1 employee-location-table action-clickable-table" matSort (matSortChange)="announceSortChange($event)">
 
                 <ng-container matColumnDef="status">
-                  <th style="width:200px!important" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                  <th class="th-matHeaderCell-style" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
                   <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
                     <div class="label label-yellow px-2 me-2" *ngIf="!element.status">
                       Open
@@ -257,7 +257,7 @@
       </mat-card>
 
       <div class="d-flex">
-        <button mat-flat-button color="primary" class="primary-button btn-lg w-100" style="min-width: 150px;" (click)="completeBatch()">
+        <button mat-flat-button color="primary" class="primary-button btn-lg w-100 completeBatchBTN-style" (click)="completeBatch()">
           Complete Batch
         </button>
 

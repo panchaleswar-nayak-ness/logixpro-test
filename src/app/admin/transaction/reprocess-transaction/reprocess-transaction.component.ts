@@ -744,28 +744,27 @@ export class ReprocessTransactionComponent implements OnInit {
     else this.getContentData();
   }
 
-  resetFields(event?) {
+  resetFields() {
     this.columnSearch.searchValue = '';
     this.searchAutocompleteListByCol = [];
     this.orderSelectionSearch = false
     this.searchByColumn.next('');
   }
 
-  openReasonDialog(reasonMessage:any)
-  {
+  openReasonDialog() {
     this.global.OpenDialog(this.description, {
       width: '560px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
     });
   }
 
   openReprocessTransactionDialogue(id: any) {
     const dialogRef:any = this.global.OpenDialog(ReprocessTransactionDetailComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '100%',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
       data: {
         transactionID: id,
         history: this.isHistory
@@ -773,9 +772,9 @@ export class ReprocessTransactionComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((x) => {
-      if(x==='add'){
-        this.itemNumber='';
-        this.orderNumber='';
+      if(x === StringConditions.Add){
+        this.itemNumber = '';
+        this.orderNumber = '';
         if(this.isHistory) this.getHistoryData();
         else this.getContentData();
       }
@@ -798,17 +797,18 @@ export class ReprocessTransactionComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  clear(){
+  clear() {
     this.columnSearch.searchValue = ''
     this.getContentData()
   }
 
   recordsToView: string = "";
+
   selectedOptionChange($event){
     this.recordsToView = $event;
   }
 
-  printPreview(type:string,print=true){
+  printPreview(type : string, print = true) {
     let id: number = this.selectedTransaction?.id;
     let history = this.recordsToView == 'history' ? 1 : 0;
     let reason = this.selectedTransaction?.reason;
@@ -816,61 +816,36 @@ export class ReprocessTransactionComponent implements OnInit {
     let date = this.selectedTransaction?.dateStamp;
     let orderNumber = this.orderNumber;
     let itemNumber = this.itemNumber;
-    if(type == 'all'){
-      if(print){
-        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`);  
-      }
-      else{
-        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-      }
+
+    let queryParams = '';
+
+    switch (type) {
+      case 'all':
+        queryParams = `FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`;
+        break;
+      case 'selected':
+        queryParams = `FileName:printReprocessTransactions|History:${history}|ID:${id}|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`;
+        break;
+      case 'reason':
+        queryParams = `FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:${reason}|Message:|Date:`;
+        break;
+      case 'message':
+        queryParams = `FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:${message}|Date:`;
+        break;
+      case 'date':
+        queryParams = `FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:${date}`;
+        break;
+      case 'item':
+        queryParams = `FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:${itemNumber}|Reason:|Message:|Date:`;
+        break;
+      case 'order':
+        queryParams = `FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:${orderNumber}|ItemNumber:|Reason:|Message:|Date:`;
+        break;
     }
-    else if(type == 'selected'){
-      if(print){
-        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:${id}|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`);  
-      }
-      else{
-        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:${id}|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-      }
-    }
-    else if(type == 'reason'){
-      if(print){
-        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:${reason}|Message:|Date:`);  
-      }
-      else{
-        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:${reason}|Message:|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-      }
-    }
-    else if(type == 'message'){
-      if(print){
-        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:${message}|Date:`);  
-      }
-      else{
-        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:${message}|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-      }
-    }
-    else if(type == 'date'){
-      if(print){
-        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:${date}`);
-      }
-      else{
-        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:${date}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-      }
-    }
-    else if(type == 'item'){
-      if(print){
-        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:${itemNumber}|Reason:|Message:|Date:`);
-      }
-      else{
-        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:${itemNumber}|Reason:|Message:|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-      }
-    }
-    else if(type == 'order'){
-      if(print){
-        this.global.Print(`FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:${orderNumber}|ItemNumber:|Reason:|Message:|Date:`);
-      }
-      else{
-        window.open(`/#/report-view?file=FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:${orderNumber}|ItemNumber:|Reason:|Message:|Date:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
-      }
-    }
+
+    const fileLink = `/#/report-view?file=${queryParams}`;
+
+    if (print) this.global.Print(queryParams);
+    else window.open(fileLink, '_blank', `width=${screen.width},height=${screen.height},toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0`);
   }
 }

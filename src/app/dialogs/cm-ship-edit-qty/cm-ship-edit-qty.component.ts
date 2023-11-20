@@ -23,7 +23,7 @@ export class CmShipEditQtyComponent implements OnInit {
 
   @ViewChild('adjReason') adjReason : ElementRef;
 
-  public IconsolidationAPI : IConsolidationApi;
+  public iConsolidationAPI : IConsolidationApi;
 
   constructor(
     public consolidationAPI : ConsolidationApiService,
@@ -31,7 +31,7 @@ export class CmShipEditQtyComponent implements OnInit {
     public dialogRef: MatDialogRef<CmShipEditQtyComponent>,
     private authService: AuthService,
     public globalService: GlobalService,
-    @Inject(MAT_DIALOG_DATA) public data: any) { this.IconsolidationAPI = consolidationAPI; }
+    @Inject(MAT_DIALOG_DATA) public data: any) { this.iConsolidationAPI = consolidationAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -70,7 +70,7 @@ export class CmShipEditQtyComponent implements OnInit {
         shipQTY: this.adjustShipQty,
         reason: this.adjustReason
       }
-      this.IconsolidationAPI.ShipQTYShipTransUpdate(payLoad).subscribe((res:any)=>{
+      this.iConsolidationAPI.ShipQTYShipTransUpdate(payLoad).subscribe((res:any)=>{
         if (res.isExecuted) {
 
           let exists = false;

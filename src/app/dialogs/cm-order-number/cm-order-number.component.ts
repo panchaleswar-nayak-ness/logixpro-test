@@ -24,17 +24,13 @@ export class CmOrderNumberComponent implements OnInit {
   @ViewChild('order_focus') order_focus: ElementRef;
   userData: any;
   isStandAlone: boolean = false;
-  type: any = '';
-
+  type: any = ''; 
   displayedColumns: string[] = ['toteID', 'stagingLocation', 'action'];
-  tableData: any = [];
-
+  tableData: any = []; 
   @ViewChild('order') order: ElementRef;
   @ViewChild('searchTote') searchTote: ElementRef;
-  @ViewChildren('stagLoc') stagLoc: QueryList<HTMLInputElement>;
-
-  public IconsolidationAPI: IConsolidationApi;
-
+  @ViewChildren('stagLoc') stagLoc: QueryList<HTMLInputElement>; 
+  public iConsolidationAPI: IConsolidationApi; 
   constructor(
     private global: GlobalService,
     public dialogRef: MatDialogRef<CmOrderNumberComponent>,
@@ -43,7 +39,7 @@ export class CmOrderNumberComponent implements OnInit {
     private authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.IconsolidationAPI = consolidationAPI;
+    this.iConsolidationAPI = consolidationAPI;
   }
 
   ngOnInit(): void {
@@ -76,7 +72,7 @@ export class CmOrderNumberComponent implements OnInit {
         selValue: value,
       };
 
-      this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
+      this.iConsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
         if (res?.isExecuted) {
           if (typeof res?.data == 'string') {
             switch (res?.data) {
@@ -114,8 +110,7 @@ export class CmOrderNumberComponent implements OnInit {
             'error',
             this.global.globalErrorMsg(),
             'Error!'
-          );
-          console.log('ConsolidationData', res.responseMessage);
+          ); 
         }
       });
     }
@@ -148,11 +143,10 @@ export class CmOrderNumberComponent implements OnInit {
       location: values.stagingLocation,
       clear: clear,
     };
-    this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
+    this.iConsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
       if (res) {
         if (res?.responseMessage == 'Fail') {
-          this.global.ShowToastr('error', 'Error Has Occured', 'Consolidation');
-          console.log('StagingLocationsUpdate', res.responseMessage);
+          this.global.ShowToastr('error', 'Error Has Occured', 'Consolidation'); 
         } else if (typeof this.tableData != 'undefined') {
           for (const item of this.tableData) {
             let tote = item.toteID;
@@ -165,8 +159,7 @@ export class CmOrderNumberComponent implements OnInit {
           }
         }
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log('StagingLocationsUpdate', res.responseMessage);
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!'); 
       }
     });
   }

@@ -10,9 +10,11 @@ export class SharedService {
   public iCommonAPI : ICommonApi;
 
   constructor(
-    public commonAPI : CommonApiService,
-    // private api: ApiFuntions
-  ) { this.iCommonAPI = commonAPI; }
+    public commonAPI : CommonApiService
+  ) { 
+    this.iCommonAPI = commonAPI; 
+  }
+
   loadMenu: boolean = false;
   private data: any;
   private menuData = new Subject<any>();
@@ -134,9 +136,11 @@ export class SharedService {
   updateBatchManagerObject(obj) {
     this.batchManagerObserver.next(obj);
   }
+  
   updateInvMasterState(obj, type) {
     this.invMasterParentObserver.next({ event: obj, isEnable: type });
   }
+
   updateMenuState(obj) {
     this.sideMenuHideObserver.next(obj);
   }
@@ -144,9 +148,11 @@ export class SharedService {
   updatePrintService(value:boolean) {
     this.PrintServiceObserver.next(value);
   }
+
   updateDevicePref(obj){
     this.devicePrefObserver.next({event:obj});
   }
+
   getSidebarStatus() {
     return this.loadMenu;
   }
@@ -154,6 +160,7 @@ export class SharedService {
   setData(data: any) {
     this.data = data;
   }
+
   getData() {
     return this.data;
   }
@@ -161,6 +168,7 @@ export class SharedService {
   setApp(data: any) {
     this.appData = data;
   }
+
   getApp() {
     return this.appData;
   }
@@ -178,20 +186,18 @@ export class SharedService {
         userName:userName,
         wsid:wsid, 
         appName:appName
-      }
-  
-        this.iCommonAPI.UserAppNameAdd(object).subscribe((res: any) => { },(error: any) => {
-          console.error('An error occurred:', error);
-        }); 
-
-      
+      };
+      this.iCommonAPI.UserAppNameAdd(object).subscribe(
+        (res: any) => { }, 
+        (error: any) => { console.error('An error occurred:', error); }
+      ); 
     } 
   }
 
   setMenuData(value: any) {
-    
     this.menuData.next(value);
   }
+
   BroadCastMenuUpdate(str: any) {
     this.SidebarMenupdate.next(str);
   }

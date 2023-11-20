@@ -7,9 +7,7 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
 import { ReelDetailComponent } from '../reel-detail/reel-detail.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
@@ -24,7 +22,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
   styleUrls: ['./reel-transactions.component.scss'],
 })
 export class ReelTransactionsComponent implements OnInit {
-  @ViewChild('field_focus') field_focus: ElementRef;
+  @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
   ELEMENT_DATA: any[] = [
     { reel_serial_number: '1202122', reel_part_quantity: '36' },
@@ -48,7 +46,7 @@ export class ReelTransactionsComponent implements OnInit {
   partsNotAssigned: any;
   noOfReels: any;
   autoGenerateReel: any = false;
-  HiddenInputValue: any;
+  hiddenInputValue: any;
   generatedReelQty: any;
   imPreferences: any;
   createdReel: any;
@@ -57,7 +55,7 @@ export class ReelTransactionsComponent implements OnInit {
   fromReelCheck: any;
   reel: any;
   oldIncluded: any;
-  public iinductionManagerApi: IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
   @ViewChild('noOfReeltemp') noOfReeltemp: ElementRef;
   @ViewChild('serialTemp') serialTemp: ElementRef;
   @ViewChildren('serialTemp') serialInputs: QueryList<any>;
@@ -65,11 +63,10 @@ export class ReelTransactionsComponent implements OnInit {
   constructor(
     private global: GlobalService,
     public dialogRef: MatDialogRef<ReelTransactionsComponent>,
-    private inductionManagerApi: InductionManagerApiService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private Api: ApiFuntions
+    public inductionManagerApi: InductionManagerApiService,
+    @Inject(MAT_DIALOG_DATA) public data: any 
   ) {
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -86,7 +83,7 @@ export class ReelTransactionsComponent implements OnInit {
     this.imPreferences = this.global.getImPreferences();
   }
   ngAfterViewInit(): void {
-    this.field_focus?.nativeElement.focus();
+    this.fieldFocus?.nativeElement.focus();
   }
   updateRemaining() {
     let total = this.partsInducted;
@@ -111,7 +108,7 @@ export class ReelTransactionsComponent implements OnInit {
         gReelQty: this.generatedReelQty,
         fromtrans: this.fromReelCheck
           ? this.generateReelAndSerial.data[this.generatedReelQtyIndex].details
-          : this.HiddenInputValue,
+          : this.hiddenInputValue,
         propFields: this.fieldNames,
       },
     });
@@ -122,10 +119,10 @@ export class ReelTransactionsComponent implements OnInit {
           this.partsInducted = result[0].reelQty;
           this.partsNotAssigned = result[0].reelQty;
           this.oldIncluded = result[0].reelQty;
-          this.HiddenInputValue = result[1];
+          this.hiddenInputValue = result[1];
           this.noOfReeltemp.nativeElement.select();
         } else {
-          this.HiddenInputValue = result[1];
+          this.hiddenInputValue = result[1];
           this.noOfReeltemp.nativeElement.select();
           this.generateReelAndSerial.data[
             this.generatedReelQtyIndex
@@ -145,7 +142,7 @@ export class ReelTransactionsComponent implements OnInit {
     let payload = {
       numReels: this.noOfReels,
     };
-    this.iinductionManagerApi.NextSerialNumber(payload).subscribe({
+    this.iInductionManagerApi.NextSerialNumber(payload).subscribe({
       next: (res: any) => {
         if (res.data && res.isExecuted) {
           const dataArray: any[] = [];
@@ -153,7 +150,7 @@ export class ReelTransactionsComponent implements OnInit {
             dataArray.push({
               reel_serial_number: '',
               reel_part_quantity: partsPerReel,
-              details: this.HiddenInputValue,
+              details: this.hiddenInputValue,
             });
           }
           this.generateReelAndSerial.data = dataArray;
@@ -305,7 +302,7 @@ export class ReelTransactionsComponent implements OnInit {
     let payload = {
       SerialNumbers: serialNos,
     };
-    this.iinductionManagerApi.ValidateSn(payload).subscribe((res: any) => {
+    this.iInductionManagerApi.ValidateSn(payload).subscribe((res: any) => {
       if (res.data && res.isExecuted) {
         let errs = '';
         for (let x = 0; x < res.data.length; x++) {
@@ -348,7 +345,7 @@ export class ReelTransactionsComponent implements OnInit {
             reels: reels,
           };
 
-          this.iinductionManagerApi.ReelsCreate(payload).subscribe((res) => {
+          this.iInductionManagerApi.ReelsCreate(payload).subscribe((res) => {
             if (res.data && res.isExecuted) {
               if (res.data.lenghth <= 0) {
                 this.global.ShowToastr(
@@ -449,7 +446,7 @@ export class ReelTransactionsComponent implements OnInit {
     let payload = {
       numReels: 1,
     };
-    this.iinductionManagerApi.NextSerialNumber(payload).subscribe({
+    this.iInductionManagerApi.NextSerialNumber(payload).subscribe({
       next: (res: any) => {
         if (res.data && res.isExecuted) {
           this.generateReelAndSerial.data[index].reel_serial_number =

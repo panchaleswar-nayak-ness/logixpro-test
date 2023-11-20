@@ -27,7 +27,7 @@ import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirma
   styleUrls: []
 })
 export class SelectionTransactionForToteExtendComponent implements OnInit {
-  @ViewChild('field_focus') field_focus: ElementRef;
+  @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
   public userData   : any;
   isWarehouseSensitive:boolean=false;
@@ -41,7 +41,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   fieldNames:any;
   imPreferences:any;
 
-  public iinductionManagerApi : IInductionManagerApiService;
+  public iInductionManagerApi : IInductionManagerApiService;
   public iAdminApiService : IAdminApiService;
   public iCommonAPI : ICommonApi;
   
@@ -56,7 +56,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     public router: Router,
     private global:GlobalService,
     ) {
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
     this.iAdminApiService = adminApiService;
     this.iCommonAPI = commonAPI;
     this.toteForm = this.formBuilder.group({
@@ -129,15 +129,14 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.field_focus?.nativeElement.focus();
+    this.fieldFocus?.nativeElement.focus();
   }
 
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       if (res.data && res.isExecuted) this.fieldNames = res.data;
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("ColumnAlias",res.responseMessage);
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!'); 
       }
     });
   }
@@ -162,7 +161,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         "otid": this.data.otid,
         "itemNumber": this.data.itemNumber, 
       }
-      this.iinductionManagerApi.ItemDetails(payload).subscribe(
+      this.iInductionManagerApi.ItemDetails(payload).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
             const values = res.data[0];  
@@ -310,7 +309,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             "szone": values.secondaryPickZone, 
           }
           
-          this.iinductionManagerApi.IMUpdate(payload).subscribe(
+          this.iInductionManagerApi.IMUpdate(payload).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) this.global.ShowToastr('success',labels.alert.update, 'Success!');            
               else {
@@ -418,7 +417,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       const values = this.toteForm.value;
       if (!this.validationPopups({...values, type : 0})) { return; }
       let payLoad = { "item": values.itemNumber };
-      this.iinductionManagerApi.CheckForwardLocations(payLoad).subscribe(
+      this.iInductionManagerApi.CheckForwardLocations(payLoad).subscribe(
         (res: any) => {
           if(res.isExecuted) {
             if (res.data > 0 && this.data.autoForwardReplenish) {
@@ -477,7 +476,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         "primaryZone": values.primaryPickZone,
         "secondaryZone": values.secondaryPickZone, 
       };
-      this.iinductionManagerApi.FindLocation(payLoad).subscribe(
+      this.iInductionManagerApi.FindLocation(payLoad).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
 
@@ -604,7 +603,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
       let payload = { zone: this.toteForm.value.zone };
       
-      this.iinductionManagerApi.BatchByZone(payload).subscribe(
+      this.iInductionManagerApi.BatchByZone(payload).subscribe(
         (res: any) => {
           if (res.isExecuted) {
             if (!res.data) {
@@ -631,7 +630,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                 ], 
               };
         
-              this.iinductionManagerApi.CrossDock(payLoad).subscribe(
+              this.iInductionManagerApi.CrossDock(payLoad).subscribe(
                 (res: any) => {
                   if (res.data && res.isExecuted) {
                     if(res.data.transaction.length > 0) {
@@ -697,7 +696,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       "orderNumber": values.orderNumber
     }
     
-    this.iinductionManagerApi.TaskComplete(payload2).subscribe(
+    this.iInductionManagerApi.TaskComplete(payload2).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           let OTID = res.data

@@ -81,8 +81,7 @@ export class ShippingCompleteDialogComponent implements OnInit {
             'error',
             this.global.globalErrorMsg(),
             'Error!'
-          );
-          console.log('viewShipping', res.responseMessage);
+          ); 
         }
       }
     );

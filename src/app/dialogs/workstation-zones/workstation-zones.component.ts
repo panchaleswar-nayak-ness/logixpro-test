@@ -12,8 +12,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import { DeleteConfirmationComponent } from '../../../app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { ConfirmationDialogComponent } from '../../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { AuthService } from '../../../app/init/auth.service';
-import labels from '../../labels/labels.json';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import labels from '../../labels/labels.json'; 
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
@@ -27,7 +26,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: [],
 })
 export class WorkstationZonesComponent implements OnInit {
-  @ViewChild('field_focus') field_focus: ElementRef;
+  @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
   public velocityCodeList: any[] = [];
   onDestroy$: Subject<boolean> = new Subject();
@@ -36,7 +35,7 @@ export class WorkstationZonesComponent implements OnInit {
   public allZoneList: any[] = [];
   public zones: any[] = [];
   @ViewChild('btnSave') button;
-  public iinductionManagerApi: IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
 
   @ViewChild('searchauto', { static: false })
   autocompleteOpened: MatAutocomplete;
@@ -102,7 +101,7 @@ export class WorkstationZonesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'Yes') {
-        this.iinductionManagerApi.ClrWSPickZone().subscribe((res) => {
+        this.iInductionManagerApi.ClrWSPickZone().subscribe((res) => {
           if (res.isExecuted && res.data) {
             this.getVelocity();
             this.global.ShowToastr('success', labels.alert.remove, 'Success!');
@@ -123,15 +122,14 @@ export class WorkstationZonesComponent implements OnInit {
 
   constructor(
     public commonAPI: CommonApiService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private Api: ApiFuntions,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
     private authService: AuthService,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<any>,
     private global: GlobalService
   ) {
     this.iCommonAPI = commonAPI;
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -140,12 +138,12 @@ export class WorkstationZonesComponent implements OnInit {
     this.getAllZoneList();
   }
   ngAfterViewInit(): void {
-    this.field_focus?.nativeElement.focus();
+    this.fieldFocus?.nativeElement.focus();
   }
   getVelocity() {
     let paylaod = {};
     this.velocityCodeList = [];
-    this.iinductionManagerApi.WSPickZoneSelect(paylaod).subscribe((res) => {
+    this.iInductionManagerApi.WSPickZoneSelect(paylaod).subscribe((res) => {
       if (res.isExecuted && res.data) {
         res.data.map((val) => {
           this.velocityCodeList.push({ zone: val, isSaved: true });
@@ -159,7 +157,7 @@ export class WorkstationZonesComponent implements OnInit {
   getAllZoneList() {
     let paylaod = {};
     this.velocityCodeList = [];
-    this.iinductionManagerApi.LocationZonesSelect(paylaod).subscribe((res) => {
+    this.iInductionManagerApi.LocationZonesSelect(paylaod).subscribe((res) => {
       if (res.isExecuted && res.data) {
         this.zones = res.data;
       } else {
@@ -184,7 +182,7 @@ export class WorkstationZonesComponent implements OnInit {
       let paylaod = {
         zone: this.selectedZone,
       };
-      this.iinductionManagerApi.WSPickZoneInsert(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.WSPickZoneInsert(paylaod).subscribe((res) => {
         if (res.isExecuted && res.data) {
           this.global.ShowToastr('success', labels.alert.success, 'Success!');
           this.getVelocity();
@@ -250,7 +248,7 @@ export class WorkstationZonesComponent implements OnInit {
           let paylaod = {
             Zone: event,
           };
-          this.iinductionManagerApi
+          this.iInductionManagerApi
             .WSPickZoneDelete(paylaod)
             .subscribe((res) => {
               if (res.isExecuted) {

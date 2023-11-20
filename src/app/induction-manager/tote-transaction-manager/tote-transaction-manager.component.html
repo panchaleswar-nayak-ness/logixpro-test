@@ -19,13 +19,13 @@
 
                             <mat-autocomplete class="card custom-scroll" #auto="matAutocomplete">
 
-                                <h6 class="card-header matAutoCompHeader "><span style="width:  140px;">Batch Pick
+                                <h6 class="card-header matAutoCompHeader"><span class="batchPickID-style" >Batch Pick
                                         ID</span> </h6>
 
                                 <mat-option *ngFor="let option of searchAutocompletBatchPick"
                                     [value]="option" class="matAutoCompTableContent">
                                     <div class="loc_option">
-                                        <span class="searchColumn" style="width:  140px;">{{option}}</span>
+                                        <span class="searchColumn searchColumnstyling">{{option}}</span>
                                     </div>
                                 </mat-option>
                             </mat-autocomplete>
@@ -57,7 +57,7 @@
             </div>
 
             <div class="card br-14 table-responsive borderless">
-                <ng-scrollbar class="mat-table-scrollbar" style="height:340px" track="all">
+                <ng-scrollbar class="mat-table-scrollbar matTabScrollbar-style" track="all">
                     <table mat-table [dataSource]="dataSource" matSort class="w-100" (matSortChange)="sortChange($event)">
                         <ng-container matColumnDef="batchPickID">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch ID </th>
@@ -140,4 +140,4 @@
 </div>
 
 
-<app-table-context-menu-component *ngIf="IsActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'toteTransManager'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'toteTransManager'"></app-table-context-menu-component>

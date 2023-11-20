@@ -10,7 +10,6 @@ export class InvalidQuantityComponent  {
 
   constructor(private dialogRef: MatDialogRef<InvalidQuantityComponent>) {}
 
-
   returnOk() {
     this.dialogRef.close(true);
   }

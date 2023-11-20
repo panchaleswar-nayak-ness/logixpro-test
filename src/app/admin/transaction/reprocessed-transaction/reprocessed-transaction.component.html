@@ -6,7 +6,7 @@
             </div>
             <div class="col-xl-2 offset-xl-5 d-flex justify-content-end mb-3">
                 <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
-                <mat-form-field class="action-dropdown" appearance="outline" style="flex:1 auto">
+                <mat-form-field class="action-dropdown flex-grow-1" appearance="outline">
                     <mat-label>Action</mat-label>
                     <mat-select  #matRef  class="employees-action" (openedChange)="actionDialog($event)" [(value)]="selectedVariable" placeholder="Actions">
                         <mat-option value="set_column_sq">Set Column Sequence</mat-option>
@@ -23,7 +23,7 @@
                     <app-column-filter-component 
                         [tableColumns]="this.displayedColumns" 
                         [searchCol]="this.columnSearch.searchColumn.colDef"
-                        (selectionChangeEvent)="this.columnSearch.searchColumn.colDef = $event; resetFields($event)"
+                        (selectionChangeEvent)="this.columnSearch.searchColumn.colDef = $event; resetFields()"
                         (clearInputFieldEvent)="this.columnSearch.searchColumn.colDef = '';  this.columnSearch.searchValue = '';this.searchBar.next($event)"
                         [searchString]="this.columnSearch.searchValue"
                         [searchByInput]="this.searchBar"
@@ -39,7 +39,7 @@
             <ng-scrollbar style="height:500px" track="all" class="mat-table-scrollbar">
                 <table mat-table class="custom-table  table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)">
 
-                    <ng-container style="display: table-row;" [matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
+                    <ng-container class="d-table-row" [matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
                         <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement" style="width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);">
                             {{ col.colDef }}
                         </th>

@@ -11,7 +11,7 @@
         <mat-form-field class="mb-3 w-100" appearance="outline">
             <mat-label *ngIf="condition != 'is between'">{{this.columnName}} {{this.condition}}</mat-label>
             <mat-label *ngIf="condition == 'is between'">{{this.columnName}} {{this.condition}} (Start)</mat-label>
-            <input type="text" placeholder="" aria-label="" #aut_focus matInput [(ngModel)]="text1" name="text1">
+            <input type="text" placeholder="" aria-label="" #autFocus matInput [(ngModel)]="text1" name="text1">
         </mat-form-field>
         <mat-form-field class="mb-3 w-100" appearance="outline" style="margin-top: 10px;"
             *ngIf="condition == 'is between'">

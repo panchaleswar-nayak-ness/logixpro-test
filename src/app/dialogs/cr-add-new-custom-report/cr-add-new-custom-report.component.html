@@ -19,19 +19,19 @@
     <div class="col-xl-6 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>Description</mat-label>
-        <input #desc_focus matInput type="text" [(ngModel)]="NewDescription" required #serialTemp>
+        <input #descFocus matInput type="text" [(ngModel)]="newDescription" required #serialTemp>
     </mat-form-field>
 </div>
     <div class="col-xl-6 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>Filename</mat-label>
-        <input matInput type="text" [(ngModel)]="NewFilename" required #serialTemp>
+        <input matInput type="text" [(ngModel)]="newFilename" required #serialTemp>
     </mat-form-field>
 </div>
     <div class="col-xl-6 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline" (click)="openEditDesign()">
         <mat-label>Test/Design Data</mat-label>
-        <input matInput type="text" [(ngModel)]="NewDesignTestData" required #serialTemp>
+        <input matInput type="text" [(ngModel)]="newDesignTestData" required #serialTemp>
         <span class="material-symbols-outlined icon-expand-more">
             expand_content
          </span>
@@ -40,7 +40,7 @@
     <div class="col-xl-6 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline"  required #serialTemp>
         <mat-label>Test/Design Data Type</mat-label>
-        <mat-select [(ngModel)]="NewDesignDataType">
+        <mat-select [(ngModel)]="newDesignDataType">
             <mat-option value="SQL">Raw SQL</mat-option>
             <mat-option value="SP">Stored Procedure</mat-option>
             </mat-select>
@@ -52,7 +52,7 @@
     <div class="col-xl-6 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>Output Type</mat-label>
-        <mat-select [(ngModel)]="NewOutputType" required #serialTemp (ngModelChange)="setExtension()">
+        <mat-select [(ngModel)]="newOutputType" required #serialTemp (ngModelChange)="setExtension()">
             <mat-option value="Report">Report</mat-option>
             <mat-option value="Label">Label</mat-option>
             </mat-select>
@@ -64,7 +64,7 @@
     <div class="col-xl-6 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>Export Filename</mat-label>
-        <input matInput type="text" [(ngModel)]="NewExportFilename" required #serialTemp>
+        <input matInput type="text" [(ngModel)]="newExportFilename" required #serialTemp>
     </mat-form-field>
 </div>
 
@@ -88,7 +88,7 @@
                 </div>
                 </div>
       
-      <mat-form-field class="custom-form-field w-100" style="display: none;" appearance="outline">
+      <mat-form-field class="custom-form-field w-100 d-none" appearance="outline">
         <input matInput type="text" [(ngModel)]="CurrentFilename"  [hidden]="true">
     </mat-form-field>
 

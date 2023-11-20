@@ -35,7 +35,7 @@
                                 <div class="col-12">
                                     <div class="d-flex justify-content-between align-items-center gap-12">
                                         <mat-form-field class="d-block w-100" appearance="outline">
-                                            <input #carrier_focus [autofocus]="i === 0" (keydown.shift.enter)="$event.preventDefault()" (keypress)="changeDisable(i)"   name="{{item.carrier}}" value="{{item.carrier}}"
+                                            <input #carrierFocus [autofocus]="i === 0" (keydown.shift.enter)="$event.preventDefault()" (keypress)="changeDisable(i)"   name="{{item.carrier}}" value="{{item.carrier}}"
                                                 matInput type="text" #vlname maxlength="50">
                                         </mat-form-field>
                                         <div class="d-flex gap-12">

@@ -9,16 +9,13 @@ export class BroadcastService {
   constructor() {
     this.broadcastChannel = new BroadcastChannel('tab_manager_channel');
    }
-   sendTabClosedMessage() {
+
+  sendTabClosedMessage() {
     this.broadcastChannel.postMessage('tabClosed');
   }
 
   checkLastTab(callback: () => void) {
     this.broadcastChannel.postMessage('checkLastTab');
-    this.broadcastChannel.addEventListener('message', event => {
-      if (event.data === 'checkLastTab') {
-        callback();
-      }
-    });
+    this.broadcastChannel.addEventListener('message', event => { if (event.data === 'checkLastTab') callback(); });
   }
 }

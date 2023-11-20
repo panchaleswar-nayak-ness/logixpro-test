@@ -6,24 +6,15 @@ import { FormControl } from '@angular/forms';
 })
 export class CustomValidatorService {
 
-  
-
   specialCharValidator(control: FormControl): any {
     const nameRegexp: RegExp = /[='"]/;
-    if (control.value && nameRegexp.test(control.value)) {
-       return { invalidInput: true };
-    }
+    if (control.value && nameRegexp.test(control.value)) return { invalidInput: true };
   }
 
   specialCharValidatorExceptSlash(control: FormControl): any {
     const nameRegexp: RegExp = /^[a-zA-Z0-9_\/][a-zA-Z0-9_\/ ]*[a-zA-Z0-9_]$/;
-    if (control.value && !nameRegexp.test(control.value)) {
-       return { invalidInput: true };
-    }
+    if (control.value && !nameRegexp.test(control.value)) return { invalidInput: true };
   }
-
-
-
 
   noWhitespaceValidator(control: FormControl) {
     const isSpace = (control.value || '').match(/\s/g);
@@ -37,10 +28,7 @@ export class CustomValidatorService {
 
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      return false;
-    }
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
     return true;
-
   }
 }

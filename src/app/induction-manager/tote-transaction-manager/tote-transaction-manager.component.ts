@@ -78,7 +78,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   dataSourceList: any;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
-  IsActiveTrigger:boolean = false;
+  isActiveTrigger:boolean = false;
 
   constructor(
     private global:GlobalService,
@@ -299,7 +299,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault()
-    this.IsActiveTrigger = true;
+    this.isActiveTrigger = true;
     setTimeout(() => {
       this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
     }, 100);
@@ -310,7 +310,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   optionSelected(filter : string) {
     this.FilterString = filter;
     this.getToteTrans();  
-    this.IsActiveTrigger = false;
+    this.isActiveTrigger = false;
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

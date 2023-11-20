@@ -1,0 +1,27 @@
+.batchIDFont-style{
+    width: 140px !important;
+  }
+  .zoneLabelfont-style{
+    width:  140px !important; 
+    white-space: normal !important;
+  }
+
+  .matScrollbar-style{
+    height:350px !important;
+    .matAutoCTableContent-styling{
+        line-height: 24px !important; 
+        height:auto !important; 
+        min-height: auto!important; 
+        padding: 12px 16px !important; 
+        overflow: unset !important;
+  
+        .batchIDFont-style{
+          width: 140px !important;
+        }
+        .zoneLabelfont-style{
+          width:  140px !important; 
+          white-space: normal !important;
+        }
+      }
+
+  }

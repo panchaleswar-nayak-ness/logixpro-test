@@ -5,16 +5,13 @@ import { AdminComponent } from './admin.component';
 import { MaterialModule } from '../material-module';
 import { GeneralModule } from '../gen-module';
 import { CdkTableModule} from '@angular/cdk/table';
-
 import { EmployeesComponent } from './employees/employees.component';
 import { EmployeesLookupComponent } from './employees/employees-lookup/employees-lookup.component';
 import { EmployeePickupLevelComponent } from './employees/employee-pickup-level/employee-pickup-level.component';
-import { GroupsAllowedComponent } from './employees/groups-allowed/groups-allowed.component';
 import { GroupsLookupComponent } from './employees/groups-lookup/groups-lookup.component';
 import { AssignedFunctionsComponent } from './employees/assigned-functions/assigned-functions.component';
 import { UnassignedFunctionsComponent, filterUnassignedFunc } from './employees/unassigned-functions/unassigned-functions.component';
 import { StatisticsLookupComponent } from './employees/statistics-lookup/statistics-lookup.component';
-
 import { AddNewEmployeeComponent } from './dialogs/add-new-employee/add-new-employee.component';
 import { AddZoneComponent } from './dialogs/add-zone/add-zone.component';
 import { DeleteConfirmationComponent } from './dialogs/delete-confirmation/delete-confirmation.component';
@@ -28,7 +25,6 @@ import { AddInvMapLocationComponent } from './dialogs/add-inv-map-location/add-i
 import { WarehouseComponent } from './dialogs/warehouse/warehouse.component';
 import { SetColumnSeqComponent } from './dialogs/set-column-seq/set-column-seq.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-
 import { CellSizeComponent } from './dialogs/cell-size/cell-size.component';
 import { VelocityCodeComponent } from './dialogs/velocity-code/velocity-code.component';
 import { InventoryMasterComponent } from './inventory-master/inventory-master.component';
@@ -108,7 +104,6 @@ import { GenerateTransactionComponent } from './manual-transactions/generate-tra
 import { SetItemLocationComponent } from './dialogs/set-item-location/set-item-location.component';
 import { SupplierItemIdComponent } from './dialogs/supplier-item-id/supplier-item-id.component';
 import { TemporaryManualOrderNumberAddComponent } from './dialogs/temporary-manual-order-number-add/temporary-manual-order-number-add.component';
-
 import { ItemExistGenerateOrderComponent } from './dialogs/item-exist-generate-order/item-exist-generate-order.component';
 import { EmptyFieldsComponent } from './dialogs/empty-fields/empty-fields.component';
 import { UserFieldsEditComponent } from './dialogs/user-fields-edit/user-fields-edit.component';
@@ -167,7 +162,6 @@ import { SrInputFieldsComponent } from './system-replenishment/sr-current-order/
 import { SrNewInputFieldsComponent } from './system-replenishment/sr-new-order/sr-new-input-fields/sr-new-input-fields.component';
 import { CountOrderSelectionComponentComponent } from './location-assignment/count/count-order-selection-component/count-order-selection-component.component';
 import { CountSelectOrdersComponentComponent } from './location-assignment/count/count-select-orders-component/count-select-orders-component.component';
-
 import { CompanyInfoComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/company-info-component/company-info-component.component';
 import { SystemLogicPreferencesComponent } from './admin-preferences/system-preferences/sp-general-setup/system-logic-preferences/system-logic-preferences.component';
 import { PodSetupComponentComponent } from './admin-preferences/system-preferences/sp-general-setup/pod-setup-component/pod-setup-component.component';
@@ -189,7 +183,6 @@ import { GtTransactionDetailsComponent } from './manual-transactions/generate-tr
         EmployeesComponent,
         EmployeesLookupComponent,
         EmployeePickupLevelComponent,
-        GroupsAllowedComponent,
         GroupsLookupComponent,
         AssignedFunctionsComponent,
         UnassignedFunctionsComponent,

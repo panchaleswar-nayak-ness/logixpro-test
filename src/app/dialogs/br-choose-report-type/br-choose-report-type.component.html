@@ -10,13 +10,13 @@
     <div class="col-xl-12 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>Export Filename</mat-label>
-        <input #exp_file matInput type="text" [(ngModel)]="ExportFileName">
+        <input #expFile matInput type="text" [(ngModel)]="exportFileName">
     </mat-form-field>
 </div>
     <div class="col-xl-12 mb-2">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>File Format</mat-label>
-        <mat-select class="employees-action" [(ngModel)]="Type">
+        <mat-select class="employees-action" [(ngModel)]="type">
             <mat-option value="pdf">PDF (PDF Format)</mat-option>
             <mat-option value="csv">CSV (Comma Sepereated File - Openable in Excel)</mat-option> 
             <mat-option value="txt">TXT (Text Format )</mat-option>  
@@ -29,5 +29,5 @@
 </div>
 
 <div class="row mt-2">
-    <button type="button" mat-flat-button color="primary" (click)="ExportSubmit()" [disabled]="!Type || !ExportFileName" class="button-primary-i mb-2 btn-lg w-100">Export</button>
+    <button type="button" mat-flat-button color="primary" (click)="ExportSubmit()" [disabled]="!type || !exportFileName" class="button-primary-i mb-2 btn-lg w-100">Export</button>
 </div>
