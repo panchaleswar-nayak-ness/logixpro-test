@@ -14,3 +14,21 @@ table{
         }
     }
 }
+
+.pick-card{
+    text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap
+
+}
+
+.pick-card-button{
+    flex:1;
+}
+
+.pick-overflow{
+    overflow-x: auto;
+}
+
+.pick-height{
+height: 550px;
+
+}

@@ -19,12 +19,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class PutAwayComponent implements OnInit {
 
-  displayedColumns1: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
-  displayedColumns2: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
-  tableData1: any = new MatTableDataSource([]);
-  tableData2: any = new MatTableDataSource([]);
-  userData: any;
-  orderNumberSearch: string = '';
+
 
   @ViewChild('MatSort1') sort1: MatSort;
   sequenceKeyMapping1: any = [
@@ -59,11 +54,15 @@ export class PutAwayComponent implements OnInit {
   ) { 
     this.iAdminApiService = adminApiService;
   }
-
+  userData: any;
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.GetLocAssPutAwayTable();
   }
+
+  displayedColumns1: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
+  displayedColumns2: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
+  tableData1: any = new MatTableDataSource([]);
 
   GetLocAssPutAwayTable(loader: boolean = false) {
     this.iAdminApiService.GetLocAssPutAwayTable().subscribe((res: any) => {
@@ -75,7 +74,7 @@ export class PutAwayComponent implements OnInit {
       }
     });
   }
-
+  tableData2: any = new MatTableDataSource([]);
   add(order: any) {
     this.tableData2 = new MatTableDataSource(this.tableData2.data.concat(order));
     this.tableData2.paginator = this.paginator2;

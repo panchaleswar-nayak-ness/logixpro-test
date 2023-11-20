@@ -1,0 +1,16 @@
+.pick-select-card{
+    text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap
+
+}
+
+.pick-select-button{
+    flex:1;
+}
+
+.pick-select-overflow{
+    overflow-x: auto;
+}
+
+.pick-select-height{
+height: 550px;
+}
