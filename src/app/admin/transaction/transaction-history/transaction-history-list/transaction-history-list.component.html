@@ -9,7 +9,7 @@
                     <app-column-filter-component 
                         [tableColumns]="this.displayedColumns" 
                         [searchCol]="this.selectedDropdown"
-                        (selectionChangeEvent)="this.selectedDropdown = ($event).toString(); resetFields($event)"
+                        (selectionChangeEvent)="this.selectedDropdown = ($event).toString(); resetFields()"
                         (clearInputFieldEvent)="this.selectedDropdown = '';  this.columnSearch.searchValue = '';this.searchBar.next($event)"
                         [searchString]="this.columnSearch.searchValue"
                         [searchByInput]="this.searchBar"
@@ -80,4 +80,4 @@
     </mat-card-content>
 </mat-card>
 
-<app-table-context-menu-component *ngIf="TabIndex==2 && IsActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'transHistory'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="tabIndex == 2 && isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'transHistory'"></app-table-context-menu-component>

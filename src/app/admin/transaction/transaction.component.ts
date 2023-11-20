@@ -24,7 +24,7 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   orderStatus$: Observable<any>;
   itemNumber$: Observable<any>;
   type$: Observable<any>;
-  IsOrderStatus:any = false;
+  isOrderStatus:any = false;
   type:any;
   itemNumber:any;
   tabIndex$: Observable<any>;
@@ -57,8 +57,8 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     let IsStatus = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('IsOrderStatus')));
     
     IsStatus.subscribe((param) => {
-      if (param!=null &&param != undefined) this.IsOrderStatus = true;
-      else this.IsOrderStatus = false;
+      if (param!=null &&param != undefined) this.isOrderStatus = true;
+      else this.isOrderStatus = false;
     });
 
     this.tabIndex$.subscribe((param) => { if (param) this.tabIndex = 0; });
@@ -80,11 +80,11 @@ export class TransactionComponent implements OnInit, AfterViewInit {
       if (param) {
         this.type=param;
 
-        if(this.type==='OpenTransaction'){
+        if(this.type === 'OpenTransaction'){
           this.tabIndex = 1;
           this.sharedService.updateItemTransaction(this.itemNumber);
         }
-        else if(this.type==='TransactionHistory'){
+        else if(this.type === 'TransactionHistory'){
           this.tabIndex = 2;
           this.sharedService.updateTransactionHistory(this.itemNumber);
         }
