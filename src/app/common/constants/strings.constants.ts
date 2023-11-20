@@ -367,7 +367,10 @@ export const Mode = {
     DeleteOrderStatus: 'delete-order-status',
     DeleteCarrier: 'delete-carrier',
     DeleteWorkstation: 'delete_workstation',
-    DeleteCategory: 'delete-category'
+    DeleteCategory: 'delete-category',
+    DeleteTrans: 'delete-trans',
+    DeleteOrder: 'delete-order',
+    DeleteManualTransaction: 'delete-manual-transaction'
 }
 
 export const TableName = {
