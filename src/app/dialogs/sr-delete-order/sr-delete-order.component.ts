@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-
-import { AuthService } from 'src/app/init/auth.service';
+ 
 
 @Component({
   selector: 'app-sr-delete-order',
