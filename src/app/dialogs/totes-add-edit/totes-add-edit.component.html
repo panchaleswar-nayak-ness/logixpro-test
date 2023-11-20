@@ -69,7 +69,7 @@
       </mat-form-field>
 
 
-        <div (click)="printRange()" class="d-flex d-xl-block"><button style="flex: 1 auto;" [disabled]="!fromTote && !toTote" type="submit" mat-flat-button class="float-end form-button-submit btn-regular" color="primary">Print
+        <div (click)="printRange()" class="d-flex d-xl-block"><button [disabled]="!fromTote && !toTote" type="submit" mat-flat-button class="float-end form-button-submit btn-regular flex-grow-1" color="primary">Print
             Range</button></div>
       </div>
     </div>

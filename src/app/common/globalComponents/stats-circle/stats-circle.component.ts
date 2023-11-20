@@ -6,9 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./stats-circle.component.scss']
 })
 export class StatsCircleComponent {
-
   @Input() value = "";
   @Input() title = "";
   @Input() divClass = "div1";
-
 }

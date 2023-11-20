@@ -35,7 +35,7 @@
             </div>
         </div>
         <div>
-            <mat-form-field class="action-dropdown mb-3 w-100" appearance="outline" style="flex:1 auto">
+            <mat-form-field class="action-dropdown mb-3 w-100 flex-grow-1" appearance="outline">
                 <mat-label>Mark Table</mat-label>
                 <mat-select class="employees-action" (selectionChange)="markTableSelection($event)">
                     <mat-option (click)="markTable('reprocess')">Mark For Reprocess</mat-option>

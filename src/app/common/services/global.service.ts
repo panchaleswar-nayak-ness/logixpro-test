@@ -11,6 +11,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { ToastrService } from 'ngx-toastr';
+import { DialogConstants, ToasterTitle, ToasterType } from '../constants/strings.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -70,9 +71,7 @@ export class GlobalService {
   }
 
   ShowToastr(type? : any, msg? : any, title? : any, timeOut? : any, positionClass? : any){
-    this.toastr[type](
-      msg, 
-      title || 'Success!', 
+    this.toastr[type](msg, title || 'Success!', 
       {
         positionClass: positionClass || 'toast-bottom-right',
         timeOut: timeOut || 2000,
@@ -96,7 +95,6 @@ export class GlobalService {
 
     if (hours > 12) hours = date.getHours() - 12;
     if (hours < 10) hours = parseInt('0' + hours);
-
     if (minutes < 10 && minutes != 0) minutes = parseInt(`0` + minutes);
     else if (minutes == 0) minutes = parseInt('00');
 
@@ -121,14 +119,11 @@ export class GlobalService {
 
   setToToday() {
     let date = new Date();
-
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
-
     if (month < 10) month = parseInt("0" + month);
     if (day < 10) day = parseInt("0" + day);
-
     let today = month + "/" + day + "/" + year;
     return today;
   }
@@ -212,54 +207,53 @@ export class GlobalService {
   };
 
   checkDecimal(n) {
-      let result = (n - Math.floor(n)) !== 0;
-      if (result) return false;
-      else return true;
+    let result = (n - Math.floor(n)) !== 0;
+    if (result) return false;
+    else return true;
   }
 
-  async Print(ChooseReport, type = "lst"){ 
-      let paylaod:any={
+  async Print(ChooseReport, type = "lst") { 
+      let paylaod:any = {
         ClientCustomData:ChooseReport,
         repositoryIdOfProject:"BCAEC8B2-9D16-4ACD-94EC-74932157BF82",
         PrinterReportName:localStorage.getItem("SelectedReportPrinter"),
         PrinterLabelName:localStorage.getItem("SelectedLabelPrinter"),
       }
       let res:any = await this.iAdminApiService.CommonPrint(paylaod); 
-      if(res.isExecuted){
-        this.ShowToastr('success',"print successfully completed", 'Success!');
+      if(res.isExecuted) {
+        this.ShowToastr(ToasterType.Success, "print successfully completed", ToasterTitle.Success);
         return true;
-      }else{
-        this.ShowToastr('error',"print unsuccessfully complete", 'Error!');
+      } else {
+        this.ShowToastr(ToasterType.Error, "print unsuccessfully complete", ToasterTitle.Error);
         return false;
       }
   }
 
-  OpenDialog(component:any, item:any){
+  OpenDialog(component:any, item:any) {
     return  this.dialog.open(component, {
-      height: item.height ? item.height:'auto',
-      width: item.width ? item.width:'600px',
+      height: item.height ? item.height : DialogConstants.auto,
+      width: item.width ? item.width : '600px',
       disableClose: item.disableClose ?? true,
-      autoFocus: item.autoFocus || '__non_existing_element__',
+      autoFocus: item.autoFocus || DialogConstants.autoFocus,
       data: item.data,
     });
   }
 
-  OpenExportModal(Name:any,ReportName) {
-    ReportName = ReportName.replace(".lst","-lst").replace(".lbl","-lbl");
-    Name = Name.replace(".lst","").replace(".lbl","");
+  OpenExportModal(name:any, reportName) {
+    reportName = reportName.replace(".lst","-lst").replace(".lbl","-lbl");
+    name = name.replace(".lst","").replace(".lbl","");
+
     const dialogRef:any = this.OpenDialog(BrChooseReportTypeComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '560px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data:{ReportName:ReportName,Name:Name}
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data:{ ReportName:reportName, Name:name }
     }); 
+
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.FileName != null) {
-        this.Export(ReportName,result.Type,result.FileName);
-      }
+      if (result.FileName != null) this.Export(reportName, result.Type, result.FileName);
     });
-  
   }
 
   Export(ChooseReport:any,Type:any,filename:any){
@@ -271,89 +265,69 @@ export class GlobalService {
     }
     this.iAdminApiService.CommonExport(paylaod).subscribe((res:any)=>{
       if(res.isExecuted){
-        this.ShowToastr('success',"Export successfully completed", 'Success!');  
+        this.ShowToastr(ToasterType.Success, "Export successfully completed", ToasterTitle.Success);  
           if(res.data.fileName.indexOf("txt") > -1) this.downloadTextFile(res.data.fileName, res.data.fileContent);
           else {
             document.getElementById('CurrentDownload')?.setAttribute("href",`${environment.apiUrl.replace("/api","")}/pdf/`+res.data.fileName);
             document.getElementById('CurrentDownload')?.setAttribute("download",res.data.fileName);
             document.getElementById('CurrentDownload')?.click();
           }   
-      } else this.ShowToastr('error',"Export unsuccessfully complete", 'Error!');
+      } else this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error);
     })
   }
 
   downloadTextFile(filename, textContent) {
     // Create a Blob from the text content
     const blob = new Blob([textContent], { type: 'text/plain' });
-  
     // Create a temporary link element
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    
     // Set the download attribute and the file name
     link.download = filename;
-  
     // Simulate a click to trigger the download
     link.click();
-  
     // Clean up the URL object
     URL.revokeObjectURL(link.href);
   } 
 
   getOmPreferences(): any{
     const preferencesString = localStorage.getItem('OmPreference');
-    if(preferencesString){
-      return JSON.parse(preferencesString)
-    } else {
+    if(preferencesString) return JSON.parse(preferencesString)
+    else {
       this.iOrderManagerApi.OrderManagerPreferenceIndex().subscribe((response: any) => {
-      if (response.isExecuted) {
-        localStorage.setItem('OmPreference', JSON.stringify(response.data.preferences[0]));
-        const getOm:any = localStorage.getItem('OmPreference');
-        return JSON.parse(getOm)
-      }
-      })
+        if (response.isExecuted) {
+          localStorage.setItem('OmPreference', JSON.stringify(response.data.preferences[0]));
+          const getOm:any = localStorage.getItem('OmPreference');
+          return JSON.parse(getOm)
+        }
+      });
     }
   }
 
   updateOmPref(){
     this.iOrderManagerApi.OrderManagerPreferenceIndex().subscribe((response: any) => {
-      if (response.isExecuted) {
-        localStorage.setItem('OmPreference', JSON.stringify(response.data.preferences[0]));
-    
-    
-      }
-      })
+      if (response.isExecuted) localStorage.setItem('OmPreference', JSON.stringify(response.data.preferences[0]));
+    });
   }
 
-  getImPreferences(){
+  getImPreferences() {
     return JSON.parse(localStorage.getItem('InductionPreference') ?? '{}');
   }
 
   updateImPreferences(){
-    let paylaod = { 
-    }
-    this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
+    this.iinductionManagerApi.PickToteSetupIndex({}).subscribe(res => {
       localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
-
-
     });
   }
   
   setImPreferences(response){
     const imPref = localStorage.getItem('InductionPreference');
-
     if (imPref) {
       const data = JSON.parse(imPref); // Assuming storedData is the object a
-      
-    
       // Loop through properties of b and update values in a if they exist
       for (const prop in response) {
-        if (response.hasOwnProperty(prop) && data.hasOwnProperty(prop)) {
-          console.log(prop)
-          data[prop] = response[prop];
-        }
+        if (response.hasOwnProperty(prop) && data.hasOwnProperty(prop)) data[prop] = response[prop];
       }
-    
       // Store the updated object a back in localStorage
       localStorage.setItem('inductionPreference', JSON.stringify(data));
     }

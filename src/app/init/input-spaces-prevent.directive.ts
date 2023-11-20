@@ -6,8 +6,6 @@ import { Directive,HostListener  } from '@angular/core';
 export class InputSpacesPreventDirective {
 
   @HostListener('keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
-    if (event.code === 'Space') {
-      event.preventDefault();
-    }
+    if (event.code === 'Space') event.preventDefault();
   }
 }

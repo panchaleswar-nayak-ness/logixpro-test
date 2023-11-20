@@ -8,7 +8,6 @@ import {
 } from '@angular/common/http';
 import { catchError, Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
-
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth.service';
 import { SpinnerService } from './spinner.service';
@@ -17,10 +16,12 @@ import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global
 import { IUserAPIService } from '../services/user-api/user-api-interface';
 import { UserApiService } from '../services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
+import { ToasterTitle, ToasterType } from '../common/constants/strings.constants';
 
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
-  public  iGlobalConfigApi: IGlobalConfigApi;
+
+  public iGlobalConfigApi: IGlobalConfigApi;
   public iUserApi : IUserAPIService;
 
   constructor(
@@ -31,19 +32,19 @@ export class HeaderInterceptor implements HttpInterceptor {
     private authService: AuthService,
     public globalConfigApi: GlobalConfigApiService,
     private spinnerService: SpinnerService
-    ) {
-      this.iGlobalConfigApi = globalConfigApi;
-      this.iUserApi = userApi;
-    }  
-    intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-      
-      return next.handle(request).pipe(
-        catchError((error, caught) => {
-          this.handleAuthError(error);
-          throw error;
-        }) as any
-      );
-    }
+  ) {
+    this.iGlobalConfigApi = globalConfigApi;
+    this.iUserApi = userApi;
+  }  
+
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    return next.handle(request).pipe(
+      catchError((error, caught) => {
+        this.handleAuthError(error);
+        throw error;
+      }) as any
+    );
+  }
 
   private handleAuthError(err: HttpErrorResponse): Observable<any> { 
     if (err.status === 401) {
@@ -52,12 +53,11 @@ export class HeaderInterceptor implements HttpInterceptor {
       if(this.authService.isConfigUser()){
           this.iGlobalConfigApi.configLogout().subscribe((res:any) => {
             if (res.isExecuted) {       
-              debugger
               this.dialog.closeAll();
-              this.global.ShowToastr('error','Token Expire', 'Error!');
+              this.global.ShowToastr(ToasterType.Error,'Token Expire', ToasterTitle.Error);
               window.location.href = "/#/globalconfig"; 
             } else {
-              this.global.ShowToastr('error',res.responseMessage, 'Error!');
+              this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
               console.log("configLogout",res.responseMessage);
             }
           });    
@@ -65,18 +65,14 @@ export class HeaderInterceptor implements HttpInterceptor {
         this.iUserApi.Logout().subscribe((res:any) => {
           if (res.isExecuted) {  
             let lastRoute: any = localStorage.getItem('LastRoute') ? localStorage.getItem('LastRoute') : ""; 
-            if(lastRoute != ""){
-              localStorage.setItem('LastRoute', lastRoute);
-            } 
-            if(!localStorage.getItem('LastRoute')){
-              localStorage.setItem('LastRoute', this.router.url);
-            }     
+            if(lastRoute != "") localStorage.setItem('LastRoute', lastRoute);
+            if(!localStorage.getItem('LastRoute')) localStorage.setItem('LastRoute', this.router.url);     
             this.dialog.closeAll();
-            this.global.ShowToastr('error','Token Expire', 'Error!');  
+            this.global.ShowToastr(ToasterType.Error,'Token Expire', ToasterTitle.Error);  
             if((this.router.url.indexOf('login') <= -1)) localStorage.setItem('LastRoute', this.router.url);        
             this.router.navigate(['/login']);    
           } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
             console.log("Logout",res.responseMessage);
           }
         })
@@ -85,10 +81,8 @@ export class HeaderInterceptor implements HttpInterceptor {
       return of(err.message);
     }
     throw err;
-  }else if(err.status === 500){
-    if(`${err.url}`.indexOf("insertnewprinter") > -1){
-      this.global.ShowToastr('error',err.error.ResponseMessage, 'Error!'); 
-    }
+  } else if(err.status === 500) {
+    if(`${err.url}`.indexOf("insertnewprinter") > -1) this.global.ShowToastr(ToasterType.Error, err.error.ResponseMessage, ToasterTitle.Error);  
     this.spinnerService.hide();
   } 
   return of(err.message);

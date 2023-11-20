@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-groups-employees-group-management',
   templateUrl: './groups-employees-group-management.component.html',
-  styleUrls: []
+  styleUrls: ['./groups-employees-group-management.component.scss']
 })
 export class GroupsEmployeesGroupManagementComponent {
 

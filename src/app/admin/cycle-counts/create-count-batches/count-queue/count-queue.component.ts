@@ -80,8 +80,11 @@ export class CCBCountQueueComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource();
+    this.initializeDataSource();
+  }
 
+  initializeDataSource(): void {
+    this.dataSource = new MatTableDataSource();
     this.getCountQue();
   }
   
@@ -161,7 +164,7 @@ export class CCBCountQueueComponent implements OnInit {
               this.global.ShowToastr(ToasterType.Error,response.responseMessage, ToasterTitle.Error);
               this.getCountQue();
               this.getCount(0);
-              this.ngOnInit();
+              this.initializeDataSource();
               this.insertEvent.emit('insert');
             } else {
               this.global.ShowToastr(ToasterType.Error,
@@ -182,7 +185,7 @@ export class CCBCountQueueComponent implements OnInit {
               this.global.ShowToastr(ToasterType.Success,response.responseMessage, ToasterTitle.Success);
               this.getCount(0);
               this.getCountQue();
-              this.ngOnInit();
+              this.initializeDataSource();
             } else {
               this.global.ShowToastr(ToasterType.Error,
                 

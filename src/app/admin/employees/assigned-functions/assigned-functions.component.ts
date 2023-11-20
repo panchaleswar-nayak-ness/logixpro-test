@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AssignService } from 'src/app/assign.service'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
@@ -23,7 +22,7 @@ export class AssignedFunctionsComponent  {
   employee_fetched_zones: string[] = [];
   group_fetched_unassigned_function:string[] = [];
   userName:any;
-  constructor( private employeeService: ApiFuntions, private assignService:AssignService) { }
+  constructor( private employeeService: ApiFuntions) { }
 
 
   clearFields(){

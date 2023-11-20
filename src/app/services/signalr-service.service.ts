@@ -11,31 +11,16 @@ export class SignalrServiceService {
   private hubConnection: signalR.HubConnection
   connectionEstablished = new Subject<boolean>();
   ConnectedUsers = new Subject<ConnectedUsers>();
+
   connect() {
     if (!this.hubConnection) {
-      this.hubConnection = new signalR.HubConnectionBuilder()
-                              .withUrl(environment.apiUrl +
-                                '/GlobalConfig/ConnectedUser')
-                              .build();
-
-        this.hubConnection
-        .start()
-        .then(() => {
-          console.log('Hub connection started');
-          this.connectionEstablished.next(true);
-        })
-        .catch(err => console.log(err));
-
-        this.hubConnection.on('GetLoginData', (data) => {
-          this.ConnectedUsers.next(data); 
-         });
-      }
-
+      this.hubConnection = new signalR.HubConnectionBuilder().withUrl(environment.apiUrl + '/GlobalConfig/ConnectedUser').build();
+      this.hubConnection.start().then(() => this.connectionEstablished.next(true)).catch(err => console.log(err));
+      this.hubConnection.on('GetLoginData', (data) => this.ConnectedUsers.next(data));
     }
-    disconnect() {
-      if (this.hubConnection) {
-        this.hubConnection.stop();
-      }
-    }
+  }
 
+  disconnect() {
+    if (this.hubConnection) this.hubConnection.stop();
+  }
 }
