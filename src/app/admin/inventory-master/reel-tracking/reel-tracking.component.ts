@@ -5,7 +5,6 @@ import { AuthService } from 'src/app/init/auth.service';
 import { MinReelQtyComponent } from 'src/app/dialogs/min-reel-qty/min-reel-qty.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { Observable, Subscription } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -22,7 +21,6 @@ export class ReelTrackingComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
 
   constructor(private global:GlobalService,
-    private api: ApiFuntions,
     private authService: AuthService,
     private sharedService:SharedService,
     private adminApiService: AdminApiService,

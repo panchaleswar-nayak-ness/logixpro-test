@@ -10,7 +10,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 @Component({
   selector: 'app-short-transaction',
   templateUrl: './short-transaction.component.html',
-  styleUrls: []
+  styleUrls: ['./short-transaction.component.scss']
 })
 export class ShortTransactionComponent implements OnInit {
   public iInductionManagerApi:IInductionManagerApiService;
@@ -22,7 +22,7 @@ export class ShortTransactionComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     
     private global:GlobalService,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<ShortTransactionComponent>,
     private globalService: GlobalService
   ) { 

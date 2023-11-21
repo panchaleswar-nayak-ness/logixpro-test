@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between alighn-item-center mb-4">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Blossom Tote: {{toteId}}</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" mat-dialog-close="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -19,8 +19,8 @@
 </div>
 
 <div class="blossom-tote-table">
-<div class="card br-14 borderless overflow-auto">
-    <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding h-300px" track="all">
+<div class="card br-14 borderless  overflow-x-auto">
+    <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding height-300"  track="all">
         <table mat-table [dataSource]="this.transactions" class="w-100">
 
             <ng-container  matColumnDef="item_number">

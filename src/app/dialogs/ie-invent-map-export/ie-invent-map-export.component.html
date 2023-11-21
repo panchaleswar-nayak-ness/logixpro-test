@@ -1,6 +1,6 @@
 
 <div class="d-flex justify-content-between mb-2 align-items-center">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Inventory Map Export Scheduler</h1>
   
     <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
@@ -30,8 +30,8 @@
   </div>
   </div>
   
-  <div class="card br-14 borderless mx-0 px-0 mb-3 overflow-auto" mat-dialog-content>
-            <ng-scrollbar class="mat-table-scrollbar h-345px" track="all" >
+  <div class="card br-14 borderless mx-0 px-0 mb-3 overflow-x-auto" mat-dialog-content>
+            <ng-scrollbar class="mat-table-scrollbar height-345"   track="all" >
               <table class="w-100 table-borderless" mat-table matSort [dataSource]="tableData">
                   <ng-container matColumnDef="mon">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header> Mon </th>
@@ -173,7 +173,7 @@
               </td>
           </tr>
   
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" style=" background-color: var(--clr-table-header);"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" class="table-settings-tr" ></tr>
   
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   

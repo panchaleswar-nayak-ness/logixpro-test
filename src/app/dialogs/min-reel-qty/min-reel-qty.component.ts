@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-min-reel-qty',
   templateUrl: './min-reel-qty.component.html',
-  styleUrls: []
+  styleUrls: ['./min-reel-qty.component.scss']
 })
 export class MinReelQtyComponent  {
   @ViewChild('minAmount') minAmount: ElementRef;

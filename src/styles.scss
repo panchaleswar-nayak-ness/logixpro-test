@@ -777,7 +777,10 @@ button {
 // .mat-sidenav:not(.mat-drawer-opened) .mat-nav-list .mat-list-item {
 //   border-radius: 14px;
 // }
-
+::ng-deep .table-backcolor{
+  background-color: var(--clr-table-header);
+}
+.d-none{display: none;}
 .mat-icon-wrap {
   background: var(--clr-tertiary-10);
   width: 48px;

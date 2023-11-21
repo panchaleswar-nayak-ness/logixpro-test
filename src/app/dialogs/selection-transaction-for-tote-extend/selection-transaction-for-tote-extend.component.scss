@@ -1,3 +1,19 @@
-.rotate-45{
-    transform: rotate(45deg)
+table {
+  width: 100%;
+}
+
+.w-48px {
+  width: 48px;
+}
+
+.h-500 {
+  height: 500px;
+}
+
+.mat-icon-transaction {
+  color: var(--clr-tertiary-900);
+  transform: rotate(45deg);
+}
+.transform-rotate{
+  transform: rotate(45deg);
 }

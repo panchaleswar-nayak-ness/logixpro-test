@@ -24,7 +24,7 @@ export class ScanCodesComponent{
 
   public userData: any;
   scanCodesList: any;
-  OldscanCodesList: any;
+  oldScanCodesList: any;
   disableButton=false;
   scanTypeList: any = [];
   scanRangeList: any =['Yes', 'No'];
@@ -50,7 +50,7 @@ export class ScanCodesComponent{
 
   ngOnChanges(changes: SimpleChanges) {
     this.scanCodesList = [...this.scanCodes.controls['scanCode'].value];
-    this.OldscanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
+    this.oldScanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
   }
 
   numberOnly(event): boolean {
@@ -73,11 +73,11 @@ export class ScanCodesComponent{
     this.sharedService.updateInvMasterState(event,true)
   }
 
-  addCatRow(e: any){
+  addCatRow(){
     this.isAddRow = true;
     this.scanCodesList.unshift({scanCode: '', scanType: '', scanRange: 'No', startPosition:0, codeLength:0, isDisabled:true, isAddedNew : true});
     this.scanCodesList = [...this.scanCodesList];
-    this.OldscanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
+    this.oldScanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
   }
 
   dltCategory(item, index : number){
@@ -91,7 +91,7 @@ export class ScanCodesComponent{
     dialogRef.afterClosed().subscribe(result => {
      if(result === 'Yes'){
       if(item.scanCode && !item.isAddedNew) {
-        let paylaod = {
+        let payLoad = {
           "itemNumber": this.scanCodes.controls['itemNumber'].value,
           "scanCode": item.scanCode,
           "scanType": item.scanType,
@@ -99,7 +99,7 @@ export class ScanCodesComponent{
           "startPosition": item.startPosition,
           "codeLength": item.codeLength, 
         }
-        this.iAdminApiService.DeleteScanCode(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.DeleteScanCode(payLoad).subscribe((res: any) => {
           if (res.isExecuted) {
             this.isAddRow=false
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
@@ -136,7 +136,7 @@ export class ScanCodesComponent{
     }
 
     if(newRecord) {
-      let paylaod = {
+      let payLoad = {
         "itemNumber": this.scanCodes.controls['itemNumber'].value,
         "scanCode": scanCode,
         "scanType": scanType,
@@ -144,7 +144,7 @@ export class ScanCodesComponent{
         "startPosition": startPosition,
         "codeLength": codeLength, 
       }
-      this.iAdminApiService.InsertScanCodes(paylaod).pipe(
+      this.iAdminApiService.InsertScanCodes(payLoad).pipe(
         catchError((error) => {
           // Handle the error here
           console.error('An error occurred while making the API call:', error);
@@ -164,19 +164,19 @@ export class ScanCodesComponent{
           console.log("InsertScanCodes", res.responseMessage);
         }})
     } else if (item.scanCode != '') {
-      let paylaod = {
+      let payLoad = {
         "itemNumber": this.scanCodes.controls['itemNumber'].value,
-        "oldScanCode": this.OldscanCodesList[index].scanCode,
+        "oldScanCode": this.oldScanCodesList[index].scanCode,
         "scanCode": scanCode,
         "scanType": scanType,
-        "oldScanRange": this.OldscanCodesList[index].scanRange,
+        "oldScanRange": this.oldScanCodesList[index].scanRange,
         "scanRange": scanRange,
-        "oldStartPosition": this.OldscanCodesList[index].startPosition,
+        "oldStartPosition": this.oldScanCodesList[index].startPosition,
         "newStartPosition": startPosition,
-        "oldCodeLength": this.OldscanCodesList[index].codeLength,
+        "oldCodeLength": this.oldScanCodesList[index].codeLength,
         "newCodeLength": codeLength, 
       };
-      this.iAdminApiService.UpdateScanCodes(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.UpdateScanCodes(payLoad).subscribe((res: any) => {
         if (res.isExecuted) {
           this.isAddRow = false;
           this.global.ShowToastr('success',labels.alert.success, 'Success!');
@@ -206,13 +206,13 @@ export class ScanCodesComponent{
   }
 
   refreshScanCodeList(){
-    let paylaod = { "itemNumber": this.scanCodes.controls['itemNumber'].value };
-    this.iAdminApiService.RefreshScanCodes(paylaod).subscribe((res: any) => {
+    let payLoad = { "itemNumber": this.scanCodes.controls['itemNumber'].value };
+    this.iAdminApiService.RefreshScanCodes(payLoad).subscribe((res: any) => {
       if (res.isExecuted) {
         this.scanCodes.controls['scanCode'].setValue([...res.data]);
         res.data = res.data.map(item => { return { ...item, isDisabled: true, isAddedNew : false }; })
         this.scanCodesList = res.data;
-        this.OldscanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
+        this.oldScanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
       } else {
         this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
         console.log("RefreshScanCodes",res.responseMessage);

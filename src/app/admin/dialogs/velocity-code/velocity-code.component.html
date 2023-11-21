@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="divWithClass"></div>
 <h1 class="m-0" mat-dialog-title>Velocity - Add, Delete, Edit and Set</h1>
 <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
     <mat-icon class="close-icon">close</mat-icon>
@@ -18,13 +18,13 @@
     <div class="card w-100">
         <div class="card-header">
             <div class="row">
-                <div class="col-6" style="padding-left:64px;">
+                <div class="col-6 velocityCodeStyleC">
                     Velocity Code
                 </div>
             </div>
         </div>
 
-        <ng-scrollbar class="h-250px">
+        <ng-scrollbar class="ngScrolbarStyleCC">
         <div class="card-body">
             <ng-container *ngFor="let vlcode of velocity_code_list;let i = index">
                 <div class="d-flex align-items-center mb-3">

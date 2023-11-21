@@ -8,6 +8,7 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-velocity-code',
@@ -84,7 +85,7 @@ export class VelocityCodeComponent implements OnInit {
     this.velocity_code_list_Res.forEach(element => {
       if(element == vlcode && cond) { 
         cond = false;
-       this.global.ShowToastr('error','Velocity cannot be saved! Another velocity code matches the current. Please save any pending changes before attempting to save this entry.', 'Error!');
+       this.global.ShowToastr(ToasterType.Error,'Velocity cannot be saved! Another velocity code matches the current. Please save any pending changes before attempting to save this entry.', ToasterTitle.Error);
        
       }   
     });
@@ -96,12 +97,12 @@ export class VelocityCodeComponent implements OnInit {
       "velocity": vlcode
     } 
     this.iCommonAPI.saveVelocityCode(paylaod).subscribe((res) => {
-      this.global.ShowToastr('success',labels.alert.success, 'Success!');
+      this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
       this.getVelocity()
     });
     } 
   } else {
-    this.global.ShowToastr('error','Velocity cannot be empty!.', 'Error!');
+    this.global.ShowToastr(ToasterType.Error,'Velocity cannot be empty!.', ToasterTitle.Error);
     console.log("saveVelocityCode");
   }
   }
@@ -119,14 +120,14 @@ export class VelocityCodeComponent implements OnInit {
               "velocity": vlCode
             }
             this.iCommonAPI.dltVelocityCode(paylaod).subscribe((res) => {
-              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+              this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
         
               this.getVelocity();
               
             });
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("dltVelocityCode");
 
           }

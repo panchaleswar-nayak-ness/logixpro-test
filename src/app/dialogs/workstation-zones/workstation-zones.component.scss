@@ -1,3 +1,20 @@
-.h-250px{
-    height: 250px;
+.selected {
+  background-color: var(--clr-primary-300) !important;
+  color: var(--clr-pure-white);
+}
+
+.h-250 {
+  height: 250px;
+}
+
+.w-48px {
+  width: 48px;
+}
+
+.pl-64 {
+  padding-left: 64px;
+}
+
+.w-140 {
+  width: 140px;
 }

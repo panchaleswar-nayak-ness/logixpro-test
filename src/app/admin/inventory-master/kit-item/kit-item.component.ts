@@ -25,13 +25,13 @@ export class KitItemComponent implements OnInit, OnChanges {
   @Input() kitItem: FormGroup;
   public userData: any;
   kitItemsList: any = [];
-  dialogitemNumber: any = '';
+  dialogItemNumber: any = '';
   dialogDescription: any = '';
-  dialogitemNumberDisplay: any = '';
+  dialogItemNumberDisplay: any = '';
   isFormFilled:any;
   Ikey:any;
   oldNumber="";
-  @ViewChild('namebutton', { read: ElementRef, static:false }) namebutton: ElementRef;
+  @ViewChild('namebutton', { read: ElementRef, static:false }) nameButton: ElementRef;
 
  public iAdminApiService: IAdminApiService;
 
@@ -39,7 +39,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   searchList: any;
   isValidForm: boolean = false;
 
-  @ViewChild('additemNumber') additemNumber: TemplateRef<any>;
+  @ViewChild('additemNumber') addItemNumber: TemplateRef<any>;
   @ViewChild('description') description: TemplateRef<any>;
 
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
@@ -112,13 +112,13 @@ export class KitItemComponent implements OnInit, OnChanges {
     dialogRef.afterClosed().subscribe(result => {
      if(result === 'Yes'){
       if (e?.itemNumber) {
-        let paylaod = {
+        let payLoad = {
           "itemNumber": this.kitItem.controls['itemNumber'].value,
           "kitItem": e.itemNumber,
           "kitQuantity": e.kitQuantity,
           "specialFeatures": e.specialFeatures
         }
-        this.iAdminApiService.DeleteKit(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.DeleteKit(payLoad).subscribe((res: any) => {
   
           if (res.isExecuted) {
             this.global.ShowToastr('success',labels.alert.delete, 'Success!');
@@ -165,13 +165,13 @@ export class KitItemComponent implements OnInit, OnChanges {
       }
     });
     if (e.itemNumber && newRecord && e.kitQuantity) {
-      let paylaod = {
+      let payLoad = {
         "itemNumber": this.kitItem.controls['itemNumber'].value,
         "kitItem": newItem,
         "kitQuantity": e.kitQuantity,
         "specialFeatures": e.specialFeatures
       }
-      this.iAdminApiService.InsertKit(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.InsertKit(payLoad).subscribe((res: any) => {
 
         if (res.isExecuted) {
           this.global.ShowToastr('success',labels.alert.success, 'Success!');
@@ -184,7 +184,7 @@ export class KitItemComponent implements OnInit, OnChanges {
       })
     } else if (e.itemNumber && !newRecord && e.kitQuantity) {
 
-      let paylaod = {
+      let payLoad = {
         "itemNumber": this.kitItem.controls['itemNumber'].value,
         "oldKitItem": this.oldNumber!=""?this.oldNumber:newItem,
         "newKitItem": newItem,
@@ -192,7 +192,7 @@ export class KitItemComponent implements OnInit, OnChanges {
         "specialFeatures": e.specialFeatures
       }
       
-      this.iAdminApiService.UpdateKit(paylaod).subscribe((res: any) => {
+      this.iAdminApiService.UpdateKit(payLoad).subscribe((res: any) => {
 
         if (res.isExecuted) {
           this.global.ShowToastr('success',labels.alert.success, 'Success!');
@@ -215,7 +215,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   }
 
   openAddItemNumDialog(e): void {
-    const dialogRef:any = this.global.OpenDialog(this.additemNumber, {
+    const dialogRef:any = this.global.OpenDialog(this.addItemNumber, {
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -224,7 +224,7 @@ export class KitItemComponent implements OnInit, OnChanges {
       e.isSaved = false;
       if (x) {
         this.oldNumber = e.itemNumber;
-        e.itemNumber =  this.dialogitemNumber!=""?this.dialogitemNumber:e.itemNumber;
+        e.itemNumber =  this.dialogItemNumber!=""?this.dialogItemNumber:e.itemNumber;
         e.description = this.dialogDescription!=""?this.dialogDescription:e.description;
         this.isFormFilled = true;
         this.sharedService.updateInvMasterState(x,true)
@@ -252,12 +252,12 @@ export class KitItemComponent implements OnInit, OnChanges {
   getSearchList(e: any) {
 
     this.searchValue = e.currentTarget.value; 
-    let paylaod = {
+    let payLoad = {
       "itemNumber": e.currentTarget.value,
       "beginItem": "---",
       "isEqual": false
     }
-    this.iCommonAPI.SearchItem(paylaod).subscribe((res: any) => {
+    this.iCommonAPI.SearchItem(payLoad).subscribe((res: any) => {
       if (res.data) {
         this.searchList = res.data
         if (this.searchList.length > 0) {
@@ -276,7 +276,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   onSearchSelect(e: any) {
 
     if (this.kitItem.controls['itemNumber'].value == e.option.value.itemNumber) {
-      this.dialogitemNumber = '';
+      this.dialogItemNumber = '';
       this.dialogDescription = '';
       this.global.ShowToastr('error',"Item " + e.option.value.itemNumber + " cannot belong to itself in a kit.", 'Error!');
       this.isValidForm = false
@@ -291,12 +291,12 @@ export class KitItemComponent implements OnInit, OnChanges {
         }
       });
       if (!alreadyExits) {
-        this.dialogitemNumber = e.option.value.itemNumber;
+        this.dialogItemNumber = e.option.value.itemNumber;
         this.dialogDescription = e.option.value.description;
       } else {
         this.isValidForm = false
-        this.global.ShowToastr('error',"Item " + this.dialogitemNumber + " already exists in kit.", 'Error!');
-        this.dialogitemNumber = '';
+        this.global.ShowToastr('error',"Item " + this.dialogItemNumber + " already exists in kit.", 'Error!');
+        this.dialogItemNumber = '';
         this.dialogDescription = '';
         return;
       }
@@ -315,19 +315,19 @@ export class KitItemComponent implements OnInit, OnChanges {
   }
 
   submitFunc(){
-    this.dialogitemNumberDisplay = '';
+    this.dialogItemNumberDisplay = '';
   }
   checkIfFilled(val: any, input?: any, index?:any){
     //Work need to be continue from here 
     
-    if(this.namebutton.nativeElement.classList.contains('kit_'+index)){
-      this.namebutton.nativeElement.disabled = false;
-      this.namebutton.nativeElement.classList.remove('mat-button-disabled')
+    if(this.nameButton.nativeElement.classList.contains('kit_'+index)){
+      this.nameButton.nativeElement.disabled = false;
+      this.nameButton.nativeElement.classList.remove('mat-button-disabled')
     }
-    if(this.namebutton.nativeElement.classList.contains('kit_push_'+index)){ 
+    if(this.nameButton.nativeElement.classList.contains('kit_push_'+index)){ 
       
-      this.namebutton.nativeElement.disabled = false;
-      this.namebutton.nativeElement.classList.remove('mat-button-disabled')
+      this.nameButton.nativeElement.disabled = false;
+      this.nameButton.nativeElement.classList.remove('mat-button-disabled')
     }
 
     if(input === 'kitQuantity'){

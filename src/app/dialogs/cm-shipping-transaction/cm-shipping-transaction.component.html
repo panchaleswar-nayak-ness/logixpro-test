@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-between align-items-center mb-2">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Shipping Transactions</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
 
-<div mat-dialog-content style="max-height:75vh">
+<div mat-dialog-content class="max-height-75v">
     <div class="card p-3 mb-3">
         <div class="">
             <div class="d-flex justify-content-between">
@@ -101,8 +101,9 @@
                         </ng-container>
 
                         <ng-container matColumnDef="action" stickyEnd>
-                            <th mat-header-cell width="8%" *matHeaderCellDef style="border: 0;height: 66px; padding-left:65px;"></th>
-                            <td mat-cell width="8%" *matCellDef="let element; let i = index" style="border: 0; padding-left: 24px; background: #fff;">                            
+                            <th mat-header-cell width="8%" *matHeaderCellDef class="table-shipping-th"></th>
+                            <td mat-cell width="8%" *matCellDef="let element; let i = index" 
+                            class="table-shipping-td" >                            
                                 <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn d-flex align-items-right" appearance="outline">                                
                                     <mat-icon>more_horiz</mat-icon>
                                 </button>
@@ -122,7 +123,7 @@
                             </td>
                         </tr>
 
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style=" background-color: var(--clr-table-header);"></tr>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="table-shiping-tr"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
                     </table>
                 </ng-scrollbar>

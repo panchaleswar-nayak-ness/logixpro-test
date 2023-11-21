@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 @Component({
   selector: 'app-sr-delete-order',
   templateUrl: './sr-delete-order.component.html',
-  styleUrls: []
+  styleUrls: ['./sr-delete-order.component.scss']
 })
 export class SrDeleteOrderComponent { 
   confrimDelete: boolean = false;

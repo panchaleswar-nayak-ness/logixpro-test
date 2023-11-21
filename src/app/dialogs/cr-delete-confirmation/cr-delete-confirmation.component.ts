@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-cr-delete-confirmation',
   templateUrl: './cr-delete-confirmation.component.html',
-  styleUrls: [],
+  styleUrls: ['./cr-delete-confirmation.component.scss'],
 })
 export class CrDeleteConfirmationComponent {
   constructor(public dialogRef: MatDialogRef<any>) {} 

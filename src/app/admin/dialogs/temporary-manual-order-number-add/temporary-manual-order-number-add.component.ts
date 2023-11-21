@@ -10,6 +10,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-temporary-manual-order-number-add',
@@ -41,8 +42,8 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
 
     private global: GlobalService,
-    private Api: ApiFuntions,
-    private adminApiService: AdminApiService,
+    public Api: ApiFuntions,
+    public adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
 
   ) {
@@ -82,7 +83,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
 
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("ItemExists", res.responseMessage);
 
           }
@@ -109,7 +110,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
 
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("GetLocations:", res.responseMessage);
         }
 
@@ -150,10 +151,10 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
                 .subscribe(
                   (res: any) => {
                     if (res.isExecuted) {
-                      this.global.ShowToastr('success', labels.alert.success, 'Success!');
+                      this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterTitle.Success);
                       this.dialogRef.close({ isExecuted: true, id: res.data, orderNumber: this.orderNumber, itemNumber: this.itemNumber, location: this.inventoryMapID });
                     } else {
-                      this.global.ShowToastr('error', res.responseMessage, 'Error!');
+                      this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
                       this.dialogRef.close({ isExecuted: true, id: res.data, orderNumber: this.orderNumber, itemNumber: this.itemNumber });
                       console.log("NewTransactionSave", res.responseMessage);
                     }
@@ -164,7 +165,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
 
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("ItemExists:", res.responseMessage);
           }
         },
@@ -206,7 +207,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
 
               }
               else {
-                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
                 console.log("ItemExists", res.responseMessage);
               }
             },
@@ -230,7 +231,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
             this.searchAutocompleteOrderNum = res.data;
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("ManualTransactionTypeAhead", res.responseMessage);
           }
 
@@ -258,7 +259,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
           } else {
 
             this.searchAutocompleteItemNum.length = 0;
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("SearchItem", res.responseMessage);
 
           }

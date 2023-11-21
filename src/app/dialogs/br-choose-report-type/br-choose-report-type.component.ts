@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-br-choose-report-type',
   templateUrl: './br-choose-report-type.component.html',
-  styleUrls: []
+  styleUrls: ['./br-choose-report-type.component.scss']
 })
 export class BrChooseReportTypeComponent{
   @ViewChild('expFile') expFile: ElementRef;

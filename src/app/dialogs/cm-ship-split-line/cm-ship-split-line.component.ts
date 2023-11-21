@@ -15,7 +15,7 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-ship-split-line',
   templateUrl: './cm-ship-split-line.component.html',
-  styleUrls: [],
+  styleUrls: ['./cm-ship-split-line.component.scss'],
 })
 export class CmShipSplitLineComponent implements OnInit {
   public userData: any;

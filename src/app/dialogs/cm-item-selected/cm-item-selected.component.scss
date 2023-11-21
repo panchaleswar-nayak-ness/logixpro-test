@@ -5,6 +5,13 @@ table{
       border:0;
     }
   }
+  ::ng-deep .w-48px {
+    width: 48px;
+  } ::ng-deep.overflow-x-auto{
+    overflow-x:auto
+  }::ng-deep.text-right{
+    text-align: right;
+  }
 .h-260px{
   height: 260px;
 }

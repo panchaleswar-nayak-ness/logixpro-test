@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Event Log Entry Detail</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -47,14 +47,14 @@
     <div class="col-xl-6">
         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
             <mat-label>Message</mat-label>
-            <textarea style="max-height: 100px;" matInput readonly="true" disabled
+            <textarea  class="max-height-100" matInput readonly="true" disabled
                 [(ngModel)]="eventLog.message"></textarea>
         </mat-form-field>
     </div>
     <div class="col-xl-6">
         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
             <mat-label>Notes</mat-label>
-            <textarea style="max-height: 100px;" matInput readonly="true" disabled
+            <textarea class="max-height-100" matInput readonly="true" disabled
                 [(ngModel)]="eventLog.notes"></textarea>
         </mat-form-field>
     </div>

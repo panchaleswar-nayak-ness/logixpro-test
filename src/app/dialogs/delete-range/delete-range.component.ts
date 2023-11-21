@@ -15,7 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-delete-range',
   templateUrl: './delete-range.component.html',
-  styleUrls: []
+  styleUrls: ['./delete-range.component.scss']
 })
 export class DeleteRangeComponent implements OnInit {
   @ViewChild('delFocus') delFocus: ElementRef;

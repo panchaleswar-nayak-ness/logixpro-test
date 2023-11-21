@@ -12,6 +12,13 @@ table{
       padding-right: 15px;
     }
   }
-  .h-545px{
-    height: 545px;
+   .w-48px {
+    width: 48px;
   }
+   .height-545 {
+      height: 545px;
+    }
+    
+      .table-settings-tr{
+        background-color: var(--clr-table-header);
+    }

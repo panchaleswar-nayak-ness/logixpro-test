@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Reel Transactions</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
         <mat-icon class="close-icon">close</mat-icon>
@@ -52,7 +52,7 @@
 
 <div *ngIf="autoGenerateReel">
     <div class="card br-14 table-responsive borderless px-0 my-3">
-        <ng-scrollbar track="all" class="mat-table-scrollbar  scrollbar-hover-padding h-350px">
+        <ng-scrollbar track="all" class="mat-table-scrollbar  scrollbar-hover-padding h-350">
 
             <table mat-table [dataSource]="generateReelAndSerial"
                 class="w-100">

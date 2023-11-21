@@ -13,7 +13,7 @@ import { CommonApiService } from 'src/app/services/common-api/common-api.service
 @Component({
   selector: 'app-set-item-location',
   templateUrl: './set-item-location.component.html',
-  styleUrls: [],
+  styleUrls: ['./set-item-location.component.scss'],
 })
 export class SetItemLocationComponent implements OnInit {
   @ViewChild('itm_nmb') itm_nmb: ElementRef;

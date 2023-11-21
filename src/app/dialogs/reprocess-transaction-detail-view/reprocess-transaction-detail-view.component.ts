@@ -17,7 +17,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 @Component({
   selector: 'app-reprocess-transaction-detail-view',
   templateUrl: './reprocess-transaction-detail-view.component.html',
-  styleUrls: [],
+  styleUrls: ['./reprocess-transaction-detail-view.component.scss'],
 })
 export class ReprocessTransactionDetailViewComponent implements OnInit {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;

@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between alighn-item-center mb-4">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Reel Detail</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" mat-dialog-close="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -51,7 +51,7 @@
                 <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline" >
                     <mat-label >Warehouse</mat-label>
                     <span matSuffix>
-                        <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
+                        <mat-icon class="mat-icon-warehouse"  >unfold_more</mat-icon>
                       </span>
                     <input matInput  [(ngModel)]="reelWarehouse" [disabled]="!wareHouseSensitivity" readonly="true" (click)="openWareHouse()">
                 </mat-form-field>

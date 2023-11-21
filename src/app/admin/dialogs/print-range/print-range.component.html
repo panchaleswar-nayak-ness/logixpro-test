@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="div-width"></div>
     <h1 class="m-0" mat-dialog-title>Print Range</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -10,18 +10,18 @@
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>Begin Location</mat-label>
         <input #begin_loc matInput type="text" [(ngModel)]="beginLoc" 
-        (keyup)="searchBeginLocation(true)" [matAutocomplete]="begin" maxlength="50" maxlength="50"
-        (focus)="searchBeginLocation(true)">
+        (keyup)="searchBeginLocation()" [matAutocomplete]="begin" maxlength="50" maxlength="50"
+        (focus)="searchBeginLocation()">
 
         <mat-autocomplete class="card custom-scroll" #begin="matAutocomplete"
             (optionSelected)="onSearchSelectBeginLocation($event)">
             <h6 class="card-header matAutoCompHeader ">
-                <span style="width:  140px;">Location</span>
+                <span class="span-width">Location</span>
             </h6>
             <mat-option *ngFor="let option of beginLocationSearchList" [value]="option"
                 class="matAutoCompTableContent">
-                <div class="loc_option" (click)="selectBeginLocation(option,$event)">
-                    <span class="searchColumn over-flow" style="width:  140px; margin-right: 5px;" #tooltip="matTooltip"
+                <div class="loc_option" (click)="selectBeginLocation(option)">
+                    <span class="searchColumn over-flow span-width span-margin" #tooltip="matTooltip"
                         [matTooltip]="option" matTooltipPosition="above">{{option}}</span>
                 </div>
             </mat-option>
@@ -33,18 +33,18 @@
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>End Location</mat-label>
         <input  #end_loc matInput type="text" [(ngModel)]="endLoc"
-        (keyup)="searchEndLocation(true)" [matAutocomplete]="end" maxlength="50" maxlength="50"
-        (focus)="searchEndLocation(true)">
+        (keyup)="searchEndLocation()" [matAutocomplete]="end" maxlength="50" maxlength="50"
+        (focus)="searchEndLocation()">
 
         <mat-autocomplete class="card custom-scroll" #end="matAutocomplete"
             (optionSelected)="onSearchSelectEndLocation($event)">
             <h6 class="card-header matAutoCompHeader ">
-                <span style="width:  140px;">Location</span>
+                <span class="span-width">Location</span>
             </h6>
             <mat-option *ngFor="let option of endLocationSearchList" [value]="option"
                 class="matAutoCompTableContent">
-                <div class="loc_option" (click)="selectEndLocation(option,$event)">
-                    <span class="searchColumn over-flow" style="width:  140px; margin-right: 5px;" #tooltip="matTooltip"
+                <div class="loc_option" (click)="selectEndLocation(option)">
+                    <span class="searchColumn over-flow span-width span-margin" #tooltip="matTooltip"
                         [matTooltip]="option" matTooltipPosition="above">{{option}}</span>
                 </div>
             </mat-option>
