@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DialogConstants } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IeManageDataInvenMapTablesComponent } from 'src/app/dialogs/ie-manage-data-inven-map-tables/ie-manage-data-inven-map-tables.component';
 import { IeManageDataTransFieldMapComponent } from 'src/app/dialogs/ie-manage-data-trans-field-map/ie-manage-data-trans-field-map.component';
@@ -14,26 +15,21 @@ export class IeMdExportInvertoryMapComponent {
     private global:GlobalService
   ) { }
 
- 
-
   IeTransFieldMappingDialog() {
     this.global.OpenDialog(IeManageDataTransFieldMapComponent,{
-     height: 'auto',
+     height: DialogConstants.auto,
      width: '100vw',
-     autoFocus: '__non_existing_element__',
-     disableClose:true,
+     autoFocus: DialogConstants.autoFocus,
+     disableClose: true,
    });
-
  }
 
  IeInventMappingDialog() {
     this.global.OpenDialog(IeManageDataInvenMapTablesComponent,{
-     height: 'auto',
+     height: DialogConstants.auto,
      width: '100vw',
-     autoFocus: '__non_existing_element__',
+     autoFocus: DialogConstants.autoFocus,
      disableClose:true,
    });
-
  }
-
 }

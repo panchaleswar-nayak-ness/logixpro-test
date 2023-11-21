@@ -7,7 +7,7 @@ import { KanbanZoneAllocationConflictComponent } from 'src/app/admin/dialogs/kan
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions,zoneType, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { zoneType, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 
 @Component({

@@ -6,7 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./ie-inventory.component.scss']
 })
 export class IeInventoryComponent  {
-
-
-
 }

@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./ie-ss-export.component.scss']
 })
 export class IeSsExportComponent {
-
 }

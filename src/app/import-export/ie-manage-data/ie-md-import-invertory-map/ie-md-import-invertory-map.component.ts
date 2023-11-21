@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./ie-md-import-invertory-map.component.scss']
 })
 export class IeMdImportInvertoryMapComponent {
-
 }

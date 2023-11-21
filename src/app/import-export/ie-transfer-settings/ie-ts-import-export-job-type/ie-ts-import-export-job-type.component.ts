@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { DialogConstants } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
@@ -11,13 +12,12 @@ export class IeTsImportExportJobTypeComponent {
 
   constructor(private global:GlobalService) { }
 
- 
   IeImportAllDialog(){
     this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '550px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
     });
 
   }
