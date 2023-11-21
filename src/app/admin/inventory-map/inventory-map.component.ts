@@ -169,7 +169,7 @@ export class InventoryMapComponent implements OnInit {
     if(router.url == AppRoutes.OrderManagerInventoryMap){
       this.transHistory = true;
     }
-    else if(router.url ==AppRoutes.AdminInventoryMap  || AppRoutes.InductionManagerInventoryMap){
+    else if(router.url ==AppRoutes.AdminInventoryMap  || AppRoutes.InductionManagerAdminInventoryMap){
       this.transHistory = false;
     }
 

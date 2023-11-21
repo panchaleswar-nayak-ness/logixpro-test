@@ -1,10 +1,8 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatRadioChange } from '@angular/material/radio';
-
 import { RequiredDateStatusComponent } from '../../../app/dialogs/required-date-status/required-date-status.component';
 import { AuthService } from '../../common/init/auth.service'; 
 import labels from 'src/app/common/labels/labels.json';
-import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
@@ -16,7 +14,7 @@ import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.cons
   styleUrls: ['./super-batch.component.scss']
 })
 export class SuperBatchComponent implements OnInit {
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
   displayedColumns: string[] = ['zone', 'totalTransactions', 'orderToBatch', 'newToteID', 'actions'];
   dataSource: any;
   user_data: any;
@@ -38,17 +36,15 @@ export class SuperBatchComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private inductionManagerApi: InductionManagerApiService,
-    private global:GlobalService, 
-    
-    private Api: ApiFuntions
+    public inductionManagerApi: InductionManagerApiService,
+    private global: GlobalService
   ) {
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
    }
 
   ngOnInit(): void {
     this.user_data = this.authService.userData(); 
-    this.iinductionManagerApi.SuperBatchIndex().subscribe(res => {
+    this.iInductionManagerApi.SuperBatchIndex().subscribe(res => {
       if (res.isExecuted && res.data)
       {
         const { preferences } = res.data;
@@ -103,7 +99,7 @@ export class SuperBatchComponent implements OnInit {
       "Type": type,
       "ItemNumber": itemNumber
     }
-    this.iinductionManagerApi.ItemZoneDataSelect(payload).subscribe(res => {
+    this.iInductionManagerApi.ItemZoneDataSelect(payload).subscribe(res => {
       if (res.isExecuted && res.data)
       {
         const batchTableData = res.data.map((v, key) => ({ ...v, 'key': key, 'orderToBatch': this.defaultSuperBatchSize, 'newToteID': '' }))
@@ -190,9 +186,9 @@ export class SuperBatchComponent implements OnInit {
       "ItemNum": this.itemNum.toString(),
       "BatchByOrder": BatchByOrder.toString()
     }
-    this.iinductionManagerApi.SuperBatchCreate(payload).subscribe(response => {
+    this.iInductionManagerApi.SuperBatchCreate(payload).subscribe(response => {
       if (response.isExecuted) {
-        this.iinductionManagerApi.TotePrintTableInsert({ "ToteID": element.newToteID.toString() }).subscribe(res => {
+        this.iInductionManagerApi.TotePrintTableInsert({ "ToteID": element.newToteID.toString() }).subscribe(res => {
           if(res.isExecuted){
             this.superBatches.push(element.newToteID);
             this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);

@@ -8,14 +8,13 @@ import { FlowRackReplenishApiService } from 'src/app/common/services/flowrackrep
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AppIcons, AppNames, AppPermissions, AppRoutes, ResponseStrings, RouteNames, RouteUpdateMenu, StringAssignments, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
+
 @Component({
   selector: 'app-fr-flowrack-replenishment',
   templateUrl: './fr-flowrack-replenishment.component.html',
   styleUrls: ['./fr-flowrack-replenishment.component.scss']
 })
-
 export class FrFlowrackReplenishmentComponent implements OnInit {
-
   public iFlowRackReplenishApi : IFlowRackReplenishApi;
   public userData: any;
   public itemQtyRow: boolean = true;
@@ -23,17 +22,17 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
   public submitBtnDisplay: boolean = true;
   public itemNumScan: any = '';
   public itemLocation: string;
-  public itemQty: any
+  public itemQty: any;
   public locationSuggestions: any = [];
   public zone: any;
   public calculator: boolean = true;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
   searchByItem: any = new Subject<string>();
   searchAutocompleteItemNum: any = [];
-  @ViewChild('autoFocusField') autoFocusField: ElementRef
-  @ViewChild('itemQtyFocus') itemQtyFocus: ElementRef
-  @ViewChild('itemLocationFocus') itemLocationFocus: ElementRef
-  @ViewChild('scrollbar') scrollBar: ElementRef
+  @ViewChild('autoFocusField') autoFocusField: ElementRef;
+  @ViewChild('itemQtyFocus') itemQtyFocus: ElementRef;
+  @ViewChild('itemLocationFocus') itemLocationFocus: ElementRef;
+  @ViewChild('scrollbar') scrollBar: ElementRef;
   applicationData: any = [];
   @ViewChild('auto') matAutocomplete: MatAutocompleteTrigger;
   @ViewChild('ord_focus') ordFocus: ElementRef;

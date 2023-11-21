@@ -20,7 +20,7 @@ export class CompletePickBatchComponent{
   tableData: any = [];
   dataSourceList: any;
   batchId: string = "";
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
   toteId: string = "";
   showToteCol: boolean = false;
   completeBatchEnable: boolean = false;
@@ -37,7 +37,7 @@ export class CompletePickBatchComponent{
     private global:GlobalService,
     public inductionManagerApi: InductionManagerApiService,
   ) { 
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngAfterViewInit() {
@@ -73,7 +73,7 @@ export class CompletePickBatchComponent{
     if(this.batchId != ""){
       payload.BatchID = this.batchId;
     }
-    this.iinductionManagerApi.getPickBatchTransactionTable(payload).subscribe((res: any) => {
+    this.iInductionManagerApi.getPickBatchTransactionTable(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.tableData = res.data;
         this.blossomToteEnable = false;
@@ -172,7 +172,7 @@ export class CompletePickBatchComponent{
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == StringConditions.Yes) {
-        this.iinductionManagerApi.completeTransaction({Id:element.id}).subscribe((res: any) => {
+        this.iInductionManagerApi.completeTransaction({Id:element.id}).subscribe((res: any) => {
           if(res.isExecuted){
             this.pickBatchTransactionTable();
             this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
@@ -199,7 +199,7 @@ export class CompletePickBatchComponent{
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == StringConditions.Yes) {
-        this.iinductionManagerApi.completePickBatch({batchId:this.batchId}).subscribe((res: any) => {
+        this.iInductionManagerApi.completePickBatch({batchId:this.batchId}).subscribe((res: any) => {
           if(res.isExecuted){
             this.clearScreen();
             this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
