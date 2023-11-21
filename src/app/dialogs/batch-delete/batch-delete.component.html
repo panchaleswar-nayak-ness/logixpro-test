@@ -56,7 +56,7 @@
         </button>
       </div>
       <div class="col-xl-4 mb-2">
-        <button mat-flat-button color="warn" class="btn-lg w-100" [disabled]="deleteAllDisable" [hidden]="deleteBtnHide" (click)="allBatchDelete()">
+        <button mat-flat-button color="warn" class="btn-lg w-100" [disabled]="deleteAllDisable" *ngIf="!deleteBtnHide" (click)="allBatchDelete()">
           Delete All Batches
         </button>
       </div>
