@@ -42,8 +42,8 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
 
     private global: GlobalService,
-    private Api: ApiFuntions,
-    private adminApiService: AdminApiService,
+    public Api: ApiFuntions,
+    public adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>
 
   ) {

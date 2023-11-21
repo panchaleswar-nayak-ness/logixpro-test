@@ -7,6 +7,7 @@ import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/d
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-warehouse',
@@ -101,7 +102,7 @@ export class WarehouseComponent implements OnInit {
     this.warehouse_list.forEach(element => {
       if (element == warehosue && cond) {
         cond = false
-        this.global.ShowToastr('error','Conflict: Warehouse cannot be saved! Another warehouse matches the current. Please save any pending changes before attempting to save this entry.', 'Error!');
+        this.global.ShowToastr(ToasterType.Error,'Conflict: Warehouse cannot be saved! Another warehouse matches the current. Please save any pending changes before attempting to save this entry.', ToasterTitle.Error);
       }
     });
     if (cond) {
@@ -112,11 +113,11 @@ export class WarehouseComponent implements OnInit {
 
       this.iCommonAPI.saveWareHouse(paylaod).subscribe((res) => {
         if(res.isExecuted){
-          this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.getWarehouse();
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("saveWareHouse:", res.responseMessage);
         }
       });
@@ -126,7 +127,7 @@ export class WarehouseComponent implements OnInit {
   dltWareHouse(warehosue: any) {
     let paylaod = { "warehouse": warehosue }
     this.iCommonAPI.dltWareHouse(paylaod).subscribe((res) => {
-      this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+      this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
       this.getWarehouse();
     });
   }

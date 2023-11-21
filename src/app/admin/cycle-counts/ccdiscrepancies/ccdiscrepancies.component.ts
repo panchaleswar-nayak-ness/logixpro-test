@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppRoutes, RouteNames } from 'src/app/common/constants/strings.constants';
+import { AppRoutes } from 'src/app/common/constants/strings.constants';
 
 
 export interface PeriodicElement {

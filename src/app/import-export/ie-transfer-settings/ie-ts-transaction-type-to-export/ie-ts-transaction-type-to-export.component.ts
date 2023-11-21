@@ -11,7 +11,7 @@ interface Actions {
 })
 export class IeTsTransactionTypeToExportComponent {
 
-  actionBtnListOne : Actions[] = [
+  operationActions : Actions[] = [
     { title: "Hot Picks" },
     { title: "Adjustments" },
     { title: "Hot Put Aways" },
@@ -21,7 +21,7 @@ export class IeTsTransactionTypeToExportComponent {
     { title: "Shipping" }
   ]
   
-  actionBtnListTwo : Actions[] = [
+  shippingOrderActions : Actions[] = [
     { title: "Shipping Transactions" },
     { title: "Wait for Split Transactions" },
     { title: "Recombine Split Transactions" },

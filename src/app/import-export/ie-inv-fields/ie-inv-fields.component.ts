@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-ie-inv-fields',
@@ -8,7 +7,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class IeInvFieldsComponent {
 
-  ELEMENT_DATA: any[] =[
+  ELEMENT_DATA: any[] = [
     {table_name: 'Active'},
     {table_name: 'Avg Piece Weight'},
     {table_name: 'Bulk Cell Size'},
@@ -28,15 +27,9 @@ export class IeInvFieldsComponent {
     {table_name: 'Golden Zone'},
     {table_name: 'Include in Auto RTS Update'},
     {table_name: 'Kanban Replenisment Level'}
-  ]
+  ];
 
-    displayedColumns: string[] = ['table_name','modify'];
-    tableData = this.ELEMENT_DATA
-    dataSourceList:any
-
-  constructor(
-    private global:GlobalService,
-  ) { }
-
-
+  displayedColumns: string[] = ['table_name','modify'];
+  tableData = this.ELEMENT_DATA;
+  dataSourceList:any;
 }

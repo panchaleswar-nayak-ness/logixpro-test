@@ -1,5 +1,6 @@
 import { Component} from '@angular/core';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { DialogConstants } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
@@ -22,25 +23,22 @@ export class IeArchivePurgeComponent  {
     {table_name: 'Import Transactions History'},
     {table_name: 'Induction Transactions History'},
     {table_name: 'Transactions History'}
-  ]
+  ];
 
-    displayedColumns: string[] = ['table_name','purge_days','archive'];
-    tableData = this.ELEMENT_DATA
-    dataSourceList:any
+  displayedColumns: string[] = ['table_name','purge_days','archive'];
+  tableData = this.ELEMENT_DATA;
+  dataSourceList: any
 
   constructor(
     private global:GlobalService,
   ) { }
 
-
-
   IeImportAllDialog(){
      this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '550px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
-
   }
 }

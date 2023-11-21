@@ -6,6 +6,4 @@ import { Component} from '@angular/core';
   styleUrls: ['./ie-md-export-invertory.component.scss']
 })
 export class IeMdExportInvertoryComponent {
-
-
 }

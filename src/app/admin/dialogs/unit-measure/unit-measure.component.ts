@@ -6,6 +6,7 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-unit-measure',
@@ -49,7 +50,7 @@ export class UnitMeasureComponent implements OnInit {
       }, 100)
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getUnitOfMeasure",res.responseMessage);
 
       }
@@ -76,7 +77,7 @@ export class UnitMeasureComponent implements OnInit {
     this.unitOfMeasure_list.forEach(element => {
       if(element.toLowerCase() == um.toLowerCase() && cond) {
         cond = false;
-       this.global.ShowToastr('error','Already Exists', 'Error!');
+       this.global.ShowToastr(ToasterType.Error,'Already Exists', ToasterTitle.Error);
        
       }   
     });
@@ -90,10 +91,10 @@ export class UnitMeasureComponent implements OnInit {
     this.iCommonAPI.saveUnitOfMeasure(paylaod).subscribe((res) => {
       if(res.isExecuted){
         this.getUOM();
-        this.global.ShowToastr('success', oldUM.toString()==''?labels.alert.success:labels.alert.update, 'Success!');
+        this.global.ShowToastr(ToasterType.Success, oldUM.toString()==''?labels.alert.success:labels.alert.update, ToasterTitle.Success);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("saveUnitOfMeasure",res.responseMessage);
       }
   
@@ -126,10 +127,10 @@ export class UnitMeasureComponent implements OnInit {
           
           if(res.isExecuted){
             this.getUOM();
-          this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
         }
         else{
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("BatchManagerOrder:", res);
         }
         });
