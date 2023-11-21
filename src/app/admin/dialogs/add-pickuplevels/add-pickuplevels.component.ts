@@ -8,11 +8,12 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-pickuplevels',
   templateUrl: './add-pickuplevels.component.html',
-  styleUrls: []
+  styleUrls: ['./add-pickuplevels.component.scss']
 })
 export class AddPickuplevelsComponent implements OnInit {
   @ViewChild('start_shelf') start_shelf: ElementRef;
@@ -68,10 +69,10 @@ export class AddPickuplevelsComponent implements OnInit {
       this.iAdminApiService.updatePickLevels({ userName : this.data.userName, ...form.value }).subscribe((res:any) =>{
         if (res.isExecuted) {
           this.dialog.closeAll();
-          this.global.ShowToastr('success',labels.alert.success, 'Update!');
+          this.global.ShowToastr(ToasterType.Error,labels.alert.success, ToasterTitle.Update);
         } else {
           
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
           console.log("updatePickLevels",res.responseMessage);
         }
       });
@@ -81,10 +82,10 @@ export class AddPickuplevelsComponent implements OnInit {
       this.iAdminApiService.insertPickLevels({ userName : this.data.userName, ...form.value }).subscribe((res: any) => {
         if (res.isExecuted) {
           this.dialog.closeAll();
-          this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
         } else {
           
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
           console.log("insertPickLevels",res.responseMessage);
         }
       });

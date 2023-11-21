@@ -8,29 +8,24 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-tote-id-update-modal',
   templateUrl: './cm-tote-id-update-modal.component.html',
-  styleUrls: []
+  styleUrls: ['./cm-tote-id-update-modal.component.scss']
 })
 export class CmToteIdUpdateModalComponent implements OnInit {
-
   public userData: any;
-
   containerID : string = '';
-
   clearContainerIDBtn : boolean = true;
   setContainerIDBtn : boolean = false;
 
   @ViewChild('conID') conID : ElementRef;
 
-  public IconsolidationAPI : IConsolidationApi;
+  public iConsolidationAPI : IConsolidationApi;
 
   constructor(private global:GlobalService,
               public dialogRef: MatDialogRef<CmToteIdUpdateModalComponent>,
-              
-              // private Api: ApiFuntions,
               public consolidationAPI : ConsolidationApiService,
               private authService: AuthService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-                this.IconsolidationAPI = consolidationAPI;
+                this.iConsolidationAPI = consolidationAPI;
                }
 
   ngOnInit(): void {
@@ -60,7 +55,7 @@ export class CmToteIdUpdateModalComponent implements OnInit {
         contID: this.containerID
       };
 
-      this.IconsolidationAPI.ContIDShipTransUpdate(payLoad).subscribe(
+      this.iConsolidationAPI.ContIDShipTransUpdate(payLoad).subscribe(
         (res: any) => {
           if (res?.isExecuted) {
             this.dialogRef.close({
@@ -73,9 +68,12 @@ export class CmToteIdUpdateModalComponent implements OnInit {
             console.log("ContIDShipTransUpdate",res.responseMessage);
           }
         },
-        (error) => { }
+        (error) => { 
+          console.log(error);
+        }
       );
     } catch (error) { 
+      console.log(error);
     }
   }
 

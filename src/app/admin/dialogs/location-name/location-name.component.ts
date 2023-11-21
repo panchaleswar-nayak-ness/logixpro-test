@@ -8,6 +8,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-location-name',
@@ -21,7 +22,7 @@ export class LocationNameComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
     locationNames :any = new MatTableDataSource([]);
   save
-  constructor(private Api: ApiFuntions,
+  constructor(
             public authService: AuthService,
             private adminApiService: AdminApiService,
             
@@ -51,7 +52,7 @@ export class LocationNameComponent implements OnInit {
         
       }
       else{
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("LocationNames",res.responseMessage);
 
       }
@@ -72,7 +73,7 @@ export class LocationNameComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
-      if (res === 'Yes'){
+      if (res === StringConditions.Yes){
 
         let payload = { 
           "name": ele.currentVal,
@@ -83,7 +84,7 @@ export class LocationNameComponent implements OnInit {
           }
           else
           {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("DeleteLocationNames:", res.responseMessage);
 
           }
@@ -107,12 +108,12 @@ export class LocationNameComponent implements OnInit {
     }
     this.iAdminApiService.LocationNamesSave(payload).subscribe((res=>{
       if(res.isExecuted){
-        this.global.ShowToastr('success',"Location Name Updated Succesfully", 'Success!');
+        this.global.ShowToastr(ToasterType.Success,"Location Name Updated Succesfully", ToasterTitle.Success);
           
         ele.oldVal = ele.currentVal
       }
       else{
-        this.global.ShowToastr('error',`Location Name Not Updated`, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,`Location Name Not Updated`, ToasterType.Error);
         console.log("LocationNamesSave",res.responseMessage);
       }
     }))

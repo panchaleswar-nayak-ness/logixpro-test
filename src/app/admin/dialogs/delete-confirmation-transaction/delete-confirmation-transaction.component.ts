@@ -6,6 +6,7 @@ import labels from '../../../labels/labels.json';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-delete-confirmation-transaction',
@@ -31,7 +32,6 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
     this.userData = this.authService.userData();
   }
 
-
   onConfirmdelete() {
     let deletePayload = {
       transType: this.data.transType,
@@ -45,25 +45,23 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
       (res: any) => {
         if(res.isExecuted){
           this.dialogRef.close("Yes");
-          this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+          this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("DeleteOrder",res.responseMessage);
         }
       },
       (error) => {
         this.dialogRef.close("No");
-        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+        this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
         console.log("(error) => : DeleteOrder");
       }
     );
   }
+
   checkOptions(event: MatCheckboxChange): void {
-    if (event.checked) {
-      this.isChecked = false;
-    } else {
-      this.isChecked = true;
-    }
+    if (event.checked) this.isChecked = false;
+    else this.isChecked = true;
   }
 }

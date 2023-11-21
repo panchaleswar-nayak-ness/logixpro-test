@@ -1,12 +1,12 @@
-.bb{
-    background-color: var(--clr-danger-shade);
+table {
+  th {
+    white-space: nowrap;
+    padding-right: 12px;
+  }
+  td {
+    border:0
+  }
 }
-table{
-    th {
-        white-space: nowrap;
-        padding-right: 12px;
-      }
-      td{
-        border:0
-      }
+.h-260px{
+  height: 260px;
 }

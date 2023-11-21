@@ -15,10 +15,10 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-delete-range',
   templateUrl: './delete-range.component.html',
-  styleUrls: []
+  styleUrls: ['./delete-range.component.scss']
 })
 export class DeleteRangeComponent implements OnInit {
-  @ViewChild('del_focus') del_focus: ElementRef;
+  @ViewChild('delFocus') delFocus: ElementRef;
   public userData: any;
   repByDeletePayload: any = {
     identity: "Batch Pick ID",
@@ -43,8 +43,7 @@ export class DeleteRangeComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private adminApiService: AdminApiService,
-    private Api: ApiFuntions,
+    public adminApiService: AdminApiService, 
     private dialog:MatDialog,
     
     private global:GlobalService,
@@ -64,7 +63,7 @@ export class DeleteRangeComponent implements OnInit {
   }
   ngAfterViewInit(): void {
     setTimeout(()=>{
-      this.del_focus.nativeElement.focus();  
+      this.delFocus.nativeElement.focus();  
     }, 200);
   }
   
@@ -119,19 +118,19 @@ export class DeleteRangeComponent implements OnInit {
     return this.floatLabelControlEnd.value ?? 'auto';
   }
 
-  changeBegin(event: any) {
+  changeBegin() {
     this.getSearchOptionsBeginSubscribe.unsubscribe();
     this.getSearchOptionsBegin();
     this.getSearchOptionsEndSubscribe.unsubscribe();
     this.getSearchOptionsEnd();
   }
 
-  changeEnd(event: any) {
+  changeEnd() {
     this.getSearchOptionsEndSubscribe.unsubscribe();
     this.getSearchOptionsEnd();
   }
 
-  showChange(event: any) {
+  showChange() {
     this.getSearchOptionsBegin();
     this.getSearchOptionsEnd();
   }
@@ -166,8 +165,7 @@ export class DeleteRangeComponent implements OnInit {
         this.endAutoCompleteList = res.data.sort();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("DeleteRangeEnd",res.responseMessage);
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!'); 
       }
     });
   }

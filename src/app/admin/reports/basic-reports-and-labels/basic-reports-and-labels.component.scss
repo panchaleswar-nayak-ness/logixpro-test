@@ -13,3 +13,17 @@ table{
         }
     }
 }
+
+.action-dropdown {
+    flex:1;
+}
+
+.borderCardDiv-style{
+    overflow-x: auto !important;
+    .scrolbarHover-style{
+        height:56vh;
+        .matHeaderCellDef-style{
+            width: 220px;
+        }
+    }
+}

@@ -16,6 +16,4 @@ export class ImportExportComponent implements OnInit {
     let appd=JSON.parse(localStorage.getItem('availableApps') ?? '');
     this.sharedService.setMenuData(appd);
   }
-
-
 }

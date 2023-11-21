@@ -3,14 +3,11 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 @Component({
   selector: 'app-om-add-transaction',
   templateUrl: './om-add-transaction.component.html',
-  styleUrls: []
+  styleUrls: ['./om-add-transaction.component.scss']
 })
 export class OmAddTransactionComponent {
-  @ViewChild('procc_focus') procc_focus: ElementRef;
- 
-
-  
+  @ViewChild('proccfocus') proccfocus: ElementRef; 
   ngAfterViewInit(): void {
-    this.procc_focus.nativeElement.focus();
+    this.proccfocus.nativeElement.focus();
   }
 }

@@ -7,7 +7,7 @@
         </div>
           <div class="col-xl-3">
             <div class="w-100 d-flex d-lg-block">
-            <mat-form-field class="action-dropdown float-end mb-3" appearance="outline" style="flex:1">
+            <mat-form-field class="action-dropdown float-end mb-3 flex-grow-1" appearance="outline">
                 <mat-label>Action</mat-label>
                 <mat-select #matRef class="employees-action">
                     <mat-option value="pagesNumber">Reset All Alternate Light Positions</mat-option>
@@ -94,7 +94,7 @@
             </app-icon-heading-component>
         </div>
         <div class="card br-14 table-responsive borderless px-0 mb-3">
-            <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 620px;">
+            <ng-scrollbar track="all" class="mat-table-scrollbar h-620px">
                 <table mat-table [dataSource]="this.ELEMENT_DATA" class="w-100">
                     <ng-container matColumnDef="position">
                         <th mat-header-cell *matHeaderCellDef> Position </th>

@@ -2,8 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {  MatDialogRef } from '@angular/material/dialog';
 
 import { AuthService } from 'src/app/init/auth.service'; 
-import labels from '../../labels/labels.json';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import labels from '../../labels/labels.json'; 
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -11,18 +10,17 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-om-user-field-data',
   templateUrl: './om-user-field-data.component.html',
-  styleUrls: []
+  styleUrls: ['./om-user-field-data.component.scss']
 })
 export class OmUserFieldDataComponent implements OnInit {
-  @ViewChild('user_focus') user_focus: ElementRef;
+  @ViewChild('userFocus') userFocus: ElementRef;
   userData: any;
   userFieldData: any;
   public iOrderManagerApi :  IOrderManagerAPIService;
 
   constructor(
     
-    private authService: AuthService,
-    private Api: ApiFuntions,
+    private authService: AuthService, 
     public orderManagerApi  : OrderManagerApiService,
     private global:GlobalService,
     public dialogRef: MatDialogRef<OmUserFieldDataComponent>,
@@ -35,7 +33,7 @@ export class OmUserFieldDataComponent implements OnInit {
     this.getUserFieldData();
   }
 
-  getUserFieldData(loader: boolean = false) {
+  getUserFieldData() {
     
     this.iOrderManagerApi.UserFieldData().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
@@ -47,7 +45,7 @@ export class OmUserFieldDataComponent implements OnInit {
     });
   }
 
-  updateUserFieldData(loader: boolean = false) {
+  updateUserFieldData( ) {
     let payload: any = {
       userField1: this.userFieldData.userField1,
       userField2: this.userFieldData.userField2,
@@ -73,6 +71,6 @@ export class OmUserFieldDataComponent implements OnInit {
 
    
   ngAfterViewInit(): void {
-    this.user_focus.nativeElement.focus();
+    this.userFocus.nativeElement.focus();
   }
 }

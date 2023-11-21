@@ -11,15 +11,15 @@ import {
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/init/auth.service';
 import { BatchManagerDetailViewComponent } from '../../dialogs/batch-manager-detail-view/batch-manager-detail-view.component';
 import { Subscription } from 'rxjs';
 import { SharedService } from 'src/app/services/shared.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { AppPermissions, AppRoutes, DialogConstants, LiveAnnouncerMessage, ToasterTitle, ToasterType, localStorageKeys } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-order-list',
@@ -27,19 +27,18 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./batch-order-list.component.scss'],
 })
 export class BatchOrderListComponent implements OnInit {
-  private subscription: Subscription = new Subscription();
 
-  // @Input() orderListData : any;
-  tableData: any;
+  private subscription: Subscription = new Subscription();
+  batchOrderDataTable: any;
   toteNumber: number = 1;
   userData: any;
   transType: any;
-  max:any;
-  selectedOrderLength:any=0;
+  max: any;
+  selectedOrderLength: any = 0;
   @Input() set orderListData(val: any) {
-    this.tableData = new MatTableDataSource(val);
-    this.tableData.paginator = this.paginator;
-    this.tableData.sort = this.sort;
+    this.batchOrderDataTable = new MatTableDataSource(val);
+    this.batchOrderDataTable.paginator = this.paginator;
+    this.batchOrderDataTable.sort = this.sort;
   }
   @Input()
   set transTypeEvent(event: Event) {
@@ -59,15 +58,13 @@ export class BatchOrderListComponent implements OnInit {
 
   constructor(
     private sharedService: SharedService,
-    private _liveAnnouncer: LiveAnnouncer,
+    private liveAnnouncer: LiveAnnouncer,
     private router: Router,
-    private adminApiService: AdminApiService,
-    private Api: ApiFuntions,
+    public adminApiService: AdminApiService,
     private authService: AuthService,
-    private global:GlobalService
+    private global: GlobalService
   ) {
-    
-   this.iAdminApiService = adminApiService;
+    this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
@@ -77,69 +74,62 @@ export class BatchOrderListComponent implements OnInit {
   ngAfterViewInit() {
     this.subscription.add(
       this.sharedService.batchManagerObserver.subscribe((obj) => {
-     
-        
-        this.selectedOrderLength=obj.selectedOrderLength;
+        this.selectedOrderLength = obj.selectedOrderLength;
       })
     );
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['orderListData']) {
-      this.tableData['_data']['_value'] =
+      this.batchOrderDataTable['_data']['_value'] =
         changes['orderListData']['currentValue'];
     }
     if (changes['extraField']) {
       this.extraField = changes['extraField']['currentValue'];
     }
   }
-  appendMax() {
-    let dataLength=this.tableData['_data']['_value'].length
-      this.max=parseInt(this.extraField)-this.selectedOrderLength;
-      if(this.max>dataLength){
-        this.max=dataLength
-      }
-      for (let index = 0; index < this.max; index++) {
-        this.addOrders( this.tableData['_data']['_value'][index])
-        
-      }
 
+  appendMax() {
+    let dataLength = this.batchOrderDataTable['_data']['_value'].length
+    this.max = parseInt(this.extraField) - this.selectedOrderLength;
+    if (this.max > dataLength) {
+      this.max = dataLength
+    }
+    for (let index = 0; index < this.max; index++) {
+      this.addOrders(this.batchOrderDataTable['_data']['_value'][index])
+    }
   }
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+      this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this.liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
   }
 
   addOrders(order: any) {
     order.fixedTote = this.fixedTote >= 10 ? 1 : this.fixedTote++;
-  
     if (this.toteNumber <= 10) {
       this.toteNumber++;
     } else {
       this.toteNumber = 1;
     }
-  
     order.toteNumber = this.toteNumber;
-  
     this.addOrderEmitter.emit(order);
   }
-  
+
   addRemoveAllOrder() {
     this.addRemoveAll.emit();
   }
 
   openView(element) {
-    let userRights=JSON.parse(localStorage.getItem('userRights')??'');
-    let permissions=userRights.includes('Order Status')
-
+    let userRights = JSON.parse(localStorage.getItem(localStorageKeys.UserRights) ?? '');
+    let permissions = userRights.includes(AppPermissions.OrderStatus)
     if (permissions) {
-      this.router.navigate([]).then((result) => {
+      this.router.navigate([]).then(() => {
         window.open(
-          `/#/admin/transaction?orderStatus=${element.orderNumber}`,
+          `${AppRoutes.AdminTransaction}?orderStatus=${element.orderNumber}`,
           '_self'
         );
       });
@@ -161,25 +151,21 @@ export class BatchOrderListComponent implements OnInit {
           this.openBatchViewDetail(data);
         }
         else {
-          
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("DetailView",res.responseMessage);
-
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("DetailView", res.responseMessage);
         }
       });
   }
 
   openBatchViewDetail(detailData?): void {
-    const dialogRef:any = this.global.OpenDialog(BatchManagerDetailViewComponent, {
+    this.global.OpenDialog(BatchManagerDetailViewComponent, {
       width: '1100px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
       data: detailData,
     });
-    dialogRef.afterClosed().subscribe(() => {
-      
-    });
   }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

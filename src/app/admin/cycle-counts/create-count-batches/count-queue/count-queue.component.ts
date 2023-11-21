@@ -13,6 +13,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
  
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
@@ -79,8 +80,11 @@ export class CCBCountQueueComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource();
+    this.initializeDataSource();
+  }
 
+  initializeDataSource(): void {
+    this.dataSource = new MatTableDataSource();
     this.getCountQue();
   }
   
@@ -125,12 +129,10 @@ export class CCBCountQueueComponent implements OnInit {
 
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("GetCCQueue",res.responseMessage);
         }
-
       },
-      (error) => {}
     );
 
   
@@ -151,7 +153,7 @@ export class CCBCountQueueComponent implements OnInit {
         heading: 'Create Cycle Count',
       },
     });
-    dialogRef.afterClosed().subscribe((res) => {
+    dialogRef.afterClosed().subscribe((res:any) => {
       
       if (res==='Yes') {
        
@@ -159,53 +161,43 @@ export class CCBCountQueueComponent implements OnInit {
         this.iAdminApiService.CreateCountRecords().subscribe(
           (response: any) => {
             if (response.isExecuted) {
-              this.global.ShowToastr('success',response.responseMessage, 'Success!');
+              this.global.ShowToastr(ToasterType.Error,response.responseMessage, ToasterTitle.Error);
               this.getCountQue();
               this.getCount(0);
-              this.ngOnInit();
+              this.initializeDataSource();
               this.insertEvent.emit('insert');
             } else {
-              
-              this.global.ShowToastr('error',
-                'Error',
-                'Error Occured while creating Count records, check event log for more information'
+              this.global.ShowToastr(ToasterType.Error,
+                'Error Occured while creating Count records, check event log for more information',ToasterTitle.Error
               );
               console.log("CreateCountRecords",res.responseMessage);
             }
           },
-          (error) => {}
         );
       } 
     });
   }
 
   deleteCycleCount(event) {
-
-      
-
         this.iAdminApiService.RemoveccQueueAll().subscribe(
           (response: any) => {
             if (response.isExecuted) {
-              this.global.ShowToastr('success',response.responseMessage, 'Success!');
+              this.global.ShowToastr(ToasterType.Success,response.responseMessage, ToasterTitle.Success);
               this.getCount(0);
               this.getCountQue();
-              this.ngOnInit();
-
+              this.initializeDataSource();
             } else {
-              
-              this.global.ShowToastr('error',
-                'Error',
-                'An Error Occured while trying to remove all data, check the event log for more information'
+              this.global.ShowToastr(ToasterType.Error,
+                
+                'An Error Occured while trying to remove all data, check the event log for more information', ToasterTitle.Error
               );
               console.log("RemoveccQueueAll",response.responseMessage);
             }
           },
-          (error) => {}
         );
   }
 
   deleteRow(rowId) {
-
     let payload = { 
       invMapID: rowId.toString(),
     };
@@ -214,15 +206,12 @@ export class CCBCountQueueComponent implements OnInit {
         if (res.isExecuted) {
           this.getCountQue();
         } else {
-          
-          this.global.ShowToastr('error',
-            'Error',
-            'An Error Occured while trying to remove this row, check the event log for more information'
+          this.global.ShowToastr(ToasterType.Error,
+            'An Error Occured while trying to remove this row, check the event log for more information',ToasterTitle.Error
           );
           console.log("RemoveccQueueRow",res.responseMessage);
         }
       },
-      (error) => {}
     );
   }
   handlePageEvent(e: PageEvent) {
@@ -234,7 +223,6 @@ export class CCBCountQueueComponent implements OnInit {
   }
 
   sortChange(event) {
-
     if (
       !this.dataSource._data._value ||
       event.direction == '' ||
@@ -258,8 +246,4 @@ export class CCBCountQueueComponent implements OnInit {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
-
-
-
-
 }

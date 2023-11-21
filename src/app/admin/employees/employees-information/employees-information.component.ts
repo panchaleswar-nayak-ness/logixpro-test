@@ -5,7 +5,7 @@ import { MatSelect } from '@angular/material/select';
 @Component({
   selector: 'app-employees-information',
   templateUrl: './employees-information.component.html',
-  styleUrls: []
+  styleUrls: ['./employees-information.component.scss']
 })
 export class EmployeesInformationComponent{
 

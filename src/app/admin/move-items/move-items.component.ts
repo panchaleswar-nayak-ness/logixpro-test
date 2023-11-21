@@ -14,6 +14,7 @@ import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { DialogConstants, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
@@ -53,11 +54,10 @@ const TRNSC_DATA = [
   styleUrls: ['./move-items.component.scss'],
 })
 export class MoveItemsComponent implements OnInit {
-  IsActiveTrigger:boolean =false;
+  isActiveTrigger:boolean =false;
   paginator: MatPaginator;
   paginatorTo: MatPaginator;
   paginators: QueryList<MatPaginator>;
-  // @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   @ViewChild('matToolbar') matToolbar: ElementRef;
   public dataSource: any = new MatTableDataSource();
@@ -135,8 +135,8 @@ export class MoveItemsComponent implements OnInit {
   dedicateMoveTo = false;
   undedicateMoveFrom = false;
   isDedicated = false;
-  MoveFromDedicated = '';
-  MoveToDedicated = '';
+  moveFromDedicated = '';
+  moveToDedicated = '';
   pageEvent: PageEvent;
   pageEventTo: PageEvent;
   itemNumberSearch = new Subject<string>();
@@ -256,7 +256,7 @@ export class MoveItemsComponent implements OnInit {
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetMoveItemsTable",res.responseMessage);
       }
     });
@@ -276,8 +276,7 @@ export class MoveItemsComponent implements OnInit {
       next: (res: any) => {
         this.searchAutocompletItemNo = res.data;
         this.getMoveItemList('MoveFrom');
-      },
-      error: (error) => {}
+      }
     });
   }
 
@@ -359,7 +358,7 @@ export class MoveItemsComponent implements OnInit {
       this.fillQty = row.itemQuantity - row.maximumQuantity - row.quantityAllocatedPutAway;
       this.fillQtytoShow = this.fillQty;
       if (this.fillQty < 0) this.fillQty = 0;
-      this.MoveToDedicated = row.dedicated === true ? 'Dedicated' : 'Not Dedicated';
+      this.moveToDedicated = row.dedicated === true ? 'Dedicated' : 'Not Dedicated';
       this.isValidateMove = true;
       if (!row.isSelected) this.clearFields('MoveTo');
       else this.isMoveQty = false;
@@ -394,7 +393,6 @@ export class MoveItemsComponent implements OnInit {
         return;
       }
 
-      // this.invMapIDToItem = row.invMapID;
       this.invMapmoveFromID = row.inventoryMapID;
       this.from_warehouse = row.warehouse;
       this.from_location = row.location;
@@ -406,7 +404,7 @@ export class MoveItemsComponent implements OnInit {
       this.from_lotNo = row.lotNumber;
       this.from_serialNo = row.serialNumber;
       this.from_itemQtyShow = row.itemQuantity;
-      this.MoveFromDedicated = row.dedicated === true ? 'Dedicated' : 'Not Dedicated';
+      this.moveFromDedicated = row.dedicated === true ? 'Dedicated' : 'Not Dedicated';
       this.isDedicated = row.dedicated
       this.fillQty = row.itemQuantity - row.maximumQuantity - row.quantityAllocatedPutAway;
       this.from_zone = row.zone;
@@ -481,7 +479,7 @@ export class MoveItemsComponent implements OnInit {
     }
 
     const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '560px',
       data: {
         message: message,
@@ -490,11 +488,11 @@ export class MoveItemsComponent implements OnInit {
         buttonField: buttonFields,
         notificationPrimary: true,
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (this.isDedicated && this.MoveFromDedicated === 'Dedicated') {
+      if (this.isDedicated && this.moveFromDedicated === 'Dedicated') {
         // open dedicated and undedicated popups case
         if (type === 'Dedicate') {
           if (result) {
@@ -517,7 +515,7 @@ export class MoveItemsComponent implements OnInit {
             this.callCreateMoveTrans();
           }
         }
-      } else if (!this.isDedicated && this.MoveFromDedicated === 'Dedicated') {
+      } else if (!this.isDedicated && this.moveFromDedicated === 'Dedicated') {
         // On undedicated popup  when dedicated unchecked move from is dedicated and move to is undedicted
         if (result) {
           this.undedicateMoveFrom = true;
@@ -530,7 +528,7 @@ export class MoveItemsComponent implements OnInit {
         }
       } else if (
         this.isDedicated &&
-        this.MoveFromDedicated === 'Not Dedicated'
+        this.moveFromDedicated === 'Not Dedicated'
       ) {
         // when move from undedicated moveto dedicated and dedicated checked only dedicated popup show
         if (result) {
@@ -565,7 +563,7 @@ export class MoveItemsComponent implements OnInit {
       return;
     }
 
-    if (this.MoveFromDedicated === 'Dedicated') {
+    if (this.moveFromDedicated === 'Dedicated') {
       this.openAlertDialog('Un-Dedicate');
       return;
     }
@@ -598,7 +596,7 @@ export class MoveItemsComponent implements OnInit {
       this.from_itemQtyShow = '';
       this.from_locationShow = '';
       this.isMoveQty = true;
-      this.MoveFromDedicated = '';
+      this.moveFromDedicated = '';
       this.isDedicated = false;
     } else if (type === 'MoveTo') {
       this.to_priority = 0;
@@ -613,7 +611,7 @@ export class MoveItemsComponent implements OnInit {
       this.to_moveQty = '';
       this.to_itemQtyShow = '';
       this.to_locationShow = '';
-      this.MoveToDedicated = '';
+      this.moveToDedicated = '';
       this.isValidateMove = false;
       this.isDedicated = false;
     }
@@ -637,7 +635,7 @@ export class MoveItemsComponent implements OnInit {
 
     this.iAdminApiService.CreateMoveTransactions(payload).subscribe((res: any) => {
       if(res.isExecuted){
-        this.global.ShowToastr('success','Item moved successfully', 'Success!');
+        this.global.ShowToastr(ToasterType.Success, 'Item moved successfully', ToasterTitle.Success);
         this.resetPagination();
         this.moveToFilter='1 = 1';
         this.moveFromFilter='1 = 1';
@@ -648,7 +646,7 @@ export class MoveItemsComponent implements OnInit {
         this.clearFields('MoveFrom')
         this.clearFields('MoveTo')
       } else {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
         console.log("CreateMoveTransactions",res.responseMessage);
       }
     });
@@ -660,7 +658,7 @@ export class MoveItemsComponent implements OnInit {
     this.resetFromFilters();
     this.resetPaginationFrom();
     this.getMoveItemList(this.tableType);  
-    this.IsActiveTrigger = false;
+    this.isActiveTrigger = false;
   }
 
   resetPagination() {

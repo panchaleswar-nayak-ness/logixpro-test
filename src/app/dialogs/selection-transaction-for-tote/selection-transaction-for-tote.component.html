@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Selection Transaction For Tote</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -46,6 +46,10 @@
 </div>
 </div>
 <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-    <button mat-stroked-button color="primary" class="btn-lg" [style]="showBtnNewPutAwayForSameSKU ? '' : 'flex:1'" (click)="refresh()">Refresh</button>
-    <button *ngIf="showBtnNewPutAwayForSameSKU" mat-flat-button color="primary" class="btn-lg" style="flex:1" (click)="openSelectionExtendDialogue()">New Put Away For Same SKU</button>
+    <button mat-stroked-button color="primary" class="btn-lg" [style]="showBtnNewPutAwayForSameSKU ? '' : 'flex:1'" (click)="refresh()">
+        Refresh
+    </button>
+    <button *ngIf="showBtnNewPutAwayForSameSKU"  mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="openSelectionExtendDialogue()">
+        New Put Away For Same SKU
+    </button>
 </div>

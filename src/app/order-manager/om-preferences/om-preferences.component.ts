@@ -1,17 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'; 
 import { AuthService } from 'src/app/init/auth.service';
 import { FormControl, FormGroup} from '@angular/forms';
-
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
-
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-om-preferences',
   templateUrl: './om-preferences.component.html',
-  styleUrls: [],
+  styleUrls: ['./om-preferences.component.scss'],
 })
 export class OmPreferencesComponent implements OnInit {
   userData: any;
@@ -19,7 +17,6 @@ export class OmPreferencesComponent implements OnInit {
   @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
   public iOrderManagerApi :  IOrderManagerAPIService;
   constructor(
-    private Api: ApiFuntions,
     public orderManagerApi  : OrderManagerApiService,
     private authService: AuthService,
     
@@ -108,7 +105,7 @@ export class OmPreferencesComponent implements OnInit {
           );      
         }
         else{
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("OrderManagerPreferenceIndex",response.responseMessage);
         }
       });
@@ -141,8 +138,8 @@ export class OmPreferencesComponent implements OnInit {
         if (response.isExecuted) {
           this.global.updateOmPref();
         } else {
-          this.global.ShowToastr('error',
-            'Error',
+          this.global.ShowToastr(ToasterType.Error,
+            ToasterTitle.Error,
             'An Error Occured while trying to update'
           );
           console.log("OrderManagerPreferenceUpdate",response.responseMessage);

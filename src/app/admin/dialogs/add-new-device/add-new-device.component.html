@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="divWithClass" ></div>
     <h1 class="m-0" mat-dialog-title>{{headerLable}}</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true"
         (click)="dialogClose()">
@@ -10,7 +10,7 @@
     <div mat-dialog-content class="row mb-3">
         <div class="col-12">
             <div class="container location_detail">
-                <ng-scrollbar style="height: 400px">
+                <ng-scrollbar class="ngScrollbarStyleClass h-400px">
                     <div class="row">
                         <div class="col-xl-8">
                             <h1 mat-dialog-title>Device Details</h1>
@@ -429,7 +429,7 @@
         <button type="button" mat-stroked-button color="secondary" class=" btn-lg text-danger"
             (click)="deleteSelected()">Delete</button>
         <button (click)="onSubmit(newDeviceForm,'close')" type="submit" mat-stroked-button class="  btn-lg" color="primary">Save & Close</button>
-        <button (click)="onSubmit(newDeviceForm)" type="submit" mat-flat-button class="  btn-lg" color="primary" style="flex:1">Save</button>
+        <button (click)="onSubmit(newDeviceForm)" type="submit" mat-flat-button class="flex-1 btn-lg" color="primary">Save</button>
     </div>
 
 </form>

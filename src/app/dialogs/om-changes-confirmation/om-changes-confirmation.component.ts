@@ -4,14 +4,13 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
 
 @Component({
   selector: 'app-om-changes-confirmation',
   templateUrl: './om-changes-confirmation.component.html',
-  styleUrls: []
+  styleUrls: ['./om-changes-confirmation.component.scss']
 })
 export class OmChangesConfirmationComponent implements OnInit {
 
@@ -25,7 +24,6 @@ export class OmChangesConfirmationComponent implements OnInit {
               public formBuilder      : FormBuilder, 
               private authService     : AuthService,
               public globalService    : GlobalService,
-              private Api : ApiFuntions,
               public orderManagerApi  : OrderManagerApiService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
 
@@ -100,11 +98,11 @@ export class OmChangesConfirmationComponent implements OnInit {
             clickDisplayRecord: true,
           });
         }
-        else this.globalService.ShowToastr('error',"An Error occured while retrieving data.", 'Error!');
-        console.log("OrderManagerRecordUpdate",res.responseMessage);
+        else this.globalService.ShowToastr('error',"An Error occured while retrieving data.", 'Error!'); 
       });
 
-    } catch (error) {    
+    } catch (error) {   
+      console.log(error);
     }
   }
 

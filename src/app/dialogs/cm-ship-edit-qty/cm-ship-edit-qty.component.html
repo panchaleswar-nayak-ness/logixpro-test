@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Adjust Shipping Quantity </h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
         <mat-icon class="close-icon">close</mat-icon>
@@ -25,11 +25,11 @@
             </mat-form-field>
         </div>
         <div class="col-xl-2 col-3 mb-2">
-            <button [disabled]="!clearContainerIDBtn" style="flex:1" mat-flat-button color="primary" class="btn-regular w-100" (click)="clearReason()">Clear</button>
+            <button [disabled]="!clearContainerIDBtn" mat-flat-button color="primary" class="btn-regular w-100 flex-grow-1" (click)="clearReason()">Clear</button>
         </div>
     </div>        
 </div>
 
 <div class="d-flex justify-content-end pt-2">
-    <button [disabled]="!saveAdjustShipQtyBtn" style="flex:1" mat-flat-button color="primary" class="btn-lg w-100" (click)="saveAdjustShipQty()">Save</button>
+    <button [disabled]="!saveAdjustShipQtyBtn" mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1" (click)="saveAdjustShipQty()">Save</button>
 </div>

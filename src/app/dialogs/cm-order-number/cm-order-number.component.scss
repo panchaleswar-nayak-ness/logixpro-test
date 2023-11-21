@@ -3,8 +3,11 @@ table{
       white-space: nowrap;
       padding-right: 12px;
       border:0;
-    //   &:last-child{
-    //     float: right;
-    //   }
     }
+  }  ::ng-deep.w-48px {
+    width: 48px;
+  } 
+ 
+  .h-340px{
+    height: 340px;
   }

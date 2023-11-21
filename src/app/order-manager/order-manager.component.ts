@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../init/auth.service';
 import { NavigationEnd, Router} from '@angular/router';
-import { ApiFuntions } from '../services/ApiFuntions';
 import { GlobalService } from '../common/services/global.service';
 import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-order-manager',
   templateUrl: './order-manager.component.html',
-  styleUrls: [],
+  styleUrls: ['./order-manager.component.scss'],
 })
 export class OrderManagerComponent implements OnInit {
   userData: any;
@@ -24,7 +24,7 @@ export class OrderManagerComponent implements OnInit {
   reprocCount=0;
   public iOrderManagerApi :  IOrderManagerAPIService;
   constructor(
-    private Api:ApiFuntions,
+ 
     private authService: AuthService,
     public orderManagerApi  : OrderManagerApiService,
     private router: Router,
@@ -70,7 +70,7 @@ export class OrderManagerComponent implements OnInit {
             this.reprocCount=item.reprocCount;
           }
           else{
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("OrderManagerMenuIndex",res.responseMessage);
           }
         },

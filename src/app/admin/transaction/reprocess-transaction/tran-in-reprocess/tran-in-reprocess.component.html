@@ -60,7 +60,7 @@
 
         <div class="row align-items-center">
             <div class="d-block d-lg-flex align-items-center gap-12">
-                <div class="w-100 mb-3" style="flex:1">
+                <div class="w-100 mb-3 flex-grow-1">
                     <mat-form-field class="w-100 bg-white" appearance="outline">
                         <mat-label>Order Number</mat-label>
                         <input type="text" maxlength="50" aria-label="Number" matInput
@@ -86,13 +86,13 @@
 
                 </div>
                 <span class="bg-tertiary-900 d-none d-lg-flex mb-3" style="width: 14px; height:2px;"></span>
-                <div class="d-flex w-100 mb-3" style="flex:1">
+                <div class="d-flex w-100 mb-3 flex-grow-1">
                     <mat-form-field class="w-100 bg-white" appearance="outline">
                         <mat-label>{{fieldNames?.itemNumber}}</mat-label>
                         <input type="text" maxlength="50" matInput [matAutocomplete]="auto" [(ngModel)]="itemNumber" style="padding-left: 0px !important;">
                         <button matSuffix *ngIf="itemNumber" class="clear-btn"  (click)="itemNumber=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                         <mat-autocomplete class="card custom-scroll" panelWidth="auto" autoActiveFirstOption
-                            #auto="matAutocomplete" (optionSelected)="listSelected($event)">
+                            #auto="matAutocomplete" (optionSelected)="listSelected()">
                             <h6 class="card-header matAutoCompHeader ">
                                 <span style="width:  140px;">Item Number</span> <span class="searchColumn" style="width:  200px;">Date</span>
                                 <span style="width:  140px;">Transaction Type</span> <span style="width:  140px;">Order Number</span> <span style="width:  180px;">Transaction

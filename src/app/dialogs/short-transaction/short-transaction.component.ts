@@ -2,7 +2,6 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import labels from '../../labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
@@ -11,10 +10,10 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 @Component({
   selector: 'app-short-transaction',
   templateUrl: './short-transaction.component.html',
-  styleUrls: []
+  styleUrls: ['./short-transaction.component.scss']
 })
 export class ShortTransactionComponent implements OnInit {
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi:IInductionManagerApiService;
   selectedTransaction: any;
   toteQuantity: any;
   @ViewChild('toteQty') toteQty: ElementRef;
@@ -23,12 +22,11 @@ export class ShortTransactionComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     
     private global:GlobalService,
-    private inductionManagerApi: InductionManagerApiService,
-    private Api: ApiFuntions,
+    public inductionManagerApi: InductionManagerApiService,
     public dialogRef: MatDialogRef<ShortTransactionComponent>,
     private globalService: GlobalService
   ) { 
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   restrictKeyboard(event: KeyboardEvent) {
@@ -71,7 +69,7 @@ export class ShortTransactionComponent implements OnInit {
             "shortQuantity": this.toteQuantity,
             "shortMethod": "Complete"
           }
-          this.iinductionManagerApi.shortTransaction(payload).subscribe((res: any) => {
+          this.iInductionManagerApi.shortTransaction(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialogRef.close(res);
               this.global.ShowToastr('success',labels.alert.update, 'Success!');

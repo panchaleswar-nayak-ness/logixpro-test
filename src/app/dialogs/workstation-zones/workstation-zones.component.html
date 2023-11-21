@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Workstation Zones </h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" (click)="closeBatchDialog()">
         <mat-icon class="close-icon">close</mat-icon>
@@ -15,27 +15,27 @@
                         (optionSelected)="onSearchSelect($event)">
                         <mat-option *ngFor="let zone of zoneSelectOptions" [value]="zone" class="matAutoCompTableContent">
                             <div class="loc_option">
-                                <span class="searchColumn" style="width:  140px;">{{zone}}</span>
+                                <span class="searchColumn w-140" >{{zone}}</span>
                             </div>
                         </mat-option>
                     </mat-autocomplete>
         </mat-form-field>
     </div>
     <div class="col-xl-4">
-        <button [disabled]="velocity_code_list.length == 0" mat-flat-button color="warn" class="btn-regular w-100" (click)="clearAllZones()">Clear All Zones</button>
+        <button [disabled]="velocityCodeList.length == 0" mat-flat-button color="warn" class="btn-regular w-100" (click)="clearAllZones()">Clear All Zones</button>
     </div>  
 </div>
 <div class="warehouse">
     <div class="card w-100">
         <div class="card-header">
             <div class="row">
-                <div class="col-6" style="padding-left:64px;">
+                <div class="col-6 pl-64" >
                     Zone
                 </div>
             </div>
         </div>
 
-        <ng-scrollbar style="height: 250px;">
+        <ng-scrollbar class="h-250" >
             <div class="card-body">
                 <ng-container *ngFor="let zone of allZoneList;let i = index">
                     <div class="d-flex align-items-center mb-3" *ngIf="allZoneList.length > 0">
@@ -65,14 +65,14 @@
                         </div>
                     </div>
                 </ng-container>
-                <ng-container *ngFor="let vlcode of velocity_code_list;let i = index">
+                <ng-container *ngFor="let vlcode of velocityCodeList;let i = index">
                     <div class="d-flex align-items-center mb-3">
                         <div class="container w-100">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="d-flex justify-content-between align-items-center gap-12">
                                         <mat-form-field class="d-block w-100" appearance="outline">
-                                            <input #field_focus (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
+                                            <input #fieldFocus (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
                                                 #vlname name="{{vlcode.zone}}" value="{{vlcode.zone}}"
                                                 [disabled]="vlcode.isSaved">
                                         </mat-form-field>

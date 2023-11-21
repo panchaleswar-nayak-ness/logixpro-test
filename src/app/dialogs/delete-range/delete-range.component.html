@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Delete Range</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
         <mat-icon class="close-icon">close</mat-icon>
@@ -12,7 +12,7 @@
             <mat-form-field class="action-dropdown w-100 mb-2" appearance="outline">
                 <mat-label>Filter</mat-label>
                 <mat-select class="employees-action" [(ngModel)]="repByDeletePayload.identity"
-                    (selectionChange)="showChange($event.value)">
+                    (selectionChange)="showChange()">
                     <mat-option value="Batch Pick ID">Batch Pick ID</mat-option>
                     <mat-option value="Pick Location">Pick Location</mat-option>
                     <mat-option value="Put Away Location">Put Away Location</mat-option>
@@ -26,8 +26,8 @@
             <mat-form-field class="custom-form-field w-100" appearance="outline" 
             (keyup.enter)="closeautoMenuStart()" [floatLabel]="getFloatLabelValueStart()" [hideRequiredMarker]="hideRequiredControlStart.value" >
                 <mat-label>Begin</mat-label>
-                <input #del_focus matInput type="text" maxlength="50" [matAutocomplete]="auto"
-                    [(ngModel)]="repByDeletePayload.filter1" (keyup)="changeBegin($event)">
+                <input #delFocus matInput type="text" maxlength="50" [matAutocomplete]="auto"
+                    [(ngModel)]="repByDeletePayload.filter1" (keyup)="changeBegin()">
                 <mat-autocomplete #auto="matAutocomplete" #autocompleteStart>
                     <mat-option *ngFor="let option of beginAutoCompleteList" [value]="option">
                         {{option}}
@@ -43,7 +43,7 @@
             (keyup.enter)="closeautoMenuEnd()" [floatLabel]="getFloatLabelValueEnd()"  [hideRequiredMarker]="hideRequiredControlEnd.value" >
                 <mat-label>End</mat-label>
                 <input matInput type="text" maxlength="50" [matAutocomplete]="auto2" 
-                    [(ngModel)]="repByDeletePayload.filter2" (keyup)="changeEnd($event)">
+                    [(ngModel)]="repByDeletePayload.filter2" (keyup)="changeEnd()">
                 <mat-autocomplete #auto2="matAutocomplete" #autocompleteEnd>
                     <mat-option *ngFor="let option of endAutoCompleteList" [value]="option">
                         {{option}}
@@ -55,7 +55,7 @@
             </mat-form-field>
         </div>
         <div class="d-flex justify-content-end pt-3">
-            <button style="flex:1" mat-flat-button color="warn" class="btn-lg w-100"
+            <button mat-flat-button color="warn" class="btn-lg w-100 flex-grow-1"
                 (click)="ReplenishmentsByDelete()">Delete</button>
         </div>
     </div>

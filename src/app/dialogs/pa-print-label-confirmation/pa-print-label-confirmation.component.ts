@@ -1,20 +1,18 @@
-import { Component} from '@angular/core';
-import {  } from '../om-user-field-data/om-user-field-data.component';
+import { Component } from '@angular/core'; 
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-pa-print-label-confirmation',
   templateUrl: './pa-print-label-confirmation.component.html',
-  styleUrls: []
+  styleUrls: [ ],
 })
 export class PaPrintLabelConfirmationComponent {
-  numberLabel:number = 0
-  constructor( public dialogRef: MatDialogRef<PaPrintLabelConfirmationComponent>) { }
+  numberLabel: number = 0;
+  constructor(
+    public dialogRef: MatDialogRef<PaPrintLabelConfirmationComponent>
+  ) {}
 
- 
-
-  sendData(){
+  sendData() {
     this.dialogRef.close(this.numberLabel);
   }
-
 }

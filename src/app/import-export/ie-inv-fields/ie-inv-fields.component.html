@@ -18,7 +18,7 @@
 
             <div class="card table-responsive borderless  br-14 p-0 col-xl-6">
 
-            <ng-scrollbar class="mat-table-scrollbar" style="height:52vh" track="all" >
+            <ng-scrollbar class="mat-table-scrollbar h-52vh" track="all" >
                 <table class="w-100" mat-table matSort [dataSource]="tableData">
                     <ng-container class="" matColumnDef="table_name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Field Name</th>
@@ -47,7 +47,7 @@
     
             </tr>
     
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" style=" background-color: var(--clr-table-header);"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" class="table-header-clr"></tr>
     
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     

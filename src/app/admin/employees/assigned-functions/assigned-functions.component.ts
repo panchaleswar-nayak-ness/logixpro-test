@@ -1,30 +1,20 @@
 import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AssignService } from 'src/app/assign.service'; 
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-assigned-functions',
   templateUrl: './assigned-functions.component.html',
-  styleUrls: []
+  styleUrls: ['./assigned-functions.components.scss']
 })
 export class AssignedFunctionsComponent  {
-  // @Input('isAssignedLookUp') isAssignedLookUp: boolean;
-  // @Output() updateAssignedLookUp  = new EventEmitter();
   @Input() assignedFunctions: [];
   @Input() isGroupLookUp: boolean;
   @Output() removeFunction = new EventEmitter();
   @Input() spliceValue:[]=[];
   filterName:any
-
-
   spliceArray:any;
-
   selectedRowIndex = -1;
-
-  // highlight(row){
-  //     this.selectedRowIndex = row.id;
-  // }
   filterValue:string;
 
   myControl = new FormControl('');
@@ -32,7 +22,7 @@ export class AssignedFunctionsComponent  {
   employee_fetched_zones: string[] = [];
   group_fetched_unassigned_function:string[] = [];
   userName:any;
-  constructor( private employeeService: ApiFuntions, private assignService:AssignService) { }
+  constructor( private employeeService: ApiFuntions) { }
 
 
   clearFields(){
@@ -51,22 +41,6 @@ export class AssignedFunctionsComponent  {
   
   
   unassignFunction(permData: any){ 
-    // if(permData){
-    //   let dialogRef:any = this.global.OpenDialog(FunctionAllocationComponent, {
-    //     height: 'auto',
-    //     width: '560px',
-    //     autoFocus: '__non_existing_element__',
-    
-    //     data: {
-    //       target: 'unassigned',
-    //       function: permData
-    //     }
-    //   })
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     this.removeFunction.emit(result);
-    //   })
-    // }
-
     if(permData){
   
       let data = {

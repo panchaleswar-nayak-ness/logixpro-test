@@ -15,11 +15,12 @@ import { catchError, of } from 'rxjs';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-new-device',
   templateUrl: './add-new-device.component.html',
-  styleUrls: [],
+  styleUrls: ['./add-new-device.component.scss'],
 })
 export class AddNewDeviceComponent implements OnInit {
   @ViewChild('first_address') first_address: ElementRef;
@@ -35,14 +36,14 @@ export class AddNewDeviceComponent implements OnInit {
   deviceModelList = [];
   IPTI = '';
   WMI = '';
-  Other = '';
+  other = '';
   setup = '';
   JMIF = '';
   COMPort = '';
-  Baud = '';
-  WordLength = '';
-  StopBit = '';
-  Parity = '';
+  baud = '';
+  wordLength = '';
+  stopBit = '';
+  parity = '';
   WMIControllers = [
     'SISHorizontalCarousel',
     'WMIC3000',
@@ -162,7 +163,7 @@ export class AddNewDeviceComponent implements OnInit {
         .DevicePreference(paylaod)
         .subscribe((res: any) => {
           if (res.isExecuted) {
-            this.global.ShowToastr('success', res.responseMessage, 'Success!');
+            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Success);
 
             if (res.data != 0) {
               this.newDeviceID = res.data;
@@ -175,7 +176,7 @@ export class AddNewDeviceComponent implements OnInit {
             this.sharedService.updateDevicePref({ response: true });
           } else {
 
-            this.global.ShowToastr('error', res.responseMessage, 'Error!');
+            this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
             console.log("DevicePreference", res.responseMessage);
           }
         });
@@ -293,11 +294,11 @@ export class AddNewDeviceComponent implements OnInit {
           .DevicePreferencesDelete(payload)
           .subscribe((res: any) => {
             if (res.isExecuted) {
-              this.global.ShowToastr('success', res.responseMessage, 'Success!');
+              this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
               this.dialogRef.close('Yes');
             } else {
 
-              this.global.ShowToastr('error', res.responseMessage, 'Error!');
+              this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
               console.log("DevicePreferencesDelete", res.responseMessage);
             }
           });
@@ -340,7 +341,7 @@ export class AddNewDeviceComponent implements OnInit {
           this.newDeviceForm.controls['Parity'].setValue(res.data.parity);
         } else {
 
-          this.global.ShowToastr('error', 'An Error occured while retrieving data.', 'Error!');
+          this.global.ShowToastr(ToasterType.Error, 'An Error occured while retrieving data.', ToasterTitle.Error);
           console.log("DeviceInformation", res.responseMessage);
         }
       });
@@ -432,11 +433,11 @@ export class AddNewDeviceComponent implements OnInit {
           .subscribe((res: any) => {
             if (res.isExecuted) {
 
-              this.global.ShowToastr('success', res.responseMessage, 'Success!');
+              this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
               this.sharedService.updateDevicePref({ response: true });
             } else {
 
-              this.global.ShowToastr('error', res.responseMessage, 'Error!');
+              this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
               console.log("ZoneDevicePreferencesUpdateAll", res.responseMessage);
             }
           });

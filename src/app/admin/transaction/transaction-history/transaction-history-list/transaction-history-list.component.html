@@ -9,7 +9,7 @@
                     <app-column-filter-component 
                         [tableColumns]="this.displayedColumns" 
                         [searchCol]="this.selectedDropdown"
-                        (selectionChangeEvent)="this.selectedDropdown = ($event).toString(); resetFields($event)"
+                        (selectionChangeEvent)="this.selectedDropdown = ($event).toString(); resetFields()"
                         (clearInputFieldEvent)="this.selectedDropdown = '';  this.columnSearch.searchValue = '';this.searchBar.next($event)"
                         [searchString]="this.columnSearch.searchValue"
                         [searchByInput]="this.searchBar"
@@ -21,7 +21,7 @@
             </div>
             <div class="col-xl-2 offset-xl-5 d-flex justify-content-end">
                 <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
-                <mat-form-field class="action-dropdown mb-3" appearance="outline" style="flex:1 auto">
+                <mat-form-field class="action-dropdown mb-3 flex-grow-1" appearance="outline">
                     <mat-label>Action</mat-label>
                     <mat-select   #matRef class="employees-action" (openedChange)="actionDialog($event)"
                         [(value)]="selectedVariable">
@@ -37,11 +37,11 @@
         </div>
 
         <div class="card br-14 table-responsive my-3">
-            <ng-scrollbar style="height:500px" track="all" class="mat-table-scrollbar">
+            <ng-scrollbar track="all" class="mat-table-scrollbar h-500px">
                 <table  mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort 
                     (matSortChange)="sortChange($event)" fixedLayout="true">
  
-                    <ng-container [matColumnDef]="col.colDef"  style="display: table-row;" 
+                    <ng-container [matColumnDef]="col.colDef" class="d-table-row"
                         *ngFor="let col of displayedColumns; let indexOfelement=index;">
 
                         <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header
@@ -80,4 +80,4 @@
     </mat-card-content>
 </mat-card>
 
-<app-table-context-menu-component *ngIf="TabIndex==2 && IsActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'transHistory'"></app-table-context-menu-component>
+<app-table-context-menu-component *ngIf="tabIndex == 2 && isActiveTrigger" (optionSelected)="optionSelected($event)" [componentName]="'transHistory'"></app-table-context-menu-component>

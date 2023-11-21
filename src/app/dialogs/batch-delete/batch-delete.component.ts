@@ -9,10 +9,10 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-batch-delete',
   templateUrl: './batch-delete.component.html',
-  styleUrls: [],
+  styleUrls: ['./batch-delete.component.scss'],
 })
 export class BatchDeleteComponent implements OnInit {
-  @ViewChild('batchId_focus') batchId_focus: ElementRef;
+  @ViewChild('batchIdFocus') batchIdFocus: ElementRef;
   toteID = '';
   batchID = '';
   transType = 'Put Away';
@@ -36,7 +36,7 @@ export class BatchDeleteComponent implements OnInit {
     this.deleteBtnHide = this.data?.delButtonHide ? this.data.delButtonHide : false
   }
   ngAfterViewChecked(): void {
-    this.batchId_focus.nativeElement.focus();
+    this.batchIdFocus.nativeElement.focus();
   }
   batchTotesDelete(deAllocate?) {
     let payLoad = {
@@ -79,8 +79,7 @@ export class BatchDeleteComponent implements OnInit {
   }
 
   allBatchDelete() {
-    let payLoad = {
-
+    let payLoad = { 
       wsid: this.data.wsid,
       username: this.data.userName,
     };

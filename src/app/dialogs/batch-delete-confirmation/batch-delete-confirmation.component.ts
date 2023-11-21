@@ -16,17 +16,16 @@ export class BatchDeleteConfirmationComponent {
   isChecked = true;
   heading: '';
   message: '';
-  public iinductionManagerApi:IInductionManagerApiService;
-
+  public iInductionManagerApi:IInductionManagerApiService; 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
     private global:GlobalService,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
    ) { 
     this.heading = data.heading;
     this.message = data.message;
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   checkOptions(event: MatCheckboxChange): void {
@@ -40,7 +39,7 @@ export class BatchDeleteConfirmationComponent {
   onConfirmdelete() {
     if (this.data) {
       if (this.data.mode === 'deallocate_clear_batch') {
-        this.iinductionManagerApi.BatchTotesDelete(this.data.payload)
+        this.iInductionManagerApi.BatchTotesDelete(this.data.payload)
           .subscribe(
             (res: any) => {
               if (res?.isExecuted) {
@@ -56,7 +55,7 @@ export class BatchDeleteConfirmationComponent {
           );
       } else if (this.data.mode === 'delete_all_batch') {
      
-        this.iinductionManagerApi.AllBatchDelete()
+        this.iInductionManagerApi.AllBatchDelete()
           .subscribe(
             (res: any) => {
               if (res?.isExecuted) {
@@ -68,7 +67,7 @@ export class BatchDeleteConfirmationComponent {
                 this.dialogRef.close({isExecuted:false});
               }
             },
-            (error) => {}
+            () => {}
           );
       } else {
         this.dialogRef.close({isExecuted:false});

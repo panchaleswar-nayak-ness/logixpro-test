@@ -1,14 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FrNumpadComponent } from '../../dialogs/fr-numpad/fr-numpad.component'; 
 import { AuthService } from '../../init/auth.service';
-
 import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete'; 
-import { SharedService } from '../../services/shared.service';
 import { IFlowRackReplenishApi } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api-interface';
 import { FlowRackReplenishApiService } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-
+import { AppIcons, AppNames, AppPermissions, AppRoutes, ResponseStrings, RouteNames, RouteUpdateMenu, StringAssignments, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 @Component({
   selector: 'app-fr-flowrack-replenishment',
   templateUrl: './fr-flowrack-replenishment.component.html',
@@ -18,87 +17,74 @@ import { GlobalService } from 'src/app/common/services/global.service';
 export class FrFlowrackReplenishmentComponent implements OnInit {
 
   public iFlowRackReplenishApi : IFlowRackReplenishApi;
-
   public userData: any;
   public itemQtyRow: boolean = true;
-  public LocationRow: boolean = true;
+  public locationRow: boolean = true;
   public submitBtnDisplay: boolean = true;
-  public itemnumscan: any = '';
+  public itemNumScan: any = '';
   public itemLocation: string;
   public itemQty: any
   public locationSuggestions: any = [];
   public zone: any;
   public calculator: boolean = true;
-
-
-  @ViewChild(MatAutocompleteTrigger) autocompleteTrigger: MatAutocompleteTrigger;
-
+  @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
   searchByItem: any = new Subject<string>();
   searchAutocompleteItemNum: any = [];
-
   @ViewChild('autoFocusField') autoFocusField: ElementRef
   @ViewChild('itemQtyFocus') itemQtyFocus: ElementRef
   @ViewChild('itemLocationFocus') itemLocationFocus: ElementRef
-  @ViewChild('scrollbar') scrollbar: ElementRef
+  @ViewChild('scrollbar') scrollBar: ElementRef
   applicationData: any = [];
   @ViewChild('auto') matAutocomplete: MatAutocompleteTrigger;
-  @ViewChild('ord_focus') ord_focus: ElementRef;
+  @ViewChild('ord_focus') ordFocus: ElementRef;
 
-
-  constructor(private global:GlobalService, 
-    private authservice: AuthService,
-    private sharedService: SharedService,
-    
+  constructor(
+    private global:GlobalService, 
+    private authService: AuthService,
     public flowRackReplenishApi : FlowRackReplenishApiService) {
       this.iFlowRackReplenishApi = flowRackReplenishApi;
     }
 
   ngOnInit(): void {
-    this.userData = this.authservice.userData()
+    this.userData = this.authService.userData()
     this.cartonFlow()
-    
   }
 
   ngAfterViewInit(): void {
-    this.ord_focus.nativeElement.focus();
+    this.ordFocus.nativeElement.focus();
     this.getAppLicense(); 
   }
 
-
-  values(event) {
-    this.itemLocation = this.autocompleteTrigger.activeOption?.value.location;
- 
+  values() {
+    this.itemLocation = this.autoCompleteTrigger.activeOption?.value.location;
   }
 
   cartonFlow() {
     this.iFlowRackReplenishApi.wslocation({}).subscribe((res) => {
       if (res.isExecuted)
       {
-        if (res.data == 'No'||res.data == ''||res.data == null){
-          this.zone='This workstation is not assigned to a zone';
+        if (res.data == ResponseStrings.No || res.data == ResponseStrings.Empty || res.data == ResponseStrings.Null){
+          this.zone = StringAssignments.WorkstationNotAssignedToZone;
         }
         else{
-          this.zone=res.data;
+          this.zone = res.data;
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("wslocation",res.responseMessage);
       }
-
-      
     })
   }
 
   updateQty(val) {
-    if (val !== 0 &&val !=null) {
+    if (val !== 0 && val !=null) {
       this.submitBtnDisplay = false;
       this.itemQtyFocus.nativeElement.focus()
       this.calculator = false
       this.itemQty = val.toString()
-
     }
-    if (val == 0 ) {
+    if (val == 0) {
       this.submitBtnDisplay = false;
       this.calculator = false
     }
@@ -117,67 +103,60 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
     this.itemQty = '';
     this.itemQtyRow = true;
     this.itemLocation = '';
-    this.LocationRow = true;
+    this.locationRow = true;
     this.autoFocusField.nativeElement.focus()
   }
 
-
-  locationchange(e) {
-   
-    if (e.keyCode == 13) {      
-      this.onLocationSelected(this.itemLocation)
+  locationChange(e) {
+    if (e.keyCode == KeyboardCodes.ENTER) {      
+      this.onLocationSelected()
     }
     this.clearQtyField()
   }
 
-
-
-  locationchangeClick(e) {
+  locationChangeClick(e) {
     this.itemLocation = e
-    this.onLocationSelected(this.itemLocation)
+    this.onLocationSelected()
   }
 
-  locationchangeSelect(event: MatAutocompleteSelectedEvent): void {
+  locationChangeSelect(event: MatAutocompleteSelectedEvent): void {
     this.itemLocation = '';
     setTimeout(() => { 
       this.itemLocation = event.option.value.location; 
-      this.onLocationSelected(this.itemLocation)
+      this.onLocationSelected()
     }, 1);
   }
 
-
   findItemLocation(event) {
-    this.itemnumscan = event.target.value;
+    this.itemNumScan = event.target.value;
     this.clearQtyField();
-    if (event.keyCode == 13) {
-      this.LocationRow = false;
+    if (event.keyCode == KeyboardCodes.ENTER) {
+      this.locationRow = false;
       let payload = {
-        "ItemNumber": this.itemnumscan,
+        "ItemNumber": this.itemNumScan,
       }
       this.iFlowRackReplenishApi.CFData(payload).subscribe((res => {
         if(res.isExecuted)
         {
           if (res.data != '') {
-            this.itemnumscan = res.data
+            this.itemNumScan = res.data
             let payload = {
-              "itemNumber": this.itemnumscan
+              "itemNumber": this.itemNumScan
             }
             this.iFlowRackReplenishApi.ItemLocation(payload).subscribe((res => {
               if (res.data.length < 1) {
                 this.locationSuggestions = [];
                 this.iFlowRackReplenishApi.openlocation({}).subscribe((res => {
                   if (res.data.length < 1) {
-                    this.global.ShowToastr('error',"There are no open locations.", 'Error!');
-                    this.LocationRow = true;
+                    this.global.ShowToastr(ToasterType.Error,ToasterMessages.NoOpenLocations, ToasterTitle.Error);
+                    this.locationRow = true;
                     this.itemLocation = ''
                   }
                   else {
-                    this.global.ShowToastr('error',"No Locations found for Item Number, Scan or Select an open Location.", 'Error!');
+                    this.global.ShowToastr(ToasterType.Error,ToasterMessages.NoLocationForItem, ToasterTitle.Error);
                     console.log("findItemLocation",res.responseMessage);
                     this.locationSuggestions = res.data
-                    this.LocationRow = false;
-  
-  
+                    this.locationRow = false;
                     setTimeout(() => {
                       this.itemLocationFocus.nativeElement.focus();
                       this.itemLocationFocus.nativeElement.select();
@@ -188,39 +167,36 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
               else {
                 this.locationSuggestions = res.data;
               }
-              this.LocationRow = false;
+              this.locationRow = false;
               this.itemLocation = res.data[0].location;
               setTimeout(() => {
                 this.itemLocationFocus.nativeElement.focus();
                 this.itemLocationFocus.nativeElement.select();
               }, 0);
             }))
-  
           }
           else {
-            this.itemnumscan = '';
-            this.global.ShowToastr('error',"This item does not exist in Inventory Master for this carton flow zone.", 'Error!');
+            this.itemNumScan = '';
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.ItemNotInInventory, ToasterTitle.Error);
             this.clearAllFields()
           }
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("CFData",res.responseMessage);
         }
-      
       }))
-
     }
-    if(event.keyCode == 8){
-      if(!this.LocationRow){
-        this.itemnumscan = '';
+    if(event.keyCode == KeyboardCodes.BACKSPACE){
+      if(!this.locationRow){
+        this.itemNumScan = '';
       }
     }
   }
 
-  onLocationSelected(location) {
+  onLocationSelected() {
     let payload = {
-      "itemNumber": this.itemnumscan,
+      "itemNumber": this.itemNumScan,
       "Input": this.itemLocation
     }
     this.iFlowRackReplenishApi.verifyitemlocation( payload).subscribe((res => {
@@ -232,18 +208,17 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
           this.openCal()
         }
         else if (!res.data) {
-          this.autocompleteTrigger.closePanel()
+          this.autoCompleteTrigger.closePanel()
           this.clearLocationField()
-          this.LocationRow = true;
-          this.global.ShowToastr('error',"Location Unavailable.", 'Error!');
+          this.locationRow = true;
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.LocationUnavailable, ToasterTitle.Error);
           console.log("onLocationSelected",res.responseMessage);
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("verifyitemlocation",res.responseMessage);
       }
-    
     }))
   }
   
@@ -256,16 +231,14 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
       data:{
         itemQuantity: this.itemQty
       }
-   
     });
     dialogRef.afterClosed().subscribe((result) => { 
       this.itemQty = !result ? '' : result;
       this.submitBtnDisplay = !this.itemQty;
-      this.autocompleteTrigger.closePanel()
+      this.autoCompleteTrigger.closePanel()
       setTimeout(() => {
         this.itemQtyFocus.nativeElement.focus();
       }, 0);
-     
     });
   }
 
@@ -274,8 +247,8 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
     this.itemQty = '';
     this.itemQtyRow = true;
     this.itemLocation = '';
-    this.LocationRow = true;
-    this.itemnumscan = ''
+    this.locationRow = true;
+    this.itemNumScan = ''
     this.autoFocusField.nativeElement.focus()
     this.calculator = true
   }
@@ -299,65 +272,60 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
     this.itemQty = '';
     this.itemQtyRow = true;
     this.itemLocation = '';
-    this.LocationRow = true;
-    this.itemnumscan = '';
+    this.locationRow = true;
+    this.itemNumScan = '';
     this.autoFocusField.nativeElement.focus()
     this.calculator = true
   }
 
   updateItemQuantity() {
     if (this.itemQty <= 0) {
-      this.global.ShowToastr('error',"Quantity must be greater than zero.", 'Error!');
+      this.global.ShowToastr(ToasterType.Error,ToasterMessages.QuantityMustGreaterZero, ToasterTitle.Error);
     }
-
     else if (this.itemQty == '') { 
-      this.global.ShowToastr('error',"Please enter a quantity.", 'Error!');
+      this.global.ShowToastr(ToasterType.Error,ToasterMessages.EnterQuantity, ToasterTitle.Error);
     }
-
     else {
-
       let payload = {
-        "itemNumber": this.itemnumscan,
+        "itemNumber": this.itemNumScan,
         "Input": this.itemLocation,
         "Quantity": this.itemQty
       }
       this.iFlowRackReplenishApi.verifyitemquantity(payload).subscribe((res => {
         if (res.data) {
           let payload = {
-            "itemNumber": this.itemnumscan,
+            "itemNumber": this.itemNumScan,
             "Input": this.itemLocation,
             "Quantity": this.itemQty
           }
-
           this.iFlowRackReplenishApi.itemquantity(payload).subscribe((res => {
             if (res.isExecuted) {
-              this.global.ShowToastr('success','Item Quantity Added', 'Success!');
+              this.global.ShowToastr(ToasterType.Success,ToasterMessages.ItemQuantityAdded, ToasterTitle.Success);
               this.resetForm()
             }
             else {
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
               console.log("itemquantity",res.responseMessage);
-
             }
           }))
         }
         else {
           this.itemQty = '';
           this.itemQtyFocus.nativeElement.select()
-          this.global.ShowToastr('error',"The quantity was not entered due to an error in the Inventory Map", 'Error!');
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.QuantityErrorInventoryMap, ToasterTitle.Error);
           console.log("updateItemQuantity",res.responseMessage);
         }
-
       }))
     }
   }
 
   getAppLicense() {
-      this.userData.wsid
+    const wsidValue = this.userData.wsid; // Assigning to a variable
+    console.log(wsidValue);
   }
   
   convertToObj(data) {
-    data.wsAllAppPermission.forEach((item,i) => {
+    data.wsAllAppPermission.forEach((item) => {
       for (const key of Object.keys(data.appLicenses)) {
         if (item.includes(key)  && data.appLicenses[key].isLicenseValid) {
           this.applicationData.push({
@@ -373,77 +341,75 @@ export class FrFlowrackReplenishmentComponent implements OnInit {
       }
     });
     this.sortAppsData();
-    
   }
   
   appNameDictionary(appName) {
     let routes = [
       {
-        appName: 'ICSAdmin',
-        route: '/admin',
-        iconName: 'manage_accounts',
-        name: 'Admin',
-        updateMenu: 'admin',
-        permission: 'Admin Menu',
+        appName: AppNames.ICSAdmin,
+        route: AppRoutes.Admin,
+        iconName: AppIcons.ManageAccounts,
+        name: RouteNames.Admin,
+        updateMenu: RouteUpdateMenu.Admin,
+        permission: AppPermissions.AdminMenu,
       },
       {
-        appName: 'Consolidation Manager',
-        route: '/ConsolidationManager',
-        iconName: 'insert_chart',
-        name: 'Consolidation Manager',
-        updateMenu: 'consolidation',
-        permission: 'Consolidation Manager',
+        appName: AppNames.ConsolidationManager,
+        route: AppRoutes.ConsolidationManager,
+        iconName: AppIcons.InsertChart,
+        name: RouteNames.ConsolidationManager,
+        updateMenu: RouteUpdateMenu.Consolidation,
+        permission: AppPermissions.ConsolidationManager,
       },
       {
-        appName: 'Induction',
-        route: '/InductionManager',
-        iconName: 'checklist',
-        name: 'Induction Manager',
-        updateMenu: 'induction',
-        permission: 'Induction Manager',
+        appName: AppNames.Induction,
+        route: AppRoutes.InductionManager,
+        iconName: AppIcons.CheckList,
+        name: RouteNames.InductionManager,
+        updateMenu: RouteUpdateMenu.Induction,
+        permission: AppPermissions.InductionManager,
       },
       {
-        appName: 'FlowRackReplenish',
-        route: '/FlowrackReplenish',
-        iconName: 'schema',
-        name: 'FlowRack Replenishment',
-        updateMenu: '',
-        permission: 'FlowRack Replenish',
+        appName: AppNames.FlowRackReplenish,
+        route: AppRoutes.FlowrackReplenish,
+        iconName: AppIcons.Schema,
+        name: RouteNames.FlowRackReplenishment,
+        updateMenu: RouteUpdateMenu.Empty,
+        permission: AppPermissions.FlowRackReplenish,
       },
       {
-        appName: 'ImportExport',
-        route: '#',
-        iconName: 'electric_bolt',
-        name: 'Import Export',
-        updateMenu: '',
-        permission: 'Import Export',
+        appName: AppNames.ImportExport,
+        route: AppRoutes.Hash,
+        iconName: AppIcons.ElectricBolt,
+        name: RouteNames.ImportExport,
+        updateMenu: RouteUpdateMenu.Empty,
+        permission: AppPermissions.ImportExport,
       },
       {
-        appName: 'Markout',
-        route: '#',
-        iconName: 'manage_accounts',
-        name: 'Markout',
-        updateMenu: '',
-        permission: 'Markout',
+        appName: AppNames.Markout,
+        route: AppRoutes.Hash,
+        iconName: AppIcons.ManageAccounts,
+        name: RouteNames.Markout,
+        updateMenu: RouteUpdateMenu.Empty,
+        permission: AppPermissions.Markout,
       },
       {
-        appName: 'OrderManager',
-        route: '/OrderManager',
-        iconName: 'pending_actions',
-        name: 'Order Manager',
-        updateMenu: 'orderManager',
-        permission: 'Order Manager',
+        appName: AppNames.OrderManager,
+        route: AppRoutes.OrderManager,
+        iconName: AppIcons.PendingActions,
+        name: RouteNames.OrderManager,
+        updateMenu: RouteUpdateMenu.OrderManager,
+        permission: AppPermissions.OrderManager,
       },
       {
-        appName: 'WorkManager',
-        route: '#',
-        iconName: 'fact_check',
-        name: 'Work Manager',
-        updateMenu: '',
-        permission: 'Work Manager',
+        appName: AppNames.WorkManager,
+        route: AppRoutes.Hash,
+        iconName: AppIcons.FactCheck,
+        name: RouteNames.WorkManager,
+        updateMenu: RouteUpdateMenu.Empty,
+        permission: AppPermissions.WorkManager,
       },
     ];
-
     let obj: any = routes.find((o) => o.appName === appName);
     return obj;
   }

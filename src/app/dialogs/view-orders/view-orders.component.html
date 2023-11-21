@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-  <div style="width:48px"></div>
+  <div class="w-48px"></div>
   <h1 class="m-0" mat-dialog-title>Orders</h1>
   <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
     <mat-icon class="close-icon">close</mat-icon>
@@ -25,7 +25,7 @@
         </mat-form-field>
       </div>
       <div class="card br-14 table-responsive borderless px-0 mb-3">
-        <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 280px;">
+        <ng-scrollbar track="all" class="mat-table-scrollbar h-280" >
           <table mat-table [dataSource]="orderDataSource" class="w-100 table1">
             <!-- Position Column -->
             <ng-container matColumnDef="orderno">
@@ -55,11 +55,11 @@
         </app-icon-heading-component>
       </div>
       <div class="card br-14 table-responsive borderless px-0 mb-3">
-        <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 280px;">
+        <ng-scrollbar track="all" class="mat-table-scrollbar h-280" >
           <mat-table #table [dataSource]="orderTransDataSource" matSort>
 
             <ng-container *ngFor="let column of filterTransColumns" [cdkColumnDef]="column.columnDef">
-              <mat-header-cell *cdkHeaderCellDef mat-sort-header style="width:200px;">{{ column.header }}</mat-header-cell>
+              <mat-header-cell *cdkHeaderCellDef mat-sort-header class="w-200" >{{ column.header }}</mat-header-cell>
               <mat-cell *cdkCellDef="let row">{{ column.cell(row) }}</mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedTransColumns"></mat-header-row>
@@ -76,6 +76,6 @@
 </div>
 
 <div class="d-flex gap-12">
-  <button type="submit" mat-flat-button class="form-button-submit btn-lg" style="flex:1" color="primary"
+  <button type="submit" mat-flat-button class="form-button-submit btn-lg flex-grow-1" color="primary"
     (click)="onSelectedOrders()" [disabled]="isDisableSubmit">Submit</button>
 </div>

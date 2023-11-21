@@ -3,6 +3,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -15,9 +16,9 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 })
 export class BatchManagerDetailViewComponent implements OnInit {
 
-  fieldNames:any;
+
   public iAdminApiService: IAdminApiService;
-  displayedColumns: string[] = ['item_no', 'description','transaction_qty','lotNo', 'expiration_date', 'uom', 'serial_no', 'notes','location','warehouse','userField1','userField2','toteID'];
+  batchDisplayedColumns: string[] = ['item_no', 'description','transaction_qty','lotNo', 'expiration_date', 'uom', 'serial_no', 'notes','location','warehouse','userField1','userField2','toteID'];
   dataSource:any = [];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   constructor(private Api:ApiFuntions,private global : GlobalService, private _liveAnnouncer: LiveAnnouncer,private adminApiService: AdminApiService,@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<any>) { 
@@ -34,7 +35,7 @@ export class BatchManagerDetailViewComponent implements OnInit {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
-
+  fieldNames:any;
   public OSFieldFilterNames() { 
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       if(res.isExecuted && res.data)
@@ -42,7 +43,7 @@ export class BatchManagerDetailViewComponent implements OnInit {
         this.fieldNames = res.data;
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ColumnAlias",res.responseMessage);
 
       }

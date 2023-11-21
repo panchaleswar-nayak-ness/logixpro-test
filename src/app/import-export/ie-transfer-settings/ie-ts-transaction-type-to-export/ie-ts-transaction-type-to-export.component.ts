@@ -7,11 +7,11 @@ interface Actions {
 @Component({
   selector: 'app-ie-ts-transaction-type-to-export',
   templateUrl: './ie-ts-transaction-type-to-export.component.html',
-  styleUrls: []
+  styleUrls: ['./ie-ts-transaction-type-to-export.component.scss']
 })
 export class IeTsTransactionTypeToExportComponent {
 
-  actionBtnListOne : Actions[] = [
+  operationActions : Actions[] = [
     { title: "Hot Picks" },
     { title: "Adjustments" },
     { title: "Hot Put Aways" },
@@ -21,7 +21,7 @@ export class IeTsTransactionTypeToExportComponent {
     { title: "Shipping" }
   ]
   
-  actionBtnListTwo : Actions[] = [
+  shippingOrderActions : Actions[] = [
     { title: "Shipping Transactions" },
     { title: "Wait for Split Transactions" },
     { title: "Recombine Split Transactions" },

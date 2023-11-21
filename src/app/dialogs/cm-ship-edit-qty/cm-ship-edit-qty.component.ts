@@ -9,7 +9,7 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-ship-edit-qty',
   templateUrl: './cm-ship-edit-qty.component.html',
-  styleUrls: []
+  styleUrls: ['./cm-ship-edit-qty.component.scss']
 })
 export class CmShipEditQtyComponent implements OnInit {
   @ViewChild('matInput') matInput: ElementRef;
@@ -23,17 +23,15 @@ export class CmShipEditQtyComponent implements OnInit {
 
   @ViewChild('adjReason') adjReason : ElementRef;
 
-  public IconsolidationAPI : IConsolidationApi;
+  public iConsolidationAPI : IConsolidationApi;
 
   constructor(
     public consolidationAPI : ConsolidationApiService,
     private global:GlobalService,
     public dialogRef: MatDialogRef<CmShipEditQtyComponent>,
-    
-    // private Api: ApiFuntions,
     private authService: AuthService,
     public globalService: GlobalService,
-    @Inject(MAT_DIALOG_DATA) public data: any) { this.IconsolidationAPI = consolidationAPI; }
+    @Inject(MAT_DIALOG_DATA) public data: any) { this.iConsolidationAPI = consolidationAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -72,18 +70,18 @@ export class CmShipEditQtyComponent implements OnInit {
         shipQTY: this.adjustShipQty,
         reason: this.adjustReason
       }
-      this.IconsolidationAPI.ShipQTYShipTransUpdate(payLoad).subscribe((res:any)=>{
+      this.iConsolidationAPI.ShipQTYShipTransUpdate(payLoad).subscribe((res:any)=>{
         if (res.isExecuted) {
 
-          let Exists = false;
+          let exists = false;
           for (let i of this.data.reasons) {
             if (i == this.adjustReason) {
-              Exists = true;
+              exists = true;
               break;
             };
           };
 
-          if (!Exists) this.data.reasons.push(this.adjustReason)
+          if (!exists) this.data.reasons.push(this.adjustReason)
           
           this.dialogRef.close({
             isExecuted: true,
@@ -99,6 +97,7 @@ export class CmShipEditQtyComponent implements OnInit {
         }
       });
     } catch (error) { 
+      console.log(error);
     }
   }
 

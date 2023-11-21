@@ -1,10 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component'; 
-import labels from '../../labels/labels.json';
-
+import labels from '../../labels/labels.json'; 
 import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DatePipe } from '@angular/common';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
@@ -13,7 +11,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 @Component({
   selector: 'app-om-event-log-entry-detail',
   templateUrl: './om-event-log-entry-detail.component.html',
-  styleUrls: []
+  styleUrls: ['./om-event-log-entry-detail.component.scss']
 })
 export class OmEventLogEntryDetailComponent implements OnInit {
 
@@ -23,7 +21,6 @@ export class OmEventLogEntryDetailComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global:GlobalService,
-    private Api: ApiFuntions,
     private adminApiService: AdminApiService,
     
     private dialog:MatDialog,
@@ -62,8 +59,7 @@ export class OmEventLogEntryDetailComponent implements OnInit {
             this.dialog.closeAll();
             this.dialogRef.close(this.data);
           } else {
-            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
-            console.log("SelectedEventDelete",res.responseMessage);
+            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!'); 
           }
         });
       }

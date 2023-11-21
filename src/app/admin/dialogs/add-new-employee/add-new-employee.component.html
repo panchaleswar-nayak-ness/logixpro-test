@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-  <div style="width:48px"></div>
+  <div class="divWithClass"></div>
 <h1 class="m-0" mat-dialog-title>{{form_heading}}</h1>
 <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
   <mat-icon class="close-icon">close</mat-icon>
@@ -10,7 +10,7 @@
   <form [formGroup]="empForm" (ngSubmit)="onSubmit(empForm)">
 
 
-    <mat-checkbox *ngIf="data?.mode === 'edit'" matInput  formControlName="active" style="margin-right: 12px;" class="example-margin custom-checkbox mb-3" color="primary">Active</mat-checkbox>
+    <mat-checkbox *ngIf="data?.mode === 'edit'" matInput  formControlName="active"  class="example-margin custom-checkbox mb-3 activeCheckboxstyle" color="primary">Active</mat-checkbox>
     <mat-form-field class="mb-3 w-100" appearance="outline">
       <mat-label>Last Name</mat-label>
       <input #last_name matInput type="text" formControlName="lastName" maxlength="30" (keydown.space)="$event.preventDefault();">
@@ -42,7 +42,7 @@
       </span>
     </mat-form-field>
 
-    <mat-form-field class="mb-3 w-100" appearance="outline"  *ngIf="(env === 'DB') && this.IsEdit == true">
+    <mat-form-field class="mb-3 w-100" appearance="outline"  *ngIf="(env === 'DB') && this.isEdit == true">
       <mat-label>Group</mat-label>
       <mat-select formControlName="groupName" (selectionChange)="groupChange($event)">
         <mat-option *ngFor="let item of allGroups" [value]="item.groupName">{{item.groupName}}</mat-option>
@@ -57,7 +57,7 @@
       <input matInput [type]="toggle_password ? 'password' : 'text'" #focusFeild formControlName="password" 
       (ngModelChange)="ChangePassword($event)"
       (focusout)="isEmptyPass()" (keydown.space)="$event.preventDefault()" [maxlength]="env === 'DB' ? 8 : 16">
-      <button *ngIf="!isDisabledPassword && (!IsEdit)"
+      <button *ngIf="!isDisabledPassword && (!isEdit)"
        type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
         <mat-icon>{{toggle_password ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
@@ -68,7 +68,7 @@
       <input matInput type="email" formControlName="emailAddress" maxlength="255" (keydown.space)="$event.preventDefault();">
     </mat-form-field>
 
-    <mat-hint class="error-message" style="color: var(--clr-danger-shade);font-size: 14px;"
+    <mat-hint class="error-message emailErrorMsg-style text-danger-shade text-14"
     *ngIf="empForm.get('emailAddress')?.invalid && (empForm.get('emailAddress')?.dirty || empForm.get('emailAddress')?.touched)">
    Invalid email address
   </mat-hint>

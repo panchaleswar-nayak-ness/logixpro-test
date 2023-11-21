@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table'; 
-
 import { AddNewDeviceComponent } from 'src/app/admin/dialogs/add-new-device/add-new-device.component';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/services/shared.service';
+import {  StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+
 
 @Component({
   selector: 'app-sp-device-preference',
@@ -47,11 +47,9 @@ export class SpDevicePreferenceComponent implements OnInit {
     'actions',
   ];
   constructor(
-    private Api: ApiFuntions,
     public authService: AuthService,
     private global:GlobalService,
-    private adminApiService: AdminApiService,
-    
+    private adminApiService: AdminApiService,  
     private sharedService: SharedService
   ) {
     this.iAdminApiService = adminApiService;
@@ -94,7 +92,7 @@ export class SpDevicePreferenceComponent implements OnInit {
       else
       {
         
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("LocationZone", res.responseMessage);
       }
     });
@@ -112,7 +110,7 @@ export class SpDevicePreferenceComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === StringConditions.Yes) {
         this.getDevicePrefTable();
       }
     });
@@ -135,7 +133,7 @@ export class SpDevicePreferenceComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === StringConditions.Yes) {
         let payload = {
           deviceID: deviceID, 
         };
@@ -143,10 +141,10 @@ export class SpDevicePreferenceComponent implements OnInit {
           .DevicePreferencesDelete(payload)
           .subscribe((res: any) => {
             if (res.isExecuted) {
-              this.global.ShowToastr('success',res.responseMessage, 'Success!');
+              this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
               this.getDevicePrefTable();
             } else {
-              this.global.ShowToastr('error',res.responseMessage, 'Error!');
+              this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
               console.log("DevicePreferencesDelete",res.responseMessage);
             }
           });

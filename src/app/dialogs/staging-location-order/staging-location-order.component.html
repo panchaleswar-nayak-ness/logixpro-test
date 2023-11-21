@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Order/Tote Number</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" (click)="closeOrder()">
         <mat-icon class="close-icon">close</mat-icon>
@@ -13,7 +13,7 @@
 <div>
     <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
         <mat-label>Order Number</mat-label>
-        <input #field_focus matInput type="text" [(ngModel)]="Order">
+        <input #fieldFocus matInput type="text" [(ngModel)]="order">
     </mat-form-field> 
 </div>
 

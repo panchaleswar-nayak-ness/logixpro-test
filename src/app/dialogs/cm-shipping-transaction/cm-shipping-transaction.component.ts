@@ -1,5 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  Inject,
+} from '@angular/core';
+import { 
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -10,8 +19,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { CmShipSplitLineComponent } from '../cm-ship-split-line/cm-ship-split-line.component';
 import { CmShipEditConIdComponent } from '../cm-ship-edit-con-id/cm-ship-edit-con-id.component';
 import { CmShipEditQtyComponent } from '../cm-ship-edit-qty/cm-ship-edit-qty.component';
-import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote-id-update-modal.component';
-import { Router } from '@angular/router';
+import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote-id-update-modal.component'; 
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
@@ -19,49 +27,56 @@ import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidat
 @Component({
   selector: 'app-cm-shipping-transaction',
   templateUrl: './cm-shipping-transaction.component.html',
-  styleUrls: ['./cm-shipping-transaction.component.scss']
+  styleUrls: ['./cm-shipping-transaction.component.scss'],
 })
 export class CmShippingTransactionComponent implements OnInit {
-  @ViewChild('toteId_update') toteId_update: ElementRef;
+  @ViewChild('toteIdUpdate') toteIdUpdate: ElementRef;
   public userData: any;
 
   toteID: string = '';
-  STIndex : any;
+  STIndex: any;
 
-  displayedColumns: string[] = ['itemNumber', 'lineNumber', 'toteID', 'transactionQuantity', 'completedQuantity', 'containerID', 'shipQuantity', 'action'];
-  OldTableData : any;
-  tableData : any;
+  displayedColumns: string[] = [
+    'itemNumber',
+    'lineNumber',
+    'toteID',
+    'transactionQuantity',
+    'completedQuantity',
+    'containerID',
+    'shipQuantity',
+    'action',
+  ];
+  OldTableData: any;
+  tableData: any;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
-  public IconsolidationAPI : IConsolidationApi;
+
+  public IconsolidationAPI: IConsolidationApi;
 
   constructor(
-      public consolidationAPI : ConsolidationApiService,
-      private dialog          : MatDialog,
-      public dialogRef        : MatDialogRef<CmShippingTransactionComponent>,
-      
-      // private Api: ApiFuntions,
-      private authService     : AuthService,
-      private _liveAnnouncer  : LiveAnnouncer,
-      private global:GlobalService,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      private route: Router
-      ) { this.IconsolidationAPI = consolidationAPI; }
+    public consolidationAPI: ConsolidationApiService, 
+    public dialogRef: MatDialogRef<CmShippingTransactionComponent>, 
+    private authService: AuthService,
+    private _liveAnnouncer: LiveAnnouncer,
+    private global: GlobalService,
+    @Inject(MAT_DIALOG_DATA) public data: any 
+  ) {
+    this.IconsolidationAPI = consolidationAPI;
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.getShippingTransactionIndex();
   }
   ngAfterViewInit(): void {
-    this.toteId_update.nativeElement.focus();
+    this.toteIdUpdate.nativeElement.focus();
   }
   // Call the GET API for the Shipping Transaction Index
   getShippingTransactionIndex() {
     try {
       // Set the parameters for the API call
       let payLoad = {
-        orderNumber : this.data?.orderNum ? this.data.orderNum : '2909782A'
+        orderNumber: this.data?.orderNum ? this.data.orderNum : '2909782A',
       };
 
       // Call the GET API
@@ -72,188 +87,237 @@ export class CmShippingTransactionComponent implements OnInit {
             this.tableData = new MatTableDataSource(this.STIndex.tableData);
             this.tableData.paginator = this.paginator;
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
-            console.log("ShippingTransactionIndex",res.responseMessage);
+            this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+            console.log('ShippingTransactionIndex', res.responseMessage);
           }
         },
-        (error) => { }
+        (error) => {}
       );
-    } catch (error) { 
-    }
+    } catch (error) {}
   }
 
-  async onKey(event : any, type : string) {    
-    if (event.key === 'Enter') { // Check if the user pressed the 'Enter' key
-      if (type == 'toteIDtoUpdate' && this.toteID != "") { // Check if the user entered a tote ID
+  async onKey(event: any, type: string) {
+    if (event.key === 'Enter') {
+      // Check if the user pressed the 'Enter' key
+      if (type == 'toteIDtoUpdate' && this.toteID != '') {
+        // Check if the user entered a tote ID
         this.checkToteID(); // If the user entered a tote ID, call the checkToteID() function
-      }    
+      }
     }
   }
 
   checkToteID() {
     let noExists = false; // this is a flag that will let us know if the toteID exists in the data
-    for (const row of this.tableData.data) { // this is a loop that will go through each row in the data
-        let tabTote = row.toteID; // this will get the toteID value from the current row of the data
-        if (this.toteID == tabTote) { // this is a conditional statement that will check if the toteID entered by the user matches the toteID in the current row of the data
-            this.openToteIDUpdate(); // if the toteID does match, then we will open the modal
-            noExists = false; // we will set the flag to false since the toteID does exist
-            break; // we will break out of the loop since we found the toteID
-        } else { // if the toteID does not match, then we will continue going through the loop
-            noExists = true; // we will set the flag to true since the toteID does not exist
-        }
-    };
-    if (noExists) { // this is a conditional statement that will check the flag to see if the toteID does not exist in the data
-      this.global.ShowToastr('error','The given Tote ID is not contained within this order number', 'Error!' );
-    };
+    for (const row of this.tableData.data) {
+      // this is a loop that will go through each row in the data
+      let tabTote = row.toteID; // this will get the toteID value from the current row of the data
+      if (this.toteID == tabTote) {
+        // this is a conditional statement that will check if the toteID entered by the user matches the toteID in the current row of the data
+        this.openToteIDUpdate(); // if the toteID does match, then we will open the modal
+        noExists = false; // we will set the flag to false since the toteID does exist
+        break; // we will break out of the loop since we found the toteID
+      } else {
+        // if the toteID does not match, then we will continue going through the loop
+        noExists = true; // we will set the flag to true since the toteID does not exist
+      }
+    }
+    if (noExists) {
+      // this is a conditional statement that will check the flag to see if the toteID does not exist in the data
+      this.global.ShowToastr(
+        'error',
+        'The given Tote ID is not contained within this order number',
+        'Error!'
+      );
+    }
   }
 
   // openToteIDUpdate() is called when the user clicks the Tote ID Update button
-  openToteIDUpdate() {    
+  openToteIDUpdate() {
     // open the dialog
-    let dialogRef:any = this.global.OpenDialog(CmToteIdUpdateModalComponent, {
+    let dialogRef: any = this.global.OpenDialog(CmToteIdUpdateModalComponent, {
       height: 'auto',
       width: '40vw',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
-        toteID : this.toteID,
-        orderNumber : this.data?.orderNum ? this.data.orderNum : '2909782A'
-      }
+        toteID: this.toteID,
+        orderNumber: this.data?.orderNum ? this.data.orderNum : '2909782A',
+      },
     });
 
     // subscribe to the dialog closing
-    dialogRef.afterClosed().subscribe(res => {
+    dialogRef.afterClosed().subscribe((res) => {
       // update the container ID for the selected tote ID
       if (res?.isExecuted) {
         // loop through the table data
         for (const row of this.tableData.data) {
           // if the tote ID matches the one that was updated
           if (res.toteID == row.toteID) {
-              // set the container ID
-              row.containerID = res.containerID;
+            // set the container ID
+            row.containerID = res.containerID;
           }
-        } 
-      }      
+        }
+      }
     });
   }
 
   completePacking() {
     try {
-
       let payLoad = {
-        orderNumber: this.data?.orderNum ? this.data.orderNum : '2909782A'
+        orderNumber: this.data?.orderNum ? this.data.orderNum : '2909782A',
       };
 
       this.IconsolidationAPI.SelCountOfOpenTransactionsTemp(payLoad).subscribe(
         (res: any) => {
           if (res.isExecuted) {
+            if (res.data == -1) {
+              this.global.ShowToastr(
+                'error',
+                'An error has occurred',
+                'Error!'
+              );
+            } else if (res.data == 0) {
+              let dialogRef: any = this.global.OpenDialog(
+                ConfirmationDialogComponent,
+                {
+                  height: 'auto',
+                  width: '560px',
+                  autoFocus: '__non_existing_element__',
+                  disableClose: true,
+                  data: {
+                    message:
+                      'Are you sure you want to update this order number as complete for packing?',
+                  },
+                }
+              );
 
-            if (res.data == -1) 
-            {
-              this.global.ShowToastr('error','An error has occurred', 'Error!');
-            } 
-            else if (res.data == 0) 
-            {
-              let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
-                height: 'auto',
-                width: '560px',
-                autoFocus: '__non_existing_element__',
-      disableClose:true,
-                data: {
-                  message: 'Are you sure you want to update this order number as complete for packing?',
-                },
-              });
-      
               dialogRef.afterClosed().subscribe((result) => {
                 if (result == 'Yes') {
-                  this.IconsolidationAPI.CompletePackingUpdate(payLoad).subscribe(
+                  this.IconsolidationAPI.CompletePackingUpdate(
+                    payLoad
+                  ).subscribe(
                     (res: any) => {
                       if (res.isExecuted) {
-                        this.global.ShowToastr('success','Packing Completed Successfully', 'Success!');
+                        this.global.ShowToastr(
+                          'success',
+                          'Packing Completed Successfully',
+                          'Success!'
+                        );
                         this.dialogRef.close({
                           isExecuted: true,
                         });
                       } else {
-                        this.global.ShowToastr('error','Something went wrong', 'Error!');
-                        console.log("CompletePackingUpdate",res.responseMessage);
+                        this.global.ShowToastr(
+                          'error',
+                          'Something went wrong',
+                          'Error!'
+                        );
+                        console.log(
+                          'CompletePackingUpdate',
+                          res.responseMessage
+                        );
                       }
                     },
-                    (error) => { }
+                    (error) => {}
                   );
                 }
               });
-            } 
-            else 
-            {
-              let dialogRef1:any = this.global.OpenDialog(ConfirmationDialogComponent, {
-                height: 'auto',
-                width: '560px',
-                autoFocus: '__non_existing_element__',
-      disableClose:true,
-                data: {
-                  message: 'Are you sure you want to update this order number as complete for packing?',
-                },
-              });
-      
+            } else {
+              let dialogRef1: any = this.global.OpenDialog(
+                ConfirmationDialogComponent,
+                {
+                  height: 'auto',
+                  width: '560px',
+                  autoFocus: '__non_existing_element__',
+                  disableClose: true,
+                  data: {
+                    message:
+                      'Are you sure you want to update this order number as complete for packing?',
+                  },
+                }
+              );
+
               dialogRef1.afterClosed().subscribe((result) => {
                 if (result == 'Yes') {
-                  let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
-                    height: 'auto',
-                    width: '560px',
-                    autoFocus: '__non_existing_element__',
-      disableClose:true,
-                    data: {
-                      message: 'Back orders exist for this order number. Still continue pack complete?',
-                    },
-                  });
+                  let dialogRef2: any = this.global.OpenDialog(
+                    ConfirmationDialogComponent,
+                    {
+                      height: 'auto',
+                      width: '560px',
+                      autoFocus: '__non_existing_element__',
+                      disableClose: true,
+                      data: {
+                        message:
+                          'Back orders exist for this order number. Still continue pack complete?',
+                      },
+                    }
+                  );
 
                   dialogRef2.afterClosed().subscribe((result) => {
                     if (result == 'Yes') {
-                      this.IconsolidationAPI.CompletePackingUpdate(payLoad).subscribe(
+                      this.IconsolidationAPI.CompletePackingUpdate(
+                        payLoad
+                      ).subscribe(
                         (res: any) => {
                           if (res.isExecuted) {
-                            this.global.ShowToastr('success','Packing Completed Successfully', 'Success!');
+                            this.global.ShowToastr(
+                              'success',
+                              'Packing Completed Successfully',
+                              'Success!'
+                            );
                             this.dialogRef.close({
                               isExecuted: true,
                             });
                           } else {
-                            this.global.ShowToastr('error','Something went wrong', 'Error!');
-                            console.log("CompletePackingUpdate",res.responseMessage);
+                            this.global.ShowToastr(
+                              'error',
+                              'Something went wrong',
+                              'Error!'
+                            );
+                            console.log(
+                              'CompletePackingUpdate',
+                              res.responseMessage
+                            );
                           }
                         },
-                        (error) => { }
+                        (error) => {
+                          console.log(error);
+                        }
                       );
                     }
-                  });                  
+                  });
                 }
               });
             }
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
-            console.log("SelCountOfOpenTransactionsTemp",res.responseMessage);
+            this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+            console.log('SelCountOfOpenTransactionsTemp', res.responseMessage);
           }
         },
-        (error) => { }
+        (error) => {
+          console.log(error);
+        }
       );
-    } catch (error) { 
+    } catch (error) {
+      console.log(error);
     }
   }
 
   // Open the ship split line dialog
-  openShipSplitLine(order : any, i : any) {
-    let dialogRef:any = this.global.OpenDialog(CmShipSplitLineComponent, {
+  openShipSplitLine(order: any, i: any) {
+    let dialogRef: any = this.global.OpenDialog(CmShipSplitLineComponent, {
       height: 'auto',
       width: '560px',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
         order,
-        page: 'ShipTrans'
-      }
+        page: 'ShipTrans',
+      },
     });
 
     // Wait for the ship split line dialog to close
-    dialogRef.afterClosed().subscribe(res => {
+    dialogRef.afterClosed().subscribe((res) => {
       // If the dialog was closed with 'OK' then update the ship quantity
       if (res?.isExecuted) {
         this.tableData.data[i].transactionQuantity = res.orderQty;
@@ -262,52 +326,54 @@ export class CmShippingTransactionComponent implements OnInit {
 
         this.getShippingTransactionIndex();
       }
-
     });
   }
 
-  openShipPrintItemLabel(order : any, i : any) {
-    this.global.Print(`FileName:PrintShipTransLabel|ST_ID:${order.sT_ID}`,'lbl');
+  openShipPrintItemLabel(order: any, i: any) {
+    this.global.Print(
+      `FileName:PrintShipTransLabel|ST_ID:${order.sT_ID}`,
+      'lbl'
+    );
   }
 
   // Open the dialog component, pass in the data to be modified
-  openShipEditQuantity(order : any, i : any) {
-    let dialogRef:any = this.global.OpenDialog(CmShipEditQtyComponent, {
+  openShipEditQuantity(order: any, i: any) {
+    let dialogRef: any = this.global.OpenDialog(CmShipEditQtyComponent, {
       height: 'auto',
       width: '50vw',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
         reasons: this.STIndex.reasons,
-        order
-      }
+        order,
+      },
     });
 
     // After the dialog is closed, get the modified data and update the table data
-    dialogRef.afterClosed().subscribe(res => {
+    dialogRef.afterClosed().subscribe((res) => {
       if (res?.isExecuted) {
         this.tableData.data[i].shipQuantity = res.shipQuantity;
-      } 
+      }
     });
   }
 
-  openShipEditContainerID(order : any, i : any) {
+  openShipEditContainerID(order: any, i: any) {
     // Open the dialog
-    let dialogRef:any = this.global.OpenDialog(CmShipEditConIdComponent, {
+    let dialogRef: any = this.global.OpenDialog(CmShipEditConIdComponent, {
       height: 'auto',
       width: '40vw',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
-        order
-      }
+        order,
+      },
     });
 
     // Handle the dialog closing
-    dialogRef.afterClosed().subscribe(res => {
+    dialogRef.afterClosed().subscribe((res) => {
       if (res?.isExecuted) {
         this.tableData.data[i].containerID = res.containerID;
-      }  
+      }
     });
   }
 
@@ -324,25 +390,30 @@ export class CmShippingTransactionComponent implements OnInit {
     this.tableData.sort = this.sort;
   }
 
-  filterByItem(value : any) {
-    if(this.OldTableData && this.OldTableData.data.length > 0) {
-      this.tableData = new MatTableDataSource(this.OldTableData.data.filter((x : any) =>  x.itemNumber.includes(value)));
+  filterByItem(value: any) {
+    if (this.OldTableData && this.OldTableData.data.length > 0) {
+      this.tableData = new MatTableDataSource(
+        this.OldTableData.data.filter((x: any) => x.itemNumber.includes(value))
+      );
       this.tableData.paginator = this.paginator;
     } else {
       this.OldTableData = new MatTableDataSource(this.tableData.data);
-      this.tableData = new MatTableDataSource(this.tableData.data.filter((x : any) =>  x.itemNumber.includes(value)));
+      this.tableData = new MatTableDataSource(
+        this.tableData.data.filter((x: any) => x.itemNumber.includes(value))
+      );
       this.tableData.paginator = this.paginator;
     }
   }
 
-
-  printList(){
-    this.global.Print(`FileName:PrintShipOrderPL|OrderNum:${this.data.orderNum}`);
+  printList() {
+    this.global.Print(
+      `FileName:PrintShipOrderPL|OrderNum:${this.data.orderNum}`
+    );
   }
 
   selectRow(row: any) {
-    this.tableData.data.forEach(element => {
-      if(row != element){
+    this.tableData.data.forEach((element) => {
+      if (row != element) {
         element.selected = false;
       }
     });
@@ -351,6 +422,4 @@ export class CmShippingTransactionComponent implements OnInit {
       selectedRow.selected = !selectedRow.selected;
     }
   }
-
-
 }

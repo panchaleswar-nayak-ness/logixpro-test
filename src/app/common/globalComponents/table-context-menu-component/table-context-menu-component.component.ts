@@ -6,6 +6,7 @@ import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.ser
 import { TableContextMenuService } from './table-context-menu.service';
 import { OperationTypes } from './../../enums/CommonEnums';
 import { Operations } from './../../types/CommonTypes';
+import { DialogConstants } from '../../constants/strings.constants';
 
 @Component({
   selector: 'app-table-context-menu-component',
@@ -83,14 +84,14 @@ export class TableContextMenuComponentComponent implements OnInit{
   
   InputFilterSearch(FilterColumnName: any, Condition: any, TypeOfElement: any) {
     const dialogRef : any = this.global.OpenDialog(InputFilterComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '480px',
       data:{
         FilterColumnName: FilterColumnName,
         Condition: Condition,
         TypeOfElement:TypeOfElement
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
 

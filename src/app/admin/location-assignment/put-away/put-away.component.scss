@@ -14,3 +14,19 @@ table{
         }
     }
 }
+
+.put-away-component-card{
+    text-overflow: ellipsis !important; 
+    overflow: hidden !important;
+     max-width: 20ch !important; 
+     white-space: nowrap !important;
+}
+.put-away-overflow{
+    overflow-x: auto !important;
+}
+.put-away-button{
+    flex:1 !important;
+}
+.put-away-scrollbar{
+height: 550px !important;
+}

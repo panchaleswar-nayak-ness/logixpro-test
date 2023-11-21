@@ -1,19 +1,19 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>{{heading}}</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="undefined">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
 
-    <ng-scrollbar style="height:65vh" [track]="itemNumberScroll">
+    <ng-scrollbar class="height-65v" [track]="itemNumberScroll">
         <div class="px-3" >
     
             <div class="row">
                 <div class="col-xl-4">
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                         <mat-label>Order Number</mat-label>
-                        <input type="text" #ord_focus aria-label="Search" matInput [disabled]="orderNumberDisabled" [(ngModel)]="this.oTTempUpdatePayload.orderNumber" maxlength="50">
+                        <input type="text" #ordFocus aria-label="Search" matInput [disabled]="orderNumberDisabled" [(ngModel)]="this.oTTempUpdatePayload.orderNumber" maxlength="50">
                     </mat-form-field>
                 </div>
                 <div class="col-xl-4">
@@ -83,20 +83,20 @@
                     <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                         <mat-label>Item Number</mat-label>
                         <input type="text" aria-label="Search" matInput [(ngModel)]="this.oTTempUpdatePayload.itemNumber"
-                            (keyup)="searchItem(true)" [matAutocomplete]="searchauto" maxlength="50" (focusout)="itemNumberFocusOut($event)" maxlength="50"
+                            (keyup)="searchItem()" [matAutocomplete]="searchauto" maxlength="50" (focusout)="itemNumberFocusOut($event)" maxlength="50"
                             (focus)="focusinmethod()" (focusout)="focusoutmethod()">
                         <mat-autocomplete class="card custom-scroll" #searchauto="matAutocomplete"
                             (optionSelected)="onSearchSelect($event)">
                             <h6 class="card-header matAutoCompHeader ">
-                                <span style="width:  140px;">Item Number</span> 
-                                <span style="width:  140px;">Description</span>
-                                <span style="width:  140px;">Unit of Measure</span>
+                                <span class="w-140">Item Number</span> 
+                                <span class="w-140">Description</span>
+                                <span  class="w-140">Unit of Measure</span>
                             </h6>
                             <mat-option *ngFor="let option of itemNumberSearchList" [value]="option.itemNumber" class="matAutoCompTableContent">
                                 <div class="loc_option" (click)="selectItemNumber(option,$event)" >
-                                    <span class="searchColumn over-flow" style="width:  140px; margin-right: 5px;" #tooltip="matTooltip" [matTooltip]="option.itemNumber" matTooltipPosition="above">{{option.itemNumber}}</span> 
-                                    <span class="searchColumn over-flow" style="width:  140px; margin-right: 5px;" #tooltip="matTooltip" [matTooltip]="option.description" matTooltipPosition="above">{{option.description}}</span> 
-                                    <span class="searchColumn over-flow" style="width:  140px;" #tooltip="matTooltip" [matTooltip]="option.unitOfMeasure" matTooltipPosition="above">{{option.unitOfMeasure}}</span>
+                                    <span class="searchColumn over-flow mt-5 w-140"  #tooltip="matTooltip" [matTooltip]="option.itemNumber" matTooltipPosition="above">{{option.itemNumber}}</span> 
+                                    <span class="searchColumn over-flow mt-5 w-140"  #tooltip="matTooltip" [matTooltip]="option.description" matTooltipPosition="above">{{option.description}}</span> 
+                                    <span class="searchColumn over-flow w-140"  #tooltip="matTooltip" [matTooltip]="option.unitOfMeasure" matTooltipPosition="above">{{option.unitOfMeasure}}</span>
                                 </div>
                             </mat-option>
                         </mat-autocomplete>

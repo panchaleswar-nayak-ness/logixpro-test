@@ -1,26 +1,24 @@
 import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GlobalService } from 'src/app/common/services/global.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
 @Component({
   selector: 'app-min-reel-qty',
   templateUrl: './min-reel-qty.component.html',
-  styleUrls: []
+  styleUrls: ['./min-reel-qty.component.scss']
 })
 export class MinReelQtyComponent  {
-  @ViewChild('min_amount') min_amount: ElementRef;
+  @ViewChild('minAmount') minAmount: ElementRef;
 
     submit: boolean = false;
     btnDisabled: boolean = true;
 
   constructor(
     public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private confirmationglobal:GlobalService
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
  
   ngAfterViewInit(): void {
-    this.min_amount.nativeElement.focus();
+    this.minAmount.nativeElement.focus();
   }
   checkRTS() {
     if(this.data.minDollarRTS === '' || this.data.minDollarRTS === null){

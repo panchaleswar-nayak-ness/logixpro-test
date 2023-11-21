@@ -2,7 +2,7 @@
     <mat-card class="mat-elevation-z g-card mb-4">
     <mat-card-content>
         <h2 class="card-header-title mb-0 d-flex align-items-center mb-3">
-            <div style="cursor:pointer;" class="mat-icon-wrap me-lg-3 " (click)="retunrToPrev()">
+            <div class="mat-icon-wrap me-lg-3 cursor-pointer" (click)="returnToPrev()">
 
                 <span class="material-symbols-outlined ">
                     arrow_back
@@ -73,8 +73,8 @@
             <span>Transactions</span>
         </h2>
       
-        <div class="card br-14  borderless px-0 mb-3 mt-3" style="overflow-x: auto;">
-            <ng-scrollbar class="mat-table-scrollbar" style="height:545px" track="all">
+        <div class="card br-14  borderless px-0 mb-3 mt-3 overflow-x-auto">
+            <ng-scrollbar class="mat-table-scrollbar h-545px" track="all">
               <table class="w-100 table-borderless" mat-table matSort [dataSource]="tableData" >
                   <ng-container matColumnDef="trans_type">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header> Trans Type </th>
@@ -122,7 +122,7 @@
               </td>
           </tr>
   
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" style=" background-color: var(--clr-table-header);"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" class="table-header-clr"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   
         </table>

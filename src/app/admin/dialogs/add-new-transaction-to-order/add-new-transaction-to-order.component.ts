@@ -11,6 +11,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-new-transaction-to-order',
@@ -122,7 +123,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
           }
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),ToasterTitle.Error);
           console.log("ItemExists",res.responseMessage);
         }
       },
@@ -142,7 +143,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
         (res: any) => {
           if(res.data) this.searchAutocompleteList=res.data;
           else { 
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("SearchItem",res.responseMessage);
           }
         },
@@ -227,16 +228,16 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                 this.iAdminApiService.TransactionForOrderInsert(payload).subscribe(
                   (res: any) => {
                     if (res.isExecuted) {
-                      this.global.ShowToastr('success',labels.alert.success, 'Success!');
+                      this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
                       this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
                     } else {
-                      this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                      this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
                       this.dialogRef.close({ isExecuted: false });
                       console.log("TransactionForOrderInsert",res.responseMessage);
                     }
                   },
                   (error) => {
-                    this.global.ShowToastr('error','something went wrong!', 'Error!');
+                    this.global.ShowToastr(ToasterType.Error,'something went wrong!', ToasterTitle.Error);
                     this.dialogRef.close({ isExecuted: false });
                   }
                 );
@@ -244,16 +245,16 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                 this.iAdminApiService.TransactionForOrderUpdate(payload).subscribe(
                   (res: any) => {
                     if (res.isExecuted) {
-                      this.global.ShowToastr('success',labels.alert.success, 'Success!');
+                      this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
                       this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
                     } else {
-                      this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                      this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
                       this.dialogRef.close({ isExecuted: false });
                       console.log("TransactionForOrderUpdate",res.responseMessage);
                     }
                   },
                   (error) => {
-                    this.global.ShowToastr('error','something went wrong!', 'Error!');
+                    this.global.ShowToastr(ToasterType.Error,'something went wrong!', ToasterTitle.Error);
                     this.dialogRef.close({ isExecuted: false });
                   }
                 );

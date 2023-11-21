@@ -28,8 +28,7 @@ import { IInductionManagerApiService } from 'src/app/services/induction-manager-
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { Router } from '@angular/router';
-import { QueryParams } from 'angular-routing';
-
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   position: string;
@@ -261,7 +260,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         this.fieldNames = res.data;
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ColumnAlias",res.responseMessage);
 
       }
@@ -310,7 +309,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         if (res.data && res.isExecuted) {
           this.currentToteID = res.data;
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
           console.log("NextTote",res.responseMessage);
         }
       },
@@ -366,7 +365,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           debugger
           this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
           console.log("BatchTotes",res.responseMessage);
         }
       },
@@ -458,7 +457,7 @@ export class ProcessPutAwaysComponent implements OnInit {
               } else this.fillToteTable();
             }
             else {
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
               console.log("BatchExist",res.responseMessage);
             }
           });
@@ -542,7 +541,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           const totePaylaod = { "ToteID": toteID }
           this.iinductionManagerApi.ValidateTotesForPutAways(totePaylaod).subscribe(res => {
             if (res.data != '') {
-              this.global.ShowToastr('error',`The tote id ${res.data} already exists in Open Transactions. Please select another tote`, 'Error!');
+              this.global.ShowToastr(ToasterType.Error,`The tote id ${res.data} already exists in Open Transactions. Please select another tote`, ToasterTitle.Error);
               console.log("ValidateTotesForPutAways",res.responseMessage);
               for (const element of this.ELEMENT_DATA) {
                 if (element.toteid == res.data) {
@@ -564,14 +563,14 @@ export class ProcessPutAwaysComponent implements OnInit {
                       if(this.imPreferences.printDirectly) this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`)
                       else window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
                     }
-                    this.global.ShowToastr('success',res.responseMessage, 'Success!');
+                    this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
                     this.status = 'Processed';
                     this.selectedIndex = 1;
                     this.batchId2 = this.batchId;
                     setTimeout(() => this.inputVal.nativeElement.focus(), 500);
                     this.fillToteTable(this.batchId);
                   } else {
-                    this.global.ShowToastr('error','Something went wrong', 'Error!');
+                    this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
                     console.log("ProcessBatch",res.responseMessage);
                   }
                 },
@@ -585,8 +584,8 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   showMessage(message: any, timeout: any, type: any) {
-    if (type == 'error') this.global.ShowToastr('error',message, 'Error!');
-    else this.global.ShowToastr('success',message, 'Success!');
+    if (type == 'error') this.global.ShowToastr(ToasterType.Error,message, ToasterTitle.Error);
+    else this.global.ShowToastr(ToasterType.Success,message, ToasterTitle.Success);
   }
 
   IMPreferences:any;
@@ -614,7 +613,7 @@ export class ProcessPutAwaysComponent implements OnInit {
             }, 500);
           }
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
           console.log("ProcessPutAwayIndex",res.responseMessage);
         }
       },
@@ -635,7 +634,7 @@ export class ProcessPutAwaysComponent implements OnInit {
             this.openSelectZonesDialogue();
           }
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
           console.log("NextBatchID",res.responseMessage);
         }
       },
@@ -647,7 +646,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     let updatePayload = { "tote": this.currentToteID }
     this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
-        this.global.ShowToastr('error','Something is wrong.', 'Error!');
+        this.global.ShowToastr(ToasterType.Error,'Something is wrong.', ToasterTitle.Error);
         console.log("NextToteUpdate",res.responseMessage);
       }
     });
@@ -774,7 +773,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           this.searchAutocompleteItemNum = res.data; 
         } 
         else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
           console.log("BatchIDTypeAhead",res.responseMessage);
         }
       },
@@ -802,7 +801,7 @@ async clearBatchData(){
         if (res.isExecuted &&  res.data) {
           this.searchAutocompleteItemNum2 = res.data;
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
           console.log("BatchIDTypeAhead",res.responseMessage);
         }
       },
@@ -878,7 +877,7 @@ async clearBatchData(){
 
   openSelectionTransactionDialogue() {
     if (this.batchId2 == "") {
-      this.global.ShowToastr('error','No batch ID present. Please select a batch vlaue form the typeahead to ensure you are inducting against the correct batch', 'Empty Batch ID Value');
+      this.global.ShowToastr(ToasterType.Error,'No batch ID present. Please select a batch vlaue form the typeahead to ensure you are inducting against the correct batch', 'Empty Batch ID Value');
       return;
     };
 
@@ -899,7 +898,7 @@ async clearBatchData(){
       dialogRef.afterClosed().subscribe((result) => {
         if (!result) return
         if (this.inputValue == "") {
-          this.global.ShowToastr('error','Please enter input value', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'Please enter input value', ToasterTitle.Error);
           
         }
         else {
@@ -950,9 +949,9 @@ async clearBatchData(){
                 return
               }
               if (this.inputType == 'Any') {
-                this.global.ShowToastr('error','The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.', 'Error!');
+                this.global.ShowToastr(ToasterType.Error,'The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.', ToasterTitle.Error);
               } else {
-                this.global.ShowToastr('error',`The input code provided was not recognized as a ${this.inputType}.`, 'Error!');
+                this.global.ShowToastr(ToasterType.Error,`The input code provided was not recognized as a ${this.inputType}.`, ToasterTitle.Error);
               }
             } 
             else if (result == "Task Completed") {
@@ -988,7 +987,7 @@ async clearBatchData(){
         }
       });
     }
-    else if (this.inputValue == "") this.global.ShowToastr('error','Please enter input value', 'Error!');
+    else if (this.inputValue == "") this.global.ShowToastr(ToasterType.Error,'Please enter input value', ToasterTitle.Error);
     else {
       const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteComponent, {
         height: 'auto',
@@ -1035,8 +1034,8 @@ async clearBatchData(){
             });
             return
           }
-          if (this.inputType == 'Any') this.global.ShowToastr('error','The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.', 'Error!');
-          else this.global.ShowToastr('error',`The input code provided was not recognized as a ${this.inputType}.`, 'Error!');
+          if (this.inputType == 'Any') this.global.ShowToastr(ToasterType.Error,'The input code provided was not recognized as an Item Number, Lot Number, Serial Number, Host Transaction ID, Scan Code or Supplier Item ID.',ToasterTitle.Error);
+          else this.global.ShowToastr(ToasterType.Error,`The input code provided was not recognized as a ${this.inputType}.`, ToasterTitle.Error);
         } 
         else if (result == "Task Completed") {
           this.inputValue='';
@@ -1121,7 +1120,7 @@ async clearBatchData(){
             this.getRow(batchID ?? this.batchId2);
             this.inputValue = "";
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
             console.log("TotesTable",res.responseMessage);
           }
         },
@@ -1189,9 +1188,9 @@ async clearBatchData(){
                           }
                           this.clearFormAndTable();
                       }else{
-                        this.global.ShowToastr('success',
+                        this.global.ShowToastr(ToasterType.Success,
                           'Batch Completed Successfully',
-                          'Success!'
+                          ToasterTitle.Success
                         );
                         this.clearFormAndTable();
                         this.selectedIndex = 0;
@@ -1203,7 +1202,7 @@ async clearBatchData(){
                     });   
                   }
                 } else {
-                  this.global.ShowToastr('error','Something went wrong', 'Error!');
+                  this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
                   console.log("CompleteBatch",res.responseMessage);
                 }
               },
@@ -1309,15 +1308,15 @@ async clearBatchData(){
           this.iinductionManagerApi.MarkToteFull(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
-                this.global.ShowToastr('success',
+                this.global.ShowToastr(ToasterType.Success,
                   'Marked Successfully',
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.fillToteTable();
           this.clearMatSelectList();
 
               } else {
-                this.global.ShowToastr('error','Something went wrong', 'Error!');
+                this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
                 console.log("MarkToteFull",res.responseMessage);
               }
             },
