@@ -1,21 +1,21 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import labels from '../../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { debounceTime, distinctUntilChanged, Subject, Subscription,takeUntil } from 'rxjs';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { ReprocessTransactionDetailComponent } from '../../dialogs/reprocess-transaction-detail/reprocess-transaction-detail.component';
-import { SharedService } from '../../../services/shared.service';
+import { SharedService } from '../../../common/services/shared.service';
 import { FunctionAllocationComponent } from '../../dialogs/function-allocation/function-allocation.component';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 

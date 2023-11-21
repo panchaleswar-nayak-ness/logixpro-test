@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/init/auth.service'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AuthService } from 'src/app/common/init/auth.service'; 
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 
 @Component({
   selector: 'app-order-status',

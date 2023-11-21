@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AuthService } from 'src/app/init/auth.service';
-import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
-import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { CMConsolidationPreferences, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

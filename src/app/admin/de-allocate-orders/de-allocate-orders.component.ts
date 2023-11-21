@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,8 +9,8 @@ import { MatSort} from '@angular/material/sort';
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { ResponseStrings, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';

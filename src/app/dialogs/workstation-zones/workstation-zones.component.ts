@@ -11,13 +11,13 @@ import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject';
 import { DeleteConfirmationComponent } from '../../../app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { ConfirmationDialogComponent } from '../../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { AuthService } from '../../../app/init/auth.service';
-import labels from '../../labels/labels.json'; 
+import { AuthService } from '../../common/init/auth.service';
+import labels from 'src/app/common/labels/labels.json'; 
 import { MatAutocomplete } from '@angular/material/autocomplete';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
-import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
-import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({

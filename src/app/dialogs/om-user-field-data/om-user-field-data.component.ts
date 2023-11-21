@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {  MatDialogRef } from '@angular/material/dialog';
 
-import { AuthService } from 'src/app/init/auth.service'; 
-import labels from '../../labels/labels.json'; 
-import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
-import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { AuthService } from 'src/app/common/init/auth.service'; 
+import labels from 'src/app/common/labels/labels.json'; 
+import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({

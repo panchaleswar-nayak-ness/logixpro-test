@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
 
 @Component({

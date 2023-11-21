@@ -2,10 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { OmAddRecordComponent } from '../om-add-record/om-add-record.component';
 import { OmUserFieldDataComponent } from '../om-user-field-data/om-user-field-data.component';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { Router } from '@angular/router';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import labels from '../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { MatAutocomplete } from '@angular/material/autocomplete'; 
 import { ColumnSequenceDialogComponent } from 'src/app/admin/dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -15,10 +15,10 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatPaginator } from '@angular/material/paginator'; 
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
-import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 
 @Component({

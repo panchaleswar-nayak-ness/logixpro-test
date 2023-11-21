@@ -1,6 +1,6 @@
 import { Component, Input} from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { SharedService } from 'src/app/services/shared.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 
 @Component({
   selector: 'app-weight-scale',

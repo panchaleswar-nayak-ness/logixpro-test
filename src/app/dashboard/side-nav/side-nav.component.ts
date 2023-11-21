@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SharedService } from '../../../app/services/shared.service';
-import { AuthService } from '../../../app/init/auth.service';
+import { SharedService } from '../../common/services/shared.service';
+import { AuthService } from '../../common/init/auth.service';
 import { HttpClient } from '@angular/common/http'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 
 @Component({
   selector: 'app-side-nav',

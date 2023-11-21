@@ -12,8 +12,8 @@ import { CrEditDesignTestDataComponent } from '../cr-edit-design-test-data/cr-ed
 import { catchError, of } from 'rxjs';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { CrDesignFilenameConfirmationComponent } from '../cr-design-filename-confirmation/cr-design-filename-confirmation.component';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({

@@ -3,11 +3,11 @@ import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table'; 
 import {MatPaginator} from '@angular/material/paginator';
-import { SignalrServiceService } from '../../../../app/services/signalr-service.service';
+import { SignalrServiceService } from '../../../common/services/signalr-service.service';
 import { HttpClient } from '@angular/common/http';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 

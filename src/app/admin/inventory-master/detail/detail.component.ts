@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { ItemCategoryComponent } from '../../dialogs/item-category/item-category.component';
 import { ItemNumberComponent } from '../../dialogs/item-number/item-number.component';
 import { UnitMeasureComponent } from '../../dialogs/unit-measure/unit-measure.component';
 import { UpdateDescriptionComponent } from '../../dialogs/update-description/update-description.component'; 
 import { Router } from '@angular/router';
-import { SharedService } from 'src/app/services/shared.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 import { Observable, Subscription } from 'rxjs';
 import { CurrentTabDataService } from '../current-tab-data-service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

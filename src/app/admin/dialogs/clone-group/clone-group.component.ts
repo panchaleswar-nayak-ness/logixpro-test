@@ -2,12 +2,12 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { CustomValidatorService } from '../../../../app/init/custom-validator.service'; 
-import labels from '../../../labels/labels.json';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { CustomValidatorService } from '../../../common/init/custom-validator.service'; 
+import labels from 'src/app/common/labels/labels.json';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 

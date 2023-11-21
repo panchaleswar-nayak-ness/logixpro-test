@@ -3,8 +3,8 @@ import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-ppa-ts-batch-setup',

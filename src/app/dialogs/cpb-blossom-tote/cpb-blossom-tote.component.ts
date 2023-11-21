@@ -2,10 +2,10 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import labels from '../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-cpb-blossom-tote',

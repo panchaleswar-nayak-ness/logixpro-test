@@ -14,17 +14,17 @@ import { map } from 'rxjs/internal/operators/map';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject';
-import { AuthService } from '../../../app/init/auth.service';
+import { AuthService } from '../../common/init/auth.service';
 import { AddFilterFunction } from '../add-filter-function/add-filter-function.component';
-import labels from '../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { DeleteConfirmationComponent } from '../../../app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { MatSelect } from '@angular/material/select';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatOption } from '@angular/material/core';
 import { MatSort } from '@angular/material/sort';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {

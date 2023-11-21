@@ -3,8 +3,8 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 import { GlobalService } from 'src/app/common/services/global.service';
 
-import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 
 
 @Component({

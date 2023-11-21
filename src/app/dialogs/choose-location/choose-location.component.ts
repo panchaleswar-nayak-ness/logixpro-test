@@ -6,9 +6,9 @@ import {
 
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AuthService } from 'src/app/init/auth.service';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-choose-location',

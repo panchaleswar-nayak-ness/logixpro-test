@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { map } from 'rxjs';
-import { SharedService } from 'src/app/services/shared.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 import { environment } from 'src/environments/environment';
 
 @Component({

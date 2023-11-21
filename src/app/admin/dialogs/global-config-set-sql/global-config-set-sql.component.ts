@@ -1,9 +1,9 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import labels from '../../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { SqlAuthConfirmationComponent } from '../sql-auth-confirmation/sql-auth-confirmation.component';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DialogConstants, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import labels from '../../labels/labels.json'
-import { UserApiService } from 'src/app/services/user-api/user-api.service';
-import { IUserAPIService } from 'src/app/services/user-api/user-api-interface';
+import labels from 'src/app/common/labels/labels.json';
+import { UserApiService } from 'src/app/common/services/user-api/user-api.service';
+import { IUserAPIService } from 'src/app/common/services/user-api/user-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({

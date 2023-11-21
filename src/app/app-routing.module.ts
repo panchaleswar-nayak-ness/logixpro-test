@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainComponent } from './dashboard/main/main.component';
 import { GlobalConfigComponent } from './global-config/global-config.component';
-import { AuthGuardGuard } from './guard/auth-guard.guard';
+import { AuthGuardGuard } from './common/guard/auth-guard.guard';
 import { LoginComponent } from './login/login.component';
 import { GlobalDashboardComponent } from './global-config/dashboard/dashboard.component';
 import { DatabaseConnectionsComponent } from './global-config/database-connections/database-connections.component';

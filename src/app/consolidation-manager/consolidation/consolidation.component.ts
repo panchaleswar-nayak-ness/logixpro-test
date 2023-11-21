@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
-import { AuthService } from '../../../app/init/auth.service';
+import { AuthService } from '../../common/init/auth.service';
 import { CmConfirmAndPackingSelectTransactionComponent } from 'src/app/dialogs/cm-confirm-and-packing-select-transaction/cm-confirm-and-packing-select-transaction.component';
 import { CmConfirmAndPackingComponent } from 'src/app/dialogs/cm-confirm-and-packing/cm-confirm-and-packing.component';
 import { CmItemSelectedComponent } from 'src/app/dialogs/cm-item-selected/cm-item-selected.component';
@@ -18,8 +18,8 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
-import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
-import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 

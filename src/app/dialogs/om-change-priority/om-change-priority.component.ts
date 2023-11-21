@@ -1,8 +1,8 @@
 import { Component, OnInit , Inject, ViewChild, ElementRef} from '@angular/core';  
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';  
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({

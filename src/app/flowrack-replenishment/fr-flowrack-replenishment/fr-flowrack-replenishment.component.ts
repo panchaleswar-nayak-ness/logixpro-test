@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FrNumpadComponent } from '../../dialogs/fr-numpad/fr-numpad.component'; 
-import { AuthService } from '../../init/auth.service';
+import { AuthService } from '../../common/init/auth.service';
 import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete'; 
-import { IFlowRackReplenishApi } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api-interface';
-import { FlowRackReplenishApiService } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api.service';
+import { IFlowRackReplenishApi } from 'src/app/common/services/flowrackreplenish-api/flowrackreplenish-api-interface';
+import { FlowRackReplenishApiService } from 'src/app/common/services/flowrackreplenish-api/flowrackreplenish-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AppIcons, AppNames, AppPermissions, AppRoutes, ResponseStrings, RouteNames, RouteUpdateMenu, StringAssignments, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';

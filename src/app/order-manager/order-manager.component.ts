@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../init/auth.service';
+import { AuthService } from '../common/init/auth.service';
 import { NavigationEnd, Router} from '@angular/router';
 import { GlobalService } from '../common/services/global.service';
-import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
-import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({

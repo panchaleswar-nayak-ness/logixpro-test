@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
  
-import labels from '../../../labels/labels.json';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import labels from 'src/app/common/labels/labels.json';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

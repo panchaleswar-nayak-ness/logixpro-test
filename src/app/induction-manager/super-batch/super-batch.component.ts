@@ -2,12 +2,12 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatRadioChange } from '@angular/material/radio';
 
 import { RequiredDateStatusComponent } from '../../../app/dialogs/required-date-status/required-date-status.component';
-import { AuthService } from '../../../app/init/auth.service'; 
-import labels from '../../labels/labels.json';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AuthService } from '../../common/init/auth.service'; 
+import labels from 'src/app/common/labels/labels.json';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({

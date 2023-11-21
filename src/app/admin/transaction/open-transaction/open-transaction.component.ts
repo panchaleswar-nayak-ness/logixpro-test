@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { AuthService } from 'src/app/init/auth.service';
-import { ITransactionModelIndex } from 'src/app/interface/transaction'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { ITransactionModelIndex } from 'src/app/common/interface/transaction'; 
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 
 @Component({
   selector: 'app-open-transaction',

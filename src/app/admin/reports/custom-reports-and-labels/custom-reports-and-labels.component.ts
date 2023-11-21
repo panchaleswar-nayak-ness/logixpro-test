@@ -4,14 +4,14 @@ import { NavigationEnd, Router } from '@angular/router';
 import { CrAddNewCustomReportComponent } from 'src/app/dialogs/cr-add-new-custom-report/cr-add-new-custom-report.component';
 import { CrDeleteConfirmationComponent } from 'src/app/dialogs/cr-delete-confirmation/cr-delete-confirmation.component';
 import { CrEditDesignTestDataComponent } from 'src/app/dialogs/cr-edit-design-test-data/cr-edit-design-test-data.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({

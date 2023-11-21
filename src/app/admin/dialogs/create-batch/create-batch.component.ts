@@ -6,7 +6,7 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 
-import { SharedService } from 'src/app/services/shared.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.component';
 

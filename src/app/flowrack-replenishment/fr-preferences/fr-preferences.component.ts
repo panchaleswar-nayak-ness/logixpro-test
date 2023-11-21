@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AuthService } from 'src/app/init/auth.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { IFlowRackReplenishApi } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api-interface';
-import { FlowRackReplenishApiService } from 'src/app/services/flowrackreplenish-api/flowrackreplenish-api.service';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IFlowRackReplenishApi } from 'src/app/common/services/flowrackreplenish-api/flowrackreplenish-api-interface';
+import { FlowRackReplenishApiService } from 'src/app/common/services/flowrackreplenish-api/flowrackreplenish-api.service';
 
 @Component({
   selector: 'app-fr-preferences',

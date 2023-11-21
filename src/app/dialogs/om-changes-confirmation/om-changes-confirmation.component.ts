@@ -3,9 +3,9 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AuthService } from 'src/app/init/auth.service'; 
-import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
-import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
+import { AuthService } from 'src/app/common/init/auth.service'; 
+import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
 
 @Component({
   selector: 'app-om-changes-confirmation',

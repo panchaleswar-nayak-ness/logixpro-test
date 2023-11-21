@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component'; 
-import labels from '../../labels/labels.json'; 
-import { AuthService } from 'src/app/init/auth.service';
+import labels from 'src/app/common/labels/labels.json'; 
+import { AuthService } from 'src/app/common/init/auth.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { DatePipe } from '@angular/common';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-om-event-log-entry-detail',

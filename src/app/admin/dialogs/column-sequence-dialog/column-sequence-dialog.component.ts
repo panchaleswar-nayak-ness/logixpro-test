@@ -1,12 +1,12 @@
 import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import { AuthService } from 'src/app/init/auth.service';
-import labels from '../../../labels/labels.json';
+import { AuthService } from 'src/app/common/init/auth.service';
+import labels from 'src/app/common/labels/labels.json';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiFuntions } from '../ApiFuntions';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { IOrderManagerAPIService } from './order-manager-api-interface'
 
 @Injectable({

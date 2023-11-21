@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 
 @Component({
   selector: 'app-ste',

@@ -3,21 +3,21 @@ import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { SetItemLocationComponent } from '../../dialogs/set-item-location/set-item-location.component';
 import { TemporaryManualOrderNumberAddComponent } from '../../dialogs/temporary-manual-order-number-add/temporary-manual-order-number-add.component';
-import labels from '../../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { PostManualTransactionComponent } from '../../dialogs/post-manual-transaction/post-manual-transaction.component';
 import { DeleteConfirmationManualTransactionComponent } from '../../dialogs/delete-confirmation-manual-transaction/delete-confirmation-manual-transaction.component';
 import { InvalidQuantityComponent } from '../../dialogs/invalid-quantity/invalid-quantity.component';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { CommonApiService } from 'src/app/services/common-api/common-api.service';
-import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
+import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import {
   DialogConstants,
   ToasterTitle,

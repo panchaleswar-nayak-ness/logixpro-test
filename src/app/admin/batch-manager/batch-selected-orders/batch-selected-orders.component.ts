@@ -11,15 +11,15 @@ import {
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { AuthService } from '../../../../app/init/auth.service';
-import labels from '../../../labels/labels.json';
-import { SharedService } from 'src/app/services/shared.service';
+import { AuthService } from '../../../common/init/auth.service';
+import labels from 'src/app/common/labels/labels.json';
+import { SharedService } from 'src/app/common/services/shared.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { CreateBatchConfirmationComponent } from '../../dialogs/create-batch-confirmation/create-batch-confirmation.component';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({

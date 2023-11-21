@@ -2,10 +2,10 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { IEmployee } from 'src/app/Iemployee';
-import { AuthService } from '../../../../app/init/auth.service';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { IEmployee } from 'src/app/common/interface/Iemployee';
+import { AuthService } from '../../../common/init/auth.service';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { LiveAnnouncerMessage, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

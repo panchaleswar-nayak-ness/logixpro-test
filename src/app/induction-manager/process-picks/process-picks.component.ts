@@ -10,18 +10,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BlossomToteComponent } from 'src/app/dialogs/blossom-tote/blossom-tote.component';
 import { Observable } from 'rxjs/internal/Observable';
-import { AuthService } from '../../../app/init/auth.service';
+import { AuthService } from '../../common/init/auth.service';
 import { FormControl } from '@angular/forms';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { PickToteManagerComponent } from 'src/app/dialogs/pick-tote-manager/pick-tote-manager.component';
 import { map, Subject, takeUntil } from 'rxjs';
-import labels from '../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import {
   StringConditions,
   ToasterMessages,

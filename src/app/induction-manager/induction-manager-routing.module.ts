@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
-import { AuthGuardGuard } from '../guard/auth-guard.guard';
+import { AuthGuardGuard } from '../common/guard/auth-guard.guard';
 import { InductionManagerComponent } from './induction-manager.component';
 import { ProcessPicksComponent } from './process-picks/process-picks.component';
 import { ProcessPutAwaysComponent } from './process-put-aways/process-put-aways.component';
 import { SuperBatchComponent } from './super-batch/super-batch.component';
 import { AdminPrefrencesComponent } from './admin-prefrences/admin-prefrences.component';
-import { ConfirmationGuard } from '../guard/confirmation-guard.guard';
+import { ConfirmationGuard } from '../common/guard/confirmation-guard.guard';
 import { TransactionComponent } from '../admin/transaction/transaction.component';
 import { InventoryMapComponent } from '../admin/inventory-map/inventory-map.component';
 import { InventoryMasterComponent } from '../admin/inventory-master/inventory-master.component';

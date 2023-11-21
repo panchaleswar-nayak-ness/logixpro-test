@@ -5,7 +5,7 @@ import { BatchDeleteComponent } from 'src/app/dialogs/batch-delete/batch-delete.
 import { SelectZonesComponent } from 'src/app/dialogs/select-zones/select-zones.component';
 import { SelectionTransactionForToteComponent } from 'src/app/dialogs/selection-transaction-for-tote/selection-transaction-for-tote.component';
 import { TotesAddEditComponent } from 'src/app/dialogs/totes-add-edit/totes-add-edit.component';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
@@ -22,11 +22,11 @@ import { ReelDetailComponent } from 'src/app/dialogs/reel-detail/reel-detail.com
 import { ReelTransactionsComponent } from 'src/app/dialogs/reel-transactions/reel-transactions.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
-import { SharedService } from 'src/app/services/shared.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 import { Router } from '@angular/router';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

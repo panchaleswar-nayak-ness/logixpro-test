@@ -11,12 +11,12 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth.service';
 import { SpinnerService } from './spinner.service';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { IUserAPIService } from '../services/user-api/user-api-interface';
 import { UserApiService } from '../services/user-api/user-api.service';
-import { GlobalService } from '../common/services/global.service';
-import { ToasterTitle, ToasterType } from '../common/constants/strings.constants';
+import { GlobalService } from '../services/global.service';
+import { ToasterTitle, ToasterType } from '../constants/strings.constants';
 
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {

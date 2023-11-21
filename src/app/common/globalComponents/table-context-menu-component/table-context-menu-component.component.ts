@@ -2,7 +2,7 @@ import { Component, ViewChild, Output, EventEmitter, Input, OnInit } from '@angu
 import { MatMenuTrigger } from '@angular/material/menu';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
-import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
 import { TableContextMenuService } from './table-context-menu.service';
 import { OperationTypes } from './../../enums/CommonEnums';
 import { Operations } from './../../types/CommonTypes';

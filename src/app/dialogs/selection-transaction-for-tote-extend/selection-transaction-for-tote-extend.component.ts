@@ -3,9 +3,9 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { formatDate } from '@angular/common' 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component'; 
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { CrossDockTransactionComponent } from '../cross-dock-transaction/cross-dock-transaction.component';
-import labels from '../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { CellSizeComponent } from 'src/app/admin/dialogs/cell-size/cell-size.component';
 import { VelocityCodeComponent } from 'src/app/admin/dialogs/velocity-code/velocity-code.component';  
 import { ChooseLocationComponent } from '../choose-location/choose-location.component';
@@ -13,12 +13,12 @@ import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.co
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { PaPrintLabelConfirmationComponent } from '../pa-print-label-confirmation/pa-print-label-confirmation.component';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
-import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
-import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 
 @Component({

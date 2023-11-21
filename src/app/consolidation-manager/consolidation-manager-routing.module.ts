@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuardGuard } from '../guard/auth-guard.guard';
+import { AuthGuardGuard } from '../common/guard/auth-guard.guard';
 import { ConsolidationManagerComponent } from './consolidation-manager.component';
 import { ConsolidationComponent } from './consolidation/consolidation.component';
 import { ConsolidationPreferencesComponent } from './consolidation-preferences/consolidation-preferences.component';

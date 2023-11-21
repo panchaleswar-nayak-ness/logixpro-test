@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, Router } from '@angular/router';
-import { ConfirmationDialogComponent } from '../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { GlobalService } from '../common/services/global.service';
+import { ConfirmationDialogComponent } from '../../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { GlobalService } from '../services/global.service';
 
 @Injectable({
   providedIn: 'root'

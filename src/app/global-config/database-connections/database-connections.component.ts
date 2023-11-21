@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
-import { SharedService } from 'src/app/services/shared.service'; 
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
+import { SharedService } from 'src/app/common/services/shared.service'; 
 
 @Component({
   selector: 'app-database-connections',

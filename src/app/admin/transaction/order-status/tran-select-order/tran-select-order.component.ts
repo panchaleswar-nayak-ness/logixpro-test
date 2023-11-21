@@ -3,12 +3,12 @@ import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, Subscription } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { AuthService } from 'src/app/init/auth.service';
-import { SharedService } from 'src/app/services/shared.service';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { ActivatedRoute } from '@angular/router';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Column, DialogConstants, Mode, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

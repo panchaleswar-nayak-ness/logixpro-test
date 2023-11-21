@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';

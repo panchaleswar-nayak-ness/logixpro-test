@@ -1,20 +1,20 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import labels from '../../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {  } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 
-import { AuthService } from 'src/app/init/auth.service'; 
+import { AuthService } from 'src/app/common/init/auth.service'; 
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 
 import { error } from 'jquery';
 import { ConfirmationMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
 
 export interface PeriodicElement {

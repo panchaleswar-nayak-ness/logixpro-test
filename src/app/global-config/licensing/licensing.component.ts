@@ -2,13 +2,13 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { SharedService } from 'src/app/services/shared.service'; 
-import labels from '../../labels/labels.json';
+import { SharedService } from 'src/app/common/services/shared.service'; 
+import labels from 'src/app/common/labels/labels.json';
 import { LicensingInvalidComponent } from 'src/app/admin/dialogs/licensing-invalid/licensing-invalid.component';
 import { Subject, takeUntil } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 export interface PeriodicElement {

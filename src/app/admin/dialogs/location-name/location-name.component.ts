@@ -1,12 +1,12 @@
 import { Component, OnInit} from '@angular/core'; 
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 
 import {MatDialogRef } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

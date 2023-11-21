@@ -5,8 +5,8 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
-import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-supplier-item-id',

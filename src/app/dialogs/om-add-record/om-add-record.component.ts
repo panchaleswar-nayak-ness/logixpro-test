@@ -1,14 +1,14 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { AuthService } from 'src/app/init/auth.service'; 
-import labels from '../../labels/labels.json';
+import { AuthService } from 'src/app/common/init/auth.service'; 
+import labels from 'src/app/common/labels/labels.json';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { OrderManagerApiService } from 'src/app/services/orderManager-api/order-manager-api.service';
-import { IOrderManagerAPIService } from 'src/app/services/orderManager-api/order-manager-api-interface';
-import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
-import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
+import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-om-add-record',

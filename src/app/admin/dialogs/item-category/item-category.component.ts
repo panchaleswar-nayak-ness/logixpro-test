@@ -1,12 +1,12 @@
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from '../../../../app/init/auth.service';
-import labels from '../../../labels/labels.json'
+import { AuthService } from '../../../common/init/auth.service';
+import labels from 'src/app/common/labels/labels.json';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
-import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { DialogConstants, Mode, StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({

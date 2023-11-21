@@ -3,7 +3,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ViewOrdersComponent } from 'src/app/dialogs/view-orders/view-orders.component';
 import { takeUntil } from 'rxjs';
 import { WorkstationZonesComponent } from 'src/app/dialogs/workstation-zones/workstation-zones.component';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-process-pick-batches',

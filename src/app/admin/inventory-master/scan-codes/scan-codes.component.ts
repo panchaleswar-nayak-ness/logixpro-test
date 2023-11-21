@@ -1,14 +1,14 @@
 import { Component, Input,SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms'; 
-import { AuthService } from 'src/app/init/auth.service';
-import labels from '../../../labels/labels.json'
+import { AuthService } from 'src/app/common/init/auth.service';
+import labels from 'src/app/common/labels/labels.json';
 import { ScanTypeCodeComponent } from '../../dialogs/scan-type-code/scan-type-code.component';
-import { CustomValidatorService } from '../../../../app/init/custom-validator.service';
+import { CustomValidatorService } from '../../../common/init/custom-validator.service';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
-import { SharedService } from 'src/app/services/shared.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 import { catchError, of } from 'rxjs';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({

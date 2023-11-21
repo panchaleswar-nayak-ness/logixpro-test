@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { SharedService } from 'src/app/services/shared.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 
 @Component({
   selector: 'app-sp-lookup-lists',

@@ -1,10 +1,10 @@
 import { Component} from '@angular/core';
-import { IEmployee,EmployeeObject,AdminEmployeeLookupResponse,AccessGroupObject } from '../Iemployee'; 
+import { IEmployee,EmployeeObject,AdminEmployeeLookupResponse,AccessGroupObject } from '../common/interface/Iemployee'; 
 import { Router } from '@angular/router';
-import { ApiFuntions } from '../services/ApiFuntions';
-import { SharedService } from '../services/shared.service';
-import { IAdminApiService } from '../services/admin-api/admin-api-interface';
-import { AdminApiService } from '../services/admin-api/admin-api.service';
+import { ApiFuntions } from '../common/services/ApiFuntions';
+import { SharedService } from '../common/services/shared.service';
+import { IAdminApiService } from '../common/services/admin-api/admin-api-interface';
+import { AdminApiService } from '../common/services/admin-api/admin-api.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',

@@ -114,7 +114,7 @@ import { CCBCreateCountsComponent } from './cycle-counts/create-count-batches/cr
 import { CCBCountQueueComponent } from './cycle-counts/create-count-batches/count-queue/count-queue.component';
 import { CreateCountBatchesComponent } from './cycle-counts/create-count-batches/create-count-batches.component';
 import { BatchManagerDetailViewComponent } from './dialogs/batch-manager-detail-view/batch-manager-detail-view.component';
-import { InputSpacesPreventDirective } from '../init/input-spaces-prevent.directive';
+import { InputSpacesPreventDirective } from '../common/init/input-spaces-prevent.directive';
 import { BmToteidEntryComponent } from './dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { SystemReplenishmentComponent } from './system-replenishment/system-replenishment.component';
 import { SrNewOrderComponent } from './system-replenishment/sr-new-order/sr-new-order.component';

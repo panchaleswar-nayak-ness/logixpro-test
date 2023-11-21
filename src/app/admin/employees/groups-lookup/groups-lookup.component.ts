@@ -4,10 +4,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { EmployeeObject } from 'src/app/Iemployee';
-import { AuthService } from '../../../../app/init/auth.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { EmployeeObject } from 'src/app/common/interface/Iemployee';
+import { AuthService } from '../../../common/init/auth.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
 

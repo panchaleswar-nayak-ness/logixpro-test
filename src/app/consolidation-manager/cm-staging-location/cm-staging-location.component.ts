@@ -1,9 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { CmOrderToteConflictComponent } from 'src/app/dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
 import { StagingLocationOrderComponent } from 'src/app/dialogs/staging-location-order/staging-location-order.component';
-import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
-import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AppRoutes, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

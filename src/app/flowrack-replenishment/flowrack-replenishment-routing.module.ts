@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FrPreferencesComponent } from './fr-preferences/fr-preferences.component';
 import { FlowrackReplenishmentComponent } from './flowrack-replenishment.component';
-import { AuthGuardGuard } from '../guard/auth-guard.guard';
+import { AuthGuardGuard } from '../common/guard/auth-guard.guard';
 import { FrFlowrackReplenishmentComponent } from './fr-flowrack-replenishment/fr-flowrack-replenishment.component';
 
 const routes: Routes = [

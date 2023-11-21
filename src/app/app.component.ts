@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { BrowserCloseService } from './services/browser-close.service';
-import { BroadcastService } from './init/broadcast.service';
+import { BrowserCloseService } from './common/services/browser-close.service';
+import { BroadcastService } from './common/init/broadcast.service';
 
 @Component({
   selector: 'app-root',

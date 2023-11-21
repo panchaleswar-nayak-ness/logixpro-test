@@ -3,14 +3,14 @@ import { ILogin} from './Ilogin';
 import { FormControl} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { SpinnerService } from '../init/spinner.service';
-import { AuthService } from '../init/auth.service'; 
+import { SpinnerService } from '../common/init/spinner.service';
+import { AuthService } from '../common/init/auth.service'; 
 import packJSON from '../../../package.json'
-import { SharedService } from '../services/shared.service';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
-import { IUserAPIService } from '../services/user-api/user-api-interface';
-import { UserApiService } from '../services/user-api/user-api.service';
+import { SharedService } from '../common/services/shared.service';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
+import { IUserAPIService } from '../common/services/user-api/user-api-interface';
+import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
 
 @Component({

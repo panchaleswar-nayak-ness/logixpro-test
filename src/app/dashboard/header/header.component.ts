@@ -1,20 +1,20 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { SpinnerService } from '../../../app/init/spinner.service'; 
+import { SpinnerService } from '../../common/init/spinner.service'; 
 import { Router,NavigationEnd  } from '@angular/router';
-import { AuthService } from '../../../app/init/auth.service';
-import { SharedService } from 'src/app/services/shared.service'; 
+import { AuthService } from '../../common/init/auth.service';
+import { SharedService } from 'src/app/common/services/shared.service'; 
 import { Title } from '@angular/platform-browser';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Subscription } from 'rxjs';
 import { DPrinterSetupComponent } from 'src/app/dialogs/d-printer-setup/d-printer-setup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StylesService } from 'src/app/services/styles.service';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
-import { IUserAPIService } from 'src/app/services/user-api/user-api-interface';
-import { UserApiService } from 'src/app/services/user-api/user-api.service';
+import { StylesService } from 'src/app/common/services/styles.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
+import { IUserAPIService } from 'src/app/common/services/user-api/user-api-interface';
+import { UserApiService } from 'src/app/common/services/user-api/user-api.service';
 
 export interface ITheme {
   name : string

@@ -1,12 +1,12 @@
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { AuthService } from "src/app/init/auth.service";
+import { AuthService } from "src/app/common/init/auth.service";
 import { Component, Inject, OnInit, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort, Sort } from "@angular/material/sort";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
-import { IConsolidationApi } from "src/app/services/consolidation-api/consolidation-api-interface";
-import { ConsolidationApiService } from "src/app/services/consolidation-api/consolidation-api.service";
+import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
+import { ConsolidationApiService } from "src/app/common/services/consolidation-api/consolidation-api.service";
 import { GlobalService } from "src/app/common/services/global.service";
 
 @Component({

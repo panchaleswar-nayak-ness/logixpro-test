@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
  
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import { CmConfirmAndPackingProcessTransactionComponent } from '../cm-confirm-and-packing-process-transaction/cm-confirm-and-packing-process-transaction.component';
 import { CmConfirmAndPackingSelectTransactionComponent } from '../cm-confirm-and-packing-select-transaction/cm-confirm-and-packing-select-transaction.component';
@@ -11,8 +11,8 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
-import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',

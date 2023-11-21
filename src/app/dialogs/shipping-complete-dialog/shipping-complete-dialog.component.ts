@@ -5,8 +5,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
-import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
+import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 
 @Component({
   selector: 'app-shipping-complete-dialog',

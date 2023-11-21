@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { SharedService } from '../services/shared.service';
-import { AuthService } from '../init/auth.service';
+import { SharedService } from '../common/services/shared.service';
+import { AuthService } from '../common/init/auth.service';
 
 @Component({
   selector: 'app-consolidation-manager',

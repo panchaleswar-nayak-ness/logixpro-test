@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router,RoutesRecognized } from '@angular/router';
 import { filter, pairwise } from 'rxjs/operators';
-import { AuthService } from '../init/auth.service';
-import { SharedService } from '../services/shared.service';
-import { ApiFuntions } from '../services/ApiFuntions';
-import { IInductionManagerApiService } from '../services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from '../services/induction-manager-api/induction-manager-api.service';
+import { AuthService } from '../common/init/auth.service';
+import { SharedService } from '../common/services/shared.service';
+import { ApiFuntions } from '../common/services/ApiFuntions';
+import { IInductionManagerApiService } from '../common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from '../common/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-induction-manager',

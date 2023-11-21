@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 
 @Component({
   selector: 'app-assigned-functions',

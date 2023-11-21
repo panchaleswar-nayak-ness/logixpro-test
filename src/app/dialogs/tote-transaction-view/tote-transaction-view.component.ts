@@ -13,11 +13,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { BatchDeleteComponent } from '../batch-delete/batch-delete.component';
 import { MarkToteFullComponent } from '../mark-tote-full/mark-tote-full.component';
-import labels from '../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { PageEvent } from '@angular/material/paginator'; 
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-tote-transaction-view',

@@ -2,14 +2,14 @@ import { Component, OnInit, Inject, ViewChild, TemplateRef, ElementRef } from '@
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import {MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import labels from '../../../labels/labels.json'; 
-import { AdminEmployeeLookupResponse } from 'src/app/Iemployee';
+import labels from 'src/app/common/labels/labels.json'; 
+import { AdminEmployeeLookupResponse } from 'src/app/common/interface/Iemployee';
 import { Router } from '@angular/router';
-import { CustomValidatorService } from '../../../../app/init/custom-validator.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { CustomValidatorService } from '../../../common/init/custom-validator.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

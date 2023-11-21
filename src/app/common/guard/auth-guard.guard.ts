@@ -5,7 +5,7 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Activ
 import { AuthService } from '../init/auth.service';
 import { HttpClient } from '@angular/common/http'
 import { Location } from '@angular/common';
-import { CurrentTabDataService } from '../admin/inventory-master/current-tab-data-service';
+import { CurrentTabDataService } from '../../admin/inventory-master/current-tab-data-service';
 import { SharedService } from '../services/shared.service';
 
 

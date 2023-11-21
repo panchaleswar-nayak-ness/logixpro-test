@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router} from '@angular/router';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject';
-import { AuthService } from '../../init/auth.service';
+import { AuthService } from '../../common/init/auth.service';
 import { AddInvMapLocationComponent } from '../dialogs/add-inv-map-location/add-inv-map-location.component';
 import { AdjustQuantityComponent } from '../dialogs/adjust-quantity/adjust-quantity.component';
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
@@ -18,12 +18,12 @@ import { QuarantineConfirmationComponent } from '../dialogs/quarantine-confirmat
 import { ColumnSequenceDialogComponent } from '../dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { RouteHistoryService } from 'src/app/services/route-history.service';
+import { RouteHistoryService } from 'src/app/common/services/route-history.service';
 import { PrintRangeComponent } from '../dialogs/print-range/print-range.component';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from '../inventory-master/current-tab-data-service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { AppNames, AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

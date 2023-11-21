@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IFlowRackReplenishApi } from './flowrackreplenish-api-interface'
 import { ApiFuntions } from '../ApiFuntions';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 
 @Injectable({
   providedIn: 'root'

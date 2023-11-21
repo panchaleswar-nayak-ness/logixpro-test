@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { TransactionQtyEditComponent } from 'src/app/dialogs/transaction-qty-edit/transaction-qty-edit.component'; 
-import { AuthService } from 'src/app/init/auth.service';
-import labels from '../../../labels/labels.json'
+import { AuthService } from 'src/app/common/init/auth.service';
+import labels from 'src/app/common/labels/labels.json';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { FilterItemNumbersComponent } from '../../dialogs/filter-item-numbers/filter-item-numbers.component';
 import { FormControl } from '@angular/forms';
@@ -13,8 +13,8 @@ import { Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 

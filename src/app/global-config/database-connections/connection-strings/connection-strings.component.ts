@@ -1,11 +1,11 @@
 import { Component, Input,  SimpleChanges, Output, EventEmitter } from '@angular/core';
 
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { IConnectionString } from 'src/app/interface/transaction'; 
+import { IConnectionString } from 'src/app/common/interface/transaction'; 
 import { GlobalConfigSetSqlComponent } from 'src/app/admin/dialogs/global-config-set-sql/global-config-set-sql.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 

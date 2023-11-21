@@ -3,10 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router'; 
 import { NgScrollbarModule } from 'ngx-scrollbar';
-import { ActionDisableDirective } from './init/action-disable.directive';
-import { NumbersOnlyDirective } from './init/NumbersOnly.directive';
-import { SortDirective } from './init/sort.directive';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActionDisableDirective } from './common/init/action-disable.directive';
+import { NumbersOnlyDirective } from './common/init/NumbersOnly.directive';
+import { SortDirective } from './common/init/sort.directive';
 
 @NgModule({
     exports: [
@@ -16,7 +15,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         HttpClientModule,
         ReactiveFormsModule,
         NumbersOnlyDirective,
-        MatTooltipModule, 
         ActionDisableDirective,
         SortDirective
     ],

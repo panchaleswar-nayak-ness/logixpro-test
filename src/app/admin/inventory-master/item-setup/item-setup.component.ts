@@ -2,7 +2,7 @@ import { Component, Input, SimpleChanges} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CellSizeComponent } from '../../dialogs/cell-size/cell-size.component';
 import { VelocityCodeComponent } from '../../dialogs/velocity-code/velocity-code.component';
-import { SharedService } from 'src/app/services/shared.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { GlobalService } from 'src/app/common/services/global.service';
 @Component({

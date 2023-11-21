@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IGlobalConfigApi } from './global-config-api-interface';
 import { ApiFuntions } from '../ApiFuntions';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 
 
 @Injectable({
