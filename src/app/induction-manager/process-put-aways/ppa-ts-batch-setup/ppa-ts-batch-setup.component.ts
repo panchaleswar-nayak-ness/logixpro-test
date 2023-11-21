@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
@@ -24,40 +25,38 @@ export class PpaTsBatchSetupComponent  implements OnInit{
 
   @Output() funCall = new EventEmitter<any>();
 
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi:IInductionManagerApiService;
  
   constructor( 
     private global:GlobalService, 
     public inductionManagerApi: InductionManagerApiService,
   ) { 
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
     this.searchByItem
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
-        this.autocompleteSearchColumnItem();
+        this.autoCompleteSearchColumnItem();
       });
   }
 
   callFun(funName:any,funParam:any){
-    debugger
     this.funCall.emit({funName:funName,funParam:funParam});
-   
   }
 
   getFloatLabelValueItem(): FloatLabelType {
     return this.floatLabelControlItem.value || 'item';
   }
 
-  async autocompleteSearchColumnItem() {
+  async autoCompleteSearchColumnItem() {
     let searchPayload = { batchID: this.batchId };
-    this.iinductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
+    this.iInductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
       (res: any) => {
         if (res.isExecuted &&  res.data) this.searchAutocompleteItemNum = res.data;
         else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("BatchIDTypeAhead",res.responseMessage);
         }
       },

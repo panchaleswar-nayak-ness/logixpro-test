@@ -11,7 +11,7 @@ import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.cons
 @Component({
   selector: 'app-unit-measure',
   templateUrl: './unit-measure.component.html',
-  styleUrls: []
+  styleUrls: ['./unit-measure.component.scss']
 })
 export class UnitMeasureComponent implements OnInit {
   @ViewChildren('unit_name', { read: ElementRef }) unit_name: QueryList<ElementRef>;

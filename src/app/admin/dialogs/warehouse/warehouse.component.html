@@ -6,7 +6,7 @@
     </button>
 </div>
 <div class="d-flex gap-12 my-4 justify-content-end" mat-dialog-content>
-    <button mat-flat-button color="primary" class="add-icon-button" (click)="addwhRow($event)" [disabled]="disableBtn">
+    <button mat-flat-button color="primary" class="add-icon-button" (click)="addwhRow()" [disabled]="disableBtn">
         <span class="material-symbols-outlined">
             add
         </span>
@@ -23,7 +23,7 @@
         </div>
         <ng-scrollbar class="ngScrolbarStyleCC" track="all">
             <div class="card-body">
-                <ng-container *ngFor="let warehouse of warehouse_list;let i = index">
+                <ng-container *ngFor="let warehouse of warehouseList;let i = index">
                     <div class="d-flex align-items-center mb-3">
                         <mat-radio-button value="{{warehouse}}" color="primary" (change)="selectWearHouse(whname.value)"></mat-radio-button>
                         <div class="container w-100">

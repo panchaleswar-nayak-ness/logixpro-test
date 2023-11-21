@@ -1,12 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
 import { AuthService } from 'src/app/common/init/auth.service';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { ToasterMessages, ToasterTitle, ToasterType, showNotificationHeading, showNotificationMessage } from 'src/app/common/constants/strings.constants';
+
 @Component({
   selector: 'app-pallet-receiving',
   templateUrl: './pallet-receiving.component.html',
