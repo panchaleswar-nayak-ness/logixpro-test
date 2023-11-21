@@ -7,11 +7,9 @@
             <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
             <span class="ps-2 w-100">This workstation does not have permission to access {{isDefaultAppVerify?.appName}}</span>
         </div>
-    </ng-container>
-      <ng-container *ngFor="let item of applicationData" >
-        <div class="col-xl-3 col-lg-6"  [routerLink]="item.info.route" 
-        (click)="updateMenu(item.info.updateMenu,item.info)" [ngClass]="(isAuthorized(item.info.permission)||item.info.route == '#') ? 'isDivDisabled' : ''">
-
+      </ng-container>
+      <ng-container *ngFor="let item of applicationData">
+        <div class="col-xl-3 col-lg-6" [routerLink]="item.info.route" (click)="updateMenu(item.info.updateMenu,item.info)" [ngClass]="(isAuthorized(item.info.permission) || item.info.route == '#') ? 'isDivDisabled' : ''">
           <div matRipple [matRippleColor]="tab_hover_color" class="main-section-option">
             <a class="main-section-option-link" href="#"></a>
             <div class="main-section-icon">
@@ -21,12 +19,8 @@
             </div>
             <h4 class="main-section-title text-22">{{item.displayname}}</h4>
           </div>
-
         </div>
-
       </ng-container>
-
-
     </div>
   </div>
 </div>

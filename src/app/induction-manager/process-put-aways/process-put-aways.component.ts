@@ -129,20 +129,22 @@ export class ProcessPutAwaysComponent implements OnInit {
   upperBound = 5
   lowerBound = 1
   
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
   public iAdminApiService: IAdminApiService;
 
   constructor( 
-    private global:GlobalService, 
+    private global: GlobalService, 
     private authService: AuthService,
     public inductionManagerApi: InductionManagerApiService,
     public adminApiService: AdminApiService,
     private _liveAnnouncer: LiveAnnouncer,
-    private router:Router,
-    private sharedService:SharedService,
+    private router: Router,
+    private sharedService: SharedService
+  ) { 
+    this.iAdminApiService = adminApiService;
+    this.iInductionManagerApi = inductionManagerApi;
+  }
 
-  ) { this.iAdminApiService = adminApiService;
-    this.iinductionManagerApi = inductionManagerApi;}
   ngAfterViewInit() {
     setTimeout(() => {
       this.inputVal.nativeElement.focus();
@@ -195,7 +197,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     }
     else if (event.funName == "getRow"){ 
       this.batchId = event.funParam;
-      this.getRow(event.funParam);
+      this.getRow();
     }
     else if (event.funName == "createNewBatch"){
       this.createNewBatch(event.funParam);
@@ -238,7 +240,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   batchIdKeyup(){
-    this.getRow(this.batchId);
+    this.getRow();
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -305,7 +307,7 @@ export class ProcessPutAwaysComponent implements OnInit {
      this.global.Print(`FileName:PrintOffCarList|BatchID:${this.batchId}`);
   }
   getCurrentToteID() {
-    this.iinductionManagerApi.NextTote().subscribe(
+    this.iInductionManagerApi.NextTote().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.currentToteID = res.data;
@@ -335,10 +337,10 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.clearMatSelectList()
   }
 
-  getRow(batchID) {
+  getRow() {
     let payLoad = { batchID: this.batchId2 };    
     this.batchId = this.batchId2;
-    this.iinductionManagerApi.BatchTotes(payLoad).subscribe(
+    this.iInductionManagerApi.BatchTotes(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           debugger
@@ -439,7 +441,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       try {
         setTimeout(() => {
           let payload = { batchID: val }
-          this.iinductionManagerApi.BatchExist(payload).subscribe((res: any) => {
+          this.iInductionManagerApi.BatchExist(payload).subscribe((res: any) => {
             if(res?.isExecuted)
             {
               if (!res.data) {
@@ -542,7 +544,7 @@ export class ProcessPutAwaysComponent implements OnInit {
             }
           }
           const totePaylaod = { "ToteID": toteID }
-          this.iinductionManagerApi.ValidateTotesForPutAways(totePaylaod).subscribe(res => {
+          this.iInductionManagerApi.ValidateTotesForPutAways(totePaylaod).subscribe(res => {
             if (res.data != '') {
               this.global.ShowToastr(ToasterType.Error,`The tote id ${res.data} already exists in Open Transactions. Please select another tote`, ToasterTitle.Error);
               console.log("ValidateTotesForPutAways",res.responseMessage);
@@ -559,7 +561,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                 zoneLabel: this.assignedZones,
                 totes: [toteID, cells, position], 
               };
-              this.iinductionManagerApi.ProcessBatch(payLoad).subscribe(
+              this.iInductionManagerApi.ProcessBatch(payLoad).subscribe(
                 (res: any) => {
                   if (res.data && res.isExecuted) {
                     if(this.imPreferences.autoPrintPutAwayToteLabels){
@@ -593,7 +595,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   IMPreferences:any;
   getProcessPutAwayIndex() {
-    this.iinductionManagerApi.ProcessPutAwayIndex().subscribe(
+    this.iInductionManagerApi.ProcessPutAwayIndex().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.IMPreferences =  res.data.imPreference;
@@ -625,7 +627,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   getNextBatchID() { 
-    this.iinductionManagerApi.NextBatchID().subscribe(
+    this.iInductionManagerApi.NextBatchID().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           this.batchId = res.data;
@@ -646,7 +648,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   updateNxtTote() {
     let updatePayload = { "tote": this.currentToteID }
-    this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
+    this.iInductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
         this.global.ShowToastr(ToasterType.Error,'Something is wrong.', ToasterTitle.Error);
         console.log("NextToteUpdate",res.responseMessage);
@@ -769,7 +771,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   async autocompleteSearchColumnItem() {
     let searchPayload = { batchID: this.batchId };
-    this.iinductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
+    this.iInductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
       (res: any) => {
         if (res.isExecuted &&  res.data){
           this.searchAutocompleteItemNum = res.data; 
@@ -798,7 +800,7 @@ async clearBatchData(){
     let searchPayload = {
       batchID: this.batchId2, 
     };
-    this.iinductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
+    this.iInductionManagerApi.BatchIDTypeAhead(searchPayload).subscribe(
       (res: any) => {
         if (res.isExecuted &&  res.data) {
           this.searchAutocompleteItemNum2 = res.data;
@@ -1101,7 +1103,7 @@ async clearBatchData(){
         sortColumn: 0, 
       };
 
-      this.iinductionManagerApi.TotesTable(payLoad).subscribe(
+      this.iInductionManagerApi.TotesTable(payLoad).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
             for (const iterator of res.data.totesTable) {
@@ -1119,7 +1121,7 @@ async clearBatchData(){
             this.maxPos = this.dataSource2.data.length;
             this.selectTotes(0)
             this.goToNext();
-            this.getRow(batchID ?? this.batchId2);
+            this.getRow();
             this.inputValue = "";
           } else {
             this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
@@ -1153,7 +1155,7 @@ async clearBatchData(){
               batchID: this.batchId2, 
             };
 
-            this.iinductionManagerApi.CompleteBatch(payLoad).subscribe(
+            this.iInductionManagerApi.CompleteBatch(payLoad).subscribe(
               (res: any) => {
                 if (res.isExecuted) {
 
@@ -1307,7 +1309,7 @@ async clearBatchData(){
             batchID: this.batchId2, 
           };
 
-          this.iinductionManagerApi.MarkToteFull(payLoad).subscribe(
+          this.iInductionManagerApi.MarkToteFull(payLoad).subscribe(
             (res: any) => {
               if (res.data && res.isExecuted) {
                 this.global.ShowToastr(ToasterType.Success,
@@ -1423,7 +1425,7 @@ async clearBatchData(){
     {
       batchId: this.batchId,
     };
-    this.iinductionManagerApi.AvailableZone(payLoad).subscribe(
+    this.iInductionManagerApi.AvailableZone(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
         this.zoneDetails = res.data.zoneDetails; 
@@ -1468,9 +1470,7 @@ async clearBatchData(){
 
   pickToteSetupIndex() {
     return new Promise(() => {
-    let paylaod = { 
-    }
-    this.iinductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
+    this.iInductionManagerApi.PickToteSetupIndex({}).subscribe(res => {
       if (res.isExecuted && res.data){
         this.imPreferences = res?.data?.imPreference;
         this.autoAssignAllZones=this.imPreferences.autoAssignAllZones;

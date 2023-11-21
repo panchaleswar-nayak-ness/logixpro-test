@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from "@angular/platform-browser";
-import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr'; 
 import { DashboardComponent } from '../dashboard/dashboard.component';
@@ -9,8 +8,6 @@ import { SideNavComponent } from './side-nav/side-nav.component';
 import { MainComponent } from './main/main.component';
 import { MaterialModule } from '../material-module';
 import { GeneralModule } from '../gen-module';
-
-
 
 @NgModule({
   declarations: [
@@ -22,7 +19,7 @@ import { GeneralModule } from '../gen-module';
   imports: [
     CommonModule,
     BrowserModule, 
-    HttpClientModule,
+    GeneralModule,
     MaterialModule,
     ToastrModule.forRoot({
       timeOut: 2000,
@@ -33,10 +30,7 @@ import { GeneralModule } from '../gen-module';
         success: 'toast-success',
         warning: 'toast-warning',
       }
-    }),
-    GeneralModule
-
-
+    })
   ],
   exports:[
     HeaderComponent,
