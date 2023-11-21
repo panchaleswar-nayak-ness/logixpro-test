@@ -40,7 +40,7 @@ export class SupplierItemIdComponent implements OnInit {
   ngOnInit(): void {
     this.searchByItem
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
+      .subscribe(() => {
         this.autocompleteSearchColumnItem();
       });
   }
@@ -60,7 +60,7 @@ export class SupplierItemIdComponent implements OnInit {
             this.searchAutocompleteItemNum = res.data;
           }
           else{
-            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),ToasterTitle.Error);
             console.log("SupplierItemTypeAhead",res.responseMessage);
           }
         },

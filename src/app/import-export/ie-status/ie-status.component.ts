@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./ie-status.component.scss']
 })
 export class IeStatusComponent  {
-
-
 }

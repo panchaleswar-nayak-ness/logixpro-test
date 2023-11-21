@@ -10,12 +10,12 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-temporary-manual-order-number-add',
   templateUrl: './temporary-manual-order-number-add.component.html',
-  styleUrls: [],
+  styleUrls: ['./temporary-manual-order-number-add.component.scss'],
 })
 export class TemporaryManualOrderNumberAddComponent implements OnInit {
   @ViewChild('ord_nmb') ord_nmb: ElementRef;
@@ -30,7 +30,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
   inventoryMapID;
   searchByOrder: any = new Subject<string>();
   searchByItem: any = new Subject<string>();
-  transType = 'Pick';
+  transType = TransactionType.Pick;
   itemNumber;
   orderRequired: boolean = false;
   public iAdminApiService: IAdminApiService;
@@ -60,9 +60,9 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.ord_nmb.nativeElement.focus();
-    },200);
+    }, 200);
   }
-  searchData(event) {
+  searchData() {
     let payLoad = {
       itemNumber: this.itemNumber
     };
@@ -88,7 +88,6 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
 
           }
         },
-        (error) => { }
       );
 
   }
@@ -115,7 +114,6 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
         }
 
       },
-      (error) => { }
     );
   }
 
@@ -159,7 +157,6 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
                       console.log("NewTransactionSave", res.responseMessage);
                     }
                   },
-                  (error) => { }
                 );
             }
 
@@ -169,7 +166,6 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
             console.log("ItemExists:", res.responseMessage);
           }
         },
-        (error) => { }
       );
 
 
@@ -211,7 +207,6 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
                 console.log("ItemExists", res.responseMessage);
               }
             },
-            (error) => { }
           );
       }
 
@@ -236,13 +231,10 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
           }
 
         },
-        (error) => { }
       );
   }
 
   async autocompleteSearchColumnItem() {
-
-
     let searchPayload = {
       itemNumber: this.itemNumber,
       beginItem: '---',
@@ -257,7 +249,6 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
             this.searchAutocompleteItemNum = res.data
             this.setItem()
           } else {
-
             this.searchAutocompleteItemNum.length = 0;
             this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("SearchItem", res.responseMessage);
@@ -265,13 +256,12 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
           }
 
         },
-        (error) => { }
       );
   }
   ngOnInit(): void {
     this.searchByOrder
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
+      .subscribe(() => {
         if (this.orderNumber != "") {
           this.orderRequired = false;
         }
@@ -280,10 +270,10 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
 
     this.searchByItem
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
+      .subscribe(() => {
         this.autocompleteSearchColumnItem();
       });
-      
+
   }
 
   ngOnDestroy() {

@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./ie-ss-check-for-duplicates.component.scss']
 })
 export class IeSsCheckForDuplicatesComponent {
-
-
 }

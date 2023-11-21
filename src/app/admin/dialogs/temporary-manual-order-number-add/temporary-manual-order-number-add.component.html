@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div class="addDivStyleC"></div>
+    <div class="div-width"></div>
     <h1 class="m-0" mat-dialog-title>Temporary Manual Order Number - Add New</h1>
 
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
@@ -38,7 +38,7 @@
                     <button matSuffix *ngIf="orderNumber" class="clear-btn" (click)="orderNumber=''"><mat-icon
                             class="text-20 text-chrome-600">cancel</mat-icon></button>
 
-                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData($event)">
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="searchData()">
                         <mat-option *ngFor="let option of searchAutocompleteOrderNum" [value]="option.orderNumber">
                             <div>{{option.orderNumber}}</div>
                         </mat-option>
@@ -61,17 +61,19 @@
 
 
                     <mat-autocomplete class="card custom-scroll" #item="matAutocomplete"
-                        (optionSelected)="searchData($event)">
+                        (optionSelected)="searchData()">
 
-                        <h6 class="card-header matAutoCompHeader "><span class="WSize140px">Item Number</span> <span
-                            class="WSize140px">Description</span> </h6>
-
+                        <h6 class="card-header matAutoCompHeader "><span class="span-width">Item Number</span>
+                            <span class="span-width">Description</span>
+                        </h6>
                         <mat-option *ngFor="let option of searchAutocompleteItemNum" [value]="option.itemNumber"
                             class="matAutoCompTableContent" (click)="$event.stopPropagation()">
                             <div class="loc_option">
-                                <span class="searchColumn WSize140px">{{option.itemNumber}}</span> <span
-                                    class="searchColumn WSize140px descOptionStyleC" #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="option.description"
-                                    [matTooltipDisabled]="option.description && option.description.length>=20?false:true">{{option.description}}</span>
+                                <span class="searchColumn" class="span-width">{{option.itemNumber}}</span> <span
+                                    class="searchColumn span-searchColumn" #tooltip="matTooltip"
+                                    matTooltipPosition="above" [matTooltip]="option.description"
+                                    [matTooltipDisabled]="option.description && option.description.length>=20?false:true">{{option.description}}
+                                </span>
                             </div>
                         </mat-option>
                     </mat-autocomplete>
@@ -116,8 +118,7 @@
         <div class="d-flex justify-content-end pt-3">
 
             <button [disabled]=" orderNumber==='' || itemNumber==='' || itemNumber===undefined"
-                (click)="saveTransaction()" mat-flat-button color="primary" class="btn-lg flex-grow-1"
-                >Save
+                (click)="saveTransaction()" mat-flat-button color="primary" class="btn-lg flex-grow-1">Save
                 New Transaction</button>
         </div>
 
