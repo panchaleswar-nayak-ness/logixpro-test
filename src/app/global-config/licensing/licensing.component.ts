@@ -10,7 +10,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 export interface PeriodicElement {
   position: string;
 }
@@ -96,7 +96,7 @@ export class LicensingComponent implements OnInit {
           this.sharedService.setApp(this.licAppData);
         }
         else{
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("AppLicense",res.responseMessage);
         }
       },
@@ -135,7 +135,7 @@ export class LicensingComponent implements OnInit {
         {next: (res: any) => {
           if (res.isExecuted) {
             this.getAppLicense();
-            this.global.ShowToastr('success',res.responseMessage, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
           }else if(!res.isExecuted){
            
 
@@ -158,12 +158,12 @@ export class LicensingComponent implements OnInit {
               });
           }
           else{
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("ValidateLicenseSave",res.responseMessage);
           }
         },
         error: (error) => {
-          this.global.ShowToastr('error',labels.alert.went_worng, 'Error!!');
+          this.global.ShowToastr(ToasterType.Error,labels.alert.went_worng, ToasterTitle.Error);
         }}
       );
   }

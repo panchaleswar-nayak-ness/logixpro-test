@@ -9,7 +9,7 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { IUserAPIService } from '../common/services/user-api/user-api-interface';
 import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
-
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'global-config',
   templateUrl: './global-config.component.html', 
@@ -68,13 +68,13 @@ export class GlobalConfigComponent {
           window.location.reload();
         } else {
           const errorMessage = res.responseMessage;
-          this.global.ShowToastr('error',errorMessage?.toString(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error,errorMessage?.toString(), ToasterTitle.Error);
           console.log("loginUser",res.responseMessage);
         }
       },
       error: (error) => {
         const errorMessage = error.responseMessage;
-        this.global.ShowToastr('error',errorMessage?.toString(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error,errorMessage?.toString(), ToasterTitle.Error);
         console.log("loginUser",errorMessage);
       }}
     );
@@ -96,10 +96,11 @@ export class GlobalConfigComponent {
           localStorage.setItem('workStation', JSON.stringify(workStation));
         } 
         else {
-          this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
+          this.global.ShowToastr(ToasterType.Error,'Kindly contact to administrator', 'Workstation is not set!');
           console.log("getSecurityEnvironment",res.responseMessage);
       }
       });
     }
   }
 }
+
