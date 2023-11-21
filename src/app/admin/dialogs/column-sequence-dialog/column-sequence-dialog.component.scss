@@ -1,17 +1,23 @@
 .custom-scrollbar {
 height: 63vh;
 overflow-y: scroll;
--webkit-overflow-scrolling: touch;
+-webkit-overflow-scrolling: touch!important;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
     width: 11px;
-    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch!important;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background: rgb(216, 215, 215);
-    border-radius: 10px;
+    border-radius: 10px!important;
+}
+.column-sequence-height{
+    height: 53vh; -webkit-overflow-scrolling: touch!important;
+}
+.column-sequence-card{
+    width:48px!important;
 }
 @media screen and (max-width: 769px) {
 button.restore-to-default-btn {
@@ -28,4 +34,11 @@ button.restore-to-default-btn {
       scrollbar-width: thin; /* Width of the scrollbar (thin or auto) */
       scrollbar-color: #888888 #f0f0f0; /* Color of the scrollbar (track color and thumb color) */
     }
+  }
+
+  .h-53vh{
+    height: 53vh;
+  }
+  .webkit-overflow{
+    -webkit-overflow-scrolling: touch;
   }

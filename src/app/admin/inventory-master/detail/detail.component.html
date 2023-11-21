@@ -8,7 +8,7 @@
             <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" (click)="openItemNumDialog()">
               <mat-label>Item No.</mat-label>
               <span matSuffix>
-                <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                <mat-icon class="unfold_more">unfold_more</mat-icon>
               </span>
               <input matInput readonly class="__grab_cursor readonly" type="text" formControlName="itemNumber"  maxlength="50">
             </mat-form-field>
@@ -26,7 +26,7 @@
           <mat-form-field class="filter w-100 stats-filters" appearance="outline" (click)="openDescriptionDialog()">
             <mat-label>Description</mat-label>
             <span matSuffix>
-              <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="unfold_more">unfold_more</mat-icon>
             </span>
             <input readonly class="__grab_cursor readonly" matInput type="text" formControlName="description"  maxlength="255"/>
           </mat-form-field>
@@ -50,12 +50,12 @@
           </mat-form-field>
           </div>
           <div class="col-xl-4">
-          <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="opencategoryDialog()">
+          <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="openCategoryDialog()">
             <mat-label>Category</mat-label>
             <span matSuffix>
-              <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="unfold_more">unfold_more</mat-icon>
             </span>
-            <input matInput type="text" formControlName="category" maxlength="50" readonly >
+            <input matInput type="text" formControlName="category" maxlength="50" readonly>
           </mat-form-field>
           </div>
         </div>
@@ -77,10 +77,10 @@
             </mat-form-field>
           </div>
           <div class="col-xl-4">
-            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="opencategoryDialog()">
+            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="openCategoryDialog()">
               <mat-label>Sub Category</mat-label>
               <span matSuffix>
-                <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                <mat-icon class="unfold_more">unfold_more</mat-icon>
               </span>
               <input matInput type="text" formControlName="subCategory" maxlength="50" readonly >
             </mat-form-field>
@@ -92,7 +92,7 @@
             <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline" (click)="openUmDialog()" >
               <mat-label>{{this.fieldNameDetails?.currentValue?.unitOfMeasure}}</mat-label>
               <span matSuffix>
-                <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                <mat-icon class="unfold_more">unfold_more</mat-icon>
               </span>
               <input matInput type="text" formControlName="unitOfMeasure" maxlength="50" readonly >
             </mat-form-field>

@@ -6,6 +6,4 @@ import { Component} from '@angular/core';
   styleUrls: ['./ie-file-backup.component.scss']
 })
 export class IeFileBackupComponent  {
-
-
 }

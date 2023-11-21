@@ -2,58 +2,56 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/init/auth.service';
 import { Router } from '@angular/router';
-
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-la-location-assignment-quantities',
   templateUrl: './la-location-assignment-quantities.component.html',
-  styleUrls: []
+  styleUrls: ['./la-location-assignment-quantities.component.scss']
 })
 export class LaLocationAssignmentQuantitiesComponent implements OnInit {
 
-  public userData:any;
-  public totalCount:any;
-  public count:any = 0
-  public pick:any = 0
-  public putaway:any = 0
-  public listLabel:any;
-  public listLabelFPZ:any;
+  public userData: any;
+  public totalCount: any;
+  public count: any = 0
+  public pick: any = 0
+  public putAway: any = 0
+  public listLabel: any;
+  public listLabelFPZ: any;
   public iAdminApiService: IAdminApiService;
 
-  constructor( 
-             @Inject(MAT_DIALOG_DATA) public data: any,
-             private Api: ApiFuntions,
-             private authservice : AuthService,
-             private adminApiService: AdminApiService,
-             public dialogRef: MatDialogRef<any>,
-             private router: Router,
-              
-             private global:GlobalService
-             ) { 
-              this.iAdminApiService = adminApiService;
-             }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private authservice: AuthService,
+    public adminApiService: AdminApiService,
+    public dialogRef: MatDialogRef<any>,
+    private router: Router,
+
+    private global: GlobalService
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
 
   ngOnInit(): void {
     this.userData = this.authservice.userData()
     this.getTotalValues()
   }
 
-  getTotalValues(){
+  getTotalValues() {
     this.totalCount = this.data.totalCount;
     this.totalCount.forEach(item => {
       switch (item.transactionType) {
-        case "Count":
+        case TransactionType.Count:
           this.count = item.count;
           break;
-        case "Pick":
+        case TransactionType.Pick:
           this.pick = item.count;
           break;
-        case "Put Away":
-          this.putaway = item.count;
+        case TransactionType.PutAway:
+          this.putAway = item.count;
           break;
         default:
           break;
@@ -62,30 +60,30 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
 
   }
 
-  viewOrderSelection(event:any,index?){
-    this.iAdminApiService.GetLocAssCountTable().subscribe((res:any)=>{
-      if(res.isExecuted){
+  viewOrderSelection(event: any, index?) {
+    this.iAdminApiService.GetLocAssCountTable().subscribe((res: any) => {
+      if (res.isExecuted) {
         res.data.tabIndex = index
-        this.dialogRef.close(res.data);  
+        this.dialogRef.close(res.data);
       }
-      else{
-        this.global.ShowToastr('error',res.responseMessage, 'Error!')
-        console.log("GetLocAssCountTable",res.responseMessage);
+      else {
+        this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error)
+        console.log("GetLocAssCountTable", res.responseMessage);
       }
     })
   }
 
-  printShortage(){
+  printShortage() {
     this.global.Print(`FileName:PreviewLocAssPickShort`);
-    }
+  }
 
-  printShortageZone(){
+  printShortageZone() {
     this.global.Print(`FileName:PreviewLocAssPickShortFPZ`);
   }
 
-  exitBack(){
+  exitBack() {
     this.dialogRef.close();
-    this.router.navigate([]).then((result) => {
+    this.router.navigate([]).then(() => {
       window.open(`/#/admin`, '_self');
     });
   }

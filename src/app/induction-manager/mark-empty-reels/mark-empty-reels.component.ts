@@ -1,14 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'; 
-
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/init/auth.service';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { Sort, MatSort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { LiveAnnouncerMessage, StringConditions, ToasterTitle, ToasterType, alertMessage } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-mark-empty-reels',
@@ -20,7 +19,7 @@ export class MarkEmptyReelsComponent implements OnInit {
   lastScanned;
   lastScannedList: any = [];
   notifyMessage = '';
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iinductionManagerApi: IInductionManagerApiService;
   itemInvalid = false;
   itemEmpty = false;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
@@ -31,10 +30,9 @@ export class MarkEmptyReelsComponent implements OnInit {
   userData;
 
   constructor(
-    private global:GlobalService,
-    public Api:ApiFuntions,
-    
-    private inductionManagerApi: InductionManagerApiService,
+    private global: GlobalService,
+
+    public inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     private _liveAnnouncer: LiveAnnouncer,
   ) {
@@ -45,19 +43,19 @@ export class MarkEmptyReelsComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.authService.userData();
   }
-  scanSerialEvent(event) {
+  scanSerialEvent() {
     if (this.scanSerial == '') {
       this.itemEmpty = true;
-      this.notifyMessage = 'Please enter a serial number';
+      this.notifyMessage = alertMessage.EnterSerialNo;
       this.lastScanned = this.lastScannedList[this.lastScannedList.length - 1];
     } else if (this.lastScannedList.includes(this.scanSerial)) {
       this.itemInvalid = true;
-      this.notifyMessage = 'Serial Number already scanned';
+      this.notifyMessage = alertMessage.SerialNoAlreadyScan;
       this.lastScanned = this.scanSerial;
     } else {
       // validate serial
       let payload = {
-        serialNumber: this.scanSerial, 
+        serialNumber: this.scanSerial,
       };
       this.iinductionManagerApi
         .ValidateSerialNumber(payload) //validate tote
@@ -67,17 +65,14 @@ export class MarkEmptyReelsComponent implements OnInit {
               switch (response.data) {
                 case 'Error':
                   this.itemInvalid = true;
-                  this.notifyMessage =
-                    'There was an error validating serial number';
+                  this.notifyMessage = alertMessage.ErrorValidatingSerialNoMsg;
                   this.scanSerial = '';
                   break;
 
                 case 'InValid':
                   this.itemInvalid = true;
-
-                  this.notifyMessage = 'Serial Number Does Not Exist';
+                  this.notifyMessage = alertMessage.SerialNoNotExistsMsg;
                   this.scanSerial = '';
-
                   break;
 
                 case 'Valid':
@@ -94,7 +89,7 @@ export class MarkEmptyReelsComponent implements OnInit {
               }
             }
             else {
-              this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+              this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
               console.log("ValidateSerialNumber");
             }
           },
@@ -108,11 +103,11 @@ export class MarkEmptyReelsComponent implements OnInit {
     }
   }
   removeRow(index: number, el) {
-    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
+    const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
         mode: 'delete-create-count',
         action: 'delete',
@@ -120,15 +115,15 @@ export class MarkEmptyReelsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(
       (result) => {
-        if (result === 'Yes') {
+        if (result === StringConditions.Yes) {
           // Remove item from last scanned list
           const indexToRemove = this.lastScannedList.findIndex(
             (item) => item === el.scannedserialnumbers
-          ); 
+          );
 
           if (indexToRemove !== -1) {
             this.lastScannedList.splice(indexToRemove, 1);
-          } 
+          }
 
           //  remove row from datasource
           this.scannedSerialList.data.splice(index, 1);
@@ -143,21 +138,20 @@ export class MarkEmptyReelsComponent implements OnInit {
     );
   }
   markReelAsEmpty() {
-    const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
+    const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
         mode: 'delete-create-count',
         action: 'delete',
-        ErrorMessage:
-          'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.',
+        ErrorMessage: alertMessage.DeleteMessage,
       },
     });
     dialogRef.afterClosed().subscribe(
       (result) => {
-        if (result === 'Yes') {
+        if (result === StringConditions.Yes) {
           let serialNumbersArr: any = [];
           this.scannedSerialList.data.forEach((item) => {
             serialNumbersArr.push(item.scannedserialnumbers);
@@ -166,22 +160,22 @@ export class MarkEmptyReelsComponent implements OnInit {
           //  Renmoves all serial numbers from list
 
           let payload = {
-            serialNumbers: serialNumbersArr, 
+            serialNumbers: serialNumbersArr,
           };
           this.iinductionManagerApi
             .DeleteSerialNumber(payload) //validate tote
             .subscribe((response: any) => {
               if (response.isExecuted) {
-                this.global.ShowToastr('success',
+                this.global.ShowToastr(ToasterType.Success,
                   response.responseMessage,
-                  'Success!' 
+                  ToasterTitle.Success
                 );
                 this.itemInvalid = false;
                 this.itemEmpty = false;
                 this.scannedSerialList = new MatTableDataSource();
                 this.lastScannedList.length = 0;
               } else {
-                this.global.ShowToastr('error',response.responseMessage, 'Error!');
+                this.global.ShowToastr(ToasterType.Error, response.responseMessage, ToasterTitle.Error);
                 console.log("DeleteSerialNumber");
               }
             });
@@ -193,7 +187,7 @@ export class MarkEmptyReelsComponent implements OnInit {
     );
   }
 
-  
+
   /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: Sort) {
     // This example uses English messages. If your application supports
@@ -203,7 +197,7 @@ export class MarkEmptyReelsComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
   }
   ngAfterViewInit() {

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA,   MatDialogRef } from '@angular/material/dialog';
 import { OmChangesConfirmationComponent } from '../om-changes-confirmation/om-changes-confirmation.component';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -7,13 +7,13 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-om-update-record',
   templateUrl: './om-update-record.component.html',
-  styleUrls: []
+  styleUrls: ['./om-update-record.component.scss']
 })
 export class OmUpdateRecordComponent implements OnInit {
-  @ViewChild('ord_focus') ord_focus: ElementRef
+  @ViewChild('ordFocus') ordFocus: ElementRef
   orderForm   : FormGroup;
 
-  constructor(private dialog          : MatDialog,
+  constructor( 
               public dialogRef        : MatDialogRef<OmUpdateRecordComponent>,
               public formBuilder      : FormBuilder,
               public globalService    : GlobalService,
@@ -107,6 +107,6 @@ export class OmUpdateRecordComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.ord_focus.nativeElement.focus();
+    this.ordFocus.nativeElement.focus();
   }
 }

@@ -118,3 +118,97 @@ table.custom-action-clickable-table tr:hover td{
   // --scrollbar-size: 10px;
   
   }
+
+.divWithClass{
+    width:48px !important;
+}
+.scrolBar-colorStyle{
+  height:65vh !important;
+
+
+  .otocompletestyle{
+    padding-bottom: 16px !important; 
+    padding-top: 16px !important;
+
+    .locationStickyHeaderStyle{
+      padding: 0px 25px !important; 
+      border: 0 !important; 
+      text-overflow: ellipsis !important; 
+      overflow: hidden !important; 
+      width:70% !important; 
+      white-space: nowrap !important;
+    }
+    .zoneStickyHeaderStyle{
+      padding: 0px 0px !important; 
+      border: 0 !important; 
+      text-overflow: ellipsis !important; 
+      overflow: hidden !important;
+       width:30% !important; 
+      white-space: nowrap !important;
+    }
+    .optionLocationNameStyle{
+      padding: 10px 12px !important; 
+      border: 0 !important; 
+      text-overflow: ellipsis !important; 
+      overflow: hidden !important; 
+      width:70% !important; 
+      white-space: nowrap !important;
+    }
+    .optionZoneStyle{
+      padding: 10px 12px !important; 
+      border: 0 !important; 
+      text-overflow: ellipsis !important; 
+      overflow: hidden !important; 
+      width:30% !important; 
+      white-space: nowrap !important;
+    }
+  }
+
+  .itemNumAutostyleC{
+    padding-bottom: 16px !important; 
+    padding-top: 16px !important;
+  }
+  .itemNumberStyleCC{
+    padding: 0px 25px !important; 
+    border: 0 !important; 
+    text-overflow: ellipsis !important; 
+    overflow: hidden !important; 
+    width:30% !important; 
+    white-space: nowrap !important;
+  }
+  .DescriptionsyleCC{
+    padding: 0px 25px !important; 
+    border: 0 !important; 
+    text-overflow: ellipsis !important; 
+    overflow: hidden !important; 
+    width:70% !important; 
+    white-space: nowrap !important;
+  }
+  .itemNumberOptionStyleCC{
+    padding: 10px 12px !important; 
+    border: 0 !important; 
+    text-overflow: ellipsis !important; 
+    overflow: hidden !important; 
+    width:30% !important; 
+    white-space: nowrap !important;
+  }
+  .DescriptionOptionsyleCC{
+    padding: 10px 12px !important; 
+    border:  0 !important; 
+    text-overflow: ellipsis !important; 
+    overflow: hidden !important; 
+    width:70% !important; 
+    white-space: nowrap !important;
+  }
+
+  .unfoldMoreStyleC{
+    color:var(--clr-tertiary-900); transform: rotate(45deg) !important;
+  }
+}
+
+.rotate-45 {
+  transform: rotate(45deg)
+}
+.h-65vh{
+  height: 65vh;
+}

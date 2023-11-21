@@ -1,13 +1,15 @@
 import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import { AuthService } from 'src/app/init/auth.service'; 
+import { AuthService } from 'src/app/init/auth.service';
 import labels from '../../../labels/labels.json';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+
 
 @Component({
   selector: 'app-column-sequence-dialog',
@@ -16,28 +18,26 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class ColumnSequenceDialogComponent implements OnInit {
   dialogData;
-  payload;
+
   public iAdminApiService: IAdminApiService;
 
-  userData;
-  unorderedCol: any = [];
-  defaultCol: any = [];
+
   constructor(
     private Api: ApiFuntions,
     private authService: AuthService,
     public dialogRef: MatDialogRef<any>,
     public adminApiService: AdminApiService,
     @Inject(MAT_DIALOG_DATA) data,
-    private global:GlobalService,
-    
+    private global: GlobalService,
+
   ) {
     this.dialogData = data;
     this.iAdminApiService = adminApiService;
   }
   @ViewChild('table') table: MatTable<any>;
-
+  userData; q ;
   ngOnInit(): void {
-    this.userData=this.authService.userData()
+    this.userData = this.authService.userData()
     this.initializePayload(this.dialogData.tableName);
     this.getColumnsSeqDetail();
   }
@@ -57,10 +57,12 @@ export class ColumnSequenceDialogComponent implements OnInit {
       );
     }
   }
+  unorderedCol: any = [];
+
   addArr(index) {
     this.defaultCol.push(...this.unorderedCol.splice(index, 1));
   }
-
+  defaultCol: any = [];
   remove(index) {
     this.unorderedCol.push(...this.defaultCol.splice(index, 1));
   }
@@ -71,58 +73,61 @@ export class ColumnSequenceDialogComponent implements OnInit {
     this.unorderedCol.length = 0;
   }
   restoreCol() {
-    this.defaultCol.length=0;
+    this.defaultCol.length = 0;
     this.getColumnsSeqDetail();
   }
+  payload;
   save() {
     this.payload.columns = this.defaultCol;
     this.saveColumnsSeq();
   }
   deleteColSeq() {
 
-    
-    
+
+
     this.iAdminApiService
       .DeleteColumns(this.payload)
       .subscribe({
         next: (res: any) => {
           if (res.isExecuted) {
-              this.defaultCol.length=0;
-              this.getColumnsSeqDetail();
-           
+            this.defaultCol.length = 0;
+            this.getColumnsSeqDetail();
+
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("DeleteColumns",res.responseMessage);
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+            console.log("DeleteColumns", res.responseMessage);
 
-          } 
+          }
         },
-        error: (error)=>{}
+        error: (error) => { }
       });
 
   }
   initializePayload(tableName) {
-    this.payload = { 
+    this.payload = {
       viewName: tableName,
     };
   }
 
   saveColumnsSeq() {
     this.iAdminApiService.SaveColumns(this.payload).subscribe(
-      {next: (res: any) => {
-        if (res.isExecuted) {
-          this.global.ShowToastr('success',labels.alert.success, 'Success!');
-          this.dialogRef.close({ isExecuted: true });
-        } else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("SaveColumns",res.responseMessage);
-          this.dialogRef.close('');
+      {
+        next: (res: any) => {
+          if (res.isExecuted) {
+            this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterType.Success);
+            this.dialogRef.close({ isExecuted: true });
+          } else {
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+            console.log("SaveColumns", res.responseMessage);
+            this.dialogRef.close('');
+          }
+        },
+        error: (error) => {
+          this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterType.Error);
+          this.dialogRef.close({ isExecuted: false });
         }
-      },
-      error: (error) => {
-        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
-        this.dialogRef.close({ isExecuted: false });
-      }}
+      }
     );
   }
 
@@ -130,30 +135,29 @@ export class ColumnSequenceDialogComponent implements OnInit {
     this.iAdminApiService
       .GetColumnSequenceDetail(this.payload)
       .subscribe((res: any) => {
-        if(res?.isExecuted)
-        {
+        if (res?.isExecuted) {
           this.unorderedCol = res.data?.allColumnSequence;
-        if (res.data?.columnSequence.length) {
-          this.defaultCol = res.data.columnSequence;
+          if (res.data?.columnSequence.length) {
+            this.defaultCol = res.data.columnSequence;
 
-          const namesToDeleteSet = new Set(this.defaultCol);
-          const newArr = this.unorderedCol.filter((name) => {
-            return !namesToDeleteSet.has(name);
-          });
-          this.unorderedCol = newArr;
-        }
+            const namesToDeleteSet = new Set(this.defaultCol);
+            const newArr = this.unorderedCol.filter((name) => {
+              return !namesToDeleteSet.has(name);
+            });
+            this.unorderedCol = newArr;
+          }
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("GetColumnSequenceDetail",res.responseMessage);
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("GetColumnSequenceDetail", res.responseMessage);
         }
-        
-        
+
+
       });
   }
 
   @HostListener('document:keyup', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) { 
+  handleKeyboardEvent(event: KeyboardEvent) {
     const target = event.target as HTMLElement;
     if (!this.isInputField(target) && event.key === 'a') {
       event.preventDefault();

@@ -1,33 +1,49 @@
-table{
-    th,td{
-      white-space: nowrap;
-      padding-right: 10px;
+table {
 
-    }
-    td {
-      max-width: 15ch;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-      padding-right: 15px;
-    }
-  }
-
-  .Open-card{
-    background-color: #FFF0D6;
-    color:#4D3B1A;
-    border-radius: 100px;
-    position: absolute;
-    padding: 10px;
-    padding-right: 20px !important;
+  th,
+  td {
+    white-space: nowrap;
+    padding-right: 10px;
 
   }
-  .Current-status{
-    background-color: var(--clr-primary-10);
-    color:var(--clr-tertiary-900);
-    border-radius: 100px;
-    position: absolute;
-    padding: 10px;
-    padding-right: 20px !important;
 
+  td {
+    max-width: 15ch;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-right: 15px;
   }
+}
+
+.Open-card {
+  background-color: #FFF0D6;
+  color: #4D3B1A;
+  border-radius: 100px;
+  position: absolute;
+  padding: 10px;
+  padding-right: 20px !important;
+
+}
+
+.Current-status {
+  background-color: var(--clr-primary-10);
+  color: var(--clr-tertiary-900);
+  border-radius: 100px;
+  position: absolute;
+  padding: 10px;
+  padding-right: 20px !important;
+
+}
+
+.w-48px {
+  width: 48px;
+}
+
+.height-545 {
+  height: 545px;
+}
+
+ .table-settings-tr{
+  background-color: var(--clr-table-header);
+}

@@ -1,30 +1,26 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { GlobalService } from 'src/app/common/services/global.service';
+import { Component, ElementRef, ViewChild } from '@angular/core'; 
 
 @Component({
   selector: 'app-ie-manage-data-trans-field-map',
   templateUrl: './ie-manage-data-trans-field-map.component.html',
-  styleUrls: []
+  styleUrls: ['./ie-manage-data-trans-field-map.component.scss'],
 })
 export class IeManageDataTransFieldMapComponent {
   @ViewChild('autoFocusField') autoFocusField: ElementRef;
-  ELEMENT_DATA: any[] =[
-    {container_id: '1202122'},
-    {container_id: '1202123'},
-    {container_id: '1202124'},
-    {container_id: '1202125'},
-    {container_id: '1202126'},
-    {container_id: '1202127'},
-    
-  ]
+  elementData: any[] = [
+    { container_id: '1202122' },
+    { container_id: '1202123' },
+    { container_id: '1202124' },
+    { container_id: '1202125' },
+    { container_id: '1202126' },
+    { container_id: '1202127' },
+  ];
 
-    displayedColumns: string[] = ['container_id','field_type','actions'];
-    tableData = this.ELEMENT_DATA
-    dataSourceList:any
+  displayedColumns: string[] = ['container_id', 'field_type', 'actions'];
+  tableData = this.elementData;
+  dataSourceList: any;
 
-  constructor(
-    private global:GlobalService,
-  ) { }
+  constructor() {}
 
   ngAfterViewInit(): void {
     this.autoFocusField.nativeElement.focus();

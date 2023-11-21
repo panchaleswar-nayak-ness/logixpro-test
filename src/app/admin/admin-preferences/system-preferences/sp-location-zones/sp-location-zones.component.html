@@ -110,7 +110,7 @@
                   <mat-form-field
                     class="custom-form-field custom-form-field-bg-white w-100 mb-3"
                     appearance="outline"
-                    (click)="LocationName(i)"
+                    (click)="locationName(i)"
                   >
                     <mat-label>Location Name</mat-label>
                     <input
@@ -121,9 +121,7 @@
                       readonly="true"
                     />
                     <span matSuffix>
-                      <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg)"
-                        >unfold_more</mat-icon
-                      >
+                      <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
                     </span>
                   </mat-form-field>
                 </div>
@@ -188,7 +186,7 @@
                       mat-button
                       class="w-100 btn-regular"
                       color="warn"
-                      (click)="DelLocationZone(i.zone)"
+                      (click)="delLocationZone(i.zone)"
                     >
                       Delete Location Zone
                     </button>

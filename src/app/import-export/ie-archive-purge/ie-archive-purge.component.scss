@@ -12,3 +12,13 @@ table{
       padding-right: 15px;
     }
   }
+
+  .overflow-x-auto{
+    overflow-x: auto;
+  }
+  .h-45vh{
+    height:45vh
+  }
+  .table-header-clr{
+    background-color: var(--clr-table-header);
+  }

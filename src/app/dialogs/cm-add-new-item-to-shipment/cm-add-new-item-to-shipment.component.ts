@@ -8,15 +8,15 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-add-new-item-to-shipment',
   templateUrl: './cm-add-new-item-to-shipment.component.html',
-  styleUrls: []
+  styleUrls: ['./cm-add-new-item-to-shipment.component.scss']
 })
 export class CmAddNewItemToShipmentComponent{
-  @ViewChild('cont_id') cont_id: ElementRef;
-  OrderNumber:any;
+  @ViewChild('contId') contId: ElementRef;
+  orderNumber:any;
   containerID:any;
   userData:any = {};
 
-  public IconsolidationAPI : IConsolidationApi;
+  public iConsolidationAPI : IConsolidationApi;
 
   constructor(
     public consolidationAPI : ConsolidationApiService,
@@ -24,26 +24,24 @@ export class CmAddNewItemToShipmentComponent{
     private global : GlobalService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CmAddNewItemToShipmentComponent>) {
-      this.OrderNumber = this.data.orderNumber;
+      this.orderNumber = this.data.orderNumber;
       this.userData = this.authService.userData(); 
-      this.IconsolidationAPI = consolidationAPI;
+      this.iConsolidationAPI = consolidationAPI;
     }
   ngAfterViewInit(): void {
-    this.cont_id.nativeElement.focus();
+    this.contId.nativeElement.focus();
   }
   async ShippingItemAdd(){
     let obj:any = {
-      orderNumber: this.OrderNumber,
+      orderNumber: this.orderNumber,
       containerID: this.containerID
     }
-    this.IconsolidationAPI.ShippingItemAdd(obj).subscribe((res:any) => {
+    this.iConsolidationAPI.ShippingItemAdd(obj).subscribe((res:any) => {
       if (res?.isExecuted) {
         this.dialogRef.close(true);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("ShippingItemAdd",res.responseMessage);
-
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');  
       }
   })
 }

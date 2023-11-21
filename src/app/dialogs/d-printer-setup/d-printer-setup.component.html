@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Configure Workstation Printers</h1>
 
     <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
@@ -13,9 +13,9 @@
         <div class="col-12 mb-2">
             <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline">
                 <mat-label>Report Printer</mat-label>
-                <mat-select class="employees-action" [(ngModel)]="ReportPrinter">
+                <mat-select class="employees-action" [(ngModel)]="reportPrinter">
                   <ng-container> 
-                  <mat-option  *ngFor="let item of ListReportPrinter" [value]="item.printer">{{item.printer}}</mat-option>  
+                  <mat-option  *ngFor="let item of listReportPrinter" [value]="item.printer">{{item.printer}}</mat-option>  
                 </ng-container>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
@@ -26,9 +26,9 @@
         <div class="col-12 mb-2">
             <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline">
                 <mat-label>Label Printer</mat-label>
-                <mat-select class="employees-action" [(ngModel)]="LabelPrinter">
+                <mat-select class="employees-action" [(ngModel)]="labelPrinter">
                   <ng-container> 
-                    <mat-option  *ngFor="let item of ListLabelPrinter" [value]="item.printer">{{item.printer}}</mat-option>  
+                    <mat-option  *ngFor="let item of listLabelPrinter" [value]="item.printer">{{item.printer}}</mat-option>  
                 </ng-container>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
@@ -37,10 +37,10 @@
               </mat-form-field>
         </div>
         <div class="d-flex justify-content-end pt-3">
-            <button type="submit" style="flex:1"
-            [disabled]="!LabelPrinter || !ReportPrinter"
-            mat-flat-button color="primary" class="btn-lg w-100"
-            (click)="UpdWSPrefsPrinters(ReportPrinter,LabelPrinter);ClosePopup();">Save</button>
+            <button type="submit"
+            [disabled]="!labelPrinter || !reportPrinter"
+            mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1"
+            (click)="UpdWSPrefsPrinters(reportPrinter,labelPrinter);ClosePopup();">Save</button>
         </div>
         
     </div>

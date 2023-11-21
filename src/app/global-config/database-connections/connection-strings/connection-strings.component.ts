@@ -12,7 +12,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-connection-strings',
   templateUrl: './connection-strings.component.html',
-  styleUrls: [],
+  styleUrls: ['./connection-strings.component.scss'],
 })
 export class ConnectionStringsComponent {
   @Input() connectionStringData: IConnectionString[] = [];

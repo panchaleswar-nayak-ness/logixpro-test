@@ -3,7 +3,7 @@ import { Component} from '@angular/core';
 @Component({
   selector: 'app-sp-light-tree-setup',
   templateUrl: './sp-light-tree-setup.component.html',
-  styleUrls: []
+  styleUrls: ['./sp-light-tree-setup.component.scss']
 })
 export class SpLightTreeSetupComponent{
 

@@ -3,13 +3,13 @@ import { Component, ElementRef,  ViewChild } from '@angular/core';
 @Component({
   selector: 'app-transfer-file-path',
   templateUrl: './transfer-file-path.component.html',
-  styleUrls: []
+  styleUrls: ['./transfer-file-path.component.scss']
 })
 export class TransferFilePathComponent {
-  @ViewChild('field_focus') field_focus: ElementRef;
+  @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
   
   ngAfterViewInit(): void {
-    this.field_focus?.nativeElement.focus();
+    this.fieldFocus?.nativeElement.focus();
   }
 }

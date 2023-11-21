@@ -12,8 +12,8 @@
     appearance="outline"
   >
     <mat-label>Red Filter Field</mat-label>
-    <mat-select class="employees-action" [(ngModel)]="CompanyObj.redField">
-      <ng-container *ngFor="let item of FieldNames | keyvalue">
+    <mat-select class="employees-action" [(ngModel)]="companyObj.redField">
+      <ng-container *ngFor="let item of fieldNames | keyvalue">
         <mat-option [value]="item.key">{{ item.value }}</mat-option>
       </ng-container>
     </mat-select>
@@ -28,7 +28,7 @@
     <mat-label>Red Filter Value</mat-label>
     <input
       type="text"
-      [(ngModel)]="CompanyObj.redValue"
+      [(ngModel)]="companyObj.redValue"
       matInput
       maxlength="255"
     />
@@ -38,8 +38,8 @@
     appearance="outline"
   >
     <mat-label>Green Filter Field</mat-label>
-    <mat-select class="employees-action" [(ngModel)]="CompanyObj.greenField">
-      <ng-container *ngFor="let item of FieldNames | keyvalue">
+    <mat-select class="employees-action" [(ngModel)]="companyObj.greenField">
+      <ng-container *ngFor="let item of fieldNames | keyvalue">
         <mat-option [value]="item.key">{{ item.value }}</mat-option>
       </ng-container>
     </mat-select>
@@ -54,7 +54,7 @@
     <mat-label>Green Filter Value</mat-label>
     <input
       type="text"
-      [(ngModel)]="CompanyObj.greenvalue"
+      [(ngModel)]="companyObj.greenvalue"
       matInput
       maxlength="255"
     />
@@ -64,8 +64,8 @@
     appearance="outline"
   >
     <mat-label>Blue Filter Field</mat-label>
-    <mat-select class="employees-action" [(ngModel)]="CompanyObj.blueField">
-      <ng-container *ngFor="let item of FieldNames | keyvalue">
+    <mat-select class="employees-action" [(ngModel)]="companyObj.blueField">
+      <ng-container *ngFor="let item of fieldNames | keyvalue">
         <mat-option [value]="item.key">{{ item.value }}</mat-option>
       </ng-container>
     </mat-select>
@@ -80,7 +80,7 @@
     <mat-label>Blue Filter Value</mat-label>
     <input
       type="text"
-      [(ngModel)]="CompanyObj.bluevalue"
+      [(ngModel)]="companyObj.bluevalue"
       matInput
       maxlength="255"
     />

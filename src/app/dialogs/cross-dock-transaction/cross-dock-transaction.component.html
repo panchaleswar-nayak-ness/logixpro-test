@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Cross Dock Transactions</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" (click)="onNoClick()">
         <mat-icon class="close-icon">close</mat-icon>
@@ -86,7 +86,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
                         <mat-label>Completed Qty</mat-label>
-                        <input [NumbersOnly]="true" #complete_focus  (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.completedQuantity}}" #compQty (focusout)="compQtyChange({ i, compQty : compQty.value })">
+                        <input [NumbersOnly]="true" #completefocus  (keydown.shift.enter)="$event.preventDefault()" matInput type="text" value="{{t.completedQuantity}}" #compQty (focusout)="compQtyChange({ i, compQty : compQty.value })">
 
                       </mat-form-field>
                 </div>
@@ -115,7 +115,7 @@
                         <mat-label>Tote ID</mat-label>
                         <input  matInput type="text" readonly value="{{t.toteID}}">
                         <span matSuffix>
-                            <mat-icon style="color: var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                            <mat-icon class="mat-icon-set" >unfold_more</mat-icon>
                         </span>
                       </mat-form-field>
                 </div>
@@ -134,7 +134,7 @@
     <button mat-stroked-button color="primary" class="btn-lg" (click)="refresh()">
         Refresh
     </button>
-    <button mat-flat-button color="primary" class="btn-lg" style="flex:1" (click)="submit()">
+    <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="submit()">
         Send Transaction To Tote Batch
     </button>
 </div>

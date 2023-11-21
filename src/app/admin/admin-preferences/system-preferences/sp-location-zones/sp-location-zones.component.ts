@@ -4,15 +4,16 @@ import { LocationNameComponent } from 'src/app/admin/dialogs/location-name/locat
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 
 import { KanbanZoneAllocationConflictComponent } from 'src/app/admin/dialogs/kanban-zone-allocation-conflict/kanban-zone-allocation-conflict.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { zoneType, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+
 
 @Component({
   selector: 'app-sp-location-zones',
   templateUrl: './sp-location-zones.component.html',
-  styleUrls: [],
+  styleUrls: ['./sp-location-zones.component.scss'],
 })
 export class SpLocationZonesComponent implements OnInit {
   toggleSwitches = [
@@ -71,9 +72,9 @@ export class SpLocationZonesComponent implements OnInit {
   includeCf: false;
 
   locationzone: any = [];
-  duplicatelocationzone: any = [];
+  duplicateLocationZone: any = [];
   constructor(
-    private Api: ApiFuntions,
+   
     public authService: AuthService,
     private global: GlobalService,
     private adminApiService: AdminApiService
@@ -109,7 +110,7 @@ export class SpLocationZonesComponent implements OnInit {
 
   zoneChange(zone: any, check, type?) {
     if (!check) {
-      if (type === 'carousel') {
+      if (type === zoneType.carousel) {
         if (zone.carousel) {
           this.alterParentZones(true, zone.zone);
           if (zone.cartonFlow) {
@@ -125,7 +126,7 @@ export class SpLocationZonesComponent implements OnInit {
           }
         }
       }
-      if (type === 'cartonFlow') {
+      if (type === zoneType.cartonFlow) {
         if (zone.cartonFlow) {
           this.alterParentZones(false, zone.zone);
           if (zone.carousel) {
@@ -133,7 +134,7 @@ export class SpLocationZonesComponent implements OnInit {
           }
         }
       }
-      if (type === 'includePick') {
+      if (type === zoneType.includePick) {
         if (zone.includeCFCarouselPick) {
           if (!zone.cartonFlow) {
             this.alterParentZones(false, zone.zone);
@@ -144,25 +145,25 @@ export class SpLocationZonesComponent implements OnInit {
           }
         }
       }
-      let oldZone: any = this.duplicatelocationzone.filter(
+      let oldZone: any = this.duplicateLocationZone.filter(
         (x: any) => x.ID == zone.ID
       )[0].zone;
       let newZone: any = zone.zone;
       let seq = zone.sequence;
       if (newZone == '') {
         this.global.ShowToastr(
-          'error',
-          'Zone may not be left blank.  Zone will not be saved until this is fixed.',
-          'Error!'
+          ToasterType.Error,
+          ToasterMessages.BlankZone,
+          ToasterTitle.Error
         );
         zone.zone = oldZone;
         return;
       } else if (seq < 0 || seq == '') {
         if (seq < 0) {
           this.global.ShowToastr(
-            'error',
-            'Sequence must be an integer greater than or equal to 0.  Zone will not be saved until this is fixed.',
-            'Error!'
+            ToasterType.Error,
+            ToasterMessages.SequenceMustEqualOrGreaterZero,
+            ToasterTitle.Error
           );
           return;
         }
@@ -170,25 +171,25 @@ export class SpLocationZonesComponent implements OnInit {
 
       let check = oldZone.toLowerCase() != newZone.toLowerCase();
       if (check) {
-        let test = this.duplicatelocationzone.find(
+        let test = this.duplicateLocationZone.find(
           (x: any) => x.zone == newZone
         );
         if (test) {
           this.global.ShowToastr(
-            'error',
-            `Zone is currently set to be a duplicate. Zone will not be saved until this is fixed.`,
-            'Error!'
+            ToasterType.Error,
+            ToasterMessages.BlankZone,
+            ToasterTitle.Error
           );
         }
       }
-      let locationzone = JSON.parse(JSON.stringify(zone));
-      Object.keys(locationzone).forEach((k) => {
-        locationzone[k] = '' + locationzone[k];
+      let locationZone = JSON.parse(JSON.stringify(zone));
+      Object.keys(locationZone).forEach((k) => {
+        locationZone[k] = '' + locationZone[k];
       });
       const updatedObj = {};
-      for (const key in locationzone) {
+      for (const key in locationZone) {
         const updatedKey = key.charAt(0).toUpperCase() + key.slice(1);
-        updatedObj[updatedKey] = locationzone[key];
+        updatedObj[updatedKey] = locationZone[key];
       }
 
       let payload: any = {
@@ -218,17 +219,17 @@ export class SpLocationZonesComponent implements OnInit {
           }
           this.locationzone.push(zone);
         });
-        this.duplicatelocationzone = JSON.parse(
+        this.duplicateLocationZone = JSON.parse(
           JSON.stringify(this.locationzone)
         );
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('LocationZone', res.responseMessage);
       }
     });
   }
 
-  LocationName(item: any) {
+  locationName(item: any) {
     let dialogRef: any = this.global.OpenDialog(LocationNameComponent, {
       height: 'auto',
       width: '786px',
@@ -246,7 +247,7 @@ export class SpLocationZonesComponent implements OnInit {
     });
   }
 
-  DelLocationZone(zone) {
+  delLocationZone(zone) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
@@ -305,7 +306,7 @@ export class SpLocationZonesComponent implements OnInit {
   newLocationValue() {
     if (this.newLocationVal != '') {
       this.locationSaveBtn = false;
-      let test = this.duplicatelocationzone.find(
+      let test = this.duplicateLocationZone.find(
         (x: any) => x.zone == this.newLocationVal
       );
       if (test) {

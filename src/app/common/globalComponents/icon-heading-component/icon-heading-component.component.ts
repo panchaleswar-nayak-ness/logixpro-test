@@ -6,9 +6,7 @@ import { Component,Input } from '@angular/core';
   styleUrls: []
 })
 export class IconHeadingComponentComponent {
-
   @Input() headingClass : string = 'card-header-title mb-0 d-flex align-items-center';
   @Input() icon: string;
   @Input() heading: string;
-
 }

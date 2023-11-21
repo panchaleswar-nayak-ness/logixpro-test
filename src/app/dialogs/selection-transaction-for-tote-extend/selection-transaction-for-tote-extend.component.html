@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
-  <div style="width:48px"></div>
-  <h1 class="m-0" mat-dialog-title>Selected Transaction For Tote</h1>
+  <div class="w-48px"></div>
+  <h1 class="m-0" mat-dialog-title>Selection Transaction For Tote</h1>
   <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
     <mat-icon class="close-icon">close</mat-icon>
   </button>
@@ -111,7 +111,7 @@
             <input formControlName="warehouse" (keydown.shift.enter)="$event.preventDefault()" matInput type="text"
               readonly>
             <span matSuffix>
-              <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="mat-icon-transaction">unfold_more</mat-icon>
             </span>
           </mat-form-field>
         </div>
@@ -194,7 +194,7 @@
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
               (click)="openCellSizeDialog('cellSize')">
-              <mat-icon style="transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
         </div>
@@ -211,7 +211,7 @@
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
               (click)="openCellSizeDialog('bulkCellSize')">
-              <mat-icon style="transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
         </div>
@@ -228,7 +228,7 @@
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
               (click)="openCellSizeDialog('cfCellSize')">
-              <mat-icon style="transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
         </div>
@@ -262,7 +262,7 @@
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
               (click)="openVelocityCodeDialog('goldenZone')">
-              <mat-icon style="transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
         </div>
@@ -279,7 +279,7 @@
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
               (click)="openVelocityCodeDialog('bulkVelocity')">
-              <mat-icon style="transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
         </div>
@@ -296,7 +296,7 @@
             </mat-form-field>
             <button mat-mini-fab color="Default" class="button-default-i icon-button-8br"
               (click)="openVelocityCodeDialog('cfVelocity')">
-              <mat-icon style="transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="transform-rotate">unfold_more</mat-icon>
             </button>
           </div>
         </div>
@@ -480,7 +480,7 @@
   <button mat-stroked-button color="primary" class="btn-lg" (click)="forSameSKU()" *ngIf="!data.imPreference.purchaseOrderRequired">
     New Put Away For Same SKU
   </button>
-  <button mat-flat-button color="primary" class="btn-lg" style="flex:1" (click)="completeTransaction()">
+  <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="completeTransaction()">
     Complete Transaction
   </button>
 </div>

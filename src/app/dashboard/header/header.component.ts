@@ -8,7 +8,7 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 import { Subscription } from 'rxjs';
 import { DPrinterSetupComponent } from 'src/app/dialogs/d-printer-setup/d-printer-setup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StylesService } from 'src/app/styles.service';
+import { StylesService } from 'src/app/services/styles.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
@@ -152,13 +152,12 @@ export class HeaderComponent {
 
   setImPreferences(){
     const imPreference = localStorage.getItem('InductionPreference');
-    if (imPreference) {
-      // const parsedData = JSON.parse(imPreference);
-    } else {
+    if (imPreference) {} 
+    else {
       let paylaod = {};
       this.iInductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
-        localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
-      });
+      localStorage.setItem('InductionPreference', JSON.stringify(res.data.imPreference));
+    });
     }
 
   }

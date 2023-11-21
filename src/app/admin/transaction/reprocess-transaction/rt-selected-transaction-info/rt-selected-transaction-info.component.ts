@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-rt-selected-transaction-info',
   templateUrl: './rt-selected-transaction-info.component.html',
-  styleUrls: []
+  styleUrls: ['./rt-selected-transaction-info.component.scss']
 })
 export class RtSelectedTransactionInfoComponent {
 
@@ -13,6 +13,7 @@ export class RtSelectedTransactionInfoComponent {
   @Input() reasonMessage = "";
   @Input() isEnabled = true;
   @Input() isHistory = true;
+  
   @Output() openReprocessTransactionDialogueEmitter = new EventEmitter<any>();
   @Output() openReasonDialogEmitter = new EventEmitter<any>();
 

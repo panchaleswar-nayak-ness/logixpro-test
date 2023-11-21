@@ -5,13 +5,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {  } from '../../dialogs/delete-confirmation/delete-confirmation.component';
-import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
+
 import { AuthService } from 'src/app/init/auth.service'; 
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+
+import { error } from 'jquery';
+import { ConfirmationMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
 
 export interface PeriodicElement {
   location: number;
@@ -28,21 +32,22 @@ export interface PeriodicElement {
 })
 export class CountComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
-  public userData: any;
-  public totalCount: any;
-  public searchOrder: string = '';
-  public searchOrder1: string = '';
-  settime:any =false;
-  displayedColumns: string[] = ['orderNumber'  , 'itemCount', 'priority', 'requiredDate','actions'];
-  displayedColumns1: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate','actions'];
   
-  OldleftTable:any = [];
+  // oldleftTable:any = [];
+  // public totalCount: any;
+   public searchOrderLeft: string = '';
+   public searchOrderRight: string = '';
+ // setTime:any =false;
+
+  displayedColumnsRight: string[] = ['orderNumber'  , 'itemCount', 'priority', 'requiredDate','actions'];
+  displayedColumnsLeft: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate','actions'];
+
   leftTable:any = new MatTableDataSource([]);
   rightTable:any = new MatTableDataSource([]);
 
   constructor(private _liveAnnouncer: LiveAnnouncer ,
               private global:GlobalService ,
-              private authservice : AuthService,
+              private authService : AuthService,
               private Api: ApiFuntions,
               private adminApiService: AdminApiService,
               ) {
@@ -52,38 +57,35 @@ export class CountComponent implements OnInit {
 
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('paginator1') paginator1: MatPaginator;
-
- 
-
-  @ViewChild('matSort') sort: MatSort;
-  @ViewChild('matSort1') sort1: MatSort;
-
+  @ViewChild('matSort') leftSort: MatSort;
+  @ViewChild('matSort1') RightSort: MatSort;
   @ViewChild('deleteAction') quarantineTemp: TemplateRef<any>;
 
   @ViewChild('addOrder') addOrderTemp: TemplateRef<any>;
   @Output() newItemEvent = new EventEmitter<Event>(); 
 
+  public userData: any;
 
   ngOnInit(): void {
-    this.userData = this.authservice.userData()
+    this.userData = this.authService.userData()
     this.openLAQ();
   }
 
-  announceSortChange(sortState: Sort) {
+  announceSortChangeLeftTable(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
-    this.leftTable.sort = this.sort;    
+    this.leftTable.sort = this.leftSort;    
   }
-  announceSortChange1(sortState: Sort) {
+  announceSortChangeRightTable(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
-    this.rightTable.sort = this.sort1;    
+    this.rightTable.sort = this.RightSort;    
   }
 
   quarantineDialog(): void {
@@ -105,7 +107,7 @@ export class CountComponent implements OnInit {
       })
     }
     else{
-      this.global.ShowToastr('error',"There were no orders selected for location assignment marking", 'No Orders Selected');
+      this.global.ShowToastr(ToasterType.Error,"There were no orders selected for location assignment marking", ConfirmationMessages.NoOrdersSelected);
     }
   }
 
@@ -122,10 +124,10 @@ export class CountComponent implements OnInit {
      if(res.isExecuted){
       let testdata = res.data.orders
      this.rightTable.data = this.rightTable.data.filter((data) => !testdata.includes(data.orderNumber)) 
-     this.global.ShowToastr('success',labels.alert.success, 'Success!');
+     this.global.ShowToastr(ToasterType.Success,"Your details have been added", ToasterTitle.Success);
      }
      else{
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("LocationAssignmentOrderInsert",res.responseMessage);
      }
     }))
@@ -185,21 +187,20 @@ export class CountComponent implements OnInit {
   }
   
 
-  applyFilter(filterValue: string) {
+  applyLeftFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase(); 
     this.leftTable.filter = filterValue; 
   }
 
 
-  applyFilter1(filterValue: string) {
+  applyRightFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase(); 
     this.rightTable.filter = filterValue;
   }
   
   @ViewChild('table1') table1: MatTable<any>;
-
   @ViewChild('table2') table2: MatTable<any>;
 
 

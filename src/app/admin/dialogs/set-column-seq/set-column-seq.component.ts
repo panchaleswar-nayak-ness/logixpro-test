@@ -9,6 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -23,9 +24,9 @@ export class SetColumnSeqComponent implements OnInit {
   ELEMENT_DATA: PeriodicElement[] = [];
   public iAdminApiService: IAdminApiService;
   constructor(
-    private Api: ApiFuntions, 
-    private authService: AuthService,
-    private adminApiService: AdminApiService,
+    public Api: ApiFuntions, 
+    public authService: AuthService,
+    public adminApiService: AdminApiService,
     private global:GlobalService,
     public dialogRef: MatDialogRef<any> 
     ) { 
@@ -46,7 +47,7 @@ export class SetColumnSeqComponent implements OnInit {
         this.formatColumn(res.data.columnSequence);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetColumnSequenceDetail",res.responseMessage);
       }
           
@@ -79,10 +80,10 @@ export class SetColumnSeqComponent implements OnInit {
     }
     this.iAdminApiService.SaveColumns(payload).subscribe((res:any) => {
       if(res.isExecuted){
-        this.global.ShowToastr('success',labels.alert.success, 'Success!');
+        this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
       }
       else{
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("SaveColumns",res.responseMessage);
       }
       this.dialogRef.close('');

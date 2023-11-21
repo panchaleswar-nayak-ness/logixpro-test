@@ -12,6 +12,7 @@ import { MatSelect } from '@angular/material/select';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-custom-reports-and-labels',
@@ -21,10 +22,10 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 export class CustomReportsAndLabelsComponent implements OnInit {
   @ViewChild('matRef') matRef: MatSelect;
 
-  Detail: any = {};
-  ListReports: any = [];
+  detail: any = {};
+  listReports: any = [];
   reportTitles: any = [];
-  IsSystemReport: boolean = true;
+  isSystemReport: boolean = true;
   sysTitles: any = [];
   olddetail;
   currentApp;
@@ -66,11 +67,11 @@ export class CustomReportsAndLabelsComponent implements OnInit {
     this.Getcustomreports();
   }
   ChangeReport(IsSysBolean: boolean) {
-    this.Detail = {};
-    this.IsSystemReport = IsSysBolean;
-    if (this.IsSystemReport) this.ListReports = this.sysTitles;
-    else this.ListReports = this.reportTitles;
-    console.log(this.ListReports);
+    this.detail = {};
+    this.isSystemReport = IsSysBolean;
+    if (this.isSystemReport) this.listReports = this.sysTitles;
+    else this.listReports = this.reportTitles;
+    console.log(this.listReports);
   }
   Getcustomreports() {
     let payload = {
@@ -91,17 +92,17 @@ export class CustomReportsAndLabelsComponent implements OnInit {
         console.log(this.sysTitles);
         console.log(this.reportTitles);
   
-        if (this.IsSystemReport || this.IsSystemReport == undefined)
+        if (this.isSystemReport || this.isSystemReport == undefined)
         {
-          this.ListReports = this.sysTitles;
+          this.listReports = this.sysTitles;
         }
         else {
-          this.ListReports = this.reportTitles;
+          this.listReports = this.reportTitles;
         }
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("Getcustomreports",res.responseMessage);
 
       }
@@ -111,7 +112,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   }
   OpenListAndLabel(route) {
     window.open(
-      `/#/${route}?file=${this.Detail.fileName.replace('.', '-')}`,
+      `/#/${route}?file=${this.detail.fileName.replace('.', '-')}`,
       '_blank',
       'width=' +
         screen.width +
@@ -131,7 +132,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
 
   Getreportdetails(file, index?) {
     
-    this.ListReports.forEach((item, i) => {
+    this.listReports.forEach((item, i) => {
       if (i === index) {
         if (item.isSelected) {
           item.isSelected = false;
@@ -145,7 +146,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
 
     this.olddetail = file;
     if (this.SelectedFile == file) {
-      this.Detail = {};
+      this.detail = {};
       this.SelectedFile = null;
       return 1;
     }
@@ -157,11 +158,11 @@ export class CustomReportsAndLabelsComponent implements OnInit {
     this.iAdminApiService.Getreportdetails(obj).subscribe((res: any) => {
       if(res.isExecuted && res.data)
       {
-        this.Detail = res.data[0];
+        this.detail = res.data[0];
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("Getreportdetails",res.responseMessage);
 
       }
@@ -180,12 +181,12 @@ export class CustomReportsAndLabelsComponent implements OnInit {
         width: '932px',
         autoFocus: '__non_existing_element__',
         disableClose: true,
-        data: this.Detail.testData ? this.Detail.testData : '',
+        data: this.detail.testData ? this.detail.testData : '',
       }
     );
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
-      if (result) this.Detail.testData = result;
+      if (result) this.detail.testData = result;
       this.saveInput();
     });
   }
@@ -198,7 +199,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
         autoFocus: '__non_existing_element__',
         disableClose: true,
         data: {
-          ListReports: this.ListReports,
+          ListReports: this.listReports,
         },
       }
     );
@@ -206,8 +207,8 @@ export class CustomReportsAndLabelsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) {
         console.log(result, 'obj');
-        console.log(this.IsSystemReport);
-        console.log(this.ListReports);
+        console.log(this.isSystemReport);
+        console.log(this.listReports);
 
         this.Getcustomreports();
         this.Getreportdetails(result.filename);
@@ -228,7 +229,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       console.log(result, 'delete');
       if (result == 'permanent' || result == 'keep') {
         let payload = {
-          filename: this.Detail.fileName,
+          filename: this.detail.fileName,
           keepFile: result === 'keep' ? true : result === 'permanent',
           wsid: '',
           username: '',
@@ -236,12 +237,12 @@ export class CustomReportsAndLabelsComponent implements OnInit {
         };
         this.iAdminApiService.deleteReport(payload).subscribe((res) => {
           if (!res.data) {
-            this.global.ShowToastr('error',"Unexpected error occurred.  If this persists please contact Scott Tech for support.", 'Error!');
+            this.global.ShowToastr(ToasterType.Error,"Unexpected error occurred.  If this persists please contact Scott Tech for support.", ToasterTitle.Error);
             console.log("deleteReport",res.responseMessage);
         } else {
           this.Getcustomreports()
-          this.Detail= {}
-          this.global.ShowToastr('success',`File Deleted Successfully`, 'Success!');
+          this.detail= {}
+          this.global.ShowToastr(ToasterType.Error,`File Deleted Successfully`, ToasterTitle.Error);
 
         };
         })
@@ -257,7 +258,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       // No file selected, handle the case if needed
       return;
     }
-    if (file.name == this.Detail.fileName) {
+    if (file.name == this.detail.fileName) {
       const formData = new FormData();
       formData.append('file', file);
 
@@ -265,24 +266,24 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       this.iAdminApiService.importFile(formData).subscribe(
         (response) => {
           this.global.ShowToastr(
-            'success',
+            ToasterType.Error,
             `File successfully uploaded`,
-            'Success!'
+            ToasterTitle.Error
           );
           // Handle the response from the server after file upload, if needed
           console.log(response);
         },
         (error) => {
-          this.global.ShowToastr('error', error, 'Error!');
+          this.global.ShowToastr(ToasterType.Error, error, ToasterTitle.Error);
           // Handle error if the file upload fails
           console.error(error);
         }
       );
     } else {
       this.global.ShowToastr(
-        'error',
-        `Uploaded filename ${file.name} must match report filename ${this.Detail.fileName}`,
-        'Error!'
+        ToasterType.Error,
+        `Uploaded filename ${file.name} must match report filename ${this.detail.fileName}`,
+        ToasterTitle.Error
       );
     }
   }
@@ -303,21 +304,21 @@ export class CustomReportsAndLabelsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let payload = {
-          FileName: this.Detail.fileName,
+          FileName: this.detail.fileName,
         };
         this.iAdminApiService.pushReportChanges(payload).subscribe((res) => {
           console.log(res);
           if (res.isExecuted) {
             this.global.ShowToastr(
-              'success',
+              ToasterType.Error,
               `Changes have been successfully pushed to the other workstations`,
-              'Success!'
+              ToasterTitle.Error
             );
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               `Error has occured while pushing changes to the other worksations`,
-              'Error!'
+              ToasterTitle.Error
             );
             console.log("pushReportChanges",res.responseMessage);
           }
@@ -329,23 +330,23 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   }
 
   saveInput() {
-    if (this.Detail.outputType == undefined) return;
+    if (this.detail.outputType == undefined) return;
     let payload = {
       oldfilename: this.olddetail,
-      newfilename: this.Detail.fileName,
-      description: this.Detail.description,
-      datasource: this.Detail.testData,
-      output: this.Detail.outputType,
-      testDataType: this.Detail.testDataType,
-      eFilename: this.Detail.exportFileName,
+      newfilename: this.detail.fileName,
+      description: this.detail.description,
+      datasource: this.detail.testData,
+      output: this.detail.outputType,
+      testDataType: this.detail.testDataType,
+      eFilename: this.detail.exportFileName,
     };
 
     this.iAdminApiService.updatereportDetails(payload).subscribe((res) => {
       if (!res.isExecuted) {
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           'Unexpected error occurred. Changes Not Saved',
-          'Error!'
+          ToasterTitle.Error
         );
         console.log("updatereportDetails",res.responseMessage);
       }

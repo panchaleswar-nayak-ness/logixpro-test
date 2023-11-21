@@ -13,7 +13,7 @@ export class LocationDetailsComponent {
   @Input() from_itemQuantity : number = 0;
   @Input() isDedicated : boolean = false;
   
-  @Input() MoveFromDedicated : string = '';
+  @Input() moveFromDedicated : string = '';
   @Input() from_warehouse : string = '';
   @Input() from_locationShow : string = '';
   @Input() from_itemNo : string = '';
@@ -23,7 +23,7 @@ export class LocationDetailsComponent {
   @Input() from_lotNo : string = '';
   @Input() from_serialNo : string = '';
 
-  @Input() MoveToDedicated : string = '';
+  @Input() moveToDedicated : string = '';
   @Input() to_warehouse : string = '';
   @Input() to_locationShow : string = '';
   @Input() to_itemNo : string = '';

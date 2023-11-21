@@ -16,7 +16,7 @@ import { CommonApiService } from 'src/app/services/common-api/common-api.service
   styleUrls: ['./om-add-record.component.scss']
 })
 export class OmAddRecordComponent implements OnInit {
-  @ViewChild('ord_focus') ord_focus: ElementRef;
+  @ViewChild('ordFocus') ordFocus: ElementRef;
   userData: any;
   userFieldData: any = {};
   oTTempUpdatePayload: any = {
@@ -70,8 +70,7 @@ export class OmAddRecordComponent implements OnInit {
   wharehouseRequired: any = false;
   heading: string = "";
   orderNumberDisabled: boolean = false;
-  itemNumberScroll:any = "all";
-
+  itemNumberScroll:any = "all"; 
   public iOrderManagerApi :  IOrderManagerAPIService;
   public iCommonAPI : ICommonApi;
   constructor(
@@ -94,7 +93,7 @@ export class OmAddRecordComponent implements OnInit {
     this.initializaAutoComplete();
   }
   ngAfterViewInit(): void {
-    this.ord_focus.nativeElement.focus();
+    this.ordFocus.nativeElement.focus();
   }
   initializaAutoComplete() {
     this.heading = this.data.heading;
@@ -190,7 +189,7 @@ export class OmAddRecordComponent implements OnInit {
     this.oTTempUpdatePayload.userField10 = this.userFieldData.userField10;
   }
 
-  getUserFieldData(loader: boolean = false) {
+  getUserFieldData() {
     this.iOrderManagerApi.UserFieldData().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.userFieldData = res.data[0];
@@ -203,7 +202,7 @@ export class OmAddRecordComponent implements OnInit {
     });
   }
 
-  async save(loader: boolean = false) { 
+  async save() { 
     if (this.oTTempUpdatePayload.orderNumber.trim() == '' || this.oTTempUpdatePayload.itemNumber.trim() == '' || this.oTTempUpdatePayload.transType.trim() == '') {
       this.global.ShowToastr('error',"Order Number, Item Number and Transaction Type must be completed in order to continue.", 'Warning!');
     }
@@ -246,7 +245,7 @@ export class OmAddRecordComponent implements OnInit {
     }
   }
 
-  searchItem(loader: boolean = false) {
+  searchItem() {
     if (this.oTTempUpdatePayload.itemNumber.trim() != '') {
       let payload = {
         "appName": "",
@@ -260,7 +259,7 @@ export class OmAddRecordComponent implements OnInit {
         }
         else {
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("SearchItem",res.responseMessage);
+           
 
         } 
       });
@@ -340,12 +339,12 @@ export class OmAddRecordComponent implements OnInit {
               this.oTTempUpdatePayload.description = "";
               this.oTTempUpdatePayload.unitofMeasure = ""; 
               this.wharehouseRequired = false;
-              console.log("SearchItem",res.responseMessage);
+               
             }
           }
           else {
             this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("SearchItem",res.responseMessage);
+             
           }
           
         });

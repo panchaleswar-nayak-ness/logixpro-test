@@ -8,3 +8,13 @@ table{
     //   }
     }
   }
+
+  .btn-flex-1{
+    flex: 1 auto;
+}
+.staging-location-table-height{
+  height:340px;
+}
+.table-header-clr{
+  background-color: var(--clr-table-header);
+}

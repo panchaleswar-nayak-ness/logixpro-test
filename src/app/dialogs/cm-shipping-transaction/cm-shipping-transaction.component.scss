@@ -1,6 +1,29 @@
-table{
-    th,td{
-        border:none;
+table {
+
+    th,
+    td {
+        border: none;
         white-space: nowrap;
     }
+}
+.w-48px {
+    width: 48px;
+}
+.max-height-75v {
+    max-height: 75vh
+}
+
+.table-shipping-th {
+    border: 0;
+    height: 66px;
+    padding-left: 65px;
+}
+.table-shipping-td {
+    border: 0;
+    padding-left: 24px;
+    background: #fff;
+}
+
+ .table-shiping-tr  {
+    background-color: var(--clr-table-header);
 }

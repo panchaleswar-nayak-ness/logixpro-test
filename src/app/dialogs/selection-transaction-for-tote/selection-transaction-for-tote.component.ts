@@ -5,12 +5,11 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
   templateUrl: './selection-transaction-for-tote.component.html',
-  styleUrls: []
+  styleUrls: ['./selection-transaction-for-tote.component.scss']
 })
 export class SelectionTransactionForToteComponent implements OnInit {
   public userData;
@@ -24,14 +23,13 @@ export class SelectionTransactionForToteComponent implements OnInit {
   public batchID;
   public itemNumber;
   public description;
-  public fieldNames;
-
+  public fieldNames; 
   public lowerBound=1;
-  public upperBound=2;
+  public upperBound=2; 
 
   showBtnNewPutAwayForSameSKU : boolean = true;
-
-  public iinductionManagerApi:IInductionManagerApiService;
+  
+  public iInductionManagerApi: IInductionManagerApiService;
 
   constructor(
     private global: GlobalService,
@@ -39,7 +37,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
     public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
     ) { 
-      this.iinductionManagerApi = inductionManagerApi;
+      this.iInductionManagerApi = inductionManagerApi;
     }
 
   ngOnInit(): void {
@@ -60,7 +58,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
   selectOrder(id:any,itemNumber:any, val : any = []) {
     if (val.zone) {
       let payload = { zone: val.zone };
-      this.iinductionManagerApi.BatchByZone(payload).subscribe(
+      this.iInductionManagerApi.BatchByZone(payload).subscribe(
         (res: any) => {
           if (res.isExecuted) {
             if (!res.data) {
@@ -149,7 +147,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
         "1=1"
       ],
     };
-    this.iinductionManagerApi.TransactionForTote(getTransaction).subscribe(
+    this.iInductionManagerApi.TransactionForTote(getTransaction).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
           if(res.data.subCategory == 'Reel Tracking' && res.data.inputType != 'Serial Number'){
@@ -181,7 +179,9 @@ export class SelectionTransactionForToteComponent implements OnInit {
           console.log("TransactionForTote",res.ResponseMessage);
         }
       },
-      (error) => {}
+      (error) => {
+        console.log(error);
+      }
     );
   }
 

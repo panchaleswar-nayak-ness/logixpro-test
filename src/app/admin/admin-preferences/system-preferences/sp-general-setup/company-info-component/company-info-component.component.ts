@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/init/auth.service';
 import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-company-info-component',
@@ -18,17 +19,17 @@ export class CompanyInfoComponentComponent  implements OnInit{
     this.userData = authService.userData();
    }
    ngOnInit(): void {
-    this.CompanyInfo();
+    this.companyInfo();
   }
-  CompanyObj: any = {};
-  public CompanyInfo() {
+  companyObj: any = {};
+  public companyInfo() {
     this.iAdminApiService.AdminCompanyInfo().subscribe((res: any) => {
       if(res.isExecuted && res.data)
       {
-      this.CompanyObj = res.data;
+      this.companyObj = res.data;
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("AdminCompanyInfo",res.responseMessage);
 
       }
@@ -38,18 +39,18 @@ export class CompanyInfoComponentComponent  implements OnInit{
   payload(no){ 
     const payload: any = {
       "preference": [
-        this.CompanyObj.companyName,this.CompanyObj.address1,this.CompanyObj.city,this.CompanyObj.state,
-        this.CompanyObj.earlyBreakTime,String(this.CompanyObj.earlyBreakDuration),this.CompanyObj.midBreakTime,String(this.CompanyObj.midBreakDuration)
-        ,this.CompanyObj.lateBreakTime,String(this.CompanyObj.lateBreakDuration)
+        this.companyObj.companyName,this.companyObj.address1,this.companyObj.city,this.companyObj.state,
+        this.companyObj.earlyBreakTime,String(this.companyObj.earlyBreakDuration),this.companyObj.midBreakTime,String(this.companyObj.midBreakDuration)
+        ,this.companyObj.lateBreakTime,String(this.companyObj.lateBreakDuration)
       ],
       "panel": 1,
       "username": this.userData.userName,
       "wsid": this.userData.wsids
     };
-    this.SaveForm(payload); 
+    this.saveForm(payload); 
     
   }
-  async SaveForm(paylaod){ 
+  async saveForm(paylaod){ 
     this.iAdminApiService.GeneralPreferenceSave(paylaod).subscribe((res: any) => { 
     })
   }

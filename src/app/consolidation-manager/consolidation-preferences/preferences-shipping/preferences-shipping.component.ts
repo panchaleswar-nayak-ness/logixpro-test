@@ -6,14 +6,14 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { CmShippingCarrierComponent } from 'src/app/dialogs/cm-shipping-carrier/cm-shipping-carrier.component'; 
-
+import { CmShippingCarrierComponent } from 'src/app/dialogs/cm-shipping-carrier/cm-shipping-carrier.component';
 import { AuthService } from 'src/app/init/auth.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { CMShippingPreferences, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-preferences-shipping',
@@ -26,22 +26,17 @@ export class PreferencesShippingComponent implements OnInit {
   selectionPacking: boolean = false;
   selectionConfirmPacking: boolean = false;
   searchByInput: any = new Subject<string>();
-
   @Input() shippingData: any;
   @Output() shippingEvnt = new EventEmitter<void>();
   userData: any;
-
-  public IconsolidationAPI : IConsolidationApi;
+  public IconsolidationAPI: IConsolidationApi;
 
   constructor(
-    public consolidationAPI : ConsolidationApiService,
-    // private Api: ApiFuntions,
-    
+    public consolidationAPI: ConsolidationApiService,
     private authService: AuthService,
-    public global:GlobalService
+    public global: GlobalService
   ) {
     this.userData = this.authService.userData();
-
     this.shippingForm = new FormGroup({
       allowShip: new FormControl(''),
       freight: new FormControl(''),
@@ -52,7 +47,6 @@ export class PreferencesShippingComponent implements OnInit {
       width: new FormControl(''),
       height: new FormControl(''),
       cube: new FormControl(''),
-
       allowPack: new FormControl(''),
       confirmPack: new FormControl(''),
       printCont: new FormControl(''),
@@ -62,7 +56,6 @@ export class PreferencesShippingComponent implements OnInit {
       confirmQTY: new FormControl(''),
       contIDText: new FormControl(''),
     });
-    
     this.IconsolidationAPI = consolidationAPI;
   }
 
@@ -70,10 +63,11 @@ export class PreferencesShippingComponent implements OnInit {
     this.searchByInput
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value) => {
-        this.shippingForm.controls['contIDText'].setValue(value);
+        this.shippingForm.controls[CMShippingPreferences.ContIDText].setValue(value);
         this.saveShippingPreferences();
       });
   }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['shippingData']['currentValue']) {
       this.setPreferences(changes['shippingData']['currentValue']);
@@ -81,28 +75,23 @@ export class PreferencesShippingComponent implements OnInit {
   }
 
   setPreferences(item) {
-    this.shippingForm.controls['allowShip'].setValue(item.shipping);
-    this.shippingForm.controls['allowPack'].setValue(item.packing);
-    this.shippingForm.controls['printCont'].setValue(item.autoPrintContPL);
-    this.shippingForm.controls['printOrd'].setValue(item.autoPrintOrderPL);
-    this.shippingForm.controls['printContLabel'].setValue(
-      item.autoPrintContLabel
-    );
-    this.shippingForm.controls['contIDText'].setValue(item.containerIDDefault);
-    this.shippingForm.controls['contID'].setValue(item.enterContainerID);
-    this.shippingForm.controls['confirmPack'].setValue(item.confirmAndPacking);
-    this.shippingForm.controls['confirmQTY'].setValue(
-      item.confirmAndPackingConfirmQuantity
-    );
-    this.shippingForm.controls['freight'].setValue(item.freight);
-    this.shippingForm.controls['freight1'].setValue(item.freight1);
-    this.shippingForm.controls['freight2'].setValue(item.freight2);
-    this.shippingForm.controls['weight'].setValue(item.weight);
-    this.shippingForm.controls['length'].setValue(item.length);
-    this.shippingForm.controls['width'].setValue(item.width);
-    this.shippingForm.controls['height'].setValue(item.height);
-    this.shippingForm.controls['cube'].setValue(item.cube);
-
+    this.shippingForm.controls[CMShippingPreferences.AllowShip].setValue(item.shipping);
+    this.shippingForm.controls[CMShippingPreferences.AllowPack].setValue(item.packing);
+    this.shippingForm.controls[CMShippingPreferences.PrintCont].setValue(item.autoPrintContPL);
+    this.shippingForm.controls[CMShippingPreferences.PrintOrd].setValue(item.autoPrintOrderPL);
+    this.shippingForm.controls[CMShippingPreferences.PrintContLabel].setValue(item.autoPrintContLabel);
+    this.shippingForm.controls[CMShippingPreferences.ContIDText].setValue(item.containerIDDefault);
+    this.shippingForm.controls[CMShippingPreferences.ContID].setValue(item.enterContainerID);
+    this.shippingForm.controls[CMShippingPreferences.ConfirmPack].setValue(item.confirmAndPacking);
+    this.shippingForm.controls[CMShippingPreferences.ConfirmQTY].setValue(item.confirmAndPackingConfirmQuantity);
+    this.shippingForm.controls[CMShippingPreferences.Freight].setValue(item.freight);
+    this.shippingForm.controls[CMShippingPreferences.Freight1].setValue(item.freight1);
+    this.shippingForm.controls[CMShippingPreferences.Freight2].setValue(item.freight2);
+    this.shippingForm.controls[CMShippingPreferences.Weight].setValue(item.weight);
+    this.shippingForm.controls[CMShippingPreferences.Length].setValue(item.length);
+    this.shippingForm.controls[CMShippingPreferences.Width].setValue(item.width);
+    this.shippingForm.controls[CMShippingPreferences.Height].setValue(item.height);
+    this.shippingForm.controls[CMShippingPreferences.Cube].setValue(item.cube);
 
     if (item.packing && item.confirmAndPacking) {
       this.selectionPacking = true;
@@ -126,75 +115,75 @@ export class PreferencesShippingComponent implements OnInit {
   }
 
   openCarrier() {
-    const dialogRef:any = this.global.OpenDialog(CmShippingCarrierComponent, {
+    this.global.OpenDialog(CmShippingCarrierComponent, {
       height: 'auto',
       width: '600px',
       autoFocus: '__non_existing_element__',
-      disableClose:true,
+      disableClose: true,
       data: {
         mode: 'delete-create-count',
         actionMessage: ``,
       },
     });
-    dialogRef.afterClosed().subscribe((res) => {});
   }
 
   saveShippingPreferences() {
     let payload = {
-      packing: this.shippingForm.controls['allowPack'].value,
-      confirmPack: this.shippingForm.controls['confirmPack'].value,
-      printContPL: this.shippingForm.controls['printCont'].value,
-      printOrderPL: this.shippingForm.controls['printOrd'].value,
-      printContLabel: this.shippingForm.controls['printContLabel'].value,
-      entContainerID: this.shippingForm.controls['contID']?.value,
-      containerIDDEF: this.shippingForm.controls['contIDText'].value,
-      confPackQuant: this.shippingForm.controls['confirmQTY'].value,
-      freight: this.shippingForm.controls['freight'].value,
-      freight1: this.shippingForm.controls['freight1'].value,
-      freight2: this.shippingForm.controls['freight2'].value,
-      weight: this.shippingForm.controls['weight'].value,
-      length: this.shippingForm.controls['length'].value,
-      width: this.shippingForm.controls['width'].value,
-      height: this.shippingForm.controls['height'].value,
-      cube: this.shippingForm.controls['cube'].value,
-      shipping: this.shippingForm.controls['allowShip']?.value
+      packing: this.shippingForm.controls[CMShippingPreferences.AllowPack].value,
+      confirmPack: this.shippingForm.controls[CMShippingPreferences.ConfirmPack].value,
+      printContPL: this.shippingForm.controls[CMShippingPreferences.PrintCont].value,
+      printOrderPL: this.shippingForm.controls[CMShippingPreferences.PrintOrd].value,
+      printContLabel: this.shippingForm.controls[CMShippingPreferences.PrintContLabel].value,
+      entContainerID: this.shippingForm.controls[CMShippingPreferences.ContID]?.value,
+      containerIDDEF: this.shippingForm.controls[CMShippingPreferences.ContIDText].value,
+      confPackQuant: this.shippingForm.controls[CMShippingPreferences.ConfirmQTY].value,
+      freight: this.shippingForm.controls[CMShippingPreferences.Freight].value,
+      freight1: this.shippingForm.controls[CMShippingPreferences.Freight1].value,
+      freight2: this.shippingForm.controls[CMShippingPreferences.Freight2].value,
+      weight: this.shippingForm.controls[CMShippingPreferences.Weight].value,
+      length: this.shippingForm.controls[CMShippingPreferences.Length].value,
+      width: this.shippingForm.controls[CMShippingPreferences.Width].value,
+      height: this.shippingForm.controls[CMShippingPreferences.Height].value,
+      cube: this.shippingForm.controls[CMShippingPreferences.Cube].value,
+      shipping: this.shippingForm.controls[CMShippingPreferences.AllowShip]?.value
     };
     this.IconsolidationAPI
       .ConsolidationPreferenceShipUpdate(payload)
       .subscribe((response: any) => {
         this.shippingEvnt.emit();
         if (!response.isExecuted) {
-          this.global.ShowToastr('error','Error', 'An Error Occured while trying to save');
-          console.log("ConsolidationPreferenceShipUpdate",response.responseMessage);
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.ErrorWhileSave,ToasterTitle.Error);
+          console.log("ConsolidationPreferenceShipUpdate", response.responseMessage);
         }
       });
   }
 
   toggleAllowPackage() {
     this.selectionPacking = !this.selectionPacking;
-
     if (!this.selectionPacking) {
       this.selectionConfirmPacking = false;
-      this.shippingForm.controls['confirmPack'].setValue(false);
+      this.shippingForm.controls[CMShippingPreferences.ConfirmPack].setValue(false);
     } else if (this.selectionPacking) {
       this.selectionConfirmPacking = true;
     }
     this.toggleConfirmPackage();
     this.saveShippingPreferences();
   }
+
   toggleAllowShip() {
     this.selectionShipping = !this.selectionShipping;
     this.saveShippingPreferences();
   }
+
   toggleConfirmPackage() {
     this.selectionConfirmPacking = !this.selectionConfirmPacking;
     if (!this.selectionConfirmPacking) {
-      this.shippingForm.controls['printCont'].setValue(false);
-      this.shippingForm.controls['printOrd'].setValue(false);
-      this.shippingForm.controls['printContLabel'].setValue(false);
-      this.shippingForm.controls['contID'].setValue(false);
-      this.shippingForm.controls['confirmQTY'].setValue(false);
-      this.shippingForm.controls['contIDText'].setValue('');
+      this.shippingForm.controls[CMShippingPreferences.PrintCont].setValue(false);
+      this.shippingForm.controls[CMShippingPreferences.PrintOrd].setValue(false);
+      this.shippingForm.controls[CMShippingPreferences.PrintContLabel].setValue(false);
+      this.shippingForm.controls[CMShippingPreferences.ContID].setValue(false);
+      this.shippingForm.controls[CMShippingPreferences.ConfirmQTY].setValue(false);
+      this.shippingForm.controls[CMShippingPreferences.ContIDText].setValue('');
     }
     this.saveShippingPreferences();
   }

@@ -1,13 +1,11 @@
 import { Component, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-
 import labels from '../../../../labels/labels.json';
 import { SharedService } from '../../../../services/shared.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { MatSelect } from '@angular/material/select';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocess-choice',
@@ -23,53 +21,47 @@ export class ReprocessChoiceComponent  {
   @Input() isReprocessedChecked: any;
   @Input() isCompleteChecked: any;
   @Input() isHistoryChecked: any;
-  @Output() itemUpdatedEvent = new EventEmitter<boolean>();
-  public iAdminApiService: IAdminApiService;
-  @Input() ROrder: any = '';
-  @Input() RItem: any = '';
-  @Input() selection4: any = '';
-  @Input() searchString4: any = '';
+  @Input() rOrder: any = '';
+  @Input() rItem: any = '';
+  @Input() selection: any = '';
+  @Input() searchString: any = '';
   @Input() hold: boolean = false;
 
+  @Output() itemUpdatedEvent = new EventEmitter<boolean>();
 
-  constructor(private Api: ApiFuntions,  private global: GlobalService, private sharedService: SharedService,public adminApiService: AdminApiService) { this.iAdminApiService = adminApiService }
+  public iAdminApiService: IAdminApiService;
+
+  constructor(
+    private global: GlobalService, 
+    public sharedService: SharedService,
+    public adminApiService: AdminApiService
+  ) { 
+    this.iAdminApiService = adminApiService 
+  }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['ROrder']?.currentValue) {
-      this.ROrder = changes['ROrder'].currentValue;
-      console.log(this.ROrder);
-    }
-    if (changes['RItem']?.currentValue) {
-      this.ROrder = changes['RItem'].currentValue;
-      console.log(this.RItem);
-    }
-    if (changes['selection4']?.currentValue) {
-      this.selection4 = changes['selection4'].currentValue;
-      console.log(this.selection4);
-    }
-    if (changes['searchString4']?.currentValue) {
-      this.searchString4 = changes['searchString4'].currentValue;
-      console.log(this.searchString4);
-    }
+    if (changes['rOrder']?.currentValue) this.rOrder = changes['rOrder'].currentValue;
+    if (changes['rItem']?.currentValue) this.rOrder = changes['rItem'].currentValue;
+    if (changes['selection']?.currentValue) this.selection = changes['selection'].currentValue;
+    if (changes['searchString']?.currentValue) this.searchString = changes['searchString'].currentValue;
   }
 
   postTransaction() { 
-    this.Api.PostReprocessTransaction().subscribe(
-      {next: (res: any) => {
+    this.iAdminApiService.PostReprocessTransaction({}).subscribe({
+      next: (res: any) => {
         if (res.data && res.isExecuted) {
           this.isEnabled = true;
           this.clearControls();
-          this.global.ShowToastr('success',res.responseMessage, 'Success!');
+          this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
           this.itemUpdatedEvent.emit(true);
         } else {
           this.clearControls();
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           this.itemUpdatedEvent.emit(true);
           console.log("PostReprocessTransaction",res.responseMessage);
         }
-      },
-      error: (error) => { }}
-    );
+      }
+    });
   }
 
   clearControls() {
@@ -79,12 +71,9 @@ export class ReprocessChoiceComponent  {
     this.isHistoryChecked.flag = false;
   }
 
-  changeOrderStatus(event: MatCheckboxChange, status): void {
-    if (status == 'Reprocess') {
-      this.isCompleteChecked.flag = false;
-    } else if (status == 'Complete') {
-      this.isReprocessedChecked.flag = false;
-    }
+  changeOrderStatus(status): void {
+    if (status == StringConditions.Reprocess) this.isCompleteChecked.flag = false;
+    else if (status == StringConditions.Complete) this.isReprocessedChecked.flag = false;
 
     let payload = {
       id: this.transactionID,
@@ -93,21 +82,17 @@ export class ReprocessChoiceComponent  {
       sendHistory: (this.isHistoryChecked.flag) ? 1 : 0,
       field: "", 
     }
-    this.iAdminApiService.ReprocessIncludeSet(payload).subscribe(
-      {next: (res: any) => {
+    this.iAdminApiService.ReprocessIncludeSet(payload).subscribe({
+      next: (res: any) => {
         if (res.data && res.isExecuted) {
-          this.global.ShowToastr('success',labels.alert.update, 'Success!');
+          this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
           this.itemUpdatedEvent.emit(true);
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("ReprocessIncludeSet",res.responseMessage);
         }
-      },
-      error: (error) => { }}
-    );
-
-
-
+      }
+    });
   }
 
   markTableSelection(matEvent: any) {
@@ -117,23 +102,20 @@ export class ReprocessChoiceComponent  {
 
   markTable(type: string) {
     let payload = {
-      "OrderNum": this.ROrder,
-      "ItemNum": this.RItem,
+      "OrderNum": this.rOrder,
+      "ItemNum": this.rItem,
       "Hold": this.hold ? 1 : 0,
-      "searchCol": this.selection4,
-      "searchString": this.searchString4,
+      "searchCol": this.selection,
+      "searchString": this.searchString,
       "field": type
     }
     this.iAdminApiService.SetReprocessIds(payload).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
-          this.global.ShowToastr('success',labels.alert.update, 'Success!');
+          this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
           this.itemUpdatedEvent.emit(true);
-        } else {
-          this.global.ShowToastr('error','There was an error marking the designated reprocess records', 'Error');
-        }
-      },
-      (error) => { }
+        } else this.global.ShowToastr(ToasterType.Error, 'There was an error marking the designated reprocess records', ToasterTitle.Error);
+      }
     );
   }
 }

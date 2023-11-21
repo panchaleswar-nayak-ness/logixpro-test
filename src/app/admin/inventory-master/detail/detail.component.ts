@@ -12,6 +12,8 @@ import { CurrentTabDataService } from '../current-tab-data-service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+
 
 @Component({
   selector: 'app-detail',
@@ -27,8 +29,8 @@ export class DetailComponent implements OnInit {
   public userData: any;
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   
-  sendNotification(e) {
-    this.notifyParent.emit(e);
+  sendNotification(notification) {
+    this.notifyParent.emit(notification);
   }
 
   public setVal: boolean = false;
@@ -51,7 +53,7 @@ export class DetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
-    this.setVal = localStorage.getItem('routeFromOrderStatus') === 'true';
+    this.setVal = localStorage.getItem('routeFromOrderStatus') === StringConditions.True;
     this.spliUrl=this.router.url.split('/');
     this.eventsSubscription = this.events.subscribe((val) => {
       if(val==='h' && this.details.controls['histCount'].value != 0) this.RedirectInv('TransactionHistory');
@@ -66,7 +68,7 @@ export class DetailComponent implements OnInit {
 
   public openItemNumDialog() {
     let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -79,17 +81,17 @@ export class DetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) { 
-        let paylaod = {
+        let payLoad = {
           "oldItemNumber": this.details.controls['itemNumber'].value,
           "newItemNumber": result, 
         }
-        this.iAdminApiService.UpdateItemNumber(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.UpdateItemNumber(payLoad).subscribe((res: any) => {
           this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY] = result;
           if (res.isExecuted) {
             this.details.patchValue({ 'itemNumber' : res.data.newItemNumber }); 
             this.sendNotification({newItemNumber: res.data.newItemNumber});
           } else {
-            this.global.ShowToastr('error',"Item Number Already Exists.", 'Error!');
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.ItemNumberExists,  ToasterTitle.Error);
             console.log("UpdateItemNumber",res.responseMessage);
           }
         })
@@ -99,7 +101,7 @@ export class DetailComponent implements OnInit {
 
   public openDescriptionDialog() {
     let dialogRef:any = this.global.OpenDialog(UpdateDescriptionComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -117,9 +119,9 @@ export class DetailComponent implements OnInit {
     });
   }
 
-  public opencategoryDialog() {
+  public openCategoryDialog() {
     let dialogRef:any = this.global.OpenDialog(ItemCategoryComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '860px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -141,7 +143,7 @@ export class DetailComponent implements OnInit {
 
   public openUmDialog() { 
     let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '750px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -169,13 +171,13 @@ export class DetailComponent implements OnInit {
       });
     }
     else if(this.spliUrl[1] == 'InductionManager'){
-      this.router.navigate([]).then((result) => {
+      this.router.navigate([]).then(() => {
         let url = '/#/InductionManager/Admin/TransactionJournal?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
         window.open(url, '_blank');
       });
     }
     else{
-      this.router.navigate([]).then((result) => {
+      this.router.navigate([]).then(() => {
         let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
         window.open(url, '_blank');
       });

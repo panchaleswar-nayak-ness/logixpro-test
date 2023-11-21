@@ -9,21 +9,21 @@
                 </div>
                 <div class="row">
                     <div class="col-xl-4">
-                        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" style="cursor: context-menu !important;">
+                        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                             <mat-label>Tote ID</mat-label>
                             <input matInput type="text" maxlength="50" formControlName="toteID" #autoFocusField [(ngModel)]="toteIDCrossBtn">
                             <button matSuffix *ngIf="toteIDCrossBtn" class="clear-btn" (click)=" toteIDCrossBtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>  
                         </mat-form-field>
                     </div>
                     <div class="col-xl-4">
-                        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" style="cursor: context-menu !important;">
+                        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" >
                             <mat-label>Item No.</mat-label>
                             <input matInput  type="text" maxlength="50" formControlName="itemNo" [(ngModel)]="itemNoCrossBtn">
                             <button matSuffix *ngIf="itemNoCrossBtn" class="clear-btn" (click)=" itemNoCrossBtn='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
                         </mat-form-field>
                     </div>
                     <div class="col-xl-4">
-                        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline" style="cursor: context-menu !important;">
+                        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                             <mat-label>Quantity</mat-label>
                             <input [NumbersOnly]="true" matInput type="number"  formControlName="quantity" >
                         </mat-form-field>

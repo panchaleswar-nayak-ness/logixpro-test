@@ -29,33 +29,6 @@ table{
     border-radius: 0px !important;
 
     color: var(--clr-pure-white);
-    // &:before{
-    //   content: '';
-    //   background-color: var(--clr-primary-300);
-    //   height: 100%;
-    //   width: 100%;
-    //   position: absolute;
-    //   left: 0px;
-    //   top: 0px;
-    //   z-index: -1;
-      
-    // }
-    // &:first-child{
-    //   &:before{
-    //   border-top-left-radius: 0px;
-    //   border-bottom-left-radius: 0px;
-    //   margin-left: 8px;
-    //   }
-    // }
-    // &:last-child{
-    //   &:before{
-    //   border-top-right-radius: 0px;
-    //   border-bottom-right-radius: 0px;
-    //   right: 12px;
-    //   left: auto;
-    //   }
-    // }
-    
   }
 }
 
@@ -65,10 +38,6 @@ table{
   z-index: 200000000;
 }
 
-
-// .custom-action-clickable-table .mat-row{
-//   position: relative;
-// }
 .toolTipConf{
   padding: 10px 12px;
    border: 0; 
@@ -103,4 +72,12 @@ table.custom-action-clickable-table tr:hover{
 table.custom-action-clickable-table tr:hover td{
   color: var(--clr-pure-white) !important;
   border: none;
+}
+
+.move-location-card{
+  height: 97%
+}
+
+.btn-create{
+  flex: 1;
 }

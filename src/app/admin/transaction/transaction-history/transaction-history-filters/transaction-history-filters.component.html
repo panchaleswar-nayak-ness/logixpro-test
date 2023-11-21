@@ -15,7 +15,7 @@
                 <div class="col-xl-3">
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label>Completed Date (Start)</mat-label>
-                        <input matInput [(ngModel)]="sdate" [matDatepicker]="start"
+                        <input matInput [(ngModel)]="sDate" [matDatepicker]="start"
                             (dateChange)="onDateChange($event.value)">
                         <mat-datepicker-toggle matSuffix [for]="start" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #start></mat-datepicker>
@@ -27,7 +27,7 @@
 
                     <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                         <mat-label>End Date</mat-label>
-                        <input matInput [matDatepicker]="end" [(ngModel)]="edate" 
+                        <input matInput [matDatepicker]="end" [(ngModel)]="eDate" 
                             (dateChange)="onEndDateChange($event.value)">
                         <mat-datepicker-toggle matSuffix [for]="end" ngDefaultControl></mat-datepicker-toggle>
                         <mat-datepicker #end></mat-datepicker>

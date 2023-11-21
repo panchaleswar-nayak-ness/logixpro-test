@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>User Fields Data</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -11,7 +11,7 @@
         <div class="col-xl-6">
             <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
                 <mat-label>User Field 1</mat-label>
-                <input #user_focus type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField1">
+                <input #userFocus type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField1">
             </mat-form-field>
         </div>
         <div class="col-xl-6">

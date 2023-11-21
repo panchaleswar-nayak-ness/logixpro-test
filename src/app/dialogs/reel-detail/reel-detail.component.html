@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between alighn-item-center mb-4">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Reel Detail</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" mat-dialog-close="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -12,20 +12,20 @@
             <div class="col-xl-4 ">
                 <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
                     <mat-label>Order Number</mat-label>
-                    <input #field_focus matInput [(ngModel)]="ReelOrder">
+                    <input #field_focus matInput [(ngModel)]="reelOrder">
                 </mat-form-field>
             </div>
             <div class="col-xl-4 ">
                 <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
                     <mat-label>Lot Number</mat-label>
-                    <input matInput [(ngModel)]="ReelLot">
+                    <input matInput [(ngModel)]="reelLot">
                 </mat-form-field>
             </div>
             <div class="col-xl-4 ">
 
                 <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
                     <mat-label>Expiration Date</mat-label>
-                    <input matInput [matDatepicker]="requireDate" [(ngModel)]="ReelExpDate">
+                    <input matInput [matDatepicker]="requireDate" [(ngModel)]="reelExpDate">
                     <mat-datepicker-toggle matSuffix [for]="requireDate"
                         ngDefaultControl></mat-datepicker-toggle>
                     <mat-datepicker #requireDate></mat-datepicker>
@@ -36,13 +36,13 @@
             <div class="col-xl-6 ">
                 <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
                     <mat-label>{{fieldNames.userField1}}</mat-label>
-                    <input matInput [(ngModel)]="ReelUF1">
+                    <input matInput [(ngModel)]="reelUF1">
                 </mat-form-field>
             </div>
                     <div class="col-xl-6 ">
                         <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
                             <mat-label>{{fieldNames.userField2}} </mat-label>
-                            <input matInput  [(ngModel)]="ReelUF2">
+                            <input matInput  [(ngModel)]="reelUF2">
                         </mat-form-field>
     </div>
     </div>
@@ -51,15 +51,15 @@
                 <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline" >
                     <mat-label >Warehouse</mat-label>
                     <span matSuffix>
-                        <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg);" >unfold_more</mat-icon>
+                        <mat-icon class="mat-icon-warehouse"  >unfold_more</mat-icon>
                       </span>
-                    <input matInput  [(ngModel)]="ReelWarehouse" [disabled]="!wareHouseSensitivity" readonly="true" (click)="openWareHouse()">
+                    <input matInput  [(ngModel)]="reelWarehouse" [disabled]="!wareHouseSensitivity" readonly="true" (click)="openWareHouse()">
                 </mat-form-field>
             </div>
                     <div class="col-xl-6 ">
                         <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
                             <mat-label>Parts to be Inducted</mat-label>
-                            <input matInput type="number" min=0 oninput="validity.valid||(value='');" [(ngModel)]="ReelQty" (keyup)="fetchReelQty($event)" #reelQuantitytemp>
+                            <input matInput type="number" min=0 oninput="validity.valid||(value='');" [(ngModel)]="reelQty" (keyup)="fetchReelQty($event)" #reelQuantitytemp>
                         </mat-form-field>
     </div>
     </div>
@@ -68,7 +68,7 @@
         <div class="col-xl-12 ">
             <mat-form-field class="custom-form-field __grab_cursor w-100" appearance="outline">
                 <mat-label>Notes</mat-label>
-                <textarea matInput  maxlength="255" [(ngModel)]="ReelNotes"></textarea>
+                <textarea matInput  maxlength="255" [(ngModel)]="reelNotes"></textarea>
             </mat-form-field>
         </div>
 </div>

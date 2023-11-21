@@ -12,8 +12,8 @@
             <span class="material-symbols-outlined icon-search">
               search
             </span>
-            <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50" [(ngModel)]="searchOrder" (ngModelChange)="applyFilter($event)" #autoFocusField>
-            <button *ngIf="searchOrder != ''" matSuffix class="clear-btn" (click)="searchOrder = ''; this.leftTable.filter = searchOrder;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+            <input #alertInput type="text" placeholder="Search" aria-label="Search" matInput maxlength="50" [(ngModel)]="searchOrderLeft" (ngModelChange)="applyFilter()" #autoFocusField>
+            <button *ngIf="searchOrderLeft != ''" matSuffix class="clear-btn" (click)="searchOrderLeft = ''; this.leftTable.filter = searchOrderLeft;"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
           </mat-form-field>
           
         </div>
@@ -22,15 +22,15 @@
 
       <div class="col-xl-6">
        <div class="d-xl-block d-flex justify-content-end">
-        <button mat-stroked-button color="primary" class="button-add-all mb-3 float-end" (click)="addOrdereDialog()" style="flex:1">
+        <button mat-stroked-button color="primary" class="button-add-all mb-3 float-end count-primary-button" (click)="addOrdereDialog()">
           Add All
         </button>
       </div>
     </div>
     </div>
       
-    <div class="card br-14  borderless" style="overflow-x: auto;">
-      <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding" style="height:550px" track="all">
+    <div class="card br-14  borderless card-overflow" >
+      <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding table-scrollbar"  track="all">
       <table mat-table #table1 [dataSource]="leftTable" class="w-100" matSort #matSort="matSort" (matSortChange)="announceSortChange($event)">
 
         <!--- Note that these columns can be defined in any order.
@@ -73,13 +73,13 @@
       </ng-container>
 
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell " [attr.colspan]="displayedColumns.length">
+        <td class="mat-cell " [attr.colspan]="displayedColumnsCountOrderData.length">
           No data available in table.
         </td>
       </tr>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsCountOrderData"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsCountOrderData;"></tr>
       </table>
     </ng-scrollbar>
   </div>

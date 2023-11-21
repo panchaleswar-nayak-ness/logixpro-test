@@ -42,7 +42,7 @@
     </div>
 
     <div class="card table-responsive  br-14">
-      <table  mat-table [dataSource]="tableData" matSort (matSortChange)="announceSortChange($event)">
+      <table  mat-table [dataSource]="batchOrderDataTable" matSort (matSortChange)="announceSortChange($event)">
 
         <!-- Position Column -->
         <ng-container matColumnDef="orderNumber">
@@ -93,7 +93,7 @@
 <div class="m-2 create-batch-btn-custom">
 
   <button mat-flat-button color="primary" class="br-18 w-100 form-button-submit btn-lg mb-3"
-    [disabled]="this.tableData.data.length == 0" (click)="createBatchDialog()">
+    [disabled]="this.batchOrderDataTable.data.length == 0" (click)="createBatchDialog()">
     Create Batch
   </button>
 </div>

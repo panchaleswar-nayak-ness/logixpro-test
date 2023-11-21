@@ -1,7 +1,4 @@
-import {
-  Component, Input,
-} from '@angular/core';
-
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-transaction-history',
@@ -13,25 +10,26 @@ export class TransactionHistoryComponent {
   endDateEvent: Event;
   orderNoEvent:Event;
   resetDateEvent:Event;
- @Input() TabIndex:any;
   clearEvent: Event;
 
+  @Input() tabIndex:any;
   
   startDateChange(event: Event) {
     this.startDateEvent = event;
   }
+
   endDateChange(event: Event) {
     this.endDateEvent = event;
   }
- orderNoChange(event: Event) {
+ 
+  orderNoChange(event: Event) {
     this.orderNoEvent = event;
   }
+
   resetDate(event: Event){
     this.resetDateEvent=event;
   }
   
-  
-
   onClearFromStatus(event: Event) {
     this.clearEvent = event; 
   }

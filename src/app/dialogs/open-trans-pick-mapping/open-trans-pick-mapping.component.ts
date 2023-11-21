@@ -1,5 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { GlobalService } from 'src/app/common/services/global.service';
+import { Component, ElementRef, ViewChild } from '@angular/core'; 
 
 @Component({
   selector: 'app-open-trans-pick-mapping',
@@ -7,7 +6,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./open-trans-pick-mapping.component.scss']
 })
 export class OpenTransPickMappingComponent {
-  @ViewChild('opcol_focus') opcol_focus: ElementRef;
+  @ViewChild('opcolFocus') opcolFocus: ElementRef;
     ELEMENT_DATA: any[] =[
       {open_transaction: ''},
       {open_transaction: ''},
@@ -21,12 +20,8 @@ export class OpenTransPickMappingComponent {
       dataSourceList:any
   
 
-  constructor(
-    private global:GlobalService,
-  ) { }
- 
   ngAfterViewInit(): void {
-    this.opcol_focus.nativeElement.focus();
+    this.opcolFocus.nativeElement.focus();
   }
   
 

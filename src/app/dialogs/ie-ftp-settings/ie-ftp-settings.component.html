@@ -1,6 +1,6 @@
 
 <div class="d-flex justify-content-between mb-2 align-items-center">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>FTP Settings</h1>
   
     <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
@@ -9,8 +9,8 @@
   </div>
   
   
-  <div class="card br-14  borderless px-0 mb-3 mt-3" style="overflow-x: auto;">
-            <ng-scrollbar class="mat-table-scrollbar" style="height:545px" track="all">
+  <div class="card br-14  borderless px-0 mb-3 mt-3 overflow-x-auto">
+            <ng-scrollbar class="mat-table-scrollbar height-545" track="all">
               <table class="w-100 table-borderless" mat-table matSort [dataSource]="tableData" >
                   <ng-container matColumnDef="import_export">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header> Import/Export </th>
@@ -118,7 +118,7 @@
               </td>
           </tr>
   
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" style=" background-color: var(--clr-table-header);"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" class="table-settings-tr "></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   
         </table>

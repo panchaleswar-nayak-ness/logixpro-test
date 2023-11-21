@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-between mb-2 align-items-center">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Split Line</h1>
 
-    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -14,13 +14,12 @@
             <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <mat-label>Enter the desired quantity for the new split line</mat-label>
                 <input matInput type="text" [readonly]="true">
-                            </mat-form-field>
-        </div>
-       
+            </mat-form-field>
+        </div> 
         <div class="d-flex justify-content-end pt-3">
-            <button style="flex:1" mat-flat-button color="primary" class="btn-lg w-100">Split Line</button>
+            <button mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1">Split Line</button>
         </div>
-        
+
     </div>
 
 </div>

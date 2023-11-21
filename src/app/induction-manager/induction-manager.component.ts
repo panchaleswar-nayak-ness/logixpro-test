@@ -10,7 +10,7 @@ import { InductionManagerApiService } from '../services/induction-manager-api/in
 @Component({
   selector: 'app-induction-manager',
   templateUrl: './induction-manager.component.html',
-  styleUrls: []
+  styleUrls: ['./induction-manager.component.scss']
 })
 export class InductionManagerComponent implements OnInit {
   tab_hover_color:string = '#cf9bff3d';

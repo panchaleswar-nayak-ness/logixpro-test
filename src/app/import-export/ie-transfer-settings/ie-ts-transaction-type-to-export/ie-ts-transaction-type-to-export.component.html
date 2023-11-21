@@ -1,13 +1,13 @@
-<div class="card p-3 mb-4" style="padding-bottom: 1px !important">
+<div class="card p-3 mb-4 pb-1px">
     <div class="row align-items-center">
       <div class="col-xl-6">
-        <div class="d-flex justify-content-between mb-2" *ngFor="let item of actionBtnListOne">
+        <div class="d-flex justify-content-between mb-2" *ngFor="let item of operationActions">
           {{item.title}}<mat-slide-toggle color="primary">
           </mat-slide-toggle>
         </div>
       </div>
       <div class="col-xl-6">
-        <div class="d-flex justify-content-between mb-2" *ngFor="let item of actionBtnListTwo">
+        <div class="d-flex justify-content-between mb-2" *ngFor="let item of shippingOrderActions">
           {{item.title}}<mat-slide-toggle color="primary">
           </mat-slide-toggle>
         </div>

@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -15,7 +6,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-
 import { Subject, takeUntil, Subscription } from 'rxjs';
 import { AdjustQuantityComponent } from 'src/app/admin/dialogs/adjust-quantity/adjust-quantity.component';
 import { AuthService } from 'src/app/init/auth.service'; 
@@ -30,81 +20,82 @@ import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-ta
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { AppNames, AppRoutes, Column, DialogConstants, Mode, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
-const TRNSC_DATA = [
-  { colHeader: 'id', colDef: 'ID' },
-  { colHeader: 'importDate', colDef: 'Import Date' },
-  { colHeader: 'importBy', colDef: 'Import By' },
-  { colHeader: 'importFileName', colDef: 'Import Filename' },
-  { colHeader: 'transactionType', colDef: 'Transaction Type' },
-  { colHeader: 'orderNumber', colDef: 'Order Number' },
-  { colHeader: 'lineNumber', colDef: 'Line Number' },
-  { colHeader: 'lineSequence', colDef: 'Line Sequence' },
-  { colHeader: 'priority', colDef: 'Priority' },
-  { colHeader: 'requiredDate', colDef: 'Required Date' },
-  { colHeader: 'itemNumber', colDef: 'Item Number' },
-  { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
-  { colHeader: 'lotNumber', colDef: 'Lot Number' },
-  { colHeader: 'expirationDate', colDef: 'Expiration Date' },
-  { colHeader: 'serialNumber', colDef: 'Serial Number' },
-  { colHeader: 'description', colDef: 'Description' },
-  { colHeader: 'revision', colDef: 'Revision' },
-  { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
-  { colHeader: 'location', colDef: 'Location' },
-  { colHeader: 'wareHouse', colDef: 'Warehouse' },
-  { colHeader: 'zone', colDef: 'Zone' },
-  { colHeader: 'carousel', colDef: 'Carousel' },
-  { colHeader: 'row', colDef: 'Row' },
-  { colHeader: 'shelf', colDef: 'Shelf' },
-  { colHeader: 'bin', colDef: 'Bin' },
-  { colHeader: 'invMapID', colDef: 'Inv Map ID' },
-  { colHeader: 'completedDate', colDef: 'Completed Date' },
-  { colHeader: 'completedBy', colDef: 'Completed By' },
-  { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
-  { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
-  { colHeader: 'notes', colDef: 'Notes' },
-  { colHeader: 'exportFileName', colDef: 'Export File Name' },
-  { colHeader: 'exportDate', colDef: 'Export Date' },
-  { colHeader: 'exportedBy', colDef: 'Exported By' },
-  { colHeader: 'exportBatchID', colDef: 'Export Batch ID' },
-  { colHeader: 'tableType', colDef: 'Table Type' },
-  { colHeader: 'statusCode', colDef: 'Status Code' },
-  { colHeader: 'masterRecord', colDef: 'Master Record' },
-  { colHeader: 'masterRecordID', colDef: 'Master Record ID' },
-  { colHeader: 'label', colDef: 'Label' },
-  { colHeader: 'inProcess', colDef: 'In Process' },
-  { colHeader: 'userField1', colDef: 'User Field1' },
-  { colHeader: 'userField2', colDef: 'User Field2' },
-  { colHeader: 'userField3', colDef: 'User Field3' },
-  { colHeader: 'userField4', colDef: 'User Field4' },
-  { colHeader: 'userField5', colDef: 'User Field5' },
-  { colHeader: 'userField6', colDef: 'User Field6' },
-  { colHeader: 'userField7', colDef: 'User Field7' },
-  { colHeader: 'userField8', colDef: 'User Field8' },
-  { colHeader: 'userField9', colDef: 'User Field9' },
-  { colHeader: 'userField10', colDef: 'User Field10' },
-  { colHeader: 'toteID', colDef: 'Tote ID' },
-  { colHeader: 'toteNumber', colDef: 'Tote Number' },
-  { colHeader: 'cell', colDef: 'Cell' },
-  { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
-  { colHeader: 'emergency', colDef: 'Emergency' },
-];
 @Component({
   selector: 'app-open-transaction-on-hold',
   templateUrl: './open-transaction-on-hold.component.html',
   styleUrls: ['./open-transaction-on-hold.component.scss'],
 })
 export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
+
+  TRNSC_DATA = [
+    { colHeader: 'id', colDef: 'ID' },
+    { colHeader: 'importDate', colDef: 'Import Date' },
+    { colHeader: 'importBy', colDef: 'Import By' },
+    { colHeader: 'importFileName', colDef: 'Import Filename' },
+    { colHeader: 'transactionType', colDef: 'Transaction Type' },
+    { colHeader: 'orderNumber', colDef: 'Order Number' },
+    { colHeader: 'lineNumber', colDef: 'Line Number' },
+    { colHeader: 'lineSequence', colDef: 'Line Sequence' },
+    { colHeader: 'priority', colDef: 'Priority' },
+    { colHeader: 'requiredDate', colDef: 'Required Date' },
+    { colHeader: 'itemNumber', colDef: 'Item Number' },
+    { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
+    { colHeader: 'lotNumber', colDef: 'Lot Number' },
+    { colHeader: 'expirationDate', colDef: 'Expiration Date' },
+    { colHeader: 'serialNumber', colDef: 'Serial Number' },
+    { colHeader: 'description', colDef: 'Description' },
+    { colHeader: 'revision', colDef: 'Revision' },
+    { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
+    { colHeader: 'location', colDef: 'Location' },
+    { colHeader: 'wareHouse', colDef: 'Warehouse' },
+    { colHeader: 'zone', colDef: 'Zone' },
+    { colHeader: 'carousel', colDef: 'Carousel' },
+    { colHeader: 'row', colDef: 'Row' },
+    { colHeader: 'shelf', colDef: 'Shelf' },
+    { colHeader: 'bin', colDef: 'Bin' },
+    { colHeader: 'invMapID', colDef: 'Inv Map ID' },
+    { colHeader: 'completedDate', colDef: 'Completed Date' },
+    { colHeader: 'completedBy', colDef: 'Completed By' },
+    { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
+    { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
+    { colHeader: 'notes', colDef: 'Notes' },
+    { colHeader: 'exportFileName', colDef: 'Export File Name' },
+    { colHeader: 'exportDate', colDef: 'Export Date' },
+    { colHeader: 'exportedBy', colDef: 'Exported By' },
+    { colHeader: 'exportBatchID', colDef: 'Export Batch ID' },
+    { colHeader: 'tableType', colDef: 'Table Type' },
+    { colHeader: 'statusCode', colDef: 'Status Code' },
+    { colHeader: 'masterRecord', colDef: 'Master Record' },
+    { colHeader: 'masterRecordID', colDef: 'Master Record ID' },
+    { colHeader: 'label', colDef: 'Label' },
+    { colHeader: 'inProcess', colDef: 'In Process' },
+    { colHeader: 'userField1', colDef: 'User Field1' },
+    { colHeader: 'userField2', colDef: 'User Field2' },
+    { colHeader: 'userField3', colDef: 'User Field3' },
+    { colHeader: 'userField4', colDef: 'User Field4' },
+    { colHeader: 'userField5', colDef: 'User Field5' },
+    { colHeader: 'userField6', colDef: 'User Field6' },
+    { colHeader: 'userField7', colDef: 'User Field7' },
+    { colHeader: 'userField8', colDef: 'User Field8' },
+    { colHeader: 'userField9', colDef: 'User Field9' },
+    { colHeader: 'userField10', colDef: 'User Field10' },
+    { colHeader: 'toteID', colDef: 'Tote ID' },
+    { colHeader: 'toteNumber', colDef: 'Tote Number' },
+    { colHeader: 'cell', colDef: 'Cell' },
+    { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
+    { colHeader: 'emergency', colDef: 'Emergency' },
+  ];
+
   @Output() back = new EventEmitter<string>();
   @Output() returnToOrder = new EventEmitter<string>();
-  @Input() TabIndex:any;
-  @Output() startdateChange: EventEmitter<MatDatepickerInputEvent<any>> =
-    new EventEmitter();
-  @Output() enddateChange: EventEmitter<MatDatepickerInputEvent<any>> =
-    new EventEmitter();
-  @Output() viewOrderChange: EventEmitter<MatDatepickerInputEvent<any>> =
-    new EventEmitter();
-    IsActiveTrigger:boolean =false;
+  @Input() tabIndex:any;
+  @Output() startDateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
+  @Output() endDateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
+  @Output() viewOrderChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
+  
+  isActiveTrigger: boolean = false;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   floatLabelControlColumn = new FormControl('auto' as FloatLabelType);
   hideRequiredControl = new FormControl(false);
@@ -115,7 +106,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   searchBar = new Subject<string>();
   searchAutocompleteList: any;
   searchAutocompleteListByCol: any;
-  isDeleteVisible:any=localStorage.getItem('routeFromInduction')
+  isDeleteVisible: any = localStorage.getItem('routeFromInduction');
  
   /*for data col. */
   public columnValues: any = [];
@@ -132,19 +123,19 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   transTypeSelect = 'All Transactions';
   transStatusSelect = 'All Transactions';
   rowClicked;
-  hideDelete
-  hideReset
-
+  hideDelete;
+  hideReset;
   directAdmin;
-  throughOrderManager
-  setVal
+  throughOrderManager;
+  setVal;
   spliUrl;
-  orderSelectionSearch  : boolean = true
-
+  orderSelectionSearch : boolean = true
   public detailDataInventoryMap: any;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('viewAllLocation') customTemplate: TemplateRef<any>;
+
   pageEvent: PageEvent;
   private subscription: Subscription = new Subscription();
 
@@ -171,9 +162,9 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   statusType: string = 'All Transactions';
   orderNumber: string = '';
   toteId: string = '';
-  public iAdminApiService: IAdminApiService;
-  sdate: any = new Date(1973,10,7);
-  edate: any = new Date()
+  sDate: any = new Date(1973,10,7);
+  eDate: any = new Date();
+  
   public transType: any = [
     {
       type: 'All Transactions',
@@ -230,46 +221,44 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     },
   ];
 
+  public iAdminApiService: IAdminApiService;
+
   constructor(
     private router: Router, 
     public adminApiService: AdminApiService,
     public authService: AuthService,
-    private global:GlobalService,
-    private contextMenuService : TableContextMenuService,
-    private sharedService:SharedService,
+    private global: GlobalService,
+    private contextMenuService: TableContextMenuService,
+    private sharedService: SharedService,
     private currentTabDataService: CurrentTabDataService
   ) {
     this.iAdminApiService = adminApiService;
     if (this.router.getCurrentNavigation()?.extras?.state?.['searchValue']) {
-      this.columnSearch.searchValue =
-        this.router.getCurrentNavigation()?.extras?.state?.['searchValue'];
+      this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.['searchValue'];
       this.columnSearch.searchColumn = {
         colDef: this.router.getCurrentNavigation()?.extras?.state?.['colDef'],
-        colHeader:
-          this.router.getCurrentNavigation()?.extras?.state?.['colHeader'],
+        colHeader: this.router.getCurrentNavigation()?.extras?.state?.['colHeader'],
       };
     }
   }
-
-  onEndDate(event) {}
   
   filterVals: any = {
     transactions: '',
   };
 
   ngOnInit(): void {
-    this.setVal = localStorage.getItem('routeFromOrderStatus') 
-    if(this.router.url == '/OrderManager/OrderStatus' || this.setVal == 'true'){
+    this.setVal = localStorage.getItem('routeFromOrderStatus');
+
+    if(this.router.url == AppRoutes.OrderManagerOrderStatus || this.setVal == StringConditions.True){
       this.throughOrderManager = true;
       this.directAdmin = false;
     }
-    else if(this.router.url == '/admin/transaction'|| this.setVal != 'true'){
+    else if(this.router.url == AppRoutes.AdminTransaction || this.setVal != StringConditions.True){
       this.throughOrderManager = false;
       this.directAdmin = true;
     }
+
     this.hideDelete=JSON.parse(this.isDeleteVisible);
-
-
 
     this.customPagination = {
       total: '',
@@ -277,111 +266,94 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       startIndex: 0,
       endIndex: 10,
     };
-    // Search by Tote Id Debounce values
-    this.searchByToteId
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        this.toteId = value;
-        this.getContentData();
-      });
-    // Search by Order Number Debounce values
-    this.searchByOrderNumber
-      .pipe(debounceTime(600), distinctUntilChanged())
-      .subscribe((value) => {
-        this.autocompleteSearchColumn(true);
-        this.getContentData();
-      });
 
-    this.searchByColumn
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        this.autocompleteSearchColumn(false);
-        this.getContentData();
-      });
+    // Search by Tote Id Debounce values
+    this.searchByToteId.pipe(debounceTime(400), distinctUntilChanged()).subscribe((value) => {
+      this.toteId = value;
+      this.getContentData();
+    });
+
+    // Search by Order Number Debounce values
+    this.searchByOrderNumber.pipe(debounceTime(600), distinctUntilChanged()).subscribe((value) => {
+      this.autoCompleteSearchColumn(true);
+      this.getContentData();
+    });
+
+    this.searchByColumn.pipe(debounceTime(400), distinctUntilChanged()).subscribe((value) => {
+      this.autoCompleteSearchColumn(false);
+      this.getContentData();
+    });
 
     this.userData = this.authService.userData();
     this.getColumnsData(true);    
   }
+
   viewOrderInOrder(row) {
     this.returnToOrder.emit();
 
-
-if( this.spliUrl[1] == 'OrderManager' ){
-  this.router.navigate([]).then((result) => {
-    window.open(`/#/OrderManager/OrderStatus?orderStatus=${row.orderNumber}`, '_self');
-  });
-}
-else {
-localStorage.setItem('routeFromInduction','false')
-this.router.navigate([]).then((result) => {
-  window.open(`/#/admin/transaction?orderStatus=${row.orderNumber}`, '_self');
-});
-
-}
-
-
-
-
+    if( this.spliUrl[1] == AppNames.OrderManager) {
+      this.router.navigate([]).then((result) => window.open(`/#${AppRoutes.OrderManagerOrderStatus}?orderStatus=${row.orderNumber}`, '_self'));
+    }
+    else {
+      localStorage.setItem('routeFromInduction','false');
+      this.router.navigate([]).then((result) => window.open(`${AppRoutes.AdminTransaction}?orderStatus=${row.orderNumber}`, '_self'));
+    }
   }
+
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
   }
+
   getFloatFormabelValue(): FloatLabelType {
     return this.floatLabelControlColumn.value ?? 'auto';
   }
+
   changeTableRowColor(idx: any) {
-    if (this.rowClicked === idx) {
-      this.rowClicked = -1;
-    } else {
-      this.rowClicked = idx;
-    }
+    if (this.rowClicked === idx) this.rowClicked = -1;
+    else this.rowClicked = idx;
   }
 
   retunrToPrev() {
     this.back.emit('back');
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.subscription.add(
-    this.sharedService.itemObserver.subscribe(itemNo => {
-      if(itemNo){
-        this.columnSearch.searchColumn.colDef='Item Number';
-       this.columnSearch.searchValue=itemNo;
-       
-      }
-       })
-    )
-    this.spliUrl=this.router.url.split('/');
+      this.sharedService.itemObserver.subscribe(itemNo => {
+        if(itemNo) {
+          this.columnSearch.searchColumn.colDef = Column.ItemNumber;
+          this.columnSearch.searchValue = itemNo;
+        }
+      })
+    );
+    this.spliUrl = this.router.url.split('/');
   }
+
   /*FUnctions for Table*/
   isAuthorized(controlName: any) {
     return !this.authService.isAuthorized(controlName);
   }
+
   searchData() {
-    if (
-      this.columnSearch.searchColumn ||
-      this.columnSearch.searchColumn == ''
-    ) {
-      this.getContentData();
-    }
+    if (this.columnSearch.searchColumn || this.columnSearch.searchColumn == '') this.getContentData();
   }
+
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
-
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
     this.customPagination.recordsPerPage = e.pageSize;
-
     this.getContentData();
   }
 
-  async autocompleteSearchColumn(isSearchByOrder: boolean = false) {
+  async autoCompleteSearchColumn(isSearchByOrder: boolean = false) {
     let searchPayload;
     if (isSearchByOrder) {
       searchPayload = {
         query: this.orderNumber,
         tableName: 2,
-        column: 'Order Number',
+        column: Column.OrderNumber,
       };
     } else {
       searchPayload = {
@@ -391,77 +363,50 @@ this.router.navigate([]).then((result) => {
       };
     }
 
-    this.iAdminApiService
-      .NextSuggestedTransactions(searchPayload)
-      .subscribe(
-        {next: (res: any) => {
-          if (res.data) {
-            if (isSearchByOrder) {
-              this.searchAutocompleteList = res.data;
-            } else {
-              this.searchAutocompleteListByCol = res.data;
-            }
-
-          }
-          else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("NextSuggestedTransactions",res.responseMessage);
-
-          }
-        },
-        error: (error) => {}}
-      );
-  }
-
-  viewInInventoryMaster(row) {
-
-
-    
-    if( this.spliUrl[1] == 'OrderManager' ){
-      this.router.navigate([]).then((result) => {
-        window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, '_self');
-      });
-   }
-   else if(this.spliUrl[1] == 'InductionManager' ){
-    window.open(`/#/InductionManager/Admin/InventoryMaster?itemNumber=${row.itemNumber}`, '_self');
-
-   }
-   else {
-    localStorage.setItem('routeFromInduction','false')
-    this.router.navigate([]).then((result) => {
-      window.open(`/#/admin/inventoryMaster?itemNumber=${row.itemNumber}`, '_self');
+    this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
+      next: (res: any) => {
+        if (res.data)
+          if (isSearchByOrder) this.searchAutocompleteList = res.data;
+          else this.searchAutocompleteListByCol = res.data;
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("NextSuggestedTransactions",res.responseMessage);
+        }
+      },
+      error: (error) => {}
     });
-
-   }
-
   }
-  sendComp(event) {
-    let dialogRef:any = this.global.OpenDialog(FunctionAllocationComponent, {
-      height: 'auto',
+
+  viewInInventoryMaster(row) {    
+    if(this.spliUrl[1] == AppNames.OrderManager) this.router.navigate([]).then(() => window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, '_self'));
+    else if(this.spliUrl[1] == AppNames.InductionManager) window.open(`/#${AppRoutes.InductionManagerAdminInvMap}?itemNumber=${row.itemNumber}`, '_self');
+    else {
+      localStorage.setItem('routeFromInduction','false')
+      this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, '_self'); });
+    }
+  }
+
+  sendComp() {
+    this.global.OpenDialog(FunctionAllocationComponent, {
+      height: DialogConstants.auto,
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         target: 'assigned',
         function: '',
       },
     });
-    dialogRef.afterClosed().subscribe((result) => {});
   }
+
   adjustQuantity(event) {
-    let dialogRef:any = this.global.OpenDialog(AdjustQuantityComponent, {
-      height: 'auto',
+    const dialogRef : any = this.global.OpenDialog(AdjustQuantityComponent, {
+      height: DialogConstants.auto,
       width: '800px',
-      data: {
-        id: event.invMapID,
-      },
+      data: { id: event.invMapID },
     });
-    dialogRef
-      .afterClosed()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((result) => {
-        this.getContentData();
-      });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(() => this.getContentData());
   }
 
   deleteItem(event) {
@@ -469,64 +414,48 @@ this.router.navigate([]).then((result) => {
       height: 'auto',
       width: '600px',
       data: {
-        mode: 'delete-transaction',
+        mode: Mode.DeleteTransaction,
         id: event.id,
         orderNo: event.orderNumber,
         transType: event.transactionType,
       },
     });
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res == 'Yes') {
-        this.getContentData();
-      }
-    });
+
+    dialogRef.afterClosed().subscribe((res) => { if (res == StringConditions.Yes) this.getContentData(); });
   }
 
   resetToTodaysDate() {
-    this.edate = new Date();
-    this.sdate = new Date();
-    this.columnSearch.searchColumn.colDef='';
-    this.columnSearch.searchValue='';
-    this.orderNumber='';
-    
+    this.eDate = new Date();
+    this.sDate = new Date();
+    this.columnSearch.searchColumn.colDef = '';
+    this.columnSearch.searchValue = '';
+    this.orderNumber = '';
     this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS] = undefined;
     this.getContentData();
   }
 
   getColumnsData(isInit : boolean = false) {
-    let payload = { 
-      tableName: 'Open Transactions',
-    };
-    this.iAdminApiService.GetColumnSequence(payload).subscribe(
-      {next: (res: any) => {
-        this.displayedColumns = TRNSC_DATA;
+    let payload = { tableName: TableName.OpenTransactions };
+    this.iAdminApiService.GetColumnSequence(payload).subscribe({
+      next: (res: any) => {
+        this.displayedColumns = this.TRNSC_DATA;
         if (res.data) {
           this.columnValues = res.data;
           this.columnValues.push('actions');
           this.getContentData(isInit);
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("GetColumnSequence",res.responseMessage);
         }
       },
-      error: (error) => {}}
-    );
-  }
-  sortChange(event) {
-    if (
-      !this.dataSource._data._value ||
-      event.direction == '' ||
-      event.direction == this.sortOrder
-    )
-      return;
-
-    let index;
-    this.columnValues.find((x, i) => {
-      if (x === event.active) {
-        index = i;
-      }
+      error: (error) => {}
     });
+  }
 
+  sortChange(event) {
+    if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
+    let index;
+    this.columnValues.find((x, i) => { if(x === event.active) index = i; });
     this.sortCol = index;
     this.sortOrder = event.direction;
     this.getContentData();
@@ -535,8 +464,8 @@ this.router.navigate([]).then((result) => {
   getContentData(isInit: boolean = false) {
     this.payload = {
       draw: 0,
-      sDate: this.sdate.toLocaleDateString(),
-      eDate: this.edate.toLocaleDateString(),
+      sDate: this.sDate.toLocaleDateString(),
+      eDate: this.eDate.toLocaleDateString(),
       transType: this.transTypeSelect,
       transStatus: this.transStatusSelect,
       searchString: this.columnSearch.searchValue,
@@ -547,58 +476,55 @@ this.router.navigate([]).then((result) => {
       toteID: this.toteId,
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
-      filter: this.FilterString, 
+      filter: this.filterString, 
     };
-    this.iAdminApiService
-      .OpenTransactionTable(this.payload)
-      .subscribe(
-        {next: (res: any) => {
-          this.detailDataInventoryMap = res.data?.transactions;
-          this.dataSource = new MatTableDataSource(res.data?.transactions);
-          this.customPagination.total = res.data?.recordsFiltered;
-          this.dataSource.sort = this.sort;
-          if (isInit && this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS])
-          {
-            this.ApplySavedItem();
-            this.orderSelectionSearch = false;
-          }
-          else
-            this.RecordSavedItem();
-        },
-        error: (error) => {}}
-      );
+    this.iAdminApiService.OpenTransactionTable(this.payload).subscribe({
+      next: (res: any) => {
+        this.detailDataInventoryMap = res.data?.transactions;
+        this.dataSource = new MatTableDataSource(res.data?.transactions);
+        this.customPagination.total = res.data?.recordsFiltered;
+        this.dataSource.sort = this.sort;
+        if (isInit && this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS]){
+          this.applySavedItem();
+          this.orderSelectionSearch = false;
+        }
+        else this.recordSavedItem();
+      },
+      error: (error) => {}
+    });
   }
   
-  ApplySavedItem() {
+  applySavedItem() {
     if (this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS]) {
       let item = this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS];
       this.detailDataInventoryMap = item.detailDataInventoryMap;
       this.dataSource = item.dataSource;
       this.customPagination.total = item.customPaginationTotal;
       this.dataSource.sort = item.dataSourceSort;
-      this.sdate= item.sdate;
-      this.edate= item.edate;
-      this.statusType= item.statusType;
-      this.orderNumber= item.orderNumber;
-      this.toteId= item.toteId;
-      this.transTypeSelect= item.transTypeSelect;
-      this.columnSearch= item.columnSearch
+      this.sDate = item.sdate;
+      this.eDate = item.edate;
+      this.statusType = item.statusType;
+      this.orderNumber = item.orderNumber;
+      this.toteId = item.toteId;
+      this.transTypeSelect = item.transTypeSelect;
+      this.columnSearch = item.columnSearch
     }
   }
-  RecordSavedItem() {
-    this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS]= {
-          detailDataInventoryMap : this.detailDataInventoryMap,
-          dataSource : this.dataSource,
-          customPaginationTotal : this.customPagination.total,
-          dataSourceSort : this.dataSource.sort,
-          sdate: this.sdate,
-          edate: this.edate,
-          statusType: this.statusType,
-          orderNumber: this.orderNumber,
-          toteId: this.toteId,
-          transTypeSelect: this.transTypeSelect,
-          columnSearch: this.columnSearch
-    }
+
+  recordSavedItem() {
+    this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS] = {
+      detailDataInventoryMap: this.detailDataInventoryMap,
+      dataSource: this.dataSource,
+      customPaginationTotal: this.customPagination.total,
+      dataSourceSort: this.dataSource.sort,
+      sdate: this.sDate,
+      edate: this.eDate,
+      statusType: this.statusType,
+      orderNumber: this.orderNumber,
+      toteId: this.toteId,
+      transTypeSelect: this.transTypeSelect,
+      columnSearch: this.columnSearch
+    };
   }
 
   getTransactionModelIndex() {
@@ -608,47 +534,40 @@ this.router.navigate([]).then((result) => {
       itemNumber: '',
       holds: false,
       orderStatusOrder: '',
-      app: 'Admin', 
+      app: RouteNames.Admin, 
     };
-    this.iAdminApiService
-      .TransactionModelIndex(paylaod)
-      .subscribe(
-        {next: (res: any) => {
-          
-          if(res.isExecuted && res.data)
-          {
-            this.columnValues = res.data?.openTransactionColumns;
+    this.iAdminApiService.TransactionModelIndex(paylaod).subscribe({
+      next: (res: any) => {
+        if(res.isExecuted && res.data){
+          this.columnValues = res.data?.openTransactionColumns;
           this.columnValues.push('actions');
-          }
-          else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("TransactionModelIndex",res.responseMessage);
-          }
-        },
-        error: (error) => {}}
-      );
+        }
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("TransactionModelIndex",res.responseMessage);
+        }
+      },
+      error: (error) => {}
+    });
   }
   /*End of table functions */
+
   actionDialog(opened: boolean) {
-    if (!opened && this.selectedVariable && this.selectedVariable==='set_column_sq') {
+    if (!opened && this.selectedVariable && this.selectedVariable === 'set_column_sq') {
       let dialogRef:any = this.global.OpenDialog(ColumnSequenceDialogComponent, {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '960',
         disableClose: true,
         data: {
           mode: event,
-          tableName: 'Open Transactions',
+          tableName: TableName.OpenTransactions,
         },
       });
-      dialogRef
-        .afterClosed()
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe((result) => {
-          this.selectedVariable='';
-          if (result?.isExecuted) {
-            this.getColumnsData();
-          }
-        });
+
+      dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((result) => {
+        this.selectedVariable='';
+        if (result?.isExecuted) this.getColumnsData();
+      });
     }
   }
 
@@ -658,53 +577,54 @@ this.router.navigate([]).then((result) => {
     this.orderSelectionSearch = false
     this.searchByColumn.next(event);
   }
+
   resetColumn() {
     this.columnSearch.searchColumn.colDef = '';
   }
+
   onDateChange(event): void {
     this.resetColumn();
     this.resetFields();
-    this.startdateChange.emit();
-    this.sdate = new Date(event);
+    this.startDateChange.emit();
+    this.sDate = new Date(event);
     this.getContentData();
   }
 
   onEndDateChange(event): void {
     this.resetColumn();
     this.resetFields();
-    this.enddateChange.emit();
-    this.edate = new Date(event);
+    this.endDateChange.emit();
+    this.eDate = new Date(event);
     this.getContentData();
   }
+
   selectStatus(event) {
     this.resetColumn();
     this.resetFields();
     this.transStatusSelect = event;
     this.getContentData();
   }
+
   selectTransType(value) {
     this.resetColumn();
     this.resetFields();
     this.transTypeSelect = value;
     this.getContentData();
   }
+
   sendCompletedToHistory() {
-    let dialogRef:any = this.global.OpenDialog(SendTranHistoryComponent, {
-      height: 'auto',
+    const dialogRef : any = this.global.OpenDialog(SendTranHistoryComponent, {
+      height: DialogConstants.auto,
       width: '580px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         user: this.userData.userName,
         wsid: this.userData.wsid,
       },
     });
-    dialogRef
-      .afterClosed()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((result) => {
-          this.getContentData();
-      });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(() => this.getContentData());
   }
 
   ngOnDestroy() {
@@ -716,21 +636,18 @@ this.router.navigate([]).then((result) => {
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
     event.preventDefault()
-    this.IsActiveTrigger = true;
-    setTimeout(() => {
-      this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
-    }, 100);
+    this.isActiveTrigger = true;
+    setTimeout(() => this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType), 100);
   }
 
-  FilterString : string = "1 = 1";
+  filterString : string = "1 = 1";
 
   optionSelected(filter : string) {
-    this.FilterString = filter;
+    this.filterString = filter;
     this.resetPagination();
     this.getContentData();  
-    this.IsActiveTrigger=false;  
+    this.isActiveTrigger = false;  
   }
-
 
   resetPagination(){
     this.customPagination.startIndex = 0;
@@ -738,7 +655,7 @@ this.router.navigate([]).then((result) => {
     this.paginator.pageIndex = 0;
   }
 
-  clear(){
+  clear() {
     this.columnSearch.searchValue = ''
     this.getContentData()
   }
@@ -748,19 +665,13 @@ this.router.navigate([]).then((result) => {
   }
 
   previewFiftyPagesOnly(){
-    window.open(`/#/report-view?file=CycleCount-lst-prv`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+    window.open(`${AppRoutes.ReportView}?file=CycleCount-lst-prv`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
   }
 
   selectRow(row: any) {
-    this.dataSource.filteredData.forEach(element => {
-      if(row != element){
-        element.selected = false;
-      }
-    });
+    this.dataSource.filteredData.forEach(element => { if(row != element) element.selected = false; });
     const selectedRow = this.dataSource.filteredData.find((x: any) => x === row);
-    if (selectedRow) {
-      selectedRow.selected = !selectedRow.selected;
-    }
+    if(selectedRow) selectedRow.selected = !selectedRow.selected;
   }
 
 }

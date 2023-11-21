@@ -4,22 +4,22 @@ import {MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { GlobalService } from 'src/app/common/services/global.service';
 import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/services/common-api/common-api.service';
-import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+
 
 @Component({
   selector: 'app-cell-size',
   templateUrl: './cell-size.component.html',
-  styleUrls: []
+  styleUrls: ['./cell-size.component.scss']
 })
 export class CellSizeComponent implements OnInit {
-  @ViewChildren('cell_size', { read: ElementRef }) cell_size: QueryList<ElementRef>;
-  
-  public cellsize_list: any;
-  public userData: any;
-  public currentCellValue = "";
-  enableButton = [{ index: -1, value: true }];
+
+
+
+ 
   public iCommonAPI : ICommonApi;
   constructor(
     public commonAPI : CommonApiService,
@@ -32,6 +32,10 @@ export class CellSizeComponent implements OnInit {
     private renderer: Renderer2
   ) { this.iCommonAPI = commonAPI; }
 
+
+  public userData: any;
+  public currentCellValue = "";
+
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.currentCellValue = this.data.cs
@@ -39,7 +43,9 @@ export class CellSizeComponent implements OnInit {
 
   }
 
-
+  enableButton = [{ index: -1, value: true }];
+  @ViewChildren('cell_size', { read: ElementRef }) cell_size: QueryList<ElementRef>;
+  public cellsize_list: any;
   getCellSizeList() {
     this.enableButton = [];
     this.commonAPI.getCellSize().subscribe((res) => {
@@ -82,7 +88,7 @@ export class CellSizeComponent implements OnInit {
         this.cellsize_list.forEach(element => {
           if (element.cells.toLowerCase() == cell.toLowerCase() && cond) {
             cond = false;
-            this.global.ShowToastr('error','Cell Size already exists. Ensure any pending changes are saved before attempting to save this entry.', 'Error!');
+            this.global.ShowToastr(ToasterType.Error,'Cell Size already exists. Ensure any pending changes are saved before attempting to save this entry.', ToasterTitle.Error);
           }
         });
       }
@@ -98,18 +104,18 @@ export class CellSizeComponent implements OnInit {
         this.iCommonAPI.saveCellSize(paylaod).subscribe((res) => {
           if (res.isExecuted) {
             this.getCellSizeList();
-            this.global.ShowToastr('success',labels.alert.success, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           }
           else {
             
-            this.global.ShowToastr('error','Cell Size already exists. Ensure any pending changes are saved before attempting to save this entry.', 'Error!');
+            this.global.ShowToastr(ToasterType.Error,'Cell Size already exists. Ensure any pending changes are saved before attempting to save this entry.', ToasterTitle.Error);
             console.log("saveCellSize",res.responseMessage);
           }
         });
       }
     } else {
       
-      this.global.ShowToastr('error','Cell Size cannot be empty', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Cell Size cannot be empty', ToasterTitle.Error);
       console.log("saveCellSize");
     }
   }
@@ -130,10 +136,10 @@ export class CellSizeComponent implements OnInit {
       this.iCommonAPI.dltCellSize(paylaod).subscribe((res) => {
         if (res.isExecuted) {
           this.getCellSizeList();
-          this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterType.Error);
           console.log("dltCellSize",res.responseMessage);
         }
       });

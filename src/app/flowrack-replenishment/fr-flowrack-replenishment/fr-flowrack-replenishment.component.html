@@ -1,6 +1,6 @@
 <div class="inner-layout-1">
     <div class="main-content mb-4">
-<mat-card class="mat-elevation-z g-card mb-3 mt-2" style="height: 100%;">
+<mat-card class="mat-elevation-z g-card mb-3 mt-2 main-card" >
     <mat-card-content>
         <div class="d-flex justify-content-between align-items-center flex-wrap">
         
@@ -14,8 +14,8 @@
             <div class="col-xl-4">
                 <mat-form-field class="custom-form-field  clear-btn-init w-100  mb-3" appearance="outline">
                     <mat-label>Scan Item</mat-label>
-                    <input  #ord_focus matInput type="text" [(ngModel)]="itemnumscan" (keyup)="findItemLocation($event)" #autoFocusField (ngModelChange)="scanItemChange()">
-                    <button matSuffix *ngIf="itemnumscan != ''" class="clear-btn" (click)="clearItemNum()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                    <input  #ord_focus matInput type="text" [(ngModel)]="itemNumScan" (keyup)="findItemLocation($event)" #autoFocusField (ngModelChange)="scanItemChange()">
+                    <button matSuffix *ngIf="itemNumScan != ''" class="clear-btn" (click)="clearItemNum()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
                 </mat-form-field>
             </div>
             <div class="col-xl-4" >
@@ -23,17 +23,17 @@
                    
                     <mat-label>Select Location</mat-label>
                   
-                  <input matInput type="text" [disabled]="LocationRow" [(ngModel)]="itemLocation" [matAutocomplete]="auto" (keypress)="locationchange($event)" (ngModelChange)="locationchange($event)" #itemLocationFocus>
-                  <mat-autocomplete class="card custom-scroll"  #auto="matAutocomplete" (optionActivated)="values($event)" (optionSelected)="locationchangeSelect($event)" >                            
+                  <input matInput type="text" [disabled]="locationRow" [(ngModel)]="itemLocation" [matAutocomplete]="auto" (keypress)="locationChange($event)" (ngModelChange)="locationChange($event)" #itemLocationFocus>
+                  <mat-autocomplete class="card custom-scroll"  #auto="matAutocomplete" (optionActivated)="values()" (optionSelected)="locationChangeSelect($event)" >                            
                     <h6 class ="card-header matAutoCompHeader ">
-                      <span style="width:  140px;">Location</span> 
-                      <span style="width:  140px;">Item Quantity</span> 
+                      <span class="location-Style" >Location</span> 
+                      <span class="location-Style">Item Quantity</span> 
                     </h6> 
-                    <ng-scrollbar style="height:350px" >
-                      <mat-option  [value]="option"  *ngFor="let option of locationSuggestions"  class="matAutoCompTableContent" style="line-height: 24px; height:auto; min-height: auto!important; padding: 12px 16px; overflow: unset;" >
+                    <ng-scrollbar class="scrollbarStyle"  >
+                      <mat-option  [value]="option"  *ngFor="let option of locationSuggestions"  class="matAutoCompTableContent AutoCompTable-style"  >
                         <div class="loc_option">
-                          <span  class="searchColumn" style="width:  140px; white-space: normal;">{{option.location}}</span> 
-                          <span  class="searchColumn" style="width:  140px; white-space: normal;">{{option.itemQuantity}}</span> 
+                          <span  class="searchColumn searchColumn-width" >{{option.location}}</span> 
+                          <span  class="searchColumn searchColumn-width" >{{option.itemQuantity}}</span> 
                         </div>
                       </mat-option>
                     </ng-scrollbar>
@@ -42,7 +42,7 @@
             </div>
             <div class="col-xl-4"   >
                 <div class="d-flex gap-12 align-items-center">
-                <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline" style="min-width: 100px;">
+                <mat-form-field class="custom-form-field w-100  mb-3 custom-form-width" appearance="outline" >
                     <mat-label>Enter Quantity</mat-label>
                     <input matInput type="number" [(ngModel)] = 'itemQty' [disabled]="itemQtyRow" (ngModelChange)="updateQty(itemQty)" #itemQtyFocus>
                 </mat-form-field>

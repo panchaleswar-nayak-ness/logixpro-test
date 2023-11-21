@@ -8,11 +8,10 @@ import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map';
 import { AuthService } from '../../../../app/init/auth.service';
 import { Router } from '@angular/router';
-import { CustomValidatorService } from '../../../../app/init/custom-validator.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'group-allowed',
@@ -21,8 +20,8 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class GroupAllowedComponent implements OnInit {
 
-  form_heading: string = 'Add Group Allowed';
-  form_btn_label: string = 'Add';
+  formHeading: string = 'Add Group Allowed';
+  formBtnLabel: string = 'Add';
   GroupName: any;
   controlNameList: any[] = [];
   options: string[] = [];
@@ -34,14 +33,11 @@ export class GroupAllowedComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog:MatDialog,
-    private adminApiService: AdminApiService,
-    private employeeService: ApiFuntions,
-    
+    public adminApiService: AdminApiService,
     private authService: AuthService,
     private fb: FormBuilder,
     private global:GlobalService,
-    private router: Router,
-    private cusValidator: CustomValidatorService
+    private router: Router
   ) { 
     this.iAdminApiService = adminApiService;
   }
@@ -56,59 +52,47 @@ export class GroupAllowedComponent implements OnInit {
       "wsid": this.userData.wsid,
     }
     this.iAdminApiService.getEmployeeData(payload).subscribe((res: any) => {
-      if(res.isExecuted)
-      {
+      if(res.isExecuted) {
         this.controlNameList = res.data.allGroups;
-      this.filteredOptions = this.controlNameForm.controls['controlName'].valueChanges.pipe(
-        startWith(''),
-        map(value => this.filterx(value || '')),
-      );
+        this.filteredOptions = this.controlNameForm.controls['controlName'].valueChanges.pipe(
+          startWith(''),
+          map(value => this.filterx(value || '')),
+        );
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("getEmployeeData",res.responseMessage);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+        console.log("getEmployeeData", res.responseMessage);
       }
-      
-      
     });
-
-
   }
 
   blurInput() {
-    if (!this.isValid){
-      this.controlNameForm.controls['controlName'].setValue("");
-    }
+    if (!this.isValid) this.controlNameForm.controls['controlName'].setValue("");
   }
+
   filterx(value: string): string[] {
     let result;
     const filterValue = value.toLowerCase();
-    result =  this.controlNameList.filter(option => option.groupName.toLowerCase().includes(filterValue));
+    result = this.controlNameList.filter(option => option.groupName.toLowerCase().includes(filterValue));
     this.isValid = result.length > 0;
     return result;
   }
-  alphaNumberOnly(string:any) {
+
+  alphaNumberOnly(string: any) {
     const regex = "^[a-zA-Z0-9_//][a-zA-Z0-9_// ]*[a-zA-Z0-9_//]$";
-    if(string.match(regex)){
-      return true;
-    }
-      return false;
+    if(string.match(regex)) return true;
+    return false;
   }
-  checkIfValid(input:string){
-    if(this.GroupName.trim() === ''){
-      this.isValid = true;
-    }
-    else{
+
+  checkIfValid(input:string) {
+    if(this.GroupName.trim() === '') this.isValid = true;
+    else {
       this.isValid =  false;
-      if(this.alphaNumberOnly(input)){
-        this.isValid = false;
-      }
-      else{
-        this.isValid = true;
-      }
-      
+      if(this.alphaNumberOnly(input)) this.isValid = false;
+      else this.isValid = true;
     }
   }
+
   onSend(form: any) { 
     let payload = {
       "groupname": form.value.controlName,
@@ -117,14 +101,15 @@ export class GroupAllowedComponent implements OnInit {
     this.iAdminApiService.insertUserGroup(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialog.closeAll();
-        this.global.ShowToastr('success',labels.alert.success, 'Success!');
+        this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterTitle.Success);
       }
       else {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
-        console.log("insertUserGroup",res.responseMessage);
+        this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
+        console.log("insertUserGroup", res.responseMessage);
       }
     });
   }
+  
   hasError(fieldName: string, errorName: string) {
     return this.controlNameForm.get(fieldName)?.touched && this.controlNameForm.get(fieldName)?.hasError(errorName);
   }

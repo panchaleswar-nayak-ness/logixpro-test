@@ -8,7 +8,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-item-setup',
   templateUrl: './item-setup.component.html',
-  styleUrls: []
+  styleUrls: ['./item-setup.component.scss']
 })
 export class ItemSetupComponent {
 

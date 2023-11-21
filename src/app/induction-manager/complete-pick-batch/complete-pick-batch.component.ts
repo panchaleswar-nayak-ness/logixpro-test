@@ -1,14 +1,13 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { CpbBlossomToteComponent } from 'src/app/dialogs/cpb-blossom-tote/cpb-blossom-tote.component';
 import { ShortTransactionComponent } from 'src/app/dialogs/short-transaction/short-transaction.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import labels from '../../labels/labels.json';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-complete-pick-batch',
@@ -29,16 +28,14 @@ export class CompletePickBatchComponent{
   @ViewChild('BatchId') BatchIdField: ElementRef;
   @ViewChild('ToteId') ToteIdField: ElementRef;
   sortColumn: number = 1;
-  SortOrder: string = "asc";
+  sortOrder: string = "asc";
   startRow:number = 0;
   endRow:number = 10;
   totalTransactions: number = 0;
 
   constructor(
     private global:GlobalService,
-    private Api: ApiFuntions,
-    private inductionManagerApi: InductionManagerApiService,
-    
+    public inductionManagerApi: InductionManagerApiService,
   ) { 
     this.iinductionManagerApi = inductionManagerApi;
   }
@@ -71,7 +68,7 @@ export class CompletePickBatchComponent{
       StartRow: this.startRow == 0 ? this.startRow : this.startRow + 1,
       EndRow: this.endRow,
       SortColumn: this.sortColumn,
-      SortOrder: this.SortOrder
+      SortOrder: this.sortOrder
     };
     if(this.batchId != ""){
       payload.BatchID = this.batchId;
@@ -96,10 +93,10 @@ export class CompletePickBatchComponent{
         }
         else {
           if (this.batchId != "" && this.toteId == "") {
-            this.global.ShowToastr('error',"No open transactions for the entered batch", 'No Rows');
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.NoOpenTransactionsBatch,ToasterTitle.NoRows);
           }
           else if (this.batchId != "" && this.toteId != "") {
-            this.global.ShowToastr('error',"No open transaction for that tote in the batch", 'No Rows');
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.NoOpenTranscationTote, ToasterTitle.NoRows);
             this.toteId = "";
             this.BatchPickIDKeyup({ keyCode: 13 });
           }
@@ -107,7 +104,7 @@ export class CompletePickBatchComponent{
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getPickBatchTransactionTable",res.responseMessage);
 
       }
@@ -174,14 +171,14 @@ export class CompletePickBatchComponent{
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == StringConditions.Yes) {
         this.iinductionManagerApi.completeTransaction({Id:element.id}).subscribe((res: any) => {
           if(res.isExecuted){
             this.pickBatchTransactionTable();
-            this.global.ShowToastr('success',labels.alert.update, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
           }
           else{
-            this.global.ShowToastr('error',"An error occured completing this transaction", 'Error');
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.ErrorOccuredTranscation, ToasterTitle.Error);
             console.log("completeTransaction",res.responseMessage);
           }
         });
@@ -201,14 +198,14 @@ export class CompletePickBatchComponent{
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == StringConditions.Yes) {
         this.iinductionManagerApi.completePickBatch({batchId:this.batchId}).subscribe((res: any) => {
           if(res.isExecuted){
             this.clearScreen();
-            this.global.ShowToastr('success',labels.alert.update, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
           }
           else{
-            this.global.ShowToastr('error',"An error occured completing this transaction", 'Error');
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.ErrorOccuredTranscation, ToasterTitle.Error);
             console.log("completePickBatch",res.responseMessage);
           }
         });
@@ -233,7 +230,7 @@ export class CompletePickBatchComponent{
   announceSortChange(e: any) {
     console.log(e);
     this.sortColumn = this.sortColumns.filter((item: any) => item.tabelColName == e.active)[0].sortColumnNumber;
-    this.SortOrder = e.direction;
+    this.sortOrder = e.direction;
     this.startRow = 0;
     this.endRow = 10;
     this.paginator.pageIndex = 0;

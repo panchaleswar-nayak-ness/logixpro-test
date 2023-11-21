@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import { DialogConstants } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IeFtpSettingsComponent } from 'src/app/dialogs/ie-ftp-settings/ie-ftp-settings.component';
 import { IeInventMapExportComponent } from 'src/app/dialogs/ie-invent-map-export/ie-invent-map-export.component';
@@ -9,7 +10,7 @@ import { TransferFilePathComponent } from 'src/app/dialogs/transfer-file-path/tr
 @Component({
   selector: 'app-ie-system-settings',
   templateUrl: './ie-system-settings.component.html',
-  styleUrls: []
+  styleUrls: ['./ie-system-settings.component.scss']
 })
 export class IeSystemSettingsComponent {
 
@@ -17,21 +18,20 @@ export class IeSystemSettingsComponent {
     private global:GlobalService,
   ) { }
 
- 
   IeTransFieldMappingDialog() {
      this.global.OpenDialog(IeTransFieldMappingComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '100vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
 
   }
   XMLFieldMappingDialog() {
      this.global.OpenDialog(OpenTransPickMappingComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '100vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
 
@@ -39,9 +39,9 @@ export class IeSystemSettingsComponent {
 
   TransFilePathDialog() {
      this.global.OpenDialog(TransferFilePathComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '100vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
 
@@ -49,9 +49,9 @@ export class IeSystemSettingsComponent {
 
   IeFTPSettingsDialog(){
      this.global.OpenDialog(IeFtpSettingsComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '100vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
 
@@ -59,9 +59,9 @@ export class IeSystemSettingsComponent {
 
   IeInventMapExportDialog(){
      this.global.OpenDialog(IeInventMapExportComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '100vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
 

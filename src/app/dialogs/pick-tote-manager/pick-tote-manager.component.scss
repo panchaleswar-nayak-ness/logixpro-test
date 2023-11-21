@@ -1,20 +1,25 @@
-.table1{
-    th{
-        white-space: nowrap ;
-        &:first-child{
+.table1 {
+    th {
+        white-space: nowrap;
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
-    td{
+
+    td {
         width: auto;
         padding-left: 12px;
-        &:first-child{
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
@@ -23,92 +28,127 @@
 .selected {
     background-color: var(--clr-primary-300) !important;
     color: var(--clr-pure-white);
-  }
+}
 
-.table2{
-    th{
-        white-space: nowrap ;
+.table2 {
+    th {
+        white-space: nowrap;
         padding-left: 12px;
-        &:first-child{
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
-    td{
-        white-space: nowrap ;
+
+    td {
+        white-space: nowrap;
         padding-left: 12px;
         max-width: 15ch;
         text-overflow: ellipsis;
         overflow: hidden;
-        &:first-child{
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
 }
-//   mat-table{
-//     display: table !important;
-//     mat-row{
-//         display: table-row;
-//         border:0;
-//     }
-//     mat-header-cell{
-//         display: table-cell;
-//         white-space: nowrap ;
-//         overflow: visible;
-//         padding-left: 12px;
-//         &:first-child{
-//             padding-left: 20px;
-//         }
-//         &:last-child{
-//             padding-right: 20px;
-//         }
-//     }
-//     mat-cell{
-//         display: table-cell;
-//         width: auto;
-//         padding:4px 0px;
-//         &:first-child{
-//             padding-left: 20px;
-//         }
-//         &:last-child{
-//             padding-right: 20px;
-//         }
-//     }
-//   }
 
-.stickyHeader{
+.stickyHeader {
     position: sticky;
     top: 0px;
     z-index: 200000000;
-  }
+}
 
-  
-table{
-    th{
-        white-space: nowrap ;
+
+table {
+    th {
+        white-space: nowrap;
         padding-left: 12px;
-        &:first-child{
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
-    td{
+
+    td {
         padding-left: 12px;
-        &:first-child{
+
+        &:first-child {
             padding-left: 20px;
         }
-        &:last-child{
+
+        &:last-child {
             padding-right: 20px;
         }
     }
 }
-// ::ng-deep .mat-dialog-content{
-//     min-height: 75vh;
-// }
+
+   .w-170{
+     width: 170px;
+  }
+.w-48px {
+    width: 48px;
+}
+
+ .w-100 {
+    width: 100px;
+}
+ .h-280{
+    height: 280px;
+}
+ .overflow-hidden{
+    overflow: hidden;
+} 
+
+ .height-280 {
+    height: 280px
+}
+ .w-160{
+    width: 160px;
+}
+ .auto-com {
+    padding-bottom: 16px;
+    padding-top: 16px;
+}
+ .h-180{
+    width: 180px;
+}
+ .w-80{
+    width: 80px;
+}
+
+ .span-batch {
+    padding: 0px 25px;
+    border: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+}
+ .w-60{
+    width: 60px;
+}
+ .w-90{
+    width:90px;
+}
+
+ .span-option {
+    padding: 10px 12px;
+    border: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+}

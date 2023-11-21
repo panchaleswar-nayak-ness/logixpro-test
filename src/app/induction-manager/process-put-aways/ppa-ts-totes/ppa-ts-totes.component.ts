@@ -5,7 +5,7 @@ import { PeriodicElement } from '../process-put-aways.component';
 @Component({
   selector: 'app-ppa-ts-totes',
   templateUrl: './ppa-ts-totes.component.html',
-  styleUrls: []
+  styleUrls: ['./ppa-ts-totes.component.scss']
 })
 export class PpaTsTotesComponent {
 

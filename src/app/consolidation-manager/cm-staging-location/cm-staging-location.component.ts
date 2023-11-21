@@ -1,24 +1,11 @@
-import { Component , ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/init/auth.service';
 import { CmOrderToteConflictComponent } from 'src/app/dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
 import { StagingLocationOrderComponent } from 'src/app/dialogs/staging-location-order/staging-location-order.component';
 import { IConsolidationApi } from 'src/app/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-};
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-];
+import { AppRoutes, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-staging-location',
@@ -27,24 +14,22 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class CmStagingLocationComponent {
   userData: any = {};
-  isInputFocused:any=false;
+  isInputFocused: any = false;
   displayedColumns: string[] = ['select', 'position', 'action'];
-  tableData = ELEMENT_DATA;
-  stagetables: any[] = [];
-  Oldstagetables: any[] = [];
-  IsLoading: any = false;
+  stageTables: any[] = [];
+  oldStageTables: any[] = [];
+  isLoading: any = false;
   type: any = "";
-  OrderNumberTote: any = null;
+  orderNumberTote: any = null;
   stagingLocation
-
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
-  public IconsolidationAPI : IConsolidationApi;
+  public IconsolidationAPI: IConsolidationApi;
 
   constructor(
-    public consolidationAPI : ConsolidationApiService,
+    public consolidationAPI: ConsolidationApiService,
     private authService: AuthService,
-    private global:GlobalService,
+    private global: GlobalService,
   ) {
     this.IconsolidationAPI = consolidationAPI;
     this.userData = this.authService.userData();
@@ -53,99 +38,99 @@ export class CmStagingLocationComponent {
   ngAfterViewInit() {
     this.searchBoxField?.nativeElement.focus();
   }
-  
-  async SearchToteAndLocation(){ 
-    if(this.stagingLocation != ""){
-      if(!this.Oldstagetables.length) this.Oldstagetables = this.stagetables;
-      this.stagetables = [];
-      this.stagetables= this.Oldstagetables.filter(x=>x.toteID.indexOf(this.stagingLocation) >-1);
-      let locArray = this.Oldstagetables.filter(x=>x.stagingLocation.indexOf(this.stagingLocation) >-1);
-      if(locArray && locArray.length > 0){
+
+  async searchToteAndLocation() {
+    if (this.stagingLocation != "") {
+      if (!this.oldStageTables.length) this.oldStageTables = this.stageTables;
+      this.stageTables = [];
+      this.stageTables = this.oldStageTables.filter(x => x.toteID.indexOf(this.stagingLocation) > -1);
+      let locArray = this.oldStageTables.filter(x => x.stagingLocation.indexOf(this.stagingLocation) > -1);
+      if (locArray && locArray.length > 0) {
         locArray.forEach(item => {
-          if(!this.stagetables.includes(item))
-                      this.stagetables.push(item);
-        }); 
+          if (!this.stageTables.includes(item))
+            this.stageTables.push(item);
+        });
+      }
+    } else {
+      if (!this.oldStageTables.length) this.oldStageTables = this.stageTables;
+      this.stageTables = this.oldStageTables
     }
-  }else {
-    if(!this.Oldstagetables.length) this.Oldstagetables = this.stagetables;
-    this.stagetables = this.Oldstagetables
   }
-  }
-  async StagingLocsOrderNum($event: any) { 
-    if ($event.key == "Enter"|| $event == 'event') {
-      this.IsLoading = true;
+
+  async stagingLocsOrderNum($event: any) {
+    if ($event.key == StringConditions.Enter || $event == StringConditions.Event) {
+      this.isLoading = true;
       let obj: any = {
         type: this.type,
-        selValue: this.OrderNumberTote
+        selValue: this.orderNumberTote
       };
-      let inputVal = this.OrderNumberTote;
+      let inputVal = this.orderNumberTote;
       this.IconsolidationAPI.ConsolidationData(obj).subscribe((res: any) => {
-        if(res.isExecuted && res.data)
-        {
-          if (typeof res?.data == 'string') { 
+        if (res.isExecuted && res.data) {
+          if (typeof res?.data == 'string') {
             switch (res?.data) {
-              case "DNE":
-                this.global.ShowToastr('error',"The Order/Tote that you entered is invalid or no longer exists in the system.", 'Consolidation!');
-                this.OrderNumberTote = null;
+              case ResponseStrings.DNE:
+                this.global.ShowToastr(ToasterType.Error,ToasterMessages.OrderInvalid,ToasterTitle.Consolidation);
+                this.orderNumberTote = null;
                 break;
-              case "DNENP":
-                this.OrderNumberTote = null; 
-                let dialogRef:any = this.global.OpenDialog(StagingLocationOrderComponent, { 
+              case ResponseStrings.DNENP:
+                this.orderNumberTote = null;
+                let dialogRef: any = this.global.OpenDialog(StagingLocationOrderComponent, {
                   height: 'auto',
                   width: '620px',
                   autoFocus: '__non_existing_element__',
-                  disableClose:true, 
+                  disableClose: true,
                 })
-                dialogRef.afterClosed().subscribe(result => { 
-                  this.stagetables = [];
-                    if(result) {this.OrderNumberTote = result;
-                    this.stagetables.push({ toteID: inputVal, stagingLocation:null});
-                    }
-                  })
+                dialogRef.afterClosed().subscribe(result => {
+                  this.stageTables = [];
+                  if (result) {
+                    this.orderNumberTote = result;
+                    this.stageTables.push({ toteID: inputVal, stagingLocation: null });
+                  }
+                })
                 break;
-              case "Conflict":
-                  this.openCmOrderToteConflict(inputVal); 
+              case ResponseStrings.Conflict:
+                this.openCmOrderToteConflict();
                 break;
-              case "Error":
-                this.global.ShowToastr('error',"An Error occured while retrieving data", "Consolidation Error");
+              case ResponseStrings.Error:
+                this.global.ShowToastr(ToasterType.Error,ToasterMessages.ErrorWhileRetrievingData,ToasterTitle.Consolidation);
                 break;
             }
           }
-          else { 
-            this.stagetables = res.data.stageTable;
+          else {
+            this.stageTables = res.data.stageTable;
           }
-          if(res?.data?.orderNumber) this.OrderNumberTote  = res?.data?.orderNumber;
-          if(!res.data.stageTable) this.stagetables  = [];
-          this.IsLoading = false;
+          if (res?.data?.orderNumber) this.orderNumberTote = res?.data?.orderNumber;
+          if (!res.data.stageTable) this.stageTables = [];
+          this.isLoading = false;
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("ConsolidationData",res.responseMessage);
+          this.global.ShowToastr(ToasterType.Error,this.global.globalErrorMsg(),ToasterTitle.Error);
+          console.log("ConsolidationData", res.responseMessage);
         }
-        
       });
     }
   }
-  async saveToteStagingLocation($event:any,toteID: any, location: any,index:any=null,clear = 0) {
-    if ($event.key == "Enter" || $event == 'click') {
-      this.stagetables[index].stagingLocation = location;
-      this.stagetables[index].stagingLocationOld = location;
-    let obj: any = {
-      "orderNumber": this.OrderNumberTote,
-      "toteID": toteID,
-      "location": location,
-      "clear": clear
-    }
-    this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
-      if (res.responseMessage == "Fail") {
-        this.global.ShowToastr('error',"Error Has Occured", "Consolidation");
-      } else if (res.responseMessage == 'INVALID') {
-        this.global.ShowToastr('error',"The Location entered was not valid", "Staging");
 
-      } else if (res.responseMessage == "Redirect") {
-        window.location.href = "/#/Logon/";
-      } else if (typeof this.stagetables != 'undefined'){
-          for (const element of this.stagetables) {
+  async saveToteStagingLocation($event: any, toteID: any, location: any, index: any = null, clear = 0) {
+    if ($event.key == StringConditions.Enter || $event == StringConditions.Click) {
+      this.stageTables[index].stagingLocation = location;
+      this.stageTables[index].stagingLocationOld = location;
+      let obj: any = {
+        "orderNumber": this.orderNumberTote,
+        "toteID": toteID,
+        "location": location,
+        "clear": clear
+      }
+      this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
+        if (res.responseMessage == ResponseStrings.Fail) {
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.ErrorOccured,ToasterTitle.Consolidation);
+        } else if (res.responseMessage == ResponseStrings.INVALID) {
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.InvalidLocation,ToasterTitle.Staging);
+        } else if (res.responseMessage == ResponseStrings.Redirect) {
+          window.location.href = AppRoutes.Logon;
+        } else if (typeof this.stageTables != 'undefined') {
+          for (const element of this.stageTables) {
             let tote = element.toteID;
             if (tote == toteID) {
               element.location = location; //location
@@ -154,39 +139,40 @@ export class CmStagingLocationComponent {
               break;
             }
           }
-      }
-      if(res?.isExecuted && index!=null){ 
-        this.stagetables[index].stagingLocation = location;
-        this.stagetables[index].location = location; 
-      }else{
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("StagingLocationsUpdate",res.responseMessage)
-      }
-      
-    })
+        }
+        if (res?.isExecuted && index != null) {
+          this.stageTables[index].stagingLocation = location;
+          this.stageTables[index].location = location;
+        } else {
+          this.global.ShowToastr(ToasterType.Error,this.global.globalErrorMsg(),ToasterTitle.Error);
+          console.log("StagingLocationsUpdate", res.responseMessage)
+        }
+      })
+    }
   }
+
+  async unstageAll() {
+    for (let x = 0; x < this.stageTables.length; x++) {
+      this.saveToteStagingLocation('click', this.stageTables[x].toteID, '', x, 1);
+    }
   }
-  async UnstageAll(){
-    for (let x = 0; x < this.stagetables.length; x++) {
-      this.saveToteStagingLocation('click',this.stagetables[x].toteID,'',x,1);
-    } 
+
+  async clearAll() {
+    this.stageTables = [];
+    this.orderNumberTote = null;
   }
-  async clearAll(){
-    this.stagetables = [];
-    this.OrderNumberTote = null;
-  }
-  
-  openCmOrderToteConflict(order:any) { 
-    let dialogRef:any = this.global.OpenDialog(CmOrderToteConflictComponent, { 
+
+  openCmOrderToteConflict() {
+    let dialogRef: any = this.global.OpenDialog(CmOrderToteConflictComponent, {
       height: 'auto',
       width: '620px',
       autoFocus: '__non_existing_element__',
-      disableClose:true, 
+      disableClose: true,
     })
-    dialogRef.afterClosed().subscribe(result => { 
-        this.type = result;  
-        if(this.type) this.StagingLocsOrderNum('event');
+    dialogRef.afterClosed().subscribe(result => {
+      this.type = result;
+      if (this.type) this.stagingLocsOrderNum('event');
     })
-   }
+  }
 }
 

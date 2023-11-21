@@ -13,9 +13,9 @@ export class CountOrderSelectionComponentComponent   {
   @ViewChild('paginator') paginator: MatPaginator; 
   @ViewChild('table1') table1: MatTable<any>;
   @ViewChild('matSort') sort: MatSort;
-  @Input() searchOrder : string='';
+  @Input() searchOrderLeft : string='';
   @Input() leftTable : any;
-  @Input() displayedColumns : string[];
+  @Input() displayedColumnsCountOrderData : string[];
   @Output() applyFilterEmit = new EventEmitter();
   @Output() addOrdereDialogEmit = new EventEmitter<any>();
   @Output() announceSortChangeEmit : EventEmitter<{ sortState : Sort }> = new EventEmitter();
@@ -25,8 +25,8 @@ export class CountOrderSelectionComponentComponent   {
     this.leftTable.paginator = this.paginator;
     this.leftTable.sort = this.sort;  
   }
-  applyFilter(filterValue){
-    this.applyFilterEmit.emit(this.searchOrder);
+  applyFilter(){
+    this.applyFilterEmit.emit(this.searchOrderLeft);
   }
   addOrdereDialog(){
     this.addOrdereDialogEmit.emit();

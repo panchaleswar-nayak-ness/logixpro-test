@@ -5,7 +5,7 @@ import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-weight-scale',
   templateUrl: './weight-scale.component.html',
-  styleUrls: []
+  styleUrls: ['./weight-scale.scss']
 })
 export class WeightScaleComponent {
 

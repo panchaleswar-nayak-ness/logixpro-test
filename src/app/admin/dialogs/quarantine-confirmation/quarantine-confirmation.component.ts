@@ -3,10 +3,10 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
  
 import { AuthService } from '../../../../app/init/auth.service';
 import labels from '../../../labels/labels.json'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-quarantine-confirmation',
@@ -16,10 +16,9 @@ export class QuarantineConfirmationComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   action: any;
   userData: any;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private adminApiService: AdminApiService, 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,public adminApiService: AdminApiService, 
   private global:GlobalService,
-  private dialog:MatDialog, private authService: AuthService,
-  private Api:ApiFuntions ) {
+  private dialog:MatDialog, private authService: AuthService) {
     this.iAdminApiService = adminApiService;
     if (this.data.mode === 'inventory-map-quarantine') {
     this.action = 'Quarantine'
@@ -27,7 +26,6 @@ export class QuarantineConfirmationComponent implements OnInit {
       this.action = 'Unquarantine'
     }
    }
-
   ngOnInit(): void {
     this.userData = this.authService.userData();
   }
@@ -42,11 +40,11 @@ export class QuarantineConfirmationComponent implements OnInit {
       if (res.isExecuted) {
         
         this.dialog.closeAll();
-        this.global.ShowToastr('success',labels.alert.quarantine, 'Success!');
+        this.global.ShowToastr(ToasterType.Success,labels.alert.quarantine,ToasterTitle.Success);
       } else {
         
         this.dialog.closeAll();
-        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,labels.alert.went_worng,ToasterTitle.Error);
         console.log("quarantineInventoryMap",res.responseMessage);
       }
     });
@@ -61,11 +59,11 @@ export class QuarantineConfirmationComponent implements OnInit {
       if (res.isExecuted) {
         
         this.dialog.closeAll();
-        this.global.ShowToastr('success',labels.alert.quarantine.replace("quarantine","unquarantined"), 'Success!');
+        this.global.ShowToastr(ToasterType.Success,labels.alert.quarantine.replace("quarantine","unquarantined"), ToasterTitle.Success);
       } else {
         
         this.dialog.closeAll();
-        this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,labels.alert.went_worng, ToasterTitle.Error);
         console.log("unQuarantineInventoryMap",res.responseMessage);
       }
     });

@@ -1,7 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
- 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 
 @Component({
   selector: 'app-function-allocation',
@@ -9,21 +7,20 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
   styleUrls: []
 })
 export class FunctionAllocationComponent implements OnInit {
-  dialog_msg: string = '';
-  btn_label = '';
+  dialogMsg: string = '';
+  btnLabel = '';
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any, 
-     
-    private employeeService: ApiFuntions,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<FunctionAllocationComponent>
-    ) { }
+  ) { }
  
   ngOnInit(): void { 
-    if(this.data?.target === 'assigned') {this.dialog_msg = 'Are you sure you want to add ?'; this.btn_label = 'Add'} ;
-    if(this.data?.target === 'unassigned') {this.dialog_msg = 'Are you sure you want to remove ?'; this.btn_label = 'Remove'} ;
-    
+    if(this.data?.target === 'assigned') { this.dialogMsg = 'Are you sure you want to add ?'; this.btnLabel = 'Add' };
+    if(this.data?.target === 'unassigned') { this.dialogMsg = 'Are you sure you want to remove ?'; this.btnLabel = 'Remove' };
   }
-  onConfirmAdd(){
+
+  onConfirmAdd() {
     this.dialogRef.close(this.data);
   }
 }

@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from 'src/app/init/auth.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
@@ -11,26 +10,20 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
 @Component({
   selector: 'app-blossom-tote',
   templateUrl: './blossom-tote.component.html',
-  styleUrls: []
+  styleUrls: ['./blossom-tote.component.scss']
 })
 export class BlossomToteComponent implements OnInit {
-  @ViewChild('tote_focus') tote_focus: ElementRef;
+  @ViewChild('toteFocus') toteFocus: ElementRef;
   public userData: any;
-  TOTE_SETUP: any = [];
-  public iinductionManagerApi:IInductionManagerApiService;
-
+  public iInductionManagerApi:IInductionManagerApiService; 
   nxtToteID: any;
-  oldToteID: any;
-  
-  imPreferences:any;
-
+  oldToteID: any; 
+  imPreferences:any; 
   constructor(private dialog:MatDialog,
-    
-    private Api: ApiFuntions,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
     private authService: AuthService,
     private global:GlobalService) {
-      this.iinductionManagerApi = inductionManagerApi;
+      this.iInductionManagerApi = inductionManagerApi;
      }
 
   ngOnInit(): void {
@@ -39,25 +32,23 @@ export class BlossomToteComponent implements OnInit {
   }
   ngAfterViewInit(): void {
     setTimeout(()=>{
-      this.tote_focus.nativeElement.focus();
+      this.toteFocus.nativeElement.focus();
     }, 200);
   }
-  updateNxtTote() { 
-    
+  updateNxtTote() {  
     let updatePayload = {
       "tote": this.nxtToteID, 
     }
-    this.iinductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
+    this.iInductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
-        this.global.ShowToastr('error','Something is wrong.', 'Error!');
-        console.log("NextToteUpdate",res.responseMessage);
+        this.global.ShowToastr('error','Something is wrong.', 'Error!'); 
       }
 
     });
   }
 
   getNextToteId() {
-    this.iinductionManagerApi.NextTote().subscribe(res => {
+    this.iInductionManagerApi.NextTote().subscribe(res => {
       if(res.data){
         this.nxtToteID = res.data;
         this.nxtToteID = this.nxtToteID + 1
@@ -87,7 +78,7 @@ export class BlossomToteComponent implements OnInit {
             "OldTote": this.oldToteID?.toString(),
             "NewTote": this.nxtToteID?.toString()
           }
-          this.iinductionManagerApi.ProcessBlossom(paylaod).subscribe(res => {
+          this.iInductionManagerApi.ProcessBlossom(paylaod).subscribe(res => {
             if (res.isExecuted && res.data) {
               let batch = res.data
               if(this.imPreferences.autoPrintPickToteLabels){
@@ -110,8 +101,7 @@ export class BlossomToteComponent implements OnInit {
               this.global.ShowToastr('success','Updated Successfully', 'Success!');
               this.dialog.closeAll();
             } else {
-              this.global.ShowToastr('error','Old tote ID does not exist', 'Error!');
-              console.log("ProcessBlossom",res.responseMessage);
+              this.global.ShowToastr('error','Old tote ID does not exist', 'Error!'); 
             }
           });
         }

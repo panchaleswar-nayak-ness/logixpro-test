@@ -20,6 +20,7 @@ import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.co
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 export interface Location {
   start_location: string;
@@ -50,26 +51,25 @@ export class EmployeesComponent implements OnInit {
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
   empData: any = {};
-  max_orders: any;
+  maxOrders: any;
   pickUplevels: any;
   assignedFunctions:any;
   unassignedFunctions:any;
-  group_fetched_unassigned_function:any
-  location_data: any[] = [];
+  groupFetchedUnassignedFunction:any
+  locationData: any[] = [];
   employee_data_source: any = [];
   grpData: any = {};
   userName: any;
-  employees_action: boolean = false;
-  employee_fetched_zones: any;
-  location_data_source: any;
-  employee_group_allowed: any;
-  emp_all_zones:any;
+  employeeFetchedZones: any;
+  locationDataSource: any;
+  employeeGroupAllowed: any;
+  empAllZones:any;
   groupAllowedList:any;
   FuncationAllowedList:any = [];
-  OldFuncationAllowedList:any = [];
+  oldFuncationAllowedList:any = [];
   access:any;
   public iAdminApiService: IAdminApiService;
-  grp_data:any;
+  grpDataV:any;
   public demo1TabIndex = 0;
   public userData;
   public updateGrpTable;
@@ -111,7 +111,7 @@ export class EmployeesComponent implements OnInit {
   
   getFuncationAllowedList(){
     let emp:any = {
-      "username": this.grp_data,
+      "username": this.grpDataV,
       "access": this.empData.accessLevel
     }
     this.iAdminApiService.getInsertAllAccess(emp).subscribe((res:any) => {
@@ -120,7 +120,7 @@ export class EmployeesComponent implements OnInit {
         this.reloadData();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getInsertAllAccess",res.responseMessage);
       }
       
@@ -128,10 +128,10 @@ export class EmployeesComponent implements OnInit {
   }
   
   applyFunctionAllowedFilter(event: any) { 
-    if(!this.OldFuncationAllowedList?.length && this.FuncationAllowedList.filteredData?.length) {
-      this.OldFuncationAllowedList = this.FuncationAllowedList.filteredData;
+    if(!this.oldFuncationAllowedList?.length && this.FuncationAllowedList.filteredData?.length) {
+      this.oldFuncationAllowedList = this.FuncationAllowedList.filteredData;
     }
-    if(this.OldFuncationAllowedList.length) this.FuncationAllowedList = new MatTableDataSource(this.OldFuncationAllowedList.filter(x=> x?.toLowerCase()?.indexOf(event?.target?.value.toLowerCase()) > -1));
+    if(this.oldFuncationAllowedList.length) this.FuncationAllowedList = new MatTableDataSource(this.oldFuncationAllowedList.filter(x=> x?.toLowerCase()?.indexOf(event?.target?.value.toLowerCase()) > -1));
   }
 
   updateIsLookUp(event: any) {
@@ -139,9 +139,9 @@ export class EmployeesComponent implements OnInit {
     this.empData = event.userData;
     this.isLookUp = event;
     this.lookUpEvnt=true; 
-    this.grp_data = event.userData?.username;
+    this.grpDataV = event.userData?.username;
 
-    this.max_orders = event.userData.maximumOrders;
+    this.maxOrders = event.userData.maximumOrders;
     const emp_data = {
       "user": event.userData?.username,
       "wsid": "TESTWSID"
@@ -153,25 +153,25 @@ export class EmployeesComponent implements OnInit {
         {
           this.isLookUp = event;
         this.lookUpEvnt=true;
-        this.employee_group_allowed = response.data?.userRights
+        this.employeeGroupAllowed = response.data?.userRights
         this.pickUplevels = response.data?.pickLevels;
-        this.location_data_source = new MatTableDataSource(response.data?.bulkRange);
+        this.locationDataSource = new MatTableDataSource(response.data?.bulkRange);
         this.FuncationAllowedList = new MatTableDataSource(response.data.userRights);
-        this.location_data = response.data?.bulkRange
+        this.locationData = response.data?.bulkRange
         let res=response.data?.handledZones.map(item=>{
           return {zones:item}
         })
-        this.employee_fetched_zones = new MatTableDataSource(res); 
-        this.employee_fetched_zones.filterPredicate = (data: any, filter: string) => {
+        this.employeeFetchedZones = new MatTableDataSource(res); 
+        this.employeeFetchedZones.filterPredicate = (data: any, filter: string) => {
      
           
           return data.zones.toLowerCase().includes(filter.trim().toLowerCase());
       };
-        this.emp_all_zones = response.data?.allZones;
+        this.empAllZones = response.data?.allZones;
         if(this.env !== 'DB') this.getgroupAllowedList();
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("getAdminEmployeeDetails",response.responseMessage);
         }
          
@@ -183,26 +183,26 @@ export class EmployeesComponent implements OnInit {
 
   reloadData(){
     const emp_data = {
-      "user":  this.grp_data,
+      "user":  this.grpDataV,
       "wsid": "TESTWSID"
     };
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => {
         if(response.isExecuted && response.data)
         {
-          this.employee_group_allowed = response.data?.userRights
+          this.employeeGroupAllowed = response.data?.userRights
         this.pickUplevels = response.data?.pickLevels;
-        this.location_data_source = new MatTableDataSource(response.data?.bulkRange);
+        this.locationDataSource = new MatTableDataSource(response.data?.bulkRange);
         this.FuncationAllowedList = new MatTableDataSource(response.data.userRights);
-        this.location_data = response.data?.bulkRange
+        this.locationData = response.data?.bulkRange
         let res=response.data?.handledZones.map(item=>{
           return {zones:item}
         })
-        this.employee_fetched_zones = new MatTableDataSource(res);
-        this.emp_all_zones = response.data?.allZones;
+        this.employeeFetchedZones = new MatTableDataSource(res);
+        this.empAllZones = response.data?.allZones;
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("getAdminEmployeeDetails",response.responseMessage);
         }
         
@@ -249,11 +249,11 @@ export class EmployeesComponent implements OnInit {
         this.unassignedFunctions =[];
         this.isGroupLookUp = false;
         if(res.isExecuted){
-          this.global.ShowToastr('success',labels.alert.update, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
           this.updateGrpLookUp();
         }
         else{
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
           console.log("insertGroupFunctions",res.responseMessage);
         }
 
@@ -264,7 +264,7 @@ export class EmployeesComponent implements OnInit {
     this.grpData = {};
     this.grpData = event.groupData;
     this.isGroupLookUp = event;
-    this.max_orders = 10;
+    this.maxOrders = 10;
     
 
     const grp_data = {
@@ -281,7 +281,7 @@ export class EmployeesComponent implements OnInit {
       this.unassignedFunctions = response.data?.allFunc
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getFunctionByGroup",response.responseMessage);
       } 
       
@@ -377,10 +377,10 @@ export class EmployeesComponent implements OnInit {
     this.clearInput();
     this.isLookUp = false;
     this.lookUpEvnt=false
-    this.employee_fetched_zones = [];
-    this.location_data_source = [];
+    this.employeeFetchedZones = [];
+    this.locationDataSource = [];
     this.groupAllowedList = [];
-    this.max_orders = '';
+    this.maxOrders = '';
     this.isTabChanged=true;
     this.demo1TabIndex = 0;
   }
@@ -447,7 +447,7 @@ export class EmployeesComponent implements OnInit {
     this.isGroupLookUp = false;
     this.assignedFunctions = [];
     this.unassignedFunctions = [];
-    this.max_orders = '';
+    this.maxOrders = '';
   }
 
   openDialog() {
@@ -475,7 +475,7 @@ export class EmployeesComponent implements OnInit {
       }
       else {
         this.ButtonAccessList = [];
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getEmployeeData",res.responseMessage);
       }
     });
@@ -499,7 +499,7 @@ export class EmployeesComponent implements OnInit {
 
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),  ToasterTitle.Error);
           console.log("",response.responseMessage)
         }
       })
@@ -507,7 +507,7 @@ export class EmployeesComponent implements OnInit {
 
   getgroupAllowedList(){
     let payload:any = {
-      user : this.grp_data
+      user : this.grpDataV
     }
     this.iAdminApiService.Groupnames(payload).subscribe((res:any) => {
       if(res.isExecuted && res.data)
@@ -515,7 +515,7 @@ export class EmployeesComponent implements OnInit {
         this.groupAllowedList = new MatTableDataSource(res.data);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),  ToasterTitle.Error);
         console.log("Groupnames",res.responseMessage);
       }
       
@@ -527,8 +527,8 @@ export class EmployeesComponent implements OnInit {
     this.bpSettingLocInp='';
     this.searchfuncAllowed = '';
     this.grpAllFilter='';
-    this.employee_fetched_zones.filter = '';
-    this.location_data_source.filter = '';
+    this.employeeFetchedZones.filter = '';
+    this.locationDataSource.filter = '';
     this.groupAllowedList.filter = '';
   }
  
@@ -541,10 +541,10 @@ export class EmployeesComponent implements OnInit {
     .subscribe((r) => {
       if(r.isExecuted)
       {
-        this.global.ShowToastr('success',labels.alert.update, 'Success!');
+        this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("updateControlName",r.responseMessage);
       }
       

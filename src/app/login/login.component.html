@@ -37,9 +37,9 @@
                       [(ngModel)]="addLoginForm.username" name="username" #userName="ngModel" maxlength="50"
                         
                         required autocomplete="off"    />
-                      <mat-icon matPrefix style="color: var(--clr-tertiary-900);">account_circle</mat-icon>
+                      <mat-icon matPrefix class="text-tertiary-900">account_circle</mat-icon>
                     </mat-form-field>
-                    <mat-hint class="error-message" style="color: var(--clr-danger-shade);font-size: 14px;"
+                    <mat-hint class="error-message text-danger-shade text-14"
                       *ngIf="userName.invalid 
                       && (userName.dirty || userName.touched)">
                       Username is required
@@ -54,14 +54,14 @@
                       (keyup.enter)="loginUser()"
                       matInput
                         [type]="toggle_password == true ? 'password' : 'text'" autocomplete="false"   required="" >
-                      <mat-icon matPrefix style="color: var(--clr-tertiary-900);">lock</mat-icon>
+                      <mat-icon matPrefix class="text-tertiary-900">lock</mat-icon>
                       <button type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password"
                         [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
                         <mat-icon>{{toggle_password ? 'visibility_off' : 'visibility'}}</mat-icon>
                       </button>
                     </mat-form-field>
 
-                    <mat-hint class="error-message" style="color: var(--clr-danger-shade);font-size: 14px;"
+                    <mat-hint class="error-message text-danger-shade text-14"
                       *ngIf="password.invalid && (password.dirty || password.touched)">
                       Password is required
                     </mat-hint>
@@ -88,7 +88,7 @@
                 <div class="text-center text-14">
                   v{{version}}
                 </div>
-                <mat-icon class="material-symbols-outlined" matPrefix style="color: var(--clr-tertiary-900); visibility: hidden; position: absolute;">lock</mat-icon>
+                <mat-icon class="material-symbols-outlined text-tertiary-900 invisible position-absolute" matPrefix>lock</mat-icon>
 
               </div>
             </div>

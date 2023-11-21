@@ -1,6 +1,6 @@
 
 <div class="d-flex justify-content-between mb-2 align-items-center">
-  <div style="width:48px"></div>
+  <div class="w-48px"></div>
   <h1 class="m-0" mat-dialog-title>Transfer File Field Mapping</h1>
 
   <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
@@ -11,7 +11,7 @@
 
 <div class="d-block d-xl-flex justify-content-between align-items-center w-100">
 <div class="d-flex">
-    <mat-form-field class="action-dropdown custom-form-field-bg-white mb-2" appearance="outline" style="flex:1;">
+    <mat-form-field class="action-dropdown custom-form-field-bg-white mb-2 flex-grow-1" appearance="outline">
         <mat-select #matRef class="employees-action">
             <mat-option value="0" >Placeholder1</mat-option>
             <mat-option value="1" >Placeholder2</mat-option>
@@ -26,7 +26,7 @@
 </div>
 
 <div class="d-flex justify-content-end"> 
-    <button mat-flat-button color="primary" class="add-icon-button mb-2" style="flex:1;">
+    <button mat-flat-button color="primary" class="add-icon-button mb-2 flex-grow-1">
             <span class="material-symbols-outlined" matTooltip="Add new"
               matTooltipPosition="above">
               add
@@ -35,8 +35,8 @@
 </div>
 </div>
 
-<div class="card br-14 borderless mx-0 px-0 mb-3" style="overflow-x: auto;" mat-dialog-content>
-          <ng-scrollbar class="mat-table-scrollbar" style="height:545px" track="all" >
+<div class="card br-14 borderless mx-0 px-0 mb-3 overflow-x-auto" mat-dialog-content>
+          <ng-scrollbar class="mat-table-scrollbar height-545" track="all" >
             <table class="w-100 table-borderless" mat-table matSort [dataSource]="tableData">
                 <ng-container matColumnDef="fields">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> PickPro Field </th>
@@ -141,7 +141,7 @@
 
         </tr>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" style=" background-color: var(--clr-table-header);"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" class="table-settings-tr"></tr>
 
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
