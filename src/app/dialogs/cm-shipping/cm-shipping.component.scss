@@ -13,30 +13,30 @@ table {
   margin: 0;}
 
 
-::ng-deep.w-48px {
+.w-48px {
   width: 48px;
 }
 
-::ng-deep.height-300 {
+.height-300 {
   height: 300px
 }
 
-::ng-deep.table-shipping-set {
+.table-shipping-set {
   border: 0;
   height: 66px;
   padding-left: 65px;
 
 }
 
-::ng-deep.table-td-shipping {
+.table-td-shipping {
   border: 0;
   padding-left: 24px;
   background: var(--clr-pure-white);
 }
-::ng-deep.gap-6px{
+.gap-6px{
   gap:6px
 }
-::ng-deep.table-backcolor{
+.table-backcolor{
   background-color: var(--clr-table-header);
 }
 .h-300px{
