@@ -166,7 +166,7 @@
                 </mat-card-content>
             </mat-card>
         </div>
-        <div class="col-xl-4" [hidden]="isHistory">
+        <div class="col-xl-4" *ngIf="!isHistory">
             <app-reprocess-choice (itemUpdatedEvent)="itemUpdatedEvent()" [reprocessCount]="orders"
                 [isEnabled]="isEnabled" [transactionID]="transactionID" [userData]="this.userData"
                 [isReprocessedChecked]="isReprocessedChecked" [isCompleteChecked]="isCompleteChecked"
