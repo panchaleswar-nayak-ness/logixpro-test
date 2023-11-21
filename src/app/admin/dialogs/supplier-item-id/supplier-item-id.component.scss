@@ -1,0 +1,15 @@
+.div-width{
+    width: 48px !important;
+}
+
+.span-width{
+    width: 140px !important;
+}
+
+.span-searchColumn{
+    width:  140px !important; 
+    text-overflow: ellipsis !important; 
+    overflow: hidden !important;
+    max-width: 20ch !important; 
+    white-space: nowrap !important;
+}
