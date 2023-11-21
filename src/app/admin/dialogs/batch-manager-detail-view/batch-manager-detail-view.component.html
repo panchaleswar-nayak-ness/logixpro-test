@@ -6,8 +6,8 @@
 </button>
 </div>
 
-<div class="card br-14 px-0 borderless batch-manager-card" >
-    <ng-scrollbar track="all" class="mat-table-scrollbar batch-height " >
+<div class="card br-14 px-0 borderless batch-manager-card overflow-auto" >
+    <ng-scrollbar track="all" class="mat-table-scrollbar batch-height h-400px" >
     <table class="w-100" mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"> 
   
       <ng-container matColumnDef="item_no">

@@ -24,7 +24,7 @@ import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirma
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
   templateUrl: './selection-transaction-for-tote-extend.component.html',
-  styleUrls: []
+  styleUrls: ['./selection-transaction-for-tote-extend.component.scss']
 })
 export class SelectionTransactionForToteExtendComponent implements OnInit {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;

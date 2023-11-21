@@ -17,7 +17,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-reprocess-transaction-detail',
   templateUrl: './reprocess-transaction-detail.component.html',
-  styleUrls: []
+  styleUrls: ['./reprocess-transaction-detail.component.scss']
 })
 export class ReprocessTransactionDetailComponent implements OnInit {
   @ViewChild('trans_qty') trans_qty: ElementRef;

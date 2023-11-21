@@ -14,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-reel-tracking',
   templateUrl: './reel-tracking.component.html',
-  styleUrls: []
+  styleUrls: ['./reel-tracking.component.scss']
 })
 export class ReelTrackingComponent implements OnInit {
   isChecked = false;

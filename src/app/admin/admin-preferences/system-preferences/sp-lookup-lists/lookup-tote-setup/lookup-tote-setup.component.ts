@@ -10,7 +10,7 @@ import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
 @Component({
   selector: 'app-lookup-tote-setup',
   templateUrl: './lookup-tote-setup.component.html',
-  styleUrls: []
+  styleUrls: ['./lookup-tote-setup.component.scss']
 })
 export class LookupToteSetupComponent implements OnInit {
 

@@ -10,8 +10,8 @@
                 </button>
             </div>
         </div>
-        <div class="card br-14 borderless px-0" style="overflow-x: auto;">
-            <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 390px">
+        <div class="card br-14 borderless px-0 overflow-auto">
+            <ng-scrollbar track="all" class="mat-table-scrollbar h-390px">
                 <table class="w-100 table-borderless" mat-table #matSort3="matSort" matSort [dataSource]="scanCodesList">
                     <ng-container matColumnDef="ScanCode">
                         <th mat-header-cell *matHeaderCellDef> Scan Code </th>
@@ -30,7 +30,7 @@
                                     (click)="openScanTypePopup(element)">
                                     <span matSuffix>
                                         <mat-icon
-                                            style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                                        class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
                                     </span>
                                     <input (input)="scanCodesList[i].isDisabled=false" readonly
                                         class="__grab_cursor readonly" matInput type="text" name="{{element.scanType}}"

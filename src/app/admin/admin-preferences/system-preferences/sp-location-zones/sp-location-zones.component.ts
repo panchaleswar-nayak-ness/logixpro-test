@@ -13,7 +13,7 @@ import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings,
 @Component({
   selector: 'app-sp-location-zones',
   templateUrl: './sp-location-zones.component.html',
-  styleUrls: [],
+  styleUrls: ['./sp-location-zones.component.scss'],
 })
 export class SpLocationZonesComponent implements OnInit {
   toggleSwitches = [

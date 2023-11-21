@@ -67,8 +67,8 @@
                 </div>
             </div>
 
-            <div class="card br-14 borderless mb-3" style="overflow-x: auto;">
-                <ng-scrollbar track="all" class="mat-table-scrollbar " style="height: 220px">
+            <div class="card br-14 borderless mb-3 overflow-auto">
+                <ng-scrollbar track="all" class="mat-table-scrollbar h-220px">
                     <table class="w-100 table-borderless" mat-table [dataSource]="tableData" matSort (matSortChange)="announceSortChange($event)">
 
                         <ng-container matColumnDef="itemNumber">

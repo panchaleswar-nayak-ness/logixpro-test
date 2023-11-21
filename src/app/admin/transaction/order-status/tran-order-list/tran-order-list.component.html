@@ -32,8 +32,8 @@
 
     <div class="row align-items-center ">
       <div class="col-12">
-        <div class="card br-14 borderless px-0 mb-3" style="overflow-x: auto;">
-          <ng-scrollbar track="all" class="mat-table-scrollbar " style="height: 300px">
+        <div class="card br-14 borderless px-0 mb-3 overflow-auto">
+          <ng-scrollbar track="all" class="mat-table-scrollbar h-300px">
             <table  style="width: 100%;" mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" style=" min-height: 150px;">
 
               <ng-container matColumnDef="status" sticky>

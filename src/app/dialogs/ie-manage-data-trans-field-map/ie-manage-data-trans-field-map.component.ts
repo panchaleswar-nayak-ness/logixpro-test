@@ -3,7 +3,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 @Component({
   selector: 'app-ie-manage-data-trans-field-map',
   templateUrl: './ie-manage-data-trans-field-map.component.html',
-  styleUrls: [],
+  styleUrls: ['./ie-manage-data-trans-field-map.component.scss'],
 })
 export class IeManageDataTransFieldMapComponent {
   @ViewChild('autoFocusField') autoFocusField: ElementRef;

@@ -12,7 +12,7 @@ import { DialogConstants, Mode, StringConditions, ToasterTitle, ToasterType } fr
 @Component({
   selector: 'app-item-category',
   templateUrl: './item-category.component.html',
-  styleUrls: []
+  styleUrls: ['./item-category.component.scss']
 })
 export class  ItemCategoryComponent implements OnInit {
   @ViewChildren('category_category', { read: ElementRef }) categoryCategory: QueryList<ElementRef>;

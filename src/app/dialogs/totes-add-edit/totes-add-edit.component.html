@@ -1,4 +1,4 @@
-<mat-card class="mat-elevation-z g-card mb-3" style="height: 100%;">
+<mat-card class="mat-elevation-z g-card mb-3 h-100">
   <mat-card-content>
 
     <div *ngIf="!isIMPath" class="d-flex justify-content-between align-items-center mb-4">
@@ -79,7 +79,7 @@
     </div>
 
     <div  class="card br-14 table-responsive borderless px-0 mb-4" *ngIf="!data.validateTotes && !isIMPath">
-      <ng-scrollbar class="mat-table-scrollbar" track="all" style="height:160px;">
+      <ng-scrollbar class="mat-table-scrollbar h-160px" track="all">
         <table mat-table [dataSource]="dataSource" class="">
 
           <ng-container matColumnDef="actions">

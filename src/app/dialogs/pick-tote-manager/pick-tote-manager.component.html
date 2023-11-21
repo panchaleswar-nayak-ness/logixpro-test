@@ -20,7 +20,7 @@
     <div class="card p-3">
       <mat-tab-group>
         <mat-tab label="Batch By Filters">
-            <div class="d-block" style="overflow: hidden;">
+            <div class="d-block overflow-hidden">
             <div class="my-3">
               <app-icon-heading-component heading="Filter Functions" icon="filter_list">
               </app-icon-heading-component>
@@ -75,7 +75,7 @@
                   </div>
 
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
-                    <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 180px;">
+                    <ng-scrollbar track="all" class="mat-table-scrollbar h-180px">
                       <table mat-table [dataSource]="dataSource" class="w-100 table1">
 
                         <!-- Position Column -->
@@ -217,7 +217,7 @@
                     </button>
                   </div>
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
-                    <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 180px;">
+                    <ng-scrollbar track="all" class="mat-table-scrollbar h-180px">
                       <table mat-table [dataSource]="orderBydataSource" class="w-100 table1">
 
                         <!-- Position Column -->
@@ -329,7 +329,7 @@
             </div>
         </mat-tab>
         <mat-tab label="Batch Results">
-            <div class="d-block" style="overflow: hidden;">
+            <div class="d-block overflow-hidden">
             <div class="p-3">
               <div class="mb-2">
                 <mat-label><b>View Order Lines</b></mat-label>
@@ -362,7 +362,7 @@
                     </mat-form-field>
                   </div>
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
-                    <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 280px;">
+                    <ng-scrollbar track="all" class="mat-table-scrollbar h-280px">
                       <table mat-table [dataSource]="filterBatchOrders" class="w-100 table1">
 
                         <!-- Position Column -->
@@ -414,7 +414,7 @@
                     </app-icon-heading-component>
                   </div>
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
-                    <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 280px;">
+                    <ng-scrollbar track="all" class="mat-table-scrollbar h-280px">
 
                       <table mat-table #table [dataSource]="filterOrderTransactionSource" matSort>
 
@@ -549,7 +549,7 @@
                 </mat-radio-button>
               </mat-radio-group>
             </div>
-            <div class="container-fluid-0" style="overflow:hidden">
+            <div class="container-fluid-0 overflow-hidden">
             <div class="row row-flex p-0">
               <div class="col-xl-4 mb-xl-0 mb-3">
                 <div class="card p-3">
@@ -569,7 +569,7 @@
                     </mat-form-field>
                   </div>
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
-                    <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 280px;">
+                    <ng-scrollbar track="all" class="mat-table-scrollbar h-280px">
                       <table mat-table [dataSource]="filterBatchOrdersZone" class="w-100 table2">
 
                         <!-- Position Column -->
@@ -616,7 +616,7 @@
                     </app-icon-heading-component>
                   </div>
                   <div class="card br-14 table-responsive borderless px-0 mb-3">
-                    <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 280px;">
+                    <ng-scrollbar track="all" class="mat-table-scrollbar h-280px">
                       <table mat-table #table [dataSource]="zoneOrderTransactionSource" matSort class="table2">
 
                         <ng-container *ngFor="let column of filterBatchTransColumns" [cdkColumnDef]="column.columnDef">

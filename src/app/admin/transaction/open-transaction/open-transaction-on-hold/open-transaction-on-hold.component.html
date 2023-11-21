@@ -158,7 +158,7 @@
                 </div>
             </div>
             <div class="card br-14 table-responsive mb-3">
-                <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 400px;" pointerEventsMethod="scrollbar">
+                <ng-scrollbar track="all" class="mat-table-scrollbar h-400px" pointerEventsMethod="scrollbar">
                     <table mat-table class="custom-table table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)">
                         <ng-container class="d-table-row"[matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
                             <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement" style="width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);">{{ col.colDef }} </th>

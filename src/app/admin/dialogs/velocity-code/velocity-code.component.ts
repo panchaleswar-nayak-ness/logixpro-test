@@ -12,7 +12,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-velocity-code',
   templateUrl: './velocity-code.component.html',
-  styleUrls: []
+  styleUrls: ['./velocity-code.component.scss']
 })
 
 export class VelocityCodeComponent implements OnInit {

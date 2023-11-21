@@ -35,3 +35,10 @@ button.restore-to-default-btn {
       scrollbar-color: #888888 #f0f0f0; /* Color of the scrollbar (track color and thumb color) */
     }
   }
+
+  .h-53vh{
+    height: 53vh;
+  }
+  .webkit-overflow{
+    -webkit-overflow-scrolling: touch;
+  }

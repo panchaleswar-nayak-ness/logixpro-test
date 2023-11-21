@@ -14,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-connected-users',
   templateUrl: './connected-users.component.html',
-  styleUrls: [],
+  styleUrls: ['./connected-users.component.scss'],
 })
 export class ConnectedUsersComponent implements OnInit,AfterViewInit {
   displayedColumns: string[] = ['username', 'wsid', 'appname'];

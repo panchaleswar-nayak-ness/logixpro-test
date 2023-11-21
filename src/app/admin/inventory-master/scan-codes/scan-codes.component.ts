@@ -14,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-scan-codes',
   templateUrl: './scan-codes.component.html',
-  styleUrls: []
+  styleUrls: ['./scan-codes.component.scss']
 })
 export class ScanCodesComponent{
 

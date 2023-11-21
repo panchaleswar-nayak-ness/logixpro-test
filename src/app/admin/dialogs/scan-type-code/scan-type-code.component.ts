@@ -10,7 +10,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-scan-type-code',
   templateUrl: './scan-type-code.component.html',
-  styleUrls: []
+  styleUrls: ['./scan-type-code.component.scss']
 })
 export class ScanTypeCodeComponent implements OnInit {
   @ViewChildren('scan_code_type', { read: ElementRef }) scan_code_type: QueryList<ElementRef>;

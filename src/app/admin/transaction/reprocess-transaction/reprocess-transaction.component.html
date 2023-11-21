@@ -117,8 +117,8 @@
                     </div>
 
                     <div class="card br-14 table-responsive my-3">
-                        <ng-scrollbar style="height:600px" track="all" appearance="compact" visibility="always"
-                            pointerEventsMethod="scrollbar" class="mat-table-scrollbar scroll-fix">
+                        <ng-scrollbar track="all" appearance="compact" visibility="always"
+                            pointerEventsMethod="scrollbar" class="mat-table-scrollbar scroll-fix h-600px">
                             <table mat-table class="custom-table table-fix custom-action-clickable-table" #table
                                 [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)">
 
@@ -193,9 +193,9 @@
                                     </button>
                                 </div>
                                 <div class="card br-14 table-responsive px-0 mt-2">
-                                    <ng-scrollbar style="height: 250px;">
+                                    <ng-scrollbar class="h-250px">
                                         <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
-                                            <ng-scrollbar style="height: 380px" pointerEventsMethod="scrollbar">
+                                            <ng-scrollbar class="h-380px" pointerEventsMethod="scrollbar">
                                                 <mat-list-item (click)="selectOrder(order)" role="listitem"
                                                     *ngFor="let order of orders.reprocessOrders">
                                                     <span class="list-label zone-list-label">
@@ -229,9 +229,9 @@
                                     </button>
                                 </div>
                                 <div class="card br-14 table-responsive px-0 mt-2">
-                                    <ng-scrollbar style="height: 250px;" pointerEventsMethod="scrollbar">
+                                    <ng-scrollbar class="h-250px" pointerEventsMethod="scrollbar">
                                         <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
-                                            <ng-scrollbar style="height: 380px">
+                                            <ng-scrollbar class="h-380px">
                                                 <mat-list-item (click)="selectOrder(order)" role="listitem"
                                                     *ngFor="let order of orders.completeOrders">
                                                     <span class="list-label zone-list-label">
@@ -264,9 +264,9 @@
                                     </button>
                                 </div>
                                 <div class="card br-14 table-responsive px-0 mt-2">
-                                    <ng-scrollbar style="height: 250px;" pointerEventsMethod="scrollbar">
+                                    <ng-scrollbar class="h-250px" pointerEventsMethod="scrollbar">
                                         <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
-                                            <ng-scrollbar style="height: 380px">
+                                            <ng-scrollbar class="h-380px">
                                                 <mat-list-item (click)="selectOrder(order)" role="listitem"
                                                     *ngFor="let order of orders.historyOrders">
                                                     <span class="list-label zone-list-label">

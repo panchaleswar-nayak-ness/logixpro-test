@@ -34,8 +34,8 @@
                         <div class="col-4 "></div>
                     </div>
                 </div>
-                    <ng-scrollbar style="height: 500px;" track="all">
-                <div class="card-body" style="overflow-x: auto;">
+                    <ng-scrollbar class="h-500px" track="all">
+                <div class="card-body overflow-auto">
                     
 
                     <div class="row">
@@ -47,7 +47,7 @@
                                         <mat-form-field class="custom-form-field w-100" appearance="outline">
                                             <input matInput type="text" [(ngModel)]="item.connectionName" name="connectionName" (ngModelChange)="onInputValueChange($event,item,index)" #specialFeature maxlength="50"
                                                 [value]="item.connectionName">
-                                                <mat-hint class="error-message" style="color: var(--clr-danger-shade);font-size: 14px;padding-top:5%"
+                                                <mat-hint class="error-message text-danger-shade text-14 padding-top-5per"
                                                 *ngIf="item.isDuplicate">
                                                 Field can not be duplicate
                                               </mat-hint>
@@ -75,7 +75,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-3" style="overflow-x: auto;">
+                                    <div class="col-3 overflow-auto">
                                         <div class="d-flex gap-12 align-items-center pe-0 pe-xl-3 justifly-content-center">
                                             <button type="button" mat-flat-button 
                                                (click)="openSqlAuth(item)" class="button-primary-i button-md flex-grow-1"  [disabled]="item.isSqlButtonDisable"> Set SQL Auth</button>

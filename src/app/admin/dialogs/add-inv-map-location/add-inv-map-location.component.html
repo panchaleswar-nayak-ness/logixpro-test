@@ -6,7 +6,7 @@
 </button>
 </div>
 <form [formGroup]="addInvMapLocation" (ngSubmit)="onSubmit(addInvMapLocation)" mat-dialog-content>
-    <ng-scrollbar class="scroll-color scrolBar-colorStyle" [track]="itemNumberScroll">
+    <ng-scrollbar class="scroll-color scrolBar-colorStyle h-65vh" [track]="itemNumberScroll">
         <div class="row mb-3 mx-1">
             <div class="col-xl-6 col-md-12 col-sm-12 col-xs-12 mb-3 mb-xl-0 ">
                     <div class="container location_detail px-md-3">
@@ -67,7 +67,7 @@
                                     <mat-label>Warehouse</mat-label>
                                     <input matInput formControlName="warehouse" name="warehouse" readonly="true">
                                     <span matSuffix>
-                                        <mat-icon class="unfoldMoreStyleC" >unfold_more</mat-icon>
+                                        <mat-icon class="unfoldMoreStyleC text-tertiary-900 rotate-45" >unfold_more</mat-icon>
                                     </span>
                                 </mat-form-field>
                                 <div class="error" *ngIf="hasError('warehouse', 'required')">This field is required.</div>
@@ -145,7 +145,7 @@
                                     <mat-label>Cell Size</mat-label>
                                     <input matInput formControlName="cell" name="cell" readonly #cellSizeVal>
                                     <span matSuffix>
-                                        <mat-icon  class="unfoldMoreStyleC">unfold_more</mat-icon>
+                                        <mat-icon  class="unfoldMoreStyleC text-tertiary-900 rotate-45">unfold_more</mat-icon>
                                     </span>
                                 </mat-form-field>
                             </div>
@@ -156,7 +156,7 @@
                                     <mat-label>Velocity Code</mat-label>
                                     <input matInput formControlName="velocity" name="velocity" readonly #velCodeVal>
                                     <span matSuffix>
-                                        <mat-icon class="unfoldMoreStyleC">unfold_more</mat-icon>
+                                        <mat-icon class="unfoldMoreStyleC text-tertiary-900 rotate-45">unfold_more</mat-icon>
                                     </span>
                                 </mat-form-field>
                             </div>
@@ -273,7 +273,7 @@
                                 <mat-label>Item Quantity</mat-label>
                                 <input matInput formControlName="itemQuantity"   name="itemQuantity" readonly>
                                 <span matSuffix>
-                                    <mat-icon class="unfoldMoreStyleC" >unfold_more</mat-icon>
+                                    <mat-icon class="unfoldMoreStyleC text-tertiary-900 rotate-45" >unfold_more</mat-icon>
                                 </span>
                             </mat-form-field>
                         </div>

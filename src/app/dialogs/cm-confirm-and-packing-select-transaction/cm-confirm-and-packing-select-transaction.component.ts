@@ -9,7 +9,7 @@ import { ConsolidationApiService } from 'src/app/services/consolidation-api/cons
 @Component({
   selector: 'app-cm-confirm-and-packing-select-transaction',
   templateUrl: './cm-confirm-and-packing-select-transaction.component.html',
-  styleUrls: []
+  styleUrls: ['./cm-confirm-and-packing-select-transaction.component.scss']
 })
 export class CmConfirmAndPackingSelectTransactionComponent implements OnInit { 
   itemNumber: any;

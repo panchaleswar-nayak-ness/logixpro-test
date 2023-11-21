@@ -17,7 +17,7 @@
             <mat-form-field class="d-block w-100 mb-3" appearance="outline" (click)="openReasonDialog()">
                 <mat-label>Reason Message</mat-label>
                 <span matSuffix>
-                    <mat-icon style="color:var(--clr-tertiary-900); transform: rotate(45deg);">unfold_more</mat-icon>
+                    <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
                 </span>
                 <input matInput value="{{reasonMessage}}" type="text" readonly [disabled]='isEnabled'>
             </mat-form-field>
@@ -26,7 +26,7 @@
             <button mat-flat-button color="primary" class="w-100 btn-regular" [disabled]='isEnabled' (click)="openReprocessTransactionDialogue()">
                 <ng-container *ngIf="!isHistory">Edit This Transaction</ng-container>
                 <ng-container *ngIf="isHistory">View This Transaction</ng-container>
-                <mat-icon style="color:var(--clr-pure-white); transform: rotate(45deg);">unfold_more</mat-icon>
+                <mat-icon class="text-pure-white rotate-45">unfold_more</mat-icon>
             </button>
         </div>
     </mat-card-content>

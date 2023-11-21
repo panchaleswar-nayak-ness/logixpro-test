@@ -9,8 +9,8 @@
   </div>
   
   
-  <div class="card br-14  borderless px-0 mb-3 mt-3" style="overflow-x: auto;">
-            <ng-scrollbar class="mat-table-scrollbar" style="height:545px" track="all">
+  <div class="card br-14 borderless px-0 mb-3 mt-3 overflow-auto">
+            <ng-scrollbar class="mat-table-scrollbar h-545px" track="all">
               <table class="w-100 table-borderless" mat-table matSort [dataSource]="tableData" >
                   <ng-container matColumnDef="import_export">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header> Import/Export </th>

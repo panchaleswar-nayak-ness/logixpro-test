@@ -68,7 +68,7 @@
       <input matInput type="email" formControlName="emailAddress" maxlength="255" (keydown.space)="$event.preventDefault();">
     </mat-form-field>
 
-    <mat-hint class="error-message emailErrorMsg-style"
+    <mat-hint class="error-message emailErrorMsg-style text-danger-shade text-14"
     *ngIf="empForm.get('emailAddress')?.invalid && (empForm.get('emailAddress')?.dirty || empForm.get('emailAddress')?.touched)">
    Invalid email address
   </mat-hint>
