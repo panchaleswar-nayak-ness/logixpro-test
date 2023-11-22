@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ccsif',
@@ -22,13 +22,13 @@ export class CcsifComponent implements OnInit {
       }
 
   ngOnInit(): void {
-    this.CheckStatus(); 
+    this.checkStatus(); 
   }
   sideBarToggler() {
     this.sideBarOpen = !this.sideBarOpen;
   }
   
-   ServiceStatus(changeType, success) {
+   serviceStatus(changeType, success) {
     if (changeType == 'start' || changeType == 'restart') {
         if (success) {
             this.Status = 'Online';
@@ -42,7 +42,7 @@ export class CcsifComponent implements OnInit {
         if (success) {
           this.global.ShowToastr('success','Service stop was successful.','Success');
         } else {
-          this.global.ShowToastr('error','Service stop encountered an error.  Please try again or contact Scott Tech for support.','Error');
+          this.global.ShowToastr(ToasterType.Error,'Service stop encountered an error.  Please try again or contact Scott Tech for support.',ToasterTitle.Error);
         };
     };
 };
@@ -65,15 +65,15 @@ export class CcsifComponent implements OnInit {
   async CCSIFToggle(){     
     if(this.Status != 'Online'){
     this.iGlobalConfigApi.startCCSIF().subscribe((res: any) => {
-      if(res.data) this.ServiceStatus('start',res.data);
+      if(res.data) this.serviceStatus('start',res.data);
     }) 
   }else  {
     this.iGlobalConfigApi.stopCCSIF().subscribe((res: any) => {
-      if(res.data) this.ServiceStatus('stop',res.data);
+      if(res.data) this.serviceStatus('stop',res.data);
     })
   }
 }
-async CheckStatus(){
+async checkStatus(){
   this.iGlobalConfigApi.ServiceStatusCCSIF().subscribe((res: any) => {
     if(res.data)   this.Status = 'Online';
     else    this.Status = 'Offline';

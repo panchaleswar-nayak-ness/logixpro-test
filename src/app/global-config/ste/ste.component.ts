@@ -4,7 +4,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-
+import {StringConditions , ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-ste',
   templateUrl: './ste.component.html',
@@ -33,17 +33,17 @@ export class SteComponent implements OnInit {
     if (changeType == 'start' || changeType == 'restart') {
         if (success) {
             this.Status = 'Online';
-            this.global.ShowToastr('success','Service ' + changeType + ' was successful.','Success');
+            this.global.ShowToastr(ToasterType.Success,'Service ' + changeType + ' was successful.',ToasterTitle.Success);
         } else {
           this.Status = 'Offline'; 
-          this.global.ShowToastr('error','Service ' + changeType + ' was unsuccessful.  Please try again or contact Scott Tech for support.','Error');
+          this.global.ShowToastr(ToasterType.Error,'Service ' + changeType + ' was unsuccessful.  Please try again or contact Scott Tech for support.',ToasterTitle.Error);
         };
     } else {
       this.Status = 'Offline'; 
         if (success) {
-          this.global.ShowToastr('success','Service stop was successful.','Success');
+          this.global.ShowToastr(ToasterType.Success,'Service stop was successful.',ToasterTitle.Success);
         } else {
-          this.global.ShowToastr('error','Service stop encountered an error.  Please try again or contact Scott Tech for support.','Error');
+          this.global.ShowToastr(ToasterType.Error,'Service stop encountered an error.  Please try again or contact Scott Tech for support.',ToasterTitle.Error);
         };
     };
 };

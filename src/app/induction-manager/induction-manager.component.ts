@@ -3,7 +3,6 @@ import { Router,RoutesRecognized } from '@angular/router';
 import { filter, pairwise } from 'rxjs/operators';
 import { AuthService } from '../common/init/auth.service';
 import { SharedService } from '../common/services/shared.service';
-import { ApiFuntions } from '../common/services/ApiFuntions';
 import { IInductionManagerApiService } from '../common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from '../common/services/induction-manager-api/induction-manager-api.service';
 
@@ -20,8 +19,7 @@ export class InductionManagerComponent implements OnInit {
     private router: Router, 
     private sharedService: SharedService,
     private authService: AuthService,
-    private inductionManagerApi: InductionManagerApiService,
-    private Api:ApiFuntions
+    public inductionManagerApi: InductionManagerApiService
     ) { 
       this.iinductionManagerApi = inductionManagerApi;
     router.events

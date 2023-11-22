@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
-
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';  
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,7 +9,6 @@ import { BatchDeleteComponent } from 'src/app/dialogs/batch-delete/batch-delete.
 import labels from 'src/app/common/labels/labels.json';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
-import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
@@ -83,9 +81,8 @@ public iinductionManagerApi:IInductionManagerApiService;
   constructor(
     private global:GlobalService,
     private contextMenuService : TableContextMenuService,
-    private Api: ApiFuntions,
     private authService: AuthService,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
     private filterService: ContextMenuFiltersService, 
   ) {
     this.userData = this.authService.userData();

@@ -2,12 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from '../../common/services/shared.service';
 import { AuthService } from '../../common/init/auth.service';
-import { HttpClient } from '@angular/common/http'; 
-import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
-import { GlobalService } from 'src/app/common/services/global.service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
+import { AppNames, AppPermissions, AppRoutes, RouteUpdateMenu } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-side-nav',
@@ -15,13 +13,13 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
   styleUrls: ['./side-nav.component.scss']
 })
 export class SideNavComponent implements OnInit {
-  menuData: any=[];
+  menuData: any = [];
   @Input() sideBarOpen: boolean;
-  isConfigUser:any = false;
+  isConfigUser: any = false;
   menuRoute;
   public userData: any;
-  isMenuHide:any=false;
-  dynamicMenu: any=[]
+  isMenuHide:any = false;
+  dynamicMenu: any = [];
   menus: any = [
     { icon: 'home', title: 'Home', route: '/dashboard' ,permission: 'Home'},
     { icon: 'electric_bolt', title: 'Import Export', route: '/ImportExport' ,permission: 'Import Export'},
@@ -96,7 +94,6 @@ export class SideNavComponent implements OnInit {
 
   orderManagerMenus: any = [
     { icon: 'arrow_back', title: 'Order Manager', route: '/dashboard', class: 'back-class' , permission: 'Order Manager'},
-
     { icon: ' pending_actions', title: 'Order Manager', route: '/OrderManager/OrderManager' ,permission:'Admin Release Orders'},
     { icon: 'view_module', title: 'Order Status ', route: '/OrderManager/OrderStatus' ,permission:true},
     { icon: 'event_note', title: 'Event Log ', route: '/OrderManager/EventLog' ,permission:'Admin Release Orders'},
@@ -116,47 +113,40 @@ export class SideNavComponent implements OnInit {
   isParentMenu: boolean = true;
   isChildMenu: boolean = false;
   childMenus: any;
-  public  iGlobalConfigApi: IGlobalConfigApi
-  constructor(private http: HttpClient,
-              private router: Router,
-              private authService: AuthService,
-              private sharedService:SharedService, 
-              private currentTabDataService:CurrentTabDataService,
-              private global:GlobalService,
-              private Api:ApiFuntions,
-              public globalConfigApi: GlobalConfigApiService
-              ) { 
-                this.iGlobalConfigApi = globalConfigApi;
-                this.sharedService?.sideMenuHideObserver?.subscribe(menu => {
-                  this.isMenuHide = menu;   
-                });
-                this.sharedService?.SidebarMenupdate?.subscribe((data: any) => { 
-                  let Menuobj = this.menus.find(x=>x.route == data);
-                  if(Menuobj==null&&this.authService.UserPermissonByFuncName('Admin Menu')) Menuobj = this.adminMenus.find(x=>x.route == data);
-                  this.loadMenus(Menuobj);
-                });
+  public iGlobalConfigApi: IGlobalConfigApi
 
-                this.sharedService.updateInductionMenuObserver.subscribe((data:any) => {
-                  this.inductionMenus.filter(x=>x.title == 'Complete Pick Batch')[0].route = data ? '/InductionManager/CompletePickBatch' : '#';
-                });
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private sharedService:SharedService, 
+    private currentTabDataService:CurrentTabDataService,
+    public globalConfigApi: GlobalConfigApiService
+  ) { 
+    this.iGlobalConfigApi = globalConfigApi;
+    this.sharedService?.sideMenuHideObserver?.subscribe(menu => this.isMenuHide = menu);
+    this.sharedService?.SidebarMenupdate?.subscribe((data: any) => { 
+      let Menuobj = this.menus.find(x => x.route == data);
+      if(Menuobj == null && this.authService.UserPermissonByFuncName('Admin Menu')) Menuobj = this.adminMenus.find(x => x.route == data);
+      this.loadMenus(Menuobj);
+    });
 
-              }
+    this.sharedService.updateInductionMenuObserver.subscribe((data:any) => {
+      this.inductionMenus.filter(x => x.title == 'Complete Pick Batch')[0].route = data ? '/InductionManager/CompletePickBatch' : '#';
+    });
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
-    this.isConfigUser =  localStorage.getItem('isConfigUser') ?? false; 
-    
+    this.isConfigUser = localStorage.getItem('isConfigUser') ?? false; 
     this.sharedService.startMenu.subscribe(res => {
-      if (res){
+      if (res) {
         this.isParentMenu = true;
         this.isChildMenu = false;
       }
     });
     this.loadMenus({route: this.router.url});
- 
     this.sharedService.updateAdminMenuObserver.subscribe(adminMenu => {
-       
-      if (adminMenu){
+      if (adminMenu) {
         this.childMenus = this.adminMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
@@ -164,185 +154,132 @@ export class SideNavComponent implements OnInit {
     });
 
     this.sharedService.updateFlowrackMenuObserver.subscribe(flowrack => {
-       
       if (flowrack){
         this.childMenus = this.flowrackReplenishmentMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
       }
     });
-    this.sharedService.updateInductionAdminObserver.subscribe(InvadminMenu => {
-      
-      if (InvadminMenu.menu === 'transaction-admin'){
-        
-        if (InvadminMenu.route.includes('/InductionManager/Admin/')) {
-          this.inductionAdminMenus[0].route = '/InductionManager/Admin';
-        } else {
-          this.inductionAdminMenus[0].route = '/InductionManager';
-        }
 
+    this.sharedService.updateInductionAdminObserver.subscribe(InvadminMenu => {
+      if (InvadminMenu.menu === RouteUpdateMenu.TransactionAdmin) {
+        if (InvadminMenu.route.includes(`${AppRoutes.InductionManagerAdmin}/`)) this.inductionAdminMenus[0].route = AppRoutes.InductionManagerAdmin;
+        else this.inductionAdminMenus[0].route = AppRoutes.InductionManager;
         this.childMenus = this.inductionAdminMenus;
         this.isParentMenu = false;  
         this.isChildMenu = true;
-      }else if(InvadminMenu.menu === 'induction'){
-        
-        if (InvadminMenu.route.includes('/InductionManager/')) {
-          this.inductionMenus[0].route = '/InductionManager';
-        } else {
-          this.inductionMenus[0].route = '/dashboard';
-        }
-
+      } else if(InvadminMenu.menu === RouteUpdateMenu.Induction) {
+        if (InvadminMenu.route.includes(`${AppRoutes.InductionManager}/`)) this.inductionMenus[0].route = AppRoutes.InductionManager;
+        else this.inductionMenus[0].route = AppRoutes.Dashboard;
         this.childMenus = this.inductionMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
-      }
-      else if(InvadminMenu.route.includes('/ConsolidationManager')){
-        
-      
-
-
-          let splittedRoute=InvadminMenu.route.split('/');
-          if(splittedRoute[2]===undefined){
-            this.consolidationMenus[0].route='/dashboard'
-          }else{
-            this.consolidationMenus[0].route='/ConsolidationManager'
-          }
-      
-
+      } else if(InvadminMenu.route.includes(AppRoutes.ConsolidationManager)) {
+        let splittedRoute=InvadminMenu.route.split('/');
+        if(splittedRoute[2] === undefined) this.consolidationMenus[0].route = AppRoutes.Dashboard;
+        else this.consolidationMenus[0].route = AppRoutes.ConsolidationManager;
         this.childMenus = this.consolidationMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
-      }else if(InvadminMenu.menu === 'FlowrackReplenish'){
-        let splittedRoute=InvadminMenu.route.split('/');
-        if(splittedRoute[2]===undefined){
-          this.flowrackReplenishmentMenus[0].route='/dashboard'
-        }else{
-          this.flowrackReplenishmentMenus[0].route='/FlowrackReplenish'
-        }
+      } else if(InvadminMenu.menu === AppRoutes.FlowrackReplenish) {
+        let splittedRoute = InvadminMenu.route.split('/');
+        if(splittedRoute[2] === undefined) this.flowrackReplenishmentMenus[0].route = AppRoutes.Dashboard;
+        else this.flowrackReplenishmentMenus[0].route =  AppRoutes.FlowrackReplenish;
       }
     });
     
     this.sharedService.menuData$.subscribe(data => { 
-       if(this.menuData.length===0){
+      if(this.menuData.length === 0){
         this.menuData = data;
-        this.menuData.filter((item,i)=>{
- 
-          if(this.dynamicMenu.find(x=>x.title ==  item.displayname)){   
-           
-   //updating child menus with display names
-  }else{
-    this.dynamicMenu[0]={icon: 'home', title: 'Home', route: '/dashboard' ,permission: 'Home'}
-    this.dynamicMenu.push({icon:item.info.iconName,title:item.displayname,route:item.info.route,permission:item.info.permission});
-
-  }
-        if(item.appname==='ICSAdmin'){
-        let obj={ icon: 'arrow_back', title: `${item.displayname}`, route: '/dashboard', class: 'back-class' ,permission: 'Dashboard'}
-        this.adminMenus.splice(0,1,obj);
-      }else if(item.appname==='Induction'){
-        let obj={ icon: 'arrow_back', title: `${item.displayname}`, route: '/dashboard', class: 'back-class' ,permission: 'Dashboard'}
-        this.inductionMenus.splice(0,1,obj);
-      }
-      else if(item.appname==='OrderManager'){
-        let obj={ icon: 'arrow_back', title: `${item.displayname}`, route: '/dashboard', class: 'back-class' ,permission: 'Dashboard'}
-        this.orderManagerMenus.splice(0,1,obj);
-      }
-   
-      })
-   
+        this.menuData.filter((item, i) => {
+          if(this.dynamicMenu.find(x=>x.title ==  item.displayname)){} 
+          else {
+            this.dynamicMenu[0] = {icon: 'home', title: 'Home', route: AppRoutes.Dashboard, permission: AppPermissions.Home};
+            this.dynamicMenu.push({icon: item.info.iconName, title: item.displayname, route: item.info.route, permission: item.info.permission});
+          }
+          
+          if(item.appname === AppNames.ICSAdmin){
+            let obj = { icon: 'arrow_back', title: `${item.displayname}`, route: AppRoutes.Dashboard, class: 'back-class', permission: AppPermissions.Dashboard }
+            this.adminMenus.splice(0, 1, obj);
+          }
+          else if(item.appname === AppNames.Induction){
+            let obj = { icon: 'arrow_back', title: `${item.displayname}`, route: AppRoutes.Dashboard, class: 'back-class', permission: AppPermissions.Dashboard }
+            this.inductionMenus.splice(0, 1, obj);
+          } 
+          else if(item.appname === AppNames.OrderManager){
+            let obj = { icon: 'arrow_back', title: `${item.displayname}`, route: AppRoutes.Dashboard, class: 'back-class', permission: AppPermissions.Dashboard }
+            this.orderManagerMenus.splice(0, 1, obj);
+          }
+        });
       }
 
     });
 
-    this.sharedService.updateMenuFromInside.subscribe((menuOpen)=>{
-         
-         this.loadMenus({route:menuOpen})
-    })
+    this.sharedService.updateMenuFromInside.subscribe((menuOpen) => this.loadMenus({ route: menuOpen }));
   }
 
 
-redirect(){
-  this.router.navigate([`${localStorage.getItem('reportNav')}`]);
-}
-
-  async getAppLicense() {
-
-    this.iGlobalConfigApi.AppLicense().subscribe(
-      (res: any) => {},
-      (error) => {}
-    );
+  redirect() {
+    this.router.navigate([`${localStorage.getItem('reportNav')}`]);
   }
 
   loadMenus(menu: any) {
     this.sharedService.updateLoggedInUser(this.userData.userName,this.userData.wsid,menu.route);
-    if (!menu) {
-      menu = {route : '/dashboard'};      
-    }
+    if (!menu) menu = {route : '/dashboard'};      
 
-    if(menu.route!='')
+    if(menu.route != '')
     { 
-        this.currentTabDataService.ClearItemsExceptCurrentTab(menu.title);
+      this.currentTabDataService.ClearItemsExceptCurrentTab();
+
       if (menu.route.includes('/admin')) {
-        
-        if (menu.route.includes('/admin/')) {
-          this.adminMenus[0].route = '/admin';
-        } else {
-          this.adminMenus[0].route = '/dashboard';
-        }
+        if (menu.route.includes('/admin/')) this.adminMenus[0].route = '/admin';
+        else this.adminMenus[0].route = '/dashboard';
         this.childMenus = this.adminMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
         return;
       }
+
       if (menu.route.includes('/InductionManager') && menu.route != '/InductionManager/Admin' && !menu.route.includes('/InductionManager/Admin')) {
-        if (menu.route.includes('/InductionManager/')) {
-          this.inductionMenus[0].route = '/InductionManager';
-        } else {
-          this.inductionMenus[0].route = '/dashboard';
-        }
+        if (menu.route.includes('/InductionManager/')) this.inductionMenus[0].route = '/InductionManager';
+        else this.inductionMenus[0].route = '/dashboard';
         this.childMenus = this.inductionMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
         return;
       }
+
       if (['/dashboard','/FlowrackReplenish'].indexOf(menu.route) > -1) {
         this.isParentMenu = true;
         this.isChildMenu = false;
       }
+
       if (menu.route.includes('/globalconfig')) {
         this.childMenus = this.globalMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
       }    
-
-         
     }
     if (menu.route.includes('/ConsolidationManager')) {
       let splittedRoute=menu.route.split('/');
-      if(splittedRoute[2]===undefined){
-        this.consolidationMenus[0].route='/dashboard'
-      }else{
-        this.consolidationMenus[0].route='/ConsolidationManager'
-        
-      }
+      if(splittedRoute[2] === undefined) this.consolidationMenus[0].route = '/dashboard';
+      else this.consolidationMenus[0].route = '/ConsolidationManager';
       this.childMenus = this.consolidationMenus;
       this.isParentMenu = false;
       this.isChildMenu = true;
       return
     } 
+
     if (menu.route.includes('/InductionManager')) {
       this.childMenus = this.inductionMenus;
       this.isParentMenu = false;
       this.isChildMenu = true;
     }
+
     if (menu.route.includes('/OrderManager')) {
-        let splittedRoute=menu.route.split('/');
-      if(splittedRoute[2]===undefined){
-        this.orderManagerMenus[0].route='/dashboard'
-        
-      }else{
-        this.orderManagerMenus[0].route='/OrderManager'
-        
-      }
+      let splittedRoute = menu.route.split('/');
+      if(splittedRoute[2]===undefined) this.orderManagerMenus[0].route = '/dashboard';
+      else this.orderManagerMenus[0].route = '/OrderManager';
       this.childMenus = this.orderManagerMenus;
       this.isParentMenu = false;
       this.isChildMenu = true;
@@ -350,11 +287,8 @@ redirect(){
     }
 
     if (menu.route.includes('/InductionManager/Admin')) {
-      if (menu.route.includes('/InductionManager/Admin/')) {
-        this.inductionAdminMenus[0].route = '/InductionManager/Admin';
-      } else {
-        this.inductionAdminMenus[0].route = '/InductionManager';
-      }
+      if (menu.route.includes('/InductionManager/Admin/')) this.inductionAdminMenus[0].route = '/InductionManager/Admin';
+      else this.inductionAdminMenus[0].route = '/InductionManager';
       this.childMenus = this.inductionAdminMenus;
       this.isParentMenu = false;
       this.isChildMenu = true;
@@ -369,19 +303,15 @@ redirect(){
     
     if (menu.route.includes('/FlowrackReplenish')) {
       let splittedRoute=menu.route.split('/');
-      if(splittedRoute[2]===undefined){
-        this.flowrackReplenishmentMenus[0].route='/dashboard'
-      }else{
-        this.flowrackReplenishmentMenus[0].route='/FlowrackReplenish'
-        
-      }
+      if(splittedRoute[2] === undefined) this.flowrackReplenishmentMenus[0].route = '/dashboard';
+      else this.flowrackReplenishmentMenus[0].route = '/FlowrackReplenish';
       this.childMenus = this.flowrackReplenishmentMenus;
       this.isParentMenu = false;
       this.isChildMenu = true;
-    } 
+    }
   }
 
-  isAuthorized(controlName:any) {
+  isAuthorized(controlName: any) {
      return !this.authService.UserPermissonByFuncName(controlName);
   }
 

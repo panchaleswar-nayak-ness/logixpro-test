@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-user-account',
   templateUrl: './user-account.component.html',
@@ -65,7 +65,7 @@ export class UserAccountComponent implements OnInit {
           this.constUser=res.data.loginInfo[0].user;
         }
         else{
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("Menu",res.responseMessage);
         }
       },
@@ -84,10 +84,10 @@ export class UserAccountComponent implements OnInit {
       .subscribe(
         {next: (res: any) => {
           if (res?.isExecuted) {
-            this.global.ShowToastr('success',labels.alert.success, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           }
           else{
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),  ToasterTitle.Error);
             console.log("changeGlobalAccount",res.responseMessage);
           }
           this.getMenuData();
@@ -95,7 +95,7 @@ export class UserAccountComponent implements OnInit {
           this.router.navigate(['/globalconfig']);
         },
         error: (error) => {
-          this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+          this.global.ShowToastr(ToasterType.Error,labels.alert.went_worng,  ToasterTitle.Error);
         }}
       );
   }

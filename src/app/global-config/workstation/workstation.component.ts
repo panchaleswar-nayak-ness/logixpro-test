@@ -9,7 +9,7 @@ import { MatOption } from '@angular/material/core';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 export interface PeriodicElement {
   position: string;
 }
@@ -123,7 +123,7 @@ export class WorkstationComponent implements OnInit {
           })
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("GlobalMenu",res.responseMessage);
         }
       },
@@ -146,7 +146,7 @@ export class WorkstationComponent implements OnInit {
           }
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),ToasterTitle.Error);
           console.log("AppLicense",res.responseMessage);
         }
       },
@@ -181,7 +181,7 @@ export class WorkstationComponent implements OnInit {
             this.getDefaultAppList(wsid, this.canAccessAppList);
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("getWorkstationapp",res.responseMessage);
           }
         },
@@ -228,7 +228,7 @@ export class WorkstationComponent implements OnInit {
             }
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("workstationdefaultapp",res.responseMessage);
           }
         
@@ -266,7 +266,7 @@ export class WorkstationComponent implements OnInit {
             this.getCanAccessList(this.wsid);
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("WorkStationDefaultAppAddDefault",res.responseMessage);
           }
         },
@@ -291,7 +291,7 @@ export class WorkstationComponent implements OnInit {
             this.getCanAccessList(this.wsid);
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),ToasterTitle.Error);
             console.log("workstationapp",res.responseMessage);
           }
         },
@@ -335,17 +335,17 @@ export class WorkstationComponent implements OnInit {
     this.iGlobalConfigApi.WorkStationDelete().subscribe(
         {next: (res: any) => {
           if (res.isExecuted) {
-            this.global.ShowToastr('success',labels.alert.success, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("WorkStationDelete",res.responseMessage);
           }
           this.getMenuData();
           this.wsid = null;
         },
         error: (error) => {
-          this.global.ShowToastr('error',labels.alert.went_worng, 'Error!');
+          this.global.ShowToastr(ToasterType.Error,labels.alert.went_worng, ToasterTitle.Error);
         }}
       );
   }

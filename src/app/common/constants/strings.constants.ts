@@ -11,11 +11,13 @@ export const TransactionType = {
     PutAway: 'Put Away',
     Count: 'Count'
 }
+
 export const DialogConstants = {
     auto: 'auto',
     close: 'close',
     autoFocus:'__non_existing_element__' 
 }
+
 export const StringConditions = {
     SupplierItemID:'Supplier Item ID',
     ToteID: 'Tote ID',
@@ -193,7 +195,9 @@ export const AppRoutes = {
     AdminCreateCountBatches: '/admin/createCountBatches',
     OrderManagerInventoryMap:'/OrderManager/InventoryMap',
     AdminInventoryMap:'/admin/inventoryMap',
-    InductionManagerInventoryMap:'/InductionManager/Admin/InventoryMap'
+    InductionManagerAdminInventoryMap:'/InductionManager/Admin/InventoryMap',
+    Dashboard: '/dashboard',
+    InductionManagerAdmin:'/InductionManager/Admin',
 }
 
 export const AppIcons = {
@@ -215,7 +219,6 @@ export const RouteNames = {
     Markout: 'Markout',
     OrderManager: 'Order Manager',
     WorkManager: 'Work Manager'
-
 }
 
 export const RouteUpdateMenu = {
@@ -223,7 +226,9 @@ export const RouteUpdateMenu = {
     Consolidation: 'consolidation',
     Induction: 'induction',
     Empty: '',
-    OrderManager: 'orderManager'
+    OrderManager: 'orderManager',
+    TransactionAdmin: 'transaction-admin',
+    FlowReplenishment: 'FlowReplenishment'
 }
 
 export const AppPermissions = {
@@ -235,7 +240,9 @@ export const AppPermissions = {
     Markout: 'Markout',
     OrderManager: 'Order Manager',
     WorkManager: 'Work Manager',
-    OrderStatus: 'Order Status'
+    OrderStatus: 'Order Status',
+    Home: 'Home',
+    Dashboard: 'Dashboard'
 }
 
 export const LiveAnnouncerMessage = {
@@ -333,6 +340,7 @@ export const FieldName = {
     EventCode: 'Event Code',
     EventType: 'Event Type'
 }
+
 export const Column = {
     ImportDate: 'Import Date',
     RequiredDate: 'Required Date',

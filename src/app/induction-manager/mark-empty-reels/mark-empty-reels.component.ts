@@ -19,7 +19,7 @@ export class MarkEmptyReelsComponent implements OnInit {
   lastScanned;
   lastScannedList: any = [];
   notifyMessage = '';
-  public iinductionManagerApi: IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
   itemInvalid = false;
   itemEmpty = false;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
@@ -37,7 +37,7 @@ export class MarkEmptyReelsComponent implements OnInit {
     private _liveAnnouncer: LiveAnnouncer,
   ) {
     this.scannedSerialList = new MatTableDataSource();
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -57,7 +57,7 @@ export class MarkEmptyReelsComponent implements OnInit {
       let payload = {
         serialNumber: this.scanSerial,
       };
-      this.iinductionManagerApi
+      this.iInductionManagerApi
         .ValidateSerialNumber(payload) //validate tote
         .subscribe(
           (response: any) => {
@@ -162,7 +162,7 @@ export class MarkEmptyReelsComponent implements OnInit {
           let payload = {
             serialNumbers: serialNumbersArr,
           };
-          this.iinductionManagerApi
+          this.iInductionManagerApi
             .DeleteSerialNumber(payload) //validate tote
             .subscribe((response: any) => {
               if (response.isExecuted) {

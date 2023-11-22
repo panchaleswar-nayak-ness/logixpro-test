@@ -1,6 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
- 
 import labels from 'src/app/common/labels/labels.json';
 import { FloatLabelType } from '@angular/material/form-field';
 import { FormControl } from '@angular/forms';
@@ -8,6 +7,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-user-fields-edit',
@@ -26,8 +26,8 @@ export class UserFieldsEditComponent implements OnInit {
   shipToName;
   searchByShipVia: any = new Subject<string>();
   searchByShipName: any = new Subject<string>();
-  searchAutocompleteShipVia: any = [];
-  searchAutocompleteShipName: any = [];
+  searchAutoCompleteShipVia: any = [];
+  searchAutoCompleteShipName: any = [];
   fieldNames:any;
   userField10 = '';
   userField9 = '';
@@ -55,21 +55,22 @@ export class UserFieldsEditComponent implements OnInit {
     this.getUserFields();
     this.searchByShipVia
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        this.autocompleteSearchColumn();
+      .subscribe(() => {
+        this.autoCompleteSearchColumn();
       });
 
     this.searchByShipName
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        this.autocompleteSearchColumnShipName();
+      .subscribe(() => {
+        this.autoCompleteSearchColumnShipName();
       });
   }
+  
   ngAfterViewInit() {
     this.ship_via.nativeElement.focus();
   }
-  saveUserFields() {
 
+  saveUserFields() {
     let userFields:any=[];
     userFields[0]=this.shipVia;
     userFields[1]=this.shipToName;
@@ -88,10 +89,10 @@ export class UserFieldsEditComponent implements OnInit {
     };
     this.iCommonAPI.UserFieldMTSave(payload).subscribe((res:any)=>{
       if(res.isExecuted){
-             this.global.ShowToastr('success',labels.alert.success, 'Success!');
+             this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             this.dialogRef.close({isExecuted:true})
       }else{
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
         this.dialogRef.close({isExecuted:false})
         console.log("UserFieldMTSave",res.responseMessage);
       }
@@ -105,7 +106,7 @@ export class UserFieldsEditComponent implements OnInit {
   }
 
 
-  async autocompleteSearchColumn() {
+  async autoCompleteSearchColumn() {
     let searchPayload = {
       value: this.shipVia,
       uFs: 1
@@ -114,9 +115,8 @@ export class UserFieldsEditComponent implements OnInit {
       .UserFieldTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
-          this.searchAutocompleteShipVia = res.data;
+          this.searchAutoCompleteShipVia = res.data;
         },
-        (error) => {}
       );
   }
 
@@ -141,14 +141,14 @@ export class UserFieldsEditComponent implements OnInit {
           this.userField10 = item.userField10 ?? "";
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),ToasterTitle.Error);
           console.log("UserFieldGetByID",res.responseMessage);
           
         }
       }
       );
   }
-  async autocompleteSearchColumnShipName() {
+  async autoCompleteSearchColumnShipName() {
     let searchPayload = {
       value: this.shipToName,
       uFs: 2
@@ -157,9 +157,8 @@ export class UserFieldsEditComponent implements OnInit {
       .UserFieldTypeAhead(searchPayload)
       .subscribe(
         (res: any) => {
-          this.searchAutocompleteShipName = res.data;
+          this.searchAutoCompleteShipVia = res.data;
         },
-        (error) => {}
       );
   }
   ngOnDestroy() {

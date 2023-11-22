@@ -16,7 +16,7 @@ import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.cons
 })
 export class WarehouseComponent implements OnInit {
   @ViewChildren('whname', { read: ElementRef }) whname: QueryList<ElementRef>;
-  public warehouse_list: any;
+  public warehouseList: any;
   public userData: any;
   disableBtn
   spliUrl
@@ -58,32 +58,30 @@ export class WarehouseComponent implements OnInit {
           action: 'delete',
         }
       })
-      dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
+      dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(() => {
         this.getWarehouse();
       })
     }
     else{
-      this.warehouse_list.shift();
+      this.warehouseList.shift();
       this.getWarehouse();
     }
-   
   }
-
 
   getWarehouse() {
     this.enableButton = [];
     this.iCommonAPI.GetWarehouses().subscribe((res) => {
-      this.warehouse_list = res.data;
-      for (let i = 0; i < this.warehouse_list.length; i++) {
+      this.warehouseList = res.data;
+      for (let i = 0; i < this.warehouseList.length; i++) {
         this.enableButton.push({ index: i, value: true });
       }
     });
   }
 
-  addwhRow(row: any) {
-    this.warehouse_list.unshift([]);
+  addwhRow() {
+    this.warehouseList.unshift([]);
     this.enableButton.push({ index: -1, value: true })
-    const lastIndex = this.warehouse_list.length - 1;
+    const lastIndex = this.warehouseList.length - 1;
     setTimeout(() => {
       const inputElements = this.whname.toArray();
       if (inputElements.length > lastIndex) {
@@ -98,14 +96,14 @@ export class WarehouseComponent implements OnInit {
   }
 
   saveWareHouse(warehosue: any, oldWh: any) {
-    let cond = true;
-    this.warehouse_list.forEach(element => {
-      if (element == warehosue && cond) {
-        cond = false
+    let condition = true;
+    this.warehouseList.forEach(element => {
+      if (element == warehosue && condition) {
+        condition = false
         this.global.ShowToastr(ToasterType.Error,'Conflict: Warehouse cannot be saved! Another warehouse matches the current. Please save any pending changes before attempting to save this entry.', ToasterTitle.Error);
       }
     });
-    if (cond) {
+    if (condition) {
       let paylaod = {
         "oldWarehouse": oldWh.toString(),
         "warehouse": warehosue
@@ -126,7 +124,7 @@ export class WarehouseComponent implements OnInit {
 
   dltWareHouse(warehosue: any) {
     let paylaod = { "warehouse": warehosue }
-    this.iCommonAPI.dltWareHouse(paylaod).subscribe((res) => {
+    this.iCommonAPI.dltWareHouse(paylaod).subscribe(() => {
       this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
       this.getWarehouse();
     });
