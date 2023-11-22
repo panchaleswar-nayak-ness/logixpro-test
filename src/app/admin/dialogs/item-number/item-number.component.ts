@@ -7,7 +7,7 @@ import { StringConditions } from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-item-number',
   templateUrl: './item-number.component.html',
-  styleUrls: []
+  styleUrls: ['./item-number.component.scss']
 })
 export class ItemNumberComponent implements OnInit {
 

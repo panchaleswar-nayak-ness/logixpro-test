@@ -14,7 +14,7 @@ import { Column, ToasterTitle, ToasterType } from 'src/app/common/constants/stri
 @Component({
   selector: 'app-open-transaction-filters',
   templateUrl: './open-transaction-filters.component.html',
-  styleUrls: [],
+  styleUrls: ['./open-transaction-filters.component.scss'],
 })
 export class OpenTransactionFiltersComponent implements OnInit {
   @Output() nextScreen = new EventEmitter<string>();

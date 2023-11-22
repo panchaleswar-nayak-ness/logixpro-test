@@ -14,7 +14,7 @@ import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.cons
 @Component({
   selector: 'app-hold-reason',
   templateUrl: './hold-reason.component.html',
-  styleUrls: [],
+  styleUrls: ['./hold-reason.component.scss'],
 })
 export class HoldReasonComponent implements OnInit {
   @ViewChild('order_text') orderText: ElementRef;

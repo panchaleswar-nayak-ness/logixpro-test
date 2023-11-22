@@ -15,3 +15,19 @@ table {
 .h-600px{
   height: 600px;
 }
+.min-h-150px{
+  min-height: 150px!important;
+}
+.mat-column-actions{
+  &.mat-header-cell{
+    border: 0;
+    height: 67px;
+    padding-left: 65px;
+    border-bottom: 1px solid var(--clr-tertiary-50);
+  }
+  &.mat-cell{
+    border: 0;
+    padding-left: 24px;
+    background: var(--clr-pure-white);
+  }
+}

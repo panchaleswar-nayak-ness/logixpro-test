@@ -27,3 +27,15 @@
   .h-200px{
     height: 200px;
   }
+  .w-48px{
+    width: 48px;
+}
+.w-900px{
+  width: 900px !important;
+}
+.g-name-style{
+  padding: 10px 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

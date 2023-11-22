@@ -125,15 +125,13 @@
                                 <ng-container [matColumnDef]="col.colDef"
                                     *ngFor="let col of displayedColumns; let indexOfelement=index;">
 
-                                    <th class="header" mat-header-cell *cdkHeaderCellDef mat-sort-header
-                                        (sortActionDescription)="indexOfelement"
-                                        style="width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);">
+                                    <th class="header header-custom-style" mat-header-cell *cdkHeaderCellDef mat-sort-header
+                                        (sortActionDescription)="indexOfelement">
                                         {{ col.colDef }}
 
                                     </th>
 
-                                    <td *matCellDef="let element; let i = index"
-                                        style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
+                                    <td *matCellDef="let element; let i = index" class="cell-custom-style"
                                         [ngClass]="'w-100'" #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"
                                         matTooltipPosition="above"
                                         [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=25?false:true">
@@ -299,7 +297,7 @@
 <ng-template #description>
 
     <div class="d-flex justify-content-between mb-4 align-items-center">
-        <div style="width:48px"></div>
+        <div class="w-48px"></div>
         <h1 class="m-0" mat-dialog-title>Description</h1>
 
         <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
@@ -312,7 +310,7 @@
             <div class="col-12 mb-2">
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
 
-                    <textarea matInput [(ngModel)]="reasonMessage" readonly="true" style="min-height:100px"></textarea>
+                    <textarea matInput [(ngModel)]="reasonMessage" readonly="true" class="min-h-100px"></textarea>
                 </mat-form-field>
             </div>
 

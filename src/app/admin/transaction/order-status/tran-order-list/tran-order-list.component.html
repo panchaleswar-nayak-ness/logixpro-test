@@ -34,7 +34,7 @@
       <div class="col-12">
         <div class="card br-14 borderless px-0 mb-3 overflow-auto">
           <ng-scrollbar track="all" class="mat-table-scrollbar h-300px">
-            <table  style="width: 100%;" mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" style=" min-height: 150px;">
+            <table class="w-100 min-h-150px" mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
 
               <ng-container matColumnDef="status" sticky>
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Status </th>

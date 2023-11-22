@@ -9,7 +9,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 @Component({
   selector: 'app-filter-item-numbers',
   templateUrl: './filter-item-numbers.component.html',
-  styleUrls: []
+  styleUrls: ['./filter-item-numbers.component.scss']
 })
 export class FilterItemNumbersComponent implements OnInit {
   @ViewChild('filter_text') filterText: ElementRef;

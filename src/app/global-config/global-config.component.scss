@@ -75,3 +75,17 @@
 color:var(--clr-primary-500);
 &:hover{color:var(--clr-primary-300)}
 }
+.global-config-card-style{
+  border-radius: 16px;
+  border:none
+}
+.border-radius-style{
+  border-top-left-radius: 16px;
+  border-bottom-left-radius:16px;
+}
+.max-w-380px{
+  max-width: 380px;
+}
+.z-index-999999{
+z-index: 999999;
+}

@@ -28,20 +28,20 @@
 
                             <mat-autocomplete class="card custom-scroll" #auto="matAutocomplete">
 
-                                <h6 class="card-header matAutoCompHeader "><span style="width:  140px;">Order
-                                        Number</span> <span style="width:  140px;">Trans. Type</span> <span
-                                        style="width:  140px;">Item Number</span> <span style="width:  140px;">Trans.
+                                <h6 class="card-header matAutoCompHeader "><span class="w-140px">Order
+                                        Number</span> <span class="w-140px">Trans. Type</span> <span
+                                        class="w-140px">Item Number</span> <span class="w-140px">Trans.
                                         Quantity</span></h6>
 
                                 <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber"
                                     class="matAutoCompTableContent">
                                     <div class="loc_option" (click)="getRow(option)">
-                                        <span class="searchColumn" style="width:  140px;">{{option.orderNumber}}</span>
-                                        <span class="searchColumn"
-                                            style="width:  140px;">{{option.transactionType}}</span> <span
-                                            class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span>
-                                        <span class="searchColumn"
-                                            style="width:  140px;">{{option.transactionQuantity}}</span>
+                                        <span class="searchColumn w-140px">{{option.orderNumber}}</span>
+                                        <span class="searchColumn" w-140px
+                                            >{{option.transactionType}}</span> <span
+                                            class="searchColumn w-140px">{{option.itemNumber}}</span>
+                                        <span class="searchColumn w-140px"
+                                            >{{option.transactionQuantity}}</span>
                                     </div>
                                 </mat-option>
                             </mat-autocomplete>

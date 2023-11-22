@@ -121,3 +121,17 @@ table tr.selected {
 .h-380px{
   height: 380px;
 }
+.w-48px{
+  width: 48px;
+}
+.header-custom-style{
+  width: auto;
+  padding: 5px 12px;
+  border-bottom: 1px solid var(--clr-tertiary-50);
+}
+.cell-custom-style{
+  padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;
+}
+.min-h-100px{
+  min-height: 100px;
+}

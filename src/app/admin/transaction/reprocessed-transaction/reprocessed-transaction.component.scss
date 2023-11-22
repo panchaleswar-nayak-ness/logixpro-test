@@ -19,3 +19,17 @@
   .h-500px{
     height: 500px;
   }
+  .reprocessed-header-custom{
+    width:auto;
+    padding: 5px 12px;
+    border-bottom: 1px solid var(--clr-tertiary-50);
+  }
+  .reprocessed-cell-custom{
+    padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;
+  }
+  .reprocessed-action-cell{
+    border: 0; width: 200px; min-width: 64px;
+  }
+  .border-0{
+    border: 0;
+  }

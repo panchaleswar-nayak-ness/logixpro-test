@@ -76,3 +76,9 @@ mat-row, mat-header-row, mat-footer-row{
 .h-400px{
   height: 400px;
 }
+.header{
+  width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);
+}
+.table-cell-style{
+  padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;
+}

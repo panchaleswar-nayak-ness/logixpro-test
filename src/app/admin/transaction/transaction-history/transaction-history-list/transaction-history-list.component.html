@@ -44,9 +44,8 @@
                     <ng-container [matColumnDef]="col.colDef" class="d-table-row"
                         *ngFor="let col of displayedColumns; let indexOfelement=index;">
 
-                        <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header
-                            (sortActionDescription)="indexOfelement" 
-                            style="width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);">
+                        <th class="header transaction-header-cell" mat-header-cell *matHeaderCellDef mat-sort-header
+                            (sortActionDescription)="indexOfelement">
                             {{ col.colDef }}
 
                         </th>
@@ -54,7 +53,7 @@
                         <td mat-cell *matCellDef="let element" 
                         (contextmenu)="onContextMenu($event, element[col.colHeader], col.colDef)"
                         #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"   matTooltipPosition="above"  [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=19?false:true"
-                            style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 19ch; white-space: nowrap;">
+                            class="transaction-cell-style">
                             {{ element[col.colHeader] }}</td>
 
                     </ng-container>
@@ -64,7 +63,7 @@
                         </div>
                     </tr>
 
-                    <mat-header-row *matHeaderRowDef="columnValues;sticky: true" style=" border: 0"></mat-header-row>
+                    <mat-header-row *matHeaderRowDef="columnValues;sticky: true" class="border-0"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: columnValues;"></mat-row>
                 </table>
             </ng-scrollbar>

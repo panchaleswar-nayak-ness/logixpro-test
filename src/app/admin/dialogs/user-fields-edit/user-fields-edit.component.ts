@@ -12,7 +12,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 @Component({
   selector: 'app-user-fields-edit',
   templateUrl: './user-fields-edit.component.html',
-  styleUrls: [],
+  styleUrls: ['./user-fields-edit.component.scss'],
 })
 export class UserFieldsEditComponent implements OnInit {
   @ViewChild('ship_via') ship_via: ElementRef;

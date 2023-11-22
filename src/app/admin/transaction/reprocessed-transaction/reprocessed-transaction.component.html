@@ -40,23 +40,23 @@
                 <table mat-table class="custom-table  table-fix" #table [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)">
 
                     <ng-container class="d-table-row" [matColumnDef]="col.colDef" *ngFor="let col of displayedColumns; let indexOfelement=index;">
-                        <th class="header" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement" style="width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);">
+                        <th class="header reprocessed-header-custom" mat-header-cell *matHeaderCellDef mat-sort-header (sortActionDescription)="indexOfelement">
                             {{ col.colDef }}
                         </th>
 
-                        <td *matCellDef="let element"  mat-cell  style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;" #tooltip="matTooltip"
+                        <td *matCellDef="let element"  mat-cell class="reprocessed-cell-custom" #tooltip="matTooltip"
                          [matTooltip]="element[col.colHeader]" matTooltipPosition="above" [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=20?false:true"> {{element[col.colHeader] }}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="actions" stickyEnd>
-                        <th mat-header-cell *matHeaderCellDef style="border: 0; width: 200px; min-width: 64px;"></th>
+                        <th mat-header-cell *matHeaderCellDef class="reprocessed-action-cell"></th>
                     </ng-container>
 
                     <tr class="mat-row d-flex w-100 justify-content-center position-absolute" *matNoDataRow [attr.colspan]="displayedColumns && displayedColumns.length">
                         <div class="p-3">No data matching the filter.</div>
                     </tr>
 
-                    <mat-header-row *matHeaderRowDef="columnValues;sticky: true" style="border:0"></mat-header-row>
+                    <mat-header-row *matHeaderRowDef="columnValues;sticky: true" class="border-0"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: columnValues;"></mat-row>
                 </table>
             </ng-scrollbar>

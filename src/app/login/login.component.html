@@ -9,15 +9,15 @@
           <h2 class="app-heading m-0">PickPro</h2>
         </div>
 
-        <div class="card bg-tertiary-10" style="border-radius: 16px; border:none">
+        <div class="card bg-tertiary-10 login-card-border">
           <div class="row g-0">
             <div class="col-md-6 col-lg-6 d-none d-md-block">
-                <div class="login-bg-img" style="background: url('../../assets/images/LogixPro-login-image2.jpg');width:100%;height: 100%; min-height: 580px; background-size: cover;border-top-left-radius: 16px; border-bottom-left-radius:16px;">
+                <div class="login-bg-img login-bg-img-style">
 
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 d-flex">
-              <div class="card-body p-4 text-black mx-auto d-flex flex-column" style="max-width: 380px; min-height: 612px">
+              <div class="card-body p-4 text-black mx-auto d-flex flex-column login-card-body">
 
                 <div class="text-center mb-2 mt-4 pt-2">
                   <div class="my-3 brand-logo">
@@ -30,7 +30,7 @@
                     <h2 class="text-tertiary-900 text-24 fw-bold">Account Login</h2>
                   </div>
                   <div class="form-outline mb-2">
-                    <mat-form-field appearance="outline" style=" width: 100%;">
+                    <mat-form-field appearance="outline" class="w-100">
                       <mat-label>Username</mat-label>
                       <input type="text" matInput placeholder="Enter Username"
                       (keyup.enter)="enterUserName()"
@@ -48,7 +48,7 @@
                     <br>
                   </div>
                   <div class="form-outline mb-1">
-                    <mat-form-field appearance="outline" style=" width: 100%;">
+                    <mat-form-field appearance="outline" class="w-100">
                       <mat-label>Password</mat-label>
                       <input #passwordInput placeholder="Password" [(ngModel)]="addLoginForm.password" #password="ngModel"   maxlength="50"
                       (keyup.enter)="loginUser()"
@@ -79,7 +79,7 @@
                   </div>
                   </div>
 
-                <div class="p-2 text-center mb-3" style="border-top:1px solid var(--clr-tertiary-50)">
+                <div class="p-2 text-center mb-3 border-top-1px">
                 <h3 class="text-18 text-tertiary-800 fw-bold mb-1" *ngIf="info.companyName">{{info.companyName}}</h3>
                   <h4 class="text-16 text-tertiary-800 fw-bold mb-1" *ngIf="info.address1">{{info.address1}}</h4>
                   <h4 class="text-16 text-tertiary-800 fw-bold"*ngIf="info.city&&info.state">{{info.city}} , {{info.state}}</h4>
@@ -97,7 +97,7 @@
       </div>
     </div>
   </div>
-  <div class="overlay" *ngIf="loader.visibility | async" style="z-index: 999999;">
+  <div class="overlay z-index-999999" *ngIf="loader.visibility | async">
     <div class="center">
       <mat-spinner [diameter]="50"></mat-spinner>
     </div>

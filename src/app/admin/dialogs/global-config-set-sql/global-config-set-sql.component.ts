@@ -10,7 +10,7 @@ import { DialogConstants, ToasterTitle, ToasterType } from 'src/app/common/const
 @Component({
   selector: 'app-global-config-set-sql',
   templateUrl: './global-config-set-sql.component.html',
-  styleUrls: [],
+  styleUrls: ['./global-config-set-sql.component.scss'],
 })
 export class GlobalConfigSetSqlComponent {
   @ViewChild('user_name') usernameField: ElementRef;

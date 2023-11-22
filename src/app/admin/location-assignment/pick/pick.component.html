@@ -41,7 +41,7 @@
                         <table mat-table #table1 [dataSource]="tableData1" class="w-100" matSort #MatSort1="matSort" (matSortChange)="announceSortChange1($event)">
 
                             <ng-container matColumnDef="status" sticky>
-                                <th style="width:200px!important" mat-header-cell *matHeaderCellDef mat-sort-header>
+                                <th class="w-200px" mat-header-cell *matHeaderCellDef mat-sort-header>
                                     Status </th>
                                 <td mat-cell *matCellDef="let element"
                                 #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.orderNumber" 
