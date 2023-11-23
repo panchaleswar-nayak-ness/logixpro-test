@@ -42,7 +42,7 @@
       </span>
     </mat-form-field>
 
-    <mat-form-field class="mb-3 w-100" appearance="outline"  *ngIf="(env === 'DB') && this.isEdit == true">
+    <mat-form-field class="mb-3 w-100" appearance="outline"  *ngIf="(env === 'SD') && this.isEdit == true">
       <mat-label>Group</mat-label>
       <mat-select formControlName="groupName" (selectionChange)="groupChange($event)">
         <mat-option *ngFor="let item of allGroups" [value]="item.groupName">{{item.groupName}}</mat-option>
@@ -52,11 +52,11 @@
       </span>
     </mat-form-field>
 
-    <mat-form-field class="mb-1 w-100" appearance="outline" (click)="toggleDisabled()" *ngIf="(env === 'DB'|| env === 'ADLDS')">
+    <mat-form-field class="mb-1 w-100" appearance="outline" (click)="toggleDisabled()" *ngIf="(env === 'SD'|| env === 'ADLDS')">
       <mat-label>Password</mat-label>
       <input matInput [type]="toggle_password ? 'password' : 'text'" #focusFeild formControlName="password" 
       (ngModelChange)="ChangePassword($event)"
-      (focusout)="isEmptyPass()" (keydown.space)="$event.preventDefault()" [maxlength]="env === 'DB' ? 8 : 16">
+      (focusout)="isEmptyPass()" (keydown.space)="$event.preventDefault()" [maxlength]="env === 'SD' ? 8 : 16">
       <button *ngIf="!isDisabledPassword && (!isEdit)"
        type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
         <mat-icon>{{toggle_password ? 'visibility_off' : 'visibility'}}</mat-icon>

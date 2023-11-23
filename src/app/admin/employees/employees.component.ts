@@ -168,7 +168,7 @@ export class EmployeesComponent implements OnInit {
           return data.zones.toLowerCase().includes(filter.trim().toLowerCase());
       };
         this.empAllZones = response.data?.allZones;
-        if(this.env !== 'DB') this.getgroupAllowedList();
+        if(this.env !== 'SD') this.getgroupAllowedList();
         }
         else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);

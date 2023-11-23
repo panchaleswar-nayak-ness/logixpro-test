@@ -19,7 +19,7 @@
         (selectionChange)="actionGroupDialog($event.value, grpData, $event)">
         <mat-option *ngIf="!isGroupLookUp" (click)="openGroupDialog()">Add new group</mat-option>
         <mat-option *ngIf="isGroupLookUp" value="delete">Delete</mat-option>
-        <mat-option value="clone" *ngIf="env !== 'DB'" && isGroupLookUp>Clone</mat-option>
+        <mat-option value="clone" *ngIf="env !== 'SD'" && isGroupLookUp>Clone</mat-option>
         <mat-option value="print selected" [disabled]="!this.grpData.groupName" (click)="printSelected()">Print Selected Group</mat-option>
         <mat-option value="print all" (click)="printAll()">Print All Groups</mat-option>
       </mat-select>

@@ -110,7 +110,7 @@ export class AddNewEmployeeComponent implements OnInit {
   }
 
   initialzeEmpForm() {
-    if (this.env === 'DB') {
+    if (this.env === 'SD') {
       this.validatorsArray.push(Validators.required, this.cusValidator.customTrim)
     }
 

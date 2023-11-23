@@ -196,7 +196,7 @@
     <app-employee-pickup-level [isAdd]="lookUpEvnt" [resetField]="isTabChanged" [pickUplevels]="pickUplevels"
       (relaodPickUpLvl)="relaodPickUpLvl()" [grp_data]="grpData"></app-employee-pickup-level>
   </mat-tab>
-  <mat-tab label="Function Allowed" *ngIf="env === 'DB'">
+  <mat-tab label="Function Allowed" *ngIf="env === 'SD'">
     <div class="groups-allowed-tab g-tab bg-white">
       <div class="g-action-card g-action-card-disabled mb-3">
         <div class="card w-100 text-center">
@@ -275,7 +275,7 @@
       </div>
     </div>
   </mat-tab>
-  <mat-tab label="Groups Allowed" *ngIf="env !== 'DB'">
+  <mat-tab label="Groups Allowed" *ngIf="env !== 'SD'">
 
     <div class="groups-allowed-tab g-tab bg-white">
 
