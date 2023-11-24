@@ -48,7 +48,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     { colHeader: 'description', colDef: 'Description' },
     { colHeader: 'revision', colDef: 'Revision' },
     { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
-    { colHeader: 'location', colDef: 'Location' },
+    { colHeader: 'location', colDef: Column.Location },
     { colHeader: 'wareHouse', colDef: 'Warehouse' },
     { colHeader: 'zone', colDef: 'Zone' },
     { colHeader: 'carousel', colDef: 'Carousel' },

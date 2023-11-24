@@ -25,7 +25,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames} from 'src/app/common/constants/strings.constants';
+import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-map',
@@ -48,7 +48,7 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: "itemQuantity", colDef: "Item Quantity" },
     { colHeader: "laserX", colDef: "Laser X" },
     { colHeader: "laserY", colDef: "Laser Y" },
-    { colHeader: "location", colDef: "Location" },
+    { colHeader: "location", colDef: Column.Location },
     { colHeader: "locationNumber", colDef: "Location Number" },
     { colHeader: "lotNumber", colDef: "Lot Number" },
     { colHeader: "masterInvMapID", colDef: "Master Inv Map ID" },

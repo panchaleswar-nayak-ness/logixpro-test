@@ -32,7 +32,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'status', colDef: 'Status' },
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
     { colHeader: 'completedDate', colDef: TableConstant.CompletedDate },
-    { colHeader: 'location', colDef: 'Location' },
+    { colHeader: 'location', colDef: Column.Location },
     { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
     { colHeader: 'itemNumber', colDef: 'Item Number' },
     { colHeader: 'lineNumber', colDef: 'Line Number' },

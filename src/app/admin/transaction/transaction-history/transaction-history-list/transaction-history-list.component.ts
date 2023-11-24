@@ -41,7 +41,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
     { colHeader: 'description', colDef: 'Description' },
     { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
-    { colHeader: 'location', colDef: 'Location' },
+    { colHeader: 'location', colDef: Column.Location },
     { colHeader: 'wareHouse', colDef: 'Warehouse' },
     { colHeader: 'zone', colDef: 'Zone' },
     { colHeader: 'carousel', colDef: 'Carousel' },

@@ -99,7 +99,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: "id", colDef: "ID" },
     { colHeader: "hostTransactionID", colDef: "Host Transaction ID" },
     { colHeader: "emergency", colDef: "Emergency" },
-    { colHeader: "location", colDef: "Location" },
+    { colHeader: "location", colDef: Column.Location },
     { colHeader: "label", colDef: "Label" },
     { colHeader: "cell", colDef: "Cell" },
   ];
