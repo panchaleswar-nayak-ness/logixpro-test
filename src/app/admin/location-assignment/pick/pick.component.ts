@@ -169,7 +169,7 @@ export class PickComponent implements OnInit {
               this.tableData2.paginator = this.paginator2;
               this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             } else {
-              this.global.ShowToastr('error',"There was an error marking these orders for location assignment", 'Error');
+              this.global.ShowToastr('error',"There was an error marking these orders for location assignment", ResponseStrings.Error);
               console.log("LocationAssignmentOrderInsert",res.responseMessage);
             }
           });

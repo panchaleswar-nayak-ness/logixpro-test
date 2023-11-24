@@ -103,7 +103,7 @@ export class CpbBlossomToteComponent implements OnInit {
       }
     });
     if(isDecimalExist){
-      this.global.ShowToastr('error',"Tote Quantity can not be in decimal", 'Error');
+      this.global.ShowToastr('error',"Tote Quantity can not be in decimal", ResponseStrings.Error);
       return;
     }
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -124,7 +124,7 @@ export class CpbBlossomToteComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
           }
           else{
-            this.global.ShowToastr('error',"An error occured when blossoming this tote", 'Error'); 
+            this.global.ShowToastr('error',"An error occured when blossoming this tote", ResponseStrings.Error); 
           }
         });
       }

@@ -7,7 +7,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { LiveAnnouncerMessage, StringConditions, ToasterTitle, ToasterType, alertMessage } from 'src/app/common/constants/strings.constants';
+import { LiveAnnouncerMessage, StringConditions, ToasterTitle, ToasterType, alertMessage ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-mark-empty-reels',
@@ -63,7 +63,7 @@ export class MarkEmptyReelsComponent implements OnInit {
           (response: any) => {
             if (response.isExecuted) {
               switch (response.data) {
-                case 'Error':
+                case ResponseStrings.Error:
                   this.itemInvalid = true;
                   this.notifyMessage = alertMessage.ErrorValidatingSerialNoMsg;
                   this.scanSerial = '';

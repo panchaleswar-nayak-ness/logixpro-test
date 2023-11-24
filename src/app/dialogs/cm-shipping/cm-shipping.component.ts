@@ -168,7 +168,7 @@ export class CmShippingComponent implements OnInit {
                 this.global.ShowToastr(
                   'error',
                   'An error has occurred',
-                  'Error'
+                  ResponseStrings.Error
                 );
               else if (res.data == 0) this.completeShipment();
               else {
@@ -217,7 +217,7 @@ export class CmShippingComponent implements OnInit {
           'Success'
         );
       else {
-        this.global.ShowToastr('error', 'An error has occurred', 'Error');
+        this.global.ShowToastr('error', 'An error has occurred', ResponseStrings.Error);
         console.log('CompleteShipment', res.responseMessage);
       }
     });

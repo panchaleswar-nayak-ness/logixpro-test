@@ -35,7 +35,7 @@ export class CcsifComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success,'Service ' + changeType + ' was successful.','Success');
         } else {
           this.Status = 'Offline'; 
-          this.global.ShowToastr('error','Service ' + changeType + ' was unsuccessful.  Please try again or contact Scott Tech for support.','Error');
+          this.global.ShowToastr('error','Service ' + changeType + ' was unsuccessful.  Please try again or contact Scott Tech for support.',ResponseStrings.Error);
         };
     } else {
       this.Status = 'Offline'; 

@@ -506,7 +506,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         disableClose:true,
         data: {
           message: "You must select one or more zones. If there are no zones available for selection check your Location Zones settings and/or delete or deallocate a batch to free up a zone.",
-          heading: 'Error'
+          heading: ResponseStrings.Error
         },
       });
     } else {

@@ -451,7 +451,7 @@ export class MoveItemsComponent implements OnInit {
           ' to create Move transactions';
         break;
 
-      case 'Error':
+      case ResponseStrings.Error:
         message =
           'An Error occured while creating move Transactions. Check the Event log for More information';
         break;

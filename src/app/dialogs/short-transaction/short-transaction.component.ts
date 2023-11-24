@@ -50,7 +50,7 @@ export class ShortTransactionComponent implements OnInit {
   ShortTransaction() {
     if (this.toteQuantity >= 0 && this.toteQuantity < this.selectedTransaction.transactionQuantity) {
       if(!this.globalService.checkDecimal(this.toteQuantity)){
-        this.global.ShowToastr('error',"Tote Quantity can not be in decimal", 'Error');
+        this.global.ShowToastr('error',"Tote Quantity can not be in decimal", ResponseStrings.Error);
         return;
       }
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -76,7 +76,7 @@ export class ShortTransactionComponent implements OnInit {
               this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
             }
             else {
-              this.global.ShowToastr('error',"An error occured when shorting this transaction", 'Error');
+              this.global.ShowToastr('error',"An error occured when shorting this transaction", ResponseStrings.Error);
               console.log("shortTransaction",res.responseMessage);
             }
           });
