@@ -241,7 +241,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
             "requiredDate": this.reqDate != "1900-01-01T19:31:48.000Z" ? this.reqDate : " ",
             "batchPickID": res.data[0].batchPickID,
             "lineNumber": res.data[0].lineNumber,
-            TableConstant.LineSequence: res.data[0].lineSequence,
+            'lineSequence': res.data[0].lineSequence,
             "priority": res.data[0].priority,
             "label": this.label.toString(),
             "emergency": this.emergency.toString(),
