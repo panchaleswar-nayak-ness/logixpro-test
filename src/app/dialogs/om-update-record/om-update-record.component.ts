@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA,   MatDialogRef } from '@angular/material/dialog';
 import { OmChangesConfirmationComponent } from '../om-changes-confirmation/om-changes-confirmation.component';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-update-record',
@@ -102,7 +103,7 @@ export class OmUpdateRecordComponent implements OnInit {
   }
 
   strToBool(str:string){
-    if(str == "True" || str == "true") return true;
+    if(str == "True" || str == StringConditions.True) return true;
     else return false;
   }
 

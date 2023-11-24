@@ -103,7 +103,7 @@ export class ReprocessTransactionComponent implements OnInit {
   public itemList: any;
   transTypeSelect = StringConditions.AllTransactions;
   transStatusSelect = StringConditions.AllTransactions;
-  trueString = 'true';
+  trueString = StringConditions.True;
   switchTrueString = false;
   falseString = 'false';
   switchFalseString = false;

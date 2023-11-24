@@ -23,7 +23,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
-import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-master',
@@ -246,7 +246,7 @@ export class InventoryMasterComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.setVal = localStorage.getItem('routeFromOrderStatus') === 'true';
+    this.setVal = localStorage.getItem('routeFromOrderStatus') === StringConditions.True;
     this.itemNumberParam$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('itemNumber')), );
     this.searchBoxField?.nativeElement.focus();
     this.itemNumberParam$.subscribe((param) => { 

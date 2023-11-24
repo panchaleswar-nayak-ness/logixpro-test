@@ -5,6 +5,7 @@ import { CmConfirmAndPackingProcessTransactionComponent } from '../cm-confirm-an
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing-select-transaction',
@@ -103,7 +104,7 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
             this.global.Print(`FileName:PrintConfPackPackList|OrderNum:${this.orderNumber}`);
 
           }
-          this.dialogRef.close('true');
+          this.dialogRef.close(StringConditions.True);
         }
 
       }
