@@ -9,6 +9,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-pickuplevels',
@@ -18,7 +19,7 @@ import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.cons
 export class AddPickuplevelsComponent implements OnInit {
   @ViewChild('start_shelf') start_shelf: ElementRef;
   form_heading: string = 'Add Pick Level';
-  form_btn_label: string = 'Add';
+  form_btn_label: string = StringConditions.AddCaps;
   levelId: any;
   startShelf: any;
   endShelf: any;

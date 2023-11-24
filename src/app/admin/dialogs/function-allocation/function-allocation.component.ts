@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-function-allocation',
@@ -16,7 +17,7 @@ export class FunctionAllocationComponent implements OnInit {
   ) { }
  
   ngOnInit(): void { 
-    if(this.data?.target === 'assigned') { this.dialogMsg = 'Are you sure you want to add ?'; this.btnLabel = 'Add' };
+    if(this.data?.target === 'assigned') { this.dialogMsg = 'Are you sure you want to add ?'; this.btnLabel = StringConditions.AddCaps };
     if(this.data?.target === 'unassigned') { this.dialogMsg = 'Are you sure you want to remove ?'; this.btnLabel = 'Remove' };
   }
 

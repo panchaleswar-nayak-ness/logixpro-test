@@ -12,6 +12,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 export interface DialogData {
   animal: 'panda' | 'unicorn' | 'lion';
@@ -28,7 +29,7 @@ export class AddNewEmployeeComponent implements OnInit {
   @ViewChild('last_name') last_name: ElementRef;
   @ViewChild('addNewEmployee') AddNewEmployeeComponent: TemplateRef<any>;
   form_heading: string = 'Add New Employee';
-  form_btn_label: string = 'Add';
+  form_btn_label: string = StringConditions.AddCaps;
   empData: any = [];
   mi: string;
   firstName: string;
@@ -72,7 +73,7 @@ export class AddNewEmployeeComponent implements OnInit {
     this.env =  JSON.parse(localStorage.getItem('env') ?? ''); 
     this.allGroups  = this.empData?.allGroups;
     this.form_heading = this.data?.mode === 'edit' ? 'Edit Employee' : 'Add New Employee';
-    this.form_btn_label = this.data?.mode === 'edit' ?'Save' : 'Add';
+    this.form_btn_label = this.data?.mode === 'edit' ?'Save' : StringConditions.AddCaps;
     this.isEmail = this.data?.mode === 'edit';
     this.isDisabledPassword = this.data?.mode === 'edit';
     this.isDisabledUsername = this.data?.mode === 'edit';
