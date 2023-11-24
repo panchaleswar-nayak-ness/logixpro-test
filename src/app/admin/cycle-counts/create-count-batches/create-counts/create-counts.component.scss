@@ -2,7 +2,11 @@ table{
     th,td{
       white-space: nowrap;
       padding-right: 10px;
-
+      &:last-child{
+        padding-right: 24px;
+        padding-left: 12px;
+        width: 0%;
+      }
     }
     td {
       max-width: 15ch;
