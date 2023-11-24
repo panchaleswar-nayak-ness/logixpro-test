@@ -46,7 +46,7 @@ export class OmAddRecordComponent implements OnInit {
     "userField1": "",
     "userField2": "",
     'userField3': "",
-    "userField4": "",
+    "userField4" :"",
     "userField5": "",
     "userField6": "",
     "userField7": "",

@@ -92,7 +92,7 @@ export class UserFieldsComponent implements OnInit {
       "userField1": values.userField1,
       "userField2": values.userField2,
       'userField3': values.userField3,
-      "userField4": values.userField4,
+      "userField4" : values.userField4,
       "userField5": values.userField5,
       "userField6": values.userField6,
       "userField7": values.userField7,
