@@ -19,7 +19,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppPermissions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -413,7 +413,7 @@ export class OmOrderManagerComponent implements OnInit {
 
           let payload = {
             val: this.viewType,
-            page: 'Order Manager'
+            page: AppPermissions.OrderManager
           };
       
           this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
@@ -452,7 +452,7 @@ export class OmOrderManagerComponent implements OnInit {
 
           let payload = {
             val: this.viewType,
-            page: 'Order Manager'
+            page: AppPermissions.OrderManager
           };
       
           this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
@@ -575,10 +575,10 @@ export class OmOrderManagerComponent implements OnInit {
     this.omPreferences=this.global.getOmPreferences();
 
     if(this.omPreferences.printDirectly){
-      this.globalService.Print(`FileName:PrintReleaseOrders|tabIDs:|View:${this.viewType}|Table:${this.orderType}|Page:${'Order Manager'}|WSID:${this.userData.wsid}`);
+      this.globalService.Print(`FileName:PrintReleaseOrders|tabIDs:|View:${this.viewType}|Table:${this.orderType}|Page:${AppPermissions.OrderManager}|WSID:${this.userData.wsid}`);
 
     }else{
-      window.open(`/#/report-view?file=FileName:PrintReleaseOrders|tabIDs:|View:${this.viewType}|Table:${this.orderType}|Page:${'Order Manager'}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+      window.open(`/#/report-view?file=FileName:PrintReleaseOrders|tabIDs:|View:${this.viewType}|Table:${this.orderType}|Page:${AppPermissions.OrderManager}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
     }
   }

@@ -27,7 +27,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'checklist', title: 'Induction Manager', route: '/InductionManager' ,permission: 'Induction Manager'},
     { icon: 'fact_check', title: 'Work Manager', route: '#' ,permission: 'Work Manager'},
     { icon: 'insert_chart', title: 'Consolidation Manager', route: '/ConsolidationManager' ,permission: 'Consolidation Manager'},
-    { icon: 'pending_actions', title: 'Order Manager', route: '/OrderManager' ,permission: 'Order Manager'},
+    { icon: 'pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager' ,permission: AppPermissions.OrderManager},
     { icon: 'schema', title: 'FlowRack Replenishment', route: '/FlowrackReplenish',permission: 'FlowRack Replenish' }
   ];
   globalMenus: any = [
@@ -93,8 +93,8 @@ export class SideNavComponent implements OnInit {
   ];
 
   orderManagerMenus: any = [
-    { icon: 'arrow_back', title: 'Order Manager', route: '/dashboard', class: 'back-class' , permission: 'Order Manager'},
-    { icon: ' pending_actions', title: 'Order Manager', route: '/OrderManager/OrderManager' ,permission:'Admin Release Orders'},
+    { icon: 'arrow_back', title: AppPermissions.OrderManager, route: '/dashboard', class: 'back-class' , permission: AppPermissions.OrderManager},
+    { icon: ' pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager/OrderManager' ,permission:'Admin Release Orders'},
     { icon: 'view_module', title: 'Order Status ', route: '/OrderManager/OrderStatus' ,permission:true},
     { icon: 'event_note', title: 'Event Log ', route: '/OrderManager/EventLog' ,permission:'Admin Release Orders'},
     { icon: 'dataset', title: 'Inventory Master Info', route: '/OrderManager/InventoryMaster' ,permission:'Admin Inventory Master'},  

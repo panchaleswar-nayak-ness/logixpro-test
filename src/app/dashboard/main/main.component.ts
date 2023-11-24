@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { RouteUpdateMenu, ToasterTitle, ToasterType ,AppNames} from 'src/app/common/constants/strings.constants';
+import { RouteUpdateMenu, ToasterTitle, ToasterType ,AppNames,AppPermissions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-main',
@@ -149,9 +149,9 @@ export class MainComponent implements OnInit {
         appName: AppNames.OrderManager,
         route: '/OrderManager',
         iconName: 'pending_actions',
-        name: 'Order Manager',
+        name: AppPermissions.OrderManager,
         updateMenu: 'orderManager',
-        permission: 'Order Manager',
+        permission: AppPermissions.OrderManager,
       },
       {
         appName: 'WorkManager',
