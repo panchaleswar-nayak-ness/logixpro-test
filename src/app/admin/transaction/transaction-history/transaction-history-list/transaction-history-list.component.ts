@@ -17,7 +17,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Column, DialogConstants, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-transaction-history-list',
@@ -62,7 +62,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'tableType', colDef: 'Table Type' },
     { colHeader: 'userField1', colDef: 'User Field1' },
     { colHeader: 'userField2', colDef: 'User Field2' },
-    { colHeader: 'userField3', colDef: 'User Field3' },
+    { colHeader: ColumnDef.userField3, colDef: 'User Field3' },
     { colHeader: 'userField4', colDef: 'User Field4' },
     { colHeader: 'userField5', colDef: 'User Field5' },
     { colHeader: 'userField6', colDef: 'User Field6' },

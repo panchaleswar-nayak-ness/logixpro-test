@@ -19,7 +19,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppPermissions,DialogConstants,TableConstant} from 'src/app/common/constants/strings.constants';
+import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppPermissions,DialogConstants,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -62,7 +62,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: "requiredDate", colDef: "Required Date" },
     { colHeader: "userField1", colDef: "User Field1" },
     { colHeader: "userField2", colDef: "User Field2" },
-    { colHeader: "userField3", colDef: "User Field3" },
+    { colHeader: ColumnDef.userField3, colDef: "User Field3" },
     { colHeader: "userField4", colDef: "User Field4" },
     { colHeader: "userField5", colDef: "User Field5" },
     { colHeader: "userField6", colDef: "User Field6" },

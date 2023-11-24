@@ -20,7 +20,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType,DialogConstants,TableConstant} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType,DialogConstants,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-create-orders',
@@ -40,7 +40,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: 'Required Date', key: 'requiredDate' },
     { sequence: 'User Field1', key: 'userField1' },
     { sequence: 'User Field2', key: 'userField2' },
-    { sequence: 'User Field3', key: 'userField3' },
+    { sequence: 'User Field3', key: ColumnDef.userField3 },
     { sequence: 'User Field4', key: 'userField4' },
     { sequence: 'User Field5', key: 'userField5' },
     { sequence: 'User Field6', key: 'userField6' },

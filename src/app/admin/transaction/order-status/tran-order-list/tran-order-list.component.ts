@@ -18,7 +18,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppRoutes, Column, DialogConstants, RouteNames, StringConditions, ToasterTitle, ToasterType ,TableConstant,LiveAnnouncerMessage,zoneType} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, Column, DialogConstants, RouteNames, StringConditions, ToasterTitle, ToasterType ,TableConstant,LiveAnnouncerMessage,zoneType,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-tran-order-list',
@@ -52,7 +52,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
     { colHeader: 'userField1', colDef: 'User Field1' },
     { colHeader: 'userField2', colDef: 'User Field2' },
-    { colHeader: 'userField3', colDef: 'User Field3' },
+    { colHeader: ColumnDef.userField3, colDef: 'User Field3' },
     { colHeader: 'userField4', colDef: 'User Field4' },
     { colHeader: 'userField5', colDef: 'User Field5' },
     { colHeader: 'userField6', colDef: 'User Field6' },
@@ -112,7 +112,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     'batchPickID',
     'userField1',
     'userField2',
-    'userField3',
+    ColumnDef.userField3,
     'userField4',
     'userField5',
     'userField6',

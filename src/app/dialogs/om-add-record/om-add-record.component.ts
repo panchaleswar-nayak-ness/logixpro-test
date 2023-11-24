@@ -9,7 +9,7 @@ import { OrderManagerApiService } from 'src/app/common/services/orderManager-api
 import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import {  ToasterTitle ,ToasterType,TransactionType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,TransactionType,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-add-record',
@@ -45,7 +45,7 @@ export class OmAddRecordComponent implements OnInit {
     "notes": "",
     "userField1": "",
     "userField2": "",
-    "userField3": "",
+    'userField3': "",
     "userField4": "",
     "userField5": "",
     "userField6": "",

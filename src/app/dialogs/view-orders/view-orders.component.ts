@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-view-orders',
@@ -72,7 +72,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'unitOfMeasure', header: 'Unit Of Measure', cell: (element: any) => `${element.unitOfMeasure}` },
     { columnDef: 'userField1', header: 'User Field1', cell: (element: any) => `${element.userField1}` },
     { columnDef: 'userField2', header: 'User Field2', cell: (element: any) => `${element.userField2}` },
-    { columnDef: 'userField3', header: 'User Field3', cell: (element: any) => `${element.userField3}` },
+    { columnDef: ColumnDef.userField3, header: 'User Field3', cell: (element: any) => `${element.userField3}` },
     { columnDef: 'userField4', header: 'User Field4', cell: (element: any) => `${element.userField4}` },
     { columnDef: 'userField5', header: 'User Field5', cell: (element: any) => `${element.userField5}` },
     { columnDef: 'userField6', header: 'User Field6', cell: (element: any) => `${element.userField6}` },

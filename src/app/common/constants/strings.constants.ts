@@ -353,6 +353,9 @@ export const Column = {
     LotNumber: 'Lot Number',
     Location: 'Location'
 }
+export const ColumnDef= {
+    userField3:'userField3'
+}
 
 export const Case = {
     Like: 'Like'
