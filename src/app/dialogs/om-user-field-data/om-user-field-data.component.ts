@@ -6,6 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-user-field-data',
@@ -60,7 +61,7 @@ export class OmUserFieldDataComponent implements OnInit {
     };
     this.iOrderManagerApi.UserFieldDataUpdate(payload).subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-        this.global.ShowToastr('success',labels.alert.success, 'Success!');
+        this.global.ShowToastr('success',labels.alert.success, ToasterTitle.Success);
         this.dialogRef.close(res.data);
       } else {
         this.global.ShowToastr('error',res.responseMessage, 'Error!');

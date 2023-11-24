@@ -6,6 +6,7 @@ import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-blossom-tote',
@@ -98,7 +99,7 @@ export class BlossomToteComponent implements OnInit {
                 }
                 
               }
-              this.global.ShowToastr('success','Updated Successfully', 'Success!');
+              this.global.ShowToastr('success','Updated Successfully', ToasterTitle.Success);
               this.dialog.closeAll();
             } else {
               this.global.ShowToastr('error','Old tote ID does not exist', 'Error!'); 

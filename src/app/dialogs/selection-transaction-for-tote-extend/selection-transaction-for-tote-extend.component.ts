@@ -20,6 +20,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -314,7 +315,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
           
           this.iInductionManagerApi.IMUpdate(payload).subscribe(
             (res: any) => {
-              if (res.data && res.isExecuted) this.global.ShowToastr('success',labels.alert.update, 'Success!');            
+              if (res.data && res.isExecuted) this.global.ShowToastr('success',labels.alert.update, ToasterTitle.Success);            
               else {
                 this.global.ShowToastr('error','Something went wrong', 'Error!');
                 console.log("IMUpdate",res.responseMessage);
@@ -739,7 +740,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               else for (let i = 0; i < numLabel; i++) this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`);
           }
           this.dialogRef.close("Task Completed");
-          this.global.ShowToastr('success',labels.alert.update, 'Success!' );            
+          this.global.ShowToastr('success',labels.alert.update, ToasterTitle.Success );            
         } else {
           this.global.ShowToastr('error','Something went wrong', 'Error!');
           console.log("TaskComplete",res.responseMessage);

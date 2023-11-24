@@ -138,7 +138,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
     this.iAdminApiService.SaveTransaction(payload).subscribe((res: any) => {
       if (res.isExecuted){
         this.dialogRef.close('add');
-        this.global.ShowToastr('success',labels.alert.update, 'Success!');
+        this.global.ShowToastr('success',labels.alert.update, ToasterTitle.Success);
       }
       else{
         this.global.ShowToastr('error','Something went wrong', 'Error!');

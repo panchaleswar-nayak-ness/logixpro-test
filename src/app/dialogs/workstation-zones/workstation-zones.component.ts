@@ -19,6 +19,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-workstation-zones',
@@ -104,7 +105,7 @@ export class WorkstationZonesComponent implements OnInit {
         this.iInductionManagerApi.ClrWSPickZone().subscribe((res) => {
           if (res.isExecuted && res.data) {
             this.getVelocity();
-            this.global.ShowToastr('success', labels.alert.remove, 'Success!');
+            this.global.ShowToastr('success', labels.alert.remove, ToasterTitle.Success);
           } else {
             this.global.ShowToastr(
               'error',
@@ -184,7 +185,7 @@ export class WorkstationZonesComponent implements OnInit {
       };
       this.iInductionManagerApi.WSPickZoneInsert(paylaod).subscribe((res) => {
         if (res.isExecuted && res.data) {
-          this.global.ShowToastr('success', labels.alert.success, 'Success!');
+          this.global.ShowToastr('success', labels.alert.success, ToasterTitle.Success);
           this.getVelocity();
           this.allZoneList = [];
           this.selectedZone = '';
@@ -219,7 +220,7 @@ export class WorkstationZonesComponent implements OnInit {
             velocity: vlCode,
           };
           this.iCommonAPI.dltVelocityCode(paylaod).subscribe((res) => {
-            this.global.ShowToastr('success', labels.alert.delete, 'Success!');
+            this.global.ShowToastr('success', labels.alert.delete, ToasterTitle.Success);
 
             this.getVelocity();
           });
@@ -255,7 +256,7 @@ export class WorkstationZonesComponent implements OnInit {
                 this.global.ShowToastr(
                   'success',
                   labels.alert.delete,
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.getVelocity();
               } else {

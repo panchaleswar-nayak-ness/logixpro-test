@@ -7,7 +7,7 @@ import { KanbanZoneAllocationConflictComponent } from 'src/app/admin/dialogs/kan
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { zoneType, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { zoneType, ToasterMessages, ToasterType ,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -269,7 +269,7 @@ export class SpLocationZonesComponent implements OnInit {
             this.global.ShowToastr(
               'success',
               'Deleted successfully',
-              'Success!'
+              ToasterTitle.Success
             );
           } else {
             this.global.ShowToastr(
@@ -330,7 +330,7 @@ export class SpLocationZonesComponent implements OnInit {
         this.global.ShowToastr(
           'success',
           `Location Zone: ${this.newLocationVal} added succesfully`,
-          'Success!'
+          ToasterTitle.Success
         );
         this.getLocationZones();
       } else {

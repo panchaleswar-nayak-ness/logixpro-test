@@ -8,6 +8,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-lookup-user-one-setup',
@@ -87,7 +88,7 @@ export class LookupUserOneSetupComponent implements OnInit {
       if(res.isExecuted){
         this.AddBtn = false
         ele.oldVal = ele.currentVal
-        this.global.ShowToastr('success',` Saved Successfully`, 'Success!');
+        this.global.ShowToastr('success',` Saved Successfully`, ToasterTitle.Success);
       }
       else{
         

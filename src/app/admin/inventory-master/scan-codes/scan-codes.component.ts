@@ -10,6 +10,7 @@ import { catchError, of } from 'rxjs';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-scan-codes',
@@ -102,7 +103,7 @@ export class ScanCodesComponent{
         this.iAdminApiService.DeleteScanCode(payLoad).subscribe((res: any) => {
           if (res.isExecuted) {
             this.isAddRow=false
-            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+            this.global.ShowToastr('success',labels.alert.delete, ToasterTitle.Success);
             this.refreshScanCodeList();
           } else{
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
@@ -154,7 +155,7 @@ export class ScanCodesComponent{
       ).subscribe((res: any) => {
         if (res.isExecuted) {
           this.isAddRow = false
-          this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          this.global.ShowToastr('success',labels.alert.success, ToasterTitle.Success);
           this.refreshScanCodeList();
           this.sendNotification();
         } 
@@ -179,7 +180,7 @@ export class ScanCodesComponent{
       this.iAdminApiService.UpdateScanCodes(payLoad).subscribe((res: any) => {
         if (res.isExecuted) {
           this.isAddRow = false;
-          this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          this.global.ShowToastr('success',labels.alert.success, ToasterTitle.Success);
           this.refreshScanCodeList();
         } else {
           this.global.ShowToastr('error','Already Exists', 'Error!');

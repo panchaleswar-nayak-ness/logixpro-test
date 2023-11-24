@@ -26,7 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant } from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -638,7 +638,7 @@ export class PickToteManagerComponent implements OnInit {
                 this.global.ShowToastr(
                   'success',
                   labels.alert.update,
-                  'Success!'
+                  ToasterTitle.Success
                 );
               } else {
                 this.global.ShowToastr(
@@ -660,7 +660,7 @@ export class PickToteManagerComponent implements OnInit {
         .PickBatchDefaultFilterClear(paylaod)
         .subscribe((res) => {
           if (res.isExecuted) {
-            this.global.ShowToastr('success', labels.alert.update, 'Success!');
+            this.global.ShowToastr('success', labels.alert.update, ToasterTitle.Success);
             const matSelect: MatSelect = option.source;
             matSelect.writeValue(null);
           } else {
@@ -719,7 +719,7 @@ export class PickToteManagerComponent implements OnInit {
                 this.global.ShowToastr(
                   'success',
                   labels.alert.delete,
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.savedFilterList = this.savedFilterList.filter(
                   (item) => item !== this.savedFilter.value
@@ -1266,7 +1266,7 @@ export class PickToteManagerComponent implements OnInit {
                 this.global.ShowToastr(
                   'success',
                   labels.alert.update,
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.filterSeq = element.sequence;
                 this.pickBatchFilterOrderData(this.savedFilter.value);
@@ -1288,7 +1288,7 @@ export class PickToteManagerComponent implements OnInit {
                 this.global.ShowToastr(
                   'success',
                   labels.alert.success,
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.filterSeq = element.sequence;
                 this.pickBatchFilterOrderData(this.savedFilter.value);
@@ -1319,7 +1319,7 @@ export class PickToteManagerComponent implements OnInit {
         .subscribe((res) => {
           if (res.isExecuted) {
             this.isOrderByAdd = true;
-            this.global.ShowToastr('success', labels.alert.update, 'Success!');
+            this.global.ShowToastr('success', labels.alert.update, ToasterTitle.Success);
           } else {
             this.global.ShowToastr(
               'error',
@@ -1341,7 +1341,7 @@ export class PickToteManagerComponent implements OnInit {
         .subscribe((res) => {
           if (res.isExecuted) {
             this.isOrderByAdd = true;
-            this.global.ShowToastr('success', labels.alert.success, 'Success!');
+            this.global.ShowToastr('success', labels.alert.success, ToasterTitle.Success);
             element.id = res.data;
             this.orderBySeq = element.sequence;
           } else {
@@ -1393,7 +1393,7 @@ export class PickToteManagerComponent implements OnInit {
               this.global.ShowToastr(
                 'success',
                 labels.alert.delete,
-                'Success!'
+                ToasterTitle.Success
               );
               this.pickBatchFilterOrderData(this.savedFilter.value);
             } else {
@@ -1431,7 +1431,7 @@ export class PickToteManagerComponent implements OnInit {
               this.global.ShowToastr(
                 'success',
                 labels.alert.delete,
-                'Success!'
+                ToasterTitle.Success
               );
               this.pickBatchFilterOrderData(this.savedFilter.value);
             } else {
@@ -1515,7 +1515,7 @@ export class PickToteManagerComponent implements OnInit {
               this.global.ShowToastr(
                 'success',
                 labels.alert.update,
-                'Success!'
+                ToasterTitle.Success
               );
             } else {
               this.global.ShowToastr('error', res.responseMessage, 'Error!');

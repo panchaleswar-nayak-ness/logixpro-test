@@ -23,6 +23,7 @@ import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-shipping-transaction',
@@ -201,7 +202,7 @@ export class CmShippingTransactionComponent implements OnInit {
                         this.global.ShowToastr(
                           'success',
                           'Packing Completed Successfully',
-                          'Success!'
+                          ToasterTitle.Success
                         );
                         this.dialogRef.close({
                           isExecuted: true,
@@ -263,7 +264,7 @@ export class CmShippingTransactionComponent implements OnInit {
                             this.global.ShowToastr(
                               'success',
                               'Packing Completed Successfully',
-                              'Success!'
+                              ToasterTitle.Success
                             );
                             this.dialogRef.close({
                               isExecuted: true,

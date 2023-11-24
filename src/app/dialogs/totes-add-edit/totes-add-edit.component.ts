@@ -26,6 +26,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -254,7 +255,7 @@ export class TotesAddEditComponent implements OnInit {
         this.global.ShowToastr(
           'success',
           isInserted == '1' ? updateMessage : res.responseMessage,
-          'Success!'
+          ToasterTitle.Success
         );
         this.dataSourceManagedTotes.data[index]['isDuplicate'] = false;
         this.isRowAdded = false;
@@ -306,7 +307,7 @@ export class TotesAddEditComponent implements OnInit {
                 this.global.ShowToastr(
                   'success',
                   'Deleted successfuly',
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.isRowAdded = false;
                 let isUnsavedItem = false;

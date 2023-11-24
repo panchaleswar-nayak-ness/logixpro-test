@@ -6,6 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-delete-confirmation',
@@ -43,7 +44,7 @@ export class BatchDeleteConfirmationComponent {
           .subscribe(
             (res: any) => {
               if (res?.isExecuted) {
-                this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+                this.global.ShowToastr('success',labels.alert.delete, ToasterTitle.Success);
                 this.dialogRef.close({ isExecuted: true });
               } else {
                 this.global.ShowToastr('error','Something went wrong', 'Error!');
@@ -59,7 +60,7 @@ export class BatchDeleteConfirmationComponent {
           .subscribe(
             (res: any) => {
               if (res?.isExecuted) {
-                this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+                this.global.ShowToastr('success',labels.alert.delete, ToasterTitle.Success);
                 this.dialogRef.close({ isExecuted: true });
               } else {
                 this.global.ShowToastr('error','Something went wrong', 'Error!');

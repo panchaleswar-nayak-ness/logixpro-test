@@ -6,6 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cpb-blossom-tote',
@@ -120,7 +121,7 @@ export class CpbBlossomToteComponent implements OnInit {
         this.iInductionManagerApi.blossomTote(payload).subscribe((res: any) => {
           if(res.isExecuted){
             this.dialogRef.close({newToteID:this.newToteID});
-            this.global.ShowToastr('success',labels.alert.update, 'Success!');
+            this.global.ShowToastr('success',labels.alert.update, ToasterTitle.Success);
           }
           else{
             this.global.ShowToastr('error',"An error occured when blossoming this tote", 'Error'); 
