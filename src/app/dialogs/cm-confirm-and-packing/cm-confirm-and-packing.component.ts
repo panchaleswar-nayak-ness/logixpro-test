@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',
@@ -198,7 +198,7 @@ async ClickConfirmAll(){
   });
 
   dialogRef.afterClosed().subscribe((result) => {
-    if (result == 'Yes') { 
+    if (result == ResponseStrings.Yes) { 
     let obj : any = {
       orderNumber:this.orderNumber,
       containerID: this.contID

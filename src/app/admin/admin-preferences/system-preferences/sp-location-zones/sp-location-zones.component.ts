@@ -7,7 +7,7 @@ import { KanbanZoneAllocationConflictComponent } from 'src/app/admin/dialogs/kan
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { zoneType, ToasterMessages, ToasterType ,ToasterTitle} from 'src/app/common/constants/strings.constants';
+import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -259,7 +259,7 @@ export class SpLocationZonesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      if (res === 'Yes') {
+      if (res === ResponseStrings.Yes) {
         let payload = {
           zone: zone,
         };

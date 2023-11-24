@@ -7,7 +7,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { DatePipe } from '@angular/common';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-event-log-entry-detail',
@@ -50,7 +50,7 @@ export class OmEventLogEntryDetailComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         let payload: any = {
           "EventID": this.eventLog.eventID
         }

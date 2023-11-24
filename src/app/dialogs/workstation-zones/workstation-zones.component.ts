@@ -19,7 +19,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-workstation-zones',
@@ -101,7 +101,7 @@ export class WorkstationZonesComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         this.iInductionManagerApi.ClrWSPickZone().subscribe((res) => {
           if (res.isExecuted && res.data) {
             this.getVelocity();
@@ -215,7 +215,7 @@ export class WorkstationZonesComponent implements OnInit {
         }
       );
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let paylaod = {
             velocity: vlCode,
           };
@@ -245,7 +245,7 @@ export class WorkstationZonesComponent implements OnInit {
       .afterClosed()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let paylaod = {
             Zone: event,
           };

@@ -6,7 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-delete-confirmation-transaction',
@@ -44,7 +44,7 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
     this.iAdminApiService.DeleteOrder(deletePayload).subscribe(
       (res: any) => {
         if(res.isExecuted){
-          this.dialogRef.close("Yes");
+          this.dialogRef.close(ResponseStrings.Yes);
           this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
         }
         else {

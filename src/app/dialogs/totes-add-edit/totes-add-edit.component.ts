@@ -26,7 +26,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -290,7 +290,7 @@ export class TotesAddEditComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == ResponseStrings.Yes) {
         const data = this.dataSourceManagedTotes.data;
         if (data[index]['isDuplicate'] || data[index]['isInserted'] == 0) {
           data.splice(index, 1);

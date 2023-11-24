@@ -16,7 +16,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ccb-create-counts',
@@ -614,7 +614,7 @@ constructor(
     dialogRef.afterClosed().subscribe((res) => {
       ;
 
-      if (res == 'Yes') {
+      if (res == ResponseStrings.Yes) {
         const payLoad = {
           orderNumber: this.orderNumber,
           ident: ident, 

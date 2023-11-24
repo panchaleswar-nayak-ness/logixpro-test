@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { FunctionAllocationComponent } from '../function-allocation/function-allocation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ResponseStrings } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-confirmation-dialog',
@@ -24,7 +25,7 @@ export class ConfirmationDialogComponent implements OnInit {
 
   confirmOK()
   {
-    this.dialogRef.close('Yes');
+    this.dialogRef.close(ResponseStrings.Yes);
   }
 
 }

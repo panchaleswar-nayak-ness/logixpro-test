@@ -6,6 +6,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import {  ResponseStrings } from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -158,7 +159,7 @@ export class CmShippingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == ResponseStrings.Yes) {
         let obj: any = { orderNumber: this.orderNumber };
         this.iConsolidationAPI.SelCountOfOpenTransactionsTemp(obj).subscribe(
           (res: any) => {
@@ -186,7 +187,7 @@ export class CmShippingComponent implements OnInit {
                 );
 
                 dialogRef.afterClosed().subscribe((result) => {
-                  if (result == 'Yes') this.completeShipment();
+                  if (result == ResponseStrings.Yes) this.completeShipment();
                 });
               }
             } else {

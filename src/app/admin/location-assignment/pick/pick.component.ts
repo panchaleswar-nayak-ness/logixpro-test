@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
-import {  ToasterTitle ,LiveAnnouncerMessage} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -158,7 +158,7 @@ export class PickComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let payload: any = {
             "transType": 'pick',
             "orders": this.tableData2.data.map((item: any) => { return item.orderNumber }), 

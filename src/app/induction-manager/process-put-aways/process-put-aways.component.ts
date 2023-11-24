@@ -28,7 +28,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { Router } from '@angular/router';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   position: string;
@@ -528,7 +528,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe((result) => {
-        if (result == 'Yes') {
+        if (result == ResponseStrings.Yes) {
           let toteID = '',
             cells = '',
             position = '';
@@ -851,7 +851,7 @@ async clearBatchData(){
       });
 
       dialogRef.afterClosed().subscribe((result) => {
-        if (result == 'Yes') {
+        if (result == ResponseStrings.Yes) {
           for (let i = 0; i < this.pickBatchQuantity; i++) {
             this.ELEMENT_DATA[i].cells = this.cellSize.toString();
           }
@@ -1150,7 +1150,7 @@ async clearBatchData(){
         });
 
         dialogRef.afterClosed().subscribe((result) => {
-          if (result == 'Yes') {
+          if (result == ResponseStrings.Yes) {
             let payLoad = {
               batchID: this.batchId2, 
             };
@@ -1182,7 +1182,7 @@ async clearBatchData(){
                     });
             
                     dialogRef2.afterClosed().subscribe((result) => {
-                      if (result == 'Yes') {
+                      if (result == ResponseStrings.Yes) {
   
                           if(this.imPreferences.printDirectly){
                             this.global.Print(`FileName:PrintOffCarList|batchID:${this.batchId2}`);

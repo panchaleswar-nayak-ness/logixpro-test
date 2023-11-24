@@ -20,7 +20,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -253,7 +253,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == ResponseStrings.Yes) {
         this.toteForm.patchValue({
           userField1                        : '',
           userField2                        : '',
@@ -299,7 +299,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       });
   
       dialogRef.afterClosed().subscribe((result) => {
-        if (result == 'Yes') {
+        if (result == ResponseStrings.Yes) {
           const values = this.toteForm.value;
           let payload = { 
             "itemNumber": values.itemNumber,
@@ -435,7 +435,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                 }
               });
   
-              dialogRef.afterClosed().subscribe((result) => { if (result == 'Yes') this.findLocation(true, res.data) });
+              dialogRef.afterClosed().subscribe((result) => { if (result == ResponseStrings.Yes) this.findLocation(true, res.data) });
             } else this.findLocation(false, 0);
           }
           else {
@@ -622,7 +622,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               });
 
               dialogRef.afterClosed().subscribe((res) => {
-                if(res == 'Yes') this.dialogRef.close("New Batch");   
+                if(res == ResponseStrings.Yes) this.dialogRef.close("New Batch");   
               });
             } else {
               let payLoad = {
@@ -650,7 +650,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                       });
       
                       dialogRef.afterClosed().subscribe((result) => {
-                        if (result == 'Yes') this.openCrossDockTransactionDialogue();
+                        if (result == ResponseStrings.Yes) this.openCrossDockTransactionDialogue();
                         else this.complete(values);
                       });                
                     }
@@ -781,7 +781,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == ResponseStrings.Yes) {
         if (values.toteQty <= 0) this.global.ShowToastr('error','Quantity should be greater 0', 'Error!');
         else {
 
@@ -799,7 +799,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             });
 
             dialogRef.afterClosed().subscribe((result) => {
-              if (result == 'Yes') splitQty = parseInt(values.transactionQuantity) - parseInt(values.toteQty);
+              if (result == ResponseStrings.Yes) splitQty = parseInt(values.transactionQuantity) - parseInt(values.toteQty);
               this.taskComplete({ splitQty : splitQty, ...values });
             });
           } else this.taskComplete(values);      

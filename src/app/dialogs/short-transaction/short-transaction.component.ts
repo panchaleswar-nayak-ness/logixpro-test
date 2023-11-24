@@ -6,7 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-short-transaction',
@@ -64,7 +64,7 @@ export class ShortTransactionComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
-        if (result == 'Yes') {
+        if (result == ResponseStrings.Yes) {
           let payload: any = {
             "otid": this.selectedTransaction.id,
             "shortQuantity": this.toteQuantity,

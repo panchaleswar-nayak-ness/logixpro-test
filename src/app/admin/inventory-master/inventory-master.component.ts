@@ -23,7 +23,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
-import {  AppNames ,ToasterTitle} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,ToasterTitle,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-master',
@@ -691,7 +691,7 @@ export class InventoryMasterComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((res) => {
       this.isDialogOpen = false
-      if (res == 'Yes') {
+      if (res == ResponseStrings.Yes) {
         let payLoad = {
           "itemNumber": itemToDelete,
           "append": true
@@ -949,7 +949,7 @@ export class InventoryMasterComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
-      if (result === 'Yes') { 
+      if (result === ResponseStrings.Yes) { 
         await this.getInvMasterDetail(this.searchValue);
         console.log(this.tabIndex);
         this.tabIndex = tabIndex;

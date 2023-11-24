@@ -10,7 +10,7 @@ import { catchError, of } from 'rxjs';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-scan-codes',
@@ -28,7 +28,7 @@ export class ScanCodesComponent{
   oldScanCodesList: any;
   disableButton=false;
   scanTypeList: any = [];
-  scanRangeList: any =['Yes', 'No'];
+  scanRangeList: any =[ResponseStrings.Yes, 'No'];
   isAddRow=false;
   
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
@@ -90,7 +90,7 @@ export class ScanCodesComponent{
     });
 
     dialogRef.afterClosed().subscribe(result => {
-     if(result === 'Yes'){
+     if(result === ResponseStrings.Yes){
       if(item.scanCode && !item.isAddedNew) {
         let payLoad = {
           "itemNumber": this.scanCodes.controls['itemNumber'].value,

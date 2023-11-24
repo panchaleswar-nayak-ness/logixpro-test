@@ -3,7 +3,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ccsif',
@@ -57,7 +57,7 @@ export class CcsifComponent implements OnInit {
   //     },
   //   });  
   //    dialogRef.afterClosed().subscribe((result) => {
-  //     if (result==='Yes') {
+  //     if (result===ResponseStrings.Yes) {
   //       this.ServiceStatus('start',true);
   //     }
   //   }); 

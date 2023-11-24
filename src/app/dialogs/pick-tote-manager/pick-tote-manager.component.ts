@@ -26,7 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,ToasterTitle} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -627,7 +627,7 @@ export class PickToteManagerComponent implements OnInit {
         }
       );
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let paylaod = {
             Description: this.savedFilter.value,
           };
@@ -708,7 +708,7 @@ export class PickToteManagerComponent implements OnInit {
         }
       );
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let paylaod = {
             Description: this.savedFilter.value,
           };
@@ -1380,7 +1380,7 @@ export class PickToteManagerComponent implements OnInit {
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         let payload = {
           Sequence: element.sequence,
           Description: this.savedFilter.value,
@@ -1419,7 +1419,7 @@ export class PickToteManagerComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         let payload = {
           id: element.id,
         };
@@ -1503,7 +1503,7 @@ export class PickToteManagerComponent implements OnInit {
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         let payload = {
           zone: row.zone,
           type: row.type,

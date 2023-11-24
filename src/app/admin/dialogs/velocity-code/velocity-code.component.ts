@@ -8,7 +8,7 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-velocity-code',
@@ -113,7 +113,7 @@ export class VelocityCodeComponent implements OnInit {
         disableClose: true,
       })
       dialogRef.afterClosed().subscribe(result => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let paylaod = {
             "velocity": vlCode
           }

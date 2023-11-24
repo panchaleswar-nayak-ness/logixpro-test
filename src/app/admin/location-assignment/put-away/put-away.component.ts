@@ -11,7 +11,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage} from 'src/app/common/constants/strings.constants';
+import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -145,7 +145,7 @@ export class PutAwayComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let payload: any = {
             "transType": 'putaway',
             "orders": this.tableData2.data.map((item: any) => { return item.orderNumber }),

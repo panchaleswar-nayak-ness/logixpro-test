@@ -17,7 +17,7 @@ import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -288,7 +288,7 @@ export class CrossDockTransactionComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => {
         debugger;
 
-        if (result == 'Yes') {
+        if (result == ResponseStrings.Yes) {
           let payLoad = {
             pick: this.data.values.transactionQuantity,
             put: this.data.values.toteQty,
@@ -413,7 +413,7 @@ export class CrossDockTransactionComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == ResponseStrings.Yes) {
         callback(true);
       } else {
         callback(false);
@@ -440,7 +440,7 @@ export class CrossDockTransactionComponent implements OnInit {
         );
 
         dialogRef.afterClosed().subscribe((result) => {
-          if (result == 'Yes') {
+          if (result == ResponseStrings.Yes) {
             this.compPick();
           }
         });

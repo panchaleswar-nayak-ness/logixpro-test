@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import {  ResponseStrings } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-lookup-adjustment-lookup-setup',
@@ -115,7 +116,7 @@ AddBtn = false
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
-      if (res === 'Yes'){
+      if (res === ResponseStrings.Yes){
 
         let payload = {
           "reason": ele.currentVal

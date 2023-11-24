@@ -10,7 +10,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { IAdminApiService } from '../common/services/admin-api/admin-api-interface';
 import { AdminApiService } from '../common/services/admin-api/admin-api.service';
 import { GlobalService } from '../common/services/global.service';
-import {  LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-admin',
@@ -242,15 +242,15 @@ export class AdminComponent implements OnInit {
           this.inventoryDetail.get("reorderQty")?.setValue(data?.reorderQuantity);
           this.inventoryDetail.get("replenishmentPoint")?.setValue(data?.reorderPoint);
           this.inventoryDetail.get("replenishmentLevel")?.setValue(data?.replenishmentLevel);
-          this.inventoryDetail.get("includeRTSUpdate")?.setValue(data?.includeInAutoRTSUpdate ? 'Yes' : 'No');
-          this.inventoryDetail.get("fifo")?.setValue(data?.fifo ? 'Yes' : 'No');
-          this.inventoryDetail.get("dateSensitive")?.setValue(data?.dateSensitive ? 'Yes' : 'No');
-          this.inventoryDetail.get("wareHouseSensitive")?.setValue(data?.warehouseSensitive ? 'Yes' : 'No');
-          this.inventoryDetail.get("active")?.setValue(data?.active ? 'Yes' : 'No');
+          this.inventoryDetail.get("includeRTSUpdate")?.setValue(data?.includeInAutoRTSUpdate ? ResponseStrings.Yes : 'No');
+          this.inventoryDetail.get("fifo")?.setValue(data?.fifo ? ResponseStrings.Yes : 'No');
+          this.inventoryDetail.get("dateSensitive")?.setValue(data?.dateSensitive ? ResponseStrings.Yes : 'No');
+          this.inventoryDetail.get("wareHouseSensitive")?.setValue(data?.warehouseSensitive ? ResponseStrings.Yes : 'No');
+          this.inventoryDetail.get("active")?.setValue(data?.active ? ResponseStrings.Yes : 'No');
           this.inventoryDetail.get("specialFeatures")?.setValue(data?.specialFeatures);
           this.inventoryDetail.get("bulkVelocity")?.setValue(data?.bulkVelocity);
-          this.inventoryDetail.get("useScale")?.setValue(data?.useScale ? 'Yes' : 'No');
-          this.inventoryDetail.get("splitCase")?.setValue(data?.splitCase ? 'Yes' : 'No');
+          this.inventoryDetail.get("useScale")?.setValue(data?.useScale ? ResponseStrings.Yes : 'No');
+          this.inventoryDetail.get("splitCase")?.setValue(data?.splitCase ? ResponseStrings.Yes : 'No');
         }
         else {
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');

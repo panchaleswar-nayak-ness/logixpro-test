@@ -12,7 +12,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-kit-item',
@@ -111,7 +111,7 @@ export class KitItemComponent implements OnInit, OnChanges {
       disableClose:true,
     })
     dialogRef.afterClosed().subscribe(result => {
-     if(result === 'Yes'){
+     if(result === ResponseStrings.Yes){
       if (e?.itemNumber) {
         let payLoad = {
           "itemNumber": this.kitItem.controls['itemNumber'].value,

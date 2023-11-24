@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-import {StringConditions , ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import {StringConditions , ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-printers',
   templateUrl: './printers.component.html',
@@ -50,7 +50,7 @@ export class PrintersComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.allPinters = res.data;
         this.allPinters.forEach((element: any) => {
-          element.labelPrinter = element.label == "Able to Print Labels" ? "Yes" : "No";
+          element.labelPrinter = element.label == "Able to Print Labels" ? ResponseStrings.Yes : "No";
           element.isNew = false;
           element.currentPrinter = element.printer;
           element.currentprinterAdd = element.printerAdd;

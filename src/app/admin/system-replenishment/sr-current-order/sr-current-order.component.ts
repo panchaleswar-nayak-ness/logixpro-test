@@ -428,7 +428,7 @@ export class SrCurrentOrderComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         this.repByDeletePayload.identity = 'ALL';
         this.repByDeletePayload.filter1 = '';
         this.repByDeletePayload.filter2 = '';
@@ -454,7 +454,7 @@ export class SrCurrentOrderComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         this.repByDeletePayload.identity = 'Shown';
         this.repByDeletePayload.filter1 = '';
         this.repByDeletePayload.filter2 = '';

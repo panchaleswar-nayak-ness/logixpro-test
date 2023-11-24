@@ -5,6 +5,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ResponseStrings } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
@@ -72,7 +73,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
                 },
               });
 
-              dialogRef.afterClosed().subscribe((res) => { if (res == 'Yes') this.dialogRef.close("New Batch"); });
+              dialogRef.afterClosed().subscribe((res) => { if (res == ResponseStrings.Yes) this.dialogRef.close("New Batch"); });
             } else {
               const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
                 height: 'auto',

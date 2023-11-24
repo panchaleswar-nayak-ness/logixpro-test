@@ -6,7 +6,7 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-unit-measure',
@@ -117,7 +117,7 @@ export class UnitMeasureComponent implements OnInit {
       disableClose:true,
     })
     dialogRef.afterClosed().subscribe(result => {
-     if(result === 'Yes'){
+     if(result === ResponseStrings.Yes){
       if(um){  //&& fromDB==true
         let paylaod = {
           "newValue": um
