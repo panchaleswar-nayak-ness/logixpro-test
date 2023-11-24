@@ -84,7 +84,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     { colHeader: 'toteID', colDef: Column.ToteID },
     { colHeader: 'toteNumber', colDef: 'Tote Number' },
     { colHeader: 'cell', colDef: 'Cell' },
-    { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
+    { colHeader: 'hostTransactionID', colDef: TableConstant.HostTransactionID },
     { colHeader: 'emergency', colDef: 'Emergency' },
   ];
 

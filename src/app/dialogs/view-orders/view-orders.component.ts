@@ -48,7 +48,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'exportBatchID', header: 'Export Batch ID', cell: (element: any) => `${element.exportBatchID}` },
     { columnDef: 'exportDate', header: 'Export Date', cell: (element: any) => `${element.exportDate}` },
     { columnDef: 'exportedBy', header: 'Exported By', cell: (element: any) => `${element.exportedBy}` },
-    { columnDef: 'hostTransactionID', header: 'Host Transaction ID', cell: (element: any) => `${element.hostTransactionID}` },
+    { columnDef: 'hostTransactionID', header: TableConstant.HostTransactionID, cell: (element: any) => `${element.hostTransactionID}` },
     { columnDef: 'id', header: 'ID', cell: (element: any) => `${element.id}` },
     { columnDef: 'importBy', header: 'Import By', cell: (element: any) => `${element.importBy}` },
     { columnDef: 'importDate', header: 'Import Date', cell: (element: any) => `${element.importDate}` },

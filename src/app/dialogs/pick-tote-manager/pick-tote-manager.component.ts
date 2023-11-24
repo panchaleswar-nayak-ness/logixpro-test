@@ -304,7 +304,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: 'hostTransactionID',
-      header: 'Host Transaction ID',
+      header: TableConstant.HostTransactionID,
       cell: (element: any) => `${element.hostTransactionID}`,
     },
     { columnDef: 'id', header: 'ID', cell: (element: any) => `${element.id}` },

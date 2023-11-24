@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ApiEndpoints, ToasterMessages, ToasterTitle, ToasterType, superBatchFilterListName ,Column} from 'src/app/common/constants/strings.constants';
+import { ApiEndpoints, ToasterMessages, ToasterTitle, ToasterType, superBatchFilterListName ,Column,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-admin-prefrences',
@@ -90,8 +90,8 @@ export class AdminPrefrencesComponent implements OnInit {
       name: Column.LotNumber,
     },
     {
-      id: 'Host Transaction ID',
-      name: 'Host Transaction ID',
+      id: TableConstant.HostTransactionID,
+      name: TableConstant.HostTransactionID,
     },
     {
       id: 'Scan Code',

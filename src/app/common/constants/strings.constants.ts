@@ -389,5 +389,6 @@ export const TableName = {
     TransactionHistory: 'Transaction History'
 }
 export const TableConstant = {
-    CompletedDate:'Completed Date'
+    CompletedDate:'Completed Date',
+    HostTransactionID:'Host Transaction ID'
 }

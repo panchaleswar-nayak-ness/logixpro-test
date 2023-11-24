@@ -19,7 +19,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppPermissions,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppPermissions,DialogConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -97,7 +97,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: "revision", colDef: "Revision" },
     { colHeader: "supplierItemID", colDef: "Supplier Item ID" },
     { colHeader: "id", colDef: "ID" },
-    { colHeader: "hostTransactionID", colDef: "Host Transaction ID" },
+    { colHeader: "hostTransactionID", colDef: TableConstant.HostTransactionID },
     { colHeader: "emergency", colDef: "Emergency" },
     { colHeader: "location", colDef: Column.Location },
     { colHeader: "label", colDef: "Label" },
