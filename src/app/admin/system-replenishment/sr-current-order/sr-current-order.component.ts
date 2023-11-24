@@ -21,7 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-current-order',
@@ -48,7 +48,7 @@ export class SrCurrentOrderComponent implements OnInit {
     'UofM',
     'Batch Pick ID',
     'Serial Number',
-    'Completed Date',
+    TableConstant.CompletedDate,
     'Print Date',
     'action',
   ];
@@ -69,7 +69,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: 'UofM', label: 'UofM', value: 'unitOfMeasure', filterProperty:'UofM' },
     { defination: 'Batch Pick ID', label: 'Batch Pick ID', value: 'batchPickID', filterProperty:'Batch Pick ID' },
     { defination: 'Serial Number', label: 'Serial Number', value: 'serialNumber', filterProperty:'Serial Number' },
-    { defination: 'Completed Date', label: 'Comp Date', value: 'completedDate', filterProperty:'Comp Date' },
+    { defination: TableConstant.CompletedDate, label: 'Comp Date', value: 'completedDate', filterProperty:'Comp Date' },
     { defination: 'Print Date', label: 'Print Date', value: 'printDate', filterProperty:'Print Date' },
   ];
   noOfPicks: number = 0;
@@ -345,7 +345,7 @@ export class SrCurrentOrderComponent implements OnInit {
         this.tablePayloadObj.searchColumn = 'Unit of Measure';
         break;
       case 'Comp Date':
-        this.tablePayloadObj.searchColumn = 'Completed Date';
+        this.tablePayloadObj.searchColumn = TableConstant.CompletedDate;
         break;
       default:
         break;
@@ -394,7 +394,7 @@ export class SrCurrentOrderComponent implements OnInit {
             this.tablePayloadObj.searchColumn = 'Unit of Measure';
             break;
           case 'Comp Date':
-            this.tablePayloadObj.searchColumn = 'Completed Date';
+            this.tablePayloadObj.searchColumn = TableConstant.CompletedDate;
             break;
           default:
             break;

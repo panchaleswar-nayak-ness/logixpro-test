@@ -388,3 +388,6 @@ export const TableName = {
     ReProcessed: 'ReProcessed',
     TransactionHistory: 'Transaction History'
 }
+export const TableConstant = {
+    CompletedDate:'Completed Date'
+}

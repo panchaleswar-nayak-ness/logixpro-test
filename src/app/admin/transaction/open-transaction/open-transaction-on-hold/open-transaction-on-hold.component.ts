@@ -20,7 +20,7 @@ import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-ta
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppNames, AppRoutes, Column, DialogConstants, Mode, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { AppNames, AppRoutes, Column, DialogConstants, Mode, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-open-transaction-on-hold',
@@ -56,7 +56,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     { colHeader: 'shelf', colDef: 'Shelf' },
     { colHeader: 'bin', colDef: 'Bin' },
     { colHeader: 'invMapID', colDef: 'Inv Map ID' },
-    { colHeader: 'completedDate', colDef: 'Completed Date' },
+    { colHeader: 'completedDate', colDef: TableConstant.CompletedDate },
     { colHeader: 'completedBy', colDef: 'Completed By' },
     { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
     { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },

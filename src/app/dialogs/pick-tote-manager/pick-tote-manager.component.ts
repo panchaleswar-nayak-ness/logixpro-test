@@ -26,6 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  TableConstant } from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -213,7 +214,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: 'completedDate',
-      header: 'Completed Date',
+      header: TableConstant.CompletedDate,
       cell: (element: any) => `${element.completedDate}`,
     },
     {
