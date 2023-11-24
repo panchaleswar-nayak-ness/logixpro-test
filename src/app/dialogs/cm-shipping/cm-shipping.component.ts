@@ -6,7 +6,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  ResponseStrings ,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterType,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -92,7 +92,7 @@ export class CmShippingComponent implements OnInit {
           this.global.ShowToastr(
             'error',
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('ShippingIndex', res.responseMessage);
         }
@@ -124,7 +124,7 @@ export class CmShippingComponent implements OnInit {
     this.iConsolidationAPI.ShipmentItemDelete(obj).subscribe((res: any) => {
       if (res?.isExecuted) this.shippingData = this.shippingData.slice(0, i);
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('ShipmentItemDelete', res.responseMessage);
       }
     });
@@ -194,7 +194,7 @@ export class CmShippingComponent implements OnInit {
               this.global.ShowToastr(
                 'error',
                 this.global.globalErrorMsg(),
-                'Error!'
+                ToasterTitle.Error
               );
               console.log(
                 'SelCountOfOpenTransactionsTemp',

@@ -106,7 +106,7 @@ export class ScanCodesComponent{
             this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
             this.refreshScanCodeList();
           } else{
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
             console.log("DeleteScanCode",res.responseMessage);
           }
         })
@@ -159,9 +159,9 @@ export class ScanCodesComponent{
           this.refreshScanCodeList();
           this.sendNotification();
         } 
-        else if(!res.isExecuted) this.global.ShowToastr('error','New Scan Code not saved!  Ensure that the scan code being added is not a duplicate and try again.', 'Error!');
+        else if(!res.isExecuted) this.global.ShowToastr('error','New Scan Code not saved!  Ensure that the scan code being added is not a duplicate and try again.', ToasterTitle.Error);
         else {
-          this.global.ShowToastr('error', res.responseMessage, 'Error!');
+          this.global.ShowToastr('error', res.responseMessage, ToasterTitle.Error);
           console.log("InsertScanCodes", res.responseMessage);
         }})
     } else if (item.scanCode != '') {
@@ -183,13 +183,13 @@ export class ScanCodesComponent{
           this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.refreshScanCodeList();
         } else {
-          this.global.ShowToastr('error','Already Exists', 'Error!');
+          this.global.ShowToastr('error','Already Exists', ToasterTitle.Error);
           console.log("UpdateScanCodes",res.responseMessage);
         }
       },
       (error) => {
         const { isExecuted, ResponseMessage } = error.error;
-        if (!isExecuted && ResponseMessage.indexOf('PRIMARY KEY') != -1) this.global.ShowToastr('error','Already Exists', 'Error!');
+        if (!isExecuted && ResponseMessage.indexOf('PRIMARY KEY') != -1) this.global.ShowToastr('error','Already Exists', ToasterTitle.Error);
         else console.log("UpdateScanCodes",error.responseMessage);
         this.refreshScanCodeList();
       }
@@ -215,7 +215,7 @@ export class ScanCodesComponent{
         this.scanCodesList = res.data;
         this.oldScanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("RefreshScanCodes",res.responseMessage);
       }
     });

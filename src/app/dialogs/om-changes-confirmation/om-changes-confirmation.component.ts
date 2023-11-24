@@ -6,6 +6,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service'; 
 import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-changes-confirmation',
@@ -98,7 +99,7 @@ export class OmChangesConfirmationComponent implements OnInit {
             clickDisplayRecord: true,
           });
         }
-        else this.globalService.ShowToastr('error',"An Error occured while retrieving data.", 'Error!'); 
+        else this.globalService.ShowToastr('error',"An Error occured while retrieving data.", ToasterTitle.Error); 
       });
 
     } catch (error) {   

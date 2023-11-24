@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-d-printer-setup',
@@ -45,7 +46,7 @@ getAllPrinters(){
       this.listReportPrinter = res.data.filter(x=>x.label == "Not Able to Print Labels");
     }
     else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("GetAllPrinters",res.responseMessage);
     } 
       
@@ -63,7 +64,7 @@ UpdWSPrefsPrinters(ReportPrinter,LabelPrinter){
       localStorage.setItem("SelectedLabelPrinter",LabelPrinter);
     }
     else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("UpdWSPrefsPrinters",res.responseMessage);
     } 
      

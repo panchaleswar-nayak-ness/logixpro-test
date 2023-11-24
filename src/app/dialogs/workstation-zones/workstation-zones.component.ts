@@ -58,12 +58,12 @@ export class WorkstationZonesComponent implements OnInit {
       this.global.ShowToastr(
         'error',
         'This Zone is already selected for this workstation',
-        'Error!'
+        ToasterTitle.Error
       );
       return false;
     }
     if (this.zones.filter((x: any) => x == this.selectedZone).length == 0) {
-      this.global.ShowToastr('error', 'This zone does not exist', 'Error!');
+      this.global.ShowToastr('error', 'This zone does not exist', ToasterTitle.Error);
       return false;
     }
     return true;
@@ -150,7 +150,7 @@ export class WorkstationZonesComponent implements OnInit {
           this.velocityCodeList.push({ zone: val, isSaved: true });
         });
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('WSPickZoneSelect', res.responseMessage);
       }
     });
@@ -162,7 +162,7 @@ export class WorkstationZonesComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.zones = res.data;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('LocationZonesSelect', res.responseMessage);
       }
     });
@@ -194,13 +194,13 @@ export class WorkstationZonesComponent implements OnInit {
           this.global.ShowToastr(
             'error',
             'This Zone is already selected for this workstation.',
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('WSPickZoneInsert', res.responseMessage);
         }
       });
     } else {
-      this.global.ShowToastr('error', 'Please select any zone,', 'Error!');
+      this.global.ShowToastr('error', 'Please select any zone,', ToasterTitle.Error);
     }
   }
   dltVlCode(vlCode: any) {
@@ -260,7 +260,7 @@ export class WorkstationZonesComponent implements OnInit {
                 );
                 this.getVelocity();
               } else {
-                this.global.ShowToastr('error', res.responseMessage, 'Error!');
+                this.global.ShowToastr('error', res.responseMessage, ToasterTitle.Error);
                 console.log('WSPickZoneDelete', res.responseMessage);
               }
             });

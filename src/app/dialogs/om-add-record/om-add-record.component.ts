@@ -197,7 +197,7 @@ export class OmAddRecordComponent implements OnInit {
         this.mapDefaultValues();
         this.getWarehouses();
       } else {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
         console.log("UserFieldData",res.responseMessage);
       }
     });
@@ -227,7 +227,7 @@ export class OmAddRecordComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             this.dialogRef.close(res.data);
           } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
             console.log("OTTempInsert",res.responseMessage);
           }
         })
@@ -238,7 +238,7 @@ export class OmAddRecordComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
             this.dialogRef.close(res.data);
           } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
             console.log("OTTempUpdate",res.responseMessage);
           }
         })
@@ -259,7 +259,7 @@ export class OmAddRecordComponent implements OnInit {
           this.itemNumberSearchList = res.data;
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
            
 
         } 
@@ -288,7 +288,7 @@ export class OmAddRecordComponent implements OnInit {
         this.wharehouses.unshift("")
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetWarehouses",res.responseMessage);
 
       } 
@@ -344,7 +344,7 @@ export class OmAddRecordComponent implements OnInit {
             }
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
              
           }
           

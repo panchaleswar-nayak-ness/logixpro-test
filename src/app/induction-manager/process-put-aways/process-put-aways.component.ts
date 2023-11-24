@@ -1448,7 +1448,7 @@ async clearBatchData(){
           this.assignedZonesArray= this.zoneAssignArray;
         }
         } else {
-          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
+          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("AvailableZone",res.responseMessage);
         }
       },
@@ -1475,7 +1475,7 @@ async clearBatchData(){
         this.imPreferences = res?.data?.imPreference;
         this.autoAssignAllZones=this.imPreferences.autoAssignAllZones;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("PickToteSetupIndex",res.responseMessage);
       }
     });

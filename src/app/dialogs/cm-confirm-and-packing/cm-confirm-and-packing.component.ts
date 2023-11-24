@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',
@@ -86,7 +86,7 @@ displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   'tra
     if(res.isExecuted)
     {
       if(res.data == ''){
-        this.global.ShowToastr('error',"An error has occurred",'Error!');
+        this.global.ShowToastr('error',"An error has occurred",ToasterTitle.Error);
         console.log("SelContIDConfirmPack",res.responseMessage);
       }else{
         this.getPreferences();
@@ -98,7 +98,7 @@ displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   'tra
       }
     }
     else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("SelContIDConfirmPack",res.responseMessage);
     }
 
@@ -112,7 +112,7 @@ async UnPack(id:any){
     if(res)
     {
       if (res.data == "Fail") {
-        this.global.ShowToastr('error',"An error has occurred", 'Error!');
+        this.global.ShowToastr('error',"An error has occurred", ToasterTitle.Error);
         console.log("ShipTransUnPackUpdate",res.responseMessage);  
     } else {  
        let index =  this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
@@ -121,7 +121,7 @@ async UnPack(id:any){
     }
     }
     else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("ShipTransUnPackUpdate",res.responseMessage);
     }
   
@@ -143,7 +143,7 @@ getPreferences() {
  
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ConsoleDataSB",res.responseMessage);
 
       }
@@ -177,7 +177,7 @@ if(this.orderNumber != ""){
     this.transTable.paginator = this.paginator2;
   }
   else {
-    this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+    this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
     console.log("ConfirmAndPackingIndex",res.responseMessage);
   } 
   
@@ -207,7 +207,7 @@ async ClickConfirmAll(){
     if(res)
     {
       if (res.data == "Fail") {
-        this.global.ShowToastr('error','An error has occurred', 'Error!');
+        this.global.ShowToastr('error','An error has occurred', ToasterTitle.Error);
         console.log("ConfirmAllConfPack",res.responseMessage); 
     } else { 
       if(this.preferencesData?.autoPrintContLabel){
@@ -230,7 +230,7 @@ async ClickConfirmAll(){
       }
     }
     else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("ConfirmAllConfPack",res.responseMessage);
     }
    
@@ -328,7 +328,7 @@ if(searchCount == 0){
  this.iConsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
    
   if (res.data == "Fail") {
-    this.global.ShowToastr('error','An error has occurred', 'Error!');
+    this.global.ShowToastr('error','An error has occurred', ToasterTitle.Error);
     console.log("ConfPackProcModalUpdate",res.responseMessage);  
 } else if (res.data == "Modal") {
     //show modal here

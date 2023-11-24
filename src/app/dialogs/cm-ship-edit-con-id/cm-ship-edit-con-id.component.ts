@@ -11,7 +11,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  ToasterMessages } from 'src/app/common/constants/strings.constants';
+import {  ToasterMessages ,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-ship-edit-con-id',
@@ -81,7 +81,7 @@ export class CmShipEditConIdComponent implements OnInit {
               containerID: this.containerID,
             });
           } else {
-            this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
+            this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log(
               'ContainerIdSingleShipTransUpdate',
               res.responseMessage

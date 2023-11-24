@@ -369,7 +369,7 @@ export class InventoryMasterComponent implements OnInit {
         this.getInsertedItemNumber(res.data, init)
       }
       else{
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
         console.log("GetInventoryItemNumber",res.responseMessage);
       }
     })
@@ -396,7 +396,7 @@ export class InventoryMasterComponent implements OnInit {
     this.iAdminApiService.GetInventory(payLoad).subscribe((res: any) => {
       if(res.isExecuted)
       {
-        if (currentPageItemNumber == '') this.global.ShowToastr('error', 'No Data Found.', 'Error!');
+        if (currentPageItemNumber == '') this.global.ShowToastr('error', 'No Data Found.', ToasterTitle.Error);
         this._searchValue = currentPageItemNumber;
         this.paginationData = {
           total: res.data?.filterCount.total,
@@ -408,7 +408,7 @@ export class InventoryMasterComponent implements OnInit {
         this.getInvMasterLocations(currentPageItemNumber);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetInventory",res.responseMessage);
       }
     });
@@ -430,7 +430,7 @@ export class InventoryMasterComponent implements OnInit {
         this.getInvMasterData = res.data;
         this.initialzeIMFeilds();
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetInventoryMasterData",res.responseMessage);
       }
     });
@@ -452,7 +452,7 @@ export class InventoryMasterComponent implements OnInit {
         this.columns = res.data;
         this.fieldNames=this.columns
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ColumnAlias",res.responseMessage);
       }
     });
@@ -473,7 +473,7 @@ export class InventoryMasterComponent implements OnInit {
         this.count = res.data.count 
         this.initialzeIMFeilds();
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetInventoryMasterLocation",res.responseMessage);
       }
     });
@@ -484,7 +484,7 @@ export class InventoryMasterComponent implements OnInit {
     this.iAdminApiService.GetLocationTable(payLoad).subscribe((res: any) => {
       if (res.isExecuted && res.data) this.locationTable = res.data;
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetLocationTable",res.responseMessage);
       }
     });
@@ -505,7 +505,7 @@ export class InventoryMasterComponent implements OnInit {
         this.getInventory();
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("NextItemNumber",res.responseMessage);
           
         }
@@ -532,14 +532,14 @@ export class InventoryMasterComponent implements OnInit {
         this.getInventory(init);
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("PreviousItemNumber",res.responseMessage);
 
         }
       })
     }
     else{
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("PreviousItemNumber");
 
     }
@@ -568,7 +568,7 @@ export class InventoryMasterComponent implements OnInit {
       resolve(this.currentPageItemNo)
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("PreviousItemNumber",res.responseMessage);
 
 
@@ -615,7 +615,7 @@ export class InventoryMasterComponent implements OnInit {
           this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
         } else {
           this.saveDisabled = false
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
           console.log("UpdateInventoryMaster",res.responseMessage);
         }
       })
@@ -663,7 +663,7 @@ export class InventoryMasterComponent implements OnInit {
             this.currentPageItemNo = itemNumber;
             this.getInventory();
           } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
             console.log("AddNewItem",res.responseMessage);
           }
         })
@@ -710,7 +710,7 @@ export class InventoryMasterComponent implements OnInit {
               this.getInventory();
             })
           } else {
-            this.global.ShowToastr('error','Delete failed!  Item exists in Inventory Map.  Please deallocate item from Inventory Map location(s) before deleting.', 'Error!');
+            this.global.ShowToastr('error','Delete failed!  Item exists in Inventory Map.  Please deallocate item from Inventory Map location(s) before deleting.', ToasterTitle.Error);
             console.log("DeleteItem",res.responseMessage);
           }
         })
@@ -737,7 +737,7 @@ export class InventoryMasterComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
             this.getInventory();
           } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
             console.log("UpdateInventoryMasterOTQuarantine",res.responseMessage);
           }
         })
@@ -768,7 +768,7 @@ export class InventoryMasterComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
             this.getInventory();
           } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
             console.log("UpdateInventoryMasterOTUnQuarantine",res.responseMessage);
           }
         })
@@ -786,7 +786,7 @@ export class InventoryMasterComponent implements OnInit {
   handleFocusOut() {
     if (!this.isDataFound && this.isDataFoundCounter > 0) {
       this.isDataFoundCounter = 0;
-      this.global.ShowToastr('error','Value undefined Does not exist!', 'Error!');
+      this.global.ShowToastr('error','Value undefined Does not exist!', ToasterTitle.Error);
     }
   }
 
@@ -809,7 +809,7 @@ export class InventoryMasterComponent implements OnInit {
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetLocationTable",res.responseMessage);
       }
     });

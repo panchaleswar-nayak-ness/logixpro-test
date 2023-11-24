@@ -15,7 +15,7 @@ import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/globa
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { IUserAPIService } from 'src/app/common/services/user-api/user-api-interface';
 import { UserApiService } from 'src/app/common/services/user-api/user-api.service';
-import {  AppNames ,AppRoutes} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,AppRoutes,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 export interface ITheme {
   name : string
@@ -234,7 +234,7 @@ export class HeaderComponent {
         }
         else 
         {
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
           console.log("configLogout",res.responseMessage);
         }
       });
@@ -242,7 +242,7 @@ export class HeaderComponent {
       this.iUserApi.Logout().subscribe((res:any) => {
         if (res.isExecuted) window.location.href = "/#/login";
         else {
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
           console.log("Logout",res.responseMessage);
         }
       });

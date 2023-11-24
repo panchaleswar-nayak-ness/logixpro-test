@@ -218,7 +218,7 @@ export class OmCreateOrdersComponent implements OnInit {
           }
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("CreateOrdersDT", res.responseMessage);
         }
       });
@@ -321,7 +321,7 @@ export class OmCreateOrdersComponent implements OnInit {
               this.createOrdersDT();
               dialogRef.close();
             } else {
-              this.global.ShowToastr('error', "An error has occurred while deleting the viewed records", 'Error!');
+              this.global.ShowToastr('error', "An error has occurred while deleting the viewed records", ToasterTitle.Error);
               console.log("OTPendDelete", res.responseMessage);
             }
           });
@@ -357,7 +357,7 @@ export class OmCreateOrdersComponent implements OnInit {
           this.orderNumberSearchList = res.data.sort();
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("CreateOrderTypeahead", res.responseMessage);
 
         }
@@ -410,7 +410,7 @@ export class OmCreateOrdersComponent implements OnInit {
         if (refresh) this.createOrdersDT();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetColumnSequence", res.responseMessage);
 
       }

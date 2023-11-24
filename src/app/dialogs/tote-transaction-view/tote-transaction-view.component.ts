@@ -137,7 +137,7 @@ export class ToteTransactionViewComponent implements OnInit {
           this.global.ShowToastr(
             'error',
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('TransTableView', res.responseMessage);
         }
@@ -203,7 +203,7 @@ export class ToteTransactionViewComponent implements OnInit {
                 this.global.ShowToastr(
                   'error',
                   labels.alert.went_worng,
-                  'Error!'
+                  ToasterTitle.Error
                 );
                 console.log('MarkToteFull', res.responseMessage);
               }
@@ -278,7 +278,7 @@ export class ToteTransactionViewComponent implements OnInit {
               this.global.ShowToastr(
                 'error',
                 labels.alert.went_worng,
-                'Error!'
+                ToasterTitle.Error
               );
               console.log('DynamicMethod', res.responseMessage);
             }

@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterMessages } from 'src/app/common/constants/strings.constants';
+import {  ToasterMessages ,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   zone: string
@@ -120,7 +120,7 @@ export class SelectZonesComponent implements OnInit {
   }
   if(recordExists==0)
   {
-    this.global.ShowToastr('error','No non staging zones', 'Error!' );
+    this.global.ShowToastr('error','No non staging zones', ToasterTitle.Error );
   }
   }
   else 
@@ -138,7 +138,7 @@ export class SelectZonesComponent implements OnInit {
 
   if(recordExists==0)
   {
-    this.global.ShowToastr('error','No staging zones', 'Error!' );
+    this.global.ShowToastr('error','No staging zones', ToasterTitle.Error );
   }
   
   }
@@ -196,7 +196,7 @@ export class SelectZonesComponent implements OnInit {
         this.dataSource = new MatTableDataSource<any>(this.elementData);
 
         } else {
-          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
+          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("AvailableZone",res.responseMessage);
         }
       },

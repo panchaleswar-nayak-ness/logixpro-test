@@ -214,7 +214,7 @@ export class TotesAddEditComponent implements OnInit {
           this.global.ShowToastr(
             'error',
             'An Error occured while retrieving data.',
-            'Error!'
+            ToasterTitle.Error
           );
           // Return a fallback value or trigger further error handling if needed
           console.log('GetFromToteTypeAhead');
@@ -265,7 +265,7 @@ export class TotesAddEditComponent implements OnInit {
         this.global.ShowToastr(
           'error',
           'Cannot set the selected tote because it is already set in the batch.',
-          'Error!'
+          ToasterTitle.Error
         );
       }
     } catch (err) {
@@ -273,7 +273,7 @@ export class TotesAddEditComponent implements OnInit {
       this.global.ShowToastr(
         'error',
         'Cannot set the selected tote because it is already set in the batch.',
-        'Error!'
+        ToasterTitle.Error
       );
     }
   }
@@ -324,7 +324,7 @@ export class TotesAddEditComponent implements OnInit {
                   this.getTotes();
                 }
               } else {
-                this.global.ShowToastr('error', 'Already exists', 'Error!');
+                this.global.ShowToastr('error', 'Already exists', ToasterTitle.Error);
                 console.log('ToteSetupDelete', res.responseMessage);
               }
             },
@@ -359,7 +359,7 @@ export class TotesAddEditComponent implements OnInit {
             this.elementDataTote
           );
         } else {
-          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
+          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log('ToteSetup', res.responseMessage);
         }
       },
@@ -400,7 +400,7 @@ export class TotesAddEditComponent implements OnInit {
       this.global.ShowToastr(
         'error',
         'Cannot set the selected tote because it is already set in the batch.',
-        'Error!'
+        ToasterTitle.Error
       );
     } else {
       let selectedTote;
@@ -409,7 +409,7 @@ export class TotesAddEditComponent implements OnInit {
           this.global.ShowToastr(
             'error',
             'Cannot set the selected tote because it is cells is empty.',
-            'Error!'
+            ToasterTitle.Error
           );
           return;
         }
@@ -424,7 +424,7 @@ export class TotesAddEditComponent implements OnInit {
           this.global.ShowToastr(
             'error',
             'Cannot set the selected tote because it is cells is empty.',
-            'Error!'
+            ToasterTitle.Error
           );
           return;
         }

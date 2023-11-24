@@ -93,7 +93,7 @@ export class DeleteRangeComponent implements OnInit {
               this.dialog.closeAll();
               this.dialogRef.close(this.data);
             } else {
-              this.global.ShowToastr('error',"Deleting by range has failed", 'Error!');
+              this.global.ShowToastr('error',"Deleting by range has failed", ToasterTitle.Error);
               this.dialog.closeAll();
               console.log("ReplenishmentsByDelete",res.responseMessage);
             }
@@ -147,7 +147,7 @@ export class DeleteRangeComponent implements OnInit {
         this.beginAutoCompleteList = res.data.sort();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("DeleteRangeBegin",res.responseMessage);
 
       }
@@ -166,7 +166,7 @@ export class DeleteRangeComponent implements OnInit {
         this.endAutoCompleteList = res.data.sort();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!'); 
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error); 
       }
     });
   }

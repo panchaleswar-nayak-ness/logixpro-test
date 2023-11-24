@@ -140,7 +140,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       if (res.data && res.isExecuted) this.fieldNames = res.data;
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!'); 
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error); 
       }
     });
   }
@@ -232,7 +232,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             });
             this.checkRepenishment();
           } else {
-            this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
+            this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log("ItemDetails",res.responseMessage);
           }
         },
@@ -270,7 +270,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.iCommonAPI.getCellSize().subscribe((res) => {
       if (res.isExecuted && res.data) this.cellSizeList = res.data;
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getCellSize",res.responseMessage);
       }
     });
@@ -280,7 +280,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.iCommonAPI.getVelocityCode().subscribe((res) => {
       if (res.isExecuted && res.data) this.velocityCodeList = res.data;
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getVelocityCode",res.responseMessage);
       }
     });
@@ -317,7 +317,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             (res: any) => {
               if (res.data && res.isExecuted) this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);            
               else {
-                this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
+                this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
                 console.log("IMUpdate",res.responseMessage);
               }
             },
@@ -439,7 +439,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             } else this.findLocation(false, 0);
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("CheckForwardLocations",res.responseMessage);
           }
         },
@@ -500,11 +500,11 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                 invMapID                          : res.data.invMapID
               }); 
             } else {
-              this.global.ShowToastr('error','No available locations were found for this item.', 'Error!');
+              this.global.ShowToastr('error','No available locations were found for this item.', ToasterTitle.Error);
             }
 
           } else {
-            this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
+            this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log("FindLocation",res.responseMessage);
           }
         },
@@ -572,28 +572,28 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   validationPopups(val : any) {
     if (val.type == 1) {
       if (val.invMapID <= 0 || !val.invMapID || val.zone == "") {
-        this.global.ShowToastr('error','You must select a location for this transaction before it can be processed.', 'Error!');
+        this.global.ShowToastr('error','You must select a location for this transaction before it can be processed.', ToasterTitle.Error);
         return false;
       } 
 
       if (this.toteForm.getRawValue().dateSensitive && !val.expirationDate) {
-        this.global.ShowToastr('error','This item is date sensitive. You must provide an expiration date.', 'Error!');
+        this.global.ShowToastr('error','This item is date sensitive. You must provide an expiration date.', ToasterTitle.Error);
         return false;
       }
     }    
 
     if (this.toteForm.getRawValue().fifo && val.fifoDate.toLowerCase() == 'expiration date' && !val.expirationDate) {
-      this.global.ShowToastr('error','This item is marked as FIFO with Expiration Date and its FIFO Date.You must provide an Expiration Date.', 'Error!');
+      this.global.ShowToastr('error','This item is marked as FIFO with Expiration Date and its FIFO Date.You must provide an Expiration Date.', ToasterTitle.Error);
       return false;
     }
 
     if (this.toteForm.getRawValue().warehouseSensitive && !val.warehouse) {
-      this.global.ShowToastr('error','This item is warehouse sensitive and must be assigned a warehouse before process can continue.', 'Error!');
+      this.global.ShowToastr('error','This item is warehouse sensitive and must be assigned a warehouse before process can continue.', ToasterTitle.Error);
       return false;
     }    
 
     if (val.toteQty <= 0) {
-      this.global.ShowToastr('error','Quantity should be greater 0', 'Error!');
+      this.global.ShowToastr('error','Quantity should be greater 0', ToasterTitle.Error);
       return false;
     }
 
@@ -656,7 +656,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                     }
                     else this.complete(values);
                   } else {
-                    this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!' );
+                    this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error );
                     console.log("CrossDock",res.responseMessage);
                   }
                 },
@@ -665,7 +665,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             }
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("BatchByZone",res.responseMessage);
           }
         });
@@ -676,7 +676,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     let toteQty = this.toteForm?.get('toteQty')?.value;
     let transactionQuantity = this.toteForm?.get('transactionQuantity')?.value;
     if(this.overReciept && toteQty > transactionQuantity){
-      this.global.ShowToastr("error","quantity cannot be greater than current transaction quantity","Error!");
+      this.global.ShowToastr("error","quantity cannot be greater than current transaction quantity",ToasterTitle.Error);
       return false;
     }
     else{
@@ -742,7 +742,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
           this.dialogRef.close("Task Completed");
           this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success );            
         } else {
-          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
+          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("TaskComplete",res.responseMessage);
         }
       },
@@ -759,7 +759,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         this.imPreferences = res?.data?.imPreference;
         this.overReciept= res.data.imPreference.dontAllowOverReceipt;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("PickToteSetupIndex",res.responseMessage);
       }
     });
@@ -782,7 +782,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result == ResponseStrings.Yes) {
-        if (values.toteQty <= 0) this.global.ShowToastr('error','Quantity should be greater 0', 'Error!');
+        if (values.toteQty <= 0) this.global.ShowToastr('error','Quantity should be greater 0', ToasterTitle.Error);
         else {
 
           let splitQty = 0;

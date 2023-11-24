@@ -8,7 +8,7 @@ import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/common/services/consolidation-api/consolidation-api.service";
 import { GlobalService } from "src/app/common/services/global.service";
-import {  LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-item-selected',
@@ -71,7 +71,7 @@ export class CmItemSelectedComponent implements OnInit {
         this.itemSelectTable.paginator = this.paginator;
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ItemModelData", res.responseMessage);
       }
     }))
@@ -86,7 +86,7 @@ export class CmItemSelectedComponent implements OnInit {
         this.dialogRef.close({ isExecuted: true }); 
       }
       else {
-        this.global.ShowToastr('error', res.responseMessage, 'Error!');
+        this.global.ShowToastr('error', res.responseMessage, ToasterTitle.Error);
         console.log("VerifyItemPost", res.responseMessage);
       } 
 
@@ -112,7 +112,7 @@ export class CmItemSelectedComponent implements OnInit {
         this.dialogRef.close({ isExecuted: true }); 
       }
       else {
-        this.global.ShowToastr('error', res.responseMessage, 'Error!');
+        this.global.ShowToastr('error', res.responseMessage, ToasterTitle.Error);
       } 
     }) 
   } 

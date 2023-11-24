@@ -15,7 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ResponseStrings ,StringConditions,ToasterMessages} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reel-transactions',
@@ -160,7 +160,7 @@ export class ReelTransactionsComponent implements OnInit {
             this.serialTemp.nativeElement.focus();
           }, 100);
         } else {
-          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
+          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log('NextSerialNumber', res.responseMessage);
         }
       },
@@ -219,7 +219,7 @@ export class ReelTransactionsComponent implements OnInit {
           this.global.ShowToastr(
             'error',
             'You must provide at least one reel transaction in order to create reels.',
-            'Error!'
+            ToasterTitle.Error
           );
         } else {
           let numUnassigned = this.partsNotAssigned;
@@ -284,7 +284,7 @@ export class ReelTransactionsComponent implements OnInit {
       this.global.ShowToastr(
         'error',
         'You must provide a serial number for each reel transaction.',
-        'Error!'
+        ToasterTitle.Error
       );
       return;
     }
@@ -296,7 +296,7 @@ export class ReelTransactionsComponent implements OnInit {
         'You must provide a unique serial number for each reel transaction.  Serial ' +
           hasDuplicatesFlag +
           ' is duplicated.',
-        'Error!'
+        ToasterTitle.Error
       );
       return;
     }
@@ -338,7 +338,7 @@ export class ReelTransactionsComponent implements OnInit {
           this.global.ShowToastr(
             'error',
             'The following serial numbers have problems and could not be assigned',
-            'Error!'
+            ToasterTitle.Error
           );
         } else {
           let payload = {
@@ -352,7 +352,7 @@ export class ReelTransactionsComponent implements OnInit {
                 this.global.ShowToastr(
                   'error',
                   'There was an error while attempting to save the new reels.  See the error log for details.',
-                  'Error!'
+                  ToasterTitle.Error
                 );
               } else {
                 this.createdReel = res.data;
@@ -392,13 +392,13 @@ export class ReelTransactionsComponent implements OnInit {
                 });
               }
             } else {
-              this.global.ShowToastr('error', res.responseMessage, 'Error!');
+              this.global.ShowToastr('error', res.responseMessage, ToasterTitle.Error);
               console.log('ReelsCreate', res.responseMessage);
             }
           });
         }
       } else {
-        this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
+        this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
       }
     });
   }
@@ -453,7 +453,7 @@ export class ReelTransactionsComponent implements OnInit {
           this.generateReelAndSerial.data[index].reel_serial_number =
             res.data + '-RT';
         } else {
-          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
+          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log('NextSerialNumber', res.responseMessage);
         }
       },

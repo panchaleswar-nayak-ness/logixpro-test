@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import {  ResponseStrings ,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterType,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-lookup-adjustment-lookup-setup',
@@ -54,7 +54,7 @@ AddBtn = false
       else 
       {
         
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("adjustmentlookup", res.responseMessage);
       } 
     })
@@ -77,11 +77,11 @@ AddBtn = false
       if(res.isExecuted){
         this.AddBtn = false
         ele.oldVal = ele.currentVal
-        this.global.ShowToastr(ToasterType.Success,`Saved Successfully`, 'Error!');
+        this.global.ShowToastr(ToasterType.Success,`Saved Successfully`, ToasterTitle.Error);
       }
       else{
         
-        this.global.ShowToastr('error',`Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!');
+        this.global.ShowToastr('error',`Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, ToasterTitle.Error);
         console.log("LocationZone", res.responseMessage);
       }
     }))
@@ -126,7 +126,7 @@ AddBtn = false
             this.getadjustmentlookup()
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("deleteAdjustmentLookup",res.responseMessage);
           }
         }))

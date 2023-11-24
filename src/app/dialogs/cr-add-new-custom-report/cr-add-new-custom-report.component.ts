@@ -93,7 +93,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
         this.global.ShowToastr(
           'error',
           `${fields[x]} must not be left blank!`,
-          'Error!'
+          ToasterTitle.Error
         );
         valid = false;
         break;
@@ -103,7 +103,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
     const exists = this.isFileNameAlreadyExists(newParams[1]);
 
     if (exists) {
-      this.global.ShowToastr('error', `Filename must be unique!`, 'Error!');
+      this.global.ShowToastr('error', `Filename must be unique!`, ToasterTitle.Error);
       valid = false;
     }
 
@@ -115,7 +115,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
           this.global.ShowToastr(
             'error',
             `Validation for adding a new report failed with an unknown error.  Please contact Scott Tech for support if this persists.`,
-            'Error!'
+            ToasterTitle.Error
           );
         } else {
           this.appendstring = this.buildAppendString(
@@ -178,7 +178,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
                     this.global.ShowToastr(
                       'error',
                       'An error occured while retrieving data.',
-                      'Error!'
+                      ToasterTitle.Error
                     );
                     // Return a fallback value or trigger further error handling if needed
                     return of({ isExecuted: false });
@@ -214,7 +214,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
         this.global.ShowToastr(
           'error',
           'Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.',
-          'Error!'
+          ToasterTitle.Error
         );
         console.log('restoreDesign', res.responseMessage);
       } else {
@@ -248,7 +248,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
             this.global.ShowToastr(
               'error',
               'Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.',
-              'Error!'
+              ToasterTitle.Error
             );
             console.log('deleteReport', res.responseMessage);
           } else {

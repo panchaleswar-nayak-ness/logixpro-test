@@ -9,6 +9,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service'; 
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-user-fields',
@@ -63,7 +64,7 @@ export class UserFieldsComponent implements OnInit {
         this.setValues();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ColumnAlias",res.responseMessage);
       }
     })

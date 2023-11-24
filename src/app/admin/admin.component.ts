@@ -10,7 +10,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { IAdminApiService } from '../common/services/admin-api/admin-api-interface';
 import { AdminApiService } from '../common/services/admin-api/admin-api.service';
 import { GlobalService } from '../common/services/global.service';
-import {  LiveAnnouncerMessage ,ResponseStrings,Column} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings,Column,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-admin',
@@ -165,7 +165,7 @@ export class AdminComponent implements OnInit {
       if (res.data) {
         this.fieldNames = res.data;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ColumnAlias",res.responseMessage);
       }
     });
@@ -182,7 +182,7 @@ export class AdminComponent implements OnInit {
           this.searchAutocompleteList = res.data;
         } else {
           
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("location",res.responseMessage);
           
         }
@@ -253,7 +253,7 @@ export class AdminComponent implements OnInit {
           this.inventoryDetail.get("splitCase")?.setValue(data?.splitCase ? ResponseStrings.Yes : 'No');
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("Inventorymasterdata",res.responseMessage);
 
         }
@@ -324,7 +324,7 @@ export class AdminComponent implements OnInit {
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetAdminMenu",res.responseMessage);
 
       }

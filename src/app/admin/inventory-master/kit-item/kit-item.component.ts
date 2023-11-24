@@ -126,7 +126,7 @@ export class KitItemComponent implements OnInit, OnChanges {
             this.sendNotification();
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("DeleteKit", res.responseMessage);
 
 
@@ -149,12 +149,12 @@ export class KitItemComponent implements OnInit, OnChanges {
   saveKit(newItem: any, e: any) {
 
     if (parseInt(e.kitQuantity) <= 0) {
-      this.global.ShowToastr('error',"Kit Quantity should be greater than 0", 'Error!');
+      this.global.ShowToastr('error',"Kit Quantity should be greater than 0", ToasterTitle.Error);
       return;        
     }
 
     if (!e.itemNumber || !e.kitQuantity) {            
-      this.global.ShowToastr('error',"Please fill required fields", 'Error!');
+      this.global.ShowToastr('error',"Please fill required fields", ToasterTitle.Error);
       return;
     }
 
@@ -178,7 +178,7 @@ export class KitItemComponent implements OnInit, OnChanges {
           this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.sendNotification();
         } else {
-          this.global.ShowToastr('error',"Invalid Input", 'Error!');
+          this.global.ShowToastr('error',"Invalid Input", ToasterTitle.Error);
           console.log("InsertKit",res.responseMessage);
         }
 
@@ -199,7 +199,7 @@ export class KitItemComponent implements OnInit, OnChanges {
           this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.sendNotification();
         } else {
-          this.global.ShowToastr('error',"Invalid Input", 'Error!');
+          this.global.ShowToastr('error',"Invalid Input", ToasterTitle.Error);
           console.log("UpdateKit",res.responseMessage);
         }
 
@@ -265,7 +265,7 @@ export class KitItemComponent implements OnInit, OnChanges {
           this.isValidForm = false;
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("SearchItem", res.responseMessage);
 
 
@@ -279,7 +279,7 @@ export class KitItemComponent implements OnInit, OnChanges {
     if (this.kitItem.controls['itemNumber'].value == e.option.value.itemNumber) {
       this.dialogItemNumber = '';
       this.dialogDescription = '';
-      this.global.ShowToastr('error',"Item " + e.option.value.itemNumber + " cannot belong to itself in a kit.", 'Error!');
+      this.global.ShowToastr('error',"Item " + e.option.value.itemNumber + " cannot belong to itself in a kit.", ToasterTitle.Error);
       this.isValidForm = false
       return;
     } else {
@@ -296,7 +296,7 @@ export class KitItemComponent implements OnInit, OnChanges {
         this.dialogDescription = e.option.value.description;
       } else {
         this.isValidForm = false
-        this.global.ShowToastr('error',"Item " + this.dialogItemNumber + " already exists in kit.", 'Error!');
+        this.global.ShowToastr('error',"Item " + this.dialogItemNumber + " already exists in kit.", ToasterTitle.Error);
         this.dialogItemNumber = '';
         this.dialogDescription = '';
         return;

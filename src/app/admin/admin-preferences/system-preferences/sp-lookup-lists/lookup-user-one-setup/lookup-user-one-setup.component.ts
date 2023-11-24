@@ -61,7 +61,7 @@ export class LookupUserOneSetupComponent implements OnInit {
       else 
       {
         
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("userfieldlookup", res.responseMessage);
       }
     })
@@ -92,7 +92,7 @@ export class LookupUserOneSetupComponent implements OnInit {
       }
       else{
         
-        this.global.ShowToastr('error',`Field is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!');
+        this.global.ShowToastr('error',`Field is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, ToasterTitle.Error);
         console.log("updateuserfieldlookup",res.responseMessage);
       }
     }))
@@ -121,7 +121,7 @@ export class LookupUserOneSetupComponent implements OnInit {
             this.getUserFeild1()
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("deleteUserfieldLookUp",res.responseMessage);
           }
         }))

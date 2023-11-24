@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,Column,zoneType} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,Column,zoneType,ToasterTitle} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-view-orders',
@@ -135,13 +135,13 @@ export class ViewOrdersComponent implements OnInit {
   
         }
         else{
-          this.global.ShowToastr('error','There are no orders for your zone', 'Error!');
+          this.global.ShowToastr('error','There are no orders for your zone', ToasterTitle.Error);
           this.isDisableSubmit = true
           
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("OrdersInZone",res.responseMessage);
       }
       
@@ -209,7 +209,7 @@ export class ViewOrdersComponent implements OnInit {
           this.orderTransDataSource.sort = this.viewTransSort;
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("InZoneTransDT",res.responseMessage);
 
         }

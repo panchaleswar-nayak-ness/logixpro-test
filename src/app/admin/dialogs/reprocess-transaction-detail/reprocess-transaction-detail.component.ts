@@ -141,7 +141,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
       }
       else{
-        this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
+        this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
         console.log("SaveTransaction",res.responseMessage);
       }
     });
@@ -173,7 +173,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.unitOfMeasure_list = res.data;
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getUnitOfMeasure:", res.responseMessage);
 
       }
@@ -265,7 +265,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
 
         } else {
-          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
+          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("TransactionByID",res.responseMessage);
         }
       },

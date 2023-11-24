@@ -88,7 +88,7 @@ export class CmShippingTransactionComponent implements OnInit {
             this.tableData = new MatTableDataSource(this.STIndex.tableData);
             this.tableData.paginator = this.paginator;
           } else {
-            this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
+            this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log('ShippingTransactionIndex', res.responseMessage);
           }
         },
@@ -127,7 +127,7 @@ export class CmShippingTransactionComponent implements OnInit {
       this.global.ShowToastr(
         'error',
         'The given Tote ID is not contained within this order number',
-        'Error!'
+        ToasterTitle.Error
       );
     }
   }
@@ -175,7 +175,7 @@ export class CmShippingTransactionComponent implements OnInit {
               this.global.ShowToastr(
                 'error',
                 'An error has occurred',
-                'Error!'
+                ToasterTitle.Error
               );
             } else if (res.data == 0) {
               let dialogRef: any = this.global.OpenDialog(
@@ -211,7 +211,7 @@ export class CmShippingTransactionComponent implements OnInit {
                         this.global.ShowToastr(
                           'error',
                           ToasterMessages.SomethingWentWrong,
-                          'Error!'
+                          ToasterTitle.Error
                         );
                         console.log(
                           'CompletePackingUpdate',
@@ -273,7 +273,7 @@ export class CmShippingTransactionComponent implements OnInit {
                             this.global.ShowToastr(
                               'error',
                               ToasterMessages.SomethingWentWrong,
-                              'Error!'
+                              ToasterTitle.Error
                             );
                             console.log(
                               'CompletePackingUpdate',
@@ -291,7 +291,7 @@ export class CmShippingTransactionComponent implements OnInit {
               });
             }
           } else {
-            this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
+            this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log('SelCountOfOpenTransactionsTemp', res.responseMessage);
           }
         },

@@ -4,6 +4,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
+import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sp-lookup-lists',
@@ -29,7 +30,7 @@ export class SpLookupListsComponent implements OnInit {
         this.sharedService.updateFieldNames(this.fieldNames)
       }
       else  {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ColumnAlias",res.responseMessage);
 
       }

@@ -40,7 +40,7 @@ export class OmUserFieldDataComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.userFieldData = res.data[0];
       } else {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
         console.log("UserFieldData",res.responseMessage);
       }
     });
@@ -64,7 +64,7 @@ export class OmUserFieldDataComponent implements OnInit {
         this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
         this.dialogRef.close(res.data);
       } else {
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
         console.log("UserFieldDataUpdate",res.responseMessage);
       }
     });

@@ -47,7 +47,7 @@ export class BatchDeleteConfirmationComponent {
                 this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
+                this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
                 console.log("BatchTotesDelete",res.responseMessage);
                 this.dialogRef.close({isExecuted:false});
               }
@@ -63,7 +63,7 @@ export class BatchDeleteConfirmationComponent {
                 this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
                 this.dialogRef.close({ isExecuted: true });
               } else {
-                this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
+                this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
                 console.log("AllBatchDelete",res.responseMessage);
                 this.dialogRef.close({isExecuted:false});
               }

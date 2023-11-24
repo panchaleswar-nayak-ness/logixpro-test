@@ -158,7 +158,7 @@ export class CrossDockTransactionComponent implements OnInit {
           this.upperBound =
             res.data.transaction.length < 5 ? res.data.numberRecords : 5;
         } else {
-          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
+          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log('CrossDock', res.responseMessage);
         }
       },
@@ -208,13 +208,13 @@ export class CrossDockTransactionComponent implements OnInit {
           this.global.ShowToastr(
             'error',
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('NextTote', res.responseMessage);
         }
       });
     } else {
-      this.global.ShowToastr('error', 'Order must be selected.', 'Error!');
+      this.global.ShowToastr('error', 'Order must be selected.', ToasterTitle.Error);
       this.clearMatSelectList();
       console.log('getNxtToteIds');
     }
@@ -228,7 +228,7 @@ export class CrossDockTransactionComponent implements OnInit {
     };
     this.iInductionManagerApi.NextToteUpdate(updatePayload).subscribe((res) => {
       if (!res.isExecuted) {
-        this.global.ShowToastr('error', 'Something is wrong.', 'Error!');
+        this.global.ShowToastr('error', 'Something is wrong.', ToasterTitle.Error);
         console.log('NextToteUpdate', res.responseMessage);
       }
     });
@@ -349,7 +349,7 @@ export class CrossDockTransactionComponent implements OnInit {
                 this.global.ShowToastr(
                   'error',
                   ToasterMessages.SomethingWentWrong,
-                  'Error!'
+                  ToasterTitle.Error
                 );
                 console.log('CompletePick', res.responseMessage);
               }
