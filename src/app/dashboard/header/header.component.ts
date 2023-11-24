@@ -15,7 +15,7 @@ import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/globa
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { IUserAPIService } from 'src/app/common/services/user-api/user-api-interface';
 import { UserApiService } from 'src/app/common/services/user-api/user-api.service';
-import {  AppNames } from 'src/app/common/constants/strings.constants';
+import {  AppNames ,AppRoutes} from 'src/app/common/constants/strings.constants';
 
 export interface ITheme {
   name : string
@@ -80,14 +80,14 @@ export class HeaderComponent {
             this.breadcrumbList.push({
                 name:'LogixPro',
                 menu: '',
-                value:'/dashboard'
+                value:AppRoutes.Dashboard
               })
             }
         }else{
             this.breadcrumbList.push({
                 name:'LogixPro',
                 menu: '',
-                value:'/dashboard'
+                value:AppRoutes.Dashboard
               })
         
         }
@@ -211,14 +211,14 @@ export class HeaderComponent {
     }  
     if(!menu) {
       // Reverts side bar to it's orignal state 
-      this.router.navigate(['/dashboard']);
+      this.router.navigate([AppRoutes.Dashboard]);
       this.sharedService.resetSidebar();
       let filter = this.breadcrumbList.filter(e => e.name == "Dashboard"); 
       if (filter.length == 0) {
         this.breadcrumbList.push({
           name:'Dashboard',
           menu: '',
-          value:'/dashboard'
+          value:AppRoutes.Dashboard
         });
       }
     }    

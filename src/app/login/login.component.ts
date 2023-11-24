@@ -12,7 +12,7 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { IUserAPIService } from '../common/services/user-api/user-api-interface';
 import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
-import {  AppNames ,AppPermissions} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,AppPermissions,AppRoutes} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'login',
@@ -129,7 +129,7 @@ export class LoginComponent {
       localStorage.setItem('LastRoute', lastRoute);
     }
     if(this.auth.IsloggedIn()){
-      this.router.navigate(['/dashboard']);
+      this.router.navigate([AppRoutes.Dashboard]);
     }
     else{
       this.iUserApi.getSecurityEnvironment().subscribe((res:any) => {
@@ -303,7 +303,7 @@ export class LoginComponent {
            localStorage.removeItem('LastRoute');
          }
          else{
-           this.router.navigate(['/dashboard']);
+           this.router.navigate([AppRoutes.Dashboard]);
          }	
        }
     }
@@ -338,7 +338,7 @@ export class LoginComponent {
       
     }else{
     localStorage.setItem('isAppVerified',JSON.stringify({appName:appName,isVerified:false}))
-      this.router.navigate(['/dashboard']);
+      this.router.navigate([AppRoutes.Dashboard]);
     }
   }
 
@@ -371,7 +371,7 @@ export class LoginComponent {
             break;
          
       default:
-        this.router.navigate(['/dashboard']);
+        this.router.navigate([AppRoutes.Dashboard]);
         break;
     }
   }

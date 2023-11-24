@@ -21,7 +21,7 @@ export class SideNavComponent implements OnInit {
   isMenuHide:any = false;
   dynamicMenu: any = [];
   menus: any = [
-    { icon: 'home', title: 'Home', route: '/dashboard' ,permission: 'Home'},
+    { icon: 'home', title: 'Home', route: AppRoutes.Dashboard ,permission: 'Home'},
     { icon: 'electric_bolt', title: 'Import Export', route: '/ImportExport' ,permission: 'Import Export'},
     { icon: 'manage_accounts', title: 'Admin', route: '/admin', permission: 'Admin Menu'},
     { icon: 'checklist', title: 'Induction Manager', route: '/InductionManager' ,permission: 'Induction Manager'},
@@ -41,7 +41,7 @@ export class SideNavComponent implements OnInit {
 
   ];
   adminMenus: any = [
-    { icon: 'arrow_back', title: 'Admin', route: '/dashboard', class: 'back-class' ,permission: 'Dashboard'},
+    { icon: 'arrow_back', title: 'Admin', route: AppRoutes.Dashboard, class: 'back-class' ,permission: 'Dashboard'},
     { icon: 'dashboard', title: 'Inventory', route: '/admin/inventoryMaster',permission: 'Inventory' },
     { icon: 'directions_alt', title: 'Inventory Map', route: '/admin/inventoryMap' ,permission: 'Inventory Map'},
     { icon: 'analytics', title: 'Reports', route: '/admin/reports' ,permission: 'Reports'},
@@ -58,7 +58,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'published_with_changes', title: 'System Replenishment', route: '/admin/systemReplenishment' ,permission: 'Replenishment'},
   ];
   inductionMenus: any = [
-    { icon: 'arrow_back', title: 'Induction Manager', route: '/dashboard', class: 'back-class' , permission: 'Induction Manager'},
+    { icon: 'arrow_back', title: 'Induction Manager', route: AppRoutes.Dashboard, class: 'back-class' , permission: 'Induction Manager'},
     { icon: 'directions_alt', title: 'Process Picks', route: '/InductionManager/ProcessPicks' ,permission:'Tote Transactions'},
     { icon: 'dashboard', title: 'Process Put Aways', route: '/InductionManager/ProcessPutAways' ,permission:'Tote Transactions'},
     { icon: 'manage_accounts', title: 'Admin', route: '/InductionManager/Admin' ,permission:'Tote Admin Menu'},
@@ -93,7 +93,7 @@ export class SideNavComponent implements OnInit {
   ];
 
   orderManagerMenus: any = [
-    { icon: 'arrow_back', title: AppPermissions.OrderManager, route: '/dashboard', class: 'back-class' , permission: AppPermissions.OrderManager},
+    { icon: 'arrow_back', title: AppPermissions.OrderManager, route: AppRoutes.Dashboard, class: 'back-class' , permission: AppPermissions.OrderManager},
     { icon: ' pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager/OrderManager' ,permission:'Admin Release Orders'},
     { icon: 'view_module', title: 'Order Status ', route: '/OrderManager/OrderStatus' ,permission:true},
     { icon: 'event_note', title: 'Event Log ', route: '/OrderManager/EventLog' ,permission:'Admin Release Orders'},
@@ -225,7 +225,7 @@ export class SideNavComponent implements OnInit {
 
   loadMenus(menu: any) {
     this.sharedService.updateLoggedInUser(this.userData.userName,this.userData.wsid,menu.route);
-    if (!menu) menu = {route : '/dashboard'};      
+    if (!menu) menu = {route : AppRoutes.Dashboard};      
 
     if(menu.route != '')
     { 
@@ -233,7 +233,7 @@ export class SideNavComponent implements OnInit {
 
       if (menu.route.includes('/admin')) {
         if (menu.route.includes('/admin/')) this.adminMenus[0].route = '/admin';
-        else this.adminMenus[0].route = '/dashboard';
+        else this.adminMenus[0].route = AppRoutes.Dashboard;
         this.childMenus = this.adminMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
@@ -242,14 +242,14 @@ export class SideNavComponent implements OnInit {
 
       if (menu.route.includes('/InductionManager') && menu.route != '/InductionManager/Admin' && !menu.route.includes('/InductionManager/Admin')) {
         if (menu.route.includes('/InductionManager/')) this.inductionMenus[0].route = '/InductionManager';
-        else this.inductionMenus[0].route = '/dashboard';
+        else this.inductionMenus[0].route = AppRoutes.Dashboard;
         this.childMenus = this.inductionMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
         return;
       }
 
-      if (['/dashboard','/FlowrackReplenish'].indexOf(menu.route) > -1) {
+      if ([AppRoutes.Dashboard,'/FlowrackReplenish'].indexOf(menu.route) > -1) {
         this.isParentMenu = true;
         this.isChildMenu = false;
       }
@@ -262,7 +262,7 @@ export class SideNavComponent implements OnInit {
     }
     if (menu.route.includes('/ConsolidationManager')) {
       let splittedRoute=menu.route.split('/');
-      if(splittedRoute[2] === undefined) this.consolidationMenus[0].route = '/dashboard';
+      if(splittedRoute[2] === undefined) this.consolidationMenus[0].route = AppRoutes.Dashboard;
       else this.consolidationMenus[0].route = '/ConsolidationManager';
       this.childMenus = this.consolidationMenus;
       this.isParentMenu = false;
@@ -278,7 +278,7 @@ export class SideNavComponent implements OnInit {
 
     if (menu.route.includes('/OrderManager')) {
       let splittedRoute = menu.route.split('/');
-      if(splittedRoute[2]===undefined) this.orderManagerMenus[0].route = '/dashboard';
+      if(splittedRoute[2]===undefined) this.orderManagerMenus[0].route = AppRoutes.Dashboard;
       else this.orderManagerMenus[0].route = '/OrderManager';
       this.childMenus = this.orderManagerMenus;
       this.isParentMenu = false;
@@ -303,7 +303,7 @@ export class SideNavComponent implements OnInit {
     
     if (menu.route.includes('/FlowrackReplenish')) {
       let splittedRoute=menu.route.split('/');
-      if(splittedRoute[2] === undefined) this.flowrackReplenishmentMenus[0].route = '/dashboard';
+      if(splittedRoute[2] === undefined) this.flowrackReplenishmentMenus[0].route = AppRoutes.Dashboard;
       else this.flowrackReplenishmentMenus[0].route = '/FlowrackReplenish';
       this.childMenus = this.flowrackReplenishmentMenus;
       this.isParentMenu = false;
