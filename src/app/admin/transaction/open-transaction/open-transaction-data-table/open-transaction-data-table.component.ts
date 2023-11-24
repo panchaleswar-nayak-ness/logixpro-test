@@ -28,7 +28,7 @@ export class OpenTransactionDataTableComponent implements OnInit {
     'id',
     'actions',
   ];
-  identify='Order Number';
+  identify=Column.OrderNumber;
   reels='non';
   orderItem='';
   payload: any;

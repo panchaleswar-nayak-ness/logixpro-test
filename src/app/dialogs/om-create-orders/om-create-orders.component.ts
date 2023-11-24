@@ -35,7 +35,7 @@ export class OmCreateOrdersComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   sequenceKeyMapping: any = [
     { sequence: 'Transaction Type', key: 'transactionType' },
-    { sequence: 'Order Number', key: 'orderNumber' },
+    { sequence: Column.OrderNumber, key: 'orderNumber' },
     { sequence: 'Priority', key: 'priority' },
     { sequence: 'Required Date', key: 'requiredDate' },
     { sequence: 'User Field1', key: 'userField1' },

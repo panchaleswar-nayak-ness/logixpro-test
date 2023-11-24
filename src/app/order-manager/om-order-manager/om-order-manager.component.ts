@@ -32,7 +32,7 @@ export class OmOrderManagerComponent implements OnInit {
   public userData: any;
   OMIndex: any;
 
-  column    : string = "Order Number";
+  column    : string = Column.OrderNumber;
   case      : string = "Equals";
   
   value1    : string = "";
@@ -57,7 +57,7 @@ export class OmOrderManagerComponent implements OnInit {
   isActiveTrigger:boolean =false;
   allColumns : any = [
     { colHeader: "transactionType", colDef: "Transaction Type" },
-    { colHeader: "orderNumber", colDef: "Order Number" },
+    { colHeader: "orderNumber", colDef: Column.OrderNumber },
     { colHeader: "priority", colDef: "Priority" },
     { colHeader: "requiredDate", colDef: "Required Date" },
     { colHeader: "userField1", colDef: "User Field1" },

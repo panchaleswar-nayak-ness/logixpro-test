@@ -44,7 +44,7 @@ export class SrCurrentOrderComponent implements OnInit {
     'lotNumber',
     'Trans Qty',
     'description',
-    'Order Number',
+    Column.OrderNumber,
     'UofM',
     'Batch Pick ID',
     'Serial Number',
@@ -65,7 +65,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: 'lotNumber', label: Column.LotNumber, value: 'lotNumber', filterProperty:'lot Number' },
     { defination: 'Trans Qty', label: 'Trans Qty', value: 'transactionQuantity' , filterProperty:'Trans Qty'},
     { defination: 'description', label: 'Description', value: 'description', filterProperty:'Description' },
-    { defination: 'Order Number', label: 'Order Number', value: 'orderNumber', filterProperty:'Order Number' },
+    { defination: Column.OrderNumber, label: Column.OrderNumber, value: 'orderNumber', filterProperty:Column.OrderNumber },
     { defination: 'UofM', label: 'UofM', value: 'unitOfMeasure', filterProperty:'UofM' },
     { defination: 'Batch Pick ID', label: 'Batch Pick ID', value: 'batchPickID', filterProperty:'Batch Pick ID' },
     { defination: 'Serial Number', label: 'Serial Number', value: 'serialNumber', filterProperty:'Serial Number' },
@@ -127,8 +127,8 @@ export class SrCurrentOrderComponent implements OnInit {
       key: 'lotNumber',
     },
     {
-      value: 'Order Number',
-      viewValue: 'Order Number',
+      value: Column.OrderNumber,
+      viewValue: Column.OrderNumber,
       sortColumn: '12',
       key: 'orderNumber',
     },
@@ -513,7 +513,7 @@ export class SrCurrentOrderComponent implements OnInit {
     this.repByDeletePayload.filter1 = '';
     this.repByDeletePayload.filter2 = '';
     this.repByDeletePayload.searchString = this.selectedOrder.orderNumber;
-    this.repByDeletePayload.searchColumn = 'Order Number';
+    this.repByDeletePayload.searchColumn = Column.OrderNumber;
     this.repByDeletePayload.status = ResponseStrings.AllCaps;
     this.ReplenishmentsByDelete();
     this.selectedOrder = {};

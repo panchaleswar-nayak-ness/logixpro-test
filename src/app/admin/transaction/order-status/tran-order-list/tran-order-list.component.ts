@@ -68,7 +68,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'id', colDef: 'ID' },
     { colHeader: 'importBy', colDef: 'Import By' },
     { colHeader: 'fileFrom', colDef: 'filefrom' },
-    { colHeader: 'orderNumber', colDef: 'Order Number' },
+    { colHeader: 'orderNumber', colDef: Column.OrderNumber },
     { colHeader: 'lineSequence', colDef: 'Line Sequence' },
     { colHeader: 'carousel', colDef: 'Carousel' },
     { colHeader: 'row', colDef: 'Row' },
@@ -154,8 +154,8 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
   @Input() set orderNoEvent(event: any) {
     if (event) {
-      this.toteId = event.columnFIeld != 'Order Number' ? event.searchField : '';
-      this.orderNo = event.columnFIeld === 'Order Number' ? event.searchField : '';
+      this.toteId = event.columnFIeld != Column.OrderNumber ? event.searchField : '';
+      this.orderNo = event.columnFIeld === Column.OrderNumber ? event.searchField : '';
       this.searchCol = '';
       this.searchString = '';
       this.getContentData();
