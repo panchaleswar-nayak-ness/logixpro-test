@@ -17,7 +17,7 @@ import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -333,14 +333,14 @@ export class CrossDockTransactionComponent implements OnInit {
                         ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
                     );
                     this.global.ShowToastr(
-                      'success',
+                      ToasterType.Success,
                       'Pick Completed Successfully',
                       ToasterTitle.Success
                     );
                   }
                 } else {
                   this.global.ShowToastr(
-                    'success',
+                    ToasterType.Success,
                     'Pick Completed Successfully',
                     ToasterTitle.Success
                   );
@@ -392,7 +392,7 @@ export class CrossDockTransactionComponent implements OnInit {
             this.PrintCrossDockForLbl();
           } else {
             this.global.ShowToastr(
-              'success',
+              ToasterType.Success,
               'Pick Completed Successfully',
               ToasterTitle.Success
             );

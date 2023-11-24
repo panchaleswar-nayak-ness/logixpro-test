@@ -511,7 +511,7 @@ export class GenerateTransactionComponent implements OnInit {
       };
       this.iAdminApiService.UpdateTransaction(payload).subscribe((res: any) => {
         if (res?.isExecuted) {
-          this.global.ShowToastr('success', labels.alert.success, ToasterTitle.Success);
+          this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterTitle.Success);
           this.clearMatSelectList();
         } else {
           this.global.ShowToastr(

@@ -32,7 +32,7 @@ export class CcsifComponent implements OnInit {
     if (changeType == 'start' || changeType == 'restart') {
         if (success) {
             this.Status = 'Online';
-            this.global.ShowToastr('success','Service ' + changeType + ' was successful.','Success');
+            this.global.ShowToastr(ToasterType.Success,'Service ' + changeType + ' was successful.','Success');
         } else {
           this.Status = 'Offline'; 
           this.global.ShowToastr('error','Service ' + changeType + ' was unsuccessful.  Please try again or contact Scott Tech for support.','Error');
@@ -40,7 +40,7 @@ export class CcsifComponent implements OnInit {
     } else {
       this.Status = 'Offline'; 
         if (success) {
-          this.global.ShowToastr('success','Service stop was successful.','Success');
+          this.global.ShowToastr(ToasterType.Success,'Service stop was successful.','Success');
         } else {
           this.global.ShowToastr(ToasterType.Error,'Service stop encountered an error.  Please try again or contact Scott Tech for support.',ToasterTitle.Error);
         };

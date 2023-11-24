@@ -11,7 +11,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-delete-range',
@@ -89,7 +89,7 @@ export class DeleteRangeComponent implements OnInit {
         if (result === ResponseStrings.Yes) {
           this.iAdminApiService.ReplenishmentsByDelete(this.repByDeletePayload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
-              this.global.ShowToastr('success',labels.alert.delete, ToasterTitle.Success);
+              this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
               this.dialog.closeAll();
               this.dialogRef.close(this.data);
             } else {

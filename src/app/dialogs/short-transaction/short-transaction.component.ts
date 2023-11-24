@@ -6,7 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-short-transaction',
@@ -73,7 +73,7 @@ export class ShortTransactionComponent implements OnInit {
           this.iInductionManagerApi.shortTransaction(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialogRef.close(res);
-              this.global.ShowToastr('success',labels.alert.update, ToasterTitle.Success);
+              this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
             }
             else {
               this.global.ShowToastr('error',"An error occured when shorting this transaction", 'Error');

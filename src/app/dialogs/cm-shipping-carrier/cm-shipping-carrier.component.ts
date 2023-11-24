@@ -15,7 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-shipping-carrier',
@@ -106,7 +106,7 @@ export class CmShippingCarrierComponent implements OnInit {
 
     this.iConsolidationAPI.CarrierSave(paylaod).subscribe((res: any) => {
       if (res.isExecuted) {
-        this.global.ShowToastr('success', res.message, ToasterTitle.Success);
+        this.global.ShowToastr(ToasterType.Success, res.message, ToasterTitle.Success);
         this.getCarrier();
       } else {
         this.global.ShowToastr('error', res.message);

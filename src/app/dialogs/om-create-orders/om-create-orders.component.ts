@@ -20,7 +20,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-create-orders',
@@ -259,10 +259,10 @@ export class OmCreateOrdersComponent implements OnInit {
         };
         this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.global.ShowToastr('success', "Order Released Successfully!", ToasterTitle.Success);
+            this.global.ShowToastr(ToasterType.Success, "Order Released Successfully!", ToasterTitle.Success);
           }
           else {
-            this.global.ShowToastr('success', "Order Released Successfully!", ToasterTitle.Success);
+            this.global.ShowToastr(ToasterType.Success, "Order Released Successfully!", ToasterTitle.Success);
             console.log("ReleaseOrders", res.responseMessage);
 
           }
@@ -314,7 +314,7 @@ export class OmCreateOrdersComponent implements OnInit {
           };
           this.iOrderManagerApi.OTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
-              this.global.ShowToastr('success', labels.alert.delete, ToasterTitle.Success);
+              this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
               this.createOrdersDTPayload.filter = "1 = 1";
               this.selectedFilterColumn = '';
               this.selectedFilterString = '';

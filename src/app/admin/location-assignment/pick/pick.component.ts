@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -167,7 +167,7 @@ export class PickComponent implements OnInit {
             if (res.isExecuted && res.data) {
               this.tableData2 = new MatTableDataSource([]);
               this.tableData2.paginator = this.paginator2;
-              this.global.ShowToastr('success',labels.alert.success, ToasterTitle.Success);
+              this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             } else {
               this.global.ShowToastr('error',"There was an error marking these orders for location assignment", 'Error');
               console.log("LocationAssignmentOrderInsert",res.responseMessage);

@@ -5,7 +5,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { UserApiService } from 'src/app/common/services/user-api/user-api.service';
 import { IUserAPIService } from 'src/app/common/services/user-api/user-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-change-password',
@@ -54,7 +54,7 @@ export class ChangePasswordComponent implements OnInit {
         {
           const { isExecuted, responseMessage } = res;
           if (isExecuted) {
-            this.global.ShowToastr('success',labels.alert.update, ToasterTitle.Success);
+            this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
             this.dialogRef.close();
           }
           else this.global.ShowToastr('error',responseMessage?.toString(), 'Error!');

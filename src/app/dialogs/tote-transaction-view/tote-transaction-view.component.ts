@@ -18,7 +18,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-tote-transaction-view',
@@ -195,7 +195,7 @@ export class ToteTransactionViewComponent implements OnInit {
             (res: any) => {
               if (res.data && res.isExecuted) {
                 this.global.ShowToastr(
-                  'success',
+                  ToasterType.Success,
                   labels.alert.success,
                   ToasterTitle.Success
                 );
@@ -269,7 +269,7 @@ export class ToteTransactionViewComponent implements OnInit {
           .subscribe((res: any) => {
             if (res?.isExecuted) {
               this.global.ShowToastr(
-                'success',
+                ToasterType.Success,
                 labels.alert.success,
                 ToasterTitle.Success
               );

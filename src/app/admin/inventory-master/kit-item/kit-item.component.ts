@@ -12,7 +12,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import {  ToasterTitle ,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-kit-item',
@@ -122,7 +122,7 @@ export class KitItemComponent implements OnInit, OnChanges {
         this.iAdminApiService.DeleteKit(payLoad).subscribe((res: any) => {
   
           if (res.isExecuted) {
-            this.global.ShowToastr('success',labels.alert.delete, ToasterTitle.Success);
+            this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
             this.sendNotification();
           }
           else {
@@ -175,7 +175,7 @@ export class KitItemComponent implements OnInit, OnChanges {
       this.iAdminApiService.InsertKit(payLoad).subscribe((res: any) => {
 
         if (res.isExecuted) {
-          this.global.ShowToastr('success',labels.alert.success, ToasterTitle.Success);
+          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.sendNotification();
         } else {
           this.global.ShowToastr('error',"Invalid Input", 'Error!');
@@ -196,7 +196,7 @@ export class KitItemComponent implements OnInit, OnChanges {
       this.iAdminApiService.UpdateKit(payLoad).subscribe((res: any) => {
 
         if (res.isExecuted) {
-          this.global.ShowToastr('success',labels.alert.success, ToasterTitle.Success);
+          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.sendNotification();
         } else {
           this.global.ShowToastr('error',"Invalid Input", 'Error!');

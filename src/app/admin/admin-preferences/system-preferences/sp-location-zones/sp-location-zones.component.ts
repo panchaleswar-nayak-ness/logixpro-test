@@ -267,7 +267,7 @@ export class SpLocationZonesComponent implements OnInit {
           if (res.isExecuted) {
             this.getLocationZones();
             this.global.ShowToastr(
-              'success',
+              ToasterType.Success,
               'Deleted successfully',
               ToasterTitle.Success
             );
@@ -328,7 +328,7 @@ export class SpLocationZonesComponent implements OnInit {
     this.iAdminApiService.LocationZoneNewSave(payload).subscribe((res) => {
       if (res.isExecuted) {
         this.global.ShowToastr(
-          'success',
+          ToasterType.Success,
           `Location Zone: ${this.newLocationVal} added succesfully`,
           ToasterTitle.Success
         );

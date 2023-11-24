@@ -23,7 +23,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
-import {  AppNames ,ToasterTitle,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-master',
@@ -612,7 +612,7 @@ export class InventoryMasterComponent implements OnInit {
           this.saveDisabled = true;
           this.ifAllowed = false;
           this.getInventory();
-          this.global.ShowToastr('success',labels.alert.update, ToasterTitle.Success);
+          this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
         } else {
           this.saveDisabled = false
           this.global.ShowToastr('error',res.responseMessage, 'Error!');
@@ -659,7 +659,7 @@ export class InventoryMasterComponent implements OnInit {
         }
         this.iAdminApiService.AddNewItem(payLoad).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.global.ShowToastr('success',labels.alert.success, ToasterTitle.Success);
+            this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             this.currentPageItemNo = itemNumber;
             this.getInventory();
           } else {
@@ -698,7 +698,7 @@ export class InventoryMasterComponent implements OnInit {
         }
         this.iAdminApiService.DeleteItem(payLoad).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.global.ShowToastr('success',labels.alert.delete, ToasterTitle.Success);
+            this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
             let payLoadNextItemNumber = {
               "itemNumber": this.currentPageItemNo,
               "filter": "1=1",
@@ -734,7 +734,7 @@ export class InventoryMasterComponent implements OnInit {
         }
         this.iAdminApiService.UpdateInventoryMasterOTQuarantine(payLoad).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.global.ShowToastr('success',res.responseMessage, ToasterTitle.Success);
+            this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
             this.getInventory();
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
@@ -765,7 +765,7 @@ export class InventoryMasterComponent implements OnInit {
         }
         this.iAdminApiService.UpdateInventoryMasterOTUnQuarantine(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.global.ShowToastr('success',res.responseMessage, ToasterTitle.Success);
+            this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
             this.getInventory();
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');

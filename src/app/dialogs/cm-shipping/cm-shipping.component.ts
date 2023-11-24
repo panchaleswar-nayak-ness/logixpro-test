@@ -6,7 +6,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  ResponseStrings } from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -212,7 +212,7 @@ export class CmShippingComponent implements OnInit {
     this.iConsolidationAPI.CompleteShipment(obj).subscribe((res: any) => {
       if (res?.isExecuted)
         this.global.ShowToastr(
-          'success',
+          ToasterType.Success,
           `Order Number: ${this.orderNumber} is marked as Shipping Complete`,
           'Success'
         );

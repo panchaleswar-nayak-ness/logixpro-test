@@ -9,7 +9,7 @@ import { OrderManagerApiService } from 'src/app/common/services/orderManager-api
 import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-add-record',
@@ -224,7 +224,7 @@ export class OmAddRecordComponent implements OnInit {
       if (!this.isEdit) {
         this.iOrderManagerApi.OTTempInsert(this.oTTempUpdatePayload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.global.ShowToastr('success',labels.alert.success, ToasterTitle.Success);
+            this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             this.dialogRef.close(res.data);
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');
@@ -235,7 +235,7 @@ export class OmAddRecordComponent implements OnInit {
       else {
         this.iOrderManagerApi.OTTempUpdate(this.oTTempUpdatePayload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.global.ShowToastr('success',labels.alert.update, ToasterTitle.Success);
+            this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
             this.dialogRef.close(res.data);
           } else {
             this.global.ShowToastr('error',res.responseMessage, 'Error!');

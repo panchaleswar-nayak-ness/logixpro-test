@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import {  ResponseStrings } from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-lookup-adjustment-lookup-setup',
@@ -77,7 +77,7 @@ AddBtn = false
       if(res.isExecuted){
         this.AddBtn = false
         ele.oldVal = ele.currentVal
-        this.global.ShowToastr('success',`Saved Successfully`, 'Error!');
+        this.global.ShowToastr(ToasterType.Success,`Saved Successfully`, 'Error!');
       }
       else{
         
