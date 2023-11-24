@@ -195,7 +195,7 @@ export class DeAllocateOrdersComponent implements OnInit {
         "sortColumn": this.sortColTransaction,
         "sortOrder": this.sortTransaction,
         "transType": this.transactionType, 
-        "displayFilter": "All",
+        "displayFilter": ResponseStrings.AllCaps,
         "orderNum": "",
         "warehouse": "",
         "filter": this.FilterString 

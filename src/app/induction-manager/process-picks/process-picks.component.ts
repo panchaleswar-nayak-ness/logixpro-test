@@ -26,8 +26,8 @@ import {
   StringConditions,
   ToasterMessages,
   ToasterTitle,
-  ToasterType,
-} from 'src/app/common/constants/strings.constants';
+  ToasterType
+,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-process-picks',
@@ -224,7 +224,7 @@ export class ProcessPicksComponent implements OnInit {
   }
   getAllOrders() {
     let paylaod = {
-      OrderView: 'All',
+      OrderView: ResponseStrings.AllCaps,
     };
     this.iinductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
       if (res.data) {

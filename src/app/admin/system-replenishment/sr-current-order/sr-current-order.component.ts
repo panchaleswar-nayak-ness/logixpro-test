@@ -21,7 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,TableConstant} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-current-order',
@@ -84,7 +84,7 @@ export class SrCurrentOrderComponent implements OnInit {
     searchColumn: '',
     sortColumn: '',
     sortDir: 'asc',
-    status: 'All',
+    status: ResponseStrings.AllCaps,
     filter: '1=1',
     username: '',
     wsid: '',
@@ -514,7 +514,7 @@ export class SrCurrentOrderComponent implements OnInit {
     this.repByDeletePayload.filter2 = '';
     this.repByDeletePayload.searchString = this.selectedOrder.orderNumber;
     this.repByDeletePayload.searchColumn = 'Order Number';
-    this.repByDeletePayload.status = 'All';
+    this.repByDeletePayload.status = ResponseStrings.AllCaps;
     this.ReplenishmentsByDelete();
     this.selectedOrder = {};
   }
@@ -543,7 +543,7 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   showChange(event: any) {
-    if (event == 'All' || event == 'Open' || event == 'Completed') {
+    if (event == ResponseStrings.AllCaps || event == 'Open' || event == 'Completed') {
       this.tablePayloadObj.status = event;
       this.newReplenishmentOrders();
     }

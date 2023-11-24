@@ -14,7 +14,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
@@ -213,9 +213,9 @@ export class MoveItemsComponent implements OnInit {
 
   getMoveItemList(tableName, fromPagination = false, unselectFrom = false) {
     if (tableName === 'MoveTo')
-      if (this.viewAll || this.dataSource.data.length === 0) this.viewModeTo = 'All';
-      else if (fromPagination && !this.isRowSelected) this.viewModeTo = 'All';
-      else if (unselectFrom) this.viewModeTo = 'All';
+      if (this.viewAll || this.dataSource.data.length === 0) this.viewModeTo = ResponseStrings.AllCaps;
+      else if (fromPagination && !this.isRowSelected) this.viewModeTo = ResponseStrings.AllCaps;
+      else if (unselectFrom) this.viewModeTo = ResponseStrings.AllCaps;
       else this.viewModeTo = 'NOA';
 
     let payload = {
@@ -385,7 +385,7 @@ export class MoveItemsComponent implements OnInit {
         this.from_itemNo = '';
         this.from_cellSize = '';
         this.invMapIDToItem = -1;
-        this.viewModeTo = 'All';
+        this.viewModeTo = ResponseStrings.AllCaps;
         this.startRowTo = 0;
         this.endRowTo = 10;
         this.paginator.pageIndex = 0;
@@ -704,7 +704,7 @@ export class MoveItemsComponent implements OnInit {
 
   resetToFilters() {
     this.startRowTo = 0;
-    this.viewModeTo = 'All';
+    this.viewModeTo = ResponseStrings.AllCaps;
   }
 
   clearItemNum() {
