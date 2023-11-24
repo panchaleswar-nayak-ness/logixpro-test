@@ -53,7 +53,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: 'Line Number', key: 'lineNumber' },
     { sequence: 'Transaction Quantity', key: 'transactionQuantity' },
     { sequence: 'Warehouse', key: 'warehouse' },
-    { sequence: 'Line Sequence', key: 'lineSequence' },
+    { sequence: 'Line Sequence', key: TableConstant.LineSequence },
     { sequence: 'In Process', key: 'inProcess' },
     { sequence: 'Processing By', key: 'processingBy' },
     { sequence: 'Unit of Measure', key: 'unitOfMeasure' },

@@ -33,7 +33,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
     { colHeader: 'orderNumber', colDef: Column.OrderNumber },
     { colHeader: 'lineNumber', colDef: 'Line Number' },
-    { colHeader: 'lineSequence', colDef: 'Line Sequence' },
+    { colHeader: TableConstant.LineSequence, colDef: 'Line Sequence' },
     { colHeader: 'priority', colDef: 'Priority' },
     { colHeader: 'requiredDate', colDef: 'Required Date' },
     { colHeader: 'itemNumber', colDef: Column.ItemNumber },

@@ -9,7 +9,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ToasterMessages} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ToasterMessages,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocess-transaction-detail',
@@ -127,7 +127,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
         this.editTransactionForm.get("batchPickID")?.value,
         this.editTransactionForm.get("lineNumber")?.value?.toString(),
-        this.editTransactionForm.get("lineSequence")?.value?.toString(),
+        this.editTransactionForm.get(TableConstant.LineSequence)?.value?.toString(),
         this.editTransactionForm.get("priority")?.value?.toString(),
         this.editTransactionForm.get("label")?.value?.toString(),
         this.editTransactionForm.get("emergency")?.value?.toString(),
@@ -241,7 +241,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
             "requiredDate": this.reqDate != "1900-01-01T19:31:48.000Z" ? this.reqDate : " ",
             "batchPickID": res.data[0].batchPickID,
             "lineNumber": res.data[0].lineNumber,
-            "lineSequence": res.data[0].lineSequence,
+            TableConstant.LineSequence: res.data[0].lineSequence,
             "priority": res.data[0].priority,
             "label": this.label.toString(),
             "emergency": this.emergency.toString(),

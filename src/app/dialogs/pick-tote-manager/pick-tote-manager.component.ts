@@ -193,7 +193,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.lineNumber}`,
     },
     {
-      columnDef: 'lineSequence',
+      columnDef: TableConstant.LineSequence,
       header: 'Line Sequence',
       cell: (element: any) => `${element.lineSequence}`,
     },

@@ -390,5 +390,6 @@ export const TableName = {
 }
 export const TableConstant = {
     CompletedDate:'Completed Date',
-    HostTransactionID:'Host Transaction ID'
+    HostTransactionID:'Host Transaction ID',
+    LineSequence:'lineSequence'
 }
