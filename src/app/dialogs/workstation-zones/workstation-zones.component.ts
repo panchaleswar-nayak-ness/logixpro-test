@@ -19,7 +19,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,KeyboardKeys} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-workstation-zones',
@@ -71,7 +71,7 @@ export class WorkstationZonesComponent implements OnInit {
 
   searchItem(event: any) {
     if (this.selectedZone.trim() != '') {
-      if (event.key == 'Enter') {
+      if (event.key == KeyboardKeys.Enter) {
         if (this.validateZone()) {
           this.saveVlCode();
         }

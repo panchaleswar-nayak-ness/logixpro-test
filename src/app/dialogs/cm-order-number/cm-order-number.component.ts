@@ -14,7 +14,7 @@ import { CmOrderToteConflictComponent } from '../cm-order-tote-conflict/cm-order
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ResponseStrings } from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,KeyboardKeys} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-order-number',
@@ -55,7 +55,7 @@ export class CmOrderNumberComponent implements OnInit {
     this.order_focus.nativeElement.focus();
   }
   findTote(event: KeyboardEvent, value: any) {
-    if (event.key === 'Enter') {
+    if (event.key === KeyboardKeys.Enter) {
       this.tableData.forEach((row: any, i: any) => {
         if (row.toteID == value) {
           this.stagLoc['_results'][i].nativeElement.focus();
@@ -67,7 +67,7 @@ export class CmOrderNumberComponent implements OnInit {
 
   async getStagLoc(event: KeyboardEvent, value: any) {
     this.tableData = [];
-    if (event.key == 'Enter') {
+    if (event.key == KeyboardKeys.Enter) {
       let obj: any = {
         type: this.type,
         selValue: value,
@@ -103,7 +103,7 @@ export class CmOrderNumberComponent implements OnInit {
                 break;
             }
           } else {
-            this.findTote({ key: 'Enter' } as KeyboardEvent, value);
+            this.findTote({ key: KeyboardKeys.Enter } as KeyboardEvent, value);
             this.tableData = res.data.stageTable;
           }
         } else {
@@ -127,12 +127,12 @@ export class CmOrderNumberComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.type = result;
-      if (this.type) this.getStagLoc({ key: 'Enter' } as KeyboardEvent, order);
+      if (this.type) this.getStagLoc({ key: KeyboardKeys.Enter } as KeyboardEvent, order);
     });
   }
 
   onEnterStagLoc(event: KeyboardEvent, value: any) {
-    if (event.key === 'Enter') {
+    if (event.key === KeyboardKeys.Enter) {
       this.saveToteStagingLocation(value);
     }
   }

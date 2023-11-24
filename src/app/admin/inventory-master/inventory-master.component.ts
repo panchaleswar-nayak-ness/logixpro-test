@@ -23,7 +23,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
-import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-master',
@@ -817,7 +817,7 @@ export class InventoryMasterComponent implements OnInit {
 
   getSearchList(e: any):void {
     e.stopPropagation();
-    if (e.key === 'Enter') {
+    if (e.key === KeyboardKeys.Enter) {
       this.autocompleteTrigger.closePanel();
       this.searchValue = e.currentTarget.value;
       this.currentPageItemNo =e.currentTarget.value;

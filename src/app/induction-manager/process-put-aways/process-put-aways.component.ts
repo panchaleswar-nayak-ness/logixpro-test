@@ -28,7 +28,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { Router } from '@angular/router';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   position: string;
@@ -870,7 +870,7 @@ async clearBatchData(){
   }
 
   openST(event: any) {
-    if (event.key === 'Enter') this.openSelectionTransactionDialogue();
+    if (event.key === KeyboardKeys.Enter) this.openSelectionTransactionDialogue();
   }
 
   applyStripIfApplicable(){

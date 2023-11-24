@@ -23,7 +23,7 @@ import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-shipping-transaction',
@@ -98,8 +98,8 @@ export class CmShippingTransactionComponent implements OnInit {
   }
 
   async onKey(event: any, type: string) {
-    if (event.key === 'Enter') {
-      // Check if the user pressed the 'Enter' key
+    if (event.key === KeyboardKeys.Enter) {
+      // Check if the user pressed the KeyboardKeys.Enter key
       if (type == 'toteIDtoUpdate' && this.toteID != '') {
         // Check if the user entered a tote ID
         this.checkToteID(); // If the user entered a tote ID, call the checkToteID() function
