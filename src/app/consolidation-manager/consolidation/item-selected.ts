@@ -5,7 +5,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/common/services/consolidation-api/consolidation-api.service";
 import { GlobalService } from "src/app/common/services/global.service";
-import {  Column ,ToasterTitle} from 'src/app/common/constants/strings.constants';
+import {  Column ,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
     template: ''
@@ -66,7 +66,7 @@ export class ItemSelected implements OnInit {
                 this.itemSelectTable = res;
               }
               else {
-                this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+                this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
                 console.log("ItemModelData",res.responseMessage);
               }
             }));
@@ -90,7 +90,7 @@ export class ItemSelected implements OnInit {
             }
             this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
                 if (!res.isExecuted) {
-                    this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
+                    this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
                     console.log("VerifyItemPost",res.responseMessage);
 
                 }
@@ -122,7 +122,7 @@ export class ItemSelected implements OnInit {
 
                 this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
                     if (!res.isExecuted) {
-                        this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
+                        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
                         console.log("VerifyItemPost",res.responseMessage);
 
                     }

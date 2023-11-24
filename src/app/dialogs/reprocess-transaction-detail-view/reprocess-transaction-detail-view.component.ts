@@ -13,7 +13,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocess-transaction-detail-view',
@@ -87,7 +87,7 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.fieldNames = res.data;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('ColumnAlias', res.responseMessage);
       }
     });
@@ -143,7 +143,7 @@ export class ReprocessTransactionDetailViewComponent implements OnInit {
         this.reprocessInfo.controls.reason.setValue(item.reason);
         this.reprocessInfo.controls.reasonMessage.setValue(item.reasonMessage);
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('RPDetails', res.responseMessage);
       }
     });

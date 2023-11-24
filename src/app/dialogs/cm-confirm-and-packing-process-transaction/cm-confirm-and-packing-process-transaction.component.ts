@@ -7,7 +7,7 @@ import { CmShipEditQtyComponent } from '../cm-ship-edit-qty/cm-ship-edit-qty.com
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing-process-transaction',
@@ -57,7 +57,7 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
 
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         }
       });
   }
@@ -67,7 +67,7 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
         this.confPackProcTable = response.data;
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ConfPackProcModal", response.responseMessage);
       }
 
@@ -126,7 +126,7 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
     this.iConsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res: any) => {
       if (res) {
         if (res.data == "Fail") {
-          this.global.ShowToastr('error', "An error has occurred", ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, "An error has occurred", ToasterTitle.Error);
 
         } else {
           //edit table 
@@ -154,7 +154,7 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error); 
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error); 
 
       };
     });

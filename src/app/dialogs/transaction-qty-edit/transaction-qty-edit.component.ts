@@ -76,7 +76,7 @@ export class TransactionQtyEditComponent implements OnInit {
           this.dialog.closeAll();
           this.dialogRef.close(this.data);
         } else {
-          this.globalService.ShowToastr('error', res.responseMessage, ToasterTitle.Error);
+          this.globalService.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
           this.dialog.closeAll(); 
         }
       });

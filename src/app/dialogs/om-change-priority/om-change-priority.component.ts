@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-change-priority',
@@ -46,7 +46,7 @@ export class OmChangePriorityComponent implements OnInit {
         this.dialogRef.close(res);
       }
       else{
-        this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error); 
+        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error); 
       }
     })
    

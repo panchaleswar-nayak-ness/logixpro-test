@@ -90,7 +90,7 @@ export class CmShippingComponent implements OnInit {
           } else this.isLoading = false;
         else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
@@ -124,7 +124,7 @@ export class CmShippingComponent implements OnInit {
     this.iConsolidationAPI.ShipmentItemDelete(obj).subscribe((res: any) => {
       if (res?.isExecuted) this.shippingData = this.shippingData.slice(0, i);
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('ShipmentItemDelete', res.responseMessage);
       }
     });
@@ -166,7 +166,7 @@ export class CmShippingComponent implements OnInit {
             if (res.isExecuted) {
               if (res.data == -1)
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   'An error has occurred',
                   ResponseStrings.Error
                 );
@@ -192,7 +192,7 @@ export class CmShippingComponent implements OnInit {
               }
             } else {
               this.global.ShowToastr(
-                'error',
+                ToasterType.Error,
                 this.global.globalErrorMsg(),
                 ToasterTitle.Error
               );
@@ -217,7 +217,7 @@ export class CmShippingComponent implements OnInit {
           'Success'
         );
       else {
-        this.global.ShowToastr('error', 'An error has occurred', ResponseStrings.Error);
+        this.global.ShowToastr(ToasterType.Error, 'An error has occurred', ResponseStrings.Error);
         console.log('CompleteShipment', res.responseMessage);
       }
     });

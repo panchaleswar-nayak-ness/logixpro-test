@@ -54,7 +54,7 @@ AddBtn = false
       else 
       {
         
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("adjustmentlookup", res.responseMessage);
       } 
     })
@@ -81,7 +81,7 @@ AddBtn = false
       }
       else{
         
-        this.global.ShowToastr('error',`Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error,`Adjustment Reason is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, ToasterTitle.Error);
         console.log("LocationZone", res.responseMessage);
       }
     }))
@@ -126,7 +126,7 @@ AddBtn = false
             this.getadjustmentlookup()
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("deleteAdjustmentLookup",res.responseMessage);
           }
         }))

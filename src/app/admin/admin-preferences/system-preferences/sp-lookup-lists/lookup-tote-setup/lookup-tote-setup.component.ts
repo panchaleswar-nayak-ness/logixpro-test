@@ -45,7 +45,7 @@ export class LookupToteSetupComponent implements OnInit {
         this.tableData = JSON.parse(JSON.stringify(res.data));   
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getToteCell",res.responseMessage);
       }
     });
@@ -68,7 +68,7 @@ export class LookupToteSetupComponent implements OnInit {
     for(const element of this.OldtableData) {
       if(element.toteID == toteID) {
         this.tableData[ind].IsDisabled = true;
-        this.global.ShowToastr('error',`Tote must be unique. Another entry matches it. Please save any pending totes and try again.`, ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error,`Tote must be unique. Another entry matches it. Please save any pending totes and try again.`, ToasterTitle.Error);
         break;
       }else  this.tableData[ind].IsDisabled = false;
     }
@@ -123,7 +123,7 @@ export class LookupToteSetupComponent implements OnInit {
 
           else {
             
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("deleteTote", res.responseMessage);
 
           }
@@ -155,7 +155,7 @@ export class LookupToteSetupComponent implements OnInit {
 
           else {
             
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("cleartote", res.responseMessage);
           }
         }))

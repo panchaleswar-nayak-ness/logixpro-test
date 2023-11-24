@@ -197,7 +197,7 @@ export class OmAddRecordComponent implements OnInit {
         this.mapDefaultValues();
         this.getWarehouses();
       } else {
-        this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
         console.log("UserFieldData",res.responseMessage);
       }
     });
@@ -205,13 +205,13 @@ export class OmAddRecordComponent implements OnInit {
 
   async save() { 
     if (this.oTTempUpdatePayload.orderNumber.trim() == '' || this.oTTempUpdatePayload.itemNumber.trim() == '' || this.oTTempUpdatePayload.transType.trim() == '') {
-      this.global.ShowToastr('error',"Order Number, Item Number and Transaction Type must be completed in order to continue.", 'Warning!');
+      this.global.ShowToastr(ToasterType.Error,"Order Number, Item Number and Transaction Type must be completed in order to continue.", 'Warning!');
     }
     else if (this.wharehouseRequired && this.oTTempUpdatePayload.warehouse == '') {
-      this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
+      this.global.ShowToastr(ToasterType.Error,"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
     }
     else if (this.oTTempUpdatePayload.transQty <= 0) {
-      this.global.ShowToastr('error',"The transaction quantity for this transaction must be greater than 0.", 'Warning!');
+      this.global.ShowToastr(ToasterType.Error,"The transaction quantity for this transaction must be greater than 0.", 'Warning!');
     }
     else {
       let check: any = await this.checkItemNumberBeforeSave();
@@ -227,7 +227,7 @@ export class OmAddRecordComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             this.dialogRef.close(res.data);
           } else {
-            this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
             console.log("OTTempInsert",res.responseMessage);
           }
         })
@@ -238,7 +238,7 @@ export class OmAddRecordComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
             this.dialogRef.close(res.data);
           } else {
-            this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
             console.log("OTTempUpdate",res.responseMessage);
           }
         })
@@ -259,7 +259,7 @@ export class OmAddRecordComponent implements OnInit {
           this.itemNumberSearchList = res.data;
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
            
 
         } 
@@ -288,7 +288,7 @@ export class OmAddRecordComponent implements OnInit {
         this.wharehouses.unshift("")
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetWarehouses",res.responseMessage);
 
       } 
@@ -327,7 +327,7 @@ export class OmAddRecordComponent implements OnInit {
                 this.wharehouseRequired = res.data[0].warehouseSensitive;
               }
               else{
-                this.global.ShowToastr('error',`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory');
+                this.global.ShowToastr(ToasterType.Error,`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory');
                 this.oTTempUpdatePayload.itemNumber = "";
                 this.oTTempUpdatePayload.description = "";
                 this.oTTempUpdatePayload.unitofMeasure = ""; 
@@ -335,7 +335,7 @@ export class OmAddRecordComponent implements OnInit {
               }
             }
             else {
-              this.global.ShowToastr('error',`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory');
+              this.global.ShowToastr(ToasterType.Error,`Item ${this.oTTempUpdatePayload.itemNumber} Does not exist!`, 'Inventory');
               this.oTTempUpdatePayload.itemNumber = "";
               this.oTTempUpdatePayload.description = "";
               this.oTTempUpdatePayload.unitofMeasure = ""; 
@@ -344,7 +344,7 @@ export class OmAddRecordComponent implements OnInit {
             }
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
              
           }
           
@@ -370,7 +370,7 @@ export class OmAddRecordComponent implements OnInit {
           this.oTTempUpdatePayload.unitofMeasure = filtered[0].unitOfMeasure;
           this.wharehouseRequired = filtered[0].warehouseSensitive;
           if(this.wharehouseRequired == true && this.oTTempUpdatePayload.warehouse == ""){
-            this.global.ShowToastr('error',"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
+            this.global.ShowToastr(ToasterType.Error,"The selected item is warehouse sensitive.  Please set a warehouse to continue.", 'Warning!');
             return false;
           }
           else{

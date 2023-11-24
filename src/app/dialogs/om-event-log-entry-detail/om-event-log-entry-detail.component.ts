@@ -60,7 +60,7 @@ export class OmEventLogEntryDetailComponent implements OnInit {
             this.dialog.closeAll();
             this.dialogRef.close(this.data);
           } else {
-            this.global.ShowToastr('error',labels.alert.went_worng, ToasterTitle.Error); 
+            this.global.ShowToastr(ToasterType.Error,labels.alert.went_worng, ToasterTitle.Error); 
           }
         });
       }

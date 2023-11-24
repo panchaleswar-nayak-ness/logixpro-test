@@ -42,7 +42,7 @@ export class ChangePasswordComponent implements OnInit {
 
   onSend(form: FormGroup) {
 
-    if (form.value.old_password.toLowerCase() === form.value.new_password.toLowerCase()) this.global.ShowToastr('error','You aren\'t changing your password. You\'re re-entering your password', ToasterTitle.Error);
+    if (form.value.old_password.toLowerCase() === form.value.new_password.toLowerCase()) this.global.ShowToastr(ToasterType.Error,'You aren\'t changing your password. You\'re re-entering your password', ToasterTitle.Error);
     else {
       let payload = {
         "username": form.value.userName,
@@ -57,10 +57,10 @@ export class ChangePasswordComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
             this.dialogRef.close();
           }
-          else this.global.ShowToastr('error',responseMessage?.toString(), ToasterTitle.Error);
+          else this.global.ShowToastr(ToasterType.Error,responseMessage?.toString(), ToasterTitle.Error);
         }
         else {
-          this.global.ShowToastr('error', res.responseMessage, ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
           console.log("changePassword",res.responseMessage);
         }
         

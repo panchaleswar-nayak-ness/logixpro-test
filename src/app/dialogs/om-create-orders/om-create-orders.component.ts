@@ -218,7 +218,7 @@ export class OmCreateOrdersComponent implements OnInit {
           }
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("CreateOrdersDT", res.responseMessage);
         }
       });
@@ -237,7 +237,7 @@ export class OmCreateOrdersComponent implements OnInit {
 
   releaseOrders() {
     if (this.allowInProc == "False" && this.otcreatecount > 0) {
-      this.global.ShowToastr('error', '"You may not release an Order that is already in progress', 'Release Transactions');
+      this.global.ShowToastr(ToasterType.Error, '"You may not release an Order that is already in progress', 'Release Transactions');
       return;
     }
 
@@ -290,7 +290,7 @@ export class OmCreateOrdersComponent implements OnInit {
 
   deleteViewed() {
     if (this.tableData.length == 0) {
-      this.global.ShowToastr('error', 'There are currently no records within the table', 'Warning');
+      this.global.ShowToastr(ToasterType.Error, 'There are currently no records within the table', 'Warning');
     }
     else {
       let ids = [];
@@ -321,7 +321,7 @@ export class OmCreateOrdersComponent implements OnInit {
               this.createOrdersDT();
               dialogRef.close();
             } else {
-              this.global.ShowToastr('error', "An error has occurred while deleting the viewed records", ToasterTitle.Error);
+              this.global.ShowToastr(ToasterType.Error, "An error has occurred while deleting the viewed records", ToasterTitle.Error);
               console.log("OTPendDelete", res.responseMessage);
             }
           });
@@ -357,7 +357,7 @@ export class OmCreateOrdersComponent implements OnInit {
           this.orderNumberSearchList = res.data.sort();
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("CreateOrderTypeahead", res.responseMessage);
 
         }
@@ -410,7 +410,7 @@ export class OmCreateOrdersComponent implements OnInit {
         if (refresh) this.createOrdersDT();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetColumnSequence", res.responseMessage);
 
       }

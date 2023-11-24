@@ -5,7 +5,7 @@ import { CmConfirmAndPackingProcessTransactionComponent } from '../cm-confirm-an
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  StringConditions ,ToasterTitle} from 'src/app/common/constants/strings.constants';
+import {  StringConditions ,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing-select-transaction',
@@ -51,7 +51,7 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error); 
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error); 
 
       }
 
@@ -84,7 +84,7 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
     this.iConsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res: any) => {
       if (res) {
         if (res.data == "Fail") {
-          this.global.ShowToastr('error', 'An error has occurred', ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, 'An error has occurred', ToasterTitle.Error);
           console.log("ConfPackProcModalUpdate", res.responseMessage);
         } else if (res.data == "Modal") {
           this.openScanItem(this.itemNumber, id);
@@ -109,7 +109,7 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ConfPackProcModalUpdate", res.responseMessage);
 
       };

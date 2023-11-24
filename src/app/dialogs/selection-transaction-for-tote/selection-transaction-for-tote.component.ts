@@ -5,7 +5,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ResponseStrings ,ToasterMessages,ToasterTitle} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterMessages,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
@@ -96,7 +96,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
               dialogRef.afterClosed().subscribe((res) => { if (res) this.dialogRef.close(res); });
             }
           } else {
-            this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log("BatchByZone");
           }
         },
@@ -166,7 +166,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
           if (this.data.imPreference.purchaseOrderRequired && this.transactionTable.length > 0) {
             this.showBtnNewPutAwayForSameSKU = false;
           } else if(this.data.imPreference.purchaseOrderRequired && this.transactionTable.length == 0) {
-            this.global.ShowToastr('error',`No open Put Aways available for this ${this.inputType != 'Any' ? this.inputType : ''}`, ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error,`No open Put Aways available for this ${this.inputType != 'Any' ? this.inputType : ''}`, ToasterTitle.Error);
             this.dialogRef.close()
           }
 
@@ -176,7 +176,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
           this.itemNumber = this.apiResponse.itemNumber;
           this.description = this.apiResponse.description;
         } else {
-          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("TransactionForTote",res.ResponseMessage);
         }
       },

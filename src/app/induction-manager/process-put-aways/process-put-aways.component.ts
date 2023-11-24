@@ -403,7 +403,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         }
       });
     } else {
-      this.showMessage('Please select batch', 2000, 'error');
+      this.showMessage('Please select batch', 2000, ToasterType.Error);
     }
   }
 
@@ -515,7 +515,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   processBath() {
-    if (this.batchId == '') this.showMessage('You must provide a Batch ID.', 2000, 'error');
+    if (this.batchId == '') this.showMessage('You must provide a Batch ID.', 2000, ToasterType.Error);
     else {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
@@ -589,7 +589,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
 
   showMessage(message: any, timeout: any, type: any) {
-    if (type == 'error') this.global.ShowToastr(ToasterType.Error,message, ToasterTitle.Error);
+    if (type == ToasterType.Error) this.global.ShowToastr(ToasterType.Error,message, ToasterTitle.Error);
     else this.global.ShowToastr(ToasterType.Success,message, ToasterTitle.Success);
   }
 
@@ -748,7 +748,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   createNewBatch(withID = '') {
     if (withID == '') {
       if (this.batchId == '') {
-        this.showMessage('You must assign a Batch ID before creating a new batch.', 2000, 'error');
+        this.showMessage('You must assign a Batch ID before creating a new batch.', 2000, ToasterType.Error);
       } else {
         this.startNewBatchWithID();
       }
@@ -837,7 +837,7 @@ async clearBatchData(){
 
   setToDefaultQuantity() {
     if (this.batchId == '') {
-      this.showMessage('You must provide a Batch ID.', 2000, 'error');
+      this.showMessage('You must provide a Batch ID.', 2000, ToasterType.Error);
     } else {
 
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -1137,7 +1137,7 @@ async clearBatchData(){
   completeBatch() {
     try {
       if (this.batchId2 == '') {
-        this.showMessage('You must provide a Batch ID.', 2000, 'error');
+        this.showMessage('You must provide a Batch ID.', 2000, ToasterType.Error);
       } else {
         let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
           height: 'auto',
@@ -1265,7 +1265,7 @@ async clearBatchData(){
           this.dataSource2.data.indexOf(fil[0])
         ].isSelected = true;
       } else {
-        this.showMessage('The selected position and/or tote ID was not found in the table.', 2000, 'error');
+        this.showMessage('The selected position and/or tote ID was not found in the table.', 2000, ToasterType.Error);
       }
     }
   }
@@ -1448,7 +1448,7 @@ async clearBatchData(){
           this.assignedZonesArray= this.zoneAssignArray;
         }
         } else {
-          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("AvailableZone",res.responseMessage);
         }
       },
@@ -1475,7 +1475,7 @@ async clearBatchData(){
         this.imPreferences = res?.data?.imPreference;
         this.autoAssignAllZones=this.imPreferences.autoAssignAllZones;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("PickToteSetupIndex",res.responseMessage);
       }
     });

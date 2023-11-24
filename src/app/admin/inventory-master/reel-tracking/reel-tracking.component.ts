@@ -71,7 +71,7 @@ export class ReelTrackingComponent implements OnInit {
   }
   else if (res.responseMessage != 'Update Successful'){
     
-    this.global.ShowToastr('error',"Changes not saved!  Please reenter the information.", ToasterTitle.Error);
+    this.global.ShowToastr(ToasterType.Error,"Changes not saved!  Please reenter the information.", ToasterTitle.Error);
     console.log("UpdateReelQuantity",res.responseMessage);
   }
   })
@@ -111,13 +111,13 @@ export class ReelTrackingComponent implements OnInit {
                   'minimumRTSReelQuantity' : res.data[0]
                 });
               } else {
-                this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
+                this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
                 console.log("RefreshRTS",res.responseMessage);
               }              
             });            
             
           } else {
-            this.global.ShowToastr('error',res.responseMessage, ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
             console.log("UpdateReelAll",res.responseMessage);
           }
 

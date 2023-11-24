@@ -42,7 +42,7 @@ export class BlossomToteComponent implements OnInit {
     }
     this.iInductionManagerApi.NextToteUpdate(updatePayload).subscribe(res => {
       if (!res.isExecuted) {
-        this.global.ShowToastr('error','Something is wrong.', ToasterTitle.Error); 
+        this.global.ShowToastr(ToasterType.Error,'Something is wrong.', ToasterTitle.Error); 
       }
 
     });
@@ -61,7 +61,7 @@ export class BlossomToteComponent implements OnInit {
 
   submitBlosom() {
     if(!this.oldToteID || !this.nxtToteID){
-      this.global.ShowToastr('error','Either the Old or New Tote ID was not supplied.', ToasterTitle.Error);
+      this.global.ShowToastr(ToasterType.Error,'Either the Old or New Tote ID was not supplied.', ToasterTitle.Error);
     }
     else{
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
@@ -102,7 +102,7 @@ export class BlossomToteComponent implements OnInit {
               this.global.ShowToastr(ToasterType.Success,'Updated Successfully', ToasterTitle.Success);
               this.dialog.closeAll();
             } else {
-              this.global.ShowToastr('error','Old tote ID does not exist', ToasterTitle.Error); 
+              this.global.ShowToastr(ToasterType.Error,'Old tote ID does not exist', ToasterTitle.Error); 
             }
           });
         }

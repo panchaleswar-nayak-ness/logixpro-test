@@ -9,7 +9,7 @@ import { AuthService } from '../../../common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { LiveAnnouncerMessage ,ToasterTitle} from 'src/app/common/constants/strings.constants';
+import { LiveAnnouncerMessage ,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
 
 
 export interface GroupsDetails {
@@ -117,7 +117,7 @@ export class GroupsLookupComponent implements OnInit {
           this.group_data_source = new MatTableDataSource(this.groups_details_data);
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("getEmployeeData", response.responseMessage);
         }
 

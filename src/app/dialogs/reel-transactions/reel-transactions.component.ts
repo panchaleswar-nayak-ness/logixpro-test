@@ -15,7 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reel-transactions',
@@ -160,7 +160,7 @@ export class ReelTransactionsComponent implements OnInit {
             this.serialTemp.nativeElement.focus();
           }, 100);
         } else {
-          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log('NextSerialNumber', res.responseMessage);
         }
       },
@@ -217,7 +217,7 @@ export class ReelTransactionsComponent implements OnInit {
       if (result) {
         if (this.generateReelAndSerial.data.length == 0) {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             'You must provide at least one reel transaction in order to create reels.',
             ToasterTitle.Error
           );
@@ -282,7 +282,7 @@ export class ReelTransactionsComponent implements OnInit {
       this.validateInputs();
       this.serialTemp.nativeElement.blur();
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'You must provide a serial number for each reel transaction.',
         ToasterTitle.Error
       );
@@ -292,7 +292,7 @@ export class ReelTransactionsComponent implements OnInit {
     const hasDuplicatesFlag = this.findDuplicateValue(serialNos);
     if (hasDuplicatesFlag) {
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'You must provide a unique serial number for each reel transaction.  Serial ' +
           hasDuplicatesFlag +
           ' is duplicated.',
@@ -336,7 +336,7 @@ export class ReelTransactionsComponent implements OnInit {
         }
         if (errs != '') {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             'The following serial numbers have problems and could not be assigned',
             ToasterTitle.Error
           );
@@ -350,7 +350,7 @@ export class ReelTransactionsComponent implements OnInit {
             if (res.data && res.isExecuted) {
               if (res.data.lenghth <= 0) {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   'There was an error while attempting to save the new reels.  See the error log for details.',
                   ToasterTitle.Error
                 );
@@ -392,13 +392,13 @@ export class ReelTransactionsComponent implements OnInit {
                 });
               }
             } else {
-              this.global.ShowToastr('error', res.responseMessage, ToasterTitle.Error);
+              this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
               console.log('ReelsCreate', res.responseMessage);
             }
           });
         }
       } else {
-        this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
       }
     });
   }
@@ -453,7 +453,7 @@ export class ReelTransactionsComponent implements OnInit {
           this.generateReelAndSerial.data[index].reel_serial_number =
             res.data + '-RT';
         } else {
-          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log('NextSerialNumber', res.responseMessage);
         }
       },

@@ -45,7 +45,7 @@ export class MainComponent implements OnInit {
     if(localStorage.getItem('isAppVerified')) this.isDefaultAppVerify = JSON.parse(localStorage.getItem('isAppVerified') ?? '');
     else this.isDefaultAppVerify = {appName: "", isVerified: true}
     this.route.queryParams.subscribe(params => {
-      const error = params['error'];
+      const error = params[ToasterType.Error];
       if (error === "multipletab") this.global.ShowToastr(ToasterType.Error, "Same Tab cannot be opened twice!", ToasterTitle.Error);
   });
   }

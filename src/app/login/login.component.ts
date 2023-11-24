@@ -12,7 +12,7 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { IUserAPIService } from '../common/services/user-api/user-api-interface';
 import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
-import {  AppNames ,AppPermissions,AppRoutes,ToasterTitle} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,AppPermissions,AppRoutes,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'login',
@@ -102,7 +102,7 @@ export class LoginComponent {
         }
         else {
           const errorMessage = response.responseMessage;
-          this.global.ShowToastr('error',errorMessage?.toString(), ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error,errorMessage?.toString(), ToasterTitle.Error);
           console.log("login",response.responseMessage);
         }
 
@@ -115,7 +115,7 @@ export class LoginComponent {
       if (response.isExecuted && response.data) {
         this.info = response.data;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.error('Error: CompanyInfo request failed');
       }
     });
@@ -142,12 +142,12 @@ export class LoginComponent {
           localStorage.setItem('workStation', JSON.stringify(workStation));
         }
         else{
-          this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
+          this.global.ShowToastr(ToasterType.Error,'Kindly contact to administrator', 'Workstation is not set!');
           
         }
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("getSecurityEnvironment",res.responseMessage);
         }
         
@@ -172,7 +172,7 @@ export class LoginComponent {
             this.getDefaultApp(wsid);
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("AppNameByWorkstation",res.responseMessage);
 
           }
@@ -308,7 +308,7 @@ export class LoginComponent {
        }
     }
     else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("workstationdefaultapp",res.responseMessage);
     }
   

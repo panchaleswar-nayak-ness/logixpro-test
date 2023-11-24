@@ -273,7 +273,7 @@ export class SpLocationZonesComponent implements OnInit {
             );
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               `Location Zone ${zone} cannot be deleted because there are allocated quantities in an Inventory Map location matching the zone`,
               ToasterTitle.Error
             );
@@ -311,7 +311,7 @@ export class SpLocationZonesComponent implements OnInit {
       );
       if (test) {
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           'Zone would be a duplicate and cannot be added.',
           ToasterTitle.Error
         );
@@ -335,7 +335,7 @@ export class SpLocationZonesComponent implements OnInit {
         this.getLocationZones();
       } else {
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           'Cannot insert duplicate Zone',
           ToasterTitle.Error
         );

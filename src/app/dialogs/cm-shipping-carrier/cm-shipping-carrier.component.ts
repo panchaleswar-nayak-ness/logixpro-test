@@ -109,7 +109,7 @@ export class CmShippingCarrierComponent implements OnInit {
         this.global.ShowToastr(ToasterType.Success, res.message, ToasterTitle.Success);
         this.getCarrier();
       } else {
-        this.global.ShowToastr('error', res.message);
+        this.global.ShowToastr(ToasterType.Error, res.message);
         console.log('CarrierSave', res.responseMessage);
       }
     });

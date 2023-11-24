@@ -91,7 +91,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
     for (let x = 0; x < newParams.length - 1; x++) {
       if (newParams[x] == '' || newParams[x] == undefined) {
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           `${fields[x]} must not be left blank!`,
           ToasterTitle.Error
         );
@@ -103,7 +103,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
     const exists = this.isFileNameAlreadyExists(newParams[1]);
 
     if (exists) {
-      this.global.ShowToastr('error', `Filename must be unique!`, ToasterTitle.Error);
+      this.global.ShowToastr(ToasterType.Error, `Filename must be unique!`, ToasterTitle.Error);
       valid = false;
     }
 
@@ -113,7 +113,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       this.iAdminApiService.validateNewDesign(newParams).subscribe((res) => {
         if (!res.data) {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             `Validation for adding a new report failed with an unknown error.  Please contact Scott Tech for support if this persists.`,
             ToasterTitle.Error
           );
@@ -176,7 +176,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
                   catchError((error) => {
                     // Handle the error here
                     this.global.ShowToastr(
-                      'error',
+                      ToasterType.Error,
                       'An error occured while retrieving data.',
                       ToasterTitle.Error
                     );
@@ -212,7 +212,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
     this.iAdminApiService.restoreDesign(obj).subscribe((res) => {
       if (!res.data) {
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           'Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.',
           ToasterTitle.Error
         );
@@ -246,7 +246,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
         this.iAdminApiService.deleteReport(payload).subscribe((res) => {
           if (!res.data) {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               'Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.',
               ToasterTitle.Error
             );

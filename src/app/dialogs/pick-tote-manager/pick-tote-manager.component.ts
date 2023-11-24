@@ -457,7 +457,7 @@ export class PickToteManagerComponent implements OnInit {
           this.batchByZoneData
         );
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('PickBatchZonesSelect', res.responseMessage);
       }
     });
@@ -487,7 +487,7 @@ export class PickToteManagerComponent implements OnInit {
           );
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
@@ -642,7 +642,7 @@ export class PickToteManagerComponent implements OnInit {
                 );
               } else {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   this.global.globalErrorMsg(),
                   ToasterTitle.Error
                 );
@@ -665,7 +665,7 @@ export class PickToteManagerComponent implements OnInit {
             matSelect.writeValue(null);
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
@@ -687,7 +687,7 @@ export class PickToteManagerComponent implements OnInit {
             this.pickBatchFilterOrderData(res.data);
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               'No filter is marked as default.',
               'Warning!'
             );
@@ -730,7 +730,7 @@ export class PickToteManagerComponent implements OnInit {
                 matSelect.writeValue(null);
               } else {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   this.global.globalErrorMsg(),
                   ToasterTitle.Error
                 );
@@ -794,7 +794,7 @@ export class PickToteManagerComponent implements OnInit {
             this.filterBatchOrders.paginator = this.filterBatchOrder;
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
@@ -841,7 +841,7 @@ export class PickToteManagerComponent implements OnInit {
             this.tabIndex = 1;
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
@@ -877,7 +877,7 @@ export class PickToteManagerComponent implements OnInit {
       }
     } else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'No open totes in batch',
         'Batch is Filled.'
       );
@@ -916,7 +916,7 @@ export class PickToteManagerComponent implements OnInit {
           this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
@@ -945,7 +945,7 @@ export class PickToteManagerComponent implements OnInit {
       }
     } else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'No open totes in batch',
         'Batch is Filled.'
       );
@@ -983,7 +983,7 @@ export class PickToteManagerComponent implements OnInit {
           this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
@@ -1015,7 +1015,7 @@ export class PickToteManagerComponent implements OnInit {
           }
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
@@ -1122,7 +1122,7 @@ export class PickToteManagerComponent implements OnInit {
           this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
@@ -1156,7 +1156,7 @@ export class PickToteManagerComponent implements OnInit {
             this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
@@ -1193,7 +1193,7 @@ export class PickToteManagerComponent implements OnInit {
           this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
@@ -1227,7 +1227,7 @@ export class PickToteManagerComponent implements OnInit {
             this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
@@ -1243,7 +1243,7 @@ export class PickToteManagerComponent implements OnInit {
   onSaveSingleFilter(element: any) {
     if (element.value === '') {
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'Some of the inputs are missing values. Cannot add row to filter.',
         ToasterTitle.Error
       );
@@ -1272,7 +1272,7 @@ export class PickToteManagerComponent implements OnInit {
                 this.pickBatchFilterOrderData(this.savedFilter.value);
               } else {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   this.global.globalErrorMsg(),
                   ToasterTitle.Error
                 );
@@ -1294,7 +1294,7 @@ export class PickToteManagerComponent implements OnInit {
                 this.pickBatchFilterOrderData(this.savedFilter.value);
               } else {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   this.global.globalErrorMsg(),
                   ToasterTitle.Error
                 );
@@ -1322,7 +1322,7 @@ export class PickToteManagerComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
@@ -1346,7 +1346,7 @@ export class PickToteManagerComponent implements OnInit {
             this.orderBySeq = element.sequence;
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
               ToasterTitle.Error
             );
@@ -1362,7 +1362,7 @@ export class PickToteManagerComponent implements OnInit {
       let existItem = res.find((x: any) => x.sequence == item.sequence);
       if (existItem) {
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           "Can't have conflicting sequences within the order rows. A new sequence has been provided",
           ToasterTitle.Error
         );
@@ -1398,7 +1398,7 @@ export class PickToteManagerComponent implements OnInit {
               this.pickBatchFilterOrderData(this.savedFilter.value);
             } else {
               this.global.ShowToastr(
-                'error',
+                ToasterType.Error,
                 this.global.globalErrorMsg(),
                 ToasterTitle.Error
               );
@@ -1436,7 +1436,7 @@ export class PickToteManagerComponent implements OnInit {
               this.pickBatchFilterOrderData(this.savedFilter.value);
             } else {
               this.global.ShowToastr(
-                'error',
+                ToasterType.Error,
                 this.global.globalErrorMsg(),
                 ToasterTitle.Error
               );
@@ -1518,7 +1518,7 @@ export class PickToteManagerComponent implements OnInit {
                 ToasterTitle.Success
               );
             } else {
-              this.global.ShowToastr('error', res.responseMessage, ToasterTitle.Error);
+              this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
               console.log('PickBatchZoneDefaultMark', res.responseMessage);
             }
           });

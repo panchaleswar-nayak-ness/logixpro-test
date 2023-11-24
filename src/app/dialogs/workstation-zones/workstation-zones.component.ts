@@ -56,14 +56,14 @@ export class WorkstationZonesComponent implements OnInit {
       ).length > 0
     ) {
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'This Zone is already selected for this workstation',
         ToasterTitle.Error
       );
       return false;
     }
     if (this.zones.filter((x: any) => x == this.selectedZone).length == 0) {
-      this.global.ShowToastr('error', 'This zone does not exist', ToasterTitle.Error);
+      this.global.ShowToastr(ToasterType.Error, 'This zone does not exist', ToasterTitle.Error);
       return false;
     }
     return true;
@@ -108,7 +108,7 @@ export class WorkstationZonesComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success, labels.alert.remove, ToasterTitle.Success);
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               'Failed to remove Zones from workstation',
               'Remove Failed'
             );
@@ -150,7 +150,7 @@ export class WorkstationZonesComponent implements OnInit {
           this.velocityCodeList.push({ zone: val, isSaved: true });
         });
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('WSPickZoneSelect', res.responseMessage);
       }
     });
@@ -162,7 +162,7 @@ export class WorkstationZonesComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.zones = res.data;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('LocationZonesSelect', res.responseMessage);
       }
     });
@@ -192,7 +192,7 @@ export class WorkstationZonesComponent implements OnInit {
           this.zoneSelectOptions = [];
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             'This Zone is already selected for this workstation.',
             ToasterTitle.Error
           );
@@ -200,7 +200,7 @@ export class WorkstationZonesComponent implements OnInit {
         }
       });
     } else {
-      this.global.ShowToastr('error', 'Please select any zone,', ToasterTitle.Error);
+      this.global.ShowToastr(ToasterType.Error, 'Please select any zone,', ToasterTitle.Error);
     }
   }
   dltVlCode(vlCode: any) {
@@ -260,7 +260,7 @@ export class WorkstationZonesComponent implements OnInit {
                 );
                 this.getVelocity();
               } else {
-                this.global.ShowToastr('error', res.responseMessage, ToasterTitle.Error);
+                this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
                 console.log('WSPickZoneDelete', res.responseMessage);
               }
             });

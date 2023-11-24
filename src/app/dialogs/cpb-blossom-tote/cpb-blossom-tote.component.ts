@@ -70,7 +70,7 @@ export class CpbBlossomToteComponent implements OnInit {
         else {
           this.newToteID = "";
           this.submitBlossomEnable = false;
-          this.global.ShowToastr('error',"This tote is currently assigned to another open order", 'Invalid Tote'); 
+          this.global.ShowToastr(ToasterType.Error,"This tote is currently assigned to another open order", 'Invalid Tote'); 
         }
       });
     }
@@ -81,7 +81,7 @@ export class CpbBlossomToteComponent implements OnInit {
 
   qtyInOldToteFoucusOut(element:any){
     if(element.oldToteQuantity < 0 || element.oldToteQuantity > element.transactionQuantity){
-      this.global.ShowToastr('error',"Invalid Quantity Entered", 'Invalid Quantity Entered');
+      this.global.ShowToastr(ToasterType.Error,"Invalid Quantity Entered", 'Invalid Quantity Entered');
       element.oldToteQuantity = null;
     }
   }
@@ -103,7 +103,7 @@ export class CpbBlossomToteComponent implements OnInit {
       }
     });
     if(isDecimalExist){
-      this.global.ShowToastr('error',"Tote Quantity can not be in decimal", ResponseStrings.Error);
+      this.global.ShowToastr(ToasterType.Error,"Tote Quantity can not be in decimal", ResponseStrings.Error);
       return;
     }
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -124,7 +124,7 @@ export class CpbBlossomToteComponent implements OnInit {
             this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
           }
           else{
-            this.global.ShowToastr('error',"An error occured when blossoming this tote", ResponseStrings.Error); 
+            this.global.ShowToastr(ToasterType.Error,"An error occured when blossoming this tote", ResponseStrings.Error); 
           }
         });
       }

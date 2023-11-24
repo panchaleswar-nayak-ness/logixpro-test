@@ -144,7 +144,7 @@ export class PickComponent implements OnInit {
 
   locationAssignment() {
     if (this.tableData2.data.length == 0) {
-      this.global.ShowToastr('error',"There were no orders selected for location assignment marking", 'No Orders Selected');
+      this.global.ShowToastr(ToasterType.Error,"There were no orders selected for location assignment marking", 'No Orders Selected');
     }
     else {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -169,7 +169,7 @@ export class PickComponent implements OnInit {
               this.tableData2.paginator = this.paginator2;
               this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             } else {
-              this.global.ShowToastr('error',"There was an error marking these orders for location assignment", ResponseStrings.Error);
+              this.global.ShowToastr(ToasterType.Error,"There was an error marking these orders for location assignment", ResponseStrings.Error);
               console.log("LocationAssignmentOrderInsert",res.responseMessage);
             }
           });

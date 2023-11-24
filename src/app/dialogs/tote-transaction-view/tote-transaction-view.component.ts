@@ -135,7 +135,7 @@ export class ToteTransactionViewComponent implements OnInit {
           }
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
             ToasterTitle.Error
           );
@@ -201,7 +201,7 @@ export class ToteTransactionViewComponent implements OnInit {
                 );
               } else {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   labels.alert.went_worng,
                   ToasterTitle.Error
                 );
@@ -276,7 +276,7 @@ export class ToteTransactionViewComponent implements OnInit {
               this.getTransactionTable();
             } else {
               this.global.ShowToastr(
-                'error',
+                ToasterType.Error,
                 labels.alert.went_worng,
                 ToasterTitle.Error
               );
