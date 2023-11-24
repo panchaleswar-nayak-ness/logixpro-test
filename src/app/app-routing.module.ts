@@ -84,7 +84,7 @@ const routes: Routes = [
         canActivate:[]
       },
       { 
-        path: 'OrderManager', 
+        path: AppNames.OrderManager, 
         loadChildren: () => import('./order-manager/order-manager.module').then(m => m.OrderManagerModule),
         canActivate:[]
       },

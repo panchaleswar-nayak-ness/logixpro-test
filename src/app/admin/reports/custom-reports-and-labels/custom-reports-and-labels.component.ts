@@ -47,7 +47,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
           case 'admin':
             this.currentApp = 'Admin';
             break;
-          case 'OrderManager':
+          case AppNames.OrderManager:
             this.currentApp = 'OM';
             break;
           case AppNames.InductionManager:

@@ -12,6 +12,7 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { IUserAPIService } from '../common/services/user-api/user-api-interface';
 import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
+import {  AppNames } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'login',
@@ -263,7 +264,7 @@ export class LoginComponent {
         permission: 'Markout',
       },
       {
-        appName: 'OrderManager',
+        appName: AppNames.OrderManager,
         route: '/OrderManager',
         iconName: 'pending_actions',
         name: 'Order Manager',
@@ -362,7 +363,7 @@ export class LoginComponent {
         case 'Markout':
           this.router.navigate(['/#']);
             break;
-         case 'OrderManager':
+         case AppNames.OrderManager:
           this.router.navigate(['/#']);
             break;
              case 'WorkManager':

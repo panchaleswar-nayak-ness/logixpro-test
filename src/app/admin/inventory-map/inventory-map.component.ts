@@ -25,7 +25,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppNames, AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType} from 'src/app/common/constants/strings.constants';
+import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-map',
@@ -506,7 +506,7 @@ export class InventoryMapComponent implements OnInit {
 
   viewInInventoryMaster(row){
 
-    if( this.spliUrl[1] == 'OrderManager' ){
+    if( this.spliUrl[1] == AppNames.OrderManager ){
       this.router.navigate([]).then(() => {
         window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, '_self');
       });
@@ -527,7 +527,7 @@ export class InventoryMapComponent implements OnInit {
 
   viewLocationHistory(row : any){
 
-    if( this.spliUrl[1] == 'OrderManager' ){
+    if( this.spliUrl[1] == AppNames.OrderManager ){
       this.router.navigate([]).then(() => {
         window.open(`/#/OrderManager/OrderStatus?location=${row.locationNumber}`, '_self');
       });
