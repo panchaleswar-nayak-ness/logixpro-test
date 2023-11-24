@@ -106,12 +106,12 @@ export class MainComponent implements OnInit {
         permission: 'Admin Menu',
       },
       {
-        appName: 'Consolidation Manager',
+        appName: AppPermissions.ConsolidationManager,
         route: '/ConsolidationManager',
         iconName: 'insert_chart',
-        name: 'Consolidation Manager',
+        name: AppPermissions.ConsolidationManager,
         updateMenu: 'consolidation',
-        permission: 'Consolidation Manager',
+        permission: AppPermissions.ConsolidationManager,
       },
       {
         appName: 'Induction',

@@ -232,12 +232,12 @@ export class LoginComponent {
         permission: 'FlowRack Replenish',
       },
       {
-        appName: 'Consolidation Manager',
+        appName: AppPermissions.ConsolidationManager,
         route: '/ConsolidationManager',
         iconName: 'insert_chart',
-        name: 'Consolidation Manager',
+        name: AppPermissions.ConsolidationManager,
         updateMenu: '',
-        permission: 'Consolidation Manager',
+        permission: AppPermissions.ConsolidationManager,
       },
       {
         appName: 'Induction',
@@ -345,7 +345,7 @@ export class LoginComponent {
   redirection(appName){
 
     switch (appName) {
-      case 'Consolidation Manager':
+      case AppPermissions.ConsolidationManager:
         this.router.navigate(['/#']);
         break;
       case 'FlowRackReplenish':
@@ -395,7 +395,7 @@ export class LoginComponent {
       'Import Export',
       'Induction Manager',
       'Work Manager',
-      'Consolidation Manager',
+      AppPermissions.ConsolidationManager,
       AppPermissions.OrderManager,
       'Admin Menu',
       'FlowRack Replenish',
