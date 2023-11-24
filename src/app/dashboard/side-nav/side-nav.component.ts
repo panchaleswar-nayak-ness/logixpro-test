@@ -24,7 +24,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'home', title: 'Home', route: AppRoutes.Dashboard ,permission: 'Home'},
     { icon: 'electric_bolt', title: 'Import Export', route: '/ImportExport' ,permission: 'Import Export'},
     { icon: 'manage_accounts', title: 'Admin', route: '/admin', permission: 'Admin Menu'},
-    { icon: 'checklist', title: 'Induction Manager', route: '/InductionManager' ,permission: 'Induction Manager'},
+    { icon: 'checklist', title: AppPermissions.InductionManager, route: '/InductionManager' ,permission: AppPermissions.InductionManager},
     { icon: 'fact_check', title: 'Work Manager', route: '#' ,permission: 'Work Manager'},
     { icon: 'insert_chart', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager' ,permission: AppPermissions.ConsolidationManager},
     { icon: 'pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager' ,permission: AppPermissions.OrderManager},
@@ -58,14 +58,14 @@ export class SideNavComponent implements OnInit {
     { icon: 'published_with_changes', title: 'System Replenishment', route: '/admin/systemReplenishment' ,permission: 'Replenishment'},
   ];
   inductionMenus: any = [
-    { icon: 'arrow_back', title: 'Induction Manager', route: AppRoutes.Dashboard, class: 'back-class' , permission: 'Induction Manager'},
+    { icon: 'arrow_back', title: AppPermissions.InductionManager, route: AppRoutes.Dashboard, class: 'back-class' , permission: AppPermissions.InductionManager},
     { icon: 'directions_alt', title: 'Process Picks', route: '/InductionManager/ProcessPicks' ,permission:'Tote Transactions'},
     { icon: 'dashboard', title: 'Process Put Aways', route: '/InductionManager/ProcessPutAways' ,permission:'Tote Transactions'},
     { icon: 'manage_accounts', title: 'Admin', route: '/InductionManager/Admin' ,permission:'Tote Admin Menu'},
-    { icon: 'edit_attributes', title: 'Mark Empty Reels', route: '/InductionManager/MarkEmptyReels' ,permission:'Induction Manager'},
-    { icon: 'linear_scale', title: 'Pallet Receiving', route: '/InductionManager/PalletReceiving' ,permission:'Induction Manager'},
-    { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch' ,permission:'Induction Manager'},
-    { icon: 'library_add_check', title: 'Complete Pick Batch', route: '/InductionManager/CompletePickBatch' ,permission:'Induction Manager'},
+    { icon: 'edit_attributes', title: 'Mark Empty Reels', route: '/InductionManager/MarkEmptyReels' ,permission:AppPermissions.InductionManager},
+    { icon: 'linear_scale', title: 'Pallet Receiving', route: '/InductionManager/PalletReceiving' ,permission:AppPermissions.InductionManager},
+    { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch' ,permission:AppPermissions.InductionManager},
+    { icon: 'library_add_check', title: 'Complete Pick Batch', route: '/InductionManager/CompletePickBatch' ,permission:AppPermissions.InductionManager},
   ];
 
   consolidationMenus: any = [
@@ -81,15 +81,15 @@ export class SideNavComponent implements OnInit {
   ];
 
   inductionAdminMenus: any = [
-    { icon: 'arrow_back', title: 'Admin', route: '/InductionManager', class: 'back-class' , permission: 'Induction Manager'},
-    { icon: ' directions_alt', title: 'Inventory Map', route: '/InductionManager/Admin/InventoryMap' ,permission:'Induction Manager'},
-    { icon: ' dashboard ', title: 'Inventory ', route: '/InductionManager/Admin/InventoryMaster' ,permission:'Induction Manager'},
-    { icon: ' inventory_2 ', title: 'Tote Transaction Manager ', route: '/InductionManager/Admin/ToteTransactionManager' ,permission:'Induction Manager'},
-    { icon: 'ads_click   ', title: 'Manual Transactions ', route: '/InductionManager/Admin/ManualTransactions' ,permission:'Induction Manager'},
-    { icon: 'elevator   ', title: 'Tote Manager ', route: '/InductionManager/Admin/ImToteManager' ,permission:'Induction Manager'},
-    { icon: 'post_add ', title: 'Transaction Journal ', route: '/InductionManager/Admin/TransactionJournal' ,permission:'Induction Manager'},
-    { icon: '     analytics     ', title: 'Reports ', route: '/InductionManager/Admin/Reports' ,permission:'Induction Manager'},
-    { icon: '      tune       ', title: 'Preferences ', route: '/InductionManager/Admin/AdminPrefrences' ,permission:'Induction Manager'},
+    { icon: 'arrow_back', title: 'Admin', route: '/InductionManager', class: 'back-class' , permission: AppPermissions.InductionManager},
+    { icon: ' directions_alt', title: 'Inventory Map', route: '/InductionManager/Admin/InventoryMap' ,permission:AppPermissions.InductionManager},
+    { icon: ' dashboard ', title: 'Inventory ', route: '/InductionManager/Admin/InventoryMaster' ,permission:AppPermissions.InductionManager},
+    { icon: ' inventory_2 ', title: 'Tote Transaction Manager ', route: '/InductionManager/Admin/ToteTransactionManager' ,permission:AppPermissions.InductionManager},
+    { icon: 'ads_click   ', title: 'Manual Transactions ', route: '/InductionManager/Admin/ManualTransactions' ,permission:AppPermissions.InductionManager},
+    { icon: 'elevator   ', title: 'Tote Manager ', route: '/InductionManager/Admin/ImToteManager' ,permission:AppPermissions.InductionManager},
+    { icon: 'post_add ', title: 'Transaction Journal ', route: '/InductionManager/Admin/TransactionJournal' ,permission:AppPermissions.InductionManager},
+    { icon: '     analytics     ', title: 'Reports ', route: '/InductionManager/Admin/Reports' ,permission:AppPermissions.InductionManager},
+    { icon: '      tune       ', title: 'Preferences ', route: '/InductionManager/Admin/AdminPrefrences' ,permission:AppPermissions.InductionManager},
   ];
 
   orderManagerMenus: any = [

@@ -243,9 +243,9 @@ export class LoginComponent {
         appName: 'Induction',
         route: '/InductionManager',
         iconName: 'checklist',
-        name: 'Induction Manager',
+        name: AppPermissions.InductionManager,
         updateMenu: 'induction',
-        permission: 'Induction Manager',
+        permission: AppPermissions.InductionManager,
       },
       {
         appName: 'ImportExport',
@@ -393,7 +393,7 @@ export class LoginComponent {
     let customPerm = [
       'Home',
       'Import Export',
-      'Induction Manager',
+      AppPermissions.InductionManager,
       'Work Manager',
       AppPermissions.ConsolidationManager,
       AppPermissions.OrderManager,

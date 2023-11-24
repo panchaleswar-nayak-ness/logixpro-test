@@ -117,9 +117,9 @@ export class MainComponent implements OnInit {
         appName: 'Induction',
         route: '/InductionManager',
         iconName: 'checklist',
-        name: 'Induction Manager',
+        name: AppPermissions.InductionManager,
         updateMenu: 'induction',
-        permission: 'Induction Manager',
+        permission: AppPermissions.InductionManager,
       },
       {
         appName: 'FlowRackReplenish',
