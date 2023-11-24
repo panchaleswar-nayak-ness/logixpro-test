@@ -215,7 +215,7 @@ export class CompletePickBatchComponent{
 
   sortColumns:any = [
     {dbColName:"Order Number",tabelColName:"order_no",sortColumnNumber:1},
-    {dbColName:"Tote ID",tabelColName:"tote_id",sortColumnNumber:2},
+    {dbColName:Column.ToteID,tabelColName:"tote_id",sortColumnNumber:2},
     {dbColName:"Item Number",tabelColName:"item_number",sortColumnNumber:3},
     {dbColName:"Description",tabelColName:"description",sortColumnNumber:4},
     {dbColName:"Transaction Quantity",tabelColName:"transaction_qty",sortColumnNumber:5},

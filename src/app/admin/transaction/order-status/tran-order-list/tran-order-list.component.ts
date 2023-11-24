@@ -39,7 +39,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'requiredDate', colDef: 'Required Date' },
     { colHeader: 'description', colDef: 'Description' },
     { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
-    { colHeader: 'toteID', colDef: 'Tote ID' },
+    { colHeader: 'toteID', colDef: Column.ToteID },
     { colHeader: 'priority', colDef: 'Priority' },
     { colHeader: 'completedBy', colDef: 'Completed By' },
     { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },

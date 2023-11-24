@@ -20,7 +20,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column} from 'src/app/common/constants/strings.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 
 @Component({
@@ -80,7 +80,7 @@ export class ConsolidationComponent implements OnInit {
     { key: '10', value: 'Lot Number' },
     { key: '2', value: 'Supplier Item ID' },
     { key: '8', value: 'Serial Number' },
-    { key: '6', value: 'Tote ID' },
+    { key: '6', value: Column.ToteID },
     { key: '9', value: 'User Field 1' },
   ];
 

@@ -20,7 +20,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-create-orders',
@@ -70,7 +70,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: 'Emergency', key: 'emergency' },
     { sequence: 'Label', key: 'label' },
     { sequence: 'Batch Pick ID', key: 'batchPickID' },
-    { sequence: 'Tote ID', key: 'toteID' },
+    { sequence: Column.ToteID, key: 'toteID' },
     { sequence: 'Cell', key: 'cell' },
     { sequence: 'Label', key: 'label' },
     { sequence: 'Label', key: 'label' },
