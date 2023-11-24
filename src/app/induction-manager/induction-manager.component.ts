@@ -5,6 +5,7 @@ import { AuthService } from '../common/init/auth.service';
 import { SharedService } from '../common/services/shared.service';
 import { IInductionManagerApiService } from '../common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from '../common/services/induction-manager-api/induction-manager-api.service';
+import {  AppNames } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-induction-manager',
@@ -31,7 +32,7 @@ export class InductionManagerComponent implements OnInit {
         const prevRoute= events[0].urlAfterRedirects.split('/');
         const nextRoute = events[1].urlAfterRedirects.split('/');
     
-        if (prevRoute[1]== 'InductionManager' || nextRoute[1] == 'InductionManager') {
+        if (prevRoute[1]== AppNames.InductionManager || nextRoute[1] == AppNames.InductionManager) {
           localStorage.setItem('routeFromInduction','true')
          
         }else{

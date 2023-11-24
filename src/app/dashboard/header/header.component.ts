@@ -15,6 +15,7 @@ import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/globa
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { IUserAPIService } from 'src/app/common/services/user-api/user-api-interface';
 import { UserApiService } from 'src/app/common/services/user-api/user-api.service';
+import {  AppNames } from 'src/app/common/constants/strings.constants';
 
 export interface ITheme {
   name : string
@@ -118,7 +119,7 @@ export class HeaderComponent {
           }
 
           if(width<=768){
-            if(element==='InductionManager'){
+            if(element===AppNames.InductionManager){
               element='IM'
             }
             

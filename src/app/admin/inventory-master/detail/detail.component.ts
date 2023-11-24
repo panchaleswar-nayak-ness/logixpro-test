@@ -12,7 +12,7 @@ import { CurrentTabDataService } from '../current-tab-data-service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppNames} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -170,7 +170,7 @@ export class DetailComponent implements OnInit {
         window.open(url, '_blank');
       });
     }
-    else if(this.spliUrl[1] == 'InductionManager'){
+    else if(this.spliUrl[1] == AppNames.InductionManager){
       this.router.navigate([]).then(() => {
         let url = '/#/InductionManager/Admin/TransactionJournal?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
         window.open(url, '_blank');

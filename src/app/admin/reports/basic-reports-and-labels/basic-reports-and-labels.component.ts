@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,AppNames} from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions'; 
@@ -75,7 +75,7 @@ export class BasicReportsAndLabelsComponent implements OnInit {
           case 'OrderManager':
             this.currentApp = 'OM';
             break;
-          case 'InductionManager':
+          case AppNames.InductionManager:
             this.currentApp = 'IM';
             break;
           case 'ConsolidationManager':

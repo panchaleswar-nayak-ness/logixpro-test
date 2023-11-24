@@ -12,7 +12,7 @@ import { MatSelect } from '@angular/material/select';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,AppNames} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-custom-reports-and-labels',
@@ -50,7 +50,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
           case 'OrderManager':
             this.currentApp = 'OM';
             break;
-          case 'InductionManager':
+          case AppNames.InductionManager:
             this.currentApp = 'IM';
             break;
           case 'ConsolidationManager':

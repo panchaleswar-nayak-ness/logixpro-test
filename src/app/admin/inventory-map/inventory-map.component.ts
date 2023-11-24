@@ -25,7 +25,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppNames, AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { AppNames, AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-map',
@@ -510,7 +510,7 @@ export class InventoryMapComponent implements OnInit {
       this.router.navigate([]).then(() => {
         window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, '_self');
       });
-   }else if(this.spliUrl[1] == 'InductionManager' ){
+   }else if(this.spliUrl[1] == AppNames.InductionManager ){
     window.open(`/#/InductionManager/Admin/InventoryMaster?itemNumber=${row.itemNumber}`, '_self');
 
    }
@@ -533,7 +533,7 @@ export class InventoryMapComponent implements OnInit {
       });
    }
    
-   else if( this.spliUrl[1] == 'InductionManager' ){
+   else if( this.spliUrl[1] == AppNames.InductionManager ){
     this.router.navigate([]).then(() => {
       window.open(`/#/InductionManager/Admin/TransactionJournal?location=${row.locationNumber}`, '_self');
     });
