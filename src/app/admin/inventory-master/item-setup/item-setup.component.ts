@@ -5,6 +5,7 @@ import { VelocityCodeComponent } from '../../dialogs/velocity-code/velocity-code
 import { SharedService } from 'src/app/common/services/shared.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  DialogConstants } from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-item-setup',
   templateUrl: './item-setup.component.html',
@@ -45,7 +46,7 @@ export class ItemSetupComponent {
     let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
       height: 'auto',
       width: '750px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: '',
@@ -72,7 +73,7 @@ export class ItemSetupComponent {
     let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
       height: 'auto',
       width: '750px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: '',

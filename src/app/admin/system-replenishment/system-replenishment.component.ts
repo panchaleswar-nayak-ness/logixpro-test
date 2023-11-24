@@ -4,6 +4,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { DeleteRangeComponent } from 'src/app/dialogs/delete-range/delete-range.component';
 import { PrintReplenLabelsComponent } from 'src/app/dialogs/print-replen-labels/print-replen-labels.component';
 import { SrDeleteOrderComponent } from 'src/app/dialogs/sr-delete-order/sr-delete-order.component';
+import {  DialogConstants } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-system-replenishment',
@@ -23,7 +24,7 @@ export class SystemReplenishmentComponent {
   deleteRange(): void {
     const dialogRef:any = this.global.OpenDialog(DeleteRangeComponent, {
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe(() => {
@@ -33,7 +34,7 @@ export class SystemReplenishmentComponent {
   printLabels(): void {
     const dialogRef:any = this.global.OpenDialog(PrintReplenLabelsComponent, {
       width: '1132px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe(() => {
@@ -44,7 +45,7 @@ export class SystemReplenishmentComponent {
   deleteSelectedOrder(): void {
     const dialogRef:any = this.global.OpenDialog(SrDeleteOrderComponent, {
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe(() => {

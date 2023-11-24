@@ -19,7 +19,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppPermissions} from 'src/app/common/constants/strings.constants';
+import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppPermissions,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -321,7 +321,7 @@ export class OmOrderManagerComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           ErrorMessage: 'Are you sure you want to delete all viewed orders?',
@@ -364,7 +364,7 @@ export class OmOrderManagerComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(OmUpdateRecordComponent, {
       height: 'auto',
       width: '50vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: { 
         ...ele,
@@ -401,7 +401,7 @@ export class OmOrderManagerComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           message: 'Cannot Release Partial Orders. If you would like to release the entire order, click Ok. Otherwise click cancel',
@@ -440,7 +440,7 @@ export class OmOrderManagerComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           message: 'Press ok to release currently Viewed Orders.',
@@ -524,7 +524,7 @@ export class OmOrderManagerComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(OmCreateOrdersComponent, { 
       height: 'auto',
       width: '1424px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true, 
     });
 

@@ -12,7 +12,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-kit-item',
@@ -107,7 +107,7 @@ export class KitItemComponent implements OnInit, OnChanges {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -218,7 +218,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   openAddItemNumDialog(e): void {
     const dialogRef:any = this.global.OpenDialog(this.addItemNumber, {
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((x) => {
@@ -236,7 +236,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   openDescriptionDialog(e): void {
     const dialogRef:any = this.global.OpenDialog(this.description, {
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((x) => {

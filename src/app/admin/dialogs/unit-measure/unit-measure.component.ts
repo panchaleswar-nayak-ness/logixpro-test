@@ -6,7 +6,7 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-unit-measure',
@@ -113,7 +113,7 @@ export class UnitMeasureComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
     dialogRef.afterClosed().subscribe(result => {

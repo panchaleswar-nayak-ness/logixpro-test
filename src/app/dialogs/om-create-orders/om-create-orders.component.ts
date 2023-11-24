@@ -20,7 +20,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-create-orders',
@@ -120,7 +120,7 @@ export class OmCreateOrdersComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         from: "add-new-order",
@@ -139,7 +139,7 @@ export class OmCreateOrdersComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         from: "edit-transaction",
@@ -176,7 +176,7 @@ export class OmCreateOrdersComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         from: "add-transaction",
@@ -197,7 +197,7 @@ export class OmCreateOrdersComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(OmUserFieldDataComponent, {
       height: 'auto',
       width: '50vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -244,7 +244,7 @@ export class OmCreateOrdersComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         heading: 'Release Transaction',
@@ -298,7 +298,7 @@ export class OmCreateOrdersComponent implements OnInit {
       const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           mode: 'release-all-orders',

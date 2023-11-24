@@ -19,7 +19,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,KeyboardKeys} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,KeyboardKeys,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-workstation-zones',
@@ -92,7 +92,7 @@ export class WorkstationZonesComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         mode: 'release-all-orders',
@@ -210,7 +210,7 @@ export class WorkstationZonesComponent implements OnInit {
         {
           height: 'auto',
           width: '480px',
-          autoFocus: '__non_existing_element__',
+          autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         }
       );
@@ -235,7 +235,7 @@ export class WorkstationZonesComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '480px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         message: 'Remove Zone ' + event + ' from picking for this workstation?',

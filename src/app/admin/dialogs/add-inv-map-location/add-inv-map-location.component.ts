@@ -512,7 +512,7 @@ export class AddInvMapLocationComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
         height: DialogConstants.auto,
         width: '640px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           mode: 'addlocation',

@@ -11,7 +11,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -137,7 +137,7 @@ export class PutAwayComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           heading: 'Mark Selected Orders for PUT AWAY Location Assignment?',

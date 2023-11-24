@@ -11,7 +11,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-new-transaction-to-order',
@@ -113,7 +113,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
             const dialogRef:any = this.global.OpenDialog(ItemExistGenerateOrderComponent, {
               height: 'auto',
               width: '560px',
-              autoFocus: '__non_existing_element__',
+              autoFocus: DialogConstants.autoFocus,
               disableClose:true,
               data: {
                 itemNumber:this.itemNumber,
@@ -164,7 +164,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
               const dialogRef:any = this.global.OpenDialog(ItemExistGenerateOrderComponent, {
                 height: 'auto',
                 width: '560px',
-                autoFocus: '__non_existing_element__',
+                autoFocus: DialogConstants.autoFocus,
                 disableClose:true,
                 data: {
                   itemNumber:this.itemNumber,
@@ -176,7 +176,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                 const dialogRef:any = this.global.OpenDialog(EmptyFieldsComponent, {
                   height: 'auto',
                   width: '560px',
-                  autoFocus: '__non_existing_element__',
+                  autoFocus: DialogConstants.autoFocus,
                   disableClose:true,
                   data: {
                     itemNumber:this.itemNumber,

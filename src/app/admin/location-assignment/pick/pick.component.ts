@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -150,7 +150,7 @@ export class PickComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           heading: 'Mark Selected Orders for PICK Location Assignment?',
@@ -236,7 +236,7 @@ export class PickComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(LaLocationAssignmentQuantitiesComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {  
         'totalCount': res.data

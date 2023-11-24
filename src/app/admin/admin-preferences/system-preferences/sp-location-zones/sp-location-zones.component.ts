@@ -7,7 +7,7 @@ import { KanbanZoneAllocationConflictComponent } from 'src/app/admin/dialogs/kan
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -94,7 +94,7 @@ export class SpLocationZonesComponent implements OnInit {
         {
           height: 'auto',
           width: '56vw',
-          autoFocus: '__non_existing_element__',
+          autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         }
       );
@@ -233,7 +233,7 @@ export class SpLocationZonesComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(LocationNameComponent, {
       height: 'auto',
       width: '786px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -251,7 +251,7 @@ export class SpLocationZonesComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         action: 'delete',

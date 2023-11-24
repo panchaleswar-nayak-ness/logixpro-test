@@ -5,7 +5,7 @@ import {
 } from '@angular/material/dialog'; 
 import { BatchDeleteConfirmationComponent } from '../batch-delete-confirmation/batch-delete-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TransactionType } from 'src/app/common/constants/strings.constants';
+import {  TransactionType ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-delete',
@@ -55,7 +55,7 @@ export class BatchDeleteComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(BatchDeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: 'deallocate_clear_batch',
@@ -87,7 +87,7 @@ export class BatchDeleteComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(BatchDeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: 'delete_all_batch',

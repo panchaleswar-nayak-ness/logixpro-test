@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA,   MatDialogRef } from '@angular/material/dialog';
 import { OmChangesConfirmationComponent } from '../om-changes-confirmation/om-changes-confirmation.component';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  StringConditions } from 'src/app/common/constants/strings.constants';
+import {  StringConditions ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-update-record',
@@ -71,7 +71,7 @@ export class OmUpdateRecordComponent implements OnInit {
     let dialogRef:any = this.globalService.OpenDialog(OmChangesConfirmationComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         order      : { id : this.data.id, ...this.orderForm.value },

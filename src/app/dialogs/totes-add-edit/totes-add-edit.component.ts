@@ -26,7 +26,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -282,7 +282,7 @@ export class TotesAddEditComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         mode: '',

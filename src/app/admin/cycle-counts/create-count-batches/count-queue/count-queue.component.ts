@@ -13,7 +13,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
  
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,DialogConstants} from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
@@ -145,7 +145,7 @@ export class CCBCountQueueComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '786px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         message:

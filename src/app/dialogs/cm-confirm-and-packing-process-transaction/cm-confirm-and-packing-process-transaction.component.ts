@@ -7,7 +7,7 @@ import { CmShipEditQtyComponent } from '../cm-ship-edit-qty/cm-ship-edit-qty.com
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing-process-transaction',
@@ -79,7 +79,7 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(CmShipSplitLineComponent, {
       height: 'auto',
       width: '30vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         order: this.confPackTransTable[index],
@@ -99,7 +99,7 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(CmShipEditQtyComponent, {
       height: 'auto',
       width: '50vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         reasons: this.data.reasons,

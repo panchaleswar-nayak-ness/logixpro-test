@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 
 import { error } from 'jquery';
-import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
@@ -93,7 +93,7 @@ export class CountComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           heading: 'Mark Selected Orders for COUNT Location Assignment?',
@@ -155,7 +155,7 @@ export class CountComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(LaLocationAssignmentQuantitiesComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {  
         'totalCount': res.data

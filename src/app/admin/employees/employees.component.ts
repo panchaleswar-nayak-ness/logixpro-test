@@ -20,7 +20,7 @@ import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.co
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 export interface Location {
   start_location: string;
@@ -313,7 +313,7 @@ export class EmployeesComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(AddNewEmployeeComponent, {
         height: 'auto',
         width: '520px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'edit',
@@ -335,7 +335,7 @@ export class EmployeesComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'delete-emp',
@@ -362,7 +362,7 @@ export class EmployeesComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -390,7 +390,7 @@ export class EmployeesComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
         height: 'auto',
         width: '480px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'edit',
@@ -409,7 +409,7 @@ export class EmployeesComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '480px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'delete-group',
@@ -427,7 +427,7 @@ export class EmployeesComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(CloneGroupComponent, {
         height: 'auto',
         width: '480px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'clone',
@@ -454,7 +454,7 @@ export class EmployeesComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(AddNewEmployeeComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         emp_data: null,

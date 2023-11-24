@@ -20,7 +20,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
-import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,zoneType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,zoneType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -245,7 +245,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         message: 'Click OK to clear serial number, lot number, expiration date, warehouse, Ship VIA, and Ship To Name',
@@ -291,7 +291,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           message: 'Click OK to save current cell sizes and velocity codes for this item to the inventory master.',
@@ -338,7 +338,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
       height: 'auto',
       width: '750px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: '',
@@ -365,7 +365,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
       height: 'auto',
       width: '750px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: '',
@@ -391,7 +391,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(ChooseLocationComponent, {
       height: 'auto',
       width: '70vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: values
     });
@@ -428,7 +428,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                 height: 'auto',
                 width: '560px',
-                autoFocus: '__non_existing_element__',
+                autoFocus: DialogConstants.autoFocus,
                 disableClose: true,
                 data: {
                   message: 'There is a need for ' + res.data + ' of item: ' + values.itemNumber + '. Press OK to find a location needing replenishment. Otherwise press CANCEL to do a normal location search',
@@ -522,7 +522,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(CrossDockTransactionComponent, {
       height: 'auto',
       width: '70vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         itemWhse: values.itemNumber,
@@ -552,7 +552,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
       height: 'auto',
       width: '640px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         userName: this.userData.userName,
@@ -615,7 +615,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                 height: 'auto',
                 width: '560px',
-                autoFocus: '__non_existing_element__',
+                autoFocus: DialogConstants.autoFocus,
                 data: {
                   message: 'There are no batches with this zone (' + this.toteForm.value.zone + ') assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
                 },
@@ -642,7 +642,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                         height: 'auto',
                         width: '560px',
-                        autoFocus: '__non_existing_element__',
+                        autoFocus: DialogConstants.autoFocus,
                         disableClose:true,
                         data: {
                           message: 'Cross Dock opportunity!  Click OK to view backorder transactions for the item you are putting away.',
@@ -724,7 +724,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               let dialogRef:any = this.global.OpenDialog(PaPrintLabelConfirmationComponent, {
                 height: 'auto',
                 width: '560px',
-                autoFocus: '__non_existing_element__',
+                autoFocus: DialogConstants.autoFocus,
                 disableClose:true,
               });
 
@@ -773,7 +773,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         message: 'Click OK to complete this transaction and assign it to the selected batch and tote.',
@@ -791,7 +791,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             let dialogRef : any = this.global.OpenDialog(ConfirmationDialogComponent, {
               height: 'auto',
               width: '560px',
-              autoFocus: '__non_existing_element__',
+              autoFocus: DialogConstants.autoFocus,
               disableClose:true,
               data: {
                 message: 'This transaction quantity is greater than the assigned quantity.  Click OK if you will receive more of this order/item.  Click Cancel to mark this transaction as received short.',
@@ -850,7 +850,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
           width: '50vw',
-          autoFocus: '__non_existing_element__',
+          autoFocus: DialogConstants.autoFocus,
           disableClose: true,
           data: {
             message: "The Tote you've selected is already marked as full. Putting the item in this tote will go over define cells",

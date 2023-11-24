@@ -6,7 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-super-batch',
@@ -71,7 +71,7 @@ export class SuperBatchComponent implements OnInit {
     this.global.OpenDialog(RequiredDateStatusComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__'
+      autoFocus: DialogConstants.autoFocus
     })
   }
   printBatchLabel(type){
@@ -155,7 +155,7 @@ export class SuperBatchComponent implements OnInit {
     if(this.isConfirmSuperBatch){
     const dialogRef:any = this.global.OpenDialog(this.batchOrderConfirmation, {
       width: 'auto',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
 

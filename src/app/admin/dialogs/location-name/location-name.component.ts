@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-location-name',
@@ -65,7 +65,7 @@ export class LocationNameComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         action: 'delete',

@@ -6,7 +6,7 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-scan-type-code',
@@ -110,7 +110,7 @@ export class ScanTypeCodeComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '480px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: 'dltScanTypeCode',

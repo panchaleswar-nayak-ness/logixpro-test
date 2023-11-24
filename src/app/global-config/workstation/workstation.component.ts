@@ -9,7 +9,7 @@ import { MatOption } from '@angular/material/core';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,AppPermissions} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,AppPermissions,DialogConstants} from 'src/app/common/constants/strings.constants';
 export interface PeriodicElement {
   position: string;
 }
@@ -305,7 +305,7 @@ export class WorkstationComponent implements OnInit {
         const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
           height: 'auto',
           width: '480px',
-          autoFocus: '__non_existing_element__',
+          autoFocus: DialogConstants.autoFocus,
       disableClose:true,
           data: {
             mode: 'delete_workstation',

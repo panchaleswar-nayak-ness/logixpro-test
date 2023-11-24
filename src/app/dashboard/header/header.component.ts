@@ -15,7 +15,7 @@ import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/globa
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { IUserAPIService } from 'src/app/common/services/user-api/user-api-interface';
 import { UserApiService } from 'src/app/common/services/user-api/user-api.service';
-import {  AppNames ,AppRoutes,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,AppRoutes,ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 export interface ITheme {
   name : string
@@ -268,7 +268,7 @@ export class HeaderComponent {
     this.global.OpenDialog(DPrinterSetupComponent, {
       height: 'auto',
       width: '556px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
   }

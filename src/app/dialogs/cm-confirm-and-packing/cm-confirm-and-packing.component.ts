@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',
@@ -190,7 +190,7 @@ async ClickConfirmAll(){
   let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
     height: 'auto',
     width: '560px',
-    autoFocus: '__non_existing_element__',
+    autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     data: {
       message: "Confirm All transactions? This will mark this entire order as confirmed and packed.",
@@ -245,7 +245,7 @@ openScanItem(ItemNumber:any,id: any) {
   this.global.OpenDialog(CmConfirmAndPackingProcessTransactionComponent, {
     height: 'auto',
     width: '96vw',
-    autoFocus: '__non_existing_element__',
+    autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     data: {ItemNumber:ItemNumber,orderNumber:this.orderNumber,contID:this.contID,confPackTransTable:this.transTable,id:id,reasons:this.reasons}
   })
@@ -281,7 +281,7 @@ announceSortChange2(sortState: Sort) {
   let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingSelectTransactionComponent, {
     height: 'auto',
     width: '96vw',
-    autoFocus: '__non_existing_element__',
+    autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     data: {ItemNumber:ItemNumber,orderNumber:this.orderNumber,contID:this.contID,confPackTransTable:this.transTable,id:id}
   })

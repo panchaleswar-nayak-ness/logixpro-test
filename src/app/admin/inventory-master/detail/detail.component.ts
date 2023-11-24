@@ -70,7 +70,7 @@ export class DetailComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
       height: DialogConstants.auto,
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         itemNumber: this.details.controls['itemNumber'].value,
@@ -103,7 +103,7 @@ export class DetailComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(UpdateDescriptionComponent, {
       height: DialogConstants.auto,
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         description: this.details.controls['description'].value,
@@ -123,7 +123,7 @@ export class DetailComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(ItemCategoryComponent, {
       height: DialogConstants.auto,
       width: '860px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: '',
@@ -145,7 +145,7 @@ export class DetailComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
       height: DialogConstants.auto,
       width: '750px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: '',

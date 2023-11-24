@@ -15,7 +15,7 @@ import { CrDesignFilenameConfirmationComponent } from '../cr-design-filename-con
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cr-add-new-custom-report',
@@ -60,7 +60,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       {
         height: 'auto',
         width: '932px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       }
     );
@@ -231,7 +231,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       data: {
         message: `Click OK to permanently delete the design file.`,
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -304,7 +304,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           restore: this.restoreAll,

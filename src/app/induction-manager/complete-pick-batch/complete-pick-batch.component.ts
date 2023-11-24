@@ -7,7 +7,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,zoneType} from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,zoneType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-complete-pick-batch',
@@ -127,7 +127,7 @@ export class CompletePickBatchComponent{
     const dialogRef:any = this.global.OpenDialog(ShortTransactionComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         selectedTransaction: element,
@@ -144,7 +144,7 @@ export class CompletePickBatchComponent{
     const dialogRef:any = this.global.OpenDialog(CpbBlossomToteComponent, {
       height: '640px',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         transactions: this.tableData,
@@ -163,7 +163,7 @@ export class CompletePickBatchComponent{
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         heading: 'Complete Transaction',
@@ -190,7 +190,7 @@ export class CompletePickBatchComponent{
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         heading: 'Complete Batch',

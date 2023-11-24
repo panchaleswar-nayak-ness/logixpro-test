@@ -5,7 +5,7 @@ import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/a
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ToasterMessages, ToasterTitle, ToasterType, showNotificationHeading, showNotificationMessage } from 'src/app/common/constants/strings.constants';
+import { ToasterMessages, ToasterTitle, ToasterType, showNotificationHeading, showNotificationMessage ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-pallet-receiving',
@@ -128,7 +128,7 @@ export class PalletReceivingComponent implements OnInit {
         heading: heading,
         disableCancel: true,
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((result) => {});

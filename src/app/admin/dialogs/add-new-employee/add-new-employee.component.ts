@@ -11,7 +11,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
 import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 export interface DialogData {
@@ -215,7 +215,7 @@ ChangePassword(data){
           message: `Would you like to change this employee's functions allowed to the defaults for ${$event.value}?`,
           heading: 'Add Employee Group',
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       });
       dialogRef.afterClosed().subscribe((result) => {

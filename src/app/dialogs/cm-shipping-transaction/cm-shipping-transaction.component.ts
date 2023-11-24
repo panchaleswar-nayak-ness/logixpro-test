@@ -23,7 +23,7 @@ import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys,ToasterMessages} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys,ToasterMessages,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-shipping-transaction',
@@ -138,7 +138,7 @@ export class CmShippingTransactionComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(CmToteIdUpdateModalComponent, {
       height: 'auto',
       width: '40vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         toteID: this.toteID,
@@ -183,7 +183,7 @@ export class CmShippingTransactionComponent implements OnInit {
                 {
                   height: 'auto',
                   width: '560px',
-                  autoFocus: '__non_existing_element__',
+                  autoFocus: DialogConstants.autoFocus,
                   disableClose: true,
                   data: {
                     message:
@@ -229,7 +229,7 @@ export class CmShippingTransactionComponent implements OnInit {
                 {
                   height: 'auto',
                   width: '560px',
-                  autoFocus: '__non_existing_element__',
+                  autoFocus: DialogConstants.autoFocus,
                   disableClose: true,
                   data: {
                     message:
@@ -245,7 +245,7 @@ export class CmShippingTransactionComponent implements OnInit {
                     {
                       height: 'auto',
                       width: '560px',
-                      autoFocus: '__non_existing_element__',
+                      autoFocus: DialogConstants.autoFocus,
                       disableClose: true,
                       data: {
                         message:
@@ -309,7 +309,7 @@ export class CmShippingTransactionComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(CmShipSplitLineComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         order,
@@ -342,7 +342,7 @@ export class CmShippingTransactionComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(CmShipEditQtyComponent, {
       height: 'auto',
       width: '50vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         reasons: this.STIndex.reasons,
@@ -363,7 +363,7 @@ export class CmShippingTransactionComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(CmShipEditConIdComponent, {
       height: 'auto',
       width: '40vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         order,

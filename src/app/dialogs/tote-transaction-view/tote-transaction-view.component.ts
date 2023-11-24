@@ -18,7 +18,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-tote-transaction-view',
@@ -150,7 +150,7 @@ export class ToteTransactionViewComponent implements OnInit {
       const dialogRef: any = this.global.OpenDialog(BatchDeleteComponent, {
         height: 'auto',
         width: '50vw',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           deleteAllDisable: true,
@@ -174,7 +174,7 @@ export class ToteTransactionViewComponent implements OnInit {
       const dialogRef: any = this.global.OpenDialog(MarkToteFullComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           mode: 'add-trans',
@@ -240,7 +240,7 @@ export class ToteTransactionViewComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
       width: '50vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         message:

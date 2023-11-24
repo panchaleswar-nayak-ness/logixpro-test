@@ -5,7 +5,7 @@ import { CmCarriersAddDeleteEditComponent } from 'src/app/dialogs/cm-carriers-ad
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-consolidation-preferences',
@@ -32,7 +32,7 @@ export class ConsolidationPreferencesComponent implements OnInit {
     this.global.OpenDialog(CmCarriersAddDeleteEditComponent, {
       height: 'auto',
       width: '720px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     })
   }

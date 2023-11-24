@@ -17,7 +17,7 @@ import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -92,7 +92,7 @@ export class CrossDockTransactionComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(TotesAddEditComponent, {
       height: 'auto',
       width: '50vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         position: position,
@@ -175,7 +175,7 @@ export class CrossDockTransactionComponent implements OnInit {
       const dialogRef: any = this.global.OpenDialog(UserFieldsComponent, {
         height: 'auto',
         width: '70vw',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: this.selectedRowObj,
       });
@@ -240,7 +240,7 @@ export class CrossDockTransactionComponent implements OnInit {
       {
         height: 'auto',
         width: '70vw',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           itemID: this.selectedRowObj.id,
@@ -277,7 +277,7 @@ export class CrossDockTransactionComponent implements OnInit {
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           message:
@@ -406,7 +406,7 @@ export class CrossDockTransactionComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         message: message,
@@ -430,7 +430,7 @@ export class CrossDockTransactionComponent implements OnInit {
           {
             height: 'auto',
             width: '560px',
-            autoFocus: '__non_existing_element__',
+            autoFocus: DialogConstants.autoFocus,
             disableClose: true,
             data: {
               message:

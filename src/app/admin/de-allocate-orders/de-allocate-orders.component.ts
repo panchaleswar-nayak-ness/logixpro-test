@@ -13,7 +13,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {ToasterTitle, ToasterType ,ResponseStrings,Column} from 'src/app/common/constants/strings.constants';
+import {ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants} from 'src/app/common/constants/strings.constants';
 import { Toast } from 'ngx-toastr';
 
 @Component({
@@ -307,7 +307,7 @@ export class DeAllocateOrdersComponent implements OnInit {
       const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: '600px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           action: 'De-Allocate',
@@ -343,7 +343,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '600px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         action: 'De-Allocate All',

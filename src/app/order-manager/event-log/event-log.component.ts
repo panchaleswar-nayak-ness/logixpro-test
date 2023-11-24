@@ -14,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppRoutes, ConfirmationMessages, FieldName, StringConditions,KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, FieldName, StringConditions,KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-event-log',
@@ -120,7 +120,7 @@ export class EventLogComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(OmEventLogEntryDetailComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: { data: element }
     });
@@ -208,7 +208,7 @@ export class EventLogComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: 'delete-event-log',

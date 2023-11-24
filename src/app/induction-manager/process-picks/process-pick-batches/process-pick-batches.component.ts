@@ -4,7 +4,7 @@ import { ViewOrdersComponent } from 'src/app/dialogs/view-orders/view-orders.com
 import { takeUntil } from 'rxjs';
 import { WorkstationZonesComponent } from 'src/app/dialogs/workstation-zones/workstation-zones.component';
 import { AuthService } from 'src/app/common/init/auth.service';
-import { StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-process-pick-batches',
   templateUrl: './process-pick-batches.component.html',
@@ -45,7 +45,7 @@ export class ProcessPickBatchesComponent {
     let dialogRef: any = this.global.OpenDialog(WorkstationZonesComponent, {
       height: 'auto',
       width: '750px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
 
     })
@@ -127,7 +127,7 @@ export class ProcessPickBatchesComponent {
         pickBatchQuantity: this.pickBatchQuantity,
         allOrders: this.allOrders,
       },
-      autoFocus: '__non_existing_element__'
+      autoFocus: DialogConstants.autoFocus
     });
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
 

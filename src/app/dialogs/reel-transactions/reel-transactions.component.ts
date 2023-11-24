@@ -15,7 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reel-transactions',
@@ -101,7 +101,7 @@ export class ReelTransactionsComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(ReelDetailComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         hvObj: this.data.hvObj,
@@ -210,7 +210,7 @@ export class ReelTransactionsComponent implements OnInit {
       data: {
         message: 'Click OK to create these reels.',
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -241,7 +241,7 @@ export class ReelTransactionsComponent implements OnInit {
           numUnassigned < 0 ? 'more' : 'fewer'
         }  parts assigned to these reels than total parts selected.  Click OK to continue or Cancel to edit the number of parts in each reel.`,
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -323,7 +323,7 @@ export class ReelTransactionsComponent implements OnInit {
                 data: {
                   message: errs,
                 },
-                autoFocus: '__non_existing_element__',
+                autoFocus: DialogConstants.autoFocus,
                 disableClose: true,
               }
             );
@@ -365,7 +365,7 @@ export class ReelTransactionsComponent implements OnInit {
                     data: {
                       message: 'Click OK to print labels now.',
                     },
-                    autoFocus: '__non_existing_element__',
+                    autoFocus: DialogConstants.autoFocus,
                     disableClose: true,
                   }
                 );
@@ -429,7 +429,7 @@ export class ReelTransactionsComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         message: message,

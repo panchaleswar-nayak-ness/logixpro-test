@@ -1,7 +1,7 @@
 import { Component} from '@angular/core';
 import { ScanVerificationDefaultsComponent } from 'src/app/admin/dialogs/scan-verification-defaults/scan-verification-defaults.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  zoneType } from 'src/app/common/constants/strings.constants';
+import {  zoneType ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sp-scan-verification-setup',
@@ -20,7 +20,7 @@ export class SpScanVerificationSetupComponent  {
     let dialogRef:any = this.global.OpenDialog(ScanVerificationDefaultsComponent, {
       height: 'auto',
       width: '96vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
     dialogRef.afterClosed().subscribe(result => {});

@@ -27,7 +27,7 @@ import {
   ToasterMessages,
   ToasterTitle,
   ToasterType
-,ResponseStrings} from 'src/app/common/constants/strings.constants';
+,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-process-picks',
@@ -362,7 +362,7 @@ export class ProcessPicksComponent implements OnInit {
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           message:'Press OK to create a new Tote Setup. Press Cancel to keep the current Tote Setup.',
@@ -386,7 +386,7 @@ export class ProcessPicksComponent implements OnInit {
     }
     const dialogRef: any = this.global.OpenDialog(this.batchPickID, {
       width: 'auto',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe(() => {
@@ -498,7 +498,7 @@ export class ProcessPicksComponent implements OnInit {
           allOrders: this.allOrders,
           resultObj: this.resultObj,
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       });
       dialogRef
         .afterClosed()
@@ -530,7 +530,7 @@ export class ProcessPicksComponent implements OnInit {
     this.global.OpenDialog(BlossomToteComponent, {
       height: 'auto',
       width: '786px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
     });
   }
 
@@ -688,7 +688,7 @@ export class ProcessPicksComponent implements OnInit {
   confirmProcessSetup() {
     this.global.OpenDialog(this.processSetup, {
       width: '450px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
   }
@@ -697,7 +697,7 @@ export class ProcessPicksComponent implements OnInit {
       width: '450px',
       height: 'auto',
       minHeight: 'auto',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
   }

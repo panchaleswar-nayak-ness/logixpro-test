@@ -21,7 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType,Column,zoneType} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType,Column,zoneType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-current-order',
@@ -374,7 +374,7 @@ export class SrCurrentOrderComponent implements OnInit {
   printLabels() {
     const dialogRef: any = this.global.OpenDialog(PrintReplenLabelsComponent, {
       width: '1100px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {},
     });
@@ -419,7 +419,7 @@ export class SrCurrentOrderComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         mode: 'delete-all-current-orders',
@@ -444,7 +444,7 @@ export class SrCurrentOrderComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         mode: 'delete-shown-current-orders',
@@ -471,7 +471,7 @@ export class SrCurrentOrderComponent implements OnInit {
   deleteRange() {
     const dialogRef: any = this.global.OpenDialog(DeleteRangeComponent, {
       width: '900px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {},
     });
@@ -487,7 +487,7 @@ export class SrCurrentOrderComponent implements OnInit {
       const dialogRef: any = this.global.OpenDialog(SrDeleteOrderComponent, {
         height: 'auto',
         width: '600px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           orderNumber: null,
@@ -499,7 +499,7 @@ export class SrCurrentOrderComponent implements OnInit {
         this.deleteSelectedConfirm,
         {
           width: '550px',
-          autoFocus: '__non_existing_element__',
+          autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         }
       );

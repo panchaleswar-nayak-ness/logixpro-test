@@ -28,7 +28,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { Router } from '@angular/router';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys,TransactionType,ToasterMessages} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys,TransactionType,ToasterMessages,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   position: string;
@@ -381,7 +381,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       const dialogRef:any = this.global.OpenDialog(SelectZonesComponent, {
         height: 'auto',
         width: '60%',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           batchId: this.batchId,
@@ -411,7 +411,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(TotesAddEditComponent, {
       height: 'auto',
       width: '50vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         position: position,
@@ -448,7 +448,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                 const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
                   height: 'auto',
                   width: '50vw',
-                  autoFocus: '__non_existing_element__',
+                  autoFocus: DialogConstants.autoFocus,
                    disableClose:true,
                   data: {
                     message: "This Batch ID either does not exists or is assigned to a different workstation.Use the Tote Setup tab to create a new batch or choose an existing batch for this workstation.",
@@ -475,7 +475,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(BatchDeleteComponent, {
       height: 'auto',
       width: '50vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         deleteAllDisable: false,
@@ -502,7 +502,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '50vw',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           message: "You must select one or more zones. If there are no zones available for selection check your Location Zones settings and/or delete or deallocate a batch to free up a zone.",
@@ -520,7 +520,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           message: 'Batch processed!  Click OK to move onto the next step or cancel to remain on this screen to create/edit more batches.',
@@ -665,7 +665,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         heading: '',
         notificationPrimary: true,
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
 
@@ -734,7 +734,7 @@ export class ProcessPutAwaysComponent implements OnInit {
           heading: '',
           notificationPrimary: true,
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
       });
 
@@ -843,7 +843,7 @@ async clearBatchData(){
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           message: 'Click OK to update all totes (except allocated ones) to have their default cell count.',
@@ -891,7 +891,7 @@ async clearBatchData(){
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: '50vw',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           message: "The Tote you've selected is already marked as full. Putting the item in this tote will go over define cells",
@@ -909,7 +909,7 @@ async clearBatchData(){
           const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteComponent, {
             height: 'auto',
             width: '1100px',
-            autoFocus: '__non_existing_element__',
+            autoFocus: DialogConstants.autoFocus,
       disableClose:true,
             data: {
               inputType: this.inputType,
@@ -934,7 +934,7 @@ async clearBatchData(){
                 const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
                   height: 'auto',
                   width: '50vw',
-                  autoFocus: '__non_existing_element__',
+                  autoFocus: DialogConstants.autoFocus,
           disableClose:true,
                   data: {
                     message: "The input code provided was not recognized.  Click OK to add the item to inventory or cancel to return.",
@@ -996,7 +996,7 @@ async clearBatchData(){
       const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteComponent, {
         height: 'auto',
         width: '1100px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           inputType: this.inputType,
@@ -1022,7 +1022,7 @@ async clearBatchData(){
             const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
               height: 'auto',
               width: '50vw',
-              autoFocus: '__non_existing_element__',
+              autoFocus: DialogConstants.autoFocus,
               disableClose:true,
               data: {
                 message: "The input code provided was not recognized.  Click OK to add the item to inventory or cancel to return.",
@@ -1142,7 +1142,7 @@ async clearBatchData(){
         let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
           height: 'auto',
           width: '560px',
-          autoFocus: '__non_existing_element__',
+          autoFocus: DialogConstants.autoFocus,
       disableClose:true,
           data: {
             message: 'Click OK to complete this batch.',
@@ -1174,7 +1174,7 @@ async clearBatchData(){
                     let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                       height: 'auto',
                       width: '560px',
-                      autoFocus: '__non_existing_element__',
+                      autoFocus: DialogConstants.autoFocus,
                       disableClose:true,
                       data: {
                         message: 'Click OK to print an Off-Carousel Put Away List.',
@@ -1290,7 +1290,7 @@ async clearBatchData(){
       const dialogRef:any = this.global.OpenDialog(MarkToteFullComponent, {
         height: 'auto',
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'add-trans',
@@ -1338,7 +1338,7 @@ async clearBatchData(){
       const dialogRef:any = this.global.OpenDialog(ToteTransactionViewComponent, {
         height: 'auto',
         width: '80vw',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
 
@@ -1367,7 +1367,7 @@ async clearBatchData(){
     const dialogRef:any = this.global.OpenDialog(ReelDetailComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         hvObj: hv,
@@ -1387,7 +1387,7 @@ async clearBatchData(){
     const dialogRef:any = this.global.OpenDialog(ReelTransactionsComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         hvObj: hv,

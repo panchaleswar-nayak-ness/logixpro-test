@@ -14,7 +14,7 @@ import { CmOrderToteConflictComponent } from '../cm-order-tote-conflict/cm-order
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ResponseStrings ,KeyboardKeys,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,KeyboardKeys,ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-order-number',
@@ -121,7 +121,7 @@ export class CmOrderNumberComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(CmOrderToteConflictComponent, {
       height: 'auto',
       width: '620px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
 

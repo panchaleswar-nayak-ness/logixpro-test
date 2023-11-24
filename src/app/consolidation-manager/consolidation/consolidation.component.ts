@@ -20,7 +20,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,DialogConstants} from 'src/app/common/constants/strings.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 
 @Component({
@@ -466,7 +466,7 @@ export class ConsolidationComponent implements OnInit {
       const dialogRef:any = this.global.OpenDialog(CmItemSelectedComponent, {
         height: 'auto',
         width: '899px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           identModal: this.typeValue,
@@ -582,7 +582,7 @@ export class ConsolidationComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(CmShippingComponent, {
       height: 'auto',
       width: '96vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: { orderNumber: this.typeValue }
     })
@@ -597,7 +597,7 @@ export class ConsolidationComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(CmShippingTransactionComponent, {
       height: 'auto',
       width: '96vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         orderNum: this.typeValue ? this.typeValue : '2909782A',
@@ -614,7 +614,7 @@ export class ConsolidationComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingComponent, {
       height: 'auto',
       width: '96vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: { orderNumber: this.typeValue }
     })
@@ -636,7 +636,7 @@ export class ConsolidationComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(CmOrderNumberComponent, {
       height: 'auto',
       width: '50vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         orderNumber: this.typeValue,
@@ -652,7 +652,7 @@ export class ConsolidationComponent implements OnInit {
     this.global.OpenDialog(CmItemSelectedComponent, {
       height: 'auto',
       width: '50vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
   }
@@ -661,7 +661,7 @@ export class ConsolidationComponent implements OnInit {
     this.global.OpenDialog(CmConfirmAndPackingSelectTransactionComponent, {
       height: 'auto',
       width: '50vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
   }
@@ -670,7 +670,7 @@ export class ConsolidationComponent implements OnInit {
     this.global.OpenDialog(CmPrintOptionsComponent, {
       height: 'auto',
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
   }
@@ -687,7 +687,7 @@ export class ConsolidationComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(CmOrderToteConflictComponent, {
       height: 'auto',
       width: '620px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -728,7 +728,7 @@ export class ConsolidationComponent implements OnInit {
         data: {
           message: ConfirmationMessages.UnverfiedItemsLeft
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       });
       dialogRef.afterClosed().subscribe((result) => {
@@ -780,7 +780,7 @@ export class ConsolidationComponent implements OnInit {
         packListSort : this.packListSort,
         print : print
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
   }

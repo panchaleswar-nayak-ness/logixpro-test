@@ -6,7 +6,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-bm-toteid-entry',
@@ -50,7 +50,7 @@ export class BmToteidEntryComponent implements OnInit {
         message: 'Click OK to auto generate tote IDs for this batch of orders.',
         heading: 'Batch Manager',
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -72,7 +72,7 @@ export class BmToteidEntryComponent implements OnInit {
           message: 'All Tote IDs must be specified before submitting.',
           heading: 'Batch Manager',
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       });
       dialogRef.afterClosed().subscribe((result) => {});

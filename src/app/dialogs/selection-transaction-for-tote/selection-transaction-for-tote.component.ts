@@ -5,7 +5,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ResponseStrings ,ToasterMessages,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterMessages,ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
@@ -66,7 +66,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
               let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                 height: 'auto',
                 width: '560px',
-                autoFocus: '__non_existing_element__',
+                autoFocus: DialogConstants.autoFocus,
                 disableClose:true,
                 data: {
                   message: 'There are no batches with this zone (' + val.zone + ') assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
@@ -78,7 +78,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
               const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
                 height: 'auto',
                 width: '100vw',
-                autoFocus: '__non_existing_element__',
+                autoFocus: DialogConstants.autoFocus,
                 disableClose:true,
                 data: {
                   otid        : id,
@@ -106,7 +106,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
       const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
         height: 'auto',
         width: '100vw',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           otid        : id,
@@ -190,7 +190,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
     const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
       height: 'auto',
       width: '100vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         otid        : 0,
