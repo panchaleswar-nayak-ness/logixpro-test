@@ -210,7 +210,8 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                 userField7: this.transactionInfo.value.userField7,
                 userField8: this.transactionInfo.value.userField8,
                 userField9: this.transactionInfo.value.userField9,
-                userField10: this.transactionInfo.value.userField10, 
+                userField10: this.transactionInfo.value.userField10,
+                itemNum:this.itemNumber
               };
           
              
@@ -218,9 +219,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
               if (this.data.mode === 'add-trans') {
                   payload['orderNumber'] = this.data.orderNumber;
                   payload['transType'] = this.data.transactionType;
-                  payload['itemNum'] = this.itemNumber;
               } else {
-                payload['itemNum'] = this.data.item.itemNumber;
                 payload['id'] = this.data.item.id;
               }
 

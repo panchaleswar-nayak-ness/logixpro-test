@@ -154,14 +154,11 @@ export class CCBCountQueueComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((res:any) => {
-      
       if (res==='Yes') {
-       
-       
         this.iAdminApiService.CreateCountRecords().subscribe(
           (response: any) => {
             if (response.isExecuted) {
-              this.global.ShowToastr(ToasterType.Error,response.responseMessage, ToasterTitle.Error);
+              this.global.ShowToastr(ToasterType.Success,response.responseMessage, ToasterTitle.Success);
               this.getCountQue();
               this.getCount(0);
               this.initializeDataSource();
