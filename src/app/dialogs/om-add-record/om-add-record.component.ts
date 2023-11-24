@@ -9,7 +9,7 @@ import { OrderManagerApiService } from 'src/app/common/services/orderManager-api
 import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,TransactionType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-add-record',
@@ -62,7 +62,7 @@ export class OmAddRecordComponent implements OnInit {
   transactionTypes: any = [
     { value: 'Pick', title: 'Pick' },
     { value: 'Count', title: 'Count' },
-    { value: 'Put Away', title: 'Put Away' },
+    { value: TransactionType.PutAway, title: TransactionType.PutAway },
   ];
   wharehouses: any = [];
   isEdit: boolean = false;

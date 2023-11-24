@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import {  TransactionType } from 'src/app/common/constants/strings.constants';
 
 
 export interface PeriodicElement {
@@ -37,8 +38,8 @@ export class CreateCountsComponent  {
       name : "Pick"
     },
     {
-      id : "Put Away",
-      name : "Put Away"
+      id : TransactionType.PutAway,
+      name : TransactionType.PutAway
     },
     {
       id : "Count",
