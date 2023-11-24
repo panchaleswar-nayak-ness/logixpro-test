@@ -25,7 +25,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column} from 'src/app/common/constants/strings.constants';
+import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column,zoneType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-map',
@@ -37,7 +37,7 @@ export class InventoryMapComponent implements OnInit {
    INVMAP_DATA = [
     { colHeader: "locationID", colDef: "Alternate Light" },
     { colHeader: "bin", colDef: "Bin" },
-    { colHeader: "carousel", colDef: "Carousel" },
+    { colHeader: zoneType.carousel, colDef: "Carousel" },
     { colHeader: "cellSize", colDef: "Cell Size" },
     { colHeader: "dateSensitive", colDef: "Date Sensitive" },
     { colHeader: "dedicated", colDef: "Dedicated" },

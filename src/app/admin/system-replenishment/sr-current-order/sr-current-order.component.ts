@@ -21,7 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType,Column} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType,Column,zoneType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-current-order',
@@ -36,7 +36,7 @@ export class SrCurrentOrderComponent implements OnInit {
     'Trans Type',
     'warehouse',
     'zone',
-    'carousel',
+    zoneType.carousel,
     'row',
     'shelf',
     'bin',
@@ -57,7 +57,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: 'Trans Type', label: 'Trans Type', value: 'transactionType',filterProperty:'Transaction Type' },
     { defination: 'warehouse', label: 'Warehouse', value: 'warehouse', filterProperty:'Warehouse'},
     { defination: 'zone', label: 'Zone', value: 'zone', filterProperty:'Zone' },
-    { defination: 'carousel', label: 'Carsl', value: 'carousel', filterProperty:'Carousel' },
+    { defination: zoneType.carousel, label: 'Carsl', value: zoneType.carousel, filterProperty:'Carousel' },
     { defination: 'row', label: 'Row', value: 'row', filterProperty:'Row' },
     { defination: 'shelf', label: 'Shelf', value: 'shelf', filterProperty:'Shelf' },
     { defination: 'bin', label: 'Bin', value: 'bin', filterProperty:'Bin' },
@@ -100,7 +100,7 @@ export class SrCurrentOrderComponent implements OnInit {
       key: 'batchPickID',
     },
     { value: 'Bin', viewValue: 'Bin', sortColumn: '7', key: 'bin' },
-    { value: 'Carsl', viewValue: 'Carsl', sortColumn: '4', key: 'carousel' },
+    { value: 'Carsl', viewValue: 'Carsl', sortColumn: '4', key: zoneType.carousel },
     { value: 'Cell', viewValue: 'Cell', sortColumn: '8', key: 'cell' },
     {
       value: 'Comp Date',

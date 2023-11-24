@@ -14,7 +14,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType} from 'src/app/common/constants/strings.constants';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
@@ -26,7 +26,7 @@ const TRNSC_DATA = [
   { colHeader: 'quantityAllocatedPick', colDef: 'Quantity Allocated Pick' },
   { colHeader: 'quantityAllocatedPutAway', colDef: 'Quantity Allocated Put Away' },
   { colHeader: 'zone', colDef: 'Zone' },
-  { colHeader: 'carousel', colDef: 'Carousel' },
+  { colHeader: zoneType.carousel, colDef: 'Carousel' },
   { colHeader: 'row', colDef: 'Row' },
   { colHeader: 'shelf', colDef: 'Shelf' },
   { colHeader: 'bin', colDef: 'Bin' },
@@ -187,7 +187,7 @@ export class MoveItemsComponent implements OnInit {
     'quantityAllocatedPick',
     'quantityAllocatedPutAway',
     'zone',
-    'carousel',
+    zoneType.carousel,
     'row',
     'shelf',
     'bin',

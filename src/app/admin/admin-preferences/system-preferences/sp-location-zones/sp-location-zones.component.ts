@@ -17,7 +17,7 @@ import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings} f
 })
 export class SpLocationZonesComponent implements OnInit {
   toggleSwitches = [
-    { label: 'Carousel', name: 'carousel', property: 'carousel' },
+    { label: 'Carousel', name: zoneType.carousel, property: zoneType.carousel },
     { label: 'Staging Zone', name: 'stagingZone', property: 'stagingZone' },
     {
       label: 'CCS Auto Induct',

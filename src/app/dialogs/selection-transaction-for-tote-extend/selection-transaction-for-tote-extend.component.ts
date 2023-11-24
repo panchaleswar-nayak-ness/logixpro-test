@@ -20,7 +20,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
-import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,zoneType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -702,7 +702,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       "expDate": values.expirationDate,
       "revision": "",
       "zone": values.zone,
-      "carousel": values.carousel,
+      'carousel' : values.carousel,
       "row": values.row,
       "shelf": values.shelf,
       "bin": values.bin,

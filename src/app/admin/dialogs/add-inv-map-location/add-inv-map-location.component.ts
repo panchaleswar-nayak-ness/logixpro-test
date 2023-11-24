@@ -19,7 +19,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
-import { DialogConstants, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,zoneType} from 'src/app/common/constants/strings.constants';
 
 
 export interface InventoryMapDataStructure {
@@ -247,7 +247,7 @@ export class AddInvMapLocationComponent implements OnInit {
       this.addInvMapLocation.get('laserX')?.disable();
       this.addInvMapLocation.get('laserY')?.disable();
       this.addInvMapLocation.get('warehouse')?.disable();
-      this.addInvMapLocation.get('carousel')?.disable();
+      this.addInvMapLocation.get(zoneType.carousel)?.disable();
       this.addInvMapLocation.get('row')?.disable();
       this.addInvMapLocation.get('shelf')?.disable();
       this.addInvMapLocation.get('bin')?.disable();
@@ -418,7 +418,7 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   onchangeItemNumber() {
-    let value = this.addInvMapLocation.controls['zone'].value + this.addInvMapLocation.controls['carousel'].value + this.addInvMapLocation.controls['row'].value + this.addInvMapLocation.controls['shelf'].value + this.addInvMapLocation.controls['bin'].value;
+    let value = this.addInvMapLocation.controls['zone'].value + this.addInvMapLocation.controls[zoneType.carousel].value + this.addInvMapLocation.controls['row'].value + this.addInvMapLocation.controls['shelf'].value + this.addInvMapLocation.controls['bin'].value;
     this.addInvMapLocation.controls['locationNumber'].setValue(value);
   }
   onSubmit(form: FormGroup) {
@@ -631,7 +631,7 @@ export class AddInvMapLocationComponent implements OnInit {
     if (col === 'zone') {
       this.zone = val?.toString();
     }
-    if (col === 'carousel') {
+    if (col === zoneType.carousel) {
       this.carousel = val.toString();
     }
     if (col === 'row') {

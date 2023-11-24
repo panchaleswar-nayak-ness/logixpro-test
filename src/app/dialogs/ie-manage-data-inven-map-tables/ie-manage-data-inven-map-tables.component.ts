@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {  zoneType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ie-manage-data-inven-map-tables',
@@ -15,7 +16,7 @@ export class IeManageDataInvenMapTablesComponent {
     'cell_size',
     'golden_zone',
     'zone',
-    'carousel',
+    zoneType.carousel,
     'putaway',
     'maxqty',
     'revision',

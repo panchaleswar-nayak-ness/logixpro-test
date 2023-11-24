@@ -17,7 +17,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Column, DialogConstants, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-transaction-history-list',
@@ -44,7 +44,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'location', colDef: Column.Location },
     { colHeader: 'wareHouse', colDef: 'Warehouse' },
     { colHeader: 'zone', colDef: 'Zone' },
-    { colHeader: 'carousel', colDef: 'Carousel' },
+    { colHeader: zoneType.carousel, colDef: 'Carousel' },
     { colHeader: 'row', colDef: 'Row' },
     { colHeader: 'shelf', colDef: 'Shelf' },
     { colHeader: 'bin', colDef: 'Bin' },

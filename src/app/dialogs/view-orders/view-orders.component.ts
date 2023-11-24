@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,Column} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,Column,zoneType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-view-orders',
@@ -39,7 +39,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'description', header: 'Description', cell: (element: any) => `${element.description}` },
     { columnDef: 'batchPickID', header: 'Batch Pick ID', cell: (element: any) => `${element.batchPickID}` },
     { columnDef: 'bin', header: 'Bin', cell: (element: any) => `${element.bin}` },
-    { columnDef: 'carousel', header: 'Carousel', cell: (element: any) => `${element.carousel}` },
+    { columnDef: zoneType.carousel, header: 'Carousel', cell: (element: any) => `${element.carousel}` },
     { columnDef: 'cell', header: 'Cell', cell: (element: any) => `${element.cell}` },
     { columnDef: 'completedBy', header: 'Completed By', cell: (element: any) => `${element.completedBy}` },
     { columnDef: 'completedDate', header: TableConstant.CompletedDate, cell: (element: any) => `${element.completedDate}` },
