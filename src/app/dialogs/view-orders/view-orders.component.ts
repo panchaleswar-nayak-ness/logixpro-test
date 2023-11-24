@@ -32,7 +32,7 @@ export class ViewOrdersComponent implements OnInit {
 
   filterTransColumns = [
     { columnDef: 'orderNumber', header: Column.OrderNumber, cell: (element: any) => `${element.orderNumber}` },
-    { columnDef: 'itemNumber', header: 'Item Number', cell: (element: any) => `${element.itemNumber}` },
+    { columnDef: 'itemNumber', header: Column.ItemNumber, cell: (element: any) => `${element.itemNumber}` },
     { columnDef: 'transactionQuantity', header: 'Transaction Quantity', cell: (element: any) => `${element.transactionQuantity}` },
     { columnDef: 'location', header: Column.Location, cell: (element: any) => `${element.location}` },
     { columnDef: 'completedQuantity', header: 'Completed Quantity', cell: (element: any) => `${element.completedQuantity}` },

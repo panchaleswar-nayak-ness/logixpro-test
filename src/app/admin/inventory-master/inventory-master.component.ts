@@ -23,7 +23,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
-import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions,Column} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-master',
@@ -778,9 +778,9 @@ export class InventoryMasterComponent implements OnInit {
 
   viewLocations() {
     this.RecordSavedItem();
-    if (this.setVal) this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
-    else if (this.spliUrl[1] == AppNames.InductionManager) this.router.navigate(['/InductionManager/Admin/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
-    else this.router.navigate(['/admin/inventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
+    if (this.setVal) this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: Column.ItemNumber, searchValue: this.currentPageItemNo } });
+    else if (this.spliUrl[1] == AppNames.InductionManager) this.router.navigate(['/InductionManager/Admin/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: Column.ItemNumber, searchValue: this.currentPageItemNo } });
+    else this.router.navigate(['/admin/inventoryMap'], { state: { colHeader: 'itemNumber', colDef: Column.ItemNumber, searchValue: this.currentPageItemNo } });
   }
 
   handleFocusOut() {

@@ -123,7 +123,7 @@ export class DeAllocateOrdersComponent implements OnInit {
         }
       });
     }
-    else if(this.chooseSearchType == 'Item Number'){
+    else if(this.chooseSearchType == Column.ItemNumber){
       let payload = {
         "itemNumber": this.TypeValue, 
       }
@@ -154,7 +154,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.dublicateTransaction = []
       let payload = {
         "orderNumber": this.chooseSearchType == Column.OrderNumber?this.TypeValue:'',
-        "itemNumber": this.chooseSearchType == 'Item Number'?this.TypeValue:'',
+        "itemNumber": this.chooseSearchType == Column.ItemNumber?this.TypeValue:'',
         "transType": this.transactionType,  
       }
       this.iAdminApiService.AllAllocatedOrders(payload).subscribe((res=>{

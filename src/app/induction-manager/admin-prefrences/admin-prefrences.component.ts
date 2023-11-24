@@ -78,8 +78,8 @@ export class AdminPrefrencesComponent implements OnInit {
       name: 'Any',
     },
     {
-      id: 'Item Number',
-      name: 'Item Number',
+      id: Column.ItemNumber,
+      name: Column.ItemNumber,
     },
     {
       id: 'Serial Number',

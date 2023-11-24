@@ -14,13 +14,13 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column} from 'src/app/common/constants/strings.constants';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
   { colHeader: 'locationNumber', colDef: 'Location Number' },
   { colHeader: 'goldenZone', colDef: 'Golden Zone' },
-  { colHeader: 'itemNumber', colDef: 'Item Number' },
+  { colHeader: 'itemNumber', colDef: Column.ItemNumber },
   { colHeader: 'description', colDef: 'Description' },
   { colHeader: 'itemQuantity', colDef: 'Item Quantity' },
   { colHeader: 'quantityAllocatedPick', colDef: 'Quantity Allocated Pick' },
@@ -223,7 +223,7 @@ export class MoveItemsComponent implements OnInit {
       StartRow: tableName === 'MoveFrom' ? this.startRow : this.startRowTo,
       EndRow: tableName === 'MoveFrom' ? this.endRow : this.endRowTo,
       searchString: tableName === 'MoveFrom' ? this.itemNo : this.from_itemNo,
-      searchColumn: 'Item Number',
+      searchColumn: Column.ItemNumber,
       sortColumnIndex: tableName === 'MoveFrom' ? this.sortCol : this.sortColTo,
       sortOrder: tableName === 'MoveFrom' ? this.sortOrder : this.sortOrderTo,
       tableName: tableName,

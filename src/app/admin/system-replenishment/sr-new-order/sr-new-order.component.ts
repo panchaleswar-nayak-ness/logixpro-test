@@ -16,7 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,Column} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-new-order',
@@ -26,7 +26,7 @@ import { ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/consta
 export class SrNewOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
  @Input() tabIndex:any;
-  displayedColumns: string[] = ['Item Number', 'Description', 'Warehouse', 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', 'action'];
+  displayedColumns: string[] = [Column.ItemNumber, 'Description', 'Warehouse', 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', 'action'];
   tableData: any = [];
   filteredTableData: any = [];
   public userData: any;
@@ -54,7 +54,7 @@ export class SrNewOrderComponent implements OnInit {
     { value: 'Available Qty', viewValue: 'Available Qty', sortValue: '6', key: 'availableQuantity', colDef: 'Available Qty' },
     { value: 'Case Qty', viewValue: 'Case Qty', sortValue: '8', key: 'caseQuantity', colDef: 'Case Qty' },
     { value: 'Description', viewValue: 'Description', sortValue: '1', key: 'description', colDef: 'Description' },
-    { value: 'Item Number', viewValue: 'Item Number', sortValue: '0', key: 'itemNumber', colDef: 'Item Number' },
+    { value: Column.ItemNumber, viewValue: Column.ItemNumber, sortValue: '0', key: 'itemNumber', colDef: Column.ItemNumber },
     { value: 'Replenish', viewValue: 'Replenish', sortValue: '10', key: 'replenish', colDef: 'Replenish' },
     { value: 'Replenish Exists', viewValue: 'Replenish Exists', sortValue: '11', key: 'replenishExists', colDef: 'Replenish Exists' },
     { value: 'Replenishment Level', viewValue: 'Replenishment Level', sortValue: '5', key: 'replenishmentLevel', colDef: 'Replenishment Level' },

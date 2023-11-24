@@ -27,7 +27,7 @@ export class ReprocessedTransactionComponent implements OnInit {
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
     { colHeader: 'orderNumber', colDef: Column.OrderNumber },
     { colHeader: 'lineNumber', colDef: 'Line Number' },
-    { colHeader: 'itemNumber', colDef: 'Item Number' },
+    { colHeader: 'itemNumber', colDef: Column.ItemNumber },
     { colHeader: 'lotNumber', colDef: Column.LotNumber },
     { colHeader: 'expirationDate', colDef: 'Expiration Date' },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },

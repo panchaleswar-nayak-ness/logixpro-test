@@ -32,7 +32,7 @@ export class SrCurrentOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
   @Input() TabIndex:any;
   displayedColumns2: string[] = [
-    'Item Number',
+    Column.ItemNumber,
     'Trans Type',
     'warehouse',
     'zone',
@@ -53,7 +53,7 @@ export class SrCurrentOrderComponent implements OnInit {
     'action',
   ];
   coloumnTable = [
-    { defination: 'Item Number', label: 'Item Num', value: 'itemNumber',filterProperty:'Item Number'},
+    { defination: Column.ItemNumber, label: 'Item Num', value: 'itemNumber',filterProperty:Column.ItemNumber},
     { defination: 'Trans Type', label: 'Trans Type', value: 'transactionType',filterProperty:'Transaction Type' },
     { defination: 'warehouse', label: 'Warehouse', value: 'warehouse', filterProperty:'Warehouse'},
     { defination: 'zone', label: 'Zone', value: 'zone', filterProperty:'Zone' },
@@ -115,8 +115,8 @@ export class SrCurrentOrderComponent implements OnInit {
       key: 'description',
     },
     {
-      value: 'Item Number',
-      viewValue: 'Item Number',
+      value: Column.ItemNumber,
+      viewValue: Column.ItemNumber,
       sortColumn: '0',
       key: 'itemNumber',
     },

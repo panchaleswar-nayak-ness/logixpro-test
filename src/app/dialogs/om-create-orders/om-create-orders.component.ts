@@ -48,7 +48,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: 'User Field8', key: 'userField8' },
     { sequence: 'User Field9', key: 'userField9' },
     { sequence: 'User Field10', key: 'userField10' },
-    { sequence: 'Item Number', key: 'itemNumber' },
+    { sequence: Column.ItemNumber, key: 'itemNumber' },
     { sequence: 'Description', key: 'description' },
     { sequence: 'Line Number', key: 'lineNumber' },
     { sequence: 'Transaction Quantity', key: 'transactionQuantity' },

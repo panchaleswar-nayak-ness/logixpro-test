@@ -76,7 +76,7 @@ export class ConsolidationComponent implements OnInit {
 
   filterOption: any = [
     { key: '0', value: 'Any Code' },
-    { key: '1', value: 'Item Number' },
+    { key: '1', value: Column.ItemNumber },
     { key: '10', value: Column.LotNumber },
     { key: '2', value: 'Supplier Item ID' },
     { key: '8', value: 'Serial Number' },
