@@ -37,6 +37,7 @@ export const StringConditions = {
     BatchToteTrans: 'batch_tote_trans',
     BatchTote: 'batch_tote',
     AllTransaction: 'All Transaction',
+    AllTransactions: 'All Transactions',
     Batch: 'Batch',
     BatchWithID:'batchWithID',
     PrintBatch:'PrintBatch',

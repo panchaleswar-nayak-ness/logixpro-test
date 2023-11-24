@@ -101,8 +101,8 @@ export class ReprocessTransactionComponent implements OnInit {
   public payload: any;
   public filterLoc: any = 'Nothing';
   public itemList: any;
-  transTypeSelect = 'All Transactions';
-  transStatusSelect = 'All Transactions';
+  transTypeSelect = StringConditions.AllTransactions;
+  transStatusSelect = StringConditions.AllTransactions;
   trueString = 'true';
   switchTrueString = false;
   falseString = 'false';
@@ -171,7 +171,7 @@ export class ReprocessTransactionComponent implements OnInit {
     sortOrder: 'asc',
   };
   /* End */
-  statusType: string = 'All Transactions';
+  statusType: string = StringConditions.AllTransactions;
   orderNumber: string = '';
   itemNumber: string = '';
   selectedVariable;

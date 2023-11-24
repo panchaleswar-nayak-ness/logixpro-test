@@ -120,8 +120,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   selectedVariable;
   public filterLoc: any = 'Nothing';
   public itemList: any;
-  transTypeSelect = 'All Transactions';
-  transStatusSelect = 'All Transactions';
+  transTypeSelect = StringConditions.AllTransactions;
+  transStatusSelect = StringConditions.AllTransactions;
   rowClicked;
   hideDelete;
   hideReset;
@@ -159,7 +159,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     sortOrder: 'asc',
   };
   /* End */
-  statusType: string = 'All Transactions';
+  statusType: string = StringConditions.AllTransactions;
   orderNumber: string = '';
   toteId: string = '';
   sDate: any = new Date(1973,10,7);
@@ -167,8 +167,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   
   public transType: any = [
     {
-      type: 'All Transactions',
-      value: 'All Transactions',
+      type: StringConditions.AllTransactions,
+      value: StringConditions.AllTransactions,
     },
     {
       type: 'Adjustment',
@@ -208,8 +208,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   ];
   public transStatus: any = [
     {
-      type: 'All Transactions',
-      value: 'All Transactions',
+      type: StringConditions.AllTransactions,
+      value: StringConditions.AllTransactions,
     },
     {
       type: 'Open Transactions',
