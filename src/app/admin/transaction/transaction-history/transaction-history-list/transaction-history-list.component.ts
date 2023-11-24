@@ -36,7 +36,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'priority', colDef: 'Priority' },
     { colHeader: 'itemNumber', colDef: 'Item Number' },
     { colHeader: 'revision', colDef: 'Revision' },
-    { colHeader: 'lotNumber', colDef: 'Lot Number' },
+    { colHeader: 'lotNumber', colDef: Column.LotNumber },
     { colHeader: 'expirationDate', colDef: 'Expiration Date' },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
     { colHeader: 'description', colDef: 'Description' },

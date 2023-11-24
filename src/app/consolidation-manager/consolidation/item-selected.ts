@@ -26,7 +26,7 @@ export class ItemSelected implements OnInit {
     filterOptionarr :any= [
         {key: '1', value: 'Item Number'},
         {key: '2', value: 'Supplier Item ID'},
-        {key: '10', value: 'Lot Number'},
+        {key: '10', value: Column.LotNumber},
         {key: '8', value: 'Serial Number'},
         {key: '9', value: 'User Field 1'},
         {key: '0', value: 'Any Code'},

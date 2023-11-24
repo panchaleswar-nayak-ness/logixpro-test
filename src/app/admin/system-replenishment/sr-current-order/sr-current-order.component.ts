@@ -21,7 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType,Column} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-current-order',
@@ -62,7 +62,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: 'shelf', label: 'Shelf', value: 'shelf', filterProperty:'Shelf' },
     { defination: 'bin', label: 'Bin', value: 'bin', filterProperty:'Bin' },
     { defination: 'cell', label: 'Cell', value: 'cell', filterProperty:'Cell' },
-    { defination: 'lotNumber', label: 'Lot Number', value: 'lotNumber', filterProperty:'lot Number' },
+    { defination: 'lotNumber', label: Column.LotNumber, value: 'lotNumber', filterProperty:'lot Number' },
     { defination: 'Trans Qty', label: 'Trans Qty', value: 'transactionQuantity' , filterProperty:'Trans Qty'},
     { defination: 'description', label: 'Description', value: 'description', filterProperty:'Description' },
     { defination: 'Order Number', label: 'Order Number', value: 'orderNumber', filterProperty:'Order Number' },
@@ -121,8 +121,8 @@ export class SrCurrentOrderComponent implements OnInit {
       key: 'itemNumber',
     },
     {
-      value: 'Lot Number',
-      viewValue: 'Lot Number',
+      value: Column.LotNumber,
+      viewValue: Column.LotNumber,
       sortColumn: '9',
       key: 'lotNumber',
     },
