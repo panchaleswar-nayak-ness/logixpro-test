@@ -2,6 +2,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, EventEmitter, Input,Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
+import {  LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-verified-item',
@@ -32,7 +33,7 @@ export class VerifiedItemComponent  {
     if (sortState.direction) {
       this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this.liveAnnouncer.announce('Sorting cleared');
+      this.liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.verifiedItems.sort = this.sort;
   }

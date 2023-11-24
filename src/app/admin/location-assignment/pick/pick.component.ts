@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
-import {  ToasterTitle } from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -191,7 +191,7 @@ export class PickComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer1.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer1.announce('Sorting cleared');
+      this._liveAnnouncer1.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.tableData1.sort = this.sort1;
   }
@@ -201,7 +201,7 @@ export class PickComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer2.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer2.announce('Sorting cleared');
+      this._liveAnnouncer2.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.tableData2.sort = this.sort2;
   }

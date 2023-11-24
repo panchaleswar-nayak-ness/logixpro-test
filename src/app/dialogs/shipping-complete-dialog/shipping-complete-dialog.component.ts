@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import {  LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-shipping-complete-dialog',
@@ -94,7 +95,7 @@ export class ShippingCompleteDialogComponent implements OnInit {
     if (sortState.direction) {
       this.liveAnnouncer1.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this.liveAnnouncer1.announce('Sorting cleared');
+      this.liveAnnouncer1.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.tableData1.sort = this.sort1;
   }
@@ -106,7 +107,7 @@ export class ShippingCompleteDialogComponent implements OnInit {
     if (sortState.direction) {
       this.liveAnnouncer2.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this.liveAnnouncer2.announce('Sorting cleared');
+      this.liveAnnouncer2.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.tableData2.sort = this.sort2;
   }

@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import {  LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',
@@ -255,7 +256,7 @@ announceSortChange1(sortState: Sort) {
     // Announce the sort direction, and the fact that sorting is cleared.
     this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
   } else {
-    this._liveAnnouncer.announce('Sorting cleared');
+    this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
   }
 
   // Set the data source's sort property to the new sort.
@@ -267,7 +268,7 @@ announceSortChange2(sortState: Sort) {
     // Announce the sort direction, and the fact that sorting is cleared.
     this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
   } else {
-    this._liveAnnouncer.announce('Sorting cleared');
+    this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
   }
 
   // Set the data source's sort property to the new sort.
