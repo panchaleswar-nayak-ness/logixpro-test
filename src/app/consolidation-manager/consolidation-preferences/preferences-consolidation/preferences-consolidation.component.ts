@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { CMConsolidationPreferences, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { CMConsolidationPreferences, ToasterMessages, ToasterTitle, ToasterType ,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-preferences-consolidation',
@@ -57,8 +57,8 @@ export class PreferencesConsolidationComponent {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['pref']['currentValue']) {
-      this.setPreferences(changes['pref']['currentValue'])
+    if (changes['pref'][StringConditions.currentValue]) {
+      this.setPreferences(changes['pref'][StringConditions.currentValue])
     }
   }
 

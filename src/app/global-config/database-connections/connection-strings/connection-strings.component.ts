@@ -7,7 +7,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-connection-strings',
@@ -34,10 +34,10 @@ export class ConnectionStringsComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (
       
-      changes['connectionStringData']['currentValue']['connectionString']
+      changes['connectionStringData'][StringConditions.currentValue]['connectionString']
     )
       this.connectionStringData =
-        changes['connectionStringData']['currentValue']['connectionString'];
+        changes['connectionStringData'][StringConditions.currentValue]['connectionString'];
   }
 
   createObjectNewConn() {

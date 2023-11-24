@@ -99,7 +99,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
       });
     }
     if (changes['isAutoBatch']) {
-      this.isAutoBatch = changes['isAutoBatch']['currentValue'];
+      this.isAutoBatch = changes['isAutoBatch'][StringConditions.currentValue];
     }
     this.batchManagerSettings.map((batchSetting) => {
       this.nextOrderNumber = batchSetting.batchID;
