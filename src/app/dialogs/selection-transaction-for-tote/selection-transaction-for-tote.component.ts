@@ -5,7 +5,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ResponseStrings } from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterMessages} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
@@ -96,7 +96,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
               dialogRef.afterClosed().subscribe((res) => { if (res) this.dialogRef.close(res); });
             }
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
             console.log("BatchByZone");
           }
         },
@@ -176,7 +176,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
           this.itemNumber = this.apiResponse.itemNumber;
           this.description = this.apiResponse.description;
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
           console.log("TransactionForTote",res.ResponseMessage);
         }
       },

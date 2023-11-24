@@ -9,7 +9,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ToasterMessages} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocess-transaction-detail',
@@ -141,7 +141,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
       }
       else{
-        this.global.ShowToastr('error','Something went wrong', 'Error!');
+        this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
         console.log("SaveTransaction",res.responseMessage);
       }
     });
@@ -265,7 +265,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
 
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
           console.log("TransactionByID",res.responseMessage);
         }
       },

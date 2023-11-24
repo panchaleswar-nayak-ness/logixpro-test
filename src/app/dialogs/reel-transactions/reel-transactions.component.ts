@@ -15,7 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ResponseStrings ,StringConditions} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,StringConditions,ToasterMessages} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reel-transactions',
@@ -160,7 +160,7 @@ export class ReelTransactionsComponent implements OnInit {
             this.serialTemp.nativeElement.focus();
           }, 100);
         } else {
-          this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
           console.log('NextSerialNumber', res.responseMessage);
         }
       },
@@ -398,7 +398,7 @@ export class ReelTransactionsComponent implements OnInit {
           });
         }
       } else {
-        this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+        this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
       }
     });
   }
@@ -453,7 +453,7 @@ export class ReelTransactionsComponent implements OnInit {
           this.generateReelAndSerial.data[index].reel_serial_number =
             res.data + '-RT';
         } else {
-          this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
           console.log('NextSerialNumber', res.responseMessage);
         }
       },

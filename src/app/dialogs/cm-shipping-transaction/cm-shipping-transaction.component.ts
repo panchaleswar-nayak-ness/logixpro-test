@@ -23,7 +23,7 @@ import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys,ToasterMessages} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-shipping-transaction',
@@ -88,7 +88,7 @@ export class CmShippingTransactionComponent implements OnInit {
             this.tableData = new MatTableDataSource(this.STIndex.tableData);
             this.tableData.paginator = this.paginator;
           } else {
-            this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+            this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
             console.log('ShippingTransactionIndex', res.responseMessage);
           }
         },
@@ -210,7 +210,7 @@ export class CmShippingTransactionComponent implements OnInit {
                       } else {
                         this.global.ShowToastr(
                           'error',
-                          'Something went wrong',
+                          ToasterMessages.SomethingWentWrong,
                           'Error!'
                         );
                         console.log(
@@ -272,7 +272,7 @@ export class CmShippingTransactionComponent implements OnInit {
                           } else {
                             this.global.ShowToastr(
                               'error',
-                              'Something went wrong',
+                              ToasterMessages.SomethingWentWrong,
                               'Error!'
                             );
                             console.log(
@@ -291,7 +291,7 @@ export class CmShippingTransactionComponent implements OnInit {
               });
             }
           } else {
-            this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+            this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
             console.log('SelCountOfOpenTransactionsTemp', res.responseMessage);
           }
         },

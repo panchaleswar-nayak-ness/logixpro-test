@@ -17,7 +17,7 @@ import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -158,7 +158,7 @@ export class CrossDockTransactionComponent implements OnInit {
           this.upperBound =
             res.data.transaction.length < 5 ? res.data.numberRecords : 5;
         } else {
-          this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+          this.global.ShowToastr('error', ToasterMessages.SomethingWentWrong, 'Error!');
           console.log('CrossDock', res.responseMessage);
         }
       },
@@ -348,7 +348,7 @@ export class CrossDockTransactionComponent implements OnInit {
               } else {
                 this.global.ShowToastr(
                   'error',
-                  'Something went wrong',
+                  ToasterMessages.SomethingWentWrong,
                   'Error!'
                 );
                 console.log('CompletePick', res.responseMessage);

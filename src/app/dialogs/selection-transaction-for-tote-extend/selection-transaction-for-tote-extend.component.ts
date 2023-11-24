@@ -20,7 +20,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
-import {  ToasterTitle ,ResponseStrings,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -232,7 +232,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             });
             this.checkRepenishment();
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
             console.log("ItemDetails",res.responseMessage);
           }
         },
@@ -317,7 +317,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             (res: any) => {
               if (res.data && res.isExecuted) this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);            
               else {
-                this.global.ShowToastr('error','Something went wrong', 'Error!');
+                this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
                 console.log("IMUpdate",res.responseMessage);
               }
             },
@@ -504,7 +504,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             }
 
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
             console.log("FindLocation",res.responseMessage);
           }
         },
@@ -656,7 +656,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                     }
                     else this.complete(values);
                   } else {
-                    this.global.ShowToastr('error','Something went wrong', 'Error!' );
+                    this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!' );
                     console.log("CrossDock",res.responseMessage);
                   }
                 },
@@ -742,7 +742,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
           this.dialogRef.close("Task Completed");
           this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success );            
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr('error',ToasterMessages.SomethingWentWrong, 'Error!');
           console.log("TaskComplete",res.responseMessage);
         }
       },
