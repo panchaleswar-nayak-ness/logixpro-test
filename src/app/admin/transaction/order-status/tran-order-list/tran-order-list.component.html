@@ -191,6 +191,13 @@
                 #tooltip="matTooltip" [matTooltip]="element.batchPickID"   matTooltipPosition="above" [matTooltipDisabled]="element.batchPickID && element.batchPickID.length>=15?false:true" > {{element.batchPickID}} </td>
               </ng-container>
 
+              <ng-container matColumnDef="statusCode">
+                <th mat-header-cell mat-sort-header  *matHeaderCellDef>Status Code</th>
+                <td mat-cell *matCellDef="let element"  
+                (contextmenu)="onContextMenu($event, element.statusCode, getColDef('statusCode'))"
+                #tooltip="matTooltip" [matTooltip]="element.statusCode"   matTooltipPosition="above" [matTooltipDisabled]="element.statusCode && element.statusCode.length>=15?false:true" > {{element.statusCode}} </td>
+              </ng-container>
+
               <ng-container matColumnDef="userField1">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef>User Field1</th>
                 <td mat-cell *matCellDef="let element"  

@@ -110,6 +110,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     'wareHouse',
     'importDate',
     'batchPickID',
+    'statusCode',
     'userField1',
     'userField2',
     'userField3',
