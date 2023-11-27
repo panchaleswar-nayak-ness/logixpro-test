@@ -66,6 +66,7 @@ export class SrNewOrderComponent implements OnInit {
   ];
   searchAutocompleteList: any;
   newOrderListCreated:boolean = false;
+  isfilterApplied:boolean = false;
   public iAdminApiService: IAdminApiService;
   constructor(
     private global:GlobalService,
@@ -200,15 +201,15 @@ export class SrNewOrderComponent implements OnInit {
 
   actionChange(event: any) {
     if(this.tableData.length != 0){
-      if (event == '1') {
-        this.filterItemNo();
-      }
-      else if (event == '5') {
+      if (event == '5') {
         this.selectAll();
       }
       else if (event == '6' && this.numberSelectedRep != 0) {
         this.unSelectAll();
       }
+    }
+    if (event == '1') {
+      this.filterItemNo();
     }
     if (event == '2') {
       this.print();
@@ -311,6 +312,7 @@ export class SrNewOrderComponent implements OnInit {
       if (result) {
         this.filterItemNumbersText = result.filterItemNumbersText;
         if (result.filterItemNumbersArray && result.filterItemNumbersArray.length > 0) {
+          this.isfilterApplied = true;
           this.resetPagination();
           this.newReplenishmentOrders();
         }

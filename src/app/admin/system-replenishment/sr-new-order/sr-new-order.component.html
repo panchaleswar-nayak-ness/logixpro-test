@@ -48,7 +48,7 @@
                 <mat-form-field class="action-dropdown d-xl-flex d-block w-30" appearance="outline">
                     <mat-label>Action</mat-label>
                     <mat-select #openActionDropDown class="employees-action" (selectionChange)="openAction($event)">
-                        <mat-option value="1" [disabled]="tableData.length == 0" (click)="actionChange('1')">Filter Item No.</mat-option>
+                        <mat-option value="1" [disabled]="tableData.length == 0 && !isfilterApplied" (click)="actionChange('1')">Filter Item No.</mat-option>
                         <mat-option value="2" (click)="actionChange('2')">Print</mat-option>
                         <mat-option value="3" [disabled]="!this.newOrderListCreated" (click)="viewAllItems()">View All Items</mat-option>
                         <mat-option value="4" [disabled]="!this.newOrderListCreated" (click)="viewSelectedItems()">View Selected Items</mat-option>
