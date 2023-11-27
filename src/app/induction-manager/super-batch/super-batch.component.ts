@@ -132,7 +132,12 @@ export class SuperBatchComponent implements OnInit {
   }
 
   onItemSelectChange(itemNumber: any) {
-    this.getSuperBatchBy('Item', itemNumber.value)
+    if(itemNumber.value){
+      this.getSuperBatchBy('Item', itemNumber.value)
+    }
+    else{
+      this.dataSource = [];
+    }
   }
 
   onCreateBtach(element: any) {
