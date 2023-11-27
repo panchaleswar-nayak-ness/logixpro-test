@@ -42,10 +42,6 @@ export class FrPreferencesComponent implements OnInit {
       {
         this.selectedCarton=res.data
       }
-      else {
-        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("wslocation",res.responseMessage);
-      }
     })
   }
 
