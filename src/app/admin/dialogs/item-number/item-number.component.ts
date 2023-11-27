@@ -49,9 +49,11 @@ export class ItemNumberComponent implements OnInit {
   onNoClick(onsubmit: any, status : any): void {
     if(status == 'createNew'){
       this.submit = true;
-      if(this.addItem && onsubmit)
-        if(this.data.itemNumber && this.data.description) this.dialogRef.close(  {itemNumber : this.data.itemNumber, description : this.data.description} );
-      else this.dialogRef.close();
+      if(this.addItem && onsubmit){
+        if(this.data.itemNumber && this.data.description){
+          this.dialogRef.close(  {itemNumber : this.data.itemNumber, description : this.data.description} );
+        }
+      }
     } else if ( status == 'update'){
       if(this.data.newItemNumber){
         const confirmationdialogRef:any = this.dialog.OpenDialog(ItemNumUpdateConfirmationComponent, { width: '560px' });
