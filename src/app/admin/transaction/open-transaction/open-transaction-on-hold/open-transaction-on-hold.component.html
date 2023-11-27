@@ -148,7 +148,7 @@
                                 <mat-option value="set_column_sq">Set Column Sequence</mat-option>
                                 <mat-option (click)="printCycleCountReport()">Print Cycle Count Report</mat-option>
                                 <mat-option (click)="previewFiftyPagesOnly()">Preview 50 Pages Only</mat-option>
-                                <mat-option (click)="sendCompletedToHistory()" *ngIf="authService.UserPermissonByFuncName('Transaction Journal Send To History') && !throughOrderManager" value="send_completed_history">Send Completed to History</mat-option>
+                                <mat-option (click)="sendCompletedToHistory()" *ngIf="authService.UserPermissonByFuncName('Transaction Journal Send To History') && !throughOrderManager">Send Completed to History</mat-option>
                             </mat-select>
                             <span class="material-symbols-outlined icon-expand-more">
                                 expand_more
