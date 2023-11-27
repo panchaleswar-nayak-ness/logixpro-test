@@ -263,12 +263,6 @@ export class KitItemComponent implements OnInit, OnChanges {
         if (this.searchList.length > 0) {
           this.isValidForm = false;
         }
-        else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("SearchItem", res.responseMessage);
-
-
-        }
       }
     });
   }
