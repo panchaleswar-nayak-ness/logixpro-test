@@ -31,10 +31,17 @@ export class LocationComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) { 
-    if(changes['location'])
-      if (changes['location']?.previousValue?.controls?.inventoryTable.value?.length) this.location.controls['inventoryTable'].setValue(changes['location']['previousValue']['controls'].inventoryTable.value);
-      else this.location.controls['inventoryTable'].setValue([]);
-    if(changes['fieldNameDetails']) this.fieldNameDetails=changes['fieldNameDetails'];
+    if(changes['location']){
+      if (changes['location']?.previousValue?.controls?.inventoryTable.value?.length){
+        this.location.controls['inventoryTable'].setValue(changes['location']['previousValue']['controls'].inventoryTable.value);
+      } 
+      else {
+        this.location.controls['inventoryTable'].setValue([]);
+      }
+    }
+    if(changes['fieldNameDetails']){
+      this.fieldNameDetails=changes['fieldNameDetails'];
+    } 
   }
     
   announceSortChange(sortState: any) {
@@ -50,6 +57,18 @@ export class LocationComponent implements OnInit {
 
   handlePageEvent(e: PageEvent) {
     this.sendNotification({locationPageSize:(e.pageSize * e.pageIndex + e.pageSize), startIndex: e.pageSize * e.pageIndex});
+  }
+
+  getPageSize(){
+    if (this.location.controls['inventoryTable'].value.length > 10){
+      return 20;
+    }
+    if (this.location.controls['inventoryTable'].value.length > 5){
+      return 10;
+    }
+    else{
+      return 5;
+    }
   }
   
 }

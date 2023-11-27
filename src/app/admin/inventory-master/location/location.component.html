@@ -123,6 +123,6 @@
 
 
 <div class="d-flex justify-content-between bg-white p-0">
-  <mat-paginator [pageSize]="5" showFirstLastButtons [length]="count" [pageSizeOptions]="[5, 10, 20]"  (page)="handlePageEvent($event)"></mat-paginator>          
+  <mat-paginator [pageSize]="getPageSize()" showFirstLastButtons [length]="count" [pageSizeOptions]="[5, 10, 20]"  (page)="handlePageEvent($event)"></mat-paginator>          
 </div>
 </div>
