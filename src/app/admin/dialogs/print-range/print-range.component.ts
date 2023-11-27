@@ -119,8 +119,6 @@ export class PrintRangeComponent implements OnInit {
       }
       else {
         this.quantitySelected = 0;
-        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-        console.log("QuantitySelected",res.responseMessage);
       }
     });
   }
