@@ -192,7 +192,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       this.batchIdKeyup();
     }
     else if (event.funName == "clear"){
-      debugger
+      
       this.clear();
     }
     else if (event.funName == "getRow"){ 
@@ -200,6 +200,7 @@ export class ProcessPutAwaysComponent implements OnInit {
       this.getRow();
     }
     else if (event.funName == "createNewBatch"){
+      this.batchId = event.batchId;
       this.createNewBatch(event.funParam);
     }
     else if (event.funName == "openSelectZonesDialogue"){
@@ -275,7 +276,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.status = 'Not Processed';
     this.assignedZones = '';
     this.ELEMENT_DATA.length = 0;
-    debugger
+    
     this.dataSource = [];
     this.assignedZonesArray.length=0;   // after deleting zones array reset to select zones 
     this.batchId2 = "";
@@ -343,7 +344,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.iInductionManagerApi.BatchTotes(payLoad).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
-          debugger
+          
           if (res.data.length > 0) this.status = "Processed";
           else this.status = "Not Processed";
           this.ELEMENT_DATA.length = 0;
@@ -365,7 +366,7 @@ export class ProcessPutAwaysComponent implements OnInit {
               } catch (e) { }
             }
           }
-          debugger
+          
           this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
         } else {
           this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
@@ -436,7 +437,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   }
   
   onFocusOutBatchID(val) {
-    debugger
+    
     if (val) {
       try {
         setTimeout(() => {
@@ -690,7 +691,7 @@ export class ProcessPutAwaysComponent implements OnInit {
             this.currentToteID++;
           }
         }
-        debugger
+        
         this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
       }
     });
@@ -719,7 +720,7 @@ export class ProcessPutAwaysComponent implements OnInit {
         this.currentToteID++;
       }
     }
-    debugger
+    
     this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
     this.updateNxtTote();
   }
@@ -785,7 +786,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     );
   }
 async clearBatchData(){
-  debugger
+  
   this.batchId2 = '';
   this.inputValue = '';
   this.inputType = 'Any';
