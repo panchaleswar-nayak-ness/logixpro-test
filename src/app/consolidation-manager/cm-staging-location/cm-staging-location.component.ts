@@ -5,7 +5,7 @@ import { StagingLocationOrderComponent } from 'src/app/dialogs/staging-location-
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppRoutes, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-staging-location',
@@ -15,7 +15,7 @@ import { AppRoutes, ResponseStrings, StringConditions, ToasterMessages, ToasterT
 export class CmStagingLocationComponent {
   userData: any = {};
   isInputFocused: any = false;
-  displayedColumns: string[] = ['select', 'position', 'action'];
+  displayedColumns: string[] = ['select', UniqueConstants.position, 'action'];
   stageTables: any[] = [];
   oldStageTables: any[] = [];
   isLoading: any = false;

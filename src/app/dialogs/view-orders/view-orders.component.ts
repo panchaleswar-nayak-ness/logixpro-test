@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-view-orders',
@@ -15,9 +15,9 @@ import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef} fro
   styleUrls: ['./view-orders.component.scss']
 })
 export class ViewOrdersComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'toteid', 'orderno', 'priority', 'options', 'other'];
+  displayedColumns: string[] = [UniqueConstants.position, 'toteid', 'orderno', 'priority', 'options', 'other'];
 
-  displayedColumns1: string[] = ['position', 'toteid', 'orderno', 'other'];
+  displayedColumns1: string[] = [UniqueConstants.position, 'toteid', 'orderno', 'other'];
 
   displayedColumns2: string[] = ['orderno'];
 

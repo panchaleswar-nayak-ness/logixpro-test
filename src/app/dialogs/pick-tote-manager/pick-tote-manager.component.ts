@@ -26,7 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -123,7 +123,7 @@ export class PickToteManagerComponent implements OnInit {
     'actions',
   ];
 
-  displayedColumns1: string[] = ['position', 'toteid', 'orderno', 'other'];
+  displayedColumns1: string[] = [UniqueConstants.position, 'toteid', 'orderno', 'other'];
   dataSource1 = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
 
   @ViewChild('matRef') matRef: MatSelect;

@@ -24,7 +24,7 @@ export class ProcessPickTotesComponent {
   @Input() batchID: any;
   selection = new SelectionModel<any>(true, []);
   public iinductionManagerApi: IInductionManagerApiService;
-  displayedColumns: string[] = ['position', 'toteid', 'orderno', 'priority', 'other'];
+  displayedColumns: string[] = [UniqueConstants.position, 'toteid', 'orderno', 'priority', 'other'];
   public userData: any;
   constructor(private global: GlobalService,
     private authService: AuthService,
