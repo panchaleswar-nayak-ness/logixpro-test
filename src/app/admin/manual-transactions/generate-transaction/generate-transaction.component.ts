@@ -21,7 +21,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import {
   DialogConstants,
   ToasterTitle,
-  ToasterType,Style} from 'src/app/common/constants/strings.constants';
+  ToasterType,Style,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-generate-transaction',
@@ -169,7 +169,7 @@ export class GenerateTransactionComponent implements OnInit {
           this.wareHouse = this.item.warehouse;
           this.toteID = this.item.toteID;
           this.emergency = !(
-            this.item.emergency === 'False' || this.item.emergency === 'false'
+            this.item.emergency === StringConditions.False || this.item.emergency === 'false'
           );
           this.warehouseSensitivity = this.item.wareHouseSensitive;
           this.totalQuantity = res.data.totalQuantity;

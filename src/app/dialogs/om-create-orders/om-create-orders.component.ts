@@ -20,7 +20,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-create-orders',
@@ -85,7 +85,7 @@ export class OmCreateOrdersComponent implements OnInit {
   };
   tableData: any = [];
   userData: any;
-  allowInProc: any = 'False';
+  allowInProc: any = StringConditions.False;
   otcreatecount: any = 0;
   orderNumberSearchList: any;
   @ViewChild("searchauto", { static: false }) autocompleteOpened: MatAutocomplete;
@@ -236,7 +236,7 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   releaseOrders() {
-    if (this.allowInProc == "False" && this.otcreatecount > 0) {
+    if (this.allowInProc == StringConditions.False && this.otcreatecount > 0) {
       this.global.ShowToastr(ToasterType.Error, '"You may not release an Order that is already in progress', 'Release Transactions');
       return;
     }

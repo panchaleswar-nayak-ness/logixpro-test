@@ -61,8 +61,8 @@ export class OmUpdateRecordComponent implements OnInit {
       user8          : this.data.userField8,
       user9          : this.data.userField9,
       user10         : this.data.userField10,
-      emergency      : this.data.emergency ? 'True' : 'False',
-      label          : this.data.label ? 'True' : 'False',
+      emergency      : this.data.emergency ? 'True' : StringConditions.False,
+      label          : this.data.label ? 'True' : StringConditions.False,
     });
   }
 

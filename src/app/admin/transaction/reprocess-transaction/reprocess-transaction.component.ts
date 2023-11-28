@@ -265,9 +265,9 @@ export class ReprocessTransactionComponent implements OnInit {
     this.selectedTransaction = row;
     this.isEnabled = false;
     this.transactionID = row.id;
-    this.isReprocessedChecked.flag = row.reprocess != 'False';
-    this.isCompleteChecked.flag = row.postAsComplete != 'False';
-    this.isHistoryChecked.flag = row.sendToHistory != 'False';
+    this.isReprocessedChecked.flag = row.reprocess != StringConditions.False;
+    this.isCompleteChecked.flag = row.postAsComplete != StringConditions.False;
+    this.isHistoryChecked.flag = row.sendToHistory != StringConditions.False;
     this.itemNumber = row.itemNumber;
     this.orderNumber = row.orderNumber;
     this.clearDelete("1");

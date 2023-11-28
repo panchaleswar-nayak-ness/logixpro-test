@@ -63,7 +63,8 @@ export const StringConditions = {
     hold: 'hold',
     reprocess: 'reprocess',
     complete: 'complete',
-    start:'start'
+    start:'start',
+    False:'False'
 }
 
 export const ResponseStrings = {

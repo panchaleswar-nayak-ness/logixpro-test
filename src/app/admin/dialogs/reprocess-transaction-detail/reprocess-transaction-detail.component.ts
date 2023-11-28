@@ -9,7 +9,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ToasterMessages,TableConstant,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ToasterMessages,TableConstant,ColumnDef,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocess-transaction-detail',
@@ -226,7 +226,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
 
           if (!res.data[0].label) { this.label = false; } else { this.label = true; }
-          if (res.data[0].emergency == 'False') { this.emergency = false; } else { this.emergency = true; }
+          if (res.data[0].emergency == StringConditions.False) { this.emergency = false; } else { this.emergency = true; }
           this.editTransactionForm.patchValue({
             "transactionQuantity": res.data[0].transactionQuantity,
             "unitOfMeasure": res.data[0].unitOfMeasure,

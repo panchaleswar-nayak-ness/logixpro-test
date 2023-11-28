@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterMessages ,ToasterTitle,ToasterType,TableConstant,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterMessages ,ToasterTitle,ToasterType,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   zone: string
@@ -111,7 +111,7 @@ export class SelectZonesComponent implements OnInit {
   //Auto select staging records
   let recordExists=0;
   for (const element of this.elementData) {
-  if(element.stagingZone=='False' && !(!element.selected && !element.available))
+  if(element.stagingZone==StringConditions.False && !(!element.selected && !element.available))
   {
     element.selected=true;
     recordExists=1;
@@ -128,7 +128,7 @@ export class SelectZonesComponent implements OnInit {
   //Auto select staging records
   let recordExists=0;
   for (const element of this.elementData) {
-  if(element.stagingZone!='False')
+  if(element.stagingZone!=StringConditions.False)
   {
     element.selected=true;
     recordExists=1;
