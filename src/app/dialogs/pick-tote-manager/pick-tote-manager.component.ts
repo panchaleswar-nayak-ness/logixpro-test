@@ -278,7 +278,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.userField9}`,
     },
     {
-      columnDef: 'userField10',
+      columnDef: ColumnDef.userField10,
       header: 'User Field10',
       cell: (element: any) => `${element.userField10}`,
     },
