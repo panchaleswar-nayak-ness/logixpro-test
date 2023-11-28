@@ -259,8 +259,6 @@ export class ReprocessTransactionDetailComponent implements OnInit {
             "reason": res.data[0].reason,
             "reasonMessage": res.data[0].reasonMessage,
             "description": res.data[0].description
-
-
           });
 
 

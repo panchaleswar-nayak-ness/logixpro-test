@@ -4,7 +4,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppPermissions, StringConditions, ToasterTitle, ToasterType, TransactionType, localStorageKeys } from 'src/app/common/constants/strings.constants';
+import { AppPermissions, StringConditions, ToasterTitle, ToasterType, TransactionType, localStorageKeys ,Column} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-manager',
@@ -80,7 +80,7 @@ export class BatchManagerComponent implements OnInit {
     this.transTypeEvent = type;
     this.type = type;
     let paylaod = {
-      "transType": type
+      'transType': type
     }
     try {
       this.iAdminApiService.BatchManagerOrder(paylaod).subscribe((res: any) => {

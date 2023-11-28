@@ -357,7 +357,8 @@ export const Column = {
     LineNumber: 'Line Number',
     LotNumber: 'Lot Number',
     Location: 'Location',
-    Description:'Description'
+    Description:'Description',
+    TransType: 'transType'
 }
 export const ColumnDef= {
     userField1:'userField1',
@@ -370,7 +371,8 @@ export const ColumnDef= {
     userField8:'userField8',
     userField9:'userField9',
     userField10:'userField10',
-    Emergency:'Emergency'
+    Emergency:'Emergency',
+    hostTransactionId:'hostTransactionId'
 }
 
 export const Case = {

@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 
 import { error } from 'jquery';
-import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
@@ -116,7 +116,7 @@ export class CountComponent implements OnInit {
     let orders = this.rightTable.data.map((data) => data.orderNumber)
      
     let payload = {
-      "transType": "count",
+     "transType": "count",
       "orders": orders, 
     }
     this.iAdminApiService.LocationAssignmentOrderInsert(payload).subscribe((res => {

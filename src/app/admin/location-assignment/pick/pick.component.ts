@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
 
 
 @Component({

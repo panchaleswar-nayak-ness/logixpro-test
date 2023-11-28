@@ -11,7 +11,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
