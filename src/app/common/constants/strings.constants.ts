@@ -427,7 +427,8 @@ export const TableConstant = {
     TransactionType: 'Transaction Type',
     Row:'Row',
     shelf:'shelf',
-    Shelf:'Shelf'
+    Shelf:'Shelf',
+    Bin:'Bin'
 }
 export const UniqueConstants = {
     backClass:'back-class',

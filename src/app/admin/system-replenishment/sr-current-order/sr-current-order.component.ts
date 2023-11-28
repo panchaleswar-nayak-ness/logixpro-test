@@ -60,7 +60,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: zoneType.carousel, label: 'Carsl', value: zoneType.carousel, filterProperty:'Carousel' },
     { defination: 'row', label: TableConstant.Row, value: 'row', filterProperty:TableConstant.Row },
     { defination: TableConstant.shelf, label: TableConstant.shelf, value: TableConstant.shelf, filterProperty:TableConstant.shelf },
-    { defination: 'bin', label: 'Bin', value: 'bin', filterProperty:'Bin' },
+    { defination: 'bin', label: TableConstant.Bin, value: 'bin', filterProperty:TableConstant.Bin },
     { defination: 'cell', label: TableConstant.Cell, value: 'cell', filterProperty:TableConstant.Cell },
     { defination: 'lotNumber', label: Column.LotNumber, value: 'lotNumber', filterProperty:'lot Number' },
     { defination: 'Trans Qty', label: 'Trans Qty', value: 'transactionQuantity' , filterProperty:'Trans Qty'},
@@ -99,7 +99,7 @@ export class SrCurrentOrderComponent implements OnInit {
       sortColumn: '14',
       key: 'batchPickID',
     },
-    { value: 'Bin', viewValue: 'Bin', sortColumn: '7', key: 'bin' },
+    { value: TableConstant.Bin, viewValue: TableConstant.Bin, sortColumn: '7', key: 'bin' },
     { value: 'Carsl', viewValue: 'Carsl', sortColumn: '4', key: zoneType.carousel },
     { value: TableConstant.Cell, viewValue: TableConstant.Cell, sortColumn: '8', key: 'cell' },
     {

@@ -224,7 +224,7 @@ export class CompletePickBatchComponent{
     {dbColName:"Carousel",tabelColName:zoneType.carousel,sortColumnNumber:8},
     {dbColName:TableConstant.Row,tabelColName:"row",sortColumnNumber:9},
     {dbColName:TableConstant.shelf,tabelColName:TableConstant.shelf,sortColumnNumber:10},
-    {dbColName:"Bin",tabelColName:"bin",sortColumnNumber:11},
+    {dbColName:TableConstant.Bin,tabelColName:"bin",sortColumnNumber:11},
   ];
 
   announceSortChange(e: any) {
