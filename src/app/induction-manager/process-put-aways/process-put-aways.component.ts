@@ -28,7 +28,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { Router } from '@angular/router';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys,TransactionType,ToasterMessages,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys,TransactionType,ToasterMessages,DialogConstants,Style,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   position: string;
@@ -191,7 +191,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     if(event.funName == "batchIdKeyup"){ 
       this.batchIdKeyup();
     }
-    else if (event.funName == "clear"){
+    else if (event.funName == StringConditions.clear){
       debugger
       this.clear();
     }

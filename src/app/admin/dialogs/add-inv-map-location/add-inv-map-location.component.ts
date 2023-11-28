@@ -19,7 +19,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
-import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,TableConstant,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 
 
 export interface InventoryMapDataStructure {
@@ -263,7 +263,7 @@ export class AddInvMapLocationComponent implements OnInit {
       this.addInvMapLocation.get(UniqueConstants.item)?.disable();
       this.addInvMapLocation.get('maxQuantity')?.disable();
       this.addInvMapLocation.get('minQuantity')?.disable();
-      this.addInvMapLocation.get('clear')?.disable();
+      this.addInvMapLocation.get(StringConditions.clear)?.disable();
       this.isInputDisabled=true;
     }
     this.location_name?.nativeElement.focus();
@@ -524,7 +524,7 @@ export class AddInvMapLocationComponent implements OnInit {
         if (result !== true && result !== false) {
           this.addInvMapLocation.controls['warehouse'].setValue(result);
         }
-        if (result == 'clear') {
+        if (result == StringConditions.clear) {
           this.addInvMapLocation.controls['warehouse'].setValue('');
         }
       })

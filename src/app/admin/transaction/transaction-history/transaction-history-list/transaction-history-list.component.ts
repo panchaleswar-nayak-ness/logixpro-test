@@ -381,8 +381,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   @ViewChild('trigger') trigger: MatMenuTrigger;
 
   onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) { 
-    this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-    if(FilterColumnName != "" || Condition == "clear") {
+    this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, StringConditions.clear, Type);
+    if(FilterColumnName != "" || Condition == StringConditions.clear) {
       this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
       this.filterString = this.filterString != "" ? this.filterString : "1=1";
       this.resetPagination();

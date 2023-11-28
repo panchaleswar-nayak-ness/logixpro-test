@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  DialogConstants ,Style} from 'src/app/common/constants/strings.constants';
+import {  DialogConstants ,Style,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reel-detail',
@@ -155,7 +155,7 @@ export class ReelDetailComponent implements OnInit {
         this.reelWarehouse = result;
         this.reelQuantitytemp.nativeElement.focus()
       }
-      if (result == 'clear') this.reelWarehouse = '';
+      if (result == StringConditions.clear) this.reelWarehouse = '';
     });
   }
 

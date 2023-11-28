@@ -7,7 +7,7 @@ import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/d
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,Style,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-warehouse',
@@ -135,6 +135,6 @@ export class WarehouseComponent implements OnInit {
   }
 
   clearWareHouse() {
-    this.dialogRef.close('clear');
+    this.dialogRef.close(StringConditions.clear);
   }
 }

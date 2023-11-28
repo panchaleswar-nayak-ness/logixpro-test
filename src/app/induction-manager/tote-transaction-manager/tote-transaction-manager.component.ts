@@ -13,7 +13,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-tote-transaction-manager',
   templateUrl: './tote-transaction-manager.component.html',
@@ -147,7 +147,7 @@ public iinductionManagerApi:IInductionManagerApiService;
       disableClose:true,
             data: {
               mode: 'clear-pick-tote-info',
-              action: 'clear',
+              action: StringConditions.clear,
               actionMessage:
                 type === 'pickTote'
                   ? 'the info for all pick batches'

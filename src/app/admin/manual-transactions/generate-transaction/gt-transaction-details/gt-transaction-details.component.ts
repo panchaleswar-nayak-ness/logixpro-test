@@ -45,11 +45,11 @@ export class GtTransactionDetailsComponent {
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
-      if (res && res != 'clear') {
+      if (res && res != StringConditions.clear) {
         this.wareHouse = res;
         this.warehouseSensitivity = StringConditions.False;
         this.onFieldChange(this.wareHouse);
-      } else if (res && res === 'clear') {
+      } else if (res && res === StringConditions.clear) {
         this.wareHouse = '';
         this.onFieldChange(this.wareHouse);
       }

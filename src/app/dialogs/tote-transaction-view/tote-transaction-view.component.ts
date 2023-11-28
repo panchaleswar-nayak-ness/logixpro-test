@@ -18,7 +18,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ToasterType,DialogConstants,Style,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style,UniqueConstants,ColumnDef,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-tote-transaction-view',
@@ -244,11 +244,11 @@ export class ToteTransactionViewComponent implements OnInit {
       disableClose: true,
       data: {
         message:
-          type === 'clear'
+          type === StringConditions.clear
             ? 'Clear This Transaction From This Tote ?'
             : 'Clear And DeAllocate This Transaction From The Tote?',
         heading:
-          type === 'clear'
+          type === StringConditions.clear
             ? 'Clear Transaction'
             : 'Clear And DeAllocate Transaction',
       },
@@ -261,7 +261,7 @@ export class ToteTransactionViewComponent implements OnInit {
           wsid: this.data.wsid,
         };
         let baseUrl =
-          type === 'clear'
+          type === StringConditions.clear
             ? '/Induction/ClearItemFromTote'
             : '/Induction/DeAllocateItemFromTote';
         this.iInductionManagerApi

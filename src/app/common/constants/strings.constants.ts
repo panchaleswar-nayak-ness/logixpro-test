@@ -64,7 +64,8 @@ export const StringConditions = {
     reprocess: 'reprocess',
     complete: 'complete',
     start:'start',
-    False:'False'
+    False:'False',
+    clear:'clear'
 }
 
 export const ResponseStrings = {
