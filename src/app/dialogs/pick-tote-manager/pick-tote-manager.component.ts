@@ -26,7 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -48,7 +48,7 @@ export class PickToteManagerComponent implements OnInit {
 
   @ViewChild('field_focus') field_focus: ElementRef;
 
-  isFilter: string = 'filter';
+  isFilter: string = StringConditions.filter;
   savedFilterList: any[] = [];
   filteredOptions: Observable<any[]>;
   savedFilter = new FormControl('');
@@ -441,7 +441,7 @@ export class PickToteManagerComponent implements OnInit {
     this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
     this.pickBatchZonesSelect();
     if (this.data.useDefaultFilter) {
-      this.isFilter = 'filter';
+      this.isFilter = StringConditions.filter;
     } else {
       this.isFilter = TableConstant.zone;
     }
@@ -1450,7 +1450,7 @@ export class PickToteManagerComponent implements OnInit {
   onClosePickToteManager() {
     let selectedObj: any = [];
     let currentObjArr: any = [];
-    if (this.isFilter === 'filter') {
+    if (this.isFilter === StringConditions.filter) {
       if (this.allSelectOrders.length > 0) {
         selectedObj = this.filterBatchData.filter((element) =>
           this.allSelectOrders.includes(element.orderNumber)
