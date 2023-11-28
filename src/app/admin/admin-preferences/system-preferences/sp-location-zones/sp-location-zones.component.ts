@@ -7,7 +7,7 @@ import { KanbanZoneAllocationConflictComponent } from 'src/app/admin/dialogs/kan
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings,DialogConstants,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings,DialogConstants,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -17,7 +17,7 @@ import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings,Di
 })
 export class SpLocationZonesComponent implements OnInit {
   toggleSwitches = [
-    { label: 'Carousel', name: zoneType.carousel, property: zoneType.carousel },
+    { label: TableConstant.Carousel, name: zoneType.carousel, property: zoneType.carousel },
     { label: 'Staging Zone', name: 'stagingZone', property: 'stagingZone' },
     {
       label: 'CCS Auto Induct',

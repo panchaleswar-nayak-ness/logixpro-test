@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import {  UniqueConstants ,ColumnDef} from 'src/app/common/constants/strings.constants'; 
+import {  UniqueConstants ,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants'; 
 
 export interface CarouselZone {
   carousel: string;
@@ -23,7 +23,7 @@ export interface CarouselZone {
 export class TranOffCarouselLzoneComponent implements OnInit, AfterViewInit {
   public columnValues: any = [];
   dataSource = new MatTableDataSource<CarouselZone>([]);
-  displayedColumns: string[] = ['Carousel', ColumnDef.Zone, 'Location Name', 'Total Lines','Open','Completed'];
+  displayedColumns: string[] = [TableConstant.Carousel, ColumnDef.Zone, 'Location Name', 'Total Lines','Open','Completed'];
   selection = new SelectionModel<CarouselZone>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

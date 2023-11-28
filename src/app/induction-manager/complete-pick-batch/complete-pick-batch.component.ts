@@ -221,7 +221,7 @@ export class CompletePickBatchComponent{
     {dbColName:TableConstant.TransactionQuantity,tabelColName:"transaction_qty",sortColumnNumber:5},
     {dbColName:Column.Location,tabelColName:"location",sortColumnNumber:6},
     {dbColName:ColumnDef.Zone,tabelColName:TableConstant.zone,sortColumnNumber:7},
-    {dbColName:"Carousel",tabelColName:zoneType.carousel,sortColumnNumber:8},
+    {dbColName:TableConstant.Carousel,tabelColName:zoneType.carousel,sortColumnNumber:8},
     {dbColName:TableConstant.Row,tabelColName:"row",sortColumnNumber:9},
     {dbColName:TableConstant.shelf,tabelColName:TableConstant.shelf,sortColumnNumber:10},
     {dbColName:TableConstant.Bin,tabelColName:"bin",sortColumnNumber:11},

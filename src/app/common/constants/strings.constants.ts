@@ -428,7 +428,8 @@ export const TableConstant = {
     Row:'Row',
     shelf:'shelf',
     Shelf:'Shelf',
-    Bin:'Bin'
+    Bin:'Bin',
+    Carousel:'Carousel'
 }
 export const UniqueConstants = {
     backClass:'back-class',

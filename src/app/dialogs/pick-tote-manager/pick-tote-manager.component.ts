@@ -315,7 +315,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: zoneType.carousel,
-      header: 'Carousel',
+      header: TableConstant.Carousel,
       cell: (element: any) => `${element.carousel}`,
     },
     {

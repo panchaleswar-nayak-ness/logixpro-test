@@ -57,7 +57,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: 'Trans Type', label: 'Trans Type', value: 'transactionType',filterProperty:TableConstant.TransactionType },
     { defination: 'warehouse', label: 'Warehouse', value: 'warehouse', filterProperty:'Warehouse'},
     { defination: TableConstant.zone, label: ColumnDef.Zone, value: TableConstant.zone, filterProperty:ColumnDef.Zone },
-    { defination: zoneType.carousel, label: 'Carsl', value: zoneType.carousel, filterProperty:'Carousel' },
+    { defination: zoneType.carousel, label: 'Carsl', value: zoneType.carousel, filterProperty:TableConstant.Carousel },
     { defination: 'row', label: TableConstant.Row, value: 'row', filterProperty:TableConstant.Row },
     { defination: TableConstant.shelf, label: TableConstant.shelf, value: TableConstant.shelf, filterProperty:TableConstant.shelf },
     { defination: 'bin', label: TableConstant.Bin, value: 'bin', filterProperty:TableConstant.Bin },
@@ -336,7 +336,7 @@ export class SrCurrentOrderComponent implements OnInit {
         this.tablePayloadObj.searchColumn = TableConstant.TransactionType;
         break;
       case 'Carsl':
-        this.tablePayloadObj.searchColumn = 'Carousel';
+        this.tablePayloadObj.searchColumn = TableConstant.Carousel;
         break;
       case 'Trans Qty':
         this.tablePayloadObj.searchColumn = TableConstant.TransactionQuantity;
@@ -385,7 +385,7 @@ export class SrCurrentOrderComponent implements OnInit {
             this.tablePayloadObj.searchColumn = TableConstant.TransactionType;
             break;
           case 'Carsl':
-            this.tablePayloadObj.searchColumn = 'Carousel';
+            this.tablePayloadObj.searchColumn = TableConstant.Carousel;
             break;
           case 'Trans Qty':
             this.tablePayloadObj.searchColumn = TableConstant.TransactionQuantity;
