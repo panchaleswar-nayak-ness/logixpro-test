@@ -416,4 +416,7 @@ export const UniqueConstants = {
 export const Style = {
     w560px:'560px'
 }  
+export const FilterColumnName = {
+    unitOfMeasure:'Unit of Measure'
+}
 

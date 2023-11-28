@@ -16,7 +16,7 @@ import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/c
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
-import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -37,7 +37,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: 'priority', colDef: 'Priority' },
     { colHeader: 'requiredDate', colDef: 'Required Date' },
     { colHeader: 'itemNumber', colDef: Column.ItemNumber },
-    { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
+    { colHeader: 'unitOfMeasure', colDef: FilterColumnName.unitOfMeasure },
     { colHeader: 'lotNumber', colDef: Column.LotNumber },
     { colHeader: 'expirationDate', colDef: 'Expiration Date' },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },

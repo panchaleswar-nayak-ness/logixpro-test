@@ -17,7 +17,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Column, DialogConstants, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,FilterColumnName} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-transaction-history-list',
@@ -70,7 +70,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: ColumnDef.userField8, colDef: 'User Field8' },
     { colHeader: ColumnDef.userField9, colDef: 'User Field9' },
     { colHeader: ColumnDef.userField10, colDef: 'User Field10' },
-    { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
+    { colHeader: 'unitOfMeasure', colDef: FilterColumnName.unitOfMeasure },
     { colHeader: 'requiredDate', colDef: 'Required Date' },
     { colHeader: 'statusCode', colDef: 'Status Code' },
     { colHeader: 'masterRecord', colDef: 'Master Record' },

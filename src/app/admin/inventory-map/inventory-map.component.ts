@@ -25,7 +25,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-map',
@@ -62,7 +62,7 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: "row", colDef: "Row" },
     { colHeader: "serialNumber", colDef: "Serial Number" },
     { colHeader: "shelf", colDef: "Shelf" },
-    { colHeader: "unitOfMeasure", colDef: "Unit of Measure" },
+    { colHeader: "unitOfMeasure", colDef: FilterColumnName.unitOfMeasure },
     { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
     { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
     { colHeader: UniqueConstants.goldenZone, colDef: "Velocity Code" },

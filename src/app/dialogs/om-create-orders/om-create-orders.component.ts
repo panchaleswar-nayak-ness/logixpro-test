@@ -20,7 +20,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-create-orders',
@@ -56,7 +56,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: 'Line Sequence', key: TableConstant.LineSequence },
     { sequence: 'In Process', key: 'inProcess' },
     { sequence: 'Processing By', key: 'processingBy' },
-    { sequence: 'Unit of Measure', key: 'unitOfMeasure' },
+    { sequence: FilterColumnName.unitOfMeasure, key: 'unitOfMeasure' },
     { sequence: 'Import By', key: 'importBy' },
     { sequence: 'Import Date', key: 'importDate' },
     { sequence: 'Import Filename', key: 'importFilename' },

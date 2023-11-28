@@ -14,7 +14,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
@@ -35,7 +35,7 @@ const TRNSC_DATA = [
   { colHeader: 'serialNumber', colDef: 'Serial Number' },
   { colHeader: 'expirationDate', colDef: 'Expiration Date' },
   { colHeader: 'revision', colDef: 'Revision' },
-  { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
+  { colHeader: 'unitOfMeasure', colDef: FilterColumnName.unitOfMeasure },
   { colHeader: 'maximumQuantity', colDef: 'Maximum Quantity' },
   { colHeader: 'putAwayDate', colDef: 'Put Away Date' },
   { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },

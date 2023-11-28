@@ -21,7 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType,Column,zoneType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType,Column,zoneType,DialogConstants,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-current-order',
@@ -342,7 +342,7 @@ export class SrCurrentOrderComponent implements OnInit {
         this.tablePayloadObj.searchColumn = 'Transaction Quantity';
         break;
       case 'UofM':
-        this.tablePayloadObj.searchColumn = 'Unit of Measure';
+        this.tablePayloadObj.searchColumn = FilterColumnName.unitOfMeasure;
         break;
       case 'Comp Date':
         this.tablePayloadObj.searchColumn = TableConstant.CompletedDate;
@@ -391,7 +391,7 @@ export class SrCurrentOrderComponent implements OnInit {
             this.tablePayloadObj.searchColumn = 'Transaction Quantity';
             break;
           case 'UofM':
-            this.tablePayloadObj.searchColumn = 'Unit of Measure';
+            this.tablePayloadObj.searchColumn = FilterColumnName.unitOfMeasure;
             break;
           case 'Comp Date':
             this.tablePayloadObj.searchColumn = TableConstant.CompletedDate;
