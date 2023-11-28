@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,StringConditions,Style} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,StringConditions,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 class info {
   title: string;
@@ -293,7 +293,7 @@ export class TranSelectOrderComponent implements OnInit {
       data: {
         mode: Mode.DeleteOrderStatus,
         paylaod: paylaod,
-        action:'delete'
+        action:UniqueConstants.delete
       },
     });
 

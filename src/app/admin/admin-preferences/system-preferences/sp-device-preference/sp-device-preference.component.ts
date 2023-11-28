@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
-import {  StringConditions, ToasterTitle, ToasterType ,DialogConstants,Style,TableConstant} from 'src/app/common/constants/strings.constants';
+import {  StringConditions, ToasterTitle, ToasterType ,DialogConstants,Style,TableConstant,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -129,7 +129,7 @@ export class SpDevicePreferenceComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {

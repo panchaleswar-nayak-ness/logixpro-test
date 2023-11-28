@@ -303,7 +303,7 @@ export class OmCreateOrdersComponent implements OnInit {
         data: {
           mode: 'release-all-orders',
           ErrorMessage: 'Are you sure you want to delete these records?',
-          action: 'delete'
+          action: UniqueConstants.delete
         },
       });
       dialogRef.afterClosed().subscribe((result) => {

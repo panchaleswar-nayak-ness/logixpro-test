@@ -7,7 +7,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { DatePipe } from '@angular/common';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-event-log-entry-detail',
@@ -46,7 +46,7 @@ export class OmEventLogEntryDetailComponent implements OnInit {
       data: {
         mode: 'delete-event-log',
         ErrorMessage: 'Are you sure you want to delete the selected event?',
-        action: 'delete'
+        action: UniqueConstants.delete
       },
     });
     dialogRef.afterClosed().subscribe((result) => {

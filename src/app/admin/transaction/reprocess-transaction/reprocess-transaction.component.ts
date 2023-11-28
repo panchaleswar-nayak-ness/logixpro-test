@@ -493,7 +493,7 @@ export class ReprocessTransactionComponent implements OnInit {
           this.selectedVariable = '';
           if (result?.isExecuted) this.getColumnsData();
         });
-      } else if (this.selectedVariable.includes('delete')) this.deleteReprocessTrans(opened);
+      } else if (this.selectedVariable.includes(UniqueConstants.delete)) this.deleteReprocessTrans(opened);
     }
   }
 

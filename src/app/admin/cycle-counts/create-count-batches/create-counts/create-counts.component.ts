@@ -608,7 +608,7 @@ constructor(
         actionMessage: ` all ${
           ident === 1 ? 'Incomplete' : ''
         } count transactions for ${this.orderNumber}`,
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((res) => {

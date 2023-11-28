@@ -20,7 +20,7 @@ import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.co
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType ,DialogConstants,Style,dataCredientials} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,Style,dataCredientials,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 export interface Location {
   start_location: string;
@@ -331,7 +331,7 @@ export class EmployeesComponent implements OnInit {
         matSelect.writeValue(null);
       })
     }
-    if (event === 'delete') {
+    if (event === UniqueConstants.delete) {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: Style.w480px,
@@ -340,7 +340,7 @@ export class EmployeesComponent implements OnInit {
         data: {
           mode: 'delete-emp',
           emp_data: emp_data,
-          action: 'delete'
+          action: UniqueConstants.delete
         }
       })
       dialogRef.afterClosed().subscribe(result => {
@@ -405,7 +405,7 @@ export class EmployeesComponent implements OnInit {
         
       })
     }
-    if (event === 'delete') {
+    if (event === UniqueConstants.delete) {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
         width: Style.w480px,

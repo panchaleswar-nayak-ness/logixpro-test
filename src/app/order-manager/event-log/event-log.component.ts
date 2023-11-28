@@ -213,7 +213,7 @@ export class EventLogComponent implements OnInit {
       data: {
         mode: 'delete-event-log',
         ErrorMessage: ConfirmationMessages.EventLogDeleteWithRange,
-        action: 'delete'
+        action: UniqueConstants.delete
       },
     });
 

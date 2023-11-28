@@ -286,7 +286,7 @@ export class TotesAddEditComponent implements OnInit {
       disableClose: true,
       data: {
         mode: '',
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {

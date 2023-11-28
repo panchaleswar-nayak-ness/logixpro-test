@@ -686,7 +686,7 @@ export class InventoryMasterComponent implements OnInit {
       disableClose:true,
       data: {
         actionMessage: `item :${this.searchValue}`,
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((res) => {

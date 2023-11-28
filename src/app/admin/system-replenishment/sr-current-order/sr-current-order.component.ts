@@ -424,7 +424,7 @@ export class SrCurrentOrderComponent implements OnInit {
       data: {
         mode: 'delete-all-current-orders',
         ErrorMessage: 'Are you sure you want to delete all records',
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -450,7 +450,7 @@ export class SrCurrentOrderComponent implements OnInit {
         mode: 'delete-shown-current-orders',
         ErrorMessage:
           'Are you sure you want to delete all records that are currently dipslayed',
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {

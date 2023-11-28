@@ -7,7 +7,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { LiveAnnouncerMessage, StringConditions, ToasterTitle, ToasterType, alertMessage ,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { LiveAnnouncerMessage, StringConditions, ToasterTitle, ToasterType, alertMessage ,ResponseStrings,DialogConstants,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-mark-empty-reels',
@@ -110,7 +110,7 @@ export class MarkEmptyReelsComponent implements OnInit {
       disableClose: true,
       data: {
         mode: 'delete-create-count',
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe(
@@ -145,7 +145,7 @@ export class MarkEmptyReelsComponent implements OnInit {
       disableClose: true,
       data: {
         mode: 'delete-create-count',
-        action: 'delete',
+        action: UniqueConstants.delete,
         ErrorMessage: alertMessage.DeleteMessage,
       },
     });

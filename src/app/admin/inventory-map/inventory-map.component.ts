@@ -415,7 +415,7 @@ export class InventoryMapComponent implements OnInit {
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
-          action: 'delete',
+          action: UniqueConstants.delete,
           mode: 'delete-inventory-map',
           id: event.invMapID
         }

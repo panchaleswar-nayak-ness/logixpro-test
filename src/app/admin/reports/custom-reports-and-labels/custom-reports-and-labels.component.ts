@@ -226,7 +226,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       }
     );
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result, 'delete');
+      console.log(result, UniqueConstants.delete);
       if (result == 'permanent' || result == 'keep') {
         let payload = {
           filename: this.detail.fileName,

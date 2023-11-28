@@ -426,7 +426,8 @@ export const UniqueConstants = {
     position : 'position',
     goldenZone:'goldenZone',
     searchValue:'searchValue',
-    event:'$event'
+    event:'$event',
+    delete:'delete'
 }
 export const Style = {
     w560px:'560px',

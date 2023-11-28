@@ -325,7 +325,7 @@ export class OmOrderManagerComponent implements OnInit {
         disableClose:true,
         data: {
           ErrorMessage: 'Are you sure you want to delete all viewed orders?',
-          action: 'delete'
+          action: UniqueConstants.delete
         },
       });
 

@@ -11,7 +11,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-delete-range',
@@ -82,7 +82,7 @@ export class DeleteRangeComponent implements OnInit {
       disableClose:true,
         data: {
           mode: 'delete-selected-current-orders',
-          action: 'delete'
+          action: UniqueConstants.delete
         },
       });
       dialogRef2.afterClosed().subscribe((result) => {
