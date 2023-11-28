@@ -67,7 +67,7 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
     { colHeader: UniqueConstants.goldenZone, colDef: "Velocity Code" },
     { colHeader: "warehouse", colDef: "Warehouse" },
-    { colHeader: TableConstant.zone, colDef: "Zone" },
+    { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
   ];
   onDestroy$: Subject<boolean> = new Subject();
   hideRequiredControl = new FormControl(false);

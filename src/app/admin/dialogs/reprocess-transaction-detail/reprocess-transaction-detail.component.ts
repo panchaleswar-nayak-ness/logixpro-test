@@ -237,7 +237,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
             "notes": res.data[0].notes,
             "userField1": res.data[0].userField1,
             "userField2": res.data[0].userField2,
-            ColumnDef.HostTransactionId: res.data[0].hostTransactionID,
+            "hostTransactionID": res.data[0].hostTransactionID,
             "requiredDate": this.reqDate != "1900-01-01T19:31:48.000Z" ? this.reqDate : " ",
             "batchPickID": res.data[0].batchPickID,
             "lineNumber": res.data[0].lineNumber,

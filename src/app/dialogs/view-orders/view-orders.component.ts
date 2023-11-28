@@ -81,7 +81,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: ColumnDef.userField9, header: 'User Field9', cell: (element: any) => `${element.userField9}` },
     { columnDef: ColumnDef.userField10, header: 'User Field10', cell: (element: any) => `${element.userField10}` },
     { columnDef: 'warehouse', header: 'Warehouse', cell: (element: any) => `${element.warehouse}` },
-    { columnDef: TableConstant.zone, header: 'Zone', cell: (element: any) => `${element.zone}` },
+    { columnDef: TableConstant.zone, header: ColumnDef.Zone, cell: (element: any) => `${element.zone}` },
   ];
 
   displayedTransColumns = this.filterTransColumns.map(c => c.columnDef);

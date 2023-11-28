@@ -21,7 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType,Column,zoneType,DialogConstants,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType,Column,zoneType,DialogConstants,Style,UniqueConstants,FilterColumnName,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-current-order',
@@ -56,7 +56,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: Column.ItemNumber, label: 'Item Num', value: 'itemNumber',filterProperty:Column.ItemNumber},
     { defination: 'Trans Type', label: 'Trans Type', value: 'transactionType',filterProperty:TableConstant.TransactionType },
     { defination: 'warehouse', label: 'Warehouse', value: 'warehouse', filterProperty:'Warehouse'},
-    { defination: TableConstant.zone, label: 'Zone', value: TableConstant.zone, filterProperty:'Zone' },
+    { defination: TableConstant.zone, label: ColumnDef.Zone, value: TableConstant.zone, filterProperty:ColumnDef.Zone },
     { defination: zoneType.carousel, label: 'Carsl', value: zoneType.carousel, filterProperty:'Carousel' },
     { defination: 'row', label: TableConstant.Row, value: 'row', filterProperty:TableConstant.Row },
     { defination: 'shelf', label: 'Shelf', value: 'shelf', filterProperty:'Shelf' },
@@ -170,7 +170,7 @@ export class SrCurrentOrderComponent implements OnInit {
       sortColumn: '2',
       key: 'warehouse',
     },
-    { value: 'Zone', viewValue: 'Zone', sortColumn: '3', key: TableConstant.zone },
+    { value: ColumnDef.Zone, viewValue: ColumnDef.Zone, sortColumn: '3', key: TableConstant.zone },
   ];
   repByDeletePayload: any = {
     identity: '',

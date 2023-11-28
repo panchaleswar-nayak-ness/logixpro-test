@@ -7,7 +7,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,zoneType,DialogConstants,Style,TableConstant,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,zoneType,DialogConstants,Style,TableConstant,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-complete-pick-batch',
@@ -220,7 +220,7 @@ export class CompletePickBatchComponent{
     {dbColName:Column.Description,tabelColName:UniqueConstants.Description,sortColumnNumber:4},
     {dbColName:TableConstant.TransactionQuantity,tabelColName:"transaction_qty",sortColumnNumber:5},
     {dbColName:Column.Location,tabelColName:"location",sortColumnNumber:6},
-    {dbColName:"Zone",tabelColName:TableConstant.zone,sortColumnNumber:7},
+    {dbColName:ColumnDef.Zone,tabelColName:TableConstant.zone,sortColumnNumber:7},
     {dbColName:"Carousel",tabelColName:zoneType.carousel,sortColumnNumber:8},
     {dbColName:TableConstant.Row,tabelColName:"row",sortColumnNumber:9},
     {dbColName:"Shelf",tabelColName:"shelf",sortColumnNumber:10},

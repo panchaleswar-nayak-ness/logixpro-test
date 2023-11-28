@@ -372,7 +372,8 @@ export const ColumnDef= {
     userField9:'userField9',
     userField10:'userField10',
     Emergency:'Emergency',
-    HostTransactionId:'hostTransactionID'
+    HostTransactionId:'hostTransactionID',
+    Zone:'Zone'
 }
 
 export const Case = {

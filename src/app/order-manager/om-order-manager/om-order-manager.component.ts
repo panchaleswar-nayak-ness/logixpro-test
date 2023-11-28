@@ -79,7 +79,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: "availableQuantity", colDef: "Available Quantity" },
     { colHeader: "stockQuantity", colDef: "Stock Quantity" },
     { colHeader: "warehouse", colDef: "Warehouse" },
-    { colHeader: TableConstant.zone, colDef: "Zone" },
+    { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
     { colHeader: TableConstant.LineSequence, colDef: "Line Sequence" },
     { colHeader: "toteID", colDef: Column.ToteID },
     { colHeader: "toteNumber", colDef: "Tote Number" },

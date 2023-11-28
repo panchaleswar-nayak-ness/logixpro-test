@@ -310,7 +310,7 @@ export class PickToteManagerComponent implements OnInit {
     { columnDef: 'id', header: 'ID', cell: (element: any) => `${element.id}` },
     {
       columnDef: TableConstant.zone,
-      header: 'Zone',
+      header: ColumnDef.Zone,
       cell: (element: any) => `${element.zone}`,
     },
     {
