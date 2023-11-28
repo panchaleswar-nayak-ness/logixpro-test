@@ -835,7 +835,7 @@ export class ReprocessTransactionComponent implements OnInit {
       case 'date':
         queryParams = `FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:${date}`;
         break;
-      case 'item':
+      case UniqueConstants.item:
         queryParams = `FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:${itemNumber}|Reason:|Message:|Date:`;
         break;
       case 'order':

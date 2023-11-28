@@ -209,7 +209,7 @@ export class AdminComponent implements OnInit {
       next: (res: any) => {
         if (res.isExecuted && res.data) {
           const data = res.data;
-          this.inventoryDetail.get("item")?.setValue(data?.itemNumber);
+          this.inventoryDetail.get(UniqueConstants.item)?.setValue(data?.itemNumber);
           this.inventoryDetail.get(UniqueConstants.Description)?.setValue(data?.description);
           this.inventoryDetail.get("supplierNo")?.setValue(data?.supplierItemID);
           this.inventoryDetail.get("minRTSReelQty")?.setValue(data?.minimumRTSReelQuantity);

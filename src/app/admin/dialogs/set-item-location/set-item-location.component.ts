@@ -9,6 +9,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
+import {  UniqueConstants } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-set-item-location',
@@ -18,7 +19,7 @@ import { CommonApiService } from 'src/app/common/services/common-api/common-api.
 export class SetItemLocationComponent implements OnInit {
   @ViewChild('itm_nmb') itm_nmb: ElementRef;
   itemNumber;
-  floatLabelControl: any = new FormControl('item' as FloatLabelType);
+  floatLabelControl: any = new FormControl(UniqueConstants.item as FloatLabelType);
   floatLabelControlLocation: any = new FormControl(
     'autoLocation' as FloatLabelType
   );
@@ -51,7 +52,7 @@ export class SetItemLocationComponent implements OnInit {
     return this.floatLabelControlLocation.value || 'autoLocation';
   }
   getFloatLabelValue(): FloatLabelType {
-    return this.floatLabelControl.value || 'item';
+    return this.floatLabelControl.value || UniqueConstants.item;
   }
   onFocusOutEvent(event){
     if(event.target.value==='') return;

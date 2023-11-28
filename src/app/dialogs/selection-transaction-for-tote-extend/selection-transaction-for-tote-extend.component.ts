@@ -420,7 +420,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     try {
       const values = this.toteForm.value;
       if (!this.validationPopups({...values, type : 0})) { return; }
-      let payLoad = { "item": values.itemNumber };
+      let payLoad = { 'item': values.itemNumber };
       this.iInductionManagerApi.CheckForwardLocations(payLoad).subscribe(
         (res: any) => {
           if(res.isExecuted) {
@@ -459,7 +459,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
       let payLoad = {
         "qtyPut": values.quantityAllocatedPutAway ? parseInt(values.quantityAllocatedPutAway) : 0,
-        "item": values.itemNumber,
+        'item': values.itemNumber,
         "ccell": values.carouselCellSize,
         "cvel": values.carouselVelocity,
         "bcell": values.bulkCellSize,

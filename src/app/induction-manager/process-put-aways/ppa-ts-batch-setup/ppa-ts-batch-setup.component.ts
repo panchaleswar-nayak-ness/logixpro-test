@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterMessages, ToasterTitle, ToasterType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
@@ -15,7 +15,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 export class PpaTsBatchSetupComponent  implements OnInit{
 
   hideRequiredControlItem = new FormControl(false);
-  floatLabelControlItem: any = new FormControl('item' as FloatLabelType);
+  floatLabelControlItem: any = new FormControl(UniqueConstants.item as FloatLabelType);
   @Input() cellSize = '0';
   @Input() batchId = '';
   @Input() status;
@@ -47,7 +47,7 @@ export class PpaTsBatchSetupComponent  implements OnInit{
   }
 
   getFloatLabelValueItem(): FloatLabelType {
-    return this.floatLabelControlItem.value || 'item';
+    return this.floatLabelControlItem.value || UniqueConstants.item;
   }
 
   async autoCompleteSearchColumnItem() {

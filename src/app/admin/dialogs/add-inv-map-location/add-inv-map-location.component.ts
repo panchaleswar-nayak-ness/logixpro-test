@@ -260,7 +260,7 @@ export class AddInvMapLocationComponent implements OnInit {
       this.addInvMapLocation.get('quantityAllocatedPutAway')?.disable();
       this.addInvMapLocation.get('inventoryMapID')?.disable();
       this.addInvMapLocation.get('masterInventoryMapID')?.disable();
-      this.addInvMapLocation.get('item')?.disable();
+      this.addInvMapLocation.get(UniqueConstants.item)?.disable();
       this.addInvMapLocation.get('maxQuantity')?.disable();
       this.addInvMapLocation.get('minQuantity')?.disable();
       this.addInvMapLocation.get('clear')?.disable();
@@ -355,7 +355,7 @@ export class AddInvMapLocationComponent implements OnInit {
         this.itemNumberList = res.data;
       }
       else {
-        this.addInvMapLocation.controls['item'].setValue('');
+        this.addInvMapLocation.controls[UniqueConstants.item].setValue('');
         this.itemNumberList = []
         this.clearFields()
       }
