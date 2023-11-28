@@ -14,7 +14,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
@@ -38,8 +38,8 @@ const TRNSC_DATA = [
   { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
   { colHeader: 'maximumQuantity', colDef: 'Maximum Quantity' },
   { colHeader: 'putAwayDate', colDef: 'Put Away Date' },
-  { colHeader: ColumnDef.userField1, colDef: 'User Field1' },
-  { colHeader: 'userField2', colDef: 'User Field2' },
+  { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
+  { colHeader: 'userField2', colDef: TableConstant.UserField2 },
   { colHeader: 'masterLocation', colDef: 'Master Location' },
   { colHeader: 'dateSensitive', colDef: 'Date Sensitive' },
   { colHeader: 'dedicated', colDef: 'Dedicated' },

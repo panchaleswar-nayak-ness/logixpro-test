@@ -25,7 +25,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column,zoneType,ColumnDef} from 'src/app/common/constants/strings.constants';
+import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column,zoneType,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-map',
@@ -63,8 +63,8 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: "serialNumber", colDef: "Serial Number" },
     { colHeader: "shelf", colDef: "Shelf" },
     { colHeader: "unitOfMeasure", colDef: "Unit of Measure" },
-    { colHeader: ColumnDef.userField1, colDef: "User Field1" },
-    { colHeader: "userField2", colDef: "User Field2" },
+    { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
+    { colHeader: "userField2", colDef: TableConstant.UserField2 },
     { colHeader: "goldenZone", colDef: "Velocity Code" },
     { colHeader: "warehouse", colDef: "Warehouse" },
     { colHeader: "zone", colDef: "Zone" },

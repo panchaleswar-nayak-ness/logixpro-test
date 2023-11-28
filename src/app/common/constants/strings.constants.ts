@@ -403,7 +403,9 @@ export const TableName = {
 export const TableConstant = {
     CompletedDate:'Completed Date',
     HostTransactionID:'Host Transaction ID',
-    LineSequence:'lineSequence'
+    LineSequence:'lineSequence',
+    UserField1:'User Field1',
+    UserField2:'User Field2'
 }
 export const UniqueConstants = {
     backClass:'back-class'
