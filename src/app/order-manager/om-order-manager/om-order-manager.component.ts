@@ -100,7 +100,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: ColumnDef.HostTransactionId, colDef: TableConstant.HostTransactionID },
     { colHeader: UniqueConstants.emergency, colDef: ColumnDef.Emergency },
     { colHeader: "location", colDef: Column.Location },
-    { colHeader: "label", colDef: "Label" },
+    { colHeader: TableConstant.label, colDef: "Label" },
     { colHeader: "cell", colDef: TableConstant.Cell },
   ];
   displayedColumns  : string[] = []; 

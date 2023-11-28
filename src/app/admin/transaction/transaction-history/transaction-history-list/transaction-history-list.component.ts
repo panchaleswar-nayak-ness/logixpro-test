@@ -76,7 +76,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'masterRecord', colDef: 'Master Record' },
     { colHeader: 'masterRecordID', colDef: 'Master Record ID' },
     { colHeader: 'tH_ID', colDef: 'Inv Map ID' },
-    { colHeader: 'label', colDef: 'Label' },
+    { colHeader: TableConstant.label, colDef: 'Label' },
     { colHeader: 'inProcess', colDef: 'In Process' },
     { colHeader: 'toteID', colDef: Column.ToteID },
     { colHeader: 'toteNumber', colDef: 'Tote Number' },

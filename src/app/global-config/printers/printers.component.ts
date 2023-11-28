@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-import {StringConditions , ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {StringConditions , ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-printers',
   templateUrl: './printers.component.html',
@@ -196,7 +196,7 @@ export class PrintersComponent implements OnInit {
       let payload = {
         "printerName": printer.printer,
         "printerString": printer.printerAdd,
-        "label": printer.labelPrinter == StringConditions.Yes 
+        'label': printer.labelPrinter == StringConditions.Yes 
       };
       this.iGlobalConfigApi.InsertNewPrinter(payload).subscribe((res: any) => {
         if (res.isExecuted) {
@@ -217,7 +217,7 @@ export class PrintersComponent implements OnInit {
         "currentPrinter": printer.currentPrinter,
         "newPrinter": printer.printer,
         "printerString": printer.printerAdd,
-        "label": printer.labelPrinter == StringConditions.Yes
+        'label': printer.labelPrinter == StringConditions.Yes
       };
       this.iGlobalConfigApi.UpdateCurrentPrinter(payload).subscribe((res: any) => {
         if (res.isExecuted) {

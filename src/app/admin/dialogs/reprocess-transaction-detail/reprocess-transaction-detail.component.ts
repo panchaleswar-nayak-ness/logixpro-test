@@ -129,7 +129,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get("lineNumber")?.value?.toString(),
         this.editTransactionForm.get(TableConstant.LineSequence)?.value?.toString(),
         this.editTransactionForm.get(UniqueConstants.Priority)?.value?.toString(),
-        this.editTransactionForm.get("label")?.value?.toString(),
+        this.editTransactionForm.get(TableConstant.label)?.value?.toString(),
         this.editTransactionForm.get(UniqueConstants.emergency)?.value?.toString(),
         this.editTransactionForm.get("wareHouse")?.value
       ]
@@ -243,7 +243,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
             "lineNumber": res.data[0].lineNumber,
             'lineSequence': res.data[0].lineSequence,
             'priority': res.data[0].priority,
-            "label": this.label.toString(),
+            'label': this.label.toString(),
             "emergency": this.emergency.toString(),
             "wareHouse": res.data[0].wareHouse,
             "orderNumber": res.data[0].orderNumber,

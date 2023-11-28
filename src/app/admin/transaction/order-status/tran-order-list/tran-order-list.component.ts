@@ -85,7 +85,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'statusCode', colDef: 'Status Code' },
     { colHeader: 'masterRecord', colDef: 'Mter Record' },
     { colHeader: 'masterRecordID', colDef: 'Mter Record ID' },
-    { colHeader: 'label', colDef: 'Label' },
+    { colHeader: TableConstant.label, colDef: 'Label' },
     { colHeader: 'inProcess', colDef: 'In Process' },
   ];
   public displayedColumns: string[] = [

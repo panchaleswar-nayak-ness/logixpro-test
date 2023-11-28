@@ -65,7 +65,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: 'statusCode', colDef: 'Status Code' },
     { colHeader: 'masterRecord', colDef: 'Master Record' },
     { colHeader: 'masterRecordID', colDef: 'Master Record ID' },
-    { colHeader: 'label', colDef: 'Label' },
+    { colHeader: TableConstant.label, colDef: 'Label' },
     { colHeader: 'inProcess', colDef: 'In Process' },
     { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
     { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
