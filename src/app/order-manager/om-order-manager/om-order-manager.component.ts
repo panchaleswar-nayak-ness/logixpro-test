@@ -94,7 +94,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: "lotNumber", colDef: Column.LotNumber },
     { colHeader: "serialNumber", colDef: "Serial Number" },
     { colHeader: "notes", colDef: "Notes" },
-    { colHeader: "revision", colDef: "Revision" },
+    { colHeader: "revision", colDef: TableConstant.Revision },
     { colHeader: "supplierItemID", colDef: "Supplier Item ID" },
     { colHeader: "id", colDef: "ID" },
     { colHeader: "hostTransactionID", colDef: TableConstant.HostTransactionID },

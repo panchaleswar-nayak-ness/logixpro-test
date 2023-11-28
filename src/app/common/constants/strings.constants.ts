@@ -405,7 +405,8 @@ export const TableConstant = {
     HostTransactionID:'Host Transaction ID',
     LineSequence:'lineSequence',
     UserField1:'User Field1',
-    UserField2:'User Field2'
+    UserField2:'User Field2',
+    Revision:'Revision'
 }
 export const UniqueConstants = {
     backClass:'back-class',

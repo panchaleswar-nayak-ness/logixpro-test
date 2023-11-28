@@ -46,7 +46,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'lotNumber', colDef: Column.LotNumber },
     { colHeader: 'expirationDate', colDef: 'Expiration Date' },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
-    { colHeader: 'revision', colDef: 'Revision' },
+    { colHeader: 'revision', colDef: TableConstant.Revision },
     { colHeader: 'wareHouse', colDef: 'Warehouse' },
     { colHeader: 'importDate', colDef: 'Import Date' },
     { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },

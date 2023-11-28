@@ -34,7 +34,7 @@ const TRNSC_DATA = [
   { colHeader: 'lotNumber', colDef: 'Serial Lot Number' },
   { colHeader: 'serialNumber', colDef: 'Serial Number' },
   { colHeader: 'expirationDate', colDef: 'Expiration Date' },
-  { colHeader: 'revision', colDef: 'Revision' },
+  { colHeader: 'revision', colDef: TableConstant.Revision },
   { colHeader: 'unitOfMeasure', colDef: FilterColumnName.unitOfMeasure },
   { colHeader: 'maximumQuantity', colDef: 'Maximum Quantity' },
   { colHeader: 'putAwayDate', colDef: 'Put Away Date' },
