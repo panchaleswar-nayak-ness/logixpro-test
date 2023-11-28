@@ -27,7 +27,7 @@ import {
   ToasterMessages,
   ToasterTitle,
   ToasterType
-,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
+,ResponseStrings,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-process-picks',
@@ -361,7 +361,7 @@ export class ProcessPicksComponent implements OnInit {
     if (filledTote) {
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {

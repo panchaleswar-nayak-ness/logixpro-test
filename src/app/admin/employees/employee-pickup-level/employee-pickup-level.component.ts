@@ -5,7 +5,7 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { AddPickuplevelsComponent } from '../../dialogs/add-pickuplevels/add-pickuplevels.component';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { LiveAnnouncerMessage, StringConditions ,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { LiveAnnouncerMessage, StringConditions ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 
 export interface PickupLevelDetails {
@@ -90,7 +90,7 @@ export class EmployeePickupLevelComponent{
     let dialogRef;
     dialogRef = this.global.OpenDialog(AddPickuplevelsComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data:{

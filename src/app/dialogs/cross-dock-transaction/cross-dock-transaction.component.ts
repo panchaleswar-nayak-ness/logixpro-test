@@ -17,7 +17,7 @@ import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -276,7 +276,7 @@ export class CrossDockTransactionComponent implements OnInit {
     try {
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
@@ -405,7 +405,7 @@ export class CrossDockTransactionComponent implements OnInit {
   async showConfirmationDialog(message, callback) {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -429,7 +429,7 @@ export class CrossDockTransactionComponent implements OnInit {
           ConfirmationDialogComponent,
           {
             height: 'auto',
-            width: '560px',
+            width: Style.w560px,
             autoFocus: DialogConstants.autoFocus,
             disableClose: true,
             data: {

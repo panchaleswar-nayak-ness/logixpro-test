@@ -23,7 +23,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
-import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions,Column,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions,Column,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-master',
@@ -636,7 +636,7 @@ export class InventoryMasterComponent implements OnInit {
     this.isDialogOpen = true
     let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -681,7 +681,7 @@ export class InventoryMasterComponent implements OnInit {
     let itemToDelete = this.currentPageItemNo
 
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -721,7 +721,7 @@ export class InventoryMasterComponent implements OnInit {
   quarantineDialog(): void {
     this.isDialogOpen = true
     const dialogRef:any = this.global.OpenDialog(QuarantineDialogComponent, {
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
@@ -939,7 +939,7 @@ export class InventoryMasterComponent implements OnInit {
   async ConfirmationDialog(tabIndex) {
     const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       data: {
         message: 'Changes you made may not be saved.',
         heading: 'Inventory Master'

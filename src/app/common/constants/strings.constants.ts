@@ -410,3 +410,6 @@ export const TableConstant = {
 export const UniqueConstants = {
     backClass:'back-class'
 }
+export const Style = {
+    w560px:'560px'
+}   

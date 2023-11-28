@@ -8,7 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -81,7 +81,7 @@ export class ReelTrackingComponent implements OnInit {
  updateReelQty(): void {
     const dialogRef:any = this.global.OpenDialog(MinReelQtyComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {

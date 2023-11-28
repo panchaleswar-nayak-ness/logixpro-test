@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -149,7 +149,7 @@ export class PickComponent implements OnInit {
     else {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
@@ -235,7 +235,7 @@ export class PickComponent implements OnInit {
     this.iAdminApiService.GetTransactionTypeCounts(payload).subscribe((res =>{
     let dialogRef:any = this.global.OpenDialog(LaLocationAssignmentQuantitiesComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {  

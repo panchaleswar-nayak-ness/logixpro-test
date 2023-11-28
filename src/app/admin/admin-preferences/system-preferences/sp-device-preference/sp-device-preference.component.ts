@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
-import {  StringConditions, ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  StringConditions, ToasterTitle, ToasterType ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -125,7 +125,7 @@ export class SpDevicePreferenceComponent implements OnInit {
   deleteAllOrders(deviceID) {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {

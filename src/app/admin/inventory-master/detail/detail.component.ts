@@ -12,7 +12,7 @@ import { CurrentTabDataService } from '../current-tab-data-service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppNames} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppNames,Style} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -69,7 +69,7 @@ export class DetailComponent implements OnInit {
   public openItemNumDialog() {
     let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
       height: DialogConstants.auto,
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -102,7 +102,7 @@ export class DetailComponent implements OnInit {
   public openDescriptionDialog() {
     let dialogRef:any = this.global.OpenDialog(UpdateDescriptionComponent, {
       height: DialogConstants.auto,
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {

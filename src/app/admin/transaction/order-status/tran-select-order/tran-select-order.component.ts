@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,StringConditions} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,StringConditions,Style} from 'src/app/common/constants/strings.constants';
 
 class info {
   title: string;
@@ -287,7 +287,7 @@ export class TranSelectOrderComponent implements OnInit {
     };
 
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {

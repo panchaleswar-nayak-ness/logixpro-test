@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  DialogConstants } from 'src/app/common/constants/strings.constants';
+import {  DialogConstants ,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reel-detail',
@@ -78,7 +78,7 @@ export class ReelDetailComponent implements OnInit {
     if(this.reelQty == undefined || this.reelQty == ""){
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         data: {
           message: 'You must provide a quantity for this reel.',
         },
@@ -94,7 +94,7 @@ export class ReelDetailComponent implements OnInit {
     if(this.wareHouseSensitivity && (this.reelWarehouse == '') && this.reelQty != undefined) {
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         data: {
           message: 'This item is warehouse sensitive.  Assign a warehouse to the reel in order to create the transaction.',
         },

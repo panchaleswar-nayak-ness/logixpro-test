@@ -6,7 +6,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  ResponseStrings ,ToasterType,ToasterTitle,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterType,ToasterTitle,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -150,7 +150,7 @@ export class CmShippingComponent implements OnInit {
   async ShippingCompShip() {
     let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -176,7 +176,7 @@ export class CmShippingComponent implements OnInit {
                   ConfirmationDialogComponent,
                   {
                     height: 'auto',
-                    width: '560px',
+                    width: Style.w560px,
                     autoFocus: DialogConstants.autoFocus,
                     disableClose: true,
                     data: {
@@ -228,7 +228,7 @@ export class CmShippingComponent implements OnInit {
       CmAddNewItemToShipmentComponent,
       {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: { orderNumber: this.orderNumber },

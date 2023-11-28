@@ -23,7 +23,7 @@ import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys,ToasterMessages,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys,ToasterMessages,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-shipping-transaction',
@@ -182,7 +182,7 @@ export class CmShippingTransactionComponent implements OnInit {
                 ConfirmationDialogComponent,
                 {
                   height: 'auto',
-                  width: '560px',
+                  width: Style.w560px,
                   autoFocus: DialogConstants.autoFocus,
                   disableClose: true,
                   data: {
@@ -228,7 +228,7 @@ export class CmShippingTransactionComponent implements OnInit {
                 ConfirmationDialogComponent,
                 {
                   height: 'auto',
-                  width: '560px',
+                  width: Style.w560px,
                   autoFocus: DialogConstants.autoFocus,
                   disableClose: true,
                   data: {
@@ -244,7 +244,7 @@ export class CmShippingTransactionComponent implements OnInit {
                     ConfirmationDialogComponent,
                     {
                       height: 'auto',
-                      width: '560px',
+                      width: Style.w560px,
                       autoFocus: DialogConstants.autoFocus,
                       disableClose: true,
                       data: {
@@ -308,7 +308,7 @@ export class CmShippingTransactionComponent implements OnInit {
   openShipSplitLine(order: any, i: any) {
     let dialogRef: any = this.global.OpenDialog(CmShipSplitLineComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {

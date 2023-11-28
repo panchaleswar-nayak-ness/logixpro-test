@@ -5,7 +5,7 @@ import {
 } from '@angular/material/dialog'; 
 import { BatchDeleteConfirmationComponent } from '../batch-delete-confirmation/batch-delete-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TransactionType ,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  TransactionType ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-delete',
@@ -54,7 +54,7 @@ export class BatchDeleteComponent implements OnInit {
     let clearBatchTote = this.clearBatchTote === 'clearBatch';
     const dialogRef:any = this.global.OpenDialog(BatchDeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -86,7 +86,7 @@ export class BatchDeleteComponent implements OnInit {
     };
     const dialogRef:any = this.global.OpenDialog(BatchDeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-import {StringConditions , ToasterTitle, ToasterType ,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {StringConditions , ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-printers',
   templateUrl: './printers.component.html',
@@ -132,7 +132,7 @@ export class PrintersComponent implements OnInit {
   removePrinter(printer: any) {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -240,7 +240,7 @@ export class PrintersComponent implements OnInit {
     else {
       let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {

@@ -20,7 +20,7 @@ import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.co
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 export interface Location {
   start_location: string;
@@ -361,7 +361,7 @@ export class EmployeesComponent implements OnInit {
   openGroupDialog() {
     let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
@@ -453,7 +453,7 @@ export class EmployeesComponent implements OnInit {
   openDialog() {
     let dialogRef:any = this.global.OpenDialog(AddNewEmployeeComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {

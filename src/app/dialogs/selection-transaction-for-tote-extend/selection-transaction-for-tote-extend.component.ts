@@ -20,7 +20,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
-import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,zoneType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,zoneType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -244,7 +244,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   clearTransInfo() {
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -290,7 +290,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     try {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
@@ -427,7 +427,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             if (res.data > 0 && this.data.autoForwardReplenish) {
               let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                 height: 'auto',
-                width: '560px',
+                width: Style.w560px,
                 autoFocus: DialogConstants.autoFocus,
                 disableClose: true,
                 data: {
@@ -614,7 +614,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             if (!res.data) {
               let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                 height: 'auto',
-                width: '560px',
+                width: Style.w560px,
                 autoFocus: DialogConstants.autoFocus,
                 data: {
                   message: 'There are no batches with this zone (' + this.toteForm.value.zone + ') assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
@@ -641,7 +641,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                     if(res.data.transaction.length > 0) {
                       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                         height: 'auto',
-                        width: '560px',
+                        width: Style.w560px,
                         autoFocus: DialogConstants.autoFocus,
                         disableClose:true,
                         data: {
@@ -723,7 +723,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               // here pop up will be implemented which will ask for number of labels
               let dialogRef:any = this.global.OpenDialog(PaPrintLabelConfirmationComponent, {
                 height: 'auto',
-                width: '560px',
+                width: Style.w560px,
                 autoFocus: DialogConstants.autoFocus,
                 disableClose:true,
               });
@@ -772,7 +772,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -790,7 +790,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
             let dialogRef : any = this.global.OpenDialog(ConfirmationDialogComponent, {
               height: 'auto',
-              width: '560px',
+              width: Style.w560px,
               autoFocus: DialogConstants.autoFocus,
               disableClose:true,
               data: {

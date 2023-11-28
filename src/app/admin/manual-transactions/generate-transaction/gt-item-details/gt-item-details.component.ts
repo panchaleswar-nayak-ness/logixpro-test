@@ -4,7 +4,7 @@ import { AddNotesComponent } from 'src/app/admin/dialogs/add-notes/add-notes.com
 import { SupplierItemIdComponent } from 'src/app/admin/dialogs/supplier-item-id/supplier-item-id.component';
 import { UnitMeasureComponent } from 'src/app/admin/dialogs/unit-measure/unit-measure.component';
 import { UserFieldsEditComponent } from 'src/app/admin/dialogs/user-fields-edit/user-fields-edit.component';
-import { DialogConstants } from 'src/app/common/constants/strings.constants';
+import { DialogConstants ,Style} from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
@@ -44,7 +44,7 @@ openNotes(){
   if (this.orderNumber == '' || !this.item) return;
   const dialogRef:any = this.global.OpenDialog(AddNotesComponent, {
     height: DialogConstants.auto,
-    width: '560px',
+    width: Style.w560px,
     autoFocus: DialogConstants.autoFocus,
     disableClose:true,
     data:{
@@ -83,7 +83,7 @@ openSupplierItemDialogue() {
   if (this.orderNumber == '' || !this.item) return;
   const dialogRef:any = this.global.OpenDialog(SupplierItemIdComponent, {
     height: DialogConstants.auto,
-    width: '560px',
+    width: Style.w560px,
     autoFocus: DialogConstants.autoFocus,
     disableClose:true,
     data: {

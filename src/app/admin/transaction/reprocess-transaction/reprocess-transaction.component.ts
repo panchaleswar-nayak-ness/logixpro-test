@@ -16,7 +16,7 @@ import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/c
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
-import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,Style} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -552,7 +552,7 @@ export class ReprocessTransactionComponent implements OnInit {
 
       const dialogRef : any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: DialogConstants.auto,
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: { message: message }
@@ -589,7 +589,7 @@ export class ReprocessTransactionComponent implements OnInit {
     else {
       const dialogRef : any = this.global.OpenDialog(FunctionAllocationComponent, {
         height: DialogConstants.auto,
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
@@ -753,7 +753,7 @@ export class ReprocessTransactionComponent implements OnInit {
 
   openReasonDialog() {
     this.global.OpenDialog(this.description, {
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });

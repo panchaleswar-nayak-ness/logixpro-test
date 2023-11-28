@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ItemNumUpdateConfirmationComponent } from '../item-num-update-confirmation/item-num-update-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StringConditions } from 'src/app/common/constants/strings.constants';
+import { StringConditions ,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-item-number',
@@ -54,7 +54,7 @@ export class ItemNumberComponent implements OnInit {
       else this.dialogRef.close();
     } else if ( status == 'update'){
       if(this.data.newItemNumber){
-        const confirmationdialogRef:any = this.dialog.OpenDialog(ItemNumUpdateConfirmationComponent, { width: '560px' });
+        const confirmationdialogRef:any = this.dialog.OpenDialog(ItemNumUpdateConfirmationComponent, { width: Style.w560px });
 
         confirmationdialogRef.afterClosed().subscribe((res) => {
           if(res == StringConditions.Yes) this.dialogRef.close( this.data.newItemNumber );

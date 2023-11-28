@@ -4,7 +4,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-import {StringConditions , ToasterTitle, ToasterType ,ResponseStrings,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {StringConditions , ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-ste',
   templateUrl: './ste.component.html',
@@ -50,7 +50,7 @@ export class SteComponent implements OnInit {
   // ConfirmationPopup(msg:any) {
   //   const dialogRef  = this.global.OpenDialog(ConfirmationDialogComponent, {
   //     height: 'auto',
-  //     width: '560px',
+  //     width: Style.w560px,
   //     autoFocus: DialogConstants.autoFocus,
 
   //     data: {

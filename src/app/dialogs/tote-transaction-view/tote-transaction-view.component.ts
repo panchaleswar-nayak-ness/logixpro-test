@@ -18,7 +18,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-tote-transaction-view',
@@ -173,7 +173,7 @@ export class ToteTransactionViewComponent implements OnInit {
       this.clearMatSelectList();
       const dialogRef: any = this.global.OpenDialog(MarkToteFullComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {

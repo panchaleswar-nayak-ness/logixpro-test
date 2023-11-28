@@ -15,7 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reel-transactions',
@@ -206,7 +206,7 @@ export class ReelTransactionsComponent implements OnInit {
   reeloverviewsubmit() {
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       data: {
         message: 'Click OK to create these reels.',
       },
@@ -235,7 +235,7 @@ export class ReelTransactionsComponent implements OnInit {
   ConfirmNoOFReel(numUnassigned) {
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       data: {
         message: `There are  ${
           numUnassigned < 0 ? 'more' : 'fewer'
@@ -319,7 +319,7 @@ export class ReelTransactionsComponent implements OnInit {
               AlertConfirmationComponent,
               {
                 height: 'auto',
-                width: '560px',
+                width: Style.w560px,
                 data: {
                   message: errs,
                 },
@@ -361,7 +361,7 @@ export class ReelTransactionsComponent implements OnInit {
                   AlertConfirmationComponent,
                   {
                     height: 'auto',
-                    width: '560px',
+                    width: Style.w560px,
                     data: {
                       message: 'Click OK to print labels now.',
                     },
@@ -428,7 +428,7 @@ export class ReelTransactionsComponent implements OnInit {
   async showConfirmationDialog(message, callback) {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {

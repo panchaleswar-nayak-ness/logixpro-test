@@ -15,7 +15,7 @@ import { CrDesignFilenameConfirmationComponent } from '../cr-design-filename-con
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cr-add-new-custom-report',
@@ -227,7 +227,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
   DeleteExistingdesign() {
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       data: {
         message: `Click OK to permanently delete the design file.`,
       },
@@ -303,7 +303,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       CrDesignFilenameConfirmationComponent,
       {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {

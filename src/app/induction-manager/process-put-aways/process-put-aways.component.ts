@@ -28,7 +28,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { Router } from '@angular/router';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys,TransactionType,ToasterMessages,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys,TransactionType,ToasterMessages,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   position: string;
@@ -519,7 +519,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     else {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
@@ -659,7 +659,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   startNewBatchWithID() {
     const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       data: {
         message: 'Click OK to start a new batch and discard any changes to the current batch.',
         heading: '',
@@ -728,7 +728,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     if(this.ELEMENT_DATA.length != 0) {
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         data: {
           message: 'Click OK to start a new batch and discard any changes to the current batch.',
           heading: '',
@@ -842,7 +842,7 @@ async clearBatchData(){
 
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
@@ -1141,7 +1141,7 @@ async clearBatchData(){
       } else {
         let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
           height: 'auto',
-          width: '560px',
+          width: Style.w560px,
           autoFocus: DialogConstants.autoFocus,
       disableClose:true,
           data: {
@@ -1173,7 +1173,7 @@ async clearBatchData(){
 
                     let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                       height: 'auto',
-                      width: '560px',
+                      width: Style.w560px,
                       autoFocus: DialogConstants.autoFocus,
                       disableClose:true,
                       data: {
@@ -1289,7 +1289,7 @@ async clearBatchData(){
 
       const dialogRef:any = this.global.OpenDialog(MarkToteFullComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {

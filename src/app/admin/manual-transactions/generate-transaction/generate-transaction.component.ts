@@ -21,7 +21,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import {
   DialogConstants,
   ToasterTitle,
-  ToasterType} from 'src/app/common/constants/strings.constants';
+  ToasterType,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-generate-transaction',
@@ -245,7 +245,7 @@ export class GenerateTransactionComponent implements OnInit {
     if (this.orderNumber == '' || !this.item) return;
     const dialogRef: any = this.global.OpenDialog(SetItemLocationComponent, {
       height: DialogConstants.auto,
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -300,7 +300,7 @@ export class GenerateTransactionComponent implements OnInit {
         PostManualTransactionComponent,
         {
           height: DialogConstants.auto,
-          width: '560px',
+          width: Style.w560px,
           autoFocus: DialogConstants.autoFocus,
           disableClose: true,
           data: {
@@ -355,7 +355,7 @@ export class GenerateTransactionComponent implements OnInit {
     if (this.isLocation && this.transQuantity > this.totalQuantity) {
       const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
         height: DialogConstants.auto,
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
@@ -414,7 +414,7 @@ export class GenerateTransactionComponent implements OnInit {
       DeleteConfirmationManualTransactionComponent,
       {
         height: DialogConstants.auto,
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
@@ -534,7 +534,7 @@ export class GenerateTransactionComponent implements OnInit {
       this.isInvalidQuantityPopUp = true;
       const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
         height: DialogConstants.auto,
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });

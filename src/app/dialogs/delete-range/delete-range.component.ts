@@ -11,7 +11,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-delete-range',
@@ -77,7 +77,7 @@ export class DeleteRangeComponent implements OnInit {
     if (this.repByDeletePayload.filter1 && this.repByDeletePayload.filter2) {
       const dialogRef2:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
