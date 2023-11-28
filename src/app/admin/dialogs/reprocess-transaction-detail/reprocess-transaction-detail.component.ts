@@ -9,7 +9,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ToasterMessages,TableConstant} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ToasterMessages,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocess-transaction-detail',
@@ -121,7 +121,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get("revision")?.value,
         this.editTransactionForm.get("notes")?.value,
         this.editTransactionForm.get("userField1")?.value,
-        this.editTransactionForm.get("userField2")?.value,
+        this.editTransactionForm.get(ColumnDef.userField2)?.value,
         this.editTransactionForm.get("hostTransactionID")?.value,
         this.dayIncrement(this.reqDate),
 

@@ -90,7 +90,7 @@ export class UserFieldsComponent implements OnInit {
     const values = this.userForm.value;
     const userFields = {
       "userField1": values.userField1,
-      "userField2": values.userField2,
+      'userField2': values.userField2,
       'userField3': values.userField3,
       "userField4": values.userField4,
       "userField5": values.userField5,

@@ -64,7 +64,7 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: "shelf", colDef: "Shelf" },
     { colHeader: "unitOfMeasure", colDef: "Unit of Measure" },
     { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
-    { colHeader: "userField2", colDef: TableConstant.UserField2 },
+    { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
     { colHeader: "goldenZone", colDef: "Velocity Code" },
     { colHeader: "warehouse", colDef: "Warehouse" },
     { colHeader: "zone", colDef: "Zone" },

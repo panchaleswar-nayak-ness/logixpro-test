@@ -19,7 +19,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
-import { DialogConstants, ToasterTitle, ToasterType ,zoneType} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 
 export interface InventoryMapDataStructure {
@@ -256,7 +256,7 @@ export class AddInvMapLocationComponent implements OnInit {
       this.addInvMapLocation.get('velocity')?.disable();
       this.addInvMapLocation.get('altLight')?.disable();
       this.addInvMapLocation.get('userField1')?.disable();
-      this.addInvMapLocation.get('userField2')?.disable();
+      this.addInvMapLocation.get(ColumnDef.userField2)?.disable();
       this.addInvMapLocation.get('quantityAllocatedPutAway')?.disable();
       this.addInvMapLocation.get('inventoryMapID')?.disable();
       this.addInvMapLocation.get('masterInventoryMapID')?.disable();

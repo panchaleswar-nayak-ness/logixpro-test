@@ -18,7 +18,7 @@ export class BatchManagerDetailViewComponent implements OnInit {
 
 
   public iAdminApiService: IAdminApiService;
-  batchDisplayedColumns: string[] = ['item_no', 'description','transaction_qty','lotNo', 'expiration_date', 'uom', 'serial_no', 'notes','location','warehouse',ColumnDef.userField1,'userField2','toteID'];
+  batchDisplayedColumns: string[] = ['item_no', 'description','transaction_qty','lotNo', 'expiration_date', 'uom', 'serial_no', 'notes','location','warehouse',ColumnDef.userField1,ColumnDef.userField2,'toteID'];
   dataSource:any = [];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   constructor(private Api:ApiFuntions,private global : GlobalService, private _liveAnnouncer: LiveAnnouncer,private adminApiService: AdminApiService,@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<any>) { 
