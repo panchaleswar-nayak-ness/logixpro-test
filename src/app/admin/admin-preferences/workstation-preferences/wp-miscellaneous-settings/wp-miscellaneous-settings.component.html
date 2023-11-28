@@ -1,0 +1,85 @@
+<div class="row w-100 mt-4 mx-0">
+    <div class="col-xl-4 mb-3 mb-xl-0">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <app-icon-heading-component heading="Stock Count Confirmation" icon=" confirmation_number">
+            </app-icon-heading-component>
+        </div>
+        <div class="card p-3">
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex justify-content-between mb-3">
+                        Carousel Pick<mat-slide-toggle color="primary">
+                        </mat-slide-toggle>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        Carousel Put Away<mat-slide-toggle color="primary">
+                        </mat-slide-toggle>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        Hot Pick<mat-slide-toggle color="primary">
+                        </mat-slide-toggle>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        Hot Put Away<mat-slide-toggle color="primary">
+                        </mat-slide-toggle>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 mb-3 mb-xl-0">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <app-icon-heading-component heading="Other Setting" icon="settings_applications">
+            </app-icon-heading-component>
+        </div>
+        <div class="card p-3">
+            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                <mat-label>Idle Warning Time</mat-label>
+                <input matInput type="text" value="123456" />
+            </mat-form-field>
+            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                <mat-label>Idle Log-Off Time</mat-label>
+                <input matInput type="text" value="12345" />
+            </mat-form-field>
+            <div class="d-flex justify-content-between mb-3">
+                Force Order Number for Hot Pick<mat-slide-toggle color="primary">
+                </mat-slide-toggle>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+                Force Order Number for Hot Put Away<mat-slide-toggle color="primary">
+                </mat-slide-toggle>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 mb-3 mb-xl-0">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <app-icon-heading-component heading="Inactive Carousels" icon="grid_off">
+            </app-icon-heading-component>
+        </div>
+        <div class="card w-100">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-6">Carousels</div>
+                    <div class="col-6">Inactive Carousel</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <mat-radio-group aria-label="Select an option" color="primary" class="w-100">
+                    <div class="row align-items-center">
+                        <div class="col-6">
+                            <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                <input matInput type="text" disabled value="Carousel POD 02">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6 mt-3">
+                            <div class="d-flex justify-content-between mb-3 ml-30percent">
+                                <mat-slide-toggle color="primary">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                    </div>
+                </mat-radio-group>
+            </div>
+        </div>
+    </div>
+</div>

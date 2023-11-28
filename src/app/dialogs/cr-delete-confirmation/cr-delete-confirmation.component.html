@@ -1,0 +1,29 @@
+<div class="mat-modal-wrap text-center">
+    <mat-dialog-content>
+      <div class="prompt-wrap">
+        <div class="d-flex justify-content-center prompt-icon-wrap">
+          <span #cancel class="material-symbols-outlined prompt-icon-delete mb-4">
+            delete
+          </span>
+  
+        </div>
+        <h1 class="mat-card-title text-error">
+            Choose Delete Method
+        </h1>
+        <p class="prompt-message py-3 px-3 mb-3 bold">
+          The reference to the selected file will be deleted. Choose whether the file itself will also be deleted or kept in case it may be needed sometime in the future
+        </p>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="d-flex flex-column justify-content-center m-0 p-0">
+      <button  class="mat-button-base prompt-action-danger-button  mb-3 btn-lg w-100 text-transform-capi" mat-stroked-button mat-button (click)="deleteReport('permanent')"> Erase File (PERMANENT)</button>
+      <button class="mat-button-base prompt-action-basic-button btn-lg w-100 mb-3" mat-button (click)="deleteReport('keep')"
+        tabindex="-1">
+        Keep File
+      </button>
+      <button class="mat-button-base prompt-action-basic-button btn-lg w-100" mat-button mat-dialog-close
+        tabindex="-1">
+        Cancel (The file and reference will BOTH be KEPT)
+      </button>
+    </mat-dialog-actions>
+  </div>

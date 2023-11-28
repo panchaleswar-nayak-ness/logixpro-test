@@ -1,0 +1,35 @@
+<div class="d-block d-xl-flex justify-content-between align-items-center w-100 gap-12 mt-3">
+    <div class="label-blue3 p-3 d-flex br-8 mb-3">
+        <mat-icon class="material-symbols-outlined">info</mat-icon>
+        <span class="ps-2 w-100">The Adjustment Lookup List can be configured by adding, deleting or modifying the suggestions that will be rendered to the user on related screens.  </span>
+    </div>
+   
+
+    <div class="d-flex justify-content-end">
+        <button mat-flat-button color="primary" class="add-icon-button mb-2 flex-grow-1"  [disabled]="AddBtn" (click)="addNewAdjust()" >
+            <span class="material-symbols-outlined" matTooltip="Add new" matTooltipPosition="above" >
+                add
+            </span>
+        </button>
+    </div>
+</div>
+
+
+<ng-container *ngFor="let element of adjustmentLookUp.data">
+    <div class="col-xl-4 d-flex align-items-center">
+        <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline">
+            <input matInput type="text" [(ngModel)]="element.currentVal" >
+        </mat-form-field>
+    
+        <div class="ms-5 d-flex align-items-center gap-12" >
+            <button mat-flat-button color="primary" class="xsm-icon-button" [disabled]="element.currentVal == element.oldVal"
+            (click)="saveAdjustLookUp(element)">
+                <mat-icon class="material-symbols-outlined">save</mat-icon>
+            </button>
+            <button mat-flat-button color="warn" class="xsm-icon-button" (click)="deleteAdjust(element)">
+                <mat-icon class="material-symbols-outlined">close</mat-icon>
+            </button>
+        </div>
+    
+    </div>
+</ng-container>

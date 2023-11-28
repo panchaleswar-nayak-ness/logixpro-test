@@ -1,0 +1,157 @@
+<div class="d-flex justify-content-between mb-2 align-items-center">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Transfer File Path Setup</h1>
+
+    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+
+<div class="card p-3 br-14  mt-3 mb-3">
+    <div class="row">
+        <div class="col-xl-9">
+            <div class="row">
+            <div class="col-xl-3">
+               
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label>Transaction Type</mat-label>
+                    <input #fieldFocus type="text"  matInput maxlength="255">
+                  </mat-form-field>
+              </div>
+              <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                  <mat-label>Import Ext.</mat-label>
+                  <input matInput type="text">
+                </mat-form-field>
+              </div>
+              <div class="col-xl-6">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                  <mat-label>Import File Path</mat-label>
+                  <input matInput type="text">
+                </mat-form-field>
+              </div>
+             <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                  <mat-label>Host Type</mat-label>
+                  <input matInput type="text">
+                </mat-form-field>
+              </div>
+              <div class="col-xl-3">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                  <mat-label>Export Ext.</mat-label>
+                  <input matInput type="text">
+                </mat-form-field>
+              </div>
+              <div class="col-xl-6">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                  <mat-label>Export File Path</mat-label>
+                  <input matInput type="text">
+                </mat-form-field>
+              </div>
+              <div class="col-xl-12">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                  <mat-label>Export File Name</mat-label>
+                  <input matInput type="text">
+                </mat-form-field>
+              </div> 
+            </div>
+        </div>
+        <div class="col-xl-3">
+          <div class="row">
+            <div class="d-flex justify-content-between mb-4">
+                Use Date/Time Filenames<mat-slide-toggle  color="primary">
+                </mat-slide-toggle>
+              </div>
+              <div class="d-flex justify-content-between mb-4">
+                Export to File/Table<mat-slide-toggle  color="primary">
+                </mat-slide-toggle>
+              </div>
+              <div class="d-flex justify-content-between mb-4">
+                Active<mat-slide-toggle  color="primary">
+                </mat-slide-toggle>
+              </div>
+            <div class="col-xl-12">
+              <button mat-flat-button class="btn-regular w-100 mb-3" color="primary">
+                <mat-label> Save</mat-label>
+            </button>
+          </div>
+            </div>
+        </div>
+    
+</div>
+</div>
+
+<div class="card p-3 br-14  mb-3" >
+  <div class="row">
+      <div class="col-xl-9">
+          <div class="row">
+          <div class="col-xl-3">
+             
+              <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                  <mat-label>Transaction Type</mat-label>
+                  <input type="text"  matInput maxlength="255">
+                </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+              <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                <mat-label>Import Ext.</mat-label>
+                <input matInput type="text">
+              </mat-form-field>
+            </div>
+            <div class="col-xl-6">
+              <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                <mat-label>Import File Path</mat-label>
+                <input matInput type="text">
+              </mat-form-field>
+            </div>
+           <div class="col-xl-3">
+              <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                <mat-label>Host Type</mat-label>
+                <input matInput type="text">
+              </mat-form-field>
+            </div>
+            <div class="col-xl-3">
+              <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                <mat-label>Export Ext.</mat-label>
+                <input matInput type="text">
+              </mat-form-field>
+            </div>
+            <div class="col-xl-6">
+              <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                <mat-label>Export File Path</mat-label>
+                <input matInput type="text">
+              </mat-form-field>
+            </div>
+            <div class="col-xl-12">
+              <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                <mat-label>Export File Name</mat-label>
+                <input matInput type="text">
+              </mat-form-field>
+            </div> 
+          </div>
+      </div>
+      <div class="col-xl-3">
+        <div class="row">
+          <div class="d-flex justify-content-between mb-4">
+              Use Date/Time Filenames<mat-slide-toggle  color="primary">
+              </mat-slide-toggle>
+            </div>
+            <div class="d-flex justify-content-between mb-4">
+              Export to File/Table<mat-slide-toggle  color="primary">
+              </mat-slide-toggle>
+            </div>
+            <div class="d-flex justify-content-between mb-4">
+              Active<mat-slide-toggle  color="primary">
+              </mat-slide-toggle>
+            </div>
+          <div class="col-xl-12">
+            <button mat-flat-button class="btn-regular w-100 mb-3" color="primary">
+              <mat-label> Save</mat-label>
+          </button>
+        </div>
+          </div>
+      </div>
+  
+</div>
+</div>

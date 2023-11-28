@@ -21,7 +21,7 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="d-flex flex-column justify-content-center m-0 p-0">
-    <button style="text-transform:capitalize"  class="mat-button-base prompt-action-danger-button  mb-3 btn-lg w-100" mat-stroked-button mat-button
+    <button class="mat-button-base prompt-action-danger-button  mb-3 btn-lg w-100 text-capitalize" mat-stroked-button mat-button
     (click)="onConfirmdelete()" tabindex="1" [disabled]="isChecked" [ngStyle]="{'opacity': isChecked ? '0.8' : '1' }">{{action}}</button>
     <button class="mat-button-base prompt-action-basic-button btn-lg w-100" mat-button mat-dialog-close
       tabindex="-1">

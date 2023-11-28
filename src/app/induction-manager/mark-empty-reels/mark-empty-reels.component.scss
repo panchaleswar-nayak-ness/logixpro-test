@@ -1,0 +1,36 @@
+.inner-layout-1 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .main-content {
+        flex: 1;
+        height: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+table{
+    th{
+        white-space: nowrap;
+        padding-right: 12px;
+    }
+    
+    th,td{
+        padding-right: 15px;
+        padding-left: 10px;
+    }
+    }
+
+.ngScrolbar-style{
+    height:300px;
+    .tr-matHeaderRowDef-style{
+        background-color: var(--clr-table-header);
+    }
+}

@@ -1,0 +1,435 @@
+<div class="d-flex justify-content-between mb-4 align-items-center">
+    <div class="divWithClass" ></div>
+    <h1 class="m-0" mat-dialog-title>{{headerLable}}</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true"
+        (click)="dialogClose()">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+<form [formGroup]="newDeviceForm" >
+    <div mat-dialog-content class="row mb-3">
+        <div class="col-12">
+            <div class="container location_detail">
+                <ng-scrollbar class="ngScrollbarStyleClass h-400px">
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <h1 mat-dialog-title>Device Details</h1>
+                        </div>
+                        <div class="col-xl-4 ">
+                            <span class="float-end"><strong >Device ID:{{this.newDeviceID>0?this.newDeviceID:this.item && this.item.deviceID?this.item.deviceID:'(new)'}}</strong></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4  mb-2">
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label>Zone</mat-label>
+                                <mat-select formControlName="zone">
+                                    <mat-option *ngFor="let item of zoneList;let index = index"
+                                        [value]="item">{{item}}</mat-option>
+
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="col-xl-4  mb-2">
+
+
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label>Device Type</mat-label>
+                                <mat-select formControlName="deviceType">
+                                    <mat-option value="Carousel">Carousel</mat-option>
+                                    <mat-option value="Carton Flow">Carton Flow</mat-option>
+                                    <mat-option value="Light Tree">Light Tree</mat-option>
+                                    <mat-option value="Scale">Scale</mat-option>
+                                    <mat-option value="Scanner">Scanner</mat-option>
+                                    <mat-option value="Sort Bar">Sort Bar</mat-option>
+
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4  mb-2">
+
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label>Device Number</mat-label>
+                                <mat-select formControlName="deviceNumber">
+
+                                    <mat-option value="1">1</mat-option>
+                                    <mat-option value="2">2</mat-option>
+                                    <mat-option value="3">3</mat-option>
+                                    <mat-option value="4">4</mat-option>
+                                    <mat-option value="5">5</mat-option>
+                                    <mat-option value="6">6</mat-option>
+                                    <mat-option value="7">7</mat-option>
+                                    <mat-option value="8">8</mat-option>
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4  mb-2">
+
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label> Device Model</mat-label>
+                                <mat-select formControlName="deviceModel">
+
+                                    <mat-option *ngFor="let item of deviceModelList;let index = index"
+                                        [value]="item">{{item}}</mat-option>
+
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4  mb-2">
+
+
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline" >
+                                <mat-label>Controller Type</mat-label>
+                                <mat-select formControlName="controllerType"  (selectionChange)="changeType($event)" >
+
+                                    <mat-option *ngFor="let item of controllerTypeList;let index = index"
+                                        [value]="item">{{item}}</mat-option>
+
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4  mb-2">
+
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label> Controller Terminal Port</mat-label>
+                                <mat-select formControlName="controllerTerminalPort">
+
+
+
+                                    <mat-option value="11">11</mat-option>
+                                    <mat-option value="12">12</mat-option>
+                                    <mat-option value="13">13</mat-option>
+                                    <mat-option value="21">21</mat-option>
+                                    <mat-option value="22">22</mat-option>
+                                    <mat-option value="23">23</mat-option>
+                                    <mat-option value="31">31</mat-option>
+                                    <mat-option value="32">32</mat-option>
+                                    <mat-option value="33">33</mat-option>
+                                    <mat-option value="41">41</mat-option>
+                                    <mat-option value="42">42</mat-option>
+                                    <mat-option value="43">43</mat-option>
+                                    <mat-option value="1">1</mat-option>
+                                    <mat-option value="2">2</mat-option>
+                                    <mat-option value="3">3</mat-option>
+                                    <mat-option value="4">4</mat-option>
+                                    <mat-option value="VC">VC</mat-option>
+                                    <mat-option value="DL">DL</mat-option>
+                                    <mat-option value="IP">IP</mat-option>
+                                    <mat-option value="DR">DR</mat-option>
+                                    <mat-option value="I1">I1</mat-option>
+                                    <mat-option value="I2">I2</mat-option>
+                                    <mat-option value="I3">I3</mat-option>
+                                    <mat-option value="I4">I4</mat-option>
+                                    <mat-option value="I5">I5</mat-option>
+                                    <mat-option value="I6">I6</mat-option>
+                                    <mat-option value="I7">I7</mat-option>
+                                    <mat-option value="I8">I8</mat-option>
+                                    <mat-option value="I9">I9</mat-option>
+                                    <mat-option value="WMI">WMI</mat-option>
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-4  mb-2">
+
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label>Arrow Direction</mat-label>
+                                <mat-select formControlName="arrowDirection">
+                                    <mat-option value="L">Left</mat-option>
+                                    <mat-option value="R">Right</mat-option>
+                                    <mat-option value="U">Up</mat-option>
+                                    <mat-option value="D">Down</mat-option>
+                                    <mat-option value="B">Left and Right</mat-option>
+                                    <mat-option value="P">Up and Down</mat-option>
+                                    <mat-option value="N">None</mat-option>
+
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4  mb-2">
+
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label>Light Direction</mat-label>
+                                <mat-select formControlName="lightDirection">
+
+                                    <mat-option value="L">Left to Right</mat-option>
+                                    <mat-option value="R">Right to Left</mat-option>
+                                    <mat-option value="U">Bottom Up</mat-option>
+                                    <mat-option value="D">Top Down</mat-option>
+                                    <mat-option value="Twin Bin R to L">Twin Bin R to L</mat-option>
+                                    <mat-option value="Twin Bin L to R">Twin Bin L to R</mat-option>
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4  mb-2">
+
+
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label>Use Light Tree Number</mat-label>
+                                <mat-select formControlName="useLightTreeNumber">
+
+                                    <mat-option value="0">0</mat-option>
+                                    <mat-option value="1">1</mat-option>
+                                    <mat-option value="2">2</mat-option>
+                                    <mat-option value="3">3</mat-option>
+                                    <mat-option value="4">4</mat-option>
+                                    <mat-option value="5">5</mat-option>
+                                    <mat-option value="6">6</mat-option>
+                                    <mat-option value="7">7</mat-option>
+                                    <mat-option value="8">8</mat-option>
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-4  mb-2">
+                            <mat-form-field class="d-block w-100 " appearance="outline">
+                                <mat-label>First Address</mat-label>
+                                <input #first_address [NumbersOnly]="true" maxlength="5" matInput name="firstAddress">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4  mb-2">
+                            <mat-form-field class="d-block w-100 " appearance="outline">
+                                <mat-label>Display Positions</mat-label>
+                                <input [NumbersOnly]="true" maxlength="9" matInput name="displayPositions">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4  mb-2">
+                            <mat-form-field class="d-block w-100 " appearance="outline">
+                                <mat-label>Display Characters</mat-label>
+                                <input [NumbersOnly]="true" maxlength="9" matInput name="displayCharacters">
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row align-items-center">
+                        <div class="col-xl-4  mb-2">
+                            <mat-form-field class="d-block w-100 " appearance="outline">
+                                <mat-label>Pair Key</mat-label>
+                                <input maxlength="50" matInput formControlName="pairKey">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4  mb-2">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Use Laser Pointer:</span>
+                                <mat-slide-toggle  formControlName="useLaserPointer" checked
+                                    color="primary"></mat-slide-toggle>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                </ng-scrollbar>
+                <div *ngIf="isEdit && this.interFaceType==='WMI'">
+                    <h1 mat-dialog-title>Communication Settings</h1>
+                    <div class="row">
+                        <div class="col-xl-6  mb-2">
+                            <mat-form-field class="d-block w-100 " appearance="outline">
+                                <mat-label>Host IP Address</mat-label>
+                                <input maxlength="50" matInput formControlName="hostIP">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-6  mb-2">
+                            <mat-form-field class="d-block w-100 " appearance="outline">
+                                <mat-label>Host Port</mat-label>
+                                <input matInput formControlName="hostPort">
+                            </mat-form-field>
+                        </div>
+                        
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6  mb-2">
+                            <mat-form-field class="d-block w-100 " appearance="outline">
+                                <mat-label>Workstation Name</mat-label>
+                                <input maxlength="50" matInput formControlName="workstationName">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                              <button type="button" mat-flat-button class="btn-regular w-100" (click)="getCompName()"  color="primary">Assign Device To This Workstation</button>
+                            </div>
+                          </div>
+                    </div>
+
+                </div>
+
+                <div *ngIf="isEdit && this.interFaceType==='Other'" >
+                    <h1 mat-dialog-title>Communication Settings</h1>
+                    <div class="row">
+                        <div class="col-xl-4  mb-2">
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label>COM Port</mat-label>
+                                <mat-select formControlName="COMPort">
+                                    <mat-option value="1">1</mat-option>
+                                    <mat-option value="2">2</mat-option>
+                                    <mat-option value="3">3</mat-option>
+                                    <mat-option value="4">4</mat-option>
+                                    <mat-option value="5">5</mat-option>
+                                    <mat-option value="6">6</mat-option>
+                                    <mat-option value="7">7</mat-option>
+                                    <mat-option value="8">8</mat-option>
+                                    <mat-option value="9">9</mat-option>
+                                    <mat-option value="10">10</mat-option>
+                                    <mat-option value="11">11</mat-option>
+                                    <mat-option value="12">12</mat-option>
+
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="col-xl-4  mb-2">
+
+
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label>Baud Rate</mat-label>
+
+                                <mat-select formControlName="Baud">
+                                    <mat-option value="4800">4800</mat-option>
+                                    <mat-option value="9600">9600</mat-option>
+                                    <mat-option value="19200">19200</mat-option>
+                              
+
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4  mb-2">
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label>Parity</mat-label>
+                                <mat-select formControlName="Parity">
+
+                                    <mat-option value="Odd">Odd</mat-option>
+                                    <mat-option value="Even">Even</mat-option>
+                                    <mat-option value="None">None</mat-option>
+
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+                       
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4  mb-2">
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label>Word Length</mat-label>
+                                <mat-select formControlName="WordLength">
+
+                                    <mat-option value="7">7</mat-option>
+                                    <mat-option value="8">8</mat-option>
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+
+                         
+                        </div>
+                        <div class="col-xl-4  mb-2">
+
+                            <mat-form-field class=" custom-form-field w-100 __grab_cursor" appearance="outline">
+                                <mat-label>Stop Bit</mat-label>
+                                <mat-select formControlName="StopBit">
+
+                                    <mat-option value="0">0</mat-option>
+                                    <mat-option value="1">1</mat-option>
+                                    <mat-option value="2">2</mat-option>
+
+                                </mat-select>
+                                <span class="material-symbols-outlined icon-expand-more">
+                                    expand_more
+                                </span>
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6  mb-2">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <button type="button" mat-flat-button class="btn-regular w-100" (click)="updateAllDevices('UpdateAllInterface')"  color="primary">Update All Devices</button>
+                                  </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                  <button type="button" mat-flat-button class="btn-regular w-100" (click)="updateAllDevices('UpdateAllInterfaceZone')"  color="primary">Update All With Same Zone</button>
+                                </div>
+                              </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div mat-dialog-actions class="d-flex gap-12">
+        <button type="button" mat-stroked-button color="secondary" class=" btn-lg text-danger"
+            (click)="deleteSelected()">Delete</button>
+        <button (click)="onSubmit(newDeviceForm,'close')" type="submit" mat-stroked-button class="  btn-lg" color="primary">Save & Close</button>
+        <button (click)="onSubmit(newDeviceForm)" type="submit" mat-flat-button class="flex-1 btn-lg" color="primary">Save</button>
+    </div>
+
+</form>

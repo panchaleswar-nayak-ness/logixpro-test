@@ -1,7 +1,6 @@
-<mat-card class="mat-elevation-z g-card br-14 mb-4" style="height: 100%;">
+<mat-card class="mat-elevation-z g-card br-14 mb-4 main-card">
     <mat-card-content>
-
-      <div class="row" style="margin-bottom: 12px;">
+      <div class="row heading-row">
         <div class="d-flex justify-content-between">
             <div div class="col-3">
               <app-icon-heading-component heading="Count Queue" icon="table">
@@ -9,7 +8,6 @@
             </div>
         </div>
       </div>
-
         <ng-scrollbar class="card bg-light-blue br-14 table-responsive">
           
             <table mat-table [dataSource]="tableData" matSort>
@@ -55,7 +53,7 @@
                 </td>
               </ng-container>
           
-              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style=" background-color: #F9F9FF;"></tr>
+              <tr class="tr-matHeader" mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" ></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
         </ng-scrollbar>

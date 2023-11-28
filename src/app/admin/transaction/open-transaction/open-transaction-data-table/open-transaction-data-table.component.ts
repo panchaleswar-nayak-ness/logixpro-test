@@ -1,52 +1,18 @@
-import {
-  Component,
-  OnInit,
-  
-  
-  
-  Input,
-  
-  
-  
-} from '@angular/core';
-import { } from '@angular/material/sort';
+import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator'; 
-import { AuthService } from 'src/app/init/auth.service'; 
-import { } from 'rxjs';
-import {  } from 'ngx-toastr'; 
-import {  } from 'src/app/admin/dialogs/add-inv-map-location/add-inv-map-location.component';
-import {  } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import {  } from 'src/app/admin/dialogs/quarantine-confirmation/quarantine-confirmation.component';
-import {  } from 'src/app/admin/dialogs/adjust-quantity/adjust-quantity.component';
+import { AuthService } from 'src/app/common/init/auth.service'; 
 import { HoldReasonComponent } from 'src/app/admin/dialogs/hold-reason/hold-reason.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-
-const TRNSC_DATA = [
-  { colHeader: 'orderNumber', colDef: 'Order Number' },
-  { colHeader: 'itemNumber', colDef: 'Item Number' },
-  { colHeader: 'wareHouse', colDef: 'Warehouse' },
-  { colHeader: 'location', colDef: 'Location' },
-  { colHeader: 'transactionType', colDef: 'Transaction Type' },
-  { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
-  { colHeader: 'serialNumber', colDef: 'Serial Number' },
-  { colHeader: 'lotNumber', colDef: 'Lot Number' },
-  { colHeader: 'lineNumber', colDef: 'Line Number' },
-  { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
-  { colHeader: 'toteID', colDef: 'Tote ID' },
-  { colHeader: 'id', colDef: 'ID' },
-];
+import { Column, DialogConstants, Mode, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-open-transaction-data-table',
   templateUrl: './open-transaction-data-table.component.html',
   styleUrls: ['./open-transaction-data-table.component.scss'],
 })
-export class OpenTransactionDataTableComponent
-  implements OnInit
-{
+export class OpenTransactionDataTableComponent implements OnInit {
   displayedColumns: string[] = [
     'orderNumber',
     'itemNumber',
@@ -66,7 +32,7 @@ export class OpenTransactionDataTableComponent
   reels='non';
   orderItem='';
   payload: any;
-  datasource: any = [];
+  dataSource: any = [];
   userData;
   customPagination: any = {
     total: '',
@@ -77,24 +43,28 @@ export class OpenTransactionDataTableComponent
   public sortCol: any = 5;
   public sortOrder: any = 'asc';
   public columnValues: any = [];
-  public iAdminApiService: IAdminApiService;
   pageEvent: PageEvent;
-  constructor(
-    private Api: ApiFuntions,
-    private adminApiService: AdminApiService,
-    private authService: AuthService,
-    private global:GlobalService
 
-  ) {this.iAdminApiService = adminApiService;}
+  public iAdminApiService: IAdminApiService;
+
+  constructor(
+    public adminApiService: AdminApiService,
+    private authService: AuthService,
+    private global: GlobalService
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
+
   @Input()
   set event(event: any) {
     if (event) {
-    this.identify=event.selectedOption;
-    this.orderItem=event.searchValue;
-    this.reels=event.selectedCheck;
+    this.identify = event.selectedOption;
+    this.orderItem = event.searchValue;
+    this.reels = event.selectedCheck;
     this.getContentData();
     }
   }
+
   ngOnInit(): void {
     this.customPagination = {
       total: '',
@@ -117,83 +87,54 @@ export class OpenTransactionDataTableComponent
       reels: this.reels,
       orderItem: this.orderItem,
     };
-    this.iAdminApiService
-      .HoldTransactionsData(this.payload)
-      .subscribe(
-        (res: any) => {
-          if(res.isExecuted && res.data)
-          {
-            this.datasource = res.data.holdTransactions;
-          }
-          else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("HoldTransactionsData",res.responseMessage);
-          }
-        },
-        (error) => {}
-      );
+    this.iAdminApiService.HoldTransactionsData(this.payload).subscribe(
+      (res: any) => {
+        if(res.isExecuted && res.data) this.dataSource = res.data.holdTransactions;
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("HoldTransactionsData",res.responseMessage);
+        }
+      },
+      (error) => {}
+    );
   }
 
   sortChange(event) {
-    if (
-      !this.datasource ||
-      event.direction == ''
-    )
-      return;
-
+    if (!this.dataSource || event.direction == '') return;
     let index;
-    this.displayedColumns.forEach((x, i) => {
-      if (x === event.active) {
-        index = i;
-      }
-    });
-
+    this.displayedColumns.forEach((x, i) => { if (x === event.active) index = i; });
     this.sortCol = index;
     this.sortOrder = event.direction;
     this.getContentData();
   }
+
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
-
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
     this.customPagination.recordsPerPage = e.pageSize;
-    
     this.getContentData();
   }
-  holdDeallocate(row){
 
-    const dialogRef:any = this.global.OpenDialog(HoldReasonComponent, {
-      height: 'auto',
+  holdDeallocate(row){
+    const dialogRef: any = this.global.OpenDialog(HoldReasonComponent, {
+      height: DialogConstants.auto,
       width: '480px',
       data: {
-        mode: 'hold-trans',
+        mode: Mode.HoldTransactions,
         reel:this.reels,
-       
         orderItem: this.orderItem,
-        Order:this.identify==='Order Number',
+        order:this.identify === Column.OrderNumber,
         id:row.id
       },
     });
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res.isExecuted) {
-        this.getContentData();
-  
-      }
-    });
 
+    dialogRef.afterClosed().subscribe((res) => { if(res.isExecuted) this.getContentData(); });
   }
 
   selectRow(row: any) {
-    this.datasource.forEach(element => {
-      if(row != element){
-        element.selected = false;
-      }
-    });
-    const selectedRow = this.datasource.find((x: any) => x === row);
-    if (selectedRow) {
-      selectedRow.selected = !selectedRow.selected;
-    }
+    this.dataSource.forEach(element => { if(row != element) element.selected = false; });
+    const selectedRow = this.dataSource.find((x: any) => x === row);
+    if(selectedRow) selectedRow.selected = !selectedRow.selected;
   }
-
 }

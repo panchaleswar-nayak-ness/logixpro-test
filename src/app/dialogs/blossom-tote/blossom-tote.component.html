@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Blossom Tote</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -9,14 +9,14 @@
 <div class="d-flex gap-12 mb-3">
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>Orignal Tote ID</mat-label>
-        <input #tote_focus  (keydown.shift.enter)="$event.preventDefault()" [(ngModel)]="oldToteID" matInput type="number">
+        <input #toteFocus  (keydown.shift.enter)="$event.preventDefault()" [(ngModel)]="oldToteID" matInput type="text">
     </mat-form-field>
     <mat-form-field class="custom-form-field w-100" appearance="outline">
         <mat-label>New Tote ID</mat-label>
-        <input (keydown.shift.enter)="$event.preventDefault()" [(ngModel)]="nxtToteID" matInput type="number">
+        <input (keydown.shift.enter)="$event.preventDefault()" [(ngModel)]="nxtToteID" matInput type="text">
     </mat-form-field>
     <div class="d-flex align-items-center">
-    <button mat-flat-button color="primary" class="btn-regular" style="min-width: 200px;" (click)="getNextToteId()">
+    <button mat-flat-button color="primary" class="btn-regular min-width-200"  (click)="getNextToteId()">
         Use Next Tote ID
     </button>
     </div>

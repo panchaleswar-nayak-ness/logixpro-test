@@ -2,19 +2,20 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
-import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 
 @Component({
   selector: 'app-print-range',
   templateUrl: './print-range.component.html',
-  styleUrls: []
+  styleUrls: ['./print-range.component.scss']
 })
+
 export class PrintRangeComponent implements OnInit {
   @ViewChild('begin_loc') begin_loc: ElementRef;
   userData: any;
@@ -26,11 +27,10 @@ export class PrintRangeComponent implements OnInit {
   public iCommonAPI : ICommonApi;
   constructor(
     public commonAPI : CommonApiService,
-    private route: Router,
+    public route: Router,
     public dialogRef: MatDialogRef<any>,
     private authService: AuthService,
-    private adminApiService: AdminApiService,
-    private Api: ApiFuntions,
+    public adminApiService: AdminApiService,
     private global:GlobalService
   ) { this.iCommonAPI = commonAPI; 
     this.iAdminApiService = adminApiService;
@@ -52,18 +52,19 @@ export class PrintRangeComponent implements OnInit {
   onSearchSelectBeginLocation(e: any) {
     this.beginLoc = e.option.value;
   }
+
   onSearchSelectEndLocation(e: any) {
     this.endLoc = e.option.value;
   }
 
-  selectBeginLocation(option: any, event: any) {
+  selectBeginLocation(option: any) {
     this.beginLoc = option;
   }
-  selectEndLocation(option: any, event: any) {
+  selectEndLocation(option: any) {
     this.endLoc = option;
   }
 
-  searchBeginLocation(loader: boolean = false) {
+  searchBeginLocation() {
     let payload = {
       "query": this.beginLoc,
       "unique": true
@@ -75,14 +76,13 @@ export class PrintRangeComponent implements OnInit {
       }
       else {
         this.beginLocationSearchList = [];
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("LocationBegin",res.responseMessage);
-        
-
       }
     });
   }
-  searchEndLocation(loader: boolean = false) {
+
+  searchEndLocation() {
     let payload = {
       "query": this.endLoc,
       "beginLocation": this.beginLoc,
@@ -95,7 +95,7 @@ export class PrintRangeComponent implements OnInit {
       }
       else {
         this.endLocationSearchList = [];
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("LocationEnd",res.responseMessage);
 
       }
@@ -119,8 +119,6 @@ export class PrintRangeComponent implements OnInit {
       }
       else {
         this.quantitySelected = 0;
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("QuantitySelected",res.responseMessage);
       }
     });
   }

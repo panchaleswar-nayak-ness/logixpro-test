@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppRoutes } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cycle-counts',
@@ -10,7 +11,7 @@ export class CycleCountsComponent {
 
   constructor(private router: Router) { }
   createTransaction(){
-    this.router.navigate(['/admin/createCountBatches']);
+    this.router.navigate([AppRoutes.AdminCreateCountBatches]);
   }
 
 }

@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="divWithClass"></div>
 <h1 class="m-0" mat-dialog-title>{{headerLable}}</h1>
 <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true" (click)="dialogClose()">
     <mat-icon class="close-icon">close</mat-icon>
 </button>
 </div>
 <form [formGroup]="addInvMapLocation" (ngSubmit)="onSubmit(addInvMapLocation)" mat-dialog-content>
-    <ng-scrollbar class="scroll-color" style="height:65vh" [track]="itemNumberScroll">
+    <ng-scrollbar class="scroll-color scrolBar-colorStyle h-65vh" [track]="itemNumberScroll">
         <div class="row mb-3 mx-1">
             <div class="col-xl-6 col-md-12 col-sm-12 col-xs-12 mb-3 mb-xl-0 ">
                     <div class="container location_detail px-md-3">
@@ -24,15 +24,15 @@
                                     <!--   #location_name  -->
                                     <input placeholder="Location Name" aria-label="Location Name" matInput maxlength="50"
                                         formControlName="location" [matAutocomplete]="auto" (focus)="focusinmethod()" (focusout)="focusoutmethod()">
-                                    <mat-autocomplete class="br-14" style="padding-bottom: 16px; padding-top: 16px;" autoActiveFirstOption #auto="matAutocomplete"
+                                    <mat-autocomplete class="br-14 otocompletestyle" autoActiveFirstOption #auto="matAutocomplete"
                                         (optionSelected)="loadZones($event)">
     
     
-                                        <h6 class="card-header matAutoCompHeader stickyHeader"> <span style="padding: 0px 25px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;"> Location</span> <span style="padding: 0px 0px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">Zone</span></h6>
+                                        <h6 class="card-header matAutoCompHeader stickyHeader"> <span class="locationStickyHeaderStyle"> Location</span> <span class="zoneStickyHeaderStyle">Zone</span></h6>
                                         <mat-option class="" *ngFor="let option of filteredOptions | async"
                                             [value]="option.locationName">
-                                            <div class="loc_option">
-                                                <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;" >{{option.locationName}}</span> <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">{{option.zone}}</span>
+                                            <div class="loc_option optionLocationNameStyle">
+                                                <span>{{option.locationName}}</span> <span class="optionZoneStyle">{{option.zone}}</span>
                                             </div>
                                         </mat-option>
                                     </mat-autocomplete>
@@ -67,7 +67,7 @@
                                     <mat-label>Warehouse</mat-label>
                                     <input matInput formControlName="warehouse" name="warehouse" readonly="true">
                                     <span matSuffix>
-                                        <mat-icon style="color:#8B8BA3; transform: rotate(45deg);" >unfold_more</mat-icon>
+                                        <mat-icon class="unfoldMoreStyleC text-tertiary-900 rotate-45" >unfold_more</mat-icon>
                                     </span>
                                 </mat-form-field>
                                 <div class="error" *ngIf="hasError('warehouse', 'required')">This field is required.</div>
@@ -145,18 +145,18 @@
                                     <mat-label>Cell Size</mat-label>
                                     <input matInput formControlName="cell" name="cell" readonly #cellSizeVal>
                                     <span matSuffix>
-                                        <mat-icon style="color:#8B8BA3; transform: rotate(45deg);" >unfold_more</mat-icon>
+                                        <mat-icon  class="unfoldMoreStyleC text-tertiary-900 rotate-45">unfold_more</mat-icon>
                                     </span>
                                 </mat-form-field>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xl-6 col-md-12 mb-2">
-                                <mat-form-field class="d-block w-100 " appearance="outline" (click)="loadVelocityCode()">
+                                <mat-form-field class="d-block w-100 " appearance="outline" (click)="loadVelocityCode()" >
                                     <mat-label>Velocity Code</mat-label>
                                     <input matInput formControlName="velocity" name="velocity" readonly #velCodeVal>
                                     <span matSuffix>
-                                        <mat-icon style="color:#8B8BA3; transform: rotate(45deg);" >unfold_more</mat-icon>
+                                        <mat-icon class="unfoldMoreStyleC text-tertiary-900 rotate-45">unfold_more</mat-icon>
                                     </span>
                                 </mat-form-field>
                             </div>
@@ -169,17 +169,36 @@
                                 <div class="error" *ngIf="hasError('altLight', 'maxlength')">Max number allowed is 9.</div>
                             </div>
                         </div>
-    
-                        <mat-form-field class="d-block w-100 mb-3" appearance="outline">
-                            <mat-label>{{fieldNames?.userField1}}</mat-label>
-                            <input  maxlength="255"  matInput type="text" formControlName="userField1"   name="userField1">
-    
+
+                        <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
+                            [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
+                            <mat-label>{{fieldNames.userField1}}</mat-label>
+                            <input #ship_via type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipVia'
+                            maxlength="255" [matAutocomplete]="uf1" (ngModelChange)="this.searchByShipVia.next($event)" formControlName="userField1"   name="userField1">
+                            <button matSuffix *ngIf="shipVia" class="clear-btn" (click)="shipVia=''"><mat-icon
+                            class="text-20 text-chrome-600">cancel</mat-icon></button>
+                            <mat-autocomplete #uf1="matAutocomplete">
+                                <mat-option *ngFor="let option of searchAutocompleteShipVia" [value]="option">
+                                    <div>{{option}}</div>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field> 
+
+                        <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
+                            [floatLabel]="getFloatLabelValueItem()" [hideRequiredMarker]="hideRequiredControlShipName.value">
+                            <mat-label>{{fieldNames.userField2}}</mat-label>
+                            <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='shipToName'
+                            maxlength="255" [matAutocomplete]="uf2" (ngModelChange)="this.searchByShipName.next($event)" formControlName="userField2"   name="userField2">
+                            <button matSuffix *ngIf="shipToName" class="clear-btn" (click)="shipToName=''">
+                                <mat-icon class="text-20 text-chrome-600">cancel</mat-icon>
+                            </button>
+                            <mat-autocomplete #uf2="matAutocomplete">
+                                <mat-option *ngFor="let option of searchAutocompleteShipName" [value]="option">
+                                    <div>{{option}}</div>
+                                </mat-option>
+                            </mat-autocomplete>
                         </mat-form-field>
-    
-                        <mat-form-field class="d-block w-100 mb-2" appearance="outline">
-                            <mat-label>{{fieldNames?.userField2}}</mat-label>
-                            <input  maxlength="255" type="text" matInput formControlName="userField2"   name="userField2">
-                        </mat-form-field>
+
                         <div class="row mt-2" *ngIf="data.mode == 'editInvMapLocation'">
                             <div class="col-xl-6 col-md-12 mb-2">
                                 <mat-form-field class="d-block w-100 " appearance="outline">
@@ -227,16 +246,16 @@
                         <div class="col-xl-12 col-md-12 mb-2">
                             <mat-form-field class="d-block w-100" appearance="outline" >
                                 <mat-label>{{fieldNames?.itemNumber}}</mat-label>
-                                <input  maxlength="50"  aria-label="Item Number" matInput (focus)="focusinmethod()" (focusout)="focusoutmethod()"
+                                <input  maxlength="50"  aria-label="Item Number" matInput (focus)="focusinmethod()" (focusout)="focusoutmethod()" (focusout)="itemNumberFocusOut()"
                                     formControlName="item" [matAutocomplete]="itemNumAuto" [(ngModel)]="searchItemNumbers" #searchItam (keyup)="searchItemNumber($event,searchItam)">
-                                    <button matSuffix *ngIf="searchItemNumbers" class="clear-btn" type="button" (click)="[searchItemNumbers='',clearFields()]"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-                                    <mat-autocomplete class="br-14" style="padding-bottom: 16px; padding-top: 16px;" #itemNumAuto="matAutocomplete" (optionSelected)="loadItemDetails($event.option.value)">
-                                        <h6 class="card-header matAutoCompHeader stickyHeader"> <span style="padding: 0px 25px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">Item Number</span>
-                                            <span style="padding: 0px 25px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;">Description</span></h6>
+                                    <button matSuffix *ngIf="searchItemNumbers && !isInputDisabled" name="clear" class="clear-btn" type="button" (click)="[searchItemNumbers='',clearFields()]"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+                                    <mat-autocomplete class="br-14 itemNumAutostyleC" #itemNumAuto="matAutocomplete" (optionSelected)="loadItemDetails($event.option.value)">
+                                        <h6 class="card-header matAutoCompHeader stickyHeader"> <span class="itemNumberStyleCC">Item Number</span>
+                                            <span class="DescriptionsyleCC">Description</span></h6>
                                     <mat-option *ngFor="let option of itemNumberList"
                                         [value]="option.itemNumber">
                                         <div class="loc_option" >
-                                            <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:30%; white-space: nowrap;">{{option.itemNumber}}</span> <span style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:70%; white-space: nowrap;" >{{option.description}}</span>
+                                            <span class="itemNumberOptionStyleCC">{{option.itemNumber}}</span> <span class="DescriptionOptionsyleCC">{{option.description}}</span>
                                             </div>
                                     </mat-option>
                                 </mat-autocomplete>
@@ -254,7 +273,7 @@
                                 <mat-label>Item Quantity</mat-label>
                                 <input matInput formControlName="itemQuantity"   name="itemQuantity" readonly>
                                 <span matSuffix>
-                                    <mat-icon style="color:#8B8BA3; transform: rotate(45deg);" >unfold_more</mat-icon>
+                                    <mat-icon class="unfoldMoreStyleC text-tertiary-900 rotate-45" >unfold_more</mat-icon>
                                 </span>
                             </mat-form-field>
                         </div>
@@ -267,7 +286,7 @@
                                 matInput 
                                 formControlName="maxQuantity"   
                                 name="maxQuantity" 
-                                (keyup)="onMaxChange($event)"  
+                                (keyup)="onMaxChange()"  
                                 type="text">
                             </mat-form-field>
                             <div class="error" *ngIf="hasError('maxQuantity', 'maxlength')">Max number allowed is 9.</div>

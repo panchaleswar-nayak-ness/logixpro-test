@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Choose Export Type</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+<div class="row align-items-center">
+    <div class="col-xl-12 mb-2">
+    <mat-form-field class="custom-form-field w-100" appearance="outline">
+        <mat-label>Export Filename</mat-label>
+        <input #expFile matInput type="text" [(ngModel)]="exportFileName">
+    </mat-form-field>
+</div>
+    <div class="col-xl-12 mb-2">
+    <mat-form-field class="custom-form-field w-100" appearance="outline">
+        <mat-label>File Format</mat-label>
+        <mat-select class="employees-action" [(ngModel)]="type">
+            <mat-option value="pdf">PDF (PDF Format)</mat-option>
+            <mat-option value="csv">CSV (Comma Sepereated File - Openable in Excel)</mat-option> 
+            <mat-option value="txt">TXT (Text Format )</mat-option>  
+        </mat-select>
+        <span class="material-symbols-outlined icon-expand-more">
+            expand_more
+        </span>
+    </mat-form-field>
+</div>
+</div>
+
+<div class="row mt-2">
+    <button type="button" mat-flat-button color="primary" (click)="ExportSubmit()" [disabled]="!type || !exportFileName" class="button-primary-i mb-2 btn-lg w-100">Export</button>
+</div>

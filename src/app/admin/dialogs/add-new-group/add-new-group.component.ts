@@ -2,12 +2,13 @@ import { Component, OnInit, Inject, ViewChild, TemplateRef, ElementRef } from '@
 import { NgForm } from '@angular/forms';
 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import labels from '../../../labels/labels.json'; 
-import { AccessGroupObject, IEmployee } from 'src/app/Iemployee';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import labels from 'src/app/common/labels/labels.json'; 
+import { AccessGroupObject, IEmployee } from 'src/app/common/interface/Iemployee';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 export interface DialogData {
   animal: 'panda' | 'unicorn' | 'lion';
@@ -16,7 +17,7 @@ export interface DialogData {
 @Component({
   selector: 'app-add-new-group',
   templateUrl: './add-new-group.component.html',
-  styleUrls: []
+  styleUrls: ['./add-new-group.component.scss']
 })
 
 export class AddNewGroupComponent implements OnInit {
@@ -77,11 +78,11 @@ export class AddNewGroupComponent implements OnInit {
         .subscribe((response: AccessGroupObject) => {
           if (response.isExecuted) {
             this.dialogRef.close(form.value); // Close opened diaglo
-            this.global.ShowToastr('success',labels.alert.success, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           }
           else {
             
-            this.global.ShowToastr('error',response.responseMessage, 'Error!');
+            this.global.ShowToastr(ToasterType.Error,response.responseMessage, ToasterTitle.Error);
             console.log("insertGroup",response.responseMessage);
           }
         });

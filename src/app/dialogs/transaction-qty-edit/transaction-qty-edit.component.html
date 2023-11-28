@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Transaction Quantity - Edit</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+<!-- Error message FOR DEV USE-->
+        <div class="label-blue3 p-3 d-flex br-8 mb-4">
+            <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
+            <span class="ps-2 w-100">Transaction Quantity must be greater than 0 and less than or equal to Available Quantity and Replenishment Quantity.</span>
+        </div>
+<div>
+    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+        <mat-label>Available Quantity</mat-label>
+        <input matInput type="number" disabled [(ngModel)]="data.availableQuantity">
+    </mat-form-field>
+
+    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+        <mat-label>Replenishment Quantity </mat-label>
+        <input matInput type="number" disabled [(ngModel)]="data.replenishmentQuantity">
+    </mat-form-field>
+
+    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+        <mat-label>Transaction Quantity</mat-label>
+        <input matInput #fieldFocus type="number" [(ngModel)]="data.transactionQuantity" #tq [NumbersOnly]="true" (keyup)="transactionQuantityChange()">
+    </mat-form-field>
+</div>
+
+<div>
+    <button type="submit" mat-flat-button class="w-100 btn-lg" color="primary" (click)="transactionQtyReplenishmentUpdate()">Submit</button>
+</div>

@@ -1,0 +1,63 @@
+<div class="d-flex justify-content-between mb-4 align-items-center">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Short Transaction</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+   
+</div>
+<mat-dialog-content>
+<div class="row">
+    <div class="col-xl-4">
+        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+            <mat-label>Order Number</mat-label>
+            <input matInput disabled [(ngModel)]="selectedTransaction.orderNumber">
+        </mat-form-field>
+    </div>
+    <div class="col-xl-4">
+        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+            <mat-label>Tote ID</mat-label>
+            <input matInput disabled [(ngModel)]="selectedTransaction.toteId">
+        </mat-form-field>
+    </div>
+    <div class="col-xl-4">
+        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+            <mat-label>Item Number</mat-label>
+            <input matInput disabled [(ngModel)]="selectedTransaction.itemNumber">
+        </mat-form-field>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xl-4">
+        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+            <mat-label>Location</mat-label>
+            <input matInput disabled [(ngModel)]="selectedTransaction.location">
+        </mat-form-field>
+    </div>
+    <div class="col-xl-4">
+        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+            <mat-label>Transaction Quantity</mat-label>
+            <input matInput disabled [(ngModel)]="selectedTransaction.transactionQuantity">
+        </mat-form-field>
+    </div>
+    <div class="col-xl-4">
+        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+            <mat-label>Tote Quantity</mat-label>
+            <input 
+            matInput 
+            [(ngModel)]="toteQuantity"  
+            type="number"
+            min="0"
+            inputmode="numeric"
+            pattern="[0-9]*" 
+            (keydown)="restrictKeyboard($event)"
+            #toteQty>
+        </mat-form-field>
+    </div>
+
+</div>
+
+<button mat-flat-button color="primary" class="btn-lg w-100" (click)="ShortTransaction()">Short Transaction</button>
+</mat-dialog-content>

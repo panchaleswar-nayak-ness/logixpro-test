@@ -1,0 +1,88 @@
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    .mat-table {
+        width: 100%;
+        max-width: 100%;
+        height: 150px;
+        display: table;
+        border-collapse: collapse;
+        margin: 0 0 1rem 0;
+    }
+    .mat-row,
+    .mat-header-row {
+        display: table-row;
+    }
+    .mat-cell,
+    .mat-header-cell {
+        word-wrap: initial;
+        display: table-cell;
+        padding: 0px 12px;
+        line-break: unset;
+        width: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        vertical-align: middle;
+        border: 0;
+    }
+  }
+
+  // .selected {
+  //   // background-color: var(--clr-primary-300) !important;
+
+  //   color: #fff;
+  //   &:before{
+  //     content: '';
+  //     background-color: var(--clr-primary-300);
+  //     height: 100%;
+  //     width: 100%;
+  //     position: absolute;
+  //     left: 0px;
+  //     top: 0px;
+  //     z-index: -1;
+      
+  //   }
+  //   &:first-child{
+  //     &:before{
+  //     border-top-left-radius: 8px;
+  //     border-bottom-left-radius: 8px;
+  //     margin-left: 8px;
+  //     }
+  //   }
+  //   &:last-child{
+  //     &:before{
+  //     border-top-right-radius: 8px;
+  //     border-bottom-right-radius: 8px;
+  //     right: 12px;
+  //     left: auto;
+  //     }
+  //   }
+    
+  // }
+
+  .divSearchBox-style{
+    flex:1 !important;
+  }
+  .mat-tabScrollbar-style{
+    height:550px !important;
+    .matHeaderCellDef-style{
+        border: 0 !important;
+        height: 66px !important; 
+        padding-left:65px !important;
+    }
+    .matCellDef-style{
+        border: 0 !important; 
+        padding-left: 24px !important; 
+        background: var(--clr-pure-white) !important;
+    }
+    .matHeaderRowDef-style{
+        background-color: var(--clr-table-header) !important;
+    }
+  }
+  .deleteOrderBoldStyle{
+    font-size: 22px !important;
+  }
+
+ 

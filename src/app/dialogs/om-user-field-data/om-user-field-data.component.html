@@ -1,0 +1,86 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>User Fields Data</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-xl-6">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 1</mat-label>
+                <input #userFocus type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField1">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-6">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 2</mat-label>
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField2">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-6">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 3</mat-label>
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField3">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-6">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 4</mat-label>
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField4">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-6">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 5</mat-label>
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField5">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-6">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 6</mat-label>
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField6">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-6">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 7</mat-label>
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField7">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-6">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 8</mat-label>
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField8">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-6">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 9</mat-label>
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField9">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-6">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 10</mat-label>
+                <input type="text" aria-label="Search" matInput [(ngModel)]="userFieldData.userField10">
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-flat-button color="primary" class="btn-lg w-100" (click)="updateUserFieldData()">
+        Save
+    </button>
+</mat-dialog-actions>

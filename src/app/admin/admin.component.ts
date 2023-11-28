@@ -1,14 +1,14 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { AuthService } from '../init/auth.service'; 
+import { AuthService } from '../common/init/auth.service'; 
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
-import { IAdminApiService } from '../services/admin-api/admin-api-interface';
-import { AdminApiService } from '../services/admin-api/admin-api.service';
+import { IAdminApiService } from '../common/services/admin-api/admin-api-interface';
+import { AdminApiService } from '../common/services/admin-api/admin-api.service';
 import { GlobalService } from '../common/services/global.service';
 
 @Component({
@@ -336,7 +336,7 @@ export class AdminComponent implements OnInit {
   backAdminAction() {
   this.isLookUp = !this.isLookUp;
   setTimeout(()=>{
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
 
   }, 500);
 

@@ -17,12 +17,8 @@ export class ItemNumUpdateConfirmationComponent{
 
  
   checkOptions(event: MatCheckboxChange): void {
-    if(event.checked){
-     this.isChecked = false;
-    }
-    else{
-     this.isChecked = true;
-    }
+    if(event.checked) this.isChecked = false;
+    else this.isChecked = true;
    }
 
    onConfirm(){

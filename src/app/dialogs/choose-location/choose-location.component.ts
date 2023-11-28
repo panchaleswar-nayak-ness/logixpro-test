@@ -1,25 +1,23 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import {
-  MatDialog,
+import { 
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
 
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-choose-location',
   templateUrl: './choose-location.component.html',
-  styleUrls: []
+  styleUrls: ['./choose-location.component.scss']
 })
 export class ChooseLocationComponent implements OnInit {
-  @ViewChild('loc_focus') loc_focus: ElementRef;
-  public iinductionManagerApi:IInductionManagerApiService;
+  @ViewChild('locFocus') locFocus: ElementRef;
+  public iInductionManagerApi:IInductionManagerApiService;
 
   public userData: any;
   searchByItem: any = new Subject<string>();
@@ -28,14 +26,12 @@ export class ChooseLocationComponent implements OnInit {
   selectedLocation : any;
 
   constructor(
-              private Api:ApiFuntions,
-              private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
               private authService: AuthService,
               private global: GlobalService,
               public dialogRef                  : MatDialogRef<ChooseLocationComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private dialog                    : MatDialog,) {
-                this.iinductionManagerApi = inductionManagerApi;
+              @Inject(MAT_DIALOG_DATA) public data: any,) {
+                this.iInductionManagerApi = inductionManagerApi;
                }
 
   ngOnInit(): void {    
@@ -43,13 +39,13 @@ export class ChooseLocationComponent implements OnInit {
     this.autocompleteSearchColumnItem();
     this.searchByItem
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
+      .subscribe(() => {
         this.autocompleteSearchColumnItem();
       });
   }
  
   ngAfterViewInit(): void {
-    this.loc_focus.nativeElement.focus();
+    this.locFocus.nativeElement.focus();
   }
   selectLoc(val : any) {
     this.location = val.locNum;
@@ -72,16 +68,15 @@ export class ChooseLocationComponent implements OnInit {
         "item": this.data.itemNumber, 
       };
 
-      this.iinductionManagerApi.BatchLocationTypeAhead(searchPayload).subscribe(
+      this.iInductionManagerApi.BatchLocationTypeAhead(searchPayload).subscribe(
         (res: any) => {
           if (res.isExecuted && res.data) {
             this.searchAutocompleteItemNum = res.data;
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
-            console.log("BatchLocationTypeAhead",res.responseMessage);
+            this.global.ShowToastr('error','Something went wrong', 'Error!'); 
           }
         },
-        (error) => {}
+        () => {}
       );      
     } catch (error) { 
     }    
@@ -94,7 +89,7 @@ export class ChooseLocationComponent implements OnInit {
         "previousZone": this.data.zones.replace("Zones:",""),
         "dedicated": this.data.dedicated, 
       };
-      this.iinductionManagerApi.ReserveLocation(payLoad).subscribe(
+      this.iInductionManagerApi.ReserveLocation(payLoad).subscribe(
         (res: any) => {
           if (res.isExecuted && res) {
             this.dialogRef.close({responseMessage : res.responseMessage, ...this.selectedLocation});
@@ -103,7 +98,7 @@ export class ChooseLocationComponent implements OnInit {
             console.log("ReserveLocation",res.responseMessage);
           }
         },
-        (error) => {}
+        () => {}
       );      
     } catch (error) { 
     }

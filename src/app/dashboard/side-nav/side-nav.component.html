@@ -1,10 +1,7 @@
 <div *ngIf="!isConfigUser">
-
-  <mat-nav-list *ngIf="isParentMenu">
+  <mat-nav-list *ngIf="isParentMenu && dynamicMenu.length > 0">
     <ng-container *ngFor="let menu of dynamicMenu;let i = index">
-    
-      <mat-list-item routerLinkActive="active" routerLink="{{menu.route}}" (click)="isMenuHide ? redirect() : loadMenus(menu)"
-        [disabled]="isAuthorized(menu.permission) || menu.route==='#'">
+      <mat-list-item routerLinkActive="active" routerLink="{{menu.route}}" (click)="isMenuHide ? redirect() : loadMenus(menu)" [disabled]="isAuthorized(menu.permission) || menu.route==='#'">
         <span mat-list-icon class="material-symbols-outlined">
           {{menu.icon}}
         </span>
@@ -13,39 +10,37 @@
     </ng-container>
   </mat-nav-list>
 
-  <mat-nav-list *ngIf="isChildMenu">
-    <ng-container *ngFor="let childMenu of childMenus;let i = index">
-      
+  <mat-nav-list *ngIf="isChildMenu && childMenus.length > 0">
+    <ng-container *ngFor="let childMenu of childMenus; let i = index">
       <mat-list-item 
-        routerLinkActive="{{ (childMenu.route != '/InductionManager' && childMenu.route != '/InductionManager/Admin' && childMenu.route != '/OrderManager' && childMenu.route != '/FlowrackReplenishment' && childMenu.route != '/ConsolidationManager'  && childMenu.route != '/admin') ? 'active' : ''}}" 
+        routerLinkActive="{{ (childMenu.route != '/InductionManager' && childMenu.route != '/InductionManager/Admin' && childMenu.route != '/OrderManager' && childMenu.route != '/FlowrackReplenish' && childMenu.route != '/ConsolidationManager'  && childMenu.route != '/admin') ? 'active' : ''}}" 
         routerLink="{{childMenu.route}}" (click)="isMenuHide ? redirect() : loadMenus(childMenu)"
-        [disabled]="childMenu.permission != true ? (isAuthorized(childMenu.permission) || childMenu.route==='#'):false"
-        [queryParams]="childMenu.paramsObj"
-        >
+        [disabled]="childMenu.permission != true ? (isAuthorized(childMenu.permission) || childMenu.route === '#') : false"
+        [queryParams]="childMenu.paramsObj">
         <span mat-list-icon class="material-symbols-outlined">
           {{childMenu.icon}}
         </span>
         <div class="sidenav-item" *ngIf="sideBarOpen">{{childMenu.title}}</div>
       </mat-list-item>
-      <span *ngIf="i ===4 && childMenu.route === '/admin/transaction'">
-        <mat-divider style="margin: 8px;"></mat-divider>
+      <span *ngIf="i === 4 && childMenu.route === '/admin/transaction'">
+        <mat-divider class="margin-8px"></mat-divider>
       </span>
-      <span *ngIf="i ===2 && childMenu.route === '/InductionManager/ProcessPutAways'">
-        <mat-divider style="margin: 8px;"></mat-divider>
+      <span *ngIf="i === 2 && childMenu.route === '/InductionManager/ProcessPutAways'">
+        <mat-divider class="margin-8px"></mat-divider>
       </span>
     </ng-container>
   </mat-nav-list>
-
 </div>
+
 <div *ngIf="isConfigUser">
-<mat-nav-list *ngIf="isChildMenu">
-  <ng-container *ngFor="let childMenu of childMenus;">
-    <mat-list-item routerLinkActive="active"  [queryParams]="{tabIndex: 0}" [disabled]=" childMenu.route==='#'"a routerLink="{{childMenu.route}}" (click)="isMenuHide ? redirect() : loadMenus(childMenu)">
-      <span mat-list-icon class="material-symbols-outlined">
-        {{childMenu.icon}}
-      </span>
-      <div class="sidenav-item" *ngIf="sideBarOpen">{{childMenu.title}}</div>
-    </mat-list-item>
-  </ng-container>
-</mat-nav-list>
+  <mat-nav-list *ngIf="isChildMenu && childMenus.length > 0">
+    <ng-container *ngFor="let childMenu of childMenus;">
+      <mat-list-item routerLinkActive="active"  [queryParams]="{tabIndex: 0}" [disabled]="childMenu.route === '#'" routerLink="{{childMenu.route}}" (click)="isMenuHide ? redirect() : loadMenus(childMenu)">
+        <span mat-list-icon class="material-symbols-outlined">
+          {{childMenu.icon}}
+        </span>
+        <div class="sidenav-item" *ngIf="sideBarOpen">{{childMenu.title}}</div>
+      </mat-list-item>
+    </ng-container>
+  </mat-nav-list>
 </div>

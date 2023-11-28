@@ -1,0 +1,323 @@
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { CrEditDesignTestDataComponent } from '../cr-edit-design-test-data/cr-edit-design-test-data.component';  
+import { catchError, of } from 'rxjs';
+import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
+import { CrDesignFilenameConfirmationComponent } from '../cr-design-filename-confirmation/cr-design-filename-confirmation.component';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
+
+@Component({
+  selector: 'app-cr-add-new-custom-report',
+  templateUrl: './cr-add-new-custom-report.component.html',
+  styleUrls: ['./cr-add-new-custom-report.component.scss'],
+})
+export class CrAddNewCustomReportComponent implements OnInit {
+  @ViewChild('descFocus') descFocus: ElementRef;
+  newDescription;
+  newFilename;
+  newDesignTestData;
+  newDesignDataType;
+  newOutputType;
+  newExportFilename;
+  listOfFileName;
+  appendstring;
+  addNewColumns;
+  addNewColumnsCheck = false;
+  public iAdminApiService: IAdminApiService;
+  addNewFilePresent = false;
+  restoreAll = false;
+  CurrentFilename;
+  @ViewChildren('serialTemp') serialInputs: QueryList<any>;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private global: GlobalService,  
+    public adminApiService: AdminApiService,
+    public dialogRef: MatDialogRef<any>
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
+
+  ngOnInit(): void {
+    this.listOfFileName = this.data.ListReports;
+  }
+  ngAfterViewInit(): void {
+    this.descFocus.nativeElement.focus();
+  }
+  openEditDesign() {
+    const dialogRef: any = this.global.OpenDialog(
+      CrEditDesignTestDataComponent,
+      {
+        height: 'auto',
+        width: '932px',
+        autoFocus: '__non_existing_element__',
+        disableClose: true,
+      }
+    );
+    dialogRef.afterClosed().subscribe((result) => {
+      this.newDesignTestData = result ? result : '';
+    });
+  }
+
+  saveNew() {
+    let newParams = [
+      this.newDescription,
+      this.newFilename,
+      this.newDesignTestData,
+      this.newDesignDataType,
+      this.newOutputType,
+      this.newExportFilename,
+    ];
+
+    let fields = [
+      'Description',
+      'Filename',
+      'Test and Design Data',
+      'Test/Design Data Type',
+      'Output Type',
+    ];
+
+    let valid = true;
+    for (let x = 0; x < newParams.length - 1; x++) {
+      if (newParams[x] == '' || newParams[x] == undefined) {
+        this.global.ShowToastr(
+          'error',
+          `${fields[x]} must not be left blank!`,
+          'Error!'
+        );
+        valid = false;
+        break;
+      }
+    }
+
+    const exists = this.isFileNameAlreadyExists(newParams[1]);
+
+    if (exists) {
+      this.global.ShowToastr('error', `Filename must be unique!`, 'Error!');
+      valid = false;
+    }
+
+    // have to convert later
+
+    if (valid) {
+      this.iAdminApiService.validateNewDesign(newParams).subscribe((res) => {
+        if (!res.data) {
+          this.global.ShowToastr(
+            'error',
+            `Validation for adding a new report failed with an unknown error.  Please contact Scott Tech for support if this persists.`,
+            'Error!'
+          );
+        } else {
+          this.appendstring = this.buildAppendString(
+            'File warnings:',
+            res.data.fileObj.errs
+          );
+          this.appendstring += this.buildAppendString(
+            'SQL warnings:',
+            res.data.sqlObj.errs
+          );
+
+          if (res.data.sqlObj.sqlError) {
+            this.appendstring += `There was an error with the stored procedure or sql string provided.  \
+            Please ensure that the procedure contains only valid statements and only returns one result set.\
+              If a stored procedure is provided it must contain either no parameters or acceptable defaults.`;
+          }
+
+          if (res.data.sqlObj?.columns.length != 0) {
+            console.log(res.data.sqlObj?.columns.length);
+            this.addNewColumns = res.data.sqlObj.columns;
+            this.addNewColumnsCheck = true;
+          } else {
+            this.addNewColumnsCheck = false;
+          }
+
+          // if the file is present already we need to deal with it before we can continue
+
+          if (res.data.fileObj.canAddFileToDefaultTable) {
+            this.addNewFilePresent = true;
+            this.restoreAll = true;
+            this.openCrDesignFilenameConfirmation();
+            this.CurrentFilename = newParams[1];
+          } else if (res.data.fileObj.canAddFileToWSTable) {
+            this.addNewFilePresent = true;
+            this.restoreAll = false;
+            this.openCrDesignFilenameConfirmation();
+            this.CurrentFilename = newParams[1];
+          }
+          //  else we don't have a file already and we need to check that there are no errors that need to be dealt with
+          else {
+            this.addNewFilePresent = false;
+            this.restoreAll = false;
+            this.CurrentFilename = '';
+            if (this.appendstring.length == 0) {
+              let obj = {
+                description: this.newDescription,
+                filename: this.newFilename,
+                dataSource: this.newDesignTestData,
+                dataType: this.newDesignDataType,
+                outputType: this.newOutputType == 'Report' ? 2 : 1,
+                exportFilename: this.newExportFilename,
+                // appName: $('#AppName').val()
+              };
+
+              this.iAdminApiService
+                .getLLDesignerNewDesign(obj)
+                .pipe(
+                  catchError((error) => {
+                    // Handle the error here
+                    this.global.ShowToastr(
+                      'error',
+                      'An error occured while retrieving data.',
+                      'Error!'
+                    );
+                    // Return a fallback value or trigger further error handling if needed
+                    return of({ isExecuted: false });
+                  })
+                )
+                .subscribe((res) => {
+                  this.dialogRef.close(obj);
+                  this.global.ShowToastr(
+                    'success',
+                    res.responseMessage,
+                    'Success!'
+                  );
+                });
+            }
+          }
+        }
+      });
+    }
+  }
+
+  restoreDesign(filename, all?) {
+    let obj = {
+      description: this.newDescription,
+      filename: this.newFilename,
+      dataSource: this.newDesignTestData,
+      dataType: this.newDesignDataType,
+      outputType: this.newOutputType == 'Report' ? 2 : 1,
+      exportFilename: this.newExportFilename,
+      all: all || false,
+    };
+    this.iAdminApiService.restoreDesign(obj).subscribe((res) => {
+      if (!res.data) {
+        this.global.ShowToastr(
+          'error',
+          'Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.',
+          'Error!'
+        );
+        console.log('restoreDesign', res.responseMessage);
+      } else {
+        // remaining
+        this.dialogRef.close(obj);
+      }
+    });
+  }
+
+  DeleteExistingdesign() {
+    const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
+      height: 'auto',
+      width: '560px',
+      data: {
+        message: `Click OK to permanently delete the design file.`,
+      },
+      autoFocus: '__non_existing_element__',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      } else {
+        let payload = {
+          filename: this.CurrentFilename,
+          keepFile: false,
+          contentRootPath: '',
+        };
+        this.iAdminApiService.deleteReport(payload).subscribe((res) => {
+          if (!res.data) {
+            this.global.ShowToastr(
+              'error',
+              'Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.',
+              'Error!'
+            );
+            console.log('deleteReport', res.responseMessage);
+          } else {
+            this.saveNew();
+          }
+        });
+      }
+    });
+  }
+
+  isFileNameAlreadyExists(fileName: string): boolean {
+    return this.listOfFileName.some((item) => {
+      const extractedValue: string = item.filename.split('.')[0];
+      return extractedValue === fileName;
+    });
+  }
+
+  buildAppendString(title, errors) {
+    let appendstring = '';
+    if (errors.length > 0) {
+      appendstring += title;
+      for (const error of errors) {
+        appendstring += error;
+      }
+    }
+    return appendstring;
+  }
+
+  validateInputs() {
+    this.serialInputs.forEach((input) => {
+      input.nativeElement.focus(); // This will force Angular to validate each input
+    });
+  }
+
+  setExtension() {
+    if (
+      this.newFilename.includes('.lst') ||
+      this.newFilename.includes('.lbl')
+    ) {
+      let extensionIndex = this.newFilename.indexOf('.');
+      this.newFilename = this.newFilename.slice(0, extensionIndex);
+    }
+    if (this.newOutputType == 'Report' && this.newFilename != '') {
+      this.newFilename = `${this.newFilename}.lst`;
+    } else if (this.newFilename != '' && this.newOutputType == 'Label') {
+      this.newFilename = `${this.newFilename}.lbl`;
+    }
+  }
+
+  openCrDesignFilenameConfirmation() {
+    const dialogRef: any = this.global.OpenDialog(
+      CrDesignFilenameConfirmationComponent,
+      {
+        height: 'auto',
+        width: '560px',
+        autoFocus: '__non_existing_element__',
+        disableClose: true,
+        data: {
+          restore: this.restoreAll,
+        },
+      }
+    );
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'this') {
+        this.restoreDesign(this.CurrentFilename);
+      } else if (result == 'all') {
+        this.restoreDesign(this.CurrentFilename, true);
+      } else if (result == 'delete') {
+        this.DeleteExistingdesign();
+      }
+    });
+  }
+}

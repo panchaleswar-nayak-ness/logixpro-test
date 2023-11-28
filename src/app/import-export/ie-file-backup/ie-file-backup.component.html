@@ -1,0 +1,56 @@
+<div class="container-fluid p-0 mt-3">
+    <mat-card class="mat-elevation-z g-card">
+        <mat-card-content>
+            <div class="d-xl-flex justify-content-between align-items-center mb-3">
+                
+                <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3 mb-xl-0" heading="File Backup" icon="backup"></app-icon-heading-component>
+
+            </div>
+            <div class="label-yellow p-3 d-flex br-8 mb-3">
+                <mat-icon class="material-symbols-outlined">info</mat-icon>
+                <span class="ps-2 w-100"><b>Note:</b> The below location paths are as seen by the SQL server. EX: C: is the server&apos;s C: drive and NOT the local drive  of LogixProIE</span>
+            </div>
+            <div class="row">
+                <div class="col-xxl-9 col-xl-7">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                        <mat-label>Import File Backup Location</mat-label>
+                        <input matInput type="text" #specialFeature maxlength="255"
+                            value="0000">
+                    </mat-form-field>
+                </div>
+                <div class="col-xxl-3 col-xl-5">
+                    <button mat-flat-button
+                class="btn-regular w-100 mb-3"
+                color="primary"
+              >
+                <mat-label>Manage Import Files</mat-label>
+              </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xxl-9 col-xl-7">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                        <mat-label>Export File Backup Location</mat-label>
+                        <input matInput type="text" #specialFeature maxlength="255"
+                            value="0000">
+                    </mat-form-field>
+                </div>
+                <div class="col-xxl-3 col-xl-5">
+                    <button mat-flat-button
+                class="btn-regular w-100 mb-3"
+                color="primary"
+              >
+                <mat-label>Manage Export Files</mat-label>
+              </button>
+                </div>
+
+                <div class="col-xl-4">
+                    <div class="d-flex justify-content-between mb-3">
+                        Backup By Day<mat-slide-toggle color="primary">
+                        </mat-slide-toggle>
+                      </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

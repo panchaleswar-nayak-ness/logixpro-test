@@ -17,7 +17,7 @@ table {
 
 .counter
 {
-    background-color: #eaecf0;
+    background-color: var(--clr-primary-10);
     padding: 12px;
     border-radius: 20px;
     margin-top: 20px;
@@ -25,10 +25,10 @@ table {
 .counter-count
 {
   font-size: 16px;
-  background-color: #000080;
+  background-color: var(--clr-primary-900);
   border-radius: 50%;
   position: relative;
-  color: #ffffff;
+  color: var(--clr-pure-white);
   text-align: center;
   line-height: 64px;
   min-width: 64px;
@@ -46,7 +46,7 @@ table {
 .employee-p,.customer-p,.order-p,.design-p
 {
   font-size: 14px;
-  color: #090948;
+  color: var(--clr-tertiary-900);
   line-height: 1;
   text-align: center;
 }
@@ -55,5 +55,9 @@ table {
 }
 
 .counter-text{
-  color: #090948;
+  color: var(--clr-tertiary-900);
+}
+
+.h-900px{
+  height: 900px;
 }

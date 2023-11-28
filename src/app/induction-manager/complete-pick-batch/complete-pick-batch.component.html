@@ -1,0 +1,142 @@
+<div class="container-fluid-0">
+    <mat-card class="mat-elevation-z g-card mb-4">
+        <mat-card-content>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <app-icon-heading-component heading="Display Batch" icon="ballot">
+                </app-icon-heading-component>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="card p-4 mb-3">
+                        <mat-form-field class="custom-form-field clear-btn-init w-100 mb-3" appearance="outline">
+                            <mat-label>Batch ID</mat-label>
+                            <input matInput type="text" [(ngModel)]="batchId" (keyup)="BatchPickIDKeyup($event)" #BatchId>
+                            <button matSuffix class="clear-btn">
+                                <mat-icon class="text-20 text-chrome-600" (click)="clearScreen()">cancel</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <button mat-flat-button class="form-button-submit w-100" color="primary" [disabled]="!completeBatchEnable" (click)="CompleteBatch()">Complete Batch</button>
+
+                    </div>
+                </div>
+                <div class="col-xl-6" >
+                    <div class="card p-4">
+                        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+                            <mat-label>Tote ID</mat-label>
+                            <input matInput type="text" [(ngModel)]="toteId" (keyup)="ToteIDKeyup($event)" #ToteId [disabled]="!showToteCol">
+                            <button matSuffix *ngIf="toteId" class="clear-btn" (click)=" toteId='' " ><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button> 
+
+                        </mat-form-field>
+                        <button mat-flat-button class="form-button-submit w-100" color="primary"
+                            (click)="CpbBlossomToteDialogue()" [disabled]="!blossomToteEnable || !showToteCol">Blossom Tote</button>
+
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div class="container-fluid-0">
+    <mat-card class="mat-elevation-z g-card-mb-4">
+        <mat-card-content>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <app-icon-heading-component heading="Batch Info" icon="list_alt">
+                </app-icon-heading-component>
+            </div>
+            <div class="card br-14  borderless mainDivCard-style">
+                <ng-scrollbar class="mat-table-scrollbar  scrollbar-hover-padding matScrolbar-style" track="all">
+                    <table mat-table [dataSource]="tableData" class="w-100" matSort #matSort="matSort" (matSortChange)="announceSortChange($event)">
+
+                        <ng-container matColumnDef="order_no">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Order Number
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.orderNumber}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="tote_id">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Tote ID
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.toteId}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="item_number">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Item Number
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.itemNumber}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Description
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="transaction_qty">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Transaction Quantity
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.transactionQuantity}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="location">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Location
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="zone">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Zone
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.zone}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="carousel">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Carousel
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.carousel}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="row">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Row
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.row}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="shelf">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Shelf
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.shelf}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="bin">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription> Bin
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.bin}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action" stickyEnd>
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element; let i = index;">
+                                <div class="d-flex justify-content-end ps-2">
+                                    <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label=""
+                                    [ngClass]="{'active-btn':element.selected}" class="circle-icon-o active-btn" appearance="outline">
+                                        <mat-icon>more_horiz</mat-icon>
+                                    </button>
+                                    <mat-menu #appMenu="matMenu">
+                                        <button mat-menu-item (click)="CompleteTransaction(element)">Complete Transaction</button>
+                                        <button mat-menu-item (click)="ShortTransactionDialogue(element)">Short Transaction
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell " [attr.colspan]="displayedColumns.length">
+                                No data available in table.
+                            </td>
+                        </tr>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
+
+                    </table>
+                </ng-scrollbar>
+            </div>
+            <div class="d-flex justify-content-between bg-white"> 
+                <mat-paginator [length]="totalTransactions" showFirstLastButtons pageSize="10" [hidePageSize]="true" (page)="handlePageEvent($event)"></mat-paginator>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

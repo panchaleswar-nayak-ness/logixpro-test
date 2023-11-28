@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainComponent } from './dashboard/main/main.component';
 import { GlobalConfigComponent } from './global-config/global-config.component';
-import { AuthGuardGuard } from './guard/auth-guard.guard';
+import { AuthGuardGuard } from './common/guard/auth-guard.guard';
 import { LoginComponent } from './login/login.component';
 import { GlobalDashboardComponent } from './global-config/dashboard/dashboard.component';
 import { DatabaseConnectionsComponent } from './global-config/database-connections/database-connections.component';
@@ -14,33 +14,18 @@ import { CcsifComponent } from './global-config/ccsif/ccsif.component';
 import { SteComponent } from './global-config/ste/ste.component';
 import { SteServicesComponent } from './global-config/ste-services/ste-services.component';
 import { ImportExportComponent } from './import-export/import-export.component';
-
 import { WrdComponent } from './list-and-label/wrd/wrd.component';
 import { WrvComponent } from './list-and-label/wrv/wrv.component';
+
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
-  },
-  { path: 'login', component: LoginComponent,canActivate: [AuthGuardGuard] },
-  {
-    path: 'globalconfig',
-    component: GlobalConfigComponent,canActivate: [AuthGuardGuard],
-    children: []
-    
-  },
-  {
-    path: 'globalconfig/home',
-    component: GlobalDashboardComponent,
-    canActivate:[AuthGuardGuard]
-    
-  },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent, canActivate: [AuthGuardGuard] },
+  { path: 'globalconfig', component: GlobalConfigComponent, canActivate: [AuthGuardGuard], children: [] },
+  { path: 'globalconfig/home', component: GlobalDashboardComponent, canActivate:[AuthGuardGuard] },
   {
     path: 'globalconfig/printers',
     component: PrintersComponent,
     canActivate:[AuthGuardGuard]
-    
   },
   {
     path: 'globalconfig/workstation',
@@ -62,17 +47,9 @@ const routes: Routes = [
     path: 'globalconfig/ccsif',
     component: CcsifComponent,
     canActivate:[AuthGuardGuard]
-  },{
-    path: 'globalconfig/ste',
-    component: SteComponent,
-    canActivate:[AuthGuardGuard]
   },
-  {
-    path: 'globalconfig/steServices',
-    component: SteServicesComponent,
-    canActivate:[AuthGuardGuard]
-  },
-  
+  { path: 'globalconfig/ste', component: SteComponent, canActivate:[AuthGuardGuard] },
+  { path: 'globalconfig/steServices', component: SteServicesComponent, canActivate:[AuthGuardGuard] },
   { path: 'report-view-iframe', component: WrvComponent },
   { path: 'report-iframe', component: WrdComponent },
   {
@@ -111,7 +88,7 @@ const routes: Routes = [
         canActivate:[]
       },
       { 
-        path: 'FlowrackReplenishment', 
+        path: 'FlowrackReplenish', 
         loadChildren: () => import('./flowrack-replenishment/flowrack-replenishment.module').then(m => m.FlowrackReplenishmentModule),
         canActivate:[]
       },
@@ -123,6 +100,7 @@ const routes: Routes = [
 
   },  
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],

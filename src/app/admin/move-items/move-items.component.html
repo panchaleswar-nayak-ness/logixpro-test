@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col-xl-5">
+        <mat-card class="mat-elevation-z g-card mb-4">
+            <mat-card-content>
+                <app-location-details 
+                [reqDate]="reqDate"
+                [isMoveQty]="isMoveQty"
+                [from_priority]="from_priority"
+                [from_itemQuantity]="from_itemQuantity"
+                [isDedicated]="isDedicated"
+
+                [moveFromDedicated]="moveFromDedicated"
+                [from_warehouse]="from_warehouse"
+                [from_locationShow]="from_locationShow"
+                [from_itemNo]="from_itemNo"
+                [from_description]="from_description"
+                [from_itemQtyShow]="from_itemQtyShow"
+                [from_cellSize]="from_cellSize"
+                [from_lotNo]="from_lotNo"
+                [from_serialNo]="from_serialNo"
+
+                [moveToDedicated]="moveToDedicated"
+                [to_warehouse]="to_warehouse"
+                [to_locationShow]="to_locationShow"
+                [to_itemNo]="to_itemNo"
+                [to_description]="to_description"
+                [to_itemQtyShow]="to_itemQtyShow"
+                [to_cellSize]="to_cellSize"
+                [to_lotNo]="to_lotNo"
+                [to_serialNo]="to_serialNo"
+                [fillQtytoShow]="fillQtytoShow"
+                
+                (setMoveQtyEmit)="from_itemQuantity = $event"
+                (setDedicatedEmit)="isDedicated = $event"></app-location-details>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div class="col-xl-7">
+        <mat-card class="mat-elevation-z g-card mb-4 move-location-card">
+            <mat-card-content>
+                <app-move-locations
+                    [itemSelected]="itemSelected"
+                    [itemNo]="itemNo"
+                    [viewAll]="viewAll"
+                    [isViewAll]="isViewAll"
+                    [tabIndex]="tabIndex"
+                    [dataSource]="dataSource"
+                    [searchAutocompletItemNo]="searchAutocompletItemNo"
+                    [displayedColumns]="displayedColumns"
+                    [recordsFiltered]="recordsFiltered"
+                    [moveToDatasource]="moveToDatasource"
+                    [recordsFilteredTo]="recordsFilteredTo"
+                    [paginator]="paginator"
+                    [paginatorTo]="paginatorTo"
+                    [paginators]="paginators"
+                    (onChangeLocationEmit)="viewAll = $event; this.getMoveItemList('MoveTo');"
+                    (tabChangedEmit)="tabChanged($event)"
+                    (sortChangeEmit)="sortChange($event)"
+                    (clearItemNumEmit)="clearItemNum()"
+                    (searchDataEmit)="searchData($event)"
+                    (handlePageEventEmit)="handlePageEvent($event)"
+                    (getMoveFromDetailsEmit)="getMoveFromDetails($event.element, $event.i, $event.tableName)"
+                    (sortChangeToItemsEmit)="sortChangeToItems($event)"
+                    (handlePageEventToEmit)="handlePageEventTo($event)"
+                    (activeTrigger)="isActiveTrigger = $event"
+                    (itemNumberSearchEmit)="itemNo = $event;this.itemNumberSearch.next($event)">
+                </app-move-locations>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<div class="d-flex justify-content-end pt-3">
+    <button mat-flat-button color="primary" [disabled]="!isValidateMove" class="btn-lg btn-create" (click)="validateMove()">Create Move Transactions</button>
+</div>
+
+
+<app-table-context-menu-component *ngIf="isActiveTrigger"  (optionSelected)="optionSelected($event)" [componentName]="'moveItem'"></app-table-context-menu-component>

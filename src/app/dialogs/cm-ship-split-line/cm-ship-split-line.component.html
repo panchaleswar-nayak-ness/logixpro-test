@@ -1,0 +1,22 @@
+<div class="d-flex justify-content-between mb-4 align-items-center">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Split Line </h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+<div>
+    <div class="row align-items-center">
+        <div class="col-xl-12 mb-2 pe-0">    
+            <mat-form-field class="action-dropdown w-100" appearance="outline">
+                <mat-label class="pe-2">Enter the desired quantity for the new split line</mat-label>
+                <input matInput type="text" maxlength="50" #ssQty (input)="ssQty.value = globalService.setNumericInRange(ssQty.value, globalService.sqlLimits.numerics.int, ''); validateSplitScreenQty()" [(ngModel)]="splitScreenQty">
+            </mat-form-field>
+        </div>
+    </div>        
+</div>
+
+<div class="d-flex justify-content-end pt-2">
+    <button [disabled]="!splitScreenQtyBtn" mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1" (click)="saveSplitScreenQty()">Split Line</button>
+</div>

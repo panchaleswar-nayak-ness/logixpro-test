@@ -1,14 +1,21 @@
-.custom-button-width{
+.custom-button-width {
     width: 90% !important;
 }
-.custom-button-height{
+
+.custom-button-height {
     height: 90% !important;
 }
-.notify-center-table{
+
+.notify-center-table {
     text-align: center;
-    color:rgba(0, 0, 0, .54)
+    color: rgba(0, 0, 0, .54)
 }
 
-.custom-add-button-color{
-    color:#1A1AD3;
+.custom-add-button-color {
+    color: var(--clr-primary-500);
+}
+
+
+.button-append-max {
+    color: var(--clr-primary-500) !important;
 }

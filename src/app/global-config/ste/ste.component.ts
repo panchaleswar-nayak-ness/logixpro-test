@@ -1,0 +1,99 @@
+import { Component, OnInit } from '@angular/core';
+
+import { GlobalService } from 'src/app/common/services/global.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
+import {StringConditions , ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+@Component({
+  selector: 'app-ste',
+  templateUrl: './ste.component.html',
+  styleUrls: []
+})
+export class SteComponent implements OnInit {
+  sideBarOpen: boolean = true;
+  Status:any = 'Offline';
+  public  iGlobalConfigApi: IGlobalConfigApi;
+  constructor( 
+    public globalConfigApi: GlobalConfigApiService,
+    public global:GlobalService,    
+    public Api: ApiFuntions) 
+    { 
+      this.iGlobalConfigApi = globalConfigApi;
+    }
+
+  ngOnInit(): void {
+    this.CheckStatus();
+  }
+  sideBarToggler() {
+    this.sideBarOpen = !this.sideBarOpen;
+  }
+  
+   ServiceStatus(changeType, success) {
+    if (changeType == 'start' || changeType == 'restart') {
+        if (success) {
+            this.Status = 'Online';
+            this.global.ShowToastr(ToasterType.Success,'Service ' + changeType + ' was successful.',ToasterTitle.Success);
+        } else {
+          this.Status = 'Offline'; 
+          this.global.ShowToastr(ToasterType.Error,'Service ' + changeType + ' was unsuccessful.  Please try again or contact Scott Tech for support.',ToasterTitle.Error);
+        };
+    } else {
+      this.Status = 'Offline'; 
+        if (success) {
+          this.global.ShowToastr(ToasterType.Success,'Service stop was successful.',ToasterTitle.Success);
+        } else {
+          this.global.ShowToastr(ToasterType.Error,'Service stop encountered an error.  Please try again or contact Scott Tech for support.',ToasterTitle.Error);
+        };
+    };
+};
+  // ConfirmationPopup(msg:any) {
+  //   const dialogRef  = this.global.OpenDialog(ConfirmationDialogComponent, {
+  //     height: 'auto',
+  //     width: '560px',
+  //     autoFocus: '__non_existing_element__',
+
+  //     data: {
+  //       message: msg,
+  //     },
+  //   });  
+  //    dialogRef.afterClosed().subscribe((result) => {
+  //     if (result==='Yes') {
+  //       this.ServiceStatus('start',true);
+  //     }
+  //   }); 
+  // }
+  async STEToggle(){  
+    try{ 
+      if(this.Status != 'Online'){
+      this.iGlobalConfigApi.startSTEService().subscribe((res: any) => {
+        if(res.data) this.ServiceStatus('start',res.data);
+      }) 
+    }else  {
+      this.iGlobalConfigApi.stopSTEService().subscribe((res: any) => {
+        if(res.data) this.ServiceStatus('stop',res.data);
+      })
+    }
+    }catch(ex){
+      this.Status = 'Offline' 
+    }
+}
+async STERestart(){  
+  try{
+    this.Status = 'Pending'; 
+    this.iGlobalConfigApi.RestartSTEService().subscribe((res: any) => {
+      if(res.data) this.ServiceStatus('restart',res.data);
+    })
+   
+  }catch(ex){
+    this.Status = 'Offline' 
+  }
+}
+async CheckStatus(){
+  this.iGlobalConfigApi.ServiceStatusSTE().subscribe((res: any) => {
+    if(res.data) this.Status = 'Online';
+    else this.Status = 'Offline';
+  })
+  
+}
+}

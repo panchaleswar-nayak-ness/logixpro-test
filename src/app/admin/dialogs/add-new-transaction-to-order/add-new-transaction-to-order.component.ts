@@ -1,16 +1,17 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
-import labels from '../../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import { ItemExistGenerateOrderComponent } from '../item-exist-generate-order/item-exist-generate-order.component';
 import { EmptyFieldsComponent } from '../empty-fields/empty-fields.component';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
-import { CommonApiService } from 'src/app/services/common-api/common-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-new-transaction-to-order',
@@ -42,6 +43,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
     this.iAdminApiService = adminApiService;
     this.iCommonAPI = commonAPI; 
   }
+
   transactionInfo = new FormGroup({
     lineNumber: new FormControl(''),
     lineSequence: new FormControl(''),
@@ -65,122 +67,72 @@ export class AddNewTransactionToOrderComponent implements OnInit {
     userField9: new FormControl(''),
     userField10: new FormControl(''),
   });
+
   ngOnInit(): void { 
     this.autocompleteSearchColumn();
+
     if (this.data.mode === 'edit-transaction') {
       this.itemNumber = this.data.item.itemNumber;
-      this.requiredDate =this.data.item.requiredDate? new Date(this.data.item.requiredDate):'' ;
+      this.requiredDate =this.data.item.requiredDate ? new Date(this.data.item.requiredDate) : '' ;
       this.quantity = this.data.item.transactionQuantity;
-      this.expirationDate = this.data.item.expirationDate? new Date(this.data.item.expirationDate):'' ;
-      this.transactionInfo.controls.lineNumber.setValue(
-        this.data.item.lineNumber
-      );
-      this.transactionInfo.controls.lineSequence.setValue(
-        this.data.item.lineSequence
-      );
+      this.expirationDate = this.data.item.expirationDate ? new Date(this.data.item.expirationDate) : '' ;
+      this.transactionInfo.controls.lineNumber.setValue(this.data.item.lineNumber);
+      this.transactionInfo.controls.lineSequence.setValue(this.data.item.lineSequence);
       this.transactionInfo.controls.priority.setValue(this.data.item.priority);
-      this.transactionInfo.controls.toteNumber.setValue(
-        this.data.item.toteNumber
-      );
-      this.transactionInfo.controls.batchPickID.setValue(
-        this.data.item.batchPickID
-      );
-      this.transactionInfo.controls.warehouse.setValue(
-        this.data.item.warehouse
-      );
-      this.transactionInfo.controls.lotNumber.setValue(
-        this.data.item.lotNumber
-      );
-      this.transactionInfo.controls.serialNumber.setValue(
-        this.data.item.serialNumber
-      );
-      this.transactionInfo.controls.hostTranID.setValue(
-        this.data.item.hostTransactionID
-      );
-      this.transactionInfo.controls.emergency.setValue(
-        this.data.item.emergency
-      );
+      this.transactionInfo.controls.toteNumber.setValue(this.data.item.toteNumber);
+      this.transactionInfo.controls.batchPickID.setValue(this.data.item.batchPickID);
+      this.transactionInfo.controls.warehouse.setValue(this.data.item.warehouse);
+      this.transactionInfo.controls.lotNumber.setValue(this.data.item.lotNumber);
+      this.transactionInfo.controls.serialNumber.setValue(this.data.item.serialNumber);
+      this.transactionInfo.controls.hostTranID.setValue(this.data.item.hostTransactionID);
+      this.transactionInfo.controls.emergency.setValue(this.data.item.emergency);
       this.transactionInfo.controls.notes.setValue(this.data.item.notes);
-      this.transactionInfo.controls.userField1.setValue(
-        this.data.item.userField1
-      );
-      this.transactionInfo.controls.userField2.setValue(
-        this.data.item.userField2
-      );
-      this.transactionInfo.controls.userField3.setValue(
-        this.data.item.userField3
-      );
-      this.transactionInfo.controls.userField4.setValue(
-        this.data.item.userField4
-      );
-      this.transactionInfo.controls.userField5.setValue(
-        this.data.item.userField5
-      );
-      this.transactionInfo.controls.userField6.setValue(
-        this.data.item.userField6
-      );
-      this.transactionInfo.controls.userField7.setValue(
-        this.data.item.userField7
-      );
-      this.transactionInfo.controls.userField8.setValue(
-        this.data.item.userField8
-      );
-      this.transactionInfo.controls.userField9.setValue(
-        this.data.item.userField9
-      );
-      this.transactionInfo.controls.userField10.setValue(
-        this.data.item.userField10
-      );
+      this.transactionInfo.controls.userField1.setValue(this.data.item.userField1);
+      this.transactionInfo.controls.userField2.setValue(this.data.item.userField2);
+      this.transactionInfo.controls.userField3.setValue(this.data.item.userField3);
+      this.transactionInfo.controls.userField4.setValue(this.data.item.userField4);
+      this.transactionInfo.controls.userField5.setValue(this.data.item.userField5);
+      this.transactionInfo.controls.userField6.setValue(this.data.item.userField6);
+      this.transactionInfo.controls.userField7.setValue(this.data.item.userField7);
+      this.transactionInfo.controls.userField8.setValue(this.data.item.userField8);
+      this.transactionInfo.controls.userField9.setValue(this.data.item.userField9);
+      this.transactionInfo.controls.userField10.setValue(this.data.item.userField10);
     }
-
-
   }
 
   onKeydownEvent(event){
-    this.autocompleteSearchColumn()
+    this.autocompleteSearchColumn();
   }
+
   searchData(){
-    let payload = {
-      itemNumber: this.itemNumber
-    }
-
-  
-      this.iCommonAPI.ItemExists(payload)
-      .subscribe(
-        (res: any) => {
-          if(res.isExecuted){
-              if(res.data==''){
-                const dialogRef:any = this.global.OpenDialog(ItemExistGenerateOrderComponent, {
-                  height: 'auto',
-                  width: '560px',
-                  autoFocus: '__non_existing_element__',
-      disableClose:true,
-                  data: {
-                    itemNumber:this.itemNumber,
-                  },
-                });
-                dialogRef.afterClosed().subscribe((res) => {
-                 this.itemNumber=''
-                });
-              }
-            
+    let payload = { itemNumber: this.itemNumber };
+    this.iCommonAPI.ItemExists(payload).subscribe(
+      (res: any) => {
+        if(res.isExecuted) {
+          if(res.data=='') {
+            const dialogRef:any = this.global.OpenDialog(ItemExistGenerateOrderComponent, {
+              height: 'auto',
+              width: '560px',
+              autoFocus: '__non_existing_element__',
+              disableClose:true,
+              data: {
+                itemNumber:this.itemNumber,
+              },
+            });
+            dialogRef.afterClosed().subscribe((res) => { this.itemNumber=''; });
           }
-          else {
-            
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("ItemExists",res.responseMessage);
-
-          }
-        },
-        (error) => {
-    
         }
-      );
-  
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),ToasterTitle.Error);
+          console.log("ItemExists",res.responseMessage);
+        }
+      },
+      (error) => {}
+    );
   }
+
   async autocompleteSearchColumn() {
     let searchPayload = {
-
       itemNumber: this.itemNumber,
       beginItem:'---',
       isEqual:false
@@ -189,29 +141,23 @@ export class AddNewTransactionToOrderComponent implements OnInit {
       .SearchItem(searchPayload)
       .subscribe(
         (res: any) => {
-          if(res.data){
-            this.searchAutocompleteList=res.data
-          }
-          else {
-            
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          if(res.data) this.searchAutocompleteList=res.data;
+          else { 
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("SearchItem",res.responseMessage);
           }
-     
         },
         (error) => {}
       );
   }
+
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
   }
 
   saveTransaction() {
-    let payloadItem = {
-      itemNumber: this.itemNumber
-    }
-    this.iCommonAPI.ItemExists(payloadItem)
-    .subscribe(
+    let payloadItem = { itemNumber: this.itemNumber };
+    this.iCommonAPI.ItemExists(payloadItem).subscribe(
       (res: any) => {
         if(res.isExecuted){
             if(res.data==''){
@@ -219,34 +165,31 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                 height: 'auto',
                 width: '560px',
                 autoFocus: '__non_existing_element__',
-      disableClose:true,
+                disableClose:true,
                 data: {
                   itemNumber:this.itemNumber,
                 },
               });
-              dialogRef.afterClosed().subscribe((res) => {
-               this.itemNumber=''
-              });
+              dialogRef.afterClosed().subscribe((res) => { this.itemNumber=''; });
             }else{
               if(this.itemNumber===''  || this.quantity===0 || this.quantity<0){
                 const dialogRef:any = this.global.OpenDialog(EmptyFieldsComponent, {
                   height: 'auto',
                   width: '560px',
                   autoFocus: '__non_existing_element__',
-      disableClose:true,
+                  disableClose:true,
                   data: {
                     itemNumber:this.itemNumber,
                   },
                 });
-                dialogRef.afterClosed().subscribe((res) => {
-                  
-                });
-                return
+                dialogRef.afterClosed().subscribe((res) => {});
+                return;
               }
+
               let payload = {
                 transQty: this.quantity.toString(),
-                reqDate: this.requiredDate ? this.requiredDate.toISOString() : '',
-                expDate: this.expirationDate ? this.expirationDate.toISOString() : '',
+                reqDate: this.requiredDate ? new Date(this.requiredDate.setHours(12)).toISOString() : '',
+                expDate: this.expirationDate ? new Date(this.expirationDate.setHours(12)).toISOString() : '',
                 lineNum: this.transactionInfo.value.lineNumber?.toString(),
                 lineSeq: this.transactionInfo.value.lineSequence?.toString(),
                 priority: this.transactionInfo.value.priority?.toString(),
@@ -267,7 +210,8 @@ export class AddNewTransactionToOrderComponent implements OnInit {
                 userField7: this.transactionInfo.value.userField7,
                 userField8: this.transactionInfo.value.userField8,
                 userField9: this.transactionInfo.value.userField9,
-                userField10: this.transactionInfo.value.userField10, 
+                userField10: this.transactionInfo.value.userField10,
+                itemNum:this.itemNumber
               };
           
              
@@ -275,55 +219,49 @@ export class AddNewTransactionToOrderComponent implements OnInit {
               if (this.data.mode === 'add-trans') {
                   payload['orderNumber'] = this.data.orderNumber;
                   payload['transType'] = this.data.transactionType;
-                  payload['itemNum'] = this.itemNumber;
               } else {
-                payload['itemNum'] = this.data.item.itemNumber;
                 payload['id'] = this.data.item.id;
               }
+
               if(this.data && this.data.mode === 'add-trans'){
                 this.iAdminApiService.TransactionForOrderInsert(payload).subscribe(
                   (res: any) => {
                     if (res.isExecuted) {
-                      this.global.ShowToastr('success',labels.alert.success, 'Success!');
+                      this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
                       this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
                     } else {
-                      
-                      this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                      this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
                       this.dialogRef.close({ isExecuted: false });
                       console.log("TransactionForOrderInsert",res.responseMessage);
                     }
                   },
                   (error) => {
-                    this.global.ShowToastr('error','something went wrong!', 'Error!');
+                    this.global.ShowToastr(ToasterType.Error,'something went wrong!', ToasterTitle.Error);
                     this.dialogRef.close({ isExecuted: false });
                   }
                 );
-              } else{
+              } else {
                 this.iAdminApiService.TransactionForOrderUpdate(payload).subscribe(
                   (res: any) => {
                     if (res.isExecuted) {
-                      this.global.ShowToastr('success',labels.alert.success, 'Success!');
+                      this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
                       this.dialogRef.close({ isExecuted: true,orderNumber:this.orderNumber });
                     } else {
-                      
-                      this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                      this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
                       this.dialogRef.close({ isExecuted: false });
                       console.log("TransactionForOrderUpdate",res.responseMessage);
                     }
                   },
                   (error) => {
-                    this.global.ShowToastr('error','something went wrong!', 'Error!');
+                    this.global.ShowToastr(ToasterType.Error,'something went wrong!', ToasterTitle.Error);
                     this.dialogRef.close({ isExecuted: false });
                   }
                 );
               } 
-              
             }
           
         }
-      })
-   
-      
+      });
   }
 
   ngOnDestroy() {

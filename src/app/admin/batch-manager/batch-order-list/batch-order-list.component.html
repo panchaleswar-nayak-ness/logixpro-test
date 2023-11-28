@@ -12,8 +12,7 @@
       <div class="row" *ngIf="extraField != '' || extraField !=0 ;else autoBatch">
         <div class="col-12 col-xl-6">
           <div class="mb-3  w-100 ">
-            <button (click)="appendMax()" style="color:#1A1AD3!important" mat-button mat-stroked-button
-              color="default-btn" class="button-add-all bg-white br-18 w-100">
+            <button (click)="appendMax()" mat-button mat-stroked-button color="default-btn" class="button-add-all bg-white br-18 w-100 button-append-max">
               Append Max Orders
             </button>
           </div>
@@ -45,7 +44,7 @@
     </ng-container>
     <div class="card table-responsive br-14">
 
-      <table mat-table [dataSource]="tableData" matSort>
+      <table mat-table [dataSource]="batchOrderDataTable" matSort>
 
         <!-- Position Column -->
         <ng-container matColumnDef="orderNumber">

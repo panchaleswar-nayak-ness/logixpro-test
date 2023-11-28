@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppRoutes } from 'src/app/common/constants/strings.constants';
 
 
 export interface PeriodicElement {
@@ -30,7 +31,6 @@ export class CCDiscrepanciesComponent{
   constructor(private router: Router) { }
 
   createTransaction(){
-    this.router.navigate(['/admin/createCounts']);
+    this.router.navigate([AppRoutes.AdminCreateCounts]);
   }
-
 }

@@ -1,0 +1,24 @@
+.table1 td{
+    padding-right: 24px;
+    padding-bottom: 10px;
+    }
+    
+    table{
+        th{
+            white-space: nowrap;
+            padding-right: 12px;
+            &:last-child{
+                padding-right: 24px;
+            }
+        }
+        tr{
+            &:first-child{
+                td{
+                    padding-top: 16px;
+                }
+            }
+        }
+    }
+.h-550px{
+    height:550px
+}

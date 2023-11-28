@@ -51,12 +51,12 @@
   }
 
   .selected {
-    // background-color: #5555EC !important;
+    // background-color: var(--clr-primary-300) !important;
 
     color: #fff;
     &:before{
       content: '';
-      background-color: #5555EC;
+      background-color: var(--clr-primary-300);
       height: 100%;
       width: 100%;
       position: absolute;
@@ -82,3 +82,42 @@
     }
     
   }
+
+  .ProcessBatchBtnStyle{
+    min-width: 150px !important;
+  }
+
+  .batchID-style, .zoneLabel-style {
+    width: 140px !important;
+  }
+
+  .ngScrollbar-font{
+    height:350px !important;
+    .matAutoTableContent-styling{
+      line-height: 24px !important; 
+      height:auto !important; 
+      min-height: auto!important; 
+      padding: 12px 16px !important; 
+      overflow: unset;
+
+      .batchIDFont-style{
+        width: 140px !important;
+      }
+      .zoneLabelfont-style{
+        width:  140px !important; 
+        white-space: normal !important;
+      }
+    }
+  }
+
+  .matTabScrollbar-style{
+    height: 540px !important;
+    .th-matHeaderCell-style{
+      width:200px!important
+    }
+
+  }
+  .completeBatchBTN-style{
+    min-width: 150px !important;
+  }
+  

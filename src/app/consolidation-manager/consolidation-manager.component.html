@@ -1,0 +1,78 @@
+<div class="main-section-options">
+    <div class="container-fluid">
+      <div class="row g-4">
+        <!-- Main Section Option (Import Export) -->
+    
+        <div class="col-xl-3 col-lg-6">
+          <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
+          routerLink="/ConsolidationManager/Consolidation"
+          (click)="updateMenu('consolidationManager', '/ConsolidationManager/Consolidation')">
+            <a class="main-section-option-link" href="#"></a>
+            <div class="main-section-icon">
+              <span class="material-symbols-outlined">insert_chart</span>
+            </div>
+            <h4 class="main-section-title text-22">Consolidation</h4>
+          </div>
+        </div>
+  
+        <div class="col-xl-3 col-lg-6"  >
+          <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option" 
+          routerLink="/ConsolidationManager/StagingLocations"
+          (click)="updateMenu('consolidationManager', '/ConsolidationManager/StagingLocations')">
+            <a class="main-section-option-link" href="#"></a>
+            <div class="main-section-icon">
+              <span class="material-symbols-outlined">
+                add_location_alt
+              </span>
+            </div>
+            <h4 class="main-section-title text-22">Staging Locations</h4>
+          </div>
+        </div>
+  
+        <div class="col-xl-3 col-lg-6" 
+        [ngClass]="isAuthorized('Consolidation Mgr Admin') ? 'isDivDisabled' : ''"
+        >
+          <div matRipple [matRippleColor]="tabHoverColor" routerLink="Preferences"  class="main-section-option bg-white" (click)="updateMenu('consolidationManager', '/ConsolidationManager/Preferences')">
+            <a class="main-section-option-link" href="#"></a>
+            <div class="main-section-icon">
+              <span class="material-symbols-outlined">
+                tune
+              </span>
+            </div>
+            <h4 class="main-section-title text-22">Preferences</h4>
+          </div>
+        </div>
+  
+        <div class="col-xl-3 col-lg-6" 
+        [ngClass]="isAuthorized('Consolidation Mgr Admin') ? 'isDivDisabled' : ''">
+          <div matRipple [matRippleColor]="tabHoverColor" routerLink="Reports" class="main-section-option bg-white" (click)="updateMenu('consolidationManager', '/ConsolidationManager/Reports')">
+            <a class="main-section-option-link" href="/ConsolidationManager/Reports"></a>
+            <div class="main-section-icon">
+              <span class="material-symbols-outlined">
+                analytics
+              </span>
+            </div>
+            <h4 class="main-section-title text-22">Reports</h4>
+          </div>
+        </div>
+  
+        <div class="col-xl-3 col-lg-6" 
+        [ngClass]="isAuthorized('Order Status') ? 'isDivDisabled' : ''"
+        >
+          <div matRipple [matRippleColor]="tabHoverColor" class="main-section-option bg-white"
+          routerLink="/ConsolidationManager/OrderStatus" [queryParams]="{IsOrderStatus:true}" >
+            <a class="main-section-option-link" href="#"></a>
+            <div class="main-section-icon">
+              <span class="material-symbols-outlined">
+                view_module
+              </span>
+            </div>
+            <h4 class="main-section-title text-22">Order Status</h4>
+          </div>
+        </div>
+  
+  
+  
+      </div>
+    </div>
+  </div>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuardGuard } from '../guard/auth-guard.guard';
+import { AuthGuardGuard } from '../common/guard/auth-guard.guard';
 import { AdminComponent } from './admin.component';
 import { BatchManagerComponent } from './batch-manager/batch-manager.component';
 import { CreateCountBatchesComponent } from './cycle-counts/create-count-batches/create-count-batches.component';
@@ -12,7 +12,7 @@ import { LocationAssignmentComponent } from './location-assignment/location-assi
 import { ManualTransactionsComponent } from './manual-transactions/manual-transactions.component';
 import { SystemReplenishmentComponent } from './system-replenishment/system-replenishment.component';
 import { TransactionComponent } from './transaction/transaction.component';
-import { ConfirmationGuard } from '../guard/confirmation-guard.guard';
+import { ConfirmationGuard } from '../common/guard/confirmation-guard.guard';
 import { MoveItemsComponent } from './move-items/move-items.component';
 import { AdminPreferencesComponent } from './admin-preferences/admin-preferences.component';
 import { EventLogComponent } from '../order-manager/event-log/event-log.component';

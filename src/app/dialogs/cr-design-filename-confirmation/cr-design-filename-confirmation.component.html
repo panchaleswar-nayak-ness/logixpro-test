@@ -1,0 +1,34 @@
+<div class="d-flex flex-column align-items-center justify-content-center text-center py-4">
+    <div color="warn" class="circle-icon circle-66 circle-primary mb-4 text-primary-900">
+      <mat-icon class="material-symbols-outlined" color="primary">info</mat-icon>
+    </div>
+    <div>
+      <p class="bold text-tritary-900 mb-4">
+        No row was selected in the table. Please select a transaction of the order you want to delete.
+      </p>
+    </div>
+    <div class="w-100">
+        <button mat-stroked-button color="primary"
+          class="w-100 btn-lg mb-3 prompt-action-accent-button" (click)="goBack('this')">
+          Restore Design For This Workstation
+        </button>
+      </div>
+      <div class="w-100" *ngIf="restoreAll">
+        <button  mat-stroked-button color="basic" mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg mb-3"
+        (click)="goBack('all')">
+          Restore Design For All Workstation
+        </button>
+      </div>
+      <div class="w-100">
+        <button  mat-stroked-button color="basic"
+          class="custom-btn bg-white w-100 btn-lg mb-3" (click)="goBack('delete')">
+          Delete Design ( PERMENENT )
+        </button>
+      </div>
+      <div class="w-100"  >
+        <button  mat-stroked-button color="basic" [mat-dialog-close]="true"
+          class="custom-btn bg-white w-100 btn-lg mb-3">
+          Cancel
+        </button>
+      </div>
+  </div>

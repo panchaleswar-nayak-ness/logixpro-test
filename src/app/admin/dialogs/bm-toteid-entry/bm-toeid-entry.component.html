@@ -1,0 +1,116 @@
+<div class="d-flex justify-content-between mb-4 align-items-center">
+    <div 
+    class="bm-toeid-width"></div>
+    <h1 class="m-0" mat-dialog-title>Tote ID Entry</h1>
+
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+<div class="">
+
+    <div class="">
+        <div class="">
+            <div class="d-flex gap-12 my-4 justify-content-end w-100">
+                
+                <button (click)="clearAll()" mat-stroked-button color="warn"
+                    class="button-remove-all-w-stroke bg-white button custom-button-width">
+                    Clear All
+                </button>
+                
+                <button mat-stroked-button color="primary"
+                    class="button-add-all bg-white button custom-button-width">
+                    Print All
+                </button>
+                <button (click)="createNextTote()" mat-flat-button color="primary" class="add-icon-button">
+                    <span class="material-symbols-outlined">
+                        add
+                    </span>
+                </button>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card w-100">
+
+
+        <div class="card-header">
+            <div class="row">
+                <div class="col-4 bm-card-padding">Order No.</div>
+                <div class="col-4 px-4">Tote No.</div>
+                <div class="col-4 px-4">Tote ID.</div>
+            </div>
+        </div>
+
+
+
+        <ng-scrollbar class="bm-toeid-height h-380px">
+            <div class="card-body">
+                <div class="container">
+
+                    <div class="row">
+                        <mat-radio-group aria-label="Select an option" color="primary" class="w-100">
+
+                            <div *ngFor="let list of selectedList;let i=index" class="d-flex align-items-center mb-2">
+
+                            <div class="container w-100">
+
+                                <div class="row">
+
+
+                                    <div class="col-4">
+                                        <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                            <input disabled matInput type="text" #catName maxlength="50" [value]="list.orderNumber">
+                                        </mat-form-field>
+                                    </div>
+
+
+                                    <div class="col-4">
+                                        <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                            <input disabled matInput type="text" #catName maxlength="50" [value]="list.toteNumber">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <div class="d-flex gap-12 align-items-center">
+
+                                            <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                          
+                                                <input matInput type="text" maxlength="50" [value]="list.createNextToteID===undefined?'':list.createNextToteID">
+                                            </mat-form-field>
+
+                                            <button (click)="removeToteID(i)" mat-flat-button color="warn" class="xsm-icon-button">
+                                                <mat-icon class="material-symbols-outlined">close</mat-icon>
+                                            </button>
+
+                                            <button mat-flat-button color="primary" class="xsm-icon-button">
+                                                <mat-icon class="material-symbols-outlined">print</mat-icon>
+                                            </button>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            </div>
+
+                        </mat-radio-group>
+                        </div>
+
+
+
+                </div>
+            </div>
+        </ng-scrollbar>
+
+    </div>
+    <button (click)="submitOrder()" mat-flat-button color="primary" class="br-18 w-100 form-button-submit btn-lg mb-3 mt-3 ">
+        Submit
+    </button>
+</div>

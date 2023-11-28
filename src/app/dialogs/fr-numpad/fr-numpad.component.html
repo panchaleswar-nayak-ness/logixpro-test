@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center align-items-center text-center w-100" mat-dialog-title>
+    <h1 class="m-0 text-center" mat-dialog-title>Enter Quantity</h1>
+</div>
+<div class="card bg-white bg-50 px-4 py-4 br-20 mb-3">
+    <div>
+        <mat-form-field class="custom-form-field w-100  mb-3" appearance="outline">
+            <input #calcFocus matInput type="text" [(ngModel)]= "itemQuantity">
+        </mat-form-field>
+    </div>
+    <div class="d-flex gap-12 justify-content-between">
+    <div class="d-flex gap-12 flex-wrap">
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold mb-2" (click)="pressNum('1')">
+            1
+        </button>
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold mb-2" (click)="pressNum('2')">
+            2
+        </button>
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold mb-2" (click)="pressNum('3')">
+            3
+        </button>
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold mb-2" (click)="pressNum('4')">
+            4
+        </button>
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold mb-2" (click)="pressNum('5')">
+            5
+        </button>
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold mb-2" (click)="pressNum('6')">
+            6
+        </button>
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold mb-2" (click)="pressNum('7')">
+            7
+        </button>
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold mb-2" (click)="pressNum('8')">
+            8
+        </button>
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold mb-0" (click)="pressNum('9')">
+            9
+        </button>
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold  mb-0" (click)="pressNum('0')">
+            0
+        </button>
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold  mb-0" (click)="pressNum('-')" [disabled]="check">
+            <span class="value-symbol">+-</span>
+        </button>
+        <button mat-mini-fab color="Default" class="button-default-i icon-button-8br bold  mb-0" (click)="pressNum(',')" [disabled]="check1">
+            ,
+        </button>
+
+    </div>
+    <div class="d-flex flex-column gap-12">
+        <button mat-stroked-button color="warn" class="mb-2 button-remove-all-w-stroke" (click)="clearLast()">
+            Delete
+        </button>
+        <button mat-stroked-button color="warn" class="mb-2 button-remove-all-w-stroke" (click)="clearAll()">
+            Clear
+        </button>
+        <button  mat-stroked-button color="warn" class="mb-0 button-remove-all-w-stroke" [mat-dialog-close]="false" >
+            Cancel
+        </button>
+    </div>
+    </div>
+</div>
+
+<button mat-flat-button color="primary" class="btn-lg w-100"  (click)="getItemQuantity()">
+    Done
+</button>

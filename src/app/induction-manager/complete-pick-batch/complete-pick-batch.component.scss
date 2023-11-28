@@ -1,0 +1,13 @@
+table{
+    th,td{
+        white-space: nowrap;
+        padding-right: 12px;
+    }
+}
+
+.mainDivCard-style{
+    overflow-x: auto;
+    .matScrolbar-style{
+        height:545px
+    }
+}

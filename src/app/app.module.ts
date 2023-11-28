@@ -1,23 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule,Title  } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component'; 
 import { LoginComponent } from './login/login.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatRippleModule } from '@angular/material/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MaterialModule } from './material-module';
-import { MatTableModule } from '@angular/material/table';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { CustomHttpInterceptor } from './init/http-interceptor';
+import { CustomHttpInterceptor } from './common/init/http-interceptor';
 import { ChangePasswordComponent } from './login/change-password/change-password.component';
-import { HeaderInterceptor } from './init/header-interceptor.interceptor';
+import { HeaderInterceptor } from './common/init/header-interceptor.interceptor';
 import { GlobalConfigModule } from './global-config/global-config.module';
 import { SelectZonesComponent } from './dialogs/select-zones/select-zones.component';
 import { TotesAddEditComponent } from './dialogs/totes-add-edit/totes-add-edit.component';
@@ -62,8 +55,7 @@ import { CmShippingCarrierComponent } from './dialogs/cm-shipping-carrier/cm-shi
 import { OrderManagerComponent } from './order-manager/order-manager.component';
 import { CmAddNewItemToShipmentComponent } from './dialogs/cm-add-new-item-to-shipment/cm-add-new-item-to-shipment.component';
 import { CmPrintOptionsComponent } from './dialogs/cm-print-options/cm-print-options.component';
-import { CmOrderToteConflictComponent } from './dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component';
-import { SrReplenishmentProgressComponent } from './dialogs/sr-replenishment-progress/sr-replenishment-progress.component';
+import { CmOrderToteConflictComponent } from './dialogs/cm-order-tote-conflict/cm-order-tote-conflict.component'; 
 import { OmEventLogEntryDetailComponent } from './dialogs/om-event-log-entry-detail/om-event-log-entry-detail.component';
 import { OmCreateOrdersComponent } from './dialogs/om-create-orders/om-create-orders.component';
 import { OmUpdateRecordComponent } from './dialogs/om-update-record/om-update-record.component';
@@ -71,15 +63,13 @@ import { OmAddRecordComponent } from './dialogs/om-add-record/om-add-record.comp
 import { OmEditTransactionComponent } from './dialogs/om-edit-transaction/om-edit-transaction.component';
 import { OmAddTransactionComponent } from './dialogs/om-add-transaction/om-add-transaction.component';
 import { OmChangesConfirmationComponent } from './dialogs/om-changes-confirmation/om-changes-confirmation.component';
-import { OmUserFieldDataComponent } from './dialogs/om-user-field-data/om-user-field-data.component';
-import { GcPrintServiceTestBeginComponent } from './dialogs/gc-print-service-test-begin/gc-print-service-test-begin.component';
-import { GcPrintServiceTestComponent } from './dialogs/gc-print-service-test/gc-print-service-test.component';
+import { OmUserFieldDataComponent } from './dialogs/om-user-field-data/om-user-field-data.component'; 
 import { OmChangePriorityComponent } from './dialogs/om-change-priority/om-change-priority.component';
-import { AuthGuard } from './init/AuthGuard.service';
+import { AuthGuard } from './common/init/AuthGuard.service';
 import { StagingLocationOrderComponent } from './dialogs/staging-location-order/staging-location-order.component';
 import { FrNumpadComponent } from './dialogs/fr-numpad/fr-numpad.component';
-import { ApiFuntions } from './services/ApiFuntions';
-import { BaseService } from './services/base-service.service';
+import { ApiFuntions } from './common/services/ApiFuntions';
+import { BaseService } from './common/services/base-service.service';
 import { ShortTransactionComponent } from './dialogs/short-transaction/short-transaction.component';
 import { CpbBlossomToteComponent } from './dialogs/cpb-blossom-tote/cpb-blossom-tote.component';
 import { ReelDetailComponent } from './dialogs/reel-detail/reel-detail.component';
@@ -173,8 +163,7 @@ import { IeMdExportInvertoryComponent } from './import-export/ie-manage-data/ie-
     OrderManagerComponent,
     CmAddNewItemToShipmentComponent,
     CmPrintOptionsComponent,
-    CmOrderToteConflictComponent,
-    SrReplenishmentProgressComponent,
+    CmOrderToteConflictComponent, 
     OmEventLogEntryDetailComponent,
     OmCreateOrdersComponent,
     OmUpdateRecordComponent,
@@ -182,9 +171,7 @@ import { IeMdExportInvertoryComponent } from './import-export/ie-manage-data/ie-
     OmEditTransactionComponent,
     OmAddTransactionComponent,
     OmChangesConfirmationComponent,
-    OmUserFieldDataComponent,
-    GcPrintServiceTestBeginComponent,
-    GcPrintServiceTestComponent,
+    OmUserFieldDataComponent, 
     OmChangePriorityComponent,
     StagingLocationOrderComponent,
     FrNumpadComponent,
@@ -234,20 +221,11 @@ import { IeMdExportInvertoryComponent } from './import-export/ie-manage-data/ie-
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
     BrowserAnimationsModule,
     GeneralModule,
-    HttpClientModule,
+    MaterialModule,
     AppRoutingModule,
     DashboardModule,
-    MatButtonModule,
-    MatInputModule,
-    MatRippleModule,
-    MatIconModule,
-    MatCheckboxModule,
-    MaterialModule,
-    MatTableModule,
     GlobalConfigModule,
     SharedComponentsModule
   ],

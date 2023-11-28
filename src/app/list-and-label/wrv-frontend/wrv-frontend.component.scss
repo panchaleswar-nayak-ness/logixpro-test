@@ -1,0 +1,11 @@
+::ng-deep mat-toolbar{
+    z-index: 0 !important;
+}
+
+
+::ng-deep .mat-drawer.mat-drawer-side {
+    z-index: 1 !important;
+}
+.h-110px{
+    height: 110px;
+}

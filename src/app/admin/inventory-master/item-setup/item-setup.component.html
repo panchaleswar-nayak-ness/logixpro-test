@@ -68,7 +68,7 @@
           </div>
           <mat-form-field class="custom-form-field" appearance="outline" *ngIf="this.itemSetup.controls['fifo'].value == true">
             <mat-label>FIFO Date</mat-label>
-            <mat-select formControlName="fifoDate">
+            <mat-select formControlName="fifoDate" (selectionChange)="handleInputChange($event.value)">
               <mat-option value="Put Away Date">Put Away Date</mat-option>
               <mat-option value="Expiration Date">Expiration Date</mat-option>
             </mat-select>
@@ -77,8 +77,8 @@
 
       </div>
       <hr>
-      <ng-scrollbar track="all" style="height:300px;">
-      <div class="container-fluid-0" style=" min-width:768px; overflow: hidden;">
+      <ng-scrollbar track="all" class="h-300px">
+      <div class="container-fluid-0 grid-custom-style">
       
       <div class="row align-items-center mb-3">
         <div class="col">
@@ -89,7 +89,7 @@
             <mat-label>Carousel</mat-label>
             <input matInput type="text" formControlName="cellSize" maxlength="50" readonly="true">
             <span matSuffix>
-              <mat-icon style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
           </mat-form-field>
         </div>
@@ -98,7 +98,7 @@
             <mat-label>Bulk</mat-label>
             <input matInput type="text" formControlName="bulkCellSize"  maxlength="50" readonly="true">
             <span matSuffix>
-              <mat-icon style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
           </mat-form-field>
         </div>
@@ -107,7 +107,7 @@
             <mat-label>Carton Flow</mat-label>
             <input matInput type="text" formControlName="cfCellSize"  maxlength="50">
             <span matSuffix>
-              <mat-icon style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
           </mat-form-field>
         </div>
@@ -121,7 +121,7 @@
             <mat-label>Carousel</mat-label>
             <input matInput type="text" formControlName="goldenZone" readonly="true">
             <span matSuffix>
-              <mat-icon style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
           </mat-form-field>
         </div>
@@ -130,7 +130,7 @@
             <mat-label>Bulk</mat-label>
             <input matInput type="text" formControlName="bulkVelocity" readonly="true">
             <span matSuffix>
-              <mat-icon style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
           </mat-form-field>
         </div>
@@ -139,7 +139,7 @@
             <mat-label>Carton Flow</mat-label>
             <input matInput type="text" formControlName="cfVelocity" readonly="true">
             <span matSuffix>
-              <mat-icon style="color:#8B8BA3; transform: rotate(45deg);">unfold_more</mat-icon>
+              <mat-icon class="text-tertiary-900 rotate-45">unfold_more</mat-icon>
             </span>
           </mat-form-field>
         </div>

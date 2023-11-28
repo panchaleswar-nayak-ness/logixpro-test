@@ -1,0 +1,322 @@
+<div class="row w-100 mt-2 mx-0">
+    <div class="col-xl-12">
+        <div class="col-xl-12 mt-3 p-3 d-flex br-8 mb-3 label-red text-danger">
+            <mat-icon class="material-symbols-outlined">info_outline</mat-icon>
+            <span class="ps-2 w-100">The Settings below will only affect individual locations in the Inventory Map.
+                Click “ Manage Default Scan Verification(s)” to default handling.</span>
+        </div>
+    </div>
+    <div class="col-xl-12 d-block d-xl-flex justify-content-between align-items-center  mb-3">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <app-icon-heading-component heading="Scan Verification Setup" icon="barcode_scanner">
+            </app-icon-heading-component>
+        </div>
+
+        <div class="d-flex align-items-center gap-12">
+                <button type="button" mat-flat-button color="primary" class="button-primary-i btn-regular w-100"
+                    (click)="openScanVerification()">Manage Default Scan Verification(S)</button>
+
+            <button mat-flat-button color="primary" class="add-icon-button">
+                <span class="material-symbols-outlined" matTooltip="Add New Device" matTooltipPosition="above">
+                    add
+                </span>
+            </button>
+
+        </div>
+    </div>
+
+
+    <div class="col-xl-12">
+        <div class="row">
+            <div class="col-12 ">
+                <div class="card br-14 table-responsive borderless px-0 mb-3">
+                    <ng-scrollbar class="mat-table-scrollbar h-295px" track="all">
+                        <table mat-table [dataSource]="displayedColumns" class="w-100 table1">
+                            <ng-container matColumnDef="transType">
+                                <th mat-header-cell *matHeaderCellDef> Trans. Type </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field
+                                        class="action-dropdown custom-form-field custom-form-field-bg-white w-100"
+                                        appearance="outline">
+                                        <mat-label>Trans. Type</mat-label>
+                                        <mat-select class="employees-action" placeholder="Actions">
+                                            <mat-option value="Pick">Pick</mat-option>
+                                            <mat-option value="Put Away">Put Away</mat-option>
+                                            <mat-option value="Count">Count</mat-option>
+                                        </mat-select>
+                                        <span class="material-symbols-outlined icon-expand-more">
+                                            expand_more
+                                        </span>
+                                    </mat-form-field>
+                                </td>
+
+                            </ng-container>
+
+                            <ng-container matColumnDef="scanSequence">
+                                <th mat-header-cell *matHeaderCellDef>Scan Sequence</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                        <input matInput type="text" value="{{element.totalTransactions}}" />
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="field">
+                                <th mat-header-cell *matHeaderCellDef> Field</th>
+                                <td mat-cell *matCellDef="let element; let i = index;">
+                                    <mat-form-field
+                                        class="action-dropdown custom-form-field custom-form-field-bg-white w-100"
+                                        appearance="outline">
+                                        <mat-label>Expiration Date</mat-label>
+                                        <mat-select class="employees-action" placeholder="Actions">
+                                            <mat-option value="Expiration Date">Expiration Date</mat-option>
+                                            <mat-option value="Item Number">Item Number</mat-option>
+                                            <mat-option value="Location Number">Location Number</mat-option>
+                                            <mat-option value="Lot Number">Lot Number</mat-option>
+                                            <mat-option value="Serial Number">Serial Number</mat-option>
+                                            <mat-option value="Supplier Item ID">Supplier Item ID</mat-option>
+                                            <mat-option value="Tote ID">Tote ID</mat-option>
+                                            <mat-option value="User Field1">User Field1</mat-option>
+                                            <mat-option value="User Field2">User Field2</mat-option>
+                                        </mat-select>
+                                        <span class="material-symbols-outlined icon-expand-more">
+                                            expand_more
+                                        </span>
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="verifyType">
+                                <th mat-header-cell *matHeaderCellDef>Verify Type</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field
+                                        class="action-dropdown custom-form-field custom-form-field-bg-white w-100"
+                                        appearance="outline">
+                                        <mat-label>All</mat-label>
+                                        <mat-select class="employees-action" placeholder="Actions">
+                                            <mat-option value="All">All</mat-option>
+                                            <mat-option value="Range">Range</mat-option>
+
+                                        </mat-select>
+                                        <span class="material-symbols-outlined icon-expand-more">
+                                            expand_more
+                                        </span>
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="verifyStringStart">
+                                <th mat-header-cell *matHeaderCellDef>Verify String Start</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                        <input matInput [NumbersOnly]="true" />
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="verifyStringLength">
+                                <th mat-header-cell *matHeaderCellDef>Verify String Length</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                        <input matInput [NumbersOnly]="true" />
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions" stickyEnd>
+                                <th mat-header-cell *matHeaderCellDef class="ps-2">Actions</th>
+                                <td mat-cell *matCellDef="let element; let i = index" class="ps-2">
+                                    <div class="d-flex gap-12">
+
+                                        <button matTooltip="Print" mat-flat-button color="primary"
+                                            class="xsm-icon-button">
+                                            <mat-icon class="material-symbols-outlined">
+                                                print
+                                            </mat-icon>
+                                        </button>
+
+                                        <button matTooltip="Delete" mat-flat-button color="warn"
+                                            class="xsm-icon-button">
+                                            <mat-icon class="material-symbols-outlined">
+                                                close
+                                            </mat-icon>
+                                        </button>
+
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                                    <b>No data found.</b>
+                                </td>
+                            </tr>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+                        </table>
+                    </ng-scrollbar>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-12">
+
+        <div class="card br-14 borderless px-0 mt-3 overflow-auto">
+            <ng-scrollbar track="all" class="mat-table-scrollbar scrollbar-hover-padding h-450px">
+                <table class="w-100 table1" mat-table
+                    [dataSource]="dataSource1" matSort>
+                    <ng-container matColumnDef="location">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Location </th>
+                        <td mat-cell *matCellDef="let element" [class.selected]="element.isSelected">
+                            aaa
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="locationName">
+                        <th class="" mat-header-cell mat-sort-header *matHeaderCellDef>Location
+                            Number</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element" class="">
+                            aaa
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="zone">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Zone </th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="carousel">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Carousel </th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="row">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Row </th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="shelf">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> shelf </th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="bin">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Bin </th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="warehouse">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Warehouse</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="cellSize">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Cell Size</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="velocityCode">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Velocity Code</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="carouselLocation">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Carousel Location</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="cartonLocation">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Carton Flow Location</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="itemNumber">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Item Number</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Description</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="serialNo">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Serial #</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="lotNo">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Lot #</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="expriationDate">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Expriation Date</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="UM">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> UM</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="maxQty">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Max Qty</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="qtyAllocatedPick">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Quantity Allocated Pick</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="itemQty">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Item Qty</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="putAwayDate">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Put Away Date</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="dateSensitive">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Date Sensitive</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="shipVia">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Ship Via</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="shipToName">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Ship To Name</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="dedicated">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Dedicated</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="masterLocation">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>Master Location</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+                    <ng-container matColumnDef="InvMapID">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>In Map ID</th>
+                        <td [class.selected]="element.isSelected" mat-cell *matCellDef="let element">aaa</td>
+                    </ng-container>
+
+
+
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell " [attr.colspan]="dataSource1.length ">
+                            No data available in table.
+                        </td>
+                    </tr>
+
+
+
+
+                    <tr mat-header-row *matHeaderRowDef="dataSource1; sticky: true" class="table-header-clr">
+                    </tr>
+                    <tr mat-row *matRowDef="let element; columns: dataSource1; let i = index">
+                    </tr>
+                </table>
+
+            </ng-scrollbar>
+
+        </div>
+
+        <div class="table-pagination d-flex justify-content-start" *ngIf="  displayedColumns && dataSource1">
+            <mat-paginator [pageSize]="10" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]" mat-paginator-range-label="customLabel"
+                #paginator></mat-paginator>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

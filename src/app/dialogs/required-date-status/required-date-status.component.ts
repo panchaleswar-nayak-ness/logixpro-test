@@ -2,9 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-required-date-status',
@@ -16,9 +15,9 @@ export class RequiredDateStatusComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi:IInductionManagerApiService;
 
-  ELEMENT_DATA: any[] = [
+  elementData: any[] = [
     { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },    
     { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
     { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
@@ -55,8 +54,8 @@ export class RequiredDateStatusComponent implements OnInit {
     { countToInduct: "1", reqDate: "12/14/2022", zone: "12" }
   ];
 
-  constructor(private Api:ApiFuntions,private inductionManagerApi: InductionManagerApiService) { 
-    this.iinductionManagerApi = inductionManagerApi;
+  constructor(public inductionManagerApi: InductionManagerApiService) { 
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -69,14 +68,14 @@ export class RequiredDateStatusComponent implements OnInit {
   }
 
   getReqDateDataSelect(){
-    this.iinductionManagerApi.ReqDateDataSelect().subscribe(res => {
+    this.iInductionManagerApi.ReqDateDataSelect().subscribe(res => {
       if (res?.isExecuted)
       {
         if(res.data.length > 0) {
           this.dataSource = new MatTableDataSource(res.data);
         }
         else {
-         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+         this.dataSource = new MatTableDataSource(this.elementData);
         }
 
       }

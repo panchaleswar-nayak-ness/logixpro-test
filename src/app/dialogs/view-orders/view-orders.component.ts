@@ -1,13 +1,11 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-
-import { AuthService } from '../../../app/init/auth.service';
+import { MatTableDataSource } from '@angular/material/table'; 
+import { AuthService } from '../../common/init/auth.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { MatSort } from '@angular/material/sort'; 
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
@@ -91,18 +89,16 @@ export class ViewOrdersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('paginatorTrans') paginatorTrans: MatPaginator;
   @ViewChild(MatSort) viewTransSort: MatSort;
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi:IInductionManagerApiService;
 
-  constructor(
-    private Api: ApiFuntions,
-    
+  constructor( 
     private authService: AuthService,
-    private inductionManagerApi: InductionManagerApiService,
+    public inductionManagerApi: InductionManagerApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global: GlobalService,
     public dialogRef: MatDialogRef<any>
   ) { 
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
   }
 
   ngOnInit(): void {
@@ -116,7 +112,7 @@ export class ViewOrdersComponent implements OnInit {
     let paylaod = {
       "OrderView": this.data.viewType, 
     }
-    this.iinductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
+    this.iInductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
       if (res.isExecuted && res.data)
       {
         if (res.data.length > 0) {
@@ -204,7 +200,7 @@ export class ViewOrdersComponent implements OnInit {
         "SortOrder": "asc",
         "Filter": "1=1", 
       }
-      this.iinductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
+      this.iInductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
         if (res.isExecuted && res.data) {
           this.transData = res.data.pickToteManTrans;
           this.orderTransDataSource = new MatTableDataSource<any>(this.transData);

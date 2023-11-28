@@ -1,5 +1,5 @@
 // .warehouse{
-//     border: 1px solid #D7D7F9;
+//     border: 1px solid var(--clr-tertiary-50);
 //     border-radius: 14px;
 //     padding: 30px;
 // }
@@ -8,4 +8,14 @@
 }
 .mat-list-base{
     padding-top: 0px !important;
+}
+
+.divWithClass{
+    width:48px !important;
+}
+.ngScrolbarStyleCC{
+    height: 400px !important;
+}
+.WarehouseStyleC{
+    padding-left:20px !important;
 }

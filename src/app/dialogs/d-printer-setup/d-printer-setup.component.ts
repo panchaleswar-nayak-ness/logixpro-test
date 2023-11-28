@@ -1,0 +1,72 @@
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog'; 
+import { GlobalService } from 'src/app/common/services/global.service';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
+
+@Component({
+  selector: 'app-d-printer-setup',
+  templateUrl: './d-printer-setup.component.html',
+  styleUrls: ['./d-printer-setup.component.scss']
+})
+export class DPrinterSetupComponent implements OnInit {
+  reportPrinter:any;
+  labelPrinter:any;
+  listReportPrinter:any;
+  userData:any = {};
+  listLabelPrinter:any;
+  public  iGlobalConfigApi: IGlobalConfigApi;
+  constructor(
+    private dialog:MatDialog,
+    private global : GlobalService,
+    private api:ApiFuntions,
+    public globalConfigApi: GlobalConfigApiService,
+    private authService:AuthService) 
+    {
+      this.iGlobalConfigApi = globalConfigApi;
+      this.userData = this.authService.userData();   
+   }
+
+  ngOnInit(): void { 
+    this.getAllPrinters();
+      this.reportPrinter = localStorage.getItem("SelectedReportPrinter");
+      this.labelPrinter =   localStorage.getItem("SelectedLabelPrinter");
+  }
+ClosePopup(){
+  this.dialog.closeAll();
+}
+getAllPrinters(){
+  this.iGlobalConfigApi.GetAllPrinters().subscribe((res:any)=>{
+    if(res)
+    {
+      this.listLabelPrinter = res.data.filter(x=>x.label == "Able to Print Labels");
+      this.listReportPrinter = res.data.filter(x=>x.label == "Not Able to Print Labels");
+    }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("GetAllPrinters",res.responseMessage);
+    } 
+      
+  });
+}
+UpdWSPrefsPrinters(ReportPrinter,LabelPrinter){
+  let payload = {
+      ReportPrinter:ReportPrinter,
+      LabelPrinter:LabelPrinter,
+  }
+  this.iGlobalConfigApi.UpdWSPrefsPrinters(payload).subscribe((res:any)=>{
+    if(res)
+    {
+      localStorage.setItem("SelectedReportPrinter",ReportPrinter);
+      localStorage.setItem("SelectedLabelPrinter",LabelPrinter);
+    }
+    else {
+      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      console.log("UpdWSPrefsPrinters",res.responseMessage);
+    } 
+     
+  });
+}
+}

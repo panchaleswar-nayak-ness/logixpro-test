@@ -2,20 +2,20 @@
   <button mat-icon-button aria-label="icon-button with menu icon" (click)="toggleSidebar()">
     <mat-icon>menu</mat-icon>
   </button>
-  <div class="breadcrumb-menu ps-1 ps-xl-3" style="height: 30px;">
+  <div class="breadcrumb-menu ps-1 ps-xl-3 h-30px">
 
 
     <ul aria-label="breadcrumb" class="breadcrumb m-0">
-      <li style="cursor:pointer;" *ngIf="isConfigUser" (click)="routeToLogin()">
+      <li class="cursor-pointer" *ngIf="isConfigUser" (click)="routeToLogin()">
         LogixPro
       </li>
       
       <ng-container *ngFor="let item of breadcrumbList; index as i;">      
-        <li *ngIf="i < (breadcrumbList.length-1) && !isConfigUser" class="breadcrumb-item"  style="cursor:pointer;" (click)="breadCrumbClick(item.menu,i)">
+        <li *ngIf="i < (breadcrumbList.length-1) && !isConfigUser" class="breadcrumb-item cursor-pointer" (click)="breadCrumbClick(item.menu,i)">
           {{item?.name}}
         </li>
         
-        <li *ngIf="i>=(breadcrumbList.length-1) " class="breadcrumb-item active" style="cursor:pointer;" (click)="breadCrumbClick(item.menu)">
+        <li *ngIf="i>=(breadcrumbList.length-1) " class="breadcrumb-item active cursor-pointer" (click)="breadCrumbClick(item.menu)">
           {{item.name}}
         </li>
       </ng-container>      
@@ -23,6 +23,7 @@
   </div>
   <span class="full-spacer"></span>
   <div class="row mr-2 ml-auto">
+    <div class="d-flex align-items-center">
     <ul class="row m-0 align-items-center">
       <li>
         <button mat-button [matMenuTriggerFor]="menu" class="user">
@@ -33,9 +34,15 @@
           <ng-container *ngIf="ConfigUserLogin">
             {{configUser.userName}}
           </ng-container>
-          <mat-icon class="user-image-icon" style="height: 18px ;">keyboard_arrow_down</mat-icon>
+          <mat-icon class="user-image-icon h-18px">keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #menu="matMenu" class="custom mat-menu-panel " xPosition="before">
+          <div class="px-3 mb-2 text-tertiary-900">
+            <div class="text-14 text-chrome-600 my-1">Theme Options</div>
+            <mat-radio-group class="d-flex flex-column text-14" color="primary" aria-label="Select an option" (change)="selectTheme($event.value)" [value]="themeRadio">
+              <mat-radio-button *ngFor="let theme of themes" class="mb-1" [value]="theme.value">{{ theme.name }}</mat-radio-button>
+            </mat-radio-group>
+            </div>
           <button mat-menu-item (click)="openPrintSetting()">
             <mat-icon class="material-symbols-outlined">
               print
@@ -46,14 +53,16 @@
             <mat-icon>exit_to_app</mat-icon>
             Logout
           </button>
+          
         </mat-menu>
       </li>
     </ul>
   </div>
+  </div>
 
 
 </mat-toolbar>
-<div class="overlay" *ngIf="spinnerService.visibility | async" style="z-index: 999999;">
+<div class="overlay z-index-999999" *ngIf="spinnerService.visibility | async">
   <div class="center">
     <mat-spinner [diameter]="50"></mat-spinner>
   </div>

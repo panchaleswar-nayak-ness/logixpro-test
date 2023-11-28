@@ -1,19 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { ItemCategoryComponent } from '../../dialogs/item-category/item-category.component';
 import { ItemNumberComponent } from '../../dialogs/item-number/item-number.component';
 import { UnitMeasureComponent } from '../../dialogs/unit-measure/unit-measure.component';
 import { UpdateDescriptionComponent } from '../../dialogs/update-description/update-description.component'; 
 import { Router } from '@angular/router';
-import { SharedService } from 'src/app/services/shared.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 import { Observable, Subscription } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from '../current-tab-data-service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+
 
 @Component({
   selector: 'app-detail',
@@ -28,64 +28,47 @@ export class DetailComponent implements OnInit {
   @Input() details: FormGroup;  
   public userData: any;
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
-  sendNotification(e) {
-      this.notifyParent.emit(e);
+  
+  sendNotification(notification) {
+    this.notifyParent.emit(notification);
   }
 
   public setVal: boolean = false;
   spliUrl;
   
-
-  constructor(   
-    private Api: ApiFuntions, 
+  constructor(
     private router: Router,
     private sharedService:SharedService,
     private authService: AuthService, 
-    private adminApiService: AdminApiService,
+    public adminApiService: AdminApiService,
     private global:GlobalService,    
     private currentTabDataService: CurrentTabDataService,
-    ) {
-      this.iAdminApiService = adminApiService;
-     }
+  ) {
+    this.iAdminApiService = adminApiService;
+  }
   
-    ngOnChanges(changes: SimpleChanges) {
-      if(changes['fieldNameDetails']){
-        this.fieldNameDetails=changes['fieldNameDetails']
-        
-      }
-
-      
-      }
-  ngOnInit(): void {
-     
-    this.userData = this.authService.userData();
-    this.setVal = localStorage.getItem('routeFromOrderStatus') === 'true';
-   
-    this.spliUrl=this.router.url.split('/');
-   
-    this.eventsSubscription = this.events.subscribe((val) => {
-      if(val==='h' && this.details.controls['histCount'].value!=0){
-        this.RedirectInv('TransactionHistory')
-      }
-      if(val==='v' && this.details.controls['openCount'].value!=0){
-        this.RedirectInv('OpenTransaction')
-      }
-      if(val==='r' && this.details.controls['procCount'].value!=0){
-        this.RedirectInv('ReprocessTransaction')
-      }
-    
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['fieldNameDetails']) this.fieldNameDetails=changes['fieldNameDetails']; 
   }
 
-
+  ngOnInit(): void {
+    this.userData = this.authService.userData();
+    this.setVal = localStorage.getItem('routeFromOrderStatus') === StringConditions.True;
+    this.spliUrl=this.router.url.split('/');
+    this.eventsSubscription = this.events.subscribe((val) => {
+      if(val==='h' && this.details.controls['histCount'].value != 0) this.RedirectInv('TransactionHistory');
+      if(val==='v' && this.details.controls['openCount'].value != 0) this.RedirectInv('OpenTransaction');
+      if(val==='r' && this.details.controls['procCount'].value != 0) this.RedirectInv('ReprocessTransaction');
+    });
+  }
 
   handleInputChange(event: Event) {
     this.sharedService.updateInvMasterState(event,true)
   }
-  public openItemNumDialog() {
 
+  public openItemNumDialog() {
     let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -94,82 +77,73 @@ export class DetailComponent implements OnInit {
         newItemNumber : '',
         addItem : false
       }
-    })
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) { 
-        let paylaod = {
+        let payLoad = {
           "oldItemNumber": this.details.controls['itemNumber'].value,
           "newItemNumber": result, 
         }
-        this.iAdminApiService.UpdateItemNumber(paylaod).subscribe((res: any) => {
+        this.iAdminApiService.UpdateItemNumber(payLoad).subscribe((res: any) => {
           this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY] = result;
-
           if (res.isExecuted) {
-            this.details.patchValue({
-              'itemNumber' : res.data.newItemNumber
-            }); 
+            this.details.patchValue({ 'itemNumber' : res.data.newItemNumber }); 
             this.sendNotification({newItemNumber: res.data.newItemNumber});
           } else {
-            this.global.ShowToastr('error',"Item Number Already Exists.", 'Error!');
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.ItemNumberExists,  ToasterTitle.Error);
             console.log("UpdateItemNumber",res.responseMessage);
           }
         })
       }
-
-    })
+    });
   }
 
   public openDescriptionDialog() {
     let dialogRef:any = this.global.OpenDialog(UpdateDescriptionComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '560px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
       data: {
         description: this.details.controls['description'].value,
       }
-    })
+    });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.sharedService.updateInvMasterState(result,true)
         this.details.patchValue({
           'description' : result.description
         });
-
       }
-    })
+    });
   }
 
-  public opencategoryDialog() {
+  public openCategoryDialog() {
     let dialogRef:any = this.global.OpenDialog(ItemCategoryComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '860px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
       data: {
         mode: '',
       }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if(result.category!='' && result)
-      { 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {      
+      if (result && result != true) {
         this.details.patchValue({        
-          'category': result.category      
+          'category': result.category,
+          'subCategory': result.subCategory
         });
       }
-      if(result.subCategory!='' && result)
-      {
-        this.details.patchValue({            
-          'subCategory': result.subCategory,        
-        });
-      }
-      
-      this.sharedService.updateInvMasterState(result,true)
+      this.sharedService.updateInvMasterState(result, true)
     })
   }
+
   public openUmDialog() { 
     let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '750px',
       autoFocus: '__non_existing_element__',
       disableClose:true,
@@ -189,28 +163,27 @@ export class DetailComponent implements OnInit {
     })
   }
 
+  RedirectInv(type){
+    if(this.setVal){
+      this.router.navigate([]).then((result) => {
+        let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
+        window.open(url, '_blank');
+      });
+    }
+    else if(this.spliUrl[1] == 'InductionManager'){
+      this.router.navigate([]).then(() => {
+        let url = '/#/InductionManager/Admin/TransactionJournal?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
+        window.open(url, '_blank');
+      });
+    }
+    else{
+      this.router.navigate([]).then(() => {
+        let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
+        window.open(url, '_blank');
+      });
+    }
+  }
 
- RedirectInv(type){
-  if(this.setVal){
-    this.router.navigate([]).then((result) => {
-      let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-      window.open(url, '_blank');
-    });
-  }
-  else if(this.spliUrl[1] == 'InductionManager'){
-    this.router.navigate([]).then((result) => {
-      let url = '/#/InductionManager/Admin/TransactionJournal?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-      window.open(url, '_blank');
-    });
-  }
-  else{
-    this.router.navigate([]).then((result) => {
-      let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-      window.open(url, '_blank');
-    });
-  }
-
-  }
   ngOnDestroy() {
     this.eventsSubscription.unsubscribe();
   }

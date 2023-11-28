@@ -1,0 +1,53 @@
+<div class="d-flex justify-content-between mb-4 align-items-center">
+    <div class="div-width"></div>
+<h1 class="m-0" mat-dialog-title>Location Assignment Quantities</h1>
+<button mat-icon-button class="close-button dialog-close-button-fix" (click)="viewOrderSelection($event)">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+</div> 
+
+<div class="custom bg-white bg-50 br-14">
+      <div>
+        <div class="row mb-4">
+         <div class="col text-center">
+          <div class="employees text-center">
+            <app-stats-circle value="{{count}}" ></app-stats-circle>
+          </div>
+          <button  mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 btn-sm backgroundColor " (click)="viewOrderSelection($event,0)" >
+            Count
+          </button>
+        </div>
+         <div class="col text-center">
+          <div class="employees text-center">
+            <app-stats-circle value="{{pick}}" ></app-stats-circle>
+          </div>
+          <button  mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 btn-sm backgroundColor " (click)="viewOrderSelection($event,1)" >
+            Pick
+          </button>
+        </div>
+         <div class="col text-center">
+          <div class="employees text-center">
+            <app-stats-circle value="{{putAway}}" ></app-stats-circle>
+          </div>
+          <button  mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 btn-sm backgroundColor " (click)="viewOrderSelection($event,2)">
+            Put Away
+          </button>
+        </div>
+      </div>
+      </div>
+  </div>
+
+  <button color="primary" class="mat-focus-indicator w-100 btn-lg mat-flat-button mat-button-base mat-primary mb-3 flex-grow-1"
+  ng-reflect-color="primary" ng-reflect-disabled="false" (click)="printShortage()"><span class="mat-button-wrapper" > Print Pick Shortage
+  </span><span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false" ng-reflect-centered="false"
+    ng-reflect-trigger="[object HTMLButtonElement]"></span><span class="mat-button-focus-overlay"></span></button>
+
+    <button color="primary" class="mat-focus-indicator w-100 btn-lg mat-flat-button mat-button-base mat-primary mb-3 flex-grow-1"
+  ng-reflect-color="primary" ng-reflect-disabled="false" (click)="printShortageZone()"><span class="mat-button-wrapper" > Print Pick Shortage Forward Pick Zones
+  </span><span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false" ng-reflect-centered="false"
+    ng-reflect-trigger="[object HTMLButtonElement]"></span><span class="mat-button-focus-overlay"></span></button>
+
+    <button color="primary" class="mat-focus-indicator w-100 btn-lg mat-stroked-button mat-button-base mat-primary mb-3 flex-grow-1"
+  ng-reflect-color="primary" ng-reflect-disabled="false" (click)="exitBack()"><span class="mat-button-wrapper"> Leave Page
+  </span><span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false" ng-reflect-centered="false"
+    ng-reflect-trigger="[object HTMLButtonElement]"></span><span class="mat-button-focus-overlay" ></span></button>

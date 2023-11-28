@@ -1,0 +1,22 @@
+<div class="row w-100 mt-2 mx-0">
+    
+<div class="col-xl-12 d-flex justify-content-between">
+    <div class="col-xl-8">
+        <h2 class="text-18 bold ">Kanban Zone & Allow Pick Allocation Conflict</h2>
+    </div>
+    <div class="col-xl-2">
+        <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+            <mat-icon class="close-icon">close</mat-icon>
+        </button>
+    </div>
+</div>
+    <p>Kanban Zone and Allow Pick Allocation may not both be set. Choose which to set to ON.</p>
+</div>
+
+<div class="col-xl-12 mt-3">
+    <div class="d-flex ">
+        <button mat-flat-button color="primary" class="btn-md mb-3 me-3" (click)="changeValue(true,'allocation')">Set "Allow Pick Allocation" ON</button>
+        <button mat-flat-button color="primary" class="btn-md mb-3 me-3" (click)="changeValue(true,'kanban')">Set "Kanban Zone" ON</button>
+        <button mat-flat-button color="primary" class="btn-md mb-3 me-3" (click)="changeValue(true,'both')">Set Both to OFF</button>
+    </div>
+</div>

@@ -28,20 +28,20 @@
 
                             <mat-autocomplete class="card custom-scroll" #auto="matAutocomplete">
 
-                                <h6 class="card-header matAutoCompHeader "><span style="width:  140px;">Order
-                                        Number</span> <span style="width:  140px;">Trans. Type</span> <span
-                                        style="width:  140px;">Item Number</span> <span style="width:  140px;">Trans.
+                                <h6 class="card-header matAutoCompHeader "><span class="w-140px">Order
+                                        Number</span> <span class="w-140px">Trans. Type</span> <span
+                                        class="w-140px">Item Number</span> <span class="w-140px">Trans.
                                         Quantity</span></h6>
 
                                 <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.orderNumber"
                                     class="matAutoCompTableContent">
                                     <div class="loc_option" (click)="getRow(option)">
-                                        <span class="searchColumn" style="width:  140px;">{{option.orderNumber}}</span>
-                                        <span class="searchColumn"
-                                            style="width:  140px;">{{option.transactionType}}</span> <span
-                                            class="searchColumn" style="width:  140px;">{{option.itemNumber}}</span>
-                                        <span class="searchColumn"
-                                            style="width:  140px;">{{option.transactionQuantity}}</span>
+                                        <span class="searchColumn w-140px">{{option.orderNumber}}</span>
+                                        <span class="searchColumn" w-140px
+                                            >{{option.transactionType}}</span> <span
+                                            class="searchColumn w-140px">{{option.itemNumber}}</span>
+                                        <span class="searchColumn w-140px"
+                                            >{{option.transactionQuantity}}</span>
                                     </div>
                                 </mat-option>
                             </mat-autocomplete>
@@ -50,8 +50,8 @@
                     <div class="col-xl-3 offset-xl-3">
                         <div class="d-xl-block d-flex justify-content-end">
 
-                            <mat-form-field class="action-dropdown custom-form-field-bg-white float-end "
-                                appearance="outline" style="flex:1">
+                            <mat-form-field class="action-dropdown custom-form-field-bg-white float-end flex-grow-1"
+                                appearance="outline">
                                 <mat-select #openAction [(ngModel)]="selectedAction" class="employees-action"
                                     placeholder="Actions" (selectionChange)="generateTranscAction($event)">
 
@@ -89,9 +89,9 @@
 
     <app-gt-item-details [item]="item" [itemNumber]="itemNumber" [orderNumber]="orderNumber" [columns]="columns"
         [supplierID]="supplierID" [expDate]="expDate" [revision]="revision" [description]="description"
-        [lotNumber]="lotNumber" [uom]="uom" [notes]="notes" [serialNumber]="serialNumber"
+        [lotNumber]="lotNumber" [uom]="uom" [notes]="notes" [serialNumber]="serialNumber" [transactionID]="transactionID"
         (getLocationData)="getLocationData()" (getSupplierItemInfo)="getSupplierItemInfo()" [userData]="userData"
-        (fieldValuesChanged)="onFieldValuesChanged($event)"
+        (fieldValuesChanged)="onFieldValuesChanged($event)"  (onFormFieldFocusOut)="onFormFieldFocusOut()"
         (openSetItemLocationDialogue)="openSetItemLocationDialogue()"> </app-gt-item-details>
 
     <app-gt-transaction-details [emergency]="emergency" [item]="item" [transType]="transType" [reqDate]="reqDate"

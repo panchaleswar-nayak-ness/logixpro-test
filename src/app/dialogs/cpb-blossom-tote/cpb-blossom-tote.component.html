@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-between alighn-item-center mb-4">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Blossom Tote: {{toteId}}</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" mat-dialog-close="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content>
+<div class="row px-3">
+    <div class="card mb-4">
+        <div class="col-xl-4">
+            <mat-form-field class="custom-form-field m-3" appearance="outline">
+                <mat-label>New Tote ID</mat-label>
+                <input matInput type="text" [(ngModel)]="newToteID" (focusout)="newToteIdFocusOut()" #NewToteID>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+
+<div class="blossom-tote-table">
+<div class="card br-14 borderless  overflow-x-auto">
+    <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding height-300"  track="all">
+        <table mat-table [dataSource]="this.transactions" class="w-100">
+
+            <ng-container  matColumnDef="item_number">
+                <th mat-header-cell *matHeaderCellDef> Item Number
+                </th>
+                <td mat-cell *matCellDef="let element" class="mt-2"> {{element.itemNumber}} </td>
+            </ng-container>
+            <ng-container matColumnDef="transaction_qty">
+                <th mat-header-cell *matHeaderCellDef> Transaction Quantity
+                </th>
+                <td mat-cell *matCellDef="let element"> {{element.transactionQuantity}} </td>
+            </ng-container>
+            <ng-container matColumnDef="qty_in_old_date">
+                <th mat-header-cell *matHeaderCellDef> Quantity In Old Tote
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-form-field class="custom-form-field w-100 pe-2" appearance="outline">
+                        <input 
+                        matInput 
+                        type="number"
+                        min="0"
+                        inputmode="numeric"
+                        pattern="[0-9]*" 
+                        [(ngModel)]="element.oldToteQuantity" 
+                        (keydown)="restrictKeyboard($event)"
+                        (focusout)="qtyInOldToteFoucusOut(element)" />
+                    </mat-form-field>
+                </td>
+            </ng-container>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell " [attr.colspan]="displayedColumns.length">
+                    No data available in table.
+                </td>
+            </tr>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+    </ng-scrollbar>
+</div>
+</div>
+
+<button mat-flat-button color="primary" class="btn-lg w-100 mt-4" [disabled]="!submitBlossomEnable" (click)="submitBlossom()">Submit Blossom</button>
+
+</mat-dialog-content>

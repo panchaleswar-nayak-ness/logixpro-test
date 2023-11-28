@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/init/auth.service';
-import { SharedService } from '../../../app/services/shared.service';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { SharedService } from '../../common/services/shared.service';
 import { Subscription } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { Router, ActivatedRoute } from '@angular/router';
-
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { RouteUpdateMenu, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: [],
+  styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
   tab_hover_color: string = '#cf9bff3d';
@@ -27,41 +26,29 @@ export class MainComponent implements OnInit {
   private subscription: Subscription = new Subscription();
 
   public  iGlobalConfigApi: IGlobalConfigApi;
+
   constructor(
     private sharedService: SharedService,
-    private Api: ApiFuntions,
     private global: GlobalService,
     public globalConfigApi: GlobalConfigApiService,
     private authService: AuthService,
     private currentTabDataService: CurrentTabDataService,
-    
     private router: Router,
     private route: ActivatedRoute
   ) {
     this.iGlobalConfigApi = globalConfigApi;
-    window.addEventListener('beforeunload', () => {
-      this.currentTabDataService.RemoveTabOnRoute(this.router.url);
-    });
+    window.addEventListener('beforeunload', () => this.currentTabDataService.RemoveTabOnRoute(this.router.url));
   }
 
-  
   ngOnInit(): void {
-
-
     this.userData = this.authService.userData();
-    if(localStorage.getItem('isAppVerified') ){
-      this.isDefaultAppVerify =  JSON.parse(localStorage.getItem('isAppVerified') ?? '');
-    }else{
-      this.isDefaultAppVerify={appName: "",isVerified:true}
-    }
+    if(localStorage.getItem('isAppVerified')) this.isDefaultAppVerify = JSON.parse(localStorage.getItem('isAppVerified') ?? '');
+    else this.isDefaultAppVerify = {appName: "", isVerified: true}
     this.route.queryParams.subscribe(params => {
       const error = params['error'];
-      if (error === "multipletab") {
-        this.global.ShowToastr('error',"Same Tab cannot be opened twice!", 'Error!');
-      }
+      if (error === "multipletab") this.global.ShowToastr(ToasterType.Error, "Same Tab cannot be opened twice!", ToasterTitle.Error);
   });
   }
-
 
   ngAfterViewInit() {
     this.getAppLicense();
@@ -72,23 +59,17 @@ export class MainComponent implements OnInit {
     // this.applicationData=JSON.parse(localStorage.getItem('availableApps') || '');
     // this.sharedService.setMenuData(this.applicationData)
 
-    let payload = {
-      workstationid: this.userData.wsid,
-    };
+    let payload = { workstationid: this.userData.wsid };
     this.iGlobalConfigApi.AppNameByWorkstation(payload).subscribe(
       (res: any) => {
         if (res?.data) {
           this.convertToObj(res.data);
-          localStorage.setItem(
-            'availableApps',
-            JSON.stringify(this.applicationData)
-          );
+          localStorage.setItem('availableApps', JSON.stringify(this.applicationData));
           this.sharedService.setMenuData(this.applicationData);
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("AppNameByWorkstation",res.responseMessage);
-
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("AppNameByWorkstation", res.responseMessage);
         }
       },
       (error) => {}
@@ -142,7 +123,7 @@ export class MainComponent implements OnInit {
       },
       {
         appName: 'FlowRackReplenish',
-        route: '/FlowrackReplenishment',
+        route: '/FlowrackReplenish',
         iconName: 'schema',
         name: 'FlowRack Replenishment',
         updateMenu: 'FlowReplenishment',
@@ -188,42 +169,29 @@ export class MainComponent implements OnInit {
 
   sortAppsData() {
     this.applicationData.sort(function (a, b) {
-      let nameA = a.info.name.toLowerCase(),
-        nameB = b.info.name.toLowerCase();
-      if (nameA < nameB)
-        //sort string ascending
-        return -1;
+      let nameA = a.info.name.toLowerCase(), nameB = b.info.name.toLowerCase();
+      if (nameA < nameB) return -1; //sort string ascending
       if (nameA > nameB) return 1;
       return 0; //default return value (no sorting)
     });
   }
-  updateMenu(menu = '', obj: any = null) {
-   
-    if (menu != '') {
-      this.sharedService.updateLoggedInUser(
-        this.userData.userName,
-        this.userData.wsid,
-        menu
-      );
-    }
 
-    if (menu == 'admin') {
-      this.sharedService.updateAdminMenu();
-    } else if (menu == 'induction') {
-      this.sharedService.BroadCastMenuUpdate(obj.route);
-    } else if (menu == 'orderManager') {
-      this.sharedService.BroadCastMenuUpdate(obj.route);
-    } else if (menu == 'consolidation') {
-      this.sharedService.BroadCastMenuUpdate(obj.route);
-    } else if (menu === 'FlowReplenishment') {
-      this.sharedService.updateFlowrackMenu(menu);
-    }
+  updateMenu(menu = '', obj: any = null) {
+    if (menu != '') this.sharedService.updateLoggedInUser(this.userData.userName, this.userData.wsid, menu);
+
+    if (menu == RouteUpdateMenu.Admin) this.sharedService.updateAdminMenu();
+    else if (menu == RouteUpdateMenu.Induction) this.sharedService.BroadCastMenuUpdate(obj.route);
+    else if (menu == RouteUpdateMenu.OrderManager) this.sharedService.BroadCastMenuUpdate(obj.route);
+    else if (menu == RouteUpdateMenu.Consolidation) this.sharedService.BroadCastMenuUpdate(obj.route);
+    else if (menu === RouteUpdateMenu.FlowReplenishment) this.sharedService.updateFlowrackMenu(menu);
+
     this.sharedService.updateSidebar();
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+
   isAuthorized(controlName: any) {
     return !this.authService.isAuthorized(controlName);
   }

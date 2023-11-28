@@ -1,0 +1,26 @@
+table{
+    th{
+        white-space: nowrap;
+        padding-right: 12px;
+    }
+
+    th,td{
+        padding-right: 15px;
+        padding-left: 10px;
+        text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap; padding-right: 15px;
+    }
+}
+
+input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
+.flex-1{
+    flex: 1 auto;
+}
+.h-545{
+    height:545px
+}
+.table-header-clr{
+    background-color: var(--clr-table-header);
+  }

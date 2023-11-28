@@ -1,0 +1,36 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TableContextMenuComponentComponent } from './table-context-menu-component/table-context-menu-component.component';
+import { GeneralModule } from 'src/app/gen-module';
+import { MaterialModule } from 'src/app/material-module';
+import { IconHeadingComponentComponent } from './icon-heading-component/icon-heading-component.component';
+import { InfoCardComponentComponent } from './info-card-component/info-card-component.component';
+import { ColumnFilterComponentComponent } from './column-filter-component/column-filter-component.component';
+import { SortPipe } from 'src/app/common/init/sort.pipe';
+import { StatsCircleComponent } from './stats-circle/stats-circle.component';
+
+@NgModule({
+  declarations: [
+    TableContextMenuComponentComponent,
+    IconHeadingComponentComponent,
+    InfoCardComponentComponent,
+    IconHeadingComponentComponent,
+    ColumnFilterComponentComponent,
+    SortPipe,
+    StatsCircleComponent
+  ],
+  exports: [
+    TableContextMenuComponentComponent,
+    IconHeadingComponentComponent,
+    StatsCircleComponent,
+    InfoCardComponentComponent,
+    ColumnFilterComponentComponent,
+    SortPipe
+  ],
+  imports: [
+    CommonModule,
+    GeneralModule,
+    MaterialModule
+  ]
+})
+export class SharedComponentsModule { }

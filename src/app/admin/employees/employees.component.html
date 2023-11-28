@@ -6,16 +6,12 @@
 
           <!-- left side for details -->
           <div class="col-xl-7 mb-3">
-            <mat-card class="mat-elevation-z g-card mb-3" style="height: 100%;">
+            <mat-card class="mat-elevation-z g-card mb-3 h-100">
               <mat-card-content>
-                <app-employees-information
-                  [isLookUp]="isLookUp"
-                  [env]="env"
-                  [empData]="empData"
+                <app-employees-information [isLookUp]="isLookUp" [env]="env" [empData]="empData"
                   (backEmpActionEmit)="backEmpAction()"
                   (actionDialogEmit)="actionDialog($event.value, $event.empData, $event.event)"
-                  (openDialogEmit)="openDialog()"
-                  (printEmpListEmit)="printEmpList()"
+                  (openDialogEmit)="openDialog()" (printEmpListEmit)="printEmpList()"
                   (updateIsLookUpEmit)="updateIsLookUp($event)">
                 </app-employees-information>
               </mat-card-content>
@@ -24,38 +20,17 @@
 
           <!-- Right side for actions -->
           <div class="col-xl-5 mb-3">
-            <mat-card class="mat-elevation-z g-card" style="height:100%">
+            <mat-card class="mat-elevation-z g-card h-100">
               <mat-card-content>
-                <app-employees-settings
-                  [emp_all_zones]="emp_all_zones"
-                  [empData]="empData"
-                
-                  [demo1TabIndex]="demo1TabIndex"
-                  [bpSettingInp]="bpSettingInp"
-                  [isLookUp]="isLookUp"
-                  [employee_fetched_zones]="employee_fetched_zones"
-                  [displayedColumns]="displayedColumns"
-                  [zoneColumns]="zoneColumns"
-
-                  [bpSettingLocInp]="bpSettingLocInp"
-                  [location_data_source]="location_data_source"
-
-                  [max_orders]="max_orders"
-
-                  [lookUpEvnt]="lookUpEvnt"
-                  [isTabChanged]="isTabChanged"
-                  [pickUplevels]="pickUplevels"
-                  [grp_data]="grp_data"
-
-                  [env]="env"
-                  [searchfuncAllowed]="searchfuncAllowed"
-                  [FuncationAllowedList]="FuncationAllowedList"
-                  [funcationsColumns]="funcationsColumns"
-
-                  [grpAllFilter]="grpAllFilter"
-                  [groupAllowedList]="groupAllowedList"
-                  [groupsColumns]="groupsColumns"
-                  
+                <app-employees-settings [empAllZones]="empAllZones" [empData]="empData"
+                  [demo1TabIndex]="demo1TabIndex" [bpSettingInp]="bpSettingInp" [isLookUp]="isLookUp"
+                  [employeeFetchedZones]="employeeFetchedZones" [displayedColumns]="displayedColumns"
+                  [zoneColumns]="zoneColumns" [bpSettingLocInp]="bpSettingLocInp"
+                  [locationDataSource]="locationDataSource" [maxOrders]="maxOrders" [lookUpEvnt]="lookUpEvnt"
+                  [isTabChanged]="isTabChanged" [pickUplevels]="pickUplevels" [grpData]="grpDataV" [env]="env"
+                  [searchfuncAllowed]="searchfuncAllowed" [FuncationAllowedList]="FuncationAllowedList"
+                  [funcationsColumns]="funcationsColumns" [grpAllFilter]="grpAllFilter"
+                  [groupAllowedList]="groupAllowedList" [groupsColumns]="groupsColumns"
                   (applyFunctionAllowedFilterEmit)="applyFunctionAllowedFilter($event)"
                   (getFuncationAllowedListEmit)="getFuncationAllowedList()">
                 </app-employees-settings>
@@ -75,20 +50,14 @@
         <div class="row">
           <!-- left side for details -->
           <div class="col-xl-5 mb-3">
-            <mat-card class="mat-elevation-z g-card" style="height: 100%;">
+            <mat-card class="mat-elevation-z g-card h-100">
               <mat-card-content>
-                <app-groups-employees-group-management
-                  [isGroupLookUp]="isGroupLookUp"
-                  [env]="env"
-                  [grpData]="grpData"
-                  [updateGrpTable]="updateGrpLookUp"
-                  [selectedIndex]="selectedIndex"
+                <app-groups-employees-group-management [isGroupLookUp]="isGroupLookUp" [env]="env" [grpData]="grpData"
+                  [updateGrpTable]="updateGrpLookUp" [selectedIndex]="selectedIndex"
                   (backGroupActionEmit)="backGroupAction()"
                   (actionGroupDialogEmit)="actionGroupDialog($event.value, $event.grpData, $event.event)"
-                  (openGroupDialogEmit)="openGroupDialog()"
-                  (printSelectedEmit)="printSelected()"
-                  (printAllEmit)="printAll()"
-                  (updateGrpLookUpEmit)="updateGrpLookUp($event)">
+                  (openGroupDialogEmit)="openGroupDialog()" (printSelectedEmit)="printSelected()"
+                  (printAllEmit)="printAll()" (updateGrpLookUpEmit)="updateGrpLookUp($event)">
                 </app-groups-employees-group-management>
               </mat-card-content>
             </mat-card>
@@ -96,14 +65,11 @@
 
           <!-- Right side for actions -->
           <div class="col-xl-7 mb-3">
-            <mat-card class="mat-elevation-z g-card" style="height: 100%;">
+            <mat-card class="mat-elevation-z g-card h-100">
               <mat-card-content>
-                <app-groups-assigned-functions-comp
-                  [isGroupLookUp]="isGroupLookUp"
-                  [unassignedFunctions]="unassignedFunctions"
-                  [assignedFunctions]="assignedFunctions"
-                  (saveAssignedFuncEmit)="saveAssignedFunc()"
-                  (addPermissionEmit)="addPermission($event)"
+                <app-groups-assigned-functions-comp [isGroupLookUp]="isGroupLookUp"
+                  [unassignedFunctions]="unassignedFunctions" [assignedFunctions]="assignedFunctions"
+                  (saveAssignedFuncEmit)="saveAssignedFunc()" (addPermissionEmit)="addPermission($event)"
                   (removePermissionEmit)="removePermission($event)">
                 </app-groups-assigned-functions-comp>
               </mat-card-content>
@@ -113,14 +79,14 @@
       </div>
     </div>
   </mat-tab>
-  
- 
-  <mat-tab label="Button Access" *ngIf="env === 'DB'">
+
+
+  <mat-tab label="Button Access" *ngIf="env === 'SD'">
     <div class="groups-tab g-tab">
       <div class="container-fluid p-0">
         <div>
 
-          <mat-card class="mat-elevation-z g-card mb-3 mt-2" style="height: 100%;">
+          <mat-card class="mat-elevation-z g-card mb-3 mt-2 h-100">
             <mat-card-content>
               <div class="d-flex align-items-center">
                 <h2 class="card-header-title mb-3 me-4 d-flex align-items-center">
@@ -136,9 +102,10 @@
               <div>
 
                 <div class="card br-14 table-responsive borderless">
-                  <ng-scrollbar class="mat-table-scrollbar" style="height:550px" track="all">
+                  <ng-scrollbar class="mat-table-scrollbar scrollbar-height" track="all">
 
-                    <table class="w-100 g-card-table table-borderless table-minimal-action-buttons" mat-table matSort [dataSource]="ButtonAccessList">
+                    <table class="w-100 g-card-table table-borderless table-minimal-action-buttons" mat-table matSort
+                      [dataSource]="ButtonAccessList">
                       <ng-container matColumnDef="controlName">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Control Name </th>
                         <td mat-cell *matCellDef="let element">{{element.controlName}}</td>
@@ -147,15 +114,17 @@
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Function </th>
                         <td mat-cell *matCellDef="let element">{{element.function}}</td>
                       </ng-container>
-                      <ng-container  matColumnDef="adminLevel">
-                        <th width="10%" class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header> Admin Level </th>
+                      <ng-container matColumnDef="adminLevel">
+                        <th width="10%" class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header> Admin
+                          Level </th>
                         <td width="10%" class="text-center" mat-cell *matCellDef="let element">
-                          <mat-checkbox color="primary"     [checked]="element.adminLevel" [(ngModel)]="element.adminLevel" (ngModelChange)="ChangeAdminLevel(element)">
+                          <mat-checkbox color="primary" [checked]="element.adminLevel" [(ngModel)]="element.adminLevel"
+                            (ngModelChange)="ChangeAdminLevel(element)">
                           </mat-checkbox>
                         </td>
                       </ng-container>
-                     
-                      <tr mat-header-row *matHeaderRowDef="displayedColumns_1" style=" background-color: #F9F9FF;">
+
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns_1" class="header-background">
                       </tr>
                       <tr mat-row *matRowDef="let row; columns: displayedColumns_1;"></tr>
                     </table>
@@ -163,7 +132,8 @@
                 </div>
 
                 <div class="d-flex justify-content-between bg-white">
-                  <mat-paginator [pageSize]="10"  #paginator1    [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"   ></mat-paginator>
+                  <mat-paginator [pageSize]="10" #paginator1 [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons
+                    [pageSizeOptions]="[10, 20, 100]"></mat-paginator>
                 </div>
 
 

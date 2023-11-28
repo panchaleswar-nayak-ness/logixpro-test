@@ -1,8 +1,8 @@
-<mat-card class="mat-elevation-z g-card mb-3" style="height: 100%;">
+<mat-card class="mat-elevation-z g-card mb-3 h-100-"  >
   <mat-card-content>
 
     <div *ngIf="!isIMPath" class="d-flex justify-content-between align-items-center mb-4">
-      <div style="width:48px"></div>
+      <div class="w-48px"></div>
       <h1 class="m-0" mat-dialog-title>Totes - Add, Edit, Delete and Print</h1>
       <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -22,23 +22,23 @@
     <div class="card br-14 p-3 mb-3">
       <div class="d-xl-flex gap-12 align-items-center">
        
-        <mat-form-field class="custom-form-field w-100 mb-3 mb-xl-0" appearance="outline" [floatLabel]="getFloatLabelValue()"
+        <mat-form-field class="custom-form-field w-100 mb-3 mb-xl-0" appearance="outline" [floatLabel]="getFloatLabelValue1()"
         [hideRequiredMarker]="hideRequiredControl.value"  >
         <mat-label>From Tote ID</mat-label>
-        <input #field_focus type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
-          [(ngModel)]='fromTote' [matAutocomplete]="auto"
-          (keyup)="autocompleteSearchColumn()"    >
-          <button matSuffix *ngIf="fromTote" class="clear-btn"  (click)="fromTote=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-        <mat-autocomplete #auto="matAutocomplete"  #autocompleteInventory>
-          <h6 class="card-header matAutoCompHeader  "><span style="margin-left:5%;width:  140px;">Tote ID</span><span style="width: 43%;" >Cells</span> </h6>
+        <input #fieldFocus type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
+          [(ngModel)]='fromTote' [matAutocomplete]="auto1"
+          (keyup)="searchAutocompleteListFilter1()" (ngModelChange)="searchAutocompleteListFilter1()">
+          <button matSuffix *ngIf="fromTote" class="clear-btn"  (click)="fromTote='';searchAutocompleteListFilter1()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+        <mat-autocomplete #auto1="matAutocomplete"  #autocompleteInventory1>
+          <h6 class="card-header matAutoCompHeader  "><span class="auto-com-span" >Tote ID</span><span class="w-43P" >Cells</span> </h6>
   
-          <mat-option *ngFor="let option of searchAutocompleteList"
+          <mat-option *ngFor="let option of searchAutocompleteListFiltered1"
           [value]="option.toteID" class="matAutoCompTableContent">
           <div class="loc_option">
-              <span class="searchColumn" style="width:  140px;" >{{option.toteID}}</span><span  style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:45%; white-space: nowrap;"matTooltipPosition="above"  >{{option.cells}}</span>
+              <span class="searchColumn w-140"   >{{option.toteID}}</span><span class="auto-option-span" matTooltipPosition="above"  >{{option.cells}}</span>
           </div>
       </mat-option>
-          <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
+          <mat-option *ngIf="searchAutocompleteListFiltered1?.length ==0" disabled>
             No data found
           </mat-option>
         </mat-autocomplete>
@@ -46,30 +46,30 @@
 
 
 
-        <mat-form-field class="custom-form-field w-100 mb-3 mb-xl-0" appearance="outline" [floatLabel]="getFloatLabelValue()"
+        <mat-form-field class="custom-form-field w-100 mb-3 mb-xl-0" appearance="outline" [floatLabel]="getFloatLabelValue2()"
         [hideRequiredMarker]="hideRequiredControl.value"  >
         <mat-label>To Tote ID</mat-label>
         <input type="text" placeholder="Search" aria-label="Number" matInput maxlength="255"
-          [(ngModel)]='toTote' [matAutocomplete]="auto" [disabled]="!fromTote"
-          (keyup)="autocompleteSearchColumn()"   >
-          <button matSuffix *ngIf="toTote" class="clear-btn"  (click)="toTote=''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-          <mat-autocomplete #auto="matAutocomplete"  #autocompleteInventory>
-            <h6 class="card-header matAutoCompHeader stickyHeader "><span style="margin-left:5%;width:  140px;">Tote ID</span><span style="width: 43%;" >Cells</span> </h6>
+          [(ngModel)]='toTote' [matAutocomplete]="auto2" [disabled]="!fromTote"
+          (keyup)="searchAutocompleteListFilter2()" (ngModelChange)="searchAutocompleteListFilter2()">
+          <button matSuffix *ngIf="toTote" class="clear-btn"  (click)="toTote='';searchAutocompleteListFilter2()"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
+          <mat-autocomplete #auto2="matAutocomplete"  #autocompleteInventory2>
+            <h6 class="card-header matAutoCompHeader stickyHeader "><span class="auto-com-span ">Tote ID</span><span class="w-43P" >Cells</span> </h6>
     
-            <mat-option *ngFor="let option of searchAutocompleteList"
+            <mat-option *ngFor="let option of searchAutocompleteListFiltered2"
             [value]="option.toteID" class="matAutoCompTableContent">
             <div class="loc_option">
-                <span class="searchColumn" style="width:  140px;" >{{option.toteID}}</span><span  style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; width:45%; white-space: nowrap;"matTooltipPosition="above"  >{{option.cells}}</span>
+                <span class="searchColumn w-140"  >{{option.toteID}}</span><span class="auto-option-span" matTooltipPosition="above"  >{{option.cells}}</span>
             </div>
         </mat-option>
-            <mat-option *ngIf="searchAutocompleteList?.length ==0" disabled>
+            <mat-option *ngIf="searchAutocompleteListFiltered2?.length ==0" disabled>
               No data found
             </mat-option>
           </mat-autocomplete>
       </mat-form-field>
 
 
-        <div (click)="printRange()" class="d-flex d-xl-block"><button style="flex: 1 auto;" [disabled]="!fromTote && !toTote" type="submit" mat-flat-button class="float-end form-button-submit btn-regular" color="primary">Print
+        <div (click)="printRange()" class="d-flex d-xl-block"><button [disabled]="!fromTote && !toTote" type="submit" mat-flat-button class="float-end form-button-submit btn-regular flex-grow-1" color="primary">Print
             Range</button></div>
       </div>
     </div>
@@ -79,7 +79,7 @@
     </div>
 
     <div  class="card br-14 table-responsive borderless px-0 mb-4" *ngIf="!data.validateTotes && !isIMPath">
-      <ng-scrollbar class="mat-table-scrollbar" track="all" style="height:160px;">
+      <ng-scrollbar class="mat-table-scrollbar h-160" track="all" >
         <table mat-table [dataSource]="dataSource" class="">
 
           <ng-container matColumnDef="actions">
@@ -113,7 +113,7 @@
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
                   <input matInput
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" type="text"
-                    #specialFeature maxlength="255" [(ngModel)]="cellID">
+                    #specialFeature maxlength="6" [(ngModel)]="cellID">
                 </mat-form-field>
               </div>
             </td>
@@ -177,7 +177,7 @@
               <div class="pe-2">
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
 
-                  <input matInput type="text" #specialFeature maxlength="255" [value]="element.cells"
+                  <input matInput type="text" #specialFeature maxlength="6" [value]="element.cells"
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                     (keydown)="onToteChange($event,i,'1')" (keyup)="onToteChange($event,i,'1')"
                     (change)="onToteChange($event,i,'1')" (keypress)="onToteChange($event,i,'1')"

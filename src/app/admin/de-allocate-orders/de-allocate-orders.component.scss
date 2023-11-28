@@ -1,0 +1,118 @@
+table {
+
+  th,
+  td {
+    white-space: nowrap;
+    padding-right: 12px;
+  }
+
+  tr {
+    display: table-row !important;
+    white-space: nowrap;
+
+    th,
+    td {
+      vertical-align: middle;
+      border-bottom: 1px solid var(--clr-pure-white);
+      padding-right: 10px;
+
+      &:first-child {
+        padding-left: 20px !important;
+      }
+
+      &:last-child {
+        padding-right: 20px !important;
+      }
+    }
+  }
+
+  .highlight-row {
+    background-color: #FCEAEE;
+  }
+
+
+
+  .selected {
+    background-color: var(--clr-primary-300) !important;
+    border-radius: 0px !important;
+
+    color: var(--clr-pure-white);
+
+
+  }
+}
+
+
+
+table.custom-action-clickable-table tr {
+  top: 0;
+  left: 0px;
+  right: 14px;
+  bottom: 0;
+  cursor: pointer;
+  color: var(--clr-pure-white);
+  border-radius: 8px !important;
+  margin-left: 15px;
+}
+
+table.custom-action-clickable-table tr:hover {
+  transition: 0.3s ease all;
+  color: var(--clr-pure-white) !important;
+  background: var(--clr-primary-300);
+  position: relative;
+  border-radius: 8px !important;
+  z-index: 0;
+  cursor: pointer;
+}
+
+table.custom-action-clickable-table tr:hover td {
+  color: var(--clr-pure-white) !important;
+  border: none;
+}
+
+.stickyHeader {
+  position: sticky;
+  top: 0px;
+  z-index: 200000000;
+}
+
+.height-550 {
+
+  height: 550px;
+
+}
+
+.height-350 {
+
+
+  height: 350px;
+
+}
+
+.searchedItemOrder {
+  line-height: 24px;
+  height: auto;
+  min-height: auto !important;
+  padding: 12px 16px;
+  overflow: unset;
+}
+
+.width-140{
+  width:  140px !important;
+}
+
+.matFormFeild1{
+  flex:1 !important;
+}
+.chooseSearchType-style{
+  width: 140px !important;
+}
+.matFormFeild2{
+  flex:1 auto !important;
+}
+.cardbr-style{
+  overflow-x: auto !important;
+}
+.table-header-clr{
+  background-color: var(--clr-table-header);
+}

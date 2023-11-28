@@ -4,7 +4,7 @@ table{
         white-space: nowrap;
         th, td{
             vertical-align: middle;
-            border-bottom: 1px solid #fff;
+            border-bottom: 1px solid var(--clr-pure-white);
             &:first-child{
                 padding-left: 20px !important;
             }
@@ -13,4 +13,28 @@ table{
             }
         }
     }
+}
+
+.pick-card{
+    text-overflow: ellipsis !important;
+     overflow: hidden !important; 
+    max-width: 20ch !important;
+     white-space: nowrap !important;
+
+}
+
+.pick-card-button{
+    flex:1 !important;
+}
+
+.pick-overflow{
+    overflow-x: auto !important;
+}
+
+.pick-height{
+height: 550px !important;
+
+}
+.w-200px{
+    width: 200px !important;
 }

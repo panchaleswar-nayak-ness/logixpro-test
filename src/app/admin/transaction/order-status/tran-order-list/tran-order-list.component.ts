@@ -1,37 +1,24 @@
-import {
-  Component,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-  AfterViewInit,
-  Input,
-  EventEmitter,
-  Output,
-} from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit, Input, EventEmitter, Output } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/init/auth.service';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  Subject,
-  Subscription,
-} from 'rxjs';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
-import { SharedService } from 'src/app/services/shared.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 import { FilterToteComponent } from 'src/app/admin/dialogs/filter-tote/filter-tote.component';
 import { OmChangePriorityComponent } from 'src/app/dialogs/om-change-priority/om-change-priority.component';
-import { ContextMenuFiltersService } from 'src/app/init/context-menu-filters.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { ShippingCompleteDialogComponent } from 'src/app/dialogs/shipping-complete-dialog/shipping-complete-dialog.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import { AppRoutes, Column, DialogConstants, RouteNames, StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-tran-order-list',
@@ -123,6 +110,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     'wareHouse',
     'importDate',
     'batchPickID',
+    'statusCode',
     'userField1',
     'userField2',
     'userField3',
@@ -157,37 +145,31 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   public catchToteId;
   isToolTipDisabled = false;
   searchByInput = new Subject<string>();
-  setVal
-
+  setVal;
   compDate = '';
+
   @Input()
   set deleteEvnt(event: Event) {
-    if (event) {
-      this.getContentData(); 
-    }
+    if (event) this.getContentData(); 
   }
 
   @Input() set orderNoEvent(event: any) {
     if (event) {
-      this.toteId =
-        event.columnFIeld != 'Order Number' ? event.searchField : '';
-      this.orderNo =
-        event.columnFIeld === 'Order Number' ? event.searchField : '';
+      this.toteId = event.columnFIeld != 'Order Number' ? event.searchField : '';
+      this.orderNo = event.columnFIeld === 'Order Number' ? event.searchField : '';
       this.searchCol = '';
       this.searchString = '';
-
-      console.log('orderNoEvent',this.orderNo,event);
       this.getContentData();
       this.selShipComp(event);
     }
   }
 
   @Input() set toteIdEvent(event: Event) {
-    if (event) {
-      this.toteId = event;
-    }
+    if (event) this.toteId = event;
   }
+
   // Emitters
+  isActiveTrigger:boolean =false;
   @Output() openOrders = new EventEmitter<any>();
   @Output() completeOrders = new EventEmitter<any>();
   @Output() reprocessOrders = new EventEmitter<any>();
@@ -199,6 +181,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('viewAllLocation') customTemplate: TemplateRef<any>;
+
   hideRequiredControl = new FormControl(false);
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   pageEvent: PageEvent;
@@ -234,32 +217,26 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
   public priority = false;
   shippingComplete = false;
+
   public iAdminApiService: IAdminApiService;
+  
   constructor(
-    private Api:ApiFuntions,
     private authService: AuthService,
     private _liveAnnouncer: LiveAnnouncer,
     private sharedService: SharedService, 
-    private adminApiService: AdminApiService,
+    public adminApiService: AdminApiService,
     private global:GlobalService,
-    private router: Router,
-    private filterService: ContextMenuFiltersService,
+    public router: Router,
+    public filterService: ContextMenuFiltersService,
     private contextMenuService : TableContextMenuService
   ) {
     this.iAdminApiService = adminApiService;
-    this.setVal = localStorage.getItem('routeFromOrderStatus')
-    if(router.url == '/OrderManager/OrderStatus' || router.url == '/OrderManager/OrderStatus?type=TransactionHistory'|| this.setVal == 'true'){
-      this.priority = true;
-    }
-    else if(router.url == '/admin/transaction'){
-      this.priority = false;
-    }
+    this.setVal = localStorage.getItem('routeFromOrderStatus');
+    if(router.url == AppRoutes.OrderManagerOrderStatus || router.url == `${AppRoutes.OrderManagerOrderStatus}?type=TransactionHistory`|| this.setVal == StringConditions.True) this.priority = true;
+    else if(router.url == AppRoutes.AdminTrans) this.priority = false;
   }
-
   
   getContentData() {
-    
-     
     this.payload = { 
       draw: 0,
       compDate: this.compDate,
@@ -275,101 +252,79 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       toteID: this.toteId,
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
-      filter: this.FilterString
+      filter: this.filterString
     };
-    this.iAdminApiService
-      .OrderStatusData(this.payload)
-      .subscribe(
-        {next: (res: any) => {
-          if(res.isExecuted)
-          {
-            this.detailDataInventoryMap = res.data?.orderStatus;
-            this.getOrderForTote = res.data?.orderNo;
-            this.dataSource = new MatTableDataSource(res.data?.orderStatus);
-  
-            this.columnValues = res.data?.orderStatusColSequence;
-            this.customPagination.total = res.data?.totalRecords;
-            this.getOrderForTote =
-              res?.data?.orderStatus[0]?.orderNumber;
-            if (res.data) {
-              this.onOpenOrderChange(res.data?.opLines);
-              this.onCompleteOrderChange(res.data?.compLines);
-              this.onReprocessOrderChange(res.data?.reLines);
-              if (
-                res?.data?.orderStatus?.length > 0
-              ) {
-                res.data.orderStatus.find((el) => {
-                  res.data.completedStatus = (el.completedDate === '' ? 'In Progress' : 'Completed');
-                  return res.data.completedStatus;
-                });
-              }
-              this.onOrderTypeOrderChange(
-                
-                  res?.data?.orderStatus?.length > 0 &&
-                  res?.data?.orderStatus[0]?.transactionType
-              );
-              
-              this.currentStatusChange(res.data.completedStatus);
-              this.totalLinesOrderChange(res.data?.totalRecords);
-              this.sharedService.updateOrderStatusSelect({
-                totalRecords: res.data?.totalRecords,
+    this.iAdminApiService.OrderStatusData(this.payload).subscribe({
+      next: (res: any) => {
+        if(res.isExecuted) {
+          this.detailDataInventoryMap = res.data?.orderStatus;
+          this.getOrderForTote = res.data?.orderNo;
+          this.dataSource = new MatTableDataSource(res.data?.orderStatus);
+
+          this.columnValues = res.data?.orderStatusColSequence;
+          this.customPagination.total = res.data?.totalRecords;
+          this.getOrderForTote = res?.data?.orderStatus[0]?.orderNumber;
+          
+          if (res.data) {
+            this.onOpenOrderChange(res.data?.opLines);
+            this.onCompleteOrderChange(res.data?.compLines);
+            this.onReprocessOrderChange(res.data?.reLines);
+            if (res?.data?.orderStatus?.length > 0) {
+              res.data.orderStatus.find((el) => {
+                res.data.completedStatus = (el.completedDate === '' ? StringConditions.InProgress : StringConditions.Completed);
+                return res.data.completedStatus;
               });
             }
-            
-  
-            if (res.data?.onCar.length) {
-              res.data.onCar.filter((item) => {
-                let carouselValue = 'on';
-                item.carousel = carouselValue
-                return item.carousel;
-              });
-              this.onLocationZoneChange(res.data?.onCar);
-            } else if (res.data?.offCar.length) {
-              res.data.offCar.filter((item) => {
-                let carouselValue = 'off';
-                item.carousel = carouselValue
-                return item.carousel;
-              });
-              this.onLocationZoneChange(res.data?.offCar);
-            } else {
-              this.onLocationZoneChange(res.data?.onCar);
-            }
-          }
-          else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("iAdminApiService",res.responseMessage);
+            this.onOrderTypeOrderChange(res?.data?.orderStatus?.length > 0 && res?.data?.orderStatus[0]?.transactionType);
+            this.currentStatusChange(res.data.completedStatus);
+            this.totalLinesOrderChange(res.data?.totalRecords);
+            this.sharedService.updateOrderStatusSelect({ totalRecords: res.data?.totalRecords });
           }
           
-         
-        },
-        error: (error) => {}}
-      );
-  }
-
-  selShipComp(event:any){
-    if(event.searchField != "" && event.columnFIeld == "Order Number"){
-      this.iAdminApiService.selShipComp({ orderNumber: event.searchField }).subscribe((res: any) => {
-        if (res.isExecuted) {
-          if (res.data == "") {
-            this.shippingComplete = false;
-          } else {
-            this.shippingComplete = true;
-          }
+          if (res.data?.onCar.length) {
+            res.data.onCar.filter((item) => {
+              let carouselValue = StringConditions.on;
+              item.carousel = carouselValue
+              return item.carousel;
+            });
+            this.onLocationZoneChange(res.data?.onCar);
+          } else if (res.data?.offCar.length) {
+            res.data.offCar.filter((item) => {
+              let carouselValue = StringConditions.off;
+              item.carousel = carouselValue
+              return item.carousel;
+            });
+            this.onLocationZoneChange(res.data?.offCar);
+          } else this.onLocationZoneChange(res.data?.onCar);
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("iAdminApiService",res.responseMessage);
+        }
+      },
+      error: (error) => {}
+    });
+  }
+
+  selShipComp(event: any) {
+    if(event.searchField != "" && event.columnFIeld == Column.OrderNumber){
+      this.iAdminApiService.selShipComp({ orderNumber: event.searchField }).subscribe((res: any) => {
+        if (res.isExecuted)
+          if (res.data == "") this.shippingComplete = false;
+          else this.shippingComplete = true;
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("selShipComp",res.responseMessage);
         }
       });
     }
-    else{
-      this.shippingComplete = false;
-    }
+    else this.shippingComplete = false;
   }
 
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelControl.value ?? 'auto';
   }
+
   deleteSelectedOrder() {
     this.detailDataInventoryMap.this.payload = {
       transType: '',
@@ -379,38 +334,44 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       lineNumber: '', 
     };
 
-    this.iAdminApiService
-      .DeleteOrder(this.payload)
-      .subscribe(
-        {next: (res: any) => { 
-        },
-        error: (error) => {}}
-      );
+    this.iAdminApiService.DeleteOrder(this.payload).subscribe({
+      next: () => {},
+      error: () => {}
+    });
   }
+
   orderNoChange(event: Event) {
     this.orderNoEvent = event;
   }
+
   toteIdChange(event: Event) {
     this.orderNoEvent = event;
   }
+
   onOpenOrderChange(event) {
     this.openOrders.emit(event);
   }
+
   onOrderTypeOrderChange(event) {
     this.orderTypeOrders.emit(event);
   }
+
   onReprocessOrderChange(event) {
     this.reprocessOrders.emit(event);
   }
+
   totalLinesOrderChange(event) {
     this.totalLinesOrders.emit(event);
   }
+
   currentStatusChange(event) {
     this.currentStatus.emit(event);
   }
+
   onCompleteOrderChange(event) {
     this.completeOrders.emit(event);
   }
+
   onLocationZoneChange(event) {
     this.locationZones.emit(event);
   }
@@ -422,82 +383,53 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       itemNumber: '',
       holds: false,
       orderStatusOrder: '',
-      app: 'Admin'
+      app: RouteNames.Admin
     };
-    this.iAdminApiService
-      .TransactionModelIndex(paylaod)
-      .subscribe(
-        {next: (res: any) => {
-        },
-        error: (error) => {}}
-      );
+    this.iAdminApiService.TransactionModelIndex(paylaod);
   }
+
   clearData(event) {
     this.dataSource = new MatTableDataSource();
     this.searchCol = '';
     this.searchString = '';
     this.clearFromListChange.emit(event);
   }
-  getClass(element) {
+
+  getClass() {
     return 'addRow';
   }
+
   getTransTypeColor(element) {
-    if (element.transactionType.toLowerCase() === 'pick') {
-      return 'background-color: #CF9ECF';
-    } else if (element.transactionType.toLowerCase() === 'putaway' || element.transactionType.toLowerCase() ===  'put away') {
-      return 'background-color: #d9edf7';
-    } else if (element.transactionType.toLowerCase() === 'count') {
-      return 'background-color: #FFDBB8';
-    } else if (element.transactionType.toLowerCase() === 'complete') {
-      return 'background-color: #e0e0d1';
-    } else if (element.transactionType.toLowerCase() === 'locationChange') {
-      return 'background-color: #ADAD85';
-    } else if (element.transactionType.toLowerCase() === 'shipping') {
-      return 'background-color: #8585A6';
-    } else if (element.transactionType.toLowerCase() === 'shippingcomplete' || element.transactionType.toLowerCase() === 'shipping complete' ) {
-      return 'background-color: #ff708c';
-    } else if (element.transactionType.toLowerCase() === 'adjustment') {
-      return 'background-color: #85A37A';
-    } else {
-      return;
-    }
+    if (element.transactionType.toLowerCase() === 'pick') return 'background-color: #CF9ECF';
+    else if (element.transactionType.toLowerCase() === 'putaway' || element.transactionType.toLowerCase() ===  'put away') return 'background-color: #d9edf7';
+    else if (element.transactionType.toLowerCase() === 'count') return 'background-color: #FFDBB8';
+    else if (element.transactionType.toLowerCase() === 'complete') return 'background-color: #e0e0d1';
+    else if (element.transactionType.toLowerCase() === 'locationChange') return 'background-color: #ADAD85';
+    else if (element.transactionType.toLowerCase() === 'shipping') return 'background-color: #8585A6';
+    else if (element.transactionType.toLowerCase() === 'shippingcomplete' || element.transactionType.toLowerCase() === 'shipping complete' ) return 'background-color: #ff708c';
+    else if (element.transactionType.toLowerCase() === 'adjustment') return 'background-color: #85A37A';
+    else return;
   }
 
   getStatus(element){
-    if (
-      element.tableType.toLowerCase() === 'open' &&
-      element.completedDate == '' &&
-      element.fileFrom.toLowerCase() == 'open'
-    ) {
-      return 'Open';
-    } else if (element.completedDate != '') {
-      return 'Completed';
-    } else if (element.fileFrom.toLowerCase() != 'open') {
-      return 'Re-process';
-    } else {
-      return;
-    }
+    if (element.tableType.toLowerCase() === 'open' && element.completedDate == '' && element.fileFrom.toLowerCase() == 'open') return 'Open';
+    else if (element.completedDate != '') return 'Completed';
+    else if (element.fileFrom.toLowerCase() != 'open') return 'Re-process';
+    else return;
   }
+
   getColor(element) {
-    if (
-      element.tableType.toLowerCase() === 'open' &&
-      element.completedDate == '' &&
-      element.fileFrom.toLowerCase() == 'open'
-    ) {
-      return 'background-color: #FFF0D6;color:#4D3B1A';
-    } else if (element.completedDate != '') {
-      return 'background-color: #C8E2D8;color:#114D35';
-    } else if (element.fileFrom.toLowerCase() != 'open') {
-      return 'background-color: #F7D0DA;color:#4D0D1D';
-    } else {
-      return;
-    }
+    if (element.tableType.toLowerCase() === 'open' && element.completedDate == '' && element.fileFrom.toLowerCase() == 'open') return 'background-color: #FFF0D6;color:#4D3B1A';
+    else if (element.completedDate != '') return 'background-color: #C8E2D8;color:#114D35';
+    else if (element.fileFrom.toLowerCase() != 'open') return 'background-color: #F7D0DA;color:#4D0D1D';
+    else return;
   }
+
   getColumnsData() {
     this.getContentData();
   }
-  async autocompleteSearchColumn() {
-    
+
+  async autoCompleteSearchColumn() {
     let searchPayload = {
       query: this.searchString,
       tableName: 1,
@@ -506,73 +438,47 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
     // NextSuggestedTransactions
     // OrderNumberNext
-    this.iAdminApiService
-      .NextSuggestedTransactions(searchPayload)
-      .subscribe(
-        {next: (res: any) => {
-          if(res.isExecuted && res.data)
-          {
-            this.searchAutocompleteList = res.data;
-          }
+    this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
+        next: (res: any) => {
+          if(res.isExecuted && res.data) this.searchAutocompleteList = res.data;
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("NextSuggestedTransactions",res.responseMessage);
-
           }
-        },
-        error: (error) => {}}
-      );
+        }
+      });
   }
   
   sortChange(event) {
-    if (
-      !this.dataSource._data._value ||
-      event.direction == '' ||
-      event.direction == this.sortOrder
-    )
-      return;
-
+    if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
     let index;
-    this.displayedColumns.forEach((x, i) => {
-      if (x === event.active) {
-        index = i;
-      }
-    });
-
+    this.displayedColumns.forEach((x, i) => { if (x === event.active) index = i; });
     this.sortCol = index;
     this.sortOrder = event.direction;
     this.getContentData();
   }
 
   actionDialog(event) {
-    if (this.toteId != '') {
-      this.catchToteId = this.toteId;
-    } else {
-      this.toteId = '';
-    }
+    if (this.toteId != '') this.catchToteId = this.toteId;
+    else this.toteId = '';
 
     this.searchCol = event;
     this.searchString = '';
     this.searchAutocompleteList = [];
     this.searchByInput.next(event)
   }
+
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
-
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
     this.customPagination.recordsPerPage = e.pageSize;
-
     this.getContentData();
   }
 
   announceSortChange(sortState: Sort) {
-
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-      this._liveAnnouncer.announce('Sorting cleared');
-    }
+    if (sortState.direction) this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    else this._liveAnnouncer.announce('Sorting cleared');
     this.dataSource.sort = this.sort;
   }
 
@@ -580,12 +486,10 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.userData = this.authService.userData();
     this.orderNo = '';
     this.toteId = '';
-    this.searchByInput
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        this.autocompleteSearchColumn();
-        this.getContentData();
-      });
+    this.searchByInput.pipe(debounceTime(400), distinctUntilChanged()).subscribe(() => {
+      this.autoCompleteSearchColumn();
+      this.getContentData();
+    });
 
     // Data coming from select order when user enter / check tote filter by Id it gets object type it tote id selected only
     // then it will do send back the order number to select order component and set order field and also check if
@@ -593,74 +497,54 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     // orderstatus table generation api .
     this.subscription.add(
       this.sharedService.orderStatusObjObserver.subscribe((obj) => {
-        if (obj.type === 'Tote ID') {
+        if (obj.type === StringConditions.ToteID) {
           this.sharedService.updateOrderStatusOrderNo(this.getOrderForTote);
           this.orderNo = this.getOrderForTote;
           this.toteId = '';
           this.getContentData();
-          let payload = {
-            orderNumber: this.getOrderForTote
-          };
-          this.iAdminApiService
-            .ScanValidateOrder(payload)
-            .subscribe(
-              {next: (res: any) => {
-                if(res.isExecuted)
-                {
-                  if (
-                    res.data.length > 0 &&
-                    res.data.length >= 2
-                  ) {
+          let payload = { orderNumber: this.getOrderForTote };
+          this.iAdminApiService.ScanValidateOrder(payload).subscribe({
+            next: (res: any) => {
+                if(res.isExecuted) {
+                  if (res.data.length > 0 && res.data.length >= 2) {
                     res.data[0] = 'Entire Order';
                     // add default check for tote id
                     this.sharedService.updateToteFilterCheck(true);
+
                     const dialogRef:any = this.global.OpenDialog(FilterToteComponent, {
                       width: '650px',
-                      autoFocus: '__non_existing_element__',
-        disableClose:true,
+                      autoFocus: DialogConstants.autoFocus,
+                      disableClose: true,
                       data: {
                         dates: res.data,
                         orderName: this.getOrderForTote,
                       },
                     });
+
                     dialogRef.afterClosed().subscribe((res) => {
-                      if (
-                        res.selectedDate != '' &&
-                        res.selectedDate != undefined
-                      ) {
-                        if (res.selectedDate == 'Entire Order') {
-                          this.compDate = '';
-                        } else {
-                          this.compDate = res.selectedDate;
-                        }
-  
+                      if (res.selectedDate != '' && res.selectedDate != undefined) {
+                        if (res.selectedDate == StringConditions.EntireOrder) this.compDate = '';
+                        else this.compDate = res.selectedDate;
                         this.getContentData();
                       }
                     });
-                  } else {
-                    
-                    this.compDate = '';
-                    
-                  }
+                  } else this.compDate = '';
                 }
                 else {
-                  this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                  this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
                   console.log("iAdminApiService",res.responseMessage);
                 }
-                
-              },
-              error: (error) => {}}
-            );
+              }
+            });
         }
       })
     );
 
     this.subscription.add(
-      this.sharedService.updateCompDateObserver.subscribe((obj) => {
-        this.compDate = '';
-      })
+      this.sharedService.updateCompDateObserver.subscribe(() => this.compDate = '')
     );
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
@@ -670,39 +554,37 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   }
 
   openGcBeginTest() { 
-    let dialogRef:any = this.global.OpenDialog(OmChangePriorityComponent, { 
-      height: 'auto',
+    const dialogRef : any = this.global.OpenDialog(OmChangePriorityComponent, { 
+      height: DialogConstants.auto,
       width: '560px',
-      autoFocus: '__non_existing_element__',
-      disableClose:true, 
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true, 
       data: {
         orderNo: this.orderNo,
         priorityTable: this.dataSource.filteredData[0].priority,
-        
-        
       }
-    })
-    dialogRef.afterClosed().subscribe(result =>{
-      if( result.isExecuted){
-        this.getContentData();
-      }
-    })
-    }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => { if( result.isExecuted) this.getContentData(); });
+  }
 
   getColDef(colHeader:any){
     return this.Order_Table_Config.filter((item) => item.colHeader == colHeader)[0]?.colDef ?? '';
   }
 
   onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
-    this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType);
+    event.preventDefault()
+    this.isActiveTrigger = true;
+    setTimeout(() => this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType), 100);
   }
 
-  FilterString : string = "1 = 1";
+  filterString : string = "1 = 1";
 
   optionSelected(filter : string) {
-    this.FilterString = filter;
+    this.filterString = filter;
     this.resetPagination();
     this.getContentData();    
+    this.isActiveTrigger = false;
   }
 
   resetPagination(){
@@ -711,17 +593,14 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.paginator.pageIndex = 0;
   }
 
-  ShippingCompleteDialog() {
-    this.global.OpenDialog(ShippingCompleteDialogComponent,{
-      height: 'auto',
+  shippingCompleteDialog() {
+    this.global.OpenDialog(ShippingCompleteDialogComponent, {
+      height: DialogConstants.auto,
       width: '100vw',
-      autoFocus: '__non_existing_element__',
-      disableClose:true,
-      data: {
-        orderNumber: this.orderNo,
-      },
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: { orderNumber: this.orderNo },
     });
-
   }
 
   printReport(){

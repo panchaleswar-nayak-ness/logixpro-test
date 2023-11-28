@@ -1,0 +1,133 @@
+<div class="container-fluid p-0 mt-3">
+    <mat-card class="mat-elevation-z g-card">
+      <mat-card-content>
+        <div
+          class="d-xl-flex justify-content-between align-items-center mb-3"
+        >
+          
+          <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3 mb-xl-0" heading="Status" icon="flaky"></app-icon-heading-component>
+
+          <div class="w-100 d-flex d-xl-block">
+            <mat-form-field
+              class="action-dropdown custom-form-field-bg-white float-end flex-1"
+              appearance="outline">
+              <mat-label>Actions</mat-label>
+              <mat-select
+                #matRef
+                class="employees-action"
+                placeholder="Actions"
+              >
+                <mat-option value="add_new_transaction"
+                  >Refresh Status</mat-option
+                >
+                <mat-option value="add_new_transaction"
+                  >Transaction Journal</mat-option
+                >
+                <mat-option value="add_new_transaction"
+                  >Event Log Manager</mat-option
+                >
+              </mat-select>
+              <span class="material-symbols-outlined icon-expand-more">
+                expand_more
+              </span>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row d-xl-flex">
+          <div class="col-xl-4 main-widget">
+            <div class="custom bg-white bg-50 br-14 mb-3">
+              <div class="counter bg-tertiary-10">
+                <div>
+                  <h6 class="text-tertiary-900"><b>Picks</b></h6>
+                  <div class="d-flex gap-20 justify-content-center">
+                    <div class="employees text-center">
+                      <app-stats-circle value="56" title="Open"></app-stats-circle>
+                    </div>
+                    <div class="customer text-center">
+                      <app-stats-circle value="65" title="Completed"></app-stats-circle>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 main-widget">
+            <div class="custom bg-white bg-50 br-14 mb-3">
+              <div class="counter bg-tertiary-10">
+                <div>
+                  <h6 class="text-tertiary-900"><b>Put Aways</b></h6>
+                  <div class="d-flex gap-20 justify-content-center">
+                    <div class="employees text-center">
+                      <app-stats-circle value="65" title="Open"></app-stats-circle>
+                    </div>
+                    <div class="customer text-center">
+                      <app-stats-circle value="55" title="Closed"></app-stats-circle>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 main-widget">
+            <div class="custom bg-white bg-50 br-14 mb-3">
+              <div class="counter bg-tertiary-10">
+                <div>
+                  <h6 class="text-tertiary-900"><b>Counts</b></h6>
+                  <div class="d-flex gap-20 justify-content-center">
+                    <div class="employees text-center">
+                      <app-stats-circle value="56" title="Open"></app-stats-circle>
+                    </div>
+                    <div class="customer text-center">
+                      <app-stats-circle value="65" title="Closed"></app-stats-circle>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 main-widget">
+            <div class="custom bg-white bg-50 br-14 mb-3">
+              <div class="counter bg-tertiary-10">
+                <div>
+                  <h6 class="text-tertiary-900"><b>Adjustments</b></h6>
+                  <div class="d-flex gap-20 justify-content-center">
+                    <div class="employees text-center">
+                      <app-stats-circle value="56" title="Adjusted"></app-stats-circle>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 main-widget">
+            <div class="custom bg-white bg-50 br-14 mb-3">
+              <div class="counter bg-tertiary-10">
+                <div>
+                  <h6 class="text-tertiary-900"><b>Changes</b></h6>
+                  <div class="d-flex gap-20 justify-content-center">
+                    <div class="employees text-center">
+                      <app-stats-circle value="65" title="Location"></app-stats-circle>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 main-widget">
+            <div class="custom bg-white bg-50 br-14 mb-3">
+              <div class="counter bg-tertiary-10">
+                <div>
+                  <h6 class="text-tertiary-900"><b>Transactions</b></h6>
+                  <div class="d-flex gap-20 justify-content-center">
+                    <div class="employees text-center">
+                      <app-stats-circle value="567" title="Re-Processed"></app-stats-circle>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>

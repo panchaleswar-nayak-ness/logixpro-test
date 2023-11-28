@@ -4,13 +4,15 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 
-import { AuthService } from 'src/app/init/auth.service';
-import labels from '../../../labels/labels.json';
+import { AuthService } from 'src/app/common/init/auth.service';
+import labels from 'src/app/common/labels/labels.json';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { ConfirmationMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+
 
 @Component({
   selector: 'app-put-away',
@@ -19,12 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class PutAwayComponent implements OnInit {
 
-  displayedColumns1: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
-  displayedColumns2: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
-  tableData1: any = new MatTableDataSource([]);
-  tableData2: any = new MatTableDataSource([]);
-  userData: any;
-  orderNumberSearch: string = '';
+
 
   @ViewChild('MatSort1') sort1: MatSort;
   sequenceKeyMapping1: any = [
@@ -45,7 +42,7 @@ export class PutAwayComponent implements OnInit {
   @ViewChild('paginator1') paginator1: MatPaginator;
   @ViewChild('paginator2') paginator2: MatPaginator;
 
-  filterValue1:string = '';
+  LeftfilterValue:string = '';
   filterValue2:string = '';
   public iAdminApiService: IAdminApiService;
   constructor(
@@ -59,11 +56,15 @@ export class PutAwayComponent implements OnInit {
   ) { 
     this.iAdminApiService = adminApiService;
   }
-
+  userData: any;
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.GetLocAssPutAwayTable();
   }
+
+  displayedColumns1: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
+  displayedColumns2: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
+  tableData1: any = new MatTableDataSource([]);
 
   GetLocAssPutAwayTable(loader: boolean = false) {
     this.iAdminApiService.GetLocAssPutAwayTable().subscribe((res: any) => {
@@ -75,7 +76,7 @@ export class PutAwayComponent implements OnInit {
       }
     });
   }
-
+  tableData2: any = new MatTableDataSource([]);
   add(order: any) {
     this.tableData2 = new MatTableDataSource(this.tableData2.data.concat(order));
     this.tableData2.paginator = this.paginator2;
@@ -87,14 +88,14 @@ export class PutAwayComponent implements OnInit {
     this.tableData1 = new MatTableDataSource(this.tableData1.data);
     this.tableData1.paginator = this.paginator1;
     this.tableData1.sort = this.sort1;
-    this.tableData1.filter = this.filterValue1.trim().toLowerCase();
+    this.tableData1.filter = this.LeftfilterValue.trim().toLowerCase();
   }
 
   remove(order: any) {
     this.tableData1 = new MatTableDataSource(this.tableData1.data.concat(order));
     this.tableData1.paginator = this.paginator1;
     this.tableData1.sort = this.sort1;
-    this.tableData1.filter = this.filterValue1.trim().toLowerCase();
+    this.tableData1.filter = this.LeftfilterValue.trim().toLowerCase();
 
     let index:any = this.tableData2.data.findIndex(x => x.orderNumber == order.orderNumber);
     this.tableData2.data.splice(index,1);
@@ -113,14 +114,14 @@ export class PutAwayComponent implements OnInit {
     this.tableData1 = new MatTableDataSource([]);
     this.tableData1.paginator = this.paginator1;
     this.tableData1.sort = this.sort1;
-    this.tableData1.filter = this.filterValue1.trim().toLowerCase();
+    this.tableData1.filter = this.LeftfilterValue.trim().toLowerCase();
   }
 
   removeAll() {
     this.tableData1 = new MatTableDataSource(this.tableData1.data.concat(this.tableData2.data));
     this.tableData1.paginator = this.paginator1;
     this.tableData1.sort = this.sort1;
-    this.tableData1.filter = this.filterValue1.trim().toLowerCase();
+    this.tableData1.filter = this.LeftfilterValue.trim().toLowerCase();
 
     this.tableData2 = new MatTableDataSource([]);
     this.tableData2.paginator = this.paginator2;
@@ -130,7 +131,7 @@ export class PutAwayComponent implements OnInit {
 
   locationAssignment() {
     if (this.tableData2.data.length == 0) {
-      this.global.ShowToastr('error',"There were no orders selected for location assignment marking", 'No Orders Selected');
+      this.global.ShowToastr(ToasterType.Error,"There were no orders selected for location assignment marking", ConfirmationMessages.NoOrdersSelected);
     }
     else {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -153,9 +154,9 @@ export class PutAwayComponent implements OnInit {
             if (res.isExecuted && res.data) {
               this.tableData2 = new MatTableDataSource([]);
               this.tableData2.paginator = this.paginator2;
-              this.global.ShowToastr('success',labels.alert.success, 'Success!');
+              this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             } else {
-              this.global.ShowToastr('error',"There was an error marking these orders for location assignment", 'Error');
+              this.global.ShowToastr(ToasterType.Error,"There was an error marking these orders for location assignment", ToasterTitle.Error);
               console.log("LocationAssignmentOrderInsert",res.responseMessage);
             }
           });

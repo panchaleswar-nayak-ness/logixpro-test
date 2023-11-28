@@ -1,0 +1,24 @@
+table{
+    th,td{
+      white-space: nowrap;
+      padding-right: 10px;
+
+    }
+    td {
+      max-width: 15ch;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding-right: 15px;
+    }
+  }
+   .w-48px {
+    width: 48px;
+  }
+   .height-545 {
+      height: 545px;
+    }
+    
+      .table-settings-tr{
+        background-color: var(--clr-table-header);
+    }

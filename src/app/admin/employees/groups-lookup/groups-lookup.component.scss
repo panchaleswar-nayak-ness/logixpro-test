@@ -4,14 +4,14 @@ table.custom-action-clickable-table tr{
     right: 14px;
     bottom: 0;
     cursor: pointer;
-    color:#fff;
+    color:var(--clr-pure-white);
     border-radius: 8px !important;
     margin-left:15px;
   }
   
   table.custom-action-clickable-table tr td:hover{
           transition: 0.1s ease all;
-          color: #fff !important;
+          color: var(--clr-pure-white) !important;
           background: var(--clr-primary-300);
           position: relative;
           border-radius: 8px !important;
@@ -20,7 +20,7 @@ table.custom-action-clickable-table tr{
   }
   
   table.custom-action-clickable-table tr:hover td{
-    color: #fff !important;
+    color: var(--clr-pure-white) !important;
     border: none;
   }
   
@@ -31,7 +31,7 @@ table.custom-action-clickable-table tr{
       border-radius: 8px;
        td{
           vertical-align: middle;
-          border-bottom: 1px solid #fff;
+          border-bottom: 1px solid var(--clr-pure-white);
           padding-right: 10px;
           &:first-child{
               padding-left: 20px !important;
@@ -46,3 +46,10 @@ table.custom-action-clickable-table tr{
       }
   }
   
+.scrollbar-height{
+    height: 560px !important;
+}
+
+.table-background{
+    background-color: var(--clr-table-header) !important;
+}

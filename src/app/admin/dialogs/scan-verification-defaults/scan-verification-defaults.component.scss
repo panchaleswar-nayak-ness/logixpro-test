@@ -1,0 +1,16 @@
+.table1 td{
+    padding-right: 24px;
+    }
+    
+    table{
+        tr{
+            &:first-child{
+                td{
+                    padding-top: 10px;
+                }
+            }
+        }
+    }
+    .ngScrolbarStyleC{
+        height:295px !important;
+    }

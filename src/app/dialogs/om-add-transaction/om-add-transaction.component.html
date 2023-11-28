@@ -1,0 +1,251 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Adding a New Transaction for 12351</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+<ng-scrollbar class="height-65">
+    <div class="px-3">
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Order Number</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000" disabled>
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+                <mat-label>Transaction Type</mat-label>
+                <mat-select value="0">
+                    <mat-option value="0">
+                        Sample Text
+                    </mat-option>
+                </mat-select>
+                <span class="material-symbols-outlined icon-expand-more text-20">
+                    expand_more
+                </span>
+
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+                <mat-label>Warehouse</mat-label>
+                <mat-select value="0">
+                    <mat-option value="0">
+                        Sample Text
+                    </mat-option>
+                </mat-select>
+                <span class="material-symbols-outlined icon-expand-more text-20">
+                    expand_more
+                </span>
+
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Processing By</mat-label>
+                <input #proccfocus type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Import By</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Import Date</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Import File</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Item Number</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Lot Number</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Serial Number</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Revision</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Tote ID</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Batch Pick ID</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-8">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Description</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000" disabled>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Expiration Date</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Unit Of Measure</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000" disabled>
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Transaction Quantity</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Line Number</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-3">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Priority</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-3">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Host Transaction ID</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-3">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>Cell</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="d-flex gap-20">
+            <mat-checkbox color="primary" class="mb-4">Emergency</mat-checkbox>
+            <mat-checkbox color="primary" class="mb-4">Print Label</mat-checkbox>
+            <mat-checkbox color="primary" class="mb-4">In Process</mat-checkbox>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 1</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 2</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 3</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 4</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 5</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 6</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 7</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 8</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                <mat-label>User Field 9</mat-label>
+                <input type="text" aria-label="Search" matInput value="000000">
+            </mat-form-field>
+        </div>
+    </div>
+    </div>
+</ng-scrollbar>
+
+<div mat-dialog-actions>
+    <button mat-flat-button color="primary" class="btn-lg w-100">
+        Save
+    </button>
+</div>

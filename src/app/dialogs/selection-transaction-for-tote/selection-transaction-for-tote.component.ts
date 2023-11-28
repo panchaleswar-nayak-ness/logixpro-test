@@ -1,17 +1,15 @@
-import { Component, OnInit , Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SelectionTransactionForToteExtendComponent } from '../selection-transaction-for-tote-extend/selection-transaction-for-tote-extend.component';
- 
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
   templateUrl: './selection-transaction-for-tote.component.html',
-  styleUrls: []
+  styleUrls: ['./selection-transaction-for-tote.component.scss']
 })
 export class SelectionTransactionForToteComponent implements OnInit {
   public userData;
@@ -25,16 +23,21 @@ export class SelectionTransactionForToteComponent implements OnInit {
   public batchID;
   public itemNumber;
   public description;
-  public fieldNames;
-
+  public fieldNames; 
   public lowerBound=1;
-  public upperBound=2;
-  public iinductionManagerApi:IInductionManagerApiService;
+  public upperBound=2; 
 
+  showBtnNewPutAwayForSameSKU : boolean = true;
+  
+  public iInductionManagerApi: IInductionManagerApiService;
 
-  constructor(private global:GlobalService,private inductionManagerApi: InductionManagerApiService,public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,private Api:ApiFuntions,) { 
-      this.iinductionManagerApi = inductionManagerApi;
+  constructor(
+    private global: GlobalService,
+    public inductionManagerApi: InductionManagerApiService,
+    public dialogRef: MatDialogRef<SelectionTransactionForToteComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+    ) { 
+      this.iInductionManagerApi = inductionManagerApi;
     }
 
   ngOnInit(): void {
@@ -48,81 +51,62 @@ export class SelectionTransactionForToteComponent implements OnInit {
     this.getTransactions();
   }
 
-  refresh()
-  {
+  refresh() {
     this.getTransactions();
   }
 
-  selectOrder(id:any,itemNumber:any, val : any = [])
-  {
-
+  selectOrder(id:any,itemNumber:any, val : any = []) {
     if (val.zone) {
+      let payload = { zone: val.zone };
+      this.iInductionManagerApi.BatchByZone(payload).subscribe(
+        (res: any) => {
+          if (res.isExecuted) {
+            if (!res.data) {
+              let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
+                height: 'auto',
+                width: '560px',
+                autoFocus: '__non_existing_element__',
+                disableClose:true,
+                data: {
+                  message: 'There are no batches with this zone (' + val.zone + ') assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
+                },
+              });
 
-      let payload = {
-        zone: val.zone,    
-      };
-      
-      this.iinductionManagerApi
-        .BatchByZone(payload)
-        .subscribe(
-          (res: any) => {
-            if (res.isExecuted) {
-              if (!res.data) {
-                let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
-                  height: 'auto',
-                  width: '560px',
-                  autoFocus: '__non_existing_element__',
-      disableClose:true,
-                  data: {
-                    message: 'There are no batches with this zone (' + val.zone + ') assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
-                  },
-                });
-  
-                dialogRef.afterClosed().subscribe((res) => {
-                  if (res == 'Yes') {
-                    this.dialogRef.close("New Batch"); 
-                  }      
-                });
-  
-  
-              } else {
-                const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
-                  height: 'auto',
-                  width: '100vw',
-                  autoFocus: '__non_existing_element__',
-      disableClose:true,
-                  data: {
-                    otid        : id,
-                    itemNumber  : itemNumber,
-                    zones       : this.data.zones,
-                    batchID     : this.data.batchID,
-                    totes       : this.data.totes,
-                    defaultPutAwayQuantity: this.data.defaultPutAwayQuantity,
-                    transactionQuantity: val.transactionQuantity,
-                    autoForwardReplenish: this.data.autoForwardReplenish
-                  }
-                });
-            
-                dialogRef.afterClosed().subscribe((res) => {
-                  if (res) {
-                    this.dialogRef.close(res); 
-                  }      
-                });
-              }
+              dialogRef.afterClosed().subscribe((res) => { if (res == 'Yes') this.dialogRef.close("New Batch"); });
             } else {
-              this.global.ShowToastr('error','Something went wrong', 'Error!');
-              console.log("BatchByZone");
+              const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
+                height: 'auto',
+                width: '100vw',
+                autoFocus: '__non_existing_element__',
+                disableClose:true,
+                data: {
+                  otid        : id,
+                  itemNumber  : itemNumber,
+                  zones       : this.data.zones,
+                  batchID     : this.data.batchID,
+                  totes       : this.data.totes,
+                  defaultPutAwayQuantity: this.data.defaultPutAwayQuantity,
+                  transactionQuantity: val.transactionQuantity,
+                  autoForwardReplenish: this.data.autoForwardReplenish,
+                  imPreference: this.data.imPreference
+                }
+              });
+          
+              dialogRef.afterClosed().subscribe((res) => { if (res) this.dialogRef.close(res); });
             }
-          },
-          (error) => {}
-        );    
-      
+          } else {
+            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            console.log("BatchByZone");
+          }
+        },
+        (error) => {}
+      );    
     } else {
       const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
         height: 'auto',
         width: '100vw',
         autoFocus: '__non_existing_element__',
-      disableClose:true,
+        disableClose:true,
         data: {
           otid        : id,
           itemNumber  : itemNumber,
@@ -131,38 +115,29 @@ export class SelectionTransactionForToteComponent implements OnInit {
           totes       : this.data.totes,
           defaultPutAwayQuantity: this.data.defaultPutAwayQuantity,
           transactionQuantity: val.transactionQuantity,
-          autoForwardReplenish: this.data.autoForwardReplenish
+          autoForwardReplenish: this.data.autoForwardReplenish,
+          imPreference: this.data.imPreference
         }
       });
   
-      dialogRef.afterClosed().subscribe((res) => {
-        if (res) {
-          this.dialogRef.close(res); 
-        }      
-      });
+      dialogRef.afterClosed().subscribe((res) => { if (res) this.dialogRef.close(res); });
     }
-    
   }
 
-  rightClick()
-  { 
-    this.lowerBound = this.upperBound+1;
-    this.upperBound = (this.lowerBound+4)<=this.apiResponse.numberOfRecords?(this.lowerBound+4):this.apiResponse.numberOfRecords;
-    
-
+  rightClick() {
+    this.lowerBound = this.upperBound + 1;
+    this.upperBound = (this.lowerBound + 4) <= this.apiResponse.numberOfRecords ? (this.lowerBound + 4) : this.apiResponse.numberOfRecords;
     this.getTransactions();
   }
 
-  leftClick()
-  {
-    this.lowerBound = (this.lowerBound-5)<=0?1:this.lowerBound-5;
-    this.upperBound =  this.upperBound-5;
-    if(this.upperBound<5){this.upperBound=5;}
+  leftClick() {
+    this.lowerBound = (this.lowerBound - 5) <= 0 ? 1 : this.lowerBound - 5;
+    this.upperBound =  this.upperBound - 5;
+    if(this.upperBound < 5) this.upperBound = 5;
     this.getTransactions();
   }
 
-  getTransactions()
-  {
+  getTransactions() {
     let getTransaction = {
       lowerBound: this.lowerBound,
       upperBound: this.upperBound,
@@ -172,38 +147,42 @@ export class SelectionTransactionForToteComponent implements OnInit {
         "1=1"
       ],
     };
-    this.iinductionManagerApi
-      .TransactionForTote(getTransaction)
-      .subscribe(
-        (res: any) => {
-          if (res.data && res.isExecuted) {
-            if(res.data.subCategory == 'Reel Tracking'&&res.data.inputType != 'Serial Number' ){
-               this.dialogRef.close({category:'isReel',item:res.data});
-                return;
-                }
-
-             
-            this.transactionTable = res.data.transactionTable;
-            
-            if (res.data.success == "0") {
-              this.dialogRef.close("NO");
-              return;
-            }
-
-            if (this.data.selectIfOne && res.data.transactionTable.length == 1) {
-              this.selectOrder(this.transactionTable[0].id, res.data.itemNumber, this.transactionTable[0]);
-            }
-
-            this.apiResponse = res.data;
-            this.itemNumber = this.apiResponse.itemNumber;
-            this.description = this.apiResponse.description;
-          } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
-            console.log("TransactionForTote",res.ResponseMessage);
+    this.iInductionManagerApi.TransactionForTote(getTransaction).subscribe(
+      (res: any) => {
+        if (res.data && res.isExecuted) {
+          if(res.data.subCategory == 'Reel Tracking' && res.data.inputType != 'Serial Number'){
+            this.dialogRef.close({category:'isReel',item:res.data});
+            return;
           }
-        },
-        (error) => {}
-      );
+            
+          this.transactionTable = res.data.transactionTable;
+
+          if (res.data.success == "0") {
+            this.dialogRef.close("NO");
+            return;
+          }
+
+          if (this.data.imPreference.purchaseOrderRequired && this.transactionTable.length > 0) {
+            this.showBtnNewPutAwayForSameSKU = false;
+          } else if(this.data.imPreference.purchaseOrderRequired && this.transactionTable.length == 0) {
+            this.global.ShowToastr('error',`No open Put Aways available for this ${this.inputType != 'Any' ? this.inputType : ''}`, 'Error!');
+            this.dialogRef.close()
+          }
+
+          if (this.data.selectIfOne && res.data.transactionTable.length == 1) this.selectOrder(this.transactionTable[0].id, res.data.itemNumber, this.transactionTable[0]);
+
+          this.apiResponse = res.data;
+          this.itemNumber = this.apiResponse.itemNumber;
+          this.description = this.apiResponse.description;
+        } else {
+          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          console.log("TransactionForTote",res.ResponseMessage);
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   openSelectionExtendDialogue() {
@@ -219,16 +198,11 @@ export class SelectionTransactionForToteComponent implements OnInit {
         batchID     : this.data.batchID,
         totes       : this.data.totes,
         defaultPutAwayQuantity: this.data.defaultPutAwayQuantity,
-        autoForwardReplenish: this.data.autoForwardReplenish
+        autoForwardReplenish: this.data.autoForwardReplenish,
+        imPreference: this.data.imPreference
       }
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
-        this.dialogRef.close(res);  
-      }
-      
-    });
+    dialogRef.afterClosed().subscribe((res) => { if (res) this.dialogRef.close(res); });
   }
-
 }

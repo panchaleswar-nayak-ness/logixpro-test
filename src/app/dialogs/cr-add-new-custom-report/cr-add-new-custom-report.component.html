@@ -1,0 +1,102 @@
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Add New Custom Report/Label Design</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+
+   <ng-container *ngIf="appendstring">
+    <div class="label-red p-3 d-flex br-8 mb-3 align-items-center">
+        <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
+        <span class="ps-2 w-100">{{appendstring}}</span>
+    </div>
+</ng-container>
+
+<mat-dialog-content>
+<div class="row align-items-center">
+    <div class="col-xl-6 mb-2">
+    <mat-form-field class="custom-form-field w-100" appearance="outline">
+        <mat-label>Description</mat-label>
+        <input #descFocus matInput type="text" [(ngModel)]="newDescription" required #serialTemp>
+    </mat-form-field>
+</div>
+    <div class="col-xl-6 mb-2">
+    <mat-form-field class="custom-form-field w-100" appearance="outline">
+        <mat-label>Filename</mat-label>
+        <input matInput type="text" [(ngModel)]="newFilename" required #serialTemp>
+    </mat-form-field>
+</div>
+    <div class="col-xl-6 mb-2">
+    <mat-form-field class="custom-form-field w-100" appearance="outline" (click)="openEditDesign()">
+        <mat-label>Test/Design Data</mat-label>
+        <input matInput type="text" [(ngModel)]="newDesignTestData" required #serialTemp>
+        <span class="material-symbols-outlined icon-expand-more">
+            expand_content
+         </span>
+    </mat-form-field>
+</div>
+    <div class="col-xl-6 mb-2">
+    <mat-form-field class="custom-form-field w-100" appearance="outline"  required #serialTemp>
+        <mat-label>Test/Design Data Type</mat-label>
+        <mat-select [(ngModel)]="newDesignDataType">
+            <mat-option value="SQL">Raw SQL</mat-option>
+            <mat-option value="SP">Stored Procedure</mat-option>
+            </mat-select>
+        <span class="material-symbols-outlined icon-expand-more">
+            expand_more
+         </span>
+    </mat-form-field>
+</div>
+    <div class="col-xl-6 mb-2">
+    <mat-form-field class="custom-form-field w-100" appearance="outline">
+        <mat-label>Output Type</mat-label>
+        <mat-select [(ngModel)]="newOutputType" required #serialTemp (ngModelChange)="setExtension()">
+            <mat-option value="Report">Report</mat-option>
+            <mat-option value="Label">Label</mat-option>
+            </mat-select>
+        <span class="material-symbols-outlined icon-expand-more">
+            expand_more
+         </span>
+    </mat-form-field>
+</div>
+    <div class="col-xl-6 mb-2">
+    <mat-form-field class="custom-form-field w-100" appearance="outline">
+        <mat-label>Export Filename</mat-label>
+        <input matInput type="text" [(ngModel)]="newExportFilename" required #serialTemp>
+    </mat-form-field>
+</div>
+
+<div class="card br-14 p-4 mb-3" *ngIf="addNewColumnsCheck">
+    <div class="row align-items-center">
+                <p class="text-tertiary-900 mb-3"> Columns in the first result test:</p>
+
+                <div class="col-xl-4" *ngFor="let item of addNewColumns">
+                    
+
+                     <ul *ngIf="addNewColumnsCheck" class="text-tertiary-900 bold p-0">
+                        <ng-container >
+                          <li >
+                            {{ item}}
+                          </li>
+                        </ng-container>
+                      </ul>
+                </div>
+
+                
+                </div>
+                </div>
+      
+      <mat-form-field class="custom-form-field w-100 d-none" appearance="outline">
+        <input matInput type="text" [(ngModel)]="CurrentFilename"  [hidden]="true">
+    </mat-form-field>
+
+</div>
+
+<div class="row mt-2">
+    <button type="button" mat-flat-button color="primary" class="button-primary-i mb-2 btn-lg w-100" (click)="saveNew()">Validate, Save, and Design</button>
+</div>
+
+
+</mat-dialog-content>

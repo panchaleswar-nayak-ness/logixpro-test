@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-between mb-2 align-items-center">
+    <div class="w-48px"></div>
+    <h1 class="m-0 text-center" mat-dialog-title>Edit Design/Test Data</h1>
+
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+<div class="">
+
+    <div class="w-100">
+        <div class="col-12 mb-2">
+            <mat-form-field class="custom-form-field w-100" appearance="outline">
+                <textarea #descfocus matInput [(ngModel)]="text"
+                    placeholder="Select [OT Report Data BM].*FROM [OT Report Data BM];"
+                    class="min-height-150"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="d-flex justify-content-end pt-3">
+            <button mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1" (click)="getDesignTestData()">Submit</button>
+        </div>
+
+    </div>
+
+</div>

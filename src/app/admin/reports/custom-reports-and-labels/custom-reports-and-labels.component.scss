@@ -1,0 +1,55 @@
+.report-label-list ul {
+    line-height: 46px;
+    top: 0;
+    left: 8px;
+    right: 20px;
+    bottom: 0;
+    padding-left: 10px;
+    padding-right: 0px;
+    margin-bottom: 0px;
+
+    li {
+        cursor: pointer;
+        position: relative;
+        width: calc(100% - 18px);
+        border-radius: 8px;
+        transition: 0.2s ease all;
+
+        &:hover {
+            border-radius: 8px;
+            transition: 0.2s ease all;
+            color: var(--clr-pure-white);
+            background: var(--clr-primary-300);
+        }
+    }
+}
+
+
+.selected {
+    border-radius: 8px;
+    transition: 0.3s ease all;
+    color: var(--clr-pure-white);
+    background: var(--clr-primary-300);
+
+
+
+}
+
+mat-card{
+    min-height: 78vh;
+    .test{
+        display: flex;
+        flex-direction: column;
+        min-height: 75vh;
+    }
+}
+
+.NGscrolbar-style{
+    height: 58vh !important;
+}
+.fileInput-style{
+    display: none !important;
+}
+.expandMore-style{
+    color:var(--clr-tertiary-900);
+}

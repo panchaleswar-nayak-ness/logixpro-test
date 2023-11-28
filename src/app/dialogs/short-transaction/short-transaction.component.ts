@@ -1,0 +1,91 @@
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import labels from 'src/app/common/labels/labels.json';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+
+@Component({
+  selector: 'app-short-transaction',
+  templateUrl: './short-transaction.component.html',
+  styleUrls: ['./short-transaction.component.scss']
+})
+export class ShortTransactionComponent implements OnInit {
+  public iInductionManagerApi:IInductionManagerApiService;
+  selectedTransaction: any;
+  toteQuantity: any;
+  @ViewChild('toteQty') toteQty: ElementRef;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    
+    private global:GlobalService,
+    public inductionManagerApi: InductionManagerApiService,
+    public dialogRef: MatDialogRef<ShortTransactionComponent>,
+    private globalService: GlobalService
+  ) { 
+    this.iInductionManagerApi = inductionManagerApi;
+  }
+
+  restrictKeyboard(event: KeyboardEvent) {
+    const isNumericInput = (/^\d+$/).exec(event.key);
+    if (!isNumericInput && event.key !== "Backspace") {
+      event.preventDefault();
+    }
+  }
+
+  ngOnInit(): void {
+    this.selectedTransaction = this.data.selectedTransaction;
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.toteQty.nativeElement.focus();
+    }, 200);
+  }
+
+  ShortTransaction() {
+    if (this.toteQuantity >= 0 && this.toteQuantity < this.selectedTransaction.transactionQuantity) {
+      if(!this.globalService.checkDecimal(this.toteQuantity)){
+        this.global.ShowToastr('error',"Tote Quantity can not be in decimal", 'Error');
+        return;
+      }
+      let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
+        height: 'auto',
+        width: '560px',
+        autoFocus: '__non_existing_element__',
+      disableClose:true,
+        data: {
+          heading: 'Process Short',
+          message: 'Short this transaction?',
+        },
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result == 'Yes') {
+          let payload: any = {
+            "otid": this.selectedTransaction.id,
+            "shortQuantity": this.toteQuantity,
+            "shortMethod": "Complete"
+          }
+          this.iInductionManagerApi.shortTransaction(payload).subscribe((res: any) => {
+            if (res.isExecuted) {
+              this.dialogRef.close(res);
+              this.global.ShowToastr('success',labels.alert.update, 'Success!');
+            }
+            else {
+              this.global.ShowToastr('error',"An error occured when shorting this transaction", 'Error');
+              console.log("shortTransaction",res.responseMessage);
+            }
+          });
+        }
+      });
+    }
+    else {
+      this.global.ShowToastr('error',"Please enter a quantity that is greater than or equal to 0 and less than the transaction qty", 'Invalid Qty Entered');
+      this.toteQuantity = undefined;
+    }
+  }
+
+}

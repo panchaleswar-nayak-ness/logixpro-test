@@ -16,7 +16,7 @@
 </div>
 
   <div class="card table-responsive">
-    <ng-scrollbar class="mat-table-scrollbar" style="height: 560px" pointerEventsMethod="scrollbar"> 
+    <ng-scrollbar class="mat-table-scrollbar scrollbar-height" pointerEventsMethod="scrollbar"> 
 <table  mat-table [dataSource]="group_data_source" matSort (matSortChange)="announceSortChange($event)" class="g-card-table table1 employee-location-table custom-action-clickable-table">
 
   <!--- Note that these columns can be defined in any order.
@@ -29,7 +29,7 @@
 
 
   
-  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" style="background-color: #F9F9FF;"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="table-background"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="getGrpDetails(row)"></tr>
 
 </table>

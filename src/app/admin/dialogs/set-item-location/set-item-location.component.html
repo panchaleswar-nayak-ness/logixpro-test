@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
+    <div class="divWithClass"></div>
     <h1 class="m-0" mat-dialog-title>Set Item Number and Location</h1>
 
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
@@ -46,11 +46,11 @@
                     
                     <mat-autocomplete #autoLocation="matAutocomplete" class="card custom-scroll" #item="matAutocomplete" (optionSelected)="searchData()">
                             
-                        <h6 class ="card-header matAutoCompHeader "><span style="width:  140px;">Inv Map ID</span> <span  style="width:  140px;">Qty</span> <span  style="width:  140px;">Location</span> </h6>
+                        <h6 class ="card-header matAutoCompHeader "><span class="WSize140px">Inv Map ID</span> <span class="WSize140px">Qty</span> <span  class="WSize140px">Location</span> </h6>
                       
                         <mat-option *ngFor="let option of searchAutocompleteList" [value]="option.locationNumber" class="matAutoCompTableContent">
                           <div class="loc_option"  (click)="getRow(option)" >
-                            <span  class="searchColumn" style="width:  140px;">{{option.invMapID}}</span> <span  class="searchColumn" style="width:  140px;">{{option.itemQty}}</span>  <span  class="searchColumn" style="width:  140px;">{{option.locationNumber}}</span> 
+                            <span  class="searchColumn WSize140px">{{option.invMapID}}</span> <span  class="searchColumn WSize140px">{{option.itemQty}}</span>  <span  class="searchColumn WSize140px">{{option.locationNumber}}</span> 
                         </div>
                         </mat-option>
                       </mat-autocomplete>
@@ -62,7 +62,7 @@
         </div>
 
         <div class="d-flex justify-content-end pt-3">
-            <button style="flex:1" (click)="setLocation()" mat-flat-button color="primary" class="button-primary btn-lg" cdkFocusInitial>Set Item and Location</button>
+            <button (click)="setLocation()" mat-flat-button color="primary" class="button-primary btn-lg flex-grow-1" cdkFocusInitial>Set Item and Location</button>
         </div>
 
     </div>

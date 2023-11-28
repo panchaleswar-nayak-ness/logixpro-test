@@ -11,7 +11,7 @@
         <div class="col-xl-4">
             <app-rt-selected-transaction-info 
             (openReprocessTransactionDialogueEmitter)="openReprocessTransactionDialogue(transactionID)"
-            (openReasonDialogEmitter)="openReasonDialog(reasonMessage)"
+            (openReasonDialogEmitter)="openReasonDialog()"
             [createdBy]="createdBy"
             [transactionDateTime]="transactionDateTime"
             [reason]="reason"
@@ -40,7 +40,7 @@
                                 <app-column-filter-component 
                                     [tableColumns]="this.displayedColumns" 
                                     [searchCol]="this.columnSearch.searchColumn.colDef"
-                                    (selectionChangeEvent)="this.columnSearch.searchColumn.colDef = $event; resetFields($event)"
+                                    (selectionChangeEvent)="this.columnSearch.searchColumn.colDef = $event; resetFields()"
                                     (clearInputFieldEvent)="this.columnSearch.searchColumn.colDef = '';  this.columnSearch.searchValue = '';this.searchByColumn.next($event)"
                                     [searchString]="this.columnSearch.searchValue"
                                     [searchByInput]="this.searchByColumn"
@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-xl-2 offset-xl-3 d-flex justify-content-end">
                             <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
-                                <mat-form-field class="action-dropdown mb-3" appearance="outline" style="flex:1 auto">
+                                <mat-form-field class="action-dropdown mb-3 flex-grow-1" appearance="outline">
                                     <mat-label>Action</mat-label>
                                     <mat-select [(value)]="selectedVariable" class="employees-action"
                                         (openedChange)="actionDialog($event)">
@@ -117,23 +117,21 @@
                     </div>
 
                     <div class="card br-14 table-responsive my-3">
-                        <ng-scrollbar style="height:600px" track="all" appearance="compact" visibility="always"
-                            pointerEventsMethod="scrollbar" class="mat-table-scrollbar scroll-fix">
+                        <ng-scrollbar track="all" appearance="compact" visibility="always"
+                            pointerEventsMethod="scrollbar" class="mat-table-scrollbar scroll-fix h-600px">
                             <table mat-table class="custom-table table-fix custom-action-clickable-table" #table
                                 [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)">
 
                                 <ng-container [matColumnDef]="col.colDef"
                                     *ngFor="let col of displayedColumns; let indexOfelement=index;">
 
-                                    <th class="header" mat-header-cell *cdkHeaderCellDef mat-sort-header
-                                        (sortActionDescription)="indexOfelement"
-                                        style="width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);">
+                                    <th class="header header-custom-style" mat-header-cell *cdkHeaderCellDef mat-sort-header
+                                        (sortActionDescription)="indexOfelement">
                                         {{ col.colDef }}
 
                                     </th>
 
-                                    <td *matCellDef="let element; let i = index"
-                                        style="padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;"
+                                    <td *matCellDef="let element; let i = index" class="cell-custom-style"
                                         [ngClass]="'w-100'" #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"
                                         matTooltipPosition="above"
                                         [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=25?false:true">
@@ -166,12 +164,12 @@
                 </mat-card-content>
             </mat-card>
         </div>
-        <div class="col-xl-4" [hidden]="isHistory">
-            <app-reprocess-choice (itemUpdatedEvent)="itemUpdatedEvent($event)" [reprocessCount]="orders"
+        <div class="col-xl-4" *ngIf="!isHistory">
+            <app-reprocess-choice (itemUpdatedEvent)="itemUpdatedEvent()" [reprocessCount]="orders"
                 [isEnabled]="isEnabled" [transactionID]="transactionID" [userData]="this.userData"
                 [isReprocessedChecked]="isReprocessedChecked" [isCompleteChecked]="isCompleteChecked"
-                [isHistoryChecked]="isHistoryChecked" [ROrder]="orderNumber" [RItem]="itemNumber"
-                [selection4]="columnSearch.searchColumn.colDef" [searchString4]="columnSearch.searchValue"
+                [isHistoryChecked]="isHistoryChecked" [rOrder]="orderNumber" [rItem]="itemNumber"
+                [selection]="columnSearch.searchColumn.colDef" [searchString]="columnSearch.searchValue"
                 [hold]="isHold"></app-reprocess-choice>
 
             <mat-card class="mat-elevation-z g-card mt-4">
@@ -193,9 +191,9 @@
                                     </button>
                                 </div>
                                 <div class="card br-14 table-responsive px-0 mt-2">
-                                    <ng-scrollbar style="height: 250px;">
+                                    <ng-scrollbar class="h-250px">
                                         <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
-                                            <ng-scrollbar style="height: 380px" pointerEventsMethod="scrollbar">
+                                            <ng-scrollbar class="h-380px" pointerEventsMethod="scrollbar">
                                                 <mat-list-item (click)="selectOrder(order)" role="listitem"
                                                     *ngFor="let order of orders.reprocessOrders">
                                                     <span class="list-label zone-list-label">
@@ -229,9 +227,9 @@
                                     </button>
                                 </div>
                                 <div class="card br-14 table-responsive px-0 mt-2">
-                                    <ng-scrollbar style="height: 250px;" pointerEventsMethod="scrollbar">
+                                    <ng-scrollbar class="h-250px" pointerEventsMethod="scrollbar">
                                         <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
-                                            <ng-scrollbar style="height: 380px">
+                                            <ng-scrollbar class="h-380px">
                                                 <mat-list-item (click)="selectOrder(order)" role="listitem"
                                                     *ngFor="let order of orders.completeOrders">
                                                     <span class="list-label zone-list-label">
@@ -264,9 +262,9 @@
                                     </button>
                                 </div>
                                 <div class="card br-14 table-responsive px-0 mt-2">
-                                    <ng-scrollbar style="height: 250px;" pointerEventsMethod="scrollbar">
+                                    <ng-scrollbar class="h-250px" pointerEventsMethod="scrollbar">
                                         <mat-list class="zones-list g-card-list list-style-1 px-2" role="list">
-                                            <ng-scrollbar style="height: 380px">
+                                            <ng-scrollbar class="h-380px">
                                                 <mat-list-item (click)="selectOrder(order)" role="listitem"
                                                     *ngFor="let order of orders.historyOrders">
                                                     <span class="list-label zone-list-label">
@@ -299,7 +297,7 @@
 <ng-template #description>
 
     <div class="d-flex justify-content-between mb-4 align-items-center">
-        <div style="width:48px"></div>
+        <div class="w-48px"></div>
         <h1 class="m-0" mat-dialog-title>Description</h1>
 
         <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
@@ -312,7 +310,7 @@
             <div class="col-12 mb-2">
                 <mat-form-field class="custom-form-field w-100" appearance="outline">
 
-                    <textarea matInput [(ngModel)]="reasonMessage" readonly="true" style="min-height:100px"></textarea>
+                    <textarea matInput [(ngModel)]="reasonMessage" readonly="true" class="min-h-100px"></textarea>
                 </mat-form-field>
             </div>
 

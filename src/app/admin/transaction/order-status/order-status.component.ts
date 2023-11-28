@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/init/auth.service'; 
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AuthService } from 'src/app/common/init/auth.service'; 
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 
 @Component({
   selector: 'app-order-status',
@@ -9,7 +9,7 @@ import { ApiFuntions } from 'src/app/services/ApiFuntions';
 })
 export class OrderStatusComponent implements OnInit {
   orderNoEvent: Event;
-  @Input() TabIndex:any;
+  @Input() tabIndex:any;
   toteIdEvent: Event;
   openOrderEvent: Event;
   completeOrderEvent: Event;

@@ -1,18 +1,13 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import {MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-
-
-import {  IEmployee } from 'src/app/Iemployee'; 
-import { AuthService } from '../../../../app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
+import { IEmployee } from 'src/app/common/interface/Iemployee';
+import { AuthService } from '../../../common/init/auth.service';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-
-// employee_details table data
-
+import { LiveAnnouncerMessage, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-employees-lookup',
@@ -36,12 +31,12 @@ export class EmployeesLookupComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   // table initialization
   displayedColumns: string[] = ['lastName', 'firstName', 'mi', 'username'];
-  constructor(private _liveAnnouncer: LiveAnnouncer, private global : GlobalService,  
-    private adminApiService: AdminApiService,
-    private employeeService: ApiFuntions, private authService: AuthService) { 
-      this.iAdminApiService = adminApiService;
+  constructor(private _liveAnnouncer: LiveAnnouncer, private global: GlobalService,
+    public adminApiService: AdminApiService,
+    private authService: AuthService) {
+    this.iAdminApiService = adminApiService;
 
-    }
+  }
 
   @ViewChild(MatSort) sort: MatSort;
   employees_details_data: [] = [];
@@ -52,28 +47,27 @@ export class EmployeesLookupComponent implements OnInit {
     this.EmployeeLookUp();
 
   }
-EmployeeLookUp(LastName:any = "",IsLoader=true){
-  
-  this.emp = {
-    "lastName": LastName, 
-  };
-  this.iAdminApiService.getAdminEmployeeLookup(this.emp,false)
-    .subscribe((response: any) => {
-      if(response.isExecuted && response.data)
-      {
-        this.employee_data_source = new MatTableDataSource(response.data.employees);
-      }
-      else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("getAdminEmployeeLookup",response.responseMessage);
-      } 
-      
-    });
-}
+  EmployeeLookUp(LastName: any = "", IsLoader = true) {
+
+    this.emp = {
+      "lastName": LastName,
+    };
+    this.iAdminApiService.getAdminEmployeeLookup(this.emp, false)
+      .subscribe((response: any) => {
+        if (response.isExecuted && response.data) {
+          this.employee_data_source = new MatTableDataSource(response.data.employees);
+        }
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("getAdminEmployeeLookup", response.responseMessage);
+        }
+
+      });
+  }
   ngAfterViewInit() {
     this.employee_data_source.sort = this.sort;
-    setTimeout(()=>{
-      this.searchBoxField.nativeElement.focus();  
+    setTimeout(() => {
+      this.searchBoxField?.nativeElement.focus();
     }, 500);
 
   }
@@ -86,7 +80,7 @@ EmployeeLookUp(LastName:any = "",IsLoader=true){
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    if(filterValue?.trim()?.toLowerCase()) this.EmployeeLookUp(filterValue?.trim()?.toLowerCase(),false);
+    if (filterValue?.trim()?.toLowerCase()) this.EmployeeLookUp(filterValue?.trim()?.toLowerCase(), false);
     else this.EmployeeLookUp();
     // this.employee_data_source.filter = ;
   }
@@ -96,7 +90,7 @@ EmployeeLookUp(LastName:any = "",IsLoader=true){
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.employee_data_source.sort = this.sort;
   }

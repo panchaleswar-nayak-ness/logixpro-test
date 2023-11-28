@@ -1,0 +1,17 @@
+table{
+    tr{
+        &:first-child{
+            td{
+                padding-top: 10px;
+            }
+        }
+    }
+}
+
+.ng-scrollbar-height{
+    height:295px !important;
+}
+
+.div-width{
+    width:48px;
+}

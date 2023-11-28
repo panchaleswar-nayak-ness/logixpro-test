@@ -1,0 +1,94 @@
+<mat-card class="mat-elevation-z g-card mt-2 mb-3">
+    <div class="mb-0">
+        <app-icon-heading-component heading="Preferences" icon="tune">
+        </app-icon-heading-component>
+        <p class="text-tertiary-800 bold py-3 mb-0"> Select a default Packing List format for printing from the
+            Consolidation window. Press the Reports button to design the desired packing list reports</p>
+    </div>
+    <form [formGroup]="filtersForm">
+        <div class="row">
+            <div class="col-xl-6 pb-2">
+                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
+                    <mat-label>Packing List Default</mat-label>
+                    <mat-select  formControlName="defPackList"  class="employees-action" (selectionChange)="changePreferences()">
+                        <mat-option value="Packing List" >Packing List</mat-option>
+                        <mat-option value="Packing List 2">Packing List 2</mat-option>
+                    </mat-select>
+                    <span class="material-symbols-outlined icon-expand-more">
+                        expand_more
+                    </span>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-6 pb-2">
+                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
+                    <mat-label>Packing List Sort</mat-label>
+                    <mat-select formControlName="packingList" class="employees-action" (selectionChange)="changePreferences()">
+                        <mat-option value="[Item Number], [Line Number]">[Item Number],[Line
+                            Number]</mat-option>
+                        <mat-option value="[Line Number], [Item Number]">[Line Number],[Item
+                            Number]</mat-option>
+                        <mat-option value="[Tote ID], [Item Number], [Line Number]">[Tote ID],[Item
+                            Number],[Line Number]</mat-option>
+                        <mat-option value="[Tote ID], [Line Number], [Item Number]">[Tote ID],[Line
+                            Number],[Item Number]</mat-option>
+                    </mat-select>
+                    <span class="material-symbols-outlined icon-expand-more">
+                        expand_more
+                    </span>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-6 pb-2">
+                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
+                    <mat-label>Verify Each Item</mat-label>
+                    <mat-select formControlName="verifyEach" class="employees-action" (selectionChange)="changePreferences()">
+                        <mat-option value="Yes">
+                            Yes
+                        </mat-option>
+                        <mat-option value="No">
+                            No
+                        </mat-option>
+                    </mat-select>
+                    <span class="material-symbols-outlined icon-expand-more">
+                        expand_more
+                    </span>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-6 pb-2">
+                <mat-form-field class="action-dropdown col-xl-12 col-12" appearance="outline">
+                    <mat-label>Default Lookup Type</mat-label>
+                    <mat-select formControlName="defLookType" class="employees-action" (selectionChange)="changePreferences()">
+                        <mat-option value="Supplier Item ID">Supplier Item ID</mat-option>
+                        <mat-option value="Lot Number" selected="">Lot Number</mat-option>
+                        <mat-option value="User Field 1">User Field 1</mat-option>
+                        <mat-option value="Item Number">Item Number</mat-option>
+                        <mat-option value="Serial Number">Serial Number</mat-option>
+                        <mat-option value="Any Code">Any Code</mat-option>
+                        <mat-option value="Tote ID">Tote ID</mat-option>
+
+                    </mat-select>
+                    <span class="material-symbols-outlined icon-expand-more">
+                        expand_more
+                    </span>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row pb-5 mb-5">
+            <div class="col-xl-6">
+                <div class="d-xl-flex gap-12 mb-2 pb-5">
+                    <div class="col-xl-12 text-left admin-prefrences py-2 ps-1">
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                            Auto Complete Backorders at "Ship Complete": <mat-slide-toggle (change)="changePreferences()" 
+                                formControlName="backOrders" checked color="primary"
+                                matTooltip=""></mat-slide-toggle>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                            Stage Non Pickpro Orders: <mat-slide-toggle checked color="primary" (change)="changePreferences()" 
+                                formControlName="nonPickpro" matTooltip=""></mat-slide-toggle>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</mat-card>

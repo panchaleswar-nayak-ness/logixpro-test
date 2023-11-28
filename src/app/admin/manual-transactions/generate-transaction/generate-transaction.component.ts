@@ -3,22 +3,26 @@ import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { SetItemLocationComponent } from '../../dialogs/set-item-location/set-item-location.component';
 import { TemporaryManualOrderNumberAddComponent } from '../../dialogs/temporary-manual-order-number-add/temporary-manual-order-number-add.component';
-import labels from '../../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { PostManualTransactionComponent } from '../../dialogs/post-manual-transaction/post-manual-transaction.component';
 import { DeleteConfirmationManualTransactionComponent } from '../../dialogs/delete-confirmation-manual-transaction/delete-confirmation-manual-transaction.component';
 import { InvalidQuantityComponent } from '../../dialogs/invalid-quantity/invalid-quantity.component';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
-import { CommonApiService } from 'src/app/services/common-api/common-api.service';
-import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
-
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
+import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
+import {
+  DialogConstants,
+  ToasterTitle,
+  ToasterType,
+} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-generate-transaction',
@@ -29,7 +33,8 @@ export class GenerateTransactionComponent implements OnInit {
   @ViewChild('openAction') openAction: MatSelect;
   @ViewChild('publicSearchBox') searchBoxField: ElementRef;
 
-
+  isInvalidQuantityPopUp: boolean = false;
+  isPost: boolean = true;
   selectedAction = '';
   columns: any = {};
   invMapIDget;
@@ -63,7 +68,6 @@ export class GenerateTransactionComponent implements OnInit {
   toteID;
   transactionQtyInvalid = false;
   warehouseSensitivity;
-  isInvalid = false;
   totalQuantity: '';
   zone: '';
   row: '';
@@ -76,6 +80,7 @@ export class GenerateTransactionComponent implements OnInit {
   message = '';
   isLocation = false;
   emergency = false;
+  isQuantityConfirmation: boolean;
   public iAdminApiService: IAdminApiService;
   public iCommonAPI: ICommonApi;
 
@@ -85,7 +90,7 @@ export class GenerateTransactionComponent implements OnInit {
     private Api: ApiFuntions,
     private global: GlobalService,
 
-    private adminApiService: AdminApiService,
+    private adminApiService: AdminApiService
   ) {
     this.iAdminApiService = adminApiService;
     this.userData = this.authService.userData();
@@ -93,10 +98,9 @@ export class GenerateTransactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.searchByInput
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
+      .subscribe(() => {
         this.autocompleteSearchColumn();
       });
     this.OSFieldFilterNames();
@@ -105,11 +109,13 @@ export class GenerateTransactionComponent implements OnInit {
     return this.floatLabelControl.value ?? 'auto';
   }
   printLabelMT() {
-    this.global.Print(`FileName:printMTLabel|ID:${this.transactionID}|User:${this.userData.userName}`, 'lbl')
-
+    this.global.Print(
+      `FileName:printMTLabel|ID:${this.transactionID}|User:${this.userData.userName}`,
+      'lbl'
+    );
   }
   clearMatSelectList() {
-    this.openAction.options.forEach((data: MatOption) => data.deselect());
+    this.openAction?.options.forEach((data: MatOption) => data.deselect());
   }
 
   generateTranscAction(event: any) {
@@ -117,15 +123,17 @@ export class GenerateTransactionComponent implements OnInit {
   }
   public OSFieldFilterNames() {
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
-      if(res.isExecuted && res.data)
-      {
+      if (res.isExecuted && res.data) {
         this.columns = res.data;
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
+        console.log('ColumnAlias', res.responseMessage);
       }
-      else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-        console.log("ColumnAlias",res.responseMessage);
-      }
-    })
+    });
   }
   getRow(row?, type?) {
     if (type != 'save') {
@@ -137,56 +145,60 @@ export class GenerateTransactionComponent implements OnInit {
     let payLoad = {
       id: row.id,
     };
-    this.iAdminApiService
-      .TransactionInfo(payLoad)
-      .subscribe(
-        (res: any) => {
-          if (res?.data && res.data.getTransaction) {
-            this.item = res.data.getTransaction;
+    this.iAdminApiService.TransactionInfo(payLoad).subscribe(
+      (res: any) => {
+        if (res?.data && res.data.getTransaction) {
+          this.item = res.data.getTransaction;
 
-            this.itemNumber = this.item.itemNumber;
-            this.supplierID = this.item.supplierItemID;
-            this.expDate = new Date(this.item.expirationDate);
-            this.revision = this.item.revision;
-            this.description = this.item.description;
-            this.lotNumber = this.item.lotNumber;
-            this.uom = this.item.unitOfMeasure;
-            this.notes = this.item.notes;
-            this.serialNumber = this.item.serialNumber;
-            this.transType = this.item.transactionType;
-            this.reqDate = new Date(this.item.requiredDate);
-            this.lineNumber = this.item.lineNumber;
-            this.transQuantity = this.item.transactionQuantity;
-            this.priority = this.item.priority;
-            this.lineSeq = this.item.lineSequence;
-            this.hostTransID = this.item.hostTransactionID;
-            this.batchPickID = this.item.batchPickID;
-            this.wareHouse = this.item.warehouse;
-            this.toteID = this.item.toteID;
-            this.emergency =!(this.item.emergency === 'False' || this.item.emergency === 'false')
-            this.warehouseSensitivity = this.item.wareHouseSensitive;
-            this.totalQuantity = res.data.totalQuantity;
-            this.zone = this.item.zone;
-            this.row = this.item.row;
-            this.shelf = this.item.shelf;
-            this.carousel = this.item.carousel;
-            this.invMapID = this.item.invMapID;
-            this.bin = this.item.bin;
-            this.quantityAllocatedPick =
-              res?.data.quantityAllocated.length &&
-              res.data.quantityAllocated[0].quantityAllocatedPick;
+          this.itemNumber = this.item.itemNumber;
+          this.supplierID = this.item.supplierItemID;
+          this.expDate = new Date(this.item.expirationDate);
+          this.revision = this.item.revision;
+          this.description = this.item.description;
+          this.lotNumber = this.item.lotNumber;
+          this.uom = this.item.unitOfMeasure;
+          this.notes = this.item.notes;
+          this.serialNumber = this.item.serialNumber;
+          this.transType = this.item.transactionType;
+          this.reqDate = new Date(this.item.requiredDate);
+          this.lineNumber = this.item.lineNumber;
+          this.transQuantity = this.item.transactionQuantity;
+          this.priority = this.item.priority;
+          this.lineSeq = this.item.lineSequence;
+          this.hostTransID = this.item.hostTransactionID;
+          this.batchPickID = this.item.batchPickID;
+          this.wareHouse = this.item.warehouse;
+          this.toteID = this.item.toteID;
+          this.emergency = !(
+            this.item.emergency === 'False' || this.item.emergency === 'false'
+          );
+          this.warehouseSensitivity = this.item.wareHouseSensitive;
+          this.totalQuantity = res.data.totalQuantity;
+          this.isLocation = this.item.location;
+          this.zone = this.item.zone;
+          this.row = this.item.row;
+          this.shelf = this.item.shelf;
+          this.carousel = this.item.carousel;
+          this.invMapID = this.item.invMapID;
+          this.bin = this.item.bin;
+          this.quantityAllocatedPick =
+            res?.data.quantityAllocated.length &&
+            res.data.quantityAllocated[0].quantityAllocatedPick;
 
-            this.quantityAllocatedPutAway =
-              res?.data.quantityAllocated.length &&
-              res.data.quantityAllocated[0].quantityAllocatedPutAway;
-          } else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("TransactionInfo", res.responseMessage);
-            this.item = '';
-          }
-        },
-        (error) => { }
-      );
+          this.quantityAllocatedPutAway =
+            res?.data.quantityAllocated.length &&
+            res.data.quantityAllocated[0].quantityAllocatedPutAway;
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            this.global.globalErrorMsg(),
+            ToasterTitle.Error
+          );
+          console.log('TransactionInfo', res.responseMessage);
+          this.item = '';
+        }
+      }
+    );
   }
   clear() {
     this.itemNumber = '';
@@ -209,7 +221,7 @@ export class GenerateTransactionComponent implements OnInit {
     this.wareHouse = '';
     this.toteID = '';
     this.transactionQtyInvalid = false;
-    this.emergency=false;
+    this.emergency = false;
   }
   async autocompleteSearchColumn() {
     let searchPayload = {
@@ -217,26 +229,25 @@ export class GenerateTransactionComponent implements OnInit {
     };
     this.iAdminApiService
       .ManualTransactionTypeAhead(searchPayload)
-      .subscribe(
-        (res: any) => {
-          if(res.isExecuted && res.data)
-          {
-            this.searchAutocompleteList = res.data;
-          }
-          else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("ManualTransactionTypeAhead",res.responseMessage);
-          }
-        },
-        (error) => { }
-      );
+      .subscribe((res: any) => {
+        if (res.isExecuted && res.data) {
+          this.searchAutocompleteList = res.data;
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            this.global.globalErrorMsg(),
+            ToasterTitle.Error
+          );
+          console.log('ManualTransactionTypeAhead', res.responseMessage);
+        }
+      });
   }
   openSetItemLocationDialogue() {
     if (this.orderNumber == '' || !this.item) return;
     const dialogRef: any = this.global.OpenDialog(SetItemLocationComponent, {
-      height: 'auto',
+      height: DialogConstants.auto,
       width: '560px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         userName: this.userData.userName,
@@ -267,12 +278,12 @@ export class GenerateTransactionComponent implements OnInit {
     this.searchAutocompleteList = [];
     this.item = null;
     this.selectedAction = '';
+    this.invMapID = '';
     this.clearMatSelectList();
-    this.emergency=false;
-
+    this.emergency = false;
   }
 
-  postTransaction(type) {
+  postTranscationFunction(type) {
     if (
       this.item === '' ||
       this.item === undefined ||
@@ -280,29 +291,28 @@ export class GenerateTransactionComponent implements OnInit {
       this.orderNumber === undefined
     ) {
       return;
-    }
-    else if (this.warehouseSensitivity === 'True' && this.wareHouse == '') {
+    } else if (this.warehouseSensitivity === 'True' && this.wareHouse == '') {
       this.transactionQtyInvalid = true;
       this.message = 'Specified Item Number must have a Warehouse';
-      return
-    }
-
-    else {
+      return;
+    } else {
       this.transactionQtyInvalid = false;
-      const dialogRef: any = this.global.OpenDialog(PostManualTransactionComponent, {
-        height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
-        disableClose: true,
-        data: {
-          message:
-            type === 'save'
-              ? 'Click OK To Post And Save The Temporary Transaction.'
-              : 'Click OK To Post And Delete the Temporary Transaction',
-        },
-      });
+      const dialogRef: any = this.global.OpenDialog(
+        PostManualTransactionComponent,
+        {
+          height: DialogConstants.auto,
+          width: '560px',
+          autoFocus: DialogConstants.autoFocus,
+          disableClose: true,
+          data: {
+            message:
+              type === 'save'
+                ? 'Click OK To Post And Save The Temporary Transaction.'
+                : 'Click OK To Post And Delete the Temporary Transaction',
+          },
+        }
+      );
       dialogRef.afterClosed().subscribe((res) => {
-
         if (res) {
           let payload = {
             deleteTransaction: type !== 'save',
@@ -311,31 +321,55 @@ export class GenerateTransactionComponent implements OnInit {
 
           this.iAdminApiService
             .PostTransaction(payload)
-            .subscribe(
-              (res: any) => {
-                if (res?.isExecuted) {
-                  this.global.ShowToastr('success', labels.alert.success, 'Success!');
-                  this.updateTrans();
-                  if (type != 'save') {
-                    this.clearFields();
-                  }
-                  this.invMapID = '';
-                  this.getRow({ id: this.transactionID }, type);
-
-                } else {
-                  this.global.ShowToastr('error', res.responseMessage, 'Error!');
-                  console.log("PostTransaction", res.responseMessage);
-                  if (type != 'save') {
-                    this.clearFields();
-                  }
-                  this.invMapID = '';
-                  this.getRow({ id: this.transactionID }, type);
+            .subscribe((res: any) => {
+              if (res?.isExecuted) {
+                this.global.ShowToastr(
+                  ToasterType.Success,
+                  labels.alert.success,
+                  ToasterTitle.Success
+                );
+                this.updateTrans();
+                if (type != 'save') {
+                  this.clearFields();
                 }
-              },
-              (error) => { }
-            );
+                this.invMapID = '';
+                this.getRow({ id: this.transactionID }, type);
+              } else {
+                this.global.ShowToastr(
+                  ToasterType.Error,
+                  res.responseMessage,
+                  ToasterTitle.Error
+                );
+                console.log('PostTransaction', res.responseMessage);
+                if (type != 'save') {
+                  this.clearFields();
+                }
+                this.invMapID = '';
+                this.getRow({ id: this.transactionID }, type);
+              }
+            });
         }
       });
+    }
+  }
+  postTransaction(type) {
+    if (this.isLocation && this.transQuantity > this.totalQuantity) {
+      const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
+        height: DialogConstants.auto,
+        width: '560px',
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+      });
+      dialogRef.afterClosed().subscribe((res) => {
+        this.clearMatSelectList();
+        this.isQuantityConfirmation = res;
+        if (this.isQuantityConfirmation) {
+          this.postTranscationFunction(type);
+          this.updateTransactionFunction();
+        }
+      });
+    } else {
+      this.postTranscationFunction(type);
     }
   }
 
@@ -343,23 +377,23 @@ export class GenerateTransactionComponent implements OnInit {
     let updateValsequence: any = [];
     updateValsequence[0] = this.itemNumber; //itemNumber
     updateValsequence[1] = this.transType; //TransType
-    updateValsequence[2] = this.expDate ? this.expDate : ''; //expDate
+    updateValsequence[2] = new Date(this.expDate).toLocaleString();
     updateValsequence[3] = this.revision; //revision
     updateValsequence[4] = this.description; //description
     updateValsequence[5] = this.lotNumber; //lotNumber
     updateValsequence[6] = this.uom; //UoM
     updateValsequence[7] = this.notes; //notes
     updateValsequence[8] = this.serialNumber; //serialNumber
-    updateValsequence[9] = this.reqDate ? this.reqDate : ''; //RequiredDate
+    updateValsequence[9] = new Date(this.reqDate).toLocaleString(); //RequiredDate
     updateValsequence[10] = this.lineNumber; //lineNumber
-    updateValsequence[11] = this.transQuantity.toString(); //transQuantity
+    updateValsequence[11] = this.transQuantity.toString(); //transQuantitys
     updateValsequence[12] = this.priority.toString(); //priority
     updateValsequence[13] = this.lineSeq.toString(); //lineSeq
     updateValsequence[14] = this.hostTransID.toString(); //hostTransID
     updateValsequence[15] = this.batchPickID.toString(); //batchPickID
     updateValsequence[16] = this.emergency.toString(); //emergency
     updateValsequence[17] = this.wareHouse; //wareHouse
-    updateValsequence[18] = this.toteID == 0 ? "" : this.toteID.toString(); //toteID
+    updateValsequence[18] = this.toteID == 0 ? '' : this.toteID.toString(); //toteID
     updateValsequence[19] = this.zone; //Zone
     updateValsequence[20] = this.shelf; //shelf
     updateValsequence[21] = this.carousel; //carousel
@@ -374,16 +408,15 @@ export class GenerateTransactionComponent implements OnInit {
 
     this.iAdminApiService
       .UpdateTransaction(payload)
-      .subscribe((res: any) => {
-      });
+      .subscribe((res: any) => {});
   }
   deleteTransaction() {
     const dialogRef: any = this.global.OpenDialog(
       DeleteConfirmationManualTransactionComponent,
       {
-        height: 'auto',
+        height: DialogConstants.auto,
         width: '560px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           mode: 'delete-manual-transaction',
@@ -399,7 +432,6 @@ export class GenerateTransactionComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       if (res.isExecuted) {
         this.clearFields();
-
       }
       this.clearFields();
     });
@@ -409,66 +441,55 @@ export class GenerateTransactionComponent implements OnInit {
     let payload = {
       invMapID: this.invMapIDget,
     };
-    this.iAdminApiService.LocationData(payload).subscribe(
-      (res: any) => {
-        if (res?.isExecuted) {
-          let items = res.data.locationTables[0];
-          this.zone = items.zone;
-          this.carousel = items.carousel;
-          this.row = items.row;
-          this.shelf = items.shelf;
-          this.bin = items.bin;
-          this.totalQuantity = res.data.totalQuantity;
-          this.quantityAllocatedPick = res.data.pickQuantity;
-          this.quantityAllocatedPutAway = res.data.putQuantity;
-        }
-        else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("LocationData", res.responseMessage);
-
-        }
-      },
-      (error) => { }
-    );
+    this.iAdminApiService.LocationData(payload).subscribe((res: any) => {
+      if (res?.isExecuted) {
+        let items = res.data.locationTables[0];
+        this.zone = items.zone;
+        this.isLocation = items.location;
+        this.carousel = items.carousel;
+        this.row = items.row;
+        this.shelf = items.shelf;
+        this.bin = items.bin;
+        this.totalQuantity = res.data.totalQuantity;
+        this.quantityAllocatedPick = res.data.pickQuantity;
+        this.quantityAllocatedPutAway = res.data.putQuantity;
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
+        console.log('LocationData', res.responseMessage);
+      }
+    });
   }
 
-  updateTransaction() {
-    if (this.isLocation && this.transQuantity > this.totalQuantity) {
-      const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
-        height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
-        disableClose: true,
-
-      });
-      dialogRef.afterClosed().subscribe((res) => {
-        this.clearMatSelectList();
-      });
-
-    }
-    if (this.transQuantity === '0' || this.transQuantity === 0 || this.transQuantity < 0) {
+  updateTransactionFunction() {
+    if (
+      this.transQuantity === '0' ||
+      this.transQuantity === 0 ||
+      this.transQuantity < 0
+    ) {
       this.transactionQtyInvalid = true;
       this.message = `Transaction Quantity must be a positive integer for transaction type ${this.transType} `;
     } else if (this.warehouseSensitivity === 'True' && this.wareHouse == '') {
       this.transactionQtyInvalid = true;
       this.message = 'Specified Item Number must have a Warehouse';
-    } else if (this.isLocation && this.transQuantity > this.totalQuantity || this.transQuantity < 0) {
-      return
-    }
-    else {
+    } else {
+      console.log(this.expDate);
       this.transactionQtyInvalid = false;
       //following sequence must follow to update
       let updateValsequence: any = [];
       updateValsequence[0] = this.itemNumber; //itemNumber
       updateValsequence[1] = this.transType; //TransType
-      updateValsequence[2] = this.expDate ? this.expDate : ''; //expDate
+      updateValsequence[2] = new Date(this.expDate).toLocaleString(); //expDate
       updateValsequence[3] = this.revision; //revision
       updateValsequence[4] = this.description; //description
       updateValsequence[5] = this.lotNumber; //lotNumber
       updateValsequence[6] = this.uom; //UoM
       updateValsequence[7] = this.notes; //notes
       updateValsequence[8] = this.serialNumber; //serialNumber
-      updateValsequence[9] = this.reqDate ? this.reqDate : ''; //RequiredDate
+      updateValsequence[9] = new Date(this.reqDate).toLocaleString(); //RequiredDate
       updateValsequence[10] = this.lineNumber; //lineNumber
       updateValsequence[11] = this.transQuantity.toString(); //transQuantity
       updateValsequence[12] = this.priority.toString(); //priority
@@ -477,7 +498,7 @@ export class GenerateTransactionComponent implements OnInit {
       updateValsequence[15] = this.batchPickID.toString(); //batchPickID
       updateValsequence[16] = this.emergency.toString(); //emergency
       updateValsequence[17] = this.wareHouse; //wareHouse
-      updateValsequence[18] = this.toteID == 0 ? "" : this.toteID.toString(); //toteID
+      updateValsequence[18] = this.toteID == 0 ? '' : this.toteID.toString(); //toteID
       updateValsequence[19] = this.zone; //Zone
       updateValsequence[20] = this.shelf; //shelf
       updateValsequence[21] = this.carousel; //carousel
@@ -489,67 +510,93 @@ export class GenerateTransactionComponent implements OnInit {
         newValues: updateValsequence,
         transID: this.transactionID,
       };
+      this.iAdminApiService.UpdateTransaction(payload).subscribe((res: any) => {
+        if (res?.isExecuted) {
+          this.global.ShowToastr('success', labels.alert.success, 'Success!');
+          this.clearMatSelectList();
+        } else {
+          this.global.ShowToastr(
+            ToasterType.Error,
+            res.responseMessage,
+            ToasterTitle.Error
+          );
+          console.log('UpdateTransaction', res.responseMessage);
+        }
+      });
+    }
+  }
 
-      this.iAdminApiService
-        .UpdateTransaction(payload)
-        .subscribe((res: any) => {
-          if (res?.isExecuted) {
-            this.global.ShowToastr('success', labels.alert.success, 'Success!');
-            this.clearMatSelectList();
-          } else {
-            this.global.ShowToastr('error', res.responseMessage, 'Error!');
-            console.log("UpdateTransaction", res.responseMessage);
-          }
-        });
+  updateTransaction() {
+    if (
+      this.isPost &&
+      this.isLocation &&
+      this.transQuantity > this.totalQuantity
+    ) {
+      this.isInvalidQuantityPopUp = true;
+      const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
+        height: DialogConstants.auto,
+        width: '560px',
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+      });
+      dialogRef.afterClosed().subscribe((res) => {
+        this.clearMatSelectList();
+        if (res) {
+          this.updateTransactionFunction();
+        }
+      });
+    } else {
+      this.updateTransactionFunction();
     }
   }
 
   getSupplierItemInfo() {
     let payload = {
-      ID: this.supplierID
-    }
-    this.iCommonAPI
-      .SupplierItemIDInfo(payload)
-      .subscribe(
-        (res: any) => {
-          if (res?.isExecuted) {
-            this.itemNumber = res.data[0].itemNumber
-            this.description = res.data[0].description
-            if (res.data[0].unitofMeasure != this.uom) {
-              if (this.uom == '') {
-                this.uom = res.data[0].unitofMeasure
-                this.transactionQtyInvalid = false;
-              } else {
-                this.transactionQtyInvalid = true;
-                this.message = 'Unit of Measure does not match Inventory Master. (Expecting)';
-                return
-              }
-            } else {
-              this.transactionQtyInvalid = false;
-            }
+      ID: this.supplierID,
+    };
+    this.iCommonAPI.SupplierItemIDInfo(payload).subscribe((res: any) => {
+      if (res?.isExecuted) {
+        this.itemNumber = res.data[0].itemNumber;
+        this.description = res.data[0].description;
+        if (res.data[0].unitofMeasure != this.uom) {
+          if (this.uom == '') {
+            this.uom = res.data[0].unitofMeasure;
+            this.transactionQtyInvalid = false;
+          } else {
+            this.transactionQtyInvalid = true;
+            this.message =
+              'Unit of Measure does not match Inventory Master. (Expecting)';
+            return;
           }
-          else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-            console.log("SupplierItemIDInfo", res.responseMessage);
-
-          }
-        })
-
-
+        } else {
+          this.transactionQtyInvalid = false;
+        }
+      } else {
+        this.global.ShowToastr(
+          ToasterType.Error,
+          this.global.globalErrorMsg(),
+          ToasterTitle.Error
+        );
+        console.log('SupplierItemIDInfo', res.responseMessage);
+      }
+    });
   }
 
   openTemporaryManualOrderDialogue() {
-    const dialogRef: any = this.global.OpenDialog(TemporaryManualOrderNumberAddComponent, {
-      height: 'auto',
-      width: '1000px',
-      autoFocus: '__non_existing_element__',
-      disableClose: true,
-      data: {
-        userName: this.userData.userName,
-        wsid: this.userData.wsid,
-        orderNumber: this.orderNumber ? this.orderNumber : '',
-      },
-    });
+    const dialogRef: any = this.global.OpenDialog(
+      TemporaryManualOrderNumberAddComponent,
+      {
+        height: DialogConstants.auto,
+        width: '1000px',
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+        data: {
+          userName: this.userData.userName,
+          wsid: this.userData.wsid,
+          orderNumber: this.orderNumber ? this.orderNumber : '',
+        },
+      }
+    );
     dialogRef.afterClosed().subscribe((res) => {
       if (res.isExecuted) {
         this.isLocation = res.location != undefined;
@@ -558,15 +605,14 @@ export class GenerateTransactionComponent implements OnInit {
         this.getRow(res);
         this.clearMatSelectList();
       }
-      ;
     });
   }
 
   ngAfterViewInit() {
     this.autocompleteSearchColumn();
-    this.searchBoxField.nativeElement.focus();
+    this.searchBoxField?.nativeElement.focus();
   }
-
+  isInvalid = false;
   onFormFieldFocusOut() {
     // Implement your custom validation logic here
     // For example, check if the input is valid, and if not, set isInvalid to true
@@ -577,21 +623,19 @@ export class GenerateTransactionComponent implements OnInit {
     return true; // Return true if the input is valid, false otherwise
   }
 
-
   onFieldValuesChanged(fieldValues: any) {
     this.itemNumber = fieldValues.itemNumber;
     this.supplierID = fieldValues.supplierID;
-    this.item.expDate = fieldValues.expDate;
+    this.expDate = fieldValues.expDate;
     this.revision = fieldValues.revision;
     this.description = fieldValues.description;
     this.lotNumber = fieldValues.lotNumber;
     this.uom = fieldValues.uom;
     this.notes = fieldValues.notes;
     this.serialNumber = fieldValues.serialNumber;
-    console.log('Order Details Received updated field values:', fieldValues);
   }
 
-  onFieldValuesChangedOfTrans(fieldValues: any){
+  onFieldValuesChangedOfTrans(fieldValues: any) {
     this.emergency = fieldValues.emergency;
     this.transType = fieldValues.transType;
     this.reqDate = fieldValues.reqDate;
@@ -603,7 +647,5 @@ export class GenerateTransactionComponent implements OnInit {
     this.batchPickID = fieldValues.batchPickID;
     this.lineNumber = fieldValues.lineNumber;
     this.transQuantity = fieldValues.transQuantity;
-    console.log('Trans Received updated field values:', fieldValues);
   }
-
 }

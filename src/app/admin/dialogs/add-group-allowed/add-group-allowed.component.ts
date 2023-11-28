@@ -1,17 +1,16 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import labels from '../../../labels/labels.json';
- 
+import labels from 'src/app/common/labels/labels.json'; 
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map';
-import { AuthService } from '../../../../app/init/auth.service';
+import { AuthService } from '../../../common/init/auth.service';
 import { Router } from '@angular/router';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-group-allowed',
@@ -21,19 +20,18 @@ import { GlobalService } from 'src/app/common/services/global.service';
 export class AddGroupAllowedComponent implements OnInit {
   @ViewChild('control_name') control_name: ElementRef;
   form_heading: string = 'Add Group Allowed';
-  form_btn_label: string = 'Add';
-  GroupName: any;
+  form_btn_label: string = StringConditions.AddCaps;
+  groupName: any;
   public iAdminApiService: IAdminApiService;
   controlNameList: any[] = [];
   options: string[] = [];
   filteredOptions: Observable<any[]>;
   userData: any;
   controlNameForm: FormGroup;
-  constrolName
+  controlNameInput
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog:MatDialog,
-    private employeeService: ApiFuntions,
     private global: GlobalService,
     private authService: AuthService,
     private fb: FormBuilder,
@@ -61,7 +59,7 @@ export class AddGroupAllowedComponent implements OnInit {
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getControlName",res.responseMessage);
       }
       
@@ -90,11 +88,11 @@ export class AddGroupAllowedComponent implements OnInit {
     this.iAdminApiService.submitControlResponse(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialog.closeAll();
-        this.global.ShowToastr('success',labels.alert.success, 'Success!'); 
+        this.global.ShowToastr(ToasterType.Error,labels.alert.success, ToasterTitle.Error); 
       }
       else{
         
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("submitControlResponse",res.responseMessage);
       }
     });

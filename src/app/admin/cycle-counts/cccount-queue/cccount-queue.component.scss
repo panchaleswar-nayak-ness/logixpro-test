@@ -27,4 +27,12 @@
         overflow: hidden;
         vertical-align: middle;
     }
+    .tableScrolbar{
+        height:200px;
+        .bodertable{
+            .tr-matheader{
+                background-color: var(--clr-table-header);
+            }
+        }
+    }
   }

@@ -1,7 +1,7 @@
-<mat-card class="mat-elevation-z g-card br-14 mb-4" style="height: 100%;">
+<mat-card class="mat-elevation-z g-card br-14 mb-4 mainCard">
     <mat-card-content>
 
-      <div class="row" style="margin-bottom: 12px;">
+      <div class="row icon-row">
         <div class="d-flex justify-content-between">
             <div div class="col-3">
               <app-icon-heading-component heading="Create Count" icon="add_road">
@@ -24,23 +24,19 @@
                   </mat-form-field>
               </div>
 
-              <div class="col-9 justify-content-end" style="text-align: end;">
-                <mat-checkbox style="margin-right: 12px;" class="example-margin custom-checkbox" color="primary">Print CC Disc Directly</mat-checkbox>
+              <div class="col-9 justify-content-end justify-content-end-style">
+                <mat-checkbox class="example-margin custom-checkbox chec checkbox-style" color="primary">Print CC Disc Directly</mat-checkbox>
     
-                <button style="margin-right: 12px; padding: 6px 15px;
-                border-radius: 14px;
-                border: 1px solid #D7D7F9 !important;" mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 br-14" >
+                <button mat-stroked-button color="button-default" class="default-btn bg-white text-primary-900 br-14 print-button-style" >
                   <mat-icon>print</mat-icon>
                   Print
                 </button>
-                <button style="margin-right: 12px;" mat-stroked-button color="warn" class="button-remove-all bg-white" >
+                <button mat-stroked-button color="warn" class="button-remove-all bg-white .delete-button-style" >
                     <mat-icon>delete_outline</mat-icon>
                     Delete
                 </button>
 
-                <button style="margin-right: 12px; padding: 6px 15px;
-                border-radius: 14px;
-                border: 1px solid #D7D7F9 !important;"  mat-stroked-button color="primary" class="br-14 bg-white primary-btn" >
+                <button mat-stroked-button color="primary" class="br-14 bg-white primary-btn filter_list-button-style" >
                     <span class="material-symbols-outlined">
                       filter_list
                     </span>
@@ -98,7 +94,7 @@
                 </td>
               </ng-container>
           
-              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style=" background-color: #F9F9FF;"></tr>
+              <tr class="mat-header-style" mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" ></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
         </ng-scrollbar>

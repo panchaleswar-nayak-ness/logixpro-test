@@ -1,27 +1,26 @@
-import {Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import {MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import {FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators'; 
-import { IEmployee } from 'src/app/Iemployee';
-import { MatDialog} from '@angular/material/dialog';
+import { IEmployee } from 'src/app/common/interface/Iemployee';
 import { AddNewEmployeeComponent } from '../dialogs/add-new-employee/add-new-employee.component';
 import { DeleteConfirmationComponent } from '../dialogs/delete-confirmation/delete-confirmation.component';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { AddNewGroupComponent } from '../dialogs/add-new-group/add-new-group.component';
-import labels from '../../labels/labels.json';
+import labels from 'src/app/common/labels/labels.json';
 import { CloneGroupComponent } from '../dialogs/clone-group/clone-group.component';
 import { Router} from '@angular/router';
-import { AuthService } from '../../../app/init/auth.service';
-import { SpinnerService } from '../../../app/init/spinner.service';
+import { AuthService } from '../../common/init/auth.service';
+import { SpinnerService } from '../../common/init/spinner.service';
 import { MatOption } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
 import { GroupsLookupComponent } from './groups-lookup/groups-lookup.component';
 import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 export interface Location {
   start_location: string;
@@ -52,26 +51,25 @@ export class EmployeesComponent implements OnInit {
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
   empData: any = {};
-  max_orders: any;
+  maxOrders: any;
   pickUplevels: any;
   assignedFunctions:any;
   unassignedFunctions:any;
-  group_fetched_unassigned_function:any
-  location_data: any[] = [];
+  groupFetchedUnassignedFunction:any
+  locationData: any[] = [];
   employee_data_source: any = [];
   grpData: any = {};
   userName: any;
-  employees_action: boolean = false;
-  employee_fetched_zones: any;
-  location_data_source: any;
-  employee_group_allowed: any;
-  emp_all_zones:any;
-  groupAllowedList:any = {};
+  employeeFetchedZones: any;
+  locationDataSource: any;
+  employeeGroupAllowed: any;
+  empAllZones:any;
+  groupAllowedList:any;
   FuncationAllowedList:any = [];
-  OldFuncationAllowedList:any = [];
+  oldFuncationAllowedList:any = [];
   access:any;
   public iAdminApiService: IAdminApiService;
-  grp_data:any;
+  grpDataV:any;
   public demo1TabIndex = 0;
   public userData;
   public updateGrpTable;
@@ -99,16 +97,13 @@ export class EmployeesComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private employeeService: ApiFuntions, 
     private global:GlobalService,
-    private adminApiService: AdminApiService,
-    private zone: NgZone,
+    public adminApiService: AdminApiService,
     public router: Router,
-    public laoder: SpinnerService,
-    private dialog:MatDialog
-    ) {  
-      this.iAdminApiService = adminApiService;
-    }
+    public laoder: SpinnerService
+  ) {  
+    this.iAdminApiService = adminApiService;
+  }
 
   clearMatSelectList(){
     this.matRef.options.forEach((data: MatOption) => data.deselect());
@@ -116,7 +111,7 @@ export class EmployeesComponent implements OnInit {
   
   getFuncationAllowedList(){
     let emp:any = {
-      "username": this.grp_data,
+      "username": this.grpDataV,
       "access": this.empData.accessLevel
     }
     this.iAdminApiService.getInsertAllAccess(emp).subscribe((res:any) => {
@@ -125,7 +120,7 @@ export class EmployeesComponent implements OnInit {
         this.reloadData();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getInsertAllAccess",res.responseMessage);
       }
       
@@ -133,10 +128,10 @@ export class EmployeesComponent implements OnInit {
   }
   
   applyFunctionAllowedFilter(event: any) { 
-    if(!this.OldFuncationAllowedList?.length && this.FuncationAllowedList.filteredData?.length) {
-      this.OldFuncationAllowedList = this.FuncationAllowedList.filteredData;
+    if(!this.oldFuncationAllowedList?.length && this.FuncationAllowedList.filteredData?.length) {
+      this.oldFuncationAllowedList = this.FuncationAllowedList.filteredData;
     }
-    if(this.OldFuncationAllowedList.length) this.FuncationAllowedList = new MatTableDataSource(this.OldFuncationAllowedList.filter(x=> x?.toLowerCase()?.indexOf(event?.target?.value.toLowerCase()) > -1));
+    if(this.oldFuncationAllowedList.length) this.FuncationAllowedList = new MatTableDataSource(this.oldFuncationAllowedList.filter(x=> x?.toLowerCase()?.indexOf(event?.target?.value.toLowerCase()) > -1));
   }
 
   updateIsLookUp(event: any) {
@@ -144,9 +139,9 @@ export class EmployeesComponent implements OnInit {
     this.empData = event.userData;
     this.isLookUp = event;
     this.lookUpEvnt=true; 
-    this.grp_data = event.userData?.username;
+    this.grpDataV = event.userData?.username;
 
-    this.max_orders = event.userData.maximumOrders;
+    this.maxOrders = event.userData.maximumOrders;
     const emp_data = {
       "user": event.userData?.username,
       "wsid": "TESTWSID"
@@ -158,25 +153,25 @@ export class EmployeesComponent implements OnInit {
         {
           this.isLookUp = event;
         this.lookUpEvnt=true;
-        this.employee_group_allowed = response.data?.userRights
+        this.employeeGroupAllowed = response.data?.userRights
         this.pickUplevels = response.data?.pickLevels;
-        this.location_data_source = new MatTableDataSource(response.data?.bulkRange);
+        this.locationDataSource = new MatTableDataSource(response.data?.bulkRange);
         this.FuncationAllowedList = new MatTableDataSource(response.data.userRights);
-        this.location_data = response.data?.bulkRange
+        this.locationData = response.data?.bulkRange
         let res=response.data?.handledZones.map(item=>{
           return {zones:item}
         })
-        this.employee_fetched_zones = new MatTableDataSource(res); 
-        this.employee_fetched_zones.filterPredicate = (data: any, filter: string) => {
+        this.employeeFetchedZones = new MatTableDataSource(res); 
+        this.employeeFetchedZones.filterPredicate = (data: any, filter: string) => {
      
           
           return data.zones.toLowerCase().includes(filter.trim().toLowerCase());
       };
-        this.emp_all_zones = response.data?.allZones;
-        if(this.env !== 'DB') this.getgroupAllowedList();
+        this.empAllZones = response.data?.allZones;
+        if(this.env !== 'SD') this.getgroupAllowedList();
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("getAdminEmployeeDetails",response.responseMessage);
         }
          
@@ -185,33 +180,35 @@ export class EmployeesComponent implements OnInit {
 
 
   }
+
   reloadData(){
     const emp_data = {
-      "user":  this.grp_data,
+      "user":  this.grpDataV,
       "wsid": "TESTWSID"
     };
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => {
         if(response.isExecuted && response.data)
         {
-          this.employee_group_allowed = response.data?.userRights
+          this.employeeGroupAllowed = response.data?.userRights
         this.pickUplevels = response.data?.pickLevels;
-        this.location_data_source = new MatTableDataSource(response.data?.bulkRange);
+        this.locationDataSource = new MatTableDataSource(response.data?.bulkRange);
         this.FuncationAllowedList = new MatTableDataSource(response.data.userRights);
-        this.location_data = response.data?.bulkRange
+        this.locationData = response.data?.bulkRange
         let res=response.data?.handledZones.map(item=>{
           return {zones:item}
         })
-        this.employee_fetched_zones = new MatTableDataSource(res);
-        this.emp_all_zones = response.data?.allZones;
+        this.employeeFetchedZones = new MatTableDataSource(res);
+        this.empAllZones = response.data?.allZones;
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("getAdminEmployeeDetails",response.responseMessage);
         }
         
       });
   }
+
   addPermission(event:any){
     if(typeof( event.function) == 'string'){
       this.unassignedFunctions = this.unassignedFunctions.filter(name => name !== event.function);
@@ -225,6 +222,7 @@ export class EmployeesComponent implements OnInit {
 
     }
   }
+
   removePermission(event:any){ 
     if(typeof(event.function) == 'string'){
       this.assignedFunctions = this.assignedFunctions.filter(name => name !== event.function);
@@ -238,6 +236,7 @@ export class EmployeesComponent implements OnInit {
 
     }
   }
+
   saveAssignedFunc(){
 
     let assignFunc = {
@@ -250,21 +249,22 @@ export class EmployeesComponent implements OnInit {
         this.unassignedFunctions =[];
         this.isGroupLookUp = false;
         if(res.isExecuted){
-          this.global.ShowToastr('success',labels.alert.update, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
           this.updateGrpLookUp();
         }
         else{
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
           console.log("insertGroupFunctions",res.responseMessage);
         }
 
       });
   }
+
   updateGrpLookUp(event?: any) {
     this.grpData = {};
     this.grpData = event.groupData;
     this.isGroupLookUp = event;
-    this.max_orders = 10;
+    this.maxOrders = 10;
     
 
     const grp_data = {
@@ -281,7 +281,7 @@ export class EmployeesComponent implements OnInit {
       this.unassignedFunctions = response.data?.allFunc
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getFunctionByGroup",response.responseMessage);
       } 
       
@@ -298,9 +298,6 @@ export class EmployeesComponent implements OnInit {
    this.env =  JSON.parse(localStorage.getItem('env') ?? '');
    this.getEmployeeData();
   }
-
-  
-
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -377,18 +374,17 @@ export class EmployeesComponent implements OnInit {
   }
   
   backEmpAction(){
-    this.clearMatSelectList();
     this.clearInput();
     this.isLookUp = false;
     this.lookUpEvnt=false
-      this.employee_fetched_zones = [];
-      this.location_data_source = [];
-      this.groupAllowedList = [];
-      this.max_orders = '';
-      this.matRef.options.forEach((data: MatOption) => data.deselect());
-      this.isTabChanged=true;
-      this.demo1TabIndex = 0;
+    this.employeeFetchedZones = [];
+    this.locationDataSource = [];
+    this.groupAllowedList = [];
+    this.maxOrders = '';
+    this.isTabChanged=true;
+    this.demo1TabIndex = 0;
   }
+
   actionGroupDialog(event: any, grp_data: any, matEvent: MatSelectChange) { 
     if (event === 'edit') {
       let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
@@ -451,7 +447,7 @@ export class EmployeesComponent implements OnInit {
     this.isGroupLookUp = false;
     this.assignedFunctions = [];
     this.unassignedFunctions = [];
-    this.max_orders = '';
+    this.maxOrders = '';
   }
 
   openDialog() {
@@ -479,11 +475,12 @@ export class EmployeesComponent implements OnInit {
       }
       else {
         this.ButtonAccessList = [];
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getEmployeeData",res.responseMessage);
       }
     });
   }
+
   getEmployeeDetails(){
     const emp_data = {};
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
@@ -502,7 +499,7 @@ export class EmployeesComponent implements OnInit {
 
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),  ToasterTitle.Error);
           console.log("",response.responseMessage)
         }
       })
@@ -510,7 +507,7 @@ export class EmployeesComponent implements OnInit {
 
   getgroupAllowedList(){
     let payload:any = {
-      user : this.grp_data
+      user : this.grpDataV
     }
     this.iAdminApiService.Groupnames(payload).subscribe((res:any) => {
       if(res.isExecuted && res.data)
@@ -518,7 +515,7 @@ export class EmployeesComponent implements OnInit {
         this.groupAllowedList = new MatTableDataSource(res.data);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(),  ToasterTitle.Error);
         console.log("Groupnames",res.responseMessage);
       }
       
@@ -530,8 +527,8 @@ export class EmployeesComponent implements OnInit {
     this.bpSettingLocInp='';
     this.searchfuncAllowed = '';
     this.grpAllFilter='';
-    this.employee_fetched_zones.filter = '';
-    this.location_data_source.filter = '';
+    this.employeeFetchedZones.filter = '';
+    this.locationDataSource.filter = '';
     this.groupAllowedList.filter = '';
   }
  
@@ -544,10 +541,10 @@ export class EmployeesComponent implements OnInit {
     .subscribe((r) => {
       if(r.isExecuted)
       {
-        this.global.ShowToastr('success',labels.alert.update, 'Success!');
+        this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("updateControlName",r.responseMessage);
       }
       

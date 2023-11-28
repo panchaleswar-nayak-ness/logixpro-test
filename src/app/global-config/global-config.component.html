@@ -9,13 +9,13 @@
           <h2 class="app-heading m-0">PickPro</h2>
         </div>
         
-        <div class="card bg-tertiary-10" style="border-radius: 16px; border:none">
+        <div class="card bg-tertiary-10 global-config-card-style">
           <div class="row g-0">
             <div class="col-md-6 col-lg-6 d-none d-md-block">
-              <img src="../../assets/images/LogixPro-login-image2.jpg" alt="login form" class="img-fluid w-100" style="border-top-left-radius: 16px; border-bottom-left-radius:16px;" />
+              <img src="../../assets/images/LogixPro-login-image2.jpg" alt="login form" class="img-fluid w-100 border-radius-style"/>
             </div>
             <div class="col-md-5 col-lg-6 d-flex">
-              <div class="card-body p-4 text-black mx-auto" style="max-width: 380px;">
+              <div class="card-body p-4 text-black mx-auto max-w-380px">
 
                 <div class="text-center mb-3 mt-5 pt-3">
                   <h1 class="text-32 text-tertiary-900 fw-bold pb-3">LogixPro</h1>
@@ -25,16 +25,16 @@
                 </div>
                 <div   > 
                   <div class="form-outline mb-2">
-                    <mat-form-field appearance="outline" style=" width: 100%;">
+                    <mat-form-field appearance="outline" class="w-100">
                       <mat-label>Username</mat-label>
                       <input type="text" matInput placeholder="Enter Username"
                       (keyup.enter)="enterUserName()"
                       [(ngModel)]="addLoginForm.username" name="username" #userName="ngModel" maxlength="50"
                         
                         required autocomplete="off"    />
-                      <mat-icon matPrefix style="color: #090948;">account_circle</mat-icon>
+                      <mat-icon matPrefix class="text-tertiary-900">account_circle</mat-icon>
                     </mat-form-field>
-                    <mat-hint class="error-message" style="color: red;font-size: 14px;"
+                    <mat-hint class="error-message text-danger-shade text-14"
                       *ngIf="userName.invalid 
                       && (userName.dirty || userName.touched)">
                       Username is required
@@ -44,20 +44,20 @@
                   
                   </div>
                   <div class="form-outline mb-1">
-                    <mat-form-field appearance="outline" style=" width: 100%;">
+                    <mat-form-field appearance="outline" class="w-100">
                       <mat-label>Password</mat-label>
                       <input #passwordInput placeholder="Password" [(ngModel)]="addLoginForm.password" #password="ngModel"   maxlength="50"
                       (keyup.enter)="loginUser()"
                       matInput
                         [type]="toggle_password == true ? 'password' : 'text'" autocomplete="false"   required="" >
-                      <mat-icon matPrefix style="color: #090948;">lock</mat-icon>
+                      <mat-icon matPrefix class="text-tertiary-900">lock</mat-icon>
                       <button type="button" mat-icon-button matSuffix (click)="toggle_password = !toggle_password"
                         [attr.aria-label]="'Hide password'" [attr.aria-pressed]="toggle_password">
                         <mat-icon>{{toggle_password ? 'visibility_off' : 'visibility'}}</mat-icon>
                       </button>
                     </mat-form-field>
 
-                    <mat-hint class="error-message" style="color: red;font-size: 14px;"
+                    <mat-hint class="error-message text-danger-shade text-14"
                       *ngIf="password.invalid && (password.dirty || password.touched)">
                       Password is required
                     </mat-hint>
@@ -78,7 +78,7 @@
       </div>
     </div>
   </div>
-  <div class="overlay" *ngIf="loader.visibility | async" style="z-index: 999999;">
+  <div class="overlay z-index-999999" *ngIf="loader.visibility | async">
     <div class="center">
     </div>
   </div>

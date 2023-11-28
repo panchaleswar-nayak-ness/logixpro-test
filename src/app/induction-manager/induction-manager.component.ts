@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router,RoutesRecognized } from '@angular/router';
 import { filter, pairwise } from 'rxjs/operators';
-import { AuthService } from '../init/auth.service';
-import { SharedService } from '../services/shared.service';
-import { ApiFuntions } from '../services/ApiFuntions';
-import { IInductionManagerApiService } from '../services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from '../services/induction-manager-api/induction-manager-api.service';
+import { AuthService } from '../common/init/auth.service';
+import { SharedService } from '../common/services/shared.service';
+import { IInductionManagerApiService } from '../common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from '../common/services/induction-manager-api/induction-manager-api.service';
 
 @Component({
   selector: 'app-induction-manager',
   templateUrl: './induction-manager.component.html',
-  styleUrls: []
+  styleUrls: ['./induction-manager.component.scss']
 })
 export class InductionManagerComponent implements OnInit {
   tab_hover_color:string = '#cf9bff3d';
@@ -20,8 +19,7 @@ export class InductionManagerComponent implements OnInit {
     private router: Router, 
     private sharedService: SharedService,
     private authService: AuthService,
-    private inductionManagerApi: InductionManagerApiService,
-    private Api:ApiFuntions
+    public inductionManagerApi: InductionManagerApiService
     ) { 
       this.iinductionManagerApi = inductionManagerApi;
     router.events

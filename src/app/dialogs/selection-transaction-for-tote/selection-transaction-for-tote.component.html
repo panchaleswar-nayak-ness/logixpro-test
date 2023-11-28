@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
-    <div style="width:48px"></div>
+    <div class="w-48px"></div>
     <h1 class="m-0" mat-dialog-title>Selection Transaction For Tote</h1>
     <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
@@ -29,40 +29,27 @@
 </div>
 <div class="card p-4 mb-3 list-row-seperator">
     <div class="mb-3 list-item" *ngFor="let col of transactionTable; let indexOfelement=index;">
-    <mat-radio-button color="primary" (click)="selectOrder(col.id,itemNumber, col)" >
-        <div class="card-header-title">Order {{col.orderNumber}}</div>
-    </mat-radio-button>
-    <div class="d-flex align-items-center flex-wrap gap-12 my-3 ps-4">
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Host Transaction ID:&nbsp;<b>{{col.hostTransactionID}}</b></span></div>
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Warehouse:&nbsp;<b>{{col.warehouse}}</b></span></div>
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Location:&nbsp;<b>{{col.location}}</b></span></div>
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Serial Number:&nbsp;<b>{{col.serialNumber}}</b></span></div>
-
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Lot Number.:&nbsp;<b>{{col.lotNumber}}</b></span></div>
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Transaction Quantity:&nbsp;<b>{{col.transactionQuantity}}</b></span></div>
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{fieldNames.userField1}}:&nbsp;<b>{{col.userField1}}</b></span></div>
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{fieldNames.userField2}}:&nbsp;<b>{{col.userField2}}</b></span></div>
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-  
-    </div>
+      <mat-radio-button color="primary" (click)="selectOrder(col.id,itemNumber, col)">
+          <div class="card-header-title">Order {{col.orderNumber}}</div>
+      </mat-radio-button>
+      <div class="d-flex align-items-center flex-wrap gap-12 my-3 ps-4">
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Host Transaction ID:&nbsp;<b>{{col.hostTransactionID}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Warehouse:&nbsp;<b>{{col.warehouse}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Location:&nbsp;<b>{{col.location}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Serial Number:&nbsp;<b>{{col.serialNumber}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Lot Number.:&nbsp;<b>{{col.lotNumber}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Transaction Quantity:&nbsp;<b>{{col.transactionQuantity}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{fieldNames.userField1}}:&nbsp;<b>{{col.userField1}}</b></span></div>
+        <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">{{fieldNames.userField2}}:&nbsp;<b>{{col.userField2}}</b></span></div>
+      </div>
     </div>
 </div>
 </div>
 <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-    <button mat-stroked-button color="primary" class="btn-lg" (click)="refresh()">
+    <button mat-stroked-button color="primary" class="btn-lg" [style]="showBtnNewPutAwayForSameSKU ? '' : 'flex:1'" (click)="refresh()">
         Refresh
     </button>
-    <button mat-flat-button color="primary" class="btn-lg" style="flex:1" (click)="openSelectionExtendDialogue()">
+    <button *ngIf="showBtnNewPutAwayForSameSKU"  mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="openSelectionExtendDialogue()">
         New Put Away For Same SKU
     </button>
 </div>

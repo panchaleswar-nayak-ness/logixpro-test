@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import labels from '../../labels/labels.json'
-import { UserApiService } from 'src/app/services/user-api/user-api.service';
-import { IUserAPIService } from 'src/app/services/user-api/user-api-interface';
+import labels from 'src/app/common/labels/labels.json';
+import { UserApiService } from 'src/app/common/services/user-api/user-api.service';
+import { IUserAPIService } from 'src/app/common/services/user-api/user-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: []
+  styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent implements OnInit {
   old_toggle = true;
@@ -59,7 +59,7 @@ export class ChangePasswordComponent implements OnInit {
           else this.global.ShowToastr('error',responseMessage?.toString(), 'Error!');
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr('error', res.responseMessage, 'Error!');
           console.log("changePassword",res.responseMessage);
         }
         

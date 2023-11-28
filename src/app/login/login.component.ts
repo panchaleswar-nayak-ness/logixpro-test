@@ -1,16 +1,16 @@
 import { Component, ElementRef,  ViewChild } from '@angular/core';
 import { ILogin} from './Ilogin'; 
 import { FormControl} from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { SpinnerService } from '../init/spinner.service';
-import { AuthService } from '../init/auth.service'; 
+import { SpinnerService } from '../common/init/spinner.service';
+import { AuthService } from '../common/init/auth.service'; 
 import packJSON from '../../../package.json'
-import { SharedService } from '../services/shared.service';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
-import { IUserAPIService } from '../services/user-api/user-api-interface';
-import { UserApiService } from '../services/user-api/user-api.service';
+import { SharedService } from '../common/services/shared.service';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
+import { IUserAPIService } from '../common/services/user-api/user-api-interface';
+import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
 
 @Component({
@@ -30,18 +30,18 @@ export class LoginComponent {
   applicationData: any = [];
   isAppAccess=false;
   info:any=  {};
-  public  iGlobalConfigApi: IGlobalConfigApi;
+
+  public iGlobalConfigApi: IGlobalConfigApi;
   public iUserApi : IUserAPIService;
+
   constructor(
     public userApi : UserApiService,
     private router: Router,
-    private route: ActivatedRoute,
-    
     private global:GlobalService,
     public loader: SpinnerService,
     public globalConfigApi: GlobalConfigApiService,
     private auth: AuthService, 
-    private sharedService: SharedService,
+    private sharedService: SharedService
   ) { 
     this.iGlobalConfigApi = globalConfigApi;
     this.iUserApi = userApi;
@@ -155,8 +155,6 @@ export class LoginComponent {
    this.CompanyInfo();
   }
 
-
-    
   // moved getAppLicense,convertToObj ,sortAppsData,appNameDictionary & setMenuData from Menu Component to handle access to the Apps on login
   getAppLicense(wsid) {
     let userData=JSON.parse(localStorage.getItem('user')?? '{}');
@@ -201,6 +199,7 @@ export class LoginComponent {
     this.sortAppsData();
     
   }
+
   sortAppsData() {
     this.applicationData.sort(function (a, b) {
       let nameA = a.info?.name?.toLowerCase(),
@@ -212,6 +211,7 @@ export class LoginComponent {
       return 0; //default return value (no sorting)
     });
   }
+
   appNameDictionary(appName) {
     let routes = [
       {
@@ -224,7 +224,7 @@ export class LoginComponent {
       },
       {
         appName: 'FlowRackReplenish',
-        route: '/FlowrackReplenishment',
+        route: '/FlowrackReplenish',
         iconName: 'schema',
         name: 'FlowRack Replenishment',
         updateMenu: '',
@@ -340,6 +340,7 @@ export class LoginComponent {
       this.router.navigate(['/dashboard']);
     }
   }
+
   redirection(appName){
 
     switch (appName) {
@@ -347,7 +348,7 @@ export class LoginComponent {
         this.router.navigate(['/#']);
         break;
       case 'FlowRackReplenish':
-        this.router.navigate(['/FlowrackReplenishment']);
+        this.router.navigate(['/FlowrackReplenish']);
         break;
         case 'ICSAdmin':
         this.router.navigate(['/admin']);
@@ -386,6 +387,7 @@ export class LoginComponent {
 
     });
   }
+
   private addCustomPermission(userRights: any) {
     let customPerm = [
       'Home',
@@ -402,5 +404,4 @@ export class LoginComponent {
     localStorage.setItem('customPerm', JSON.stringify(customPerm));
     return [...userRights, ...customPerm];
   }
-
 }

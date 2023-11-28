@@ -1,0 +1,13 @@
+.dev-main-style{
+    border: 1px solid var(--clr-tertiary-50) !important;
+    border-radius: 14px !important;
+    padding: 30px !important;
+    height: 400px !important;
+    .first-row-style, .sec-row-style, .third-row-style{
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        .transaction-type-style, .field-length-style{
+            font-weight: bold;
+        }
+    }
+}

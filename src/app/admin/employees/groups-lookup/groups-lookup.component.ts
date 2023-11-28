@@ -4,12 +4,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { EmployeeObject} from 'src/app/Iemployee';  
-import { AuthService } from '../../../../app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { EmployeeObject } from 'src/app/common/interface/Iemployee';
+import { AuthService } from '../../../common/init/auth.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
 
 
 export interface GroupsDetails {
@@ -30,15 +30,15 @@ export class GroupsLookupComponent implements OnInit {
   employees_details_data: any = [];
   @Input('childGroupLookUp') isGroupLookUp: boolean;
   @Input('updateGrpTable') updateGrpTable: any;
-  @Output() updateGrpLookUp = new EventEmitter(); 
+  @Output() updateGrpLookUp = new EventEmitter();
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   selectedRowIndex = -1;
 
   highlight(row) {
     this.selectedRowIndex = row.id;
   }
-  clearFields(){
-    this.searchGrp='';
+  clearFields() {
+    this.searchGrp = '';
     this.group_data_source.filter = '';
   }
 
@@ -51,15 +51,15 @@ export class GroupsLookupComponent implements OnInit {
   // table initialization
   displayedColumns: string[] = ['groupName'];
 
-  @Input() set tab(event : any) {
+  @Input() set tab(event: any) {
     if (event) {
-      setTimeout(()=>{
-        this.searchBoxField.nativeElement.focus(); 
+      setTimeout(() => {
+        this.searchBoxField?.nativeElement.focus();
       }, 500);
     }
   }
   public iAdminApiService: IAdminApiService;
-  constructor(private _liveAnnouncer: LiveAnnouncer, private global : GlobalService, private adminApiService: AdminApiService, private employeeService: ApiFuntions, private authService: AuthService) { 
+  constructor(private _liveAnnouncer: LiveAnnouncer, private global: GlobalService, private adminApiService: AdminApiService, private authService: AuthService) {
     this.iAdminApiService = adminApiService;
   }
 
@@ -68,9 +68,6 @@ export class GroupsLookupComponent implements OnInit {
   ngAfterViewInit() {
     this.group_data_source.sort = this.sort;
   }
-
-
-
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
@@ -90,7 +87,7 @@ export class GroupsLookupComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
 
     this.group_data_source.sort = this.sort;
@@ -103,47 +100,29 @@ export class GroupsLookupComponent implements OnInit {
   }
 
 
-  // openGroupDialog() {
-  //   let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
-  //     height: 'auto',
-  //     width: '560px',
-  //     autoFocus: '__non_existing_element__',
-   
-  //   });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.loadEmpData();
-  //   })
-
-  // }
-  getGrpDetails(grpData: any) { 
+  getGrpDetails(grpData: any) {
     this.isGroupLookUp = true;
-    this.updateGrpLookUp.emit({ groupData: grpData, isGroupLookUp: this.isGroupLookUp }); 
+    this.updateGrpLookUp.emit({ groupData: grpData, isGroupLookUp: this.isGroupLookUp });
 
   }
 
-  public loadEmpData(){
-    this.emp = { 
+  public loadEmpData() {
+    this.emp = {
     };
     this.iAdminApiService.getEmployeeData(this.emp)
       .subscribe((response: EmployeeObject) => {
-        if(response.isExecuted)
-        {
+        if (response.isExecuted) {
           this.employees_res = response
-        this.groups_details_data = this.employees_res.data.allGroups
-        this.group_data_source = new MatTableDataSource(this.groups_details_data);
+          this.groups_details_data = this.employees_res.data.allGroups
+          this.group_data_source = new MatTableDataSource(this.groups_details_data);
         }
         else {
           this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("getEmployeeData",response.responseMessage);
+          console.log("getEmployeeData", response.responseMessage);
         }
-        
+
       });
 
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.group_data_source?.filteredData?.push({groupName:this.updateGrpTable});
-    
   }
 
 

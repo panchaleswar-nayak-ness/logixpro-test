@@ -1,0 +1,20 @@
+table{
+    th{
+        white-space: nowrap;
+    }
+    td{
+        padding-right: 20px;
+        white-space: nowrap;
+        max-width: 25ch;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}.w-48px {
+  width: 48px;
+}.height-545 {
+    height: 545px;
+  }
+  
+    .table-settings-tr{
+      background-color: var(--clr-table-header);
+  }

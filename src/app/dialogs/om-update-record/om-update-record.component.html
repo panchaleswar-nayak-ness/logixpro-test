@@ -1,0 +1,160 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Order Manager Update Record(s)</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content>
+    <form [formGroup]="orderForm">
+        <div class="px-3">
+            <div class="row">
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>Order Number</mat-label>
+                        <input #ordFocus formControlName="orderNum" type="text" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>Item Number</mat-label>
+                        <input formControlName="itemNum" type="text" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>Supplier Item ID</mat-label>
+                        <input formControlName="supItemNum" type="text" matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>Required Date</mat-label>
+                        <input formControlName="reqDate" type="date" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-8">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>Notes</mat-label>
+                        <input formControlName="notes" maxlength="255" type="text" matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>Priority</mat-label>
+                        <input formControlName="priority" #prio (input)="prio.value = globalService.setNumericInRange(prio.value, globalService.sqlLimits.numerics.smallint, '');" type="text" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>User Field 1</mat-label>
+                        <input formControlName="user1" maxlength="255" type="text" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>User Field 2</mat-label>
+                        <input formControlName="user2" maxlength="255" type="text" matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>User Field 3</mat-label>
+                        <input formControlName="user3" maxlength="255" type="text" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>User Field 4</mat-label>
+                        <input formControlName="user4" maxlength="255" type="text" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>User Field 5</mat-label>
+                        <input formControlName="user5" maxlength="255" type="text" matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>User Field 6</mat-label>
+                        <input formControlName="user6" maxlength="255" type="text" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>User Field 7</mat-label>
+                        <input formControlName="user7" maxlength="255" type="text" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>User Field 8</mat-label>
+                        <input formControlName="user8" maxlength="255" type="text" matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>User Field 9</mat-label>
+                        <input formControlName="user9" maxlength="255" type="text" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="w-100 custom-form-field mb-3" appearance="outline">
+                        <mat-label>User Field 10</mat-label>
+                        <input formControlName="user10" maxlength="255" type="text" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4">
+                    <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+                        <mat-label>Emergency</mat-label>
+                        <mat-select formControlName="emergency">
+                            <mat-option value="True">True</mat-option>
+                            <mat-option value="False">False</mat-option>
+                        </mat-select>
+                        <span class="material-symbols-outlined icon-expand-more text-20">
+                            expand_more
+                        </span>
+    
+                    </mat-form-field>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-xl-4">
+                    <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+                        <mat-label>Label</mat-label>
+                        <mat-select formControlName="label">
+                            <mat-option value="True">True</mat-option>
+                            <mat-option value="False">False</mat-option>
+                        </mat-select>
+                        <span class="material-symbols-outlined icon-expand-more text-20">
+                            expand_more
+                        </span>
+    
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </form>    
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+    <button mat-flat-button color="primary" class="btn-lg w-100" (click)="openOmChangesConfirm()">Update</button>
+</div>

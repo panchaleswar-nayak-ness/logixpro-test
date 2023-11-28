@@ -1,0 +1,126 @@
+<mat-card class="mat-elevation-z g-card mt-2 mb-3">
+    <div class="mb-0">
+        <div class="col-xl-12 d-xl-flex justify-content-between">
+            <app-icon-heading-component heading="Preferences" icon="stacked_bar_chart">
+            </app-icon-heading-component>
+            <div class="d-flex d-xl-block gap-12 justify-content-end">
+                <button mat-flat-button color="primary" class="float-end btn-md flex-grow-1" (click)="openCarrier()">
+                    Carriers
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <form [formGroup]="shippingForm">
+        <div class="row pb-5 mb-5">
+            <div class="col-xl-6">
+                <p class="text-tertiary-800 bold py-3 mb-0"> Choose the desired Consolidation options for your business.
+                </p>
+                <div class="d-xl-flex gap-12 mb-2 pb-5">
+                    <div class="col-xl-12 text-left admin-prefrences py-2 ps-1">
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                            Allow Shipping: <mat-slide-toggle formControlName="allowShip" checked class="primary"
+                                color="primary" (change)="toggleAllowShip()" matTooltip=""></mat-slide-toggle>
+                        </div>
+                        <div class="col-xl-12 text-left admin-prefrences py-2 ps-1">
+                            <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                                Allow Packing: <mat-slide-toggle checked class="primary" color="primary"
+                                    (change)="toggleAllowPackage()" formControlName="allowPack"
+                                    matTooltip=""></mat-slide-toggle>
+                            </div>
+                            <ng-container *ngIf="selectionPacking">
+                                <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                                    Confirm and Packing: <mat-slide-toggle (change)="toggleConfirmPackage()"
+                                        formControlName="confirmPack" checked color="primary"
+                                        matTooltip=""></mat-slide-toggle>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="selectionConfirmPacking">
+                                <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                                    Auto Print Container PL: <mat-slide-toggle (change)="saveShippingPreferences()"
+                                        formControlName="printCont" checked color="primary"
+                                        matTooltip=""></mat-slide-toggle>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                                    Auto Print Order PL: <mat-slide-toggle (change)="saveShippingPreferences()"
+                                        formControlName="printOrd" checked color="primary" matTooltip=""></mat-slide-toggle>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                                    Auto Print Container Label: <mat-slide-toggle (change)="saveShippingPreferences()"
+                                        formControlName="printContLabel" checked color="primary"
+                                        matTooltip=""></mat-slide-toggle>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                                    Enter Container ID: <mat-slide-toggle (change)="saveShippingPreferences()"
+                                        formControlName="contID" checked color="primary" matTooltip=""></mat-slide-toggle>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                                    Confirm Quantity: <mat-slide-toggle (change)="saveShippingPreferences()"
+                                        formControlName="confirmQTY" checked color="primary"
+                                        matTooltip=""></mat-slide-toggle>
+                                </div>
+    
+                                <div class="d-flex">
+                                    <mat-form-field class="action-dropdown col-xl-12" appearance="outline">
+                                        <mat-label>Default Text for Container ID</mat-label>
+    
+    
+                                        <input (ngModelChange)="this.searchByInput.next($event)"
+                                            formControlName="contIDText" matInput type="text" #vlname maxlength="50">
+                                    </mat-form-field>
+                                </div>
+                            </ng-container>
+                        </div>
+                     
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6">
+                <p class="text-tertiary-800 bold py-3 mb-0"> Select from the field list those that you will be collecting data for in Shipping.
+
+                </p>
+                <div class="d-xl-flex gap-12 mb-2 pb-5">
+                    <div class="col-xl-12 text-left admin-prefrences py-2 ps-1">
+                    <ng-container *ngIf="selectionShipping">
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                            Freight: <mat-slide-toggle (change)="saveShippingPreferences()"
+                                formControlName="freight" checked color="primary" matTooltip=""></mat-slide-toggle>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                            Freight1: <mat-slide-toggle (change)="saveShippingPreferences()"
+                                formControlName="freight1" checked color="primary" matTooltip=""></mat-slide-toggle>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                            Freight2: <mat-slide-toggle (change)="saveShippingPreferences()"
+                                formControlName="freight2" checked color="primary" matTooltip=""></mat-slide-toggle>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                            Weight: <mat-slide-toggle (change)="saveShippingPreferences()" formControlName="weight"
+                                checked color="primary" matTooltip=""></mat-slide-toggle>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                            Length: <mat-slide-toggle (change)="saveShippingPreferences()" formControlName="length"
+                                checked color="primary" matTooltip=""></mat-slide-toggle>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                            Width: <mat-slide-toggle (change)="saveShippingPreferences()" formControlName="width"
+                                checked color="primary" matTooltip=""></mat-slide-toggle>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                            Height: <mat-slide-toggle (change)="saveShippingPreferences()" formControlName="height"
+                                checked color="primary" matTooltip=""></mat-slide-toggle>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 text-tertiary-900">
+                            Cube: <mat-slide-toggle checked (change)="saveShippingPreferences()"
+                                formControlName="cube" color="primary" matTooltip=""></mat-slide-toggle>
+                        </div>
+                    </ng-container>
+                </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</mat-card>

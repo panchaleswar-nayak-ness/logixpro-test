@@ -13,11 +13,11 @@
     }
 }
 /*Theme colors*/
-@each $theme-color, $value in $theme-colors {
-    .text-#{$theme-color}{
-        color:$value !important;
-    }
-}
+// @each $theme-color, $value in $theme-colors {
+//     .text-#{$theme-color}{
+//         color:$value !important;
+//     }
+// }
 /*TEXT AND BACKGROUND CLASSES---END*/
 
 /*TEXT-SIZES---START*/

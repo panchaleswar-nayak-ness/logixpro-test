@@ -1,0 +1,25 @@
+table{
+    th{
+      white-space: nowrap;
+      padding-right: 12px;
+      border:0;
+    //   &:last-child{
+    //     float: right;
+    //   }
+    }
+      td{
+        white-space: nowrap;
+        padding-right: 12px;
+        border:0;
+        text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;
+    }
+  }
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.h-545px{
+  height: 545px;
+}
+.table-header-clr{
+  background-color: var(--clr-table-header);
+}

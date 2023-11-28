@@ -1,0 +1,29 @@
+mat-card{
+    min-height: 72vh;
+}
+table{
+    tr{
+        &:first-child{
+            td{
+            padding-top: 10px;
+            }
+        }
+        td{
+            padding-bottom: 10px; 
+        }
+    }
+}
+
+.action-dropdown {
+    flex:1;
+}
+
+.borderCardDiv-style{
+    overflow-x: auto !important;
+    .scrolbarHover-style{
+        height:56vh;
+        .matHeaderCellDef-style{
+            width: 220px;
+        }
+    }
+}

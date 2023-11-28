@@ -4,12 +4,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
  
 
-import {ApiFuntions } from 'src/app/services/ApiFuntions';
-import { ICommonApi } from 'src/app/services/common-api/common-api-interface';
-import { CommonApiService } from 'src/app/services/common-api/common-api.service';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import {ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
+import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 
 export interface  AdjustQuantityDataStructure   {
@@ -106,7 +107,7 @@ export class AdjustQuantityComponent implements OnInit {
       }
       else {
         
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getItemQuantityDetail",res.responseMessage);
 
       }
@@ -120,7 +121,7 @@ export class AdjustQuantityComponent implements OnInit {
       }
       else {
         
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getAdjustmentReasonsList",res.responseMessage);
 
       }
@@ -131,12 +132,12 @@ export class AdjustQuantityComponent implements OnInit {
     if(form.valid){
       this.iAdminApiService.updateItemQuantity(form.value).subscribe((res) => {
         if(res.isExecuted){
-          this.global.ShowToastr('success',res.responseMessage, 'Success!'); 
+          this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success); 
           this.dialogRef.close(form.value.quantity);   
         }
         else {
           
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("updateItemQuantity",res.responseMessage);
           
         }

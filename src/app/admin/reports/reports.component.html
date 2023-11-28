@@ -1,0 +1,8 @@
+<mat-tab-group dynamicHeight>
+    <mat-tab label="Basic Reports And Labels" *ngIf="fromAdmin">
+    <app-basic-reports-and-labels ></app-basic-reports-and-labels>    
+    </mat-tab>
+    <mat-tab label="Custom Reports And Labels">
+        <app-custom-reports-and-labels></app-custom-reports-and-labels>
+    </mat-tab>
+</mat-tab-group>

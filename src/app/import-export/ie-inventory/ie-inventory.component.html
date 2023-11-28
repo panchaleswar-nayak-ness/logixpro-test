@@ -1,0 +1,91 @@
+<div class="container-fluid p-0 mt-3">
+    <mat-card class="mat-elevation-z g-card">
+        <mat-card-content>
+            <div class="d-xl-flex justify-content-between align-items-center mb-3">
+                
+                <app-icon-heading-component class="card-header-title mb-0 d-flex align-items-center mb-3 mb-xl-0" heading="File Backup" icon="backup"></app-icon-heading-component>
+
+            </div>
+            <div class="label-blue2 p-3 d-flex br-8 mb-3 text-primary-600">
+                <mat-icon class="material-symbols-outlined">info</mat-icon>
+                <span class="ps-2 w-100">Enter the default settings for importing new inventory records. These will only be used if the data is missing from the import record.</span>
+            </div>
+            <div class="row">
+                <div class="col-xl-6">
+                    <mat-form-field
+                    class="action-dropdown custom-form-field-bg-white w-100 mb-3"
+                    appearance="outline"
+                  >
+                    <mat-label>Primary Storage</mat-label>
+                    <mat-select class="employees-action">
+                      <mat-option value="123456">123456789cc</mat-option>
+                      <mat-option value="987654">987654789cc</mat-option>
+                      <mat-option value="147852">147852789cc</mat-option>
+                    </mat-select>
+                    <span class="material-symbols-outlined icon-expand-more">
+                      expand_more
+                    </span>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6">
+                    <mat-form-field
+                    class="action-dropdown custom-form-field-bg-white w-100 mb-3"
+                    appearance="outline"
+                  >
+                    <mat-label>Secondary Storage</mat-label>
+                    <mat-select class="employees-action">
+                      <mat-option value="123456">123456789cc</mat-option>
+                      <mat-option value="987654">987654789cc</mat-option>
+                      <mat-option value="147852">147852789cc</mat-option>
+                    </mat-select>
+                    <span class="material-symbols-outlined icon-expand-more">
+                      expand_more
+                    </span>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                        <mat-label>Bulk Cell Size</mat-label>
+                        <input matInput type="text" #specialFeature maxlength="255"
+                            value="0000">
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                        <mat-label>Bulk Velocity Code</mat-label>
+                        <input matInput type="text" #specialFeature maxlength="255"
+                            value="0000">
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                        <mat-label>Carousel Cell Size</mat-label>
+                        <input matInput type="text" #specialFeature maxlength="255"
+                            value="0000">
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                        <mat-label>Carousel Velocity Code</mat-label>
+                        <input matInput type="text" #specialFeature maxlength="255"
+                            value="0000">
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                        <mat-label>Carton Flow Cell Size</mat-label>
+                        <input matInput type="text" #specialFeature maxlength="255"
+                            value="0000">
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6">
+                    <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                        <mat-label>Carton Flow Velocity Code</mat-label>
+                        <input matInput type="text" #specialFeature maxlength="255"
+                            value="0000">
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

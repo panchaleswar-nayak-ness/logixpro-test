@@ -1,276 +1,279 @@
 <form [formGroup]="editTransactionForm" (ngSubmit)="editTransaction()" name="editTransactionForm">
-<div class="d-flex justify-content-between mb-4 align-items-center">
-    <div style="width:48px"></div>
-    <h1 class="m-0" mat-dialog-title>Reprocess Transaction Detail</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
-        <mat-icon class="close-icon">close</mat-icon>
-    </button>
-</div>
-<div >
-    <ng-scrollbar mat-dialog-content style="height: 75vh;">
-    <div class="card p-3 mb-3">
-        <div class="d-flex align-items-center gap-12 mb-4" >
-        <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
-            <div class="mat-icon-wrap me-lg-3">
-                <span class="material-symbols-outlined">
-                    edit_square
-                </span>
-            </div>
-            <span>Editable Fields</span>
-        </h2>
-        <div class="d-flex gap-12">
-        <mat-checkbox color="primary" formControlName="label" checked >Label</mat-checkbox>
-        <mat-checkbox color="primary" formControlName="emergency" checked  >Emergency</mat-checkbox>
-        </div>
-        </div>
-        <div class="row">
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Trans. Qty</mat-label>
-                    <input #trans_qty maxlength="9" [NumbersOnly]="true"  matInput maxlength="11" type="text" value="" formControlName="transactionQuantity">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames?.unitOfMeasure}}</mat-label>
-                    <mat-select formControlName="unitOfMeasure">
-                        <mat-option *ngFor="let type of unitOfMeasure_list" value="{{type}}">{{type}}</mat-option>                        
-                      </mat-select>
-                      <span class="material-symbols-outlined icon-expand-more">
-                        expand_more
-                    </span>
-
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Serial Number</mat-label>
-                    <input matInput maxlength="50" type="text" value="Label" formControlName="serialNumber" >
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Lot number</mat-label>
-                    <input matInput maxlength="50" type="text" value="Label" formControlName="lotNumber">
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xl-3">
-
-                <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                    <mat-label>Expiration Date</mat-label>
-                    <input matInput  formControlName="expirationDate" [value]="expDate" [(ngModel)]="expDate" [matDatepicker]="start"
-                        (dateChange)="onDateChange($event.value,'1')" readonly>
-                    <mat-datepicker-toggle matSuffix [for]="start" ngDefaultControl></mat-datepicker-toggle>
-                    <mat-datepicker #start></mat-datepicker>
-                </mat-form-field>
-
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Revision</mat-label>
-                    <input matInput maxlength="50" type="text" value="Label" formControlName="revision">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Host Transaction ID</mat-label>
-                    <input matInput  maxlength="50"  type="text" value="Label" formControlName="hostTransactionID">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-
-                <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
-                    <mat-label>Required Date</mat-label>
-                    <input matInput  formControlName="requiredDate" [value]="reqDate" [(ngModel)]="reqDate" [matDatepicker]="req"
-                        (dateChange)="onDateChange($event.value)" readonly>
-                    <mat-datepicker-toggle matSuffix [for]="req" ngDefaultControl></mat-datepicker-toggle>
-                    <mat-datepicker #req></mat-datepicker>
-                </mat-form-field>
-
-
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Batch Pick ID</mat-label>
-                    <input maxlength="50" matInput type="text" value="Label" formControlName="batchPickID">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Line Number</mat-label>
-                    <input maxlength="9" [NumbersOnly]="true"  matInput type="text" value="Label" formControlName="lineNumber">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Line Sequence</mat-label>
-                    <input maxlength="9" [NumbersOnly]="true" matInput type="text" value="Label" formControlName="lineSequence">
-                </mat-form-field>
-            </div>
-            
-        </div>
-
-        <div class="row">
-            <div class="col-xl-6">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Priority</mat-label>
-                    <input maxlength="9" [NumbersOnly]="true" matInput type="text" value="Label" formControlName="priority">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-6">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Warehouse</mat-label>
-                    <mat-select formControlName="wareHouse">
-                        <mat-option *ngFor="let type of warehouse_list" value="{{type}}">{{type}}</mat-option>                        
-                      </mat-select>
-                      <span class="material-symbols-outlined icon-expand-more">
-                        expand_more
-                    </span>
-                </mat-form-field>
-            </div>
-            
-        </div>
-
-        <div class="row">
-            <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Notes</mat-label>
-                    <textarea maxlength="255" matInput formControlName="notes"></textarea>
-                </mat-form-field>
-            </div>
-            <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames?.userField1}}</mat-label>
-                    <textarea maxlength="255" matInput formControlName="userField1" ></textarea>
-                </mat-form-field>
-            </div>
-            <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames?.userField2}}</mat-label>
-                    <textarea maxlength="255" matInput formControlName="userField2" ></textarea>
-                </mat-form-field>
-            </div>
-        </div>
-
-
-
-        
-
-    <div class="card p-3 mb-3">
-        <div class="d-flex align-items-center gap-12 mb-4" >
-        <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
-            <div class="mat-icon-wrap me-lg-3">
-                <span class="material-symbols-outlined">
-                    lock
-                </span>
-            </div>
-            <span>Locked Fields</span>
-        </h2>
-        </div>
-
-        <div class="row">
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Order number</mat-label>
-                    <input formControlName="orderNumber" matInput type="text" value="Label">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>{{fieldNames?.itemNumber}}</mat-label>
-                    <input formControlName="itemNumber" matInput type="text" value="Label">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Transaction Type</mat-label>
-                    <input formControlName="transactionType" matInput type="text" value="Label">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Transaction Date/Time</mat-label>
-                    <input formControlName="importDate" matInput type="text" value="Label">
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Record Created By</mat-label>
-                    <input formControlName="importBy" matInput type="text" value="Label">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Zone</mat-label>
-                    <input formControlName="zone"  matInput type="text" value="Label">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Carousel</mat-label>
-                    <input formControlName="carousel"  matInput type="text" value="Label">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-3">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Row</mat-label>
-                    <input formControlName="row"  matInput type="text" value="Label">
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xl-6">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Shelf</mat-label>
-                    <input formControlName="shelf"  matInput type="text" value="Label">
-                </mat-form-field>
-            </div>
-            <div class="col-xl-6">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Bin</mat-label>
-                    <input formControlName="bin" matInput type="text" value="">
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Reason</mat-label>
-                    <textarea matInput formControlName="reason"></textarea>
-                </mat-form-field>
-            </div>
-            <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Reason Message</mat-label>
-                    <textarea matInput formControlName="reasonMessage"></textarea>
-                </mat-form-field>
-            </div>
-            <div class="col-xl-4">
-                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
-                    <mat-label>Item Description</mat-label>
-                    <textarea matInput formControlName="description"></textarea>
-                </mat-form-field>
-            </div>
-        </div>
-
+    <div class="d-flex justify-content-between mb-4 align-items-center">
+        <div class="div-width" ></div>
+        <h1 class="m-0" mat-dialog-title>Reprocess Transaction Detail</h1>
+        <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+            <mat-icon class="close-icon">close</mat-icon>
+        </button>
     </div>
+    <div>
+        <ng-scrollbar mat-dialog-content class="ng-scrollbar-height">
+            <div class="card p-3 mb-3">
+                <div class="d-flex align-items-center gap-12 mb-4">
+                    <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
+                        <div class="mat-icon-wrap me-lg-3">
+                            <span class="material-symbols-outlined">
+                                edit_square
+                            </span>
+                        </div>
+                        <span>Editable Fields</span>
+                    </h2>
+                    <div class="d-flex gap-12">
+                        <mat-checkbox color="primary" formControlName="label" checked>Label</mat-checkbox>
+                        <mat-checkbox color="primary" formControlName="emergency" checked>Emergency</mat-checkbox>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-3">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Trans. Qty</mat-label>
+                            <input #trans_qty maxlength="9" [NumbersOnly]="true" matInput maxlength="11" type="text"
+                                value="" formControlName="transactionQuantity">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-3">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>{{fieldNames?.unitOfMeasure}}</mat-label>
+                            <mat-select formControlName="unitOfMeasure">
+                                <mat-option *ngFor="let type of unitOfMeasure_list"
+                                    value="{{type}}">{{type}}</mat-option>
+                            </mat-select>
+                            <span class="material-symbols-outlined icon-expand-more">
+                                expand_more
+                            </span>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-3">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Serial Number</mat-label>
+                            <input matInput maxlength="50" type="text" value="Label" formControlName="serialNumber">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-3">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Lot number</mat-label>
+                            <input matInput maxlength="50" type="text" value="Label" formControlName="lotNumber">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-3">
+
+                        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+                            <mat-label>Expiration Date</mat-label>
+                            <input matInput formControlName="expirationDate" [value]="expDate" [(ngModel)]="expDate"
+                                [matDatepicker]="start" (dateChange)="onDateChange($event.value,'1')" readonly>
+                            <mat-datepicker-toggle matSuffix [for]="start" ngDefaultControl></mat-datepicker-toggle>
+                            <mat-datepicker #start></mat-datepicker>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-xl-3">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Revision</mat-label>
+                            <input matInput maxlength="50" type="text" value="Label" formControlName="revision">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-3">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Host Transaction ID</mat-label>
+                            <input matInput maxlength="50" type="text" value="Label"
+                                formControlName="hostTransactionID">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-3">
+
+                        <mat-form-field class="custom-form-field w-100 __grab_cursor mb-3" appearance="outline">
+                            <mat-label>Required Date</mat-label>
+                            <input matInput formControlName="requiredDate" [value]="reqDate" [(ngModel)]="reqDate"
+                                [matDatepicker]="req" (dateChange)="onDateChange($event.value)" readonly>
+                            <mat-datepicker-toggle matSuffix [for]="req" ngDefaultControl></mat-datepicker-toggle>
+                            <mat-datepicker #req></mat-datepicker>
+                        </mat-form-field>
+
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-4">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Batch Pick ID</mat-label>
+                            <input maxlength="50" matInput type="text" value="Label" formControlName="batchPickID">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-4">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Line Number</mat-label>
+                            <input maxlength="9" [NumbersOnly]="true" matInput type="text" value="Label"
+                                formControlName="lineNumber">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-4">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Line Sequence</mat-label>
+                            <input maxlength="9" [NumbersOnly]="true" matInput type="text" value="Label"
+                                formControlName="lineSequence">
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Priority</mat-label>
+                            <input maxlength="9" [NumbersOnly]="true" matInput type="text" value="Label"
+                                formControlName="priority">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-6">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Warehouse</mat-label>
+                            <mat-select formControlName="wareHouse">
+                                <mat-option *ngFor="let type of warehouse_list" value="{{type}}">{{type}}</mat-option>
+                            </mat-select>
+                            <span class="material-symbols-outlined icon-expand-more">
+                                expand_more
+                            </span>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-4">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>Notes</mat-label>
+                            <textarea maxlength="255" matInput formControlName="notes"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-4">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>{{fieldNames?.userField1}}</mat-label>
+                            <textarea maxlength="255" matInput formControlName="userField1"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-4">
+                        <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                            <mat-label>{{fieldNames?.userField2}}</mat-label>
+                            <textarea maxlength="255" matInput formControlName="userField2"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="card p-3 mb-3">
+                    <div class="d-flex align-items-center gap-12 mb-4">
+                        <h2 class="card-header-title mb-0 d-flex align-items-center me-3">
+                            <div class="mat-icon-wrap me-lg-3">
+                                <span class="material-symbols-outlined">
+                                    lock
+                                </span>
+                            </div>
+                            <span>Locked Fields</span>
+                        </h2>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-3">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Order number</mat-label>
+                                <input formControlName="orderNumber" matInput type="text" value="Label">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-3">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>{{fieldNames?.itemNumber}}</mat-label>
+                                <input formControlName="itemNumber" matInput type="text" value="Label">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-3">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Transaction Type</mat-label>
+                                <input formControlName="transactionType" matInput type="text" value="Label">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-3">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Transaction Date/Time</mat-label>
+                                <input formControlName="importDate" matInput type="text" value="Label">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-3">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Record Created By</mat-label>
+                                <input formControlName="importBy" matInput type="text" value="Label">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-3">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Zone</mat-label>
+                                <input formControlName="zone" matInput type="text" value="Label">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-3">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Carousel</mat-label>
+                                <input formControlName="carousel" matInput type="text" value="Label">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-3">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Row</mat-label>
+                                <input formControlName="row" matInput type="text" value="Label">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Shelf</mat-label>
+                                <input formControlName="shelf" matInput type="text" value="Label">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-6">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Bin</mat-label>
+                                <input formControlName="bin" matInput type="text" value="">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Reason</mat-label>
+                                <textarea matInput formControlName="reason"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Reason Message</mat-label>
+                                <textarea matInput formControlName="reasonMessage"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4">
+                            <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                                <mat-label>Item Description</mat-label>
+                                <textarea matInput formControlName="description"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ng-scrollbar>
     </div>
-</ng-scrollbar>
-</div>
-<div mat-dialog-actions *ngIf="!isHistory">
-    <button type="button" (click)="closeWindow()" mat-stroked-button color="primary" class="btn-lg">Close Without Saving Changes</button>
-    <button type="submit" style="flex:1" mat-flat-button color="primary" class="btn-lg" [disabled]="!editTransactionForm.valid">Save</button>
-</div>
+    <div mat-dialog-actions *ngIf="!isHistory">
+        <button type="button" (click)="closeWindow()" mat-stroked-button color="primary" class="btn-lg">Close Without
+            Saving Changes</button>
+        <button type="submit" mat-flat-button color="primary" class="btn-lg flex-grow-1"
+            [disabled]="!editTransactionForm.valid">Save</button>
+    </div>
 </form>

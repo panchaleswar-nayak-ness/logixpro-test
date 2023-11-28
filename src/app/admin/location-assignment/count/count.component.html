@@ -1,23 +1,23 @@
-<div class="row mb-3"> 
+<div class="row my-3"> 
 
   <div class="col-xl-6"> 
-    <app-count-order-selection-component [searchOrder]="searchOrder" [leftTable]="leftTable"
-      [displayedColumns]="displayedColumns" (applyFilterEmit)="applyFilter($event)"
-      (addOrdereDialogEmit)="addOrdereDialog()" (announceSortChangeEmit)="announceSortChange($event.sortState)"
+    <app-count-order-selection-component [searchOrderLeft]="searchOrderLeft" [leftTable]="leftTable"
+      [displayedColumnsCountOrderData]="displayedColumnsLeft" (applyFilterEmit)="applyLeftFilter($event)"
+      (addOrdereDialogEmit)="addOrdereDialog()" (announceSortChangeEmit)="announceSortChangeLeftTable($event.sortState)"
       (addEmit)="add($event)"></app-count-order-selection-component> 
   </div> 
   <div class="col-xl-6">  
-    <app-count-select-orders-component [searchOrder1]="searchOrder1" [rightTable]="rightTable"
+    <app-count-select-orders-component [searchOrderRight]="searchOrderRight" [rightTable]="rightTable"
    
-      [displayedColumns1]="displayedColumns1" (announceSortChange1Emit)="announceSortChange1($event.sortState)"
-      (applyFilter1Emit)="applyFilter1($event)" (deleteItemEmit)="deleteItem()"
+      [displayedColumnsSelectData]="displayedColumnsRight" (announceSortChange1Emit)="announceSortChangeRightTable($event.sortState)"
+      (applyFilter1Emit)="applyRightFilter($event)" (deleteItemEmit)="deleteItem()"
       (removeEmit)="remove($event)"></app-count-select-orders-component> 
   </div> 
 </div>
 
 
-<button color="primary" class="mat-focus-indicator w-100 btn-lg mat-flat-button mat-button-base mat-primary mb-3"
-  style="flex: 1;" ng-reflect-color="primary" ng-reflect-disabled="false" (click)="quarantineDialog()"><span
+<button color="primary" class="mat-focus-indicator w-100 btn-lg mat-flat-button mat-button-base mat-primary mb-3 count-btn-primary"
+  ng-reflect-color="primary" ng-reflect-disabled="false" (click)="quarantineDialog()"><span
     class="mat-button-wrapper"> Location Assignment
   </span><span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false" ng-reflect-centered="false"
     ng-reflect-trigger="[object HTMLButtonElement]"></span><span class="mat-button-focus-overlay"></span></button>

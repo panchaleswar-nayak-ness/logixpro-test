@@ -1,0 +1,41 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Appy Changes to All Transactions</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+<div>
+    <p class="bold">Check any fields that you wish to save the values for for EVERY transaction in the order you have selected. Leave the fields unchecked if you only wish to change the value for the selected transaction.</p>
+
+    <form [formGroup]="orderForm">
+            <div class="row ">
+                <div class="col"><mat-checkbox formControlName="reqDate" color="primary" class="bold  mb-3">Required Date</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="user1" color="primary" class="bold  mb-3">User Field 1</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="user4" color="primary" class="bold  mb-3">User Field 4</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="user7" color="primary" class="bold  mb-3">User Field 7</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="user10" color="primary" class="bold  mb-3">User Field 10</mat-checkbox></div>
+            </div>
+            <div class="row">
+                <div class="col"><mat-checkbox formControlName="notes" color="primary" class="bold mb-3">Notes</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="user2" color="primary" class="bold mb-3">User Field 2</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="user8" color="primary" class="bold mb-3">User Field 8</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="user5" color="primary" class="bold mb-3">User Field 5</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="emergency" color="primary" class="bold mb-3">Emergency</mat-checkbox></div>
+            </div>
+            <div class="row">
+                <div class="col"><mat-checkbox formControlName="priority" color="primary" class="bold mb-3">Priority</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="user3" color="primary" class="bold mb-3">User Field 3</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="user6" color="primary" class="bold mb-3">User Field 6</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="user9" color="primary" class="bold mb-3">User Field 9</mat-checkbox></div>
+                <div class="col"><mat-checkbox formControlName="label" color="primary" class="bold mb-3">Label</mat-checkbox></div>
+            </div>
+           
+        </form>        
+</div>
+
+<div mat-dialog-actions>
+    <button mat-flat-button color="primary" class="btn-lg w-100" (click)="updateOrder()">
+        Update
+    </button>
+</div>

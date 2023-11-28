@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-between mb-4 align-items-center">
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Set Container ID For Selected Transaction </h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix"  [mat-dialog-close]="false">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+<div>
+    <div class="row align-items-center">
+        <div class="col-xl-10 col-9 mb-2 pe-0">    
+            <mat-form-field class="action-dropdown w-100" appearance="outline">
+                <mat-label>Container ID</mat-label>
+                <input #contId matInput type="text" maxlength="50" #conID (input)="validateContainerID()" [(ngModel)]="containerID">
+            </mat-form-field>
+        </div>
+        <div class="col-xl-2 col-3 mb-2">
+            <button [disabled]="!clearContainerIDBtn" mat-stroked-button color="warn" class="btn-regular w-100 flex-grow-1" (click)="clearContainerID()">Clear</button>
+        </div>
+    </div>        
+</div>
+
+<div class="d-flex justify-content-end pt-2">
+    <button [disabled]="!setContainerIDBtn" mat-flat-button color="primary" class="btn-lg w-100 flex-grow-1" (click)="setContainerID()">Set Container ID</button>
+</div>

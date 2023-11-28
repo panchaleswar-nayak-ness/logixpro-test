@@ -16,3 +16,22 @@ mat-row, mat-header-row, mat-footer-row{
 .mat-column-Order-Number{
   max-width: 50ch !important;
 }
+.h-500px{
+  height: 500px;
+}
+.transaction-header-cell{
+  width:auto;
+  padding: 5px 12px; 
+  border-bottom: 1px solid var(--clr-tertiary-50);
+}
+.transaction-cell-style{
+  padding: 10px 12px; 
+  border: 0; 
+  text-overflow: ellipsis; 
+  overflow: hidden; 
+  max-width: 19ch; 
+  white-space: nowrap;
+}
+.border-0{
+  border: 0;
+}

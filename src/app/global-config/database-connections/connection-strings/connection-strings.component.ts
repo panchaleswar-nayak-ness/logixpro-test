@@ -1,18 +1,18 @@
 import { Component, Input,  SimpleChanges, Output, EventEmitter } from '@angular/core';
 
 import { DeleteConfirmationComponent } from 'src/app/admin/dialogs/delete-confirmation/delete-confirmation.component';
-import { IConnectionString } from 'src/app/interface/transaction'; 
+import { IConnectionString } from 'src/app/common/interface/transaction'; 
 import { GlobalConfigSetSqlComponent } from 'src/app/admin/dialogs/global-config-set-sql/global-config-set-sql.component';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IGlobalConfigApi } from 'src/app/services/globalConfig-api/global-config-api-interface';
-import { GlobalConfigApiService } from 'src/app/services/globalConfig-api/global-config-api.service';
+import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
+import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
+import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-connection-strings',
   templateUrl: './connection-strings.component.html',
-  styleUrls: [],
+  styleUrls: ['./connection-strings.component.scss'],
 })
 export class ConnectionStringsComponent {
   @Input() connectionStringData: IConnectionString[] = [];
@@ -110,21 +110,21 @@ export class ConnectionStringsComponent {
       .subscribe(
         (res: any) => {
           if (res.isExecuted) {
-            this.global.ShowToastr('success',res.responseMessage, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
         this.connectionStringData[index].isSqlButtonDisable = false;
         this.connectionStringData[index].isButtonDisable = true;
 
           }else{
-            this.global.ShowToastr('error','A connection by this name already exists', 'Error!!');
+            this.global.ShowToastr(ToasterType.Error,'A connection by this name already exists', ToasterTitle.Error);
             console.log("saveString",res.responseMessage);
           }
         },
         (error) => {
-          this.global.ShowToastr('error','something went wrong!', 'Error!!');
+          this.global.ShowToastr(ToasterType.Error,'something went wrong!', ToasterTitle.Error);
         }
       );
     }else{
-      this.global.ShowToastr('error','A connection by this name already exists', 'Error!!');
+      this.global.ShowToastr(ToasterType.Error,'A connection by this name already exists', ToasterTitle.Error);
     }
   }
   deleteString(item) {

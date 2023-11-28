@@ -1,17 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators,
-} from '@angular/forms';
-
-import { AuthService } from 'src/app/init/auth.service'; 
-import labels from '../../labels/labels.json';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { ApiEndpoints, ToasterMessages, ToasterTitle, ToasterType, superBatchFilterListName } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-admin-prefrences',
@@ -22,10 +15,10 @@ export class AdminPrefrencesComponent implements OnInit {
 
   @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
   @ViewChild('maxNumber') maxNumber: ElementRef<HTMLInputElement>;
-  
-  public userData: any;
+
+
   preferencesForm: FormGroup;
-  trackIndIsDisable = false;
+
   shortMethodList: any = [
     {
       id: 'Complete Short',
@@ -122,17 +115,17 @@ export class AdminPrefrencesComponent implements OnInit {
   ];
 
   superBatchFilterList: any;
-  public iInductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
   constructor(
     private authService: AuthService,
-    private Api: ApiFuntions,
     public inductionManagerApi: InductionManagerApiService,
     public formBuilder: FormBuilder,
-    
-    private global:GlobalService
+    private global: GlobalService
   ) {
     this.iInductionManagerApi = inductionManagerApi;
     this.preferencesForm = this.formBuilder.group({
+
+
       // System Settings
       useDefault: new FormControl('', Validators.compose([])),
       pickBatchQuantity: new FormControl(0, Validators.compose([])),
@@ -169,20 +162,23 @@ export class AdminPrefrencesComponent implements OnInit {
       defaultPutAwayPriority: new FormControl(0, Validators.compose([])),
       defaultPutAwayQuantity: new FormControl(0, Validators.compose([])),
       putAwayInductionScreen: new FormControl('', Validators.compose([])),
+      dontAllowOverReceipt: new FormControl(false, Validators.compose([])),
+      autoAssignAllZones: new FormControl(false, Validators.compose([])),
+      purchaseOrderRequired: new FormControl(false, Validators.compose([])),
 
       // Print Settings
       autoPrintCrossDockLabel: new FormControl(false, Validators.compose([])),
       autoPrintPickLabels: new FormControl(false, Validators.compose([])),
       pickLabelsOnePerQty: new FormControl(false, Validators.compose([])),
       autoPrintPickToteLabels: new FormControl(false, Validators.compose([])),
-      autoPrintPutAwayToteLabels: new FormControl(
-        false,
-        Validators.compose([])
+      autoPrintPutAwayToteLabels: new FormControl(false, Validators.compose([])
       ),
+
       autoPrintOffCarouselPickList: new FormControl(
         false,
         Validators.compose([])
       ),
+
       autoPrintOffCarouselPutAwayList: new FormControl(
         false,
         Validators.compose([])
@@ -219,15 +215,14 @@ export class AdminPrefrencesComponent implements OnInit {
       orderNoPrefix: new FormControl('', Validators.compose([])),
     });
   }
-
+  public userData: any;
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.getPreferences();
   }
-
+  trackIndIsDisable = false;
   getPreferences() {
     try {
-      
       this.iInductionManagerApi
         .PreferenceIndex()
         .subscribe(
@@ -237,14 +232,14 @@ export class AdminPrefrencesComponent implements OnInit {
               const reelVal = res.data.rtUserFieldData[0];
               if (values.superBatchByToteID) {
                 this.superBatchFilterList = [
-                  { id: 1, name: 'Tote ID' },
-                  { id: 0, name: 'Order Number' },
+                  { id: 1, name: superBatchFilterListName.ToteID },
+                  { id: 0, name: superBatchFilterListName.OrderNo },
                 ];
                 this.preferencesForm.get('superBatchFilter')?.setValue('1');
               } else {
                 this.superBatchFilterList = [
-                  { id: 0, name: 'Order Number' },
-                  { id: 1, name: 'Tote ID' },
+                  { id: 0, name: superBatchFilterListName.OrderNo },
+                  { id: 1, name: superBatchFilterListName.ToteID },
                 ];
                 this.preferencesForm.get('superBatchFilter')?.setValue('0');
               }
@@ -290,6 +285,9 @@ export class AdminPrefrencesComponent implements OnInit {
                 defaultPutAwayPriority: values.defaultPutAwayPriority,
                 defaultPutAwayQuantity: values.defaultPutAwayQuantity,
                 putAwayInductionScreen: values.putAwayInductionScreen,
+                dontAllowOverReceipt: values.dontAllowOverReceipt,
+                autoAssignAllZones: values.autoAssignAllZones,
+                purchaseOrderRequired: values.purchaseOrderRequired,
 
                 // Print Settings
                 autoPrintCrossDockLabel: values.autoPrintCrossDockLabel,
@@ -334,13 +332,12 @@ export class AdminPrefrencesComponent implements OnInit {
                 orderNoPrefix: reelVal.orderNumberPrefix,
               });
             } else {
-              this.global.ShowToastr('error','Something went wrong', 'Error!');
-              console.log("PreferenceIndex",res.responseMessage);
+              this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+              console.log("PreferenceIndex", res.responseMessage);
             }
           },
-          (error) => {}
         );
-    } catch (error) { 
+    } catch (error) {
     }
   }
 
@@ -349,7 +346,6 @@ export class AdminPrefrencesComponent implements OnInit {
       const values = this.preferencesForm.value;
       let payLoad = {};
       let endPoint = '';
-
       if (type == 1) {
         payLoad = {
           AutoPickOrder: values.autoPickOrderSelection,
@@ -385,9 +381,12 @@ export class AdminPrefrencesComponent implements OnInit {
           AutoPrintCaseLabel: values.autoPrintCaseLabel,
           ShortMethod: values.shortMethod,
           WSID: this.userData.wsid,
+          DontAllowOverReceipt:values.dontAllowOverReceipt,
+          AutoAssignAllZones:values.autoAssignAllZones,
+          PurchaseOrderRequired:values.purchaseOrderRequired
         };
 
-        endPoint = '/Induction/imsytemsettings';
+        endPoint = ApiEndpoints.IMSytemSettings;
       } else if (type == 2) {
         payLoad = {
           User1: values.userField1,
@@ -403,21 +402,21 @@ export class AdminPrefrencesComponent implements OnInit {
           OrderNumPre: values.orderNoPrefix,
           WSID: this.userData.wsid,
         };
-        endPoint = '/Induction/rtsuserdata';
+        endPoint = ApiEndpoints.RTSUserData;
       } else if (type == 3) {
         if (event?.checked) {
           this.preferencesForm.get('inductionLocation')?.enable();
           this.trackIndIsDisable = false;
-        } else if(event && !event.checked) {
+        } else if (event && !event.checked) {
           this.preferencesForm.get('inductionLocation')?.disable();
           this.trackIndIsDisable = true;
         }
 
-        if(values.defaultSuperBatchSize<2){
-          this.global.ShowToastr('error','Default Super Batch Size must be greater than 1', 'Error!');
-          return 
+        if (values.defaultSuperBatchSize < 2) {
+          this.global.ShowToastr(ToasterType.Error, "Default Super Batch Size must be greater than 1", ToasterTitle.Error);
+          return
         }
-        
+
         payLoad = {
           TrackInductTrans: values.trackInductionLocation,
           InductLoc: this.preferencesForm.get('inductionLocation')?.value,
@@ -428,7 +427,7 @@ export class AdminPrefrencesComponent implements OnInit {
           superBatchFilt: values.superBatchFilter === '1',
           WSID: this.userData.wsid,
         };
-        endPoint = '/Induction/immiscsetup';
+        endPoint = ApiEndpoints.IMMIScSetup;
       } else {
         payLoad = {
           AutoPrintCross: values.autoPrintCrossDockLabel,
@@ -446,39 +445,37 @@ export class AdminPrefrencesComponent implements OnInit {
           WSID: this.userData.wsid,
         };
 
-        endPoint = '/Induction/imprintsettings';
+        endPoint = ApiEndpoints.IMPrintSettings;
       }
-
+      console.log("here",payLoad);
       this.iInductionManagerApi.DynamicMethod(payLoad, endPoint).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
-              this.global.updateImPreferences()
-            this.global.ShowToastr('success',labels.alert.update, 'Success!');
+            this.global.updateImPreferences()
+            this.global.ShowToastr(ToasterType.Success, "Your details have been updated", ToasterTitle.Success);
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
-            console.log("DynamicMethod",res.responseMessage);
+            this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+            console.log("DynamicMethod", res.responseMessage);
           }
         },
-        (error) => {}
       );
-    } catch (error) { 
+    } catch (error) {
     }
   }
   getCompName() {
-    
+
     this.iInductionManagerApi.CompName().subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
 
           this.preferencesForm.get('inductionLocation')?.setValue(res.data);
           this.updatePreferences(3);
-          this.global.ShowToastr('success',labels.alert.update, 'Success!');
+          this.global.ShowToastr(ToasterType.Success, "Your details have been updated", ToasterTitle.Success);
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
-          console.log("CompName",res.responseMessage);
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
+          console.log("CompName", res.responseMessage);
         }
-      },
-      (error) => {}
+      }
     );
   }
   checkDBQ() {
@@ -495,7 +492,7 @@ export class AdminPrefrencesComponent implements OnInit {
     let value = inputElement.value.replace(/\D/g, ''); // Remove non-digit characters
     if (parseInt(value) > 2147483647) {
       value = value.slice(0, 10);
-    } 
+    }
     inputElement.value = value;
   }
 
@@ -507,5 +504,4 @@ export class AdminPrefrencesComponent implements OnInit {
     }
     inputElement.value = value;
   }
-
 }

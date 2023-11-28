@@ -61,10 +61,24 @@ mat-row, mat-header-row, mat-footer-row{
   }
 }
 
+.custom-header-cell {
+  border: 0;
+  height: 67px;
+  padding-left: 65px;
+  border-bottom: 1px solid var(--clr-tertiary-50);
+}
 
-//OVAIS FIXES
-
-// mat-row, mat-header-row, mat-footer-row{
-//   display: table-row;
-//   white-space: nowrap;
-// }
+.custom-cell {
+  border: 0;
+  padding-left: 24px;
+  background: var(--clr-pure-white);
+}
+.h-400px{
+  height: 400px;
+}
+.header{
+  width:auto; padding: 5px 12px; border-bottom: 1px solid var(--clr-tertiary-50);
+}
+.table-cell-style{
+  padding: 10px 12px; border: 0; text-overflow: ellipsis; overflow: hidden; max-width: 20ch; white-space: nowrap;
+}

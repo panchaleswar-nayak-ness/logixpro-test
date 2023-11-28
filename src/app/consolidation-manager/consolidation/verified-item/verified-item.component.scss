@@ -1,0 +1,21 @@
+table{
+    th,td{
+      white-space: nowrap;
+      padding-right: 12px;
+    }
+  }
+  btn-regular{
+min-height: 48px;
+  }
+  .flex-1{
+    flex:1
+  }
+  .overflow-x-auto{
+    overflow-x: auto;
+    }
+    .h-400{
+      height: 400px
+    }
+    .table-header-clr{
+      background-color: var(--clr-table-header);
+    }

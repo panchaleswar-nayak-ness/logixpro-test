@@ -1,0 +1,15 @@
+table{
+    th,td{
+      white-space: nowrap;
+      padding-right: 12px;
+      border:0;
+    }
+  }
+.h-345px{
+  height: 345px;
+  }.w-48px{
+  width: 48px;
+}
+.table-backcolor{
+  background-color: var(--clr-table-header);
+}

@@ -6,18 +6,17 @@ import {
 } from '@angular/material/dialog';
 
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AuthService } from 'src/app/init/auth.service';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { AuthService } from 'src/app/common/init/auth.service'; 
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 
 @Component({
   selector: 'app-user-fields',
   templateUrl: './user-fields.component.html',
-  styleUrls: []
+  styleUrls: ['./user-fields.component.scss']
 })
 export class UserFieldsComponent implements OnInit {
-  @ViewChild('field_focus') field_focus: ElementRef;
+  @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
   public userData: any;
   public iAdminApiService: IAdminApiService;
@@ -29,8 +28,7 @@ export class UserFieldsComponent implements OnInit {
     public formBuilder: FormBuilder,
     private authService: AuthService,
     
-    private adminApiService: AdminApiService,
-    private Api: ApiFuntions) {
+    public adminApiService: AdminApiService) {
       this.iAdminApiService = adminApiService;
     this.userForm = this.formBuilder.group({
       userField1: new FormControl('', Validators.compose([])),
@@ -54,7 +52,7 @@ export class UserFieldsComponent implements OnInit {
     this.OSFieldFilterNames();
   }
   ngAfterViewInit(): void {
-    this.field_focus.nativeElement.focus();
+    this.fieldFocus?.nativeElement.focus();
   }
 
   public OSFieldFilterNames() { 

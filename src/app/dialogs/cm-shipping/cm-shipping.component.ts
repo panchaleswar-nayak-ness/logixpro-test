@@ -1,0 +1,255 @@
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from 'src/app/common/init/auth.service';
+import { CmAddNewItemToShipmentComponent } from '../cm-add-new-item-to-shipment/cm-add-new-item-to-shipment.component';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
+import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}
+
+@Component({
+  selector: 'app-cm-shipping',
+  templateUrl: './cm-shipping.component.html',
+  styleUrls: ['./cm-shipping.component.scss'],
+})
+export class CmShippingComponent implements OnInit {
+  ELEMENT_DATA: PeriodicElement[] = [
+    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+    { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+    { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+    { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+  ];
+
+  isLoading: any = false;
+  displayedColumns: string[] = [
+    'containerID',
+    'carrier',
+    'trackingNum',
+    'action',
+  ];
+  tableData = this.ELEMENT_DATA;
+  userData: any = {};
+  orderNumber: any;
+  shippingData: any[] = [];
+  carriers: any[] = [];
+  shippingComp: any = false;
+  shippingPreferences: any = {};
+
+  public iConsolidationAPI: IConsolidationApi;
+
+  constructor(
+    public consolidationAPI: ConsolidationApiService,
+    private authService: AuthService,
+    private global: GlobalService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<CmShippingComponent>
+  ) {
+    this.orderNumber = this.data.orderNumber;
+    this.userData = this.authService.userData();
+    this.iConsolidationAPI = consolidationAPI;
+  }
+
+  ngOnInit(): void {
+    this.shippingData = [];
+    this.carriers = [];
+    this.shippingComp = false;
+    this.ShippingIndex();
+  }
+
+  async ShippingIndex() {
+    if (this.orderNumber != '') {
+      let obj: any = { orderNumber: this.orderNumber };
+      this.isLoading = true;
+      this.iConsolidationAPI.ShippingIndex(obj).subscribe((res: any) => {
+        if (res.isExecuted)
+          if (res?.data) {
+            this.shippingData = res.data.shippingData;
+            this.carriers = res.data.carriers;
+            this.shippingPreferences = res.data.shippingPreferences;
+            let indx = 0;
+            for (let key in this.shippingPreferences) {
+              if (
+                this.displayedColumns.indexOf(key) <= -1 &&
+                this.shippingPreferences[key]
+              ) {
+                this.displayedColumns.splice(3 + indx, 0, key);
+                indx = indx + 1;
+              }
+            }
+            this.shippingComp = res.data.shippingComp;
+            this.orderNumber = res.data.orderNumber;
+            this.isLoading = false;
+          } else this.isLoading = false;
+        else {
+          this.global.ShowToastr(
+            'error',
+            this.global.globalErrorMsg(),
+            'Error!'
+          );
+          console.log('ShippingIndex', res.responseMessage);
+        }
+      });
+    }
+  }
+
+  setNumericInRange(low: number, high: number | null): void {
+    const element = document.getElementById('input') as HTMLInputElement;
+    let value: any = element.value;
+    while (
+      (!$.isNumeric(value) && value.length > 0) ||
+      (parseInt(value) > high! && high !== null)
+    )
+      value = value.substring(0, value.length - 1);
+    if (low !== null && value < low && value.trim() !== '')
+      value = low.toString();
+    element.value = value;
+  }
+
+  async DeleteItem(element: any, i: any = null) {
+    let obj: any = {
+      id: element.id,
+      orderNumber: this.orderNumber,
+      contId: element.containerID,
+      carrier: element.carrier,
+      trackingNum: element.trackingNum,
+    };
+    this.iConsolidationAPI.ShipmentItemDelete(obj).subscribe((res: any) => {
+      if (res?.isExecuted) this.shippingData = this.shippingData.slice(0, i);
+      else {
+        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        console.log('ShipmentItemDelete', res.responseMessage);
+      }
+    });
+  }
+
+  async updateShipmentItem(element: any) {
+    let obj: any = {
+      id: element.id,
+      carrier: element.carrier,
+      trackingNum: element.trackingNum,
+      freight: element.freight,
+      freight1: element.freight1,
+      freight2: element.freight2,
+      weight: element.weight,
+      length: element.length ? element.length : 0,
+      width: element.width ? element.width : 0,
+      height: element.height ? element.height : 0,
+      cube: element.cube,
+    };
+    this.iConsolidationAPI.ShipmentItemUpdate(obj).subscribe((res: any) => {});
+  }
+
+  async ShippingCompShip() {
+    let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: '560px',
+      autoFocus: '__non_existing_element__',
+      disableClose: true,
+      data: {
+        message: 'Are you sure you wish to complete this shipment?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'Yes') {
+        let obj: any = { orderNumber: this.orderNumber };
+        this.iConsolidationAPI.SelCountOfOpenTransactionsTemp(obj).subscribe(
+          (res: any) => {
+            if (res.isExecuted) {
+              if (res.data == -1)
+                this.global.ShowToastr(
+                  'error',
+                  'An error has occurred',
+                  'Error'
+                );
+              else if (res.data == 0) this.completeShipment();
+              else {
+                let dialogRef: any = this.global.OpenDialog(
+                  ConfirmationDialogComponent,
+                  {
+                    height: 'auto',
+                    width: '560px',
+                    autoFocus: '__non_existing_element__',
+                    disableClose: true,
+                    data: {
+                      message:
+                        'Back Orders exist for this order number. Still complete shipment?',
+                    },
+                  }
+                );
+
+                dialogRef.afterClosed().subscribe((result) => {
+                  if (result == 'Yes') this.completeShipment();
+                });
+              }
+            } else {
+              this.global.ShowToastr(
+                'error',
+                this.global.globalErrorMsg(),
+                'Error!'
+              );
+              console.log(
+                'SelCountOfOpenTransactionsTemp',
+                res.responseMessage
+              );
+            }
+          }
+        );
+      }
+    });
+  }
+
+  async completeShipment() {
+    let obj: any = { orderNumber: this.orderNumber };
+    this.iConsolidationAPI.CompleteShipment(obj).subscribe((res: any) => {
+      if (res?.isExecuted)
+        this.global.ShowToastr(
+          'success',
+          `Order Number: ${this.orderNumber} is marked as Shipping Complete`,
+          'Success'
+        );
+      else {
+        this.global.ShowToastr('error', 'An error has occurred', 'Error');
+        console.log('CompleteShipment', res.responseMessage);
+      }
+    });
+  }
+
+  openCmAddNewItem() {
+    let dialogRef: any = this.global.OpenDialog(
+      CmAddNewItemToShipmentComponent,
+      {
+        height: 'auto',
+        width: '560px',
+        autoFocus: '__non_existing_element__',
+        disableClose: true,
+        data: { orderNumber: this.orderNumber },
+      }
+    );
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) this.ShippingIndex();
+    });
+  }
+
+  calculateCube(element) {
+    this.shippingData.filter((x: any) => x.id == element.id)[0].cube =
+      (element.length * element.width * element.height) / 1728;
+  }
+
+  printAll() {
+    this.global.Print(`FileName:PrintShipOrderPL|OrderNum:${this.orderNumber}`);
+  }
+
+  PrintItem(element: any, i: any = null) {
+    this.global.Print(
+      `FileName:PrintShipContPL|OrderNum:${this.orderNumber}|ContID:${element.containerID}`
+    );
+  }
+}

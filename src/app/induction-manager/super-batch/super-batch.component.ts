@@ -1,13 +1,12 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatRadioChange } from '@angular/material/radio';
-
 import { RequiredDateStatusComponent } from '../../../app/dialogs/required-date-status/required-date-status.component';
-import { AuthService } from '../../../app/init/auth.service'; 
-import labels from '../../labels/labels.json';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
+import { AuthService } from '../../common/init/auth.service'; 
+import labels from 'src/app/common/labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { IInductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api-interface';
-import { InductionManagerApiService } from 'src/app/services/induction-manager-api/induction-manager-api.service';
+import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
+import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-super-batch',
@@ -15,7 +14,7 @@ import { InductionManagerApiService } from 'src/app/services/induction-manager-a
   styleUrls: ['./super-batch.component.scss']
 })
 export class SuperBatchComponent implements OnInit {
-  public iinductionManagerApi:IInductionManagerApiService;
+  public iInductionManagerApi: IInductionManagerApiService;
   displayedColumns: string[] = ['zone', 'totalTransactions', 'orderToBatch', 'newToteID', 'actions'];
   dataSource: any;
   user_data: any;
@@ -37,17 +36,15 @@ export class SuperBatchComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private inductionManagerApi: InductionManagerApiService,
-    private global:GlobalService, 
-    
-    private Api: ApiFuntions
+    public inductionManagerApi: InductionManagerApiService,
+    private global: GlobalService
   ) {
-    this.iinductionManagerApi = inductionManagerApi;
+    this.iInductionManagerApi = inductionManagerApi;
    }
 
   ngOnInit(): void {
     this.user_data = this.authService.userData(); 
-    this.iinductionManagerApi.SuperBatchIndex().subscribe(res => {
+    this.iInductionManagerApi.SuperBatchIndex().subscribe(res => {
       if (res.isExecuted && res.data)
       {
         const { preferences } = res.data;
@@ -61,7 +58,7 @@ export class SuperBatchComponent implements OnInit {
         
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("SuperBatchIndex",res.responseMessage);
 
       }
@@ -79,7 +76,7 @@ export class SuperBatchComponent implements OnInit {
   }
   printBatchLabel(type){
     if(!this.printBatchLabels){
-      this.global.ShowToastr('error','Please Select a Batch ID to Print', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Please Select a Batch ID to Print', ToasterTitle.Error);
     }else{
       if(type=='printBatchLabels'){
     this.global.Print(`FileName:PrintSuperBatchLabel|ToteID:${this.printBatchLabels}`,'lbl');
@@ -102,7 +99,7 @@ export class SuperBatchComponent implements OnInit {
       "Type": type,
       "ItemNumber": itemNumber
     }
-    this.iinductionManagerApi.ItemZoneDataSelect(payload).subscribe(res => {
+    this.iInductionManagerApi.ItemZoneDataSelect(payload).subscribe(res => {
       if (res.isExecuted && res.data)
       {
         const batchTableData = res.data.map((v, key) => ({ ...v, 'key': key, 'orderToBatch': this.defaultSuperBatchSize, 'newToteID': '' }))
@@ -110,9 +107,8 @@ export class SuperBatchComponent implements OnInit {
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ItemZoneDataSelect",res.responseMessage);
-
       }
       
     });
@@ -136,7 +132,12 @@ export class SuperBatchComponent implements OnInit {
   }
 
   onItemSelectChange(itemNumber: any) {
-    this.getSuperBatchBy('Item', itemNumber.value)
+    if(itemNumber.value){
+      this.getSuperBatchBy('Item', itemNumber.value)
+    }
+    else{
+      this.dataSource = [];
+    }
   }
 
   onCreateBtach(element: any) {
@@ -144,15 +145,15 @@ export class SuperBatchComponent implements OnInit {
       
       
     if (element.newToteID <= 1) {
-      this.global.ShowToastr('error','Must enter a tote id to batch orders', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Must enter a tote id to batch orders', ToasterTitle.Error);
       return;
     }
     if (element.orderToBatch <= 1) {
-      this.global.ShowToastr('error','Orders to Batch must be greater than 1 ', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Orders to Batch must be greater than 1 ', ToasterTitle.Error);
       return;
     }
     if (!element.newToteID) {
-      this.global.ShowToastr('error','Must enter a tote id to batch orders', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Must enter a tote id to batch orders', ToasterTitle.Error);
       return;
     }
 
@@ -190,15 +191,15 @@ export class SuperBatchComponent implements OnInit {
       "ItemNum": this.itemNum.toString(),
       "BatchByOrder": BatchByOrder.toString()
     }
-    this.iinductionManagerApi.SuperBatchCreate(payload).subscribe(response => {
+    this.iInductionManagerApi.SuperBatchCreate(payload).subscribe(response => {
       if (response.isExecuted) {
-        this.iinductionManagerApi.TotePrintTableInsert({ "ToteID": element.newToteID.toString() }).subscribe(res => {
+        this.iInductionManagerApi.TotePrintTableInsert({ "ToteID": element.newToteID.toString() }).subscribe(res => {
           if(res.isExecuted){
             this.superBatches.push(element.newToteID);
-            this.global.ShowToastr('success',labels.alert.success, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           }
           else{
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
             console.log("TotePrintTableInsert",res.responseMessage);
           }
 
@@ -206,7 +207,7 @@ export class SuperBatchComponent implements OnInit {
         this.getSuperBatchBy(this.type, this.itemNum);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("SuperBatchCreate");
       }
 
@@ -220,7 +221,7 @@ export class SuperBatchComponent implements OnInit {
   checkOTB(element: any, i : any) {
     if (element.orderToBatch <= 1) {
       this.dataSource[i].orderToBatch = 2;
-      this.global.ShowToastr('error','Orders to Batch must be greater than 1 ', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Orders to Batch must be greater than 1 ', ToasterTitle.Error);
     }
   }
 

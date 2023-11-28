@@ -1,6 +1,14 @@
 <div class="my-3">
-  <app-select-order-component [isPost]="isPost"
-  (OrderTableData)="getOrderTableData($event)"
+  <app-select-order-component #SelectOrderComponentComponent [isPost]="isPost" [orderNumber]="orderNumber" [transType]="transType"
+  (orderTableData)="getOrderTableData($event)" 
+  (clear)="clear()"
+  (transTypeEmitter)="onTransTypeChange($event)"
+  (orderNumberEmitter)="onOrderNoChange($event)"
+  (actionDialog)="actionDialog($event.param1,$event.param2)"
+  (autocompleteSearchColumn)="orderNumber = $event;autocompleteSearchColumn()"
+  [searchAutocompleteList]="searchAutocompleteList"
+  (getOrderTableData)="getOrderTableData($event)"
+  (searchData)="searchData()"
   ></app-select-order-component>
   <mat-card class="mat-elevation-z g-card mb-4">
     <mat-card-content>
@@ -28,13 +36,12 @@
             <mat-label>Tote ID For Order</mat-label>
             <input type="text" placeholder="Search" [(ngModel)]="toteID" matInput maxlength="255">
             <button matSuffix *ngIf="toteID" class="clear-btn"  (click)=" toteID = ''"><mat-icon class="text-20 text-chrome-600">cancel</mat-icon></button>
-          </mat-form-field>
-          
+          </mat-form-field> 
         </div>
       </div>
       <div class="card br-14 table-responsive borderless px-0 mb-3">
-        <ng-scrollbar track="all" class="mat-table-scrollbar" style="height: 350px;">
-          <table mat-table [dataSource]="dataSource" class="w-100 table1" matSort (matSortChange)="sortChange($event)">
+        <ng-scrollbar track="all" class="mat-table-scrollbar">
+          <table mat-table [dataSource]="generateOrderDataSource" class="w-100 table1" matSort (matSortChange)="sortChange($event)">
 
 
 
@@ -179,8 +186,7 @@
             </ng-container>
 
             <ng-container matColumnDef="actions" stickyEnd>
-              <th mat-header-cell *matHeaderCellDef
-                style="border: 0;height: 58px; padding-left:65px; border-bottom: 1px solid var(--clr-tertiary-50); width: 80px;">
+              <th mat-header-cell *matHeaderCellDef class="action-col">
               </th>
               <td mat-cell *matCellDef="let seletedRecord">
                 <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':seletedRecord.selected}" class="circle-icon-o active-btn" appearance="outline">
@@ -193,14 +199,11 @@
               </td>
             </ng-container>
 
-
             <tr class="mat-row" *matNoDataRow>
               <td class="mat-cell " [attr.colspan]="displayedColumns.length">
                 No data available in table.
               </td>
             </tr>
-
-
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)">
@@ -208,10 +211,9 @@
           </table>
         </ng-scrollbar>
       </div>
-      <div class="table-pagination d-flex justify-content-start" *ngIf="  displayedColumns && dataSource">
+      <div class="table-pagination d-flex justify-content-start" *ngIf="  displayedColumns && generateOrderDataSource">
         <mat-paginator [length]="this.customPagination.total" [pageSize]="20" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"
           (page)="handlePageEvent($event)"></mat-paginator>
-
 
       </div>
     </mat-card-content>

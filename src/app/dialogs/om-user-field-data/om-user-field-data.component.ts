@@ -1,0 +1,76 @@
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {  MatDialogRef } from '@angular/material/dialog';
+
+import { AuthService } from 'src/app/common/init/auth.service'; 
+import labels from 'src/app/common/labels/labels.json'; 
+import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
+import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
+import { GlobalService } from 'src/app/common/services/global.service';
+
+@Component({
+  selector: 'app-om-user-field-data',
+  templateUrl: './om-user-field-data.component.html',
+  styleUrls: ['./om-user-field-data.component.scss']
+})
+export class OmUserFieldDataComponent implements OnInit {
+  @ViewChild('userFocus') userFocus: ElementRef;
+  userData: any;
+  userFieldData: any;
+  public iOrderManagerApi :  IOrderManagerAPIService;
+
+  constructor(
+    
+    private authService: AuthService, 
+    public orderManagerApi  : OrderManagerApiService,
+    private global:GlobalService,
+    public dialogRef: MatDialogRef<OmUserFieldDataComponent>,
+  ) {
+    this.iOrderManagerApi = orderManagerApi;
+   }
+
+  ngOnInit(): void {
+    this.userData = this.authService.userData();
+    this.getUserFieldData();
+  }
+
+  getUserFieldData() {
+    
+    this.iOrderManagerApi.UserFieldData().subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.userFieldData = res.data[0];
+      } else {
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("UserFieldData",res.responseMessage);
+      }
+    });
+  }
+
+  updateUserFieldData( ) {
+    let payload: any = {
+      userField1: this.userFieldData.userField1,
+      userField2: this.userFieldData.userField2,
+      userField3: this.userFieldData.userField3,
+      userField4: this.userFieldData.userField4,
+      userField5: this.userFieldData.userField5,
+      userField6: this.userFieldData.userField6,
+      userField7: this.userFieldData.userField7,
+      userField8: this.userFieldData.userField8,
+      userField9: this.userFieldData.userField9,
+      userField10: this.userFieldData.userField10,
+    };
+    this.iOrderManagerApi.UserFieldDataUpdate(payload).subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.global.ShowToastr('success',labels.alert.success, 'Success!');
+        this.dialogRef.close(res.data);
+      } else {
+        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        console.log("UserFieldDataUpdate",res.responseMessage);
+      }
+    });
+  }
+
+   
+  ngAfterViewInit(): void {
+    this.userFocus.nativeElement.focus();
+  }
+}

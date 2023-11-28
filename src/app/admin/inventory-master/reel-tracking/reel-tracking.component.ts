@@ -1,20 +1,19 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup} from '@angular/forms'; 
-import { AuthService } from 'src/app/init/auth.service';
+import { AuthService } from 'src/app/common/init/auth.service';
 
 import { MinReelQtyComponent } from 'src/app/dialogs/min-reel-qty/min-reel-qty.component';
-import { SharedService } from 'src/app/services/shared.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 import { Observable, Subscription } from 'rxjs';
-import { ApiFuntions } from 'src/app/services/ApiFuntions';
-import { IAdminApiService } from 'src/app/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/services/admin-api/admin-api.service';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 
 @Component({
   selector: 'app-reel-tracking',
   templateUrl: './reel-tracking.component.html',
-  styleUrls: []
+  styleUrls: ['./reel-tracking.component.scss']
 })
 export class ReelTrackingComponent implements OnInit {
   isChecked = false;
@@ -22,7 +21,6 @@ export class ReelTrackingComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
 
   constructor(private global:GlobalService,
-    private api: ApiFuntions,
     private authService: AuthService,
     private sharedService:SharedService,
     private adminApiService: AdminApiService,

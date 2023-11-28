@@ -1,5 +1,5 @@
 .btn-color-blue {
-  color: #1a1ad3 !important;
+  color: var(--clr-primary-500) !important;
 }
 .Compete-cart{
   background-color: #C8E2D8;
@@ -26,8 +26,8 @@
 }
 
 .Putaway {
-  background-color: #f2f2ff;
-  color: #090948;
+  background-color: var(--clr-primary-10);
+  color: var(--clr-tertiary-900);
 }
 
 .Count {
@@ -50,7 +50,7 @@
   }
 }
 .btn-custom-color-blue{
-  color:#1A1AD3
+  color:var(--clr-primary-500)
 }
 .paginator-left-align{
   float: left, !important;
@@ -59,3 +59,9 @@
 // .mat-row:nth-child(n){
 //   background-color:#731a1a;
 // }
+.h-300px{
+  height: 300px;
+}
+.min-h-150px{
+  min-height: 150px;
+}
