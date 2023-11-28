@@ -79,9 +79,9 @@ export class PickToteManagerComponent implements OnInit {
  
   checkboxLabel(row?: PeriodicElement): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? 'deselect' : UniqueConstants.Select} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+    return `${this.selection.isSelected(row) ? 'deselect' : UniqueConstants.Select} row ${
       row.position + 1
     }`;
   }
@@ -398,7 +398,7 @@ export class PickToteManagerComponent implements OnInit {
   displayedTransColumns = this.filterBatchTransColumns.map((c) => c.columnDef);
 
   displayedColumns4: string[] = [
-    'select',
+    UniqueConstants.Select,
     TableConstant.zone,
     'batchtype',
     'totalorders',

@@ -198,9 +198,9 @@ export class TotesAddEditComponent implements OnInit {
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: PeriodicElement): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? 'deselect' : UniqueConstants.Select} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+    return `${this.selection.isSelected(row) ? 'deselect' : UniqueConstants.Select} row ${
       row.position + 1
     }`;
   }
@@ -439,7 +439,7 @@ export class TotesAddEditComponent implements OnInit {
     }
   }
 
-  displayedColumns1: string[] = ['select', TableConstant.zone, 'locationdesc', 'options'];
+  displayedColumns1: string[] = [UniqueConstants.Select, TableConstant.zone, 'locationdesc', 'options'];
   dataSource1 = new MatTableDataSource<PeriodicElement>(this.elementData);
   selection1 = new SelectionModel<PeriodicElement>(true, []);
 

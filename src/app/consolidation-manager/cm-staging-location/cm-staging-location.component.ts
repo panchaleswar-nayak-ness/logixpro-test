@@ -15,7 +15,7 @@ import { AppRoutes, ResponseStrings, StringConditions, ToasterMessages, ToasterT
 export class CmStagingLocationComponent {
   userData: any = {};
   isInputFocused: any = false;
-  displayedColumns: string[] = ['select', UniqueConstants.position, 'action'];
+  displayedColumns: string[] = [UniqueConstants.Select, UniqueConstants.position, 'action'];
   stageTables: any[] = [];
   oldStageTables: any[] = [];
   isLoading: any = false;

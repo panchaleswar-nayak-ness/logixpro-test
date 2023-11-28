@@ -29,7 +29,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     {order_no: '1202122'},
   ]
     isOrderSelected=true;
-    displayedColumns_1: string[] = ['select','order_no'];
+    displayedColumns_1: string[] = [UniqueConstants.Select,'order_no'];
    
     isChecked: boolean = false;
     orderNumbersList:any=[];
