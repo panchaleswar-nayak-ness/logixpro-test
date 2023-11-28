@@ -334,7 +334,7 @@ export class EmployeesComponent implements OnInit {
     if (event === 'delete') {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
-        width: '480px',
+        width: Style.w480px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
@@ -389,7 +389,7 @@ export class EmployeesComponent implements OnInit {
     if (event === 'edit') {
       let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
         height: 'auto',
-        width: '480px',
+        width: Style.w480px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
@@ -408,7 +408,7 @@ export class EmployeesComponent implements OnInit {
     if (event === 'delete') {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
-        width: '480px',
+        width: Style.w480px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
@@ -426,7 +426,7 @@ export class EmployeesComponent implements OnInit {
     if (event === 'clone') { 
       let dialogRef:any = this.global.OpenDialog(CloneGroupComponent, {
         height: 'auto',
-        width: '480px',
+        width: Style.w480px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {

@@ -12,7 +12,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import labels from 'src/app/common/labels/labels.json';
 import { AddGroupAllowedComponent } from '../../dialogs/add-group-allowed/add-group-allowed.component';
 import { GroupAllowedComponent } from '../../dialogs/group-allowed/group-allowed.component';
-import { LiveAnnouncerMessage, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,dataCredientials} from 'src/app/common/constants/strings.constants';
+import { LiveAnnouncerMessage, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,dataCredientials,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-employees-settings',
@@ -171,7 +171,7 @@ export class EmployeesSettingsComponent implements OnInit {
   addZoneDialog() {
     const dialogRef: any = this.global.OpenDialog(AddZoneComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -202,7 +202,7 @@ export class EmployeesSettingsComponent implements OnInit {
   editZoneDialog(zone: any) {
     const dialogRef: any = this.global.OpenDialog(AddZoneComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -240,7 +240,7 @@ export class EmployeesSettingsComponent implements OnInit {
   deleteZone(zone: any) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -270,7 +270,7 @@ export class EmployeesSettingsComponent implements OnInit {
     let dialogRef;
     dialogRef = this.global.OpenDialog(AddLocationComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -288,7 +288,7 @@ export class EmployeesSettingsComponent implements OnInit {
     let dialogRef;
     dialogRef = this.global.OpenDialog(AddLocationComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -307,7 +307,7 @@ export class EmployeesSettingsComponent implements OnInit {
     let dialogRef;
     dialogRef = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -357,7 +357,7 @@ export class EmployeesSettingsComponent implements OnInit {
     let dialogRef;
     dialogRef = this.global.OpenDialog(AddGroupAllowedComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -394,7 +394,7 @@ export class EmployeesSettingsComponent implements OnInit {
   grpAllowedDialog() {
     const dialogRef: any = this.global.OpenDialog(GroupAllowedComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {

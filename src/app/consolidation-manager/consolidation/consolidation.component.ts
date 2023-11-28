@@ -635,7 +635,7 @@ export class ConsolidationComponent implements OnInit {
   openCmOrderNumber() {
     let dialogRef:any = this.global.OpenDialog(CmOrderNumberComponent, {
       height: 'auto',
-      width: '50vw',
+      width: Style.w50vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -651,7 +651,7 @@ export class ConsolidationComponent implements OnInit {
   openCmItemSelected() {
     this.global.OpenDialog(CmItemSelectedComponent, {
       height: 'auto',
-      width: '50vw',
+      width: Style.w50vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
@@ -660,7 +660,7 @@ export class ConsolidationComponent implements OnInit {
   openCmSelectTransaction() {
     this.global.OpenDialog(CmConfirmAndPackingSelectTransactionComponent, {
       height: 'auto',
-      width: '50vw',
+      width: Style.w50vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })

@@ -849,7 +849,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       if (data[0].cells <= data[0].toteQuantity) {
         this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
-          width: '50vw',
+          width: Style.w50vw,
           autoFocus: DialogConstants.autoFocus,
           disableClose: true,
           data: {

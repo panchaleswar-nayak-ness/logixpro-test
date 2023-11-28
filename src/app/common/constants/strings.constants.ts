@@ -419,7 +419,10 @@ export const UniqueConstants = {
     event:'$event'
 }
 export const Style = {
-    w560px:'560px'
+    w560px:'560px',
+    w100vw:'100vw',
+    w50vw:'50vw',
+    w480px:'480px'
 }  
 export const FilterColumnName = {
     unitOfMeasure:'Unit of Measure'

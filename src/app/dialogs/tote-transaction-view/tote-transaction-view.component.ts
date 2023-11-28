@@ -149,7 +149,7 @@ export class ToteTransactionViewComponent implements OnInit {
     if (!opened && this.selectedOption && this.selectedOption === 'clearTote') {
       const dialogRef: any = this.global.OpenDialog(BatchDeleteComponent, {
         height: 'auto',
-        width: '50vw',
+        width: Style.w50vw,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
@@ -239,7 +239,7 @@ export class ToteTransactionViewComponent implements OnInit {
     let itemId = item.id;
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '50vw',
+      width: Style.w50vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {

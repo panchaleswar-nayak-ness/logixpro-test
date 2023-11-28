@@ -91,7 +91,7 @@ export class CrossDockTransactionComponent implements OnInit {
   openTotesDialogue(position: any) {
     const dialogRef: any = this.global.OpenDialog(TotesAddEditComponent, {
       height: 'auto',
-      width: '50vw',
+      width: Style.w50vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {

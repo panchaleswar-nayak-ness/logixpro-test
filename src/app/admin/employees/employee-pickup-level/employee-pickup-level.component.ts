@@ -106,7 +106,7 @@ export class EmployeePickupLevelComponent{
     let dialogRef;
     dialogRef = this.global.OpenDialog(AddPickuplevelsComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data:{
@@ -124,7 +124,7 @@ export class EmployeePickupLevelComponent{
     let dialogRef;
     dialogRef = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {

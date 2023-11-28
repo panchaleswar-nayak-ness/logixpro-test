@@ -341,7 +341,7 @@ export class CmShippingTransactionComponent implements OnInit {
   openShipEditQuantity(order: any, i: any) {
     let dialogRef: any = this.global.OpenDialog(CmShipEditQtyComponent, {
       height: 'auto',
-      width: '50vw',
+      width: Style.w50vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {

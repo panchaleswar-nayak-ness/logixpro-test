@@ -4,7 +4,7 @@ import { ViewOrdersComponent } from 'src/app/dialogs/view-orders/view-orders.com
 import { takeUntil } from 'rxjs';
 import { WorkstationZonesComponent } from 'src/app/dialogs/workstation-zones/workstation-zones.component';
 import { AuthService } from 'src/app/common/init/auth.service';
-import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-process-pick-batches',
   templateUrl: './process-pick-batches.component.html',
@@ -121,7 +121,7 @@ export class ProcessPickBatchesComponent {
   openViewOrdersDialogue(viewType: any) {
     const dialogRef: any = this.global.OpenDialog(ViewOrdersComponent, {
       height: 'auto',
-      width: '100vw',
+      width: Style.w100vw,
       data: {
         viewType: viewType,
         pickBatchQuantity: this.pickBatchQuantity,

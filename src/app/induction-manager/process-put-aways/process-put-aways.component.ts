@@ -410,7 +410,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   openTotesDialogue(position: any, index?) {
     const dialogRef:any = this.global.OpenDialog(TotesAddEditComponent, {
       height: 'auto',
-      width: '50vw',
+      width: Style.w50vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -447,7 +447,7 @@ export class ProcessPutAwaysComponent implements OnInit {
               if (!res.data) {
                 const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
                   height: 'auto',
-                  width: '50vw',
+                  width: Style.w50vw,
                   autoFocus: DialogConstants.autoFocus,
                    disableClose:true,
                   data: {
@@ -474,7 +474,7 @@ export class ProcessPutAwaysComponent implements OnInit {
   openDeleteBatchDialogue() {
     const dialogRef:any = this.global.OpenDialog(BatchDeleteComponent, {
       height: 'auto',
-      width: '50vw',
+      width: Style.w50vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -501,7 +501,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     if (this.assignedZonesArray.length <= 0) {
       this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
-        width: '50vw',
+        width: Style.w50vw,
         autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
@@ -890,7 +890,7 @@ async clearBatchData(){
     if (this.cell <= this.toteQuantity) {
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
-        width: '50vw',
+        width: Style.w50vw,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
@@ -933,7 +933,7 @@ async clearBatchData(){
     
                 const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
                   height: 'auto',
-                  width: '50vw',
+                  width: Style.w50vw,
                   autoFocus: DialogConstants.autoFocus,
           disableClose:true,
                   data: {
@@ -1021,7 +1021,7 @@ async clearBatchData(){
 
             const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
               height: 'auto',
-              width: '50vw',
+              width: Style.w50vw,
               autoFocus: DialogConstants.autoFocus,
               disableClose:true,
               data: {

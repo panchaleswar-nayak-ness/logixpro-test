@@ -363,7 +363,7 @@ export class OmOrderManagerComponent implements OnInit {
   updateRecord(ele : any) {
     let dialogRef:any = this.global.OpenDialog(OmUpdateRecordComponent, {
       height: 'auto',
-      width: '50vw',
+      width: Style.w50vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: { 

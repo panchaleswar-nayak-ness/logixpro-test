@@ -595,7 +595,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   shippingCompleteDialog() {
     this.global.OpenDialog(ShippingCompleteDialogComponent, {
       height: DialogConstants.auto,
-      width: '100vw',
+      width: Style.w100vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: { orderNumber: this.orderNo },

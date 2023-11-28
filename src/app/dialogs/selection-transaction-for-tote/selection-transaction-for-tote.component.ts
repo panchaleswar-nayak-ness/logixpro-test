@@ -77,7 +77,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
             } else {
               const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
                 height: 'auto',
-                width: '100vw',
+                width: Style.w100vw,
                 autoFocus: DialogConstants.autoFocus,
                 disableClose:true,
                 data: {
@@ -105,7 +105,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
     } else {
       const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
         height: 'auto',
-        width: '100vw',
+        width: Style.w100vw,
         autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
@@ -189,7 +189,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
   openSelectionExtendDialogue() {
     const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
       height: 'auto',
-      width: '100vw',
+      width: Style.w100vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {

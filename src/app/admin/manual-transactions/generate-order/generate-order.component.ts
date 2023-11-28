@@ -137,7 +137,7 @@ export class GenerateOrderComponent implements OnInit {
     ) {
       const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
         height: DialogConstants.auto,
-        width: '100vw',
+        width: Style.w100vw,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
@@ -220,7 +220,7 @@ export class GenerateOrderComponent implements OnInit {
 
   const dialogRef:any = this.global.OpenDialog(AddNewTransactionToOrderComponent, {
         height: DialogConstants.auto,
-        width: '100vw',
+        width: Style.w100vw,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {

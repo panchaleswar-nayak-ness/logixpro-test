@@ -456,7 +456,7 @@ export class ReprocessTransactionComponent implements OnInit {
         
         const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
             height: DialogConstants.auto,
-            width: '480px',
+            width: Style.w480px,
             autoFocus: DialogConstants.autoFocus,
             disableClose: true,
             data: {

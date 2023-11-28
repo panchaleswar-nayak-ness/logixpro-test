@@ -209,7 +209,7 @@ export class WorkstationZonesComponent implements OnInit {
         DeleteConfirmationComponent,
         {
           height: 'auto',
-          width: '480px',
+          width: Style.w480px,
           autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         }
@@ -234,7 +234,7 @@ export class WorkstationZonesComponent implements OnInit {
   delete(event: any) {
     let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {

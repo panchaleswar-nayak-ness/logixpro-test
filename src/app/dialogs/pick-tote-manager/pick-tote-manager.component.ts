@@ -26,7 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -618,7 +618,7 @@ export class PickToteManagerComponent implements OnInit {
         ConfirmationDialogComponent,
         {
           height: 'auto',
-          width: '480px',
+          width: Style.w480px,
           data: {
             message: 'Mark this filter as the default one ?',
           },
@@ -702,7 +702,7 @@ export class PickToteManagerComponent implements OnInit {
         DeleteConfirmationComponent,
         {
           height: 'auto',
-          width: '480px',
+          width: Style.w480px,
           autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         }
@@ -1375,7 +1375,7 @@ export class PickToteManagerComponent implements OnInit {
   onDeleteSingleFilter(element: any) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
@@ -1411,7 +1411,7 @@ export class PickToteManagerComponent implements OnInit {
   onDeleteSingleOrder(element: any) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -1495,7 +1495,7 @@ export class PickToteManagerComponent implements OnInit {
   onSelectBatchZone(row) {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       data: {
         message: 'Mark this filter as a default one ?',
       },

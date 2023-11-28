@@ -15,7 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  ToasterTitle ,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-shipping-carrier',
@@ -122,7 +122,7 @@ export class CmShippingCarrierComponent implements OnInit {
     if (event != '') {
       let dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
-        width: '480px',
+        width: Style.w480px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {

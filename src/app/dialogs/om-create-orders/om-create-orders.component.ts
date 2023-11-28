@@ -196,7 +196,7 @@ export class OmCreateOrdersComponent implements OnInit {
   openOmUserFieldData() {
     let dialogRef: any = this.global.OpenDialog(OmUserFieldDataComponent, {
       height: 'auto',
-      width: '50vw',
+      width: Style.w50vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     })

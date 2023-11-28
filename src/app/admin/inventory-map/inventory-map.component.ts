@@ -411,7 +411,7 @@ export class InventoryMapComponent implements OnInit {
     else{ 
       let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
         height: DialogConstants.auto,
-        width: '480px',
+        width: Style.w480px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
@@ -432,7 +432,7 @@ export class InventoryMapComponent implements OnInit {
   quarantine(event){
     let dialogRef:any = this.global.OpenDialog(QuarantineConfirmationComponent, {
       height: DialogConstants.auto,
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -450,7 +450,7 @@ export class InventoryMapComponent implements OnInit {
   unQuarantine(event){
     let dialogRef:any = this.global.OpenDialog(QuarantineConfirmationComponent, {
       height: DialogConstants.auto,
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
