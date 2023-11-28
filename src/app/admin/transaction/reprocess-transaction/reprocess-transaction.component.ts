@@ -39,7 +39,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: 'itemNumber', colDef: Column.ItemNumber },
     { colHeader: 'unitOfMeasure', colDef: FilterColumnName.unitOfMeasure },
     { colHeader: 'lotNumber', colDef: Column.LotNumber },
-    { colHeader: 'expirationDate', colDef: 'Expiration Date' },
+    { colHeader: 'expirationDate', colDef: TableConstant.ExpirationDate },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
     { colHeader: 'description', colDef: 'Description' },
     { colHeader: 'revision', colDef: TableConstant.Revision },

@@ -60,7 +60,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: 'Import By', key: 'importBy' },
     { sequence: 'Import Date', key: 'importDate' },
     { sequence: 'Import Filename', key: 'importFilename' },
-    { sequence: 'Expiration Date', key: 'expirationDate' },
+    { sequence: TableConstant.ExpirationDate, key: 'expirationDate' },
     { sequence: Column.LotNumber, key: 'lotNumber' },
     { sequence: 'Serial Number', key: 'serialNumber' },
     { sequence: 'Notes', key: 'notes' },

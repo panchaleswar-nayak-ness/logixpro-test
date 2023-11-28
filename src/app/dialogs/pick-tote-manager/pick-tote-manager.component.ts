@@ -209,7 +209,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: 'expirationDate',
-      header: 'Expiration Date',
+      header: TableConstant.ExpirationDate,
       cell: (element: any) => `${element.expirationDate}`,
     },
     {

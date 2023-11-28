@@ -12,7 +12,7 @@ import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dia
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, RouteNames, TableName, ToasterMessages, ToasterTitle, ToasterType ,Column} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, RouteNames, TableName, ToasterMessages, ToasterTitle, ToasterType ,Column,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocessed-transaction',
@@ -29,7 +29,7 @@ export class ReprocessedTransactionComponent implements OnInit {
     { colHeader: 'lineNumber', colDef: 'Line Number' },
     { colHeader: 'itemNumber', colDef: Column.ItemNumber },
     { colHeader: 'lotNumber', colDef: Column.LotNumber },
-    { colHeader: 'expirationDate', colDef: 'Expiration Date' },
+    { colHeader: 'expirationDate', colDef: TableConstant.ExpirationDate },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
     { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
     { colHeader: 'reasonMessage', colDef: 'Reason Message' },

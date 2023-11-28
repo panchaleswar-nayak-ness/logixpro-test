@@ -407,7 +407,8 @@ export const TableConstant = {
     LineSequence:'lineSequence',
     UserField1:'User Field1',
     UserField2:'User Field2',
-    Revision:'Revision'
+    Revision:'Revision',
+    ExpirationDate: 'Expiration Date'
 }
 export const UniqueConstants = {
     backClass:'back-class',

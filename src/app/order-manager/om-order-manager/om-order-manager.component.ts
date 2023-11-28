@@ -90,7 +90,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: "importBy", colDef: "Import By" },
     { colHeader: "importDate", colDef: "Import Date" },
     { colHeader: "importFilename", colDef: "Import Filename" },
-    { colHeader: "expirationDate", colDef: "Expiration Date" },
+    { colHeader: "expirationDate", colDef: TableConstant.ExpirationDate },
     { colHeader: "lotNumber", colDef: Column.LotNumber },
     { colHeader: "serialNumber", colDef: "Serial Number" },
     { colHeader: "notes", colDef: "Notes" },

@@ -33,7 +33,7 @@ const TRNSC_DATA = [
   { colHeader: 'cellSize', colDef: 'Cell Size' },
   { colHeader: 'lotNumber', colDef: 'Serial Lot Number' },
   { colHeader: 'serialNumber', colDef: 'Serial Number' },
-  { colHeader: 'expirationDate', colDef: 'Expiration Date' },
+  { colHeader: 'expirationDate', colDef: TableConstant.ExpirationDate },
   { colHeader: 'revision', colDef: TableConstant.Revision },
   { colHeader: 'unitOfMeasure', colDef: FilterColumnName.unitOfMeasure },
   { colHeader: 'maximumQuantity', colDef: 'Maximum Quantity' },

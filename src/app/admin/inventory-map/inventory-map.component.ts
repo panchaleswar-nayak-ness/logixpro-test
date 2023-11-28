@@ -42,7 +42,7 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: "dateSensitive", colDef: "Date Sensitive" },
     { colHeader: "dedicated", colDef: "Dedicated" },
     { colHeader: "description", colDef: "Description" },
-    { colHeader: "expirationDate", colDef: "Expiration Date" },
+    { colHeader: "expirationDate", colDef: TableConstant.ExpirationDate },
     { colHeader: "invMapID", colDef: "Inv Map ID" },
     { colHeader: "itemNumber", colDef: Column.ItemNumber },
     { colHeader: "itemQuantity", colDef: "Item Quantity" },
