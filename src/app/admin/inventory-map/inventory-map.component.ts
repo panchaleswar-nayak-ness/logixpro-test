@@ -401,7 +401,7 @@ export class InventoryMapComponent implements OnInit {
     if(event.itemQuantity > 0){
       this.global.OpenDialog(ConfirmationDialogComponent, {
         height: DialogConstants.auto,
-        width: '786px',
+        width: Style.w786px,
         data: {
           message: "This location currently has a positive item quantity and cannot be deleted.",
         },

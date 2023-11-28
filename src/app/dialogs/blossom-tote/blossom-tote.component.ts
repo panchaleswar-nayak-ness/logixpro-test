@@ -6,7 +6,7 @@ import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ToasterType,DialogConstants,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-blossom-tote',
@@ -66,7 +66,7 @@ export class BlossomToteComponent implements OnInit {
     else{
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
-        width: '786px',
+        width: Style.w786px,
         data: {
           message: "Perform the blossom? This will move all open transaction lines from the old tote to the new tote.",
           heading: 'Perform Blossom'

@@ -350,7 +350,7 @@ export class AddNewDeviceComponent implements OnInit {
   openAlertDialog(message) {
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       data: {
         message: message,
         heading: '',
@@ -417,7 +417,7 @@ export class AddNewDeviceComponent implements OnInit {
     }
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       data: {
         message: message,
         heading: '',

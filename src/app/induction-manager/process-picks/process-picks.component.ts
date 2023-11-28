@@ -529,7 +529,7 @@ export class ProcessPicksComponent implements OnInit {
   openBlossomToteDialogue() {
     this.global.OpenDialog(BlossomToteComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       autoFocus: DialogConstants.autoFocus,
     });
   }

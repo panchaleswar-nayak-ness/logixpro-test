@@ -136,7 +136,7 @@ export class LookupToteSetupComponent implements OnInit {
 
     const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       data: {
         message: 'Click OK to clear ALL tote information for incomplete transactions.',
         heading: 'Clear Tote',

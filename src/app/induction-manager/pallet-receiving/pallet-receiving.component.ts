@@ -5,7 +5,7 @@ import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/a
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ToasterMessages, ToasterTitle, ToasterType, showNotificationHeading, showNotificationMessage ,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterMessages, ToasterTitle, ToasterType, showNotificationHeading, showNotificationMessage ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-pallet-receiving',
@@ -122,7 +122,7 @@ export class PalletReceivingComponent implements OnInit {
   showNotification(heading, message) {
     const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       data: {
         message: message,
         heading: heading,

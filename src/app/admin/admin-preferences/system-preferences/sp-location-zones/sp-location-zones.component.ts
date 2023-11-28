@@ -232,7 +232,7 @@ export class SpLocationZonesComponent implements OnInit {
   locationName(item: any) {
     let dialogRef: any = this.global.OpenDialog(LocationNameComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });

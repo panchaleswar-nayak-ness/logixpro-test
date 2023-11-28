@@ -724,7 +724,7 @@ export class ConsolidationComponent implements OnInit {
     if (this.unverifiedItems?.filteredData && this.unverifiedItems.filteredData.length > 0) {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '786px',
+        width: Style.w786px,
         data: {
           message: ConfirmationMessages.UnverfiedItemsLeft
         },
@@ -773,7 +773,7 @@ export class ConsolidationComponent implements OnInit {
   showCmPackPrintModal(preview:boolean,orderNumber:any,print:any){
      this.global.OpenDialog(CmPrintOptionsComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       data: {
         preview : preview,
         orderNumber: orderNumber,
