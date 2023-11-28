@@ -63,7 +63,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: UniqueConstants.Priority, header: 'Priority', cell: (element: any) => `${element.priority}` },
     { columnDef: 'requiredDate', header: 'Required Date', cell: (element: any) => `${element.requiredDate}` },
     { columnDef: 'revision', header: TableConstant.Revision, cell: (element: any) => `${element.revision}` },
-    { columnDef: 'row', header: 'Row', cell: (element: any) => `${element.row}` },
+    { columnDef: 'row', header: TableConstant.Row, cell: (element: any) => `${element.row}` },
     { columnDef: 'serialNumber', header: 'Serial Number', cell: (element: any) => `${element.serialNumber}` },
     { columnDef: 'shelf', header: 'Shelf', cell: (element: any) => `${element.shelf}` },
     { columnDef: 'statusCode', header: 'Status Code', cell: (element: any) => `${element.statusCode}` },

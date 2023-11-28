@@ -320,7 +320,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: 'row',
-      header: 'Row',
+      header: TableConstant.Row,
       cell: (element: any) => `${element.row}`,
     },
     {

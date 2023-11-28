@@ -59,7 +59,7 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: "quantityAllocatedPick", colDef: "Quantity Allocated Pick" },
     { colHeader: "quantityAllocatedPutAway", colDef: "Quantity Allocated Put Away" },
     { colHeader: "revision", colDef: TableConstant.Revision },
-    { colHeader: "row", colDef: "Row" },
+    { colHeader: "row", colDef: TableConstant.Row },
     { colHeader: "serialNumber", colDef: "Serial Number" },
     { colHeader: "shelf", colDef: "Shelf" },
     { colHeader: "unitOfMeasure", colDef: FilterColumnName.unitOfMeasure },

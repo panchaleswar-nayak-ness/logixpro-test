@@ -58,7 +58,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: 'warehouse', label: 'Warehouse', value: 'warehouse', filterProperty:'Warehouse'},
     { defination: TableConstant.zone, label: 'Zone', value: TableConstant.zone, filterProperty:'Zone' },
     { defination: zoneType.carousel, label: 'Carsl', value: zoneType.carousel, filterProperty:'Carousel' },
-    { defination: 'row', label: 'Row', value: 'row', filterProperty:'Row' },
+    { defination: 'row', label: TableConstant.Row, value: 'row', filterProperty:TableConstant.Row },
     { defination: 'shelf', label: 'Shelf', value: 'shelf', filterProperty:'Shelf' },
     { defination: 'bin', label: 'Bin', value: 'bin', filterProperty:'Bin' },
     { defination: 'cell', label: TableConstant.Cell, value: 'cell', filterProperty:TableConstant.Cell },
@@ -138,7 +138,7 @@ export class SrCurrentOrderComponent implements OnInit {
       sortColumn: '17',
       key: 'printDate',
     },
-    { value: 'Row', viewValue: 'Row', sortColumn: '5', key: 'row' },
+    { value: TableConstant.Row, viewValue: TableConstant.Row, sortColumn: '5', key: 'row' },
     {
       value: 'Serial Number',
       viewValue: 'Serial Number',

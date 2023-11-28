@@ -27,7 +27,7 @@ const TRNSC_DATA = [
   { colHeader: 'quantityAllocatedPutAway', colDef: 'Quantity Allocated Put Away' },
   { colHeader: TableConstant.zone, colDef: 'Zone' },
   { colHeader: zoneType.carousel, colDef: 'Carousel' },
-  { colHeader: 'row', colDef: 'Row' },
+  { colHeader: 'row', colDef: TableConstant.Row },
   { colHeader: 'shelf', colDef: 'Shelf' },
   { colHeader: 'bin', colDef: 'Bin' },
   { colHeader: 'cellSize', colDef: 'Cell Size' },
