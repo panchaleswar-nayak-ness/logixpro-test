@@ -21,7 +21,7 @@ import { DialogConstants, RouteNames, TableName, ToasterMessages, ToasterTitle, 
 })
 export class ReprocessedTransactionComponent implements OnInit {
   TRNSC_DATA = [
-    { colHeader: 'importDate', colDef: 'Import Date' },
+    { colHeader: TableConstant.ImportDate, colDef: 'Import Date' },
     { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'importFileName', colDef: 'Import Filename' },
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
@@ -31,7 +31,7 @@ export class ReprocessedTransactionComponent implements OnInit {
     { colHeader: 'lotNumber', colDef: Column.LotNumber },
     { colHeader: 'expirationDate', colDef: TableConstant.ExpirationDate },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
-    { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
+    { colHeader: 'transactionQuantity', colDef: TableConstant.TransactionQuantity },
     { colHeader: 'reasonMessage', colDef: 'Reason Message' },
     { colHeader: 'reason', colDef: 'Reason' },
     { colHeader: 'dateStamp', colDef: 'Date Stamp' },

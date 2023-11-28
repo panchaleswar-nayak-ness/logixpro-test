@@ -33,7 +33,7 @@ export class ViewOrdersComponent implements OnInit {
   filterTransColumns = [
     { columnDef: 'orderNumber', header: Column.OrderNumber, cell: (element: any) => `${element.orderNumber}` },
     { columnDef: 'itemNumber', header: Column.ItemNumber, cell: (element: any) => `${element.itemNumber}` },
-    { columnDef: 'transactionQuantity', header: 'Transaction Quantity', cell: (element: any) => `${element.transactionQuantity}` },
+    { columnDef: 'transactionQuantity', header: TableConstant.TransactionQuantity, cell: (element: any) => `${element.transactionQuantity}` },
     { columnDef: 'location', header: Column.Location, cell: (element: any) => `${element.location}` },
     { columnDef: 'completedQuantity', header: 'Completed Quantity', cell: (element: any) => `${element.completedQuantity}` },
     { columnDef: 'description', header: 'Description', cell: (element: any) => `${element.description}` },
@@ -51,7 +51,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'hostTransactionID', header: TableConstant.HostTransactionID, cell: (element: any) => `${element.hostTransactionID}` },
     { columnDef: 'id', header: 'ID', cell: (element: any) => `${element.id}` },
     { columnDef: TableConstant.ImportBy, header: 'Import By', cell: (element: any) => `${element.importBy}` },
-    { columnDef: 'importDate', header: 'Import Date', cell: (element: any) => `${element.importDate}` },
+    { columnDef: TableConstant.ImportDate, header: 'Import Date', cell: (element: any) => `${element.importDate}` },
     { columnDef: 'importFilename', header: 'Import Filename', cell: (element: any) => `${element.importFilename}` },
     { columnDef: 'invMapID', header: 'Inventory Map ID', cell: (element: any) => `${element.invMapID}` },
     { columnDef: 'lineNumber', header: 'Line Number', cell: (element: any) => `${element.lineNumber}` },

@@ -249,7 +249,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
             "orderNumber": res.data[0].orderNumber,
             "itemNumber": res.data[0].itemNumber,
             "transactionType": res.data[0].transactionType,
-            "importDate": res.data[0].importDate,
+            'importDate': res.data[0].importDate,
             "importBy": res.data[0].importBy,
             "zone": res.data[0].zone,
             'carousel': res.data[0].carousel,

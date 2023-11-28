@@ -56,7 +56,7 @@ export class OmAddRecordComponent implements OnInit {
     "inProcess": false,
     "processBy": "",
     "importBy" :"",
-    "importDate": "",
+    'importDate': "",
     "importFileName": "",
   };
   transactionTypes: any = [

@@ -28,7 +28,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   TRNSC_DATA = [
     { colHeader: 'tH_ID', colDef: 'TH_ID' },
     { colHeader: 'id', colDef: 'ID' },
-    { colHeader: 'importDate', colDef: 'Import Date' },
+    { colHeader: TableConstant.ImportDate, colDef: 'Import Date' },
     { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'importFileName', colDef: 'Import Filename' },
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
@@ -40,7 +40,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'expirationDate', colDef: TableConstant.ExpirationDate },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
     { colHeader: 'description', colDef: 'Description' },
-    { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
+    { colHeader: 'transactionQuantity', colDef: TableConstant.TransactionQuantity },
     { colHeader: 'location', colDef: Column.Location },
     { colHeader: 'wareHouse', colDef: 'Warehouse' },
     { colHeader: 'zone', colDef: 'Zone' },

@@ -415,7 +415,9 @@ export const TableConstant = {
     Revision:'Revision',
     ExpirationDate: 'Expiration Date',
     ImportBy:'importBy',
-    Cell:'Cell'
+    Cell:'Cell',
+    TransactionQuantity:'Transaction Quantity',
+    ImportDate:'importDate'
 }
 export const UniqueConstants = {
     backClass:'back-class',

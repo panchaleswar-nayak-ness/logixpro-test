@@ -339,7 +339,7 @@ export class SrCurrentOrderComponent implements OnInit {
         this.tablePayloadObj.searchColumn = 'Carousel';
         break;
       case 'Trans Qty':
-        this.tablePayloadObj.searchColumn = 'Transaction Quantity';
+        this.tablePayloadObj.searchColumn = TableConstant.TransactionQuantity;
         break;
       case 'UofM':
         this.tablePayloadObj.searchColumn = FilterColumnName.unitOfMeasure;
@@ -388,7 +388,7 @@ export class SrCurrentOrderComponent implements OnInit {
             this.tablePayloadObj.searchColumn = 'Carousel';
             break;
           case 'Trans Qty':
-            this.tablePayloadObj.searchColumn = 'Transaction Quantity';
+            this.tablePayloadObj.searchColumn = TableConstant.TransactionQuantity;
             break;
           case 'UofM':
             this.tablePayloadObj.searchColumn = FilterColumnName.unitOfMeasure;

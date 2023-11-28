@@ -154,7 +154,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: 'transactionQuantity',
-      header: 'Transaction Quantity',
+      header: TableConstant.TransactionQuantity,
       cell: (element: any) => `${element.transactionQuantity}`,
     },
     {
@@ -173,7 +173,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.description}`,
     },
     {
-      columnDef: 'importDate',
+      columnDef: TableConstant.ImportDate,
       header: 'Import Date',
       cell: (element: any) => `${element.importDate}`,
     },
