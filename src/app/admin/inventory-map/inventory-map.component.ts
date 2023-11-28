@@ -25,7 +25,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column,zoneType,ColumnDef,TableConstant,Style} from 'src/app/common/constants/strings.constants';
+import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-map',
@@ -643,7 +643,7 @@ export class InventoryMapComponent implements OnInit {
 
   this.router.navigate([]).then(() => {
       let url = `/#/OrderManager/OrderStatus?itemNumber=${seletedRecord.itemNumber}&type=TransactionHistory`;
-      window.open(url, '_blank');
+      window.open(url, UniqueConstants._blank);
   });
  }
 

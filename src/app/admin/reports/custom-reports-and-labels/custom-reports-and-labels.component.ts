@@ -12,7 +12,7 @@ import { MatSelect } from '@angular/material/select';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType ,AppNames,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,AppNames,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-custom-reports-and-labels',
@@ -113,7 +113,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   OpenListAndLabel(route) {
     window.open(
       `/#/${route}?file=${this.detail.fileName.replace('.', '-')}`,
-      '_blank',
+      UniqueConstants._blank,
       'width=' +
         screen.width +
         ',height=' +

@@ -27,7 +27,7 @@ import {
   ToasterMessages,
   ToasterTitle,
   ToasterType
-,ResponseStrings,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+,ResponseStrings,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-process-picks',
@@ -135,7 +135,7 @@ export class ProcessPicksComponent implements OnInit {
         } else {
           window.open(
             `/#/report-view?file=FileName:PrintPrevIMPickItemLabel|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`,
-            '_blank',
+            UniqueConstants._blank,
             'width=' +
             screen.width +
             ',height=' +
@@ -177,7 +177,7 @@ export class ProcessPicksComponent implements OnInit {
         } else {
           window.open(
             `/#/report-view?file=FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`,
-            '_blank',
+            UniqueConstants._blank,
             'width=' +
             screen.width +
             ',height=' +
@@ -212,7 +212,7 @@ export class ProcessPicksComponent implements OnInit {
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`,
-          '_blank',
+          UniqueConstants._blank,
           'width=' +
           screen.width +
           ',height=' +
@@ -640,7 +640,7 @@ export class ProcessPicksComponent implements OnInit {
 
       newWindow = window.open(
         `/#/report-view?file=${url}`,
-        '_blank',
+        UniqueConstants._blank,
         'width=' +
         screen.width +
         ',height=' +
@@ -875,7 +875,7 @@ export class ProcessPicksComponent implements OnInit {
           if (_isWindowClosed) {
             window.open(
               `/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`,
-              '_blank',
+              UniqueConstants._blank,
               'width=' +
               screen.width +
               ',height=' +
@@ -886,7 +886,7 @@ export class ProcessPicksComponent implements OnInit {
         } else {
           window.open(
             `/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`,
-            '_blank',
+            UniqueConstants._blank,
             'width=' +
             screen.width +
             ',height=' +
@@ -1010,7 +1010,7 @@ export class ProcessPicksComponent implements OnInit {
         } else {
           window.open(
             `/#/report-view?file=FileName:PrintPrevPickBatchList|BatchID:${batchId}`,
-            '_blank',
+            UniqueConstants._blank,
             'width=' +
             screen.width +
             ',height=' +

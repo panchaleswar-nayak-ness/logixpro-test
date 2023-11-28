@@ -20,7 +20,7 @@ import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-ta
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppNames, AppRoutes, Column, DialogConstants, Mode, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,TransactionType,zoneType,ColumnDef,Style} from 'src/app/common/constants/strings.constants';
+import { AppNames, AppRoutes, Column, DialogConstants, Mode, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,TransactionType,zoneType,ColumnDef,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-open-transaction-on-hold',
@@ -665,7 +665,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   }
 
   previewFiftyPagesOnly(){
-    window.open(`${AppRoutes.ReportView}?file=CycleCount-lst-prv`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+    window.open(`${AppRoutes.ReportView}?file=CycleCount-lst-prv`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
   }
 
   selectRow(row: any) {

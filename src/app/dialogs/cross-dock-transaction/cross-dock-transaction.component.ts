@@ -17,7 +17,7 @@ import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -265,7 +265,7 @@ export class CrossDockTransactionComponent implements OnInit {
     this.router.navigate([]).then((result) => {
       window.open(
         `/#/InductionManager/Admin/TransactionJournal?orderStatus=${this.selectedRowObj.orderNumber}`,
-        '_blank'
+        UniqueConstants._blank
       );
     });
   }
@@ -325,7 +325,7 @@ export class CrossDockTransactionComponent implements OnInit {
                   } else {
                     window.open(
                       `/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`,
-                      '_blank',
+                      UniqueConstants._blank,
                       'width=' +
                         screen.width +
                         ',height=' +
@@ -459,7 +459,7 @@ export class CrossDockTransactionComponent implements OnInit {
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:${this.selectedRowObj.toteID}`,
-          '_blank',
+          UniqueConstants._blank,
           'width=' +
             screen.width +
             ',height=' +
@@ -474,7 +474,7 @@ export class CrossDockTransactionComponent implements OnInit {
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`,
-        '_blank',
+        UniqueConstants._blank,
         'width=' +
           screen.width +
           ',height=' +

@@ -20,7 +20,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,DialogConstants,ColumnDef,Style} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,DialogConstants,ColumnDef,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 
 @Component({
@@ -712,7 +712,7 @@ export class ConsolidationComponent implements OnInit {
         this.global.Print(`FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`)
       }
       else{
-        window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+        window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
       }
     }
     else {
@@ -739,7 +739,7 @@ export class ConsolidationComponent implements OnInit {
                 this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
               }
               else{
-                window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
               }
             } else if (res.isExecuted && res.data == ResponseStrings.Modal) {
               this.showCmPackPrintModal(true, this.typeValue,print);
@@ -758,7 +758,7 @@ export class ConsolidationComponent implements OnInit {
             this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
           }
           else{
-            window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+            window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
           }
         } else if (res.isExecuted && res.data == ResponseStrings.Modal) {
           this.showCmPackPrintModal(true, this.typeValue,print);

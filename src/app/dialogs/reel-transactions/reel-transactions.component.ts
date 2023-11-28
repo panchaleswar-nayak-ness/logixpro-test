@@ -15,7 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle,ToasterType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reel-transactions',
@@ -377,7 +377,7 @@ export class ReelTransactionsComponent implements OnInit {
                     } else {
                       window.open(
                         `/#/report-view?file=FileName:PrintReelLabels|OTID:[]|SN:${this.generateReelAndSerial.data[0].reel_serial_number}|Order:${this.data.hvObj.order}|Item:${this.itemNumber}`,
-                        '_blank',
+                        UniqueConstants._blank,
                         'width=' +
                           screen.width +
                           ',height=' +
@@ -494,7 +494,7 @@ export class ReelTransactionsComponent implements OnInit {
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintReelLabels|OTID:[]|SN:${e.reel_serial_number}|Order:${this.data.hvObj.order}|Item:${this.itemNumber}`,
-        '_blank',
+        UniqueConstants._blank,
         'width=' +
           screen.width +
           ',height=' +

@@ -408,8 +408,10 @@ export const TableConstant = {
     UserField2:'User Field2'
 }
 export const UniqueConstants = {
-    backClass:'back-class'
+    backClass:'back-class',
+    _blank:'_blank'
 }
 export const Style = {
     w560px:'560px'
-}   
+}  
+

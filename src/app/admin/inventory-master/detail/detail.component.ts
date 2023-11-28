@@ -12,7 +12,7 @@ import { CurrentTabDataService } from '../current-tab-data-service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppNames,Style} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppNames,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -167,19 +167,19 @@ export class DetailComponent implements OnInit {
     if(this.setVal){
       this.router.navigate([]).then((result) => {
         let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-        window.open(url, '_blank');
+        window.open(url, UniqueConstants._blank);
       });
     }
     else if(this.spliUrl[1] == AppNames.InductionManager){
       this.router.navigate([]).then(() => {
         let url = '/#/InductionManager/Admin/TransactionJournal?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-        window.open(url, '_blank');
+        window.open(url, UniqueConstants._blank);
       });
     }
     else{
       this.router.navigate([]).then(() => {
         let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-        window.open(url, '_blank');
+        window.open(url, UniqueConstants._blank);
       });
     }
   }

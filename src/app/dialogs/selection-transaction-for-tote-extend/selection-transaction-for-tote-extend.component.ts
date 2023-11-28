@@ -20,7 +20,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
-import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,zoneType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,zoneType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote-extend',
@@ -730,13 +730,13 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
               dialogRef.afterClosed().subscribe((result) => {
                 if(result > 0)
-                  if(!this.imPreferences.printDirectly) window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+                  if(!this.imPreferences.printDirectly) window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
                   else for (let i = 0; i < result; i++) this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`);
               });
 
             }
             else if (numLabel > 0)
-              if(!this.imPreferences.printDirectly) window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+              if(!this.imPreferences.printDirectly) window.open(`/#/report-view?file=FileName:PrintPutAwayItemLabels|OTID:${OTID}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
               else for (let i = 0; i < numLabel; i++) this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`);
           }
           this.dialogRef.close("Task Completed");
@@ -810,7 +810,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   onViewItemDetail(itemNum:any) { 
     this.router.navigate([]).then(() => {
-      window.open(`/#/admin/inventoryMaster?itemNumber=${itemNum}`, '_blank');
+      window.open(`/#/admin/inventoryMaster?itemNumber=${itemNum}`, UniqueConstants._blank);
     });
   }
 

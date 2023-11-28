@@ -16,7 +16,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,ToasterMessages,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,ToasterMessages,DialogConstants,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ccb-create-counts',
@@ -279,7 +279,7 @@ constructor(
     if(this.printCC){
       this.global.Print(`FileName:PrintCycleCountReport|OrderNum:${this.orderNumber?this.orderNumber:''}`)
      } else {
-      window.open(`/#/report-view?file=PrintCycleCountReport-lst-prv|OrderNum:${this.orderNumber?this.orderNumber:''}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+      window.open(`/#/report-view?file=PrintCycleCountReport-lst-prv|OrderNum:${this.orderNumber?this.orderNumber:''}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
     }
   }
 

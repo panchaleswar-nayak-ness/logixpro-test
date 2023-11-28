@@ -6,7 +6,7 @@ import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-blossom-tote',
@@ -87,7 +87,7 @@ export class BlossomToteComponent implements OnInit {
                   this.global.Print(`FileName:PrintPrevInZoneBatchToteLabel|tote:true|BatchID:${batch}`)
                 }
                 else{
-                  window.open(`/#/report-view?file=FileName:PrintPrevInZoneBatchToteLabel|tote:true|BatchID:${batch}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                  window.open(`/#/report-view?file=FileName:PrintPrevInZoneBatchToteLabel|tote:true|BatchID:${batch}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
                 }
               }
               if(this.imPreferences.autoPrintOffCarouselPickList){
@@ -95,7 +95,7 @@ export class BlossomToteComponent implements OnInit {
                   this.global.Print(`FileName:autoPrintCrossDock|tote:true|BatchID:${batch}`)
                 }
                 else{
-                  window.open(`/#/report-view?file=FileName:autoPrintCrossDock|tote:true|BatchID:${batch}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                  window.open(`/#/report-view?file=FileName:autoPrintCrossDock|tote:true|BatchID:${batch}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
                 }
                 
               }

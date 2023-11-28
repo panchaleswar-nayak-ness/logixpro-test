@@ -16,7 +16,7 @@ import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/c
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
-import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,Style} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -846,6 +846,6 @@ export class ReprocessTransactionComponent implements OnInit {
     const fileLink = `/#/report-view?file=${queryParams}`;
 
     if (print) this.global.Print(queryParams);
-    else window.open(fileLink, '_blank', `width=${screen.width},height=${screen.height},toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0`);
+    else window.open(fileLink, UniqueConstants._blank, `width=${screen.width},height=${screen.height},toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0`);
   }
 }

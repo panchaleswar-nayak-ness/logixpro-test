@@ -18,7 +18,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-tote-transaction-view',
@@ -296,7 +296,7 @@ export class ToteTransactionViewComponent implements OnInit {
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:|ZoneLab:${this.zoneLabels}|ID:${this.dataSource?.filteredData[0]?.id}|BatchID:${this.batchID}|TransType:Put Away`,
-          '_blank',
+          UniqueConstants._blank,
           'width=' +
             screen.width +
             ',height=' +
@@ -312,7 +312,7 @@ export class ToteTransactionViewComponent implements OnInit {
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:-1|BatchID:${this.batchID}|ToteNum:${this.tote}`,
-          '_blank',
+          UniqueConstants._blank,
           'width=' +
             screen.width +
             ',height=' +
@@ -328,7 +328,7 @@ export class ToteTransactionViewComponent implements OnInit {
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteTransViewCont|BatchID:${this.batchID}|ToteNum:${this.tote}`,
-          '_blank',
+          UniqueConstants._blank,
           'width=' +
             screen.width +
             ',height=' +
@@ -348,7 +348,7 @@ export class ToteTransactionViewComponent implements OnInit {
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:${ID}|BatchID:${this.batchID}|ToteNum:${this.tote}`,
-        '_blank',
+        UniqueConstants._blank,
         'width=' +
           screen.width +
           ',height=' +

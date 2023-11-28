@@ -18,7 +18,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppRoutes, Column, DialogConstants, RouteNames, StringConditions, ToasterTitle, ToasterType ,TableConstant,LiveAnnouncerMessage,zoneType,ColumnDef,Style} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, Column, DialogConstants, RouteNames, StringConditions, ToasterTitle, ToasterType ,TableConstant,LiveAnnouncerMessage,zoneType,ColumnDef,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-tran-order-list',
@@ -607,6 +607,6 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   }
 
   previewReport(){ 
-    window.open(`/#/report-view?file=OrderStatus-lst-prv|field:Order Number|exptype:=|expone:${this.orderNo}|exptwo:`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+    window.open(`/#/report-view?file=OrderStatus-lst-prv|field:Order Number|exptype:=|expone:${this.orderNo}|exptwo:`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
   }
 }

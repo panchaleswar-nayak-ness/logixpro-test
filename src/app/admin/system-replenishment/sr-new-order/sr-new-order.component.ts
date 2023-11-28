@@ -16,7 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-new-order',
@@ -245,7 +245,7 @@ export class SrNewOrderComponent implements OnInit {
 
   viewItemInInventoryMaster(element: any) {
     
-    window.open(`/#/admin/inventoryMaster?itemNumber=${element.itemNumber}`, '_blank', "location=yes");
+    window.open(`/#/admin/inventoryMaster?itemNumber=${element.itemNumber}`, UniqueConstants._blank, "location=yes");
   }
 
   print() {

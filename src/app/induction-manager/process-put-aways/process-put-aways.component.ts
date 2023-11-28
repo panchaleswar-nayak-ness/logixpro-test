@@ -28,7 +28,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { Router } from '@angular/router';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys,TransactionType,ToasterMessages,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,KeyboardKeys,TransactionType,ToasterMessages,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   position: string;
@@ -297,7 +297,7 @@ export class ProcessPutAwaysComponent implements OnInit {
 
     }else{
 
-      window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:${this.toteID}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+      window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:${this.toteID}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
     }    
   }
@@ -566,7 +566,7 @@ export class ProcessPutAwaysComponent implements OnInit {
                   if (res.data && res.isExecuted) {
                     if(this.imPreferences.autoPrintPutAwayToteLabels){
                       if(this.imPreferences.printDirectly) this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`)
-                      else window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                      else window.open(`/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:-1|ZoneLabel:|TransType:Put Away|ID:-1|BatchID:${this.batchId}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
                     }
                     this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
                     this.status = 'Processed';
@@ -1165,7 +1165,7 @@ async clearBatchData(){
                       this.global.Print(`FileName:PrintOffCarList|batchID:${this.batchId2}`);
                     }
                     else{
-                      window.open(`/#/report-view?file=FileName:PrintOffCarList|batchID:${this.batchId2}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                      window.open(`/#/report-view?file=FileName:PrintOffCarList|batchID:${this.batchId2}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
                     }
                     this.clearFormAndTable();
                   }
@@ -1188,7 +1188,7 @@ async clearBatchData(){
                             this.global.Print(`FileName:PrintOffCarList|batchID:${this.batchId2}`);
                           }
                           else{
-                            window.open(`/#/report-view?file=FileName:PrintOffCarList|batchID:${this.batchId2}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                            window.open(`/#/report-view?file=FileName:PrintOffCarList|batchID:${this.batchId2}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
                           }
                           this.clearFormAndTable();
                       }else{
