@@ -434,7 +434,8 @@ export const TableConstant = {
     Carousel:'Carousel',
     Notes:'notes',
     label:'label',
-    completedQuantity:'completedQuantity'
+    completedQuantity:'completedQuantity',
+    transactionType:'transactionType'
 }
 export const UniqueConstants = {
     backClass:'back-class',

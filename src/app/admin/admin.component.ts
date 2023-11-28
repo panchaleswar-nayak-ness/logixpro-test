@@ -75,7 +75,7 @@ export class AdminComponent implements OnInit {
     { colHeader: 'warehouse', colDef: 'Warehouse' },
     { colHeader: 'locationName', colDef: Column.Location },
     { colHeader: 'totalPicks', colDef: 'Lines' },
-    { colHeader: 'transactionType', colDef: TableConstant.TransactionType },
+    { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
   ];
 
   public iAdminApiService: IAdminApiService;
@@ -85,7 +85,7 @@ export class AdminComponent implements OnInit {
     'warehouse',
     'locationName',
     'totalPicks',
-    'transactionType',
+    TableConstant.transactionType,
   ];
 
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
