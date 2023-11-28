@@ -3,10 +3,18 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { CellSizeComponent } from '../cell-size/cell-size.component';
 import { VelocityCodeComponent } from '../velocity-code/velocity-code.component';
 import { WarehouseComponent } from '../warehouse/warehouse.component';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
-import { map } from 'rxjs/internal/operators/map'; 
+import { map } from 'rxjs/internal/operators/map';
 
 import { AuthService } from '../../../common/init/auth.service';
 import { AdjustQuantityComponent } from '../adjust-quantity/adjust-quantity.component';
@@ -67,6 +75,8 @@ export interface InventoryMapDataStructure {
 })
 export class AddInvMapLocationComponent implements OnInit {
   addInvMapLocation: FormGroup;
+  clearInvMapLocation: FormGroup;
+
   locZoneList: any[] = [];
   itemNumberList: any[] = [];
   zoneList: any[] = [];
@@ -138,7 +148,7 @@ export class AddInvMapLocationComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   myroute1:boolean=true;
   myroute2:boolean=true;
-  unitOFMeasure  
+  unitOFMeasure
   itemNumberScroll:any = "vertical";
 
   floatLabelControl: any = new FormControl('uf1' as FloatLabelType);
@@ -163,7 +173,7 @@ export class AddInvMapLocationComponent implements OnInit {
     private Api: ApiFuntions,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private authService: AuthService,
-    
+
     private adminApiService: AdminApiService,
     public dialogRef: MatDialogRef<any>,
     private router: Router
@@ -184,6 +194,10 @@ export class AddInvMapLocationComponent implements OnInit {
     this.iCommonAPI = commonAPI;
   }
 
+  isValidClearLocation() {
+    return this.clearInvMapLocation.valid;
+  }
+
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.fieldNames=this.data?.fieldName;
@@ -195,20 +209,20 @@ export class AddInvMapLocationComponent implements OnInit {
       this.shelf = this.getDetailInventoryMapData.shelf;
       this.bin = this.getDetailInventoryMapData.bin;
       this.itemDescription = this.getDetailInventoryMapData.description;
-      this.quantity = this.getDetailInventoryMapData.itemQuantity; 
-      this.unitOFMeasure = this.getDetailInventoryMapData.unitOfMeasure; 
+      this.quantity = this.getDetailInventoryMapData.itemQuantity;
+      this.unitOFMeasure = this.getDetailInventoryMapData.unitOfMeasure;
       this.updateItemNumber();
       this.initializeDataSet();
     } else {
       this.initializeDataSet();
-    } 
+    }
     this.searchItemNumbers = this.getDetailInventoryMapData.itemNumber;
 
 
     this.iAdminApiService.getLocZTypeInvMap({}).subscribe((res) => {
       if(res.isExecuted && res.data)
       {
-        this.locZoneList = res.data; 
+        this.locZoneList = res.data;
       this.filteredOptions = this.addInvMapLocation.controls['location'].valueChanges.pipe(
         startWith(''),
         map(value => this.filterLocalZoneList(value || '')),
@@ -221,7 +235,7 @@ export class AddInvMapLocationComponent implements OnInit {
 
 
       }
-      
+
 
     });
       this.searchByShipVia
@@ -229,12 +243,12 @@ export class AddInvMapLocationComponent implements OnInit {
       .subscribe(() => {
         this.autocompleteSearchColumn();
       });
-    
+
       this.searchByShipName
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe(() => {
         this.autocompleteSearchColumnShipName();
-      });  
+      });
 
 
   }
@@ -273,33 +287,19 @@ export class AddInvMapLocationComponent implements OnInit {
   }
   clearFields() {
     this.addInvMapLocation.patchValue({
+      'putAwayDate': '',
       'userField1': '',
       'userField2': '',
       'item': '',
-      'maxQuantity': '',
-      'minQuantity': '',
-      'putAwayDate': '',
+      'expirationDate': '',
+      'maxQuantity': '0',
+      'minQuantity': '0',
+      'revision': '',
       'serialNumber': '',
       'lotNumber': '',
-      'revision': '',
-      'expirationDate': '',
-      'description':'',
-      'location':'',
-      'locationNumber':'',
-      'laserX':'',
-      'lasery':'',
-      'warehouse':'',
-      'zone':'',
-      'carousel':'',
-      'row':'',
-      'shelf':'',
-      'bin':'',
-      'cell':'',
-      'velocity':'',
-      'altLight':'',
       dedicated: false,
       dateSensitive : false
-      
+
 
     });
     this.itemDescription = "";
@@ -333,13 +333,13 @@ export class AddInvMapLocationComponent implements OnInit {
     })
   }
 
-  searchItemNumber(event:any,itemNum: any) { 
+  searchItemNumber(event:any,itemNum: any) {
     if(this.searchItemNumbers == ''||this.searchItemNumbers == undefined){
       this.clearFields()
     }
     if(event.keyCode == 13){
       this.searchItemNumbers = this.itemNumberList.find(x=>x.itemNumber == event.target.value.toString()).itemNumber;
-      if(this.searchItemNumbers) { 
+      if(this.searchItemNumbers) {
         this.loadItemDetails(this.searchItemNumbers);
         this.itemNumberList = []
       }
@@ -359,7 +359,7 @@ export class AddInvMapLocationComponent implements OnInit {
         this.itemNumberList = []
         this.clearFields()
       }
-    });  
+    });
   }
   }
 
@@ -401,6 +401,24 @@ export class AddInvMapLocationComponent implements OnInit {
       locationID: [this.getDetailInventoryMapData.locationID || ''],
       altLight: [this.getDetailInventoryMapData.altLight || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]]
     });
+
+    this.clearInvMapLocation = this.fb.group({
+      quantityAllocatedPick: new FormControl(this.getDetailInventoryMapData.quantityAllocatedPick || 0),
+      quantityAllocatedPutAway: new FormControl(this.getDetailInventoryMapData.quantityAllocatedPutAway || 0),
+      itemQuantity: new FormControl(this.getDetailInventoryMapData.itemQuantity || 0),
+    }, { validators: this.validateQuantity });
+
+  }
+
+  validateQuantity(control: AbstractControl): ValidationErrors | null {
+    const quantityAllocatedPick = control.get('quantityAllocatedPick')?.value;
+    const quantityAllocatedPutAway = control.get('quantityAllocatedPutAway')?.value;
+    const itemQuantity = control.get('itemQuantity')?.value;
+
+    if (itemQuantity === 0 && quantityAllocatedPick === 0 && quantityAllocatedPutAway === 0) {
+      return {invalidQuantity: true};
+    }
+    return null;
   }
 
   onMinChange(event: KeyboardEvent) {
@@ -475,7 +493,7 @@ export class AddInvMapLocationComponent implements OnInit {
               }
 
               else {
-                
+
                 this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
                 console.log("createInventoryMap",res.responseMessage);
 
@@ -577,11 +595,11 @@ export class AddInvMapLocationComponent implements OnInit {
     this.addInvMapLocation.controls['zone'].setValue(this.zoneList[0]?.zone);
     this.updateItemNumber('zone', this.zoneList[0]?.zone);
   }
-  
+
   zoneChecker(zone, location) { //To check if the zone and location are selected from dropdown.
     return this.locZoneList.some(item => item.zone === zone && item.locationName === location);
   }
-  
+
 
   loadItemDetails(item: any) {
     this.itemNumberList.forEach(val => {
@@ -593,20 +611,20 @@ export class AddInvMapLocationComponent implements OnInit {
       "itemNumber": item,
       "zone": this.addInvMapLocation?.get('zone')?.value
     }
-    
+
 
     const cellSizeVal = this.cellSizeVal?.nativeElement.value
     const velCodeVal = this.velCodeVal?.nativeElement.value
-    
+
 
     this.iAdminApiService.getItemNumDetail(payload).subscribe((res) => {
       if (res.isExecuted) {
         this.warehouseSensitive=res.data.warehouseSensitive;
         this.dateSensitive=res.data.dateSensitive;
-        this.unitOFMeasure =res.data.unitOfMeasure 
+        this.unitOFMeasure =res.data.unitOfMeasure
         let match = '';
         let expected = '';
-        
+
         if (cellSizeVal != res.data.cellSize && res.data.cellSize) {
           match += 'Cell Size';
           expected += ' Expecting Cell Size: ' + res.data.cellSize;
