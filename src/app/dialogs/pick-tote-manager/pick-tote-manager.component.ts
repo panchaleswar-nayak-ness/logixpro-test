@@ -168,7 +168,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.completedQuantity}`,
     },
     {
-      columnDef: 'description',
+      columnDef: UniqueConstants.Description,
       header: 'Description',
       cell: (element: any) => `${element.description}`,
     },

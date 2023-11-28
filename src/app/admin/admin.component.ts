@@ -10,7 +10,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { IAdminApiService } from '../common/services/admin-api/admin-api-interface';
 import { AdminApiService } from '../common/services/admin-api/admin-api.service';
 import { GlobalService } from '../common/services/global.service';
-import {  LiveAnnouncerMessage ,ResponseStrings,Column,ToasterTitle,ToasterType,TableConstant} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings,Column,ToasterTitle,ToasterType,TableConstant,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-admin',
@@ -210,7 +210,7 @@ export class AdminComponent implements OnInit {
         if (res.isExecuted && res.data) {
           const data = res.data;
           this.inventoryDetail.get("item")?.setValue(data?.itemNumber);
-          this.inventoryDetail.get("description")?.setValue(data?.description);
+          this.inventoryDetail.get(UniqueConstants.Description)?.setValue(data?.description);
           this.inventoryDetail.get("supplierNo")?.setValue(data?.supplierItemID);
           this.inventoryDetail.get("minRTSReelQty")?.setValue(data?.minimumRTSReelQuantity);
           this.inventoryDetail.get("primaryPickZone")?.setValue(data?.primaryPickZone);

@@ -1,4 +1,5 @@
 import { Component, EventEmitter,Output } from '@angular/core';
+import {  UniqueConstants } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-filters',
@@ -19,7 +20,7 @@ export class FiltersComponent {
     {trans_type: '10A'},
   ];
 
-  displayedColumns: string[] = ['trans_type','import_date','order_no','item_no','description','trans_qty','priority'];
+  displayedColumns: string[] = ['trans_type','import_date','order_no','item_no',UniqueConstants.Description,'trans_qty','priority'];
   tableData = this.ELEMENT_DATA;
   dataSourceList: any;
 

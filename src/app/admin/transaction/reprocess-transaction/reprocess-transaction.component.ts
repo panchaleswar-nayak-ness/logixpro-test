@@ -41,7 +41,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: 'lotNumber', colDef: Column.LotNumber },
     { colHeader: 'expirationDate', colDef: TableConstant.ExpirationDate },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
-    { colHeader: 'description', colDef: 'Description' },
+    { colHeader: UniqueConstants.Description, colDef: 'Description' },
     { colHeader: 'revision', colDef: TableConstant.Revision },
     { colHeader: 'transactionQuantity', colDef: TableConstant.TransactionQuantity },
     { colHeader: 'location', colDef: Column.Location },
@@ -123,7 +123,7 @@ export class ReprocessTransactionComponent implements OnInit {
   deleteByOrderNumber=false; //Only visible if searched
   private subscription: Subscription = new Subscription();
  
-  @ViewChild('description') description: TemplateRef<any>;
+  @ViewChild(UniqueConstants.Description) description: TemplateRef<any>;
 
   idx: any;
 

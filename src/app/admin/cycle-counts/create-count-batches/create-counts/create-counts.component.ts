@@ -96,7 +96,7 @@ export class CCBCreateCountsComponent implements OnInit {
 
   displayedColumns: string[] = [
     'itemNumber',
-    'description',
+    UniqueConstants.Description,
     'itemQuantity',
     'unitofMeasure',
     'warehouse',
@@ -286,7 +286,7 @@ constructor(
   resetVal() {
     this.filtersForm.controls['fromLocation'].setValue('');
     this.filtersForm.controls['toLocation'].setValue('');
-    this.filtersForm.controls['description'].setValue('');
+    this.filtersForm.controls[UniqueConstants.Description].setValue('');
     this.filtersForm.controls['category'].setValue('');
     this.filtersForm.controls['subCategory'].setValue('');
     this.filtersForm.controls['fromItem'].setValue('');

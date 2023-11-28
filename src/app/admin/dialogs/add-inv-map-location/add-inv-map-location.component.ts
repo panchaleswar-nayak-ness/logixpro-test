@@ -19,7 +19,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
-import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,TableConstant,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 
 export interface InventoryMapDataStructure {
@@ -243,7 +243,7 @@ export class AddInvMapLocationComponent implements OnInit {
     if(this.router.url == '/OrderManager/InventoryMap'){
       this.addInvMapLocation.get('location')?.disable();
       this.addInvMapLocation.get(TableConstant.zone)?.disable();
-      this.addInvMapLocation.get('description')?.disable();
+      this.addInvMapLocation.get(UniqueConstants.Description)?.disable();
       this.addInvMapLocation.get('laserX')?.disable();
       this.addInvMapLocation.get('laserY')?.disable();
       this.addInvMapLocation.get('warehouse')?.disable();
@@ -283,7 +283,7 @@ export class AddInvMapLocationComponent implements OnInit {
       'lotNumber': '',
       'revision': '',
       'expirationDate': '',
-      'description':'',
+      "description":'',
       'location':'',
       'locationNumber':'',
       'laserX':'',
@@ -490,7 +490,7 @@ export class AddInvMapLocationComponent implements OnInit {
     if(this.itemNumberList && this.itemNumberList.length > 0){
       this.warehouseSensitive =  this.itemNumberList[0].warehouseSensitive;
       this.dateSensitive =  this.itemNumberList[0].dateSensitive;
-      this.addInvMapLocation.controls['description'].setValue(this.itemNumberList[0].description ?? '');
+      this.addInvMapLocation.controls[UniqueConstants.Description].setValue(this.itemNumberList[0].description ?? '');
     }
     else{
       this.searchItemNumbers = "";
@@ -586,7 +586,7 @@ export class AddInvMapLocationComponent implements OnInit {
   loadItemDetails(item: any) {
     this.itemNumberList.forEach(val => {
       if (val.itemNumber === item) {
-        this.addInvMapLocation.controls['description'].setValue(val.description ?? '');
+        this.addInvMapLocation.controls[UniqueConstants.Description].setValue(val.description ?? '');
       }
     })
     let payload = {

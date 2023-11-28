@@ -106,14 +106,14 @@ export class DetailComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
-        description: this.details.controls['description'].value,
+        description: this.details.controls[UniqueConstants.Description].value,
       }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.sharedService.updateInvMasterState(result,true)
         this.details.patchValue({
-          'description' : result.description
+          "description" : result.description
         });
       }
     });

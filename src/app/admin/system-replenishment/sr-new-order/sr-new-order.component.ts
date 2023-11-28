@@ -53,7 +53,7 @@ export class SrNewOrderComponent implements OnInit {
     { value: 'Alloc Put', viewValue: 'Alloc Put', sortValue: '13', key: 'allocPut', colDef: 'Alloc Put' },
     { value: 'Available Qty', viewValue: 'Available Qty', sortValue: '6', key: 'availableQuantity', colDef: 'Available Qty' },
     { value: 'Case Qty', viewValue: 'Case Qty', sortValue: '8', key: 'caseQuantity', colDef: 'Case Qty' },
-    { value: 'Description', viewValue: 'Description', sortValue: '1', key: 'description', colDef: 'Description' },
+    { value: 'Description', viewValue: 'Description', sortValue: '1', key: UniqueConstants.Description, colDef: 'Description' },
     { value: Column.ItemNumber, viewValue: Column.ItemNumber, sortValue: '0', key: 'itemNumber', colDef: Column.ItemNumber },
     { value: 'Replenish', viewValue: 'Replenish', sortValue: '10', key: 'replenish', colDef: 'Replenish' },
     { value: 'Replenish Exists', viewValue: 'Replenish Exists', sortValue: '11', key: 'replenishExists', colDef: 'Replenish Exists' },

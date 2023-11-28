@@ -3,7 +3,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
@@ -18,7 +18,7 @@ export class BatchManagerDetailViewComponent implements OnInit {
 
 
   public iAdminApiService: IAdminApiService;
-  batchDisplayedColumns: string[] = ['item_no', 'description','transaction_qty','lotNo', 'expiration_date', 'uom', 'serial_no', 'notes','location','warehouse',ColumnDef.userField1,ColumnDef.userField2,'toteID'];
+  batchDisplayedColumns: string[] = ['item_no', UniqueConstants.Description,'transaction_qty','lotNo', 'expiration_date', 'uom', 'serial_no', 'notes','location','warehouse',ColumnDef.userField1,ColumnDef.userField2,'toteID'];
   dataSource:any = [];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   constructor(private Api:ApiFuntions,private global : GlobalService, private _liveAnnouncer: LiveAnnouncer,private adminApiService: AdminApiService,@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<any>) { 

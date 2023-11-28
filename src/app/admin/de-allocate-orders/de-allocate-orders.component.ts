@@ -13,7 +13,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,StringConditions} from 'src/app/common/constants/strings.constants';
+import {ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,StringConditions,UniqueConstants} from 'src/app/common/constants/strings.constants';
 import { Toast } from 'ngx-toastr';
 
 @Component({
@@ -40,7 +40,7 @@ export class DeAllocateOrdersComponent implements OnInit {
       {trans_type: 'Count', order_no: '1202122', priority: '36', required_date: '11/02/2022 11:58 AM', user_field_1: 'Treat with care'},
     ];
     
-    displayedColumns: string[] = ['deallocate','order_no','item_no','description','priority', 'transactionQuantity','unitOfMeasure','batchPickID','trans_type'];
+    displayedColumns: string[] = ['deallocate','order_no','item_no',UniqueConstants.Description,'priority', 'transactionQuantity','unitOfMeasure','batchPickID','trans_type'];
     tableData = this.ELEMENT_DATA
     orderItemTransactions:MatTableDataSource<any> = new MatTableDataSource<any>([]);  
   orderNameList:MatTableDataSource<any> = new MatTableDataSource<any>([]);
