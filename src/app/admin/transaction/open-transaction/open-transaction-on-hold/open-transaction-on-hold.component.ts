@@ -58,7 +58,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     { colHeader: 'invMapID', colDef: 'Inv Map ID' },
     { colHeader: 'completedDate', colDef: TableConstant.CompletedDate },
     { colHeader: 'completedBy', colDef: 'Completed By' },
-    { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
+    { colHeader: TableConstant.completedQuantity, colDef: 'Completed Quantity' },
     { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
     { colHeader: TableConstant.Notes, colDef: 'Notes' },
     { colHeader: 'exportFileName', colDef: 'Export File Name' },

@@ -433,7 +433,8 @@ export const TableConstant = {
     Bin:'Bin',
     Carousel:'Carousel',
     Notes:'notes',
-    label:'label'
+    label:'label',
+    completedQuantity:'completedQuantity'
 }
 export const UniqueConstants = {
     backClass:'back-class',

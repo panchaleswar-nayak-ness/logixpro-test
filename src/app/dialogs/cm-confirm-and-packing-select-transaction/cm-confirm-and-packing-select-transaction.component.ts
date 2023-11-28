@@ -5,7 +5,7 @@ import { CmConfirmAndPackingProcessTransactionComponent } from '../cm-confirm-an
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  StringConditions ,ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  StringConditions ,ToasterTitle,ToasterType,DialogConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing-select-transaction',
@@ -17,7 +17,7 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
   orderNumber: any;
   confPackSelectTable: any[] = [];
   preferencesData: any; 
-  displayedColumns: string[] = ['sT_ID', 'itemNumber', 'lineNumber', 'completedQuantity', 'transactionQuantity'];
+  displayedColumns: string[] = ['sT_ID', 'itemNumber', 'lineNumber', TableConstant.completedQuantity, 'transactionQuantity'];
   dataSourceList: any
   confPackTransTable: any;
   contID: any;
