@@ -14,7 +14,7 @@ export class LocationComponent implements OnInit {
   currentDir=UniqueConstants.Asc;
   nextDir='desc';
   counter=0;
-  displayedColumns: string[] = ['location','warehouse',TableConstant.zone,'carousal','row',TableConstant.shelf,'bin','lotNo','expiration','serialNo','cellSize','shipVia','shipToName', 'qtyAllPick', 'qtyAllPut', 'unitOfMeasure', 'itemQty',  'stockDate', 'velocity'];
+  displayedColumns: string[] = ['location','warehouse',TableConstant.zone,'carousal','row',TableConstant.shelf,'bin','lotNo','expiration','serialNo',UniqueConstants.cellSize,'shipVia','shipToName', 'qtyAllPick', 'qtyAllPut', 'unitOfMeasure', 'itemQty',  'stockDate', 'velocity'];
 
   @Input() location: FormGroup;
   @Input() count: any;

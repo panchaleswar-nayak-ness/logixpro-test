@@ -444,7 +444,8 @@ export const UniqueConstants = {
     Select:'select',
     emergency:'emergency',
     _self:'_self',
-
+    cellSize:'cellSize',
+    item:'item'
 }
 export const Style = {
     w560px:'560px',

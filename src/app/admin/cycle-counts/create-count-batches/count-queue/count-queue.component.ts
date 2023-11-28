@@ -34,7 +34,7 @@ export class CCBCountQueueComponent implements OnInit {
     'warehouse',
     'location',
     'velocityCode',
-    'cellSize',
+    UniqueConstants.cellSize,
     'serialNo',
     'lotNo',
     'expDate',

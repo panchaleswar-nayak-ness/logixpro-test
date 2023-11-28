@@ -39,7 +39,7 @@ export class ItemSetupComponent {
 
   public openCellSizeDialog(param) {
     let currentValue="";
-    if(param == 'cellSize') currentValue  = this.itemSetup.controls['cellSize'].value;
+    if(param == UniqueConstants.cellSize) currentValue  = this.itemSetup.controls[UniqueConstants.cellSize].value;
     else if(param == 'bulkCellSize') currentValue  = this.itemSetup.controls['bulkCellSize'].value;
     else if(param == 'cfCellSize') currentValue  = this.itemSetup.controls['cfCellSize'].value;
 
@@ -56,7 +56,7 @@ export class ItemSetupComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        if(param == 'cellSize') this.itemSetup.patchValue({ 'cellSize' : result });
+        if(param == UniqueConstants.cellSize) this.itemSetup.patchValue({ "cellSize" : result });
         else if(param == 'bulkCellSize') this.itemSetup.patchValue({ 'bulkCellSize' : result });
         else if(param == 'cfCellSize') this.itemSetup.patchValue({ 'cfCellSize' : result });
         this.sharedService.updateInvMasterState(result,true)

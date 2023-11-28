@@ -38,7 +38,7 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: "locationID", colDef: "Alternate Light" },
     { colHeader: "bin", colDef: "Bin" },
     { colHeader: zoneType.carousel, colDef: "Carousel" },
-    { colHeader: "cellSize", colDef: "Cell Size" },
+    { colHeader: UniqueConstants.cellSize, colDef: "Cell Size" },
     { colHeader: "dateSensitive", colDef: "Date Sensitive" },
     { colHeader: "dedicated", colDef: "Dedicated" },
     { colHeader: UniqueConstants.Description, colDef: Column.Description },

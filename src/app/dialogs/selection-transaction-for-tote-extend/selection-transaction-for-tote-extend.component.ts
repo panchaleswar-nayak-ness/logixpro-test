@@ -331,7 +331,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   public openCellSizeDialog(param : any) {
     let currentValue="";
 
-    if(param == 'cellSize') currentValue = this.toteForm.controls['carouselCellSize'].value;
+    if(param == UniqueConstants.cellSize) currentValue = this.toteForm.controls['carouselCellSize'].value;
     else if(param == 'bulkCellSize') currentValue = this.toteForm.controls['bulkCellSize'].value;
     else if(param == 'cfCellSize') currentValue = this.toteForm.controls['cfCellSize'].value;
     
@@ -348,7 +348,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result)
-        if(param == 'cellSize') this.toteForm.patchValue({ 'carouselCellSize' : result });
+        if(param == UniqueConstants.cellSize) this.toteForm.patchValue({ 'carouselCellSize' : result });
         else if(param == 'bulkCellSize') this.toteForm.patchValue({ 'bulkCellSize' : result });
         else if(param == 'cfCellSize') this.toteForm.patchValue({ 'cfCellSize' : result });
       this.getCellSizeList();
