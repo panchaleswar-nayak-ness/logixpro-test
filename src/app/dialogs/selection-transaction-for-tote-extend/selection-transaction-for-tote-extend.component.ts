@@ -358,7 +358,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   public openVelocityCodeDialog(param : any) {
     let currentValue="";
 
-    if(param == 'goldenZone') currentValue  = this.toteForm.controls['carouselVelocity'].value;
+    if(param == UniqueConstants.goldenZone) currentValue  = this.toteForm.controls['carouselVelocity'].value;
     else if(param == 'bulkVelocity') currentValue  = this.toteForm.controls['bulkVelocity'].value;
     else if(param == 'cfVelocity') currentValue  = this.toteForm.controls['cfVelocity'].value;
     
@@ -375,7 +375,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result)
-        if(param == 'goldenZone') this.toteForm.patchValue({ 'carouselVelocity' : result });
+        if(param == UniqueConstants.goldenZone) this.toteForm.patchValue({ 'carouselVelocity' : result });
         else if(param == 'bulkVelocity') this.toteForm.patchValue({ 'bulkVelocity' : result });
         else if(param == 'cfVelocity') this.toteForm.patchValue({ 'cfVelocity' : result });
       this.getVelocityCodeList();

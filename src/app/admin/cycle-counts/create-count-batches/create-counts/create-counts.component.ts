@@ -101,7 +101,7 @@ export class CCBCreateCountsComponent implements OnInit {
     'unitofMeasure',
     'warehouse',
     'location',
-    'goldenZone',
+    UniqueConstants.goldenZone,
     'cellSize',
     'serialNumber',
     'lotNumber',

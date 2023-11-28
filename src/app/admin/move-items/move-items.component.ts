@@ -14,12 +14,12 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 const TRNSC_DATA = [
   { colHeader: 'warehouse', colDef: 'Warehouse' },
   { colHeader: 'locationNumber', colDef: 'Location Number' },
-  { colHeader: 'goldenZone', colDef: 'Golden Zone' },
+  { colHeader: UniqueConstants.goldenZone, colDef: 'Golden Zone' },
   { colHeader: 'itemNumber', colDef: Column.ItemNumber },
   { colHeader: 'description', colDef: 'Description' },
   { colHeader: 'itemQuantity', colDef: 'Item Quantity' },
@@ -180,7 +180,7 @@ export class MoveItemsComponent implements OnInit {
   public displayedColumns: any = [
     'warehouse',
     'locationNumber',
-    'goldenZone',
+    UniqueConstants.goldenZone,
     'itemNumber',
     'description',
     'itemQuantity',

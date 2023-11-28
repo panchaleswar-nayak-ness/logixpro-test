@@ -410,7 +410,8 @@ export const TableConstant = {
 export const UniqueConstants = {
     backClass:'back-class',
     _blank:'_blank',
-    position : 'position'
+    position : 'position',
+    goldenZone:'goldenZone'
 }
 export const Style = {
     w560px:'560px'

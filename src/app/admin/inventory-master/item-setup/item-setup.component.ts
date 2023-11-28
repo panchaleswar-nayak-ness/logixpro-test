@@ -5,7 +5,7 @@ import { VelocityCodeComponent } from '../../dialogs/velocity-code/velocity-code
 import { SharedService } from 'src/app/common/services/shared.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  DialogConstants } from 'src/app/common/constants/strings.constants';
+import {  DialogConstants ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-item-setup',
   templateUrl: './item-setup.component.html',
@@ -66,7 +66,7 @@ export class ItemSetupComponent {
 
   public openVelocityCodeDialog(param) {
     let currentValue="";
-    if(param == 'goldenZone') currentValue = this.itemSetup.controls['goldenZone'].value;
+    if(param == UniqueConstants.goldenZone) currentValue = this.itemSetup.controls[UniqueConstants.goldenZone].value;
     else if(param == 'bulkVelocity') currentValue = this.itemSetup.controls['bulkVelocity'].value;
     else if(param == 'cfVelocity') currentValue = this.itemSetup.controls['cfVelocity'].value;
     
@@ -83,7 +83,7 @@ export class ItemSetupComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        if(param == 'goldenZone') this.itemSetup.patchValue({ 'goldenZone' : result });
+        if(param == UniqueConstants.goldenZone) this.itemSetup.patchValue({ 'goldenZone' : result });
         else if(param == 'bulkVelocity') this.itemSetup.patchValue({ 'bulkVelocity' : result });
         else if(param == 'cfVelocity') this.itemSetup.patchValue({ 'cfVelocity' : result });
         this.sharedService.updateInvMasterState(result,true)
