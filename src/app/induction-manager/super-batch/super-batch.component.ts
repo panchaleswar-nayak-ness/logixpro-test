@@ -6,7 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-super-batch',
@@ -15,7 +15,7 @@ import { ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/consta
 })
 export class SuperBatchComponent implements OnInit {
   public iInductionManagerApi: IInductionManagerApiService;
-  displayedColumns: string[] = ['zone', 'totalTransactions', 'orderToBatch', 'newToteID', 'actions'];
+  displayedColumns: string[] = [TableConstant.zone, 'totalTransactions', 'orderToBatch', 'newToteID', 'actions'];
   dataSource: any;
   user_data: any;
   totalTransHeading = 'Single Line Orders';

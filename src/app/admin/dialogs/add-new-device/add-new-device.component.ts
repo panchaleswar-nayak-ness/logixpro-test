@@ -15,7 +15,7 @@ import { catchError, of } from 'rxjs';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-new-device',
@@ -395,7 +395,7 @@ export class AddNewDeviceComponent implements OnInit {
 
   updateAllDevices(type) {
     let payload = {
-      zone: this.newDeviceForm.controls['zone'].value,
+      zone: this.newDeviceForm.controls[TableConstant.zone].value,
       hostport: this.newDeviceForm.controls['COMPort'].value,
       baud: this.newDeviceForm.controls['Baud'].value,
       parity: this.newDeviceForm.controls['Parity'].value,
@@ -413,7 +413,7 @@ export class AddNewDeviceComponent implements OnInit {
         'Click OK to update all devices with Com Port: ' +
         this.newDeviceForm.controls['COMPort'].value +
         ' and Zone: ' +
-        this.newDeviceForm.controls['zone'].value;
+        this.newDeviceForm.controls[TableConstant.zone].value;
     }
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',

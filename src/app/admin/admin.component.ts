@@ -10,7 +10,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { IAdminApiService } from '../common/services/admin-api/admin-api-interface';
 import { AdminApiService } from '../common/services/admin-api/admin-api.service';
 import { GlobalService } from '../common/services/global.service';
-import {  LiveAnnouncerMessage ,ResponseStrings,Column,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings,Column,ToasterTitle,ToasterType,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-admin',
@@ -71,7 +71,7 @@ export class AdminComponent implements OnInit {
     sortOrder: 'asc',
   };
   public Order_Table_Config = [
-    { colHeader: 'zone', colDef: 'Zone' },
+    { colHeader: TableConstant.zone, colDef: 'Zone' },
     { colHeader: 'warehouse', colDef: 'Warehouse' },
     { colHeader: 'locationName', colDef: Column.Location },
     { colHeader: 'totalPicks', colDef: 'Lines' },
@@ -81,7 +81,7 @@ export class AdminComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
 
   public displayedColumns: string[] = [
-    'zone',
+    TableConstant.zone,
     'warehouse',
     'locationName',
     'totalPicks',

@@ -35,7 +35,7 @@ export class SrCurrentOrderComponent implements OnInit {
     Column.ItemNumber,
     'Trans Type',
     'warehouse',
-    'zone',
+    TableConstant.zone,
     zoneType.carousel,
     'row',
     'shelf',
@@ -56,7 +56,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: Column.ItemNumber, label: 'Item Num', value: 'itemNumber',filterProperty:Column.ItemNumber},
     { defination: 'Trans Type', label: 'Trans Type', value: 'transactionType',filterProperty:'Transaction Type' },
     { defination: 'warehouse', label: 'Warehouse', value: 'warehouse', filterProperty:'Warehouse'},
-    { defination: 'zone', label: 'Zone', value: 'zone', filterProperty:'Zone' },
+    { defination: TableConstant.zone, label: 'Zone', value: TableConstant.zone, filterProperty:'Zone' },
     { defination: zoneType.carousel, label: 'Carsl', value: zoneType.carousel, filterProperty:'Carousel' },
     { defination: 'row', label: 'Row', value: 'row', filterProperty:'Row' },
     { defination: 'shelf', label: 'Shelf', value: 'shelf', filterProperty:'Shelf' },
@@ -170,7 +170,7 @@ export class SrCurrentOrderComponent implements OnInit {
       sortColumn: '2',
       key: 'warehouse',
     },
-    { value: 'Zone', viewValue: 'Zone', sortColumn: '3', key: 'zone' },
+    { value: 'Zone', viewValue: 'Zone', sortColumn: '3', key: TableConstant.zone },
   ];
   repByDeletePayload: any = {
     identity: '',

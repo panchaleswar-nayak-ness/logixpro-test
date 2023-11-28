@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterMessages ,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterMessages ,ToasterTitle,ToasterType,TableConstant} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   zone: string
@@ -25,7 +25,7 @@ export class SelectZonesComponent implements OnInit {
   isNewBatch=false;
   public iInductionManagerApi:IInductionManagerApiService;
   elementData = [{ zone: '',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
-  displayedColumns: string[] = ['select', 'zone', 'locationdesc', 'locationtype', 'stagingzone' , 'flag'];
+  displayedColumns: string[] = ['select', TableConstant.zone, 'locationdesc', 'locationtype', 'stagingzone' , 'flag'];
   dataSource = new MatTableDataSource<PeriodicElement>(this.elementData);
   selection = new SelectionModel<PeriodicElement>(true, []);
   batchID="";

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChil
 import { FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import {  TableConstant } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-location',
@@ -13,7 +14,7 @@ export class LocationComponent implements OnInit {
   currentDir='asc';
   nextDir='desc';
   counter=0;
-  displayedColumns: string[] = ['location','warehouse','zone','carousal','row','shelf','bin','lotNo','expiration','serialNo','cellSize','shipVia','shipToName', 'qtyAllPick', 'qtyAllPut', 'unitOfMeasure', 'itemQty',  'stockDate', 'velocity'];
+  displayedColumns: string[] = ['location','warehouse',TableConstant.zone,'carousal','row','shelf','bin','lotNo','expiration','serialNo','cellSize','shipVia','shipToName', 'qtyAllPick', 'qtyAllPut', 'unitOfMeasure', 'itemQty',  'stockDate', 'velocity'];
 
   @Input() location: FormGroup;
   @Input() count: any;

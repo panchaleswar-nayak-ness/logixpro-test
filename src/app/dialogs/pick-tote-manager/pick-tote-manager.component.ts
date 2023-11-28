@@ -309,7 +309,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     { columnDef: 'id', header: 'ID', cell: (element: any) => `${element.id}` },
     {
-      columnDef: 'zone',
+      columnDef: TableConstant.zone,
       header: 'Zone',
       cell: (element: any) => `${element.zone}`,
     },
@@ -399,7 +399,7 @@ export class PickToteManagerComponent implements OnInit {
 
   displayedColumns4: string[] = [
     'select',
-    'zone',
+    TableConstant.zone,
     'batchtype',
     'totalorders',
     'totallocations',
@@ -407,7 +407,7 @@ export class PickToteManagerComponent implements OnInit {
   ];
   batchByOrderColumns: string[] = [
     'default',
-    'zone',
+    TableConstant.zone,
     'batchtype',
     'totalorders',
     'totallocations',
@@ -443,7 +443,7 @@ export class PickToteManagerComponent implements OnInit {
     if (this.data.useDefaultFilter) {
       this.isFilter = 'filter';
     } else {
-      this.isFilter = 'zone';
+      this.isFilter = TableConstant.zone;
     }
     this.allSelectOrders = this.data.allOrders;
   }

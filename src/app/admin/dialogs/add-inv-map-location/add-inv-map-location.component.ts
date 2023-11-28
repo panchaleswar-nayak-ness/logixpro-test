@@ -19,7 +19,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
-import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
 
 
 export interface InventoryMapDataStructure {
@@ -242,7 +242,7 @@ export class AddInvMapLocationComponent implements OnInit {
   ngAfterViewInit() {
     if(this.router.url == '/OrderManager/InventoryMap'){
       this.addInvMapLocation.get('location')?.disable();
-      this.addInvMapLocation.get('zone')?.disable();
+      this.addInvMapLocation.get(TableConstant.zone)?.disable();
       this.addInvMapLocation.get('description')?.disable();
       this.addInvMapLocation.get('laserX')?.disable();
       this.addInvMapLocation.get('laserY')?.disable();
@@ -289,7 +289,7 @@ export class AddInvMapLocationComponent implements OnInit {
       'laserX':'',
       'lasery':'',
       'warehouse':'',
-      'zone':'',
+      "zone":'',
       'carousel':'',
       'row':'',
       'shelf':'',
@@ -418,7 +418,7 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   onchangeItemNumber() {
-    let value = this.addInvMapLocation.controls['zone'].value + this.addInvMapLocation.controls[zoneType.carousel].value + this.addInvMapLocation.controls['row'].value + this.addInvMapLocation.controls['shelf'].value + this.addInvMapLocation.controls['bin'].value;
+    let value = this.addInvMapLocation.controls[TableConstant.zone].value + this.addInvMapLocation.controls[zoneType.carousel].value + this.addInvMapLocation.controls['row'].value + this.addInvMapLocation.controls['shelf'].value + this.addInvMapLocation.controls['bin'].value;
     this.addInvMapLocation.controls['locationNumber'].setValue(value);
   }
   onSubmit(form: FormGroup) {
@@ -574,8 +574,8 @@ export class AddInvMapLocationComponent implements OnInit {
   }
   loadZones(zone: any) {
     this.zoneList = this.locZoneList.filter(option => option.locationName.includes(zone.option.value));
-    this.addInvMapLocation.controls['zone'].setValue(this.zoneList[0]?.zone);
-    this.updateItemNumber('zone', this.zoneList[0]?.zone);
+    this.addInvMapLocation.controls[TableConstant.zone].setValue(this.zoneList[0]?.zone);
+    this.updateItemNumber(TableConstant.zone, this.zoneList[0]?.zone);
   }
   
   zoneChecker(zone, location) { //To check if the zone and location are selected from dropdown.
@@ -591,7 +591,7 @@ export class AddInvMapLocationComponent implements OnInit {
     })
     let payload = {
       "itemNumber": item,
-      "zone": this.addInvMapLocation?.get('zone')?.value
+      "zone": this.addInvMapLocation?.get(TableConstant.zone)?.value
     }
     
 
@@ -628,7 +628,7 @@ export class AddInvMapLocationComponent implements OnInit {
 
   updateItemNumber(col?: string, val?: any) {
 
-    if (col === 'zone') {
+    if (col === TableConstant.zone) {
       this.zone = val?.toString();
     }
     if (col === zoneType.carousel) {

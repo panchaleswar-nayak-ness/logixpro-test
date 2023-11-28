@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import {  zoneType ,UniqueConstants} from 'src/app/common/constants/strings.constants'; 
+import {  zoneType ,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants'; 
 
 @Component({
   selector: 'app-tran-carousel-lzone',
@@ -17,7 +17,7 @@ export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<any>([]);
   displayedColumns: string[] = [
     zoneType.carousel,
-    'zone',
+    TableConstant.zone,
     'locationName',
     'totalLines',
     'open',

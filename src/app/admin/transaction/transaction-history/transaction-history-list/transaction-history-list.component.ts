@@ -43,7 +43,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'transactionQuantity', colDef: TableConstant.TransactionQuantity },
     { colHeader: 'location', colDef: Column.Location },
     { colHeader: 'wareHouse', colDef: 'Warehouse' },
-    { colHeader: 'zone', colDef: 'Zone' },
+    { colHeader: TableConstant.zone, colDef: 'Zone' },
     { colHeader: zoneType.carousel, colDef: 'Carousel' },
     { colHeader: 'row', colDef: 'Row' },
     { colHeader: 'shelf', colDef: 'Shelf' },

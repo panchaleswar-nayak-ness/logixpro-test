@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
-import {  StringConditions, ToasterTitle, ToasterType ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  StringConditions, ToasterTitle, ToasterType ,DialogConstants,Style,TableConstant} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -31,7 +31,7 @@ export class SpDevicePreferenceComponent implements OnInit {
     endIndex: 10,
   };
   public displayedColumns: string[] = [
-    'zone',
+    TableConstant.zone,
     'deviceType',
     'device',
     'deviceModel',

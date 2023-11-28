@@ -26,7 +26,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,UniqueConstants,Style,TableConstant} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -71,7 +71,7 @@ export class TotesAddEditComponent implements OnInit {
       isEdit: false,
     },
   ];
-  displayedColumns: string[] = ['actions', 'zone', 'locationdesc'];
+  displayedColumns: string[] = ['actions', TableConstant.zone, 'locationdesc'];
   alreadySavedTotesList: any;
   dataSource = new MatTableDataSource<PeriodicElement>(this.elementData);
   dataSourceManagedTotes = new MatTableDataSource<ToteElement>(
@@ -439,7 +439,7 @@ export class TotesAddEditComponent implements OnInit {
     }
   }
 
-  displayedColumns1: string[] = ['select', 'zone', 'locationdesc', 'options'];
+  displayedColumns1: string[] = ['select', TableConstant.zone, 'locationdesc', 'options'];
   dataSource1 = new MatTableDataSource<PeriodicElement>(this.elementData);
   selection1 = new SelectionModel<PeriodicElement>(true, []);
 

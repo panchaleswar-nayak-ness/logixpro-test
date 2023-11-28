@@ -250,7 +250,7 @@ export class AdminPrefrencesComponent implements OnInit {
 
               this.preferencesForm.patchValue({
                 // System Settings
-                useDefault: values.useDefaultFilter ? 'filter' : 'zone',
+                useDefault: values.useDefaultFilter ? 'filter' : TableConstant.zone,
                 pickBatchQuantity: values.pickBatchQuantity,
                 defaultCells: values.defaultCells,
                 shortMethod: values.shortMethod,
@@ -355,7 +355,7 @@ export class AdminPrefrencesComponent implements OnInit {
           OffCarTotePicks: values.offCarouselToteIDPicks,
           UsePickBatch: values.usePickBatchManager,
           UseDefFilter: values.useDefault == 'filter',
-          UseDefZone: values.useDefault == 'zone',
+          UseDefZone: values.useDefault == TableConstant.zone,
           AutoPutTote: values.autoPutAwayToteID,
           DefPutPrior: values.defaultPutAwayPriority,
           DefPutQuant: values.defaultPutAwayQuantity,
