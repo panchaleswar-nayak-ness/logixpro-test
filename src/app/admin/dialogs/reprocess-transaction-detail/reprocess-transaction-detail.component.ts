@@ -128,7 +128,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get("batchPickID")?.value,
         this.editTransactionForm.get("lineNumber")?.value?.toString(),
         this.editTransactionForm.get(TableConstant.LineSequence)?.value?.toString(),
-        this.editTransactionForm.get("priority")?.value?.toString(),
+        this.editTransactionForm.get(UniqueConstants.Priority)?.value?.toString(),
         this.editTransactionForm.get("label")?.value?.toString(),
         this.editTransactionForm.get("emergency")?.value?.toString(),
         this.editTransactionForm.get("wareHouse")?.value
@@ -242,7 +242,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
             "batchPickID": res.data[0].batchPickID,
             "lineNumber": res.data[0].lineNumber,
             'lineSequence': res.data[0].lineSequence,
-            "priority": res.data[0].priority,
+            'priority': res.data[0].priority,
             "label": this.label.toString(),
             "emergency": this.emergency.toString(),
             "wareHouse": res.data[0].wareHouse,

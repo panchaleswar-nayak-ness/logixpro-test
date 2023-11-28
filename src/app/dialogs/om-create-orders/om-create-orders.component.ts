@@ -36,7 +36,7 @@ export class OmCreateOrdersComponent implements OnInit {
   sequenceKeyMapping: any = [
     { sequence: 'Transaction Type', key: 'transactionType' },
     { sequence: Column.OrderNumber, key: 'orderNumber' },
-    { sequence: 'Priority', key: 'priority' },
+    { sequence: 'Priority', key: UniqueConstants.Priority },
     { sequence: 'Required Date', key: 'requiredDate' },
     { sequence: TableConstant.UserField1, key: ColumnDef.userField1 },
     { sequence: TableConstant.UserField2, key: ColumnDef.userField2 },

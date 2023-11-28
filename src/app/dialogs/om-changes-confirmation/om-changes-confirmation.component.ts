@@ -6,7 +6,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service'; 
 import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
-import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-changes-confirmation',
@@ -77,7 +77,7 @@ export class OmChangesConfirmationComponent implements OnInit {
         label: this.data.order.label,
         checkRequiredDate: this.orderForm.controls['reqDate'].value,
         checkNotes: this.orderForm.controls['notes'].value,
-        checkPriority: this.orderForm.controls['priority'].value,
+        checkPriority: this.orderForm.controls[UniqueConstants.Priority].value,
         checkUser1: this.orderForm.controls['user1'].value,
         checkUser2: this.orderForm.controls['user2'].value,
         checkUser3: this.orderForm.controls['user3'].value,

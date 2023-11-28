@@ -12,7 +12,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -22,8 +22,8 @@ import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogC
 })
 export class PickComponent implements OnInit {
 
-  displayedColumns1: string[] = ['status', 'orderNumber', 'priority', 'itemCount', 'requiredDate', 'action'];
-  displayedColumns2: string[] = ['orderNumber', 'priority', 'itemCount', 'requiredDate', 'action'];
+  displayedColumns1: string[] = ['status', 'orderNumber', UniqueConstants.Priority, 'itemCount', 'requiredDate', 'action'];
+  displayedColumns2: string[] = ['orderNumber', UniqueConstants.Priority, 'itemCount', 'requiredDate', 'action'];
   tableData1: any = new MatTableDataSource([]);
   tableData2: any = new MatTableDataSource([]);
   userData: any;
@@ -33,7 +33,7 @@ export class PickComponent implements OnInit {
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   sequenceKeyMapping1: any = [
     { sequence: 'orderNumber', key: 'orderNumber' },
-    { sequence: 'priority', key: 'priority' },
+    { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
     { sequence: 'itemCount', key: 'itemCount' },
     { sequence: 'requiredDate', key: 'requiredDate' },
   ];
@@ -42,7 +42,7 @@ export class PickComponent implements OnInit {
   sequenceKeyMapping2: any = [
     { sequence: 'orderNumber', key: 'orderNumber' },
     { sequence: 'itemCount', key: 'itemCount' },
-    { sequence: 'priority', key: 'priority' },
+    { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
     { sequence: 'requiredDate', key: 'requiredDate' },
   ];
   public iAdminApiService: IAdminApiService;

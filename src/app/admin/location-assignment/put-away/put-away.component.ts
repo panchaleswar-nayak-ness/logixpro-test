@@ -11,7 +11,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -27,7 +27,7 @@ export class PutAwayComponent implements OnInit {
   sequenceKeyMapping1: any = [
     { sequence: 'orderNumber', key: 'orderNumber' },
     { sequence: 'itemCount', key: 'itemCount' },
-    { sequence: 'priority', key: 'priority' },
+    { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
     { sequence: 'requiredDate', key: 'requiredDate' },
   ];
 
@@ -35,7 +35,7 @@ export class PutAwayComponent implements OnInit {
   sequenceKeyMapping2: any = [
     { sequence: 'orderNumber', key: 'orderNumber' },
     { sequence: 'itemCount', key: 'itemCount' },
-    { sequence: 'priority', key: 'priority' },
+    { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
     { sequence: 'requiredDate', key: 'requiredDate' },
   ];
 
@@ -62,8 +62,8 @@ export class PutAwayComponent implements OnInit {
     this.GetLocAssPutAwayTable();
   }
 
-  displayedColumns1: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
-  displayedColumns2: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
+  displayedColumns1: string[] = ['orderNumber', 'itemCount', UniqueConstants.Priority, 'requiredDate', 'action'];
+  displayedColumns2: string[] = ['orderNumber', 'itemCount', UniqueConstants.Priority, 'requiredDate', 'action'];
   tableData1: any = new MatTableDataSource([]);
 
   GetLocAssPutAwayTable(loader: boolean = false) {

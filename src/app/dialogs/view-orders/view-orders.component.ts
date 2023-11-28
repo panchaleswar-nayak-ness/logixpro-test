@@ -15,7 +15,7 @@ import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef,Uniq
   styleUrls: ['./view-orders.component.scss']
 })
 export class ViewOrdersComponent implements OnInit {
-  displayedColumns: string[] = [UniqueConstants.position, 'toteid', 'orderno', 'priority', 'options', 'other'];
+  displayedColumns: string[] = [UniqueConstants.position, 'toteid', 'orderno', UniqueConstants.Priority, 'options', 'other'];
 
   displayedColumns1: string[] = [UniqueConstants.position, 'toteid', 'orderno', 'other'];
 
@@ -60,7 +60,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'masterRecord', header: 'Master Record', cell: (element: any) => `${element.masterRecord}` },
     { columnDef: 'masterRecordID', header: 'Master Record ID', cell: (element: any) => `${element.masterRecordID}` },
     { columnDef: 'notes', header: 'Notes', cell: (element: any) => `${element.notes}` },
-    { columnDef: 'priority', header: 'Priority', cell: (element: any) => `${element.priority}` },
+    { columnDef: UniqueConstants.Priority, header: 'Priority', cell: (element: any) => `${element.priority}` },
     { columnDef: 'requiredDate', header: 'Required Date', cell: (element: any) => `${element.requiredDate}` },
     { columnDef: 'revision', header: TableConstant.Revision, cell: (element: any) => `${element.revision}` },
     { columnDef: 'row', header: 'Row', cell: (element: any) => `${element.row}` },

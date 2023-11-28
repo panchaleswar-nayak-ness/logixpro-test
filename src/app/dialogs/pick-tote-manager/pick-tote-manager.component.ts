@@ -132,8 +132,8 @@ export class PickToteManagerComponent implements OnInit {
   @ViewChild(MatSort) viewFilterTransSort: MatSort;
   @ViewChild(MatSort) viewZoneTransSort: MatSort;
 
-  displayedColumns2: string[] = ['orderno', 'requireddate', 'priority'];
-  filterBatchOrderColums: string[] = ['orderno', 'requireddate', 'priority'];
+  displayedColumns2: string[] = ['orderno', 'requireddate', UniqueConstants.Priority];
+  filterBatchOrderColums: string[] = ['orderno', 'requireddate', UniqueConstants.Priority];
 
   displayedColumns3: string[] = [
     'orderno',
@@ -178,7 +178,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.importDate}`,
     },
     {
-      columnDef: 'priority',
+      columnDef: UniqueConstants.Priority,
       header: 'Priority',
       cell: (element: any) => `${element.priority}`,
     },

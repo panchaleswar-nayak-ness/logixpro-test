@@ -30,7 +30,7 @@ export class OmAddRecordComponent implements OnInit {
     "unitofMeasure": "",
     "transQty": 1,
     "lineNumber": 0,
-    "priority": 0,
+    'priority': 0,
     "requiredDate": "",
     "hostTransID": "",
     "emergency": false,

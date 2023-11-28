@@ -20,7 +20,7 @@ export class FiltersComponent {
     {trans_type: '10A'},
   ];
 
-  displayedColumns: string[] = ['trans_type','import_date','order_no','item_no',UniqueConstants.Description,'trans_qty','priority'];
+  displayedColumns: string[] = ['trans_type','import_date','order_no','item_no',UniqueConstants.Description,'trans_qty',UniqueConstants.Priority];
   tableData = this.ELEMENT_DATA;
   dataSourceList: any;
 

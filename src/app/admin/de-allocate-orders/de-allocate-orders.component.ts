@@ -40,7 +40,7 @@ export class DeAllocateOrdersComponent implements OnInit {
       {trans_type: 'Count', order_no: '1202122', priority: '36', required_date: '11/02/2022 11:58 AM', user_field_1: 'Treat with care'},
     ];
     
-    displayedColumns: string[] = ['deallocate','order_no','item_no',UniqueConstants.Description,'priority', 'transactionQuantity','unitOfMeasure','batchPickID','trans_type'];
+    displayedColumns: string[] = ['deallocate','order_no','item_no',UniqueConstants.Description,UniqueConstants.Priority, 'transactionQuantity','unitOfMeasure','batchPickID','trans_type'];
     tableData = this.ELEMENT_DATA
     orderItemTransactions:MatTableDataSource<any> = new MatTableDataSource<any>([]);  
   orderNameList:MatTableDataSource<any> = new MatTableDataSource<any>([]);
