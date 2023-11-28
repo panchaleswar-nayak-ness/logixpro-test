@@ -55,7 +55,7 @@ export class OmAddRecordComponent implements OnInit {
     "userField10": "",
     "inProcess": false,
     "processBy": "",
-    TableConstant.ImportBy: "",
+    "importBy" :"",
     "importDate": "",
     "importFileName": "",
   };
