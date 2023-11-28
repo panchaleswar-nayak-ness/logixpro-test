@@ -299,7 +299,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: 'cell',
-      header: 'Cell',
+      header: TableConstant.Cell,
       cell: (element: any) => `${element.cell}`,
     },
     {

@@ -4,7 +4,7 @@ import { NavigationEnd, Router} from '@angular/router';
 import { GlobalService } from '../common/services/global.service';
 import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
-import { ToasterTitle, ToasterType ,AppNames,StringConditions} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,AppNames,StringConditions,RouteUpdateMenu} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-order-manager',
@@ -37,7 +37,7 @@ export class OrderManagerComponent implements OnInit {
             let spliUrl=event.url.split('/');
             if(spliUrl[1]==AppNames.OrderManager){
               localStorage.setItem('routeFromOrderStatus',StringConditions.True)
-              localStorage.setItem('routeFromInduction','false')
+              localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false')
             }else{
               localStorage.setItem('routeFromOrderStatus','false')
             }

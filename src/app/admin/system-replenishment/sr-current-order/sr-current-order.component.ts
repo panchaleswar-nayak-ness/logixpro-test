@@ -61,7 +61,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: 'row', label: 'Row', value: 'row', filterProperty:'Row' },
     { defination: 'shelf', label: 'Shelf', value: 'shelf', filterProperty:'Shelf' },
     { defination: 'bin', label: 'Bin', value: 'bin', filterProperty:'Bin' },
-    { defination: 'cell', label: 'Cell', value: 'cell', filterProperty:'Cell' },
+    { defination: 'cell', label: TableConstant.Cell, value: 'cell', filterProperty:TableConstant.Cell },
     { defination: 'lotNumber', label: Column.LotNumber, value: 'lotNumber', filterProperty:'lot Number' },
     { defination: 'Trans Qty', label: 'Trans Qty', value: 'transactionQuantity' , filterProperty:'Trans Qty'},
     { defination: 'description', label: 'Description', value: 'description', filterProperty:'Description' },
@@ -101,7 +101,7 @@ export class SrCurrentOrderComponent implements OnInit {
     },
     { value: 'Bin', viewValue: 'Bin', sortColumn: '7', key: 'bin' },
     { value: 'Carsl', viewValue: 'Carsl', sortColumn: '4', key: zoneType.carousel },
-    { value: 'Cell', viewValue: 'Cell', sortColumn: '8', key: 'cell' },
+    { value: TableConstant.Cell, viewValue: TableConstant.Cell, sortColumn: '8', key: 'cell' },
     {
       value: 'Comp Date',
       viewValue: 'Comp Date',

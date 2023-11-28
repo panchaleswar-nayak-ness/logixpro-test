@@ -20,7 +20,7 @@ import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-ta
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppNames, AppRoutes, Column, DialogConstants, Mode, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,TransactionType,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
+import { AppNames, AppRoutes, Column, DialogConstants, Mode, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,TransactionType,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName,RouteUpdateMenu} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-open-transaction-on-hold',
@@ -83,7 +83,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     { colHeader: ColumnDef.userField10, colDef: 'User Field10' },
     { colHeader: 'toteID', colDef: Column.ToteID },
     { colHeader: 'toteNumber', colDef: 'Tote Number' },
-    { colHeader: 'cell', colDef: 'Cell' },
+    { colHeader: 'cell', colDef: TableConstant.Cell },
     { colHeader: 'hostTransactionID', colDef: TableConstant.HostTransactionID },
     { colHeader: 'emergency', colDef: 'Emergency' },
   ];
@@ -106,7 +106,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   searchBar = new Subject<string>();
   searchAutocompleteList: any;
   searchAutocompleteListByCol: any;
-  isDeleteVisible: any = localStorage.getItem('routeFromInduction');
+  isDeleteVisible: any = localStorage.getItem(RouteUpdateMenu.RouteFromInduction);
  
   /*for data col. */
   public columnValues: any = [];
@@ -295,7 +295,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       this.router.navigate([]).then((result) => window.open(`/#${AppRoutes.OrderManagerOrderStatus}?orderStatus=${row.orderNumber}`, '_self'));
     }
     else {
-      localStorage.setItem('routeFromInduction','false');
+      localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false');
       this.router.navigate([]).then((result) => window.open(`${AppRoutes.AdminTransaction}?orderStatus=${row.orderNumber}`, '_self'));
     }
   }
@@ -381,7 +381,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     if(this.spliUrl[1] == AppNames.OrderManager) this.router.navigate([]).then(() => window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, '_self'));
     else if(this.spliUrl[1] == AppNames.InductionManager) window.open(`/#${AppRoutes.InductionManagerAdminInvMap}?itemNumber=${row.itemNumber}`, '_self');
     else {
-      localStorage.setItem('routeFromInduction','false')
+      localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false')
       this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, '_self'); });
     }
   }

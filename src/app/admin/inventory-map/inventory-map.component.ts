@@ -25,7 +25,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
+import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName,RouteUpdateMenu} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-map',
@@ -205,7 +205,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.setStorage =localStorage.getItem('routeFromInduction')
+    this.setStorage =localStorage.getItem(RouteUpdateMenu.RouteFromInduction)
  
     this.spliUrl=this.router.url.split('/'); 
 
@@ -515,7 +515,7 @@ export class InventoryMapComponent implements OnInit {
 
    }
    else {
-    localStorage.setItem('routeFromInduction','false')
+    localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false')
     this.router.navigate([]).then(() => {
       window.open(`/#/admin/inventoryMaster?itemNumber=${row.itemNumber}`, '_self');
     });
@@ -539,7 +539,7 @@ export class InventoryMapComponent implements OnInit {
     });
  }
    else {
-    localStorage.setItem('routeFromInduction','false')
+    localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false')
     this.router.navigate([]).then(() => {
       window.open(`/#/admin/transaction?location=${row.locationNumber}`, '_self');
     });

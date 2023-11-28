@@ -200,6 +200,7 @@ export const AppRoutes = {
     InductionManagerAdminInventoryMap:'/InductionManager/Admin/InventoryMap',
     Dashboard: '/dashboard',
     InductionManagerAdmin:'/InductionManager/Admin',
+    
 }
 
 export const AppIcons = {
@@ -223,6 +224,7 @@ export const RouteNames = {
     WorkManager: 'Work Manager'
 }
 
+
 export const RouteUpdateMenu = {
     Admin: 'admin',
     Consolidation: 'consolidation',
@@ -230,7 +232,9 @@ export const RouteUpdateMenu = {
     Empty: '',
     OrderManager: 'orderManager',
     TransactionAdmin: 'transaction-admin',
-    FlowReplenishment: 'FlowReplenishment'
+    FlowReplenishment: 'FlowReplenishment',
+    RouteFromInduction:'routeFromInduction'
+    
 }
 
 export const AppPermissions = {
@@ -409,7 +413,8 @@ export const TableConstant = {
     UserField2:'User Field2',
     Revision:'Revision',
     ExpirationDate: 'Expiration Date',
-    ImportBy:'importBy'
+    ImportBy:'importBy',
+    Cell:'Cell'
 }
 export const UniqueConstants = {
     backClass:'back-class',

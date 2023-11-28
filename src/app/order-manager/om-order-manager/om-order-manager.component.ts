@@ -101,7 +101,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: "emergency", colDef: "Emergency" },
     { colHeader: "location", colDef: Column.Location },
     { colHeader: "label", colDef: "Label" },
-    { colHeader: "cell", colDef: "Cell" },
+    { colHeader: "cell", colDef: TableConstant.Cell },
   ];
   displayedColumns  : string[] = []; 
   orderTable        : any = new MatTableDataSource([]); 
