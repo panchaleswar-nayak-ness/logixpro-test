@@ -439,7 +439,8 @@ export const UniqueConstants = {
     Priority:'priority',
     constantDate:"12/14/2022",
     Select:'select',
-    emergency:'emergency'
+    emergency:'emergency',
+    _self:'_self'
 }
 export const Style = {
     w560px:'560px',

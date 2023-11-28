@@ -292,11 +292,11 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     this.returnToOrder.emit();
 
     if( this.spliUrl[1] == AppNames.OrderManager) {
-      this.router.navigate([]).then((result) => window.open(`/#${AppRoutes.OrderManagerOrderStatus}?orderStatus=${row.orderNumber}`, '_self'));
+      this.router.navigate([]).then((result) => window.open(`/#${AppRoutes.OrderManagerOrderStatus}?orderStatus=${row.orderNumber}`, UniqueConstants._self));
     }
     else {
       localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false');
-      this.router.navigate([]).then((result) => window.open(`${AppRoutes.AdminTransaction}?orderStatus=${row.orderNumber}`, '_self'));
+      this.router.navigate([]).then((result) => window.open(`${AppRoutes.AdminTransaction}?orderStatus=${row.orderNumber}`, UniqueConstants._self));
     }
   }
 
@@ -378,11 +378,11 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   }
 
   viewInInventoryMaster(row) {    
-    if(this.spliUrl[1] == AppNames.OrderManager) this.router.navigate([]).then(() => window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, '_self'));
-    else if(this.spliUrl[1] == AppNames.InductionManager) window.open(`/#${AppRoutes.InductionManagerAdminInvMap}?itemNumber=${row.itemNumber}`, '_self');
+    if(this.spliUrl[1] == AppNames.OrderManager) this.router.navigate([]).then(() => window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self));
+    else if(this.spliUrl[1] == AppNames.InductionManager) window.open(`/#${AppRoutes.InductionManagerAdminInvMap}?itemNumber=${row.itemNumber}`, UniqueConstants._self);
     else {
       localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false')
-      this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, '_self'); });
+      this.router.navigate([]).then(() => { window.open(`/#${AppRoutes.AdminInventoryMaster}?itemNumber=${row.itemNumber}`, UniqueConstants._self); });
     }
   }
 

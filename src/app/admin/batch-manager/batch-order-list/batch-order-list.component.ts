@@ -19,7 +19,7 @@ import { SharedService } from 'src/app/common/services/shared.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppPermissions, AppRoutes, DialogConstants, LiveAnnouncerMessage, ToasterTitle, ToasterType, localStorageKeys ,StringConditions} from 'src/app/common/constants/strings.constants';
+import { AppPermissions, AppRoutes, DialogConstants, LiveAnnouncerMessage, ToasterTitle, ToasterType, localStorageKeys ,StringConditions,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-order-list',
@@ -130,7 +130,7 @@ export class BatchOrderListComponent implements OnInit {
       this.router.navigate([]).then(() => {
         window.open(
           `${AppRoutes.AdminTransaction}?orderStatus=${element.orderNumber}`,
-          '_self'
+          UniqueConstants._self
         );
       });
     } else {

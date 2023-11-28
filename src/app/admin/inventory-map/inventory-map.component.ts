@@ -508,16 +508,16 @@ export class InventoryMapComponent implements OnInit {
 
     if( this.spliUrl[1] == AppNames.OrderManager ){
       this.router.navigate([]).then(() => {
-        window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, '_self');
+        window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self);
       });
    }else if(this.spliUrl[1] == AppNames.InductionManager ){
-    window.open(`/#/InductionManager/Admin/InventoryMaster?itemNumber=${row.itemNumber}`, '_self');
+    window.open(`/#/InductionManager/Admin/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self);
 
    }
    else {
     localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false')
     this.router.navigate([]).then(() => {
-      window.open(`/#/admin/inventoryMaster?itemNumber=${row.itemNumber}`, '_self');
+      window.open(`/#/admin/inventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self);
     });
 
    }
@@ -529,19 +529,19 @@ export class InventoryMapComponent implements OnInit {
 
     if( this.spliUrl[1] == AppNames.OrderManager ){
       this.router.navigate([]).then(() => {
-        window.open(`/#/OrderManager/OrderStatus?location=${row.locationNumber}`, '_self');
+        window.open(`/#/OrderManager/OrderStatus?location=${row.locationNumber}`, UniqueConstants._self);
       });
    }
    
    else if( this.spliUrl[1] == AppNames.InductionManager ){
     this.router.navigate([]).then(() => {
-      window.open(`/#/InductionManager/Admin/TransactionJournal?location=${row.locationNumber}`, '_self');
+      window.open(`/#/InductionManager/Admin/TransactionJournal?location=${row.locationNumber}`, UniqueConstants._self);
     });
  }
    else {
     localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false')
     this.router.navigate([]).then(() => {
-      window.open(`/#/admin/transaction?location=${row.locationNumber}`, '_self');
+      window.open(`/#/admin/transaction?location=${row.locationNumber}`, UniqueConstants._self);
     });
 
    }
