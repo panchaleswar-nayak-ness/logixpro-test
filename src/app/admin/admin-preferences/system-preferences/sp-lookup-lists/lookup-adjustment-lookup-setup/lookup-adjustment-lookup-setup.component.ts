@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import {  ResponseStrings ,ToasterType,ToasterTitle,DialogConstants,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterType,ToasterTitle,DialogConstants,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-lookup-adjustment-lookup-setup',
@@ -107,7 +107,7 @@ AddBtn = false
   deleteAdjust(ele){
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '600px',
+      width: Style.w600px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {

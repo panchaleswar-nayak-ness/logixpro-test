@@ -161,7 +161,7 @@ export class ConnectionStringsComponent {
          
             const dialogRef:any = this.global.OpenDialog(GlobalConfigSetSqlComponent, {
               height: 'auto',
-              width: '600px',
+              width: Style.w600px,
               autoFocus: DialogConstants.autoFocus,
       disableClose:true,
               data: {

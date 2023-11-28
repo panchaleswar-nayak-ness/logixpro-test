@@ -13,7 +13,7 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { CMShippingPreferences, ToasterMessages, ToasterTitle, ToasterType ,StringConditions,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { CMShippingPreferences, ToasterMessages, ToasterTitle, ToasterType ,StringConditions,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-preferences-shipping',
@@ -117,7 +117,7 @@ export class PreferencesShippingComponent implements OnInit {
   openCarrier() {
     this.global.OpenDialog(CmShippingCarrierComponent, {
       height: 'auto',
-      width: '600px',
+      width: Style.w600px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {

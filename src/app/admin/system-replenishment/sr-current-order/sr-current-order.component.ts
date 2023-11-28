@@ -486,7 +486,7 @@ export class SrCurrentOrderComponent implements OnInit {
     if (this.selectedOrder.rowNumber == undefined) {
       const dialogRef: any = this.global.OpenDialog(SrDeleteOrderComponent, {
         height: 'auto',
-        width: '600px',
+        width: Style.w600px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {

@@ -9,7 +9,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-lookup-user-two-setup',
@@ -105,7 +105,7 @@ export class LookupUserTwoSetupComponent implements OnInit {
   deleteUserF2(ele){
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '600px',
+      width: Style.w600px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
