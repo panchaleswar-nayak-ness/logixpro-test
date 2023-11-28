@@ -153,8 +153,8 @@ export class InventoryMapComponent implements OnInit {
     this.previousUrl = this.routeHistoryService.getPreviousUrl();
     this.iAdminApiService = adminApiService;
     
-    if(this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ){
-      this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ;
+    if(this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue] ){
+      this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue] ;
       this.columnSearch.searchColumn = {
         colDef: this.router.getCurrentNavigation()?.extras?.state?.['colDef'],
         colHeader: this.router.getCurrentNavigation()?.extras?.state?.['colHeader']
@@ -274,7 +274,7 @@ export class InventoryMapComponent implements OnInit {
     });
   }
   applySavedItem() {
-    if(this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ) return;
+    if(this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue] ) return;
     
     this.dataSource = this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP].dataSource;
     this.columnSearch = this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP].columnSearch;

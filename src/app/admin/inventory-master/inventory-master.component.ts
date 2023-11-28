@@ -23,7 +23,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
-import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions,Column,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions,Column,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-master',
@@ -377,7 +377,7 @@ export class InventoryMasterComponent implements OnInit {
   }
 
   ApplySavedItem() {
-    if(this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ) return;
+    if(this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue] ) return;
     this.searchValue = this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY]?.searchValue || '';
   }
 

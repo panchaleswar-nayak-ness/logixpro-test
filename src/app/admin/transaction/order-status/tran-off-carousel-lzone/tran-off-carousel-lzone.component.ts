@@ -3,7 +3,8 @@ import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angul
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
+import {  UniqueConstants } from 'src/app/common/constants/strings.constants'; 
 
 export interface CarouselZone {
   carousel: string;
@@ -50,8 +51,8 @@ export class TranOffCarouselLzoneComponent implements OnInit, AfterViewInit {
   };
 
   constructor(private router: Router) {
-    if (this.router.getCurrentNavigation()?.extras?.state?.['searchValue']) {
-      this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.['searchValue'];
+    if (this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue]) {
+      this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue];
       this.columnSearch.searchColumn = {
         colDef: this.router.getCurrentNavigation()?.extras?.state?.['colDef'],
         colHeader: this.router.getCurrentNavigation()?.extras?.state?.['colHeader'],

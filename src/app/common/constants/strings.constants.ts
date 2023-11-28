@@ -412,7 +412,8 @@ export const UniqueConstants = {
     backClass:'back-class',
     _blank:'_blank',
     position : 'position',
-    goldenZone:'goldenZone'
+    goldenZone:'goldenZone',
+    searchValue:'searchValue'
 }
 export const Style = {
     w560px:'560px'

@@ -233,8 +233,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     private currentTabDataService: CurrentTabDataService
   ) {
     this.iAdminApiService = adminApiService;
-    if (this.router.getCurrentNavigation()?.extras?.state?.['searchValue']) {
-      this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.['searchValue'];
+    if (this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue]) {
+      this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue];
       this.columnSearch.searchColumn = {
         colDef: this.router.getCurrentNavigation()?.extras?.state?.['colDef'],
         colHeader: this.router.getCurrentNavigation()?.extras?.state?.['colHeader'],
