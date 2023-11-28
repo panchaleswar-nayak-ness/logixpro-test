@@ -20,7 +20,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,DialogConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 
 @Component({
@@ -68,10 +68,10 @@ export class ConsolidationComponent implements OnInit {
   stageColumns: string[] = ['toteID', 'complete', 'stagingLocation', 'stagedBy', 'stagedDate'];
   stageTable = new MatTableDataSource<any>([]);
 
-  unverifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'lineNumber', 'completedQuantity', 'toteID', 'serialNumber', 'userField1', 'actions'];
+  unverifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'lineNumber', 'completedQuantity', 'toteID', 'serialNumber', ColumnDef.userField1, 'actions'];
   unverifiedItems = new MatTableDataSource<any>([]);
 
-  verifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'supplierItemID', 'lineNumber', 'completedQuantity', 'toteID', 'serialNumber', 'userField1', 'actions'];
+  verifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'supplierItemID', 'lineNumber', 'completedQuantity', 'toteID', 'serialNumber', ColumnDef.userField1, 'actions'];
   verifiedItems = new MatTableDataSource<any>([]);
 
   filterOption: any = [

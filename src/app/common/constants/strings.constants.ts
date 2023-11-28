@@ -354,6 +354,8 @@ export const Column = {
     Location: 'Location'
 }
 export const ColumnDef= {
+    userField1:'userField1',
+    userField2:'userField2',
     userField3:'userField3',
     userField4:'userField4',
     userField5:'userField5',
@@ -361,6 +363,7 @@ export const ColumnDef= {
     userField7:'userField7',
     userField8:'userField8',
     userField9:'userField9',
+    userField10:'userField10'
 }
 
 export const Case = {

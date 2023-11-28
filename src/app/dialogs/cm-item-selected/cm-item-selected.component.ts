@@ -8,7 +8,7 @@ import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/common/services/consolidation-api/consolidation-api.service";
 import { GlobalService } from "src/app/common/services/global.service";
-import {  LiveAnnouncerMessage ,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ToasterTitle,ToasterType,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-item-selected',
@@ -23,7 +23,7 @@ export class CmItemSelectedComponent implements OnInit {
   public colLabel: any;
   public columnModal: any;
   userData: any;
-  displayedColumns: string[] = ['itemNumber', 'warehouse', 'completedQuantity', 'toteID', 'serialNumber', 'userField1', 'lotNumber', 'actions'];
+  displayedColumns: string[] = ['itemNumber', 'warehouse', 'completedQuantity', 'toteID', 'serialNumber', ColumnDef.userField1, 'lotNumber', 'actions'];
   itemSelectTable: any
   dataSourceList: any
   @ViewChild(MatSort) sort: MatSort;

@@ -70,7 +70,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'toteID', header: Column.ToteID, cell: (element: any) => `${element.toteID}` },
     { columnDef: 'toteNumber', header: 'Tote Number', cell: (element: any) => `${element.toteNumber}` },
     { columnDef: 'unitOfMeasure', header: 'Unit Of Measure', cell: (element: any) => `${element.unitOfMeasure}` },
-    { columnDef: 'userField1', header: 'User Field1', cell: (element: any) => `${element.userField1}` },
+    { columnDef: ColumnDef.userField1, header: 'User Field1', cell: (element: any) => `${element.userField1}` },
     { columnDef: 'userField2', header: 'User Field2', cell: (element: any) => `${element.userField2}` },
     { columnDef: ColumnDef.userField3, header: 'User Field3', cell: (element: any) => `${element.userField3}` },
     { columnDef: ColumnDef.userField4, header: 'User Field4', cell: (element: any) => `${element.userField4}` },

@@ -60,7 +60,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'lineNumber', colDef: 'Line Number' },
     { colHeader: TableConstant.LineSequence, colDef: 'Line Sequence' },
     { colHeader: 'tableType', colDef: 'Table Type' },
-    { colHeader: 'userField1', colDef: 'User Field1' },
+    { colHeader: ColumnDef.userField1, colDef: 'User Field1' },
     { colHeader: 'userField2', colDef: 'User Field2' },
     { colHeader: ColumnDef.userField3, colDef: 'User Field3' },
     { colHeader: ColumnDef.userField4, colDef: 'User Field4' },

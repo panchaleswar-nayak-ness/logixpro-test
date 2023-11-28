@@ -38,7 +38,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: Column.OrderNumber, key: 'orderNumber' },
     { sequence: 'Priority', key: 'priority' },
     { sequence: 'Required Date', key: 'requiredDate' },
-    { sequence: 'User Field1', key: 'userField1' },
+    { sequence: 'User Field1', key: ColumnDef.userField1 },
     { sequence: 'User Field2', key: 'userField2' },
     { sequence: 'User Field3', key: ColumnDef.userField3 },
     { sequence: 'User Field4', key: ColumnDef.userField4 },

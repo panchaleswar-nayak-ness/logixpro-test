@@ -60,7 +60,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: "orderNumber", colDef: Column.OrderNumber },
     { colHeader: "priority", colDef: "Priority" },
     { colHeader: "requiredDate", colDef: "Required Date" },
-    { colHeader: "userField1", colDef: "User Field1" },
+    { colHeader: ColumnDef.userField1, colDef: "User Field1" },
     { colHeader: "userField2", colDef: "User Field2" },
     { colHeader: ColumnDef.userField3, colDef: "User Field3" },
     { colHeader: ColumnDef.userField4, colDef: "User Field4" },
