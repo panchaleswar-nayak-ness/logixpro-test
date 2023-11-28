@@ -75,7 +75,7 @@ export class AdminComponent implements OnInit {
     { colHeader: 'warehouse', colDef: 'Warehouse' },
     { colHeader: 'locationName', colDef: Column.Location },
     { colHeader: 'totalPicks', colDef: 'Lines' },
-    { colHeader: 'transactionType', colDef: 'Transaction Type' },
+    { colHeader: 'transactionType', colDef: TableConstant.TransactionType },
   ];
 
   public iAdminApiService: IAdminApiService;

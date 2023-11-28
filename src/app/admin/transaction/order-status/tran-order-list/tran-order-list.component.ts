@@ -30,7 +30,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   @Input() TabIndex:any;
   public Order_Table_Config = [
     { colHeader: 'status', colDef: 'Status' },
-    { colHeader: 'transactionType', colDef: 'Transaction Type' },
+    { colHeader: 'transactionType', colDef: TableConstant.TransactionType },
     { colHeader: 'completedDate', colDef: TableConstant.CompletedDate },
     { colHeader: 'location', colDef: Column.Location },
     { colHeader: 'transactionQuantity', colDef: TableConstant.TransactionQuantity },

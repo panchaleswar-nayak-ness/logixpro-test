@@ -419,7 +419,8 @@ export const TableConstant = {
     Cell:'Cell',
     TransactionQuantity:'Transaction Quantity',
     ImportDate:'importDate',
-    zone:'zone'
+    zone:'zone',
+    TransactionType: 'Transaction Type',
 }
 export const UniqueConstants = {
     backClass:'back-class',
