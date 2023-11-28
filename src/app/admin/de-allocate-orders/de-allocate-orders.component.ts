@@ -13,7 +13,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import {ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 import { Toast } from 'ngx-toastr';
 
 @Component({

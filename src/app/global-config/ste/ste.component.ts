@@ -30,7 +30,7 @@ export class SteComponent implements OnInit {
   }
   
    ServiceStatus(changeType, success) {
-    if (changeType == 'start' || changeType == 'restart') {
+    if (changeType == StringConditions.start || changeType == 'restart') {
         if (success) {
             this.Status = 'Online';
             this.global.ShowToastr(ToasterType.Success,'Service ' + changeType + ' was successful.',ToasterTitle.Success);
@@ -59,7 +59,7 @@ export class SteComponent implements OnInit {
   //   });  
   //    dialogRef.afterClosed().subscribe((result) => {
   //     if (result===ResponseStrings.Yes) {
-  //       this.ServiceStatus('start',true);
+  //       this.ServiceStatus(StringConditions.start,true);
   //     }
   //   }); 
   // }
@@ -67,7 +67,7 @@ export class SteComponent implements OnInit {
     try{ 
       if(this.Status != 'Online'){
       this.iGlobalConfigApi.startSTEService().subscribe((res: any) => {
-        if(res.data) this.ServiceStatus('start',res.data);
+        if(res.data) this.ServiceStatus(StringConditions.start,res.data);
       }) 
     }else  {
       this.iGlobalConfigApi.stopSTEService().subscribe((res: any) => {

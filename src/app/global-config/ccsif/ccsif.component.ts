@@ -3,7 +3,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ccsif',
@@ -29,7 +29,7 @@ export class CcsifComponent implements OnInit {
   }
   
    serviceStatus(changeType, success) {
-    if (changeType == 'start' || changeType == 'restart') {
+    if (changeType == StringConditions.start || changeType == 'restart') {
         if (success) {
             this.Status = 'Online';
             this.global.ShowToastr(ToasterType.Success,'Service ' + changeType + ' was successful.','Success');
@@ -58,14 +58,14 @@ export class CcsifComponent implements OnInit {
   //   });  
   //    dialogRef.afterClosed().subscribe((result) => {
   //     if (result===ResponseStrings.Yes) {
-  //       this.ServiceStatus('start',true);
+  //       this.ServiceStatus(StringConditions.start,true);
   //     }
   //   }); 
   // }
   async CCSIFToggle(){     
     if(this.Status != 'Online'){
     this.iGlobalConfigApi.startCCSIF().subscribe((res: any) => {
-      if(res.data) this.serviceStatus('start',res.data);
+      if(res.data) this.serviceStatus(StringConditions.start,res.data);
     }) 
   }else  {
     this.iGlobalConfigApi.stopCCSIF().subscribe((res: any) => {

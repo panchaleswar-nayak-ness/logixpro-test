@@ -62,7 +62,8 @@ export const StringConditions = {
     set_column_sq : 'set_column_sq',
     hold: 'hold',
     reprocess: 'reprocess',
-    complete: 'complete'
+    complete: 'complete',
+    start:'start'
 }
 
 export const ResponseStrings = {
