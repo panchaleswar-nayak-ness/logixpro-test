@@ -371,12 +371,12 @@
                             <mat-select [(ngModel)]="orderNumber" (selectionChange)="changeCountOrder($event.value)"
                                 #matRef class="employees-action" placeholder="Actions">
                                 <h6 class="ctl_name ac-dropdown-label">
-                                    <span class="span-orderNumber-style">Order Number</span> <span class="span-EntriesNum-style">No. Of Entries</span>
+                                    <span class="span-orderNumber-style">Order Number</span> <span class="span-EntriesNum-style">&nbsp;No. Of Entries</span>
                                 </h6>
-                                <mat-option class=".mat-option-style2" *ngFor="let currItem of curCountOrders"
+                                <mat-option class="mat-option-style2" *ngFor="let currItem of curCountOrders"
                                     [value]="currItem.orderNumber">
                                     <div class="ctl_option ac-dropdown-option">
-                                        <span class="span-currItem.orderNumber-style" >{{currItem.orderNumber}}</span><span class=".span-currItem.itemCount-style">
+                                        <span class="span-currItem orderNumber-style" >{{currItem.orderNumber}}</span><span class="span-currItem itemCount-style">
                                             &nbsp;{{currItem.itemCount}}</span>
                                     </div>
                                 </mat-option>

@@ -61,7 +61,6 @@ table.custom-action-clickable-table tr:hover {
   background: var(--clr-primary-300);
   position: relative;
   border-radius: 8px !important;
-  z-index: 0;
   cursor: pointer;
 }
 
@@ -114,5 +113,8 @@ table.custom-action-clickable-table tr:hover td {
   overflow-x: auto !important;
 }
 .table-header-clr{
-  background-color: var(--clr-table-header);
+  background-color: var(--clr-table-header)!important;
+}
+mat-checkbox{
+  z-index: 0;
 }

@@ -32,6 +32,7 @@ table{
   }
   .ccount-subcategory-style{
     width:30% !important;
+    white-space: nowrap;
   }
   .mat-option-style{
     width:900px !important;
@@ -62,15 +63,18 @@ table{
   }
   .span-EntriesNum-style{
     width:30% !important;
+    white-space: nowrap;
   }
   .mat-option-style2{
     width:900px !important;
+    .ac-dropdown-option{
     .span-currItem.orderNumber-style{
       width:70% !important;
     }
     .span-currItem.itemCount-style{
       width:30% !important;
     }
+  }
   }
   .mat-Insert_Into_Queue-style{
     flex: 1;

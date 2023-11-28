@@ -1304,6 +1304,7 @@ h4.main-section-title {
   cursor: default;
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 //-------------- LABEL-CLASSES ----END-------------------
@@ -1581,7 +1582,7 @@ button.default-btn {
 }
 .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-label {
   mat-label {
-    background: rgba(var(--clr-pure-rgb-white),0.6);
+    background: rgba(var(--clr-pure-rgb-white),0);
   }
 }
 
