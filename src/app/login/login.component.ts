@@ -12,7 +12,7 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { IUserAPIService } from '../common/services/user-api/user-api-interface';
 import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
-import {  AppNames ,AppPermissions,AppRoutes,ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  AppNames ,AppPermissions,AppRoutes,ToasterTitle,ToasterType,DialogConstants,dataCredientials} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'login',
@@ -69,7 +69,7 @@ export class LoginComponent {
     this.addLoginForm.username = this.addLoginForm.username?.replace(/\s/g, "")||null;
     this.addLoginForm.password = this.addLoginForm.password?.replace(/\s/g, "")||null;
     this.login = this.addLoginForm;
-    this.login.wsid = "TESTWSID";
+    this.login.wsid = dataCredientials.testWsid;
     this.iUserApi
       .login(this.login)
       .subscribe((response: any) => {

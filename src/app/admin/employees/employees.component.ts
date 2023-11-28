@@ -20,7 +20,7 @@ import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.co
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,Style,dataCredientials} from 'src/app/common/constants/strings.constants';
 
 export interface Location {
   start_location: string;
@@ -144,7 +144,7 @@ export class EmployeesComponent implements OnInit {
     this.maxOrders = event.userData.maximumOrders;
     const emp_data = {
       "user": event.userData?.username,
-      "wsid": "TESTWSID"
+      "wsid": dataCredientials.testWsid
     };
  
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
@@ -184,7 +184,7 @@ export class EmployeesComponent implements OnInit {
   reloadData(){
     const emp_data = {
       "user":  this.grpDataV,
-      "wsid": "TESTWSID"
+      "wsid": dataCredientials.testWsid
     };
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => {
@@ -269,7 +269,7 @@ export class EmployeesComponent implements OnInit {
 
     const grp_data = {
       "userName":this.userName,
-      "wsid": "TESTWSID",
+      "wsid": dataCredientials.testWsid,
       "groupName":this.grpData.groupName
 
       }; 
