@@ -6,10 +6,9 @@
             <div>
                 <mat-form-field class="action-dropdown mb-3 w-100" appearance="outline">
                     <mat-label>Actions</mat-label>
-                    <mat-select class="employees-action" [(ngModel)]="actionDropDown" #actionRef1
-                        (selectionChange)="callFun('gridAction',$event.value)">
-                        <mat-option value="assignAll">Assign all IDs</mat-option>
-                        <mat-option (click)="callFun('printToteLoc')" value="delete">Print Tote/Location Labels</mat-option>
+                    <mat-select class="employees-action" [(ngModel)]="actionDropDown" #actionRef1>
+                        <mat-option (click)="callFun('gridAction','assignAll')">Assign all IDs</mat-option>
+                        <mat-option (click)="callFun('printToteLoc','delete')">Print Tote/Location Labels</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">
                         expand_more
