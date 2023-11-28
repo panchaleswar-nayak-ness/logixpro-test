@@ -405,3 +405,6 @@ export const TableConstant = {
     HostTransactionID:'Host Transaction ID',
     LineSequence:'lineSequence'
 }
+export const UniqueConstants = {
+    backClass:'back-class'
+}
