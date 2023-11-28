@@ -359,7 +359,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.notes}`,
     },
     {
-      columnDef: 'emergency',
+      columnDef: UniqueConstants.emergency,
       header: ColumnDef.Emergency,
       cell: (element: any) => `${element.emergency}`,
     },

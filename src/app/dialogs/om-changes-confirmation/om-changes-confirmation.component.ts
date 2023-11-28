@@ -88,7 +88,7 @@ export class OmChangesConfirmationComponent implements OnInit {
         checkUser8: this.orderForm.controls['user8'].value,
         checkUser9: this.orderForm.controls['user9'].value,
         checkUser10: this.orderForm.controls['user10'].value,
-        checkEmergency: this.orderForm.controls['emergency'].value,
+        checkEmergency: this.orderForm.controls[UniqueConstants.emergency].value,
         checkLabel: this.orderForm.controls['label'].value,        
       };
   

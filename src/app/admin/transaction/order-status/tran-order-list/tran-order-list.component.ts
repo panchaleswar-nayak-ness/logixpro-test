@@ -64,7 +64,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'cell', colDef: TableConstant.Cell },
     { colHeader: 'hostTransactionID', colDef: TableConstant.HostTransactionID },
     { colHeader: TableConstant.zone, colDef: 'Zone' },
-    { colHeader: 'emergency', colDef: ColumnDef.Emergency },
+    { colHeader: UniqueConstants.emergency, colDef: ColumnDef.Emergency },
     { colHeader: 'id', colDef: 'ID' },
     { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'fileFrom', colDef: 'filefrom' },
@@ -124,7 +124,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     'cell',
     TableConstant.zone,
     'hostTransactionID',
-    'emergency',
+    UniqueConstants.emergency,
     'id',
   ];
 
