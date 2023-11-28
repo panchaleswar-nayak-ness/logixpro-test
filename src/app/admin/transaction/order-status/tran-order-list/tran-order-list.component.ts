@@ -66,7 +66,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'zone', colDef: 'Zone' },
     { colHeader: 'emergency', colDef: 'Emergency' },
     { colHeader: 'id', colDef: 'ID' },
-    { colHeader: 'importBy', colDef: 'Import By' },
+    { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'fileFrom', colDef: 'filefrom' },
     { colHeader: 'orderNumber', colDef: Column.OrderNumber },
     { colHeader: TableConstant.LineSequence, colDef: 'Line Sequence' },

@@ -29,7 +29,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'tH_ID', colDef: 'TH_ID' },
     { colHeader: 'id', colDef: 'ID' },
     { colHeader: 'importDate', colDef: 'Import Date' },
-    { colHeader: 'importBy', colDef: 'Import By' },
+    { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'importFileName', colDef: 'Import Filename' },
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
     { colHeader: 'orderNumber', colDef: Column.OrderNumber },

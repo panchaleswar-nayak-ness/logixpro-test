@@ -344,7 +344,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.invMapID}`,
     },
     {
-      columnDef: 'importBy',
+      columnDef: TableConstant.ImportBy,
       header: 'Import By',
       cell: (element: any) => `${element.importBy}`,
     },

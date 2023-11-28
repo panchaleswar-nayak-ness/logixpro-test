@@ -87,7 +87,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: "batchPickID", colDef: "Batch Pick ID" },
     { colHeader: "category", colDef: "Category" },
     { colHeader: "subCategory", colDef: "Sub Category" },
-    { colHeader: "importBy", colDef: "Import By" },
+    { colHeader: TableConstant.ImportBy, colDef: "Import By" },
     { colHeader: "importDate", colDef: "Import Date" },
     { colHeader: "importFilename", colDef: "Import Filename" },
     { colHeader: "expirationDate", colDef: TableConstant.ExpirationDate },

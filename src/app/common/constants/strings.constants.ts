@@ -408,7 +408,8 @@ export const TableConstant = {
     UserField1:'User Field1',
     UserField2:'User Field2',
     Revision:'Revision',
-    ExpirationDate: 'Expiration Date'
+    ExpirationDate: 'Expiration Date',
+    ImportBy:'importBy'
 }
 export const UniqueConstants = {
     backClass:'back-class',

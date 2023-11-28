@@ -32,7 +32,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   TRNSC_DATA = [
     { colHeader: 'id', colDef: 'ID' },
     { colHeader: 'importDate', colDef: 'Import Date' },
-    { colHeader: 'importBy', colDef: 'Import By' },
+    { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'importFileName', colDef: 'Import Filename' },
     { colHeader: 'transactionType', colDef: 'Transaction Type' },
     { colHeader: 'orderNumber', colDef: Column.OrderNumber },
