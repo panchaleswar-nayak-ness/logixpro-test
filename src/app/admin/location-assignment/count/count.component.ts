@@ -39,8 +39,8 @@ export class CountComponent implements OnInit {
    public searchOrderRight: string = '';
  // setTime:any =false;
 
-  displayedColumnsRight: string[] = ['orderNumber'  , 'itemCount', UniqueConstants.Priority, 'requiredDate','actions'];
-  displayedColumnsLeft: string[] = ['orderNumber', 'itemCount', UniqueConstants.Priority, 'requiredDate','actions'];
+  displayedColumnsRight: string[] = ['orderNumber'  , UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate','actions'];
+  displayedColumnsLeft: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate','actions'];
 
   leftTable:any = new MatTableDataSource([]);
   rightTable:any = new MatTableDataSource([]);

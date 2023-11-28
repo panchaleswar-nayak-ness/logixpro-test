@@ -22,8 +22,8 @@ import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogC
 })
 export class PickComponent implements OnInit {
 
-  displayedColumns1: string[] = ['status', 'orderNumber', UniqueConstants.Priority, 'itemCount', 'requiredDate', 'action'];
-  displayedColumns2: string[] = ['orderNumber', UniqueConstants.Priority, 'itemCount', 'requiredDate', 'action'];
+  displayedColumns1: string[] = ['status', 'orderNumber', UniqueConstants.Priority, UniqueConstants.itemCount, 'requiredDate', 'action'];
+  displayedColumns2: string[] = ['orderNumber', UniqueConstants.Priority, UniqueConstants.itemCount, 'requiredDate', 'action'];
   tableData1: any = new MatTableDataSource([]);
   tableData2: any = new MatTableDataSource([]);
   userData: any;
@@ -34,14 +34,14 @@ export class PickComponent implements OnInit {
   sequenceKeyMapping1: any = [
     { sequence: 'orderNumber', key: 'orderNumber' },
     { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
-    { sequence: 'itemCount', key: 'itemCount' },
+    { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
     { sequence: 'requiredDate', key: 'requiredDate' },
   ];
 
   @ViewChild('MatSort2') sort2: MatSort;
   sequenceKeyMapping2: any = [
     { sequence: 'orderNumber', key: 'orderNumber' },
-    { sequence: 'itemCount', key: 'itemCount' },
+    { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
     { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
     { sequence: 'requiredDate', key: 'requiredDate' },
   ];
