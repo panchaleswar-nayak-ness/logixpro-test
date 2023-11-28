@@ -122,7 +122,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get("notes")?.value,
         this.editTransactionForm.get("userField1")?.value,
         this.editTransactionForm.get(ColumnDef.userField2)?.value,
-        this.editTransactionForm.get("hostTransactionID")?.value,
+        this.editTransactionForm.get(ColumnDef.HostTransactionId)?.value,
         this.dayIncrement(this.reqDate),
 
         this.editTransactionForm.get("batchPickID")?.value,
@@ -237,7 +237,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
             "notes": res.data[0].notes,
             "userField1": res.data[0].userField1,
             "userField2": res.data[0].userField2,
-            "hostTransactionID": res.data[0].hostTransactionID,
+            ColumnDef.HostTransactionId: res.data[0].hostTransactionID,
             "requiredDate": this.reqDate != "1900-01-01T19:31:48.000Z" ? this.reqDate : " ",
             "batchPickID": res.data[0].batchPickID,
             "lineNumber": res.data[0].lineNumber,
