@@ -67,7 +67,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: TableConstant.Revision, key: 'revision' },
     { sequence: 'ID', key: 'id' },
     { sequence: TableConstant.HostTransactionID, key: 'hostTransactionID' },
-    { sequence: 'Emergency', key: 'emergency' },
+    { sequence: ColumnDef.Emergency, key: 'emergency' },
     { sequence: 'Label', key: 'label' },
     { sequence: 'Batch Pick ID', key: 'batchPickID' },
     { sequence: Column.ToteID, key: 'toteID' },

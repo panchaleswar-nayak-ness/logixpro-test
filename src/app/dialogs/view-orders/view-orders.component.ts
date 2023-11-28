@@ -43,7 +43,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'cell', header: TableConstant.Cell, cell: (element: any) => `${element.cell}` },
     { columnDef: 'completedBy', header: 'Completed By', cell: (element: any) => `${element.completedBy}` },
     { columnDef: 'completedDate', header: TableConstant.CompletedDate, cell: (element: any) => `${element.completedDate}` },
-    { columnDef: 'emergency', header: 'Emergency', cell: (element: any) => `${element.emergency}` },
+    { columnDef: 'emergency', header: ColumnDef.Emergency, cell: (element: any) => `${element.emergency}` },
     { columnDef: 'expirationDate', header: TableConstant.ExpirationDate, cell: (element: any) => `${element.expirationDate}` },
     { columnDef: 'exportBatchID', header: 'Export Batch ID', cell: (element: any) => `${element.exportBatchID}` },
     { columnDef: 'exportDate', header: 'Export Date', cell: (element: any) => `${element.exportDate}` },

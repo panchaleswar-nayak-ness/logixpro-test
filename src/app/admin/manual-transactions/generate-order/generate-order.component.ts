@@ -14,7 +14,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { SelectOrderComponentComponent } from './select-order-component/select-order-component.component';
-import { DialogConstants, ToasterTitle, ToasterType, TransactionType ,Style} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType, TransactionType ,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
  
 
 @Component({
@@ -92,7 +92,7 @@ export class GenerateOrderComponent implements OnInit {
     'Notes',
     'ToteNumber',
     'HostTransactionID',
-    'Emergency',
+    ColumnDef.Emergency,
     'UserField1',
     'UserField2',
     'UserField3',

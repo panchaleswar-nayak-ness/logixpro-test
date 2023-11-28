@@ -368,7 +368,8 @@ export const ColumnDef= {
     userField7:'userField7',
     userField8:'userField8',
     userField9:'userField9',
-    userField10:'userField10'
+    userField10:'userField10',
+    Emergency:'Emergency'
 }
 
 export const Case = {

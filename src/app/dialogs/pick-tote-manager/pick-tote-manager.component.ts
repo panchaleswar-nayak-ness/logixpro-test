@@ -360,7 +360,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: 'emergency',
-      header: 'Emergency',
+      header: ColumnDef.Emergency,
       cell: (element: any) => `${element.emergency}`,
     },
     {
@@ -521,7 +521,7 @@ export class PickToteManagerComponent implements OnInit {
     } else {
       this.filterData.push({
         sequence: this.filterSeq + 1,
-        field: 'Emergency',
+        field: ColumnDef.Emergency,
         criteria: 'Equals',
         value: '',
         andOr: 'And',
@@ -548,7 +548,7 @@ export class PickToteManagerComponent implements OnInit {
     } else {
       this.orderByData.push({
         sequence: this.orderBySeq + 1,
-        field: 'Emergency',
+        field: ColumnDef.Emergency,
         sortOrder: 'DESC',
         isSaved: false,
       });

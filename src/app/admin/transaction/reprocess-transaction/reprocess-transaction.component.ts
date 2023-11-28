@@ -81,7 +81,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: 'toteNumber', colDef: 'Tote Number' },
     { colHeader: 'cell', colDef: TableConstant.Cell },
     { colHeader: 'hostTransactionID', colDef: TableConstant.HostTransactionID },
-    { colHeader: 'emergency', colDef: 'Emergency' },
+    { colHeader: 'emergency', colDef: ColumnDef.Emergency },
     { colHeader: 'reasonMessage', colDef: 'Reason Message' },
     { colHeader: 'dateStamp', colDef: 'Date Stamp' },
     { colHeader: 'reason', colDef: 'Reason' },
@@ -107,7 +107,7 @@ export class ReprocessTransactionComponent implements OnInit {
   switchTrueString = false;
   falseString = 'false';
   switchFalseString = false;
-  searchFieldsTrueFalse = ['Label','Emergency','In Process','Master Record'];
+  searchFieldsTrueFalse = ['Label',ColumnDef.Emergency,'In Process','Master Record'];
   isReprocessedChecked = {flag:false};
   isCompleteChecked = {flag:false};
   isHistoryChecked = {flag:false};
