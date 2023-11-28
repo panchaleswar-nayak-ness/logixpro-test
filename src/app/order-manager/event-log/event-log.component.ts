@@ -14,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppRoutes, ConfirmationMessages, FieldName, StringConditions,KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,Style,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, FieldName, StringConditions,KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,Style,UniqueConstants,Column,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-event-log',
@@ -23,7 +23,7 @@ import { AppRoutes, ConfirmationMessages, FieldName, StringConditions,KeyboardKe
 })
 export class EventLogComponent implements OnInit {
 
-  displayedColumns: string[] = ['dateStamp', 'message', 'eventCode', 'nameStamp', 'eventType', 'eventLocation', 'notes', 'transactionID','actions'];
+  displayedColumns: string[] = ['dateStamp', 'message', 'eventCode', 'nameStamp', 'eventType', 'eventLocation', TableConstant.Notes, 'transactionID','actions'];
   dataSourceList: any;
   ignoreDateRange: boolean ;
   startDate:any = "";
@@ -58,7 +58,7 @@ export class EventLogComponent implements OnInit {
     { value: 'nameStamp', sortValue: '3' },
     { value: 'eventType', sortValue: '4' },
     { value: 'eventLocation', sortValue: '5' },
-    { value: 'notes', sortValue: '6' },
+    { value: TableConstant.Notes, sortValue: '6' },
     { value: 'transactionID', sortValue: '7' },
   ];
 

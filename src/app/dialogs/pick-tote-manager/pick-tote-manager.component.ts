@@ -354,7 +354,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.importFilename}`,
     },
     {
-      columnDef: 'notes',
+      columnDef: TableConstant.Notes,
       header: 'Notes',
       cell: (element: any) => `${element.notes}`,
     },

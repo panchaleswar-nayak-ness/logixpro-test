@@ -75,7 +75,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
     { colHeader: 'bin', colDef: TableConstant.Bin },
     { colHeader: 'invMapID', colDef: 'Inv Map ID' },
-    { colHeader: 'notes', colDef: 'Notes' },
+    { colHeader: TableConstant.Notes, colDef: 'Notes' },
     { colHeader: 'exportFileName', colDef: 'Export File Name' },
     { colHeader: 'exportDate', colDef: 'Export Date' },
     { colHeader: 'exportedBy', colDef: 'Exported By' },

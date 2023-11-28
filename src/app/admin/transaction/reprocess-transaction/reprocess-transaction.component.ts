@@ -56,7 +56,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: 'completedBy', colDef: 'Completed By' },
     { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
     { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
-    { colHeader: 'notes', colDef: 'Notes' },
+    { colHeader: TableConstant.Notes, colDef: 'Notes' },
     { colHeader: 'exportFileName', colDef: 'Export File Name' },
     { colHeader: 'exportDate', colDef: 'Export Date' },
     { colHeader: 'exportedBy', colDef: 'Exported By' },

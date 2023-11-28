@@ -63,7 +63,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: TableConstant.ExpirationDate, key: 'expirationDate' },
     { sequence: Column.LotNumber, key: 'lotNumber' },
     { sequence: 'Serial Number', key: 'serialNumber' },
-    { sequence: 'Notes', key: 'notes' },
+    { sequence: 'Notes', key: TableConstant.Notes },
     { sequence: TableConstant.Revision, key: 'revision' },
     { sequence: 'ID', key: 'id' },
     { sequence: TableConstant.HostTransactionID, key: ColumnDef.HostTransactionId },
