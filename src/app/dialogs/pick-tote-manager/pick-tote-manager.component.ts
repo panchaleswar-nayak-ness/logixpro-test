@@ -169,7 +169,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: UniqueConstants.Description,
-      header: 'Description',
+      header: Column.Description,
       cell: (element: any) => `${element.description}`,
     },
     {

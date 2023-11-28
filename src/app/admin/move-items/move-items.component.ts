@@ -21,7 +21,7 @@ const TRNSC_DATA = [
   { colHeader: 'locationNumber', colDef: 'Location Number' },
   { colHeader: UniqueConstants.goldenZone, colDef: 'Golden Zone' },
   { colHeader: 'itemNumber', colDef: Column.ItemNumber },
-  { colHeader: UniqueConstants.Description, colDef: 'Description' },
+  { colHeader: UniqueConstants.Description, colDef: Column.Description },
   { colHeader: 'itemQuantity', colDef: 'Item Quantity' },
   { colHeader: 'quantityAllocatedPick', colDef: 'Quantity Allocated Pick' },
   { colHeader: 'quantityAllocatedPutAway', colDef: 'Quantity Allocated Put Away' },

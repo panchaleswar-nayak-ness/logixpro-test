@@ -37,7 +37,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'itemNumber', colDef: Column.ItemNumber },
     { colHeader: 'lineNumber', colDef: 'Line Number' },
     { colHeader: 'requiredDate', colDef: 'Required Date' },
-    { colHeader: UniqueConstants.Description, colDef: 'Description' },
+    { colHeader: UniqueConstants.Description, colDef: Column.Description },
     { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
     { colHeader: 'toteID', colDef: Column.ToteID },
     { colHeader: 'priority', colDef: 'Priority' },

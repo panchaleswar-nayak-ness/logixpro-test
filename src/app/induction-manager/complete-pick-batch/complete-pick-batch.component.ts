@@ -217,7 +217,7 @@ export class CompletePickBatchComponent{
     {dbColName:Column.OrderNumber,tabelColName:"order_no",sortColumnNumber:1},
     {dbColName:Column.ToteID,tabelColName:"tote_id",sortColumnNumber:2},
     {dbColName:Column.ItemNumber,tabelColName:"item_number",sortColumnNumber:3},
-    {dbColName:"Description",tabelColName:UniqueConstants.Description,sortColumnNumber:4},
+    {dbColName:Column.Description,tabelColName:UniqueConstants.Description,sortColumnNumber:4},
     {dbColName:TableConstant.TransactionQuantity,tabelColName:"transaction_qty",sortColumnNumber:5},
     {dbColName:Column.Location,tabelColName:"location",sortColumnNumber:6},
     {dbColName:"Zone",tabelColName:TableConstant.zone,sortColumnNumber:7},

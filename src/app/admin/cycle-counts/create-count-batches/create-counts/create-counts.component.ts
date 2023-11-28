@@ -16,7 +16,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,ToasterMessages,DialogConstants,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,ToasterMessages,DialogConstants,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ccb-create-counts',
@@ -205,7 +205,7 @@ constructor(
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value) => {
         
-        this.getTypeAheads('Description');
+        this.getTypeAheads(Column.Description);
         this.fillData();
       });
 
@@ -305,7 +305,7 @@ constructor(
     this.fillData();
   }
   getTypeAheads(type) {
-    if (type === 'Description') {
+    if (type === Column.Description) {
       let paylaod = {
         description: this.filtersForm.value.description 
       };
@@ -474,7 +474,7 @@ constructor(
         : '',
       includeEmpty: this.filtersForm.value.includeEmpty,
       includeOther: this.filtersForm.value.includeOther,
-      countType: this.selection ? this.selection : 'Description',
+      countType: this.selection ? this.selection : Column.Description,
       fromItem: this.filtersForm.value.fromItem
         ? this.filtersForm.value.fromItem
         : '',
@@ -529,7 +529,7 @@ constructor(
           : '',
         includeEmpty: this.filtersForm.value.includeEmpty,
         includeOther: this.filtersForm.value.includeOther,
-        CountType: this.selection ? this.selection : 'Description',
+        CountType: this.selection ? this.selection : Column.Description,
         fromItem: this.filtersForm.value.fromItem
           ? this.filtersForm.value.fromItem
           : '',

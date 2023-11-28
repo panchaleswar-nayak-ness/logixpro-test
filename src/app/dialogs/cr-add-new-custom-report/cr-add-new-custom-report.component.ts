@@ -15,7 +15,7 @@ import { CrDesignFilenameConfirmationComponent } from '../cr-design-filename-con
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ToasterType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cr-add-new-custom-report',
@@ -80,7 +80,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
     ];
 
     let fields = [
-      'Description',
+      Column.Description,
       'Filename',
       'Test and Design Data',
       'Test/Design Data Type',

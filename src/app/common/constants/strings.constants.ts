@@ -356,7 +356,8 @@ export const Column = {
     ToteID: 'Tote ID',
     LineNumber: 'Line Number',
     LotNumber: 'Lot Number',
-    Location: 'Location'
+    Location: 'Location',
+    Description:'Description'
 }
 export const ColumnDef= {
     userField1:'userField1',
