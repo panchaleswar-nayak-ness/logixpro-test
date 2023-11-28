@@ -98,7 +98,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public orderNo: any;
   public payload: any;
   public sortCol: any = 0;
-  public sortOrder: any = 'asc';
+  public sortOrder: any = UniqueConstants.Asc;
   selectedVariable: any;
   selectedDropdown = '';
   floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -160,7 +160,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
 
   sortColumn: any = {
     columnName: 32,
-    sortOrder: 'asc',
+    sortOrder: UniqueConstants.Asc,
   };
 
   public iAdminApiService: IAdminApiService;

@@ -28,7 +28,7 @@ export class CompletePickBatchComponent{
   @ViewChild('BatchId') BatchIdField: ElementRef;
   @ViewChild('ToteId') ToteIdField: ElementRef;
   sortColumn: number = 1;
-  sortOrder: string = "asc";
+  sortOrder: string = UniqueConstants.Asc;
   startRow:number = 0;
   endRow:number = 10;
   totalTransactions: number = 0;

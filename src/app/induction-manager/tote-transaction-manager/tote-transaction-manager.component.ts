@@ -50,7 +50,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   pageEvent: PageEvent;
   public dataSource: any = new MatTableDataSource();
   batchId: any = '';
-  sortOrder = 'asc';
+  sortOrder = UniqueConstants.Asc;
   sortCol = 0;
   startRow=0;
   endRow=10;

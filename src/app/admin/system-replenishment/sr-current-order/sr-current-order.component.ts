@@ -83,7 +83,7 @@ export class SrCurrentOrderComponent implements OnInit {
     searchString: '',
     searchColumn: '',
     sortColumn: '',
-    sortDir: 'asc',
+    sortDir: UniqueConstants.Asc,
     status: ResponseStrings.AllCaps,
     filter: '1=1',
     username: '',

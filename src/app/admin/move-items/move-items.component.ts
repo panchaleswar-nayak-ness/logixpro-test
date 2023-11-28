@@ -75,7 +75,7 @@ export class MoveItemsComponent implements OnInit {
   isValidateMove = false;
   isViewAll = false;
   reqDate: Date = new Date();
-  sortOrder = 'asc';
+  sortOrder = UniqueConstants.Asc;
   sortCol = 0;
   totalRecords = 0;
   startRow = 0;
@@ -84,7 +84,7 @@ export class MoveItemsComponent implements OnInit {
   recordsFiltered = 0;
   itemSelected = true;
   from_zone = '';
-  sortOrderTo = 'asc';
+  sortOrderTo = UniqueConstants.Asc;
   sortColTo = 0;
   totalRecordsTo = 0;
   startRowTo = 0;
@@ -662,14 +662,14 @@ export class MoveItemsComponent implements OnInit {
   }
 
   resetPagination() {
-    this.sortOrder = 'asc';
+    this.sortOrder = UniqueConstants.Asc;
     this.sortCol = 0;
     this.totalRecords = 0;
     this.startRow = 0;
     this.endRow = 10;
     this.recordsPerPage = 10;
     this.recordsFiltered = 0;
-    this.sortOrderTo = 'asc';
+    this.sortOrderTo = UniqueConstants.Asc;
     this.sortColTo = 0;
     this.totalRecordsTo = 0;
     this.startRowTo = 0;
@@ -679,7 +679,7 @@ export class MoveItemsComponent implements OnInit {
   }
 
   resetPaginationTo() {
-    this.sortOrderTo = 'asc';
+    this.sortOrderTo = UniqueConstants.Asc;
     this.sortColTo = 0;
     this.totalRecordsTo = 0;
     this.startRowTo = 0;
@@ -689,7 +689,7 @@ export class MoveItemsComponent implements OnInit {
   }
 
   resetPaginationFrom() {
-    this.sortOrder = 'asc';
+    this.sortOrder = UniqueConstants.Asc;
     this.sortCol = 0;
     this.totalRecords = 0;
     this.startRow = 0;

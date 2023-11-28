@@ -5,7 +5,7 @@ import { HoldReasonComponent } from 'src/app/admin/dialogs/hold-reason/hold-reas
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,Style} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-open-transaction-data-table',
@@ -41,7 +41,7 @@ export class OpenTransactionDataTableComponent implements OnInit {
     endIndex: 10,
   };
   public sortCol: any = 5;
-  public sortOrder: any = 'asc';
+  public sortOrder: any = UniqueConstants.Asc;
   public columnValues: any = [];
   pageEvent: PageEvent;
 

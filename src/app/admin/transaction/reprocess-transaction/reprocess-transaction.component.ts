@@ -149,7 +149,7 @@ export class ReprocessTransactionComponent implements OnInit {
   pageEvent: PageEvent;
   searchAutocompleteListByCol: any;
   public sortCol: any = 5;
-  public sortOrder: any = 'asc';
+  public sortOrder: any = UniqueConstants.Asc;
 
   cols = [];
   customPagination: any = {
@@ -168,7 +168,7 @@ export class ReprocessTransactionComponent implements OnInit {
 
   sortColumn: any = {
     columnName: 32,
-    sortOrder: 'asc',
+    sortOrder: UniqueConstants.Asc,
   };
   /* End */
   statusType: string = StringConditions.AllTransactions;
@@ -371,7 +371,7 @@ export class ReprocessTransactionComponent implements OnInit {
       endIndex: 10,
     };
     this.sortCol= 5;
-    this.sortOrder= 'asc';
+    this.sortOrder= UniqueConstants.Asc;
   }
 
   deleteReprocessTrans(opened : boolean) {

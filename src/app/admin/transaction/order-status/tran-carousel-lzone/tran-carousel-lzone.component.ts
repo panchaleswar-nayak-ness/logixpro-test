@@ -45,7 +45,7 @@ export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
 
   sortColumn: any = {
     columnName: 32,
-    sortOrder: 'asc',
+    sortOrder: UniqueConstants.Asc,
   };
 
   @Input() set locationZonesEvent(event: any) {

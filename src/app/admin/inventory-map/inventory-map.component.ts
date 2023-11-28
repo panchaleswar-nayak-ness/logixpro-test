@@ -96,7 +96,7 @@ export class InventoryMapComponent implements OnInit {
 
   sortColumn: any ={
     columnName: 0,
-    sortOrder: 'asc'
+    sortOrder: UniqueConstants.Asc
   }
   userData: any;
   payload: any;

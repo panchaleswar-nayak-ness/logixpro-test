@@ -1099,7 +1099,7 @@ async clearBatchData(){
     try {
       let payLoad = {
         batchID: batchID || this.batchId2,
-        sortOrder: 'asc',
+        sortOrder: UniqueConstants.Asc,
         sortColumn: 0, 
       };
 

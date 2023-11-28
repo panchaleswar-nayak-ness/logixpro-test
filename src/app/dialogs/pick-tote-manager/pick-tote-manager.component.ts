@@ -904,7 +904,7 @@ export class PickToteManagerComponent implements OnInit {
         sRow: 1,
         eRow: 10,
         SortColumnNumber: 0,
-        SortOrder: 'asc',
+        SortOrder: UniqueConstants.Asc,
         Filter: '1=1',
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
@@ -971,7 +971,7 @@ export class PickToteManagerComponent implements OnInit {
         sRow: 1,
         eRow: 10,
         SortColumnNumber: 0,
-        SortOrder: 'asc',
+        SortOrder: UniqueConstants.Asc,
         Filter: '1=1',
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
@@ -1110,7 +1110,7 @@ export class PickToteManagerComponent implements OnInit {
         sRow: 1,
         eRow: 10,
         SortColumnNumber: 0,
-        SortOrder: 'asc',
+        SortOrder: UniqueConstants.Asc,
         Filter: '1=1',
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
@@ -1144,7 +1144,7 @@ export class PickToteManagerComponent implements OnInit {
           sRow: 1,
           eRow: 10,
           SortColumnNumber: 0,
-          SortOrder: 'asc',
+          SortOrder: UniqueConstants.Asc,
           Filter: '1=1',
         };
         this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
@@ -1181,7 +1181,7 @@ export class PickToteManagerComponent implements OnInit {
         sRow: 1,
         eRow: 10,
         SortColumnNumber: 0,
-        SortOrder: 'asc',
+        SortOrder: UniqueConstants.Asc,
         Filter: '1=1',
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
@@ -1215,7 +1215,7 @@ export class PickToteManagerComponent implements OnInit {
           sRow: 1,
           eRow: 10,
           SortColumnNumber: 0,
-          SortOrder: 'asc',
+          SortOrder: UniqueConstants.Asc,
           Filter: '1=1',
         };
         this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {

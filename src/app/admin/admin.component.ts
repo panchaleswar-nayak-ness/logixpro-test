@@ -24,7 +24,7 @@ export class AdminComponent implements OnInit {
   fieldNames:any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public sortCol: any = 3;
-  public sortOrder: any = 'asc';
+  public sortOrder: any = UniqueConstants.Asc;
   pageEvent: PageEvent;
   searchValue: any = '';
   searchAutocompleteList: any;
@@ -68,7 +68,7 @@ export class AdminComponent implements OnInit {
   };
   sortColumn: any = {
     columnName: 3,
-    sortOrder: 'asc',
+    sortOrder: UniqueConstants.Asc,
   };
   public Order_Table_Config = [
     { colHeader: TableConstant.zone, colDef: 'Zone' },

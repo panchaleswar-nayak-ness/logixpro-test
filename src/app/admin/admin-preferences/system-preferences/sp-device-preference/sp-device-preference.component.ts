@@ -23,7 +23,7 @@ export class SpDevicePreferenceComponent implements OnInit {
   pageEvent: PageEvent;
   public iAdminApiService: IAdminApiService;
   sortCol = 0;
-  sortDir = 'asc';
+  sortDir = UniqueConstants.Asc;
   customPagination: any = {
     total: '',
     recordsPerPage: 10,

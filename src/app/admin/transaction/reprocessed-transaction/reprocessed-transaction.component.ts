@@ -12,7 +12,7 @@ import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dia
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, RouteNames, TableName, ToasterMessages, ToasterTitle, ToasterType ,Column,TableConstant} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, RouteNames, TableName, ToasterMessages, ToasterTitle, ToasterType ,Column,TableConstant,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocessed-transaction',
@@ -54,7 +54,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   searchAutocompleteList: any;
   public iAdminApiService: IAdminApiService;
   public sortCol:any=5;
-  public sortOrder:any='asc';
+  public sortOrder:any=UniqueConstants.Asc;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('matRef') matRef: MatSelect;
@@ -76,7 +76,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   };
   sortColumn: any = {
     columnName: 0,
-    sortOrder: 'asc',
+    sortOrder: UniqueConstants.Asc,
   };
   constructor(
     private authService: AuthService,

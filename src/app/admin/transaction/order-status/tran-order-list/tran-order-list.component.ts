@@ -137,7 +137,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   public searchString: any = '';
   public payload;
   public sortCol: any = 3;
-  public sortOrder: any = 'asc';
+  public sortOrder: any = UniqueConstants.Asc;
   public getOrderForTote: any = ''; // get orderNumber from api to pass it to Filter By ToteID
   @ViewChild(MatSort) sort: MatSort;
   private subscription: Subscription = new Subscription();
@@ -201,7 +201,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   };
   sortColumn: any = {
     columnName: 3,
-    sortOrder: 'asc',
+    sortOrder: UniqueConstants.Asc,
   };
 
   @Input()
@@ -241,7 +241,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       compDate: this.compDate,
       identify: this.orderNo ? 0 : 1,
       searchString: this.searchString,
-      direct: 'asc',
+      direct: UniqueConstants.Asc,
       searchColumn: this.searchCol,
       sRow: this.customPagination.startIndex,
       eRow: this.customPagination.endIndex,

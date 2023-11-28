@@ -66,7 +66,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   endRowOrder = 10;
   recordsPerPageOrder = 10;
   sortColOrder = 0;
-  sortOrder ='asc';
+  sortOrder =UniqueConstants.Asc;
 
   isActiveTrigger:boolean =false;
 // pagination and sorting for transaction View
@@ -75,7 +75,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   endRowTransaction = 10;
   recordsPerPageTransaction = 10;
   sortColTransaction = 0;
-  sortTransaction ='asc';
+  sortTransaction =UniqueConstants.Asc;
   dublicateTransaction ;
   dublicateRecords ;
   actions='';
@@ -497,7 +497,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.endRowOrder = 10;
     this.recordsPerPageOrder = 10;
     this.sortColOrder = 0;
-    this.sortOrder ='asc';
+    this.sortOrder =UniqueConstants.Asc;
     this.paginator.pageIndex=0;
     this.pageLength=0;
     
@@ -509,7 +509,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.endRowTransaction = 10;
     this.recordsPerPageTransaction = 10;
     this.sortColTransaction = 0;
-    this.sortTransaction ='asc';
+    this.sortTransaction =UniqueConstants.Asc;
     this.paginator.pageIndex=0;
     this.pageLength=0;
   }

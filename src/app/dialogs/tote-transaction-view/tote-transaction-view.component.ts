@@ -37,7 +37,7 @@ export class ToteTransactionViewComponent implements OnInit {
   @ViewChild('actionRef') actionRef: MatSelect;
   pageEvent: PageEvent;
   public sortCol: any = 0;
-  public sortOrder: any = 'asc';
+  public sortOrder: any = UniqueConstants.Asc;
   customPagination: any = {
     total: '',
     recordsPerPage: 10,

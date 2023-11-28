@@ -40,7 +40,7 @@ export class SrNewOrderComponent implements OnInit {
     searchString: "",
     sortColumn: 0,
     searchColumn: "",
-    sortDir: "asc",
+    sortDir: UniqueConstants.Asc,
     reOrder: false,
     filter: "1=1",
     username: "",

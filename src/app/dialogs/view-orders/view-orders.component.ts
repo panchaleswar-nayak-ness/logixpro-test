@@ -198,7 +198,7 @@ export class ViewOrdersComponent implements OnInit {
         "sRow": 1,
         "eRow": 10,
         "SortColumnNumber": 0,
-        "SortOrder": "asc",
+        "SortOrder": UniqueConstants.Asc,
         "Filter": "1=1", 
       }
       this.iInductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {

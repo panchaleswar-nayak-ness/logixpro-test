@@ -113,7 +113,7 @@ export class OmOrderManagerComponent implements OnInit {
                             }
   sortColumn        : any = {
                               columnName: 0,
-                              sortOrder: 'asc'
+                              sortOrder: UniqueConstants.Asc
                             }
 
   @ViewChild(MatSort) sort: MatSort;
