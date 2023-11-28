@@ -249,7 +249,7 @@ export class AddInvMapLocationComponent implements OnInit {
       this.addInvMapLocation.get('warehouse')?.disable();
       this.addInvMapLocation.get(zoneType.carousel)?.disable();
       this.addInvMapLocation.get('row')?.disable();
-      this.addInvMapLocation.get('shelf')?.disable();
+      this.addInvMapLocation.get(TableConstant.shelf)?.disable();
       this.addInvMapLocation.get('bin')?.disable();
       this.addInvMapLocation.get('unitOfMeasure')?.disable();
       this.addInvMapLocation.get('cell')?.disable();
@@ -292,7 +292,7 @@ export class AddInvMapLocationComponent implements OnInit {
       "zone":'',
       'carousel':'',
       'row':'',
-      'shelf':'',
+      "shelf":'',
       'bin':'',
       'cell':'',
       'velocity':'',
@@ -418,7 +418,7 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   onchangeItemNumber() {
-    let value = this.addInvMapLocation.controls[TableConstant.zone].value + this.addInvMapLocation.controls[zoneType.carousel].value + this.addInvMapLocation.controls['row'].value + this.addInvMapLocation.controls['shelf'].value + this.addInvMapLocation.controls['bin'].value;
+    let value = this.addInvMapLocation.controls[TableConstant.zone].value + this.addInvMapLocation.controls[zoneType.carousel].value + this.addInvMapLocation.controls['row'].value + this.addInvMapLocation.controls[TableConstant.shelf].value + this.addInvMapLocation.controls['bin'].value;
     this.addInvMapLocation.controls['locationNumber'].setValue(value);
   }
   onSubmit(form: FormGroup) {
@@ -637,7 +637,7 @@ export class AddInvMapLocationComponent implements OnInit {
     if (col === 'row') {
       this.row = val.toString();
     }
-    if (col === 'shelf') {
+    if (col === TableConstant.shelf) {
       this.shelf = val.toString();
     }
     if (col === 'bin') {

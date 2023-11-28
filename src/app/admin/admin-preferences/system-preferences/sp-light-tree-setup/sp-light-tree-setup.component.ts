@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import {  TableConstant } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sp-light-tree-setup',
@@ -12,7 +13,7 @@ export class SpLightTreeSetupComponent{
     {shelf: '12', alternate_light_positions_no: '22' },
   ];
 
-  displayedColumns: string[] = ['shelf', 'alternate_light_positions_no','other'];
+  displayedColumns: string[] = [TableConstant.shelf, 'alternate_light_positions_no','other'];
   tableData = this.ELEMENT_DATA;
   dataSourceList: any;
 

@@ -425,7 +425,9 @@ export const TableConstant = {
     ImportDate:'importDate',
     zone:'zone',
     TransactionType: 'Transaction Type',
-    Row:'Row'
+    Row:'Row',
+    shelf:'shelf',
+    Shelf:'Shelf'
 }
 export const UniqueConstants = {
     backClass:'back-class',
@@ -441,7 +443,8 @@ export const UniqueConstants = {
     constantDate:"12/14/2022",
     Select:'select',
     emergency:'emergency',
-    _self:'_self'
+    _self:'_self',
+
 }
 export const Style = {
     w560px:'560px',

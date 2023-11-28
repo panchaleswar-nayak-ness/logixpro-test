@@ -324,8 +324,8 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.row}`,
     },
     {
-      columnDef: 'shelf',
-      header: 'Shelf',
+      columnDef: TableConstant.shelf,
+      header: TableConstant.shelf,
       cell: (element: any) => `${element.shelf}`,
     },
     {
