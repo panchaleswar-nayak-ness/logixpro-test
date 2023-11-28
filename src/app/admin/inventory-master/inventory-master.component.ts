@@ -103,11 +103,11 @@ export class InventoryMasterComponent implements OnInit {
   eventsSubject: Subject<string> = new Subject<string>();
   reelSubject: Subject<string> = new Subject<string>();
 
-  @HostListener('window:scroll', ['$event']) // for window scroll events
-  @HostListener('document:keydown', ['$event'])
+  @HostListener('window:scroll', [UniqueConstants.event]) // for window scroll events
+  @HostListener('document:keydown', [UniqueConstants.event])
 
   //  SHORTCUT KEYS
-  @HostListener('document:keydown', ['$event'])
+  @HostListener('document:keydown', [UniqueConstants.event])
   handleKeyboardEvent(event: KeyboardEvent) {
     const target = event.target as HTMLElement;
 
@@ -962,7 +962,7 @@ export class InventoryMasterComponent implements OnInit {
     });
   }
 
-  @HostListener('window:beforeunload', ['$event'])
+  @HostListener('window:beforeunload', [UniqueConstants.event])
   onbeforeunload(event) {
     if (this.ifAllowed) {
       event.preventDefault();
@@ -970,7 +970,7 @@ export class InventoryMasterComponent implements OnInit {
     }
   }
 
-  @HostListener('document:keyup', ['$event'])
+  @HostListener('document:keyup', [UniqueConstants.event])
   documentClick(event: MouseEvent) {
     let IsCheck = this.getChangesCheck();
     if (IsCheck) this.ifAllowed = true;

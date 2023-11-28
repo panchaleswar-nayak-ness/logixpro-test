@@ -14,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppRoutes, ConfirmationMessages, FieldName, StringConditions,KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, FieldName, StringConditions,KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-event-log',
@@ -280,7 +280,7 @@ export class EventLogComponent implements OnInit {
     this.global.OpenExportModal("Single Range",`FileName:singleExport|sDate:${this.startDate}|eDate:${this.endDate}|message:${this.message}|eLocation:${this.eventLocation}|nStamp:${this.message}`);
   }
 
-  @HostListener('document:keyup', ['$event'])
+  @HostListener('document:keyup', [UniqueConstants.event])
   handleKeyboardEvent(event: KeyboardEvent) { 
     const target = event.target as HTMLElement;
     if (!this.isInputField(target) && event.key === KeyboardKeys.C) {

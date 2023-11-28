@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { BrowserCloseService } from './common/services/browser-close.service';
 import { BroadcastService } from './common/init/broadcast.service';
+import {  UniqueConstants } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-root',
@@ -15,12 +16,12 @@ export class AppComponent implements OnInit {
     private broadCast:BroadcastService
   ) {}
 
-  @HostListener('window:beforeunload', ['$event'])
+  @HostListener('window:beforeunload', [UniqueConstants.event])
   beforeunloadHandler(): void {
     this.browserCloseService.handleBrowserClose();
   }
 
-  @HostListener('window:load',['$event'])
+  @HostListener('window:load',[UniqueConstants.event])
   onPageLoad() {
     this.userData = JSON.parse(localStorage.getItem('user') ?? '{}');
   }

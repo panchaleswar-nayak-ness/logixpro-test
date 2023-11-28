@@ -254,7 +254,7 @@ export class ProcessPicksComponent implements OnInit {
     }
   }
 
-  @HostListener('window:beforeunload', ['$event'])
+  @HostListener('window:beforeunload', [UniqueConstants.event])
   onbeforeunload(event) {
     if (this.ifAllowed) {
       event.preventDefault();

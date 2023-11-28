@@ -243,7 +243,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.getRow();
   }
 
-  @HostListener('window:beforeunload', ['$event'])
+  @HostListener('window:beforeunload', [UniqueConstants.event])
   onbeforeunload(event) {
     if (this.ifAllowed) {
       event.preventDefault();

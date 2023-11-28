@@ -414,7 +414,8 @@ export const UniqueConstants = {
     _blank:'_blank',
     position : 'position',
     goldenZone:'goldenZone',
-    searchValue:'searchValue'
+    searchValue:'searchValue',
+    event:'$event'
 }
 export const Style = {
     w560px:'560px'
