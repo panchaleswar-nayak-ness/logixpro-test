@@ -35,7 +35,7 @@ export class EventLogComponent implements OnInit {
   userName: string = "";
   start: number = 0;
   length: number = 15;
-  filterString: string = "1 = 1";
+  filterString: string = UniqueConstants.OneEqualsOne;
   sortColumn: number = 0;
   sortOrder: string = "desc";
   userData: any;

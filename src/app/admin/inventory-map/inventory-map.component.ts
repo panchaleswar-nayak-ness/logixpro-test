@@ -129,7 +129,7 @@ export class InventoryMapComponent implements OnInit {
     }, 100);
   }
 
-  filterString : string = "1 = 1";
+  filterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.filterString = filter;
@@ -242,7 +242,7 @@ export class InventoryMapComponent implements OnInit {
     this.userData = this.authService.userData();
     if(this.filterString == "")
     {
-      this.filterString = "1 = 1"
+      this.filterString = UniqueConstants.OneEqualsOne
     }
     this.payload = { 
      "oqa": this.filterLoc,

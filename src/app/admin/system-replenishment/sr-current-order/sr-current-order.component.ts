@@ -205,7 +205,7 @@ export class SrCurrentOrderComponent implements OnInit {
     }, 100);
   }
 
-  filterString : string = "1 = 1";
+  filterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.tablePayloadObj.filter = filter;

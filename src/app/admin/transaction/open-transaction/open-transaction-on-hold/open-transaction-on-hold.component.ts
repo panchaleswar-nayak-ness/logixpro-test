@@ -640,7 +640,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType), 100);
   }
 
-  filterString : string = "1 = 1";
+  filterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.filterString = filter;

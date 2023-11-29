@@ -108,7 +108,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   clearBatchButt() {
     this.batchId = '';
     this.searchAutocompletBatchPick.length = 0;
-    this.FilterString='1 = 1';
+    this.FilterString=UniqueConstants.OneEqualsOne;
     this.resetPagination();
     this.getToteTrans();
   }
@@ -302,7 +302,7 @@ public iinductionManagerApi:IInductionManagerApiService;
     }, 100);
   }
 
-  FilterString : string = "1 = 1";
+  FilterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.FilterString = filter;

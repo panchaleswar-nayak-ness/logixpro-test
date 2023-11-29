@@ -67,8 +67,8 @@ export class MoveItemsComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   isRowSelected = false;
   contextMenuPosition = { x: '0px', y: '0px' };
-  moveFromFilter: string = '1 = 1';
-  moveToFilter: string = '1 = 1';
+  moveFromFilter: string = UniqueConstants.OneEqualsOne;
+  moveToFilter: string = UniqueConstants.OneEqualsOne;
   tableType = 'MoveFrom';
   userData: any;
   itemNo: any = '';
@@ -637,8 +637,8 @@ export class MoveItemsComponent implements OnInit {
       if(res.isExecuted){
         this.global.ShowToastr(ToasterType.Success, 'Item moved successfully', ToasterTitle.Success);
         this.resetPagination();
-        this.moveToFilter='1 = 1';
-        this.moveFromFilter='1 = 1';
+        this.moveToFilter=UniqueConstants.OneEqualsOne;
+        this.moveFromFilter=UniqueConstants.OneEqualsOne;
         this.tabIndex=0;
         this.itemNumberSearch.next('');
         this.getMoveItemList('MoveFrom');

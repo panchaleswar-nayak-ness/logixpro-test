@@ -456,7 +456,8 @@ export const UniqueConstants = {
     _self:'_self',
     cellSize:'cellSize',
     item:'item',
-    itemCount:'itemCount'
+    itemCount:'itemCount',
+    OneEqualsOne:'1 = 1'
 }
 export const Style = {
     w560px:'560px',

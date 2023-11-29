@@ -522,7 +522,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     }, 100);
   }
 
-  FilterString : string = "1 = 1";
+  FilterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.FilterString = filter;

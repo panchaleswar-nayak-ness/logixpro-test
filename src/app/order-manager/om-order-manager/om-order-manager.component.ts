@@ -213,7 +213,7 @@ export class OmOrderManagerComponent implements OnInit {
         val2 = this.value2;      
       }
   
-      if(this.FilterString == "") this.FilterString = "1 = 1";
+      if(this.FilterString == "") this.FilterString = UniqueConstants.OneEqualsOne;
   
       let payload = {
         col: this.column,
@@ -396,7 +396,7 @@ export class OmOrderManagerComponent implements OnInit {
       return
     }
 
-    if (!this.OMIndex.preferences[0].allowPartRel && this.totalRecords > -1 || this.FilterString != '1 = 1') {      
+    if (!this.OMIndex.preferences[0].allowPartRel && this.totalRecords > -1 || this.FilterString != UniqueConstants.OneEqualsOne) {      
 
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
@@ -549,7 +549,7 @@ export class OmOrderManagerComponent implements OnInit {
     }, 100);
   }
 
-  FilterString : string = "1 = 1";
+  FilterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.customPagination.startIndex = 0;

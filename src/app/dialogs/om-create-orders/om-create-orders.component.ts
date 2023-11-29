@@ -81,7 +81,7 @@ export class OmCreateOrdersComponent implements OnInit {
   createOrdersDTSubscribe: any;
   createOrdersDTPayload: any = {
     orderNumber: "",
-    filter: "1 = 1"
+    filter: UniqueConstants.OneEqualsOne
   };
   tableData: any = [];
   userData: any;
@@ -315,7 +315,7 @@ export class OmCreateOrdersComponent implements OnInit {
           this.iOrderManagerApi.OTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
               this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-              this.createOrdersDTPayload.filter = "1 = 1";
+              this.createOrdersDTPayload.filter = UniqueConstants.OneEqualsOne;
               this.selectedFilterColumn = '';
               this.selectedFilterString = '';
               this.createOrdersDT();
