@@ -65,7 +65,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: TableConstant.LotNumber, label: Column.LotNumber, value: TableConstant.LotNumber, filterProperty:'lot Number' },
     { defination: 'Trans Qty', label: 'Trans Qty', value: ColumnDef.TransactionQuantity , filterProperty:'Trans Qty'},
     { defination: UniqueConstants.Description, label: Column.Description, value: UniqueConstants.Description, filterProperty:Column.Description },
-    { defination: Column.OrderNumber, label: Column.OrderNumber, value: 'orderNumber', filterProperty:Column.OrderNumber },
+    { defination: Column.OrderNumber, label: Column.OrderNumber, value: UniqueConstants.OrderNumber, filterProperty:Column.OrderNumber },
     { defination: 'UofM', label: 'UofM', value: ColumnDef.UnitOfMeasure, filterProperty:'UofM' },
     { defination: ColumnDef.BatchPickID, label: ColumnDef.BatchPickID, value: TableConstant.BatchPickID, filterProperty:ColumnDef.BatchPickID },
     { defination: ColumnDef.SerialNumber, label: ColumnDef.SerialNumber, value: TableConstant.SerialNumber, filterProperty:ColumnDef.SerialNumber },
@@ -130,7 +130,7 @@ export class SrCurrentOrderComponent implements OnInit {
       value: Column.OrderNumber,
       viewValue: Column.OrderNumber,
       sortColumn: '12',
-      key: 'orderNumber',
+      key: UniqueConstants.OrderNumber,
     },
     {
       value: 'Print Date',

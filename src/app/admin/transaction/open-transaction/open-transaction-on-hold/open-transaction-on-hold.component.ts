@@ -35,7 +35,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'importFileName', colDef: 'Import Filename' },
     { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
-    { colHeader: 'orderNumber', colDef: Column.OrderNumber },
+    { colHeader: UniqueConstants.OrderNumber, colDef: Column.OrderNumber },
     { colHeader: TableConstant.LineNumber, colDef: 'Line Number' },
     { colHeader: TableConstant.LineSequence, colDef: 'Line Sequence' },
     { colHeader: UniqueConstants.Priority, colDef: 'Priority' },

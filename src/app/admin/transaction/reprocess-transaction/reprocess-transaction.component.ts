@@ -31,7 +31,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'importFileName', colDef: 'Import Filename' },
     { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
-    { colHeader: 'orderNumber', colDef: Column.OrderNumber },
+    { colHeader: UniqueConstants.OrderNumber, colDef: Column.OrderNumber },
     { colHeader: TableConstant.LineNumber, colDef: 'Line Number' },
     { colHeader: TableConstant.LineSequence, colDef: 'Line Sequence' },
     { colHeader: UniqueConstants.Priority, colDef: 'Priority' },
@@ -653,7 +653,7 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   selectOrder(row){
-    this.selectedOrderObj['orderNumber'] = row.orderNumber;
+    this.selectedOrderObj[UniqueConstants.OrderNumber] = row.orderNumber;
     this.selectedOrderObj['itemNumber'] = row.itemNumber;
     this.sharedService.updateReprocess(this.selectedOrderObj)
   }

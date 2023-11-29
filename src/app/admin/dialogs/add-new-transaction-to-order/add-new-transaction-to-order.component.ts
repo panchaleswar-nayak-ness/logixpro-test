@@ -11,7 +11,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,DialogConstants,Style,Column} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,Style,Column,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-new-transaction-to-order',
@@ -216,7 +216,7 @@ export class AddNewTransactionToOrderComponent implements OnInit {
              
               // TransactionForOrderInsert
               if (this.data.mode === 'add-trans') {
-                  payload['orderNumber'] = this.data.orderNumber;
+                  payload[UniqueConstants.OrderNumber] = this.data.orderNumber;
                   payload[Column.TransType] = this.data.transactionType;
                   payload['itemNum'] = this.itemNumber;
               } else {

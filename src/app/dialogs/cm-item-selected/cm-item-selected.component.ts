@@ -8,7 +8,7 @@ import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/common/services/consolidation-api/consolidation-api.service";
 import { GlobalService } from "src/app/common/services/global.service";
-import {  LiveAnnouncerMessage ,ToasterTitle,ToasterType,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ToasterTitle,ToasterType,ColumnDef,TableConstant,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-item-selected',

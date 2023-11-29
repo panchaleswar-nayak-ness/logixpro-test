@@ -5,7 +5,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/common/services/consolidation-api/consolidation-api.service";
 import { GlobalService } from "src/app/common/services/global.service";
-import {  Column ,ToasterTitle,ToasterType,ColumnDef} from 'src/app/common/constants/strings.constants';
+import {  Column ,ToasterTitle,ToasterType,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
     template: ''
@@ -56,7 +56,7 @@ export class ItemSelected implements OnInit {
 
     getItemSelectedData(){
         let payload = {
-            "orderNumber": this.IdentModal ,
+            UniqueConstants.OrderNumber: this.IdentModal ,
             "column": this.ColLabel,
             "columnValue": this.data.ColLabel
         }

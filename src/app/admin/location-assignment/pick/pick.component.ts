@@ -22,8 +22,8 @@ import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogC
 })
 export class PickComponent implements OnInit {
 
-  displayedColumns1: string[] = ['status', 'orderNumber', UniqueConstants.Priority, UniqueConstants.itemCount, ColumnDef.RequiredDate, ColumnDef.Action];
-  displayedColumns2: string[] = ['orderNumber', UniqueConstants.Priority, UniqueConstants.itemCount, ColumnDef.RequiredDate, ColumnDef.Action];
+  displayedColumns1: string[] = ['status', UniqueConstants.OrderNumber, UniqueConstants.Priority, UniqueConstants.itemCount, ColumnDef.RequiredDate, ColumnDef.Action];
+  displayedColumns2: string[] = [UniqueConstants.OrderNumber, UniqueConstants.Priority, UniqueConstants.itemCount, ColumnDef.RequiredDate, ColumnDef.Action];
   tableData1: any = new MatTableDataSource([]);
   tableData2: any = new MatTableDataSource([]);
   userData: any;
@@ -32,7 +32,7 @@ export class PickComponent implements OnInit {
   @ViewChild('MatSort1') sort1: MatSort;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   sequenceKeyMapping1: any = [
-    { sequence: 'orderNumber', key: 'orderNumber' },
+    { sequence: UniqueConstants.OrderNumber, key: UniqueConstants.OrderNumber },
     { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
     { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
     { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },
@@ -40,7 +40,7 @@ export class PickComponent implements OnInit {
 
   @ViewChild('MatSort2') sort2: MatSort;
   sequenceKeyMapping2: any = [
-    { sequence: 'orderNumber', key: 'orderNumber' },
+    { sequence: UniqueConstants.OrderNumber, key: UniqueConstants.OrderNumber },
     { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
     { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
     { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },

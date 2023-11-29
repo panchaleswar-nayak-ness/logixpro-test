@@ -4,7 +4,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppPermissions, StringConditions, ToasterTitle, ToasterType, TransactionType, localStorageKeys ,Column,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { AppPermissions, StringConditions, ToasterTitle, ToasterType, TransactionType, localStorageKeys ,Column,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-manager',
@@ -19,12 +19,12 @@ export class BatchManagerComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   orderList: any;
   transTypeEvent: Event;
-  displayOrderCols: string[] = ["orderNumber", "countOfOrderNumber", "minOfPriority", "detail", ColumnDef.Action];
+  displayOrderCols: string[] = [UniqueConstants.OrderNumber, "countOfOrderNumber", "minOfPriority", "detail", ColumnDef.Action];
   selOrderList: any = [];
   type: any;
   isAutoBatch = false;
   batchManagerSettings: any = [];
-  displaySelOrderCols: string[] = ["orderNumber", "countOfOrderNumber", ColumnDef.Action];
+  displaySelOrderCols: string[] = [UniqueConstants.OrderNumber, "countOfOrderNumber", ColumnDef.Action];
   permissions: any;
   seeOrderStatus: boolean;
   pickToTotes: boolean;

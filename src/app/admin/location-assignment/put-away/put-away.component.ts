@@ -25,7 +25,7 @@ export class PutAwayComponent implements OnInit {
 
   @ViewChild('MatSort1') sort1: MatSort;
   sequenceKeyMapping1: any = [
-    { sequence: 'orderNumber', key: 'orderNumber' },
+    { sequence: UniqueConstants.OrderNumber, key: UniqueConstants.OrderNumber },
     { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
     { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
     { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },
@@ -33,7 +33,7 @@ export class PutAwayComponent implements OnInit {
 
   @ViewChild('MatSort2') sort2: MatSort;
   sequenceKeyMapping2: any = [
-    { sequence: 'orderNumber', key: 'orderNumber' },
+    { sequence: UniqueConstants.OrderNumber, key: UniqueConstants.OrderNumber },
     { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
     { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
     { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },
@@ -62,8 +62,8 @@ export class PutAwayComponent implements OnInit {
     this.GetLocAssPutAwayTable();
   }
 
-  displayedColumns1: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, ColumnDef.RequiredDate, ColumnDef.Action];
-  displayedColumns2: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, ColumnDef.RequiredDate, ColumnDef.Action];
+  displayedColumns1: string[] = [UniqueConstants.OrderNumber, UniqueConstants.itemCount, UniqueConstants.Priority, ColumnDef.RequiredDate, ColumnDef.Action];
+  displayedColumns2: string[] = [UniqueConstants.OrderNumber, UniqueConstants.itemCount, UniqueConstants.Priority, ColumnDef.RequiredDate, ColumnDef.Action];
   tableData1: any = new MatTableDataSource([]);
 
   GetLocAssPutAwayTable(loader: boolean = false) {

@@ -32,7 +32,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'importFileName', colDef: 'Import Filename' },
     { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
-    { colHeader: 'orderNumber', colDef: Column.OrderNumber },
+    { colHeader: UniqueConstants.OrderNumber, colDef: Column.OrderNumber },
     { colHeader: UniqueConstants.Priority, colDef: 'Priority' },
     { colHeader: 'itemNumber', colDef: Column.ItemNumber },
     { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },

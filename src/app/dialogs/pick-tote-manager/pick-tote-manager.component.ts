@@ -143,7 +143,7 @@ export class PickToteManagerComponent implements OnInit {
   ];
   filterBatchTransColumns = [
     {
-      columnDef: 'orderNumber',
+      columnDef: UniqueConstants.OrderNumber,
       header: Column.OrderNumber,
       cell: (element: any) => `${element.orderNumber}`,
     },

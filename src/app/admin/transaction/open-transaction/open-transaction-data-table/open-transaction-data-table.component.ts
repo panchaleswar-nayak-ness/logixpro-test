@@ -14,7 +14,7 @@ import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,Style,UniqueC
 })
 export class OpenTransactionDataTableComponent implements OnInit {
   displayedColumns: string[] = [
-    'orderNumber',
+    UniqueConstants.OrderNumber,
     'itemNumber',
     'wareHouse',
     TableConstant.Location,
