@@ -7,6 +7,7 @@ import { CmShipEditQtyComponent } from '../cm-ship-edit-qty/cm-ship-edit-qty.com
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing-process-transaction',
@@ -14,7 +15,7 @@ import { ConsolidationApiService } from 'src/app/common/services/consolidation-a
   styleUrls: ['./cm-confirm-and-packing-process-transaction.component.scss']
 })
 export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
-  displayedColumns: string[] = ['itemNumber', 'lineNumber', 'transactionQuantity', 'completedQuantity', 'shipQuantity'];
+  displayedColumns: string[] = ['itemNumber', TableConstant.LineNumber, ColumnDef.TransactionQuantity, TableConstant.completedQuantity, 'shipQuantity'];
   confPackProcTable: any = [];
   confPackTransTable: any = [];
   orderNumber: any;
@@ -56,7 +57,7 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
 
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         }
       });
   }
@@ -66,7 +67,7 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
         this.confPackProcTable = response.data;
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ConfPackProcModal", response.responseMessage);
       }
 
@@ -78,7 +79,7 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(CmShipSplitLineComponent, {
       height: 'auto',
       width: '30vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         order: this.confPackTransTable[index],
@@ -97,8 +98,8 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
     let index = this.confPackTransTable.findIndex(x => x.active);
     let dialogRef: any = this.global.OpenDialog(CmShipEditQtyComponent, {
       height: 'auto',
-      width: '50vw',
-      autoFocus: '__non_existing_element__',
+      width: Style.w50vw,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         reasons: this.data.reasons,
@@ -125,7 +126,7 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
     this.iConsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res: any) => {
       if (res) {
         if (res.data == "Fail") {
-          this.global.ShowToastr('error', "An error has occurred", 'Error!');
+          this.global.ShowToastr(ToasterType.Error, "An error has occurred", ToasterTitle.Error);
 
         } else {
           //edit table 
@@ -153,7 +154,7 @@ export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!'); 
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error); 
 
       };
     });

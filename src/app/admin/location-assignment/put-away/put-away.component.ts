@@ -11,7 +11,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ConfirmationMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style,UniqueConstants,Column,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -25,18 +25,18 @@ export class PutAwayComponent implements OnInit {
 
   @ViewChild('MatSort1') sort1: MatSort;
   sequenceKeyMapping1: any = [
-    { sequence: 'orderNumber', key: 'orderNumber' },
-    { sequence: 'itemCount', key: 'itemCount' },
-    { sequence: 'priority', key: 'priority' },
-    { sequence: 'requiredDate', key: 'requiredDate' },
+    { sequence: UniqueConstants.OrderNumber, key: UniqueConstants.OrderNumber },
+    { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
+    { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
+    { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },
   ];
 
   @ViewChild('MatSort2') sort2: MatSort;
   sequenceKeyMapping2: any = [
-    { sequence: 'orderNumber', key: 'orderNumber' },
-    { sequence: 'itemCount', key: 'itemCount' },
-    { sequence: 'priority', key: 'priority' },
-    { sequence: 'requiredDate', key: 'requiredDate' },
+    { sequence: UniqueConstants.OrderNumber, key: UniqueConstants.OrderNumber },
+    { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
+    { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
+    { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },
   ];
 
   @ViewChild('paginator1') paginator1: MatPaginator;
@@ -62,8 +62,8 @@ export class PutAwayComponent implements OnInit {
     this.GetLocAssPutAwayTable();
   }
 
-  displayedColumns1: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
-  displayedColumns2: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate', 'action'];
+  displayedColumns1: string[] = [UniqueConstants.OrderNumber, UniqueConstants.itemCount, UniqueConstants.Priority, ColumnDef.RequiredDate, ColumnDef.Action];
+  displayedColumns2: string[] = [UniqueConstants.OrderNumber, UniqueConstants.itemCount, UniqueConstants.Priority, ColumnDef.RequiredDate, ColumnDef.Action];
   tableData1: any = new MatTableDataSource([]);
 
   GetLocAssPutAwayTable(loader: boolean = false) {
@@ -136,8 +136,8 @@ export class PutAwayComponent implements OnInit {
     else {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           heading: 'Mark Selected Orders for PUT AWAY Location Assignment?',
@@ -145,7 +145,7 @@ export class PutAwayComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let payload: any = {
             "transType": 'putaway',
             "orders": this.tableData2.data.map((item: any) => { return item.orderNumber }),
@@ -171,7 +171,7 @@ export class PutAwayComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer1.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer1.announce('Sorting cleared');
+      this._liveAnnouncer1.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.tableData1.sort = this.sort1;
   }
@@ -181,7 +181,7 @@ export class PutAwayComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer2.announce(`Sorted ${sortState.direction}ending`);
     } else { 
-      this._liveAnnouncer2.announce('Sorting cleared');
+      this._liveAnnouncer2.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.tableData2.sort = this.sort2;
   }

@@ -16,7 +16,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,ToasterMessages,DialogConstants,UniqueConstants,Column,Style,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ccb-create-counts',
@@ -96,17 +96,17 @@ export class CCBCreateCountsComponent implements OnInit {
 
   displayedColumns: string[] = [
     'itemNumber',
-    'description',
+    UniqueConstants.Description,
     'itemQuantity',
     'unitofMeasure',
-    'warehouse',
-    'location',
-    'goldenZone',
-    'cellSize',
-    'serialNumber',
-    'lotNumber',
-    'expirationDate',
-    'actions',
+    TableConstant.WareHouse,
+    TableConstant.Location,
+    UniqueConstants.goldenZone,
+    UniqueConstants.cellSize,
+    TableConstant.SerialNumber,
+    TableConstant.LotNumber,
+    ColumnDef.ExpirationDate,
+    ColumnDef.Actions,
   ];
   dataSourceList: any;
   fromLocationCrossbtn:any;
@@ -164,7 +164,7 @@ constructor(
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['updateTable']['currentValue']) {
+    if (changes['updateTable'][StringConditions.currentValue]) {
       this.resetVal();
     }
   }
@@ -205,7 +205,7 @@ constructor(
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value) => {
         
-        this.getTypeAheads('Description');
+        this.getTypeAheads(Column.Description);
         this.fillData();
       });
 
@@ -279,14 +279,14 @@ constructor(
     if(this.printCC){
       this.global.Print(`FileName:PrintCycleCountReport|OrderNum:${this.orderNumber?this.orderNumber:''}`)
      } else {
-      window.open(`/#/report-view?file=PrintCycleCountReport-lst-prv|OrderNum:${this.orderNumber?this.orderNumber:''}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+      window.open(`/#/report-view?file=PrintCycleCountReport-lst-prv|OrderNum:${this.orderNumber?this.orderNumber:''}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
     }
   }
 
   resetVal() {
     this.filtersForm.controls['fromLocation'].setValue('');
     this.filtersForm.controls['toLocation'].setValue('');
-    this.filtersForm.controls['description'].setValue('');
+    this.filtersForm.controls[UniqueConstants.Description].setValue('');
     this.filtersForm.controls['category'].setValue('');
     this.filtersForm.controls['subCategory'].setValue('');
     this.filtersForm.controls['fromItem'].setValue('');
@@ -299,13 +299,13 @@ constructor(
     this.filtersForm.controls['putEnd'].setValue(new Date());
     this.filtersForm.controls['costStart'].setValue('');
     this.filtersForm.controls['costEnd'].setValue('');
-    this.filtersForm.controls['warehouse'].setValue('');
+    this.filtersForm.controls[TableConstant.WareHouse].setValue('');
 
     
     this.fillData();
   }
   getTypeAheads(type) {
-    if (type === 'Description') {
+    if (type === Column.Description) {
       let paylaod = {
         description: this.filtersForm.value.description 
       };
@@ -447,18 +447,18 @@ constructor(
           // If the data is not returned, show an error message
           else {
             
-            this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log("GetCountBatches",res.responseMessage);
           }
         },
         // If the request is not successful, show an error message
         (error) => {
-          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
         }
       );
     } catch (error) {
       // If the code cannot be run, show an error message
-      this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
+      this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
     }
   }
 
@@ -474,7 +474,7 @@ constructor(
         : '',
       includeEmpty: this.filtersForm.value.includeEmpty,
       includeOther: this.filtersForm.value.includeOther,
-      countType: this.selection ? this.selection : 'Description',
+      countType: this.selection ? this.selection : Column.Description,
       fromItem: this.filtersForm.value.fromItem
         ? this.filtersForm.value.fromItem
         : '',
@@ -529,7 +529,7 @@ constructor(
           : '',
         includeEmpty: this.filtersForm.value.includeEmpty,
         includeOther: this.filtersForm.value.includeOther,
-        CountType: this.selection ? this.selection : 'Description',
+        CountType: this.selection ? this.selection : Column.Description,
         fromItem: this.filtersForm.value.fromItem
           ? this.filtersForm.value.fromItem
           : '',
@@ -584,12 +584,12 @@ constructor(
           }
         } else {
           
-          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("BatchResultTable",res.responseMessage);
         }
       },
       (err) => {
-        this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
       }
     );
   }
@@ -600,21 +600,21 @@ constructor(
     if (this.orderNumber === '' || this.orderNumber == undefined) return;
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '600px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w600px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: 'delete-create-count',
         actionMessage: ` all ${
           ident === 1 ? 'Incomplete' : ''
         } count transactions for ${this.orderNumber}`,
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
       ;
 
-      if (res == 'Yes') {
+      if (res == ResponseStrings.Yes) {
         const payLoad = {
           orderNumber: this.orderNumber,
           ident: ident, 
@@ -632,13 +632,13 @@ constructor(
               // Get the orders again
             } else {
               // Display an error message
-              this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
+              this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             }
           },
           // This function will be called if there is an error
           (error: any) => {
             // Display an error message
-            this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           }
         );
       }
@@ -657,7 +657,7 @@ constructor(
           this.updateQueCountEvent(res.data);
         } else {
           
-          this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("CycleCountQueueInsert",res.responseMessage);
         }
       },
@@ -704,7 +704,7 @@ constructor(
                       } else {
                         
                         this.global.ShowToastr(ToasterType.Error,
-                          'Something went wrong',
+                          ToasterMessages.SomethingWentWrong,
                           ToasterTitle.Error 
                         );
                         console.log("CycleCountQueueInsert",res.responseMessage);
@@ -736,7 +736,7 @@ constructor(
     if (sortState.direction) {
       this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this.liveAnnouncer.announce('Sorting cleared');
+      this.liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
   }
 

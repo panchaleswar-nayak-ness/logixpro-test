@@ -6,7 +6,8 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,dataCredientials} from 'src/app/common/constants/strings.constants';
+import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-location',
@@ -45,7 +46,7 @@ export class AddLocationComponent implements OnInit {
 
     } else {
       this.form_heading = 'Add New Location';
-      this.form_btn_label = 'Add';
+      this.form_btn_label = StringConditions.AddCaps;
     }
     
   }
@@ -58,7 +59,7 @@ export class AddLocationComponent implements OnInit {
       "query":  this.startLocation,
       "unique": true,
       "username": this.data.userName,
-      "wsid": "TESTWSID"
+      "wsid": dataCredientials.testWsid
     }
     this.employeeService.getLocationList('/Common/locationbegin',payload).subscribe((res:any) => {
       if(res.isExecuted){
@@ -77,7 +78,7 @@ export class AddLocationComponent implements OnInit {
       "beginLocation": this.startLocation,
       "unique": true,
       "username": this.data.userName,
-      "wsid": "TESTWSID"
+      "wsid": dataCredientials.testWsid
     }
     this.employeeService.getLocationList('/Common/locationend',payload).subscribe((res:any) => {
       if(res.isExecuted){
@@ -108,7 +109,7 @@ export class AddLocationComponent implements OnInit {
       "oldStartLocation":  this.data.locationData?.startLocation ?? '',    
       "oldEndLocation": this.data.locationData?.endLocation ?? '' ,
       "username": this.data.userName,
-      "wsid": "TESTWSID"
+      "wsid": dataCredientials.testWsid
     }
     if(this.data.locationData){
       this.iAdminApiService.updateEmployeeLocation(payload).subscribe((res:any) => {

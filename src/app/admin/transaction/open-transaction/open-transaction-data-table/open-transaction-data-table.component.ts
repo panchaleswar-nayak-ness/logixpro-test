@@ -5,7 +5,7 @@ import { HoldReasonComponent } from 'src/app/admin/dialogs/hold-reason/hold-reas
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { Column, DialogConstants, Mode, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, Mode, ToasterTitle, ToasterType ,Style,UniqueConstants,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-open-transaction-data-table',
@@ -14,21 +14,21 @@ import { Column, DialogConstants, Mode, ToasterTitle, ToasterType } from 'src/ap
 })
 export class OpenTransactionDataTableComponent implements OnInit {
   displayedColumns: string[] = [
-    'orderNumber',
+    UniqueConstants.OrderNumber,
     'itemNumber',
     'wareHouse',
-    'location',
-    'transactionType',
-    'transactionQuantity',
-    'serialNumber',
-    'lotNumber',
-    'lineNumber',
-    'hostTransactionID',
-    'toteID',
+    TableConstant.Location,
+    TableConstant.transactionType,
+    ColumnDef.TransactionQuantity,
+    TableConstant.SerialNumber,
+    TableConstant.LotNumber,
+    TableConstant.LineNumber,
+    ColumnDef.HostTransactionId,
+    ColumnDef.ToteID,
     'id',
-    'actions',
+    ColumnDef.Actions,
   ];
-  identify='Order Number';
+  identify=Column.OrderNumber;
   reels='non';
   orderItem='';
   payload: any;
@@ -41,7 +41,7 @@ export class OpenTransactionDataTableComponent implements OnInit {
     endIndex: 10,
   };
   public sortCol: any = 5;
-  public sortOrder: any = 'asc';
+  public sortOrder: any = UniqueConstants.Asc;
   public columnValues: any = [];
   pageEvent: PageEvent;
 
@@ -119,7 +119,7 @@ export class OpenTransactionDataTableComponent implements OnInit {
   holdDeallocate(row){
     const dialogRef: any = this.global.OpenDialog(HoldReasonComponent, {
       height: DialogConstants.auto,
-      width: '480px',
+      width: Style.w480px,
       data: {
         mode: Mode.HoldTransactions,
         reel:this.reels,

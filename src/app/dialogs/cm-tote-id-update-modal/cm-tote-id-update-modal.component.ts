@@ -4,6 +4,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import {  ToasterMessages ,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-tote-id-update-modal',
@@ -64,7 +65,7 @@ export class CmToteIdUpdateModalComponent implements OnInit {
               containerID: this.containerID
             });
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log("ContIDShipTransUpdate",res.responseMessage);
           }
         },

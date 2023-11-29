@@ -12,6 +12,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-kit-item',
@@ -20,7 +21,7 @@ import { CommonApiService } from 'src/app/common/services/common-api/common-api.
 })
 export class KitItemComponent implements OnInit, OnChanges {
 
-  displayedColumns: string[] = ['ItemNumber', 'Description', 'SpecialFeatures', 'KitQuantity','Actions'];
+  displayedColumns: string[] = ['ItemNumber', Column.Description, 'SpecialFeatures', 'KitQuantity','Actions'];
 
   @Input() kitItem: FormGroup;
   public userData: any;
@@ -40,7 +41,7 @@ export class KitItemComponent implements OnInit, OnChanges {
   isValidForm: boolean = false;
 
   @ViewChild('additemNumber') addItemNumber: TemplateRef<any>;
-  @ViewChild('description') description: TemplateRef<any>;
+  @ViewChild(UniqueConstants.Description) description: TemplateRef<any>;
 
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   sendNotification(e?) {
@@ -105,12 +106,12 @@ export class KitItemComponent implements OnInit, OnChanges {
   dltCategory(e: any) {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w480px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
     dialogRef.afterClosed().subscribe(result => {
-     if(result === 'Yes'){
+     if(result === ResponseStrings.Yes){
       if (e?.itemNumber) {
         let payLoad = {
           "itemNumber": this.kitItem.controls['itemNumber'].value,
@@ -121,11 +122,11 @@ export class KitItemComponent implements OnInit, OnChanges {
         this.iAdminApiService.DeleteKit(payLoad).subscribe((res: any) => {
   
           if (res.isExecuted) {
-            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
             this.sendNotification();
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("DeleteKit", res.responseMessage);
 
 
@@ -148,12 +149,12 @@ export class KitItemComponent implements OnInit, OnChanges {
   saveKit(newItem: any, e: any) {
 
     if (parseInt(e.kitQuantity) <= 0) {
-      this.global.ShowToastr('error',"Kit Quantity should be greater than 0", 'Error!');
+      this.global.ShowToastr(ToasterType.Error,"Kit Quantity should be greater than 0", ToasterTitle.Error);
       return;        
     }
 
     if (!e.itemNumber || !e.kitQuantity) {            
-      this.global.ShowToastr('error',"Please fill required fields", 'Error!');
+      this.global.ShowToastr(ToasterType.Error,"Please fill required fields", ToasterTitle.Error);
       return;
     }
 
@@ -174,10 +175,10 @@ export class KitItemComponent implements OnInit, OnChanges {
       this.iAdminApiService.InsertKit(payLoad).subscribe((res: any) => {
 
         if (res.isExecuted) {
-          this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.sendNotification();
         } else {
-          this.global.ShowToastr('error',"Invalid Input", 'Error!');
+          this.global.ShowToastr(ToasterType.Error,"Invalid Input", ToasterTitle.Error);
           console.log("InsertKit",res.responseMessage);
         }
 
@@ -195,10 +196,10 @@ export class KitItemComponent implements OnInit, OnChanges {
       this.iAdminApiService.UpdateKit(payLoad).subscribe((res: any) => {
 
         if (res.isExecuted) {
-          this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.sendNotification();
         } else {
-          this.global.ShowToastr('error',"Invalid Input", 'Error!');
+          this.global.ShowToastr(ToasterType.Error,"Invalid Input", ToasterTitle.Error);
           console.log("UpdateKit",res.responseMessage);
         }
 
@@ -216,8 +217,8 @@ export class KitItemComponent implements OnInit, OnChanges {
 
   openAddItemNumDialog(e): void {
     const dialogRef:any = this.global.OpenDialog(this.addItemNumber, {
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((x) => {
@@ -234,8 +235,8 @@ export class KitItemComponent implements OnInit, OnChanges {
 
   openDescriptionDialog(e): void {
     const dialogRef:any = this.global.OpenDialog(this.description, {
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((x) => {
@@ -260,8 +261,10 @@ export class KitItemComponent implements OnInit, OnChanges {
     this.iCommonAPI.SearchItem(payLoad).subscribe((res: any) => {
       if (res.data) {
         this.searchList = res.data
-        if (this.searchList.length > 0) {
-          this.isValidForm = false;
+        if (this.searchList.length > 0) this.isValidForm = false;
+        else {
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log("SearchItem", res.responseMessage);
         }
       }
     });
@@ -272,7 +275,7 @@ export class KitItemComponent implements OnInit, OnChanges {
     if (this.kitItem.controls['itemNumber'].value == e.option.value.itemNumber) {
       this.dialogItemNumber = '';
       this.dialogDescription = '';
-      this.global.ShowToastr('error',"Item " + e.option.value.itemNumber + " cannot belong to itself in a kit.", 'Error!');
+      this.global.ShowToastr(ToasterType.Error,"Item " + e.option.value.itemNumber + " cannot belong to itself in a kit.", ToasterTitle.Error);
       this.isValidForm = false
       return;
     } else {
@@ -289,7 +292,7 @@ export class KitItemComponent implements OnInit, OnChanges {
         this.dialogDescription = e.option.value.description;
       } else {
         this.isValidForm = false
-        this.global.ShowToastr('error',"Item " + this.dialogItemNumber + " already exists in kit.", 'Error!');
+        this.global.ShowToastr(ToasterType.Error,"Item " + this.dialogItemNumber + " already exists in kit.", ToasterTitle.Error);
         this.dialogItemNumber = '';
         this.dialogDescription = '';
         return;

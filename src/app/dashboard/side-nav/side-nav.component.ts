@@ -5,7 +5,7 @@ import { AuthService } from '../../common/init/auth.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-import { AppNames, AppPermissions, AppRoutes, RouteUpdateMenu } from 'src/app/common/constants/strings.constants';
+import { AppNames, AppPermissions, AppRoutes, RouteUpdateMenu ,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-side-nav',
@@ -21,13 +21,13 @@ export class SideNavComponent implements OnInit {
   isMenuHide:any = false;
   dynamicMenu: any = [];
   menus: any = [
-    { icon: 'home', title: 'Home', route: '/dashboard' ,permission: 'Home'},
+    { icon: 'home', title: 'Home', route: AppRoutes.Dashboard ,permission: 'Home'},
     { icon: 'electric_bolt', title: 'Import Export', route: '/ImportExport' ,permission: 'Import Export'},
     { icon: 'manage_accounts', title: 'Admin', route: '/admin', permission: 'Admin Menu'},
-    { icon: 'checklist', title: 'Induction Manager', route: '/InductionManager' ,permission: 'Induction Manager'},
+    { icon: 'checklist', title: AppPermissions.InductionManager, route: '/InductionManager' ,permission: AppPermissions.InductionManager},
     { icon: 'fact_check', title: 'Work Manager', route: '#' ,permission: 'Work Manager'},
-    { icon: 'insert_chart', title: 'Consolidation Manager', route: '/ConsolidationManager' ,permission: 'Consolidation Manager'},
-    { icon: 'pending_actions', title: 'Order Manager', route: '/OrderManager' ,permission: 'Order Manager'},
+    { icon: 'insert_chart', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager' ,permission: AppPermissions.ConsolidationManager},
+    { icon: 'pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager' ,permission: AppPermissions.OrderManager},
     { icon: 'schema', title: 'FlowRack Replenishment', route: '/FlowrackReplenish',permission: 'FlowRack Replenish' }
   ];
   globalMenus: any = [
@@ -41,7 +41,7 @@ export class SideNavComponent implements OnInit {
 
   ];
   adminMenus: any = [
-    { icon: 'arrow_back', title: 'Admin', route: '/dashboard', class: 'back-class' ,permission: 'Dashboard'},
+    { icon: 'arrow_back', title: 'Admin', route: AppRoutes.Dashboard, class: UniqueConstants.backClass ,permission: 'Dashboard'},
     { icon: 'dashboard', title: 'Inventory', route: '/admin/inventoryMaster',permission: 'Inventory' },
     { icon: 'directions_alt', title: 'Inventory Map', route: '/admin/inventoryMap' ,permission: 'Inventory Map'},
     { icon: 'analytics', title: 'Reports', route: '/admin/reports' ,permission: 'Reports'},
@@ -58,21 +58,21 @@ export class SideNavComponent implements OnInit {
     { icon: 'published_with_changes', title: 'System Replenishment', route: '/admin/systemReplenishment' ,permission: 'Replenishment'},
   ];
   inductionMenus: any = [
-    { icon: 'arrow_back', title: 'Induction Manager', route: '/dashboard', class: 'back-class' , permission: 'Induction Manager'},
+    { icon: 'arrow_back', title: AppPermissions.InductionManager, route: AppRoutes.Dashboard, class: UniqueConstants.backClass , permission: AppPermissions.InductionManager},
     { icon: 'directions_alt', title: 'Process Picks', route: '/InductionManager/ProcessPicks' ,permission:'Tote Transactions'},
     { icon: 'dashboard', title: 'Process Put Aways', route: '/InductionManager/ProcessPutAways' ,permission:'Tote Transactions'},
     { icon: 'manage_accounts', title: 'Admin', route: '/InductionManager/Admin' ,permission:'Tote Admin Menu'},
-    { icon: 'edit_attributes', title: 'Mark Empty Reels', route: '/InductionManager/MarkEmptyReels' ,permission:'Induction Manager'},
-    { icon: 'linear_scale', title: 'Pallet Receiving', route: '/InductionManager/PalletReceiving' ,permission:'Induction Manager'},
-    { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch' ,permission:'Induction Manager'},
-    { icon: 'library_add_check', title: 'Complete Pick Batch', route: '/InductionManager/CompletePickBatch' ,permission:'Induction Manager'},
+    { icon: 'edit_attributes', title: 'Mark Empty Reels', route: '/InductionManager/MarkEmptyReels' ,permission:AppPermissions.InductionManager},
+    { icon: 'linear_scale', title: 'Pallet Receiving', route: '/InductionManager/PalletReceiving' ,permission:AppPermissions.InductionManager},
+    { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch' ,permission:AppPermissions.InductionManager},
+    { icon: 'library_add_check', title: 'Complete Pick Batch', route: '/InductionManager/CompletePickBatch' ,permission:AppPermissions.InductionManager},
   ];
 
   consolidationMenus: any = [
-    { icon: 'arrow_back', title: 'Consolidation Manager', route: '/ConsolidationManager', class: 'back-class' , permission: 'Consolidation Manager'},
-    { icon: 'insert_chart', title: 'Consolidation', route: '/ConsolidationManager/Consolidation', class: 'back-class' , permission: 'Consolidation Manager'},
+    { icon: 'arrow_back', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager', class: UniqueConstants.backClass , permission: AppPermissions.ConsolidationManager},
+    { icon: 'insert_chart', title: 'Consolidation', route: '/ConsolidationManager/Consolidation', class: UniqueConstants.backClass , permission: AppPermissions.ConsolidationManager},
     // Vector
-    { icon: 'add_location_alt', title: 'Staging Locations', route: '/ConsolidationManager/StagingLocations' ,permission:'Consolidation Manager'},
+    { icon: 'add_location_alt', title: 'Staging Locations', route: '/ConsolidationManager/StagingLocations' ,permission:AppPermissions.ConsolidationManager},
     { icon: 'tune', title: ' Preferences ', route: '/ConsolidationManager/Preferences' ,permission:'Consolidation Mgr Admin'},
     // Vector (Stroke)
     { icon: 'analytics', title: 'Reporting ', route: '/ConsolidationManager/Reports' ,permission:'Consolidation Mgr Admin'},
@@ -81,30 +81,30 @@ export class SideNavComponent implements OnInit {
   ];
 
   inductionAdminMenus: any = [
-    { icon: 'arrow_back', title: 'Admin', route: '/InductionManager', class: 'back-class' , permission: 'Induction Manager'},
-    { icon: ' directions_alt', title: 'Inventory Map', route: '/InductionManager/Admin/InventoryMap' ,permission:'Induction Manager'},
-    { icon: ' dashboard ', title: 'Inventory ', route: '/InductionManager/Admin/InventoryMaster' ,permission:'Induction Manager'},
-    { icon: ' inventory_2 ', title: 'Tote Transaction Manager ', route: '/InductionManager/Admin/ToteTransactionManager' ,permission:'Induction Manager'},
-    { icon: 'ads_click   ', title: 'Manual Transactions ', route: '/InductionManager/Admin/ManualTransactions' ,permission:'Induction Manager'},
-    { icon: 'elevator   ', title: 'Tote Manager ', route: '/InductionManager/Admin/ImToteManager' ,permission:'Induction Manager'},
-    { icon: 'post_add ', title: 'Transaction Journal ', route: '/InductionManager/Admin/TransactionJournal' ,permission:'Induction Manager'},
-    { icon: '     analytics     ', title: 'Reports ', route: '/InductionManager/Admin/Reports' ,permission:'Induction Manager'},
-    { icon: '      tune       ', title: 'Preferences ', route: '/InductionManager/Admin/AdminPrefrences' ,permission:'Induction Manager'},
+    { icon: 'arrow_back', title: 'Admin', route: '/InductionManager', class: UniqueConstants.backClass , permission: AppPermissions.InductionManager},
+    { icon: ' directions_alt', title: 'Inventory Map', route: '/InductionManager/Admin/InventoryMap' ,permission:AppPermissions.InductionManager},
+    { icon: ' dashboard ', title: 'Inventory ', route: '/InductionManager/Admin/InventoryMaster' ,permission:AppPermissions.InductionManager},
+    { icon: ' inventory_2 ', title: 'Tote Transaction Manager ', route: '/InductionManager/Admin/ToteTransactionManager' ,permission:AppPermissions.InductionManager},
+    { icon: 'ads_click   ', title: 'Manual Transactions ', route: '/InductionManager/Admin/ManualTransactions' ,permission:AppPermissions.InductionManager},
+    { icon: 'elevator   ', title: 'Tote Manager ', route: '/InductionManager/Admin/ImToteManager' ,permission:AppPermissions.InductionManager},
+    { icon: 'post_add ', title: 'Transaction Journal ', route: '/InductionManager/Admin/TransactionJournal' ,permission:AppPermissions.InductionManager},
+    { icon: '     analytics     ', title: 'Reports ', route: '/InductionManager/Admin/Reports' ,permission:AppPermissions.InductionManager},
+    { icon: '      tune       ', title: 'Preferences ', route: '/InductionManager/Admin/AdminPrefrences' ,permission:AppPermissions.InductionManager},
   ];
 
   orderManagerMenus: any = [
-    { icon: 'arrow_back', title: 'Order Manager', route: '/dashboard', class: 'back-class' , permission: 'Order Manager'},
-    { icon: ' pending_actions', title: 'Order Manager', route: '/OrderManager/OrderManager' ,permission:'Admin Release Orders'},
+    { icon: 'arrow_back', title: AppPermissions.OrderManager, route: AppRoutes.Dashboard, class: UniqueConstants.backClass , permission: AppPermissions.OrderManager},
+    { icon: ' pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager/OrderManager' ,permission:'Admin Release Orders'},
     { icon: 'view_module', title: 'Order Status ', route: '/OrderManager/OrderStatus' ,permission:true},
     { icon: 'event_note', title: 'Event Log ', route: '/OrderManager/EventLog' ,permission:'Admin Release Orders'},
     { icon: 'dataset', title: 'Inventory Master Info', route: '/OrderManager/InventoryMaster' ,permission:'Admin Inventory Master'},  
-    { icon: 'warehouse', title: 'Stock Location & Quantity ', route: '/OrderManager/InventoryMap' ,permission:'Admin Stock Locations'},
+    { icon: TableConstant.WareHouse, title: 'Stock Location & Quantity ', route: '/OrderManager/InventoryMap' ,permission:'Admin Stock Locations'},
     { icon: 'analytics', title: 'Reports ', route: '/OrderManager/Reports' ,permission:'Admin Reports'},
     { icon: 'tune', title: 'Preferences ', route: '/OrderManager/Preferences' ,permission:'Admin Preferences'},
   ];
 
   flowrackReplenishmentMenus: any = [
-    { icon: 'arrow_back', title: 'Flowrack Replenish', route: '/FlowrackReplenish', class: 'back-class' , permission: 'FlowRack Replenish'},
+    { icon: 'arrow_back', title: 'Flowrack Replenish', route: '/FlowrackReplenish', class: UniqueConstants.backClass , permission: 'FlowRack Replenish'},
     { icon: 'schema', title: 'Flowrack Replenishment', route: '/FlowrackReplenish/Flowrack' ,permission:'FlowRack Replenish'},
     { icon: 'tune', title: 'Preferences ', route: '/FlowrackReplenish/Preferences' ,permission:'FlowRack Replenish'},
   ];
@@ -199,15 +199,15 @@ export class SideNavComponent implements OnInit {
           }
           
           if(item.appname === AppNames.ICSAdmin){
-            let obj = { icon: 'arrow_back', title: `${item.displayname}`, route: AppRoutes.Dashboard, class: 'back-class', permission: AppPermissions.Dashboard }
+            let obj = { icon: 'arrow_back', title: `${item.displayname}`, route: AppRoutes.Dashboard, class: UniqueConstants.backClass, permission: AppPermissions.Dashboard }
             this.adminMenus.splice(0, 1, obj);
           }
           else if(item.appname === AppNames.Induction){
-            let obj = { icon: 'arrow_back', title: `${item.displayname}`, route: AppRoutes.Dashboard, class: 'back-class', permission: AppPermissions.Dashboard }
+            let obj = { icon: 'arrow_back', title: `${item.displayname}`, route: AppRoutes.Dashboard, class: UniqueConstants.backClass, permission: AppPermissions.Dashboard }
             this.inductionMenus.splice(0, 1, obj);
           } 
           else if(item.appname === AppNames.OrderManager){
-            let obj = { icon: 'arrow_back', title: `${item.displayname}`, route: AppRoutes.Dashboard, class: 'back-class', permission: AppPermissions.Dashboard }
+            let obj = { icon: 'arrow_back', title: `${item.displayname}`, route: AppRoutes.Dashboard, class: UniqueConstants.backClass, permission: AppPermissions.Dashboard }
             this.orderManagerMenus.splice(0, 1, obj);
           }
         });
@@ -225,7 +225,7 @@ export class SideNavComponent implements OnInit {
 
   loadMenus(menu: any) {
     this.sharedService.updateLoggedInUser(this.userData.userName,this.userData.wsid,menu.route);
-    if (!menu) menu = {route : '/dashboard'};      
+    if (!menu) menu = {route : AppRoutes.Dashboard};      
 
     if(menu.route != '')
     { 
@@ -233,7 +233,7 @@ export class SideNavComponent implements OnInit {
 
       if (menu.route.includes('/admin')) {
         if (menu.route.includes('/admin/')) this.adminMenus[0].route = '/admin';
-        else this.adminMenus[0].route = '/dashboard';
+        else this.adminMenus[0].route = AppRoutes.Dashboard;
         this.childMenus = this.adminMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
@@ -242,14 +242,14 @@ export class SideNavComponent implements OnInit {
 
       if (menu.route.includes('/InductionManager') && menu.route != '/InductionManager/Admin' && !menu.route.includes('/InductionManager/Admin')) {
         if (menu.route.includes('/InductionManager/')) this.inductionMenus[0].route = '/InductionManager';
-        else this.inductionMenus[0].route = '/dashboard';
+        else this.inductionMenus[0].route = AppRoutes.Dashboard;
         this.childMenus = this.inductionMenus;
         this.isParentMenu = false;
         this.isChildMenu = true;
         return;
       }
 
-      if (['/dashboard','/FlowrackReplenish'].indexOf(menu.route) > -1) {
+      if ([AppRoutes.Dashboard,'/FlowrackReplenish'].indexOf(menu.route) > -1) {
         this.isParentMenu = true;
         this.isChildMenu = false;
       }
@@ -262,7 +262,7 @@ export class SideNavComponent implements OnInit {
     }
     if (menu.route.includes('/ConsolidationManager')) {
       let splittedRoute=menu.route.split('/');
-      if(splittedRoute[2] === undefined) this.consolidationMenus[0].route = '/dashboard';
+      if(splittedRoute[2] === undefined) this.consolidationMenus[0].route = AppRoutes.Dashboard;
       else this.consolidationMenus[0].route = '/ConsolidationManager';
       this.childMenus = this.consolidationMenus;
       this.isParentMenu = false;
@@ -278,7 +278,7 @@ export class SideNavComponent implements OnInit {
 
     if (menu.route.includes('/OrderManager')) {
       let splittedRoute = menu.route.split('/');
-      if(splittedRoute[2]===undefined) this.orderManagerMenus[0].route = '/dashboard';
+      if(splittedRoute[2]===undefined) this.orderManagerMenus[0].route = AppRoutes.Dashboard;
       else this.orderManagerMenus[0].route = '/OrderManager';
       this.childMenus = this.orderManagerMenus;
       this.isParentMenu = false;
@@ -303,7 +303,7 @@ export class SideNavComponent implements OnInit {
     
     if (menu.route.includes('/FlowrackReplenish')) {
       let splittedRoute=menu.route.split('/');
-      if(splittedRoute[2] === undefined) this.flowrackReplenishmentMenus[0].route = '/dashboard';
+      if(splittedRoute[2] === undefined) this.flowrackReplenishmentMenus[0].route = AppRoutes.Dashboard;
       else this.flowrackReplenishmentMenus[0].route = '/FlowrackReplenish';
       this.childMenus = this.flowrackReplenishmentMenus;
       this.isParentMenu = false;

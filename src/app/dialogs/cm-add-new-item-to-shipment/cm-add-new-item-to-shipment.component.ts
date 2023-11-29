@@ -4,6 +4,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-add-new-item-to-shipment',
@@ -41,7 +42,7 @@ export class CmAddNewItemToShipmentComponent{
         this.dialogRef.close(true);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');  
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);  
       }
   })
 }

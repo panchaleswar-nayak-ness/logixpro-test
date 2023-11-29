@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table'; 
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import {  TableConstant ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-required-date-status',
@@ -11,47 +12,47 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
   styleUrls: ['./required-date-status.component.scss']
 })
 export class RequiredDateStatusComponent implements OnInit {
-  displayedColumns = ['reqDate', 'zone', 'countToInduct'];
+  displayedColumns = ['reqDate', TableConstant.zone, 'countToInduct'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   public iInductionManagerApi:IInductionManagerApiService;
 
   elementData: any[] = [
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },    
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2023", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "10" },
-    { countToInduct: "1", reqDate: "12/14/2022", zone: "12" }
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },    
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "10" },
+    { countToInduct: "1", reqDate: UniqueConstants.constantDate, zone: "12" }
   ];
 
   constructor(public inductionManagerApi: InductionManagerApiService) { 

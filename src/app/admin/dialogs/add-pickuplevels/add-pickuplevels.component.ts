@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-pickuplevels',
@@ -18,7 +18,7 @@ import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.cons
 export class AddPickuplevelsComponent implements OnInit {
   @ViewChild('start_shelf') start_shelf: ElementRef;
   form_heading: string = 'Add Pick Level';
-  form_btn_label: string = 'Add';
+  form_btn_label: string = StringConditions.AddCaps;
   levelId: any;
   startShelf: any;
   endShelf: any;
@@ -41,7 +41,7 @@ export class AddPickuplevelsComponent implements OnInit {
   ngOnInit(): void { 
 
     this.userData = this.authService.userData();
-    if (this.data.mode === 'edit') {
+    if (this.data.mode === StringConditions.edit) {
       this.form_heading = 'Edit Pick Label';
       this.form_btn_label = 'Update';
       this.picklvl = this.data.pickLevelData.pickLevel?.toString();
@@ -63,7 +63,7 @@ export class AddPickuplevelsComponent implements OnInit {
   }
 
   onSend(form: NgForm) { 
-    if (this.data.mode === 'edit') {
+    if (this.data.mode === StringConditions.edit) {
       form.value.levelID = this.levelId;
       
       this.iAdminApiService.updatePickLevels({ userName : this.data.userName, ...form.value }).subscribe((res:any) =>{

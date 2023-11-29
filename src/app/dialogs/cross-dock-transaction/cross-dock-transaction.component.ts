@@ -17,6 +17,7 @@ import { ConfirmationDialogComponent } from '../../../app/admin/dialogs/confirma
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cross-dock-transaction',
@@ -90,8 +91,8 @@ export class CrossDockTransactionComponent implements OnInit {
   openTotesDialogue(position: any) {
     const dialogRef: any = this.global.OpenDialog(TotesAddEditComponent, {
       height: 'auto',
-      width: '50vw',
-      autoFocus: '__non_existing_element__',
+      width: Style.w50vw,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         position: position,
@@ -141,7 +142,7 @@ export class CrossDockTransactionComponent implements OnInit {
     let payLoad = {
       sRow: this.lowerBound,
       eRow: this.upperBound,
-      itemWhse: [this.itemWhse, this.warehouse, '1=1'],
+      itemWhse: [this.itemWhse, this.warehouse, UniqueConstants.OneEqualsOne],
       username: this.userId,
       wsid: this.wsid,
     };
@@ -157,7 +158,7 @@ export class CrossDockTransactionComponent implements OnInit {
           this.upperBound =
             res.data.transaction.length < 5 ? res.data.numberRecords : 5;
         } else {
-          this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log('CrossDock', res.responseMessage);
         }
       },
@@ -174,7 +175,7 @@ export class CrossDockTransactionComponent implements OnInit {
       const dialogRef: any = this.global.OpenDialog(UserFieldsComponent, {
         height: 'auto',
         width: '70vw',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: this.selectedRowObj,
       });
@@ -205,15 +206,15 @@ export class CrossDockTransactionComponent implements OnInit {
           this.clearMatSelectList();
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('NextTote', res.responseMessage);
         }
       });
     } else {
-      this.global.ShowToastr('error', 'Order must be selected.', 'Error!');
+      this.global.ShowToastr(ToasterType.Error, 'Order must be selected.', ToasterTitle.Error);
       this.clearMatSelectList();
       console.log('getNxtToteIds');
     }
@@ -227,7 +228,7 @@ export class CrossDockTransactionComponent implements OnInit {
     };
     this.iInductionManagerApi.NextToteUpdate(updatePayload).subscribe((res) => {
       if (!res.isExecuted) {
-        this.global.ShowToastr('error', 'Something is wrong.', 'Error!');
+        this.global.ShowToastr(ToasterType.Error, 'Something is wrong.', ToasterTitle.Error);
         console.log('NextToteUpdate', res.responseMessage);
       }
     });
@@ -239,7 +240,7 @@ export class CrossDockTransactionComponent implements OnInit {
       {
         height: 'auto',
         width: '70vw',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           itemID: this.selectedRowObj.id,
@@ -264,7 +265,7 @@ export class CrossDockTransactionComponent implements OnInit {
     this.router.navigate([]).then((result) => {
       window.open(
         `/#/InductionManager/Admin/TransactionJournal?orderStatus=${this.selectedRowObj.orderNumber}`,
-        '_blank'
+        UniqueConstants._blank
       );
     });
   }
@@ -275,8 +276,8 @@ export class CrossDockTransactionComponent implements OnInit {
     try {
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           message:
@@ -287,7 +288,7 @@ export class CrossDockTransactionComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => {
         debugger;
 
-        if (result == 'Yes') {
+        if (result == ResponseStrings.Yes) {
           let payLoad = {
             pick: this.data.values.transactionQuantity,
             put: this.data.values.toteQty,
@@ -324,7 +325,7 @@ export class CrossDockTransactionComponent implements OnInit {
                   } else {
                     window.open(
                       `/#/report-view?file=FileName:autoPrintCrossDock|tote:true|otid:${this.OTRecID}|ZoneLabel:${this.zone}`,
-                      '_blank',
+                      UniqueConstants._blank,
                       'width=' +
                         screen.width +
                         ',height=' +
@@ -332,23 +333,23 @@ export class CrossDockTransactionComponent implements OnInit {
                         ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'
                     );
                     this.global.ShowToastr(
-                      'success',
+                      ToasterType.Success,
                       'Pick Completed Successfully',
-                      'Success!'
+                      ToasterTitle.Success
                     );
                   }
                 } else {
                   this.global.ShowToastr(
-                    'success',
+                    ToasterType.Success,
                     'Pick Completed Successfully',
-                    'Success!'
+                    ToasterTitle.Success
                   );
                 }
               } else {
                 this.global.ShowToastr(
-                  'error',
-                  'Something went wrong',
-                  'Error!'
+                  ToasterType.Error,
+                  ToasterMessages.SomethingWentWrong,
+                  ToasterTitle.Error
                 );
                 console.log('CompletePick', res.responseMessage);
               }
@@ -391,9 +392,9 @@ export class CrossDockTransactionComponent implements OnInit {
             this.PrintCrossDockForLbl();
           } else {
             this.global.ShowToastr(
-              'success',
+              ToasterType.Success,
               'Pick Completed Successfully',
-              'Success!'
+              ToasterTitle.Success
             );
           }
         }
@@ -404,15 +405,15 @@ export class CrossDockTransactionComponent implements OnInit {
   async showConfirmationDialog(message, callback) {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         message: message,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == ResponseStrings.Yes) {
         callback(true);
       } else {
         callback(false);
@@ -428,8 +429,8 @@ export class CrossDockTransactionComponent implements OnInit {
           ConfirmationDialogComponent,
           {
             height: 'auto',
-            width: '560px',
-            autoFocus: '__non_existing_element__',
+            width: Style.w560px,
+            autoFocus: DialogConstants.autoFocus,
             disableClose: true,
             data: {
               message:
@@ -439,7 +440,7 @@ export class CrossDockTransactionComponent implements OnInit {
         );
 
         dialogRef.afterClosed().subscribe((result) => {
-          if (result == 'Yes') {
+          if (result == ResponseStrings.Yes) {
             this.compPick();
           }
         });
@@ -458,7 +459,7 @@ export class CrossDockTransactionComponent implements OnInit {
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:${this.selectedRowObj.toteID}`,
-          '_blank',
+          UniqueConstants._blank,
           'width=' +
             screen.width +
             ',height=' +
@@ -473,7 +474,7 @@ export class CrossDockTransactionComponent implements OnInit {
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintCrossDock|RPID:${this.selectedRowObj.id}|ZoneLabel:${this.zone}|ToteID:`,
-        '_blank',
+        UniqueConstants._blank,
         'width=' +
           screen.width +
           ',height=' +

@@ -12,6 +12,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-location-assignment-quantities/la-location-assignment-quantities.component';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants,Column,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -21,8 +22,8 @@ import { LaLocationAssignmentQuantitiesComponent } from '../../dialogs/la-locati
 })
 export class PickComponent implements OnInit {
 
-  displayedColumns1: string[] = ['status', 'orderNumber', 'priority', 'itemCount', 'requiredDate', 'action'];
-  displayedColumns2: string[] = ['orderNumber', 'priority', 'itemCount', 'requiredDate', 'action'];
+  displayedColumns1: string[] = ['status', UniqueConstants.OrderNumber, UniqueConstants.Priority, UniqueConstants.itemCount, ColumnDef.RequiredDate, ColumnDef.Action];
+  displayedColumns2: string[] = [UniqueConstants.OrderNumber, UniqueConstants.Priority, UniqueConstants.itemCount, ColumnDef.RequiredDate, ColumnDef.Action];
   tableData1: any = new MatTableDataSource([]);
   tableData2: any = new MatTableDataSource([]);
   userData: any;
@@ -31,18 +32,18 @@ export class PickComponent implements OnInit {
   @ViewChild('MatSort1') sort1: MatSort;
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
   sequenceKeyMapping1: any = [
-    { sequence: 'orderNumber', key: 'orderNumber' },
-    { sequence: 'priority', key: 'priority' },
-    { sequence: 'itemCount', key: 'itemCount' },
-    { sequence: 'requiredDate', key: 'requiredDate' },
+    { sequence: UniqueConstants.OrderNumber, key: UniqueConstants.OrderNumber },
+    { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
+    { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
+    { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },
   ];
 
   @ViewChild('MatSort2') sort2: MatSort;
   sequenceKeyMapping2: any = [
-    { sequence: 'orderNumber', key: 'orderNumber' },
-    { sequence: 'itemCount', key: 'itemCount' },
-    { sequence: 'priority', key: 'priority' },
-    { sequence: 'requiredDate', key: 'requiredDate' },
+    { sequence: UniqueConstants.OrderNumber, key: UniqueConstants.OrderNumber },
+    { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
+    { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
+    { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },
   ];
   public iAdminApiService: IAdminApiService;
   @ViewChild('paginator1') paginator1: MatPaginator;
@@ -143,13 +144,13 @@ export class PickComponent implements OnInit {
 
   locationAssignment() {
     if (this.tableData2.data.length == 0) {
-      this.global.ShowToastr('error',"There were no orders selected for location assignment marking", 'No Orders Selected');
+      this.global.ShowToastr(ToasterType.Error,"There were no orders selected for location assignment marking", 'No Orders Selected');
     }
     else {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           heading: 'Mark Selected Orders for PICK Location Assignment?',
@@ -157,7 +158,7 @@ export class PickComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let payload: any = {
             "transType": 'pick',
             "orders": this.tableData2.data.map((item: any) => { return item.orderNumber }), 
@@ -166,9 +167,9 @@ export class PickComponent implements OnInit {
             if (res.isExecuted && res.data) {
               this.tableData2 = new MatTableDataSource([]);
               this.tableData2.paginator = this.paginator2;
-              this.global.ShowToastr('success',labels.alert.success, 'Success!');
+              this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             } else {
-              this.global.ShowToastr('error',"There was an error marking these orders for location assignment", 'Error');
+              this.global.ShowToastr(ToasterType.Error,"There was an error marking these orders for location assignment", ResponseStrings.Error);
               console.log("LocationAssignmentOrderInsert",res.responseMessage);
             }
           });
@@ -190,7 +191,7 @@ export class PickComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer1.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer1.announce('Sorting cleared');
+      this._liveAnnouncer1.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.tableData1.sort = this.sort1;
   }
@@ -200,7 +201,7 @@ export class PickComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer2.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer2.announce('Sorting cleared');
+      this._liveAnnouncer2.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.tableData2.sort = this.sort2;
   }
@@ -234,8 +235,8 @@ export class PickComponent implements OnInit {
     this.iAdminApiService.GetTransactionTypeCounts(payload).subscribe((res =>{
     let dialogRef:any = this.global.OpenDialog(LaLocationAssignmentQuantitiesComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {  
         'totalCount': res.data

@@ -4,6 +4,7 @@ import { AuthService } from '../../common/init/auth.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -52,7 +53,7 @@ export class AddFilterFunction implements OnInit {
           this.dialogRef.close({ "oldFilter": this.data.savedFilter, "newFilter": this.filterName, })
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("PickBatchFilterRename", res.responseMessage);
 
         }

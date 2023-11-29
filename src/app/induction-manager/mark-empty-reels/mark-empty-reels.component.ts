@@ -7,7 +7,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { LiveAnnouncerMessage, StringConditions, ToasterTitle, ToasterType, alertMessage } from 'src/app/common/constants/strings.constants';
+import { LiveAnnouncerMessage, StringConditions, ToasterTitle, ToasterType, alertMessage ,ResponseStrings,DialogConstants,UniqueConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-mark-empty-reels',
@@ -26,7 +26,7 @@ export class MarkEmptyReelsComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   scannedSerialList: MatTableDataSource<any>;
-  displayedColumns_1: string[] = ['scannedserialnumbers', 'actions'];
+  displayedColumns_1: string[] = ['scannedserialnumbers', ColumnDef.Actions];
   userData;
 
   constructor(
@@ -63,7 +63,7 @@ export class MarkEmptyReelsComponent implements OnInit {
           (response: any) => {
             if (response.isExecuted) {
               switch (response.data) {
-                case 'Error':
+                case ResponseStrings.Error:
                   this.itemInvalid = true;
                   this.notifyMessage = alertMessage.ErrorValidatingSerialNoMsg;
                   this.scanSerial = '';
@@ -105,12 +105,12 @@ export class MarkEmptyReelsComponent implements OnInit {
   removeRow(index: number, el) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '600px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w600px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         mode: 'delete-create-count',
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe(
@@ -140,12 +140,12 @@ export class MarkEmptyReelsComponent implements OnInit {
   markReelAsEmpty() {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '600px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w600px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         mode: 'delete-create-count',
-        action: 'delete',
+        action: UniqueConstants.delete,
         ErrorMessage: alertMessage.DeleteMessage,
       },
     });

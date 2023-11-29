@@ -7,7 +7,7 @@ import { KanbanZoneAllocationConflictComponent } from 'src/app/admin/dialogs/kan
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { zoneType, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { zoneType, ToasterMessages, ToasterType ,ToasterTitle,ResponseStrings,DialogConstants,UniqueConstants,TableConstant,Style} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -17,7 +17,7 @@ import { zoneType, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/co
 })
 export class SpLocationZonesComponent implements OnInit {
   toggleSwitches = [
-    { label: 'Carousel', name: 'carousel', property: 'carousel' },
+    { label: TableConstant.Carousel, name: zoneType.carousel, property: zoneType.carousel },
     { label: 'Staging Zone', name: 'stagingZone', property: 'stagingZone' },
     {
       label: 'CCS Auto Induct',
@@ -94,7 +94,7 @@ export class SpLocationZonesComponent implements OnInit {
         {
           height: 'auto',
           width: '56vw',
-          autoFocus: '__non_existing_element__',
+          autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         }
       );
@@ -232,8 +232,8 @@ export class SpLocationZonesComponent implements OnInit {
   locationName(item: any) {
     let dialogRef: any = this.global.OpenDialog(LocationNameComponent, {
       height: 'auto',
-      width: '786px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w786px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -250,16 +250,16 @@ export class SpLocationZonesComponent implements OnInit {
   delLocationZone(zone) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '600px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w600px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      if (res === 'Yes') {
+      if (res === ResponseStrings.Yes) {
         let payload = {
           zone: zone,
         };
@@ -267,15 +267,15 @@ export class SpLocationZonesComponent implements OnInit {
           if (res.isExecuted) {
             this.getLocationZones();
             this.global.ShowToastr(
-              'success',
+              ToasterType.Success,
               'Deleted successfully',
-              'Success!'
+              ToasterTitle.Success
             );
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               `Location Zone ${zone} cannot be deleted because there are allocated quantities in an Inventory Map location matching the zone`,
-              'Error!'
+              ToasterTitle.Error
             );
             console.log('LocationZone', res.responseMessage);
           }
@@ -311,9 +311,9 @@ export class SpLocationZonesComponent implements OnInit {
       );
       if (test) {
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           'Zone would be a duplicate and cannot be added.',
-          'Error!'
+          ToasterTitle.Error
         );
       }
     } else {
@@ -328,16 +328,16 @@ export class SpLocationZonesComponent implements OnInit {
     this.iAdminApiService.LocationZoneNewSave(payload).subscribe((res) => {
       if (res.isExecuted) {
         this.global.ShowToastr(
-          'success',
+          ToasterType.Success,
           `Location Zone: ${this.newLocationVal} added succesfully`,
-          'Success!'
+          ToasterTitle.Success
         );
         this.getLocationZones();
       } else {
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           'Cannot insert duplicate Zone',
-          'Error!'
+          ToasterTitle.Error
         );
         console.log('LocationZoneNewSave', res.responseMessage);
       }

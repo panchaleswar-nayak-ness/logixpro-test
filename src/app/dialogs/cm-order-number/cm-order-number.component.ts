@@ -14,6 +14,7 @@ import { CmOrderToteConflictComponent } from '../cm-order-tote-conflict/cm-order
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ResponseStrings ,KeyboardKeys,ToasterTitle,ToasterType,DialogConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-order-number',
@@ -25,7 +26,7 @@ export class CmOrderNumberComponent implements OnInit {
   userData: any;
   isStandAlone: boolean = false;
   type: any = ''; 
-  displayedColumns: string[] = ['toteID', 'stagingLocation', 'action'];
+  displayedColumns: string[] = [ColumnDef.ToteID, 'stagingLocation', ColumnDef.Action];
   tableData: any = []; 
   @ViewChild('order') order: ElementRef;
   @ViewChild('searchTote') searchTote: ElementRef;
@@ -54,7 +55,7 @@ export class CmOrderNumberComponent implements OnInit {
     this.order_focus.nativeElement.focus();
   }
   findTote(event: KeyboardEvent, value: any) {
-    if (event.key === 'Enter') {
+    if (event.key === KeyboardKeys.Enter) {
       this.tableData.forEach((row: any, i: any) => {
         if (row.toteID == value) {
           this.stagLoc['_results'][i].nativeElement.focus();
@@ -66,7 +67,7 @@ export class CmOrderNumberComponent implements OnInit {
 
   async getStagLoc(event: KeyboardEvent, value: any) {
     this.tableData = [];
-    if (event.key == 'Enter') {
+    if (event.key == KeyboardKeys.Enter) {
       let obj: any = {
         type: this.type,
         selValue: value,
@@ -78,7 +79,7 @@ export class CmOrderNumberComponent implements OnInit {
             switch (res?.data) {
               case 'DNE':
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   'The Order/Tote that you entered is invalid or no longer exists in the system.',
                   'Consolidation!'
                 );
@@ -93,23 +94,23 @@ export class CmOrderNumberComponent implements OnInit {
                 );
                 this.openCmOrderToteConflict(value);
                 break;
-              case 'Error':
+              case ResponseStrings.Error:
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   'An Error occured while retrieving data',
                   'Consolidation Error'
                 );
                 break;
             }
           } else {
-            this.findTote({ key: 'Enter' } as KeyboardEvent, value);
+            this.findTote({ key: KeyboardKeys.Enter } as KeyboardEvent, value);
             this.tableData = res.data.stageTable;
           }
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           ); 
         }
       });
@@ -120,18 +121,18 @@ export class CmOrderNumberComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(CmOrderToteConflictComponent, {
       height: 'auto',
       width: '620px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       this.type = result;
-      if (this.type) this.getStagLoc({ key: 'Enter' } as KeyboardEvent, order);
+      if (this.type) this.getStagLoc({ key: KeyboardKeys.Enter } as KeyboardEvent, order);
     });
   }
 
   onEnterStagLoc(event: KeyboardEvent, value: any) {
-    if (event.key === 'Enter') {
+    if (event.key === KeyboardKeys.Enter) {
       this.saveToteStagingLocation(value);
     }
   }
@@ -146,7 +147,7 @@ export class CmOrderNumberComponent implements OnInit {
     this.iConsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
       if (res) {
         if (res?.responseMessage == 'Fail') {
-          this.global.ShowToastr('error', 'Error Has Occured', 'Consolidation'); 
+          this.global.ShowToastr(ToasterType.Error, 'Error Has Occured', 'Consolidation'); 
         } else if (typeof this.tableData != 'undefined') {
           for (const item of this.tableData) {
             let tote = item.toteID;
@@ -159,7 +160,7 @@ export class CmOrderNumberComponent implements OnInit {
           }
         }
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!'); 
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error); 
       }
     });
   }

@@ -5,6 +5,7 @@ import { VelocityCodeComponent } from '../../dialogs/velocity-code/velocity-code
 import { SharedService } from 'src/app/common/services/shared.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  DialogConstants ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-item-setup',
   templateUrl: './item-setup.component.html',
@@ -38,14 +39,14 @@ export class ItemSetupComponent {
 
   public openCellSizeDialog(param) {
     let currentValue="";
-    if(param == 'cellSize') currentValue  = this.itemSetup.controls['cellSize'].value;
+    if(param == UniqueConstants.cellSize) currentValue  = this.itemSetup.controls[UniqueConstants.cellSize].value;
     else if(param == 'bulkCellSize') currentValue  = this.itemSetup.controls['bulkCellSize'].value;
     else if(param == 'cfCellSize') currentValue  = this.itemSetup.controls['cfCellSize'].value;
 
     let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
       height: 'auto',
       width: '750px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: '',
@@ -55,7 +56,7 @@ export class ItemSetupComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        if(param == 'cellSize') this.itemSetup.patchValue({ 'cellSize' : result });
+        if(param == UniqueConstants.cellSize) this.itemSetup.patchValue({ "cellSize" : result });
         else if(param == 'bulkCellSize') this.itemSetup.patchValue({ 'bulkCellSize' : result });
         else if(param == 'cfCellSize') this.itemSetup.patchValue({ 'cfCellSize' : result });
         this.sharedService.updateInvMasterState(result,true)
@@ -65,14 +66,14 @@ export class ItemSetupComponent {
 
   public openVelocityCodeDialog(param) {
     let currentValue="";
-    if(param == 'goldenZone') currentValue = this.itemSetup.controls['goldenZone'].value;
+    if(param == UniqueConstants.goldenZone) currentValue = this.itemSetup.controls[UniqueConstants.goldenZone].value;
     else if(param == 'bulkVelocity') currentValue = this.itemSetup.controls['bulkVelocity'].value;
     else if(param == 'cfVelocity') currentValue = this.itemSetup.controls['cfVelocity'].value;
     
     let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
       height: 'auto',
       width: '750px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: '',
@@ -82,7 +83,7 @@ export class ItemSetupComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        if(param == 'goldenZone') this.itemSetup.patchValue({ 'goldenZone' : result });
+        if(param == UniqueConstants.goldenZone) this.itemSetup.patchValue({ 'goldenZone' : result });
         else if(param == 'bulkVelocity') this.itemSetup.patchValue({ 'bulkVelocity' : result });
         else if(param == 'cfVelocity') this.itemSetup.patchValue({ 'cfVelocity' : result });
         this.sharedService.updateInvMasterState(result,true)

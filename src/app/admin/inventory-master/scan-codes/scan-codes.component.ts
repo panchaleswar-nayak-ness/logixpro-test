@@ -10,6 +10,7 @@ import { catchError, of } from 'rxjs';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-scan-codes',
@@ -27,7 +28,7 @@ export class ScanCodesComponent{
   oldScanCodesList: any;
   disableButton=false;
   scanTypeList: any = [];
-  scanRangeList: any =['Yes', 'No'];
+  scanRangeList: any =[ResponseStrings.Yes, 'No'];
   isAddRow=false;
   
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
@@ -83,13 +84,13 @@ export class ScanCodesComponent{
   dltCategory(item, index : number){
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w480px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
 
     dialogRef.afterClosed().subscribe(result => {
-     if(result === 'Yes'){
+     if(result === ResponseStrings.Yes){
       if(item.scanCode && !item.isAddedNew) {
         let payLoad = {
           "itemNumber": this.scanCodes.controls['itemNumber'].value,
@@ -102,10 +103,10 @@ export class ScanCodesComponent{
         this.iAdminApiService.DeleteScanCode(payLoad).subscribe((res: any) => {
           if (res.isExecuted) {
             this.isAddRow=false
-            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
             this.refreshScanCodeList();
           } else{
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
             console.log("DeleteScanCode",res.responseMessage);
           }
         })
@@ -121,17 +122,17 @@ export class ScanCodesComponent{
     let newRecord = item.isAddedNew || false;
 
     if(scanCode == '') {
-      this.global.ShowToastr('error','Scan code not saved, scan code field must not be empty.', 'Alert!');
+      this.global.ShowToastr(ToasterType.Error,'Scan code not saved, scan code field must not be empty.', 'Alert!');
       return;
     }
 
     if(startPosition == '') {
-      this.global.ShowToastr('error','Scan code not saved,Start position field must be an integer.', 'Alert!');
+      this.global.ShowToastr(ToasterType.Error,'Scan code not saved,Start position field must be an integer.', 'Alert!');
       return;
     }
 
     if(codeLength == '') {
-      this.global.ShowToastr('error','Scan code not saved, Scan code field must not be empty..', 'Alert!');
+      this.global.ShowToastr(ToasterType.Error,'Scan code not saved, Scan code field must not be empty..', 'Alert!');
       return;
     }
 
@@ -154,13 +155,13 @@ export class ScanCodesComponent{
       ).subscribe((res: any) => {
         if (res.isExecuted) {
           this.isAddRow = false
-          this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.refreshScanCodeList();
           this.sendNotification();
         } 
-        else if(!res.isExecuted) this.global.ShowToastr('error','New Scan Code not saved!  Ensure that the scan code being added is not a duplicate and try again.', 'Error!');
+        else if(!res.isExecuted) this.global.ShowToastr(ToasterType.Error,'New Scan Code not saved!  Ensure that the scan code being added is not a duplicate and try again.', ToasterTitle.Error);
         else {
-          this.global.ShowToastr('error', res.responseMessage, 'Error!');
+          this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
           console.log("InsertScanCodes", res.responseMessage);
         }})
     } else if (item.scanCode != '') {
@@ -179,16 +180,16 @@ export class ScanCodesComponent{
       this.iAdminApiService.UpdateScanCodes(payLoad).subscribe((res: any) => {
         if (res.isExecuted) {
           this.isAddRow = false;
-          this.global.ShowToastr('success',labels.alert.success, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
           this.refreshScanCodeList();
         } else {
-          this.global.ShowToastr('error','Already Exists', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'Already Exists', ToasterTitle.Error);
           console.log("UpdateScanCodes",res.responseMessage);
         }
       },
       (error) => {
         const { isExecuted, ResponseMessage } = error.error;
-        if (!isExecuted && ResponseMessage.indexOf('PRIMARY KEY') != -1) this.global.ShowToastr('error','Already Exists', 'Error!');
+        if (!isExecuted && ResponseMessage.indexOf('PRIMARY KEY') != -1) this.global.ShowToastr(ToasterType.Error,'Already Exists', ToasterTitle.Error);
         else console.log("UpdateScanCodes",error.responseMessage);
         this.refreshScanCodeList();
       }
@@ -214,7 +215,7 @@ export class ScanCodesComponent{
         this.scanCodesList = res.data;
         this.oldScanCodesList = JSON.parse(JSON.stringify(this.scanCodesList));
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("RefreshScanCodes",res.responseMessage);
       }
     });
@@ -224,7 +225,7 @@ export class ScanCodesComponent{
     let dialogRef:any = this.global.OpenDialog(ScanTypeCodeComponent, {
       height: 'auto',
       width: '750px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: '',

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
-import { ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType, TransactionType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-la-location-assignment-quantities',
@@ -84,7 +84,7 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
   exitBack() {
     this.dialogRef.close();
     this.router.navigate([]).then(() => {
-      window.open(`/#/admin`, '_self');
+      window.open(`/#/admin`, UniqueConstants._self);
     });
   }
 }

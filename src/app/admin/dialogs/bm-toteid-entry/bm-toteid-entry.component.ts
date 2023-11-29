@@ -6,7 +6,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-bm-toteid-entry',
@@ -45,16 +45,16 @@ export class BmToteidEntryComponent implements OnInit {
   createNextTote() {
     const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       data: {
         message: 'Click OK to auto generate tote IDs for this batch of orders.',
         heading: 'Batch Manager',
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result==='Yes') {
+      if (result===ResponseStrings.Yes) {
         this.selectedList.forEach((element, i) => {
           this.selectedList[i]['createNextToteID'] =
             parseInt(this.nextToteID) + i + 1;
@@ -67,12 +67,12 @@ export class BmToteidEntryComponent implements OnInit {
     if (this.selectedList.find((o) => o.createNextToteID === undefined)) {
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
-        width: '786px',
+        width: Style.w786px,
         data: {
           message: 'All Tote IDs must be specified before submitting.',
           heading: 'Batch Manager',
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       });
       dialogRef.afterClosed().subscribe((result) => {});

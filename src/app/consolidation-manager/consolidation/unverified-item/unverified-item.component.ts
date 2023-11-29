@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import {  LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-unverified-item',
@@ -62,7 +63,7 @@ export class UnverifiedItemComponent implements OnInit {
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    else this.liveAnnouncer.announce('Sorting cleared');
+    else this.liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     this.unverifiedItems.sort = this.sort;
   }
 

@@ -9,7 +9,7 @@ import { MatOption } from '@angular/material/core';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,AppPermissions,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 export interface PeriodicElement {
   position: string;
 }
@@ -106,8 +106,8 @@ export class WorkstationComponent implements OnInit {
       LicenseString:
         'qdljjBp3O3llQvKEW01qlvO4dTIFf6VMuJvYMgXgEc8U8q+dVlMKt0mKG6qtD9DO',
       AppUrl: 'CM1',
-      DisplayName: 'Consolidation Manager',
-      AppName: 'Consolidation Manager',
+      DisplayName: AppPermissions.ConsolidationManager,
+      AppName: AppPermissions.ConsolidationManager,
     };
     this.iGlobalConfigApi.GlobalMenu(payload).subscribe(
       {next: (res: any) => {
@@ -304,8 +304,8 @@ export class WorkstationComponent implements OnInit {
       if (this.selectedVariable === 'delete_workstation') {
         const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
           height: 'auto',
-          width: '480px',
-          autoFocus: '__non_existing_element__',
+          width: Style.w480px,
+          autoFocus: DialogConstants.autoFocus,
       disableClose:true,
           data: {
             mode: 'delete_workstation',

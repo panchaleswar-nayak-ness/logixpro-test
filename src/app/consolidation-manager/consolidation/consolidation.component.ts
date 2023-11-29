@@ -20,7 +20,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,DialogConstants,ColumnDef,Style,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 
 @Component({
@@ -65,22 +65,22 @@ export class ConsolidationComponent implements OnInit {
 
   searchAutoCompleteItemNum: any = [];
 
-  stageColumns: string[] = ['toteID', 'complete', 'stagingLocation', 'stagedBy', 'stagedDate'];
+  stageColumns: string[] = [ColumnDef.ToteID, 'complete', 'stagingLocation', 'stagedBy', 'stagedDate'];
   stageTable = new MatTableDataSource<any>([]);
 
-  unverifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'lineNumber', 'completedQuantity', 'toteID', 'serialNumber', 'userField1', 'actions'];
+  unverifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', TableConstant.LineNumber, TableConstant.completedQuantity, ColumnDef.ToteID, TableConstant.SerialNumber, ColumnDef.userField1, ColumnDef.Actions];
   unverifiedItems = new MatTableDataSource<any>([]);
 
-  verifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'supplierItemID', 'lineNumber', 'completedQuantity', 'toteID', 'serialNumber', 'userField1', 'actions'];
+  verifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'supplierItemID', TableConstant.LineNumber, TableConstant.completedQuantity, ColumnDef.ToteID, TableConstant.SerialNumber, ColumnDef.userField1, ColumnDef.Actions];
   verifiedItems = new MatTableDataSource<any>([]);
 
   filterOption: any = [
     { key: '0', value: 'Any Code' },
-    { key: '1', value: 'Item Number' },
-    { key: '10', value: 'Lot Number' },
+    { key: '1', value: Column.ItemNumber },
+    { key: '10', value: Column.LotNumber },
     { key: '2', value: 'Supplier Item ID' },
-    { key: '8', value: 'Serial Number' },
-    { key: '6', value: 'Tote ID' },
+    { key: '8', value: ColumnDef.SerialNumber },
+    { key: '6', value: Column.ToteID },
     { key: '9', value: 'User Field 1' },
   ];
 
@@ -466,7 +466,7 @@ export class ConsolidationComponent implements OnInit {
       const dialogRef:any = this.global.OpenDialog(CmItemSelectedComponent, {
         height: 'auto',
         width: '899px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           identModal: this.typeValue,
@@ -582,7 +582,7 @@ export class ConsolidationComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(CmShippingComponent, {
       height: 'auto',
       width: '96vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: { orderNumber: this.typeValue }
     })
@@ -597,7 +597,7 @@ export class ConsolidationComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(CmShippingTransactionComponent, {
       height: 'auto',
       width: '96vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         orderNum: this.typeValue ? this.typeValue : '2909782A',
@@ -614,7 +614,7 @@ export class ConsolidationComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingComponent, {
       height: 'auto',
       width: '96vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: { orderNumber: this.typeValue }
     })
@@ -635,8 +635,8 @@ export class ConsolidationComponent implements OnInit {
   openCmOrderNumber() {
     let dialogRef:any = this.global.OpenDialog(CmOrderNumberComponent, {
       height: 'auto',
-      width: '50vw',
-      autoFocus: '__non_existing_element__',
+      width: Style.w50vw,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         orderNumber: this.typeValue,
@@ -651,8 +651,8 @@ export class ConsolidationComponent implements OnInit {
   openCmItemSelected() {
     this.global.OpenDialog(CmItemSelectedComponent, {
       height: 'auto',
-      width: '50vw',
-      autoFocus: '__non_existing_element__',
+      width: Style.w50vw,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
   }
@@ -660,8 +660,8 @@ export class ConsolidationComponent implements OnInit {
   openCmSelectTransaction() {
     this.global.OpenDialog(CmConfirmAndPackingSelectTransactionComponent, {
       height: 'auto',
-      width: '50vw',
-      autoFocus: '__non_existing_element__',
+      width: Style.w50vw,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
   }
@@ -669,8 +669,8 @@ export class ConsolidationComponent implements OnInit {
   openCmPrintOptions() {
     this.global.OpenDialog(CmPrintOptionsComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
   }
@@ -687,7 +687,7 @@ export class ConsolidationComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(CmOrderToteConflictComponent, {
       height: 'auto',
       width: '620px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -712,7 +712,7 @@ export class ConsolidationComponent implements OnInit {
         this.global.Print(`FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`)
       }
       else{
-        window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+        window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevNotVerified|OrderNum:${this.typeValue}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
       }
     }
     else {
@@ -724,11 +724,11 @@ export class ConsolidationComponent implements OnInit {
     if (this.unverifiedItems?.filteredData && this.unverifiedItems.filteredData.length > 0) {
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '786px',
+        width: Style.w786px,
         data: {
           message: ConfirmationMessages.UnverfiedItemsLeft
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       });
       dialogRef.afterClosed().subscribe((result) => {
@@ -739,7 +739,7 @@ export class ConsolidationComponent implements OnInit {
                 this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
               }
               else{
-                window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+                window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
               }
             } else if (res.isExecuted && res.data == ResponseStrings.Modal) {
               this.showCmPackPrintModal(true, this.typeValue,print);
@@ -758,7 +758,7 @@ export class ConsolidationComponent implements OnInit {
             this.global.Print(`FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`)
           }
           else{
-            window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+            window.open(`${AppRoutes.ReportView}?file=FileName:PrintPrevCMPackList|OrderNum:${this.typeValue}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
           }
         } else if (res.isExecuted && res.data == ResponseStrings.Modal) {
           this.showCmPackPrintModal(true, this.typeValue,print);
@@ -773,14 +773,14 @@ export class ConsolidationComponent implements OnInit {
   showCmPackPrintModal(preview:boolean,orderNumber:any,print:any){
      this.global.OpenDialog(CmPrintOptionsComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       data: {
         preview : preview,
         orderNumber: orderNumber,
         packListSort : this.packListSort,
         print : print
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
   }

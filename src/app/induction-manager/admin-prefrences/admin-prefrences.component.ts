@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ApiEndpoints, ToasterMessages, ToasterTitle, ToasterType, superBatchFilterListName } from 'src/app/common/constants/strings.constants';
+import { ApiEndpoints, ToasterMessages, ToasterTitle, ToasterType, superBatchFilterListName ,Column,TableConstant,StringConditions,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-admin-prefrences',
@@ -78,20 +78,20 @@ export class AdminPrefrencesComponent implements OnInit {
       name: 'Any',
     },
     {
-      id: 'Item Number',
-      name: 'Item Number',
+      id: Column.ItemNumber,
+      name: Column.ItemNumber,
     },
     {
-      id: 'Serial Number',
-      name: 'Serial Number',
+      id: ColumnDef.SerialNumber,
+      name: ColumnDef.SerialNumber,
     },
     {
-      id: 'Lot Number',
-      name: 'Lot Number',
+      id: Column.LotNumber,
+      name: Column.LotNumber,
     },
     {
-      id: 'Host Transaction ID',
-      name: 'Host Transaction ID',
+      id: TableConstant.HostTransactionID,
+      name: TableConstant.HostTransactionID,
     },
     {
       id: 'Scan Code',
@@ -250,7 +250,7 @@ export class AdminPrefrencesComponent implements OnInit {
 
               this.preferencesForm.patchValue({
                 // System Settings
-                useDefault: values.useDefaultFilter ? 'filter' : 'zone',
+                useDefault: values.useDefaultFilter ? StringConditions.filter : TableConstant.zone,
                 pickBatchQuantity: values.pickBatchQuantity,
                 defaultCells: values.defaultCells,
                 shortMethod: values.shortMethod,
@@ -354,8 +354,8 @@ export class AdminPrefrencesComponent implements OnInit {
           CarTotePicks: values.carouselToteIDPicks,
           OffCarTotePicks: values.offCarouselToteIDPicks,
           UsePickBatch: values.usePickBatchManager,
-          UseDefFilter: values.useDefault == 'filter',
-          UseDefZone: values.useDefault == 'zone',
+          UseDefFilter: values.useDefault == StringConditions.filter,
+          UseDefZone: values.useDefault == TableConstant.zone,
           AutoPutTote: values.autoPutAwayToteID,
           DefPutPrior: values.defaultPutAwayPriority,
           DefPutQuant: values.defaultPutAwayQuantity,

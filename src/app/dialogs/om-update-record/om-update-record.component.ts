@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA,   MatDialogRef } from '@angular/material/dialog';
 import { OmChangesConfirmationComponent } from '../om-changes-confirmation/om-changes-confirmation.component';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  StringConditions ,DialogConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-update-record',
@@ -60,8 +61,8 @@ export class OmUpdateRecordComponent implements OnInit {
       user8          : this.data.userField8,
       user9          : this.data.userField9,
       user10         : this.data.userField10,
-      emergency      : this.data.emergency ? 'True' : 'False',
-      label          : this.data.label ? 'True' : 'False',
+      emergency      : this.data.emergency ? 'True' : StringConditions.False,
+      label          : this.data.label ? 'True' : StringConditions.False,
     });
   }
 
@@ -70,7 +71,7 @@ export class OmUpdateRecordComponent implements OnInit {
     let dialogRef:any = this.globalService.OpenDialog(OmChangesConfirmationComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         order      : { id : this.data.id, ...this.orderForm.value },
@@ -102,7 +103,7 @@ export class OmUpdateRecordComponent implements OnInit {
   }
 
   strToBool(str:string){
-    if(str == "True" || str == "true") return true;
+    if(str == "True" || str == StringConditions.True) return true;
     else return false;
   }
 

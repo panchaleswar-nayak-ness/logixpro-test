@@ -7,7 +7,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,zoneType,DialogConstants,Style,TableConstant,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-complete-pick-batch',
@@ -16,7 +16,7 @@ import { StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'sr
 })
 export class CompletePickBatchComponent{
 
-  displayedColumns: string[] = ['order_no', 'tote_id', 'item_number', 'description', 'transaction_qty', 'location', 'zone','carousel','row','shelf','bin', 'action'];
+  displayedColumns: string[] = ['order_no', 'tote_id', 'item_number', UniqueConstants.Description, 'transaction_qty', TableConstant.Location, TableConstant.zone,zoneType.carousel,Column.Row,TableConstant.shelf,ColumnDef.Bin, ColumnDef.Action];
   tableData: any = [];
   dataSourceList: any;
   batchId: string = "";
@@ -28,7 +28,7 @@ export class CompletePickBatchComponent{
   @ViewChild('BatchId') BatchIdField: ElementRef;
   @ViewChild('ToteId') ToteIdField: ElementRef;
   sortColumn: number = 1;
-  sortOrder: string = "asc";
+  sortOrder: string = UniqueConstants.Asc;
   startRow:number = 0;
   endRow:number = 10;
   totalTransactions: number = 0;
@@ -127,7 +127,7 @@ export class CompletePickBatchComponent{
     const dialogRef:any = this.global.OpenDialog(ShortTransactionComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         selectedTransaction: element,
@@ -144,7 +144,7 @@ export class CompletePickBatchComponent{
     const dialogRef:any = this.global.OpenDialog(CpbBlossomToteComponent, {
       height: '640px',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         transactions: this.tableData,
@@ -162,8 +162,8 @@ export class CompletePickBatchComponent{
   CompleteTransaction(element:any){
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         heading: 'Complete Transaction',
@@ -189,8 +189,8 @@ export class CompletePickBatchComponent{
   CompleteBatch(){
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         heading: 'Complete Batch',
@@ -214,17 +214,17 @@ export class CompletePickBatchComponent{
   }
 
   sortColumns:any = [
-    {dbColName:"Order Number",tabelColName:"order_no",sortColumnNumber:1},
-    {dbColName:"Tote ID",tabelColName:"tote_id",sortColumnNumber:2},
-    {dbColName:"Item Number",tabelColName:"item_number",sortColumnNumber:3},
-    {dbColName:"Description",tabelColName:"description",sortColumnNumber:4},
-    {dbColName:"Transaction Quantity",tabelColName:"transaction_qty",sortColumnNumber:5},
-    {dbColName:"Location",tabelColName:"location",sortColumnNumber:6},
-    {dbColName:"Zone",tabelColName:"zone",sortColumnNumber:7},
-    {dbColName:"Carousel",tabelColName:"carousel",sortColumnNumber:8},
-    {dbColName:"Row",tabelColName:"row",sortColumnNumber:9},
-    {dbColName:"Shelf",tabelColName:"shelf",sortColumnNumber:10},
-    {dbColName:"Bin",tabelColName:"bin",sortColumnNumber:11},
+    {dbColName:Column.OrderNumber,tabelColName:"order_no",sortColumnNumber:1},
+    {dbColName:Column.ToteID,tabelColName:"tote_id",sortColumnNumber:2},
+    {dbColName:Column.ItemNumber,tabelColName:"item_number",sortColumnNumber:3},
+    {dbColName:Column.Description,tabelColName:UniqueConstants.Description,sortColumnNumber:4},
+    {dbColName:TableConstant.TransactionQuantity,tabelColName:"transaction_qty",sortColumnNumber:5},
+    {dbColName:Column.Location,tabelColName:TableConstant.Location,sortColumnNumber:6},
+    {dbColName:ColumnDef.Zone,tabelColName:TableConstant.zone,sortColumnNumber:7},
+    {dbColName:TableConstant.Carousel,tabelColName:zoneType.carousel,sortColumnNumber:8},
+    {dbColName:TableConstant.Row,tabelColName:Column.Row,sortColumnNumber:9},
+    {dbColName:TableConstant.shelf,tabelColName:TableConstant.shelf,sortColumnNumber:10},
+    {dbColName:TableConstant.Bin,tabelColName:ColumnDef.Bin,sortColumnNumber:11},
   ];
 
   announceSortChange(e: any) {

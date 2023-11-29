@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort'; 
+import { MatSort } from '@angular/material/sort';
+import {  ColumnDef } from 'src/app/common/constants/strings.constants'; 
 
 @Component({
   selector: 'app-ie-trans-field-mapping',
@@ -24,7 +25,7 @@ export class IeTransFieldMappingComponent {
     'export_format',
     'field_type',
     'pad_field_left',
-    'actions',
+    ColumnDef.Actions,
   ];
   tableData = this.elementData;
   dataSourceList: any;

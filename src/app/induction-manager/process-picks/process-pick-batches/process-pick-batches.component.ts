@@ -4,7 +4,7 @@ import { ViewOrdersComponent } from 'src/app/dialogs/view-orders/view-orders.com
 import { takeUntil } from 'rxjs';
 import { WorkstationZonesComponent } from 'src/app/dialogs/workstation-zones/workstation-zones.component';
 import { AuthService } from 'src/app/common/init/auth.service';
-import { StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-process-pick-batches',
   templateUrl: './process-pick-batches.component.html',
@@ -45,7 +45,7 @@ export class ProcessPickBatchesComponent {
     let dialogRef: any = this.global.OpenDialog(WorkstationZonesComponent, {
       height: 'auto',
       width: '750px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
 
     })
@@ -63,18 +63,18 @@ export class ProcessPickBatchesComponent {
 
       if (type === StringConditions.PrintTote) {
         if (this.imPreferences.printDirectly) {
-          await this.global.Print(`FileName:PrintPrevIMPickBatchToteLabel|BatchID:${this.pickBatches.value}`, 'lbl')
+          await this.global.Print(`FileName:PrintPrevIMPickBatchToteLabel|BatchID:${this.pickBatches.value}`, UniqueConstants.Ibl)
 
         } else {
-          window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchToteLabel|BatchID:${this.pickBatches.value}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+          window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchToteLabel|BatchID:${this.pickBatches.value}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
         }
       }
       if (type === StringConditions.PickPickLabel) {
         if (this.imPreferences.printDirectly) {
-          await this.global.Print(`FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, 'lbl')
+          await this.global.Print(`FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, UniqueConstants.Ibl)
         } else {
-          window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+          window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
         }
       }
       if (type === StringConditions.PrintPickList) {
@@ -84,7 +84,7 @@ export class ProcessPickBatchesComponent {
           await this.global.Print(`FileName:PrintPrevIMPickBatchList|BatchID:${this.pickBatches.value}`);
 
         } else {
-          window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchList|BatchID:${this.pickBatches.value}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+          window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchList|BatchID:${this.pickBatches.value}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
         }
 
@@ -94,10 +94,10 @@ export class ProcessPickBatchesComponent {
 
 
         if (this.imPreferences.printDirectly) {
-          await this.global.Print(`FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, 'lbl');
+          await this.global.Print(`FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, UniqueConstants.Ibl);
 
         } else {
-          window.open(`/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+          window.open(`/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
         }
 
@@ -110,7 +110,7 @@ export class ProcessPickBatchesComponent {
           await this.global.Print(`FileName:PrintPrevPickBatchList|BatchID:${this.pickBatches.value}`);
 
         } else {
-          window.open(`/#/report-view?file=FileName:PrintPrevPickBatchList|BatchID:${this.pickBatches.value}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+          window.open(`/#/report-view?file=FileName:PrintPrevPickBatchList|BatchID:${this.pickBatches.value}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
         }
 
@@ -121,13 +121,13 @@ export class ProcessPickBatchesComponent {
   openViewOrdersDialogue(viewType: any) {
     const dialogRef: any = this.global.OpenDialog(ViewOrdersComponent, {
       height: 'auto',
-      width: '100vw',
+      width: Style.w100vw,
       data: {
         viewType: viewType,
         pickBatchQuantity: this.pickBatchQuantity,
         allOrders: this.allOrders,
       },
-      autoFocus: '__non_existing_element__'
+      autoFocus: DialogConstants.autoFocus
     });
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
 

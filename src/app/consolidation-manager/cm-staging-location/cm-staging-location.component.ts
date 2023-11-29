@@ -5,7 +5,7 @@ import { StagingLocationOrderComponent } from 'src/app/dialogs/staging-location-
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppRoutes, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,UniqueConstants,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-staging-location',
@@ -15,7 +15,7 @@ import { AppRoutes, ResponseStrings, StringConditions, ToasterMessages, ToasterT
 export class CmStagingLocationComponent {
   userData: any = {};
   isInputFocused: any = false;
-  displayedColumns: string[] = ['select', 'position', 'action'];
+  displayedColumns: string[] = [UniqueConstants.Select, UniqueConstants.position, ColumnDef.Action];
   stageTables: any[] = [];
   oldStageTables: any[] = [];
   isLoading: any = false;
@@ -78,7 +78,7 @@ export class CmStagingLocationComponent {
                 let dialogRef: any = this.global.OpenDialog(StagingLocationOrderComponent, {
                   height: 'auto',
                   width: '620px',
-                  autoFocus: '__non_existing_element__',
+                  autoFocus: DialogConstants.autoFocus,
                   disableClose: true,
                 })
                 dialogRef.afterClosed().subscribe(result => {
@@ -118,8 +118,8 @@ export class CmStagingLocationComponent {
       this.stageTables[index].stagingLocationOld = location;
       let obj: any = {
         "orderNumber": this.orderNumberTote,
-        "toteID": toteID,
-        "location": location,
+        'toteID': toteID,
+        'location': location,
         "clear": clear
       }
       this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {
@@ -166,7 +166,7 @@ export class CmStagingLocationComponent {
     let dialogRef: any = this.global.OpenDialog(CmOrderToteConflictComponent, {
       height: 'auto',
       width: '620px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     })
     dialogRef.afterClosed().subscribe(result => {

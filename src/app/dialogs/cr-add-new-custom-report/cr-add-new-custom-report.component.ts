@@ -15,6 +15,7 @@ import { CrDesignFilenameConfirmationComponent } from '../cr-design-filename-con
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cr-add-new-custom-report',
@@ -59,7 +60,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
       {
         height: 'auto',
         width: '932px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       }
     );
@@ -79,7 +80,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
     ];
 
     let fields = [
-      'Description',
+      Column.Description,
       'Filename',
       'Test and Design Data',
       'Test/Design Data Type',
@@ -90,9 +91,9 @@ export class CrAddNewCustomReportComponent implements OnInit {
     for (let x = 0; x < newParams.length - 1; x++) {
       if (newParams[x] == '' || newParams[x] == undefined) {
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           `${fields[x]} must not be left blank!`,
-          'Error!'
+          ToasterTitle.Error
         );
         valid = false;
         break;
@@ -102,7 +103,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
     const exists = this.isFileNameAlreadyExists(newParams[1]);
 
     if (exists) {
-      this.global.ShowToastr('error', `Filename must be unique!`, 'Error!');
+      this.global.ShowToastr(ToasterType.Error, `Filename must be unique!`, ToasterTitle.Error);
       valid = false;
     }
 
@@ -112,9 +113,9 @@ export class CrAddNewCustomReportComponent implements OnInit {
       this.iAdminApiService.validateNewDesign(newParams).subscribe((res) => {
         if (!res.data) {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             `Validation for adding a new report failed with an unknown error.  Please contact Scott Tech for support if this persists.`,
-            'Error!'
+            ToasterTitle.Error
           );
         } else {
           this.appendstring = this.buildAppendString(
@@ -175,9 +176,9 @@ export class CrAddNewCustomReportComponent implements OnInit {
                   catchError((error) => {
                     // Handle the error here
                     this.global.ShowToastr(
-                      'error',
+                      ToasterType.Error,
                       'An error occured while retrieving data.',
-                      'Error!'
+                      ToasterTitle.Error
                     );
                     // Return a fallback value or trigger further error handling if needed
                     return of({ isExecuted: false });
@@ -186,9 +187,9 @@ export class CrAddNewCustomReportComponent implements OnInit {
                 .subscribe((res) => {
                   this.dialogRef.close(obj);
                   this.global.ShowToastr(
-                    'success',
+                    ToasterType.Success,
                     res.responseMessage,
-                    'Success!'
+                    ToasterTitle.Success
                   );
                 });
             }
@@ -211,9 +212,9 @@ export class CrAddNewCustomReportComponent implements OnInit {
     this.iAdminApiService.restoreDesign(obj).subscribe((res) => {
       if (!res.data) {
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           'Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.',
-          'Error!'
+          ToasterTitle.Error
         );
         console.log('restoreDesign', res.responseMessage);
       } else {
@@ -226,11 +227,11 @@ export class CrAddNewCustomReportComponent implements OnInit {
   DeleteExistingdesign() {
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       data: {
         message: `Click OK to permanently delete the design file.`,
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -245,9 +246,9 @@ export class CrAddNewCustomReportComponent implements OnInit {
         this.iAdminApiService.deleteReport(payload).subscribe((res) => {
           if (!res.data) {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               'Unknown error occurred during design restoration.  Please contact Scott Tech for support if this persists.',
-              'Error!'
+              ToasterTitle.Error
             );
             console.log('deleteReport', res.responseMessage);
           } else {
@@ -302,8 +303,8 @@ export class CrAddNewCustomReportComponent implements OnInit {
       CrDesignFilenameConfirmationComponent,
       {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           restore: this.restoreAll,
@@ -315,7 +316,7 @@ export class CrAddNewCustomReportComponent implements OnInit {
         this.restoreDesign(this.CurrentFilename);
       } else if (result == 'all') {
         this.restoreDesign(this.CurrentFilename, true);
-      } else if (result == 'delete') {
+      } else if (result == UniqueConstants.delete) {
         this.DeleteExistingdesign();
       }
     });

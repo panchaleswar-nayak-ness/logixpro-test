@@ -11,7 +11,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,dataCredientials,Style,StringConditions} from 'src/app/common/constants/strings.constants';
 
 export interface DialogData {
   animal: 'panda' | 'unicorn' | 'lion';
@@ -28,7 +28,7 @@ export class AddNewEmployeeComponent implements OnInit {
   @ViewChild('last_name') last_name: ElementRef;
   @ViewChild('addNewEmployee') AddNewEmployeeComponent: TemplateRef<any>;
   form_heading: string = 'Add New Employee';
-  form_btn_label: string = 'Add';
+  form_btn_label: string = StringConditions.AddCaps;
   empData: any = [];
   mi: string;
   firstName: string;
@@ -71,11 +71,11 @@ export class AddNewEmployeeComponent implements OnInit {
     
     this.env =  JSON.parse(localStorage.getItem('env') ?? ''); 
     this.allGroups  = this.empData?.allGroups;
-    this.form_heading = this.data?.mode === 'edit' ? 'Edit Employee' : 'Add New Employee';
-    this.form_btn_label = this.data?.mode === 'edit' ?'Save' : 'Add';
-    this.isEmail = this.data?.mode === 'edit';
-    this.isDisabledPassword = this.data?.mode === 'edit';
-    this.isDisabledUsername = this.data?.mode === 'edit';
+    this.form_heading = this.data?.mode === StringConditions.edit ? 'Edit Employee' : 'Add New Employee';
+    this.form_btn_label = this.data?.mode === StringConditions.edit ?'Save' : StringConditions.AddCaps;
+    this.isEmail = this.data?.mode === StringConditions.edit;
+    this.isDisabledPassword = this.data?.mode === StringConditions.edit;
+    this.isDisabledUsername = this.data?.mode === StringConditions.edit;
     this.mi = this.empData?.mi ?? '';
     this.firstName = this.empData?.firstName ?? '';
     this.oldPassword = this.empData?.password ?? '';
@@ -100,7 +100,7 @@ export class AddNewEmployeeComponent implements OnInit {
     }
   }
   isEmptyPass() { 
-    if (this.data?.mode === 'edit') {
+    if (this.data?.mode === StringConditions.edit) {
       if (this.empForm.controls['password']?.value === '') {
         this.isDisabledPassword = true;
         this.empForm.controls['password'].disable();
@@ -135,13 +135,13 @@ ChangePassword(data){
       this.cleanForm(form);
       form.value.active = Boolean(JSON.parse(form.value.active || "false"));
       
-      if (this.data?.mode === 'edit') {
+      if (this.data?.mode === StringConditions.edit) {
         form.value.wsid = "TESTWID"; 
         form.value.username = this.data?.emp_data?.username ? this.data.emp_data.username : this.data.emp_data.Username;
         if(this.groupChanged){
           let requpdateAccessGroup = await this.iAdminApiService.updateAccessGroup({"group": this.empForm.value.groupName,"Username" : this.username}).toPromise();
           if(requpdateAccessGroup.isExecuted){
-            let reqgetAdminEmployeeDetails = await this.iAdminApiService.getAdminEmployeeDetails({"user": this.username,"wsid": "TESTWSID"}).toPromise();
+            let reqgetAdminEmployeeDetails = await this.iAdminApiService.getAdminEmployeeDetails({"user": this.username,"wsid": dataCredientials.testWsid}).toPromise();
             if(reqgetAdminEmployeeDetails.isExecuted){
               this.functionsAllowedList = reqgetAdminEmployeeDetails.data.userRights;
             }
@@ -206,19 +206,19 @@ ChangePassword(data){
   functionsAllowedList: any = [];
   groupChanged: boolean = false;
   groupChange($event:any){
-    if (this.data?.mode === 'edit') {
+    if (this.data?.mode === StringConditions.edit) {
       const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '786px',
+        width: Style.w786px,
         data: {
           message: `Would you like to change this employee's functions allowed to the defaults for ${$event.value}?`,
           heading: 'Add Employee Group',
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       });
       dialogRef.afterClosed().subscribe((result) => {
-        if (result==='Yes') {
+        if (result===ResponseStrings.Yes) {
           this.groupChanged = true;
         }
         else{
