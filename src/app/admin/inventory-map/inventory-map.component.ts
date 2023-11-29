@@ -25,7 +25,7 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppNames, AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType,AppNames,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName,RouteUpdateMenu} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-map',
@@ -36,21 +36,21 @@ import { AppNames, AppRoutes, DialogConstants, StringConditions, ToasterMessages
 export class InventoryMapComponent implements OnInit {
    INVMAP_DATA = [
     { colHeader: "locationID", colDef: "Alternate Light" },
-    { colHeader: "bin", colDef: "Bin" },
-    { colHeader: "carousel", colDef: "Carousel" },
-    { colHeader: "cellSize", colDef: "Cell Size" },
+    { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin },
+    { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
+    { colHeader: UniqueConstants.cellSize, colDef: "Cell Size" },
     { colHeader: "dateSensitive", colDef: "Date Sensitive" },
     { colHeader: "dedicated", colDef: "Dedicated" },
-    { colHeader: "description", colDef: "Description" },
-    { colHeader: "expirationDate", colDef: "Expiration Date" },
+    { colHeader: UniqueConstants.Description, colDef: Column.Description },
+    { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
     { colHeader: "invMapID", colDef: "Inv Map ID" },
-    { colHeader: "itemNumber", colDef: "Item Number" },
+    { colHeader: "itemNumber", colDef: Column.ItemNumber },
     { colHeader: "itemQuantity", colDef: "Item Quantity" },
     { colHeader: "laserX", colDef: "Laser X" },
     { colHeader: "laserY", colDef: "Laser Y" },
-    { colHeader: "location", colDef: "Location" },
+    { colHeader: TableConstant.Location, colDef: Column.Location },
     { colHeader: "locationNumber", colDef: "Location Number" },
-    { colHeader: "lotNumber", colDef: "Lot Number" },
+    { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
     { colHeader: "masterInvMapID", colDef: "Master Inv Map ID" },
     { colHeader: "masterLocation", colDef: "Master Location" },
     { colHeader: "maxQuantity", colDef: "Maximum Quantity" },
@@ -58,16 +58,16 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: "putAwayDate", colDef: "Put Away Date" },
     { colHeader: "quantityAllocatedPick", colDef: "Quantity Allocated Pick" },
     { colHeader: "quantityAllocatedPutAway", colDef: "Quantity Allocated Put Away" },
-    { colHeader: "revision", colDef: "Revision" },
-    { colHeader: "row", colDef: "Row" },
-    { colHeader: "serialNumber", colDef: "Serial Number" },
-    { colHeader: "shelf", colDef: "Shelf" },
-    { colHeader: "unitOfMeasure", colDef: "Unit of Measure" },
-    { colHeader: "userField1", colDef: "User Field1" },
-    { colHeader: "userField2", colDef: "User Field2" },
-    { colHeader: "goldenZone", colDef: "Velocity Code" },
-    { colHeader: "warehouse", colDef: "Warehouse" },
-    { colHeader: "zone", colDef: "Zone" },
+    { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },
+    { colHeader: Column.Row, colDef: TableConstant.Row },
+    { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber },
+    { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
+    { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
+    { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
+    { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
+    { colHeader: UniqueConstants.goldenZone, colDef: "Velocity Code" },
+    { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
+    { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
   ];
   onDestroy$: Subject<boolean> = new Subject();
   hideRequiredControl = new FormControl(false);
@@ -96,7 +96,7 @@ export class InventoryMapComponent implements OnInit {
 
   sortColumn: any ={
     columnName: 0,
-    sortOrder: 'asc'
+    sortOrder: UniqueConstants.Asc
   }
   userData: any;
   payload: any;
@@ -129,7 +129,7 @@ export class InventoryMapComponent implements OnInit {
     }, 100);
   }
 
-  filterString : string = "1 = 1";
+  filterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.filterString = filter;
@@ -153,8 +153,8 @@ export class InventoryMapComponent implements OnInit {
     this.previousUrl = this.routeHistoryService.getPreviousUrl();
     this.iAdminApiService = adminApiService;
     
-    if(this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ){
-      this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ;
+    if(this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue] ){
+      this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue] ;
       this.columnSearch.searchColumn = {
         colDef: this.router.getCurrentNavigation()?.extras?.state?.['colDef'],
         colHeader: this.router.getCurrentNavigation()?.extras?.state?.['colHeader']
@@ -205,7 +205,7 @@ export class InventoryMapComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.setStorage =localStorage.getItem('routeFromInduction')
+    this.setStorage =localStorage.getItem(RouteUpdateMenu.RouteFromInduction)
  
     this.spliUrl=this.router.url.split('/'); 
 
@@ -242,7 +242,7 @@ export class InventoryMapComponent implements OnInit {
     this.userData = this.authService.userData();
     if(this.filterString == "")
     {
-      this.filterString = "1 = 1"
+      this.filterString = UniqueConstants.OneEqualsOne
     }
     this.payload = { 
      "oqa": this.filterLoc,
@@ -265,16 +265,16 @@ export class InventoryMapComponent implements OnInit {
       if(res.data){
         this.columnValues =  res.data;
 
-        this.columnValues.push('actions');
+        this.columnValues.push(ColumnDef.Actions);
         this.getContentData();
       } else {
-        this.global.ShowToastr(ToasterType.Error,'Something went wrong', ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
         console.log("getSetColumnSeq",res.responseMessage);
       }
     });
   }
   applySavedItem() {
-    if(this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ) return;
+    if(this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue] ) return;
     
     this.dataSource = this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP].dataSource;
     this.columnSearch = this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY_MAP].columnSearch;
@@ -358,7 +358,7 @@ export class InventoryMapComponent implements OnInit {
 
   viewAllLocDialog(): void {
     const dialogRef:any = this.global.OpenDialog(this.customTemplate, {
-       width: '560px',
+       width: Style.w560px,
        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
@@ -401,7 +401,7 @@ export class InventoryMapComponent implements OnInit {
     if(event.itemQuantity > 0){
       this.global.OpenDialog(ConfirmationDialogComponent, {
         height: DialogConstants.auto,
-        width: '786px',
+        width: Style.w786px,
         data: {
           message: "This location currently has a positive item quantity and cannot be deleted.",
         },
@@ -411,11 +411,11 @@ export class InventoryMapComponent implements OnInit {
     else{ 
       let dialogRef = this.dialog.open(DeleteConfirmationComponent, {
         height: DialogConstants.auto,
-        width: '480px',
+        width: Style.w480px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
-          action: 'delete',
+          action: UniqueConstants.delete,
           mode: 'delete-inventory-map',
           id: event.invMapID
         }
@@ -432,7 +432,7 @@ export class InventoryMapComponent implements OnInit {
   quarantine(event){
     let dialogRef:any = this.global.OpenDialog(QuarantineConfirmationComponent, {
       height: DialogConstants.auto,
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -450,7 +450,7 @@ export class InventoryMapComponent implements OnInit {
   unQuarantine(event){
     let dialogRef:any = this.global.OpenDialog(QuarantineConfirmationComponent, {
       height: DialogConstants.auto,
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -506,18 +506,18 @@ export class InventoryMapComponent implements OnInit {
 
   viewInInventoryMaster(row){
 
-    if( this.spliUrl[1] == 'OrderManager' ){
+    if( this.spliUrl[1] == AppNames.OrderManager ){
       this.router.navigate([]).then(() => {
-        window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, '_self');
+        window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self);
       });
-   }else if(this.spliUrl[1] == 'InductionManager' ){
-    window.open(`/#/InductionManager/Admin/InventoryMaster?itemNumber=${row.itemNumber}`, '_self');
+   }else if(this.spliUrl[1] == AppNames.InductionManager ){
+    window.open(`/#/InductionManager/Admin/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self);
 
    }
    else {
-    localStorage.setItem('routeFromInduction','false')
+    localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false')
     this.router.navigate([]).then(() => {
-      window.open(`/#/admin/inventoryMaster?itemNumber=${row.itemNumber}`, '_self');
+      window.open(`/#/admin/inventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self);
     });
 
    }
@@ -527,21 +527,21 @@ export class InventoryMapComponent implements OnInit {
 
   viewLocationHistory(row : any){
 
-    if( this.spliUrl[1] == 'OrderManager' ){
+    if( this.spliUrl[1] == AppNames.OrderManager ){
       this.router.navigate([]).then(() => {
-        window.open(`/#/OrderManager/OrderStatus?location=${row.locationNumber}`, '_self');
+        window.open(`/#/OrderManager/OrderStatus?location=${row.locationNumber}`, UniqueConstants._self);
       });
    }
    
-   else if( this.spliUrl[1] == 'InductionManager' ){
+   else if( this.spliUrl[1] == AppNames.InductionManager ){
     this.router.navigate([]).then(() => {
-      window.open(`/#/InductionManager/Admin/TransactionJournal?location=${row.locationNumber}`, '_self');
+      window.open(`/#/InductionManager/Admin/TransactionJournal?location=${row.locationNumber}`, UniqueConstants._self);
     });
  }
    else {
-    localStorage.setItem('routeFromInduction','false')
+    localStorage.setItem(RouteUpdateMenu.RouteFromInduction,'false')
     this.router.navigate([]).then(() => {
-      window.open(`/#/admin/transaction?location=${row.locationNumber}`, '_self');
+      window.open(`/#/admin/transaction?location=${row.locationNumber}`, UniqueConstants._self);
     });
 
    }
@@ -643,7 +643,7 @@ export class InventoryMapComponent implements OnInit {
 
   this.router.navigate([]).then(() => {
       let url = `/#/OrderManager/OrderStatus?itemNumber=${seletedRecord.itemNumber}&type=TransactionHistory`;
-      window.open(url, '_blank');
+      window.open(url, UniqueConstants._blank);
   });
  }
 

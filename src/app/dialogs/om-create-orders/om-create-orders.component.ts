@@ -20,6 +20,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,Column,ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-create-orders',
@@ -33,46 +34,46 @@ export class OmCreateOrdersComponent implements OnInit {
   isActiveTrigger: boolean = false;
   public iAdminApiService: IAdminApiService;
   sequenceKeyMapping: any = [
-    { sequence: 'Transaction Type', key: 'transactionType' },
-    { sequence: 'Order Number', key: 'orderNumber' },
-    { sequence: 'Priority', key: 'priority' },
-    { sequence: 'Required Date', key: 'requiredDate' },
-    { sequence: 'User Field1', key: 'userField1' },
-    { sequence: 'User Field2', key: 'userField2' },
-    { sequence: 'User Field3', key: 'userField3' },
-    { sequence: 'User Field4', key: 'userField4' },
-    { sequence: 'User Field5', key: 'userField5' },
-    { sequence: 'User Field6', key: 'userField6' },
-    { sequence: 'User Field7', key: 'userField7' },
-    { sequence: 'User Field8', key: 'userField8' },
-    { sequence: 'User Field9', key: 'userField9' },
-    { sequence: 'User Field10', key: 'userField10' },
-    { sequence: 'Item Number', key: 'itemNumber' },
-    { sequence: 'Description', key: 'description' },
-    { sequence: 'Line Number', key: 'lineNumber' },
-    { sequence: 'Transaction Quantity', key: 'transactionQuantity' },
-    { sequence: 'Warehouse', key: 'warehouse' },
-    { sequence: 'Line Sequence', key: 'lineSequence' },
+    { sequence: TableConstant.TransactionType, key: TableConstant.transactionType },
+    { sequence: Column.OrderNumber, key: 'orderNumber' },
+    { sequence: 'Priority', key: UniqueConstants.Priority },
+    { sequence: 'Required Date', key: ColumnDef.RequiredDate },
+    { sequence: TableConstant.UserField1, key: ColumnDef.userField1 },
+    { sequence: TableConstant.UserField2, key: ColumnDef.userField2 },
+    { sequence: 'User Field3', key: ColumnDef.userField3 },
+    { sequence: 'User Field4', key: ColumnDef.userField4 },
+    { sequence: 'User Field5', key: ColumnDef.userField5 },
+    { sequence: 'User Field6', key: ColumnDef.userField6 },
+    { sequence: 'User Field7', key: ColumnDef.userField7 },
+    { sequence: 'User Field8', key: ColumnDef.userField8 },
+    { sequence: 'User Field9', key: ColumnDef.userField9 },
+    { sequence: 'User Field10', key: ColumnDef.userField10 },
+    { sequence: Column.ItemNumber, key: 'itemNumber' },
+    { sequence: Column.Description, key: UniqueConstants.Description },
+    { sequence: 'Line Number', key: TableConstant.LineNumber },
+    { sequence: TableConstant.TransactionQuantity, key: ColumnDef.TransactionQuantity },
+    { sequence: ColumnDef.Warehouse, key: TableConstant.WareHouse },
+    { sequence: 'Line Sequence', key: TableConstant.LineSequence },
     { sequence: 'In Process', key: 'inProcess' },
     { sequence: 'Processing By', key: 'processingBy' },
-    { sequence: 'Unit of Measure', key: 'unitOfMeasure' },
-    { sequence: 'Import By', key: 'importBy' },
-    { sequence: 'Import Date', key: 'importDate' },
+    { sequence: FilterColumnName.unitOfMeasure, key: ColumnDef.UnitOfMeasure },
+    { sequence: 'Import By', key: TableConstant.ImportBy },
+    { sequence: 'Import Date', key: TableConstant.ImportDate },
     { sequence: 'Import Filename', key: 'importFilename' },
-    { sequence: 'Expiration Date', key: 'expirationDate' },
-    { sequence: 'Lot Number', key: 'lotNumber' },
-    { sequence: 'Serial Number', key: 'serialNumber' },
-    { sequence: 'Notes', key: 'notes' },
-    { sequence: 'Revision', key: 'revision' },
+    { sequence: TableConstant.ExpirationDate, key: ColumnDef.ExpirationDate },
+    { sequence: Column.LotNumber, key: TableConstant.LotNumber },
+    { sequence: ColumnDef.SerialNumber, key: TableConstant.SerialNumber },
+    { sequence: 'Notes', key: TableConstant.Notes },
+    { sequence: TableConstant.Revision, key: ColumnDef.Revision },
     { sequence: 'ID', key: 'id' },
-    { sequence: 'Host Transaction ID', key: 'hostTransactionID' },
-    { sequence: 'Emergency', key: 'emergency' },
-    { sequence: 'Label', key: 'label' },
-    { sequence: 'Batch Pick ID', key: 'batchPickID' },
-    { sequence: 'Tote ID', key: 'toteID' },
-    { sequence: 'Cell', key: 'cell' },
-    { sequence: 'Label', key: 'label' },
-    { sequence: 'Label', key: 'label' },
+    { sequence: TableConstant.HostTransactionID, key: ColumnDef.HostTransactionId },
+    { sequence: ColumnDef.Emergency, key: UniqueConstants.emergency },
+    { sequence: 'Label', key: TableConstant.label },
+    { sequence: ColumnDef.BatchPickID, key: TableConstant.BatchPickID },
+    { sequence: Column.ToteID, key: ColumnDef.ToteID },
+    { sequence: TableConstant.Cell, key: Column.cell },
+    { sequence: 'Label', key: TableConstant.label },
+    { sequence: 'Label', key: TableConstant.label },
   ];
 
   filterColumnNames: any = [];
@@ -80,11 +81,11 @@ export class OmCreateOrdersComponent implements OnInit {
   createOrdersDTSubscribe: any;
   createOrdersDTPayload: any = {
     orderNumber: "",
-    filter: "1 = 1"
+    filter: UniqueConstants.OneEqualsOne
   };
   tableData: any = [];
   userData: any;
-  allowInProc: any = 'False';
+  allowInProc: any = StringConditions.False;
   otcreatecount: any = 0;
   orderNumberSearchList: any;
   @ViewChild("searchauto", { static: false }) autocompleteOpened: MatAutocomplete;
@@ -119,7 +120,7 @@ export class OmCreateOrdersComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         from: "add-new-order",
@@ -138,7 +139,7 @@ export class OmCreateOrdersComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         from: "edit-transaction",
@@ -160,7 +161,7 @@ export class OmCreateOrdersComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.tableData.sort = this.sort1;
   }
@@ -175,7 +176,7 @@ export class OmCreateOrdersComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(OmAddRecordComponent, {
       height: 'auto',
       width: '75vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         from: "add-transaction",
@@ -195,8 +196,8 @@ export class OmCreateOrdersComponent implements OnInit {
   openOmUserFieldData() {
     let dialogRef: any = this.global.OpenDialog(OmUserFieldDataComponent, {
       height: 'auto',
-      width: '50vw',
-      autoFocus: '__non_existing_element__',
+      width: Style.w50vw,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -217,7 +218,7 @@ export class OmCreateOrdersComponent implements OnInit {
           }
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("CreateOrdersDT", res.responseMessage);
         }
       });
@@ -235,15 +236,15 @@ export class OmCreateOrdersComponent implements OnInit {
   }
 
   releaseOrders() {
-    if (this.allowInProc == "False" && this.otcreatecount > 0) {
-      this.global.ShowToastr('error', '"You may not release an Order that is already in progress', 'Release Transactions');
+    if (this.allowInProc == StringConditions.False && this.otcreatecount > 0) {
+      this.global.ShowToastr(ToasterType.Error, '"You may not release an Order that is already in progress', 'Release Transactions');
       return;
     }
 
     let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         heading: 'Release Transaction',
@@ -251,17 +252,17 @@ export class OmCreateOrdersComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         let payload = {
           "val": this.createOrdersDTPayload.orderNumber,
           "page": "Create Orders",
         };
         this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.global.ShowToastr('success', "Order Released Successfully!", 'Success!');
+            this.global.ShowToastr(ToasterType.Success, "Order Released Successfully!", ToasterTitle.Success);
           }
           else {
-            this.global.ShowToastr('success', "Order Released Successfully!", 'Success!');
+            this.global.ShowToastr(ToasterType.Success, "Order Released Successfully!", ToasterTitle.Success);
             console.log("ReleaseOrders", res.responseMessage);
 
           }
@@ -281,7 +282,7 @@ export class OmCreateOrdersComponent implements OnInit {
       this.global.Print(`FileName:PrintReleaseOrders|tabIDs:${tabIDs}|View:|Table:|Page:${'Create Orders'}|WSID:${this.userData.wsid}`);
 
     } else {
-      window.open(`/#/report-view?file=FileName:PrintReleaseOrders|tabIDs:${tabIDs}|View:|Table:|Page:${'Create Orders'}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+      window.open(`/#/report-view?file=FileName:PrintReleaseOrders|tabIDs:${tabIDs}|View:|Table:|Page:${'Create Orders'}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
     }
 
@@ -289,38 +290,38 @@ export class OmCreateOrdersComponent implements OnInit {
 
   deleteViewed() {
     if (this.tableData.length == 0) {
-      this.global.ShowToastr('error', 'There are currently no records within the table', 'Warning');
+      this.global.ShowToastr(ToasterType.Error, 'There are currently no records within the table', 'Warning');
     }
     else {
       let ids = [];
       ids = this.tableData.filteredData.map(x => x.id.toString());
       const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           mode: 'release-all-orders',
           ErrorMessage: 'Are you sure you want to delete these records?',
-          action: 'delete'
+          action: UniqueConstants.delete
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let payload = {
             "ids": ids,
             "user": this.userData.userName,
           };
           this.iOrderManagerApi.OTPendDelete(payload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
-              this.global.ShowToastr('success', labels.alert.delete, 'Success!');
-              this.createOrdersDTPayload.filter = "1 = 1";
+              this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
+              this.createOrdersDTPayload.filter = UniqueConstants.OneEqualsOne;
               this.selectedFilterColumn = '';
               this.selectedFilterString = '';
               this.createOrdersDT();
               dialogRef.close();
             } else {
-              this.global.ShowToastr('error', "An error has occurred while deleting the viewed records", 'Error!');
+              this.global.ShowToastr(ToasterType.Error, "An error has occurred while deleting the viewed records", ToasterTitle.Error);
               console.log("OTPendDelete", res.responseMessage);
             }
           });
@@ -356,7 +357,7 @@ export class OmCreateOrdersComponent implements OnInit {
           this.orderNumberSearchList = res.data.sort();
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("CreateOrderTypeahead", res.responseMessage);
 
         }
@@ -405,11 +406,11 @@ export class OmCreateOrdersComponent implements OnInit {
             this.displayedColumns.push(this.sequenceKeyMapping.filter((y: any) => x == y.sequence)[0]?.key)
           }
         });
-        this.displayedColumns.push('actions');
+        this.displayedColumns.push(ColumnDef.Actions);
         if (refresh) this.createOrdersDT();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetColumnSequence", res.responseMessage);
 
       }

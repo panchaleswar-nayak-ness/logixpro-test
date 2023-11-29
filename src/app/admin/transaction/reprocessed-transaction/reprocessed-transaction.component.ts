@@ -12,7 +12,7 @@ import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dia
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, RouteNames, TableName, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, RouteNames, TableName, ToasterMessages, ToasterTitle, ToasterType ,Column,TableConstant,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocessed-transaction',
@@ -21,17 +21,17 @@ import { DialogConstants, RouteNames, TableName, ToasterMessages, ToasterTitle, 
 })
 export class ReprocessedTransactionComponent implements OnInit {
   TRNSC_DATA = [
-    { colHeader: 'importDate', colDef: 'Import Date' },
-    { colHeader: 'importBy', colDef: 'Import By' },
+    { colHeader: TableConstant.ImportDate, colDef: 'Import Date' },
+    { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'importFileName', colDef: 'Import Filename' },
-    { colHeader: 'transactionType', colDef: 'Transaction Type' },
-    { colHeader: 'orderNumber', colDef: 'Order Number' },
-    { colHeader: 'lineNumber', colDef: 'Line Number' },
-    { colHeader: 'itemNumber', colDef: 'Item Number' },
-    { colHeader: 'lotNumber', colDef: 'Lot Number' },
-    { colHeader: 'expirationDate', colDef: 'Expiration Date' },
-    { colHeader: 'serialNumber', colDef: 'Serial Number' },
-    { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
+    { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
+    { colHeader: UniqueConstants.OrderNumber, colDef: Column.OrderNumber },
+    { colHeader: TableConstant.LineNumber, colDef: 'Line Number' },
+    { colHeader: 'itemNumber', colDef: Column.ItemNumber },
+    { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
+    { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
+    { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber },
+    { colHeader: ColumnDef.TransactionQuantity, colDef: TableConstant.TransactionQuantity },
     { colHeader: 'reasonMessage', colDef: 'Reason Message' },
     { colHeader: 'reason', colDef: 'Reason' },
     { colHeader: 'dateStamp', colDef: 'Date Stamp' },
@@ -54,7 +54,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   searchAutocompleteList: any;
   public iAdminApiService: IAdminApiService;
   public sortCol:any=5;
-  public sortOrder:any='asc';
+  public sortOrder:any=UniqueConstants.Asc;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('matRef') matRef: MatSelect;
@@ -76,7 +76,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   };
   sortColumn: any = {
     columnName: 0,
-    sortOrder: 'asc',
+    sortOrder: UniqueConstants.Asc,
   };
   constructor(
     private authService: AuthService,

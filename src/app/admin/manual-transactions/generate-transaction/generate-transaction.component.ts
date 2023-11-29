@@ -21,8 +21,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import {
   DialogConstants,
   ToasterTitle,
-  ToasterType,
-} from 'src/app/common/constants/strings.constants';
+  ToasterType,Style,StringConditions,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-generate-transaction',
@@ -111,7 +110,7 @@ export class GenerateTransactionComponent implements OnInit {
   printLabelMT() {
     this.global.Print(
       `FileName:printMTLabel|ID:${this.transactionID}|User:${this.userData.userName}`,
-      'lbl'
+      UniqueConstants.Ibl
     );
   }
   clearMatSelectList() {
@@ -170,7 +169,7 @@ export class GenerateTransactionComponent implements OnInit {
           this.wareHouse = this.item.warehouse;
           this.toteID = this.item.toteID;
           this.emergency = !(
-            this.item.emergency === 'False' || this.item.emergency === 'false'
+            this.item.emergency === StringConditions.False || this.item.emergency === 'false'
           );
           this.warehouseSensitivity = this.item.wareHouseSensitive;
           this.totalQuantity = res.data.totalQuantity;
@@ -246,7 +245,7 @@ export class GenerateTransactionComponent implements OnInit {
     if (this.orderNumber == '' || !this.item) return;
     const dialogRef: any = this.global.OpenDialog(SetItemLocationComponent, {
       height: DialogConstants.auto,
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
@@ -301,7 +300,7 @@ export class GenerateTransactionComponent implements OnInit {
         PostManualTransactionComponent,
         {
           height: DialogConstants.auto,
-          width: '560px',
+          width: Style.w560px,
           autoFocus: DialogConstants.autoFocus,
           disableClose: true,
           data: {
@@ -356,7 +355,7 @@ export class GenerateTransactionComponent implements OnInit {
     if (this.isLocation && this.transQuantity > this.totalQuantity) {
       const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
         height: DialogConstants.auto,
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
@@ -415,7 +414,7 @@ export class GenerateTransactionComponent implements OnInit {
       DeleteConfirmationManualTransactionComponent,
       {
         height: DialogConstants.auto,
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
@@ -512,7 +511,7 @@ export class GenerateTransactionComponent implements OnInit {
       };
       this.iAdminApiService.UpdateTransaction(payload).subscribe((res: any) => {
         if (res?.isExecuted) {
-          this.global.ShowToastr('success', labels.alert.success, 'Success!');
+          this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterTitle.Success);
           this.clearMatSelectList();
         } else {
           this.global.ShowToastr(
@@ -535,7 +534,7 @@ export class GenerateTransactionComponent implements OnInit {
       this.isInvalidQuantityPopUp = true;
       const dialogRef: any = this.global.OpenDialog(InvalidQuantityComponent, {
         height: DialogConstants.auto,
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });

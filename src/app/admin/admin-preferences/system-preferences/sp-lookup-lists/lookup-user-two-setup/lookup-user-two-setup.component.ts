@@ -9,6 +9,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { SharedService } from 'src/app/common/services/shared.service';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-lookup-user-two-setup',
@@ -60,7 +61,7 @@ export class LookupUserTwoSetupComponent implements OnInit {
 
       else {
         
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("userfieldlookup",res.responseMessage);
       }
     })
@@ -87,11 +88,11 @@ export class LookupUserTwoSetupComponent implements OnInit {
       if(res.isExecuted){
         this.AddBtn = false
         ele.oldVal = ele.currentVal
-        this.global.ShowToastr('success',`Saved Successfully`, 'Success!');
+        this.global.ShowToastr(ToasterType.Success,`Saved Successfully`, ToasterTitle.Success);
       }
       else{
         
-        this.global.ShowToastr('error',`Field is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,`Field is a duplicate. Save other edited fields and ensure it is not a duplicate before saving.`, ToasterTitle.Error);
         console.log("userfieldlookup",res.responseMessage);
       }
     }))
@@ -104,16 +105,16 @@ export class LookupUserTwoSetupComponent implements OnInit {
   deleteUserF2(ele){
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '600px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w600px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
-        action: 'delete',
+        action: UniqueConstants.delete,
         actionMessage:` ${ele.currentVal} from the ${this.label} `
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
-      if (res === 'Yes'){
+      if (res === ResponseStrings.Yes){
 
         let payload = {
           "value":  ele.currentVal,
@@ -125,7 +126,7 @@ export class LookupUserTwoSetupComponent implements OnInit {
           }
           else {
             
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("deleteUserfieldLookUp",res.responseMessage);
 
           }

@@ -5,7 +5,7 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { AddPickuplevelsComponent } from '../../dialogs/add-pickuplevels/add-pickuplevels.component';
 import { DeleteConfirmationComponent } from '../../dialogs/delete-confirmation/delete-confirmation.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { LiveAnnouncerMessage, StringConditions } from 'src/app/common/constants/strings.constants';
+import { LiveAnnouncerMessage, StringConditions ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 
 export interface PickupLevelDetails {
@@ -36,7 +36,7 @@ export class EmployeePickupLevelComponent{
   @ViewChild(MatSort) sort: MatSort;
   public nextPickLvl:any;
 
-   displayedColumns: string[] = ['pickLevel', 'startShelf', 'endShelf', 'edit'];
+   displayedColumns: string[] = ['pickLevel', 'startShelf', 'endShelf', StringConditions.edit];
 
   ngOnChanges(changes: SimpleChanges): void { 
     if(this.pickUplevels){
@@ -90,8 +90,8 @@ export class EmployeePickupLevelComponent{
     let dialogRef;
     dialogRef = this.global.OpenDialog(AddPickuplevelsComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data:{
         nextPickLvl:this.nextPickLvl,
@@ -106,11 +106,11 @@ export class EmployeePickupLevelComponent{
     let dialogRef;
     dialogRef = this.global.OpenDialog(AddPickuplevelsComponent, {
       height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w480px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data:{
-        mode: 'edit',
+        mode: StringConditions.edit,
         pickLevelData:pickLevelData,
         userName:this.grp_data
       }
@@ -124,8 +124,8 @@ export class EmployeePickupLevelComponent{
     let dialogRef;
     dialogRef = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w480px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: 'delete-picklevel',

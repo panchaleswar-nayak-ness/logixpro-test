@@ -20,7 +20,7 @@ import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.co
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,Style,dataCredientials,UniqueConstants,StringConditions,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 export interface Location {
   start_location: string;
@@ -81,9 +81,9 @@ export class EmployeesComponent implements OnInit {
 
   // table initialization
   displayedColumns: string[] = ['startLocation', 'endLocation', 'delete_location'];
-  zoneColumns: string[] = ['zones', 'actions'];
-  groupsColumns: string[] = ['groups', 'actions'];
-  funcationsColumns: string[] = ['Function', 'actions'];
+  zoneColumns: string[] = ['zones', ColumnDef.Actions];
+  groupsColumns: string[] = ['groups', ColumnDef.Actions];
+  funcationsColumns: string[] = ['Function', ColumnDef.Actions];
   
   ELEMENT_DATA_1: any[] = [
     { controlname: '11/02/2022 11:58 AM', function: 'deleted Item Number 123'},
@@ -144,7 +144,7 @@ export class EmployeesComponent implements OnInit {
     this.maxOrders = event.userData.maximumOrders;
     const emp_data = {
       "user": event.userData?.username,
-      "wsid": "TESTWSID"
+      "wsid": dataCredientials.testWsid
     };
  
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
@@ -184,7 +184,7 @@ export class EmployeesComponent implements OnInit {
   reloadData(){
     const emp_data = {
       "user":  this.grpDataV,
-      "wsid": "TESTWSID"
+      "wsid": dataCredientials.testWsid
     };
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => {
@@ -269,7 +269,7 @@ export class EmployeesComponent implements OnInit {
 
     const grp_data = {
       "userName":this.userName,
-      "wsid": "TESTWSID",
+      "wsid": dataCredientials.testWsid,
       "groupName":this.grpData.groupName
 
       }; 
@@ -309,14 +309,14 @@ export class EmployeesComponent implements OnInit {
 
     emp_data.env = this.env;
     emp_data.allGroups = this.allGroups;
-    if (event === 'edit') {
+    if (event === StringConditions.edit) {
       let dialogRef:any = this.global.OpenDialog(AddNewEmployeeComponent, {
         height: 'auto',
         width: '520px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
-          mode: 'edit',
+          mode: StringConditions.edit,
           emp_data: emp_data,
         }
       })
@@ -331,16 +331,16 @@ export class EmployeesComponent implements OnInit {
         matSelect.writeValue(null);
       })
     }
-    if (event === 'delete') {
+    if (event === UniqueConstants.delete) {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
-        width: '480px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w480px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'delete-emp',
           emp_data: emp_data,
-          action: 'delete'
+          action: UniqueConstants.delete
         }
       })
       dialogRef.afterClosed().subscribe(result => {
@@ -361,8 +361,8 @@ export class EmployeesComponent implements OnInit {
   openGroupDialog() {
     let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -386,14 +386,14 @@ export class EmployeesComponent implements OnInit {
   }
 
   actionGroupDialog(event: any, grp_data: any, matEvent: MatSelectChange) { 
-    if (event === 'edit') {
+    if (event === StringConditions.edit) {
       let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
         height: 'auto',
-        width: '480px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w480px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
-          mode: 'edit',
+          mode: StringConditions.edit,
           grp_data: grp_data
         }
       })
@@ -405,11 +405,11 @@ export class EmployeesComponent implements OnInit {
         
       })
     }
-    if (event === 'delete') {
+    if (event === UniqueConstants.delete) {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
-        width: '480px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w480px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'delete-group',
@@ -426,8 +426,8 @@ export class EmployeesComponent implements OnInit {
     if (event === 'clone') { 
       let dialogRef:any = this.global.OpenDialog(CloneGroupComponent, {
         height: 'auto',
-        width: '480px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w480px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'clone',
@@ -453,8 +453,8 @@ export class EmployeesComponent implements OnInit {
   openDialog() {
     let dialogRef:any = this.global.OpenDialog(AddNewEmployeeComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         emp_data: null,

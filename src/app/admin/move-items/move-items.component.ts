@@ -14,32 +14,32 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { DialogConstants, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName,StringConditions} from 'src/app/common/constants/strings.constants';
 
 const TRNSC_DATA = [
-  { colHeader: 'warehouse', colDef: 'Warehouse' },
+  { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
   { colHeader: 'locationNumber', colDef: 'Location Number' },
-  { colHeader: 'goldenZone', colDef: 'Golden Zone' },
-  { colHeader: 'itemNumber', colDef: 'Item Number' },
-  { colHeader: 'description', colDef: 'Description' },
+  { colHeader: UniqueConstants.goldenZone, colDef: 'Golden Zone' },
+  { colHeader: 'itemNumber', colDef: Column.ItemNumber },
+  { colHeader: UniqueConstants.Description, colDef: Column.Description },
   { colHeader: 'itemQuantity', colDef: 'Item Quantity' },
   { colHeader: 'quantityAllocatedPick', colDef: 'Quantity Allocated Pick' },
   { colHeader: 'quantityAllocatedPutAway', colDef: 'Quantity Allocated Put Away' },
-  { colHeader: 'zone', colDef: 'Zone' },
-  { colHeader: 'carousel', colDef: 'Carousel' },
-  { colHeader: 'row', colDef: 'Row' },
-  { colHeader: 'shelf', colDef: 'Shelf' },
-  { colHeader: 'bin', colDef: 'Bin' },
-  { colHeader: 'cellSize', colDef: 'Cell Size' },
-  { colHeader: 'lotNumber', colDef: 'Serial Lot Number' },
-  { colHeader: 'serialNumber', colDef: 'Serial Number' },
-  { colHeader: 'expirationDate', colDef: 'Expiration Date' },
-  { colHeader: 'revision', colDef: 'Revision' },
-  { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
+  { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
+  { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
+  { colHeader: Column.Row, colDef: TableConstant.Row },
+  { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
+  { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin },
+  { colHeader: UniqueConstants.cellSize, colDef: 'Cell Size' },
+  { colHeader: TableConstant.LotNumber, colDef: 'Serial Lot Number' },
+  { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber },
+  { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
+  { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },
+  { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
   { colHeader: 'maximumQuantity', colDef: 'Maximum Quantity' },
   { colHeader: 'putAwayDate', colDef: 'Put Away Date' },
-  { colHeader: 'userField1', colDef: 'User Field1' },
-  { colHeader: 'userField2', colDef: 'User Field2' },
+  { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
+  { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
   { colHeader: 'masterLocation', colDef: 'Master Location' },
   { colHeader: 'dateSensitive', colDef: 'Date Sensitive' },
   { colHeader: 'dedicated', colDef: 'Dedicated' },
@@ -67,15 +67,15 @@ export class MoveItemsComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
   isRowSelected = false;
   contextMenuPosition = { x: '0px', y: '0px' };
-  moveFromFilter: string = '1 = 1';
-  moveToFilter: string = '1 = 1';
-  tableType = 'MoveFrom';
+  moveFromFilter: string = UniqueConstants.OneEqualsOne;
+  moveToFilter: string = UniqueConstants.OneEqualsOne;
+  tableType = StringConditions.MoveFrom;
   userData: any;
   itemNo: any = '';
   isValidateMove = false;
   isViewAll = false;
   reqDate: Date = new Date();
-  sortOrder = 'asc';
+  sortOrder = UniqueConstants.Asc;
   sortCol = 0;
   totalRecords = 0;
   startRow = 0;
@@ -84,7 +84,7 @@ export class MoveItemsComponent implements OnInit {
   recordsFiltered = 0;
   itemSelected = true;
   from_zone = '';
-  sortOrderTo = 'asc';
+  sortOrderTo = UniqueConstants.Asc;
   sortColTo = 0;
   totalRecordsTo = 0;
   startRowTo = 0;
@@ -168,8 +168,8 @@ export class MoveItemsComponent implements OnInit {
         this.resetPaginationFrom();
         this.autocompleteSearchColumn();
       });
-    this.getMoveItemList('MoveFrom');
-    this.getMoveItemList('MoveTo');
+    this.getMoveItemList(StringConditions.MoveFrom);
+    this.getMoveItemList(StringConditions.MoveTo);
   }
 
   ngAfterViewInit() {
@@ -178,29 +178,29 @@ export class MoveItemsComponent implements OnInit {
   }
 
   public displayedColumns: any = [
-    'warehouse',
+    TableConstant.WareHouse,
     'locationNumber',
-    'goldenZone',
+    UniqueConstants.goldenZone,
     'itemNumber',
-    'description',
+    UniqueConstants.Description,
     'itemQuantity',
     'quantityAllocatedPick',
     'quantityAllocatedPutAway',
-    'zone',
-    'carousel',
-    'row',
-    'shelf',
-    'bin',
-    'cellSize',
-    'lotNumber',
-    'serialNumber',
-    'expirationDate',
-    'revision',
-    'unitOfMeasure',
+    TableConstant.zone,
+    zoneType.carousel,
+    Column.Row,
+    TableConstant.shelf,
+    ColumnDef.Bin,
+    UniqueConstants.cellSize,
+    TableConstant.LotNumber,
+    TableConstant.SerialNumber,
+    ColumnDef.ExpirationDate,
+    ColumnDef.Revision,
+    ColumnDef.UnitOfMeasure,
     'maximumQuantity',
     'putAwayDate',
-    'userField1',
-    'userField2',
+    ColumnDef.userField1,
+    ColumnDef.userField2,
     'masterLocation',
     'dateSensitive',
     'dedicated',
@@ -212,36 +212,36 @@ export class MoveItemsComponent implements OnInit {
   columnSeq: any = [];
 
   getMoveItemList(tableName, fromPagination = false, unselectFrom = false) {
-    if (tableName === 'MoveTo')
-      if (this.viewAll || this.dataSource.data.length === 0) this.viewModeTo = 'All';
-      else if (fromPagination && !this.isRowSelected) this.viewModeTo = 'All';
-      else if (unselectFrom) this.viewModeTo = 'All';
+    if (tableName === StringConditions.MoveTo)
+      if (this.viewAll || this.dataSource.data.length === 0) this.viewModeTo = ResponseStrings.AllCaps;
+      else if (fromPagination && !this.isRowSelected) this.viewModeTo = ResponseStrings.AllCaps;
+      else if (unselectFrom) this.viewModeTo = ResponseStrings.AllCaps;
       else this.viewModeTo = 'NOA';
 
     let payload = {
       draw: 1,
-      StartRow: tableName === 'MoveFrom' ? this.startRow : this.startRowTo,
-      EndRow: tableName === 'MoveFrom' ? this.endRow : this.endRowTo,
-      searchString: tableName === 'MoveFrom' ? this.itemNo : this.from_itemNo,
-      searchColumn: 'Item Number',
-      sortColumnIndex: tableName === 'MoveFrom' ? this.sortCol : this.sortColTo,
-      sortOrder: tableName === 'MoveFrom' ? this.sortOrder : this.sortOrderTo,
+      StartRow: tableName === StringConditions.MoveFrom ? this.startRow : this.startRowTo,
+      EndRow: tableName === StringConditions.MoveFrom ? this.endRow : this.endRowTo,
+      searchString: tableName === StringConditions.MoveFrom ? this.itemNo : this.from_itemNo,
+      searchColumn: Column.ItemNumber,
+      sortColumnIndex: tableName === StringConditions.MoveFrom ? this.sortCol : this.sortColTo,
+      sortOrder: tableName === StringConditions.MoveFrom ? this.sortOrder : this.sortOrderTo,
       tableName: tableName,
       cellSize: this.from_cellSize,
       warehouse: this.from_warehouse,
-      invMapid: tableName === 'MoveFrom' ? this.invMapID : this.invMapIDToItem,
-      viewMode: tableName === 'MoveFrom' ? this.viewMode : this.viewModeTo,
-      filter: tableName === 'MoveFrom' ? this.moveFromFilter : this.moveToFilter,
+      invMapid: tableName === StringConditions.MoveFrom ? this.invMapID : this.invMapIDToItem,
+      viewMode: tableName === StringConditions.MoveFrom ? this.viewMode : this.viewModeTo,
+      filter: tableName === StringConditions.MoveFrom ? this.moveFromFilter : this.moveToFilter,
     };
 
     this.iAdminApiService.GetMoveItemsTable(payload).subscribe((res: any) => {
       if(res.isExecuted)
       {
         if (res?.data && res.data['moveMapItems'].length === 0)
-          if (tableName === 'MoveFrom') this.resetPaginationFrom();
+          if (tableName === StringConditions.MoveFrom) this.resetPaginationFrom();
           else this.resetPaginationTo();
 
-        if (tableName === 'MoveTo') {
+        if (tableName === StringConditions.MoveTo) {
           res?.data && res.data['moveMapItems'].map((item : any) => item.isSelected = false);
           this.moveToDatasource = new MatTableDataSource(res?.data && res.data && res.data['moveMapItems']);
           this.totalRecordsTo = res?.data.recordsTotal;
@@ -275,7 +275,7 @@ export class MoveItemsComponent implements OnInit {
     this.iCommonAPI.SearchItem(searchPayload).subscribe({
       next: (res: any) => {
         this.searchAutocompletItemNo = res.data;
-        this.getMoveItemList('MoveFrom');
+        this.getMoveItemList(StringConditions.MoveFrom);
       }
     });
   }
@@ -290,7 +290,7 @@ export class MoveItemsComponent implements OnInit {
     this.displayedColumns.find((x, i) => { if(x === event.active) index = i; });
     this.sortCol = index;
     this.sortOrder = event.direction;
-    this.getMoveItemList('MoveFrom');
+    this.getMoveItemList(StringConditions.MoveFrom);
   }
 
   sortChangeToItems(event) {
@@ -299,7 +299,7 @@ export class MoveItemsComponent implements OnInit {
     this.displayedColumns.find((x, i) => { if (x === event.active) index = i; });
     this.sortColTo = index;
     this.sortOrderTo = event.direction;
-    this.getMoveItemList('MoveTo');
+    this.getMoveItemList(StringConditions.MoveTo);
   }
 
   handlePageEvent(e: PageEvent) {
@@ -307,7 +307,7 @@ export class MoveItemsComponent implements OnInit {
     this.startRow = e.pageSize * e.pageIndex;
     this.endRow = e.pageSize * e.pageIndex + e.pageSize;
     this.recordsPerPage = e.pageSize;
-    this.getMoveItemList('MoveFrom');
+    this.getMoveItemList(StringConditions.MoveFrom);
   }
 
   handlePageEventTo(e: PageEvent) {
@@ -315,14 +315,14 @@ export class MoveItemsComponent implements OnInit {
     this.startRowTo = e.pageSize * e.pageIndex;
     this.endRowTo = e.pageSize * e.pageIndex + e.pageSize;
     this.recordsPerPageTo = e.pageSize;
-    this.getMoveItemList('MoveTo', true);
+    this.getMoveItemList(StringConditions.MoveTo, true);
   }
 
   getMoveFromDetails(row, i?, type?) {
     let isMoveFromSelected = false;
     console.log(row)
 
-    if (type === 'MoveTo') 
+    if (type === StringConditions.MoveTo) 
     {
       this.dataSource._data._value.forEach((element, index) => {
         if (!element.isSelected) return;
@@ -360,18 +360,18 @@ export class MoveItemsComponent implements OnInit {
       if (this.fillQty < 0) this.fillQty = 0;
       this.moveToDedicated = row.dedicated === true ? 'Dedicated' : 'Not Dedicated';
       this.isValidateMove = true;
-      if (!row.isSelected) this.clearFields('MoveTo');
+      if (!row.isSelected) this.clearFields(StringConditions.MoveTo);
       else this.isMoveQty = false;
     } 
-    else if (type === 'MoveFrom') 
+    else if (type === StringConditions.MoveFrom) 
     {
       this.dataSource._data._value[i].isSelected = !this.dataSource._data._value[i].isSelected;
       this.isRowSelected = !this.isRowSelected;
       
       if (!this.isRowSelected) {
         this.moveToDatasource._data._value.forEach((element, index) => element.isSelected = false);
-        this.clearFields('MoveFrom');
-        this.clearFields('MoveTo');
+        this.clearFields(StringConditions.MoveFrom);
+        this.clearFields(StringConditions.MoveTo);
       }
 
       this.dataSource._data._value.forEach((element, index) => {
@@ -380,16 +380,16 @@ export class MoveItemsComponent implements OnInit {
       });
 
       if (!this.dataSource._data._value[i].isSelected) {
-        if (!row.isSelected) this.clearFields('MoveFrom');
+        if (!row.isSelected) this.clearFields(StringConditions.MoveFrom);
         else this.isMoveQty = false;
         this.from_itemNo = '';
         this.from_cellSize = '';
         this.invMapIDToItem = -1;
-        this.viewModeTo = 'All';
+        this.viewModeTo = ResponseStrings.AllCaps;
         this.startRowTo = 0;
         this.endRowTo = 10;
         this.paginator.pageIndex = 0;
-        this.getMoveItemList('MoveTo', false, true);
+        this.getMoveItemList(StringConditions.MoveTo, false, true);
         return;
       }
 
@@ -419,7 +419,7 @@ export class MoveItemsComponent implements OnInit {
         this.from_itemQuantity = this.maxMoveQty;
         this.openAlertDialog('MoveCap', this.maxMoveQty);
       } else this.from_itemQuantity = this.maxMoveQty;
-      this.getMoveItemList('MoveTo');
+      this.getMoveItemList(StringConditions.MoveTo);
     }
   }
 
@@ -451,7 +451,7 @@ export class MoveItemsComponent implements OnInit {
           ' to create Move transactions';
         break;
 
-      case 'Error':
+      case ResponseStrings.Error:
         message =
           'An Error occured while creating move Transactions. Check the Event log for More information';
         break;
@@ -471,7 +471,7 @@ export class MoveItemsComponent implements OnInit {
         this.isMoveQty = true;
         this.from_priority = 0;
         this.from_itemQuantity = 0;
-        this.clearFields('MoveFrom');
+        this.clearFields(StringConditions.MoveFrom);
         break;
 
       default:
@@ -480,7 +480,7 @@ export class MoveItemsComponent implements OnInit {
 
     const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: DialogConstants.auto,
-      width: '560px',
+      width: Style.w560px,
       data: {
         message: message,
         heading: '',
@@ -573,16 +573,16 @@ export class MoveItemsComponent implements OnInit {
 
   tabChanged(tab: any) {
     if (tab.index === 0) {
-      this.tableType = 'MoveFrom';
+      this.tableType = StringConditions.MoveFrom;
       this.isViewAll = false;
     } else if (tab.index === 1) {
-      this.tableType = 'MoveTo';
+      this.tableType = StringConditions.MoveTo;
       this.isViewAll = true;
     }
   }
 
   clearFields(type?) {
-    if (type === 'MoveFrom') {
+    if (type === StringConditions.MoveFrom) {
       this.from_priority = 0;
       this.from_warehouse = '';
       this.from_location = '';
@@ -598,7 +598,7 @@ export class MoveItemsComponent implements OnInit {
       this.isMoveQty = true;
       this.moveFromDedicated = '';
       this.isDedicated = false;
-    } else if (type === 'MoveTo') {
+    } else if (type === StringConditions.MoveTo) {
       this.to_priority = 0;
       this.to_warehouse = '';
       this.to_location = '';
@@ -637,14 +637,14 @@ export class MoveItemsComponent implements OnInit {
       if(res.isExecuted){
         this.global.ShowToastr(ToasterType.Success, 'Item moved successfully', ToasterTitle.Success);
         this.resetPagination();
-        this.moveToFilter='1 = 1';
-        this.moveFromFilter='1 = 1';
+        this.moveToFilter=UniqueConstants.OneEqualsOne;
+        this.moveFromFilter=UniqueConstants.OneEqualsOne;
         this.tabIndex=0;
         this.itemNumberSearch.next('');
-        this.getMoveItemList('MoveFrom');
-        this.getMoveItemList('MoveTo');
-        this.clearFields('MoveFrom')
-        this.clearFields('MoveTo')
+        this.getMoveItemList(StringConditions.MoveFrom);
+        this.getMoveItemList(StringConditions.MoveTo);
+        this.clearFields(StringConditions.MoveFrom)
+        this.clearFields(StringConditions.MoveTo)
       } else {
         this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
         console.log("CreateMoveTransactions",res.responseMessage);
@@ -653,8 +653,8 @@ export class MoveItemsComponent implements OnInit {
   }
 
   optionSelected(filter : string) {
-    if (this.tableType === 'MoveFrom') this.moveFromFilter = filter;
-    else if(this.tableType === 'MoveTo') this.moveToFilter = filter;
+    if (this.tableType === StringConditions.MoveFrom) this.moveFromFilter = filter;
+    else if(this.tableType === StringConditions.MoveTo) this.moveToFilter = filter;
     this.resetFromFilters();
     this.resetPaginationFrom();
     this.getMoveItemList(this.tableType);  
@@ -662,14 +662,14 @@ export class MoveItemsComponent implements OnInit {
   }
 
   resetPagination() {
-    this.sortOrder = 'asc';
+    this.sortOrder = UniqueConstants.Asc;
     this.sortCol = 0;
     this.totalRecords = 0;
     this.startRow = 0;
     this.endRow = 10;
     this.recordsPerPage = 10;
     this.recordsFiltered = 0;
-    this.sortOrderTo = 'asc';
+    this.sortOrderTo = UniqueConstants.Asc;
     this.sortColTo = 0;
     this.totalRecordsTo = 0;
     this.startRowTo = 0;
@@ -679,7 +679,7 @@ export class MoveItemsComponent implements OnInit {
   }
 
   resetPaginationTo() {
-    this.sortOrderTo = 'asc';
+    this.sortOrderTo = UniqueConstants.Asc;
     this.sortColTo = 0;
     this.totalRecordsTo = 0;
     this.startRowTo = 0;
@@ -689,7 +689,7 @@ export class MoveItemsComponent implements OnInit {
   }
 
   resetPaginationFrom() {
-    this.sortOrder = 'asc';
+    this.sortOrder = UniqueConstants.Asc;
     this.sortCol = 0;
     this.totalRecords = 0;
     this.startRow = 0;
@@ -704,21 +704,21 @@ export class MoveItemsComponent implements OnInit {
 
   resetToFilters() {
     this.startRowTo = 0;
-    this.viewModeTo = 'All';
+    this.viewModeTo = ResponseStrings.AllCaps;
   }
 
   clearItemNum() {
     this.itemNo = '';
     this.invMapIDToItem = -1;
-    this.clearFields('MoveFrom');
-    this.clearFields('MoveTo');
+    this.clearFields(StringConditions.MoveFrom);
+    this.clearFields(StringConditions.MoveTo);
     this.resetFromFilters();
     this.resetToFilters();
     this.autocompleteSearchColumn();
     this.resetPaginationFrom();
     this.resetPaginationTo();
-    this.getMoveItemList('MoveFrom');
-    this.getMoveItemList('MoveTo', false, true);
+    this.getMoveItemList(StringConditions.MoveFrom);
+    this.getMoveItemList(StringConditions.MoveTo, false, true);
     if (this.tabIndex === 1) this.tabIndex = 0;
   }
 }

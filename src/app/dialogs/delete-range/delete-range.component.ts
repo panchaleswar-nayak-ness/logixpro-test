@@ -11,6 +11,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-delete-range',
@@ -21,7 +22,7 @@ export class DeleteRangeComponent implements OnInit {
   @ViewChild('delFocus') delFocus: ElementRef;
   public userData: any;
   repByDeletePayload: any = {
-    identity: "Batch Pick ID",
+    identity: ColumnDef.BatchPickID,
     filter1: "",
     filter2: "",
     searchString: "",
@@ -57,7 +58,7 @@ export class DeleteRangeComponent implements OnInit {
     this.userData = this.authService.userData();
     this.repByDeletePayload.username = this.userData.userName;
     this.repByDeletePayload.wsid = this.userData.wsid;
-    this.repByDeletePayload.identity = "Batch Pick ID";
+    this.repByDeletePayload.identity = ColumnDef.BatchPickID;
     this.getSearchOptionsBegin();
     this.getSearchOptionsEnd();
   }
@@ -76,23 +77,23 @@ export class DeleteRangeComponent implements OnInit {
     if (this.repByDeletePayload.filter1 && this.repByDeletePayload.filter2) {
       const dialogRef2:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           mode: 'delete-selected-current-orders',
-          action: 'delete'
+          action: UniqueConstants.delete
         },
       });
       dialogRef2.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           this.iAdminApiService.ReplenishmentsByDelete(this.repByDeletePayload).subscribe((res: any) => {
             if (res.isExecuted && res.data) {
-              this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+              this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
               this.dialog.closeAll();
               this.dialogRef.close(this.data);
             } else {
-              this.global.ShowToastr('error',"Deleting by range has failed", 'Error!');
+              this.global.ShowToastr(ToasterType.Error,"Deleting by range has failed", ToasterTitle.Error);
               this.dialog.closeAll();
               console.log("ReplenishmentsByDelete",res.responseMessage);
             }
@@ -146,7 +147,7 @@ export class DeleteRangeComponent implements OnInit {
         this.beginAutoCompleteList = res.data.sort();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("DeleteRangeBegin",res.responseMessage);
 
       }
@@ -165,7 +166,7 @@ export class DeleteRangeComponent implements OnInit {
         this.endAutoCompleteList = res.data.sort();
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!'); 
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error); 
       }
     });
   }

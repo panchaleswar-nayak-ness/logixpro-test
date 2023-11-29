@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {  AppPermissions } from 'src/app/common/constants/strings.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class CurrentTabDataService {
     public TRANSACTIONS_ORDER = "Transactions Order";
     public TRANSACTIONS_ORDER_SELECT = "Transactions Order Select";
     public CONSOLIDATION = "Consolidation";
-    public ORDER_MANAGER = "Order Manager";
+    public ORDER_MANAGER = AppPermissions.OrderManager;
     
     public ClearAllItems() {
       this.savedItem = [];

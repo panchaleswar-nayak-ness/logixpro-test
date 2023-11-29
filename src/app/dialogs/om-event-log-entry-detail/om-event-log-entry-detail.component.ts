@@ -7,6 +7,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { DatePipe } from '@angular/common';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-event-log-entry-detail',
@@ -39,27 +40,27 @@ export class OmEventLogEntryDetailComponent implements OnInit {
   deleteEvent() {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: 'delete-event-log',
         ErrorMessage: 'Are you sure you want to delete the selected event?',
-        action: 'delete'
+        action: UniqueConstants.delete
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         let payload: any = {
           "EventID": this.eventLog.eventID
         }
         this.iAdminApiService.SelectedEventDelete(payload).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
             this.dialog.closeAll();
             this.dialogRef.close(this.data);
           } else {
-            this.global.ShowToastr('error',labels.alert.went_worng, 'Error!'); 
+            this.global.ShowToastr(ToasterType.Error,labels.alert.went_worng, ToasterTitle.Error); 
           }
         });
       }

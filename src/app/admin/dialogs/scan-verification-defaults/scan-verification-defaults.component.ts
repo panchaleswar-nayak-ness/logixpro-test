@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import {  Column ,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-scan-verification-defaults',
@@ -6,7 +7,7 @@ import { Component} from '@angular/core';
   styleUrls: ['./scan-verification-defaults.component.scss']
 })
 export class ScanVerificationDefaultsComponent {
-  displayedColumns: string[] = ['transType', 'scanSequence', 'field', 'verifyType', 'verifyStringStart','verifyStringLength','actions'];
+  displayedColumns: string[] = [Column.TransType, 'scanSequence', 'field', 'verifyType', 'verifyStringStart','verifyStringLength',ColumnDef.Actions];
   
 
 }

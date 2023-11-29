@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {  UniqueConstants ,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -27,7 +28,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class CountQueueComponent  {
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'ex', 'srno', 'action'];
+  displayedColumns: string[] = [UniqueConstants.position, 'name', 'weight', 'symbol', 'ex', 'srno', ColumnDef.Action];
   tableData = ELEMENT_DATA;
 
 

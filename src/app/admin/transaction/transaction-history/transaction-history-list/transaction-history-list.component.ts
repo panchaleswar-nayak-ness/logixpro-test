@@ -17,7 +17,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Column, DialogConstants, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,FilterColumnName,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-transaction-history-list',
@@ -28,61 +28,61 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   TRNSC_DATA = [
     { colHeader: 'tH_ID', colDef: 'TH_ID' },
     { colHeader: 'id', colDef: 'ID' },
-    { colHeader: 'importDate', colDef: 'Import Date' },
-    { colHeader: 'importBy', colDef: 'Import By' },
+    { colHeader: TableConstant.ImportDate, colDef: 'Import Date' },
+    { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'importFileName', colDef: 'Import Filename' },
-    { colHeader: 'transactionType', colDef: 'Transaction Type' },
-    { colHeader: 'orderNumber', colDef: 'Order Number' },
-    { colHeader: 'priority', colDef: 'Priority' },
-    { colHeader: 'itemNumber', colDef: 'Item Number' },
-    { colHeader: 'revision', colDef: 'Revision' },
-    { colHeader: 'lotNumber', colDef: 'Lot Number' },
-    { colHeader: 'expirationDate', colDef: 'Expiration Date' },
-    { colHeader: 'serialNumber', colDef: 'Serial Number' },
-    { colHeader: 'description', colDef: 'Description' },
-    { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
-    { colHeader: 'location', colDef: 'Location' },
-    { colHeader: 'wareHouse', colDef: 'Warehouse' },
-    { colHeader: 'zone', colDef: 'Zone' },
-    { colHeader: 'carousel', colDef: 'Carousel' },
-    { colHeader: 'row', colDef: 'Row' },
-    { colHeader: 'shelf', colDef: 'Shelf' },
-    { colHeader: 'bin', colDef: 'Bin' },
-    { colHeader: 'completedDate', colDef: 'Completed Date' },
+    { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
+    { colHeader: UniqueConstants.OrderNumber, colDef: Column.OrderNumber },
+    { colHeader: UniqueConstants.Priority, colDef: 'Priority' },
+    { colHeader: 'itemNumber', colDef: Column.ItemNumber },
+    { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },
+    { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
+    { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
+    { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber },
+    { colHeader: UniqueConstants.Description, colDef: Column.Description },
+    { colHeader: ColumnDef.TransactionQuantity, colDef: TableConstant.TransactionQuantity },
+    { colHeader: TableConstant.Location, colDef: Column.Location },
+    { colHeader: 'wareHouse', colDef: ColumnDef.Warehouse },
+    { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
+    { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
+    { colHeader: Column.Row, colDef: TableConstant.Row },
+    { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
+    { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin },
+    { colHeader: 'completedDate', colDef: TableConstant.CompletedDate },
     { colHeader: 'completedBy', colDef: 'Completed By' },
-    { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
-    { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
-    { colHeader: 'notes', colDef: 'Notes' },
+    { colHeader: TableConstant.completedQuantity, colDef: 'Completed Quantity' },
+    { colHeader: TableConstant.BatchPickID, colDef: ColumnDef.BatchPickID },
+    { colHeader: TableConstant.Notes, colDef: 'Notes' },
     { colHeader: 'exportFileName', colDef: 'Export File Name' },
     { colHeader: 'exportDate', colDef: 'Export Date' },
     { colHeader: 'exportedBy', colDef: 'Exported By' },
     { colHeader: 'exportBatchID', colDef: 'Export Batch ID' },
-    { colHeader: 'lineNumber', colDef: 'Line Number' },
-    { colHeader: 'lineSequence', colDef: 'Line Sequence' },
+    { colHeader: TableConstant.LineNumber, colDef: 'Line Number' },
+    { colHeader: TableConstant.LineSequence, colDef: 'Line Sequence' },
     { colHeader: 'tableType', colDef: 'Table Type' },
-    { colHeader: 'userField1', colDef: 'User Field1' },
-    { colHeader: 'userField2', colDef: 'User Field2' },
-    { colHeader: 'userField3', colDef: 'User Field3' },
-    { colHeader: 'userField4', colDef: 'User Field4' },
-    { colHeader: 'userField5', colDef: 'User Field5' },
-    { colHeader: 'userField6', colDef: 'User Field6' },
+    { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
+    { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
+    { colHeader: ColumnDef.userField3, colDef: 'User Field3' },
+    { colHeader: ColumnDef.userField4, colDef: 'User Field4' },
+    { colHeader: ColumnDef.userField5, colDef: 'User Field5' },
+    { colHeader: ColumnDef.userField6, colDef: 'User Field6' },
     { colHeader: 'useField7', colDef: 'User Field7' },
-    { colHeader: 'userField8', colDef: 'User Field8' },
-    { colHeader: 'userField9', colDef: 'User Field9' },
-    { colHeader: 'userField10', colDef: 'User Field10' },
-    { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
-    { colHeader: 'requiredDate', colDef: 'Required Date' },
+    { colHeader: ColumnDef.userField8, colDef: 'User Field8' },
+    { colHeader: ColumnDef.userField9, colDef: 'User Field9' },
+    { colHeader: ColumnDef.userField10, colDef: 'User Field10' },
+    { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
+    { colHeader: ColumnDef.RequiredDate, colDef: 'Required Date' },
     { colHeader: 'statusCode', colDef: 'Status Code' },
     { colHeader: 'masterRecord', colDef: 'Master Record' },
     { colHeader: 'masterRecordID', colDef: 'Master Record ID' },
     { colHeader: 'tH_ID', colDef: 'Inv Map ID' },
-    { colHeader: 'label', colDef: 'Label' },
+    { colHeader: TableConstant.label, colDef: 'Label' },
     { colHeader: 'inProcess', colDef: 'In Process' },
-    { colHeader: 'toteID', colDef: 'Tote ID' },
+    { colHeader: ColumnDef.ToteID, colDef: Column.ToteID },
     { colHeader: 'toteNumber', colDef: 'Tote Number' },
-    { colHeader: 'cell', colDef: 'Cell' },
-    { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
-    { colHeader: 'emergency', colDef: 'Emergency' },
+    { colHeader: Column.cell, colDef: TableConstant.Cell },
+    { colHeader: ColumnDef.HostTransactionId, colDef: TableConstant.HostTransactionID },
+    { colHeader: UniqueConstants.emergency, colDef: ColumnDef.Emergency },
   ];
 
   @ViewChild('matRef') matRef: MatSelect;
@@ -98,7 +98,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public orderNo: any;
   public payload: any;
   public sortCol: any = 0;
-  public sortOrder: any = 'asc';
+  public sortOrder: any = UniqueConstants.Asc;
   selectedVariable: any;
   selectedDropdown = '';
   floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -160,7 +160,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
 
   sortColumn: any = {
     columnName: 32,
-    sortOrder: 'asc',
+    sortOrder: UniqueConstants.Asc,
   };
 
   public iAdminApiService: IAdminApiService;
@@ -381,8 +381,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   @ViewChild('trigger') trigger: MatMenuTrigger;
 
   onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) { 
-    this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, "clear", Type);
-    if(FilterColumnName != "" || Condition == "clear") {
+    this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, StringConditions.clear, Type);
+    if(FilterColumnName != "" || Condition == StringConditions.clear) {
       this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
       this.filterString = this.filterString != "" ? this.filterString : "1=1";
       this.resetPagination();
@@ -396,7 +396,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType), 100);
   }
 
-  filterString : string = "1 = 1";
+  filterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.filterString = filter;

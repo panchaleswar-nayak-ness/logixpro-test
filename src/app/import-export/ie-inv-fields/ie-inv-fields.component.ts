@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {  Column } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ie-inv-fields',
@@ -22,7 +23,7 @@ export class IeInvFieldsComponent {
     {table_name: 'CF Min Qty'},
     {table_name: 'CF Velocity'},
     {table_name: 'Data Sensitive'},
-    {table_name: 'Description'},
+    {table_name: Column.Description},
     {table_name: 'FIFO'},
     {table_name: 'Golden Zone'},
     {table_name: 'Include in Auto RTS Update'},

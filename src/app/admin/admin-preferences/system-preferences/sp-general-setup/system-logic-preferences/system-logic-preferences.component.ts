@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,StringConditions} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-system-logic-preferences',
   templateUrl: './system-logic-preferences.component.html',
@@ -52,8 +52,8 @@ export class SystemLogicPreferencesComponent implements OnInit{
 
   payload() {
     const payload:any = {
-      "preference": ["true",String(this.CompanyObj.fifoPickAcrossWarehouse),"true",String(this.CompanyObj.replenishDedicatedOnly),"true","true",String(this.CompanyObj.zeroLocationQuantityCheck),"true","true","true","true",
-       String(this.CompanyObj.reelTrackingPickLogic) ,"true","true",String(this.CompanyObj.showTransQty),
+      "preference": [StringConditions.True,String(this.CompanyObj.fifoPickAcrossWarehouse),StringConditions.True,String(this.CompanyObj.replenishDedicatedOnly),StringConditions.True,StringConditions.True,String(this.CompanyObj.zeroLocationQuantityCheck),StringConditions.True,StringConditions.True,StringConditions.True,StringConditions.True,
+       String(this.CompanyObj.reelTrackingPickLogic) ,StringConditions.True,StringConditions.True,String(this.CompanyObj.showTransQty),
       String(this.CompanyObj.nextToteID),String(this.CompanyObj.nextSerialNumber),"",String(this.CompanyObj.pickType),String(this.CompanyObj.otTemptoOTPending)
       ,String(this.CompanyObj.distinctKitOrders),String(this.CompanyObj.printReplenPutLabels),String(this.CompanyObj.generateQuarantineTransactions)],
       "panel": 3,

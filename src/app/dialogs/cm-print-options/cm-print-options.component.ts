@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service';
+import {  UniqueConstants } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-print-options',
@@ -49,7 +50,7 @@ export class CmPrintOptionsComponent implements OnInit {
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintPrevCMPackList|OrderNum:${this.orderNumber}|Where:where|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`,
-        '_blank',
+        UniqueConstants._blank,
         'width=' +
           screen.width +
           ',height=' +
@@ -67,7 +68,7 @@ export class CmPrintOptionsComponent implements OnInit {
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintPrevCMPackList|OrderNum:${this.orderNumber}|Where:all|OrderBy:${this.packListSort}|WSID:${this.userData.wsid}`,
-        '_blank',
+        UniqueConstants._blank,
         'width=' +
           screen.width +
           ',height=' +

@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle,ToasterType,DialogConstants,Style,TableConstant,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',
@@ -37,11 +38,11 @@ export class CmConfirmAndPackingComponent implements OnInit {
   shipComp:any;
   printPrefs:any={}; 
   isDisabled:boolean  = false;
- displayedColumns: string[] = ['toteID', 'stagingLocation']; 
+ displayedColumns: string[] = [ColumnDef.ToteID, 'stagingLocation']; 
 userData:any={}; 
 @ViewChild('paginator1') paginator1: MatPaginator;
 @ViewChild('paginator2') paginator2: MatPaginator;
-displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   'transactionQuantity', 'completedQuantity', 'containerID',
+displayedColumnsForItems: string[] = ['sT_ID','itemNumber', TableConstant.LineNumber,   ColumnDef.TransactionQuantity, TableConstant.completedQuantity, 'containerID',
  'shipQuantity', 'complete']; 
 
  public iConsolidationAPI : IConsolidationApi;
@@ -85,7 +86,7 @@ displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   'tra
     if(res.isExecuted)
     {
       if(res.data == ''){
-        this.global.ShowToastr('error',"An error has occurred",'Error!');
+        this.global.ShowToastr(ToasterType.Error,"An error has occurred",ToasterTitle.Error);
         console.log("SelContIDConfirmPack",res.responseMessage);
       }else{
         this.getPreferences();
@@ -97,7 +98,7 @@ displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   'tra
       }
     }
     else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("SelContIDConfirmPack",res.responseMessage);
     }
 
@@ -111,7 +112,7 @@ async UnPack(id:any){
     if(res)
     {
       if (res.data == "Fail") {
-        this.global.ShowToastr('error',"An error has occurred", 'Error!');
+        this.global.ShowToastr(ToasterType.Error,"An error has occurred", ToasterTitle.Error);
         console.log("ShipTransUnPackUpdate",res.responseMessage);  
     } else {  
        let index =  this.transTable.filteredData.findIndex(x=>x.sT_ID == id);
@@ -120,7 +121,7 @@ async UnPack(id:any){
     }
     }
     else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("ShipTransUnPackUpdate",res.responseMessage);
     }
   
@@ -142,7 +143,7 @@ getPreferences() {
  
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ConsoleDataSB",res.responseMessage);
 
       }
@@ -176,7 +177,7 @@ if(this.orderNumber != ""){
     this.transTable.paginator = this.paginator2;
   }
   else {
-    this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+    this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
     console.log("ConfirmAndPackingIndex",res.responseMessage);
   } 
   
@@ -188,8 +189,8 @@ async ClickConfirmAll(){
   this.getPreferences();
   let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
     height: 'auto',
-    width: '560px',
-    autoFocus: '__non_existing_element__',
+    width: Style.w560px,
+    autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     data: {
       message: "Confirm All transactions? This will mark this entire order as confirmed and packed.",
@@ -197,7 +198,7 @@ async ClickConfirmAll(){
   });
 
   dialogRef.afterClosed().subscribe((result) => {
-    if (result == 'Yes') { 
+    if (result == ResponseStrings.Yes) { 
     let obj : any = {
       orderNumber:this.orderNumber,
       containerID: this.contID
@@ -206,7 +207,7 @@ async ClickConfirmAll(){
     if(res)
     {
       if (res.data == "Fail") {
-        this.global.ShowToastr('error','An error has occurred', 'Error!');
+        this.global.ShowToastr(ToasterType.Error,'An error has occurred', ToasterTitle.Error);
         console.log("ConfirmAllConfPack",res.responseMessage); 
     } else { 
       if(this.preferencesData?.autoPrintContLabel){
@@ -229,7 +230,7 @@ async ClickConfirmAll(){
       }
     }
     else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("ConfirmAllConfPack",res.responseMessage);
     }
    
@@ -244,7 +245,7 @@ openScanItem(ItemNumber:any,id: any) {
   this.global.OpenDialog(CmConfirmAndPackingProcessTransactionComponent, {
     height: 'auto',
     width: '96vw',
-    autoFocus: '__non_existing_element__',
+    autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     data: {ItemNumber:ItemNumber,orderNumber:this.orderNumber,contID:this.contID,confPackTransTable:this.transTable,id:id,reasons:this.reasons}
   })
@@ -255,7 +256,7 @@ announceSortChange1(sortState: Sort) {
     // Announce the sort direction, and the fact that sorting is cleared.
     this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
   } else {
-    this._liveAnnouncer.announce('Sorting cleared');
+    this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
   }
 
   // Set the data source's sort property to the new sort.
@@ -267,7 +268,7 @@ announceSortChange2(sortState: Sort) {
     // Announce the sort direction, and the fact that sorting is cleared.
     this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
   } else {
-    this._liveAnnouncer.announce('Sorting cleared');
+    this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
   }
 
   // Set the data source's sort property to the new sort.
@@ -280,12 +281,12 @@ announceSortChange2(sortState: Sort) {
   let dialogRef:any = this.global.OpenDialog(CmConfirmAndPackingSelectTransactionComponent, {
     height: 'auto',
     width: '96vw',
-    autoFocus: '__non_existing_element__',
+    autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     data: {ItemNumber:ItemNumber,orderNumber:this.orderNumber,contID:this.contID,confPackTransTable:this.transTable,id:id}
   })
   dialogRef.afterClosed().subscribe(result => {
-    if(result == 'true'){
+    if(result == StringConditions.True){
       this.transTable.filteredData[index].containerID = this.contID;
       this.transTable.filteredData[index].complete = true; 
     }  
@@ -302,7 +303,7 @@ announceSortChange2(sortState: Sort) {
   }, 10);
  }
 async ScanItemNum($event:any){  
-  if($event.key == "Enter"){ 
+  if($event.key == KeyboardKeys.Enter){ 
 let searchCount = 0;
 let id;
 let contID;
@@ -316,7 +317,7 @@ for (const item of this.transTable.filteredData) {
 };
  
 if(searchCount == 0){ 
-  this.global.ShowToastr('error',"The desired item number was not found or is already confirmed and packed",'Item Number Issue'); 
+  this.global.ShowToastr(ToasterType.Error,"The desired item number was not found or is already confirmed and packed",'Item Number Issue'); 
 } else if (searchCount == 1) {
   let obj : any = {
     id: id,
@@ -327,7 +328,7 @@ if(searchCount == 0){
  this.iConsolidationAPI.ConfPackProcModalUpdate(obj).subscribe((res:any) => {
    
   if (res.data == "Fail") {
-    this.global.ShowToastr('error','An error has occurred', 'Error!');
+    this.global.ShowToastr(ToasterType.Error,'An error has occurred', ToasterTitle.Error);
     console.log("ConfPackProcModalUpdate",res.responseMessage);  
 } else if (res.data == "Modal") {
     //show modal here
@@ -370,13 +371,13 @@ print(type:any){
   if(type == 'list'){
     this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|ContID:${this.contID}`);
   }
-  else if (type == 'label'){
-    this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|ContID:${this.contID}`,'lbl');
+  else if (type == TableConstant.label){
+    this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|ContID:${this.contID}`,UniqueConstants.Ibl);
   }
   else{
     this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|ContID:${this.contID}`);
     setTimeout(()=>{
-      this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|ContID:${this.contID}`,'lbl');
+      this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|ContID:${this.contID}`,UniqueConstants.Ibl);
     }, 2000);
   }
 }

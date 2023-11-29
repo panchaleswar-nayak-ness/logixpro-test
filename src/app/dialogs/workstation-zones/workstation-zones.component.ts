@@ -19,6 +19,7 @@ import { InductionManagerApiService } from 'src/app/common/services/induction-ma
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ToasterTitle ,ResponseStrings,ToasterType,KeyboardKeys,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-workstation-zones',
@@ -55,14 +56,14 @@ export class WorkstationZonesComponent implements OnInit {
       ).length > 0
     ) {
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'This Zone is already selected for this workstation',
-        'Error!'
+        ToasterTitle.Error
       );
       return false;
     }
     if (this.zones.filter((x: any) => x == this.selectedZone).length == 0) {
-      this.global.ShowToastr('error', 'This zone does not exist', 'Error!');
+      this.global.ShowToastr(ToasterType.Error, 'This zone does not exist', ToasterTitle.Error);
       return false;
     }
     return true;
@@ -70,7 +71,7 @@ export class WorkstationZonesComponent implements OnInit {
 
   searchItem(event: any) {
     if (this.selectedZone.trim() != '') {
-      if (event.key == 'Enter') {
+      if (event.key == KeyboardKeys.Enter) {
         if (this.validateZone()) {
           this.saveVlCode();
         }
@@ -90,8 +91,8 @@ export class WorkstationZonesComponent implements OnInit {
   clearAllZones() {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         mode: 'release-all-orders',
@@ -100,14 +101,14 @@ export class WorkstationZonesComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         this.iInductionManagerApi.ClrWSPickZone().subscribe((res) => {
           if (res.isExecuted && res.data) {
             this.getVelocity();
-            this.global.ShowToastr('success', labels.alert.remove, 'Success!');
+            this.global.ShowToastr(ToasterType.Success, labels.alert.remove, ToasterTitle.Success);
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               'Failed to remove Zones from workstation',
               'Remove Failed'
             );
@@ -149,7 +150,7 @@ export class WorkstationZonesComponent implements OnInit {
           this.velocityCodeList.push({ zone: val, isSaved: true });
         });
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('WSPickZoneSelect', res.responseMessage);
       }
     });
@@ -161,7 +162,7 @@ export class WorkstationZonesComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.zones = res.data;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('LocationZonesSelect', res.responseMessage);
       }
     });
@@ -184,22 +185,22 @@ export class WorkstationZonesComponent implements OnInit {
       };
       this.iInductionManagerApi.WSPickZoneInsert(paylaod).subscribe((res) => {
         if (res.isExecuted && res.data) {
-          this.global.ShowToastr('success', labels.alert.success, 'Success!');
+          this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterTitle.Success);
           this.getVelocity();
           this.allZoneList = [];
           this.selectedZone = '';
           this.zoneSelectOptions = [];
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             'This Zone is already selected for this workstation.',
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('WSPickZoneInsert', res.responseMessage);
         }
       });
     } else {
-      this.global.ShowToastr('error', 'Please select any zone,', 'Error!');
+      this.global.ShowToastr(ToasterType.Error, 'Please select any zone,', ToasterTitle.Error);
     }
   }
   dltVlCode(vlCode: any) {
@@ -208,18 +209,18 @@ export class WorkstationZonesComponent implements OnInit {
         DeleteConfirmationComponent,
         {
           height: 'auto',
-          width: '480px',
-          autoFocus: '__non_existing_element__',
+          width: Style.w480px,
+          autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         }
       );
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let paylaod = {
             velocity: vlCode,
           };
           this.iCommonAPI.dltVelocityCode(paylaod).subscribe((res) => {
-            this.global.ShowToastr('success', labels.alert.delete, 'Success!');
+            this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
 
             this.getVelocity();
           });
@@ -233,8 +234,8 @@ export class WorkstationZonesComponent implements OnInit {
   delete(event: any) {
     let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w480px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         message: 'Remove Zone ' + event + ' from picking for this workstation?',
@@ -244,7 +245,7 @@ export class WorkstationZonesComponent implements OnInit {
       .afterClosed()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let paylaod = {
             Zone: event,
           };
@@ -253,13 +254,13 @@ export class WorkstationZonesComponent implements OnInit {
             .subscribe((res) => {
               if (res.isExecuted) {
                 this.global.ShowToastr(
-                  'success',
+                  ToasterType.Success,
                   labels.alert.delete,
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.getVelocity();
               } else {
-                this.global.ShowToastr('error', res.responseMessage, 'Error!');
+                this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
                 console.log('WSPickZoneDelete', res.responseMessage);
               }
             });

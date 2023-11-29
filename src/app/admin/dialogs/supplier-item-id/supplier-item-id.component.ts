@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'; 
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
@@ -18,7 +18,7 @@ export class SupplierItemIdComponent implements OnInit {
   supplierID;
   description;
   itemNumber;
-  floatLabelControlItem: any = new FormControl('item' as FloatLabelType);
+  floatLabelControlItem: any = new FormControl(UniqueConstants.item as FloatLabelType);
   hideRequiredControlItem = new FormControl(false);
   searchByItem: any = new Subject<string>();
   searchAutocompleteItemNum: any = [];
@@ -35,7 +35,7 @@ export class SupplierItemIdComponent implements OnInit {
     this.iCommonAPI = commonAPI;
   }
   getFloatLabelValueItem(): FloatLabelType {
-    return this.floatLabelControlItem.value || 'item';
+    return this.floatLabelControlItem.value || UniqueConstants.item;
   }
   ngOnInit(): void {
     this.searchByItem

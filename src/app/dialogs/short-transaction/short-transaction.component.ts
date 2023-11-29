@@ -6,6 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-short-transaction',
@@ -49,13 +50,13 @@ export class ShortTransactionComponent implements OnInit {
   ShortTransaction() {
     if (this.toteQuantity >= 0 && this.toteQuantity < this.selectedTransaction.transactionQuantity) {
       if(!this.globalService.checkDecimal(this.toteQuantity)){
-        this.global.ShowToastr('error',"Tote Quantity can not be in decimal", 'Error');
+        this.global.ShowToastr(ToasterType.Error,"Tote Quantity can not be in decimal", ResponseStrings.Error);
         return;
       }
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           heading: 'Process Short',
@@ -63,7 +64,7 @@ export class ShortTransactionComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
-        if (result == 'Yes') {
+        if (result == ResponseStrings.Yes) {
           let payload: any = {
             "otid": this.selectedTransaction.id,
             "shortQuantity": this.toteQuantity,
@@ -72,10 +73,10 @@ export class ShortTransactionComponent implements OnInit {
           this.iInductionManagerApi.shortTransaction(payload).subscribe((res: any) => {
             if (res.isExecuted) {
               this.dialogRef.close(res);
-              this.global.ShowToastr('success',labels.alert.update, 'Success!');
+              this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
             }
             else {
-              this.global.ShowToastr('error',"An error occured when shorting this transaction", 'Error');
+              this.global.ShowToastr(ToasterType.Error,"An error occured when shorting this transaction", ResponseStrings.Error);
               console.log("shortTransaction",res.responseMessage);
             }
           });
@@ -83,7 +84,7 @@ export class ShortTransactionComponent implements OnInit {
       });
     }
     else {
-      this.global.ShowToastr('error',"Please enter a quantity that is greater than or equal to 0 and less than the transaction qty", 'Invalid Qty Entered');
+      this.global.ShowToastr(ToasterType.Error,"Please enter a quantity that is greater than or equal to 0 and less than the transaction qty", 'Invalid Qty Entered');
       this.toteQuantity = undefined;
     }
   }

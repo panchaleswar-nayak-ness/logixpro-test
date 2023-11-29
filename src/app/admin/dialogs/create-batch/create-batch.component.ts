@@ -9,6 +9,7 @@ import {
 import { SharedService } from 'src/app/common/services/shared.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { BmToteidEntryComponent } from '../bm-toteid-entry/bm-toteid-entry.component';
+import {  DialogConstants } from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -49,7 +50,7 @@ export class CreateBatchComponent implements OnInit {
       dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
         height: 'auto',
         width: '990px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           selectedOrderList: this.selectedList,
@@ -65,7 +66,7 @@ export class CreateBatchComponent implements OnInit {
       dialogRef = this.global.OpenDialog(CreateBatchConfirmationComponent, {
         height: 'auto',
         width: '550px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe((result) => {

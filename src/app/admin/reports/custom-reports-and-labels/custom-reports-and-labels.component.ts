@@ -12,7 +12,7 @@ import { MatSelect } from '@angular/material/select';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,AppNames,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-custom-reports-and-labels',
@@ -47,10 +47,10 @@ export class CustomReportsAndLabelsComponent implements OnInit {
           case 'admin':
             this.currentApp = 'Admin';
             break;
-          case 'OrderManager':
+          case AppNames.OrderManager:
             this.currentApp = 'OM';
             break;
-          case 'InductionManager':
+          case AppNames.InductionManager:
             this.currentApp = 'IM';
             break;
           case 'ConsolidationManager':
@@ -113,7 +113,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
   OpenListAndLabel(route) {
     window.open(
       `/#/${route}?file=${this.detail.fileName.replace('.', '-')}`,
-      '_blank',
+      UniqueConstants._blank,
       'width=' +
         screen.width +
         ',height=' +
@@ -179,7 +179,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       {
         height: 'auto',
         width: '932px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: this.detail.testData ? this.detail.testData : '',
       }
@@ -196,7 +196,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       {
         height: 'auto',
         width: '932px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           ListReports: this.listReports,
@@ -220,13 +220,13 @@ export class CustomReportsAndLabelsComponent implements OnInit {
       CrDeleteConfirmationComponent,
       {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
       }
     );
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result, 'delete');
+      console.log(result, UniqueConstants.delete);
       if (result == 'permanent' || result == 'keep') {
         let payload = {
           filename: this.detail.fileName,
@@ -297,7 +297,7 @@ export class CustomReportsAndLabelsComponent implements OnInit {
           'Do you wish to give all workstations your version of this report?',
         heading: '',
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
 

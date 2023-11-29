@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { IAdminApiService } from '../common/services/admin-api/admin-api-interface';
 import { AdminApiService } from '../common/services/admin-api/admin-api.service';
 import { GlobalService } from '../common/services/global.service';
+import {  LiveAnnouncerMessage ,ResponseStrings,Column,ToasterTitle,ToasterType,TableConstant,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-admin',
@@ -23,7 +24,7 @@ export class AdminComponent implements OnInit {
   fieldNames:any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public sortCol: any = 3;
-  public sortOrder: any = 'asc';
+  public sortOrder: any = UniqueConstants.Asc;
   pageEvent: PageEvent;
   searchValue: any = '';
   searchAutocompleteList: any;
@@ -67,24 +68,24 @@ export class AdminComponent implements OnInit {
   };
   sortColumn: any = {
     columnName: 3,
-    sortOrder: 'asc',
+    sortOrder: UniqueConstants.Asc,
   };
   public Order_Table_Config = [
-    { colHeader: 'zone', colDef: 'Zone' },
-    { colHeader: 'warehouse', colDef: 'Warehouse' },
-    { colHeader: 'locationName', colDef: 'Location' },
+    { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
+    { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
+    { colHeader: 'locationName', colDef: Column.Location },
     { colHeader: 'totalPicks', colDef: 'Lines' },
-    { colHeader: 'transactionType', colDef: 'Transaction Type' },
+    { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
   ];
 
   public iAdminApiService: IAdminApiService;
 
   public displayedColumns: string[] = [
-    'zone',
-    'warehouse',
+    TableConstant.zone,
+    TableConstant.WareHouse,
     'locationName',
     'totalPicks',
-    'transactionType',
+    TableConstant.transactionType,
   ];
 
   @ViewChild('autoFocusField') searchBoxField: ElementRef;
@@ -164,7 +165,7 @@ export class AdminComponent implements OnInit {
       if (res.data) {
         this.fieldNames = res.data;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ColumnAlias",res.responseMessage);
       }
     });
@@ -181,8 +182,8 @@ export class AdminComponent implements OnInit {
           this.searchAutocompleteList = res.data;
         } else {
           
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
-          console.log("location",res.responseMessage);
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
+          console.log(TableConstant.Location,res.responseMessage);
           
         }
       },
@@ -208,8 +209,8 @@ export class AdminComponent implements OnInit {
       next: (res: any) => {
         if (res.isExecuted && res.data) {
           const data = res.data;
-          this.inventoryDetail.get("item")?.setValue(data?.itemNumber);
-          this.inventoryDetail.get("description")?.setValue(data?.description);
+          this.inventoryDetail.get(UniqueConstants.item)?.setValue(data?.itemNumber);
+          this.inventoryDetail.get(UniqueConstants.Description)?.setValue(data?.description);
           this.inventoryDetail.get("supplierNo")?.setValue(data?.supplierItemID);
           this.inventoryDetail.get("minRTSReelQty")?.setValue(data?.minimumRTSReelQuantity);
           this.inventoryDetail.get("primaryPickZone")?.setValue(data?.primaryPickZone);
@@ -241,18 +242,18 @@ export class AdminComponent implements OnInit {
           this.inventoryDetail.get("reorderQty")?.setValue(data?.reorderQuantity);
           this.inventoryDetail.get("replenishmentPoint")?.setValue(data?.reorderPoint);
           this.inventoryDetail.get("replenishmentLevel")?.setValue(data?.replenishmentLevel);
-          this.inventoryDetail.get("includeRTSUpdate")?.setValue(data?.includeInAutoRTSUpdate ? 'Yes' : 'No');
-          this.inventoryDetail.get("fifo")?.setValue(data?.fifo ? 'Yes' : 'No');
-          this.inventoryDetail.get("dateSensitive")?.setValue(data?.dateSensitive ? 'Yes' : 'No');
-          this.inventoryDetail.get("wareHouseSensitive")?.setValue(data?.warehouseSensitive ? 'Yes' : 'No');
-          this.inventoryDetail.get("active")?.setValue(data?.active ? 'Yes' : 'No');
+          this.inventoryDetail.get("includeRTSUpdate")?.setValue(data?.includeInAutoRTSUpdate ? ResponseStrings.Yes : 'No');
+          this.inventoryDetail.get("fifo")?.setValue(data?.fifo ? ResponseStrings.Yes : 'No');
+          this.inventoryDetail.get("dateSensitive")?.setValue(data?.dateSensitive ? ResponseStrings.Yes : 'No');
+          this.inventoryDetail.get("wareHouseSensitive")?.setValue(data?.warehouseSensitive ? ResponseStrings.Yes : 'No');
+          this.inventoryDetail.get("active")?.setValue(data?.active ? ResponseStrings.Yes : 'No');
           this.inventoryDetail.get("specialFeatures")?.setValue(data?.specialFeatures);
           this.inventoryDetail.get("bulkVelocity")?.setValue(data?.bulkVelocity);
-          this.inventoryDetail.get("useScale")?.setValue(data?.useScale ? 'Yes' : 'No');
-          this.inventoryDetail.get("splitCase")?.setValue(data?.splitCase ? 'Yes' : 'No');
+          this.inventoryDetail.get("useScale")?.setValue(data?.useScale ? ResponseStrings.Yes : 'No');
+          this.inventoryDetail.get("splitCase")?.setValue(data?.splitCase ? ResponseStrings.Yes : 'No');
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("Inventorymasterdata",res.responseMessage);
 
         }
@@ -290,7 +291,7 @@ export class AdminComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.dataSource.sort = this.sort;
   }
@@ -323,7 +324,7 @@ export class AdminComponent implements OnInit {
 
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetAdminMenu",res.responseMessage);
 
       }

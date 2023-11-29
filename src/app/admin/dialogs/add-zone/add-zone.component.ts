@@ -11,7 +11,8 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,TableConstant} from 'src/app/common/constants/strings.constants';
+import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-zone',
@@ -22,7 +23,7 @@ export class AddZoneComponent implements OnInit {
   @ViewChild('select_zone') select_zone: ElementRef;
 
   form_heading: string = 'Add New Zone';
-  form_btn_label: string = 'Add';
+  form_btn_label: string = StringConditions.AddCaps;
   zone = new FormControl('');
   fetchedZones:any;
   all_zones: any = this.data.allZones;
@@ -48,7 +49,7 @@ export class AddZoneComponent implements OnInit {
   ngOnInit(): void {
     const isEditMode = this.data?.mode === 'edit-zone';
     this.form_heading = isEditMode ? 'Edit Zone' : 'Update Zone';
-    this.form_btn_label = isEditMode ? 'Update' : 'Add';
+    this.form_btn_label = isEditMode ? 'Update' : StringConditions.AddCaps;
     this.fetchedZones = this.data?.fetchedZones;
     this.editZoneName = this.data?.fetchedZones;
     this.initialzeEmpForm();

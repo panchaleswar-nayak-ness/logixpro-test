@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import {  Column ,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-wp-bulk-zones',
@@ -8,7 +9,7 @@ import { Component} from '@angular/core';
 export class WpBulkZonesComponent  {
 
   
-  displayedColumns: string[] = ['transType', 'scanSequence','actions'];
+  displayedColumns: string[] = [Column.TransType, 'scanSequence',ColumnDef.Actions];
   dataSource:any
 
 

@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  TableConstant ,Column,zoneType,ToasterTitle,ToasterType,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-view-orders',
@@ -14,13 +15,13 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./view-orders.component.scss']
 })
 export class ViewOrdersComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'toteid', 'orderno', 'priority', 'options', 'other'];
+  displayedColumns: string[] = [UniqueConstants.position, 'toteid', 'orderno', UniqueConstants.Priority, 'options', 'other'];
 
-  displayedColumns1: string[] = ['position', 'toteid', 'orderno', 'other'];
+  displayedColumns1: string[] = [UniqueConstants.position, 'toteid', 'orderno', 'other'];
 
   displayedColumns2: string[] = ['orderno'];
 
-  displayedColumns3: string[] = ['orderno', 'itemno', 'transaction', 'location', 'completed'];
+  displayedColumns3: string[] = ['orderno', 'itemno', 'transaction', TableConstant.Location, 'completed'];
   public userData: any;
   allOrders: any[] = [];
   selectedOrders: any[] = [];
@@ -30,57 +31,57 @@ export class ViewOrdersComponent implements OnInit {
   transData: any;
 
   filterTransColumns = [
-    { columnDef: 'orderNumber', header: 'Order Number', cell: (element: any) => `${element.orderNumber}` },
-    { columnDef: 'itemNumber', header: 'Item Number', cell: (element: any) => `${element.itemNumber}` },
-    { columnDef: 'transactionQuantity', header: 'Transaction Quantity', cell: (element: any) => `${element.transactionQuantity}` },
-    { columnDef: 'location', header: 'Location', cell: (element: any) => `${element.location}` },
-    { columnDef: 'completedQuantity', header: 'Completed Quantity', cell: (element: any) => `${element.completedQuantity}` },
-    { columnDef: 'description', header: 'Description', cell: (element: any) => `${element.description}` },
-    { columnDef: 'batchPickID', header: 'Batch Pick ID', cell: (element: any) => `${element.batchPickID}` },
-    { columnDef: 'bin', header: 'Bin', cell: (element: any) => `${element.bin}` },
-    { columnDef: 'carousel', header: 'Carousel', cell: (element: any) => `${element.carousel}` },
-    { columnDef: 'cell', header: 'Cell', cell: (element: any) => `${element.cell}` },
+    { columnDef: 'orderNumber', header: Column.OrderNumber, cell: (element: any) => `${element.orderNumber}` },
+    { columnDef: 'itemNumber', header: Column.ItemNumber, cell: (element: any) => `${element.itemNumber}` },
+    { columnDef: ColumnDef.TransactionQuantity, header: TableConstant.TransactionQuantity, cell: (element: any) => `${element.transactionQuantity}` },
+    { columnDef: TableConstant.Location, header: Column.Location, cell: (element: any) => `${element.location}` },
+    { columnDef: TableConstant.completedQuantity, header: 'Completed Quantity', cell: (element: any) => `${element.completedQuantity}` },
+    { columnDef: UniqueConstants.Description, header: Column.Description, cell: (element: any) => `${element.description}` },
+    { columnDef: TableConstant.BatchPickID, header: ColumnDef.BatchPickID, cell: (element: any) => `${element.batchPickID}` },
+    { columnDef: ColumnDef.Bin, header: TableConstant.Bin, cell: (element: any) => `${element.bin}` },
+    { columnDef: zoneType.carousel, header: TableConstant.Carousel, cell: (element: any) => `${element.carousel}` },
+    { columnDef: Column.cell, header: TableConstant.Cell, cell: (element: any) => `${element.cell}` },
     { columnDef: 'completedBy', header: 'Completed By', cell: (element: any) => `${element.completedBy}` },
-    { columnDef: 'completedDate', header: 'Completed Date', cell: (element: any) => `${element.completedDate}` },
-    { columnDef: 'emergency', header: 'Emergency', cell: (element: any) => `${element.emergency}` },
-    { columnDef: 'expirationDate', header: 'Expiration Date', cell: (element: any) => `${element.expirationDate}` },
+    { columnDef: 'completedDate', header: TableConstant.CompletedDate, cell: (element: any) => `${element.completedDate}` },
+    { columnDef: UniqueConstants.emergency, header: ColumnDef.Emergency, cell: (element: any) => `${element.emergency}` },
+    { columnDef: ColumnDef.ExpirationDate, header: TableConstant.ExpirationDate, cell: (element: any) => `${element.expirationDate}` },
     { columnDef: 'exportBatchID', header: 'Export Batch ID', cell: (element: any) => `${element.exportBatchID}` },
     { columnDef: 'exportDate', header: 'Export Date', cell: (element: any) => `${element.exportDate}` },
     { columnDef: 'exportedBy', header: 'Exported By', cell: (element: any) => `${element.exportedBy}` },
-    { columnDef: 'hostTransactionID', header: 'Host Transaction ID', cell: (element: any) => `${element.hostTransactionID}` },
+    { columnDef: ColumnDef.HostTransactionId, header: TableConstant.HostTransactionID, cell: (element: any) => `${element.hostTransactionID}` },
     { columnDef: 'id', header: 'ID', cell: (element: any) => `${element.id}` },
-    { columnDef: 'importBy', header: 'Import By', cell: (element: any) => `${element.importBy}` },
-    { columnDef: 'importDate', header: 'Import Date', cell: (element: any) => `${element.importDate}` },
+    { columnDef: TableConstant.ImportBy, header: 'Import By', cell: (element: any) => `${element.importBy}` },
+    { columnDef: TableConstant.ImportDate, header: 'Import Date', cell: (element: any) => `${element.importDate}` },
     { columnDef: 'importFilename', header: 'Import Filename', cell: (element: any) => `${element.importFilename}` },
     { columnDef: 'invMapID', header: 'Inventory Map ID', cell: (element: any) => `${element.invMapID}` },
-    { columnDef: 'lineNumber', header: 'Line Number', cell: (element: any) => `${element.lineNumber}` },
-    { columnDef: 'lineSequence', header: 'Line Sequence', cell: (element: any) => `${element.lineSequence}` },
-    { columnDef: 'lotNumber', header: 'Lot Number', cell: (element: any) => `${element.lotNumber}` },
+    { columnDef: TableConstant.LineNumber, header: 'Line Number', cell: (element: any) => `${element.lineNumber}` },
+    { columnDef: TableConstant.LineSequence, header: 'Line Sequence', cell: (element: any) => `${element.lineSequence}` },
+    { columnDef: TableConstant.LotNumber, header: Column.LotNumber, cell: (element: any) => `${element.lotNumber}` },
     { columnDef: 'masterRecord', header: 'Master Record', cell: (element: any) => `${element.masterRecord}` },
     { columnDef: 'masterRecordID', header: 'Master Record ID', cell: (element: any) => `${element.masterRecordID}` },
-    { columnDef: 'notes', header: 'Notes', cell: (element: any) => `${element.notes}` },
-    { columnDef: 'priority', header: 'Priority', cell: (element: any) => `${element.priority}` },
-    { columnDef: 'requiredDate', header: 'Required Date', cell: (element: any) => `${element.requiredDate}` },
-    { columnDef: 'revision', header: 'Revision', cell: (element: any) => `${element.revision}` },
-    { columnDef: 'row', header: 'Row', cell: (element: any) => `${element.row}` },
-    { columnDef: 'serialNumber', header: 'Serial Number', cell: (element: any) => `${element.serialNumber}` },
-    { columnDef: 'shelf', header: 'Shelf', cell: (element: any) => `${element.shelf}` },
+    { columnDef: TableConstant.Notes, header: 'Notes', cell: (element: any) => `${element.notes}` },
+    { columnDef: UniqueConstants.Priority, header: 'Priority', cell: (element: any) => `${element.priority}` },
+    { columnDef: ColumnDef.RequiredDate, header: 'Required Date', cell: (element: any) => `${element.requiredDate}` },
+    { columnDef: ColumnDef.Revision, header: TableConstant.Revision, cell: (element: any) => `${element.revision}` },
+    { columnDef: Column.Row, header: TableConstant.Row, cell: (element: any) => `${element.row}` },
+    { columnDef: TableConstant.SerialNumber, header: ColumnDef.SerialNumber, cell: (element: any) => `${element.serialNumber}` },
+    { columnDef: TableConstant.shelf, header: TableConstant.shelf, cell: (element: any) => `${element.shelf}` },
     { columnDef: 'statusCode', header: 'Status Code', cell: (element: any) => `${element.statusCode}` },
-    { columnDef: 'toteID', header: 'Tote ID', cell: (element: any) => `${element.toteID}` },
+    { columnDef: ColumnDef.ToteID, header: Column.ToteID, cell: (element: any) => `${element.toteID}` },
     { columnDef: 'toteNumber', header: 'Tote Number', cell: (element: any) => `${element.toteNumber}` },
-    { columnDef: 'unitOfMeasure', header: 'Unit Of Measure', cell: (element: any) => `${element.unitOfMeasure}` },
-    { columnDef: 'userField1', header: 'User Field1', cell: (element: any) => `${element.userField1}` },
-    { columnDef: 'userField2', header: 'User Field2', cell: (element: any) => `${element.userField2}` },
-    { columnDef: 'userField3', header: 'User Field3', cell: (element: any) => `${element.userField3}` },
-    { columnDef: 'userField4', header: 'User Field4', cell: (element: any) => `${element.userField4}` },
-    { columnDef: 'userField5', header: 'User Field5', cell: (element: any) => `${element.userField5}` },
-    { columnDef: 'userField6', header: 'User Field6', cell: (element: any) => `${element.userField6}` },
-    { columnDef: 'userField7', header: 'User Field7', cell: (element: any) => `${element.userField7}` },
-    { columnDef: 'userField8', header: 'User Field8', cell: (element: any) => `${element.userField8}` },
-    { columnDef: 'userField9', header: 'User Field9', cell: (element: any) => `${element.userField9}` },
-    { columnDef: 'userField10', header: 'User Field10', cell: (element: any) => `${element.userField10}` },
-    { columnDef: 'warehouse', header: 'Warehouse', cell: (element: any) => `${element.warehouse}` },
-    { columnDef: 'zone', header: 'Zone', cell: (element: any) => `${element.zone}` },
+    { columnDef: ColumnDef.UnitOfMeasure, header: 'Unit Of Measure', cell: (element: any) => `${element.unitOfMeasure}` },
+    { columnDef: ColumnDef.userField1, header: TableConstant.UserField1, cell: (element: any) => `${element.userField1}` },
+    { columnDef: ColumnDef.userField2, header: TableConstant.UserField2, cell: (element: any) => `${element.userField2}` },
+    { columnDef: ColumnDef.userField3, header: 'User Field3', cell: (element: any) => `${element.userField3}` },
+    { columnDef: ColumnDef.userField4, header: 'User Field4', cell: (element: any) => `${element.userField4}` },
+    { columnDef: ColumnDef.userField5, header: 'User Field5', cell: (element: any) => `${element.userField5}` },
+    { columnDef: ColumnDef.userField6, header: 'User Field6', cell: (element: any) => `${element.userField6}` },
+    { columnDef: ColumnDef.userField7, header: 'User Field7', cell: (element: any) => `${element.userField7}` },
+    { columnDef: ColumnDef.userField8, header: 'User Field8', cell: (element: any) => `${element.userField8}` },
+    { columnDef: ColumnDef.userField9, header: 'User Field9', cell: (element: any) => `${element.userField9}` },
+    { columnDef: ColumnDef.userField10, header: 'User Field10', cell: (element: any) => `${element.userField10}` },
+    { columnDef: TableConstant.WareHouse, header: ColumnDef.Warehouse, cell: (element: any) => `${element.warehouse}` },
+    { columnDef: TableConstant.zone, header: ColumnDef.Zone, cell: (element: any) => `${element.zone}` },
   ];
 
   displayedTransColumns = this.filterTransColumns.map(c => c.columnDef);
@@ -134,13 +135,13 @@ export class ViewOrdersComponent implements OnInit {
   
         }
         else{
-          this.global.ShowToastr('error','There are no orders for your zone', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,'There are no orders for your zone', ToasterTitle.Error);
           this.isDisableSubmit = true
           
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("OrdersInZone",res.responseMessage);
       }
       
@@ -182,7 +183,7 @@ export class ViewOrdersComponent implements OnInit {
       this.selectedOrders = this.selectedOrders.filter(item => item !== row.orderNumber)
     }
     else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
-      this.global.ShowToastr('error','No open totes in batch', 'Batch is Filled.');
+      this.global.ShowToastr(ToasterType.Error,'No open totes in batch', 'Batch is Filled.');
     }
     else {
       this.selectedOrders.push(row.orderNumber);
@@ -197,7 +198,7 @@ export class ViewOrdersComponent implements OnInit {
         "sRow": 1,
         "eRow": 10,
         "SortColumnNumber": 0,
-        "SortOrder": "asc",
+        "SortOrder": UniqueConstants.Asc,
         "Filter": "1=1", 
       }
       this.iInductionManagerApi.InZoneTransDT(paylaod).subscribe((res) => {
@@ -208,7 +209,7 @@ export class ViewOrdersComponent implements OnInit {
           this.orderTransDataSource.sort = this.viewTransSort;
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("InZoneTransDT",res.responseMessage);
 
         }

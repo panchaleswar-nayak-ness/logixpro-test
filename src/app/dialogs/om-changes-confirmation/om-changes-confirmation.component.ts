@@ -6,6 +6,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service'; 
 import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
+import {  ToasterTitle ,ToasterType,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-changes-confirmation',
@@ -75,8 +76,8 @@ export class OmChangesConfirmationComponent implements OnInit {
         emergency: this.data.order.emergency,
         label: this.data.order.label,
         checkRequiredDate: this.orderForm.controls['reqDate'].value,
-        checkNotes: this.orderForm.controls['notes'].value,
-        checkPriority: this.orderForm.controls['priority'].value,
+        checkNotes: this.orderForm.controls[TableConstant.Notes].value,
+        checkPriority: this.orderForm.controls[UniqueConstants.Priority].value,
         checkUser1: this.orderForm.controls['user1'].value,
         checkUser2: this.orderForm.controls['user2'].value,
         checkUser3: this.orderForm.controls['user3'].value,
@@ -87,8 +88,8 @@ export class OmChangesConfirmationComponent implements OnInit {
         checkUser8: this.orderForm.controls['user8'].value,
         checkUser9: this.orderForm.controls['user9'].value,
         checkUser10: this.orderForm.controls['user10'].value,
-        checkEmergency: this.orderForm.controls['emergency'].value,
-        checkLabel: this.orderForm.controls['label'].value,        
+        checkEmergency: this.orderForm.controls[UniqueConstants.emergency].value,
+        checkLabel: this.orderForm.controls[TableConstant.label].value,        
       };
   
       this.iOrderManagerApi.OrderManagerRecordUpdate(payload).subscribe((res: any) => {
@@ -98,7 +99,7 @@ export class OmChangesConfirmationComponent implements OnInit {
             clickDisplayRecord: true,
           });
         }
-        else this.globalService.ShowToastr('error',"An Error occured while retrieving data.", 'Error!'); 
+        else this.globalService.ShowToastr(ToasterType.Error,"An Error occured while retrieving data.", ToasterTitle.Error); 
       });
 
     } catch (error) {   

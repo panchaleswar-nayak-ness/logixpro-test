@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 
 import { error } from 'jquery';
-import { ConfirmationMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style,UniqueConstants,Column,ColumnDef} from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
@@ -39,8 +39,8 @@ export class CountComponent implements OnInit {
    public searchOrderRight: string = '';
  // setTime:any =false;
 
-  displayedColumnsRight: string[] = ['orderNumber'  , 'itemCount', 'priority', 'requiredDate','actions'];
-  displayedColumnsLeft: string[] = ['orderNumber', 'itemCount', 'priority', 'requiredDate','actions'];
+  displayedColumnsRight: string[] = [UniqueConstants.OrderNumber  , UniqueConstants.itemCount, UniqueConstants.Priority, ColumnDef.RequiredDate,ColumnDef.Actions];
+  displayedColumnsLeft: string[] = [UniqueConstants.OrderNumber, UniqueConstants.itemCount, UniqueConstants.Priority, ColumnDef.RequiredDate,ColumnDef.Actions];
 
   leftTable:any = new MatTableDataSource([]);
   rightTable:any = new MatTableDataSource([]);
@@ -75,7 +75,7 @@ export class CountComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.leftTable.sort = this.leftSort;    
   }
@@ -83,7 +83,7 @@ export class CountComponent implements OnInit {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
     this.rightTable.sort = this.RightSort;    
   }
@@ -92,8 +92,8 @@ export class CountComponent implements OnInit {
     if(this.rightTable.data.length > 0){
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           heading: 'Mark Selected Orders for COUNT Location Assignment?',
@@ -101,7 +101,7 @@ export class CountComponent implements OnInit {
         },
       });
       dialogRef.afterClosed().subscribe(result => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           this.locationAssignment()
         }
       })
@@ -116,7 +116,7 @@ export class CountComponent implements OnInit {
     let orders = this.rightTable.data.map((data) => data.orderNumber)
      
     let payload = {
-      "transType": "count",
+     "transType": "count",
       "orders": orders, 
     }
     this.iAdminApiService.LocationAssignmentOrderInsert(payload).subscribe((res => {
@@ -154,8 +154,8 @@ export class CountComponent implements OnInit {
     this.iAdminApiService.GetTransactionTypeCounts(payload).subscribe((res =>{
     let dialogRef:any = this.global.OpenDialog(LaLocationAssignmentQuantitiesComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {  
         'totalCount': res.data

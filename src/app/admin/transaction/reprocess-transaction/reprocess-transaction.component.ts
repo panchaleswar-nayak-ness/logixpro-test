@@ -16,7 +16,7 @@ import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/c
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
-import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -27,36 +27,36 @@ import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, 
 export class ReprocessTransactionComponent implements OnInit {
   TRNSC_DATA = [
     { colHeader: 'id', colDef: 'ID' },
-    { colHeader: 'importDate', colDef: 'Import Date' },
-    { colHeader: 'importBy', colDef: 'Import By' },
+    { colHeader: TableConstant.ImportDate, colDef: 'Import Date' },
+    { colHeader: TableConstant.ImportBy, colDef: 'Import By' },
     { colHeader: 'importFileName', colDef: 'Import Filename' },
-    { colHeader: 'transactionType', colDef: 'Transaction Type' },
-    { colHeader: 'orderNumber', colDef: 'Order Number' },
-    { colHeader: 'lineNumber', colDef: 'Line Number' },
-    { colHeader: 'lineSequence', colDef: 'Line Sequence' },
-    { colHeader: 'priority', colDef: 'Priority' },
-    { colHeader: 'requiredDate', colDef: 'Required Date' },
-    { colHeader: 'itemNumber', colDef: 'Item Number' },
-    { colHeader: 'unitOfMeasure', colDef: 'Unit of Measure' },
-    { colHeader: 'lotNumber', colDef: 'Lot Number' },
-    { colHeader: 'expirationDate', colDef: 'Expiration Date' },
-    { colHeader: 'serialNumber', colDef: 'Serial Number' },
-    { colHeader: 'description', colDef: 'Description' },
-    { colHeader: 'revision', colDef: 'Revision' },
-    { colHeader: 'transactionQuantity', colDef: 'Transaction Quantity' },
-    { colHeader: 'location', colDef: 'Location' },
-    { colHeader: 'wareHouse', colDef: 'Warehouse' },
-    { colHeader: 'zone', colDef: 'Zone' },
-    { colHeader: 'carousel', colDef: 'Carousel' },
-    { colHeader: 'row', colDef: 'Row' },
-    { colHeader: 'shelf', colDef: 'Shelf' },
-    { colHeader: 'bin', colDef: 'Bin' },
+    { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
+    { colHeader: UniqueConstants.OrderNumber, colDef: Column.OrderNumber },
+    { colHeader: TableConstant.LineNumber, colDef: 'Line Number' },
+    { colHeader: TableConstant.LineSequence, colDef: 'Line Sequence' },
+    { colHeader: UniqueConstants.Priority, colDef: 'Priority' },
+    { colHeader: ColumnDef.RequiredDate, colDef: 'Required Date' },
+    { colHeader: 'itemNumber', colDef: Column.ItemNumber },
+    { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
+    { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
+    { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
+    { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber },
+    { colHeader: UniqueConstants.Description, colDef: Column.Description },
+    { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },
+    { colHeader: ColumnDef.TransactionQuantity, colDef: TableConstant.TransactionQuantity },
+    { colHeader: TableConstant.Location, colDef: Column.Location },
+    { colHeader: 'wareHouse', colDef: ColumnDef.Warehouse },
+    { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
+    { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
+    { colHeader: Column.Row, colDef: TableConstant.Row },
+    { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
+    { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin },
     { colHeader: 'invMapID', colDef: 'Inv Map ID' },
-    { colHeader: 'completedDate', colDef: 'Completed Date' },
+    { colHeader: 'completedDate', colDef: TableConstant.CompletedDate },
     { colHeader: 'completedBy', colDef: 'Completed By' },
-    { colHeader: 'completedQuantity', colDef: 'Completed Quantity' },
-    { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
-    { colHeader: 'notes', colDef: 'Notes' },
+    { colHeader: TableConstant.completedQuantity, colDef: 'Completed Quantity' },
+    { colHeader: TableConstant.BatchPickID, colDef: ColumnDef.BatchPickID },
+    { colHeader: TableConstant.Notes, colDef: 'Notes' },
     { colHeader: 'exportFileName', colDef: 'Export File Name' },
     { colHeader: 'exportDate', colDef: 'Export Date' },
     { colHeader: 'exportedBy', colDef: 'Exported By' },
@@ -65,23 +65,23 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: 'statusCode', colDef: 'Status Code' },
     { colHeader: 'masterRecord', colDef: 'Master Record' },
     { colHeader: 'masterRecordID', colDef: 'Master Record ID' },
-    { colHeader: 'label', colDef: 'Label' },
+    { colHeader: TableConstant.label, colDef: 'Label' },
     { colHeader: 'inProcess', colDef: 'In Process' },
-    { colHeader: 'userField1', colDef: 'User Field1' },
-    { colHeader: 'userField2', colDef: 'User Field2' },
-    { colHeader: 'userField3', colDef: 'User Field3' },
-    { colHeader: 'userField4', colDef: 'User Field4' },
-    { colHeader: 'userField5', colDef: 'User Field5' },
-    { colHeader: 'userField6', colDef: 'User Field6' },
-    { colHeader: 'userField7', colDef: 'User Field7' },
-    { colHeader: 'userField8', colDef: 'User Field8' },
-    { colHeader: 'userField9', colDef: 'User Field9' },
-    { colHeader: 'userField10', colDef: 'User Field10' },
-    { colHeader: 'toteID', colDef: 'Tote ID' },
+    { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
+    { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
+    { colHeader: ColumnDef.userField3, colDef: 'User Field3' },
+    { colHeader: ColumnDef.userField4, colDef: 'User Field4' },
+    { colHeader: ColumnDef.userField5, colDef: 'User Field5' },
+    { colHeader: ColumnDef.userField6, colDef: 'User Field6' },
+    { colHeader: ColumnDef.userField7, colDef: 'User Field7' },
+    { colHeader: ColumnDef.userField8, colDef: 'User Field8' },
+    { colHeader: ColumnDef.userField9, colDef: 'User Field9' },
+    { colHeader: ColumnDef.userField10, colDef: 'User Field10' },
+    { colHeader: ColumnDef.ToteID, colDef: Column.ToteID },
     { colHeader: 'toteNumber', colDef: 'Tote Number' },
-    { colHeader: 'cell', colDef: 'Cell' },
-    { colHeader: 'hostTransactionID', colDef: 'Host Transaction ID' },
-    { colHeader: 'emergency', colDef: 'Emergency' },
+    { colHeader: Column.cell, colDef: TableConstant.Cell },
+    { colHeader: ColumnDef.HostTransactionId, colDef: TableConstant.HostTransactionID },
+    { colHeader: UniqueConstants.emergency, colDef: ColumnDef.Emergency },
     { colHeader: 'reasonMessage', colDef: 'Reason Message' },
     { colHeader: 'dateStamp', colDef: 'Date Stamp' },
     { colHeader: 'reason', colDef: 'Reason' },
@@ -101,13 +101,13 @@ export class ReprocessTransactionComponent implements OnInit {
   public payload: any;
   public filterLoc: any = 'Nothing';
   public itemList: any;
-  transTypeSelect = 'All Transactions';
-  transStatusSelect = 'All Transactions';
-  trueString = 'true';
+  transTypeSelect = StringConditions.AllTransactions;
+  transStatusSelect = StringConditions.AllTransactions;
+  trueString = StringConditions.True;
   switchTrueString = false;
   falseString = 'false';
   switchFalseString = false;
-  searchFieldsTrueFalse = ['Label','Emergency','In Process','Master Record'];
+  searchFieldsTrueFalse = ['Label',ColumnDef.Emergency,'In Process','Master Record'];
   isReprocessedChecked = {flag:false};
   isCompleteChecked = {flag:false};
   isHistoryChecked = {flag:false};
@@ -123,7 +123,7 @@ export class ReprocessTransactionComponent implements OnInit {
   deleteByOrderNumber=false; //Only visible if searched
   private subscription: Subscription = new Subscription();
  
-  @ViewChild('description') description: TemplateRef<any>;
+  @ViewChild(UniqueConstants.Description) description: TemplateRef<any>;
 
   idx: any;
 
@@ -149,7 +149,7 @@ export class ReprocessTransactionComponent implements OnInit {
   pageEvent: PageEvent;
   searchAutocompleteListByCol: any;
   public sortCol: any = 5;
-  public sortOrder: any = 'asc';
+  public sortOrder: any = UniqueConstants.Asc;
 
   cols = [];
   customPagination: any = {
@@ -168,10 +168,10 @@ export class ReprocessTransactionComponent implements OnInit {
 
   sortColumn: any = {
     columnName: 32,
-    sortOrder: 'asc',
+    sortOrder: UniqueConstants.Asc,
   };
   /* End */
-  statusType: string = 'All Transactions';
+  statusType: string = StringConditions.AllTransactions;
   orderNumber: string = '';
   itemNumber: string = '';
   selectedVariable;
@@ -265,9 +265,9 @@ export class ReprocessTransactionComponent implements OnInit {
     this.selectedTransaction = row;
     this.isEnabled = false;
     this.transactionID = row.id;
-    this.isReprocessedChecked.flag = row.reprocess != 'False';
-    this.isCompleteChecked.flag = row.postAsComplete != 'False';
-    this.isHistoryChecked.flag = row.sendToHistory != 'False';
+    this.isReprocessedChecked.flag = row.reprocess != StringConditions.False;
+    this.isCompleteChecked.flag = row.postAsComplete != StringConditions.False;
+    this.isHistoryChecked.flag = row.sendToHistory != StringConditions.False;
     this.itemNumber = row.itemNumber;
     this.orderNumber = row.orderNumber;
     this.clearDelete("1");
@@ -371,7 +371,7 @@ export class ReprocessTransactionComponent implements OnInit {
       endIndex: 10,
     };
     this.sortCol= 5;
-    this.sortOrder= 'asc';
+    this.sortOrder= UniqueConstants.Asc;
   }
 
   deleteReprocessTrans(opened : boolean) {
@@ -456,7 +456,7 @@ export class ReprocessTransactionComponent implements OnInit {
         
         const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
             height: DialogConstants.auto,
-            width: '480px',
+            width: Style.w480px,
             autoFocus: DialogConstants.autoFocus,
             disableClose: true,
             data: {
@@ -493,7 +493,7 @@ export class ReprocessTransactionComponent implements OnInit {
           this.selectedVariable = '';
           if (result?.isExecuted) this.getColumnsData();
         });
-      } else if (this.selectedVariable.includes('delete')) this.deleteReprocessTrans(opened);
+      } else if (this.selectedVariable.includes(UniqueConstants.delete)) this.deleteReprocessTrans(opened);
     }
   }
 
@@ -552,7 +552,7 @@ export class ReprocessTransactionComponent implements OnInit {
 
       const dialogRef : any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: DialogConstants.auto,
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: { message: message }
@@ -589,7 +589,7 @@ export class ReprocessTransactionComponent implements OnInit {
     else {
       const dialogRef : any = this.global.OpenDialog(FunctionAllocationComponent, {
         height: DialogConstants.auto,
-        width: '560px',
+        width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
@@ -653,7 +653,7 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   selectOrder(row){
-    this.selectedOrderObj['orderNumber'] = row.orderNumber;
+    this.selectedOrderObj[UniqueConstants.OrderNumber] = row.orderNumber;
     this.selectedOrderObj['itemNumber'] = row.itemNumber;
     this.sharedService.updateReprocess(this.selectedOrderObj)
   }
@@ -753,7 +753,7 @@ export class ReprocessTransactionComponent implements OnInit {
 
   openReasonDialog() {
     this.global.OpenDialog(this.description, {
-      width: '560px',
+      width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
@@ -835,7 +835,7 @@ export class ReprocessTransactionComponent implements OnInit {
       case 'date':
         queryParams = `FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:${date}`;
         break;
-      case 'item':
+      case UniqueConstants.item:
         queryParams = `FileName:printReprocessTransactions|History:${history}|ID:|OrderNumber:|ItemNumber:${itemNumber}|Reason:|Message:|Date:`;
         break;
       case 'order':
@@ -846,6 +846,6 @@ export class ReprocessTransactionComponent implements OnInit {
     const fileLink = `/#/report-view?file=${queryParams}`;
 
     if (print) this.global.Print(queryParams);
-    else window.open(fileLink, '_blank', `width=${screen.width},height=${screen.height},toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0`);
+    else window.open(fileLink, UniqueConstants._blank, `width=${screen.width},height=${screen.height},toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0`);
   }
 }

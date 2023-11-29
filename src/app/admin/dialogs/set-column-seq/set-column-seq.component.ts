@@ -9,7 +9,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -56,7 +56,7 @@ export class SetColumnSeqComponent implements OnInit {
   }
 
   @ViewChild('table') table: MatTable<PeriodicElement>;
-  displayedColumns: string[] = ['position', 'name'];
+  displayedColumns: string[] = [UniqueConstants.position, 'name'];
   
 
   dropTable(event: CdkDragDrop<PeriodicElement[]>) {
