@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {  zoneType ,TableConstant} from 'src/app/common/constants/strings.constants';
+import {  zoneType ,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ie-manage-data-inven-map-tables',
@@ -19,7 +19,7 @@ export class IeManageDataInvenMapTablesComponent {
     zoneType.carousel,
     'putaway',
     'maxqty',
-    'revision',
+    ColumnDef.Revision,
     's_no',
     'lot_no',
     'e_date',

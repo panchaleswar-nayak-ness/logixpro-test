@@ -64,7 +64,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: Column.LotNumber, key: 'lotNumber' },
     { sequence: 'Serial Number', key: 'serialNumber' },
     { sequence: 'Notes', key: TableConstant.Notes },
-    { sequence: TableConstant.Revision, key: 'revision' },
+    { sequence: TableConstant.Revision, key: ColumnDef.Revision },
     { sequence: 'ID', key: 'id' },
     { sequence: TableConstant.HostTransactionID, key: ColumnDef.HostTransactionId },
     { sequence: ColumnDef.Emergency, key: UniqueConstants.emergency },

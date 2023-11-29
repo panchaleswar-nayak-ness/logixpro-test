@@ -118,7 +118,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.editTransactionForm.get("serialNumber")?.value,
         this.editTransactionForm.get("lotNumber")?.value?.toString(),
         this.dayIncrement(this.expDate),
-        this.editTransactionForm.get("revision")?.value,
+        this.editTransactionForm.get(ColumnDef.Revision)?.value,
         this.editTransactionForm.get(TableConstant.Notes)?.value,
         this.editTransactionForm.get("userField1")?.value,
         this.editTransactionForm.get(ColumnDef.userField2)?.value,

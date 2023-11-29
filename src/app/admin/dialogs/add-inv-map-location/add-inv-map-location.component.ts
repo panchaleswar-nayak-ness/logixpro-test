@@ -281,7 +281,7 @@ export class AddInvMapLocationComponent implements OnInit {
       'putAwayDate': '',
       'serialNumber': '',
       'lotNumber': '',
-      'revision': '',
+      "revision": '',
       'expirationDate': '',
       "description":'',
       'location':'',

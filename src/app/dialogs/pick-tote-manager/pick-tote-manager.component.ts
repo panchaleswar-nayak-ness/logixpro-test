@@ -283,7 +283,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.userField10}`,
     },
     {
-      columnDef: 'revision',
+      columnDef: ColumnDef.Revision,
       header: TableConstant.Revision,
       cell: (element: any) => `${element.revision}`,
     },
