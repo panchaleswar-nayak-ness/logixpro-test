@@ -70,7 +70,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: ColumnDef.userField8, colDef: 'User Field8' },
     { colHeader: ColumnDef.userField9, colDef: 'User Field9' },
     { colHeader: ColumnDef.userField10, colDef: 'User Field10' },
-    { colHeader: 'unitOfMeasure', colDef: FilterColumnName.unitOfMeasure },
+    { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
     { colHeader: 'requiredDate', colDef: 'Required Date' },
     { colHeader: 'statusCode', colDef: 'Status Code' },
     { colHeader: 'masterRecord', colDef: 'Master Record' },

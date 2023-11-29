@@ -114,7 +114,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
       ],
       "newValues": [
         this.editTransactionForm.get(ColumnDef.TransactionQuantity)?.value,
-        this.editTransactionForm.get("unitOfMeasure")?.value,
+        this.editTransactionForm.get(ColumnDef.UnitOfMeasure)?.value,
         this.editTransactionForm.get("serialNumber")?.value,
         this.editTransactionForm.get("lotNumber")?.value?.toString(),
         this.dayIncrement(this.expDate),
@@ -229,7 +229,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
           if (res.data[0].emergency == StringConditions.False) { this.emergency = false; } else { this.emergency = true; }
           this.editTransactionForm.patchValue({
             'transactionQuantity': res.data[0].transactionQuantity,
-            "unitOfMeasure": res.data[0].unitOfMeasure,
+            'unitOfMeasure': res.data[0].unitOfMeasure,
             "serialNumber": res.data[0].serialNumber,
             "lotNumber": res.data[0].lotNumber,
             'expirationDate': this.expDate != "1900-01-01T19:31:48.000Z" ? this.expDate : " ",

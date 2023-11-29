@@ -228,7 +228,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.batchPickID}`,
     },
     {
-      columnDef: 'unitOfMeasure',
+      columnDef: ColumnDef.UnitOfMeasure,
       header: 'Unit Of Measure',
       cell: (element: any) => `${element.unitOfMeasure}`,
     },

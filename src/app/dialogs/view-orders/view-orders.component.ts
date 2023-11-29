@@ -69,7 +69,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'statusCode', header: 'Status Code', cell: (element: any) => `${element.statusCode}` },
     { columnDef: ColumnDef.ToteID, header: Column.ToteID, cell: (element: any) => `${element.toteID}` },
     { columnDef: 'toteNumber', header: 'Tote Number', cell: (element: any) => `${element.toteNumber}` },
-    { columnDef: 'unitOfMeasure', header: 'Unit Of Measure', cell: (element: any) => `${element.unitOfMeasure}` },
+    { columnDef: ColumnDef.UnitOfMeasure, header: 'Unit Of Measure', cell: (element: any) => `${element.unitOfMeasure}` },
     { columnDef: ColumnDef.userField1, header: TableConstant.UserField1, cell: (element: any) => `${element.userField1}` },
     { columnDef: ColumnDef.userField2, header: TableConstant.UserField2, cell: (element: any) => `${element.userField2}` },
     { columnDef: ColumnDef.userField3, header: 'User Field3', cell: (element: any) => `${element.userField3}` },

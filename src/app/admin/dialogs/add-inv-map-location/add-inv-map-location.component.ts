@@ -251,7 +251,7 @@ export class AddInvMapLocationComponent implements OnInit {
       this.addInvMapLocation.get(Column.Row)?.disable();
       this.addInvMapLocation.get(TableConstant.shelf)?.disable();
       this.addInvMapLocation.get('bin')?.disable();
-      this.addInvMapLocation.get('unitOfMeasure')?.disable();
+      this.addInvMapLocation.get(ColumnDef.UnitOfMeasure)?.disable();
       this.addInvMapLocation.get(Column.cell)?.disable();
       this.addInvMapLocation.get('velocity')?.disable();
       this.addInvMapLocation.get('altLight')?.disable();

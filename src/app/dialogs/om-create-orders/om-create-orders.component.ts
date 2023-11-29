@@ -56,7 +56,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: 'Line Sequence', key: TableConstant.LineSequence },
     { sequence: 'In Process', key: 'inProcess' },
     { sequence: 'Processing By', key: 'processingBy' },
-    { sequence: FilterColumnName.unitOfMeasure, key: 'unitOfMeasure' },
+    { sequence: FilterColumnName.unitOfMeasure, key: ColumnDef.UnitOfMeasure },
     { sequence: 'Import By', key: TableConstant.ImportBy },
     { sequence: 'Import Date', key: TableConstant.ImportDate },
     { sequence: 'Import Filename', key: 'importFilename' },

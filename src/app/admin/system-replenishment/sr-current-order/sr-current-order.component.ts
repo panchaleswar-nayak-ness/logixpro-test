@@ -66,7 +66,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: 'Trans Qty', label: 'Trans Qty', value: ColumnDef.TransactionQuantity , filterProperty:'Trans Qty'},
     { defination: UniqueConstants.Description, label: Column.Description, value: UniqueConstants.Description, filterProperty:Column.Description },
     { defination: Column.OrderNumber, label: Column.OrderNumber, value: 'orderNumber', filterProperty:Column.OrderNumber },
-    { defination: 'UofM', label: 'UofM', value: 'unitOfMeasure', filterProperty:'UofM' },
+    { defination: 'UofM', label: 'UofM', value: ColumnDef.UnitOfMeasure, filterProperty:'UofM' },
     { defination: ColumnDef.BatchPickID, label: ColumnDef.BatchPickID, value: TableConstant.BatchPickID, filterProperty:ColumnDef.BatchPickID },
     { defination: 'Serial Number', label: 'Serial Number', value: 'serialNumber', filterProperty:'Serial Number' },
     { defination: TableConstant.CompletedDate, label: 'Comp Date', value: 'completedDate', filterProperty:'Comp Date' },
@@ -162,7 +162,7 @@ export class SrCurrentOrderComponent implements OnInit {
       value: 'UofM',
       viewValue: 'UofM',
       sortColumn: '13',
-      key: 'unitOfMeasure',
+      key: ColumnDef.UnitOfMeasure,
     },
     {
       value: 'Warehouse',

@@ -389,7 +389,8 @@ export const ColumnDef= {
     Actions:'actions',
     Action:'action',
     ToteID:'toteID',
-    TransactionQuantity:'transactionQuantity'
+    TransactionQuantity:'transactionQuantity',
+    UnitOfMeasure:'unitOfMeasure'
 }
 
 export const Case = {
