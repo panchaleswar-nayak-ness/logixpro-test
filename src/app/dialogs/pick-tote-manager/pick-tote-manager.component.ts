@@ -298,7 +298,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.toteNumber}`,
     },
     {
-      columnDef: 'cell',
+      columnDef: Column.cell,
       header: TableConstant.Cell,
       cell: (element: any) => `${element.cell}`,
     },

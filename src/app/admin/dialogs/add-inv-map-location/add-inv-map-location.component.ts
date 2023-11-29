@@ -19,7 +19,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
-import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,Column,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 
 
 export interface InventoryMapDataStructure {
@@ -252,7 +252,7 @@ export class AddInvMapLocationComponent implements OnInit {
       this.addInvMapLocation.get(TableConstant.shelf)?.disable();
       this.addInvMapLocation.get('bin')?.disable();
       this.addInvMapLocation.get('unitOfMeasure')?.disable();
-      this.addInvMapLocation.get('cell')?.disable();
+      this.addInvMapLocation.get(Column.cell)?.disable();
       this.addInvMapLocation.get('velocity')?.disable();
       this.addInvMapLocation.get('altLight')?.disable();
       this.addInvMapLocation.get('userField1')?.disable();
@@ -543,7 +543,7 @@ export class AddInvMapLocationComponent implements OnInit {
       })
       dialogRef.afterClosed().subscribe(result => {
         if (result !== true && result !== false) {
-          this.addInvMapLocation.controls['cell'].setValue(result);
+          this.addInvMapLocation.controls[Column.cell].setValue(result);
         }
       })
     }

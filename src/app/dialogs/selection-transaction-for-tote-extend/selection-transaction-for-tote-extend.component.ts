@@ -697,7 +697,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       "lot": values.lotNumber,
       "ser": values.serialNumber,
       "totePos": values.totePos ? parseInt(values.totePos) : 0,
-      "cell": values.cellSize,
+      'cell': values.cellSize,
       "warehouse": values.warehouse,
       "expDate": values.expirationDate,
       "revision": "",

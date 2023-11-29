@@ -41,7 +41,7 @@ export class OmAddRecordComponent implements OnInit {
     "revision": "",
     'batchPickID': "",
     "toteID": "",
-    "cell": "",
+    'cell': "",
     'notes': "",
     "userField1": "",
     "userField2": "",

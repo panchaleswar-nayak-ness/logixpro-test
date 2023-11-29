@@ -80,7 +80,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'inProcess', colDef: 'In Process' },
     { colHeader: 'toteID', colDef: Column.ToteID },
     { colHeader: 'toteNumber', colDef: 'Tote Number' },
-    { colHeader: 'cell', colDef: TableConstant.Cell },
+    { colHeader: Column.cell, colDef: TableConstant.Cell },
     { colHeader: ColumnDef.HostTransactionId, colDef: TableConstant.HostTransactionID },
     { colHeader: UniqueConstants.emergency, colDef: ColumnDef.Emergency },
   ];

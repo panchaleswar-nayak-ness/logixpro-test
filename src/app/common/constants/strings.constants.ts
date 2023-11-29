@@ -364,7 +364,8 @@ export const Column = {
     Location: 'Location',
     Description:'Description',
     TransType: 'transType',
-    Action:'action'
+    Action:'action',
+    cell:'cell'
 }
 export const ColumnDef= {
     userField1:'userField1',

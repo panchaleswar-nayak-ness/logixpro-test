@@ -7,7 +7,7 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,Column} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -131,7 +131,7 @@ export class CellSizeComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
        if(result === ResponseStrings.Yes){
         let paylaod = {
-        "cell": cell.cells.toString()
+          'cell': cell.cells.toString()
       }
       this.iCommonAPI.dltCellSize(paylaod).subscribe((res) => {
         if (res.isExecuted) {
