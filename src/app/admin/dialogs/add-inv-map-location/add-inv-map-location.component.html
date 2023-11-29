@@ -31,8 +31,8 @@
                                         <h6 class="card-header matAutoCompHeader stickyHeader"> <span class="locationStickyHeaderStyle"> Location</span> <span class="zoneStickyHeaderStyle">Zone</span></h6>
                                         <mat-option class="" *ngFor="let option of filteredOptions | async"
                                             [value]="option.locationName">
-                                            <div class="loc_option optionLocationNameStyle">
-                                                <span>{{option.locationName}}</span> <span class="optionZoneStyle">{{option.zone}}</span>
+                                            <div class="loc_option">
+                                                <span class="optionLocationNameStyle">{{option.locationName}}</span> <span class="optionZoneStyle">{{option.zone}}</span>
                                             </div>
                                         </mat-option>
                                     </mat-autocomplete>
@@ -78,14 +78,14 @@
                                     <mat-label>Zone</mat-label>
                                     <input  maxlength="2" placeholder="Zone" aria-label="Zone" matInput
                                         formControlName="zone" [matAutocomplete]="autoZone">
-                                    <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete"
+                                    <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete" class="br-14 otocompletestyle"
                                         (optionSelected)="loadZones($event)">
 
-                                        <h6 class="loc_name"><span>Zone</span> <span>Location</span></h6>
+                                        <h6 class="card-header matAutoCompHeader stickyHeader"><span class="zoneStickyHeaderStyle zone-padding">Zone</span> <span class="locationStickyHeaderStyle location-padding">Location</span></h6>
                                         <mat-option *ngFor="let option of filteredOptions | async"
                                             [value]="option.zone">
                                             <div class="loc_option">
-                                                <span>{{option.zone}}  </span> <span>{{option.locationName}}</span>
+                                                <span class="optionZoneStyle">{{option.zone}}  </span> <span class="optionLocationNameStyle">{{option.locationName}}</span>
                                             </div>
                                         </mat-option>
                                     </mat-autocomplete>
