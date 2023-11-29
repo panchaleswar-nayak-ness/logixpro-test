@@ -16,7 +16,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,ToasterMessages,DialogConstants,UniqueConstants,Column,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,ToasterMessages,DialogConstants,UniqueConstants,Column,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ccb-create-counts',
@@ -105,7 +105,7 @@ export class CCBCreateCountsComponent implements OnInit {
     UniqueConstants.cellSize,
     'serialNumber',
     'lotNumber',
-    'expirationDate',
+    ColumnDef.ExpirationDate,
     'actions',
   ];
   dataSourceList: any;

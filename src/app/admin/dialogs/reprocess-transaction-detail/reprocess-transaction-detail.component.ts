@@ -232,7 +232,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
             "unitOfMeasure": res.data[0].unitOfMeasure,
             "serialNumber": res.data[0].serialNumber,
             "lotNumber": res.data[0].lotNumber,
-            "expirationDate": this.expDate != "1900-01-01T19:31:48.000Z" ? this.expDate : " ",
+            'expirationDate': this.expDate != "1900-01-01T19:31:48.000Z" ? this.expDate : " ",
             "revision": res.data[0].revision,
             'notes': res.data[0].notes,
             "userField1": res.data[0].userField1,

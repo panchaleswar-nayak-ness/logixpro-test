@@ -379,7 +379,8 @@ export const ColumnDef= {
     HostTransactionId:'hostTransactionID',
     Zone:'Zone',
     BatchPickID:'Batch Pick ID',
-    Revision:'revision'
+    Revision:'revision',
+    ExpirationDate:'expirationDate'
 }
 
 export const Case = {

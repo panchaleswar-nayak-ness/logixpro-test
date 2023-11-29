@@ -36,7 +36,7 @@ export class OmAddRecordComponent implements OnInit {
     "emergency": false,
     "label": false,
     "lotNumber": "",
-    "expirationDate": "",
+    'expirationDate': "",
     "serialNumber": "",
     "revision": "",
     "batchPickID": "",
