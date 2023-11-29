@@ -43,7 +43,7 @@ export class PpaTsBatchSetupComponent  implements OnInit{
   }
 
   callFun(funName:any,funParam:any){
-    this.funCall.emit({funName:funName,funParam:funParam});
+    this.funCall.emit({funName:funName,funParam:funParam,batchId:this.batchId});
   }
 
   getFloatLabelValueItem(): FloatLabelType {
