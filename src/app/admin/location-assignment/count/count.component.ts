@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 
 import { error } from 'jquery';
-import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
+import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style,UniqueConstants,Column,ColumnDef} from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
@@ -39,8 +39,8 @@ export class CountComponent implements OnInit {
    public searchOrderRight: string = '';
  // setTime:any =false;
 
-  displayedColumnsRight: string[] = ['orderNumber'  , UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate','actions'];
-  displayedColumnsLeft: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate','actions'];
+  displayedColumnsRight: string[] = ['orderNumber'  , UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate',ColumnDef.Actions];
+  displayedColumnsLeft: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate',ColumnDef.Actions];
 
   leftTable:any = new MatTableDataSource([]);
   rightTable:any = new MatTableDataSource([]);

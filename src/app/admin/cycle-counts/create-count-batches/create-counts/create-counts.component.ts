@@ -106,7 +106,7 @@ export class CCBCreateCountsComponent implements OnInit {
     'serialNumber',
     'lotNumber',
     ColumnDef.ExpirationDate,
-    'actions',
+    ColumnDef.Actions,
   ];
   dataSourceList: any;
   fromLocationCrossbtn:any;

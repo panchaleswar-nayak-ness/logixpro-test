@@ -7,7 +7,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { LiveAnnouncerMessage, StringConditions, ToasterTitle, ToasterType, alertMessage ,ResponseStrings,DialogConstants,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
+import { LiveAnnouncerMessage, StringConditions, ToasterTitle, ToasterType, alertMessage ,ResponseStrings,DialogConstants,UniqueConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-mark-empty-reels',
@@ -26,7 +26,7 @@ export class MarkEmptyReelsComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   scannedSerialList: MatTableDataSource<any>;
-  displayedColumns_1: string[] = ['scannedserialnumbers', 'actions'];
+  displayedColumns_1: string[] = ['scannedserialnumbers', ColumnDef.Actions];
   userData;
 
   constructor(

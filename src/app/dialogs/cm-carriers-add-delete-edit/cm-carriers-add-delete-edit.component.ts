@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {  UniqueConstants } from 'src/app/common/constants/strings.constants';
+import {  UniqueConstants ,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -21,7 +21,7 @@ export class CmCarriersAddDeleteEditComponent{
     {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
     {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
   ];  
-  displayedColumns: string[] = [UniqueConstants.Select, 'action'];
+  displayedColumns: string[] = [UniqueConstants.Select, ColumnDef.Action];
   periodicElementTable = this.elementData;
 
 }

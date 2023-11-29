@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {  ColumnDef } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ie-ftp-settings',
@@ -25,7 +26,7 @@ export class IeFtpSettingsComponent {
     'ftp_file',
     'ftp_extension',
     'ftp_readyfile',
-    'actions',
+    ColumnDef.Actions,
   ];
   tableData = this.elementData;
   dataSourceList: any;

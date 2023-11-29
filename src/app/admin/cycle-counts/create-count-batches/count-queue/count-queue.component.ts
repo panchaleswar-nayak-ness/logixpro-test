@@ -13,7 +13,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
  
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,DialogConstants,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,StringConditions,DialogConstants,UniqueConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
@@ -38,7 +38,7 @@ export class CCBCountQueueComponent implements OnInit {
     'serialNo',
     'lotNo',
     'expDate',
-    'action',
+    ColumnDef.Action,
   ];
   dataSource: any = [];
   noData:boolean=false;

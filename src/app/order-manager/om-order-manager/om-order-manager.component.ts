@@ -176,8 +176,8 @@ export class OmOrderManagerComponent implements OnInit {
     this.iAdminApiService.GetColumnSequence(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.displayedColumns = res.data;        
-        this.displayedColumns.push( 'actions');
-        this.colList = res.data.filter(x => x != 'actions');
+        this.displayedColumns.push( ColumnDef.Actions);
+        this.colList = res.data.filter(x => x != ColumnDef.Actions);
         this.colList = this.colList.sort();
         this.searchCol = this.colList[0];
       }

@@ -1,4 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core'; 
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import {  ColumnDef } from 'src/app/common/constants/strings.constants'; 
 
 @Component({
   selector: 'app-ie-manage-data-trans-field-map',
@@ -16,7 +17,7 @@ export class IeManageDataTransFieldMapComponent {
     { container_id: '1202127' },
   ];
 
-  displayedColumns: string[] = ['container_id', 'field_type', 'actions'];
+  displayedColumns: string[] = ['container_id', 'field_type', ColumnDef.Actions];
   tableData = this.elementData;
   dataSourceList: any;
 

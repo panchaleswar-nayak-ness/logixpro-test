@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import {  TransactionType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  TransactionType ,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 
 export interface PeriodicElement {
@@ -29,7 +29,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class CreateCountsComponent  {
 
-  displayedColumns: string[] = [UniqueConstants.position, 'name', 'weight', 'symbol', 'ex', 'srno', 'action'];
+  displayedColumns: string[] = [UniqueConstants.position, 'name', 'weight', 'symbol', 'ex', 'srno', ColumnDef.Action];
   tableData = ELEMENT_DATA;
   
   transList : any = [

@@ -6,7 +6,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  ResponseStrings ,ToasterType,ToasterTitle,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterType,ToasterTitle,DialogConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -33,7 +33,7 @@ export class CmShippingComponent implements OnInit {
     'containerID',
     'carrier',
     'trackingNum',
-    'action',
+    ColumnDef.Action,
   ];
   tableData = this.ELEMENT_DATA;
   userData: any = {};

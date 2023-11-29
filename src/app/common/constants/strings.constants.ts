@@ -363,7 +363,8 @@ export const Column = {
     LotNumber: 'Lot Number',
     Location: 'Location',
     Description:'Description',
-    TransType: 'transType'
+    TransType: 'transType',
+    Action:'action'
 }
 export const ColumnDef= {
     userField1:'userField1',
@@ -381,7 +382,9 @@ export const ColumnDef= {
     Zone:'Zone',
     BatchPickID:'Batch Pick ID',
     Revision:'revision',
-    ExpirationDate:'expirationDate'
+    ExpirationDate:'expirationDate',
+    Actions:'actions',
+    Action:'action'
 }
 
 export const Case = {

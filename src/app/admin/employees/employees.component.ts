@@ -20,7 +20,7 @@ import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.co
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType ,DialogConstants,Style,dataCredientials,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,Style,dataCredientials,UniqueConstants,StringConditions,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 export interface Location {
   start_location: string;
@@ -81,9 +81,9 @@ export class EmployeesComponent implements OnInit {
 
   // table initialization
   displayedColumns: string[] = ['startLocation', 'endLocation', 'delete_location'];
-  zoneColumns: string[] = ['zones', 'actions'];
-  groupsColumns: string[] = ['groups', 'actions'];
-  funcationsColumns: string[] = ['Function', 'actions'];
+  zoneColumns: string[] = ['zones', ColumnDef.Actions];
+  groupsColumns: string[] = ['groups', ColumnDef.Actions];
+  funcationsColumns: string[] = ['Function', ColumnDef.Actions];
   
   ELEMENT_DATA_1: any[] = [
     { controlname: '11/02/2022 11:58 AM', function: 'deleted Item Number 123'},

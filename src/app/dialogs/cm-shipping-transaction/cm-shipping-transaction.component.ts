@@ -23,7 +23,7 @@ import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
-import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys,ToasterMessages,DialogConstants,Style,TableConstant} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys,ToasterMessages,DialogConstants,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-shipping-transaction',
@@ -45,7 +45,7 @@ export class CmShippingTransactionComponent implements OnInit {
     TableConstant.completedQuantity,
     'containerID',
     'shipQuantity',
-    'action',
+    ColumnDef.Action,
   ];
   OldTableData: any;
   tableData: any;

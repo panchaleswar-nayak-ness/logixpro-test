@@ -15,7 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle,ToasterType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle,ToasterType,DialogConstants,Style,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reel-transactions',
@@ -35,7 +35,7 @@ export class ReelTransactionsComponent implements OnInit {
     'reel_serial_number',
     'button',
     'reel_part_quantity',
-    'action',
+    ColumnDef.Action,
   ];
   generateReelAndSerial: MatTableDataSource<any> = new MatTableDataSource<any>(
     []

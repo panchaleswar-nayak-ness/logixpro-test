@@ -113,14 +113,14 @@ export class PickToteManagerComponent implements OnInit {
     'criteria',
     'value',
     'andOr',
-    'actions',
+    ColumnDef.Actions,
   ];
   disOrderColumns: string[] = [
     'sequence',
     'field',
     'sortOrder',
     'id',
-    'actions',
+    ColumnDef.Actions,
   ];
 
   displayedColumns1: string[] = [UniqueConstants.position, 'toteid', 'orderno', 'other'];
@@ -411,7 +411,7 @@ export class PickToteManagerComponent implements OnInit {
     'batchtype',
     'totalorders',
     'totallocations',
-    'actions',
+    ColumnDef.Actions,
   ];
   @ViewChild('filterBatchOrder') filterBatchOrder: MatPaginator;
   @ViewChild('filterBatchTrans') filterBatchTrans: MatPaginator;

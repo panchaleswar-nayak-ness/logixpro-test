@@ -265,7 +265,7 @@ export class InventoryMapComponent implements OnInit {
       if(res.data){
         this.columnValues =  res.data;
 
-        this.columnValues.push('actions');
+        this.columnValues.push(ColumnDef.Actions);
         this.getContentData();
       } else {
         this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);

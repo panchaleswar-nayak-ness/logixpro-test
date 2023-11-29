@@ -50,7 +50,7 @@ export class SrCurrentOrderComponent implements OnInit {
     'Serial Number',
     TableConstant.CompletedDate,
     'Print Date',
-    'action',
+    ColumnDef.Action,
   ];
   coloumnTable = [
     { defination: Column.ItemNumber, label: 'Item Num', value: 'itemNumber',filterProperty:Column.ItemNumber},

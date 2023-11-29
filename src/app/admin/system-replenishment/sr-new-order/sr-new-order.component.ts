@@ -16,7 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,Style,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-new-order',
@@ -26,7 +26,7 @@ import { ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,Style
 export class SrNewOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
  @Input() tabIndex:any;
-  displayedColumns: string[] = [Column.ItemNumber, Column.Description, 'Warehouse', 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', 'action'];
+  displayedColumns: string[] = [Column.ItemNumber, Column.Description, 'Warehouse', 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', ColumnDef.Action];
   tableData: any = [];
   filteredTableData: any = [];
   public userData: any;

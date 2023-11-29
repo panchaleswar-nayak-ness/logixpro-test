@@ -406,7 +406,7 @@ export class OmCreateOrdersComponent implements OnInit {
             this.displayedColumns.push(this.sequenceKeyMapping.filter((y: any) => x == y.sequence)[0]?.key)
           }
         });
-        this.displayedColumns.push('actions');
+        this.displayedColumns.push(ColumnDef.Actions);
         if (refresh) this.createOrdersDT();
       }
       else {

@@ -1,7 +1,7 @@
 import { Component} from '@angular/core';
 import { ScanVerificationDefaultsComponent } from 'src/app/admin/dialogs/scan-verification-defaults/scan-verification-defaults.component';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  zoneType ,DialogConstants,TableConstant,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
+import {  zoneType ,DialogConstants,TableConstant,UniqueConstants,Column,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sp-scan-verification-setup',
@@ -11,7 +11,7 @@ import {  zoneType ,DialogConstants,TableConstant,UniqueConstants,Column} from '
 export class SpScanVerificationSetupComponent  {
 
   constructor(private global:GlobalService) { }
-  displayedColumns: string[] = [Column.TransType, 'scanSequence', 'field', 'verifyType', 'verifyStringStart','verifyStringLength','actions'];
+  displayedColumns: string[] = [Column.TransType, 'scanSequence', 'field', 'verifyType', 'verifyStringStart','verifyStringLength',ColumnDef.Actions];
   dataSource:any
   dataSource1: string[] = ['location', 'locationName', TableConstant.zone, zoneType.carousel, 'row',TableConstant.shelf,'bin','warehouse',UniqueConstants.cellSize,'velocityCode','carouselLocation','cartonLocation','itemNumber',UniqueConstants.Description,'serialNo','lotNo','expriationDate','UM','maxQty','qtyAllocatedPick','itemQty','putAwayDate','dateSensitive','shipVia','shipToName','dedicated','masterLocation','InvMapID'];
  

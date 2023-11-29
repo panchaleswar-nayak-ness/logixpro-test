@@ -13,7 +13,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,UniqueConstants,StringConditions,Style,TableConstant} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,UniqueConstants,StringConditions,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-tote-transaction-manager',
   templateUrl: './tote-transaction-manager.component.html',
@@ -67,7 +67,7 @@ public iinductionManagerApi:IInductionManagerApiService;
     TableConstant.transactionType,
     'zoneLabel',
     'hostTransaction',
-    'action'
+    ColumnDef.Action
   ];
 
   hideRequiredControl = new FormControl(false);

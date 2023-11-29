@@ -6,7 +6,7 @@ import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/a
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import {  ResponseStrings ,ToasterType,ToasterTitle,DialogConstants,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterType,ToasterTitle,DialogConstants,UniqueConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-lookup-tote-setup',
@@ -19,7 +19,7 @@ export class LookupToteSetupComponent implements OnInit {
     {tote_id: '125874', cells: '120' },
   ];
   public iAdminApiService: IAdminApiService;
-  displayedColumns: string[] = ['tote_id', 'cells', 'actions'];
+  displayedColumns: string[] = ['tote_id', 'cells', ColumnDef.Actions];
   tableData : any = [];
   OldtableData : any = [];
   

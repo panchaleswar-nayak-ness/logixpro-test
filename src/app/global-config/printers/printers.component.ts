@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-import {StringConditions , ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
+import {StringConditions , ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,UniqueConstants,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-printers',
   templateUrl: './printers.component.html',
@@ -20,7 +20,7 @@ export class PrintersComponent implements OnInit {
 
 
   sideBarOpen: boolean = true;
-  displayedColumns: string[] = ['printerName', 'printerAddress', 'labelPrinter', 'actions'];
+  displayedColumns: string[] = ['printerName', 'printerAddress', 'labelPrinter', ColumnDef.Actions];
   running: boolean = false;
   userData: any;
   allPinters: any[] = [];

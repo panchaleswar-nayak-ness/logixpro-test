@@ -1,4 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core'; 
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import {  ColumnDef } from 'src/app/common/constants/strings.constants'; 
 
 @Component({
   selector: 'app-open-trans-pick-mapping',
@@ -15,7 +16,7 @@ export class OpenTransPickMappingComponent {
       
     ]
   
-      displayedColumns: string[] = ['open_transaction','xmi_node','field_type','actions'];
+      displayedColumns: string[] = ['open_transaction','xmi_node','field_type',ColumnDef.Actions];
       tableData = this.ELEMENT_DATA
       dataSourceList:any
   

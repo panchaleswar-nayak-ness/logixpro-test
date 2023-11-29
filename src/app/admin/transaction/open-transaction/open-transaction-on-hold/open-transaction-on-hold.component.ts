@@ -441,7 +441,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
         this.displayedColumns = this.TRNSC_DATA;
         if (res.data) {
           this.columnValues = res.data;
-          this.columnValues.push('actions');
+          this.columnValues.push(ColumnDef.Actions);
           this.getContentData(isInit);
         } else {
           this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
@@ -540,7 +540,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       next: (res: any) => {
         if(res.isExecuted && res.data){
           this.columnValues = res.data?.openTransactionColumns;
-          this.columnValues.push('actions');
+          this.columnValues.push(ColumnDef.Actions);
         }
         else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);

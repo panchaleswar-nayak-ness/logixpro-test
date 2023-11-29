@@ -26,7 +26,7 @@ export class OpenTransactionDataTableComponent implements OnInit {
     ColumnDef.HostTransactionId,
     'toteID',
     'id',
-    'actions',
+    ColumnDef.Actions,
   ];
   identify=Column.OrderNumber;
   reels='non';

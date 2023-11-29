@@ -15,7 +15,7 @@ import { ToasterTitle, ToasterType ,DialogConstants,TableConstant,ColumnDef} fro
 })
 export class SuperBatchComponent implements OnInit {
   public iInductionManagerApi: IInductionManagerApiService;
-  displayedColumns: string[] = [TableConstant.zone, 'totalTransactions', 'orderToBatch', 'newToteID', 'actions'];
+  displayedColumns: string[] = [TableConstant.zone, 'totalTransactions', 'orderToBatch', 'newToteID', ColumnDef.Actions];
   dataSource: any;
   user_data: any;
   totalTransHeading = 'Single Line Orders';

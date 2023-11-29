@@ -11,7 +11,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style,UniqueConstants,Column} from 'src/app/common/constants/strings.constants';
+import { ConfirmationMessages, ToasterTitle, ToasterType ,LiveAnnouncerMessage,ResponseStrings,DialogConstants,Style,UniqueConstants,Column,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -62,8 +62,8 @@ export class PutAwayComponent implements OnInit {
     this.GetLocAssPutAwayTable();
   }
 
-  displayedColumns1: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate', 'action'];
-  displayedColumns2: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate', 'action'];
+  displayedColumns1: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate', ColumnDef.Action];
+  displayedColumns2: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate', ColumnDef.Action];
   tableData1: any = new MatTableDataSource([]);
 
   GetLocAssPutAwayTable(loader: boolean = false) {

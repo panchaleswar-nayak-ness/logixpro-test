@@ -14,7 +14,7 @@ import { CmOrderToteConflictComponent } from '../cm-order-tote-conflict/cm-order
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ResponseStrings ,KeyboardKeys,ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,KeyboardKeys,ToasterTitle,ToasterType,DialogConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-order-number',
@@ -26,7 +26,7 @@ export class CmOrderNumberComponent implements OnInit {
   userData: any;
   isStandAlone: boolean = false;
   type: any = ''; 
-  displayedColumns: string[] = ['toteID', 'stagingLocation', 'action'];
+  displayedColumns: string[] = ['toteID', 'stagingLocation', ColumnDef.Action];
   tableData: any = []; 
   @ViewChild('order') order: ElementRef;
   @ViewChild('searchTote') searchTote: ElementRef;

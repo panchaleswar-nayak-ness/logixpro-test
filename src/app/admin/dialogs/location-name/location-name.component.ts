@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { StringConditions, ToasterTitle, ToasterType ,DialogConstants,UniqueConstants,Style} from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterTitle, ToasterType ,DialogConstants,UniqueConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-location-name',
@@ -16,7 +16,7 @@ import { StringConditions, ToasterTitle, ToasterType ,DialogConstants,UniqueCons
   styleUrls: ['./location-name.component.scss']
 })
 export class LocationNameComponent implements OnInit {
-  displayedColumns: string[] = ['check','locationName','actions'];
+  displayedColumns: string[] = ['check','locationName',ColumnDef.Actions];
   userData;
   LocationName;
   public iAdminApiService: IAdminApiService;

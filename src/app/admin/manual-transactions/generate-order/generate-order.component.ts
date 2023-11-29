@@ -103,7 +103,7 @@ export class GenerateOrderComponent implements OnInit {
     'UserField8',
     'UserField9',
     'UserField10',
-    'actions',
+    ColumnDef.Actions,
   ];
   public generateOrderDataSource: any = new MatTableDataSource();
 

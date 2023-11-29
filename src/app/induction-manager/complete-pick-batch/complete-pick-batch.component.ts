@@ -16,7 +16,7 @@ import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,zo
 })
 export class CompletePickBatchComponent{
 
-  displayedColumns: string[] = ['order_no', 'tote_id', 'item_number', UniqueConstants.Description, 'transaction_qty', 'location', TableConstant.zone,zoneType.carousel,'row',TableConstant.shelf,'bin', 'action'];
+  displayedColumns: string[] = ['order_no', 'tote_id', 'item_number', UniqueConstants.Description, 'transaction_qty', 'location', TableConstant.zone,zoneType.carousel,'row',TableConstant.shelf,'bin', ColumnDef.Action];
   tableData: any = [];
   dataSourceList: any;
   batchId: string = "";
