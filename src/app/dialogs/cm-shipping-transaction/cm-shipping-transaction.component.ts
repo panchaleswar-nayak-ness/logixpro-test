@@ -39,7 +39,7 @@ export class CmShippingTransactionComponent implements OnInit {
 
   displayedColumns: string[] = [
     'itemNumber',
-    'lineNumber',
+    TableConstant.LineNumber,
     ColumnDef.ToteID,
     ColumnDef.TransactionQuantity,
     TableConstant.completedQuantity,

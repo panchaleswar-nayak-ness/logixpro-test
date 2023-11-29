@@ -15,7 +15,7 @@ import {  ToasterTitle ,ToasterType,DialogConstants,Style,TableConstant,ColumnDe
   styleUrls: ['./cm-confirm-and-packing-process-transaction.component.scss']
 })
 export class CmConfirmAndPackingProcessTransactionComponent implements OnInit {
-  displayedColumns: string[] = ['itemNumber', 'lineNumber', ColumnDef.TransactionQuantity, TableConstant.completedQuantity, 'shipQuantity'];
+  displayedColumns: string[] = ['itemNumber', TableConstant.LineNumber, ColumnDef.TransactionQuantity, TableConstant.completedQuantity, 'shipQuantity'];
   confPackProcTable: any = [];
   confPackTransTable: any = [];
   orderNumber: any;

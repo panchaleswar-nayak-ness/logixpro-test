@@ -50,7 +50,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: 'User Field10', key: ColumnDef.userField10 },
     { sequence: Column.ItemNumber, key: 'itemNumber' },
     { sequence: Column.Description, key: UniqueConstants.Description },
-    { sequence: 'Line Number', key: 'lineNumber' },
+    { sequence: 'Line Number', key: TableConstant.LineNumber },
     { sequence: TableConstant.TransactionQuantity, key: ColumnDef.TransactionQuantity },
     { sequence: 'Warehouse', key: TableConstant.WareHouse },
     { sequence: 'Line Sequence', key: TableConstant.LineSequence },

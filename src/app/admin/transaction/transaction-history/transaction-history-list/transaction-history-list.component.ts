@@ -57,7 +57,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'exportDate', colDef: 'Export Date' },
     { colHeader: 'exportedBy', colDef: 'Exported By' },
     { colHeader: 'exportBatchID', colDef: 'Export Batch ID' },
-    { colHeader: 'lineNumber', colDef: 'Line Number' },
+    { colHeader: TableConstant.LineNumber, colDef: 'Line Number' },
     { colHeader: TableConstant.LineSequence, colDef: 'Line Sequence' },
     { colHeader: 'tableType', colDef: 'Table Type' },
     { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },

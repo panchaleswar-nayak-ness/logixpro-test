@@ -42,7 +42,7 @@ export class CmConfirmAndPackingComponent implements OnInit {
 userData:any={}; 
 @ViewChild('paginator1') paginator1: MatPaginator;
 @ViewChild('paginator2') paginator2: MatPaginator;
-displayedColumnsForItems: string[] = ['sT_ID','itemNumber', 'lineNumber',   ColumnDef.TransactionQuantity, TableConstant.completedQuantity, 'containerID',
+displayedColumnsForItems: string[] = ['sT_ID','itemNumber', TableConstant.LineNumber,   ColumnDef.TransactionQuantity, TableConstant.completedQuantity, 'containerID',
  'shipQuantity', 'complete']; 
 
  public iConsolidationAPI : IConsolidationApi;

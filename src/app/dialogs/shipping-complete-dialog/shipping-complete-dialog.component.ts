@@ -17,7 +17,7 @@ import {  LiveAnnouncerMessage ,ToasterTitle,ToasterType,TableConstant,ColumnDef
 export class ShippingCompleteDialogComponent implements OnInit {
   displayedColumns1: string[] = [
     'itemNumber',
-    'lineNumber',
+    TableConstant.LineNumber,
     ColumnDef.ToteID,
     ColumnDef.TransactionQuantity,
     TableConstant.completedQuantity,

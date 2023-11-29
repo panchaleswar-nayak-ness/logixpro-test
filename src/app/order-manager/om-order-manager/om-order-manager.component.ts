@@ -72,7 +72,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: ColumnDef.userField10, colDef: "User Field10" },
     { colHeader: "itemNumber", colDef: Column.ItemNumber },
     { colHeader: UniqueConstants.Description, colDef: Column.Description },
-    { colHeader: "lineNumber", colDef: "Line Number" },
+    { colHeader: TableConstant.LineNumber, colDef: "Line Number" },
     { colHeader: ColumnDef.TransactionQuantity, colDef: TableConstant.TransactionQuantity },
     { colHeader: "allocatedPicks", colDef: "Allocated Picks" },
     { colHeader: "allocatedPuts", colDef: "Allocated Puts" },

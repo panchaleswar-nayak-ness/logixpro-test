@@ -54,7 +54,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: TableConstant.ImportDate, header: 'Import Date', cell: (element: any) => `${element.importDate}` },
     { columnDef: 'importFilename', header: 'Import Filename', cell: (element: any) => `${element.importFilename}` },
     { columnDef: 'invMapID', header: 'Inventory Map ID', cell: (element: any) => `${element.invMapID}` },
-    { columnDef: 'lineNumber', header: 'Line Number', cell: (element: any) => `${element.lineNumber}` },
+    { columnDef: TableConstant.LineNumber, header: 'Line Number', cell: (element: any) => `${element.lineNumber}` },
     { columnDef: TableConstant.LineSequence, header: 'Line Sequence', cell: (element: any) => `${element.lineSequence}` },
     { columnDef: TableConstant.LotNumber, header: Column.LotNumber, cell: (element: any) => `${element.lotNumber}` },
     { columnDef: 'masterRecord', header: 'Master Record', cell: (element: any) => `${element.masterRecord}` },

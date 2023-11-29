@@ -26,7 +26,7 @@ export class ReprocessedTransactionComponent implements OnInit {
     { colHeader: 'importFileName', colDef: 'Import Filename' },
     { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
     { colHeader: 'orderNumber', colDef: Column.OrderNumber },
-    { colHeader: 'lineNumber', colDef: 'Line Number' },
+    { colHeader: TableConstant.LineNumber, colDef: 'Line Number' },
     { colHeader: 'itemNumber', colDef: Column.ItemNumber },
     { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
     { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },

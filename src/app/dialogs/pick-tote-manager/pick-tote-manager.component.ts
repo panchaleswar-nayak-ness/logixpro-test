@@ -188,7 +188,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.requiredDate}`,
     },
     {
-      columnDef: 'lineNumber',
+      columnDef: TableConstant.LineNumber,
       header: 'Line Number',
       cell: (element: any) => `${element.lineNumber}`,
     },

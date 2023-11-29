@@ -17,7 +17,7 @@ export class CmConfirmAndPackingSelectTransactionComponent implements OnInit {
   orderNumber: any;
   confPackSelectTable: any[] = [];
   preferencesData: any; 
-  displayedColumns: string[] = ['sT_ID', 'itemNumber', 'lineNumber', TableConstant.completedQuantity, ColumnDef.TransactionQuantity];
+  displayedColumns: string[] = ['sT_ID', 'itemNumber', TableConstant.LineNumber, TableConstant.completedQuantity, ColumnDef.TransactionQuantity];
   dataSourceList: any
   confPackTransTable: any;
   contID: any;

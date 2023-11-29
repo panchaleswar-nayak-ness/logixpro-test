@@ -126,7 +126,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.dayIncrement(this.reqDate),
 
         this.editTransactionForm.get(TableConstant.BatchPickID)?.value,
-        this.editTransactionForm.get("lineNumber")?.value?.toString(),
+        this.editTransactionForm.get(TableConstant.LineNumber)?.value?.toString(),
         this.editTransactionForm.get(TableConstant.LineSequence)?.value?.toString(),
         this.editTransactionForm.get(UniqueConstants.Priority)?.value?.toString(),
         this.editTransactionForm.get(TableConstant.label)?.value?.toString(),
