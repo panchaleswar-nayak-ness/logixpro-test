@@ -86,6 +86,24 @@
             <h4 class="main-section-title">Tote Manager</h4>
           </div>
         </div>
+
+
+        <!-- Main Section Option (Induction Manager) -->
+        <div class="col-xl-3 col-lg-6">
+          <div matRipple 
+            [matRippleColor]="tab_hover_color" 
+            class="main-section-option" 
+            (click)="updateMenu('transaction-admin', '/InductionManager/Admin/ImToteManager')"
+            routerLink="/InductionManager/Admin/ImToteManager">
+            <a class="main-section-option-link" href="#"></a>
+            <div class="main-section-icon">
+              <span class="material-symbols-outlined">
+                elevator
+              </span>
+            </div>
+            <h4 class="main-section-title" style="font-size:22px;">Tote Manager</h4>
+          </div>
+        </div>
   
         <!-- Main Section Option (Consolidation Manager) -->
         <div class="col-xl-3 col-lg-6" routerLink="/admin/transaction">

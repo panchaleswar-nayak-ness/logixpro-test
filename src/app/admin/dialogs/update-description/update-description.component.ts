@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-update-description',
   templateUrl: './update-description.component.html',
-  styleUrls: ['./update-description.component.scss']
+  styleUrls: []
 })
 export class UpdateDescriptionComponent{
   @ViewChild('des_focus') des_focus: ElementRef;

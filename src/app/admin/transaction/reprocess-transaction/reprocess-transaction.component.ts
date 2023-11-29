@@ -25,7 +25,7 @@ import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, 
   styleUrls: ['./reprocess-transaction.component.scss'],
 })
 export class ReprocessTransactionComponent implements OnInit {
-  TRNSC_DATA = [
+    TRNSC_DATA = [
     { colHeader: 'id', colDef: 'ID' },
     { colHeader: TableConstant.ImportDate, colDef: 'Import Date' },
     { colHeader: TableConstant.ImportBy, colDef: 'Import By' },

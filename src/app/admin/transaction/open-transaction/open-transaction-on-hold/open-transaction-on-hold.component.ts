@@ -88,6 +88,9 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     { colHeader: UniqueConstants.emergency, colDef: ColumnDef.Emergency },
   ];
 
+
+
+
   @Output() back = new EventEmitter<string>();
   @Output() returnToOrder = new EventEmitter<string>();
   @Input() tabIndex:any;
