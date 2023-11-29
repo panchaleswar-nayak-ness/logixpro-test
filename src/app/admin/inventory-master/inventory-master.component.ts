@@ -274,15 +274,15 @@ export class InventoryMasterComponent implements OnInit {
       itemNumber: [this.getInvMasterData?.itemNumber || '', [Validators.required, Validators.maxLength(50)]],
       supplierItemID: [this.getInvMasterData?.supplierItemID || '', [Validators.maxLength(50)]],
       description: [this.getInvMasterData?.description || '', [Validators.maxLength(255)]],
-      reorderPoint: [this.getInvMasterData?.reorderPoint || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      replenishmentPoint: [this.getInvMasterData?.replenishmentPoint || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      reorderPoint: [this.getInvMasterData?.reorderPoint || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      replenishmentPoint: [this.getInvMasterData?.replenishmentPoint || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
       category: [this.getInvMasterData?.category || '', [Validators.maxLength(50)]],
-      reorderQuantity: [this.getInvMasterData?.reorderQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      replenishmentLevel: [this.getInvMasterData?.replenishmentLevel || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      reorderQuantity: [this.getInvMasterData?.reorderQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      replenishmentLevel: [this.getInvMasterData?.replenishmentLevel || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
       subCategory: [this.getInvMasterData?.subCategory || '', [Validators.maxLength(50)]],
       unitOfMeasure: [this.getInvMasterData?.unitOfMeasure || '', [Validators.maxLength(50)]],
-      kanbanReplenishmentPoint: [this.getInvMasterData?.kanbanReplenishmentPoint || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      kanbanReplenishmentLevel: [this.getInvMasterData?.kanbanReplenishmentLevel || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      kanbanReplenishmentPoint: [this.getInvMasterData?.kanbanReplenishmentPoint || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      kanbanReplenishmentLevel: [this.getInvMasterData?.kanbanReplenishmentLevel || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
 
       totalQuantity: [this.getInvMasterData?.totalQuantity || 0, [Validators.required]],
       wipCount: [this.getInvMasterData?.wipCount || 0, [Validators.required]],
@@ -294,9 +294,9 @@ export class InventoryMasterComponent implements OnInit {
 
       primaryPickZone: [this.getInvMasterData?.primaryPickZone.toLowerCase() || ''],
       secondaryPickZone: [this.getInvMasterData?.secondaryPickZone.toLowerCase()||''],
-      caseQuantity: [this.getInvMasterData?.caseQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      pickFenceQuantity: [this.getInvMasterData?.pickFenceQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      pickSequence: [this.getInvMasterData?.pickSequence || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      caseQuantity: [this.getInvMasterData?.caseQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      pickFenceQuantity: [this.getInvMasterData?.pickFenceQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      pickSequence: [this.getInvMasterData?.pickSequence || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
 
       dateSensitive: [this.getInvMasterData?.dateSensitive || false],
       warehouseSensitive: [this.getInvMasterData?.warehouseSensitive || false],
@@ -316,13 +316,13 @@ export class InventoryMasterComponent implements OnInit {
       bulkVelocity: [this.getInvMasterData?.bulkVelocity],
       cfVelocity: [this.getInvMasterData?.cfVelocity],
 
-      minimumQuantity: [this.getInvMasterData?.minimumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      bulkMinimumQuantity: [this.getInvMasterData?.bulkMinimumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      cfMinimumQuantity: [this.getInvMasterData?.cfMinimumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      minimumQuantity: [this.getInvMasterData?.minimumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      bulkMinimumQuantity: [this.getInvMasterData?.bulkMinimumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      cfMinimumQuantity: [this.getInvMasterData?.cfMinimumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
 
-      maximumQuantity: [this.getInvMasterData?.maximumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      bulkMaximumQuantity: [this.getInvMasterData?.bulkMaximumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      cfMaximumQuantity: [this.getInvMasterData?.cfMaximumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      maximumQuantity: [this.getInvMasterData?.maximumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      bulkMaximumQuantity: [this.getInvMasterData?.bulkMaximumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      cfMaximumQuantity: [this.getInvMasterData?.cfMaximumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
 
       kitInventories: [this.getInvMasterData?.kitInventories || '', [Validators.required]],
 
@@ -336,7 +336,7 @@ export class InventoryMasterComponent implements OnInit {
       minimumUseScaleQuantity: [this.getInvMasterData?.minimumUseScaleQuantity || 0, [Validators.required]],
       useScale: [this.getInvMasterData?.useScale || false, [Validators.required]],
 
-      unitCost: [this.getInvMasterData?.unitCost || 0, [Validators.required, Validators.maxLength(11), Validators.pattern("^[0-9]*$")]],
+      unitCost: [this.getInvMasterData?.unitCost || 0, [Validators.required, Validators.maxLength(11), Validators.pattern(UniqueConstants.Regx)]],
       manufacturer: [this.getInvMasterData?.manufacturer || '', [Validators.maxLength(50)]],
       specialFeatures: [this.getInvMasterData?.specialFeatures || '', [Validators.maxLength(255)]],
 

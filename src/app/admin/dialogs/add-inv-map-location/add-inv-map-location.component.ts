@@ -367,7 +367,7 @@ export class AddInvMapLocationComponent implements OnInit {
     this.addInvMapLocation = this.fb.group({
       location: [this.getDetailInventoryMapData.location  || '', [Validators.required]],
       zone: [this.getDetailInventoryMapData.zone|| '', [Validators.required, Validators.maxLength(2)]],
-      carousel: [this.getDetailInventoryMapData.carousel || '', [Validators.pattern("^[0-9]*$"), Validators.maxLength(1)]],
+      carousel: [this.getDetailInventoryMapData.carousel || '', [Validators.pattern(UniqueConstants.Regx), Validators.maxLength(1)]],
       row: [this.getDetailInventoryMapData.row || '', [Validators.maxLength(5)]],
       shelf: [this.getDetailInventoryMapData.shelf || '', [Validators.maxLength(2)]],
       bin: [this.getDetailInventoryMapData.bin || '', [Validators.maxLength(3)]],
@@ -395,11 +395,11 @@ export class AddInvMapLocationComponent implements OnInit {
       dateSensitive: [this.getDetailInventoryMapData.dateSensitive || false],
       masterInventoryMapID: new FormControl({ value: this.getDetailInventoryMapData.masterInvMapID || '', disabled: true }),
       minQuantity: [this.getDetailInventoryMapData.minQuantity || 0, [Validators.maxLength(9)]],
-      laserX: [this.getDetailInventoryMapData.laserX || 0, [Validators.pattern("^[0-9]*$"), Validators.maxLength(9)]],
-      laserY: [this.getDetailInventoryMapData.laserY || 0, [Validators.pattern("^[0-9]*$"), Validators.maxLength(9)]],
+      laserX: [this.getDetailInventoryMapData.laserX || 0, [Validators.pattern(UniqueConstants.Regx), Validators.maxLength(9)]],
+      laserY: [this.getDetailInventoryMapData.laserY || 0, [Validators.pattern(UniqueConstants.Regx), Validators.maxLength(9)]],
       locationNumber: [this.getDetailInventoryMapData.locationNumber || '',],
       locationID: [this.getDetailInventoryMapData.locationID || ''],
-      altLight: [this.getDetailInventoryMapData.altLight || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]]
+      altLight: [this.getDetailInventoryMapData.altLight || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]]
     });
   }
 

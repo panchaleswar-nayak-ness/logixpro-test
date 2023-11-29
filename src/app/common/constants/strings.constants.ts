@@ -484,7 +484,8 @@ export const UniqueConstants = {
     Lindsay:'Lindsay',
     Blue:'Blue',
     Ibl:'lbl',
-    OrderNumber:'orderNumber'
+    OrderNumber:'orderNumber',
+    Regx:"^[0-9]*$"
     
 }
 export const Style = {
