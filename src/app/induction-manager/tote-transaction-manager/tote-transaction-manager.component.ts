@@ -61,7 +61,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   searchAutocompletBatchPick: any = [];
   imPreferences:any;
   public displayedColumns: string[] = [
-    'batchPickID',
+    TableConstant.BatchPickID,
     'filterCount',
     'toteId',
     TableConstant.transactionType,

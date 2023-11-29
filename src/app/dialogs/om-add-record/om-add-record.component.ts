@@ -39,7 +39,7 @@ export class OmAddRecordComponent implements OnInit {
     'expirationDate': "",
     "serialNumber": "",
     "revision": "",
-    "batchPickID": "",
+    'batchPickID': "",
     "toteID": "",
     "cell": "",
     'notes': "",

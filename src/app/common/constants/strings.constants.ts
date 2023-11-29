@@ -439,7 +439,8 @@ export const TableConstant = {
     Notes:'notes',
     label:'label',
     completedQuantity:'completedQuantity',
-    transactionType:'transactionType'
+    transactionType:'transactionType',
+    BatchPickID:'batchPickID'
 }
 export const UniqueConstants = {
     backClass:'back-class',

@@ -27,7 +27,7 @@ import {
   ToasterMessages,
   ToasterTitle,
   ToasterType
-,ResponseStrings,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+,ResponseStrings,DialogConstants,Style,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-process-picks',
@@ -65,7 +65,7 @@ export class ProcessPicksComponent implements OnInit {
   public iinductionManagerApi: IInductionManagerApiService;
   nxtToteID: any;
   onDestroy$: Subject<boolean> = new Subject();
-  @ViewChild('batchPickID') batchPickID: TemplateRef<any>;
+  @ViewChild(TableConstant.BatchPickID) batchPickID: TemplateRef<any>;
   @ViewChild('processSetup') processSetup: TemplateRef<any>;
   @ViewChild('popupBlocked') popupBlocked: TemplateRef<any>;
   @ViewChild('batch_id') batch_id: ElementRef;
