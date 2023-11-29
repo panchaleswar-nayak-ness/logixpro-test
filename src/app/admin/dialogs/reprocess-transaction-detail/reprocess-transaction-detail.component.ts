@@ -102,9 +102,9 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   onNumberValueChange() {
 
     let currentLotNumber = this.editTransactionForm.get(TableConstant.LotNumber)?.value?.toString() == "" ? "0" : this.editTransactionForm.get(TableConstant.LotNumber)?.value?.toString();
-    let currentSerialNumber = this.editTransactionForm.get("serialNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("serialNumber")?.value?.toString();
+    let currentSerialNumber = this.editTransactionForm.get(TableConstant.SerialNumber)?.value?.toString() == "" ? "0" : this.editTransactionForm.get(TableConstant.SerialNumber)?.value?.toString();
     this.editTransactionForm.get(TableConstant.LotNumber)?.setValue(parseInt(currentLotNumber ?? '').toString());
-    this.editTransactionForm.get("serialNumber")?.setValue(parseInt(currentSerialNumber ?? '').toString());
+    this.editTransactionForm.get(TableConstant.SerialNumber)?.setValue(parseInt(currentSerialNumber ?? '').toString());
   }
 
   editTransaction() { 
@@ -115,7 +115,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
       "newValues": [
         this.editTransactionForm.get(ColumnDef.TransactionQuantity)?.value,
         this.editTransactionForm.get(ColumnDef.UnitOfMeasure)?.value,
-        this.editTransactionForm.get("serialNumber")?.value,
+        this.editTransactionForm.get(TableConstant.SerialNumber)?.value,
         this.editTransactionForm.get(TableConstant.LotNumber)?.value?.toString(),
         this.dayIncrement(this.expDate),
         this.editTransactionForm.get(ColumnDef.Revision)?.value,

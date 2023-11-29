@@ -68,10 +68,10 @@ export class ConsolidationComponent implements OnInit {
   stageColumns: string[] = [ColumnDef.ToteID, 'complete', 'stagingLocation', 'stagedBy', 'stagedDate'];
   stageTable = new MatTableDataSource<any>([]);
 
-  unverifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'lineNumber', TableConstant.completedQuantity, ColumnDef.ToteID, 'serialNumber', ColumnDef.userField1, ColumnDef.Actions];
+  unverifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'lineNumber', TableConstant.completedQuantity, ColumnDef.ToteID, TableConstant.SerialNumber, ColumnDef.userField1, ColumnDef.Actions];
   unverifiedItems = new MatTableDataSource<any>([]);
 
-  verifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'supplierItemID', 'lineNumber', TableConstant.completedQuantity, ColumnDef.ToteID, 'serialNumber', ColumnDef.userField1, ColumnDef.Actions];
+  verifiedItemsColumns: string[] = ['itemNumber', 'lineStatus', 'supplierItemID', 'lineNumber', TableConstant.completedQuantity, ColumnDef.ToteID, TableConstant.SerialNumber, ColumnDef.userField1, ColumnDef.Actions];
   verifiedItems = new MatTableDataSource<any>([]);
 
   filterOption: any = [

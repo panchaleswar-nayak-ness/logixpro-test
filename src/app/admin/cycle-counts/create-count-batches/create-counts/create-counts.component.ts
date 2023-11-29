@@ -103,7 +103,7 @@ export class CCBCreateCountsComponent implements OnInit {
     TableConstant.Location,
     UniqueConstants.goldenZone,
     UniqueConstants.cellSize,
-    'serialNumber',
+    TableConstant.SerialNumber,
     TableConstant.LotNumber,
     ColumnDef.ExpirationDate,
     ColumnDef.Actions,

@@ -198,7 +198,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.lineSequence}`,
     },
     {
-      columnDef: 'serialNumber',
+      columnDef: TableConstant.SerialNumber,
       header: ColumnDef.SerialNumber,
       cell: (element: any) => `${element.serialNumber}`,
     },
