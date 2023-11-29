@@ -20,7 +20,7 @@ import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/c
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterTitle, ToasterType ,Style} from 'src/app/common/constants/strings.constants';
+import { ConfirmationHeadings, ConfirmationMessages, DialogConstants, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterTitle, ToasterType ,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-batch-selected-orders',
@@ -154,7 +154,7 @@ export class BatchSelectedOrdersComponent implements OnInit {
           this.batchOrderDataTable._data._value.forEach(element => {
             ordersArr.push(element.orderNumber)
           });
-          this.global.Print(`FileName:PrintBatchLabel|TransType:${this.transType}|Orders:${ordersArr.length > 0 ? ordersArr : ''}`, 'lbl')
+          this.global.Print(`FileName:PrintBatchLabel|TransType:${this.transType}|Orders:${ordersArr.length > 0 ? ordersArr : ''}`, UniqueConstants.Ibl)
         }
       });
     }

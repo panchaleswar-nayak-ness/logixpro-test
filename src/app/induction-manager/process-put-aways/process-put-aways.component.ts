@@ -288,12 +288,12 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.tote = "";
   }
   print(tote){
-      this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:${tote}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`,'lbl') 
+      this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:${tote}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`,UniqueConstants.Ibl) 
   }
   printToteLoc(){
     if(this.imPreferences.printDirectly){
 
-      this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:${this.toteID}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`,'lbl')
+      this.global.Print(`FileName:PrintPrevToteContentsLabel|ToteID:${this.toteID}|BatchID:${this.batchId}|ZoneLabel:''|TransType:TransactionType.PutAway|printDirect:true|ID:-1`,UniqueConstants.Ibl)
 
     }else{
 

@@ -154,7 +154,7 @@ export class TotesAddEditComponent implements OnInit {
 
     this.global.Print(
       `FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`,
-      'lbl'
+      UniqueConstants.Ibl
     );
   }
   printRange() {

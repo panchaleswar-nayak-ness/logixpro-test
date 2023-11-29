@@ -359,7 +359,7 @@ export class SrCurrentOrderComponent implements OnInit {
       }|searchColumn:${this.tablePayloadObj.searchColumn}|Status:${
         this.tablePayloadObj.status
       }|filter:${this.tablePayloadObj.filter}|ident:Orders`,
-      'lbl'
+      UniqueConstants.Ibl
     );
   }
 
@@ -409,7 +409,7 @@ export class SrCurrentOrderComponent implements OnInit {
           }|PrintAll:${1}|filter:${this.tablePayloadObj.filter}|Sort:${
             this.tableData.sort
           }|ident:Labels`,
-          'lbl'
+          UniqueConstants.Ibl
         );
       }
     });

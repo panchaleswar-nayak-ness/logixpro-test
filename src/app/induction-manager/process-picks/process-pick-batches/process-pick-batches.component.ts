@@ -63,7 +63,7 @@ export class ProcessPickBatchesComponent {
 
       if (type === StringConditions.PrintTote) {
         if (this.imPreferences.printDirectly) {
-          await this.global.Print(`FileName:PrintPrevIMPickBatchToteLabel|BatchID:${this.pickBatches.value}`, 'lbl')
+          await this.global.Print(`FileName:PrintPrevIMPickBatchToteLabel|BatchID:${this.pickBatches.value}`, UniqueConstants.Ibl)
 
         } else {
           window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchToteLabel|BatchID:${this.pickBatches.value}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
@@ -72,7 +72,7 @@ export class ProcessPickBatchesComponent {
       }
       if (type === StringConditions.PickPickLabel) {
         if (this.imPreferences.printDirectly) {
-          await this.global.Print(`FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, 'lbl')
+          await this.global.Print(`FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, UniqueConstants.Ibl)
         } else {
           window.open(`/#/report-view?file=FileName:PrintPrevIMPickBatchItemLabel|BatchID:${this.pickBatches.value}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
         }
@@ -94,7 +94,7 @@ export class ProcessPickBatchesComponent {
 
 
         if (this.imPreferences.printDirectly) {
-          await this.global.Print(`FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, 'lbl');
+          await this.global.Print(`FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, UniqueConstants.Ibl);
 
         } else {
           window.open(`/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${this.pickBatches.value}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')

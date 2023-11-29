@@ -249,7 +249,7 @@ export class PrintersComponent implements OnInit {
       });
       dialogRef2.afterClosed().subscribe((result) => {
         if (result == StringConditions.Yes) {
-          this.global.Print(`FileName:TestPrint|islabel:${printer.labelPrinter == StringConditions.Yes}|PrinterName:${printer.printer}|PrinterAddress:${printer.printerAdd}`,'lbl'); 
+          this.global.Print(`FileName:TestPrint|islabel:${printer.labelPrinter == StringConditions.Yes}|PrinterName:${printer.printer}|PrinterAddress:${printer.printerAdd}`,UniqueConstants.Ibl); 
         }
       });
     }

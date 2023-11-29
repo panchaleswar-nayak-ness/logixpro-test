@@ -407,7 +407,7 @@ export class ReelTransactionsComponent implements OnInit {
     let res: any = this.global.Print(
       `FileName:PrintReelLabels|OTID:${this.createdReel.join(
         ',',
-        'lbl'
+        UniqueConstants.Ibl
       )}|SN:|Item:|Order:`
     );
 

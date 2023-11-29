@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle,ToasterType,DialogConstants,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle,ToasterType,DialogConstants,Style,TableConstant,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',
@@ -372,12 +372,12 @@ print(type:any){
     this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|ContID:${this.contID}`);
   }
   else if (type == TableConstant.label){
-    this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|ContID:${this.contID}`,'lbl');
+    this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|ContID:${this.contID}`,UniqueConstants.Ibl);
   }
   else{
     this.global.Print(`FileName:PrintConfPackPrintCont|OrderNum:${this.orderNumber}|ContID:${this.contID}`);
     setTimeout(()=>{
-      this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|ContID:${this.contID}`,'lbl');
+      this.global.Print(`FileName:PrintConfPackLabel|OrderNum:${this.orderNumber}|ContID:${this.contID}`,UniqueConstants.Ibl);
     }, 2000);
   }
 }

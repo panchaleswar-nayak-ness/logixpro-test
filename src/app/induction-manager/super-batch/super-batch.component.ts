@@ -6,7 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ToasterTitle, ToasterType ,DialogConstants,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,TableConstant,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-super-batch',
@@ -79,13 +79,13 @@ export class SuperBatchComponent implements OnInit {
       this.global.ShowToastr(ToasterType.Error,'Please Select a Batch ID to Print', ToasterTitle.Error);
     }else{
       if(type=='printBatchLabels'){
-    this.global.Print(`FileName:PrintSuperBatchLabel|ToteID:${this.printBatchLabels}`,'lbl');
+    this.global.Print(`FileName:PrintSuperBatchLabel|ToteID:${this.printBatchLabels}`,UniqueConstants.Ibl);
     }
       if(type=='printOrderLabels'){
-    this.global.Print(`FileName:PrintSuperBatchOrderLabel|ToteID:${this.printBatchLabels}`,'lbl');
+    this.global.Print(`FileName:PrintSuperBatchOrderLabel|ToteID:${this.printBatchLabels}`,UniqueConstants.Ibl);
         }
       if(type=='printCaseLabels'){
-    this.global.Print(`FileName:PrintPrevInZoneCaseLabelToteID|ToteID:${this.printBatchLabels}`,'lbl');
+    this.global.Print(`FileName:PrintPrevInZoneCaseLabelToteID|ToteID:${this.printBatchLabels}`,UniqueConstants.Ibl);
 
        }
    

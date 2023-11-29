@@ -3,6 +3,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { map } from 'rxjs';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { environment } from 'src/environments/environment';
+import {  UniqueConstants } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-wrd-frontend',
@@ -36,7 +37,7 @@ export class WrdFrontendComponent implements OnInit {
 
   generateHTMLAndAppend() { 
     const dynamicHtml = `<ll-webreportdesigner backendUrl="${environment.apiUrl.split("/api")[0]}/LLWebReportDesigner"
-    defaultProject="${this.fileName.split('-')[1] == 'lbl'? 'BCAEC8B2-9D16-4ACD-94EC-74932157BF82':'072A40E4-6D25-47E5-A71F-C491BC758BC9'}" customData="${this.fileName}" ></ll-webreportdesigner>`; 
+    defaultProject="${this.fileName.split('-')[1] == UniqueConstants.Ibl? 'BCAEC8B2-9D16-4ACD-94EC-74932157BF82':'072A40E4-6D25-47E5-A71F-C491BC758BC9'}" customData="${this.fileName}" ></ll-webreportdesigner>`; 
     this.ListAndLabel.nativeElement.insertAdjacentHTML('beforeend', dynamicHtml);
   }
 } 

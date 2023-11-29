@@ -21,7 +21,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import {
   DialogConstants,
   ToasterTitle,
-  ToasterType,Style,StringConditions} from 'src/app/common/constants/strings.constants';
+  ToasterType,Style,StringConditions,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-generate-transaction',
@@ -110,7 +110,7 @@ export class GenerateTransactionComponent implements OnInit {
   printLabelMT() {
     this.global.Print(
       `FileName:printMTLabel|ID:${this.transactionID}|User:${this.userData.userName}`,
-      'lbl'
+      UniqueConstants.Ibl
     );
   }
   clearMatSelectList() {

@@ -146,7 +146,7 @@ export class ProcessPicksComponent implements OnInit {
 
         await this.global.Print(
           `FileName:PrintPrevIMPickToteLabelButt|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}`,
-          'lbl'
+          UniqueConstants.Ibl
         );
       }
     }
@@ -188,7 +188,7 @@ export class ProcessPicksComponent implements OnInit {
 
         await this.global.Print(
           `FileName:PrintPrevIMPickItemLabel|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`,
-          'lbl'
+          UniqueConstants.Ibl
         );
       }
     }
@@ -834,7 +834,7 @@ export class ProcessPicksComponent implements OnInit {
         if (this.imPreferences.printDirectly) {
           await this.global.Print(
             `FileName:PrintPrevPickToteLabel|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}|BatchID:${batchId}`,
-            'lbl'
+            UniqueConstants.Ibl
           );
         } else {
           _isAnyWindowOpen = true;
@@ -869,7 +869,7 @@ export class ProcessPicksComponent implements OnInit {
         if (this.imPreferences.printDirectly) {
           await this.global.Print(
             `FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`,
-            'lbl'
+            UniqueConstants.Ibl
           );
         } else if (_isAnyWindowOpen) {
           if (_isWindowClosed) {
