@@ -21,7 +21,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 @Component({
   selector: 'app-ccdiscrepancies',
   templateUrl: './ccdiscrepancies.component.html',
-  styleUrls: ['./ccdiscrepancies.component.scss']
+  styleUrls: []
 })
 export class CCDiscrepanciesComponent{
 

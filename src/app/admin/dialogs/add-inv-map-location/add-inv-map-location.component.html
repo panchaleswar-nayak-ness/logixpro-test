@@ -26,8 +26,8 @@
                                         formControlName="location" [matAutocomplete]="auto" (focus)="focusinmethod()" (focusout)="focusoutmethod()">
                                     <mat-autocomplete class="br-14 otocompletestyle" autoActiveFirstOption #auto="matAutocomplete"
                                         (optionSelected)="loadZones($event)">
-    
-    
+
+
                                         <h6 class="card-header matAutoCompHeader stickyHeader"> <span class="locationStickyHeaderStyle"> Location</span> <span class="zoneStickyHeaderStyle">Zone</span></h6>
                                         <mat-option class="" *ngFor="let option of filteredOptions | async"
                                             [value]="option.locationName">
@@ -38,7 +38,7 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
                                 <div class="error" *ngIf="hasError('location', 'required')">This field is required.</div>
-    
+
                             </div>
                         </div>
                         <div class="row">
@@ -73,14 +73,14 @@
                                 <div class="error" *ngIf="hasError('warehouse', 'required')">This field is required.</div>
                             </div>
                             <div class="col-xl-6 col-md-12 mb-2">
-    
+
                                 <mat-form-field class="d-block w-100" appearance="outline">
                                     <mat-label>Zone</mat-label>
                                     <input  maxlength="2" placeholder="Zone" aria-label="Zone" matInput
                                         formControlName="zone" [matAutocomplete]="autoZone">
                                     <mat-autocomplete autoActiveFirstOption #autoZone="matAutocomplete"
                                         (optionSelected)="loadZones($event)">
-    
+
                                         <h6 class="loc_name"><span>Zone</span> <span>Location</span></h6>
                                         <mat-option *ngFor="let option of filteredOptions | async"
                                             [value]="option.zone">
@@ -90,8 +90,8 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
-    
-    
+
+
                                 <div class="error" *ngIf="hasError('zone', 'required')">This field is required.</div>
                                 <div class="error" *ngIf="hasError('zone', 'maxlength')">Max number allowed is 2.</div>
                             </div>
@@ -182,7 +182,7 @@
                                     <div>{{option}}</div>
                                 </mat-option>
                             </mat-autocomplete>
-                        </mat-form-field> 
+                        </mat-form-field>
 
                         <mat-form-field class="custom-form-field  w-100 mb-2" appearance="outline"
                             [floatLabel]="getFloatLabelValueItem()" [hideRequiredMarker]="hideRequiredControlShipName.value">
@@ -227,9 +227,9 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        
+
                         <section class="ld_checks d-block d-xl-flex">
-                            <mat-checkbox *ngIf="data.mode == 'editInvMapLocation'" formControlName="masterLocation" class="ld_checkbox" color="primary">Master Location 
+                            <mat-checkbox *ngIf="data.mode == 'editInvMapLocation'" formControlName="masterLocation" class="ld_checkbox" color="primary">Master Location
                             </mat-checkbox>
                             <mat-checkbox formControlName="dedicated" class="ld_checkbox col-12 col-xl-4 " color="primary">Dedicated
                             </mat-checkbox>
@@ -237,7 +237,7 @@
                             </mat-checkbox>
                         </section>
                     </div>
-                
+
             </div>
             <div class="col-xl-6 col-md-12 col-sm-12 col-xs-12">
                 <div class="container item_detail px-md-3">
@@ -262,7 +262,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-    
+
                     <mat-form-field class="d-block w-100 mb-3" appearance="outline">
                         <mat-label>Description</mat-label>
                         <input matInput  name="description"     [value]="addInvMapLocation.controls['description'].value"   disabled >
@@ -280,13 +280,13 @@
                         <div class="mb-2" [ngClass]="{'col-xl-4 col-md-12': data.mode != 'addInvMapLocation', 'col-6' : data.mode == 'addInvMapLocation' }">
                             <mat-form-field class="d-block w-100" appearance="outline">
                                 <mat-label>Maximum (Location) Quantity</mat-label>
-                                <input 
-                                [NumbersOnly]="true" 
-                                maxlength="9" 
-                                matInput 
-                                formControlName="maxQuantity"   
-                                name="maxQuantity" 
-                                (keyup)="onMaxChange()"  
+                                <input
+                                [NumbersOnly]="true"
+                                maxlength="9"
+                                matInput
+                                formControlName="maxQuantity"
+                                name="maxQuantity"
+                                (keyup)="onMaxChange()"
                                 type="text">
                             </mat-form-field>
                             <div class="error" *ngIf="hasError('maxQuantity', 'maxlength')">Max number allowed is 9.</div>
@@ -294,13 +294,13 @@
                         <div class="mb-2" [ngClass]="{'col-xl-4 col-md-12': data.mode != 'addInvMapLocation', 'col-6' : data.mode == 'addInvMapLocation' }">
                             <mat-form-field class="d-block w-100" appearance="outline">
                                 <mat-label>Min (Location) Quantity</mat-label>
-                                <input 
-                                [NumbersOnly]="true" 
-                                maxlength="9" 
-                                matInput 
-                                formControlName="minQuantity"   
-                                name="minQuantity" 
-                                (keyup)="onMinChange($event)" 
+                                <input
+                                [NumbersOnly]="true"
+                                maxlength="9"
+                                matInput
+                                formControlName="minQuantity"
+                                name="minQuantity"
+                                (keyup)="onMinChange($event)"
                                 type="text">
                             </mat-form-field>
                                 <div class="error" *ngIf="hasError('minQuantity', 'maxlength')">Max number allowed is 9.</div>
@@ -340,13 +340,17 @@
                     </mat-form-field>
                 </div>
             </div>
-    
+
         </div>
     </ng-scrollbar>
 </form>
 <mat-dialog-actions>
-    <div class="d-flex gap-12 w-100">
-        <button type="button" mat-stroked-button color="warn" class="form-button-submit btn-lg" (click)="clearFields()"  *ngIf="myroute1">Clear</button>
-        <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100" color="primary"  *ngIf="myroute2" (click)="onSubmit(addInvMapLocation)" [disabled]="!isValid()">Save Changes</button>
-    </div>
-    </mat-dialog-actions>
+  <div class="d-flex gap-12 w-100">
+    <button type="button" mat-stroked-button color="warn" class="form-button-submit btn-lg" (click)="clearFields()"
+            *ngIf="myroute1" [disabled]="isValidClearLocation()">Clear
+    </button>
+    <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100" color="primary" *ngIf="myroute2"
+            (click)="onSubmit(addInvMapLocation)" [disabled]="!isValid()">Save Changes
+    </button>
+  </div>
+</mat-dialog-actions>
