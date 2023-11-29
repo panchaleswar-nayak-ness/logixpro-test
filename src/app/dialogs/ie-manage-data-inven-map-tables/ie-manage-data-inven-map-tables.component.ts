@@ -12,7 +12,7 @@ export class IeManageDataInvenMapTablesComponent {
     'inv_map_id',
     'transaction_type',
     'location_id',
-    'warehouse',
+    TableConstant.WareHouse,
     'cell_size',
     'golden_zone',
     TableConstant.zone,

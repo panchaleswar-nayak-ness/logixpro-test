@@ -34,7 +34,7 @@ export class SrCurrentOrderComponent implements OnInit {
   displayedColumns2: string[] = [
     Column.ItemNumber,
     'Trans Type',
-    'warehouse',
+    TableConstant.WareHouse,
     TableConstant.zone,
     zoneType.carousel,
     Column.Row,
@@ -55,7 +55,7 @@ export class SrCurrentOrderComponent implements OnInit {
   coloumnTable = [
     { defination: Column.ItemNumber, label: 'Item Num', value: 'itemNumber',filterProperty:Column.ItemNumber},
     { defination: 'Trans Type', label: 'Trans Type', value: TableConstant.transactionType,filterProperty:TableConstant.TransactionType },
-    { defination: 'warehouse', label: 'Warehouse', value: 'warehouse', filterProperty:'Warehouse'},
+    { defination: TableConstant.WareHouse, label: 'Warehouse', value: TableConstant.WareHouse, filterProperty:'Warehouse'},
     { defination: TableConstant.zone, label: ColumnDef.Zone, value: TableConstant.zone, filterProperty:ColumnDef.Zone },
     { defination: zoneType.carousel, label: 'Carsl', value: zoneType.carousel, filterProperty:TableConstant.Carousel },
     { defination: Column.Row, label: TableConstant.Row, value: Column.Row, filterProperty:TableConstant.Row },
@@ -168,7 +168,7 @@ export class SrCurrentOrderComponent implements OnInit {
       value: 'Warehouse',
       viewValue: 'Warehouse',
       sortColumn: '2',
-      key: 'warehouse',
+      key: TableConstant.WareHouse,
     },
     { value: ColumnDef.Zone, viewValue: ColumnDef.Zone, sortColumn: '3', key: TableConstant.zone },
   ];

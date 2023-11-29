@@ -99,7 +99,7 @@ export class CCBCreateCountsComponent implements OnInit {
     UniqueConstants.Description,
     'itemQuantity',
     'unitofMeasure',
-    'warehouse',
+    TableConstant.WareHouse,
     TableConstant.Location,
     UniqueConstants.goldenZone,
     UniqueConstants.cellSize,
@@ -299,7 +299,7 @@ constructor(
     this.filtersForm.controls['putEnd'].setValue(new Date());
     this.filtersForm.controls['costStart'].setValue('');
     this.filtersForm.controls['costEnd'].setValue('');
-    this.filtersForm.controls['warehouse'].setValue('');
+    this.filtersForm.controls[TableConstant.WareHouse].setValue('');
 
     
     this.fillData();

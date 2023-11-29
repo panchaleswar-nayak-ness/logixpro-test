@@ -31,7 +31,7 @@ export class CCBCountQueueComponent implements OnInit {
     UniqueConstants.Description,
     'locationQty',
     'um',
-    'warehouse',
+    TableConstant.WareHouse,
     TableConstant.Location,
     'velocityCode',
     UniqueConstants.cellSize,

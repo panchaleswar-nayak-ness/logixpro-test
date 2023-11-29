@@ -390,7 +390,9 @@ export const ColumnDef= {
     Action:'action',
     ToteID:'toteID',
     TransactionQuantity:'transactionQuantity',
-    UnitOfMeasure:'unitOfMeasure'
+    UnitOfMeasure:'unitOfMeasure',
+    SerialNumber:'Serial Number',
+    Bin:'bin'
 }
 
 export const Case = {
@@ -452,6 +454,10 @@ export const TableConstant = {
     transactionType:'transactionType',
     BatchPickID:'batchPickID',
     Location: 'location',
+    LineNumber:'lineNumber',
+    WareHouse:'warehouse',
+    SerialNumber:'serialNumber',
+    LotNumber: 'lotNumber',
 }
 export const UniqueConstants = {
     backClass:'back-class',
@@ -474,7 +480,8 @@ export const UniqueConstants = {
     OneEqualsOne:'1 = 1',
     Lizard:'Lizard',
     Lindsay:'Lindsay',
-    Blue:'Blue'
+    Blue:'Blue',
+    Ibl:'lbl'
     
 }
 export const Style = {

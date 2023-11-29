@@ -522,10 +522,10 @@ export class AddInvMapLocationComponent implements OnInit {
         ;
 
         if (result !== true && result !== false) {
-          this.addInvMapLocation.controls['warehouse'].setValue(result);
+          this.addInvMapLocation.controls[TableConstant.WareHouse].setValue(result);
         }
         if (result == StringConditions.clear) {
-          this.addInvMapLocation.controls['warehouse'].setValue('');
+          this.addInvMapLocation.controls[TableConstant.WareHouse].setValue('');
         }
       })
     }

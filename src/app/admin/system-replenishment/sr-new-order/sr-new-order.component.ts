@@ -16,7 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-new-order',
@@ -62,7 +62,7 @@ export class SrNewOrderComponent implements OnInit {
     { value: 'Replenishment Qty', viewValue: 'Replenishment Qty', sortValue: '7', key: 'replenishmentQuantity', colDef: 'Replenishment Qty' },
     { value: 'Stock Qty', viewValue: 'Stock Qty', sortValue: '3', key: 'stockQuantity', colDef: 'Stock Qty' },
     { value: 'Transaction Qty', viewValue: 'Transaction Qty', sortValue: '9', key: ColumnDef.TransactionQuantity, colDef: 'Transaction Qty' },
-    { value: 'Warehouse', viewValue: 'Warehouse', sortValue: '2', key: 'warehouse', colDef: 'Warehouse' },
+    { value: 'Warehouse', viewValue: 'Warehouse', sortValue: '2', key: TableConstant.WareHouse, colDef: 'Warehouse' },
   ];
   searchAutocompleteList: any;
   newOrderListCreated:boolean = false;

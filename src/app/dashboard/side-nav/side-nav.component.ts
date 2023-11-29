@@ -5,7 +5,7 @@ import { AuthService } from '../../common/init/auth.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-import { AppNames, AppPermissions, AppRoutes, RouteUpdateMenu ,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { AppNames, AppPermissions, AppRoutes, RouteUpdateMenu ,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-side-nav',
@@ -98,7 +98,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'view_module', title: 'Order Status ', route: '/OrderManager/OrderStatus' ,permission:true},
     { icon: 'event_note', title: 'Event Log ', route: '/OrderManager/EventLog' ,permission:'Admin Release Orders'},
     { icon: 'dataset', title: 'Inventory Master Info', route: '/OrderManager/InventoryMaster' ,permission:'Admin Inventory Master'},  
-    { icon: 'warehouse', title: 'Stock Location & Quantity ', route: '/OrderManager/InventoryMap' ,permission:'Admin Stock Locations'},
+    { icon: TableConstant.WareHouse, title: 'Stock Location & Quantity ', route: '/OrderManager/InventoryMap' ,permission:'Admin Stock Locations'},
     { icon: 'analytics', title: 'Reports ', route: '/OrderManager/Reports' ,permission:'Admin Reports'},
     { icon: 'tune', title: 'Preferences ', route: '/OrderManager/Preferences' ,permission:'Admin Preferences'},
   ];

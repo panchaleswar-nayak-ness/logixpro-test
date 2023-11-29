@@ -78,7 +78,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: "allocatedPuts", colDef: "Allocated Puts" },
     { colHeader: "availableQuantity", colDef: "Available Quantity" },
     { colHeader: "stockQuantity", colDef: "Stock Quantity" },
-    { colHeader: "warehouse", colDef: "Warehouse" },
+    { colHeader: TableConstant.WareHouse, colDef: "Warehouse" },
     { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
     { colHeader: TableConstant.LineSequence, colDef: "Line Sequence" },
     { colHeader: ColumnDef.ToteID, colDef: Column.ToteID },
