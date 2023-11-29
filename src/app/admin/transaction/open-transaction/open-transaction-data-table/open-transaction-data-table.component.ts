@@ -17,7 +17,7 @@ export class OpenTransactionDataTableComponent implements OnInit {
     'orderNumber',
     'itemNumber',
     'wareHouse',
-    'location',
+    TableConstant.Location,
     TableConstant.transactionType,
     'transactionQuantity',
     'serialNumber',

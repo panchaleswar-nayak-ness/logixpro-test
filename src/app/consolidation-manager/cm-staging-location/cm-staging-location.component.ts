@@ -5,7 +5,7 @@ import { StagingLocationOrderComponent } from 'src/app/dialogs/staging-location-
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppRoutes, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,UniqueConstants,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-staging-location',
@@ -119,7 +119,7 @@ export class CmStagingLocationComponent {
       let obj: any = {
         "orderNumber": this.orderNumberTote,
         'toteID': toteID,
-        "location": location,
+        'location': location,
         "clear": clear
       }
       this.IconsolidationAPI.StagingLocationsUpdate(obj).subscribe((res: any) => {

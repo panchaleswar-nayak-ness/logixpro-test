@@ -183,7 +183,7 @@ export class AdminComponent implements OnInit {
         } else {
           
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("location",res.responseMessage);
+          console.log(TableConstant.Location,res.responseMessage);
           
         }
       },

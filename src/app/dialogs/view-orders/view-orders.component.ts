@@ -21,7 +21,7 @@ export class ViewOrdersComponent implements OnInit {
 
   displayedColumns2: string[] = ['orderno'];
 
-  displayedColumns3: string[] = ['orderno', 'itemno', 'transaction', 'location', 'completed'];
+  displayedColumns3: string[] = ['orderno', 'itemno', 'transaction', TableConstant.Location, 'completed'];
   public userData: any;
   allOrders: any[] = [];
   selectedOrders: any[] = [];
@@ -34,7 +34,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'orderNumber', header: Column.OrderNumber, cell: (element: any) => `${element.orderNumber}` },
     { columnDef: 'itemNumber', header: Column.ItemNumber, cell: (element: any) => `${element.itemNumber}` },
     { columnDef: 'transactionQuantity', header: TableConstant.TransactionQuantity, cell: (element: any) => `${element.transactionQuantity}` },
-    { columnDef: 'location', header: Column.Location, cell: (element: any) => `${element.location}` },
+    { columnDef: TableConstant.Location, header: Column.Location, cell: (element: any) => `${element.location}` },
     { columnDef: TableConstant.completedQuantity, header: 'Completed Quantity', cell: (element: any) => `${element.completedQuantity}` },
     { columnDef: UniqueConstants.Description, header: Column.Description, cell: (element: any) => `${element.description}` },
     { columnDef: TableConstant.BatchPickID, header: ColumnDef.BatchPickID, cell: (element: any) => `${element.batchPickID}` },

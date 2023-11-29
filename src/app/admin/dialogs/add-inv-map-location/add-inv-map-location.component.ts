@@ -209,7 +209,7 @@ export class AddInvMapLocationComponent implements OnInit {
       if(res.isExecuted && res.data)
       {
         this.locZoneList = res.data; 
-      this.filteredOptions = this.addInvMapLocation.controls['location'].valueChanges.pipe(
+      this.filteredOptions = this.addInvMapLocation.controls[TableConstant.Location].valueChanges.pipe(
         startWith(''),
         map(value => this.filterLocalZoneList(value || '')),
       );
@@ -241,7 +241,7 @@ export class AddInvMapLocationComponent implements OnInit {
 
   ngAfterViewInit() {
     if(this.router.url == '/OrderManager/InventoryMap'){
-      this.addInvMapLocation.get('location')?.disable();
+      this.addInvMapLocation.get(TableConstant.Location)?.disable();
       this.addInvMapLocation.get(TableConstant.zone)?.disable();
       this.addInvMapLocation.get(UniqueConstants.Description)?.disable();
       this.addInvMapLocation.get('laserX')?.disable();

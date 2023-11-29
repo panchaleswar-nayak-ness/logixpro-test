@@ -14,7 +14,7 @@ export class LocationComponent implements OnInit {
   currentDir=UniqueConstants.Asc;
   nextDir='desc';
   counter=0;
-  displayedColumns: string[] = ['location','warehouse',TableConstant.zone,'carousal',Column.Row,TableConstant.shelf,'bin','lotNo','expiration','serialNo',UniqueConstants.cellSize,'shipVia','shipToName', 'qtyAllPick', 'qtyAllPut', 'unitOfMeasure', 'itemQty',  'stockDate', 'velocity'];
+  displayedColumns: string[] = [TableConstant.Location,'warehouse',TableConstant.zone,'carousal',Column.Row,TableConstant.shelf,'bin','lotNo','expiration','serialNo',UniqueConstants.cellSize,'shipVia','shipToName', 'qtyAllPick', 'qtyAllPut', 'unitOfMeasure', 'itemQty',  'stockDate', 'velocity'];
 
   @Input() location: FormGroup;
   @Input() count: any;
@@ -32,8 +32,8 @@ export class LocationComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) { 
-    if(changes['location'])
-      if (changes['location']?.previousValue?.controls?.inventoryTable.value?.length) this.location.controls['inventoryTable'].setValue(changes['location']['previousValue']['controls'].inventoryTable.value);
+    if(changes[TableConstant.Location])
+      if (changes[TableConstant.Location]?.previousValue?.controls?.inventoryTable.value?.length) this.location.controls['inventoryTable'].setValue(changes[TableConstant.Location]['previousValue']['controls'].inventoryTable.value);
       else this.location.controls['inventoryTable'].setValue([]);
     if(changes['fieldNameDetails']) this.fieldNameDetails=changes['fieldNameDetails'];
   }

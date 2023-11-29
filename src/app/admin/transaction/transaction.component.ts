@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppRoutes, ToasterTitle, ToasterType ,RouteUpdateMenu} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ToasterTitle, ToasterType ,RouteUpdateMenu,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-transaction',
@@ -95,7 +95,7 @@ export class TransactionComponent implements OnInit, AfterViewInit {
       }
     });
 
-    this.location$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('location')));
+    this.location$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get(TableConstant.Location)));
 
     this.location$.subscribe((param) => {
       if (param) {

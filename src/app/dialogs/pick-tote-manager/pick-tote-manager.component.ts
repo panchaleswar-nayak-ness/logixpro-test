@@ -139,7 +139,7 @@ export class PickToteManagerComponent implements OnInit {
     'orderno',
     'itemno',
     'transaction',
-    'location',
+    TableConstant.Location,
   ];
   filterBatchTransColumns = [
     {
@@ -158,7 +158,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.transactionQuantity}`,
     },
     {
-      columnDef: 'location',
+      columnDef: TableConstant.Location,
       header: Column.Location,
       cell: (element: any) => `${element.location}`,
     },
