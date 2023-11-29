@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChil
 import { FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import {  TableConstant ,UniqueConstants,Column,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-location',
@@ -10,10 +11,10 @@ import { MatSort } from '@angular/material/sort';
 })
 export class LocationComponent implements OnInit {
   @Input() fieldNameDetails: any;
-  currentDir='asc';
+  currentDir=UniqueConstants.Asc;
   nextDir='desc';
   counter=0;
-  displayedColumns: string[] = ['location','warehouse','zone','carousal','row','shelf','bin','lotNo','expiration','serialNo','cellSize','shipVia','shipToName', 'qtyAllPick', 'qtyAllPut', 'unitOfMeasure', 'itemQty',  'stockDate', 'velocity'];
+  displayedColumns: string[] = [TableConstant.Location,TableConstant.WareHouse,TableConstant.zone,'carousal',Column.Row,TableConstant.shelf,ColumnDef.Bin,'lotNo','expiration','serialNo',UniqueConstants.cellSize,'shipVia','shipToName', 'qtyAllPick', 'qtyAllPut', ColumnDef.UnitOfMeasure, 'itemQty',  'stockDate', 'velocity'];
 
   @Input() location: FormGroup;
   @Input() count: any;

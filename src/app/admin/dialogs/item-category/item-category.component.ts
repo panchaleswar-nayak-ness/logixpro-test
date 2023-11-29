@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
-import { DialogConstants, Mode, StringConditions, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, Mode, StringConditions, ToasterTitle, ToasterType ,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-item-category',
@@ -110,7 +110,7 @@ export class  ItemCategoryComponent implements OnInit {
   dltCategory(category : any, subCategory : any){
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: DialogConstants.auto,
-      width: '480px',
+      width: Style.w480px,
       autoFocus: DialogConstants.autoFocus,
       disableClose : true,
       data:{ mode: Mode.DeleteCategory, category, subCategory }

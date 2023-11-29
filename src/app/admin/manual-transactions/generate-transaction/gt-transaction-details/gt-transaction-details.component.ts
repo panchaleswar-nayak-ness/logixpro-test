@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
-import { DialogConstants } from 'src/app/common/constants/strings.constants';
+import { DialogConstants ,StringConditions} from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
@@ -45,11 +45,11 @@ export class GtTransactionDetailsComponent {
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
-      if (res && res != 'clear') {
+      if (res && res != StringConditions.clear) {
         this.wareHouse = res;
-        this.warehouseSensitivity = 'False';
+        this.warehouseSensitivity = StringConditions.False;
         this.onFieldChange(this.wareHouse);
-      } else if (res && res === 'clear') {
+      } else if (res && res === StringConditions.clear) {
         this.wareHouse = '';
         this.onFieldChange(this.wareHouse);
       }

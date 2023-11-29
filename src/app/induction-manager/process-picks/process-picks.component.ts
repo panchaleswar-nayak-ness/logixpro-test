@@ -26,8 +26,8 @@ import {
   StringConditions,
   ToasterMessages,
   ToasterTitle,
-  ToasterType,
-} from 'src/app/common/constants/strings.constants';
+  ToasterType
+,ResponseStrings,DialogConstants,Style,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-process-picks',
@@ -65,7 +65,7 @@ export class ProcessPicksComponent implements OnInit {
   public iinductionManagerApi: IInductionManagerApiService;
   nxtToteID: any;
   onDestroy$: Subject<boolean> = new Subject();
-  @ViewChild('batchPickID') batchPickID: TemplateRef<any>;
+  @ViewChild(TableConstant.BatchPickID) batchPickID: TemplateRef<any>;
   @ViewChild('processSetup') processSetup: TemplateRef<any>;
   @ViewChild('popupBlocked') popupBlocked: TemplateRef<any>;
   @ViewChild('batch_id') batch_id: ElementRef;
@@ -135,7 +135,7 @@ export class ProcessPicksComponent implements OnInit {
         } else {
           window.open(
             `/#/report-view?file=FileName:PrintPrevIMPickItemLabel|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`,
-            '_blank',
+            UniqueConstants._blank,
             'width=' +
             screen.width +
             ',height=' +
@@ -146,7 +146,7 @@ export class ProcessPicksComponent implements OnInit {
 
         await this.global.Print(
           `FileName:PrintPrevIMPickToteLabelButt|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}`,
-          'lbl'
+          UniqueConstants.Ibl
         );
       }
     }
@@ -177,7 +177,7 @@ export class ProcessPicksComponent implements OnInit {
         } else {
           window.open(
             `/#/report-view?file=FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`,
-            '_blank',
+            UniqueConstants._blank,
             'width=' +
             screen.width +
             ',height=' +
@@ -188,7 +188,7 @@ export class ProcessPicksComponent implements OnInit {
 
         await this.global.Print(
           `FileName:PrintPrevIMPickItemLabel|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}|WSID:${this.userData.wsid}`,
-          'lbl'
+          UniqueConstants.Ibl
         );
       }
     }
@@ -212,7 +212,7 @@ export class ProcessPicksComponent implements OnInit {
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevIMPickList|Positions:${PositionList}|ToteIDs:${ToteList}|OrderNums:${OrderList}|BatchID:${this.batchID}`,
-          '_blank',
+          UniqueConstants._blank,
           'width=' +
           screen.width +
           ',height=' +
@@ -224,7 +224,7 @@ export class ProcessPicksComponent implements OnInit {
   }
   getAllOrders() {
     let paylaod = {
-      OrderView: 'All',
+      OrderView: ResponseStrings.AllCaps,
     };
     this.iinductionManagerApi.OrdersInZone(paylaod).subscribe((res) => {
       if (res.data) {
@@ -254,7 +254,7 @@ export class ProcessPicksComponent implements OnInit {
     }
   }
 
-  @HostListener('window:beforeunload', ['$event'])
+  @HostListener('window:beforeunload', [UniqueConstants.event])
   onbeforeunload(event) {
     if (this.ifAllowed) {
       event.preventDefault();
@@ -361,8 +361,8 @@ export class ProcessPicksComponent implements OnInit {
     if (filledTote) {
       let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           message:'Press OK to create a new Tote Setup. Press Cancel to keep the current Tote Setup.',
@@ -386,7 +386,7 @@ export class ProcessPicksComponent implements OnInit {
     }
     const dialogRef: any = this.global.OpenDialog(this.batchPickID, {
       width: 'auto',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe(() => {
@@ -498,7 +498,7 @@ export class ProcessPicksComponent implements OnInit {
           allOrders: this.allOrders,
           resultObj: this.resultObj,
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       });
       dialogRef
         .afterClosed()
@@ -529,8 +529,8 @@ export class ProcessPicksComponent implements OnInit {
   openBlossomToteDialogue() {
     this.global.OpenDialog(BlossomToteComponent, {
       height: 'auto',
-      width: '786px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w786px,
+      autoFocus: DialogConstants.autoFocus,
     });
   }
 
@@ -640,7 +640,7 @@ export class ProcessPicksComponent implements OnInit {
 
       newWindow = window.open(
         `/#/report-view?file=${url}`,
-        '_blank',
+        UniqueConstants._blank,
         'width=' +
         screen.width +
         ',height=' +
@@ -688,7 +688,7 @@ export class ProcessPicksComponent implements OnInit {
   confirmProcessSetup() {
     this.global.OpenDialog(this.processSetup, {
       width: '450px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
   }
@@ -697,7 +697,7 @@ export class ProcessPicksComponent implements OnInit {
       width: '450px',
       height: 'auto',
       minHeight: 'auto',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
   }
@@ -834,7 +834,7 @@ export class ProcessPicksComponent implements OnInit {
         if (this.imPreferences.printDirectly) {
           await this.global.Print(
             `FileName:PrintPrevPickToteLabel|Positions:${Positions}|ToteIDs:${ToteIDs}|OrderNums:${OrderNumbers}|BatchID:${batchId}`,
-            'lbl'
+            UniqueConstants.Ibl
           );
         } else {
           _isAnyWindowOpen = true;
@@ -869,13 +869,13 @@ export class ProcessPicksComponent implements OnInit {
         if (this.imPreferences.printDirectly) {
           await this.global.Print(
             `FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`,
-            'lbl'
+            UniqueConstants.Ibl
           );
         } else if (_isAnyWindowOpen) {
           if (_isWindowClosed) {
             window.open(
               `/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`,
-              '_blank',
+              UniqueConstants._blank,
               'width=' +
               screen.width +
               ',height=' +
@@ -886,7 +886,7 @@ export class ProcessPicksComponent implements OnInit {
         } else {
           window.open(
             `/#/report-view?file=FileName:PrintPrevInZoneCaseLabel|BatchID:${batchId}`,
-            '_blank',
+            UniqueConstants._blank,
             'width=' +
             screen.width +
             ',height=' +
@@ -1010,7 +1010,7 @@ export class ProcessPicksComponent implements OnInit {
         } else {
           window.open(
             `/#/report-view?file=FileName:PrintPrevPickBatchList|BatchID:${batchId}`,
-            '_blank',
+            UniqueConstants._blank,
             'width=' +
             screen.width +
             ',height=' +

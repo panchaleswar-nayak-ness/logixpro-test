@@ -16,6 +16,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import {  ToasterTitle ,ToasterType} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-transaction-qty-edit',
   templateUrl: './transaction-qty-edit.component.html',
@@ -68,14 +69,14 @@ export class TransactionQtyEditComponent implements OnInit {
       .subscribe((res: any) => {
         if (res.isExecuted && res.data) {
           this.globalService.ShowToastr(
-            'success',
+            ToasterType.Success,
             labels.alert.success,
-            'Success!'
+            ToasterTitle.Success
           );
           this.dialog.closeAll();
           this.dialogRef.close(this.data);
         } else {
-          this.globalService.ShowToastr('error', res.responseMessage, 'Error!');
+          this.globalService.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
           this.dialog.closeAll(); 
         }
       });

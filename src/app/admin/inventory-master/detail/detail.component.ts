@@ -12,7 +12,7 @@ import { CurrentTabDataService } from '../current-tab-data-service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppNames,Style,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -69,8 +69,8 @@ export class DetailComponent implements OnInit {
   public openItemNumDialog() {
     let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
       height: DialogConstants.auto,
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         itemNumber: this.details.controls['itemNumber'].value,
@@ -102,18 +102,18 @@ export class DetailComponent implements OnInit {
   public openDescriptionDialog() {
     let dialogRef:any = this.global.OpenDialog(UpdateDescriptionComponent, {
       height: DialogConstants.auto,
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
-        description: this.details.controls['description'].value,
+        description: this.details.controls[UniqueConstants.Description].value,
       }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.sharedService.updateInvMasterState(result,true)
         this.details.patchValue({
-          'description' : result.description
+          "description" : result.description
         });
       }
     });
@@ -123,7 +123,7 @@ export class DetailComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(ItemCategoryComponent, {
       height: DialogConstants.auto,
       width: '860px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: '',
@@ -145,7 +145,7 @@ export class DetailComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
       height: DialogConstants.auto,
       width: '750px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: '',
@@ -167,19 +167,19 @@ export class DetailComponent implements OnInit {
     if(this.setVal){
       this.router.navigate([]).then((result) => {
         let url = '/#/OrderManager/OrderStatus?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-        window.open(url, '_blank');
+        window.open(url, UniqueConstants._blank);
       });
     }
-    else if(this.spliUrl[1] == 'InductionManager'){
+    else if(this.spliUrl[1] == AppNames.InductionManager){
       this.router.navigate([]).then(() => {
         let url = '/#/InductionManager/Admin/TransactionJournal?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-        window.open(url, '_blank');
+        window.open(url, UniqueConstants._blank);
       });
     }
     else{
       this.router.navigate([]).then(() => {
         let url = '/#/admin/transaction?itemNumber=' + this.details.controls['itemNumber'].value + '&type='+ type.toString().replace(/\+/gi, '%2B');
-        window.open(url, '_blank');
+        window.open(url, UniqueConstants._blank);
       });
     }
   }

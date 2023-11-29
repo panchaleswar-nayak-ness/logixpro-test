@@ -8,6 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -63,14 +64,14 @@ export class ReelTrackingComponent implements OnInit {
       this.sharedService.updateInvMasterState(event,true)
        
       if(event.checked){
-        this.global.ShowToastr('success',res.responseMessage, 'Success!');
+        this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
         
       }
       this.btnDisabled = false;
   }
   else if (res.responseMessage != 'Update Successful'){
     
-    this.global.ShowToastr('error',"Changes not saved!  Please reenter the information.", 'Error!');
+    this.global.ShowToastr(ToasterType.Error,"Changes not saved!  Please reenter the information.", ToasterTitle.Error);
     console.log("UpdateReelQuantity",res.responseMessage);
   }
   })
@@ -80,8 +81,8 @@ export class ReelTrackingComponent implements OnInit {
  updateReelQty(): void {
     const dialogRef:any = this.global.OpenDialog(MinReelQtyComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         minDollarRTS:0,
@@ -110,13 +111,13 @@ export class ReelTrackingComponent implements OnInit {
                   'minimumRTSReelQuantity' : res.data[0]
                 });
               } else {
-                this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
                 console.log("RefreshRTS",res.responseMessage);
               }              
             });            
             
           } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
             console.log("UpdateReelAll",res.responseMessage);
           }
 

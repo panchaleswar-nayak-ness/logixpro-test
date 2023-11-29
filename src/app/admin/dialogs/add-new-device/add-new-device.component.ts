@@ -15,7 +15,7 @@ import { catchError, of } from 'rxjs';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,TableConstant,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-new-device',
@@ -171,7 +171,7 @@ export class AddNewDeviceComponent implements OnInit {
               this.getDeviceInformation(res.data);
             }
             if (type === 'close') {
-              this.dialogRef.close('Yes');
+              this.dialogRef.close(ResponseStrings.Yes);
             }
             this.sharedService.updateDevicePref({ response: true });
           } else {
@@ -270,15 +270,15 @@ export class AddNewDeviceComponent implements OnInit {
     }
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         let deviceID;
         if (this.data?.item) {
           deviceID = this.data.item.deviceID;
@@ -295,7 +295,7 @@ export class AddNewDeviceComponent implements OnInit {
           .subscribe((res: any) => {
             if (res.isExecuted) {
               this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
-              this.dialogRef.close('Yes');
+              this.dialogRef.close(ResponseStrings.Yes);
             } else {
 
               this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
@@ -350,13 +350,13 @@ export class AddNewDeviceComponent implements OnInit {
   openAlertDialog(message) {
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       data: {
         message: message,
         heading: '',
         disableCancel: true,
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => { });
@@ -395,7 +395,7 @@ export class AddNewDeviceComponent implements OnInit {
 
   updateAllDevices(type) {
     let payload = {
-      zone: this.newDeviceForm.controls['zone'].value,
+      zone: this.newDeviceForm.controls[TableConstant.zone].value,
       hostport: this.newDeviceForm.controls['COMPort'].value,
       baud: this.newDeviceForm.controls['Baud'].value,
       parity: this.newDeviceForm.controls['Parity'].value,
@@ -413,17 +413,17 @@ export class AddNewDeviceComponent implements OnInit {
         'Click OK to update all devices with Com Port: ' +
         this.newDeviceForm.controls['COMPort'].value +
         ' and Zone: ' +
-        this.newDeviceForm.controls['zone'].value;
+        this.newDeviceForm.controls[TableConstant.zone].value;
     }
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       data: {
         message: message,
         heading: '',
         disableCancel: true,
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {

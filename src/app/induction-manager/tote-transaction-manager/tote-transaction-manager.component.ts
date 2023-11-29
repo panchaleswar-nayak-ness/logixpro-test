@@ -13,7 +13,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,UniqueConstants,StringConditions,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-tote-transaction-manager',
   templateUrl: './tote-transaction-manager.component.html',
@@ -50,7 +50,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   pageEvent: PageEvent;
   public dataSource: any = new MatTableDataSource();
   batchId: any = '';
-  sortOrder = 'asc';
+  sortOrder = UniqueConstants.Asc;
   sortCol = 0;
   startRow=0;
   endRow=10;
@@ -61,13 +61,13 @@ public iinductionManagerApi:IInductionManagerApiService;
   searchAutocompletBatchPick: any = [];
   imPreferences:any;
   public displayedColumns: string[] = [
-    'batchPickID',
+    TableConstant.BatchPickID,
     'filterCount',
     'toteId',
-    'transactionType',
+    TableConstant.transactionType,
     'zoneLabel',
     'hostTransaction',
-    'action'
+    ColumnDef.Action
   ];
 
   hideRequiredControl = new FormControl(false);
@@ -108,7 +108,7 @@ public iinductionManagerApi:IInductionManagerApiService;
   clearBatchButt() {
     this.batchId = '';
     this.searchAutocompletBatchPick.length = 0;
-    this.FilterString='1 = 1';
+    this.FilterString=UniqueConstants.OneEqualsOne;
     this.resetPagination();
     this.getToteTrans();
   }
@@ -122,7 +122,7 @@ public iinductionManagerApi:IInductionManagerApiService;
           const dialogRef:any = this.global.OpenDialog(BatchDeleteComponent, {
             height: 'auto',
             width: '60vw',
-            autoFocus: '__non_existing_element__',
+            autoFocus: DialogConstants.autoFocus,
       disableClose:true,
             data: {
               deleteAllDisable:true,
@@ -142,12 +142,12 @@ public iinductionManagerApi:IInductionManagerApiService;
         } else {
           const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
             height: 'auto',
-            width: '600px',
-            autoFocus: '__non_existing_element__',
+            width: Style.w600px,
+            autoFocus: DialogConstants.autoFocus,
       disableClose:true,
             data: {
               mode: 'clear-pick-tote-info',
-              action: 'clear',
+              action: StringConditions.clear,
               actionMessage:
                 type === 'pickTote'
                   ? 'the info for all pick batches'
@@ -155,7 +155,7 @@ public iinductionManagerApi:IInductionManagerApiService;
             },
           });
           dialogRef.afterClosed().subscribe((res) => {
-            if (res === 'Yes') {
+            if (res === ResponseStrings.Yes) {
               this.clearToteInfo();
             }
           })
@@ -272,7 +272,7 @@ public iinductionManagerApi:IInductionManagerApiService;
         if(this.imPreferences.printDirectly){
           this.global.Print(`FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`)
         }else{
-          window.open(`/#/report-view?file=FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+          window.open(`/#/report-view?file=FileName:PrintPrevOffCarList|ToteID:${row.toteId}|TransType:${row.transactionType}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
         }
         break;
       case 'printTotelContents':
@@ -290,7 +290,7 @@ public iinductionManagerApi:IInductionManagerApiService;
     if(this.imPreferences.printDirectly){
       this.global.Print(`FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`)
     }else{
-      window.open(`/#/report-view?file=FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+      window.open(`/#/report-view?file=FileName:PrintPrevToteContents|ToteID:${row.toteId}|ZoneLab:${row.zoneLabel}|TransType:${row.transactionType}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
     }
   }
   
@@ -302,7 +302,7 @@ public iinductionManagerApi:IInductionManagerApiService;
     }, 100);
   }
 
-  FilterString : string = "1 = 1";
+  FilterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.FilterString = filter;

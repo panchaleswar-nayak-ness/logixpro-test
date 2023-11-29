@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-import {StringConditions , ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import {StringConditions , ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,UniqueConstants,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-printers',
   templateUrl: './printers.component.html',
@@ -20,7 +20,7 @@ export class PrintersComponent implements OnInit {
 
 
   sideBarOpen: boolean = true;
-  displayedColumns: string[] = ['printerName', 'printerAddress', 'labelPrinter', 'actions'];
+  displayedColumns: string[] = ['printerName', 'printerAddress', 'labelPrinter', ColumnDef.Actions];
   running: boolean = false;
   userData: any;
   allPinters: any[] = [];
@@ -50,7 +50,7 @@ export class PrintersComponent implements OnInit {
       if (res.isExecuted && res.data) {
         this.allPinters = res.data;
         this.allPinters.forEach((element: any) => {
-          element.labelPrinter = element.label == "Able to Print Labels" ? "Yes" : "No";
+          element.labelPrinter = element.label == "Able to Print Labels" ? ResponseStrings.Yes : "No";
           element.isNew = false;
           element.currentPrinter = element.printer;
           element.currentprinterAdd = element.printerAdd;
@@ -132,13 +132,13 @@ export class PrintersComponent implements OnInit {
   removePrinter(printer: any) {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: 'remove-printer',
         ErrorMessage: `Are you sure you wish to delete this printer: ${printer.isNew ? 'New' : printer.currentPrinter}?`,
-        action: 'delete'
+        action: UniqueConstants.delete
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -196,7 +196,7 @@ export class PrintersComponent implements OnInit {
       let payload = {
         "printerName": printer.printer,
         "printerString": printer.printerAdd,
-        "label": printer.labelPrinter == StringConditions.Yes 
+        'label': printer.labelPrinter == StringConditions.Yes 
       };
       this.iGlobalConfigApi.InsertNewPrinter(payload).subscribe((res: any) => {
         if (res.isExecuted) {
@@ -217,7 +217,7 @@ export class PrintersComponent implements OnInit {
         "currentPrinter": printer.currentPrinter,
         "newPrinter": printer.printer,
         "printerString": printer.printerAdd,
-        "label": printer.labelPrinter == StringConditions.Yes
+        'label': printer.labelPrinter == StringConditions.Yes
       };
       this.iGlobalConfigApi.UpdateCurrentPrinter(payload).subscribe((res: any) => {
         if (res.isExecuted) {
@@ -240,8 +240,8 @@ export class PrintersComponent implements OnInit {
     else {
       let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           message: `Click OK to test print.`
@@ -249,7 +249,7 @@ export class PrintersComponent implements OnInit {
       });
       dialogRef2.afterClosed().subscribe((result) => {
         if (result == StringConditions.Yes) {
-          this.global.Print(`FileName:TestPrint|islabel:${printer.labelPrinter == StringConditions.Yes}|PrinterName:${printer.printer}|PrinterAddress:${printer.printerAdd}`,'lbl'); 
+          this.global.Print(`FileName:TestPrint|islabel:${printer.labelPrinter == StringConditions.Yes}|PrinterName:${printer.printer}|PrinterAddress:${printer.printerAdd}`,UniqueConstants.Ibl); 
         }
       });
     }

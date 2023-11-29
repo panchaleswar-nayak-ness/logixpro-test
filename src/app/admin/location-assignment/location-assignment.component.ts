@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'; 
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,TransactionType} from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 
 import { AuthService } from 'src/app/common/init/auth.service';
@@ -48,7 +48,7 @@ export class LocationAssignmentComponent implements OnInit {
             this.countLabel = `Count (${item.count})`;
           } else if (item.transactionType === "Pick") {
             this.pickLabel = `Pick (${item.count})`;
-          } else if (item.transactionType === "Put Away") {
+          } else if (item.transactionType === TransactionType.PutAway) {
             this.putAwayLabel = `Put Away (${item.count})`;
           }
         });

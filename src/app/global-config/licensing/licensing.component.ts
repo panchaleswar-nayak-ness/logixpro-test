@@ -10,7 +10,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants} from 'src/app/common/constants/strings.constants';
 export interface PeriodicElement {
   position: string;
 }
@@ -141,7 +141,7 @@ export class LicensingComponent implements OnInit {
 
             let dialogRef:any = this.global.OpenDialog(LicensingInvalidComponent, {
               width: '550px',
-              autoFocus: '__non_existing_element__',
+              autoFocus: DialogConstants.autoFocus,
       disableClose:true,
 
 

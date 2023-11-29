@@ -15,6 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-shipping-carrier',
@@ -105,10 +106,10 @@ export class CmShippingCarrierComponent implements OnInit {
 
     this.iConsolidationAPI.CarrierSave(paylaod).subscribe((res: any) => {
       if (res.isExecuted) {
-        this.global.ShowToastr('success', res.message, 'Success!');
+        this.global.ShowToastr(ToasterType.Success, res.message, ToasterTitle.Success);
         this.getCarrier();
       } else {
-        this.global.ShowToastr('error', res.message);
+        this.global.ShowToastr(ToasterType.Error, res.message);
         console.log('CarrierSave', res.responseMessage);
       }
     });
@@ -121,8 +122,8 @@ export class CmShippingCarrierComponent implements OnInit {
     if (event != '') {
       let dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
-        width: '480px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w480px,
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           mode: 'delete-carrier',

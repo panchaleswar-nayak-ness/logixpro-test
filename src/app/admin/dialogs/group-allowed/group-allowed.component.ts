@@ -12,6 +12,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'group-allowed',
@@ -21,7 +22,7 @@ import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.cons
 export class GroupAllowedComponent implements OnInit {
 
   formHeading: string = 'Add Group Allowed';
-  formBtnLabel: string = 'Add';
+  formBtnLabel: string = StringConditions.AddCaps;
   GroupName: any;
   controlNameList: any[] = [];
   options: string[] = [];

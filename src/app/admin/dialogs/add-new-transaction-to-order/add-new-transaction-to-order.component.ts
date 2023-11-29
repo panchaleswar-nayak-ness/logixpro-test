@@ -11,7 +11,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,Style,Column,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-add-new-transaction-to-order',
@@ -112,8 +112,8 @@ export class AddNewTransactionToOrderComponent implements OnInit {
           if(res.data=='') {
             const dialogRef:any = this.global.OpenDialog(ItemExistGenerateOrderComponent, {
               height: 'auto',
-              width: '560px',
-              autoFocus: '__non_existing_element__',
+              width: Style.w560px,
+              autoFocus: DialogConstants.autoFocus,
               disableClose:true,
               data: {
                 itemNumber:this.itemNumber,
@@ -163,8 +163,8 @@ export class AddNewTransactionToOrderComponent implements OnInit {
             if(res.data==''){
               const dialogRef:any = this.global.OpenDialog(ItemExistGenerateOrderComponent, {
                 height: 'auto',
-                width: '560px',
-                autoFocus: '__non_existing_element__',
+                width: Style.w560px,
+                autoFocus: DialogConstants.autoFocus,
                 disableClose:true,
                 data: {
                   itemNumber:this.itemNumber,
@@ -175,8 +175,8 @@ export class AddNewTransactionToOrderComponent implements OnInit {
               if(this.itemNumber===''  || this.quantity===0 || this.quantity<0){
                 const dialogRef:any = this.global.OpenDialog(EmptyFieldsComponent, {
                   height: 'auto',
-                  width: '560px',
-                  autoFocus: '__non_existing_element__',
+                  width: Style.w560px,
+                  autoFocus: DialogConstants.autoFocus,
                   disableClose:true,
                   data: {
                     itemNumber:this.itemNumber,
@@ -217,8 +217,9 @@ export class AddNewTransactionToOrderComponent implements OnInit {
              
               // TransactionForOrderInsert
               if (this.data.mode === 'add-trans') {
-                  payload['orderNumber'] = this.data.orderNumber;
-                  payload['transType'] = this.data.transactionType;
+                  payload[UniqueConstants.OrderNumber] = this.data.orderNumber;
+                  payload[Column.TransType] = this.data.transactionType;
+                  payload['itemNum'] = this.itemNumber;
               } else {
                 payload['id'] = this.data.item.id;
               }

@@ -6,7 +6,7 @@ import labels from 'src/app/common/labels/labels.json';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,TableConstant,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-super-batch',
@@ -15,7 +15,7 @@ import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.cons
 })
 export class SuperBatchComponent implements OnInit {
   public iInductionManagerApi: IInductionManagerApiService;
-  displayedColumns: string[] = ['zone', 'totalTransactions', 'orderToBatch', 'newToteID', 'actions'];
+  displayedColumns: string[] = [TableConstant.zone, 'totalTransactions', 'orderToBatch', 'newToteID', ColumnDef.Actions];
   dataSource: any;
   user_data: any;
   totalTransHeading = 'Single Line Orders';
@@ -71,7 +71,7 @@ export class SuperBatchComponent implements OnInit {
     this.global.OpenDialog(RequiredDateStatusComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__'
+      autoFocus: DialogConstants.autoFocus
     })
   }
   printBatchLabel(type){
@@ -79,13 +79,13 @@ export class SuperBatchComponent implements OnInit {
       this.global.ShowToastr(ToasterType.Error,'Please Select a Batch ID to Print', ToasterTitle.Error);
     }else{
       if(type=='printBatchLabels'){
-    this.global.Print(`FileName:PrintSuperBatchLabel|ToteID:${this.printBatchLabels}`,'lbl');
+    this.global.Print(`FileName:PrintSuperBatchLabel|ToteID:${this.printBatchLabels}`,UniqueConstants.Ibl);
     }
       if(type=='printOrderLabels'){
-    this.global.Print(`FileName:PrintSuperBatchOrderLabel|ToteID:${this.printBatchLabels}`,'lbl');
+    this.global.Print(`FileName:PrintSuperBatchOrderLabel|ToteID:${this.printBatchLabels}`,UniqueConstants.Ibl);
         }
       if(type=='printCaseLabels'){
-    this.global.Print(`FileName:PrintPrevInZoneCaseLabelToteID|ToteID:${this.printBatchLabels}`,'lbl');
+    this.global.Print(`FileName:PrintPrevInZoneCaseLabelToteID|ToteID:${this.printBatchLabels}`,UniqueConstants.Ibl);
 
        }
    
@@ -160,7 +160,7 @@ export class SuperBatchComponent implements OnInit {
     if(this.isConfirmSuperBatch){
     const dialogRef:any = this.global.OpenDialog(this.batchOrderConfirmation, {
       width: 'auto',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
 

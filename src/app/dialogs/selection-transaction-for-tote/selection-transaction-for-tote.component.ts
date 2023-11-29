@@ -5,6 +5,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ResponseStrings ,ToasterMessages,ToasterTitle,ToasterType,DialogConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
@@ -64,20 +65,20 @@ export class SelectionTransactionForToteComponent implements OnInit {
             if (!res.data) {
               let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
                 height: 'auto',
-                width: '560px',
-                autoFocus: '__non_existing_element__',
+                width: Style.w560px,
+                autoFocus: DialogConstants.autoFocus,
                 disableClose:true,
                 data: {
                   message: 'There are no batches with this zone (' + val.zone + ') assigned.  Click OK to start a new batch or cancel to choose a different location/transaction.',
                 },
               });
 
-              dialogRef.afterClosed().subscribe((res) => { if (res == 'Yes') this.dialogRef.close("New Batch"); });
+              dialogRef.afterClosed().subscribe((res) => { if (res == ResponseStrings.Yes) this.dialogRef.close("New Batch"); });
             } else {
               const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
                 height: 'auto',
-                width: '100vw',
-                autoFocus: '__non_existing_element__',
+                width: Style.w100vw,
+                autoFocus: DialogConstants.autoFocus,
                 disableClose:true,
                 data: {
                   otid        : id,
@@ -95,7 +96,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
               dialogRef.afterClosed().subscribe((res) => { if (res) this.dialogRef.close(res); });
             }
           } else {
-            this.global.ShowToastr('error','Something went wrong', 'Error!');
+            this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log("BatchByZone");
           }
         },
@@ -104,8 +105,8 @@ export class SelectionTransactionForToteComponent implements OnInit {
     } else {
       const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
         height: 'auto',
-        width: '100vw',
-        autoFocus: '__non_existing_element__',
+        width: Style.w100vw,
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           otid        : id,
@@ -150,7 +151,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
     this.iInductionManagerApi.TransactionForTote(getTransaction).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
-          if(res.data.subCategory == 'Reel Tracking' && res.data.inputType != 'Serial Number'){
+          if(res.data.subCategory == 'Reel Tracking' && res.data.inputType != ColumnDef.SerialNumber){
             this.dialogRef.close({category:'isReel',item:res.data});
             return;
           }
@@ -165,7 +166,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
           if (this.data.imPreference.purchaseOrderRequired && this.transactionTable.length > 0) {
             this.showBtnNewPutAwayForSameSKU = false;
           } else if(this.data.imPreference.purchaseOrderRequired && this.transactionTable.length == 0) {
-            this.global.ShowToastr('error',`No open Put Aways available for this ${this.inputType != 'Any' ? this.inputType : ''}`, 'Error!');
+            this.global.ShowToastr(ToasterType.Error,`No open Put Aways available for this ${this.inputType != 'Any' ? this.inputType : ''}`, ToasterTitle.Error);
             this.dialogRef.close()
           }
 
@@ -175,7 +176,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
           this.itemNumber = this.apiResponse.itemNumber;
           this.description = this.apiResponse.description;
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("TransactionForTote",res.ResponseMessage);
         }
       },
@@ -188,8 +189,8 @@ export class SelectionTransactionForToteComponent implements OnInit {
   openSelectionExtendDialogue() {
     const dialogRef:any = this.global.OpenDialog(SelectionTransactionForToteExtendComponent, {
       height: 'auto',
-      width: '100vw',
-      autoFocus: '__non_existing_element__',
+      width: Style.w100vw,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         otid        : 0,

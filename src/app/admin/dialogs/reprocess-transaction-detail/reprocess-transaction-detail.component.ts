@@ -9,7 +9,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ToasterMessages,TableConstant,ColumnDef,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reprocess-transaction-detail',
@@ -101,10 +101,10 @@ export class ReprocessTransactionDetailComponent implements OnInit {
   }
   onNumberValueChange() {
 
-    let currentLotNumber = this.editTransactionForm.get("lotNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("lotNumber")?.value?.toString();
-    let currentSerialNumber = this.editTransactionForm.get("serialNumber")?.value?.toString() == "" ? "0" : this.editTransactionForm.get("serialNumber")?.value?.toString();
-    this.editTransactionForm.get("lotNumber")?.setValue(parseInt(currentLotNumber ?? '').toString());
-    this.editTransactionForm.get("serialNumber")?.setValue(parseInt(currentSerialNumber ?? '').toString());
+    let currentLotNumber = this.editTransactionForm.get(TableConstant.LotNumber)?.value?.toString() == "" ? "0" : this.editTransactionForm.get(TableConstant.LotNumber)?.value?.toString();
+    let currentSerialNumber = this.editTransactionForm.get(TableConstant.SerialNumber)?.value?.toString() == "" ? "0" : this.editTransactionForm.get(TableConstant.SerialNumber)?.value?.toString();
+    this.editTransactionForm.get(TableConstant.LotNumber)?.setValue(parseInt(currentLotNumber ?? '').toString());
+    this.editTransactionForm.get(TableConstant.SerialNumber)?.setValue(parseInt(currentSerialNumber ?? '').toString());
   }
 
   editTransaction() { 
@@ -113,24 +113,24 @@ export class ReprocessTransactionDetailComponent implements OnInit {
       "oldValues": [
       ],
       "newValues": [
-        this.editTransactionForm.get("transactionQuantity")?.value,
-        this.editTransactionForm.get("unitOfMeasure")?.value,
-        this.editTransactionForm.get("serialNumber")?.value,
-        this.editTransactionForm.get("lotNumber")?.value?.toString(),
+        this.editTransactionForm.get(ColumnDef.TransactionQuantity)?.value,
+        this.editTransactionForm.get(ColumnDef.UnitOfMeasure)?.value,
+        this.editTransactionForm.get(TableConstant.SerialNumber)?.value,
+        this.editTransactionForm.get(TableConstant.LotNumber)?.value?.toString(),
         this.dayIncrement(this.expDate),
-        this.editTransactionForm.get("revision")?.value,
-        this.editTransactionForm.get("notes")?.value,
+        this.editTransactionForm.get(ColumnDef.Revision)?.value,
+        this.editTransactionForm.get(TableConstant.Notes)?.value,
         this.editTransactionForm.get("userField1")?.value,
-        this.editTransactionForm.get("userField2")?.value,
-        this.editTransactionForm.get("hostTransactionID")?.value,
+        this.editTransactionForm.get(ColumnDef.userField2)?.value,
+        this.editTransactionForm.get(ColumnDef.HostTransactionId)?.value,
         this.dayIncrement(this.reqDate),
 
-        this.editTransactionForm.get("batchPickID")?.value,
-        this.editTransactionForm.get("lineNumber")?.value?.toString(),
-        this.editTransactionForm.get("lineSequence")?.value?.toString(),
-        this.editTransactionForm.get("priority")?.value?.toString(),
-        this.editTransactionForm.get("label")?.value?.toString(),
-        this.editTransactionForm.get("emergency")?.value?.toString(),
+        this.editTransactionForm.get(TableConstant.BatchPickID)?.value,
+        this.editTransactionForm.get(TableConstant.LineNumber)?.value?.toString(),
+        this.editTransactionForm.get(TableConstant.LineSequence)?.value?.toString(),
+        this.editTransactionForm.get(UniqueConstants.Priority)?.value?.toString(),
+        this.editTransactionForm.get(TableConstant.label)?.value?.toString(),
+        this.editTransactionForm.get(UniqueConstants.emergency)?.value?.toString(),
         this.editTransactionForm.get("wareHouse")?.value
       ]
     }
@@ -138,10 +138,10 @@ export class ReprocessTransactionDetailComponent implements OnInit {
     this.iAdminApiService.SaveTransaction(payload).subscribe((res: any) => {
       if (res.isExecuted){
         this.dialogRef.close('add');
-        this.global.ShowToastr('success',labels.alert.update, 'Success!');
+        this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
       }
       else{
-        this.global.ShowToastr('error','Something went wrong', 'Error!');
+        this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
         console.log("SaveTransaction",res.responseMessage);
       }
     });
@@ -173,7 +173,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
         this.unitOfMeasure_list = res.data;
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getUnitOfMeasure:", res.responseMessage);
 
       }
@@ -226,46 +226,44 @@ export class ReprocessTransactionDetailComponent implements OnInit {
 
 
           if (!res.data[0].label) { this.label = false; } else { this.label = true; }
-          if (res.data[0].emergency == 'False') { this.emergency = false; } else { this.emergency = true; }
+          if (res.data[0].emergency == StringConditions.False) { this.emergency = false; } else { this.emergency = true; }
           this.editTransactionForm.patchValue({
-            "transactionQuantity": res.data[0].transactionQuantity,
-            "unitOfMeasure": res.data[0].unitOfMeasure,
+            'transactionQuantity': res.data[0].transactionQuantity,
+            'unitOfMeasure': res.data[0].unitOfMeasure,
             "serialNumber": res.data[0].serialNumber,
             "lotNumber": res.data[0].lotNumber,
-            "expirationDate": this.expDate != "1900-01-01T19:31:48.000Z" ? this.expDate : " ",
+            'expirationDate': this.expDate != "1900-01-01T19:31:48.000Z" ? this.expDate : " ",
             "revision": res.data[0].revision,
-            "notes": res.data[0].notes,
+            'notes': res.data[0].notes,
             "userField1": res.data[0].userField1,
             "userField2": res.data[0].userField2,
             "hostTransactionID": res.data[0].hostTransactionID,
             "requiredDate": this.reqDate != "1900-01-01T19:31:48.000Z" ? this.reqDate : " ",
-            "batchPickID": res.data[0].batchPickID,
+            'batchPickID': res.data[0].batchPickID,
             "lineNumber": res.data[0].lineNumber,
-            "lineSequence": res.data[0].lineSequence,
-            "priority": res.data[0].priority,
-            "label": this.label.toString(),
+            'lineSequence': res.data[0].lineSequence,
+            'priority': res.data[0].priority,
+            'label': this.label.toString(),
             "emergency": this.emergency.toString(),
             "wareHouse": res.data[0].wareHouse,
             "orderNumber": res.data[0].orderNumber,
             "itemNumber": res.data[0].itemNumber,
             "transactionType": res.data[0].transactionType,
-            "importDate": res.data[0].importDate,
+            'importDate': res.data[0].importDate,
             "importBy": res.data[0].importBy,
             "zone": res.data[0].zone,
-            "carousel": res.data[0].carousel,
-            "row": res.data[0].row,
+            'carousel': res.data[0].carousel,
+            'row': res.data[0].row,
             "shelf": res.data[0].shelf,
             "bin": res.data[0].bin,
             "reason": res.data[0].reason,
             "reasonMessage": res.data[0].reasonMessage,
             "description": res.data[0].description
-
-
           });
 
 
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("TransactionByID",res.responseMessage);
         }
       },

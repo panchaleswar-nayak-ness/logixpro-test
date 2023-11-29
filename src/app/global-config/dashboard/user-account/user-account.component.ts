@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,AppPermissions} from 'src/app/common/constants/strings.constants';
 @Component({
   selector: 'app-user-account',
   templateUrl: './user-account.component.html',
@@ -51,8 +51,8 @@ export class UserAccountComponent implements OnInit {
       LicenseString:
         'qdljjBp3O3llQvKEW01qlvO4dTIFf6VMuJvYMgXgEc8U8q+dVlMKt0mKG6qtD9DO',
       AppUrl: 'CM1',
-      DisplayName: 'Consolidation Manager',
-      AppName: 'Consolidation Manager',
+      DisplayName: AppPermissions.ConsolidationManager,
+      AppName: AppPermissions.ConsolidationManager,
     };
     this.iGlobalConfigApi.Menu(payload).subscribe(
       {next: (res: any) => {

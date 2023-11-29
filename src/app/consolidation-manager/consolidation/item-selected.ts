@@ -5,6 +5,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/common/services/consolidation-api/consolidation-api.service";
 import { GlobalService } from "src/app/common/services/global.service";
+import {  Column ,ToasterTitle,ToasterType,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
     template: ''
@@ -23,13 +24,13 @@ export class ItemSelected implements OnInit {
     userData: any;
 
     filterOptionarr :any= [
-        {key: '1', value: 'Item Number'},
+        {key: '1', value: Column.ItemNumber},
         {key: '2', value: 'Supplier Item ID'},
-        {key: '10', value: 'Lot Number'},
-        {key: '8', value: 'Serial Number'},
+        {key: '10', value: Column.LotNumber},
+        {key: '8', value: ColumnDef.SerialNumber},
         {key: '9', value: 'User Field 1'},
         {key: '0', value: 'Any Code'},
-        {key: '6', value: 'Tote ID'},
+        {key: '6', value: Column.ToteID},
       ];
 
       public IconsolidationAPI : IConsolidationApi;
@@ -55,7 +56,7 @@ export class ItemSelected implements OnInit {
 
     getItemSelectedData(){
         let payload = {
-            "orderNumber": this.IdentModal ,
+            UniqueConstants.OrderNumber: this.IdentModal ,
             "column": this.ColLabel,
             "columnValue": this.data.ColLabel
         }
@@ -65,7 +66,7 @@ export class ItemSelected implements OnInit {
                 this.itemSelectTable = res;
               }
               else {
-                this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+                this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
                 console.log("ItemModelData",res.responseMessage);
               }
             }));
@@ -89,7 +90,7 @@ export class ItemSelected implements OnInit {
             }
             this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
                 if (!res.isExecuted) {
-                    this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                    this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
                     console.log("VerifyItemPost",res.responseMessage);
 
                 }
@@ -121,7 +122,7 @@ export class ItemSelected implements OnInit {
 
                 this.IconsolidationAPI.VerifyItemPost(payload).subscribe((res: any) => {
                     if (!res.isExecuted) {
-                        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+                        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
                         console.log("VerifyItemPost",res.responseMessage);
 
                     }

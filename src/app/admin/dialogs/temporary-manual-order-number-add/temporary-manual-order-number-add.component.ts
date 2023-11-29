@@ -10,7 +10,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType, TransactionType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType, TransactionType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-temporary-manual-order-number-add',
@@ -20,7 +20,7 @@ import { ToasterTitle, ToasterType, TransactionType } from 'src/app/common/const
 export class TemporaryManualOrderNumberAddComponent implements OnInit {
   @ViewChild('ord_nmb') ord_nmb: ElementRef;
   floatLabelControl: any = new FormControl('auto' as FloatLabelType);
-  floatLabelControlItem: any = new FormControl('item' as FloatLabelType);
+  floatLabelControlItem: any = new FormControl(UniqueConstants.item as FloatLabelType);
   hideRequiredControl = new FormControl(false);
   hideRequiredControlItem = new FormControl(false);
   searchAutocompleteOrderNum: any;
@@ -55,7 +55,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
     return this.floatLabelControl.value || 'auto';
   }
   getFloatLabelValueItem(): FloatLabelType {
-    return this.floatLabelControlItem.value || 'item';
+    return this.floatLabelControlItem.value || UniqueConstants.item;
   }
   ngAfterViewInit() {
     setTimeout(() => {
@@ -182,7 +182,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
       } else {
         this.orderRequired = false;
       }
-    } else if (type === 'item') {
+    } else if (type === UniqueConstants.item) {
       if (this.itemNumber) {
         let payLoad = {
           itemNumber: this.itemNumber

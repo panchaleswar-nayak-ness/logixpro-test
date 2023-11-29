@@ -5,7 +5,7 @@ import { SqlAuthConfirmationComponent } from '../sql-auth-confirmation/sql-auth-
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-global-config-set-sql',
@@ -46,7 +46,7 @@ export class GlobalConfigSetSqlComponent {
     
     const dialogRef:any = this.global.OpenDialog(SqlAuthConfirmationComponent, {
       height: DialogConstants.auto,
-      width: '560px',
+      width: Style.w560px,
       data:{ message:this.message }
     });
 

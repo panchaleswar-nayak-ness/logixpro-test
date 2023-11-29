@@ -6,6 +6,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
+import {  ResponseStrings ,ToasterType,ToasterTitle,DialogConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -32,7 +33,7 @@ export class CmShippingComponent implements OnInit {
     'containerID',
     'carrier',
     'trackingNum',
-    'action',
+    ColumnDef.Action,
   ];
   tableData = this.ELEMENT_DATA;
   userData: any = {};
@@ -89,9 +90,9 @@ export class CmShippingComponent implements OnInit {
           } else this.isLoading = false;
         else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('ShippingIndex', res.responseMessage);
         }
@@ -123,7 +124,7 @@ export class CmShippingComponent implements OnInit {
     this.iConsolidationAPI.ShipmentItemDelete(obj).subscribe((res: any) => {
       if (res?.isExecuted) this.shippingData = this.shippingData.slice(0, i);
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('ShipmentItemDelete', res.responseMessage);
       }
     });
@@ -149,8 +150,8 @@ export class CmShippingComponent implements OnInit {
   async ShippingCompShip() {
     let dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         message: 'Are you sure you wish to complete this shipment?',
@@ -158,16 +159,16 @@ export class CmShippingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == ResponseStrings.Yes) {
         let obj: any = { orderNumber: this.orderNumber };
         this.iConsolidationAPI.SelCountOfOpenTransactionsTemp(obj).subscribe(
           (res: any) => {
             if (res.isExecuted) {
               if (res.data == -1)
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   'An error has occurred',
-                  'Error'
+                  ResponseStrings.Error
                 );
               else if (res.data == 0) this.completeShipment();
               else {
@@ -175,8 +176,8 @@ export class CmShippingComponent implements OnInit {
                   ConfirmationDialogComponent,
                   {
                     height: 'auto',
-                    width: '560px',
-                    autoFocus: '__non_existing_element__',
+                    width: Style.w560px,
+                    autoFocus: DialogConstants.autoFocus,
                     disableClose: true,
                     data: {
                       message:
@@ -186,14 +187,14 @@ export class CmShippingComponent implements OnInit {
                 );
 
                 dialogRef.afterClosed().subscribe((result) => {
-                  if (result == 'Yes') this.completeShipment();
+                  if (result == ResponseStrings.Yes) this.completeShipment();
                 });
               }
             } else {
               this.global.ShowToastr(
-                'error',
+                ToasterType.Error,
                 this.global.globalErrorMsg(),
-                'Error!'
+                ToasterTitle.Error
               );
               console.log(
                 'SelCountOfOpenTransactionsTemp',
@@ -211,12 +212,12 @@ export class CmShippingComponent implements OnInit {
     this.iConsolidationAPI.CompleteShipment(obj).subscribe((res: any) => {
       if (res?.isExecuted)
         this.global.ShowToastr(
-          'success',
+          ToasterType.Success,
           `Order Number: ${this.orderNumber} is marked as Shipping Complete`,
           'Success'
         );
       else {
-        this.global.ShowToastr('error', 'An error has occurred', 'Error');
+        this.global.ShowToastr(ToasterType.Error, 'An error has occurred', ResponseStrings.Error);
         console.log('CompleteShipment', res.responseMessage);
       }
     });
@@ -227,8 +228,8 @@ export class CmShippingComponent implements OnInit {
       CmAddNewItemToShipmentComponent,
       {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: { orderNumber: this.orderNumber },
       }

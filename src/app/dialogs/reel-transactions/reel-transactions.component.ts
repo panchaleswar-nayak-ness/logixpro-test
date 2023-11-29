@@ -15,6 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import {  ResponseStrings ,StringConditions,ToasterMessages,ToasterTitle,ToasterType,DialogConstants,Style,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-reel-transactions',
@@ -34,7 +35,7 @@ export class ReelTransactionsComponent implements OnInit {
     'reel_serial_number',
     'button',
     'reel_part_quantity',
-    'action',
+    ColumnDef.Action,
   ];
   generateReelAndSerial: MatTableDataSource<any> = new MatTableDataSource<any>(
     []
@@ -100,7 +101,7 @@ export class ReelTransactionsComponent implements OnInit {
     const dialogRef: any = this.global.OpenDialog(ReelDetailComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         hvObj: this.data.hvObj,
@@ -114,7 +115,7 @@ export class ReelTransactionsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result != 'true') {
+      if (result != StringConditions.True) {
         if (!this.generatedReelQty && this.generatedReelQty != '') {
           this.partsInducted = result[0].reelQty;
           this.partsNotAssigned = result[0].reelQty;
@@ -159,7 +160,7 @@ export class ReelTransactionsComponent implements OnInit {
             this.serialTemp.nativeElement.focus();
           }, 100);
         } else {
-          this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log('NextSerialNumber', res.responseMessage);
         }
       },
@@ -205,20 +206,20 @@ export class ReelTransactionsComponent implements OnInit {
   reeloverviewsubmit() {
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       data: {
         message: 'Click OK to create these reels.',
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (this.generateReelAndSerial.data.length == 0) {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             'You must provide at least one reel transaction in order to create reels.',
-            'Error!'
+            ToasterTitle.Error
           );
         } else {
           let numUnassigned = this.partsNotAssigned;
@@ -234,13 +235,13 @@ export class ReelTransactionsComponent implements OnInit {
   ConfirmNoOFReel(numUnassigned) {
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       data: {
         message: `There are  ${
           numUnassigned < 0 ? 'more' : 'fewer'
         }  parts assigned to these reels than total parts selected.  Click OK to continue or Cancel to edit the number of parts in each reel.`,
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -281,9 +282,9 @@ export class ReelTransactionsComponent implements OnInit {
       this.validateInputs();
       this.serialTemp.nativeElement.blur();
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'You must provide a serial number for each reel transaction.',
-        'Error!'
+        ToasterTitle.Error
       );
       return;
     }
@@ -291,11 +292,11 @@ export class ReelTransactionsComponent implements OnInit {
     const hasDuplicatesFlag = this.findDuplicateValue(serialNos);
     if (hasDuplicatesFlag) {
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'You must provide a unique serial number for each reel transaction.  Serial ' +
           hasDuplicatesFlag +
           ' is duplicated.',
-        'Error!'
+        ToasterTitle.Error
       );
       return;
     }
@@ -318,11 +319,11 @@ export class ReelTransactionsComponent implements OnInit {
               AlertConfirmationComponent,
               {
                 height: 'auto',
-                width: '560px',
+                width: Style.w560px,
                 data: {
                   message: errs,
                 },
-                autoFocus: '__non_existing_element__',
+                autoFocus: DialogConstants.autoFocus,
                 disableClose: true,
               }
             );
@@ -335,9 +336,9 @@ export class ReelTransactionsComponent implements OnInit {
         }
         if (errs != '') {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             'The following serial numbers have problems and could not be assigned',
-            'Error!'
+            ToasterTitle.Error
           );
         } else {
           let payload = {
@@ -349,9 +350,9 @@ export class ReelTransactionsComponent implements OnInit {
             if (res.data && res.isExecuted) {
               if (res.data.lenghth <= 0) {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   'There was an error while attempting to save the new reels.  See the error log for details.',
-                  'Error!'
+                  ToasterTitle.Error
                 );
               } else {
                 this.createdReel = res.data;
@@ -360,11 +361,11 @@ export class ReelTransactionsComponent implements OnInit {
                   AlertConfirmationComponent,
                   {
                     height: 'auto',
-                    width: '560px',
+                    width: Style.w560px,
                     data: {
                       message: 'Click OK to print labels now.',
                     },
-                    autoFocus: '__non_existing_element__',
+                    autoFocus: DialogConstants.autoFocus,
                     disableClose: true,
                   }
                 );
@@ -376,7 +377,7 @@ export class ReelTransactionsComponent implements OnInit {
                     } else {
                       window.open(
                         `/#/report-view?file=FileName:PrintReelLabels|OTID:[]|SN:${this.generateReelAndSerial.data[0].reel_serial_number}|Order:${this.data.hvObj.order}|Item:${this.itemNumber}`,
-                        '_blank',
+                        UniqueConstants._blank,
                         'width=' +
                           screen.width +
                           ',height=' +
@@ -391,13 +392,13 @@ export class ReelTransactionsComponent implements OnInit {
                 });
               }
             } else {
-              this.global.ShowToastr('error', res.responseMessage, 'Error!');
+              this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
               console.log('ReelsCreate', res.responseMessage);
             }
           });
         }
       } else {
-        this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+        this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
       }
     });
   }
@@ -406,7 +407,7 @@ export class ReelTransactionsComponent implements OnInit {
     let res: any = this.global.Print(
       `FileName:PrintReelLabels|OTID:${this.createdReel.join(
         ',',
-        'lbl'
+        UniqueConstants.Ibl
       )}|SN:|Item:|Order:`
     );
 
@@ -427,15 +428,15 @@ export class ReelTransactionsComponent implements OnInit {
   async showConfirmationDialog(message, callback) {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         message: message,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == ResponseStrings.Yes) {
         callback(true);
       } else {
         callback(false);
@@ -452,7 +453,7 @@ export class ReelTransactionsComponent implements OnInit {
           this.generateReelAndSerial.data[index].reel_serial_number =
             res.data + '-RT';
         } else {
-          this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log('NextSerialNumber', res.responseMessage);
         }
       },
@@ -493,7 +494,7 @@ export class ReelTransactionsComponent implements OnInit {
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintReelLabels|OTID:[]|SN:${e.reel_serial_number}|Order:${this.data.hvObj.order}|Item:${this.itemNumber}`,
-        '_blank',
+        UniqueConstants._blank,
         'width=' +
           screen.width +
           ',height=' +

@@ -6,6 +6,7 @@ import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/a
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import {  ResponseStrings ,ToasterType,ToasterTitle,DialogConstants,UniqueConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-lookup-tote-setup',
@@ -18,7 +19,7 @@ export class LookupToteSetupComponent implements OnInit {
     {tote_id: '125874', cells: '120' },
   ];
   public iAdminApiService: IAdminApiService;
-  displayedColumns: string[] = ['tote_id', 'cells', 'actions'];
+  displayedColumns: string[] = ['tote_id', 'cells', ColumnDef.Actions];
   tableData : any = [];
   OldtableData : any = [];
   
@@ -44,7 +45,7 @@ export class LookupToteSetupComponent implements OnInit {
         this.tableData = JSON.parse(JSON.stringify(res.data));   
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("getToteCell",res.responseMessage);
       }
     });
@@ -67,7 +68,7 @@ export class LookupToteSetupComponent implements OnInit {
     for(const element of this.OldtableData) {
       if(element.toteID == toteID) {
         this.tableData[ind].IsDisabled = true;
-        this.global.ShowToastr('error',`Tote must be unique. Another entry matches it. Please save any pending totes and try again.`, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,`Tote must be unique. Another entry matches it. Please save any pending totes and try again.`, ToasterTitle.Error);
         break;
       }else  this.tableData[ind].IsDisabled = false;
     }
@@ -77,7 +78,7 @@ export class LookupToteSetupComponent implements OnInit {
   saveTotes(ele,i){
     let payload = {
       "oldToteID": "",
-      "toteID": ele.toteID,
+      'toteID': ele.toteID,
       "cells": ele.cells.toString()
     }
     this.iAdminApiService.totesetup(payload).pipe(
@@ -92,7 +93,7 @@ export class LookupToteSetupComponent implements OnInit {
         console.log(res)
         this.AddBtn = false
         ele.IsDisabled = true
-        this.global.ShowToastr('success',`Saved Successfully`, 'Error!');
+        this.global.ShowToastr(ToasterType.Success,`Saved Successfully`, ToasterTitle.Error);
       }
     }))
 
@@ -101,19 +102,19 @@ export class LookupToteSetupComponent implements OnInit {
   deleteTote(ele){
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '600px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w600px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
-        action: 'delete',
+        action: UniqueConstants.delete,
         actionMessage:` ${ele.toteID} from the Tote list.. `
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
-      if (res === 'Yes'){
+      if (res === ResponseStrings.Yes){
 
         let payload = {
-          "toteID": ele.toteID
+          'toteID': ele.toteID
         }
         this.iAdminApiService.deleteTote(payload).subscribe((res=>{ 
           if(res.isExecuted){
@@ -122,7 +123,7 @@ export class LookupToteSetupComponent implements OnInit {
 
           else {
             
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("deleteTote", res.responseMessage);
 
           }
@@ -135,12 +136,12 @@ export class LookupToteSetupComponent implements OnInit {
 
     const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '786px',
+      width: Style.w786px,
       data: {
         message: 'Click OK to clear ALL tote information for incomplete transactions.',
         heading: 'Clear Tote',
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -149,12 +150,12 @@ export class LookupToteSetupComponent implements OnInit {
         this.iAdminApiService.cleartote({}).subscribe((res=>{
           
           if(res.isExecuted){
-            this.global.ShowToastr('success',`Tote Clear Successfully`, 'Error!');
+            this.global.ShowToastr(ToasterType.Success,`Tote Clear Successfully`, ToasterTitle.Error);
           }
 
           else {
             
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("cleartote", res.responseMessage);
           }
         }))

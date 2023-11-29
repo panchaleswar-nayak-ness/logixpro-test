@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppRoutes, StringConditions } from 'src/app/common/constants/strings.constants';
+import { AppRoutes, StringConditions ,RouteUpdateMenu} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-ie-transfer-settings',
@@ -10,7 +10,7 @@ import { AppRoutes, StringConditions } from 'src/app/common/constants/strings.co
 export class IeTransferSettingsComponent implements OnInit {
   @Output() back = new EventEmitter<string>();
 
-  isDeleteVisible: any = localStorage.getItem('routeFromInduction')
+  isDeleteVisible: any = localStorage.getItem(RouteUpdateMenu.RouteFromInduction)
   directAdmin;
   setVal
   throughOrderManager

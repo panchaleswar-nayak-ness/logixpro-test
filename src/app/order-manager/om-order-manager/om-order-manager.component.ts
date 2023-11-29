@@ -19,7 +19,7 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppPermissions,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -32,7 +32,7 @@ export class OmOrderManagerComponent implements OnInit {
   public userData: any;
   OMIndex: any;
 
-  column    : string = "Order Number";
+  column    : string = Column.OrderNumber;
   case      : string = "Equals";
   
   value1    : string = "";
@@ -56,52 +56,52 @@ export class OmOrderManagerComponent implements OnInit {
   totalRecords:any;
   isActiveTrigger:boolean =false;
   allColumns : any = [
-    { colHeader: "transactionType", colDef: "Transaction Type" },
-    { colHeader: "orderNumber", colDef: "Order Number" },
-    { colHeader: "priority", colDef: "Priority" },
-    { colHeader: "requiredDate", colDef: "Required Date" },
-    { colHeader: "userField1", colDef: "User Field1" },
-    { colHeader: "userField2", colDef: "User Field2" },
-    { colHeader: "userField3", colDef: "User Field3" },
-    { colHeader: "userField4", colDef: "User Field4" },
-    { colHeader: "userField5", colDef: "User Field5" },
-    { colHeader: "userField6", colDef: "User Field6" },
-    { colHeader: "userField7", colDef: "User Field7" },
-    { colHeader: "userField8", colDef: "User Field8" },
-    { colHeader: "userField9", colDef: "User Field9" },
-    { colHeader: "userField10", colDef: "User Field10" },
-    { colHeader: "itemNumber", colDef: "Item Number" },
-    { colHeader: "description", colDef: "Description" },
-    { colHeader: "lineNumber", colDef: "Line Number" },
-    { colHeader: "transactionQuantity", colDef: "Transaction Quantity" },
+    { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
+    { colHeader: UniqueConstants.OrderNumber, colDef: Column.OrderNumber },
+    { colHeader: UniqueConstants.Priority, colDef: "Priority" },
+    { colHeader: ColumnDef.RequiredDate, colDef: "Required Date" },
+    { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
+    { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
+    { colHeader: ColumnDef.userField3, colDef: "User Field3" },
+    { colHeader: ColumnDef.userField4, colDef: "User Field4" },
+    { colHeader: ColumnDef.userField5, colDef: "User Field5" },
+    { colHeader: ColumnDef.userField6, colDef: "User Field6" },
+    { colHeader: ColumnDef.userField7, colDef: "User Field7" },
+    { colHeader: ColumnDef.userField8, colDef: "User Field8" },
+    { colHeader: ColumnDef.userField9, colDef: "User Field9" },
+    { colHeader: ColumnDef.userField10, colDef: "User Field10" },
+    { colHeader: "itemNumber", colDef: Column.ItemNumber },
+    { colHeader: UniqueConstants.Description, colDef: Column.Description },
+    { colHeader: TableConstant.LineNumber, colDef: "Line Number" },
+    { colHeader: ColumnDef.TransactionQuantity, colDef: TableConstant.TransactionQuantity },
     { colHeader: "allocatedPicks", colDef: "Allocated Picks" },
     { colHeader: "allocatedPuts", colDef: "Allocated Puts" },
     { colHeader: "availableQuantity", colDef: "Available Quantity" },
     { colHeader: "stockQuantity", colDef: "Stock Quantity" },
-    { colHeader: "warehouse", colDef: "Warehouse" },
-    { colHeader: "zone", colDef: "Zone" },
-    { colHeader: "lineSequence", colDef: "Line Sequence" },
-    { colHeader: "toteID", colDef: "Tote ID" },
+    { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
+    { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
+    { colHeader: TableConstant.LineSequence, colDef: "Line Sequence" },
+    { colHeader: ColumnDef.ToteID, colDef: Column.ToteID },
     { colHeader: "toteNumber", colDef: "Tote Number" },
-    { colHeader: "unitOfMeasure", colDef: "Unit of Measure" },
-    { colHeader: "batchPickID", colDef: "Batch Pick ID" },
+    { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
+    { colHeader: TableConstant.BatchPickID, colDef: ColumnDef.BatchPickID },
     { colHeader: "category", colDef: "Category" },
     { colHeader: "subCategory", colDef: "Sub Category" },
-    { colHeader: "importBy", colDef: "Import By" },
-    { colHeader: "importDate", colDef: "Import Date" },
+    { colHeader: TableConstant.ImportBy, colDef: "Import By" },
+    { colHeader: TableConstant.ImportDate, colDef: "Import Date" },
     { colHeader: "importFilename", colDef: "Import Filename" },
-    { colHeader: "expirationDate", colDef: "Expiration Date" },
-    { colHeader: "lotNumber", colDef: "Lot Number" },
-    { colHeader: "serialNumber", colDef: "Serial Number" },
-    { colHeader: "notes", colDef: "Notes" },
-    { colHeader: "revision", colDef: "Revision" },
+    { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
+    { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
+    { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber },
+    { colHeader: TableConstant.Notes, colDef: "Notes" },
+    { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },
     { colHeader: "supplierItemID", colDef: "Supplier Item ID" },
     { colHeader: "id", colDef: "ID" },
-    { colHeader: "hostTransactionID", colDef: "Host Transaction ID" },
-    { colHeader: "emergency", colDef: "Emergency" },
-    { colHeader: "location", colDef: "Location" },
-    { colHeader: "label", colDef: "Label" },
-    { colHeader: "cell", colDef: "Cell" },
+    { colHeader: ColumnDef.HostTransactionId, colDef: TableConstant.HostTransactionID },
+    { colHeader: UniqueConstants.emergency, colDef: ColumnDef.Emergency },
+    { colHeader: TableConstant.Location, colDef: Column.Location },
+    { colHeader: TableConstant.label, colDef: "Label" },
+    { colHeader: Column.cell, colDef: TableConstant.Cell },
   ];
   displayedColumns  : string[] = []; 
   orderTable        : any = new MatTableDataSource([]); 
@@ -113,7 +113,7 @@ export class OmOrderManagerComponent implements OnInit {
                             }
   sortColumn        : any = {
                               columnName: 0,
-                              sortOrder: 'asc'
+                              sortOrder: UniqueConstants.Asc
                             }
 
   @ViewChild(MatSort) sort: MatSort;
@@ -176,8 +176,8 @@ export class OmOrderManagerComponent implements OnInit {
     this.iAdminApiService.GetColumnSequence(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.displayedColumns = res.data;        
-        this.displayedColumns.push( 'actions');
-        this.colList = res.data.filter(x => x != 'actions');
+        this.displayedColumns.push( ColumnDef.Actions);
+        this.colList = res.data.filter(x => x != ColumnDef.Actions);
         this.colList = this.colList.sort();
         this.searchCol = this.colList[0];
       }
@@ -213,7 +213,7 @@ export class OmOrderManagerComponent implements OnInit {
         val2 = this.value2;      
       }
   
-      if(this.FilterString == "") this.FilterString = "1 = 1";
+      if(this.FilterString == "") this.FilterString = UniqueConstants.OneEqualsOne;
   
       let payload = {
         col: this.column,
@@ -320,12 +320,12 @@ export class OmOrderManagerComponent implements OnInit {
     else {
       let dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           ErrorMessage: 'Are you sure you want to delete all viewed orders?',
-          action: 'delete'
+          action: UniqueConstants.delete
         },
       });
 
@@ -363,8 +363,8 @@ export class OmOrderManagerComponent implements OnInit {
   updateRecord(ele : any) {
     let dialogRef:any = this.global.OpenDialog(OmUpdateRecordComponent, {
       height: 'auto',
-      width: '50vw',
-      autoFocus: '__non_existing_element__',
+      width: Style.w50vw,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: { 
         ...ele,
@@ -396,12 +396,12 @@ export class OmOrderManagerComponent implements OnInit {
       return
     }
 
-    if (!this.OMIndex.preferences[0].allowPartRel && this.totalRecords > -1 || this.FilterString != '1 = 1') {      
+    if (!this.OMIndex.preferences[0].allowPartRel && this.totalRecords > -1 || this.FilterString != UniqueConstants.OneEqualsOne) {      
 
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           message: 'Cannot Release Partial Orders. If you would like to release the entire order, click Ok. Otherwise click cancel',
@@ -413,7 +413,7 @@ export class OmOrderManagerComponent implements OnInit {
 
           let payload = {
             val: this.viewType,
-            page: 'Order Manager'
+            page: AppPermissions.OrderManager
           };
       
           this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
@@ -439,8 +439,8 @@ export class OmOrderManagerComponent implements OnInit {
 
       let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           message: 'Press ok to release currently Viewed Orders.',
@@ -452,7 +452,7 @@ export class OmOrderManagerComponent implements OnInit {
 
           let payload = {
             val: this.viewType,
-            page: 'Order Manager'
+            page: AppPermissions.OrderManager
           };
       
           this.iOrderManagerApi.ReleaseOrders(payload).subscribe((res: any) => {
@@ -524,7 +524,7 @@ export class OmOrderManagerComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(OmCreateOrdersComponent, { 
       height: 'auto',
       width: '1424px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true, 
     });
 
@@ -549,7 +549,7 @@ export class OmOrderManagerComponent implements OnInit {
     }, 100);
   }
 
-  FilterString : string = "1 = 1";
+  FilterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.customPagination.startIndex = 0;
@@ -575,10 +575,10 @@ export class OmOrderManagerComponent implements OnInit {
     this.omPreferences=this.global.getOmPreferences();
 
     if(this.omPreferences.printDirectly){
-      this.globalService.Print(`FileName:PrintReleaseOrders|tabIDs:|View:${this.viewType}|Table:${this.orderType}|Page:${'Order Manager'}|WSID:${this.userData.wsid}`);
+      this.globalService.Print(`FileName:PrintReleaseOrders|tabIDs:|View:${this.viewType}|Table:${this.orderType}|Page:${AppPermissions.OrderManager}|WSID:${this.userData.wsid}`);
 
     }else{
-      window.open(`/#/report-view?file=FileName:PrintReleaseOrders|tabIDs:|View:${this.viewType}|Table:${this.orderType}|Page:${'Order Manager'}|WSID:${this.userData.wsid}`, '_blank', 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
+      window.open(`/#/report-view?file=FileName:PrintReleaseOrders|tabIDs:|View:${this.viewType}|Table:${this.orderType}|Page:${AppPermissions.OrderManager}|WSID:${this.userData.wsid}`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
 
     }
   }

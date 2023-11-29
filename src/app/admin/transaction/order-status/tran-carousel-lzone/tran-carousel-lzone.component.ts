@@ -3,7 +3,8 @@ import { AfterViewInit, Component, Input, OnInit, TemplateRef, ViewChild } from 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
+import {  zoneType ,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants'; 
 
 @Component({
   selector: 'app-tran-carousel-lzone',
@@ -15,8 +16,8 @@ export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
   public locationZonesData: any = [];
   dataSource = new MatTableDataSource<any>([]);
   displayedColumns: string[] = [
-    'carousel',
-    'zone',
+    zoneType.carousel,
+    TableConstant.zone,
     'locationName',
     'totalLines',
     'open',
@@ -44,7 +45,7 @@ export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
 
   sortColumn: any = {
     columnName: 32,
-    sortOrder: 'asc',
+    sortOrder: UniqueConstants.Asc,
   };
 
   @Input() set locationZonesEvent(event: any) {
@@ -63,8 +64,8 @@ export class TranCarouselLzoneComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router
   ) {
-    if (this.router.getCurrentNavigation()?.extras?.state?.['searchValue']) {
-      this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.['searchValue'];
+    if (this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue]) {
+      this.columnSearch.searchValue = this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue];
       this.columnSearch.searchColumn = {
         colDef: this.router.getCurrentNavigation()?.extras?.state?.['colDef'],
         colHeader: this.router.getCurrentNavigation()?.extras?.state?.['colHeader'],

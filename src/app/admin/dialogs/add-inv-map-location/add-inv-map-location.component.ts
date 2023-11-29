@@ -27,7 +27,7 @@ import { ICommonApi } from 'src/app/common/services/common-api/common-api-interf
 import { GlobalService } from 'src/app/common/services/global.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
-import { DialogConstants, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,Column,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 
 
 export interface InventoryMapDataStructure {
@@ -255,29 +255,29 @@ export class AddInvMapLocationComponent implements OnInit {
 
   ngAfterViewInit() {
     if(this.router.url == '/OrderManager/InventoryMap'){
-      this.addInvMapLocation.get('location')?.disable();
-      this.addInvMapLocation.get('zone')?.disable();
-      this.addInvMapLocation.get('description')?.disable();
+      this.addInvMapLocation.get(TableConstant.Location)?.disable();
+      this.addInvMapLocation.get(TableConstant.zone)?.disable();
+      this.addInvMapLocation.get(UniqueConstants.Description)?.disable();
       this.addInvMapLocation.get('laserX')?.disable();
       this.addInvMapLocation.get('laserY')?.disable();
       this.addInvMapLocation.get('warehouse')?.disable();
-      this.addInvMapLocation.get('carousel')?.disable();
-      this.addInvMapLocation.get('row')?.disable();
-      this.addInvMapLocation.get('shelf')?.disable();
-      this.addInvMapLocation.get('bin')?.disable();
-      this.addInvMapLocation.get('unitOfMeasure')?.disable();
-      this.addInvMapLocation.get('cell')?.disable();
+      this.addInvMapLocation.get(zoneType.carousel)?.disable();
+      this.addInvMapLocation.get(Column.Row)?.disable();
+      this.addInvMapLocation.get(TableConstant.shelf)?.disable();
+      this.addInvMapLocation.get(ColumnDef.Bin)?.disable();
+      this.addInvMapLocation.get(ColumnDef.UnitOfMeasure)?.disable();
+      this.addInvMapLocation.get(Column.cell)?.disable();
       this.addInvMapLocation.get('velocity')?.disable();
       this.addInvMapLocation.get('altLight')?.disable();
       this.addInvMapLocation.get('userField1')?.disable();
-      this.addInvMapLocation.get('userField2')?.disable();
+      this.addInvMapLocation.get(ColumnDef.userField2)?.disable();
       this.addInvMapLocation.get('quantityAllocatedPutAway')?.disable();
       this.addInvMapLocation.get('inventoryMapID')?.disable();
       this.addInvMapLocation.get('masterInventoryMapID')?.disable();
-      this.addInvMapLocation.get('item')?.disable();
+      this.addInvMapLocation.get(UniqueConstants.item)?.disable();
       this.addInvMapLocation.get('maxQuantity')?.disable();
       this.addInvMapLocation.get('minQuantity')?.disable();
-      this.addInvMapLocation.get('clear')?.disable();
+      this.addInvMapLocation.get(StringConditions.clear)?.disable();
       this.isInputDisabled=true;
     }
     this.location_name?.nativeElement.focus();
@@ -297,6 +297,20 @@ export class AddInvMapLocationComponent implements OnInit {
       'revision': '',
       'serialNumber': '',
       'lotNumber': '',
+      "description":'',
+      'location':'',
+      'locationNumber':'',
+      'laserX':'',
+      'lasery':'',
+      'warehouse':'',
+      "zone":'',
+      'carousel':'',
+      'row':'',
+      "shelf":'',
+      'bin':'',
+      'cell':'',
+      'velocity':'',
+      'altLight':'',
       dedicated: false,
       dateSensitive : false
 
@@ -355,7 +369,7 @@ export class AddInvMapLocationComponent implements OnInit {
         this.itemNumberList = res.data;
       }
       else {
-        this.addInvMapLocation.controls['item'].setValue('');
+        this.addInvMapLocation.controls[UniqueConstants.item].setValue('');
         this.itemNumberList = []
         this.clearFields()
       }
@@ -367,7 +381,7 @@ export class AddInvMapLocationComponent implements OnInit {
     this.addInvMapLocation = this.fb.group({
       location: [this.getDetailInventoryMapData.location  || '', [Validators.required]],
       zone: [this.getDetailInventoryMapData.zone|| '', [Validators.required, Validators.maxLength(2)]],
-      carousel: [this.getDetailInventoryMapData.carousel || '', [Validators.pattern("^[0-9]*$"), Validators.maxLength(1)]],
+      carousel: [this.getDetailInventoryMapData.carousel || '', [Validators.pattern(UniqueConstants.Regx), Validators.maxLength(1)]],
       row: [this.getDetailInventoryMapData.row || '', [Validators.maxLength(5)]],
       shelf: [this.getDetailInventoryMapData.shelf || '', [Validators.maxLength(2)]],
       bin: [this.getDetailInventoryMapData.bin || '', [Validators.maxLength(3)]],
@@ -395,11 +409,11 @@ export class AddInvMapLocationComponent implements OnInit {
       dateSensitive: [this.getDetailInventoryMapData.dateSensitive || false],
       masterInventoryMapID: new FormControl({ value: this.getDetailInventoryMapData.masterInvMapID || '', disabled: true }),
       minQuantity: [this.getDetailInventoryMapData.minQuantity || 0, [Validators.maxLength(9)]],
-      laserX: [this.getDetailInventoryMapData.laserX || 0, [Validators.pattern("^[0-9]*$"), Validators.maxLength(9)]],
-      laserY: [this.getDetailInventoryMapData.laserY || 0, [Validators.pattern("^[0-9]*$"), Validators.maxLength(9)]],
+      laserX: [this.getDetailInventoryMapData.laserX || 0, [Validators.pattern(UniqueConstants.Regx), Validators.maxLength(9)]],
+      laserY: [this.getDetailInventoryMapData.laserY || 0, [Validators.pattern(UniqueConstants.Regx), Validators.maxLength(9)]],
       locationNumber: [this.getDetailInventoryMapData.locationNumber || '',],
       locationID: [this.getDetailInventoryMapData.locationID || ''],
-      altLight: [this.getDetailInventoryMapData.altLight || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]]
+      altLight: [this.getDetailInventoryMapData.altLight || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]]
     });
 
     this.clearInvMapLocation = this.fb.group({
@@ -436,7 +450,7 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   onchangeItemNumber() {
-    let value = this.addInvMapLocation.controls['zone'].value + this.addInvMapLocation.controls['carousel'].value + this.addInvMapLocation.controls['row'].value + this.addInvMapLocation.controls['shelf'].value + this.addInvMapLocation.controls['bin'].value;
+    let value = this.addInvMapLocation.controls[TableConstant.zone].value + this.addInvMapLocation.controls[zoneType.carousel].value + this.addInvMapLocation.controls[Column.Row].value + this.addInvMapLocation.controls[TableConstant.shelf].value + this.addInvMapLocation.controls[ColumnDef.Bin].value;
     this.addInvMapLocation.controls['locationNumber'].setValue(value);
   }
   onSubmit(form: FormGroup) {
@@ -508,7 +522,7 @@ export class AddInvMapLocationComponent implements OnInit {
     if(this.itemNumberList && this.itemNumberList.length > 0){
       this.warehouseSensitive =  this.itemNumberList[0].warehouseSensitive;
       this.dateSensitive =  this.itemNumberList[0].dateSensitive;
-      this.addInvMapLocation.controls['description'].setValue(this.itemNumberList[0].description ?? '');
+      this.addInvMapLocation.controls[UniqueConstants.Description].setValue(this.itemNumberList[0].description ?? '');
     }
     else{
       this.searchItemNumbers = "";
@@ -530,7 +544,7 @@ export class AddInvMapLocationComponent implements OnInit {
       let dialogRef:any = this.global.OpenDialog(WarehouseComponent, {
         height: DialogConstants.auto,
         width: '640px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
         disableClose:true,
         data: {
           mode: 'addlocation',
@@ -540,10 +554,10 @@ export class AddInvMapLocationComponent implements OnInit {
         ;
 
         if (result !== true && result !== false) {
-          this.addInvMapLocation.controls['warehouse'].setValue(result);
+          this.addInvMapLocation.controls[TableConstant.WareHouse].setValue(result);
         }
-        if (result == 'clear') {
-          this.addInvMapLocation.controls['warehouse'].setValue('');
+        if (result == StringConditions.clear) {
+          this.addInvMapLocation.controls[TableConstant.WareHouse].setValue('');
         }
       })
     }
@@ -561,7 +575,7 @@ export class AddInvMapLocationComponent implements OnInit {
       })
       dialogRef.afterClosed().subscribe(result => {
         if (result !== true && result !== false) {
-          this.addInvMapLocation.controls['cell'].setValue(result);
+          this.addInvMapLocation.controls[Column.cell].setValue(result);
         }
       })
     }
@@ -592,8 +606,8 @@ export class AddInvMapLocationComponent implements OnInit {
   }
   loadZones(zone: any) {
     this.zoneList = this.locZoneList.filter(option => option.locationName.includes(zone.option.value));
-    this.addInvMapLocation.controls['zone'].setValue(this.zoneList[0]?.zone);
-    this.updateItemNumber('zone', this.zoneList[0]?.zone);
+    this.addInvMapLocation.controls[TableConstant.zone].setValue(this.zoneList[0]?.zone);
+    this.updateItemNumber(TableConstant.zone, this.zoneList[0]?.zone);
   }
 
   zoneChecker(zone, location) { //To check if the zone and location are selected from dropdown.
@@ -604,12 +618,12 @@ export class AddInvMapLocationComponent implements OnInit {
   loadItemDetails(item: any) {
     this.itemNumberList.forEach(val => {
       if (val.itemNumber === item) {
-        this.addInvMapLocation.controls['description'].setValue(val.description ?? '');
+        this.addInvMapLocation.controls[UniqueConstants.Description].setValue(val.description ?? '');
       }
     })
     let payload = {
       "itemNumber": item,
-      "zone": this.addInvMapLocation?.get('zone')?.value
+      "zone": this.addInvMapLocation?.get(TableConstant.zone)?.value
     }
 
 
@@ -646,19 +660,19 @@ export class AddInvMapLocationComponent implements OnInit {
 
   updateItemNumber(col?: string, val?: any) {
 
-    if (col === 'zone') {
+    if (col === TableConstant.zone) {
       this.zone = val?.toString();
     }
-    if (col === 'carousel') {
+    if (col === zoneType.carousel) {
       this.carousel = val.toString();
     }
-    if (col === 'row') {
+    if (col === Column.Row) {
       this.row = val.toString();
     }
-    if (col === 'shelf') {
+    if (col === TableConstant.shelf) {
       this.shelf = val.toString();
     }
-    if (col === 'bin') {
+    if (col === ColumnDef.Bin) {
       this.bin = val.toString();
     }
     this.autoFillLocNumber = this.zone + this.carousel + this.row + this.shelf + this.bin;

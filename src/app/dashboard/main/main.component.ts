@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { RouteUpdateMenu, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { RouteUpdateMenu, ToasterTitle, ToasterType ,AppNames,AppPermissions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-main',
@@ -45,7 +45,7 @@ export class MainComponent implements OnInit {
     if(localStorage.getItem('isAppVerified')) this.isDefaultAppVerify = JSON.parse(localStorage.getItem('isAppVerified') ?? '');
     else this.isDefaultAppVerify = {appName: "", isVerified: true}
     this.route.queryParams.subscribe(params => {
-      const error = params['error'];
+      const error = params[ToasterType.Error];
       if (error === "multipletab") this.global.ShowToastr(ToasterType.Error, "Same Tab cannot be opened twice!", ToasterTitle.Error);
   });
   }
@@ -106,20 +106,20 @@ export class MainComponent implements OnInit {
         permission: 'Admin Menu',
       },
       {
-        appName: 'Consolidation Manager',
+        appName: AppPermissions.ConsolidationManager,
         route: '/ConsolidationManager',
         iconName: 'insert_chart',
-        name: 'Consolidation Manager',
+        name: AppPermissions.ConsolidationManager,
         updateMenu: 'consolidation',
-        permission: 'Consolidation Manager',
+        permission: AppPermissions.ConsolidationManager,
       },
       {
         appName: 'Induction',
         route: '/InductionManager',
         iconName: 'checklist',
-        name: 'Induction Manager',
+        name: AppPermissions.InductionManager,
         updateMenu: 'induction',
-        permission: 'Induction Manager',
+        permission: AppPermissions.InductionManager,
       },
       {
         appName: 'FlowRackReplenish',
@@ -146,12 +146,12 @@ export class MainComponent implements OnInit {
         permission: 'Markout',
       },
       {
-        appName: 'OrderManager',
+        appName: AppNames.OrderManager,
         route: '/OrderManager',
         iconName: 'pending_actions',
-        name: 'Order Manager',
+        name: AppPermissions.OrderManager,
         updateMenu: 'orderManager',
-        permission: 'Order Manager',
+        permission: AppPermissions.OrderManager,
       },
       {
         appName: 'WorkManager',

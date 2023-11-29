@@ -26,6 +26,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,DialogConstants,UniqueConstants,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -70,7 +71,7 @@ export class TotesAddEditComponent implements OnInit {
       isEdit: false,
     },
   ];
-  displayedColumns: string[] = ['actions', 'zone', 'locationdesc'];
+  displayedColumns: string[] = [ColumnDef.Actions, TableConstant.zone, 'locationdesc'];
   alreadySavedTotesList: any;
   dataSource = new MatTableDataSource<PeriodicElement>(this.elementData);
   dataSourceManagedTotes = new MatTableDataSource<ToteElement>(
@@ -153,7 +154,7 @@ export class TotesAddEditComponent implements OnInit {
 
     this.global.Print(
       `FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`,
-      'lbl'
+      UniqueConstants.Ibl
     );
   }
   printRange() {
@@ -170,7 +171,7 @@ export class TotesAddEditComponent implements OnInit {
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintPrevToteManLabel|ToteID:${ToteID}|Ident:${ident}|FromTote:${sTote}|ToTote:${eTote}|BatchID:${batch}`,
-        '_blank',
+        UniqueConstants._blank,
         'width=' +
           screen.width +
           ',height=' +
@@ -197,9 +198,9 @@ export class TotesAddEditComponent implements OnInit {
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: PeriodicElement): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? 'deselect' : UniqueConstants.Select} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+    return `${this.selection.isSelected(row) ? 'deselect' : UniqueConstants.Select} row ${
       row.position + 1
     }`;
   }
@@ -211,9 +212,9 @@ export class TotesAddEditComponent implements OnInit {
         catchError((error) => {
           // Handle the error here
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             'An Error occured while retrieving data.',
-            'Error!'
+            ToasterTitle.Error
           );
           // Return a fallback value or trigger further error handling if needed
           console.log('GetFromToteTypeAhead');
@@ -252,9 +253,9 @@ export class TotesAddEditComponent implements OnInit {
       let res: any = await this.iAdminApiService.ToteSetupInsert(searchPayload);
       if (res.data && res.isExecuted) {
         this.global.ShowToastr(
-          'success',
+          ToasterType.Success,
           isInserted == '1' ? updateMessage : res.responseMessage,
-          'Success!'
+          ToasterTitle.Success
         );
         this.dataSourceManagedTotes.data[index]['isDuplicate'] = false;
         this.isRowAdded = false;
@@ -262,17 +263,17 @@ export class TotesAddEditComponent implements OnInit {
       } else {
         this.dataSourceManagedTotes.data[index]['isDuplicate'] = true;
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           'Cannot set the selected tote because it is already set in the batch.',
-          'Error!'
+          ToasterTitle.Error
         );
       }
     } catch (err) {
       this.dataSourceManagedTotes.data[index]['isDuplicate'] = true;
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'Cannot set the selected tote because it is already set in the batch.',
-        'Error!'
+        ToasterTitle.Error
       );
     }
   }
@@ -280,16 +281,16 @@ export class TotesAddEditComponent implements OnInit {
   deleteTote(toteID: any, index) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w480px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         mode: '',
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == ResponseStrings.Yes) {
         const data = this.dataSourceManagedTotes.data;
         if (data[index]['isDuplicate'] || data[index]['isInserted'] == 0) {
           data.splice(index, 1);
@@ -304,9 +305,9 @@ export class TotesAddEditComponent implements OnInit {
             (res: any) => {
               if (res.data && res.isExecuted) {
                 this.global.ShowToastr(
-                  'success',
+                  ToasterType.Success,
                   'Deleted successfuly',
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.isRowAdded = false;
                 let isUnsavedItem = false;
@@ -323,7 +324,7 @@ export class TotesAddEditComponent implements OnInit {
                   this.getTotes();
                 }
               } else {
-                this.global.ShowToastr('error', 'Already exists', 'Error!');
+                this.global.ShowToastr(ToasterType.Error, 'Already exists', ToasterTitle.Error);
                 console.log('ToteSetupDelete', res.responseMessage);
               }
             },
@@ -358,7 +359,7 @@ export class TotesAddEditComponent implements OnInit {
             this.elementDataTote
           );
         } else {
-          this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log('ToteSetup', res.responseMessage);
         }
       },
@@ -397,18 +398,18 @@ export class TotesAddEditComponent implements OnInit {
 
     if (exists) {
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'Cannot set the selected tote because it is already set in the batch.',
-        'Error!'
+        ToasterTitle.Error
       );
     } else {
       let selectedTote;
       if (toteIDs == null && cells == null) {
         if (!this.cellID) {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             'Cannot set the selected tote because it is cells is empty.',
-            'Error!'
+            ToasterTitle.Error
           );
           return;
         }
@@ -421,9 +422,9 @@ export class TotesAddEditComponent implements OnInit {
       } else {
         if (!cells) {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             'Cannot set the selected tote because it is cells is empty.',
-            'Error!'
+            ToasterTitle.Error
           );
           return;
         }
@@ -438,7 +439,7 @@ export class TotesAddEditComponent implements OnInit {
     }
   }
 
-  displayedColumns1: string[] = ['select', 'zone', 'locationdesc', 'options'];
+  displayedColumns1: string[] = [UniqueConstants.Select, TableConstant.zone, 'locationdesc', 'options'];
   dataSource1 = new MatTableDataSource<PeriodicElement>(this.elementData);
   selection1 = new SelectionModel<PeriodicElement>(true, []);
 

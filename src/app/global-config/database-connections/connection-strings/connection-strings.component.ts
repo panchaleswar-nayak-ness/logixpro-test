@@ -7,7 +7,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,StringConditions,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-connection-strings',
@@ -34,10 +34,10 @@ export class ConnectionStringsComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (
       
-      changes['connectionStringData']['currentValue']['connectionString']
+      changes['connectionStringData'][StringConditions.currentValue]['connectionString']
     )
       this.connectionStringData =
-        changes['connectionStringData']['currentValue']['connectionString'];
+        changes['connectionStringData'][StringConditions.currentValue]['connectionString'];
   }
 
   createObjectNewConn() {
@@ -130,7 +130,7 @@ export class ConnectionStringsComponent {
   deleteString(item) {
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       data: {
         mode: 'delete-connection-string',
         connectionName: item.connectionName,
@@ -161,8 +161,8 @@ export class ConnectionStringsComponent {
          
             const dialogRef:any = this.global.OpenDialog(GlobalConfigSetSqlComponent, {
               height: 'auto',
-              width: '600px',
-              autoFocus: '__non_existing_element__',
+              width: Style.w600px,
+              autoFocus: DialogConstants.autoFocus,
       disableClose:true,
               data: {
                 mode: 'sql-auth-string',

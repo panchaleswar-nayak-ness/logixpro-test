@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef } from '@angular/material/dialog';
+import {  ResponseStrings } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-item-num-update-confirmation',
@@ -22,7 +23,7 @@ export class ItemNumUpdateConfirmationComponent{
    }
 
    onConfirm(){
-    this.dialogRef.close("Yes");
+    this.dialogRef.close(ResponseStrings.Yes);
    }
    
 }

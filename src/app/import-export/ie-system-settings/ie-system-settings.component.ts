@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { DialogConstants } from 'src/app/common/constants/strings.constants';
+import { DialogConstants ,Style} from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IeFtpSettingsComponent } from 'src/app/dialogs/ie-ftp-settings/ie-ftp-settings.component';
 import { IeInventMapExportComponent } from 'src/app/dialogs/ie-invent-map-export/ie-invent-map-export.component';
@@ -21,7 +21,7 @@ export class IeSystemSettingsComponent {
   IeTransFieldMappingDialog() {
      this.global.OpenDialog(IeTransFieldMappingComponent, {
       height: DialogConstants.auto,
-      width: '100vw',
+      width: Style.w100vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
@@ -30,7 +30,7 @@ export class IeSystemSettingsComponent {
   XMLFieldMappingDialog() {
      this.global.OpenDialog(OpenTransPickMappingComponent, {
       height: DialogConstants.auto,
-      width: '100vw',
+      width: Style.w100vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
@@ -40,7 +40,7 @@ export class IeSystemSettingsComponent {
   TransFilePathDialog() {
      this.global.OpenDialog(TransferFilePathComponent, {
       height: DialogConstants.auto,
-      width: '100vw',
+      width: Style.w100vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
@@ -50,7 +50,7 @@ export class IeSystemSettingsComponent {
   IeFTPSettingsDialog(){
      this.global.OpenDialog(IeFtpSettingsComponent, {
       height: DialogConstants.auto,
-      width: '100vw',
+      width: Style.w100vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
@@ -60,7 +60,7 @@ export class IeSystemSettingsComponent {
   IeInventMapExportDialog(){
      this.global.OpenDialog(IeInventMapExportComponent, {
       height: DialogConstants.auto,
-      width: '100vw',
+      width: Style.w100vw,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });

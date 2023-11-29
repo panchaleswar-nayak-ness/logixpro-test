@@ -18,6 +18,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
+import {  ToasterTitle ,ToasterType,DialogConstants,Style,Column,UniqueConstants,ColumnDef,StringConditions} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-tote-transaction-view',
@@ -36,7 +37,7 @@ export class ToteTransactionViewComponent implements OnInit {
   @ViewChild('actionRef') actionRef: MatSelect;
   pageEvent: PageEvent;
   public sortCol: any = 0;
-  public sortOrder: any = 'asc';
+  public sortOrder: any = UniqueConstants.Asc;
   customPagination: any = {
     total: '',
     recordsPerPage: 10,
@@ -71,11 +72,11 @@ export class ToteTransactionViewComponent implements OnInit {
   }
 
   displayedColumns: string[] = [
-    'cell',
+    Column.cell,
     'itemNumber',
-    'transactionQuantity',
+    ColumnDef.TransactionQuantity,
     'itemLocation',
-    'hostTransactionID',
+    ColumnDef.HostTransactionId,
     'other',
   ];
   dataSource: any;
@@ -134,9 +135,9 @@ export class ToteTransactionViewComponent implements OnInit {
           }
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('TransTableView', res.responseMessage);
         }
@@ -148,8 +149,8 @@ export class ToteTransactionViewComponent implements OnInit {
     if (!opened && this.selectedOption && this.selectedOption === 'clearTote') {
       const dialogRef: any = this.global.OpenDialog(BatchDeleteComponent, {
         height: 'auto',
-        width: '50vw',
-        autoFocus: '__non_existing_element__',
+        width: Style.w50vw,
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           deleteAllDisable: true,
@@ -172,8 +173,8 @@ export class ToteTransactionViewComponent implements OnInit {
       this.clearMatSelectList();
       const dialogRef: any = this.global.OpenDialog(MarkToteFullComponent, {
         height: 'auto',
-        width: '560px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           mode: 'add-trans',
@@ -194,15 +195,15 @@ export class ToteTransactionViewComponent implements OnInit {
             (res: any) => {
               if (res.data && res.isExecuted) {
                 this.global.ShowToastr(
-                  'success',
+                  ToasterType.Success,
                   labels.alert.success,
-                  'Success!'
+                  ToasterTitle.Success
                 );
               } else {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   labels.alert.went_worng,
-                  'Error!'
+                  ToasterTitle.Error
                 );
                 console.log('MarkToteFull', res.responseMessage);
               }
@@ -238,16 +239,16 @@ export class ToteTransactionViewComponent implements OnInit {
     let itemId = item.id;
     const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
       height: 'auto',
-      width: '50vw',
-      autoFocus: '__non_existing_element__',
+      width: Style.w50vw,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         message:
-          type === 'clear'
+          type === StringConditions.clear
             ? 'Clear This Transaction From This Tote ?'
             : 'Clear And DeAllocate This Transaction From The Tote?',
         heading:
-          type === 'clear'
+          type === StringConditions.clear
             ? 'Clear Transaction'
             : 'Clear And DeAllocate Transaction',
       },
@@ -260,7 +261,7 @@ export class ToteTransactionViewComponent implements OnInit {
           wsid: this.data.wsid,
         };
         let baseUrl =
-          type === 'clear'
+          type === StringConditions.clear
             ? '/Induction/ClearItemFromTote'
             : '/Induction/DeAllocateItemFromTote';
         this.iInductionManagerApi
@@ -268,16 +269,16 @@ export class ToteTransactionViewComponent implements OnInit {
           .subscribe((res: any) => {
             if (res?.isExecuted) {
               this.global.ShowToastr(
-                'success',
+                ToasterType.Success,
                 labels.alert.success,
-                'Success!'
+                ToasterTitle.Success
               );
               this.getTransactionTable();
             } else {
               this.global.ShowToastr(
-                'error',
+                ToasterType.Error,
                 labels.alert.went_worng,
-                'Error!'
+                ToasterTitle.Error
               );
               console.log('DynamicMethod', res.responseMessage);
             }
@@ -295,7 +296,7 @@ export class ToteTransactionViewComponent implements OnInit {
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteContentsLabel|ToteID:|ZoneLab:${this.zoneLabels}|ID:${this.dataSource?.filteredData[0]?.id}|BatchID:${this.batchID}|TransType:Put Away`,
-          '_blank',
+          UniqueConstants._blank,
           'width=' +
             screen.width +
             ',height=' +
@@ -311,7 +312,7 @@ export class ToteTransactionViewComponent implements OnInit {
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:-1|BatchID:${this.batchID}|ToteNum:${this.tote}`,
-          '_blank',
+          UniqueConstants._blank,
           'width=' +
             screen.width +
             ',height=' +
@@ -327,7 +328,7 @@ export class ToteTransactionViewComponent implements OnInit {
       } else {
         window.open(
           `/#/report-view?file=FileName:PrintPrevToteTransViewCont|BatchID:${this.batchID}|ToteNum:${this.tote}`,
-          '_blank',
+          UniqueConstants._blank,
           'width=' +
             screen.width +
             ',height=' +
@@ -347,7 +348,7 @@ export class ToteTransactionViewComponent implements OnInit {
     } else {
       window.open(
         `/#/report-view?file=FileName:PrintPrevToteItemLabel|ID:${ID}|BatchID:${this.batchID}|ToteNum:${this.tote}`,
-        '_blank',
+        UniqueConstants._blank,
         'width=' +
           screen.width +
           ',height=' +

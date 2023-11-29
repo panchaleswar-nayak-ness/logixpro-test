@@ -16,6 +16,7 @@ import { SteServicesComponent } from './global-config/ste-services/ste-services.
 import { ImportExportComponent } from './import-export/import-export.component';
 import { WrdComponent } from './list-and-label/wrd/wrd.component';
 import { WrvComponent } from './list-and-label/wrv/wrv.component';
+import {  AppNames } from 'src/app/common/constants/strings.constants';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -73,7 +74,7 @@ const routes: Routes = [
         canActivate: [],
       },
       { 
-        path: 'InductionManager', 
+        path: AppNames.InductionManager, 
         loadChildren: () => import('./induction-manager/induction-manager.module').then(m => m.InductionManagerModule),
         canActivate:[]
       },
@@ -83,7 +84,7 @@ const routes: Routes = [
         canActivate:[]
       },
       { 
-        path: 'OrderManager', 
+        path: AppNames.OrderManager, 
         loadChildren: () => import('./order-manager/order-manager.module').then(m => m.OrderManagerModule),
         canActivate:[]
       },

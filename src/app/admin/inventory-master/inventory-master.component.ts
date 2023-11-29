@@ -23,6 +23,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { QuarantineDialogComponent } from '../dialogs/quarantine-dialog/quarantine-dialog.component';
 import { UnquarantineDialogComponent } from '../dialogs/unquarantine-dialog/unquarantine-dialog.component';
+import {  AppNames ,ToasterTitle,ResponseStrings,ToasterType,KeyboardKeys,StringConditions,Column,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-inventory-master',
@@ -102,11 +103,11 @@ export class InventoryMasterComponent implements OnInit {
   eventsSubject: Subject<string> = new Subject<string>();
   reelSubject: Subject<string> = new Subject<string>();
 
-  @HostListener('window:scroll', ['$event']) // for window scroll events
-  @HostListener('document:keydown', ['$event'])
+  @HostListener('window:scroll', [UniqueConstants.event]) // for window scroll events
+  @HostListener('document:keydown', [UniqueConstants.event])
 
   //  SHORTCUT KEYS
-  @HostListener('document:keydown', ['$event'])
+  @HostListener('document:keydown', [UniqueConstants.event])
   handleKeyboardEvent(event: KeyboardEvent) {
     const target = event.target as HTMLElement;
 
@@ -245,7 +246,7 @@ export class InventoryMasterComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.setVal = localStorage.getItem('routeFromOrderStatus') === 'true';
+    this.setVal = localStorage.getItem('routeFromOrderStatus') === StringConditions.True;
     this.itemNumberParam$ = this.route.queryParamMap.pipe(map((params: ParamMap) => params.get('itemNumber')), );
     this.searchBoxField?.nativeElement.focus();
     this.itemNumberParam$.subscribe((param) => { 
@@ -273,15 +274,15 @@ export class InventoryMasterComponent implements OnInit {
       itemNumber: [this.getInvMasterData?.itemNumber || '', [Validators.required, Validators.maxLength(50)]],
       supplierItemID: [this.getInvMasterData?.supplierItemID || '', [Validators.maxLength(50)]],
       description: [this.getInvMasterData?.description || '', [Validators.maxLength(255)]],
-      reorderPoint: [this.getInvMasterData?.reorderPoint || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      replenishmentPoint: [this.getInvMasterData?.replenishmentPoint || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      reorderPoint: [this.getInvMasterData?.reorderPoint || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      replenishmentPoint: [this.getInvMasterData?.replenishmentPoint || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
       category: [this.getInvMasterData?.category || '', [Validators.maxLength(50)]],
-      reorderQuantity: [this.getInvMasterData?.reorderQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      replenishmentLevel: [this.getInvMasterData?.replenishmentLevel || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      reorderQuantity: [this.getInvMasterData?.reorderQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      replenishmentLevel: [this.getInvMasterData?.replenishmentLevel || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
       subCategory: [this.getInvMasterData?.subCategory || '', [Validators.maxLength(50)]],
       unitOfMeasure: [this.getInvMasterData?.unitOfMeasure || '', [Validators.maxLength(50)]],
-      kanbanReplenishmentPoint: [this.getInvMasterData?.kanbanReplenishmentPoint || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      kanbanReplenishmentLevel: [this.getInvMasterData?.kanbanReplenishmentLevel || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      kanbanReplenishmentPoint: [this.getInvMasterData?.kanbanReplenishmentPoint || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      kanbanReplenishmentLevel: [this.getInvMasterData?.kanbanReplenishmentLevel || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
 
       totalQuantity: [this.getInvMasterData?.totalQuantity || 0, [Validators.required]],
       wipCount: [this.getInvMasterData?.wipCount || 0, [Validators.required]],
@@ -293,9 +294,9 @@ export class InventoryMasterComponent implements OnInit {
 
       primaryPickZone: [this.getInvMasterData?.primaryPickZone.toLowerCase() || ''],
       secondaryPickZone: [this.getInvMasterData?.secondaryPickZone.toLowerCase()||''],
-      caseQuantity: [this.getInvMasterData?.caseQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      pickFenceQuantity: [this.getInvMasterData?.pickFenceQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      pickSequence: [this.getInvMasterData?.pickSequence || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      caseQuantity: [this.getInvMasterData?.caseQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      pickFenceQuantity: [this.getInvMasterData?.pickFenceQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      pickSequence: [this.getInvMasterData?.pickSequence || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
 
       dateSensitive: [this.getInvMasterData?.dateSensitive || false],
       warehouseSensitive: [this.getInvMasterData?.warehouseSensitive || false],
@@ -315,13 +316,13 @@ export class InventoryMasterComponent implements OnInit {
       bulkVelocity: [this.getInvMasterData?.bulkVelocity],
       cfVelocity: [this.getInvMasterData?.cfVelocity],
 
-      minimumQuantity: [this.getInvMasterData?.minimumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      bulkMinimumQuantity: [this.getInvMasterData?.bulkMinimumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      cfMinimumQuantity: [this.getInvMasterData?.cfMinimumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      minimumQuantity: [this.getInvMasterData?.minimumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      bulkMinimumQuantity: [this.getInvMasterData?.bulkMinimumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      cfMinimumQuantity: [this.getInvMasterData?.cfMinimumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
 
-      maximumQuantity: [this.getInvMasterData?.maximumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      bulkMaximumQuantity: [this.getInvMasterData?.bulkMaximumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
-      cfMaximumQuantity: [this.getInvMasterData?.cfMaximumQuantity || 0, [Validators.maxLength(9), Validators.pattern("^[0-9]*$")]],
+      maximumQuantity: [this.getInvMasterData?.maximumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      bulkMaximumQuantity: [this.getInvMasterData?.bulkMaximumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
+      cfMaximumQuantity: [this.getInvMasterData?.cfMaximumQuantity || 0, [Validators.maxLength(9), Validators.pattern(UniqueConstants.Regx)]],
 
       kitInventories: [this.getInvMasterData?.kitInventories || '', [Validators.required]],
 
@@ -335,7 +336,7 @@ export class InventoryMasterComponent implements OnInit {
       minimumUseScaleQuantity: [this.getInvMasterData?.minimumUseScaleQuantity || 0, [Validators.required]],
       useScale: [this.getInvMasterData?.useScale || false, [Validators.required]],
 
-      unitCost: [this.getInvMasterData?.unitCost || 0, [Validators.required, Validators.maxLength(11), Validators.pattern("^[0-9]*$")]],
+      unitCost: [this.getInvMasterData?.unitCost || 0, [Validators.required, Validators.maxLength(11), Validators.pattern(UniqueConstants.Regx)]],
       manufacturer: [this.getInvMasterData?.manufacturer || '', [Validators.maxLength(50)]],
       specialFeatures: [this.getInvMasterData?.specialFeatures || '', [Validators.maxLength(255)]],
 
@@ -368,7 +369,7 @@ export class InventoryMasterComponent implements OnInit {
         this.getInsertedItemNumber(res.data, init)
       }
       else{
-        this.global.ShowToastr('error',res.responseMessage, 'Error!');
+        this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
         console.log("GetInventoryItemNumber",res.responseMessage);
       }
     })
@@ -376,7 +377,7 @@ export class InventoryMasterComponent implements OnInit {
   }
 
   ApplySavedItem() {
-    if(this.router.getCurrentNavigation()?.extras?.state?.['searchValue'] ) return;
+    if(this.router.getCurrentNavigation()?.extras?.state?.[UniqueConstants.searchValue] ) return;
     this.searchValue = this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY]?.searchValue || '';
   }
 
@@ -395,7 +396,7 @@ export class InventoryMasterComponent implements OnInit {
     this.iAdminApiService.GetInventory(payLoad).subscribe((res: any) => {
       if(res.isExecuted)
       {
-        if (currentPageItemNumber == '') this.global.ShowToastr('error', 'No Data Found.', 'Error!');
+        if (currentPageItemNumber == '') this.global.ShowToastr(ToasterType.Error, 'No Data Found.', ToasterTitle.Error);
         this._searchValue = currentPageItemNumber;
         this.paginationData = {
           total: res.data?.filterCount.total,
@@ -407,7 +408,7 @@ export class InventoryMasterComponent implements OnInit {
         this.getInvMasterLocations(currentPageItemNumber);
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetInventory",res.responseMessage);
       }
     });
@@ -429,7 +430,7 @@ export class InventoryMasterComponent implements OnInit {
         this.getInvMasterData = res.data;
         this.initialzeIMFeilds();
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetInventoryMasterData",res.responseMessage);
       }
     });
@@ -451,7 +452,7 @@ export class InventoryMasterComponent implements OnInit {
         this.columns = res.data;
         this.fieldNames=this.columns
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("ColumnAlias",res.responseMessage);
       }
     });
@@ -472,7 +473,7 @@ export class InventoryMasterComponent implements OnInit {
         this.count = res.data.count 
         this.initialzeIMFeilds();
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetInventoryMasterLocation",res.responseMessage);
       }
     });
@@ -483,7 +484,7 @@ export class InventoryMasterComponent implements OnInit {
     this.iAdminApiService.GetLocationTable(payLoad).subscribe((res: any) => {
       if (res.isExecuted && res.data) this.locationTable = res.data;
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetLocationTable",res.responseMessage);
       }
     });
@@ -504,7 +505,7 @@ export class InventoryMasterComponent implements OnInit {
         this.getInventory();
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("NextItemNumber",res.responseMessage);
           
         }
@@ -531,14 +532,14 @@ export class InventoryMasterComponent implements OnInit {
         this.getInventory(init);
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("PreviousItemNumber",res.responseMessage);
 
         }
       })
     }
     else{
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("PreviousItemNumber");
 
     }
@@ -567,7 +568,7 @@ export class InventoryMasterComponent implements OnInit {
       resolve(this.currentPageItemNo)
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("PreviousItemNumber",res.responseMessage);
 
 
@@ -611,10 +612,10 @@ export class InventoryMasterComponent implements OnInit {
           this.saveDisabled = true;
           this.ifAllowed = false;
           this.getInventory();
-          this.global.ShowToastr('success',labels.alert.update, 'Success!');
+          this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
         } else {
           this.saveDisabled = false
-          this.global.ShowToastr('error',res.responseMessage, 'Error!');
+          this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
           console.log("UpdateInventoryMaster",res.responseMessage);
         }
       })
@@ -635,8 +636,8 @@ export class InventoryMasterComponent implements OnInit {
     this.isDialogOpen = true
     let dialogRef:any = this.global.OpenDialog(ItemNumberComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         itemNumber: this.addItemNumber!=''?this.addItemNumber:this.currentPageItemNo,
@@ -658,11 +659,11 @@ export class InventoryMasterComponent implements OnInit {
         }
         this.iAdminApiService.AddNewItem(payLoad).subscribe((res: any) => {
           if (res.isExecuted && res.data) {
-            this.global.ShowToastr('success',labels.alert.success, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
             this.currentPageItemNo = itemNumber;
             this.getInventory();
           } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
             console.log("AddNewItem",res.responseMessage);
           }
         })
@@ -680,24 +681,24 @@ export class InventoryMasterComponent implements OnInit {
     let itemToDelete = this.currentPageItemNo
 
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         actionMessage: `item :${this.searchValue}`,
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
       this.isDialogOpen = false
-      if (res == 'Yes') {
+      if (res == ResponseStrings.Yes) {
         let payLoad = {
           "itemNumber": itemToDelete,
           "append": true
         }
         this.iAdminApiService.DeleteItem(payLoad).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.global.ShowToastr('success',labels.alert.delete, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
             let payLoadNextItemNumber = {
               "itemNumber": this.currentPageItemNo,
               "filter": "1=1",
@@ -709,7 +710,7 @@ export class InventoryMasterComponent implements OnInit {
               this.getInventory();
             })
           } else {
-            this.global.ShowToastr('error','Delete failed!  Item exists in Inventory Map.  Please deallocate item from Inventory Map location(s) before deleting.', 'Error!');
+            this.global.ShowToastr(ToasterType.Error,'Delete failed!  Item exists in Inventory Map.  Please deallocate item from Inventory Map location(s) before deleting.', ToasterTitle.Error);
             console.log("DeleteItem",res.responseMessage);
           }
         })
@@ -720,8 +721,8 @@ export class InventoryMasterComponent implements OnInit {
   quarantineDialog(): void {
     this.isDialogOpen = true
     const dialogRef:any = this.global.OpenDialog(QuarantineDialogComponent, {
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((x) => {
@@ -733,10 +734,10 @@ export class InventoryMasterComponent implements OnInit {
         }
         this.iAdminApiService.UpdateInventoryMasterOTQuarantine(payLoad).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.global.ShowToastr('success',res.responseMessage, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
             this.getInventory();
           } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
             console.log("UpdateInventoryMasterOTQuarantine",res.responseMessage);
           }
         })
@@ -752,7 +753,7 @@ export class InventoryMasterComponent implements OnInit {
     this.isDialogOpen = false
     const dialogRef:any = this.global.OpenDialog(UnquarantineDialogComponent, {
       width: '450px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe((x) => {
@@ -764,10 +765,10 @@ export class InventoryMasterComponent implements OnInit {
         }
         this.iAdminApiService.UpdateInventoryMasterOTUnQuarantine(paylaod).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.global.ShowToastr('success',res.responseMessage, 'Success!');
+            this.global.ShowToastr(ToasterType.Success,res.responseMessage, ToasterTitle.Success);
             this.getInventory();
           } else {
-            this.global.ShowToastr('error',res.responseMessage, 'Error!');
+            this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
             console.log("UpdateInventoryMasterOTUnQuarantine",res.responseMessage);
           }
         })
@@ -777,15 +778,15 @@ export class InventoryMasterComponent implements OnInit {
 
   viewLocations() {
     this.RecordSavedItem();
-    if (this.setVal) this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
-    else if (this.spliUrl[1] == 'InductionManager') this.router.navigate(['/InductionManager/Admin/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
-    else this.router.navigate(['/admin/inventoryMap'], { state: { colHeader: 'itemNumber', colDef: 'Item Number', searchValue: this.currentPageItemNo } });
+    if (this.setVal) this.router.navigate(['/OrderManager/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: Column.ItemNumber, searchValue: this.currentPageItemNo } });
+    else if (this.spliUrl[1] == AppNames.InductionManager) this.router.navigate(['/InductionManager/Admin/InventoryMap'], { state: { colHeader: 'itemNumber', colDef: Column.ItemNumber, searchValue: this.currentPageItemNo } });
+    else this.router.navigate(['/admin/inventoryMap'], { state: { colHeader: 'itemNumber', colDef: Column.ItemNumber, searchValue: this.currentPageItemNo } });
   }
 
   handleFocusOut() {
     if (!this.isDataFound && this.isDataFoundCounter > 0) {
       this.isDataFoundCounter = 0;
-      this.global.ShowToastr('error','Value undefined Does not exist!', 'Error!');
+      this.global.ShowToastr(ToasterType.Error,'Value undefined Does not exist!', ToasterTitle.Error);
     }
   }
 
@@ -808,7 +809,7 @@ export class InventoryMasterComponent implements OnInit {
         }
       }
       else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("GetLocationTable",res.responseMessage);
       }
     });
@@ -816,7 +817,7 @@ export class InventoryMasterComponent implements OnInit {
 
   getSearchList(e: any):void {
     e.stopPropagation();
-    if (e.key === 'Enter') {
+    if (e.key === KeyboardKeys.Enter) {
       this.autocompleteTrigger.closePanel();
       this.searchValue = e.currentTarget.value;
       this.currentPageItemNo =e.currentTarget.value;
@@ -938,17 +939,17 @@ export class InventoryMasterComponent implements OnInit {
   async ConfirmationDialog(tabIndex) {
     const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
+      width: Style.w560px,
       data: {
         message: 'Changes you made may not be saved.',
         heading: 'Inventory Master'
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
-      if (result === 'Yes') { 
+      if (result === ResponseStrings.Yes) { 
         await this.getInvMasterDetail(this.searchValue);
         console.log(this.tabIndex);
         this.tabIndex = tabIndex;
@@ -961,7 +962,7 @@ export class InventoryMasterComponent implements OnInit {
     });
   }
 
-  @HostListener('window:beforeunload', ['$event'])
+  @HostListener('window:beforeunload', [UniqueConstants.event])
   onbeforeunload(event) {
     if (this.ifAllowed) {
       event.preventDefault();
@@ -969,7 +970,7 @@ export class InventoryMasterComponent implements OnInit {
     }
   }
 
-  @HostListener('document:keyup', ['$event'])
+  @HostListener('document:keyup', [UniqueConstants.event])
   documentClick(event: MouseEvent) {
     let IsCheck = this.getChangesCheck();
     if (IsCheck) this.ifAllowed = true;

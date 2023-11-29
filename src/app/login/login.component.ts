@@ -12,6 +12,7 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { IUserAPIService } from '../common/services/user-api/user-api-interface';
 import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
+import {  AppNames ,AppPermissions,AppRoutes,ToasterTitle,ToasterType,DialogConstants,dataCredientials} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'login',
@@ -68,7 +69,7 @@ export class LoginComponent {
     this.addLoginForm.username = this.addLoginForm.username?.replace(/\s/g, "")||null;
     this.addLoginForm.password = this.addLoginForm.password?.replace(/\s/g, "")||null;
     this.login = this.addLoginForm;
-    this.login.wsid = "TESTWSID";
+    this.login.wsid = dataCredientials.testWsid;
     this.iUserApi
       .login(this.login)
       .subscribe((response: any) => {
@@ -101,7 +102,7 @@ export class LoginComponent {
         }
         else {
           const errorMessage = response.responseMessage;
-          this.global.ShowToastr('error',errorMessage?.toString(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error,errorMessage?.toString(), ToasterTitle.Error);
           console.log("login",response.responseMessage);
         }
 
@@ -114,7 +115,7 @@ export class LoginComponent {
       if (response.isExecuted && response.data) {
         this.info = response.data;
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.error('Error: CompanyInfo request failed');
       }
     });
@@ -128,7 +129,7 @@ export class LoginComponent {
       localStorage.setItem('LastRoute', lastRoute);
     }
     if(this.auth.IsloggedIn()){
-      this.router.navigate(['/dashboard']);
+      this.router.navigate([AppRoutes.Dashboard]);
     }
     else{
       this.iUserApi.getSecurityEnvironment().subscribe((res:any) => {
@@ -141,12 +142,12 @@ export class LoginComponent {
           localStorage.setItem('workStation', JSON.stringify(workStation));
         }
         else{
-          this.global.ShowToastr('error','Kindly contact to administrator', 'Workstation is not set!');
+          this.global.ShowToastr(ToasterType.Error,'Kindly contact to administrator', 'Workstation is not set!');
           
         }
         }
         else {
-          this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+          this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
           console.log("getSecurityEnvironment",res.responseMessage);
         }
         
@@ -171,7 +172,7 @@ export class LoginComponent {
             this.getDefaultApp(wsid);
           }
           else {
-            this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
             console.log("AppNameByWorkstation",res.responseMessage);
 
           }
@@ -231,20 +232,20 @@ export class LoginComponent {
         permission: 'FlowRack Replenish',
       },
       {
-        appName: 'Consolidation Manager',
+        appName: AppPermissions.ConsolidationManager,
         route: '/ConsolidationManager',
         iconName: 'insert_chart',
-        name: 'Consolidation Manager',
+        name: AppPermissions.ConsolidationManager,
         updateMenu: '',
-        permission: 'Consolidation Manager',
+        permission: AppPermissions.ConsolidationManager,
       },
       {
         appName: 'Induction',
         route: '/InductionManager',
         iconName: 'checklist',
-        name: 'Induction Manager',
+        name: AppPermissions.InductionManager,
         updateMenu: 'induction',
-        permission: 'Induction Manager',
+        permission: AppPermissions.InductionManager,
       },
       {
         appName: 'ImportExport',
@@ -263,12 +264,12 @@ export class LoginComponent {
         permission: 'Markout',
       },
       {
-        appName: 'OrderManager',
+        appName: AppNames.OrderManager,
         route: '/OrderManager',
         iconName: 'pending_actions',
-        name: 'Order Manager',
+        name: AppPermissions.OrderManager,
         updateMenu: '',
-        permission: 'Order Manager',
+        permission: AppPermissions.OrderManager,
       },
       {
         appName: 'WorkManager',
@@ -302,12 +303,12 @@ export class LoginComponent {
            localStorage.removeItem('LastRoute');
          }
          else{
-           this.router.navigate(['/dashboard']);
+           this.router.navigate([AppRoutes.Dashboard]);
          }	
        }
     }
     else {
-      this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+      this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
       console.log("workstationdefaultapp",res.responseMessage);
     }
   
@@ -337,14 +338,14 @@ export class LoginComponent {
       
     }else{
     localStorage.setItem('isAppVerified',JSON.stringify({appName:appName,isVerified:false}))
-      this.router.navigate(['/dashboard']);
+      this.router.navigate([AppRoutes.Dashboard]);
     }
   }
 
   redirection(appName){
 
     switch (appName) {
-      case 'Consolidation Manager':
+      case AppPermissions.ConsolidationManager:
         this.router.navigate(['/#']);
         break;
       case 'FlowRackReplenish':
@@ -362,7 +363,7 @@ export class LoginComponent {
         case 'Markout':
           this.router.navigate(['/#']);
             break;
-         case 'OrderManager':
+         case AppNames.OrderManager:
           this.router.navigate(['/#']);
             break;
              case 'WorkManager':
@@ -370,7 +371,7 @@ export class LoginComponent {
             break;
          
       default:
-        this.router.navigate(['/dashboard']);
+        this.router.navigate([AppRoutes.Dashboard]);
         break;
     }
   }
@@ -379,7 +380,7 @@ export class LoginComponent {
     let dialogRef:any = this.global.OpenDialog(ChangePasswordComponent, {
       height: 'auto',
       width: '500px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -392,10 +393,10 @@ export class LoginComponent {
     let customPerm = [
       'Home',
       'Import Export',
-      'Induction Manager',
+      AppPermissions.InductionManager,
       'Work Manager',
-      'Consolidation Manager',
-      'Order Manager',
+      AppPermissions.ConsolidationManager,
+      AppPermissions.OrderManager,
       'Admin Menu',
       'FlowRack Replenish',
       'Markout',

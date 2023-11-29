@@ -21,7 +21,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,TableConstant,ResponseStrings,TransactionType,Column,zoneType,DialogConstants,Style,UniqueConstants,FilterColumnName,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-current-order',
@@ -32,44 +32,44 @@ export class SrCurrentOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
   @Input() TabIndex:any;
   displayedColumns2: string[] = [
-    'Item Number',
+    Column.ItemNumber,
     'Trans Type',
-    'warehouse',
-    'zone',
-    'carousel',
-    'row',
-    'shelf',
-    'bin',
-    'cell',
-    'lotNumber',
+    TableConstant.WareHouse,
+    TableConstant.zone,
+    zoneType.carousel,
+    Column.Row,
+    TableConstant.shelf,
+    ColumnDef.Bin,
+    Column.cell,
+    TableConstant.LotNumber,
     'Trans Qty',
-    'description',
-    'Order Number',
+    UniqueConstants.Description,
+    Column.OrderNumber,
     'UofM',
-    'Batch Pick ID',
-    'Serial Number',
-    'Completed Date',
+    ColumnDef.BatchPickID,
+    ColumnDef.SerialNumber,
+    TableConstant.CompletedDate,
     'Print Date',
-    'action',
+    ColumnDef.Action,
   ];
   coloumnTable = [
-    { defination: 'Item Number', label: 'Item Num', value: 'itemNumber',filterProperty:'Item Number'},
-    { defination: 'Trans Type', label: 'Trans Type', value: 'transactionType',filterProperty:'Transaction Type' },
-    { defination: 'warehouse', label: 'Warehouse', value: 'warehouse', filterProperty:'Warehouse'},
-    { defination: 'zone', label: 'Zone', value: 'zone', filterProperty:'Zone' },
-    { defination: 'carousel', label: 'Carsl', value: 'carousel', filterProperty:'Carousel' },
-    { defination: 'row', label: 'Row', value: 'row', filterProperty:'Row' },
-    { defination: 'shelf', label: 'Shelf', value: 'shelf', filterProperty:'Shelf' },
-    { defination: 'bin', label: 'Bin', value: 'bin', filterProperty:'Bin' },
-    { defination: 'cell', label: 'Cell', value: 'cell', filterProperty:'Cell' },
-    { defination: 'lotNumber', label: 'Lot Number', value: 'lotNumber', filterProperty:'lot Number' },
-    { defination: 'Trans Qty', label: 'Trans Qty', value: 'transactionQuantity' , filterProperty:'Trans Qty'},
-    { defination: 'description', label: 'Description', value: 'description', filterProperty:'Description' },
-    { defination: 'Order Number', label: 'Order Number', value: 'orderNumber', filterProperty:'Order Number' },
-    { defination: 'UofM', label: 'UofM', value: 'unitOfMeasure', filterProperty:'UofM' },
-    { defination: 'Batch Pick ID', label: 'Batch Pick ID', value: 'batchPickID', filterProperty:'Batch Pick ID' },
-    { defination: 'Serial Number', label: 'Serial Number', value: 'serialNumber', filterProperty:'Serial Number' },
-    { defination: 'Completed Date', label: 'Comp Date', value: 'completedDate', filterProperty:'Comp Date' },
+    { defination: Column.ItemNumber, label: 'Item Num', value: 'itemNumber',filterProperty:Column.ItemNumber},
+    { defination: 'Trans Type', label: 'Trans Type', value: TableConstant.transactionType,filterProperty:TableConstant.TransactionType },
+    { defination: TableConstant.WareHouse, label: ColumnDef.Warehouse, value: TableConstant.WareHouse, filterProperty:ColumnDef.Warehouse},
+    { defination: TableConstant.zone, label: ColumnDef.Zone, value: TableConstant.zone, filterProperty:ColumnDef.Zone },
+    { defination: zoneType.carousel, label: 'Carsl', value: zoneType.carousel, filterProperty:TableConstant.Carousel },
+    { defination: Column.Row, label: TableConstant.Row, value: Column.Row, filterProperty:TableConstant.Row },
+    { defination: TableConstant.shelf, label: TableConstant.shelf, value: TableConstant.shelf, filterProperty:TableConstant.shelf },
+    { defination: ColumnDef.Bin, label: TableConstant.Bin, value: ColumnDef.Bin, filterProperty:TableConstant.Bin },
+    { defination: Column.cell, label: TableConstant.Cell, value: Column.cell, filterProperty:TableConstant.Cell },
+    { defination: TableConstant.LotNumber, label: Column.LotNumber, value: TableConstant.LotNumber, filterProperty:'lot Number' },
+    { defination: 'Trans Qty', label: 'Trans Qty', value: ColumnDef.TransactionQuantity , filterProperty:'Trans Qty'},
+    { defination: UniqueConstants.Description, label: Column.Description, value: UniqueConstants.Description, filterProperty:Column.Description },
+    { defination: Column.OrderNumber, label: Column.OrderNumber, value: UniqueConstants.OrderNumber, filterProperty:Column.OrderNumber },
+    { defination: 'UofM', label: 'UofM', value: ColumnDef.UnitOfMeasure, filterProperty:'UofM' },
+    { defination: ColumnDef.BatchPickID, label: ColumnDef.BatchPickID, value: TableConstant.BatchPickID, filterProperty:ColumnDef.BatchPickID },
+    { defination: ColumnDef.SerialNumber, label: ColumnDef.SerialNumber, value: TableConstant.SerialNumber, filterProperty:ColumnDef.SerialNumber },
+    { defination: TableConstant.CompletedDate, label: 'Comp Date', value: 'completedDate', filterProperty:'Comp Date' },
     { defination: 'Print Date', label: 'Print Date', value: 'printDate', filterProperty:'Print Date' },
   ];
   noOfPicks: number = 0;
@@ -83,9 +83,9 @@ export class SrCurrentOrderComponent implements OnInit {
     searchString: '',
     searchColumn: '',
     sortColumn: '',
-    sortDir: 'asc',
-    status: 'All',
-    filter: '1=1',
+    sortDir: UniqueConstants.Asc,
+    status: ResponseStrings.AllCaps,
+    filter: UniqueConstants.OneEqualsOne,
     username: '',
     wsid: '',
   };
@@ -94,14 +94,14 @@ export class SrCurrentOrderComponent implements OnInit {
   tableDataTotalCount: number = 0;
   searchColumnOptions: any = [
     {
-      value: 'Batch Pick ID',
-      viewValue: 'Batch Pick ID',
+      value: ColumnDef.BatchPickID,
+      viewValue: ColumnDef.BatchPickID,
       sortColumn: '14',
-      key: 'batchPickID',
+      key: TableConstant.BatchPickID,
     },
-    { value: 'Bin', viewValue: 'Bin', sortColumn: '7', key: 'bin' },
-    { value: 'Carsl', viewValue: 'Carsl', sortColumn: '4', key: 'carousel' },
-    { value: 'Cell', viewValue: 'Cell', sortColumn: '8', key: 'cell' },
+    { value: TableConstant.Bin, viewValue: TableConstant.Bin, sortColumn: '7', key: ColumnDef.Bin },
+    { value: 'Carsl', viewValue: 'Carsl', sortColumn: '4', key: zoneType.carousel },
+    { value: TableConstant.Cell, viewValue: TableConstant.Cell, sortColumn: '8', key: Column.cell },
     {
       value: 'Comp Date',
       viewValue: 'Comp Date',
@@ -109,28 +109,28 @@ export class SrCurrentOrderComponent implements OnInit {
       key: 'completedDate',
     },
     {
-      value: 'Description',
-      viewValue: 'Description',
+      value: Column.Description,
+      viewValue: Column.Description,
       sortColumn: '11',
-      key: 'description',
+      key: UniqueConstants.Description,
     },
     {
-      value: 'Item Number',
-      viewValue: 'Item Number',
+      value: Column.ItemNumber,
+      viewValue: Column.ItemNumber,
       sortColumn: '0',
       key: 'itemNumber',
     },
     {
-      value: 'Lot Number',
-      viewValue: 'Lot Number',
+      value: Column.LotNumber,
+      viewValue: Column.LotNumber,
       sortColumn: '9',
-      key: 'lotNumber',
+      key: TableConstant.LotNumber,
     },
     {
-      value: 'Order Number',
-      viewValue: 'Order Number',
+      value: Column.OrderNumber,
+      viewValue: Column.OrderNumber,
       sortColumn: '12',
-      key: 'orderNumber',
+      key: UniqueConstants.OrderNumber,
     },
     {
       value: 'Print Date',
@@ -138,39 +138,39 @@ export class SrCurrentOrderComponent implements OnInit {
       sortColumn: '17',
       key: 'printDate',
     },
-    { value: 'Row', viewValue: 'Row', sortColumn: '5', key: 'row' },
+    { value: TableConstant.Row, viewValue: TableConstant.Row, sortColumn: '5', key: Column.Row },
     {
-      value: 'Serial Number',
-      viewValue: 'Serial Number',
+      value: ColumnDef.SerialNumber,
+      viewValue: ColumnDef.SerialNumber,
       sortColumn: '15',
-      key: 'serialNumber',
+      key: TableConstant.SerialNumber,
     },
-    { value: 'Shelf', viewValue: 'Shelf', sortColumn: '6', key: 'shelf' },
+    { value: TableConstant.shelf, viewValue: TableConstant.shelf, sortColumn: '6', key: TableConstant.shelf },
     {
       value: 'Trans Qty',
       viewValue: 'Trans Qty',
       sortColumn: '10',
-      key: 'transactionQuantity',
+      key: ColumnDef.TransactionQuantity,
     },
     {
-      value: 'Transaction Type',
+      value: TableConstant.TransactionType,
       viewValue: 'Trans Type',
       sortColumn: '1',
-      key: 'transactionType',
+      key: TableConstant.transactionType,
     },
     {
       value: 'UofM',
       viewValue: 'UofM',
       sortColumn: '13',
-      key: 'unitOfMeasure',
+      key: ColumnDef.UnitOfMeasure,
     },
     {
-      value: 'Warehouse',
-      viewValue: 'Warehouse',
+      value: ColumnDef.Warehouse,
+      viewValue: ColumnDef.Warehouse,
       sortColumn: '2',
-      key: 'warehouse',
+      key: TableConstant.WareHouse,
     },
-    { value: 'Zone', viewValue: 'Zone', sortColumn: '3', key: 'zone' },
+    { value: ColumnDef.Zone, viewValue: ColumnDef.Zone, sortColumn: '3', key: TableConstant.zone },
   ];
   repByDeletePayload: any = {
     identity: '',
@@ -205,7 +205,7 @@ export class SrCurrentOrderComponent implements OnInit {
     }, 100);
   }
 
-  filterString : string = "1 = 1";
+  filterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.tablePayloadObj.filter = filter;
@@ -284,7 +284,7 @@ export class SrCurrentOrderComponent implements OnInit {
 
   updateCounts() {
     this.noOfPutAways = this.filteredTableData.filter(
-      (item: any) => item.transactionType == 'Put Away'
+      (item: any) => item.transactionType == TransactionType.PutAway
     ).length;
     this.noOfPicks = this.filteredTableData.filter(
       (item: any) => item.transactionType == 'Pick'
@@ -333,19 +333,19 @@ export class SrCurrentOrderComponent implements OnInit {
   printOrders() {
     switch (this.tablePayloadObj.searchColumn) {
       case 'Trans Type':
-        this.tablePayloadObj.searchColumn = 'Transaction Type';
+        this.tablePayloadObj.searchColumn = TableConstant.TransactionType;
         break;
       case 'Carsl':
-        this.tablePayloadObj.searchColumn = 'Carousel';
+        this.tablePayloadObj.searchColumn = TableConstant.Carousel;
         break;
       case 'Trans Qty':
-        this.tablePayloadObj.searchColumn = 'Transaction Quantity';
+        this.tablePayloadObj.searchColumn = TableConstant.TransactionQuantity;
         break;
       case 'UofM':
-        this.tablePayloadObj.searchColumn = 'Unit of Measure';
+        this.tablePayloadObj.searchColumn = FilterColumnName.unitOfMeasure;
         break;
       case 'Comp Date':
-        this.tablePayloadObj.searchColumn = 'Completed Date';
+        this.tablePayloadObj.searchColumn = TableConstant.CompletedDate;
         break;
       default:
         break;
@@ -359,7 +359,7 @@ export class SrCurrentOrderComponent implements OnInit {
       }|searchColumn:${this.tablePayloadObj.searchColumn}|Status:${
         this.tablePayloadObj.status
       }|filter:${this.tablePayloadObj.filter}|ident:Orders`,
-      'lbl'
+      UniqueConstants.Ibl
     );
   }
 
@@ -374,7 +374,7 @@ export class SrCurrentOrderComponent implements OnInit {
   printLabels() {
     const dialogRef: any = this.global.OpenDialog(PrintReplenLabelsComponent, {
       width: '1100px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {},
     });
@@ -382,19 +382,19 @@ export class SrCurrentOrderComponent implements OnInit {
       if (result) {
         switch (this.tablePayloadObj.searchColumn) {
           case 'Trans Type':
-            this.tablePayloadObj.searchColumn = 'Transaction Type';
+            this.tablePayloadObj.searchColumn = TableConstant.TransactionType;
             break;
           case 'Carsl':
-            this.tablePayloadObj.searchColumn = 'Carousel';
+            this.tablePayloadObj.searchColumn = TableConstant.Carousel;
             break;
           case 'Trans Qty':
-            this.tablePayloadObj.searchColumn = 'Transaction Quantity';
+            this.tablePayloadObj.searchColumn = TableConstant.TransactionQuantity;
             break;
           case 'UofM':
-            this.tablePayloadObj.searchColumn = 'Unit of Measure';
+            this.tablePayloadObj.searchColumn = FilterColumnName.unitOfMeasure;
             break;
           case 'Comp Date':
-            this.tablePayloadObj.searchColumn = 'Completed Date';
+            this.tablePayloadObj.searchColumn = TableConstant.CompletedDate;
             break;
           default:
             break;
@@ -409,7 +409,7 @@ export class SrCurrentOrderComponent implements OnInit {
           }|PrintAll:${1}|filter:${this.tablePayloadObj.filter}|Sort:${
             this.tableData.sort
           }|ident:Labels`,
-          'lbl'
+          UniqueConstants.Ibl
         );
       }
     });
@@ -418,17 +418,17 @@ export class SrCurrentOrderComponent implements OnInit {
   deleteAllOrders() {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         mode: 'delete-all-current-orders',
         ErrorMessage: 'Are you sure you want to delete all records',
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         this.repByDeletePayload.identity = 'ALL';
         this.repByDeletePayload.filter1 = '';
         this.repByDeletePayload.filter2 = '';
@@ -443,18 +443,18 @@ export class SrCurrentOrderComponent implements OnInit {
   deleteShownOrders() {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         mode: 'delete-shown-current-orders',
         ErrorMessage:
           'Are you sure you want to delete all records that are currently dipslayed',
-        action: 'delete',
+        action: UniqueConstants.delete,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         this.repByDeletePayload.identity = 'Shown';
         this.repByDeletePayload.filter1 = '';
         this.repByDeletePayload.filter2 = '';
@@ -471,7 +471,7 @@ export class SrCurrentOrderComponent implements OnInit {
   deleteRange() {
     const dialogRef: any = this.global.OpenDialog(DeleteRangeComponent, {
       width: '900px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {},
     });
@@ -486,8 +486,8 @@ export class SrCurrentOrderComponent implements OnInit {
     if (this.selectedOrder.rowNumber == undefined) {
       const dialogRef: any = this.global.OpenDialog(SrDeleteOrderComponent, {
         height: 'auto',
-        width: '600px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w600px,
+        autoFocus: DialogConstants.autoFocus,
         disableClose: true,
         data: {
           orderNumber: null,
@@ -499,7 +499,7 @@ export class SrCurrentOrderComponent implements OnInit {
         this.deleteSelectedConfirm,
         {
           width: '550px',
-          autoFocus: '__non_existing_element__',
+          autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         }
       );
@@ -513,8 +513,8 @@ export class SrCurrentOrderComponent implements OnInit {
     this.repByDeletePayload.filter1 = '';
     this.repByDeletePayload.filter2 = '';
     this.repByDeletePayload.searchString = this.selectedOrder.orderNumber;
-    this.repByDeletePayload.searchColumn = 'Order Number';
-    this.repByDeletePayload.status = 'All';
+    this.repByDeletePayload.searchColumn = Column.OrderNumber;
+    this.repByDeletePayload.status = ResponseStrings.AllCaps;
     this.ReplenishmentsByDelete();
     this.selectedOrder = {};
   }
@@ -543,7 +543,7 @@ export class SrCurrentOrderComponent implements OnInit {
   }
 
   showChange(event: any) {
-    if (event == 'All' || event == 'Open' || event == 'Completed') {
+    if (event == ResponseStrings.AllCaps || event == 'Open' || event == 'Completed') {
       this.tablePayloadObj.status = event;
       this.newReplenishmentOrders();
     }
@@ -610,7 +610,7 @@ export class SrCurrentOrderComponent implements OnInit {
   viewItemInInventoryMaster(element: any) {
     window.open(
       `/#/admin/inventoryMaster?itemNumber=${element.itemNumber}`,
-      '_blank',
+      UniqueConstants._blank,
       'location=yes'
     );
   }

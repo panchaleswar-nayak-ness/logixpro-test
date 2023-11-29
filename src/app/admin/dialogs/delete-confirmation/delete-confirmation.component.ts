@@ -13,7 +13,7 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { Mode, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Mode, ToasterTitle, ToasterType ,ResponseStrings,dataCredientials} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-delete-confirmation',
@@ -188,7 +188,7 @@ export class DeleteConfirmationComponent implements OnInit {
         let emp_data = {
           userName: this.data.emp_data.username,
           deleteBy: this.userData.userName,
-          wsid: 'TESTWSID',
+          wsid: dataCredientials.testWsid,
         };
         this.iAdminApiService
           .deleteAdminEmployee(emp_data)
@@ -222,7 +222,7 @@ export class DeleteConfirmationComponent implements OnInit {
         };
         this.iCommonAPI.dltWareHouse(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.dialogRef.close('Yes');
+            this.dialogRef.close(ResponseStrings.Yes);
             this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
           } else {
             this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
@@ -235,7 +235,7 @@ export class DeleteConfirmationComponent implements OnInit {
         };
         this.iCommonAPI.dltVelocityCode(emp_data).subscribe((res: any) => {
           if (res.isExecuted) {
-            this.dialogRef.close('Yes');
+            this.dialogRef.close(ResponseStrings.Yes);
             this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
           } else {
             this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
@@ -310,7 +310,7 @@ export class DeleteConfirmationComponent implements OnInit {
             (res: any) => {
               if (res.isExecuted) {
                 this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
-                this.dialogRef.close('Yes');
+                this.dialogRef.close(ResponseStrings.Yes);
               } else {
                 this.global.ShowToastr(ToasterType.Error, labels.alert.went_worng, ToasterTitle.Error);
                 this.dialogRef.close({ isExecuted: false });
@@ -322,9 +322,9 @@ export class DeleteConfirmationComponent implements OnInit {
             }
           );
       } 
-      else this.dialogRef.close('Yes');
+      else this.dialogRef.close(ResponseStrings.Yes);
     } 
-    else this.dialogRef.close('Yes');
+    else this.dialogRef.close(ResponseStrings.Yes);
   }
 
   checkOptions(event: MatCheckboxChange): void {

@@ -2,6 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import {  UniqueConstants } from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -24,124 +25,124 @@ export class StatisticsLookupComponent implements OnInit {
       pet: 'Cat'
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
-      name: 'Lindsay',
+      name: UniqueConstants.Lindsay,
       id: 3,
-      colour: 'Blue',
-      pet: 'Lizard'
+      colour: UniqueConstants.Blue,
+      pet: UniqueConstants.Lizard
     },
     {
       name: 'Megan',

@@ -23,6 +23,7 @@ import { CmToteIdUpdateModalComponent } from '../cm-tote-id-update-modal/cm-tote
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
+import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,KeyboardKeys,ToasterMessages,DialogConstants,Style,TableConstant,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-shipping-transaction',
@@ -38,13 +39,13 @@ export class CmShippingTransactionComponent implements OnInit {
 
   displayedColumns: string[] = [
     'itemNumber',
-    'lineNumber',
-    'toteID',
-    'transactionQuantity',
-    'completedQuantity',
+    TableConstant.LineNumber,
+    ColumnDef.ToteID,
+    ColumnDef.TransactionQuantity,
+    TableConstant.completedQuantity,
     'containerID',
     'shipQuantity',
-    'action',
+    ColumnDef.Action,
   ];
   OldTableData: any;
   tableData: any;
@@ -87,7 +88,7 @@ export class CmShippingTransactionComponent implements OnInit {
             this.tableData = new MatTableDataSource(this.STIndex.tableData);
             this.tableData.paginator = this.paginator;
           } else {
-            this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+            this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log('ShippingTransactionIndex', res.responseMessage);
           }
         },
@@ -97,8 +98,8 @@ export class CmShippingTransactionComponent implements OnInit {
   }
 
   async onKey(event: any, type: string) {
-    if (event.key === 'Enter') {
-      // Check if the user pressed the 'Enter' key
+    if (event.key === KeyboardKeys.Enter) {
+      // Check if the user pressed the KeyboardKeys.Enter key
       if (type == 'toteIDtoUpdate' && this.toteID != '') {
         // Check if the user entered a tote ID
         this.checkToteID(); // If the user entered a tote ID, call the checkToteID() function
@@ -124,9 +125,9 @@ export class CmShippingTransactionComponent implements OnInit {
     if (noExists) {
       // this is a conditional statement that will check the flag to see if the toteID does not exist in the data
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'The given Tote ID is not contained within this order number',
-        'Error!'
+        ToasterTitle.Error
       );
     }
   }
@@ -137,7 +138,7 @@ export class CmShippingTransactionComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(CmToteIdUpdateModalComponent, {
       height: 'auto',
       width: '40vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         toteID: this.toteID,
@@ -172,17 +173,17 @@ export class CmShippingTransactionComponent implements OnInit {
           if (res.isExecuted) {
             if (res.data == -1) {
               this.global.ShowToastr(
-                'error',
+                ToasterType.Error,
                 'An error has occurred',
-                'Error!'
+                ToasterTitle.Error
               );
             } else if (res.data == 0) {
               let dialogRef: any = this.global.OpenDialog(
                 ConfirmationDialogComponent,
                 {
                   height: 'auto',
-                  width: '560px',
-                  autoFocus: '__non_existing_element__',
+                  width: Style.w560px,
+                  autoFocus: DialogConstants.autoFocus,
                   disableClose: true,
                   data: {
                     message:
@@ -192,25 +193,25 @@ export class CmShippingTransactionComponent implements OnInit {
               );
 
               dialogRef.afterClosed().subscribe((result) => {
-                if (result == 'Yes') {
+                if (result == ResponseStrings.Yes) {
                   this.IconsolidationAPI.CompletePackingUpdate(
                     payLoad
                   ).subscribe(
                     (res: any) => {
                       if (res.isExecuted) {
                         this.global.ShowToastr(
-                          'success',
+                          ToasterType.Success,
                           'Packing Completed Successfully',
-                          'Success!'
+                          ToasterTitle.Success
                         );
                         this.dialogRef.close({
                           isExecuted: true,
                         });
                       } else {
                         this.global.ShowToastr(
-                          'error',
-                          'Something went wrong',
-                          'Error!'
+                          ToasterType.Error,
+                          ToasterMessages.SomethingWentWrong,
+                          ToasterTitle.Error
                         );
                         console.log(
                           'CompletePackingUpdate',
@@ -227,8 +228,8 @@ export class CmShippingTransactionComponent implements OnInit {
                 ConfirmationDialogComponent,
                 {
                   height: 'auto',
-                  width: '560px',
-                  autoFocus: '__non_existing_element__',
+                  width: Style.w560px,
+                  autoFocus: DialogConstants.autoFocus,
                   disableClose: true,
                   data: {
                     message:
@@ -238,13 +239,13 @@ export class CmShippingTransactionComponent implements OnInit {
               );
 
               dialogRef1.afterClosed().subscribe((result) => {
-                if (result == 'Yes') {
+                if (result == ResponseStrings.Yes) {
                   let dialogRef2: any = this.global.OpenDialog(
                     ConfirmationDialogComponent,
                     {
                       height: 'auto',
-                      width: '560px',
-                      autoFocus: '__non_existing_element__',
+                      width: Style.w560px,
+                      autoFocus: DialogConstants.autoFocus,
                       disableClose: true,
                       data: {
                         message:
@@ -254,25 +255,25 @@ export class CmShippingTransactionComponent implements OnInit {
                   );
 
                   dialogRef2.afterClosed().subscribe((result) => {
-                    if (result == 'Yes') {
+                    if (result == ResponseStrings.Yes) {
                       this.IconsolidationAPI.CompletePackingUpdate(
                         payLoad
                       ).subscribe(
                         (res: any) => {
                           if (res.isExecuted) {
                             this.global.ShowToastr(
-                              'success',
+                              ToasterType.Success,
                               'Packing Completed Successfully',
-                              'Success!'
+                              ToasterTitle.Success
                             );
                             this.dialogRef.close({
                               isExecuted: true,
                             });
                           } else {
                             this.global.ShowToastr(
-                              'error',
-                              'Something went wrong',
-                              'Error!'
+                              ToasterType.Error,
+                              ToasterMessages.SomethingWentWrong,
+                              ToasterTitle.Error
                             );
                             console.log(
                               'CompletePackingUpdate',
@@ -290,7 +291,7 @@ export class CmShippingTransactionComponent implements OnInit {
               });
             }
           } else {
-            this.global.ShowToastr('error', 'Something went wrong', 'Error!');
+            this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             console.log('SelCountOfOpenTransactionsTemp', res.responseMessage);
           }
         },
@@ -307,8 +308,8 @@ export class CmShippingTransactionComponent implements OnInit {
   openShipSplitLine(order: any, i: any) {
     let dialogRef: any = this.global.OpenDialog(CmShipSplitLineComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         order,
@@ -332,7 +333,7 @@ export class CmShippingTransactionComponent implements OnInit {
   openShipPrintItemLabel(order: any, i: any) {
     this.global.Print(
       `FileName:PrintShipTransLabel|ST_ID:${order.sT_ID}`,
-      'lbl'
+      UniqueConstants.Ibl
     );
   }
 
@@ -340,8 +341,8 @@ export class CmShippingTransactionComponent implements OnInit {
   openShipEditQuantity(order: any, i: any) {
     let dialogRef: any = this.global.OpenDialog(CmShipEditQtyComponent, {
       height: 'auto',
-      width: '50vw',
-      autoFocus: '__non_existing_element__',
+      width: Style.w50vw,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         reasons: this.STIndex.reasons,
@@ -362,7 +363,7 @@ export class CmShippingTransactionComponent implements OnInit {
     let dialogRef: any = this.global.OpenDialog(CmShipEditConIdComponent, {
       height: 'auto',
       width: '40vw',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         order,
@@ -383,7 +384,7 @@ export class CmShippingTransactionComponent implements OnInit {
       // Announce the sort direction, and the fact that sorting is cleared.
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
     }
 
     // Set the data source's sort property to the new sort.

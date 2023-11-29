@@ -37,6 +37,7 @@ export const StringConditions = {
     BatchToteTrans: 'batch_tote_trans',
     BatchTote: 'batch_tote',
     AllTransaction: 'All Transaction',
+    AllTransactions: 'All Transactions',
     Batch: 'Batch',
     BatchWithID:'batchWithID',
     PrintBatch:'PrintBatch',
@@ -61,7 +62,14 @@ export const StringConditions = {
     set_column_sq : 'set_column_sq',
     hold: 'hold',
     reprocess: 'reprocess',
-    complete: 'complete'
+    complete: 'complete',
+    start:'start',
+    False:'False',
+    clear:'clear',
+    filter:'filter',
+    MoveTo:'MoveTo',
+    edit:'edit',
+    MoveFrom:'MoveFrom'
 }
 
 export const ResponseStrings = {
@@ -198,6 +206,7 @@ export const AppRoutes = {
     InductionManagerAdminInventoryMap:'/InductionManager/Admin/InventoryMap',
     Dashboard: '/dashboard',
     InductionManagerAdmin:'/InductionManager/Admin',
+    
 }
 
 export const AppIcons = {
@@ -221,6 +230,7 @@ export const RouteNames = {
     WorkManager: 'Work Manager'
 }
 
+
 export const RouteUpdateMenu = {
     Admin: 'admin',
     Consolidation: 'consolidation',
@@ -228,7 +238,9 @@ export const RouteUpdateMenu = {
     Empty: '',
     OrderManager: 'orderManager',
     TransactionAdmin: 'transaction-admin',
-    FlowReplenishment: 'FlowReplenishment'
+    FlowReplenishment: 'FlowReplenishment',
+    RouteFromInduction:'routeFromInduction'
+    
 }
 
 export const AppPermissions = {
@@ -350,7 +362,39 @@ export const Column = {
     ToteID: 'Tote ID',
     LineNumber: 'Line Number',
     LotNumber: 'Lot Number',
-    Location: 'Location'
+    Location: 'Location',
+    Description:'Description',
+    TransType: 'transType',
+    Action:'action',
+    cell:'cell',
+    Row:'row'
+}
+export const ColumnDef= {
+    userField1:'userField1',
+    userField2:'userField2',
+    userField3:'userField3',
+    userField4:'userField4',
+    userField5:'userField5',
+    userField6:'userField6',
+    userField7:'userField7',
+    userField8:'userField8',
+    userField9:'userField9',
+    userField10:'userField10',
+    Emergency:'Emergency',
+    HostTransactionId:'hostTransactionID',
+    Zone:'Zone',
+    BatchPickID:'Batch Pick ID',
+    Revision:'revision',
+    ExpirationDate:'expirationDate',
+    Actions:'actions',
+    Action:'action',
+    ToteID:'toteID',
+    TransactionQuantity:'transactionQuantity',
+    UnitOfMeasure:'unitOfMeasure',
+    SerialNumber:'Serial Number',
+    Bin:'bin',
+    Warehouse:'Warehouse',
+    RequiredDate:'requiredDate'
 }
 
 export const Case = {
@@ -387,3 +431,75 @@ export const TableName = {
     ReProcessed: 'ReProcessed',
     TransactionHistory: 'Transaction History'
 }
+export const TableConstant = {
+    CompletedDate:'Completed Date',
+    HostTransactionID:'Host Transaction ID',
+    LineSequence:'lineSequence',
+    UserField1:'User Field1',
+    UserField2:'User Field2',
+    Revision:'Revision',
+    ExpirationDate: 'Expiration Date',
+    ImportBy:'importBy',
+    Cell:'Cell',
+    TransactionQuantity:'Transaction Quantity',
+    ImportDate:'importDate',
+    zone:'zone',
+    TransactionType: 'Transaction Type',
+    Row:'Row',
+    shelf:'shelf',
+    Shelf:'Shelf',
+    Bin:'Bin',
+    Carousel:'Carousel',
+    Notes:'notes',
+    label:'label',
+    completedQuantity:'completedQuantity',
+    transactionType:'transactionType',
+    BatchPickID:'batchPickID',
+    Location: 'location',
+    LineNumber:'lineNumber',
+    WareHouse:'warehouse',
+    SerialNumber:'serialNumber',
+    LotNumber: 'lotNumber',
+}
+export const UniqueConstants = {
+    backClass:'back-class',
+    _blank:'_blank',
+    position : 'position',
+    goldenZone:'goldenZone',
+    searchValue:'searchValue',
+    event:'$event',
+    delete:'delete',
+    Asc:'asc',
+    Description:"description",
+    Priority:'priority',
+    constantDate:"12/14/2022",
+    Select:'select',
+    emergency:'emergency',
+    _self:'_self',
+    cellSize:'cellSize',
+    item:'item',
+    itemCount:'itemCount',
+    OneEqualsOne:'1 = 1',
+    Lizard:'Lizard',
+    Lindsay:'Lindsay',
+    Blue:'Blue',
+    Ibl:'lbl',
+    OrderNumber:'orderNumber',
+    Regx:"^[0-9]*$"
+    
+}
+export const Style = {
+    w560px:'560px',
+    w100vw:'100vw',
+    w50vw:'50vw',
+    w480px:'480px',
+    w600px:'600px',
+    w786px:'786px'
+}  
+export const FilterColumnName = {
+    unitOfMeasure:'Unit of Measure'
+}
+export const dataCredientials={
+    testWsid: 'TESTWSID'
+}
+

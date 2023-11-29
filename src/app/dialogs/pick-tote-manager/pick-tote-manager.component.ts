@@ -26,6 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  TableConstant ,ToasterTitle,ResponseStrings,Column,ToasterType,zoneType,DialogConstants,ColumnDef,UniqueConstants,Style,StringConditions} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   name: string;
@@ -47,7 +48,7 @@ export class PickToteManagerComponent implements OnInit {
 
   @ViewChild('field_focus') field_focus: ElementRef;
 
-  isFilter: string = 'filter';
+  isFilter: string = StringConditions.filter;
   savedFilterList: any[] = [];
   filteredOptions: Observable<any[]>;
   savedFilter = new FormControl('');
@@ -78,9 +79,9 @@ export class PickToteManagerComponent implements OnInit {
  
   checkboxLabel(row?: PeriodicElement): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? 'deselect' : UniqueConstants.Select} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+    return `${this.selection.isSelected(row) ? 'deselect' : UniqueConstants.Select} row ${
       row.position + 1
     }`;
   }
@@ -112,17 +113,17 @@ export class PickToteManagerComponent implements OnInit {
     'criteria',
     'value',
     'andOr',
-    'actions',
+    ColumnDef.Actions,
   ];
   disOrderColumns: string[] = [
     'sequence',
     'field',
     'sortOrder',
     'id',
-    'actions',
+    ColumnDef.Actions,
   ];
 
-  displayedColumns1: string[] = ['position', 'toteid', 'orderno', 'other'];
+  displayedColumns1: string[] = [UniqueConstants.position, 'toteid', 'orderno', 'other'];
   dataSource1 = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
 
   @ViewChild('matRef') matRef: MatSelect;
@@ -131,89 +132,89 @@ export class PickToteManagerComponent implements OnInit {
   @ViewChild(MatSort) viewFilterTransSort: MatSort;
   @ViewChild(MatSort) viewZoneTransSort: MatSort;
 
-  displayedColumns2: string[] = ['orderno', 'requireddate', 'priority'];
-  filterBatchOrderColums: string[] = ['orderno', 'requireddate', 'priority'];
+  displayedColumns2: string[] = ['orderno', 'requireddate', UniqueConstants.Priority];
+  filterBatchOrderColums: string[] = ['orderno', 'requireddate', UniqueConstants.Priority];
 
   displayedColumns3: string[] = [
     'orderno',
     'itemno',
     'transaction',
-    'location',
+    TableConstant.Location,
   ];
   filterBatchTransColumns = [
     {
-      columnDef: 'orderNumber',
-      header: 'Order Number',
+      columnDef: UniqueConstants.OrderNumber,
+      header: Column.OrderNumber,
       cell: (element: any) => `${element.orderNumber}`,
     },
     {
       columnDef: 'itemNumber',
-      header: 'Item Number',
+      header: Column.ItemNumber,
       cell: (element: any) => `${element.itemNumber}`,
     },
     {
-      columnDef: 'transactionQuantity',
-      header: 'Transaction Quantity',
+      columnDef: ColumnDef.TransactionQuantity,
+      header: TableConstant.TransactionQuantity,
       cell: (element: any) => `${element.transactionQuantity}`,
     },
     {
-      columnDef: 'location',
-      header: 'Location',
+      columnDef: TableConstant.Location,
+      header: Column.Location,
       cell: (element: any) => `${element.location}`,
     },
     {
-      columnDef: 'completedQuantity',
+      columnDef: TableConstant.completedQuantity,
       header: 'Completed Quantity',
       cell: (element: any) => `${element.completedQuantity}`,
     },
     {
-      columnDef: 'description',
-      header: 'Description',
+      columnDef: UniqueConstants.Description,
+      header: Column.Description,
       cell: (element: any) => `${element.description}`,
     },
     {
-      columnDef: 'importDate',
+      columnDef: TableConstant.ImportDate,
       header: 'Import Date',
       cell: (element: any) => `${element.importDate}`,
     },
     {
-      columnDef: 'priority',
+      columnDef: UniqueConstants.Priority,
       header: 'Priority',
       cell: (element: any) => `${element.priority}`,
     },
     {
-      columnDef: 'requiredDate',
+      columnDef: ColumnDef.RequiredDate,
       header: 'Required Date',
       cell: (element: any) => `${element.requiredDate}`,
     },
     {
-      columnDef: 'lineNumber',
+      columnDef: TableConstant.LineNumber,
       header: 'Line Number',
       cell: (element: any) => `${element.lineNumber}`,
     },
     {
-      columnDef: 'lineSequence',
+      columnDef: TableConstant.LineSequence,
       header: 'Line Sequence',
       cell: (element: any) => `${element.lineSequence}`,
     },
     {
-      columnDef: 'serialNumber',
-      header: 'Serial Number',
+      columnDef: TableConstant.SerialNumber,
+      header: ColumnDef.SerialNumber,
       cell: (element: any) => `${element.serialNumber}`,
     },
     {
-      columnDef: 'lotNumber',
-      header: 'Lot Number',
+      columnDef: TableConstant.LotNumber,
+      header: Column.LotNumber,
       cell: (element: any) => `${element.lotNumber}`,
     },
     {
-      columnDef: 'expirationDate',
-      header: 'Expiration Date',
+      columnDef: ColumnDef.ExpirationDate,
+      header: TableConstant.ExpirationDate,
       cell: (element: any) => `${element.expirationDate}`,
     },
     {
       columnDef: 'completedDate',
-      header: 'Completed Date',
+      header: TableConstant.CompletedDate,
       cell: (element: any) => `${element.completedDate}`,
     },
     {
@@ -222,73 +223,73 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.completedBy}`,
     },
     {
-      columnDef: 'batchPickID',
-      header: 'Batch Pick ID',
+      columnDef: TableConstant.BatchPickID,
+      header: ColumnDef.BatchPickID,
       cell: (element: any) => `${element.batchPickID}`,
     },
     {
-      columnDef: 'unitOfMeasure',
+      columnDef: ColumnDef.UnitOfMeasure,
       header: 'Unit Of Measure',
       cell: (element: any) => `${element.unitOfMeasure}`,
     },
     {
-      columnDef: 'userField1',
-      header: 'User Field1',
+      columnDef: ColumnDef.userField1,
+      header: TableConstant.UserField1,
       cell: (element: any) => `${element.userField1}`,
     },
     {
-      columnDef: 'userField2',
-      header: 'User Field2',
+      columnDef: ColumnDef.userField2,
+      header: TableConstant.UserField2,
       cell: (element: any) => `${element.userField2}`,
     },
     {
-      columnDef: 'userField3',
+      columnDef: ColumnDef.userField3,
       header: 'User Field3',
       cell: (element: any) => `${element.userField3}`,
     },
     {
-      columnDef: 'userField4',
+      columnDef: ColumnDef.userField4,
       header: 'User Field4',
       cell: (element: any) => `${element.userField4}`,
     },
     {
-      columnDef: 'userField5',
+      columnDef: ColumnDef.userField5,
       header: 'User Field5',
       cell: (element: any) => `${element.userField5}`,
     },
     {
-      columnDef: 'userField6',
+      columnDef: ColumnDef.userField6,
       header: 'User Field6',
       cell: (element: any) => `${element.userField6}`,
     },
     {
-      columnDef: 'userField7',
+      columnDef: ColumnDef.userField7,
       header: 'User Field7',
       cell: (element: any) => `${element.userField7}`,
     },
     {
-      columnDef: 'userField8',
+      columnDef: ColumnDef.userField8,
       header: 'User Field8',
       cell: (element: any) => `${element.userField8}`,
     },
     {
-      columnDef: 'userField9',
+      columnDef: ColumnDef.userField9,
       header: 'User Field9',
       cell: (element: any) => `${element.userField9}`,
     },
     {
-      columnDef: 'userField10',
+      columnDef: ColumnDef.userField10,
       header: 'User Field10',
       cell: (element: any) => `${element.userField10}`,
     },
     {
-      columnDef: 'revision',
-      header: 'Revision',
+      columnDef: ColumnDef.Revision,
+      header: TableConstant.Revision,
       cell: (element: any) => `${element.revision}`,
     },
     {
-      columnDef: 'toteID',
-      header: 'Tote ID',
+      columnDef: ColumnDef.ToteID,
+      header: Column.ToteID,
       cell: (element: any) => `${element.toteID}`,
     },
     {
@@ -297,44 +298,44 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.toteNumber}`,
     },
     {
-      columnDef: 'cell',
-      header: 'Cell',
+      columnDef: Column.cell,
+      header: TableConstant.Cell,
       cell: (element: any) => `${element.cell}`,
     },
     {
-      columnDef: 'hostTransactionID',
-      header: 'Host Transaction ID',
+      columnDef: ColumnDef.HostTransactionId,
+      header: TableConstant.HostTransactionID,
       cell: (element: any) => `${element.hostTransactionID}`,
     },
     { columnDef: 'id', header: 'ID', cell: (element: any) => `${element.id}` },
     {
-      columnDef: 'zone',
-      header: 'Zone',
+      columnDef: TableConstant.zone,
+      header: ColumnDef.Zone,
       cell: (element: any) => `${element.zone}`,
     },
     {
-      columnDef: 'carousel',
-      header: 'Carousel',
+      columnDef: zoneType.carousel,
+      header: TableConstant.Carousel,
       cell: (element: any) => `${element.carousel}`,
     },
     {
-      columnDef: 'row',
-      header: 'Row',
+      columnDef: Column.Row,
+      header: TableConstant.Row,
       cell: (element: any) => `${element.row}`,
     },
     {
-      columnDef: 'shelf',
-      header: 'Shelf',
+      columnDef: TableConstant.shelf,
+      header: TableConstant.shelf,
       cell: (element: any) => `${element.shelf}`,
     },
     {
-      columnDef: 'bin',
-      header: 'Bin',
+      columnDef: ColumnDef.Bin,
+      header: TableConstant.Bin,
       cell: (element: any) => `${element.bin}`,
     },
     {
-      columnDef: 'warehouse',
-      header: 'Warehouse',
+      columnDef: TableConstant.WareHouse,
+      header: ColumnDef.Warehouse,
       cell: (element: any) => `${element.warehouse}`,
     },
     {
@@ -343,7 +344,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.invMapID}`,
     },
     {
-      columnDef: 'importBy',
+      columnDef: TableConstant.ImportBy,
       header: 'Import By',
       cell: (element: any) => `${element.importBy}`,
     },
@@ -353,13 +354,13 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.importFilename}`,
     },
     {
-      columnDef: 'notes',
+      columnDef: TableConstant.Notes,
       header: 'Notes',
       cell: (element: any) => `${element.notes}`,
     },
     {
-      columnDef: 'emergency',
-      header: 'Emergency',
+      columnDef: UniqueConstants.emergency,
+      header: ColumnDef.Emergency,
       cell: (element: any) => `${element.emergency}`,
     },
     {
@@ -397,8 +398,8 @@ export class PickToteManagerComponent implements OnInit {
   displayedTransColumns = this.filterBatchTransColumns.map((c) => c.columnDef);
 
   displayedColumns4: string[] = [
-    'select',
-    'zone',
+    UniqueConstants.Select,
+    TableConstant.zone,
     'batchtype',
     'totalorders',
     'totallocations',
@@ -406,11 +407,11 @@ export class PickToteManagerComponent implements OnInit {
   ];
   batchByOrderColumns: string[] = [
     'default',
-    'zone',
+    TableConstant.zone,
     'batchtype',
     'totalorders',
     'totallocations',
-    'actions',
+    ColumnDef.Actions,
   ];
   @ViewChild('filterBatchOrder') filterBatchOrder: MatPaginator;
   @ViewChild('filterBatchTrans') filterBatchTrans: MatPaginator;
@@ -440,9 +441,9 @@ export class PickToteManagerComponent implements OnInit {
     this.orderBydataSource = new MatTableDataSource<any>(this.orderByData);
     this.pickBatchZonesSelect();
     if (this.data.useDefaultFilter) {
-      this.isFilter = 'filter';
+      this.isFilter = StringConditions.filter;
     } else {
-      this.isFilter = 'zone';
+      this.isFilter = TableConstant.zone;
     }
     this.allSelectOrders = this.data.allOrders;
   }
@@ -456,7 +457,7 @@ export class PickToteManagerComponent implements OnInit {
           this.batchByZoneData
         );
       } else {
-        this.global.ShowToastr('error', this.global.globalErrorMsg(), 'Error!');
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('PickBatchZonesSelect', res.responseMessage);
       }
     });
@@ -486,9 +487,9 @@ export class PickToteManagerComponent implements OnInit {
           );
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('PickBatchFilterTypeAhead', res.responseMessage);
         }
@@ -520,7 +521,7 @@ export class PickToteManagerComponent implements OnInit {
     } else {
       this.filterData.push({
         sequence: this.filterSeq + 1,
-        field: 'Emergency',
+        field: ColumnDef.Emergency,
         criteria: 'Equals',
         value: '',
         andOr: 'And',
@@ -547,7 +548,7 @@ export class PickToteManagerComponent implements OnInit {
     } else {
       this.orderByData.push({
         sequence: this.orderBySeq + 1,
-        field: 'Emergency',
+        field: ColumnDef.Emergency,
         sortOrder: 'DESC',
         isSaved: false,
       });
@@ -572,7 +573,7 @@ export class PickToteManagerComponent implements OnInit {
       const dialogRef: any = this.global.OpenDialog(AddFilterFunction, {
         height: 'auto',
         width: '500px',
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       });
       dialogRef
         .afterClosed()
@@ -597,7 +598,7 @@ export class PickToteManagerComponent implements OnInit {
         data: {
           savedFilter: this.savedFilter.value,
         },
-        autoFocus: '__non_existing_element__',
+        autoFocus: DialogConstants.autoFocus,
       });
       dialogRef
         .afterClosed()
@@ -617,16 +618,16 @@ export class PickToteManagerComponent implements OnInit {
         ConfirmationDialogComponent,
         {
           height: 'auto',
-          width: '480px',
+          width: Style.w480px,
           data: {
             message: 'Mark this filter as the default one ?',
           },
-          autoFocus: '__non_existing_element__',
+          autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         }
       );
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let paylaod = {
             Description: this.savedFilter.value,
           };
@@ -635,15 +636,15 @@ export class PickToteManagerComponent implements OnInit {
             .subscribe((res) => {
               if (res.isExecuted) {
                 this.global.ShowToastr(
-                  'success',
+                  ToasterType.Success,
                   labels.alert.update,
-                  'Success!'
+                  ToasterTitle.Success
                 );
               } else {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   this.global.globalErrorMsg(),
-                  'Error!'
+                  ToasterTitle.Error
                 );
                 console.log('PickBatchDefaultFilterMark', res.responseMessage);
               }
@@ -659,14 +660,14 @@ export class PickToteManagerComponent implements OnInit {
         .PickBatchDefaultFilterClear(paylaod)
         .subscribe((res) => {
           if (res.isExecuted) {
-            this.global.ShowToastr('success', labels.alert.update, 'Success!');
+            this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
             const matSelect: MatSelect = option.source;
             matSelect.writeValue(null);
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
-              'Error!'
+              ToasterTitle.Error
             );
             console.log('PickBatchDefaultFilterClear', res.responseMessage);
           }
@@ -686,7 +687,7 @@ export class PickToteManagerComponent implements OnInit {
             this.pickBatchFilterOrderData(res.data);
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               'No filter is marked as default.',
               'Warning!'
             );
@@ -701,13 +702,13 @@ export class PickToteManagerComponent implements OnInit {
         DeleteConfirmationComponent,
         {
           height: 'auto',
-          width: '480px',
-          autoFocus: '__non_existing_element__',
+          width: Style.w480px,
+          autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         }
       );
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Yes') {
+        if (result === ResponseStrings.Yes) {
           let paylaod = {
             Description: this.savedFilter.value,
           };
@@ -716,9 +717,9 @@ export class PickToteManagerComponent implements OnInit {
             .subscribe((res) => {
               if (res.isExecuted) {
                 this.global.ShowToastr(
-                  'success',
+                  ToasterType.Success,
                   labels.alert.delete,
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.savedFilterList = this.savedFilterList.filter(
                   (item) => item !== this.savedFilter.value
@@ -729,9 +730,9 @@ export class PickToteManagerComponent implements OnInit {
                 matSelect.writeValue(null);
               } else {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   this.global.globalErrorMsg(),
-                  'Error!'
+                  ToasterTitle.Error
                 );
                 console.log('PickBatchFilterBatchDelete', res.responseMessage);
               }
@@ -793,9 +794,9 @@ export class PickToteManagerComponent implements OnInit {
             this.filterBatchOrders.paginator = this.filterBatchOrder;
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
-              'Error!'
+              ToasterTitle.Error
             );
             console.log('OrdersFilterZoneSelect', res.responseMessage);
           }
@@ -840,9 +841,9 @@ export class PickToteManagerComponent implements OnInit {
             this.tabIndex = 1;
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
-              'Error!'
+              ToasterTitle.Error
             );
             console.log('OrdersFilterZoneSelect', res.responseMessage);
           }
@@ -876,7 +877,7 @@ export class PickToteManagerComponent implements OnInit {
       }
     } else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'No open totes in batch',
         'Batch is Filled.'
       );
@@ -903,8 +904,8 @@ export class PickToteManagerComponent implements OnInit {
         sRow: 1,
         eRow: 10,
         SortColumnNumber: 0,
-        SortOrder: 'asc',
-        Filter: '1=1',
+        SortOrder: UniqueConstants.Asc,
+        Filter: UniqueConstants.OneEqualsOne
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res) {
@@ -915,9 +916,9 @@ export class PickToteManagerComponent implements OnInit {
           this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('PickToteTransDT', res.responseMessage);
         }
@@ -944,7 +945,7 @@ export class PickToteManagerComponent implements OnInit {
       }
     } else if (this.selectedOrders.length >= this.data.pickBatchQuantity) {
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'No open totes in batch',
         'Batch is Filled.'
       );
@@ -970,8 +971,8 @@ export class PickToteManagerComponent implements OnInit {
         sRow: 1,
         eRow: 10,
         SortColumnNumber: 0,
-        SortOrder: 'asc',
-        Filter: '1=1',
+        SortOrder: UniqueConstants.Asc,
+        Filter: UniqueConstants.OneEqualsOne
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res) {
@@ -982,9 +983,9 @@ export class PickToteManagerComponent implements OnInit {
           this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('PickToteTransDT', res.responseMessage);
         }
@@ -1014,9 +1015,9 @@ export class PickToteManagerComponent implements OnInit {
           }
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('PickBatchFilterOrderData', res.responseMessage);
         }
@@ -1109,8 +1110,8 @@ export class PickToteManagerComponent implements OnInit {
         sRow: 1,
         eRow: 10,
         SortColumnNumber: 0,
-        SortOrder: 'asc',
-        Filter: '1=1',
+        SortOrder: UniqueConstants.Asc,
+        Filter: UniqueConstants.OneEqualsOne
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
@@ -1121,9 +1122,9 @@ export class PickToteManagerComponent implements OnInit {
           this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('PickToteTransDT', res.responseMessage);
         }
@@ -1143,8 +1144,8 @@ export class PickToteManagerComponent implements OnInit {
           sRow: 1,
           eRow: 10,
           SortColumnNumber: 0,
-          SortOrder: 'asc',
-          Filter: '1=1',
+          SortOrder: UniqueConstants.Asc,
+          Filter: UniqueConstants.OneEqualsOne
         };
         this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
@@ -1155,9 +1156,9 @@ export class PickToteManagerComponent implements OnInit {
             this.zoneOrderTransactionSource.sort = this.viewZoneTransSort;
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
-              'Error!'
+              ToasterTitle.Error
             );
             console.log('PickToteTransDT', res.responseMessage);
           }
@@ -1180,8 +1181,8 @@ export class PickToteManagerComponent implements OnInit {
         sRow: 1,
         eRow: 10,
         SortColumnNumber: 0,
-        SortOrder: 'asc',
-        Filter: '1=1',
+        SortOrder: UniqueConstants.Asc,
+        Filter: UniqueConstants.OneEqualsOne
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
@@ -1192,9 +1193,9 @@ export class PickToteManagerComponent implements OnInit {
           this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
         } else {
           this.global.ShowToastr(
-            'error',
+            ToasterType.Error,
             this.global.globalErrorMsg(),
-            'Error!'
+            ToasterTitle.Error
           );
           console.log('PickToteTransDT', res.responseMessage);
         }
@@ -1214,8 +1215,8 @@ export class PickToteManagerComponent implements OnInit {
           sRow: 1,
           eRow: 10,
           SortColumnNumber: 0,
-          SortOrder: 'asc',
-          Filter: '1=1',
+          SortOrder: UniqueConstants.Asc,
+          Filter: UniqueConstants.OneEqualsOne
         };
         this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
@@ -1226,9 +1227,9 @@ export class PickToteManagerComponent implements OnInit {
             this.filterOrderTransactionSource.sort = this.viewFilterTransSort;
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
-              'Error!'
+              ToasterTitle.Error
             );
             console.log('PickToteTransDT', res.responseMessage);
           }
@@ -1242,9 +1243,9 @@ export class PickToteManagerComponent implements OnInit {
   onSaveSingleFilter(element: any) {
     if (element.value === '') {
       this.global.ShowToastr(
-        'error',
+        ToasterType.Error,
         'Some of the inputs are missing values. Cannot add row to filter.',
-        'Error!'
+        ToasterTitle.Error
       );
     } else {
       let payload = {
@@ -1263,17 +1264,17 @@ export class PickToteManagerComponent implements OnInit {
               if (res.isExecuted) {
                 this.isFilterAdd = true;
                 this.global.ShowToastr(
-                  'success',
+                  ToasterType.Success,
                   labels.alert.update,
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.filterSeq = element.sequence;
                 this.pickBatchFilterOrderData(this.savedFilter.value);
               } else {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   this.global.globalErrorMsg(),
-                  'Error!'
+                  ToasterTitle.Error
                 );
                 console.log('PickBatchFilterUpdate', res.responseMessage);
               }
@@ -1285,17 +1286,17 @@ export class PickToteManagerComponent implements OnInit {
               if (res.isExecuted) {
                 this.isFilterAdd = true;
                 this.global.ShowToastr(
-                  'success',
+                  ToasterType.Success,
                   labels.alert.success,
-                  'Success!'
+                  ToasterTitle.Success
                 );
                 this.filterSeq = element.sequence;
                 this.pickBatchFilterOrderData(this.savedFilter.value);
               } else {
                 this.global.ShowToastr(
-                  'error',
+                  ToasterType.Error,
                   this.global.globalErrorMsg(),
-                  'Error!'
+                  ToasterTitle.Error
                 );
                 console.log('PickBatchFilterInsert', res.responseMessage);
               }
@@ -1318,12 +1319,12 @@ export class PickToteManagerComponent implements OnInit {
         .subscribe((res) => {
           if (res.isExecuted) {
             this.isOrderByAdd = true;
-            this.global.ShowToastr('success', labels.alert.update, 'Success!');
+            this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
-              'Error!'
+              ToasterTitle.Error
             );
             console.log('PickBatchOrderUpdate', res.responseMessage);
           }
@@ -1340,14 +1341,14 @@ export class PickToteManagerComponent implements OnInit {
         .subscribe((res) => {
           if (res.isExecuted) {
             this.isOrderByAdd = true;
-            this.global.ShowToastr('success', labels.alert.success, 'Success!');
+            this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterTitle.Success);
             element.id = res.data;
             this.orderBySeq = element.sequence;
           } else {
             this.global.ShowToastr(
-              'error',
+              ToasterType.Error,
               this.global.globalErrorMsg(),
-              'Error!'
+              ToasterTitle.Error
             );
             console.log('PickBatchOrderInsert', res.responseMessage);
           }
@@ -1361,9 +1362,9 @@ export class PickToteManagerComponent implements OnInit {
       let existItem = res.find((x: any) => x.sequence == item.sequence);
       if (existItem) {
         this.global.ShowToastr(
-          'error',
+          ToasterType.Error,
           "Can't have conflicting sequences within the order rows. A new sequence has been provided",
-          'Error!'
+          ToasterTitle.Error
         );
         element.sequence = +existItem.sequence + 1;
       } else {
@@ -1374,12 +1375,12 @@ export class PickToteManagerComponent implements OnInit {
   onDeleteSingleFilter(element: any) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w480px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         let payload = {
           Sequence: element.sequence,
           Description: this.savedFilter.value,
@@ -1390,16 +1391,16 @@ export class PickToteManagerComponent implements OnInit {
             if (res.isExecuted) {
               this.isFilterAdd = true;
               this.global.ShowToastr(
-                'success',
+                ToasterType.Success,
                 labels.alert.delete,
-                'Success!'
+                ToasterTitle.Success
               );
               this.pickBatchFilterOrderData(this.savedFilter.value);
             } else {
               this.global.ShowToastr(
-                'error',
+                ToasterType.Error,
                 this.global.globalErrorMsg(),
-                'Error!'
+                ToasterTitle.Error
               );
               console.log('PickBatchFilterDelete', res.responseMessage);
             }
@@ -1410,15 +1411,15 @@ export class PickToteManagerComponent implements OnInit {
   onDeleteSingleOrder(element: any) {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '480px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w480px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
         ErrorMessage: 'Are you sure you want to delete this order by row?',
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         let payload = {
           id: element.id,
         };
@@ -1428,16 +1429,16 @@ export class PickToteManagerComponent implements OnInit {
             if (res.isExecuted) {
               this.isFilterAdd = true;
               this.global.ShowToastr(
-                'success',
+                ToasterType.Success,
                 labels.alert.delete,
-                'Success!'
+                ToasterTitle.Success
               );
               this.pickBatchFilterOrderData(this.savedFilter.value);
             } else {
               this.global.ShowToastr(
-                'error',
+                ToasterType.Error,
                 this.global.globalErrorMsg(),
-                'Error!'
+                ToasterTitle.Error
               );
               console.log('PickBatchOrderDelete', res.responseMessage);
             }
@@ -1449,7 +1450,7 @@ export class PickToteManagerComponent implements OnInit {
   onClosePickToteManager() {
     let selectedObj: any = [];
     let currentObjArr: any = [];
-    if (this.isFilter === 'filter') {
+    if (this.isFilter === StringConditions.filter) {
       if (this.allSelectOrders.length > 0) {
         selectedObj = this.filterBatchData.filter((element) =>
           this.allSelectOrders.includes(element.orderNumber)
@@ -1494,15 +1495,15 @@ export class PickToteManagerComponent implements OnInit {
   onSelectBatchZone(row) {
     const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '480px',
+      width: Style.w480px,
       data: {
         message: 'Mark this filter as a default one ?',
       },
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'Yes') {
+      if (result === ResponseStrings.Yes) {
         let payload = {
           zone: row.zone,
           type: row.type,
@@ -1512,12 +1513,12 @@ export class PickToteManagerComponent implements OnInit {
           .subscribe((res) => {
             if (res.isExecuted) {
               this.global.ShowToastr(
-                'success',
+                ToasterType.Success,
                 labels.alert.update,
-                'Success!'
+                ToasterTitle.Success
               );
             } else {
-              this.global.ShowToastr('error', res.responseMessage, 'Error!');
+              this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
               console.log('PickBatchZoneDefaultMark', res.responseMessage);
             }
           });

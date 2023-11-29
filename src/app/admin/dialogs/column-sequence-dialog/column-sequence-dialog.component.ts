@@ -8,7 +8,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,UniqueConstants} from 'src/app/common/constants/strings.constants';
 
 
 @Component({
@@ -156,7 +156,7 @@ export class ColumnSequenceDialogComponent implements OnInit {
       });
   }
 
-  @HostListener('document:keyup', ['$event'])
+  @HostListener('document:keyup', [UniqueConstants.event])
   handleKeyboardEvent(event: KeyboardEvent) {
     const target = event.target as HTMLElement;
     if (!this.isInputField(target) && event.key === 'a') {

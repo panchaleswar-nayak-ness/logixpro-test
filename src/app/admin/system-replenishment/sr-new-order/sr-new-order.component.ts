@@ -16,7 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,Style,UniqueConstants,StringConditions,ColumnDef,TableConstant} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-sr-new-order',
@@ -26,7 +26,7 @@ import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.cons
 export class SrNewOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
  @Input() tabIndex:any;
-  displayedColumns: string[] = ['Item Number', 'Description', 'Warehouse', 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', 'action'];
+  displayedColumns: string[] = [Column.ItemNumber, Column.Description, ColumnDef.Warehouse, 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', ColumnDef.Action];
   tableData: any = [];
   filteredTableData: any = [];
   public userData: any;
@@ -40,7 +40,7 @@ export class SrNewOrderComponent implements OnInit {
     searchString: "",
     sortColumn: 0,
     searchColumn: "",
-    sortDir: "asc",
+    sortDir: UniqueConstants.Asc,
     reOrder: false,
     filter: "1=1",
     username: "",
@@ -53,16 +53,16 @@ export class SrNewOrderComponent implements OnInit {
     { value: 'Alloc Put', viewValue: 'Alloc Put', sortValue: '13', key: 'allocPut', colDef: 'Alloc Put' },
     { value: 'Available Qty', viewValue: 'Available Qty', sortValue: '6', key: 'availableQuantity', colDef: 'Available Qty' },
     { value: 'Case Qty', viewValue: 'Case Qty', sortValue: '8', key: 'caseQuantity', colDef: 'Case Qty' },
-    { value: 'Description', viewValue: 'Description', sortValue: '1', key: 'description', colDef: 'Description' },
-    { value: 'Item Number', viewValue: 'Item Number', sortValue: '0', key: 'itemNumber', colDef: 'Item Number' },
+    { value: Column.Description, viewValue: Column.Description, sortValue: '1', key: UniqueConstants.Description, colDef: Column.Description },
+    { value: Column.ItemNumber, viewValue: Column.ItemNumber, sortValue: '0', key: 'itemNumber', colDef: Column.ItemNumber },
     { value: 'Replenish', viewValue: 'Replenish', sortValue: '10', key: 'replenish', colDef: 'Replenish' },
     { value: 'Replenish Exists', viewValue: 'Replenish Exists', sortValue: '11', key: 'replenishExists', colDef: 'Replenish Exists' },
     { value: 'Replenishment Level', viewValue: 'Replenishment Level', sortValue: '5', key: 'replenishmentLevel', colDef: 'Replenishment Level' },
     { value: 'Replenishment Point', viewValue: 'Replenishment Point', sortValue: '4', key: 'replenishmentPoint', colDef: 'Replenishment Point' },
     { value: 'Replenishment Qty', viewValue: 'Replenishment Qty', sortValue: '7', key: 'replenishmentQuantity', colDef: 'Replenishment Qty' },
     { value: 'Stock Qty', viewValue: 'Stock Qty', sortValue: '3', key: 'stockQuantity', colDef: 'Stock Qty' },
-    { value: 'Transaction Qty', viewValue: 'Transaction Qty', sortValue: '9', key: 'transactionQuantity', colDef: 'Transaction Qty' },
-    { value: 'Warehouse', viewValue: 'Warehouse', sortValue: '2', key: 'warehouse', colDef: 'Warehouse' },
+    { value: 'Transaction Qty', viewValue: 'Transaction Qty', sortValue: '9', key: ColumnDef.TransactionQuantity, colDef: 'Transaction Qty' },
+    { value: ColumnDef.Warehouse, viewValue: ColumnDef.Warehouse, sortValue: '2', key: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
   ];
   searchAutocompleteList: any;
   newOrderListCreated:boolean = false;
@@ -131,8 +131,8 @@ export class SrNewOrderComponent implements OnInit {
 
   editTransDialog(element: any): void {
     const dialogRef:any = this.global.OpenDialog(TransactionQtyEditComponent, {
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         rP_ID: element.rP_ID,
@@ -246,7 +246,7 @@ export class SrNewOrderComponent implements OnInit {
 
   viewItemInInventoryMaster(element: any) {
     
-    window.open(`/#/admin/inventoryMaster?itemNumber=${element.itemNumber}`, '_blank', "location=yes");
+    window.open(`/#/admin/inventoryMaster?itemNumber=${element.itemNumber}`, UniqueConstants._blank, "location=yes");
   }
 
   print() {
@@ -254,15 +254,15 @@ export class SrNewOrderComponent implements OnInit {
   
     let dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         message: 'Click OK to print a replenishment report.',
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'Yes') {
+      if (result == ResponseStrings.Yes) {
         this.global.Print(`FileName:printNewReplenishmentReport|reorder:${this.tablePayloadObj.reOrder}`) ;
 
       }
@@ -303,8 +303,8 @@ export class SrNewOrderComponent implements OnInit {
 
   filterItemNo() {
     const dialogRef:any = this.global.OpenDialog(FilterItemNumbersComponent, {
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: this.filterItemNumbersText,
     });
@@ -341,15 +341,15 @@ export class SrNewOrderComponent implements OnInit {
         if(res.responseMessage == "Reprocess"){
           let dialogRef2:any = this.global.OpenDialog(ConfirmationDialogComponent, {
             height: 'auto',
-            width: '560px',
-            autoFocus: '__non_existing_element__',
+            width: Style.w560px,
+            autoFocus: DialogConstants.autoFocus,
       disableClose:true,
             data: {
               message: `Replenishments finished. There are reprocess transactions due to the replenishment process. Click Ok to print a process report now.`,
             },
           });
           dialogRef2.afterClosed().subscribe((result) => {
-            if (result == 'Yes') {
+            if (result == ResponseStrings.Yes) {
               this.global.Print(`FileName:printReprocessTransactions|History:0|ID:|OrderNumber:|ItemNumber:|Reason:|Message:|Date:`);
             }
           });

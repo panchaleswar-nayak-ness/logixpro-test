@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  ToasterMessages ,ToasterTitle,ToasterType,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 
 export interface PeriodicElement {
   zone: string
@@ -24,7 +25,7 @@ export class SelectZonesComponent implements OnInit {
   isNewBatch=false;
   public iInductionManagerApi:IInductionManagerApiService;
   elementData = [{ zone: '',locationName:'',locationType:'',stagingZone:'',selected: false,available: false}];
-  displayedColumns: string[] = ['select', 'zone', 'locationdesc', 'locationtype', 'stagingzone' , 'flag'];
+  displayedColumns: string[] = [UniqueConstants.Select, TableConstant.zone, 'locationdesc', 'locationtype', 'stagingzone' , 'flag'];
   dataSource = new MatTableDataSource<PeriodicElement>(this.elementData);
   selection = new SelectionModel<PeriodicElement>(true, []);
   batchID="";
@@ -98,9 +99,9 @@ export class SelectZonesComponent implements OnInit {
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: PeriodicElement): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? 'deselect' : UniqueConstants.Select} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.zone + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : UniqueConstants.Select} row ${row.zone + 1}`;
   }
 
   selectStaging(staging="0")
@@ -110,7 +111,7 @@ export class SelectZonesComponent implements OnInit {
   //Auto select staging records
   let recordExists=0;
   for (const element of this.elementData) {
-  if(element.stagingZone=='False' && !(!element.selected && !element.available))
+  if(element.stagingZone==StringConditions.False && !(!element.selected && !element.available))
   {
     element.selected=true;
     recordExists=1;
@@ -119,7 +120,7 @@ export class SelectZonesComponent implements OnInit {
   }
   if(recordExists==0)
   {
-    this.global.ShowToastr('error','No non staging zones', 'Error!' );
+    this.global.ShowToastr(ToasterType.Error,'No non staging zones', ToasterTitle.Error );
   }
   }
   else 
@@ -127,7 +128,7 @@ export class SelectZonesComponent implements OnInit {
   //Auto select staging records
   let recordExists=0;
   for (const element of this.elementData) {
-  if(element.stagingZone!='False')
+  if(element.stagingZone!=StringConditions.False)
   {
     element.selected=true;
     recordExists=1;
@@ -137,7 +138,7 @@ export class SelectZonesComponent implements OnInit {
 
   if(recordExists==0)
   {
-    this.global.ShowToastr('error','No staging zones', 'Error!' );
+    this.global.ShowToastr(ToasterType.Error,'No staging zones', ToasterTitle.Error );
   }
   
   }
@@ -195,7 +196,7 @@ export class SelectZonesComponent implements OnInit {
         this.dataSource = new MatTableDataSource<any>(this.elementData);
 
         } else {
-          this.global.ShowToastr('error','Something went wrong', 'Error!');
+          this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("AvailableZone",res.responseMessage);
         }
       },

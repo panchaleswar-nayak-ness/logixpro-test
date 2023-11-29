@@ -13,7 +13,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { ResponseStrings, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import {ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,StringConditions,UniqueConstants,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 import { Toast } from 'ngx-toastr';
 
 @Component({
@@ -29,7 +29,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     {order_no: '1202122'},
   ]
     isOrderSelected=true;
-    displayedColumns_1: string[] = ['select','order_no'];
+    displayedColumns_1: string[] = [UniqueConstants.Select,'order_no'];
    
     isChecked: boolean = false;
     orderNumbersList:any=[];
@@ -40,7 +40,7 @@ export class DeAllocateOrdersComponent implements OnInit {
       {trans_type: 'Count', order_no: '1202122', priority: '36', required_date: '11/02/2022 11:58 AM', user_field_1: 'Treat with care'},
     ];
     
-    displayedColumns: string[] = ['deallocate','order_no','item_no','description','priority', 'transactionQuantity','unitOfMeasure','batchPickID','trans_type'];
+    displayedColumns: string[] = ['deallocate','order_no','item_no',UniqueConstants.Description,UniqueConstants.Priority, ColumnDef.TransactionQuantity,ColumnDef.UnitOfMeasure,TableConstant.BatchPickID,'trans_type'];
     tableData = this.ELEMENT_DATA
     orderItemTransactions:MatTableDataSource<any> = new MatTableDataSource<any>([]);  
   orderNameList:MatTableDataSource<any> = new MatTableDataSource<any>([]);
@@ -66,7 +66,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   endRowOrder = 10;
   recordsPerPageOrder = 10;
   sortColOrder = 0;
-  sortOrder ='asc';
+  sortOrder =UniqueConstants.Asc;
 
   isActiveTrigger:boolean =false;
 // pagination and sorting for transaction View
@@ -75,7 +75,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   endRowTransaction = 10;
   recordsPerPageTransaction = 10;
   sortColTransaction = 0;
-  sortTransaction ='asc';
+  sortTransaction =UniqueConstants.Asc;
   dublicateTransaction ;
   dublicateRecords ;
   actions='';
@@ -105,7 +105,7 @@ export class DeAllocateOrdersComponent implements OnInit {
   } 
   
   async autoCompleteSearchColumnItem() {
-    if(this.chooseSearchType == 'Order Number'){
+    if(this.chooseSearchType == Column.OrderNumber){
       let payload = {
         "orderNumber": this.TypeValue, 
       }
@@ -123,7 +123,7 @@ export class DeAllocateOrdersComponent implements OnInit {
         }
       });
     }
-    else if(this.chooseSearchType == 'Item Number'){
+    else if(this.chooseSearchType == Column.ItemNumber){
       let payload = {
         "itemNumber": this.TypeValue, 
       }
@@ -153,8 +153,8 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.orderItemTransactions.data = []
     this.dublicateTransaction = []
       let payload = {
-        "orderNumber": this.chooseSearchType == 'Order Number'?this.TypeValue:'',
-        "itemNumber": this.chooseSearchType == 'Item Number'?this.TypeValue:'',
+        "orderNumber": this.chooseSearchType == Column.OrderNumber?this.TypeValue:'',
+        "itemNumber": this.chooseSearchType == Column.ItemNumber?this.TypeValue:'',
         "transType": this.transactionType,  
       }
       this.iAdminApiService.AllAllocatedOrders(payload).subscribe((res=>{
@@ -194,8 +194,8 @@ export class DeAllocateOrdersComponent implements OnInit {
         "length":this.recordsPerPageTransaction,
         "sortColumn": this.sortColTransaction,
         "sortOrder": this.sortTransaction,
-        "transType": this.transactionType, 
-        "displayFilter": "All",
+        'transType': this.transactionType, 
+        "displayFilter": ResponseStrings.AllCaps,
         "orderNum": "",
         "warehouse": "",
         "filter": this.FilterString 
@@ -306,8 +306,8 @@ export class DeAllocateOrdersComponent implements OnInit {
     if(this.orderNumbersList.length != 0){
       const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
         height: 'auto',
-        width: '600px',
-        autoFocus: '__non_existing_element__',
+        width: Style.w600px,
+        autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
           action: 'De-Allocate',
@@ -315,7 +315,7 @@ export class DeAllocateOrdersComponent implements OnInit {
       });
   
       dialogRef.afterClosed().subscribe((res) => {
-        if (res === 'Yes') {
+        if (res === ResponseStrings.Yes) {
           let deallocate = this.orderNumbersList.toString()
           let payload = {
             "orderNumber": deallocate, 
@@ -342,15 +342,15 @@ export class DeAllocateOrdersComponent implements OnInit {
   deAllocateAll(){
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '600px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w600px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         action: 'De-Allocate All',
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
-      if (res === 'Yes') {
+      if (res === ResponseStrings.Yes) {
         let payload = {
           "orderNumber": "ALL", 
         }
@@ -497,7 +497,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.endRowOrder = 10;
     this.recordsPerPageOrder = 10;
     this.sortColOrder = 0;
-    this.sortOrder ='asc';
+    this.sortOrder =UniqueConstants.Asc;
     this.paginator.pageIndex=0;
     this.pageLength=0;
     
@@ -509,7 +509,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     this.endRowTransaction = 10;
     this.recordsPerPageTransaction = 10;
     this.sortColTransaction = 0;
-    this.sortTransaction ='asc';
+    this.sortTransaction =UniqueConstants.Asc;
     this.paginator.pageIndex=0;
     this.pageLength=0;
   }
@@ -522,7 +522,7 @@ export class DeAllocateOrdersComponent implements OnInit {
     }, 100);
   }
 
-  FilterString : string = "1 = 1";
+  FilterString : string = UniqueConstants.OneEqualsOne;
 
   optionSelected(filter : string) {
     this.FilterString = filter;

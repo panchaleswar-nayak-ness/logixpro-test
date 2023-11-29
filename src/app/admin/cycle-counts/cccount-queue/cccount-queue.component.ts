@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ImportFieldMappingComponent } from '../import-field-mapping/import-field-mapping.component';
 import { GlobalService } from 'src/app/common/services/global.service';
+import {  DialogConstants ,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 
 export interface PeriodicElement {
@@ -25,7 +26,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class CCCountQueueComponent{
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'ex', 'srno', 'action'];
+  displayedColumns: string[] = [UniqueConstants.position, 'name', 'weight', 'symbol', 'ex', 'srno', ColumnDef.Action];
   tableData = ELEMENT_DATA;
 
 
@@ -35,7 +36,7 @@ export class CCCountQueueComponent{
     let dialogRef:any = this.global.OpenDialog(ImportFieldMappingComponent, {
       height: '650px',
       width: '800px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: 'addInvMapLocation',

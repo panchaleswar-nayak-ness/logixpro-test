@@ -14,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppRoutes, ConfirmationMessages, FieldName, StringConditions,KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { AppRoutes, ConfirmationMessages, FieldName, StringConditions,KeyboardKeys, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,Style,UniqueConstants,Column,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-event-log',
@@ -23,7 +23,7 @@ import { AppRoutes, ConfirmationMessages, FieldName, StringConditions,KeyboardKe
 })
 export class EventLogComponent implements OnInit {
 
-  displayedColumns: string[] = ['dateStamp', 'message', 'eventCode', 'nameStamp', 'eventType', 'eventLocation', 'notes', 'transactionID','actions'];
+  displayedColumns: string[] = ['dateStamp', 'message', 'eventCode', 'nameStamp', 'eventType', 'eventLocation', TableConstant.Notes, 'transactionID',ColumnDef.Actions];
   dataSourceList: any;
   ignoreDateRange: boolean ;
   startDate:any = "";
@@ -35,7 +35,7 @@ export class EventLogComponent implements OnInit {
   userName: string = "";
   start: number = 0;
   length: number = 15;
-  filterString: string = "1 = 1";
+  filterString: string = UniqueConstants.OneEqualsOne;
   sortColumn: number = 0;
   sortOrder: string = "desc";
   userData: any;
@@ -58,7 +58,7 @@ export class EventLogComponent implements OnInit {
     { value: 'nameStamp', sortValue: '3' },
     { value: 'eventType', sortValue: '4' },
     { value: 'eventLocation', sortValue: '5' },
-    { value: 'notes', sortValue: '6' },
+    { value: TableConstant.Notes, sortValue: '6' },
     { value: 'transactionID', sortValue: '7' },
   ];
 
@@ -120,7 +120,7 @@ export class EventLogComponent implements OnInit {
     let dialogRef:any = this.global.OpenDialog(OmEventLogEntryDetailComponent, {
       height: 'auto',
       width: '932px',
-      autoFocus: '__non_existing_element__',
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: { data: element }
     });
@@ -209,13 +209,13 @@ export class EventLogComponent implements OnInit {
 
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
-      width: '560px',
-      autoFocus: '__non_existing_element__',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
         mode: 'delete-event-log',
         ErrorMessage: ConfirmationMessages.EventLogDeleteWithRange,
-        action: 'delete'
+        action: UniqueConstants.delete
       },
     });
 
@@ -282,7 +282,7 @@ export class EventLogComponent implements OnInit {
     this.global.OpenExportModal("Single Range",`FileName:singleExport|sDate:${this.startDate}|eDate:${this.endDate}|message:${this.message}|eLocation:${this.eventLocation}|nStamp:${this.message}`);
   }
 
-  @HostListener('document:keyup', ['$event'])
+  @HostListener('document:keyup', [UniqueConstants.event])
   handleKeyboardEvent(event: KeyboardEvent) { 
     const target = event.target as HTMLElement;
     if (!this.isInputField(target) && event.key === KeyboardKeys.C) {

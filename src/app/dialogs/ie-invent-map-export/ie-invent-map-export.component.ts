@@ -1,4 +1,5 @@
-import { Component } from '@angular/core'; 
+import { Component } from '@angular/core';
+import {  ColumnDef } from 'src/app/common/constants/strings.constants'; 
 
 @Component({
   selector: 'app-ie-invent-map-export',
@@ -25,7 +26,7 @@ export class IeInventMapExportComponent {
     'export_hour',
     'export_minute',
     'am_pm',
-    'actions',
+    ColumnDef.Actions,
   ];
   tableData = this.elementData;
   dataSourceList: any;
