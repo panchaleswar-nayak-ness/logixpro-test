@@ -22,8 +22,8 @@ import {  ToasterTitle ,LiveAnnouncerMessage,ResponseStrings,ToasterType,DialogC
 })
 export class PickComponent implements OnInit {
 
-  displayedColumns1: string[] = ['status', 'orderNumber', UniqueConstants.Priority, UniqueConstants.itemCount, 'requiredDate', ColumnDef.Action];
-  displayedColumns2: string[] = ['orderNumber', UniqueConstants.Priority, UniqueConstants.itemCount, 'requiredDate', ColumnDef.Action];
+  displayedColumns1: string[] = ['status', 'orderNumber', UniqueConstants.Priority, UniqueConstants.itemCount, ColumnDef.RequiredDate, ColumnDef.Action];
+  displayedColumns2: string[] = ['orderNumber', UniqueConstants.Priority, UniqueConstants.itemCount, ColumnDef.RequiredDate, ColumnDef.Action];
   tableData1: any = new MatTableDataSource([]);
   tableData2: any = new MatTableDataSource([]);
   userData: any;
@@ -35,7 +35,7 @@ export class PickComponent implements OnInit {
     { sequence: 'orderNumber', key: 'orderNumber' },
     { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
     { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
-    { sequence: 'requiredDate', key: 'requiredDate' },
+    { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },
   ];
 
   @ViewChild('MatSort2') sort2: MatSort;
@@ -43,7 +43,7 @@ export class PickComponent implements OnInit {
     { sequence: 'orderNumber', key: 'orderNumber' },
     { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
     { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
-    { sequence: 'requiredDate', key: 'requiredDate' },
+    { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },
   ];
   public iAdminApiService: IAdminApiService;
   @ViewChild('paginator1') paginator1: MatPaginator;

@@ -59,7 +59,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },
     { colHeader: "orderNumber", colDef: Column.OrderNumber },
     { colHeader: UniqueConstants.Priority, colDef: "Priority" },
-    { colHeader: "requiredDate", colDef: "Required Date" },
+    { colHeader: ColumnDef.RequiredDate, colDef: "Required Date" },
     { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
     { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
     { colHeader: ColumnDef.userField3, colDef: "User Field3" },

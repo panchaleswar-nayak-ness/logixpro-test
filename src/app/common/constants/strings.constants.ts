@@ -393,7 +393,8 @@ export const ColumnDef= {
     UnitOfMeasure:'unitOfMeasure',
     SerialNumber:'Serial Number',
     Bin:'bin',
-    Warehouse:'Warehouse'
+    Warehouse:'Warehouse',
+    RequiredDate:'requiredDate'
 }
 
 export const Case = {

@@ -28,7 +28,7 @@ export class PutAwayComponent implements OnInit {
     { sequence: 'orderNumber', key: 'orderNumber' },
     { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
     { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
-    { sequence: 'requiredDate', key: 'requiredDate' },
+    { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },
   ];
 
   @ViewChild('MatSort2') sort2: MatSort;
@@ -36,7 +36,7 @@ export class PutAwayComponent implements OnInit {
     { sequence: 'orderNumber', key: 'orderNumber' },
     { sequence: UniqueConstants.itemCount, key: UniqueConstants.itemCount },
     { sequence: UniqueConstants.Priority, key: UniqueConstants.Priority },
-    { sequence: 'requiredDate', key: 'requiredDate' },
+    { sequence: ColumnDef.RequiredDate, key: ColumnDef.RequiredDate },
   ];
 
   @ViewChild('paginator1') paginator1: MatPaginator;
@@ -62,8 +62,8 @@ export class PutAwayComponent implements OnInit {
     this.GetLocAssPutAwayTable();
   }
 
-  displayedColumns1: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate', ColumnDef.Action];
-  displayedColumns2: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, 'requiredDate', ColumnDef.Action];
+  displayedColumns1: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, ColumnDef.RequiredDate, ColumnDef.Action];
+  displayedColumns2: string[] = ['orderNumber', UniqueConstants.itemCount, UniqueConstants.Priority, ColumnDef.RequiredDate, ColumnDef.Action];
   tableData1: any = new MatTableDataSource([]);
 
   GetLocAssPutAwayTable(loader: boolean = false) {

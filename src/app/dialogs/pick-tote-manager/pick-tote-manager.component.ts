@@ -183,7 +183,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.priority}`,
     },
     {
-      columnDef: 'requiredDate',
+      columnDef: ColumnDef.RequiredDate,
       header: 'Required Date',
       cell: (element: any) => `${element.requiredDate}`,
     },

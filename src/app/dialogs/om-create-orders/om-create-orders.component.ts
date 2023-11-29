@@ -37,7 +37,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: TableConstant.TransactionType, key: TableConstant.transactionType },
     { sequence: Column.OrderNumber, key: 'orderNumber' },
     { sequence: 'Priority', key: UniqueConstants.Priority },
-    { sequence: 'Required Date', key: 'requiredDate' },
+    { sequence: 'Required Date', key: ColumnDef.RequiredDate },
     { sequence: TableConstant.UserField1, key: ColumnDef.userField1 },
     { sequence: TableConstant.UserField2, key: ColumnDef.userField2 },
     { sequence: 'User Field3', key: ColumnDef.userField3 },
