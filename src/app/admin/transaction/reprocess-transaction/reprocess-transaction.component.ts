@@ -50,7 +50,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
     { colHeader: Column.Row, colDef: TableConstant.Row },
     { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
-    { colHeader: 'bin', colDef: TableConstant.Bin },
+    { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin },
     { colHeader: 'invMapID', colDef: 'Inv Map ID' },
     { colHeader: 'completedDate', colDef: TableConstant.CompletedDate },
     { colHeader: 'completedBy', colDef: 'Completed By' },

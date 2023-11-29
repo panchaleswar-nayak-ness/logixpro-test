@@ -13,7 +13,7 @@ export class SpScanVerificationSetupComponent  {
   constructor(private global:GlobalService) { }
   displayedColumns: string[] = [Column.TransType, 'scanSequence', 'field', 'verifyType', 'verifyStringStart','verifyStringLength',ColumnDef.Actions];
   dataSource:any
-  dataSource1: string[] = [TableConstant.Location, 'locationName', TableConstant.zone, zoneType.carousel, Column.Row,TableConstant.shelf,'bin',TableConstant.WareHouse,UniqueConstants.cellSize,'velocityCode','carouselLocation','cartonLocation','itemNumber',UniqueConstants.Description,'serialNo','lotNo','expriationDate','UM','maxQty','qtyAllocatedPick','itemQty','putAwayDate','dateSensitive','shipVia','shipToName','dedicated','masterLocation','InvMapID'];
+  dataSource1: string[] = [TableConstant.Location, 'locationName', TableConstant.zone, zoneType.carousel, Column.Row,TableConstant.shelf,ColumnDef.Bin,TableConstant.WareHouse,UniqueConstants.cellSize,'velocityCode','carouselLocation','cartonLocation','itemNumber',UniqueConstants.Description,'serialNo','lotNo','expriationDate','UM','maxQty','qtyAllocatedPick','itemQty','putAwayDate','dateSensitive','shipVia','shipToName','dedicated','masterLocation','InvMapID'];
  
 
   openScanVerification(){

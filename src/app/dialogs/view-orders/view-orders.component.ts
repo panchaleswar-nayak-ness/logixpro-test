@@ -38,7 +38,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: TableConstant.completedQuantity, header: 'Completed Quantity', cell: (element: any) => `${element.completedQuantity}` },
     { columnDef: UniqueConstants.Description, header: Column.Description, cell: (element: any) => `${element.description}` },
     { columnDef: TableConstant.BatchPickID, header: ColumnDef.BatchPickID, cell: (element: any) => `${element.batchPickID}` },
-    { columnDef: 'bin', header: TableConstant.Bin, cell: (element: any) => `${element.bin}` },
+    { columnDef: ColumnDef.Bin, header: TableConstant.Bin, cell: (element: any) => `${element.bin}` },
     { columnDef: zoneType.carousel, header: TableConstant.Carousel, cell: (element: any) => `${element.carousel}` },
     { columnDef: Column.cell, header: TableConstant.Cell, cell: (element: any) => `${element.cell}` },
     { columnDef: 'completedBy', header: 'Completed By', cell: (element: any) => `${element.completedBy}` },

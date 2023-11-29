@@ -16,7 +16,7 @@ import { StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,zo
 })
 export class CompletePickBatchComponent{
 
-  displayedColumns: string[] = ['order_no', 'tote_id', 'item_number', UniqueConstants.Description, 'transaction_qty', TableConstant.Location, TableConstant.zone,zoneType.carousel,Column.Row,TableConstant.shelf,'bin', ColumnDef.Action];
+  displayedColumns: string[] = ['order_no', 'tote_id', 'item_number', UniqueConstants.Description, 'transaction_qty', TableConstant.Location, TableConstant.zone,zoneType.carousel,Column.Row,TableConstant.shelf,ColumnDef.Bin, ColumnDef.Action];
   tableData: any = [];
   dataSourceList: any;
   batchId: string = "";
@@ -224,7 +224,7 @@ export class CompletePickBatchComponent{
     {dbColName:TableConstant.Carousel,tabelColName:zoneType.carousel,sortColumnNumber:8},
     {dbColName:TableConstant.Row,tabelColName:Column.Row,sortColumnNumber:9},
     {dbColName:TableConstant.shelf,tabelColName:TableConstant.shelf,sortColumnNumber:10},
-    {dbColName:TableConstant.Bin,tabelColName:"bin",sortColumnNumber:11},
+    {dbColName:TableConstant.Bin,tabelColName:ColumnDef.Bin,sortColumnNumber:11},
   ];
 
   announceSortChange(e: any) {

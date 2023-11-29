@@ -36,7 +36,7 @@ import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTi
 export class InventoryMapComponent implements OnInit {
    INVMAP_DATA = [
     { colHeader: "locationID", colDef: "Alternate Light" },
-    { colHeader: "bin", colDef: TableConstant.Bin },
+    { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin },
     { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
     { colHeader: UniqueConstants.cellSize, colDef: "Cell Size" },
     { colHeader: "dateSensitive", colDef: "Date Sensitive" },

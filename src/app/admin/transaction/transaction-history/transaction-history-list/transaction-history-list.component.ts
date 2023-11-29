@@ -47,7 +47,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
     { colHeader: Column.Row, colDef: TableConstant.Row },
     { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
-    { colHeader: 'bin', colDef: TableConstant.Bin },
+    { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin },
     { colHeader: 'completedDate', colDef: TableConstant.CompletedDate },
     { colHeader: 'completedBy', colDef: 'Completed By' },
     { colHeader: TableConstant.completedQuantity, colDef: 'Completed Quantity' },
