@@ -64,7 +64,7 @@ export class EmployeesComponent implements OnInit {
   locationDataSource: any;
   employeeGroupAllowed: any;
   empAllZones:any;
-  groupAllowedList:any;
+  groupAllowedList:any= new MatTableDataSource();
   FuncationAllowedList:any = [];
   oldFuncationAllowedList:any = [];
   access:any;
