@@ -928,7 +928,7 @@ async clearBatchData(){
           }); 
           dialogRef.afterClosed().subscribe((result) => {
             if (result == 'NO') {
-              if(this.inputType !='Serial Number' && this.processPutAwayIndex.imPreference.createItemMaster ){
+              if(this.inputType !=ColumnDef.SerialNumber && this.processPutAwayIndex.imPreference.createItemMaster ){
                 this.ifAllowed=false;
     
                 const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
@@ -1016,7 +1016,7 @@ async clearBatchData(){
 
       dialogRef.afterClosed().subscribe((result) => {
         if (result == 'NO') {
-          if(this.inputType !='Serial Number' && this.processPutAwayIndex.imPreference.createItemMaster ){
+          if(this.inputType !=ColumnDef.SerialNumber && this.processPutAwayIndex.imPreference.createItemMaster ){
             this.ifAllowed=false;
 
             const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {

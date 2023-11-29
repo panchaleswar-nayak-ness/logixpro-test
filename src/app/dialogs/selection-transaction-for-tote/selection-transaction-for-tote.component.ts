@@ -5,7 +5,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ResponseStrings ,ToasterMessages,ToasterTitle,ToasterType,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import {  ResponseStrings ,ToasterMessages,ToasterTitle,ToasterType,DialogConstants,Style,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-selection-transaction-for-tote',
@@ -151,7 +151,7 @@ export class SelectionTransactionForToteComponent implements OnInit {
     this.iInductionManagerApi.TransactionForTote(getTransaction).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
-          if(res.data.subCategory == 'Reel Tracking' && res.data.inputType != 'Serial Number'){
+          if(res.data.subCategory == 'Reel Tracking' && res.data.inputType != ColumnDef.SerialNumber){
             this.dialogRef.close({category:'isReel',item:res.data});
             return;
           }

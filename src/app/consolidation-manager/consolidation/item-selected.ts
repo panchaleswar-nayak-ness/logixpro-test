@@ -5,7 +5,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { IConsolidationApi } from "src/app/common/services/consolidation-api/consolidation-api-interface";
 import { ConsolidationApiService } from "src/app/common/services/consolidation-api/consolidation-api.service";
 import { GlobalService } from "src/app/common/services/global.service";
-import {  Column ,ToasterTitle,ToasterType} from 'src/app/common/constants/strings.constants';
+import {  Column ,ToasterTitle,ToasterType,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
     template: ''
@@ -27,7 +27,7 @@ export class ItemSelected implements OnInit {
         {key: '1', value: Column.ItemNumber},
         {key: '2', value: 'Supplier Item ID'},
         {key: '10', value: Column.LotNumber},
-        {key: '8', value: 'Serial Number'},
+        {key: '8', value: ColumnDef.SerialNumber},
         {key: '9', value: 'User Field 1'},
         {key: '0', value: 'Any Code'},
         {key: '6', value: Column.ToteID},

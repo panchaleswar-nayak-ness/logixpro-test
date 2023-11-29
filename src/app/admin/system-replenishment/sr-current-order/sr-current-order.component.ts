@@ -47,7 +47,7 @@ export class SrCurrentOrderComponent implements OnInit {
     Column.OrderNumber,
     'UofM',
     ColumnDef.BatchPickID,
-    'Serial Number',
+    ColumnDef.SerialNumber,
     TableConstant.CompletedDate,
     'Print Date',
     ColumnDef.Action,
@@ -68,7 +68,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: Column.OrderNumber, label: Column.OrderNumber, value: 'orderNumber', filterProperty:Column.OrderNumber },
     { defination: 'UofM', label: 'UofM', value: ColumnDef.UnitOfMeasure, filterProperty:'UofM' },
     { defination: ColumnDef.BatchPickID, label: ColumnDef.BatchPickID, value: TableConstant.BatchPickID, filterProperty:ColumnDef.BatchPickID },
-    { defination: 'Serial Number', label: 'Serial Number', value: 'serialNumber', filterProperty:'Serial Number' },
+    { defination: ColumnDef.SerialNumber, label: ColumnDef.SerialNumber, value: 'serialNumber', filterProperty:ColumnDef.SerialNumber },
     { defination: TableConstant.CompletedDate, label: 'Comp Date', value: 'completedDate', filterProperty:'Comp Date' },
     { defination: 'Print Date', label: 'Print Date', value: 'printDate', filterProperty:'Print Date' },
   ];
@@ -140,8 +140,8 @@ export class SrCurrentOrderComponent implements OnInit {
     },
     { value: TableConstant.Row, viewValue: TableConstant.Row, sortColumn: '5', key: Column.Row },
     {
-      value: 'Serial Number',
-      viewValue: 'Serial Number',
+      value: ColumnDef.SerialNumber,
+      viewValue: ColumnDef.SerialNumber,
       sortColumn: '15',
       key: 'serialNumber',
     },

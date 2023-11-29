@@ -32,7 +32,7 @@ const TRNSC_DATA = [
   { colHeader: 'bin', colDef: TableConstant.Bin },
   { colHeader: UniqueConstants.cellSize, colDef: 'Cell Size' },
   { colHeader: TableConstant.LotNumber, colDef: 'Serial Lot Number' },
-  { colHeader: 'serialNumber', colDef: 'Serial Number' },
+  { colHeader: 'serialNumber', colDef: ColumnDef.SerialNumber },
   { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
   { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },
   { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
