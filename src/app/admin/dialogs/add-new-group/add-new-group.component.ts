@@ -9,7 +9,6 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType ,StringConditions} from 'src/app/common/constants/strings.constants';
-import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 export interface DialogData {
   animal: 'panda' | 'unicorn' | 'lion';
