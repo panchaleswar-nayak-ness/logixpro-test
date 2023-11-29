@@ -703,7 +703,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       "revision": "",
       "zone": values.zone,
       'carousel' : values.carousel,
-      "row": values.row,
+      'row': values.row,
       "shelf": values.shelf,
       "bin": values.bin,
       "invMapID": values.invMapID,

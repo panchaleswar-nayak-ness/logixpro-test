@@ -319,7 +319,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.carousel}`,
     },
     {
-      columnDef: 'row',
+      columnDef: Column.Row,
       header: TableConstant.Row,
       cell: (element: any) => `${element.row}`,
     },

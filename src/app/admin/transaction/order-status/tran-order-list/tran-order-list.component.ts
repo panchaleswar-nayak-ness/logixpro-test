@@ -71,7 +71,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'orderNumber', colDef: Column.OrderNumber },
     { colHeader: TableConstant.LineSequence, colDef: 'Line Sequence' },
     { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
-    { colHeader: 'row', colDef: TableConstant.Row },
+    { colHeader: Column.Row, colDef: TableConstant.Row },
     { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
     { colHeader: 'bin', colDef: TableConstant.Bin },
     { colHeader: 'invMapID', colDef: 'Inv Map ID' },

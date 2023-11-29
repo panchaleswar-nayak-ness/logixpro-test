@@ -68,7 +68,8 @@ export const StringConditions = {
     clear:'clear',
     filter:'filter',
     MoveTo:'MoveTo',
-    edit:'edit'
+    edit:'edit',
+    MoveFrom:'MoveFrom'
 }
 
 export const ResponseStrings = {
@@ -365,7 +366,8 @@ export const Column = {
     Description:'Description',
     TransType: 'transType',
     Action:'action',
-    cell:'cell'
+    cell:'cell',
+    Row:'row'
 }
 export const ColumnDef= {
     userField1:'userField1',
@@ -385,7 +387,8 @@ export const ColumnDef= {
     Revision:'revision',
     ExpirationDate:'expirationDate',
     Actions:'actions',
-    Action:'action'
+    Action:'action',
+    ToteID:'toteID'
 }
 
 export const Case = {
@@ -445,7 +448,8 @@ export const TableConstant = {
     label:'label',
     completedQuantity:'completedQuantity',
     transactionType:'transactionType',
-    BatchPickID:'batchPickID'
+    BatchPickID:'batchPickID',
+    Location: 'location',
 }
 export const UniqueConstants = {
     backClass:'back-class',
