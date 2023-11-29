@@ -142,7 +142,7 @@ export class CrossDockTransactionComponent implements OnInit {
     let payLoad = {
       sRow: this.lowerBound,
       eRow: this.upperBound,
-      itemWhse: [this.itemWhse, this.warehouse, '1=1'],
+      itemWhse: [this.itemWhse, this.warehouse, UniqueConstants.OneEqualsOne],
       username: this.userId,
       wsid: this.wsid,
     };

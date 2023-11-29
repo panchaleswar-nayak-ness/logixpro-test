@@ -905,7 +905,7 @@ export class PickToteManagerComponent implements OnInit {
         eRow: 10,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: '1=1',
+        Filter: UniqueConstants.OneEqualsOne
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res) {
@@ -972,7 +972,7 @@ export class PickToteManagerComponent implements OnInit {
         eRow: 10,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: '1=1',
+        Filter: UniqueConstants.OneEqualsOne
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res) {
@@ -1111,7 +1111,7 @@ export class PickToteManagerComponent implements OnInit {
         eRow: 10,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: '1=1',
+        Filter: UniqueConstants.OneEqualsOne
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
@@ -1145,7 +1145,7 @@ export class PickToteManagerComponent implements OnInit {
           eRow: 10,
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
-          Filter: '1=1',
+          Filter: UniqueConstants.OneEqualsOne
         };
         this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {
@@ -1182,7 +1182,7 @@ export class PickToteManagerComponent implements OnInit {
         eRow: 10,
         SortColumnNumber: 0,
         SortOrder: UniqueConstants.Asc,
-        Filter: '1=1',
+        Filter: UniqueConstants.OneEqualsOne
       };
       this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
         if (res.data.pickToteManTrans?.length > 0) {
@@ -1216,7 +1216,7 @@ export class PickToteManagerComponent implements OnInit {
           eRow: 10,
           SortColumnNumber: 0,
           SortOrder: UniqueConstants.Asc,
-          Filter: '1=1',
+          Filter: UniqueConstants.OneEqualsOne
         };
         this.iInductionManagerApi.PickToteTransDT(paylaod).subscribe((res) => {
           if (res.data.pickToteManTrans?.length > 0) {

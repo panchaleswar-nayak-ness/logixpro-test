@@ -85,7 +85,7 @@ export class SrCurrentOrderComponent implements OnInit {
     sortColumn: '',
     sortDir: UniqueConstants.Asc,
     status: ResponseStrings.AllCaps,
-    filter: '1=1',
+    filter: UniqueConstants.OneEqualsOne,
     username: '',
     wsid: '',
   };
