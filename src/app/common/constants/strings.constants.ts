@@ -469,7 +469,10 @@ export const UniqueConstants = {
     cellSize:'cellSize',
     item:'item',
     itemCount:'itemCount',
-    OneEqualsOne:'1 = 1'
+    OneEqualsOne:'1 = 1',
+    Lizard:'Lizard',
+    Lindsay:'Lindsay',
+    Blue:'Blue'
     
 }
 export const Style = {
