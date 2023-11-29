@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  LiveAnnouncerMessage ,ToasterTitle,ToasterType,TableConstant} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ToasterTitle,ToasterType,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-shipping-complete-dialog',
@@ -18,7 +18,7 @@ export class ShippingCompleteDialogComponent implements OnInit {
   displayedColumns1: string[] = [
     'itemNumber',
     'lineNumber',
-    'toteID',
+    ColumnDef.ToteID,
     'transactionQuantity',
     TableConstant.completedQuantity,
     'containerID',

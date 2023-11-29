@@ -78,7 +78,7 @@ export class LookupToteSetupComponent implements OnInit {
   saveTotes(ele,i){
     let payload = {
       "oldToteID": "",
-      "toteID": ele.toteID,
+      'toteID': ele.toteID,
       "cells": ele.cells.toString()
     }
     this.iAdminApiService.totesetup(payload).pipe(
@@ -114,7 +114,7 @@ export class LookupToteSetupComponent implements OnInit {
       if (res === ResponseStrings.Yes){
 
         let payload = {
-          "toteID": ele.toteID
+          'toteID': ele.toteID
         }
         this.iAdminApiService.deleteTote(payload).subscribe((res=>{ 
           if(res.isExecuted){

@@ -689,7 +689,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       "otid": this.data.otid,
       "splitQty": values.splitQty || 0, 
       "qty": values.toteQty,
-      "toteID": values.toteID,
+      'toteID': values.toteID,
       "batchID": this.data.batchID,
       "item": values.itemNumber,
       "uF1": values.userField1,

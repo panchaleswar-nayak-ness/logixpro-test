@@ -26,7 +26,7 @@ export class CmOrderNumberComponent implements OnInit {
   userData: any;
   isStandAlone: boolean = false;
   type: any = ''; 
-  displayedColumns: string[] = ['toteID', 'stagingLocation', ColumnDef.Action];
+  displayedColumns: string[] = [ColumnDef.ToteID, 'stagingLocation', ColumnDef.Action];
   tableData: any = []; 
   @ViewChild('order') order: ElementRef;
   @ViewChild('searchTote') searchTote: ElementRef;

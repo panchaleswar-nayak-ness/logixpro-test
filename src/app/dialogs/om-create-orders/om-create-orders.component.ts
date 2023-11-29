@@ -70,7 +70,7 @@ export class OmCreateOrdersComponent implements OnInit {
     { sequence: ColumnDef.Emergency, key: UniqueConstants.emergency },
     { sequence: 'Label', key: TableConstant.label },
     { sequence: ColumnDef.BatchPickID, key: TableConstant.BatchPickID },
-    { sequence: Column.ToteID, key: 'toteID' },
+    { sequence: Column.ToteID, key: ColumnDef.ToteID },
     { sequence: TableConstant.Cell, key: Column.cell },
     { sequence: 'Label', key: TableConstant.label },
     { sequence: 'Label', key: TableConstant.label },

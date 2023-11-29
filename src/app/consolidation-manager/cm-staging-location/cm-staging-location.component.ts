@@ -118,7 +118,7 @@ export class CmStagingLocationComponent {
       this.stageTables[index].stagingLocationOld = location;
       let obj: any = {
         "orderNumber": this.orderNumberTote,
-        "toteID": toteID,
+        'toteID': toteID,
         "location": location,
         "clear": clear
       }

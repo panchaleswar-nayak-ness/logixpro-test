@@ -67,7 +67,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: 'serialNumber', header: 'Serial Number', cell: (element: any) => `${element.serialNumber}` },
     { columnDef: TableConstant.shelf, header: TableConstant.shelf, cell: (element: any) => `${element.shelf}` },
     { columnDef: 'statusCode', header: 'Status Code', cell: (element: any) => `${element.statusCode}` },
-    { columnDef: 'toteID', header: Column.ToteID, cell: (element: any) => `${element.toteID}` },
+    { columnDef: ColumnDef.ToteID, header: Column.ToteID, cell: (element: any) => `${element.toteID}` },
     { columnDef: 'toteNumber', header: 'Tote Number', cell: (element: any) => `${element.toteNumber}` },
     { columnDef: 'unitOfMeasure', header: 'Unit Of Measure', cell: (element: any) => `${element.unitOfMeasure}` },
     { columnDef: ColumnDef.userField1, header: TableConstant.UserField1, cell: (element: any) => `${element.userField1}` },

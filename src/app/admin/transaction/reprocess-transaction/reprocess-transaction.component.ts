@@ -77,7 +77,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: ColumnDef.userField8, colDef: 'User Field8' },
     { colHeader: ColumnDef.userField9, colDef: 'User Field9' },
     { colHeader: ColumnDef.userField10, colDef: 'User Field10' },
-    { colHeader: 'toteID', colDef: Column.ToteID },
+    { colHeader: ColumnDef.ToteID, colDef: Column.ToteID },
     { colHeader: 'toteNumber', colDef: 'Tote Number' },
     { colHeader: Column.cell, colDef: TableConstant.Cell },
     { colHeader: ColumnDef.HostTransactionId, colDef: TableConstant.HostTransactionID },

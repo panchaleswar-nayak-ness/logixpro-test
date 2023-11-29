@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle,ToasterType,DialogConstants,Style,TableConstant} from 'src/app/common/constants/strings.constants';
+import {  LiveAnnouncerMessage ,ResponseStrings,KeyboardKeys,StringConditions,ToasterTitle,ToasterType,DialogConstants,Style,TableConstant,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-cm-confirm-and-packing',
@@ -38,7 +38,7 @@ export class CmConfirmAndPackingComponent implements OnInit {
   shipComp:any;
   printPrefs:any={}; 
   isDisabled:boolean  = false;
- displayedColumns: string[] = ['toteID', 'stagingLocation']; 
+ displayedColumns: string[] = [ColumnDef.ToteID, 'stagingLocation']; 
 userData:any={}; 
 @ViewChild('paginator1') paginator1: MatPaginator;
 @ViewChild('paginator2') paginator2: MatPaginator;

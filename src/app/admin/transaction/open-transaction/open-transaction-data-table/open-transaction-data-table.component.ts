@@ -24,7 +24,7 @@ export class OpenTransactionDataTableComponent implements OnInit {
     'lotNumber',
     'lineNumber',
     ColumnDef.HostTransactionId,
-    'toteID',
+    ColumnDef.ToteID,
     'id',
     ColumnDef.Actions,
   ];

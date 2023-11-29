@@ -288,7 +288,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.revision}`,
     },
     {
-      columnDef: 'toteID',
+      columnDef: ColumnDef.ToteID,
       header: Column.ToteID,
       cell: (element: any) => `${element.toteID}`,
     },
