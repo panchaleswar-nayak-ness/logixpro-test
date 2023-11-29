@@ -21,7 +21,7 @@ export class OpenTransactionDataTableComponent implements OnInit {
     TableConstant.transactionType,
     ColumnDef.TransactionQuantity,
     'serialNumber',
-    'lotNumber',
+    TableConstant.LotNumber,
     'lineNumber',
     ColumnDef.HostTransactionId,
     ColumnDef.ToteID,

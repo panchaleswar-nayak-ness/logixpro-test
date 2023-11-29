@@ -50,7 +50,7 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: "laserY", colDef: "Laser Y" },
     { colHeader: TableConstant.Location, colDef: Column.Location },
     { colHeader: "locationNumber", colDef: "Location Number" },
-    { colHeader: "lotNumber", colDef: Column.LotNumber },
+    { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
     { colHeader: "masterInvMapID", colDef: "Master Inv Map ID" },
     { colHeader: "masterLocation", colDef: "Master Location" },
     { colHeader: "maxQuantity", colDef: "Maximum Quantity" },

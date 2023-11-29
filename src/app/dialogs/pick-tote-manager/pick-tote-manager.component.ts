@@ -203,7 +203,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.serialNumber}`,
     },
     {
-      columnDef: 'lotNumber',
+      columnDef: TableConstant.LotNumber,
       header: Column.LotNumber,
       cell: (element: any) => `${element.lotNumber}`,
     },

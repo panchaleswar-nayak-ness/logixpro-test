@@ -42,7 +42,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     { colHeader: 'requiredDate', colDef: 'Required Date' },
     { colHeader: 'itemNumber', colDef: Column.ItemNumber },
     { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
-    { colHeader: 'lotNumber', colDef: Column.LotNumber },
+    { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
     { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
     { colHeader: UniqueConstants.Description, colDef: Column.Description },

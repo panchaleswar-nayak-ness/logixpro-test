@@ -23,7 +23,7 @@ export class CmItemSelectedComponent implements OnInit {
   public colLabel: any;
   public columnModal: any;
   userData: any;
-  displayedColumns: string[] = ['itemNumber', TableConstant.WareHouse, TableConstant.completedQuantity, ColumnDef.ToteID, 'serialNumber', ColumnDef.userField1, 'lotNumber', ColumnDef.Actions];
+  displayedColumns: string[] = ['itemNumber', TableConstant.WareHouse, TableConstant.completedQuantity, ColumnDef.ToteID, 'serialNumber', ColumnDef.userField1, TableConstant.LotNumber, ColumnDef.Actions];
   itemSelectTable: any
   dataSourceList: any
   @ViewChild(MatSort) sort: MatSort;
