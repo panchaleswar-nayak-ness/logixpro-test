@@ -41,7 +41,7 @@ export class CmShippingTransactionComponent implements OnInit {
     'itemNumber',
     'lineNumber',
     ColumnDef.ToteID,
-    'transactionQuantity',
+    ColumnDef.TransactionQuantity,
     TableConstant.completedQuantity,
     'containerID',
     'shipQuantity',

@@ -31,7 +31,7 @@ export class ReprocessedTransactionComponent implements OnInit {
     { colHeader: 'lotNumber', colDef: Column.LotNumber },
     { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
-    { colHeader: 'transactionQuantity', colDef: TableConstant.TransactionQuantity },
+    { colHeader: ColumnDef.TransactionQuantity, colDef: TableConstant.TransactionQuantity },
     { colHeader: 'reasonMessage', colDef: 'Reason Message' },
     { colHeader: 'reason', colDef: 'Reason' },
     { colHeader: 'dateStamp', colDef: 'Date Stamp' },

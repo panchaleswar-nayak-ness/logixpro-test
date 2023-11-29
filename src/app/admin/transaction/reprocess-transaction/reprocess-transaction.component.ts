@@ -43,7 +43,7 @@ export class ReprocessTransactionComponent implements OnInit {
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
     { colHeader: UniqueConstants.Description, colDef: Column.Description },
     { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },
-    { colHeader: 'transactionQuantity', colDef: TableConstant.TransactionQuantity },
+    { colHeader: ColumnDef.TransactionQuantity, colDef: TableConstant.TransactionQuantity },
     { colHeader: TableConstant.Location, colDef: Column.Location },
     { colHeader: 'wareHouse', colDef: 'Warehouse' },
     { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },

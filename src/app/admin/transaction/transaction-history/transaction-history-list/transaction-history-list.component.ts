@@ -40,7 +40,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
     { colHeader: 'serialNumber', colDef: 'Serial Number' },
     { colHeader: UniqueConstants.Description, colDef: Column.Description },
-    { colHeader: 'transactionQuantity', colDef: TableConstant.TransactionQuantity },
+    { colHeader: ColumnDef.TransactionQuantity, colDef: TableConstant.TransactionQuantity },
     { colHeader: TableConstant.Location, colDef: Column.Location },
     { colHeader: 'wareHouse', colDef: 'Warehouse' },
     { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },

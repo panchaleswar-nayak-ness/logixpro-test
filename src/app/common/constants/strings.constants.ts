@@ -388,7 +388,8 @@ export const ColumnDef= {
     ExpirationDate:'expirationDate',
     Actions:'actions',
     Action:'action',
-    ToteID:'toteID'
+    ToteID:'toteID',
+    TransactionQuantity:'transactionQuantity'
 }
 
 export const Case = {

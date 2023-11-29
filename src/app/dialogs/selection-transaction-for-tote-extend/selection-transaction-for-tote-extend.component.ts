@@ -674,7 +674,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   validateOverReciept(){
     let toteQty = this.toteForm?.get('toteQty')?.value;
-    let transactionQuantity = this.toteForm?.get('transactionQuantity')?.value;
+    let transactionQuantity = this.toteForm?.get(ColumnDef.TransactionQuantity)?.value;
     if(this.overReciept && toteQty > transactionQuantity){
       this.global.ShowToastr(ToasterType.Error,"quantity cannot be greater than current transaction quantity",ToasterTitle.Error);
       return false;

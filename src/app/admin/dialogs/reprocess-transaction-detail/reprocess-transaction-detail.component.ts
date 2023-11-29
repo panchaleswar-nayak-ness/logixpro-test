@@ -113,7 +113,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
       "oldValues": [
       ],
       "newValues": [
-        this.editTransactionForm.get("transactionQuantity")?.value,
+        this.editTransactionForm.get(ColumnDef.TransactionQuantity)?.value,
         this.editTransactionForm.get("unitOfMeasure")?.value,
         this.editTransactionForm.get("serialNumber")?.value,
         this.editTransactionForm.get("lotNumber")?.value?.toString(),
@@ -228,7 +228,7 @@ export class ReprocessTransactionDetailComponent implements OnInit {
           if (!res.data[0].label) { this.label = false; } else { this.label = true; }
           if (res.data[0].emergency == StringConditions.False) { this.emergency = false; } else { this.emergency = true; }
           this.editTransactionForm.patchValue({
-            "transactionQuantity": res.data[0].transactionQuantity,
+            'transactionQuantity': res.data[0].transactionQuantity,
             "unitOfMeasure": res.data[0].unitOfMeasure,
             "serialNumber": res.data[0].serialNumber,
             "lotNumber": res.data[0].lotNumber,

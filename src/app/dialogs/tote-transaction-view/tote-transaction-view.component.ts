@@ -74,7 +74,7 @@ export class ToteTransactionViewComponent implements OnInit {
   displayedColumns: string[] = [
     Column.cell,
     'itemNumber',
-    'transactionQuantity',
+    ColumnDef.TransactionQuantity,
     'itemLocation',
     ColumnDef.HostTransactionId,
     'other',

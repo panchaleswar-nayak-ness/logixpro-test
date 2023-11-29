@@ -153,7 +153,7 @@ export class PickToteManagerComponent implements OnInit {
       cell: (element: any) => `${element.itemNumber}`,
     },
     {
-      columnDef: 'transactionQuantity',
+      columnDef: ColumnDef.TransactionQuantity,
       header: TableConstant.TransactionQuantity,
       cell: (element: any) => `${element.transactionQuantity}`,
     },

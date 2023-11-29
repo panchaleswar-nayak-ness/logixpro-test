@@ -61,7 +61,7 @@ export class SrNewOrderComponent implements OnInit {
     { value: 'Replenishment Point', viewValue: 'Replenishment Point', sortValue: '4', key: 'replenishmentPoint', colDef: 'Replenishment Point' },
     { value: 'Replenishment Qty', viewValue: 'Replenishment Qty', sortValue: '7', key: 'replenishmentQuantity', colDef: 'Replenishment Qty' },
     { value: 'Stock Qty', viewValue: 'Stock Qty', sortValue: '3', key: 'stockQuantity', colDef: 'Stock Qty' },
-    { value: 'Transaction Qty', viewValue: 'Transaction Qty', sortValue: '9', key: 'transactionQuantity', colDef: 'Transaction Qty' },
+    { value: 'Transaction Qty', viewValue: 'Transaction Qty', sortValue: '9', key: ColumnDef.TransactionQuantity, colDef: 'Transaction Qty' },
     { value: 'Warehouse', viewValue: 'Warehouse', sortValue: '2', key: 'warehouse', colDef: 'Warehouse' },
   ];
   searchAutocompleteList: any;

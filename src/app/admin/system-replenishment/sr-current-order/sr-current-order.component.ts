@@ -63,7 +63,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: 'bin', label: TableConstant.Bin, value: 'bin', filterProperty:TableConstant.Bin },
     { defination: Column.cell, label: TableConstant.Cell, value: Column.cell, filterProperty:TableConstant.Cell },
     { defination: 'lotNumber', label: Column.LotNumber, value: 'lotNumber', filterProperty:'lot Number' },
-    { defination: 'Trans Qty', label: 'Trans Qty', value: 'transactionQuantity' , filterProperty:'Trans Qty'},
+    { defination: 'Trans Qty', label: 'Trans Qty', value: ColumnDef.TransactionQuantity , filterProperty:'Trans Qty'},
     { defination: UniqueConstants.Description, label: Column.Description, value: UniqueConstants.Description, filterProperty:Column.Description },
     { defination: Column.OrderNumber, label: Column.OrderNumber, value: 'orderNumber', filterProperty:Column.OrderNumber },
     { defination: 'UofM', label: 'UofM', value: 'unitOfMeasure', filterProperty:'UofM' },
@@ -150,7 +150,7 @@ export class SrCurrentOrderComponent implements OnInit {
       value: 'Trans Qty',
       viewValue: 'Trans Qty',
       sortColumn: '10',
-      key: 'transactionQuantity',
+      key: ColumnDef.TransactionQuantity,
     },
     {
       value: TableConstant.TransactionType,
