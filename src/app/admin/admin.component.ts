@@ -72,7 +72,7 @@ export class AdminComponent implements OnInit {
   };
   public Order_Table_Config = [
     { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
-    { colHeader: TableConstant.WareHouse, colDef: 'Warehouse' },
+    { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
     { colHeader: 'locationName', colDef: Column.Location },
     { colHeader: 'totalPicks', colDef: 'Lines' },
     { colHeader: TableConstant.transactionType, colDef: TableConstant.TransactionType },

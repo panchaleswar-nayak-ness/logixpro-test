@@ -87,7 +87,7 @@ export class GenerateOrderComponent implements OnInit {
     'LotNumber',
     'ExpirationDate',
     'SerialNumber',
-    'Warehouse',
+    ColumnDef.Warehouse,
     'BatchPickID',
     'Notes',
     'ToteNumber',

@@ -392,7 +392,8 @@ export const ColumnDef= {
     TransactionQuantity:'transactionQuantity',
     UnitOfMeasure:'unitOfMeasure',
     SerialNumber:'Serial Number',
-    Bin:'bin'
+    Bin:'bin',
+    Warehouse:'Warehouse'
 }
 
 export const Case = {

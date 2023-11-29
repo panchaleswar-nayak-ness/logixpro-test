@@ -26,7 +26,7 @@ import { ToasterTitle, ToasterType ,ResponseStrings,Column,DialogConstants,Style
 export class SrNewOrderComponent implements OnInit {
   @ViewChild('openActionDropDown') openActionDropDown: MatSelect;
  @Input() tabIndex:any;
-  displayedColumns: string[] = [Column.ItemNumber, Column.Description, 'Warehouse', 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', ColumnDef.Action];
+  displayedColumns: string[] = [Column.ItemNumber, Column.Description, ColumnDef.Warehouse, 'Stock Qty', 'Replenishment Point', 'Replenishment Level', 'Available Qty', 'Replenishment Qty', 'Case Qty', 'Transaction Qty', 'Replenish', 'Replenish Exists', 'Alloc Pick', 'Alloc Put', ColumnDef.Action];
   tableData: any = [];
   filteredTableData: any = [];
   public userData: any;
@@ -62,7 +62,7 @@ export class SrNewOrderComponent implements OnInit {
     { value: 'Replenishment Qty', viewValue: 'Replenishment Qty', sortValue: '7', key: 'replenishmentQuantity', colDef: 'Replenishment Qty' },
     { value: 'Stock Qty', viewValue: 'Stock Qty', sortValue: '3', key: 'stockQuantity', colDef: 'Stock Qty' },
     { value: 'Transaction Qty', viewValue: 'Transaction Qty', sortValue: '9', key: ColumnDef.TransactionQuantity, colDef: 'Transaction Qty' },
-    { value: 'Warehouse', viewValue: 'Warehouse', sortValue: '2', key: TableConstant.WareHouse, colDef: 'Warehouse' },
+    { value: ColumnDef.Warehouse, viewValue: ColumnDef.Warehouse, sortValue: '2', key: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
   ];
   searchAutocompleteList: any;
   newOrderListCreated:boolean = false;

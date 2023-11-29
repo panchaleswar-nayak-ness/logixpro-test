@@ -66,7 +66,7 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
     { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
     { colHeader: UniqueConstants.goldenZone, colDef: "Velocity Code" },
-    { colHeader: TableConstant.WareHouse, colDef: "Warehouse" },
+    { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
     { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
   ];
   onDestroy$: Subject<boolean> = new Subject();

@@ -17,7 +17,7 @@ import { TableContextMenuService } from 'src/app/common/globalComponents/table-c
 import { DialogConstants, ToasterTitle, ToasterType ,ResponseStrings,Column,zoneType,ColumnDef,TableConstant,Style,UniqueConstants,FilterColumnName,StringConditions} from 'src/app/common/constants/strings.constants';
 
 const TRNSC_DATA = [
-  { colHeader: TableConstant.WareHouse, colDef: 'Warehouse' },
+  { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
   { colHeader: 'locationNumber', colDef: 'Location Number' },
   { colHeader: UniqueConstants.goldenZone, colDef: 'Golden Zone' },
   { colHeader: 'itemNumber', colDef: Column.ItemNumber },

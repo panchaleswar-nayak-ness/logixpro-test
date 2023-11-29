@@ -335,7 +335,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: TableConstant.WareHouse,
-      header: 'Warehouse',
+      header: ColumnDef.Warehouse,
       cell: (element: any) => `${element.warehouse}`,
     },
     {

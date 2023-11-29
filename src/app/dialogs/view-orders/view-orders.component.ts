@@ -80,7 +80,7 @@ export class ViewOrdersComponent implements OnInit {
     { columnDef: ColumnDef.userField8, header: 'User Field8', cell: (element: any) => `${element.userField8}` },
     { columnDef: ColumnDef.userField9, header: 'User Field9', cell: (element: any) => `${element.userField9}` },
     { columnDef: ColumnDef.userField10, header: 'User Field10', cell: (element: any) => `${element.userField10}` },
-    { columnDef: TableConstant.WareHouse, header: 'Warehouse', cell: (element: any) => `${element.warehouse}` },
+    { columnDef: TableConstant.WareHouse, header: ColumnDef.Warehouse, cell: (element: any) => `${element.warehouse}` },
     { columnDef: TableConstant.zone, header: ColumnDef.Zone, cell: (element: any) => `${element.zone}` },
   ];
 
