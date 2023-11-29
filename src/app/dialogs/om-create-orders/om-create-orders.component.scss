@@ -12,8 +12,8 @@ table {
 }
 .w-140 {
   width: 140px;
-}.height-315 {
-  height: 315px;
+}.height-300 {
+  height: 300px;
 }.table-order-td {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -29,4 +29,13 @@ table {
   border: 0;
   padding-left: 24px;
   background: var(--clr-pure-white);
+}
+.btn-bg-white{
+  background-color: #fff;
+}
+.label-white{
+  mat-label{
+    background-color: var(--clr-pure-white);
+    border-radius: 999px;
+  }
 }
