@@ -36,7 +36,7 @@ export class EmployeePickupLevelComponent{
   @ViewChild(MatSort) sort: MatSort;
   public nextPickLvl:any;
 
-   displayedColumns: string[] = ['pickLevel', 'startShelf', 'endShelf', 'edit'];
+   displayedColumns: string[] = ['pickLevel', 'startShelf', 'endShelf', StringConditions.edit];
 
   ngOnChanges(changes: SimpleChanges): void { 
     if(this.pickUplevels){
@@ -110,7 +110,7 @@ export class EmployeePickupLevelComponent{
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data:{
-        mode: 'edit',
+        mode: StringConditions.edit,
         pickLevelData:pickLevelData,
         userName:this.grp_data
       }

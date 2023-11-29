@@ -11,7 +11,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,dataCredientials,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,dataCredientials,Style,StringConditions} from 'src/app/common/constants/strings.constants';
 import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 export interface DialogData {
@@ -72,11 +72,11 @@ export class AddNewEmployeeComponent implements OnInit {
     
     this.env =  JSON.parse(localStorage.getItem('env') ?? ''); 
     this.allGroups  = this.empData?.allGroups;
-    this.form_heading = this.data?.mode === 'edit' ? 'Edit Employee' : 'Add New Employee';
-    this.form_btn_label = this.data?.mode === 'edit' ?'Save' : StringConditions.AddCaps;
-    this.isEmail = this.data?.mode === 'edit';
-    this.isDisabledPassword = this.data?.mode === 'edit';
-    this.isDisabledUsername = this.data?.mode === 'edit';
+    this.form_heading = this.data?.mode === StringConditions.edit ? 'Edit Employee' : 'Add New Employee';
+    this.form_btn_label = this.data?.mode === StringConditions.edit ?'Save' : StringConditions.AddCaps;
+    this.isEmail = this.data?.mode === StringConditions.edit;
+    this.isDisabledPassword = this.data?.mode === StringConditions.edit;
+    this.isDisabledUsername = this.data?.mode === StringConditions.edit;
     this.mi = this.empData?.mi ?? '';
     this.firstName = this.empData?.firstName ?? '';
     this.oldPassword = this.empData?.password ?? '';
@@ -101,7 +101,7 @@ export class AddNewEmployeeComponent implements OnInit {
     }
   }
   isEmptyPass() { 
-    if (this.data?.mode === 'edit') {
+    if (this.data?.mode === StringConditions.edit) {
       if (this.empForm.controls['password']?.value === '') {
         this.isDisabledPassword = true;
         this.empForm.controls['password'].disable();
@@ -136,7 +136,7 @@ ChangePassword(data){
       this.cleanForm(form);
       form.value.active = Boolean(JSON.parse(form.value.active || "false"));
       
-      if (this.data?.mode === 'edit') {
+      if (this.data?.mode === StringConditions.edit) {
         form.value.wsid = "TESTWID"; 
         form.value.username = this.data?.emp_data?.username ? this.data.emp_data.username : this.data.emp_data.Username;
         if(this.groupChanged){
@@ -207,7 +207,7 @@ ChangePassword(data){
   functionsAllowedList: any = [];
   groupChanged: boolean = false;
   groupChange($event:any){
-    if (this.data?.mode === 'edit') {
+    if (this.data?.mode === StringConditions.edit) {
       const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: Style.w786px,

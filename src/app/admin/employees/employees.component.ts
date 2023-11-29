@@ -20,7 +20,7 @@ import { EmployeesLookupComponent } from './employees-lookup/employees-lookup.co
 import { GlobalService } from 'src/app/common/services/global.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
-import { ToasterTitle, ToasterType ,DialogConstants,Style,dataCredientials,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,DialogConstants,Style,dataCredientials,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 
 export interface Location {
   start_location: string;
@@ -309,14 +309,14 @@ export class EmployeesComponent implements OnInit {
 
     emp_data.env = this.env;
     emp_data.allGroups = this.allGroups;
-    if (event === 'edit') {
+    if (event === StringConditions.edit) {
       let dialogRef:any = this.global.OpenDialog(AddNewEmployeeComponent, {
         height: 'auto',
         width: '520px',
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
-          mode: 'edit',
+          mode: StringConditions.edit,
           emp_data: emp_data,
         }
       })
@@ -386,14 +386,14 @@ export class EmployeesComponent implements OnInit {
   }
 
   actionGroupDialog(event: any, grp_data: any, matEvent: MatSelectChange) { 
-    if (event === 'edit') {
+    if (event === StringConditions.edit) {
       let dialogRef:any = this.global.OpenDialog(AddNewGroupComponent, {
         height: 'auto',
         width: Style.w480px,
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
         data: {
-          mode: 'edit',
+          mode: StringConditions.edit,
           grp_data: grp_data
         }
       })

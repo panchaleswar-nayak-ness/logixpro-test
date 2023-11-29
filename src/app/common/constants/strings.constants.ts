@@ -67,7 +67,8 @@ export const StringConditions = {
     False:'False',
     clear:'clear',
     filter:'filter',
-    MoveTo:'MoveTo'
+    MoveTo:'MoveTo',
+    edit:'edit'
 }
 
 export const ResponseStrings = {

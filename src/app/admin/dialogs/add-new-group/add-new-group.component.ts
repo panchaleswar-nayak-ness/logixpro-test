@@ -8,7 +8,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,StringConditions} from 'src/app/common/constants/strings.constants';
 import {  StringConditions } from 'src/app/common/constants/strings.constants';
 
 export interface DialogData {
@@ -46,8 +46,8 @@ export class AddNewGroupComponent implements OnInit {
 
   ngOnInit(): void {
     this.grpData = this.data.grp_data;
-    this.form_heading = this.data?.mode === 'edit' ? 'Edit Group' : 'Add New Group';
-    this.form_btn_label = this.data?.mode === 'edit' ? 'Save' : StringConditions.AddCaps;
+    this.form_heading = this.data?.mode === StringConditions.edit ? 'Edit Group' : 'Add New Group';
+    this.form_btn_label = this.data?.mode === StringConditions.edit ? 'Save' : StringConditions.AddCaps;
 
     this.groupName = this.grpData.groupName ?? '';
 
