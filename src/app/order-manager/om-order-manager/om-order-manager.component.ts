@@ -84,7 +84,7 @@ export class OmOrderManagerComponent implements OnInit {
     { colHeader: "toteID", colDef: Column.ToteID },
     { colHeader: "toteNumber", colDef: "Tote Number" },
     { colHeader: "unitOfMeasure", colDef: FilterColumnName.unitOfMeasure },
-    { colHeader: "batchPickID", colDef: "Batch Pick ID" },
+    { colHeader: "batchPickID", colDef: ColumnDef.BatchPickID },
     { colHeader: "category", colDef: "Category" },
     { colHeader: "subCategory", colDef: "Sub Category" },
     { colHeader: TableConstant.ImportBy, colDef: "Import By" },

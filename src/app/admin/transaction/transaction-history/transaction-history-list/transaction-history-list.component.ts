@@ -51,7 +51,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     { colHeader: 'completedDate', colDef: TableConstant.CompletedDate },
     { colHeader: 'completedBy', colDef: 'Completed By' },
     { colHeader: TableConstant.completedQuantity, colDef: 'Completed Quantity' },
-    { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
+    { colHeader: 'batchPickID', colDef: ColumnDef.BatchPickID },
     { colHeader: TableConstant.Notes, colDef: 'Notes' },
     { colHeader: 'exportFileName', colDef: 'Export File Name' },
     { colHeader: 'exportDate', colDef: 'Export Date' },

@@ -224,7 +224,7 @@ export class PickToteManagerComponent implements OnInit {
     },
     {
       columnDef: 'batchPickID',
-      header: 'Batch Pick ID',
+      header: ColumnDef.BatchPickID,
       cell: (element: any) => `${element.batchPickID}`,
     },
     {

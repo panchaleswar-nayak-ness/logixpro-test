@@ -49,7 +49,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     { colHeader: 'revision', colDef: TableConstant.Revision },
     { colHeader: 'wareHouse', colDef: 'Warehouse' },
     { colHeader: TableConstant.ImportDate, colDef: 'Import Date' },
-    { colHeader: 'batchPickID', colDef: 'Batch Pick ID' },
+    { colHeader: 'batchPickID', colDef: ColumnDef.BatchPickID },
     { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
     { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
     { colHeader: ColumnDef.userField3, colDef: 'User Field3' },

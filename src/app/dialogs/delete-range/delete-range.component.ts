@@ -11,7 +11,7 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import {  ToasterTitle ,ResponseStrings,ToasterType,DialogConstants,Style,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-delete-range',
@@ -22,7 +22,7 @@ export class DeleteRangeComponent implements OnInit {
   @ViewChild('delFocus') delFocus: ElementRef;
   public userData: any;
   repByDeletePayload: any = {
-    identity: "Batch Pick ID",
+    identity: ColumnDef.BatchPickID,
     filter1: "",
     filter2: "",
     searchString: "",
@@ -58,7 +58,7 @@ export class DeleteRangeComponent implements OnInit {
     this.userData = this.authService.userData();
     this.repByDeletePayload.username = this.userData.userName;
     this.repByDeletePayload.wsid = this.userData.wsid;
-    this.repByDeletePayload.identity = "Batch Pick ID";
+    this.repByDeletePayload.identity = ColumnDef.BatchPickID;
     this.getSearchOptionsBegin();
     this.getSearchOptionsEnd();
   }

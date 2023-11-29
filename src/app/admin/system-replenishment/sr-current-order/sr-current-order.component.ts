@@ -46,7 +46,7 @@ export class SrCurrentOrderComponent implements OnInit {
     UniqueConstants.Description,
     Column.OrderNumber,
     'UofM',
-    'Batch Pick ID',
+    ColumnDef.BatchPickID,
     'Serial Number',
     TableConstant.CompletedDate,
     'Print Date',
@@ -67,7 +67,7 @@ export class SrCurrentOrderComponent implements OnInit {
     { defination: UniqueConstants.Description, label: Column.Description, value: UniqueConstants.Description, filterProperty:Column.Description },
     { defination: Column.OrderNumber, label: Column.OrderNumber, value: 'orderNumber', filterProperty:Column.OrderNumber },
     { defination: 'UofM', label: 'UofM', value: 'unitOfMeasure', filterProperty:'UofM' },
-    { defination: 'Batch Pick ID', label: 'Batch Pick ID', value: 'batchPickID', filterProperty:'Batch Pick ID' },
+    { defination: ColumnDef.BatchPickID, label: ColumnDef.BatchPickID, value: 'batchPickID', filterProperty:ColumnDef.BatchPickID },
     { defination: 'Serial Number', label: 'Serial Number', value: 'serialNumber', filterProperty:'Serial Number' },
     { defination: TableConstant.CompletedDate, label: 'Comp Date', value: 'completedDate', filterProperty:'Comp Date' },
     { defination: 'Print Date', label: 'Print Date', value: 'printDate', filterProperty:'Print Date' },
@@ -94,8 +94,8 @@ export class SrCurrentOrderComponent implements OnInit {
   tableDataTotalCount: number = 0;
   searchColumnOptions: any = [
     {
-      value: 'Batch Pick ID',
-      viewValue: 'Batch Pick ID',
+      value: ColumnDef.BatchPickID,
+      viewValue: ColumnDef.BatchPickID,
       sortColumn: '14',
       key: 'batchPickID',
     },
