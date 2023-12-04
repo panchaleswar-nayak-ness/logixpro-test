@@ -71,8 +71,8 @@
         
       
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-            (click)="selection.toggle(row)">
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+          <!-- (click)="selection.toggle(row)" Removed the click functionality on row due to mis selection--> 
         </tr>
       </table>
     </ng-scrollbar>
