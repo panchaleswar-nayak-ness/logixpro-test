@@ -178,8 +178,8 @@ export class SelectZonesComponent implements OnInit {
           if(this.alreadyAssignedZones!=null && this.alreadyAssignedZones?.length>0)
           {
             this.alreadyAssignedZones.find((o) => {
-              if(o.zone == zoneDetail.zone && zoneDetail.available) zoneDetail.selected = true;
-              return o.zone == zoneDetail.zone;
+              if(o?.zone == zoneDetail?.zone && zoneDetail?.available) zoneDetail.selected = true;
+              return o?.zone == zoneDetail?.zone;
             });
           }
           this.elementData.push(
