@@ -29,6 +29,7 @@ import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,zoneType,Dia
 })
 export class SelectionTransactionForToteExtendComponent implements OnInit {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;
+  @ViewChild('inputToteQty') inputToteQty: ElementRef;
 
   public userData   : any;
   isWarehouseSensitive:boolean=false;
@@ -45,8 +46,6 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   public iInductionManagerApi : IInductionManagerApiService;
   public iAdminApiService : IAdminApiService;
   public iCommonAPI : ICommonApi;
-  overReciept: any;
- 
   
   constructor(
     public commonAPI : CommonApiService,
@@ -604,7 +603,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     try {
       const values = this.toteForm.value;
       if (!this.validationPopups({...values, type : 1})) return;
-      if(!this.validateOverReciept()) return;
+      if (!this.validateOverReciept()) return;
 
       let payload = { zone: this.toteForm.value.zone };
       
@@ -672,16 +671,16 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     } catch (error) {}
   }
 
-  validateOverReciept(){
+  validateOverReciept() {
     let toteQty = this.toteForm?.get('toteQty')?.value;
     let transactionQuantity = this.toteForm?.get(ColumnDef.TransactionQuantity)?.value;
-    if(this.overReciept && toteQty > transactionQuantity){
-      this.global.ShowToastr(ToasterType.Error,"quantity cannot be greater than current transaction quantity",ToasterTitle.Error);
+    if(this.imPreferences.dontAllowOverReceipt && toteQty > transactionQuantity) {
+      this.global.ShowToastr(ToasterType.Error, "Quantity cannot be greater than current transaction quantity", ToasterTitle.Error);
+      this.toteForm.patchValue({ 'toteQty' : transactionQuantity });
+      this.inputToteQty.nativeElement.focus();
       return false;
     }
-    else{
-      return true;
-    }
+    else return true;
   }
 
   taskComplete(values : any) {
@@ -757,7 +756,6 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.iInductionManagerApi.PickToteSetupIndex(paylaod).subscribe(res => {
       if (res.isExecuted && res.data){
         this.imPreferences = res?.data?.imPreference;
-        this.overReciept= res.data.imPreference.dontAllowOverReceipt;
       } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("PickToteSetupIndex",res.responseMessage);

@@ -1434,6 +1434,7 @@ async clearBatchData(){
         if (result) {
           let zones = 'Zones:';
           this.zoneAssignArray = [];
+          this.assignedZones = '';
           for (let i = 0; i < this.zoneDetails.length; i++) {
             if (this.zoneDetails[i].available) {
               this.zoneDetails[i].selected=true;
