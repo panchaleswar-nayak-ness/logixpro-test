@@ -5,7 +5,7 @@
     <mat-icon class="close-icon">close</mat-icon>
   </button>
 </div>
-<div mat-dialog-content>
+<div mat-dialog-content (scroll)="onScroll()">
 
   <form [formGroup]="toteForm">
 
@@ -461,9 +461,9 @@
           </mat-form-field>
         </div>
         <div class="col-xl-3">
-          <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" appearance="outline">
+          <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mb-2" [color]="QtyToAssignFieldColor" appearance="outline" [matTooltip]="toolTipMsgForTransQty" matTooltipPosition="above" #tooltip="matTooltip">
             <mat-label>Quantity To Assign</mat-label>
-            <input formControlName="toteQty" #inputToteQty matInput type="number" min="1" oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 1" >
+            <input (focus)="tooltip.show()" formControlName="toteQty" #inputToteQty matInput type="number" min="1" oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 1" >
           </mat-form-field>
         </div>
       </div>
