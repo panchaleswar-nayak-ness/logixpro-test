@@ -34,25 +34,23 @@ import {AppRoutes, DialogConstants, StringConditions, ToasterMessages, ToasterTi
 })
 
 export class InventoryMapComponent implements OnInit {
- 
-  INVMAP_DATA = [
+   INVMAP_DATA = [
     { colHeader: "locationID", colDef: "Alternate Light" },
-    { colHeader: "bin", colDef: "Bin" },
-    { colHeader: "carousel", colDef: "Carousel" },
-    { colHeader: "cellSize", colDef: "Cell Size" },
+    { colHeader: ColumnDef.Bin, colDef: TableConstant.Bin },
+    { colHeader: zoneType.carousel, colDef: TableConstant.Carousel },
+    { colHeader: UniqueConstants.cellSize, colDef: "Cell Size" },
     { colHeader: "dateSensitive", colDef: "Date Sensitive" },
     { colHeader: "dedicated", colDef: "Dedicated" },
-    { colHeader: "description", colDef: "Description" },
-    { colHeader: "expirationDate", colDef: "Expiration Date" },
-   
+    { colHeader: UniqueConstants.Description, colDef: Column.Description },
+    { colHeader: ColumnDef.ExpirationDate, colDef: TableConstant.ExpirationDate },
     { colHeader: "invMapID", colDef: "Inv Map ID" },
-    { colHeader: "itemNumber", colDef: "Item Number" },
+    { colHeader: "itemNumber", colDef: Column.ItemNumber },
     { colHeader: "itemQuantity", colDef: "Item Quantity" },
     { colHeader: "laserX", colDef: "Laser X" },
     { colHeader: "laserY", colDef: "Laser Y" },
-    { colHeader: "location", colDef: "Location" },
+    { colHeader: TableConstant.Location, colDef: Column.Location },
     { colHeader: "locationNumber", colDef: "Location Number" },
-    { colHeader: "lotNumber", colDef: "Lot Number" },
+    { colHeader: TableConstant.LotNumber, colDef: Column.LotNumber },
     { colHeader: "masterInvMapID", colDef: "Master Inv Map ID" },
     { colHeader: "masterLocation", colDef: "Master Location" },
     { colHeader: "maxQuantity", colDef: "Maximum Quantity" },
@@ -60,20 +58,17 @@ export class InventoryMapComponent implements OnInit {
     { colHeader: "putAwayDate", colDef: "Put Away Date" },
     { colHeader: "quantityAllocatedPick", colDef: "Quantity Allocated Pick" },
     { colHeader: "quantityAllocatedPutAway", colDef: "Quantity Allocated Put Away" },
-    { colHeader: "revision", colDef: "Revision" },
-    { colHeader: "row", colDef: "Row" },
-    { colHeader: "serialNumber", colDef: "Serial Number" },
-    { colHeader: "shelf", colDef: "Shelf" },
-    { colHeader: "unitOfMeasure", colDef: "Unit of Measure" },
-    { colHeader: "userField1", colDef: "User Field1" },
-    { colHeader: "userField2", colDef: "User Field2" },
-    { colHeader: "goldenZone", colDef: "Velocity Code" },
-    { colHeader: "warehouse", colDef: "Warehouse" },
-    { colHeader: "zone", colDef: "Zone" },
+    { colHeader: ColumnDef.Revision, colDef: TableConstant.Revision },
+    { colHeader: Column.Row, colDef: TableConstant.Row },
+    { colHeader: TableConstant.SerialNumber, colDef: ColumnDef.SerialNumber },
+    { colHeader: TableConstant.shelf, colDef: TableConstant.shelf },
+    { colHeader: ColumnDef.UnitOfMeasure, colDef: FilterColumnName.unitOfMeasure },
+    { colHeader: ColumnDef.userField1, colDef: TableConstant.UserField1 },
+    { colHeader: ColumnDef.userField2, colDef: TableConstant.UserField2 },
+    { colHeader: UniqueConstants.goldenZone, colDef: "Velocity Code" },
+    { colHeader: TableConstant.WareHouse, colDef: ColumnDef.Warehouse },
+    { colHeader: TableConstant.zone, colDef: ColumnDef.Zone },
   ];
-  
-  
-  
   onDestroy$: Subject<boolean> = new Subject();
   hideRequiredControl = new FormControl(false);
   floatLabelControl = new FormControl('auto' as FloatLabelType);
