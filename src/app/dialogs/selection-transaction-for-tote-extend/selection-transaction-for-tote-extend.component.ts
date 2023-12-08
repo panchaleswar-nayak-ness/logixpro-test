@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common' 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -29,7 +29,9 @@ import {  ToasterTitle ,ResponseStrings,ToasterType,ToasterMessages,zoneType,Dia
 })
 export class SelectionTransactionForToteExtendComponent implements OnInit {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;
+  @ViewChild('tooltip') tooltip: any = ElementRef;
   @ViewChild('inputToteQty') inputToteQty: ElementRef;
+
 
   public userData   : any;
   isWarehouseSensitive: boolean = false;
@@ -49,8 +51,11 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   public iInductionManagerApi : IInductionManagerApiService;
   public iAdminApiService : IAdminApiService;
   public iCommonAPI : ICommonApi;
+  event: Event;
   
   constructor(
+    private renderer: Renderer2, 
+    private elementRef: ElementRef,
     public commonAPI : CommonApiService,
     public dialogRef : MatDialogRef<SelectionTransactionForToteExtendComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -851,16 +856,29 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       }
     }
   }
-
-  onScroll() {
+  tooltipShowDelay: number = 100000;
+  lastScrollPosition: number = 1000;
+  scrollDirection: string = '';
+  onScroll(event: Event) {
+    const currentScrollPosition = (event.target as Element).scrollTop;
     // Check if the input field is focused
-    if (this.inputToteQty && this.inputToteQty.nativeElement === document.activeElement) {
+    if (this.inputToteQty ) {
       // Perform actions when the input loses focus due to scrolling
-      this.inputToteQty.nativeElement.blur(); // Example: Blur or perform other actions
+      this.inputToteQty.nativeElement.blur();
     }
     if (this.initialFocus) {
       this.inputToteQty.nativeElement.focus();
-      this.initialFocus = false;
+      this.initialFocus = false;  
+      this.tooltipShowDelay=100000;  
     }
+    else if(currentScrollPosition < this.lastScrollPosition){
+      this.tooltip.hide();
+      this.tooltipShowDelay=0;
+    }
+    if (currentScrollPosition > this.lastScrollPosition) {
+      this.tooltipShowDelay=100000;
+    } 
+    this.lastScrollPosition = currentScrollPosition; // Update last known scroll position
   }
+  
 }
