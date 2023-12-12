@@ -673,7 +673,6 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     let transactionQuantity = this.toteForm?.get(ColumnDef.TransactionQuantity)?.value;
     if(this.imPreferences.dontAllowOverReceipt && toteQty > transactionQuantity) {
       this.global.ShowToastr(ToasterType.Error, "Quantity cannot be greater than current transaction quantity", ToasterTitle.Error);
-      // this.toteForm.patchValue({ 'toteQty' : transactionQuantity });
       this.inputToteQty.nativeElement.focus();
       this.QtyToAssignFieldColor = 'warn';
       return false;
@@ -856,9 +855,11 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       }
     }
   }
+
   tooltipShowDelay: number = 100000;
   lastScrollPosition: number = 1000;
   scrollDirection: string = '';
+  
   onScroll(event: Event) {
     const currentScrollPosition = (event.target as Element).scrollTop;
     // Check if the input field is focused
@@ -869,15 +870,13 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     if (this.initialFocus) {
       this.inputToteQty.nativeElement.focus();
       this.initialFocus = false;  
-      this.tooltipShowDelay=100000;  
+      this.tooltipShowDelay = 100000;  
     }
     else if(currentScrollPosition < this.lastScrollPosition){
       this.tooltip.hide();
-      this.tooltipShowDelay=0;
+      this.tooltipShowDelay = 0;
     }
-    if (currentScrollPosition > this.lastScrollPosition) {
-      this.tooltipShowDelay=100000;
-    } 
+    if (currentScrollPosition > this.lastScrollPosition) this.tooltipShowDelay = 100000;
     this.lastScrollPosition = currentScrollPosition; // Update last known scroll position
   }
   
