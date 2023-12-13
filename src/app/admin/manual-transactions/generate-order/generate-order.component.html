@@ -5,7 +5,7 @@
   (transTypeEmitter)="onTransTypeChange($event)"
   (orderNumberEmitter)="onOrderNoChange($event)"
   (actionDialog)="actionDialog($event.param1,$event.param2)"
-  (autocompleteSearchColumn)="orderNumber = $event;autocompleteSearchColumn()"
+  (autocompleteSearchColumn)="selectedOrder = $event;orderNumber = $event;autocompleteSearchColumn()"
   [searchAutocompleteList]="searchAutocompleteList"
   (getOrderTableData)="getOrderTableData($event)"
   (searchData)="searchData()"

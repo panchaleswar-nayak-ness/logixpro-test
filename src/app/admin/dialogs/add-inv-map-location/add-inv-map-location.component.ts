@@ -222,8 +222,8 @@ export class AddInvMapLocationComponent implements OnInit {
     this.iAdminApiService.getLocZTypeInvMap({}).subscribe((res) => {
       if(res.isExecuted && res.data)
       {
-        this.locZoneList = res.data;
-      this.filteredOptions = this.addInvMapLocation.controls['location'].valueChanges.pipe(
+        this.locZoneList = res.data; 
+      this.filteredOptions = this.addInvMapLocation.controls[TableConstant.Location].valueChanges.pipe(
         startWith(''),
         map(value => this.filterLocalZoneList(value || '')),
       );
