@@ -20,6 +20,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppPermissions,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-om-order-manager',
@@ -127,6 +128,7 @@ export class OmOrderManagerComponent implements OnInit {
     public orderManagerApi  : OrderManagerApiService,
     public adminApiService: AdminApiService,
     public authService      : AuthService,
+    public datepipe:DatePipe,
     public globalService    : GlobalService,
     private currentTabDataService: CurrentTabDataService,
     private global:GlobalService,
@@ -206,8 +208,8 @@ export class OmOrderManagerComponent implements OnInit {
       let val1 : any, val2 : any;
 
       if (this.column.indexOf('Date') > -1) {
-        val1 = this.value1D.toLocaleDateString();
-        val2 = this.value2D.toLocaleDateString();
+        val1 = this.datepipe.transform(this.value1D, 'MM/dd/yyyy');
+        val2 = this.datepipe.transform(this.value2D, 'MM/dd/yyyy');
       } else {
         val1 = this.value1;
         val2 = this.value2;      

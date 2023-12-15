@@ -230,7 +230,8 @@ import { IeMdExportInvertoryComponent } from './import-export/ie-manage-data/ie-
     SharedComponentsModule
   ],
   providers: [
-    Title, 
+    Title,
+    DatePipe, 
     { 
       provide: LocationStrategy, 
       useClass: HashLocationStrategy 

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
- apiUrl: "https://staging-e64.com:9010/api"
+ apiUrl: "https://localhost:5001/api"
 };
 
 /*

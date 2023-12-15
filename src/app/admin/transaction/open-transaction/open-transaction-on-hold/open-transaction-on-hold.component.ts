@@ -21,6 +21,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { AppNames, AppRoutes, Column, DialogConstants, Mode, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,TransactionType,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName,RouteUpdateMenu} from 'src/app/common/constants/strings.constants';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-open-transaction-on-hold',
@@ -226,6 +227,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router, 
     public adminApiService: AdminApiService,
+    public datepipe:DatePipe,
     public authService: AuthService,
     private global: GlobalService,
     private contextMenuService: TableContextMenuService,
@@ -464,8 +466,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   getContentData(isInit: boolean = false) {
     this.payload = {
       draw: 0,
-      sDate: this.sDate.toLocaleDateString(),
-      eDate: this.eDate.toLocaleDateString(),
+      sDate: this.datepipe.transform(this.sDate, 'MM/dd/yyyy'),
+      eDate: this.datepipe.transform(this.eDate, 'MM/dd/yyyy'),
       transType: this.transTypeSelect,
       transStatus: this.transStatusSelect,
       searchString: this.columnSearch.searchValue,

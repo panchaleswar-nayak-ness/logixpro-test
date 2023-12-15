@@ -18,6 +18,7 @@ import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.ser
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { Column, DialogConstants, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,FilterColumnName,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-transaction-history-list',
@@ -167,6 +168,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
 
   constructor(
     private authService: AuthService,
+    public datepipe: DatePipe,
     private contextMenuService: TableContextMenuService,
     public adminApiService: AdminApiService,
     private global: GlobalService,
@@ -304,8 +306,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   getContentData() {
     let payload = {
       draw: 0,
-      sDate: this.startDate.toLocaleDateString(),
-      eDate: this.endDate.toLocaleDateString(),
+      sDate: this.datepipe.transform(this.startDate, 'MM/dd/yyyy'),
+      eDate: this.datepipe.transform(this.endDate, 'MM/dd/yyyy'),
       searchString: this.columnSearch.searchValue,
       searchColumn: this.selectedDropdown,
       start: this.customPagination.startIndex,
