@@ -64,7 +64,7 @@ export class EmployeesComponent implements OnInit {
   locationDataSource: any;
   employeeGroupAllowed: any;
   empAllZones:any;
-  groupAllowedList:any;
+  groupAllowedList:any= new MatTableDataSource();
   FuncationAllowedList:any = [];
   oldFuncationAllowedList:any = [];
   access:any;
@@ -139,11 +139,11 @@ export class EmployeesComponent implements OnInit {
     this.empData = event.userData;
     this.isLookUp = event;
     this.lookUpEvnt=true; 
-    this.grpDataV = event.userData?.username;
+    this.grpDataV = event.userData?.userName;
 
     this.maxOrders = event.userData.maximumOrders;
     const emp_data = {
-      "user": event.userData?.username,
+      "user": event.userData?.userName,
       "wsid": dataCredientials.testWsid
     };
  
@@ -527,9 +527,6 @@ export class EmployeesComponent implements OnInit {
     this.bpSettingLocInp='';
     this.searchfuncAllowed = '';
     this.grpAllFilter='';
-    this.employeeFetchedZones.filter = '';
-    this.locationDataSource.filter = '';
-    this.groupAllowedList.filter = '';
   }
  
   ChangeAdminLevel(levelresponse:any){
