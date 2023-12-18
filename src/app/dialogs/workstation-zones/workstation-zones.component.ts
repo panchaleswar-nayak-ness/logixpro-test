@@ -101,12 +101,12 @@ export class WorkstationZonesComponent implements OnInit {
           this.saveVlCode();
         }
       } else {
-        this.zoneSelectOptions = this.zoneSelectOptions.filter(
+        this.zoneSelectOptions = this.zones.filter(
           (x: any) =>
-            x
-              .trim()
-              .toLowerCase()
-              .indexOf(this.selectedZone.trim().toLowerCase()) != -1
+            x.trim().toLowerCase().indexOf(this.selectedZone.trim().toLowerCase()) != -1 &&
+            this.workstationZones.filter(
+              (y: any) => y.zone.toLowerCase() == x.toLowerCase()
+            ).length == 0
         );
       }
   }
