@@ -101,7 +101,7 @@ export class WorkstationZonesComponent implements OnInit {
           this.saveVlCode();
         }
       } else {
-        this.zoneSelectOptions = this.zones.filter(
+        this.zoneSelectOptions = this.zoneSelectOptions.filter(
           (x: any) =>
             x
               .trim()
