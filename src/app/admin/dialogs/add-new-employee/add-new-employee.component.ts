@@ -83,7 +83,7 @@ export class AddNewEmployeeComponent implements OnInit {
     
     if(this.empData)this.isEdit =true; 
     this.groupName = this.empData?.groupName ?? '';
-    this.username = this.empData?.username ?? '';
+    this.username = this.empData?.userName ?? '';
     this.emailAddress = this.empData?.emailAddress ?? '';
     this.emailAddress = this.empData?.emailAddress ?? '';
     this.password = this.empData?.password ?? '';
