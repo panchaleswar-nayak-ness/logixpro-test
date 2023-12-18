@@ -346,8 +346,9 @@
 </form>
 <mat-dialog-actions>
   <div class="d-flex gap-12 w-100">
+      <!-- remove from main [disabled]="isValidClearLocation()" -->
     <button type="button" mat-stroked-button color="warn" class="form-button-submit btn-lg" (click)="clearFields()"
-            *ngIf="myroute1" [disabled]="isValidClearLocation()">Clear
+            *ngIf="myroute1" >Clear  
     </button>
     <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100" color="primary" *ngIf="myroute2"
             (click)="onSubmit(addInvMapLocation)" [disabled]="!isValid()">Save Changes
