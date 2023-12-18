@@ -12,7 +12,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import { DeleteConfirmationComponent } from '../../../app/admin/dialogs/delete-confirmation/delete-confirmation.component';
 import { ConfirmationDialogComponent } from '../../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { AuthService } from '../../common/init/auth.service';
-import labels from 'src/app/common/labels/labels.json'; 
+import labels from 'src/app/common/labels/labels.json';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { IInductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
@@ -29,7 +29,7 @@ import {  ToasterTitle ,ResponseStrings,ToasterType,KeyboardKeys,DialogConstants
 export class WorkstationZonesComponent implements OnInit {
   @ViewChild('fieldFocus') fieldFocus: ElementRef;
 
-  public velocityCodeList: any[] = [];
+  public workstationZones: any[] = [];
   onDestroy$: Subject<boolean> = new Subject();
   public userData: any;
   public selectedZone: any = '';
@@ -48,9 +48,35 @@ export class WorkstationZonesComponent implements OnInit {
     }
   }
 
+
+  constructor(
+    public commonAPI: CommonApiService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private authService: AuthService,
+    public inductionManagerApi: InductionManagerApiService,
+    public dialogRef: MatDialogRef<any>,
+    private global: GlobalService
+  ) {
+    this.iCommonAPI = commonAPI;
+    this.iInductionManagerApi = inductionManagerApi;
+  }
+
+  public iCommonAPI: ICommonApi;
+
+  ngOnInit(): void {
+    this.userData = this.authService.userData();
+    this.getWorkstationZones();
+    this.getAllZoneList();
+  }
+  ngAfterViewInit(): void {
+    this.fieldFocus?.nativeElement.focus();
+    console.log(this.zoneSelectOptions);
+    this.zoneSelectOptions = this.zones;
+  }
+
   validateZone() {
     if (
-      this.velocityCodeList.filter(
+      this.workstationZones.filter(
         (x: any) =>
           x.zone.toLowerCase() == this.selectedZone.trim().toLowerCase()
       ).length > 0
@@ -70,7 +96,6 @@ export class WorkstationZonesComponent implements OnInit {
   }
 
   searchItem(event: any) {
-    if (this.selectedZone.trim() != '') {
       if (event.key == KeyboardKeys.Enter) {
         if (this.validateZone()) {
           this.saveVlCode();
@@ -84,9 +109,6 @@ export class WorkstationZonesComponent implements OnInit {
               .indexOf(this.selectedZone.trim().toLowerCase()) != -1
         );
       }
-    } else {
-      this.zoneSelectOptions = [];
-    }
   }
   clearAllZones() {
     const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
@@ -100,11 +122,13 @@ export class WorkstationZonesComponent implements OnInit {
         action: 'remove',
       },
     });
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result === ResponseStrings.Yes) {
         this.iInductionManagerApi.ClrWSPickZone().subscribe((res) => {
           if (res.isExecuted && res.data) {
-            this.getVelocity();
+            this.getWorkstationZones();
+            this.getAllZoneList();
             this.global.ShowToastr(ToasterType.Success, labels.alert.remove, ToasterTitle.Success);
           } else {
             this.global.ShowToastr(
@@ -119,35 +143,13 @@ export class WorkstationZonesComponent implements OnInit {
     });
   }
 
-  public iCommonAPI: ICommonApi;
-
-  constructor(
-    public commonAPI: CommonApiService,
-    @Inject(MAT_DIALOG_DATA) public data: any, 
-    private authService: AuthService,
-    public inductionManagerApi: InductionManagerApiService,
-    public dialogRef: MatDialogRef<any>,
-    private global: GlobalService
-  ) {
-    this.iCommonAPI = commonAPI;
-    this.iInductionManagerApi = inductionManagerApi;
-  }
-
-  ngOnInit(): void {
-    this.userData = this.authService.userData();
-    this.getVelocity();
-    this.getAllZoneList();
-  }
-  ngAfterViewInit(): void {
-    this.fieldFocus?.nativeElement.focus();
-  }
-  getVelocity() {
+  getWorkstationZones() {
     let paylaod = {};
-    this.velocityCodeList = [];
+    this.workstationZones = [];
     this.iInductionManagerApi.WSPickZoneSelect(paylaod).subscribe((res) => {
       if (res.isExecuted && res.data) {
         res.data.map((val) => {
-          this.velocityCodeList.push({ zone: val, isSaved: true });
+          this.workstationZones.push({ zone: val, isSaved: true });
         });
       } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
@@ -157,10 +159,16 @@ export class WorkstationZonesComponent implements OnInit {
   }
   getAllZoneList() {
     let paylaod = {};
-    this.velocityCodeList = [];
+    this.workstationZones = [];
     this.iInductionManagerApi.LocationZonesSelect(paylaod).subscribe((res) => {
       if (res.isExecuted && res.data) {
         this.zones = res.data;
+        this.zoneSelectOptions = this.zones.filter(
+          (x: any) =>
+            this.workstationZones.filter(
+              (y: any) => y.zone.toLowerCase() == x.toLowerCase()
+            ).length == 0
+        );
       } else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log('LocationZonesSelect', res.responseMessage);
@@ -173,7 +181,7 @@ export class WorkstationZonesComponent implements OnInit {
     this.allZoneList.unshift([]);
   }
   dltZone() {
-    this.allZoneList = [];
+
   }
   onSelectZone(val: string) {
     this.selectedZone = val;
@@ -186,10 +194,9 @@ export class WorkstationZonesComponent implements OnInit {
       this.iInductionManagerApi.WSPickZoneInsert(paylaod).subscribe((res) => {
         if (res.isExecuted && res.data) {
           this.global.ShowToastr(ToasterType.Success, labels.alert.success, ToasterTitle.Success);
-          this.getVelocity();
-          this.allZoneList = [];
+          this.getWorkstationZones();
+          this.zoneSelectOptions = this.zoneSelectOptions.filter(x => x !== this.selectedZone);
           this.selectedZone = '';
-          this.zoneSelectOptions = [];
         } else {
           this.global.ShowToastr(
             ToasterType.Error,
@@ -222,12 +229,12 @@ export class WorkstationZonesComponent implements OnInit {
           this.iCommonAPI.dltVelocityCode(paylaod).subscribe((res) => {
             this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
 
-            this.getVelocity();
+            this.getWorkstationZones();
           });
         }
       });
     } else {
-      this.velocityCodeList.shift();
+      this.workstationZones.shift();
     }
   }
 
@@ -258,7 +265,11 @@ export class WorkstationZonesComponent implements OnInit {
                   labels.alert.delete,
                   ToasterTitle.Success
                 );
-                this.getVelocity();
+                this.getWorkstationZones();
+                this.zoneSelectOptions.push(event);
+                this.zoneSelectOptions.sort();
+
+
               } else {
                 this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);
                 console.log('WSPickZoneDelete', res.responseMessage);
@@ -269,7 +280,6 @@ export class WorkstationZonesComponent implements OnInit {
   }
 
   valueEntered() {
-    alert('TRIGGERED');
     this.button.nativeElement.disabled = true;
   }
 
@@ -281,6 +291,6 @@ export class WorkstationZonesComponent implements OnInit {
   }
 
   closeBatchDialog() {
-    this.dialogRef.close(this.velocityCodeList);
+    this.dialogRef.close(this.workstationZones);
   }
 }

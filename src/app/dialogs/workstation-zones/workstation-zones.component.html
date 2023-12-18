@@ -22,8 +22,8 @@
         </mat-form-field>
     </div>
     <div class="col-xl-4">
-        <button [disabled]="velocityCodeList.length == 0" mat-flat-button color="warn" class="btn-regular w-100" (click)="clearAllZones()">Clear All Zones</button>
-    </div>  
+        <button [disabled]="workstationZones.length == 0" mat-flat-button color="warn" class="btn-regular w-100" (click)="clearAllZones()">Clear All Zones</button>
+    </div>
 </div>
 <div class="warehouse">
     <div class="card w-100">
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <ng-scrollbar class="h-250" >
+        <ng-scrollbar class="h-default" >
             <div class="card-body">
                 <ng-container *ngFor="let zone of allZoneList;let i = index">
                     <div class="d-flex align-items-center mb-3" *ngIf="allZoneList.length > 0">
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                 </ng-container>
-                <ng-container *ngFor="let vlcode of velocityCodeList;let i = index">
+                <ng-container *ngFor="let vlcode of workstationZones;let i = index">
                     <div class="d-flex align-items-center mb-3">
                         <div class="container w-100">
                             <div class="row">
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                 </ng-container>
-          
+
             </div>
         </ng-scrollbar>
     </div>
