@@ -118,7 +118,7 @@ export class AddNewEmployeeComponent implements OnInit {
       mi: [this.mi || '', []],
       firstName: [this.firstName || '',[Validators.required, this.cusValidator.customTrim]],
       lastName: [this.lastName || '', [Validators.required, this.cusValidator.customTrim]],
-      username: [{ value: this.username, disabled: this.isDisabledPassword } , [Validators.required]], 
+      userName: [{ value: this.username, disabled: this.isDisabledPassword } , [Validators.required]], 
       password: [this.password || '',this.validatorsArray],
       emailAddress: [this.emailAddress || '', [Validators.email]],
       accessLevel: [this.accessLevel || '', [Validators.required]],
@@ -137,7 +137,7 @@ ChangePassword(data){
       
       if (this.data?.mode === StringConditions.edit) {
         form.value.wsid = "TESTWID"; 
-        form.value.username = this.data?.emp_data?.username ? this.data.emp_data.username : this.data.emp_data.Username;
+        form.value.userName = this.data?.emp_data?.userName 
         if(this.groupChanged){
           let requpdateAccessGroup = await this.iAdminApiService.updateAccessGroup({"group": this.empForm.value.groupName,"Username" : this.username}).toPromise();
           if(requpdateAccessGroup.isExecuted){
