@@ -30,7 +30,7 @@ export class EmployeesLookupComponent implements OnInit {
   }
   public iAdminApiService: IAdminApiService;
   // table initialization
-  displayedColumns: string[] = ['lastName', 'firstName', 'mi', 'username'];
+  displayedColumns: string[] = ['lastName', 'firstName', 'mi', 'userName'];
   constructor(private _liveAnnouncer: LiveAnnouncer, private global: GlobalService,
     public adminApiService: AdminApiService,
     private authService: AuthService) {
