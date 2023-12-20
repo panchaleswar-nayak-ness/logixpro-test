@@ -332,6 +332,7 @@ export class SpLocationZonesComponent implements OnInit {
           `Location Zone: ${this.newLocationVal} added succesfully`,
           ToasterTitle.Success
         );
+        this.newLocation = false;
         this.getLocationZones();
       } else {
         this.global.ShowToastr(
