@@ -1,4 +1,4 @@
-import { Component, ElementRef,  ViewChild } from '@angular/core';
+import { Component, ElementRef,  TemplateRef,  ViewChild } from '@angular/core';
 import { ILogin} from './Ilogin'; 
 import { FormControl} from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,6 +13,8 @@ import { IUserAPIService } from '../common/services/user-api/user-api-interface'
 import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
 import {  AppNames ,AppPermissions,AppRoutes,ToasterTitle,ToasterType,DialogConstants,dataCredientials} from 'src/app/common/constants/strings.constants';
+import { MatDialog } from '@angular/material/dialog';
+import { WorkstationLoginComponent } from '../dialogs/workstation-login/workstation-login.component';
 
 @Component({
   selector: 'login',
@@ -31,6 +33,7 @@ export class LoginComponent {
   applicationData: any = [];
   isAppAccess=false;
   info:any=  {};
+  @ViewChild('workstationSelect') workstationSelectTemplate: TemplateRef<any>;
 
   public iGlobalConfigApi: IGlobalConfigApi;
   public iUserApi : IUserAPIService;
@@ -42,13 +45,25 @@ export class LoginComponent {
     public loader: SpinnerService,
     public globalConfigApi: GlobalConfigApiService,
     private auth: AuthService, 
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    public dialog: MatDialog
   ) { 
     this.iGlobalConfigApi = globalConfigApi;
     this.iUserApi = userApi;
     this.url = this.router.url;
+    this.openWS();
   }
-
+  workstationD=false;
+  openWS(){
+    const dialogRef = this.dialog.open(WorkstationLoginComponent,{
+    width: '550px',
+    autoFocus: DialogConstants.autoFocus,
+    disableClose: true,
+  })
+  dialogRef.afterClosed().subscribe(() => {
+    this.workstationD=true;
+  });;
+}
   removeReadOnly(){  
     this.isReadOnly = !this.isReadOnly;
   }

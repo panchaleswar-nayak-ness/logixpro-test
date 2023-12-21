@@ -114,6 +114,7 @@ import { IeMdExportInvertoryMapComponent } from './import-export/ie-manage-data/
 import { IeMdImportInvertoryMapComponent } from './import-export/ie-manage-data/ie-md-import-invertory-map/ie-md-import-invertory-map.component';
 import { IeMdImportInvertoryComponent } from './import-export/ie-manage-data/ie-md-import-invertory/ie-md-import-invertory.component';
 import { IeMdExportInvertoryComponent } from './import-export/ie-manage-data/ie-md-export-invertory/ie-md-export-invertory.component';
+import { WorkstationLoginComponent } from './dialogs/workstation-login/workstation-login.component';
 
 @NgModule({
   declarations: [
@@ -217,7 +218,8 @@ import { IeMdExportInvertoryComponent } from './import-export/ie-manage-data/ie-
     IeMdExportInvertoryMapComponent,
     IeMdImportInvertoryMapComponent,
     IeMdImportInvertoryComponent,
-    IeMdExportInvertoryComponent
+    IeMdExportInvertoryComponent,
+    WorkstationLoginComponent
   ],
   imports: [
     BrowserModule,
