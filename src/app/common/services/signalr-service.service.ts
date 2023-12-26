@@ -14,7 +14,7 @@ export class SignalrServiceService {
 
   connect() {
     if (!this.hubConnection) {
-      this.hubConnection = new signalR.HubConnectionBuilder().withUrl(environment.apiUrl + '/GlobalConfig/ConnectedUser').build();
+      this.hubConnection = new signalR.HubConnectionBuilder().withUrl(environment.apiUrl + '/GlobalConfig/connection').build();
       this.hubConnection.start().then(() => this.connectionEstablished.next(true)).catch(err => console.log(err));
       this.hubConnection.on('GetLoginData', (data) => this.ConnectedUsers.next(data));
     }

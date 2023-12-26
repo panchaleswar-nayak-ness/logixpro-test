@@ -286,7 +286,7 @@ export class CrossDockTransactionComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe((result) => {
-        debugger;
+
 
         if (result == ResponseStrings.Yes) {
           let payLoad = {
@@ -423,7 +423,6 @@ export class CrossDockTransactionComponent implements OnInit {
 
   completePick() {
     try {
-      debugger;
       if (!this.selectedRowObj.toteID) {
         let dialogRef: any = this.global.OpenDialog(
           ConfirmationDialogComponent,

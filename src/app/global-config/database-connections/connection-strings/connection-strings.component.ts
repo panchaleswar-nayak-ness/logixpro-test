@@ -147,7 +147,6 @@ export class ConnectionStringsComponent {
     });
   }
   openSqlAuth(item) {
-
     let payload = {
       ConnectionName: item.connectionName,
     };
@@ -155,8 +154,6 @@ export class ConnectionStringsComponent {
       .ConnectionUserPassword(payload)
       .subscribe(
         (res: any) => {
-   
-          
           if (res.isExecuted) {
          
             const dialogRef:any = this.global.OpenDialog(GlobalConfigSetSqlComponent, {

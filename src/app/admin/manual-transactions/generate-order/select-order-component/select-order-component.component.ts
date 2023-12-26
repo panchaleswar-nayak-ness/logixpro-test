@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
@@ -12,7 +12,8 @@ import { MatSelect } from '@angular/material/select';
   templateUrl: './select-order-component.component.html',
   styleUrls: [],
 })
-export class SelectOrderComponentComponent implements OnInit {
+export class SelectOrderComponentComponent implements OnInit{
+
   @ViewChild('matRef') matRef: MatSelect;
   @Input() orderNumber: string;
   @Output() orderTableData: EventEmitter<any> = new EventEmitter();
@@ -42,12 +43,14 @@ export class SelectOrderComponentComponent implements OnInit {
   
   ngOnInit(): void {
     this.searchByInput
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
+      .pipe(debounceTime(400))
+      .subscribe(() => {
+        console.log(this.orderNumber)
         this.autocompleteSearchColumn.emit(this.orderNumber);
         this.getOrderTableData.emit(this.orderNumber);
       });
   }
+
   onOrderNoChange() {
     this.orderNumberEmitter.emit(this.orderNumber);
   }

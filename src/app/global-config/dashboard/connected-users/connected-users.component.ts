@@ -46,17 +46,15 @@ export class ConnectedUsersComponent implements OnInit,AfterViewInit {
       });
   }
   getConnectedUsers() {
-
     this.iGlobalConfigApi.ConnectedUser().subscribe(
       (res: any) => {
         if (res.isExecuted) {
-          res.data.map((obj) => ({
+          res.data = res.data.map((obj) => ({
             ...obj,
             appname: obj?.appname ? obj.appname : 'no app',
           }));
           this.user_connected_datasource = new MatTableDataSource(res.data);
           this.user_connected_datasource.paginator = this.paginator;
-
         }
         else{
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
@@ -64,6 +62,7 @@ export class ConnectedUsersComponent implements OnInit,AfterViewInit {
         }
       },
       (error) => {}
+      
     );
   }
   
