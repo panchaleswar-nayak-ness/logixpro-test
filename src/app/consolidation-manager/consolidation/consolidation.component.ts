@@ -310,7 +310,7 @@ export class ConsolidationComponent implements OnInit {
           return !tempData.includes(el)
         })
         if (this.unverifiedItems.data.length == 0) {
-          this.global.ShowToastr(ToasterType.Info,ToasterMessages.ConsolidatedAllItemsInOrder, ToasterTitle.Alert);
+          this.global.ShowToastr(ToasterType.Info,ToasterMessages.ConsolidatedAllItemsInOrder, ToasterTitle.Update);
         }
       }
     })

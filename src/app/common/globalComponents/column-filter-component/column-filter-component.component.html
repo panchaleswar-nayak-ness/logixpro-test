@@ -1,5 +1,5 @@
 <div class="d-xl-flex gap-12 align-items-center">
-  <mat-form-field class="action-dropdown w-100 mb-3" appearance="outline">
+  <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
     <mat-label>Select</mat-label>
     <mat-select class="employees-action" [(ngModel)]="this.searchCol" (selectionChange)="selectionChange($event.value)" (keyup.enter)="colKeyUpEnter($event)">
       <mat-option value=""></mat-option>
@@ -10,9 +10,9 @@
     <span class="material-symbols-outlined icon-expand-more">expand_more</span>
   </mat-form-field>
   
-  <span class="v-br d-xl-block d-none mb-3">-</span>
+  <span class="v-br d-xl-block d-none mb-3 mb-xl-0">-</span>
 
-  <div class="d-flex g-mini-search-box w-100 mb-3">
+  <div class="d-flex g-mini-search-box w-100 mb-3 mb-xl-0">
     <mat-form-field class="w-100 bg-white br-8" appearance="fill" [floatLabel]="getFloatLabelValue()" [hideRequiredMarker]="hideRequiredControl.value">
       <span class="material-symbols-outlined icon-search">Search</span>
       <input type="text" placeholder="Search" aria-label="Number" matInput [(ngModel)]='searchString' [disabled]="!searchCol" [matAutocomplete]="auto" (ngModelChange)="autoComplete($event)" (keyup.enter)="searchKeyUpEnter($event)" (keyup)="searchKeyUp($event)" (focus)="searchFocus($event)">
@@ -25,6 +25,6 @@
   </div>
 
   <div class="d-block d-lg-flex" *ngIf="showClearBtn">
-    <button (click)="clearBtn($event)" mat-stroked-button appearance="outline" color="warn" class="button-remove-all-w-stroke mb-3 w-100 flex-grow-1">Clear</button>
+    <button (click)="clearBtn($event)" mat-stroked-button appearance="outline" color="warn" class="button-remove-all-w-stroke mb-3 mb-xl-0 w-100 flex-grow-1">Clear</button>
   </div>
 </div>

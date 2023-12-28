@@ -468,7 +468,7 @@ button {
   top: 50%;
   left: 0.5em;
   transform: translateY(-50%);
-  background: rgba(var(--clr-primary-10), 1);
+  background: rgba(var(--clr-primary-rgb-10), 1);
   width: 66px;
   height: 66px;
   font-family: 'Material Symbols Outlined',sans-serif;
@@ -1771,6 +1771,8 @@ button.default-btn {
 //-------------- Table-CLASSES ----START-------------------
 .custom-table {
   border-radius: 14px;
+  border-collapse: separate !important;
+  width: 100%;
 
   th.mat-header-cell {
 
@@ -1784,9 +1786,12 @@ button.default-btn {
     }
 
     &:last-child {
-      width: 100% !important; //  cover width of table last  by umer aslam
+      width: 100%;//  cover width of table last  by umer aslam
       border-top-right-radius: 14px;
     }
+  }
+  .mat-column-actions,.mat-column-save{
+    width: 90px !important;
   }
 
   .mat-row {
