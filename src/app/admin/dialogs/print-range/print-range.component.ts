@@ -41,8 +41,11 @@ export class PrintRangeComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.begin_loc.nativeElement.focus();
+    setTimeout(() => {
+      this.begin_loc.nativeElement.focus();
+    }, 150); 
   }
+  
 
   @ViewChild("begin", { static: false }) beginOpened: MatAutocomplete;
   @ViewChild("end", { static: false }) endOpened: MatAutocomplete;

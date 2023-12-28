@@ -22,7 +22,6 @@
         <div class="card br-14 table-responsive borderless px-0 mb-3">
             <ng-scrollbar track="all" class="mat-table-scrollbar matTableScrolbar-style">
                 <table mat-table [dataSource]="dataSource" class="w-100">
-
                     <!-- Position Column -->
                     <ng-container matColumnDef="position">
                         <th mat-header-cell *matHeaderCellDef> Position </th>
@@ -94,9 +93,6 @@
                             </div>
                         </td>
                     </ng-container>
-
-
-
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">

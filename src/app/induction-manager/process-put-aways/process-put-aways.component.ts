@@ -157,10 +157,8 @@ export class ProcessPutAwaysComponent implements OnInit {
     // This method will be called whenever the user changes the selected tab
     const newIndex = event.index;
     if(newIndex===1){
-      
       setTimeout(() => {
       this.inputVal.nativeElement.focus();
-        
       }, 2000);
    
       this.autocompleteSearchColumnItem2();
@@ -177,7 +175,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     this.userData = this.authService.userData();
     this.pickToteSetupIndex();
     this.getCurrentToteID();
-    this.getProcessPutAwayIndex();
+    
     this.OSFieldFilterNames();
     this.imPreferences=this.global.getImPreferences();
     this.searchByItem2
@@ -185,6 +183,9 @@ export class ProcessPutAwaysComponent implements OnInit {
       .subscribe((value) => {
         this.autocompleteSearchColumnItem2();
       });
+    setTimeout(()=>{
+      this.getProcessPutAwayIndex();
+    },300)
   }
 
   callFunBatchSetup(event:any){

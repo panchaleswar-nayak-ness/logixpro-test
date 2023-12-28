@@ -26,6 +26,11 @@ export class PalletReceivingComponent implements OnInit {
     
   ) {
     this.iInductionManagerApi = inductionManagerApi;
+    
+  }
+
+  ngOnInit(): void {
+    this.userData = this.authService.userData();
     this.processForm = new FormGroup({
       toteID: new FormControl('', Validators.required),
       itemNo: new FormControl('', Validators.required),
@@ -33,14 +38,11 @@ export class PalletReceivingComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.userData = this.authService.userData();
-  }
-
   async processPallet() {
+    console.log(this.processForm.value);
     if (
-      this.processForm.value.toteID === '' ||
-      this.processForm.value.itemNo === '' ||
+      this.processForm.value.toteID === '' || this.processForm.value.toteID == undefined ||
+      this.processForm.value.itemNo === '' || this.processForm.value.itemNo == undefined ||
       this.processForm.value.quantity === ''
     ) {
       this.showNotification(

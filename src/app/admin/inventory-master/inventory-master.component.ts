@@ -908,7 +908,6 @@ export class InventoryMasterComponent implements OnInit {
   }
 
   tabChanged(tab: any) {
-    debugger
     if (!this.isTabChange) {
       this.isTabChange = true;
       this.spinnerService.show();
