@@ -132,7 +132,7 @@
                                     </th>
 
                                     <td *matCellDef="let element; let i = index" class="cell-custom-style"
-                                        [ngClass]="'w-100'" #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"
+                                         #tooltip="matTooltip" [matTooltip]="element[col.colHeader]"
                                         matTooltipPosition="above"
                                         [matTooltipDisabled]="element[col.colHeader] && element[col.colHeader].length>=25?false:true">
 

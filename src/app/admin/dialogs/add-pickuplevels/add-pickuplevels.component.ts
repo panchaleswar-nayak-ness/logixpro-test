@@ -69,7 +69,7 @@ export class AddPickuplevelsComponent implements OnInit {
       this.iAdminApiService.updatePickLevels({ userName : this.data.userName, ...form.value }).subscribe((res:any) =>{
         if (res.isExecuted) {
           this.dialog.closeAll();
-          this.global.ShowToastr(ToasterType.Error,labels.alert.success, ToasterTitle.Update);
+          this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Update);
         } else {
           
           this.global.ShowToastr(ToasterType.Error,res.responseMessage, ToasterTitle.Error);
