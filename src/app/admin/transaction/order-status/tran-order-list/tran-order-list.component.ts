@@ -108,6 +108,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     'wareHouse',
     TableConstant.ImportDate,
     TableConstant.BatchPickID,
+    'statusCode',
     ColumnDef.userField1,
     ColumnDef.userField2,
     ColumnDef.userField3,
