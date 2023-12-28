@@ -31,8 +31,16 @@ export class ChangePasswordComponent implements OnInit {
     this.resetPassForm = this.fb.group({
       userName: ['', Validators.required],
       old_password: ['', Validators.required],
-      new_password: ['', Validators.required],
-      confirm_password: ['', Validators.required]
+      new_password: ['',  [
+        Validators.required,
+        Validators.minLength(7),
+        Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/),
+      ]],
+      confirm_password: ['',  [
+        Validators.required,
+        Validators.minLength(7),
+        Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/),
+      ]]
     }, { validator: this.passwordMatchValidator });
   }
 
