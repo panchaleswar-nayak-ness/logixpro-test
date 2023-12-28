@@ -17,7 +17,7 @@ import { ToasterTitle, ToasterType ,LiveAnnouncerMessage} from 'src/app/common/c
   styleUrls: ['./connected-users.component.scss'],
 })
 export class ConnectedUsersComponent implements OnInit,AfterViewInit {
-  displayedColumns: string[] = ['username', 'wsid', 'appname'];
+  displayedColumns: string[] = ['userName', 'wsid', 'appname'];
   user_connected_datasource: any = [];
   ConnectedUserSubscription : any;
   public  iGlobalConfigApi: IGlobalConfigApi;
