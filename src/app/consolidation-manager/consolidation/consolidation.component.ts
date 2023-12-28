@@ -453,6 +453,7 @@ export class ConsolidationComponent implements OnInit {
   checkDuplicatesForVerify(val) {
     let columnIndex = this.startSelectFilter;
     let result: any;
+    console.log(this.consolidationIndex.cmPreferences);
     if (columnIndex == 0) {
       this.filterOption.forEach((e: any) => {
         result = this.checkVerifyType(val);
@@ -462,7 +463,8 @@ export class ConsolidationComponent implements OnInit {
       result = this.checkVerifyType(val);
     // desturcturing
     const { verifyItems, blindVerifyItems } = this.consolidationIndex.cmPreferences;
-    if (result.valueCount >= 1 && verifyItems == StringConditions.No && blindVerifyItems == StringConditions.No) {
+    //blind verify condition removed.
+    if (result.valueCount >= 1 && verifyItems == StringConditions.No) {
       const dialogRef:any = this.global.OpenDialog(CmItemSelectedComponent, {
         height: 'auto',
         width: '899px',
