@@ -37,6 +37,7 @@ export class LoginComponent {
 
   public iGlobalConfigApi: IGlobalConfigApi;
   public iUserApi : IUserAPIService;
+  workstationD=false;
 
   constructor(
     public userApi : UserApiService,
@@ -51,19 +52,26 @@ export class LoginComponent {
     this.iGlobalConfigApi = globalConfigApi;
     this.iUserApi = userApi;
     this.url = this.router.url;
-    this.openWS();
+    if(!global.getCookie("WSName")){
+      this.openWS();
+    }
+    else{
+      this.workstationD = true;
+    }
   }
-  workstationD=false;
+  
   openWS(){
     const dialogRef = this.dialog.open(WorkstationLoginComponent,{
     width: '550px',
     autoFocus: DialogConstants.autoFocus,
     disableClose: true,
   })
-  dialogRef.afterClosed().subscribe(() => {
-    this.workstationD=true;
-  });;
-}
+  dialogRef.afterClosed().subscribe((res:string) => {
+    this.global.setCookie("WSName", res, 525600);
+    this.workstationD = true;
+  });
+  }
+
   removeReadOnly(){  
     this.isReadOnly = !this.isReadOnly;
   }
