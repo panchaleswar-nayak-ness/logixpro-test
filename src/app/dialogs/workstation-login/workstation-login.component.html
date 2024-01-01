@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-between align-items-center" mat-dialog-title>
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Workstation Name</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+
+<div mat-dialog-content>
+  <div class="label-red p-2 d-flex br-8 mb-3">
+    <mat-icon class="material-symbols-outlined">notification_important</mat-icon>
+    <span class="ps-2 w-100">Please enter your PC Name before closing.</span>
+</div>
+        <div class="row">
+            <div class="col-xl-12">
+                <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
+                    <mat-label>PC Name</mat-label>
+                    <input #locFocus (keydown.shift.enter)="$event.preventDefault()" matInput type="text">
+                </mat-form-field>
+            </div>
+        </div>  
+       
+
+</div>
+
+<div class="d-flex gap-12 mb-1" mat-dialog-actions>
+    <button mat-flat-button color="primary" class="btn-lg flex-grow-1">
+        Submit
+    </button>
+</div>
