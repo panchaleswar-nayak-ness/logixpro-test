@@ -119,7 +119,7 @@ export class BatchOrderListComponent implements OnInit {
       else{
         this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
-          width: Style.w786px,
+          width: Style.w560px,
           data: {
             message: 'The entered order was not found within the order selection list table display.',
             heading: 'Order Not Found',
