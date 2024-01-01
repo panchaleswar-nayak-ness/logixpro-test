@@ -19,7 +19,8 @@ import { SharedService } from 'src/app/common/services/shared.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppPermissions, AppRoutes, DialogConstants, LiveAnnouncerMessage, ToasterTitle, ToasterType, localStorageKeys ,StringConditions,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { AppPermissions, AppRoutes, DialogConstants, LiveAnnouncerMessage, ToasterTitle, ToasterType, localStorageKeys ,StringConditions,UniqueConstants, KeyboardKeys, Style} from 'src/app/common/constants/strings.constants';
+import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 
 @Component({
   selector: 'app-batch-order-list',
@@ -55,6 +56,7 @@ export class BatchOrderListComponent implements OnInit {
   fixedTote = 1;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  orderNumberLookup:string;
 
   constructor(
     private sharedService: SharedService,
@@ -105,6 +107,29 @@ export class BatchOrderListComponent implements OnInit {
       this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
       this.liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
+    }
+  }
+
+  orderNumberLookupFun(e:any){
+    if (e.key === KeyboardKeys.Enter) {
+      let lookup = this.batchOrderDataTable.filteredData.filter((x:any) => x.orderNumber == this.orderNumberLookup);
+      if(lookup?.length > 0){
+        this.addOrders(lookup[0]);
+      }
+      else{
+        this.global.OpenDialog(AlertConfirmationComponent, {
+          height: 'auto',
+          width: Style.w786px,
+          data: {
+            message: 'The entered order was not found within the order selection list table display.',
+            heading: 'Order Not Found',
+            disableCancel:true
+          },
+          autoFocus: DialogConstants.autoFocus,
+          disableClose:true
+        });
+      }
+      this.orderNumberLookup = "";
     }
   }
 
