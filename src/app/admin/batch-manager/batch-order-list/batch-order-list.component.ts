@@ -111,8 +111,8 @@ export class BatchOrderListComponent implements OnInit {
   }
 
   orderNumberLookupFun(e:any){
-    if (e.key === KeyboardKeys.Enter) {
-      let lookup = this.batchOrderDataTable.filteredData.filter((x:any) => x.orderNumber == this.orderNumberLookup);
+    if (e.key === KeyboardKeys.Enter && this.orderNumberLookup != "") {
+      let lookup = this.batchOrderDataTable.filteredData.filter((x:any) => x.orderNumber.toLowerCase() == this.orderNumberLookup.toLowerCase());
       if(lookup?.length > 0){
         this.addOrders(lookup[0]);
       }
