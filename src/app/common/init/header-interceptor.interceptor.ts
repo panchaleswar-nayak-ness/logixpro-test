@@ -11,6 +11,7 @@ import { IUserAPIService } from '../services/user-api/user-api-interface';
 import { UserApiService } from '../services/user-api/user-api.service';
 import { GlobalService } from '../services/global.service';
 import { ToasterTitle, ToasterType } from '../constants/strings.constants';
+import { SharedService } from '../services/shared.service';
 
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
@@ -25,7 +26,8 @@ export class HeaderInterceptor implements HttpInterceptor {
     private dialog:MatDialog,
     private authService: AuthService,
     public globalConfigApi: GlobalConfigApiService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private sharedService:SharedService,
   ) {
     this.iGlobalConfigApi = globalConfigApi;
     this.iUserApi = userApi;
@@ -75,6 +77,7 @@ export class HeaderInterceptor implements HttpInterceptor {
       const errorMessage = 'Unauthorize access ' + responseMessage;
       this.global.ShowToastr(ToasterType.Error, errorMessage, ToasterTitle.Error);
       this.router.navigate(['/dashboard']);
+      this.sharedService.BroadCastMenuUpdate("/dashboard");
     }
 
     return of(err.message);
