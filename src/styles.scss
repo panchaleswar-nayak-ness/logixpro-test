@@ -175,6 +175,9 @@ input:-webkit-autofill {
   color: var(--clr-danger-shade);
   border: 1px solid var(--clr-danger-shade);
   min-height: 48px;
+  &:disabled{
+    border-color: var(--clr-chrome-100) !important;
+  }
 }
 
 .mat-flat-button.mat-warn,
