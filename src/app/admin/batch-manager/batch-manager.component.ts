@@ -85,7 +85,7 @@ export class BatchManagerComponent implements OnInit {
     try {
       this.iAdminApiService.BatchManagerOrder(paylaod).subscribe((res: any) => {
         const { data, isExecuted } = res
-        if (isExecuted && data.length > 0) {
+        if (isExecuted) {
           this.orderList = data;
           this.recordSavedItem();
         } else {
