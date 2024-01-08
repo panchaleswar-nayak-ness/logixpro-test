@@ -11,6 +11,7 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 
 export interface  AdjustQuantityDataStructure   {
@@ -57,6 +58,8 @@ export class AdjustQuantityComponent implements OnInit {
 
  getAdjustReasonsList: any ;
 
+ searchReasonValue: any = '';
+ searchReasonByInput: any = new Subject<string>();
  
 
  public iCommonAPI : ICommonApi;
@@ -78,8 +81,14 @@ export class AdjustQuantityComponent implements OnInit {
 
   ngOnInit(): void { 
     this.getItemQuantity(this.data.id);
-    this.getAdjustmentReasons();
     this.initializeDataSet();
+
+    this.searchReasonByInput
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe((value) => {
+        this.searchReasonValue = value;
+        this.getAdjustmentReasons();
+      });
   }
   
   ngAfterViewInit() {
@@ -115,7 +124,7 @@ export class AdjustQuantityComponent implements OnInit {
   }
 
   getAdjustmentReasons(){
-    this.iCommonAPI.getAdjustmentReasonsList().subscribe((res) => {
+    this.iCommonAPI.getAdjustmentReasonsList({reason:this.searchReasonValue}).subscribe((res) => {
       if(res.data && res.isExecuted){
         this.getAdjustReasonsList = res.data;
       }

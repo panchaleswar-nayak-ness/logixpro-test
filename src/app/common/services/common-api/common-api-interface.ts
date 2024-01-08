@@ -31,6 +31,6 @@ export interface ICommonApi
 	getVelocityCode(payload? : any)
 	saveVelocityCode(payload: any)
 	dltVelocityCode(payload: any)
-	getAdjustmentReasonsList()
+	getAdjustmentReasonsList(payload: any)
 	getItemQuantityDetail(payload: any)
 }

@@ -301,7 +301,6 @@ export class AddInvMapLocationComponent implements OnInit {
     });
     this.itemDescription = "";
     this.unitOFMeasure = '';
-    this.autoFillLocNumber = '';
     this.itemNumberList = [];
   }
 
@@ -321,8 +320,7 @@ export class AddInvMapLocationComponent implements OnInit {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-      if (!result) {
-
+      if (result) {
         this.addInvMapLocation.patchValue({
           'itemQuantity': result
         });

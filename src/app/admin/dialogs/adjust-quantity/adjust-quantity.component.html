@@ -2,7 +2,7 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="divWithClass"></div>
     <h1 class="m-0" mat-dialog-title>Adjust Quantity</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -88,8 +88,9 @@
         <div class="col-6">
             <mat-form-field class="custom-form-field w-100" appearance="outline">
                 <mat-label>Reason For Adjustment</mat-label>
-                <input   placeholder="Reason For Adjustment" aria-label="Reason For Adjustment" matInput
-                    formControlName="description" [matAutocomplete]="auto">
+                <input placeholder="Reason For Adjustment" aria-label="Reason For Adjustment" matInput
+                    formControlName="description" [(ngModel)]='searchReasonValue' [matAutocomplete]="auto"
+                    (ngModelChange)="this.searchReasonByInput.next($event)">
                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                     <mat-option *ngFor="let option of getAdjustReasonsList"
                         [value]="option">
