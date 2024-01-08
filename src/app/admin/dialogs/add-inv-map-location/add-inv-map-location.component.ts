@@ -287,39 +287,22 @@ export class AddInvMapLocationComponent implements OnInit {
   }
   clearFields() {
     this.addInvMapLocation.patchValue({
-      'putAwayDate': '',
-      'userField1': '',
-      'userField2': '',
       'item': '',
-      'expirationDate': '',
+      "description":'',
       'maxQuantity': '0',
       'minQuantity': '0',
-      'revision': '',
+      'putAwayDate': '',
       'serialNumber': '',
       'lotNumber': '',
-      "description":'',
-      'location':'',
-      'locationNumber':'',
-      'laserX':'',
-      'lasery':'',
-      'warehouse':'',
-      "zone":'',
-      'carousel':'',
-      'row':'',
-      "shelf":'',
-      'bin':'',
-      'cell':'',
-      'velocity':'',
-      'altLight':'',
-      dedicated: false,
-      dateSensitive : false
-
-
+      'revision': '',
+      'expirationDate': '',
+      'userField1': '',
+      'userField2': '',
     });
     this.itemDescription = "";
-    this.unitOFMeasure = ''
-    this.autoFillLocNumber = ''
-    this.itemNumberList = []
+    this.unitOFMeasure = '';
+    this.autoFillLocNumber = '';
+    this.itemNumberList = [];
   }
 
   adjustQuantity() {
