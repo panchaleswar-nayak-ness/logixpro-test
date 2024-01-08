@@ -97,7 +97,7 @@ export class BatchDeleteComponent implements OnInit {
         .SelectBatchesDeleteDrop(paylaod)
         .subscribe((res: any) => {
           this.batchList = [];
-          if (res.isExecuted && res.data.length > 0) {
+          if (res.isExecuted) {
             this.batchList.push(StringConditions.AllTransaction);
             res.data.forEach((i: any) => {
               if (i) this.batchList.push(i);
