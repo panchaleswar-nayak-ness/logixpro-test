@@ -268,7 +268,7 @@ export class GlobalService {
         this.ShowToastr(ToasterType.Success, "Export successfully completed", ToasterTitle.Success);  
           if(res.data.fileName.indexOf("txt") > -1) this.downloadTextFile(res.data.fileName, res.data.fileContent);
           else {
-            document.getElementById('CurrentDownload')?.setAttribute("href",`${environment.apiUrl.replace("/api","")}/pdf/`+res.data.fileName);
+            document.getElementById('CurrentDownload')?.setAttribute("href",""); //Force Href to "" to just download file
             document.getElementById('CurrentDownload')?.setAttribute("download",res.data.fileName);
             document.getElementById('CurrentDownload')?.click();
           }   
