@@ -320,8 +320,11 @@ export class AddInvMapLocationComponent implements OnInit {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result !== false) {
         this.addInvMapLocation.patchValue({
+          'itemQuantity': result
+        });
+        this.clearInvMapLocation.patchValue({
           'itemQuantity': result
         });
       }
@@ -402,7 +405,6 @@ export class AddInvMapLocationComponent implements OnInit {
       quantityAllocatedPutAway: new FormControl(this.getDetailInventoryMapData.quantityAllocatedPutAway || 0),
       itemQuantity: new FormControl(this.getDetailInventoryMapData.itemQuantity || 0),
     }, { validators: this.validateQuantity });
-
   }
 
   validateQuantity(control: AbstractControl): ValidationErrors | null {
