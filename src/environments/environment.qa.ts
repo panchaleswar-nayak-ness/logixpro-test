@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "https://staging-e64.com:9011/api"
+  apiUrl: "https://pickproapi.dev-staging.peaklogix.com:8443/api"
 };
