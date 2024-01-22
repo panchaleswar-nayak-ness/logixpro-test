@@ -270,6 +270,8 @@ export class AddNewTransactionToOrderComponent implements OnInit {
   }
   
   ngAfterViewInit() {
-    this.item_num.nativeElement.focus();
+    setTimeout(()=>{
+      this.item_num.nativeElement.focus();
+    }, 200);
   }
 }
