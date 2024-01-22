@@ -250,11 +250,7 @@ export class TemporaryManualOrderNumberAddComponent implements OnInit {
             this.setItem()
           } else {
             this.searchAutocompleteItemNum.length = 0;
-            this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-            console.log("SearchItem", res.responseMessage);
-
           }
-
         },
       );
   }

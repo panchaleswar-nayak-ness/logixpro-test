@@ -303,8 +303,8 @@ export class CommonApiService implements ICommonApi{
 		return this.Api.dltVelocityCode(payload);
 	}
 
-  getAdjustmentReasonsList() {
-		return this.Api.getAdjustmentReasonsList();
+  getAdjustmentReasonsList(payload: any) {
+		return this.Api.getAdjustmentReasonsList(payload);
 	}
 
   getItemQuantityDetail(payloadParams : any) {

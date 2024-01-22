@@ -65,7 +65,7 @@
 
     <mat-form-field class="mb-1 w-100" appearance="outline" *ngIf="isEmail">
       <mat-label>Email Address</mat-label>
-      <input matInput type="email" formControlName="emailAddress" maxlength="255" (keydown.space)="$event.preventDefault();">
+      <input matInput type="email" formControlName="emailAddress" maxlength="255" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{3,4}$" (keydown.space)="$event.preventDefault();">
     </mat-form-field>
 
     <mat-hint class="error-message emailErrorMsg-style text-danger-shade text-14"

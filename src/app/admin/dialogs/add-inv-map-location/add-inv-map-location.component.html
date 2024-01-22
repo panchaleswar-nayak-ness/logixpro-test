@@ -348,7 +348,7 @@
   <div class="d-flex gap-12 w-100">
       <!-- remove from main [disabled]="isValidClearLocation()" -->
     <button type="button" mat-stroked-button color="warn" class="form-button-submit btn-lg" (click)="clearFields()"
-            *ngIf="myroute1" [disabled]="clearInvMapLocation.value.quantityAllocatedPick != 0 || clearInvMapLocation.value.quantityAllocatedPutAway != 0 || addInvMapLocation.value.itemQuantity != 0">Clear
+            *ngIf="myroute1" [disabled]="clearInvMapLocation.value.quantityAllocatedPick != 0 || clearInvMapLocation.value.quantityAllocatedPutAway != 0 || clearInvMapLocation.value.itemQuantity != 0">Clear
     </button>
     <button type="submit" mat-flat-button class="form-button-submit btn-lg w-100" color="primary" *ngIf="myroute2"
             (click)="onSubmit(addInvMapLocation)" [disabled]="!isValid()">Save Changes

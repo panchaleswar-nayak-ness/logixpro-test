@@ -301,7 +301,6 @@ export class AddInvMapLocationComponent implements OnInit {
     });
     this.itemDescription = "";
     this.unitOFMeasure = '';
-    this.autoFillLocNumber = '';
     this.itemNumberList = [];
   }
 
@@ -321,9 +320,11 @@ export class AddInvMapLocationComponent implements OnInit {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-      if (!result) {
-
+      if (result !== false) {
         this.addInvMapLocation.patchValue({
+          'itemQuantity': result
+        });
+        this.clearInvMapLocation.patchValue({
           'itemQuantity': result
         });
       }
@@ -369,7 +370,7 @@ export class AddInvMapLocationComponent implements OnInit {
       shelf: [this.getDetailInventoryMapData.shelf || '', [Validators.maxLength(2)]],
       bin: [this.getDetailInventoryMapData.bin || '', [Validators.maxLength(3)]],
       item: [this.getDetailInventoryMapData.itemNumber || '', [Validators.maxLength(50)]],
-      itemQuantity: new FormControl({value:this.getDetailInventoryMapData.itemQuantity || '',disabled:this.getDetailInventoryMapData.itemNumber ===''}),
+      itemQuantity: new FormControl({value:this.getDetailInventoryMapData.itemQuantity || 0,disabled:this.getDetailInventoryMapData.itemNumber ===''}),
       description: [this.getDetailInventoryMapData.description || ""],
       clear:new FormControl({ value: this.getDetailInventoryMapData.itemNumber || 0, disabled: true }),
       cell: [this.getDetailInventoryMapData.cellSize || ''],
@@ -404,7 +405,7 @@ export class AddInvMapLocationComponent implements OnInit {
       quantityAllocatedPutAway: new FormControl(this.getDetailInventoryMapData.quantityAllocatedPutAway || 0),
       itemQuantity: new FormControl(this.getDetailInventoryMapData.itemQuantity || 0),
     }, { validators: this.validateQuantity });
-
+    debugger
   }
 
   validateQuantity(control: AbstractControl): ValidationErrors | null {

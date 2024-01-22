@@ -1325,11 +1325,12 @@ public updateItemQuantity(body){
   
   return this.ApiBase.Put(`/Admin/itemquantity`,payload);
 }
-public getAdjustmentReasonsList(){
+public getAdjustmentReasonsList(body:any){
   let userData = this.authService.userData(); 
   let payload = {
     'username': userData.userName,
-    'wsid': userData.wsid
+    'wsid': userData.wsid,
+    'Reason':body.reason
   }
   return this.ApiBase.Get(`/Common/adjustquantityreason`,payload);
 } 
