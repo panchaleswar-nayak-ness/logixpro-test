@@ -185,8 +185,9 @@ export class DeleteConfirmationComponent implements OnInit {
           }
         });
       } else if (this.data.mode === Mode.DeleteEmp) {
+        debugger
         let emp_data = {
-          userName: this.data.emp_data.username,
+          userName: this.data.emp_data.userName,
           deleteBy: this.userData.userName,
           wsid: dataCredientials.testWsid,
         };
