@@ -266,7 +266,7 @@ export class GlobalService {
     this.iAdminApiService.CommonExport(paylaod).subscribe((res:any)=>{
       if(res.isExecuted){
         this.ShowToastr(ToasterType.Success, "Export successfully completed", ToasterTitle.Success);  
-          if(res.data.fileName.indexOf("txt") > -1) this.downloadTextFile(res.data.fileName, res.data.fileContent);
+          if(res.data.fileName.indexOf("txt") > -1 || res.data.fileName.indexOf("csv") > -1) this.downloadTextFile(res.data.fileName, res.data.fileContent);
           else {
             document.getElementById('CurrentDownload')?.setAttribute("href",""); //Force Href to "" to just download file
             document.getElementById('CurrentDownload')?.setAttribute("download",res.data.fileName);
