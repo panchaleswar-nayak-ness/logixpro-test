@@ -98,7 +98,6 @@ const routes: Routes = [
         loadChildren: () => import('./list-and-label/list-and-label.module').then(m => m.ListAndLabelModule),
       },
     ]
-
   },  
 ];
 
