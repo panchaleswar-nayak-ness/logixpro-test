@@ -231,9 +231,6 @@ export class OmOrderManagerComponent implements OnInit {
       
       this.iOrderManagerApi.FillOrderManTempData(payload).pipe(
         catchError((error) => {
-          // Handle the error here
-          this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
-          // Return a fallback value or trigger further error handling if needed
           return of({ isExecuted: false });
         })
       ).subscribe((res: any) => {
