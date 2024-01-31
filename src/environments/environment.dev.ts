@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "https://staging-e64.com:9010/api"
+  apiUrl: "https://172.16.172.238/api"
 };
