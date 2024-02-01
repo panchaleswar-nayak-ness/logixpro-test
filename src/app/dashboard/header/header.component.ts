@@ -180,8 +180,8 @@ export class HeaderComponent {
 
   GetWorkStatPrinters(){
     this.iGlobalConfigApi.GetWorkStatPrinters().subscribe((res:any) => {
-      localStorage.setItem("SelectedReportPrinter",res.data.reportPrinter);
-      localStorage.setItem("SelectedLabelPrinter",res.data.labelPrinter);
+      localStorage.setItem("SelectedReportPrinter",res?.data?.reportPrinter);
+      localStorage.setItem("SelectedLabelPrinter",res?.data?.labelPrinter);
     });
   }
 
