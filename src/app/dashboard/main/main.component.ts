@@ -130,6 +130,14 @@ export class MainComponent implements OnInit {
         permission: 'FlowRack Replenish',
       },
       {
+        appName: 'BulkProcess',
+        route: '/BulkProcess',
+        iconName: 'schema',
+        name: 'BulkProcess',
+        updateMenu: 'BulkProcess',
+        permission: 'FlowRack Replenish',
+      },
+      {
         appName: 'ImportExport',
         route: '/ImportExport',
         iconName: 'electric_bolt',

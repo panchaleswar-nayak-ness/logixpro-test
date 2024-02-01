@@ -181,6 +181,7 @@ export const AppNames = {
     Markout: 'Markout',
     OrderManager: 'OrderManager',
     WorkManager: 'WorkManager',
+    BulkProcess: 'BulkProcess',
    
 }
 

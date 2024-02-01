@@ -94,6 +94,11 @@ const routes: Routes = [
         canActivate:[]
       },
       { 
+        path: 'BulkProcess', 
+        loadChildren: () => import('./bulk-process/bulk-process.module').then(m => m.BulkProcessModule),
+        canActivate:[]
+      },
+      { 
         path: '', 
         loadChildren: () => import('./list-and-label/list-and-label.module').then(m => m.ListAndLabelModule),
       },

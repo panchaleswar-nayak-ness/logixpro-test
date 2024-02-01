@@ -28,7 +28,8 @@ export class SideNavComponent implements OnInit {
     { icon: 'fact_check', title: 'Work Manager', route: '#' ,permission: 'Work Manager'},
     { icon: 'insert_chart', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager' ,permission: AppPermissions.ConsolidationManager},
     { icon: 'pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager' ,permission: AppPermissions.OrderManager},
-    { icon: 'schema', title: 'FlowRack Replenishment', route: '/FlowrackReplenish',permission: 'FlowRack Replenish' }
+    { icon: 'schema', title: 'FlowRack Replenishment', route: '/FlowrackReplenish',permission: 'FlowRack Replenish' },
+    { icon: 'schema', title: 'Bulk Process', route: '/BulkProcess',permission: 'FlowRack Replenish' }
   ];
   globalMenus: any = [
     { icon: 'door_front', title: 'Home', route: '/globalconfig/home' ,permission: true},
@@ -67,7 +68,6 @@ export class SideNavComponent implements OnInit {
     { icon: 'line_style', title: 'Super Batch', route: '/InductionManager/SuperBatch' ,permission:AppPermissions.InductionManager},
     { icon: 'library_add_check', title: 'Complete Pick Batch', route: '/InductionManager/CompletePickBatch' ,permission:AppPermissions.InductionManager},
   ];
-
   consolidationMenus: any = [
     { icon: 'arrow_back', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager', class: UniqueConstants.backClass , permission: AppPermissions.ConsolidationManager},
     { icon: 'insert_chart', title: 'Consolidation', route: '/ConsolidationManager/Consolidation', class: UniqueConstants.backClass , permission: AppPermissions.ConsolidationManager},
@@ -79,7 +79,6 @@ export class SideNavComponent implements OnInit {
      { icon: 'view_module', title: 'Order Status', route: '/ConsolidationManager/OrderStatus',paramsObj:{IsOrderStatus:true} ,permission:'Order Status'}
     //  flex_wrap
   ];
-
   inductionAdminMenus: any = [
     { icon: 'arrow_back', title: 'Admin', route: '/InductionManager', class: UniqueConstants.backClass , permission: AppPermissions.InductionManager},
     { icon: ' directions_alt', title: 'Inventory Map', route: '/InductionManager/Admin/InventoryMap' ,permission:AppPermissions.InductionManager},
@@ -91,7 +90,6 @@ export class SideNavComponent implements OnInit {
     { icon: '     analytics     ', title: 'Reports ', route: '/InductionManager/Admin/Reports' ,permission:AppPermissions.InductionManager},
     { icon: '      tune       ', title: 'Preferences ', route: '/InductionManager/Admin/AdminPrefrences' ,permission:AppPermissions.InductionManager},
   ];
-
   orderManagerMenus: any = [
     { icon: 'arrow_back', title: AppPermissions.OrderManager, route: AppRoutes.Dashboard, class: UniqueConstants.backClass , permission: AppPermissions.OrderManager},
     { icon: ' pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager/OrderManager' ,permission:'Admin Release Orders'},
@@ -102,11 +100,14 @@ export class SideNavComponent implements OnInit {
     { icon: 'analytics', title: 'Reports ', route: '/OrderManager/Reports' ,permission:'Admin Reports'},
     { icon: 'tune', title: 'Preferences ', route: '/OrderManager/Preferences' ,permission:'Admin Preferences'},
   ];
-
   flowrackReplenishmentMenus: any = [
     { icon: 'arrow_back', title: 'Flowrack Replenish', route: '/FlowrackReplenish', class: UniqueConstants.backClass , permission: 'FlowRack Replenish'},
     { icon: 'schema', title: 'Flowrack Replenishment', route: '/FlowrackReplenish/Flowrack' ,permission:'FlowRack Replenish'},
     { icon: 'tune', title: 'Preferences ', route: '/FlowrackReplenish/Preferences' ,permission:'FlowRack Replenish'},
+  ];
+  bulkProcessMenus: any = [
+    { icon: 'arrow_back', title: 'Bulk Process', route: '/BulkProcess', class: UniqueConstants.backClass , permission: 'FlowRack Replenish'},
+    { icon: 'schema', title: 'Bulk Pick', route: '/BulkProcess/BulkPick' ,permission:'FlowRack Replenish'},
   ];
   
 

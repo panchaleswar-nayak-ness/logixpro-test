@@ -23,10 +23,7 @@
         "path": "/OrderManager/OrderManager",
         "Permission": "Admin Release Orders"
     },
-    {
-        "path": "/FlowrackReplenish",
-        "Permission": "FlowRack Replenish"
-    },
+    
     {
         "path": "/wrd",
         "Permission": true
@@ -219,13 +216,26 @@
     },
 
     {
+        "path": "/FlowrackReplenish",
+        "Permission": "FlowRack Replenish"
+    },
+    {
         "path": "/FlowrackReplenish/Preferences",
         "Permission": "Preferences"
     },
     {
         "path": "/FlowrackReplenish/Flowrack",
         "Permission": "Preferences"
-    } 
+    },
+
+    {
+        "path": "/BulkProcess",
+        "Permission": "FlowRack Replenish"
+    },
+    {
+        "path": "/BulkProcess/BulkPick",
+        "Permission": "FlowRack Replenish"
+    }
  
     
    
