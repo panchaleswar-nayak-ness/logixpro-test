@@ -1,0 +1,19 @@
+<mat-card class="mat-elevation-z g-card">
+    <mat-card-content>
+        <div class="row mb-3">
+            <div class="col">
+                <app-icon-heading-component heading="Selected Orders" icon="filter_frames">
+                </app-icon-heading-component>
+            </div>
+        </div>
+        <div class="row px-3">
+            <button mat-stroked-button color="warn" class="button-add-all mb-3 float-end count-primary-button">
+                Remove All
+            </button>
+        </div>
+        <div class="card br-14 borderless">
+            <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding count-table-scrollbar" track="all">
+            </ng-scrollbar>
+        </div>
+    </mat-card-content>
+</mat-card>
