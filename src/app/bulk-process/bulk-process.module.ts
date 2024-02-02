@@ -12,6 +12,7 @@ import { BpSearchBarComponent } from './bulk-pick/bp-search-bar/bp-search-bar.co
 import { BpStatusComponent } from './bulk-pick/bp-status/bp-status.component';
 import { BpOrderSelectionListComponent } from './bulk-pick/bp-order-selection-list/bp-order-selection-list.component';
 import { BpSelectedOrdersComponent } from './bulk-pick/bp-selected-orders/bp-selected-orders.component';
+import { BpVerifyBulkPickComponent } from './bulk-pick/bp-verify-bulk-pick/bp-verify-bulk-pick.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { BpSelectedOrdersComponent } from './bulk-pick/bp-selected-orders/bp-sel
     BpSearchBarComponent,
     BpStatusComponent,
     BpOrderSelectionListComponent,
-    BpSelectedOrdersComponent
+    BpSelectedOrdersComponent,
+    BpVerifyBulkPickComponent
   ],
   imports: [
     CommonModule,
