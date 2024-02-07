@@ -26,8 +26,7 @@ test "" = "$(grep '^Signed-off-by: ' "$1" |
 
 # This code will check the format of commit message according to Project Name and Task ID.
 INPUT_FILE=$1
-START_LINE=`head -n1 $INPUT_FILE`
-PATTERN="^([[:upper:]]{4,})-[[:digit:]]+: "
+START_LINE=`head -n1 $INPUT_FILE` 
 if ! [[ "$START_LINE" =~ $PATTERN ]]; then
   echo "Bad Commit message, see example: PROJ-123:<space>[commit message message should be here. Commit format is case sensitive and requires at least 4 characters with task ID]"
   exit 1

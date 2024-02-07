@@ -235,9 +235,10 @@
     {
         "path": "/BulkProcess/BulkPick",
         "Permission": "FlowRack Replenish"
+    },
+    {
+        "path": "/BulkProcess/BulkPutAway",
+        "Permission": "FlowRack Replenish"
     }
- 
-    
-   
     
 ]

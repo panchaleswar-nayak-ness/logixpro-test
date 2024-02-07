@@ -1,0 +1,59 @@
+<mat-card class="mat-elevation-z g-card">
+    <mat-card-content>
+        <div class="row mb-3">
+            <div class="col">
+                <div class="d-flex">
+                <button mat-icon-button class="add-icon-button circle-icon-o round me-2" (click)="backButton()">
+                    <span class="material-symbols-outlined cursor-pointer" matTooltip="Back to Bulk Put Away"
+                        matTooltipPosition="above">
+                        arrow_back
+                    </span>
+                </button>
+                <app-icon-heading-component heading="Verify Bulk Put Away" icon="unarchive">
+                </app-icon-heading-component>
+            </div>
+            </div>
+            <div class="col">
+                <div class="w-100 d-flex d-xl-block">
+                    <mat-form-field
+                        class="action-dropdown custom-form-field-bg-white float-end flex-grow-1 flexOne"
+                        appearance="outline">
+                        <mat-label>Actions</mat-label>
+                        <mat-select class="employees-action" placeholder="Actions">
+                            <mat-option value="add_new_transaction">View By Location</mat-option>
+                            <mat-option value="add_new_transaction">View By Order / Item</mat-option>
+                            <mat-option value="add_new_transaction">Print List</mat-option>
+                            <mat-option value="add_new_transaction">Print All Labels</mat-option>
+                        </mat-select>
+                        <span class="material-symbols-outlined icon-expand-more">expand_more</span>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="bg-light-blue bg-50 br-none px-4 py-4 br-20 mb-3">
+            <div class="d-xl-flex d-block gap-20 flex-wrap">
+                <div class="flex-grow-1 mb-xl-0 mb-3">
+                    <mat-form-field class="w-100 br-14 custom-form-field-bg-white" appearance="outline">
+                        <span class="material-symbols-outlined icon-search pe-2">search</span>
+                        <input type="text" placeholder="Search" aria-label="Search" matInput maxlength="50"
+                            #autoFocusField>
+                    </mat-form-field>
+                </div>
+                <div class="mb-xl-0 mb-3">
+                    <button mat-stroked-button color="primary" class="button-secondary btn-md w-100">
+                        Reset All Completed Qty’s to Zero
+                    </button>
+                </div>
+                <div class="mb-xl-0 mb-3">
+                    <button mat-stroked-button color="primary" class="button-secondary btn-md w-100">
+                        Copy All Order Qty’s to Completed Qty’s
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card br-14 borderless">
+            <ng-scrollbar class="mat-table-scrollbar scrollbar-hover-padding verify-table-height" track="all">
+            </ng-scrollbar>
+        </div>
+    </mat-card-content>
+</mat-card>

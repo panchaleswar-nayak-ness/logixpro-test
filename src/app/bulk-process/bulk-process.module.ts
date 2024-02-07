@@ -13,6 +13,11 @@ import { BpStatusComponent } from './bulk-pick/bp-status/bp-status.component';
 import { BpOrderSelectionListComponent } from './bulk-pick/bp-order-selection-list/bp-order-selection-list.component';
 import { BpSelectedOrdersComponent } from './bulk-pick/bp-selected-orders/bp-selected-orders.component';
 import { BpVerifyBulkPickComponent } from './bulk-pick/bp-verify-bulk-pick/bp-verify-bulk-pick.component';
+import { StatusComponent } from './bulk-put-away/status/status.component';
+import { OrderSelectionListComponent } from './bulk-put-away/order-selection-list/order-selection-list.component';
+import { SelectedOrdersComponent } from './bulk-put-away/selected-orders/selected-orders.component'; 
+import { SearchBarComponent } from './bulk-put-away/search-bar/search-bar.component'; 
+import { VerifyBulkPutAwayComponent } from './bulk-put-away/verify-bulk-put-away/verify-bulk-put-away.component';
 
 
 @NgModule({
@@ -24,7 +29,12 @@ import { BpVerifyBulkPickComponent } from './bulk-pick/bp-verify-bulk-pick/bp-ve
     BpStatusComponent,
     BpOrderSelectionListComponent,
     BpSelectedOrdersComponent,
-    BpVerifyBulkPickComponent
+    BpVerifyBulkPickComponent,
+    SearchBarComponent,
+    StatusComponent,
+    OrderSelectionListComponent,
+    SelectedOrdersComponent,
+    VerifyBulkPutAwayComponent
   ],
   imports: [
     CommonModule,
