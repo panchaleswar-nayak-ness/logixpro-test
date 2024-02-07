@@ -240,6 +240,7 @@ export const RouteUpdateMenu = {
     OrderManager: 'orderManager',
     TransactionAdmin: 'transaction-admin',
     FlowReplenishment: 'FlowReplenishment',
+    BulkProcess: 'BulkProcess',
     RouteFromInduction:'routeFromInduction'
     
 }
