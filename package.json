@@ -1,6 +1,6 @@
 {
   "name": "client-app",
-  "version": "14.0.0.Beta-18",
+  "version": "15.0.8-alpha3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
