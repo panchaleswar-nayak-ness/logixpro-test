@@ -193,6 +193,7 @@ export class MainComponent implements OnInit {
   }
 
   updateMenu(menu = '', obj: any = null) {
+    debugger
     if (menu != '') this.sharedService.updateLoggedInUser(this.userData.userName, this.userData.wsid, menu);
 
     if (menu == RouteUpdateMenu.Admin) this.sharedService.updateAdminMenu();
@@ -200,6 +201,7 @@ export class MainComponent implements OnInit {
     else if (menu == RouteUpdateMenu.OrderManager) this.sharedService.BroadCastMenuUpdate(obj.route);
     else if (menu == RouteUpdateMenu.Consolidation) this.sharedService.BroadCastMenuUpdate(obj.route);
     else if (menu === RouteUpdateMenu.FlowReplenishment) this.sharedService.updateFlowrackMenu(menu);
+    else if (menu === RouteUpdateMenu.BulkProcess)this.sharedService.BroadCastMenuUpdate(obj.route);
 
     this.sharedService.updateSidebar();
   }
