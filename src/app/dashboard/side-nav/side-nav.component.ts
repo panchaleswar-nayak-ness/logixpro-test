@@ -29,7 +29,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'insert_chart', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager' ,permission: AppPermissions.ConsolidationManager},
     { icon: 'pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager' ,permission: AppPermissions.OrderManager},
     { icon: 'schema', title: 'FlowRack Replenishment', route: '/FlowrackReplenish',permission: 'FlowRack Replenish' },
-    { icon: 'schema', title: 'Bulk Process', route: '/BulkProcess',permission: 'FlowRack Replenish' }
+    { icon: 'schema', title: 'Bulk Process', route: '/BulkProcess', permission: 'FlowRack Replenish' }
   ];
   globalMenus: any = [
     { icon: 'door_front', title: 'Home', route: '/globalconfig/home' ,permission: true},
@@ -225,6 +225,7 @@ export class SideNavComponent implements OnInit {
   }
 
   loadMenus(menu: any) {
+    debugger
     this.sharedService.updateLoggedInUser(this.userData.userName,this.userData.wsid,menu.route);
     if (!menu) menu = {route : AppRoutes.Dashboard};      
 
@@ -307,6 +308,15 @@ export class SideNavComponent implements OnInit {
       if(splittedRoute[2] === undefined) this.flowrackReplenishmentMenus[0].route = AppRoutes.Dashboard;
       else this.flowrackReplenishmentMenus[0].route = '/FlowrackReplenish';
       this.childMenus = this.flowrackReplenishmentMenus;
+      this.isParentMenu = false;
+      this.isChildMenu = true;
+    }
+
+    if (menu.route.includes("/BulkProcess")) {
+      let splittedRoute=menu.route.split('/');
+      if(splittedRoute[2] === undefined) this.bulkProcessMenus[0].route = AppRoutes.Dashboard;
+      else this.bulkProcessMenus[0].route = '/BulkProcess';
+      this.childMenus = this.bulkProcessMenus;
       this.isParentMenu = false;
       this.isChildMenu = true;
     }

@@ -63,6 +63,13 @@ export class MainComponent implements OnInit {
     this.iGlobalConfigApi.AppNameByWorkstation(payload).subscribe(
       (res: any) => {
         if (res?.data) {
+          // temp BulkProcess
+          res.data.wsAllAppPermission.push("BulkProcess");
+          res.data.appLicenses.BulkProcess = res.data.appLicenses.FlowRackReplenish;
+          res.data.appLicenses.BulkProcess.info.displayName = "BulkProcess";
+          res.data.appLicenses.BulkProcess.info.name = "BulkProcess";
+          res.data.appLicenses.BulkProcess.info.url = "BulkProcess";
+          // temp BulkProcess
           this.convertToObj(res.data);
           localStorage.setItem('availableApps', JSON.stringify(this.applicationData));
           this.sharedService.setMenuData(this.applicationData);
