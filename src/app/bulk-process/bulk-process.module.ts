@@ -18,6 +18,7 @@ import { OrderSelectionListComponent } from './bulk-put-away/order-selection-lis
 import { SelectedOrdersComponent } from './bulk-put-away/selected-orders/selected-orders.component'; 
 import { SearchBarComponent } from './bulk-put-away/search-bar/search-bar.component'; 
 import { VerifyBulkPutAwayComponent } from './bulk-put-away/verify-bulk-put-away/verify-bulk-put-away.component';
+import { PreferencesComponent } from './preferences/preferences.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { VerifyBulkPutAwayComponent } from './bulk-put-away/verify-bulk-put-away
     StatusComponent,
     OrderSelectionListComponent,
     SelectedOrdersComponent,
-    VerifyBulkPutAwayComponent
+    VerifyBulkPutAwayComponent,
+    PreferencesComponent
   ],
   imports: [
     CommonModule,

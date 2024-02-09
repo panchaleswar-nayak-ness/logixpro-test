@@ -4,6 +4,7 @@ import { BulkProcessComponent } from './bulk-process.component';
 import { BulkPickComponent } from './bulk-pick/bulk-pick.component';
 import { AuthGuardGuard } from '../common/guard/auth-guard.guard';
 import { BulkPutAwayComponent } from './bulk-put-away/bulk-put-away.component';
+import { PreferencesComponent } from './preferences/preferences.component';
 
 const routes: Routes = [
 { 
@@ -21,7 +22,11 @@ const routes: Routes = [
   component: BulkPutAwayComponent,
   canActivate: [AuthGuardGuard],
 },
-
+{
+  path: 'Preferences',
+  component: PreferencesComponent,
+  canActivate: [AuthGuardGuard],
+},
 ]
 
 @NgModule({

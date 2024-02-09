@@ -140,7 +140,7 @@ export class MainComponent implements OnInit {
       {
         appName: 'BulkProcess',
         route: '/BulkProcess',
-        iconName: 'schema',
+        iconName: 'process_chart',
         name: 'BulkProcess',
         updateMenu: 'BulkProcess',
         permission: 'FlowRack Replenish',

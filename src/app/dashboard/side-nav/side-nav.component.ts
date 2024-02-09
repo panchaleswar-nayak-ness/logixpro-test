@@ -29,7 +29,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'insert_chart', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager' ,permission: AppPermissions.ConsolidationManager},
     { icon: 'pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager' ,permission: AppPermissions.OrderManager},
     { icon: 'schema', title: 'FlowRack Replenishment', route: '/FlowrackReplenish',permission: 'FlowRack Replenish' },
-    { icon: 'schema', title: 'Bulk Process', route: '/BulkProcess', permission: 'FlowRack Replenish' }
+    { icon: 'process_chart', title: 'Bulk Process', route: '/BulkProcess', permission: 'FlowRack Replenish' }
   ];
   globalMenus: any = [
     { icon: 'door_front', title: 'Home', route: '/globalconfig/home' ,permission: true},
@@ -107,8 +107,9 @@ export class SideNavComponent implements OnInit {
   ];
   bulkProcessMenus: any = [
     { icon: 'arrow_back', title: 'Bulk Process', route: '/BulkProcess', class: UniqueConstants.backClass , permission: 'FlowRack Replenish'},
-    { icon: 'schema', title: 'Bulk Pick', route: '/BulkProcess/BulkPick' ,permission:'FlowRack Replenish'},
-    { icon: 'tune', title: 'Bulk Put Away', route: '/BulkProcess/BulkPutAway' ,permission:true},
+    { icon: 'archive', title: 'Bulk Pick', route: '/BulkProcess/BulkPick' ,permission:'FlowRack Replenish'},
+    { icon: 'unarchive', title: 'Bulk Put Away', route: '/BulkProcess/BulkPutAway' ,permission:true},
+    { icon: 'tune', title: 'Preferences', route: '/BulkProcess/Preferences' ,permission:'FlowRack Replenish'},
   ];
   
 
@@ -227,7 +228,6 @@ export class SideNavComponent implements OnInit {
   }
 
   loadMenus(menu: any) {
-    debugger
     this.sharedService.updateLoggedInUser(this.userData.userName,this.userData.wsid,menu.route);
     if (!menu) menu = {route : AppRoutes.Dashboard};      
 
