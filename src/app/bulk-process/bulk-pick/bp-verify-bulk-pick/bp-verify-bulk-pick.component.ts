@@ -1,4 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { DialogConstants, Style } from 'src/app/common/constants/strings.constants';
+import { GlobalService } from 'src/app/common/services/global.service';
+import { BpFullToteComponent } from 'src/app/dialogs/bp-full-tote/bp-full-tote.component';
 
 @Component({
   selector: 'app-bp-verify-bulk-pick',
@@ -8,7 +11,9 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class BpVerifyBulkPickComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(
+    private global:GlobalService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -16,4 +21,13 @@ export class BpVerifyBulkPickComponent implements OnInit {
   backButton(){
     this.back.emit();
   }
+  openDialog(){
+    this.global.OpenDialog(BpFullToteComponent, {
+      height: 'auto',
+      width: '800px',
+      autoFocus: DialogConstants.autoFocus,
+      disableClose:true,
+    });
+  }
+
 }

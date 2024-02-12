@@ -1,0 +1,68 @@
+<div class="d-flex justify-content-between align-items-center" mat-dialog-title>
+    <div class="w-48px"></div>
+    <h1 class="m-0" mat-dialog-title>Full Tote</h1>
+    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+<div mat-dialog-content>
+<div class="d-flex align-items-center justify-content-center flex-wrap px-5 gap-12 mb-3">
+    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Order Number:&nbsp;<b>Bulk Order 2</b></span></div>
+    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Pick Qty:&nbsp;<b>20</b></span></div>
+    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Item Number:&nbsp;<b>024768006647</b></span></div>
+    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Description:&nbsp;<b>N BELT MATE WHITE CNT WITH SLVR MIRR TIP 44”</b></span></div>
+</div>
+<div class="card p-3 mb-3">
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field class="custom-form-field w-100 mat-form-field-disabled" appearance="outline">
+                <mat-label>Tote Number</mat-label>
+                <input matInput type="text" value="2" readonly>
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="custom-form-field w-100 mat-form-field-disabled" appearance="outline">
+                <mat-label>Full Tote ID</mat-label>
+                <input matInput type="text" value="6627" readonly>
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field class="custom-form-field w-100 mat-form-field-disabled" appearance="outline">
+                <mat-label>Qty Put in New Tote</mat-label>
+                <input matInput type="text" value="2" readonly>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+<div class="card p-3 mb-3">
+    <div class="row">
+        <div class="col-xl-6">
+            <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline">
+                <mat-label>New Tote ID</mat-label>
+                <input matInput type="text" value="000000">
+                <button matSuffix class="clear-btn" matTooltip="Clear New Tote ID" matTooltipPosition="above"><mat-icon class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" class="btn-regular w-100">
+                Create Next Tote ID
+            </button>
+        </div>
+        <div class="col-xl-6">
+            <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" (click)="openNumberSelection()">
+                <mat-label>Qty Put in New Tote</mat-label>
+                <input matInput type="text" value="2">
+            </mat-form-field>
+            <button mat-stroked-button color="primary" class="btn-regular w-100">
+                Put All in New Tote
+            </button>
+        </div>
+    </div>
+</div>
+</div>
+<div class="d-flex gap-12 mb-1" mat-dialog-actions>
+    <!-- <button mat-stroked-button color="primary" class="btn-lg">
+      Choose a Different Transaction
+    </button> -->
+    <button mat-flat-button color="primary" class="btn-lg flex-grow-1">
+        Done
+    </button>
+  </div>
