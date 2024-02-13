@@ -1,4 +1,4 @@
-export const environment = { 
+export const environment = {
   production: true,
-  apiUrl: "https://api.logixpro.com/api"
+  apiUrl: "https://pickprobingapi.peaklogix.com:8443/api"
 };
