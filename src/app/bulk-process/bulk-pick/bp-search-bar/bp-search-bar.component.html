@@ -21,10 +21,10 @@
         <div class="bg-light-blue bg-50 br-none px-4 py-4 br-20 mb-3">
             <div class="d-flex justify-content-between align-items-center gap-12">
                 <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
-                    <mat-select class="employees-action" value="0">
-                        <mat-option value="0">Batches</mat-option>
-                        <mat-option value="1">Totes</mat-option>
-                        <mat-option value="2">Orders</mat-option>
+                    <mat-select class="employees-action" [(ngModel)]="view" [value]="view" (selectionChange)="changeView($event)">
+                        <mat-option value="batch">Batches</mat-option>
+                        <mat-option value="tote">Totes</mat-option>
+                        <mat-option value="order">Orders</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>
@@ -32,9 +32,18 @@
                 <span class="v-br d-xl-block d-none mb-3 mb-xl-0">-</span>
                 <mat-form-field class="w-100 br-14 custom-form-field-bg-white" appearance="outline">
                     <span class="material-symbols-outlined icon-search pe-2">search</span>
-                    <input type="text" placeholder="Search" aria-label="Search" matInput maxlength="50" #autoFocusField>
+                    <input type="text"  class="hadi" matInput  [matAutocomplete]="auto1" (ngModelChange)="search($event)" [(ngModel)]="searchText" (keyup.enter)="addItem()" />
+                    <input type="text" class="hadi autocomplete" disabled [value]="suggestion" matInput/>
+                    <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="dropdownSelect($event)"
+                        #autocompleteMesaage>
+                        <mat-option *ngFor="let option of filteredOrders" [value]="option">
+                            {{option.batchPickId}}
+                        </mat-option>
+                        <mat-option *ngIf="filteredOrders?.length ==0" disabled>
+                            No data found
+                        </mat-option>
+                    </mat-autocomplete>
                 </mat-form-field>
-                <!-- <mat-checkbox color="primary">Quick Pick</mat-checkbox> -->
             </div>
         </div>
     </mat-card-content>

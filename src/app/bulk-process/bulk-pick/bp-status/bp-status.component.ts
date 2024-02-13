@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-bp-status',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./bp-status.component.scss']
 })
 export class BpStatusComponent implements OnInit {
+
+  @Input() status:any;
 
   constructor() { }
 

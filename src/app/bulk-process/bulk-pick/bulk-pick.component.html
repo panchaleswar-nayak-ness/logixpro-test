@@ -1,18 +1,18 @@
-<div class="container-fluid p-0" *ngIf="pick1">
+<div class="container-fluid p-0" *ngIf="!verifyBulkPicks">
     <div class="row">
         <div class="col-xl-7 mb-3">
-            <app-bp-search-bar></app-bp-search-bar>
+            <app-bp-search-bar (changeViewEmitter)="changeView($event)" [view]="view" [orders]="orders" (addItemEmitter)="selectOrder($event)"></app-bp-search-bar>
         </div>
         <div class="col-xl-5 mb-3">
-            <app-bp-status></app-bp-status>
+            <app-bp-status [status]="status"></app-bp-status>
         </div>
     </div>
     <div class="row">
         <div class="col-xl-7 mb-3">
-            <app-bp-order-selection-list></app-bp-order-selection-list>
+            <app-bp-order-selection-list [orders]="orders" [ordersDisplayedColumns]="ordersDisplayedColumns" (selectOrderEmitter)="selectOrder($event)" (appendAllEmitter)="appendAll()"></app-bp-order-selection-list>
         </div>
         <div class="col-xl-5 mb-3">
-            <app-bp-selected-orders></app-bp-selected-orders>
+            <app-bp-selected-orders [selectedOrders]="selectedOrders" [selectedOrdersDisplayedColumns]="selectedOrdersDisplayedColumns" (removeOrderEmitter)="removeOrder($event)" (removeAllEmitter)="removeAll()"></app-bp-selected-orders>
         </div>
     </div>
     <div>
@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<div class="container-fluid p-0" *ngIf="!pick1">
+<div class="container-fluid p-0" *ngIf="verifyBulkPicks">
     <div class="row">
         <div class="col-xl-12 mb-3">
             <app-bp-verify-bulk-pick (back)="pickProcess()"></app-bp-verify-bulk-pick>

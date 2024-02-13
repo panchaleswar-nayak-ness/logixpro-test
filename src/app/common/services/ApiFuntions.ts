@@ -1486,4 +1486,12 @@ public SetReprocessIds(Body: any ): Observable<any> {
 } 
 
 
+public bulkPickAllOrdersQty(body:any): Observable<any> { 
+  return this.ApiBase.Get("/bulkpick/allordersqty",body);
+}  
+public bulkPickOrders(body:any): Observable<any> { 
+  return this.ApiBase.Get("/bulkpick/orders",body);
+}  
+
+
 }
