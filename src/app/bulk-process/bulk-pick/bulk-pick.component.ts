@@ -89,6 +89,7 @@ export class BulkPickComponent implements OnInit {
   }
 
   changeView(event:any){
+    this.view = event;
     if(event == "batch"){
       this.ordersDisplayedColumns = ['batchPickId', 'quantity', 'priority', 'requiredDate','actions'];
       this.selectedOrdersDisplayedColumns = ['batchPickId', 'toteNumber','actions'];

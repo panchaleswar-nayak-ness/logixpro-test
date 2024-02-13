@@ -10,10 +10,11 @@ export class BpSelectedOrdersComponent implements OnInit {
 
   @Input() selectedOrdersDisplayedColumns: string[];
   @Input() selectedOrders: any = [];
+  @Input() view;
   @Output() removeOrderEmitter = new EventEmitter<any>();
   @Output() removeAllEmitter = new EventEmitter<any>();
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  tableHeading = "Selected Batches";
 
   constructor() { }
 
@@ -22,6 +23,15 @@ export class BpSelectedOrdersComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes);
+    if(this.view == "batch"){
+      this.tableHeading = "Selected Batches";
+    } 
+    else if(this.view  == "tote"){
+      this.tableHeading = "Selected Totes";
+    }
+    else if(this.view  == "order"){
+      this.tableHeading = "Selected Orders";
+    }
   }
 
   removeOrder(order: any) {
