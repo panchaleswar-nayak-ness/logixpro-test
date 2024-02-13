@@ -53,7 +53,7 @@ export class BpSearchBarComponent implements OnInit {
   }
 
   dropdownSelect(event: any) {
-    this.addItemEmitter.emit(event);
+    this.addItemEmitter.emit(event.option.value);
     this.filteredOrders = [];
     this.searchText = "";
     this.suggestion = "";
