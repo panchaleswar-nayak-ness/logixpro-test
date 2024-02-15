@@ -9,6 +9,7 @@ export class BpSearchBarComponent implements OnInit {
 
   @Input() view;
   @Input() orders;
+  @Input() status;
   @Output() changeViewEmitter = new EventEmitter<any>();
   @Output() addItemEmitter = new EventEmitter<any>();
   searchText: string = "";

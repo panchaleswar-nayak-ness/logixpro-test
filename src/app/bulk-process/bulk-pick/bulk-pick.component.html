@@ -1,7 +1,7 @@
 <div class="container-fluid p-0" *ngIf="!verifyBulkPicks">
     <div class="row">
         <div class="col-xl-7 mb-3">
-            <app-bp-search-bar (changeViewEmitter)="changeView($event)" [view]="view" [orders]="orders" (addItemEmitter)="selectOrder($event)"></app-bp-search-bar>
+            <app-bp-search-bar (changeViewEmitter)="changeView($event)" [status]="status" [view]="view" [orders]="orders" (addItemEmitter)="selectOrder($event)"></app-bp-search-bar>
         </div>
         <div class="col-xl-5 mb-3">
             <app-bp-status [status]="status"></app-bp-status>

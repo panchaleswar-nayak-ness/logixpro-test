@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
+import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 
 @Component({
   selector: 'app-bulk-pick',
@@ -8,80 +10,95 @@ import { Component, OnInit } from '@angular/core';
 export class BulkPickComponent implements OnInit {
 
   verifyBulkPicks: boolean = false;
-  status: any = {
-    "batchCount": 38,
-    "toteCount": 344,
-    "orderCount": 344,
-    "linesCount": 0
-  }
-  view:string = "batch";
+  status: any = { }
+  view:string = "";
   ordersDisplayedColumns: string[] = ['batchPickId', 'quantity', 'priority', 'requiredDate','actions'];
   selectedOrdersDisplayedColumns: string[] = ['batchPickId', 'toteNumber','actions'];
   orders: any = [];
   selectedOrders:any = [];
 
-  constructor() { }
-
-  ngOnInit(): void {
-    this.getOrders();
+  public iBulkProcessApiService: IBulkProcessApiService;
+  constructor(
+    public bulkProcessApiService: BulkProcessApiService
+  ) { 
+    this.iBulkProcessApiService = bulkProcessApiService;
   }
 
-  getOrders(){
-    this.orders = [
-      {
-        "id": 13502116,
-        "orderNumber": "2943823A",
-        "priority": 60,
-        "toteId": 12345,
-        "toteNumber": 0,
-        "zone": "01",
-        "batchPickId": "13202116-13502116",
-        "exportBatchId": null,
-        "lineNumber": 3,
-        "transactionQuantity": 1,
-        "requiredDate": "2022-12-20T17:30:00"
-      },
-      {
-        "id": 13502117,
-        "orderNumber": "2953823A",
-        "priority": 60,
-        "toteId": 12445,
-        "toteNumber": 0,
-        "zone": "01",
-        "batchPickId": "13302116-13502116",
-        "exportBatchId": null,
-        "lineNumber": 3,
-        "transactionQuantity": 1,
-        "requiredDate": "2022-12-20T17:30:00"
-      },
-      {
-        "id": 13502118,
-        "orderNumber": "2963823A",
-        "priority": 60,
-        "toteId": 12545,
-        "toteNumber": 0,
-        "zone": "01",
-        "batchPickId": "13402116-13502116",
-        "exportBatchId": null,
-        "lineNumber": 3,
-        "transactionQuantity": 1,
-        "requiredDate": "2022-12-20T17:30:00"
-      },
-      {
-        "id": 13502119,
-        "orderNumber": "2963823A",
-        "priority": 60,
-        "toteId": 12645,
-        "toteNumber": 0,
-        "zone": "01",
-        "batchPickId": "13502116-13502116",
-        "exportBatchId": null,
-        "lineNumber": 3,
-        "transactionQuantity": 1,
-        "requiredDate": "2022-12-20T17:30:00"
+  ngOnInit(): void {
+    this.bulkPickoOrderBatchToteQty();
+  }
+
+  bulkPickoOrderBatchToteQty(){
+    let paylaod = {
+      "type": 'pick'
+    }
+    this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(paylaod).subscribe((res: any) => {
+      if (res) {
+        this.status = res;
+        this.status.linesCount = 0;
+        if(this.status.batchCount > 0){
+          this.bulkPickBatches();
+          this.view = "batch";
+        }
+        else if(this.status.toteCount > 0){
+          this.bulkPickTotes();
+          this.view = "tote";
+        }
+        else{
+          this.bulkPickOrders();
+          this.view = "order";
+        }
       }
-    ];
-    this.selectedOrders = [];
+      this.changeView(this.view);
+    });
+  }
+
+  bulkPickBatches(){
+    let paylaod = {
+      "type": 'pick',
+      "start": 1,
+      "size": 500,
+      "status": "open",
+      "area":" "
+    }
+    this.iBulkProcessApiService.bulkPickBatches(paylaod).subscribe((res: any) => {
+      if (res) {
+        this.orders = res;
+        this.selectedOrders = [];
+      }
+    });
+  }
+  
+  bulkPickTotes(){
+    let paylaod = {
+      "type": 'pick',
+      "start": 1,
+      "size": 50,
+      "status": "open",
+      "area":" "
+    }
+    this.iBulkProcessApiService.bulkPickTotes(paylaod).subscribe((res: any) => {
+      if (res) {
+        this.orders = res;
+        this.selectedOrders = [];
+      }
+    });
+  }
+
+  bulkPickOrders(){
+    let paylaod = {
+      "type": 'pick',
+      "start": 1,
+      "size": 50,
+      "status": "open",
+      "area":" "
+    }
+    this.iBulkProcessApiService.bulkPickOrders(paylaod).subscribe((res: any) => {
+      if (res) {
+        this.orders = res;
+        this.selectedOrders = [];
+      }
+    });
   }
 
   pickProcess() {
@@ -93,26 +110,30 @@ export class BulkPickComponent implements OnInit {
     if(event == "batch"){
       this.ordersDisplayedColumns = ['batchPickId', 'quantity', 'priority', 'requiredDate','actions'];
       this.selectedOrdersDisplayedColumns = ['batchPickId', 'toteNumber','actions'];
+      this.bulkPickBatches();
     }
     else if(event == "tote"){
       this.ordersDisplayedColumns = ['toteId', 'quantity', 'priority', 'requiredDate','actions'];
       this.selectedOrdersDisplayedColumns = ['toteId', 'toteNumber','actions'];
+      this.bulkPickTotes();
     }
     else if(event == "order"){
       this.ordersDisplayedColumns = ['orderNumber', 'quantity', 'priority', 'requiredDate','actions'];
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber','actions'];
+      this.bulkPickOrders();
     }
-    this.getOrders();
   }
 
   selectOrder(event:any){
     this.selectedOrders = [...this.selectedOrders,event];
     this.orders = this.orders.filter((x:any) => x.id != event.id);
+    this.status.linesCount = this.status.linesCount + 1;
   }
 
   removeOrder(event:any){
     this.orders = [...this.orders,event];
     this.selectedOrders = this.selectedOrders.filter((x:any) => x.id != event.id);
+    this.status.linesCount = this.status.linesCount - 1;
   }
 
   appendAll(){

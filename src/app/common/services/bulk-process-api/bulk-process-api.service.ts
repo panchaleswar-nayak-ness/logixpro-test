@@ -15,20 +15,16 @@ export class BulkProcessApiService implements IBulkProcessApiService {
     private authService: AuthService) {
     this.userData = this.authService.userData();
   }
-  public bulkPickAllOrdersQty(body: any) {
-    const payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
-      ...body
-    }
-    return this.Api.bulkPickAllOrdersQty(payload);
+  public bulkPickoOrderBatchToteQty(body: any) {
+    return this.Api.bulkPickoOrderBatchToteQty(body);
+  }
+  public bulkPickBatches(body: any) {
+    return this.Api.bulkPickBatches(body);
   }
   public bulkPickOrders(body: any) {
-    const payload = {
-      username: this.userData.userName,
-      wsid: this.userData.wsid,
-      ...body
-    }
-    return this.Api.bulkPickOrders(payload);
+    return this.Api.bulkPickOrders(body);
+  }
+  public bulkPickTotes(body: any) {
+    return this.Api.bulkPickTotes(body);
   }
 }

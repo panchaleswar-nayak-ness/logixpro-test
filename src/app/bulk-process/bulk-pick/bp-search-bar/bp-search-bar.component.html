@@ -22,9 +22,9 @@
             <div class="d-xl-flex d-block justify-content-between align-items-center gap-12">
                 <mat-form-field class="action-dropdown w-100 mb-3 mb-xl-0" appearance="outline">
                     <mat-select class="employees-action" [(ngModel)]="view" [value]="view" (selectionChange)="changeView($event)">
-                        <mat-option value="batch">Batches</mat-option>
-                        <mat-option value="tote">Totes</mat-option>
-                        <mat-option value="order">Orders</mat-option>
+                        <mat-option value="batch" [disabled]="status.batchCount < 1">Batches</mat-option>
+                        <mat-option value="tote" [disabled]="status.toteCount < 1">Totes</mat-option>
+                        <mat-option value="order" [disabled]="status.orderCount < 1">Orders</mat-option>
                     </mat-select>
                     <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                 </mat-form-field>

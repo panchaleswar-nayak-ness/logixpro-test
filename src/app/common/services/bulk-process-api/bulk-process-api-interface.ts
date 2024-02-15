@@ -1,4 +1,6 @@
 export interface IBulkProcessApiService {
-  bulkPickAllOrdersQty(payload: any);
+  bulkPickoOrderBatchToteQty(payload: any);
+  bulkPickBatches(paylaod:any);
   bulkPickOrders(paylaod:any);
+  bulkPickTotes(paylaod:any);
 }
