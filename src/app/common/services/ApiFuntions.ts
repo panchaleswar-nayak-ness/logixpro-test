@@ -1497,7 +1497,21 @@ public bulkPickOrders(body:any): Observable<any> {
 }
 public bulkPickTotes(body:any): Observable<any> { 
   return this.ApiBase.Get("/totes",body);
-} 
-
+}
+public bulkPickZones(): Observable<any> { 
+  return this.ApiBase.Get("/zones");
+}
+public bulkPickBulkZone(): Observable<any> { 
+  return this.ApiBase.Get("/zones/bulkzone");
+}
+public addBulkPickBulkZone(body:any): Observable<any> { 
+  return this.ApiBase.Post("/zones/bulkzone", body);
+}
+public updateBulkPickBulkZone(body:any): Observable<any> { 
+  return this.ApiBase.Put("/zones/bulkzone", body);
+}
+public deleteBulkPickBulkZone(body:any): Observable<any> { 
+  return this.ApiBase.Delete("/zones/bulkzone", body);
+}
 
 }

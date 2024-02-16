@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
+import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 
 @Component({
   selector: 'app-preferences',
@@ -8,20 +10,43 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class PreferencesComponent implements OnInit {
 
-  zoneOptions= ['01','02','03','04'];
+  zoneOptions: any= [];
   displayedColumns: string[] = ['Zone'];
-  dataSource = new MatTableDataSource<any>(ELEMENT_DATA);
+  bulkZones: any = [];
 
-  constructor() { }
+  public iBulkProcessApiService: IBulkProcessApiService;
+  constructor(
+    public bulkProcessApiService: BulkProcessApiService
+  ) { 
+    this.iBulkProcessApiService = bulkProcessApiService;
+  }
 
   ngOnInit(): void {
+    this.bulkPickBulkZone();
+  }
+
+  bulkPickZones(){
+    this.iBulkProcessApiService.bulkPickZones().subscribe((res: any) => {
+      if (res) {
+        this.zoneOptions = res;
+      }
+    });
+  }
+
+  bulkPickBulkZone(){
+    this.iBulkProcessApiService.bulkPickBulkZone().subscribe((res: any) => {
+      if (res) {
+        this.bulkZones = res;
+        this.bulkPickZones();
+      }
+    });
+  }
+
+  addRecord(){
+    // this.bulkZones = [...this.bulkZones,{zone:''}];
+    // this.bulkZones.push({zone:''});
   }
 
 }
 
-export interface PeriodicElement {
-  
-}
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-];
+
