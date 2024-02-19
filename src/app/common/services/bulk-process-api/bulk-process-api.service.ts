@@ -34,7 +34,11 @@ export class BulkProcessApiService implements IBulkProcessApiService {
     return this.Api.bulkPickBulkZone();
   }
   public addBulkPickBulkZone(body: any) {
-    return this.Api.addBulkPickBulkZone(body);
+    const payload = {
+      wsid: this.userData.wsid,
+      ...body
+    }
+    return this.Api.addBulkPickBulkZone(payload);
   }
   public updateBulkPickBulkZone(body: any) {
     return this.Api.updateBulkPickBulkZone(body);
