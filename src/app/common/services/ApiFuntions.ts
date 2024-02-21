@@ -1498,20 +1498,20 @@ public bulkPickOrders(body:any): Observable<any> {
 public bulkPickTotes(body:any): Observable<any> { 
   return this.ApiBase.Get("/totes",body);
 }
-public bulkPickZones(): Observable<any> { 
-  return this.ApiBase.Get("/zones");
+public async bulkPickZones() { 
+  return await this.ApiBase.GetHttpResponse("/zones");
 }
-public bulkPickBulkZone(): Observable<any> { 
-  return this.ApiBase.Get("/zones/bulkzone");
+public async bulkPickBulkZone() { 
+  return await this.ApiBase.GetHttpResponse("/zones/bulkzone");
 }
-public addBulkPickBulkZone(body:any): Observable<any> { 
-  return this.ApiBase.Post("/zones/bulkzone", body);
+public async addBulkPickBulkZone(body:any){ 
+  return await this.ApiBase.PostHttpResponse("/zones/bulkzone", body);
 }
-public updateBulkPickBulkZone(body:any): Observable<any> { 
-  return this.ApiBase.Put("/zones/bulkzone", body);
+public async updateBulkPickBulkZone(body:any) { 
+  return await this.ApiBase.PutHttpResponse("/zones/bulkzone", body);
 }
-public deleteBulkPickBulkZone(body:any): Observable<any> { 
-  return this.ApiBase.Delete("/zones/bulkzone", body);
+public async deleteBulkPickBulkZone(body:any) { 
+  return await this.ApiBase.DeleteHttpResponse("/zones/bulkzone", body);
 }
 
 }
