@@ -1773,4 +1773,13 @@ public WorkstationSettingsUpdate(body: any) {
   }
   return this.Api.WorkstationSettingsUpdate(payload);
 }
+
+public ToteManagementUpdate(body: any) {
+  const payload = {
+    username: this.userData.userName,
+    wsid: this.userData.wsid,
+    ...body
+  }
+  return this.Api.ToteManagementUpdate(payload);
+}
 }

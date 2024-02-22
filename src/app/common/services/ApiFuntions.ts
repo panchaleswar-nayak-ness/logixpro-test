@@ -1522,4 +1522,8 @@ public WorkstationSettingsUpdate(body:any):  Observable<any> {
   return this.ApiBase.Put("/Admin/workstationsettings",body);
 }
 
+public ToteManagementUpdate(body:any):  Observable<any> {
+  return this.ApiBase.Put("/Admin/totemanagement",body);
+}
+
 }

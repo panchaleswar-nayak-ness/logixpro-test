@@ -7,7 +7,8 @@
       <div class="col-xl-12">
         <mat-form-field class="action-dropdown custom-form-field-bg-white w-100 mb-3" appearance="outline">
           <mat-label>Batch Hot Put Away</mat-label>
-          <mat-select class="employees-action" value="pick">
+          <mat-select class="employees-action" value="pick" [(ngModel)]="companyObj.batchHotPut" (ngModelChange)="payload()">
+            <mat-option value=""></mat-option>
             <mat-option value="123456">123456</mat-option>
             <mat-option value="987654">987654</mat-option>
             <mat-option value="147852">147852</mat-option>
@@ -21,31 +22,31 @@
 
       <div class="col">
         <div class="d-flex justify-content-between mb-3">
-          Pick To Totes<mat-slide-toggle color="primary">
+          Pick To Totes<mat-slide-toggle [(ngModel)]="companyObj.pickTotes" (change)="payload()"  color="primary">
           </mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-3">
-          Put Away From Totes <mat-slide-toggle color="primary">
+          Put Away From Totes <mat-slide-toggle [(ngModel)]="companyObj.putTotes" (change)="payload()"  color="primary">
           </mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-3">
-          Carousel Pick Tote Manifest <mat-slide-toggle color="primary">
+          Carousel Pick Tote Manifest <mat-slide-toggle [(ngModel)]="companyObj.carManifest" (change)="payload()" color="primary">
           </mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-3">
-          Off Carousel Pick Tote Manifest <mat-slide-toggle color="primary">
+          Off Carousel Pick Tote Manifest <mat-slide-toggle [(ngModel)]="companyObj.offCarManifest" (change)="payload()" color="primary">
           </mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-3">
-          Auto Print Off Carousel Pick Tote Manifest <mat-slide-toggle color="primary">
+          Auto Print Off Carousel Pick Tote Manifest <mat-slide-toggle [(ngModel)]="companyObj.autoToteManifest" (change)="payload()" color="primary">
           </mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-3">
-          Auto Print Tote Labels <mat-slide-toggle color="primary">
+          Auto Print Tote Labels <mat-slide-toggle [(ngModel)]="companyObj.autoPrintTote" (change)="payload()"  color="primary">
           </mat-slide-toggle>
         </div>
         <div class="d-flex justify-content-between mb-3">
-          Batch Carousel Put Away <mat-slide-toggle color="primary">
+          Batch Carousel Put Away <mat-slide-toggle [(ngModel)]="companyObj.batchPut" (change)="payload()"  color="primary">
           </mat-slide-toggle>
         </div>
 

@@ -230,4 +230,5 @@ export interface IAdminApiService
     DeleteOrderStatus(payload : any) 
     WorkstationSetupInfo()
     WorkstationSettingsUpdate(payload : any);
+    ToteManagementUpdate(payload : any);
 }
