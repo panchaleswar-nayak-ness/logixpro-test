@@ -1526,4 +1526,7 @@ public ToteManagementUpdate(body:any):  Observable<any> {
   return this.ApiBase.Put("/Admin/totemanagement",body);
 }
 
+public LocationAssignmentFunctionsUpdate(body:any):  Observable<any> {
+  return this.ApiBase.Put("/Admin/locationassignmentfunctions",body);
+}
 }

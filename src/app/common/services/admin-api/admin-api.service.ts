@@ -1782,4 +1782,13 @@ public ToteManagementUpdate(body: any) {
   }
   return this.Api.ToteManagementUpdate(payload);
 }
+
+public LocationAssignmentFunctionsUpdate(body: any) {
+  const payload = {
+    username: this.userData.userName,
+    wsid: this.userData.wsid,
+    ...body
+  }
+  return this.Api.LocationAssignmentFunctionsUpdate(payload);
+}
 }

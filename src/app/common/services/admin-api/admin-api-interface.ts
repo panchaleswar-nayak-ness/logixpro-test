@@ -231,4 +231,5 @@ export interface IAdminApiService
     WorkstationSetupInfo()
     WorkstationSettingsUpdate(payload : any);
     ToteManagementUpdate(payload : any);
+    LocationAssignmentFunctionsUpdate(payload : any);
 }
