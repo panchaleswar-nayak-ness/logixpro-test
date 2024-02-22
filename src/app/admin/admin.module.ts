@@ -176,6 +176,9 @@ import { SelectOrderComponentComponent } from './manual-transactions/generate-or
 import { GtLocationComponent } from './manual-transactions/generate-transaction/gt-location/gt-location.component';
 import { GtItemDetailsComponent } from './manual-transactions/generate-transaction/gt-item-details/gt-item-details.component';
 import { GtTransactionDetailsComponent } from './manual-transactions/generate-transaction/gt-transaction-details/gt-transaction-details.component';
+import { WpWsWorkstationSettingsComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/wp-ws-workstation-settings/wp-ws-workstation-settings.component';
+import { WpWsToteManagementComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/wp-ws-tote-management/wp-ws-tote-management.component';
+import { WpWsLocationAssignmentFunctionsComponent } from './admin-preferences/workstation-preferences/wp-workstation-setup/wp-ws-location-assignment-functions/wp-ws-location-assignment-functions.component';
 
 @NgModule({
     declarations: [
@@ -350,6 +353,9 @@ import { GtTransactionDetailsComponent } from './manual-transactions/generate-tr
         GtLocationComponent,
         GtItemDetailsComponent,
         GtTransactionDetailsComponent,
+        WpWsWorkstationSettingsComponent,
+        WpWsToteManagementComponent,
+        WpWsLocationAssignmentFunctionsComponent,
     ],
     imports: [
         CommonModule,

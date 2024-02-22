@@ -228,4 +228,6 @@ export interface IAdminApiService
     ToteSetup();
     UpdateOSPriority(payload : any)
     DeleteOrderStatus(payload : any) 
+    WorkstationSetupInfo()
+    WorkstationSettingsUpdate(payload : any);
 }

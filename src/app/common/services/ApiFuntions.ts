@@ -1514,4 +1514,12 @@ public async deleteBulkPickBulkZone(body:any) {
   return await this.ApiBase.DeleteHttpResponse("/zones/bulkzone", body);
 }
 
+public WorkstationSetupInfo(): Observable<any> { 
+  return this.ApiBase.Get("/Admin/WorkstationSetup");
+}
+
+public WorkstationSettingsUpdate(body:any):  Observable<any> {
+  return this.ApiBase.Put("/Admin/workstationsettings",body);
+}
+
 }

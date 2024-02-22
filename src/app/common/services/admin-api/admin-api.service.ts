@@ -1759,5 +1759,18 @@ public DeleteOrderStatus(body: any ) {
     ...body
   }
   return this.Api.DeleteOrderStatus(payload);
-} 
+}
+
+public WorkstationSetupInfo() {
+  return this.Api.WorkstationSetupInfo();
+}
+
+public WorkstationSettingsUpdate(body: any) {
+  const payload = {
+    username: this.userData.userName,
+    wsid: this.userData.wsid,
+    ...body
+  }
+  return this.Api.WorkstationSettingsUpdate(payload);
+}
 }
