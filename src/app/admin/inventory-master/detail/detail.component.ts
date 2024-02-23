@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { ItemCategoryComponent } from '../../dialogs/item-category/item-category.component';
 import { ItemNumberComponent } from '../../dialogs/item-number/item-number.component';
 import { UnitMeasureComponent } from '../../dialogs/unit-measure/unit-measure.component';
-import { UpdateDescriptionComponent } from '../../dialogs/update-description/update-description.component'; 
+import { UpdateDescriptionComponent } from '../../dialogs/update-description/update-description.component';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/common/services/shared.service';
 import { Observable, Subscription } from 'rxjs';
@@ -25,30 +25,30 @@ export class DetailComponent implements OnInit {
   @Input() events: Observable<string>;
   @Input() fieldNameDetails: any;
   public iAdminApiService: IAdminApiService;
-  @Input() details: FormGroup;  
+  @Input() details: FormGroup;
   public userData: any;
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
-  
+
   sendNotification(notification) {
     this.notifyParent.emit(notification);
   }
 
   public setVal: boolean = false;
   spliUrl;
-  
+
   constructor(
     private router: Router,
     private sharedService:SharedService,
-    private authService: AuthService, 
+    private authService: AuthService,
     public adminApiService: AdminApiService,
-    private global:GlobalService,    
+    private global:GlobalService,
     private currentTabDataService: CurrentTabDataService,
   ) {
     this.iAdminApiService = adminApiService;
   }
-  
+
   ngOnChanges(changes: SimpleChanges) {
-    if(changes['fieldNameDetails']) this.fieldNameDetails=changes['fieldNameDetails']; 
+    if(changes['fieldNameDetails']) this.fieldNameDetails=changes['fieldNameDetails'];
   }
 
   ngOnInit(): void {
@@ -80,15 +80,15 @@ export class DetailComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) { 
+      if (result) {
         let payLoad = {
           "oldItemNumber": this.details.controls['itemNumber'].value,
-          "newItemNumber": result, 
+          "newItemNumber": result,
         }
         this.iAdminApiService.UpdateItemNumber(payLoad).subscribe((res: any) => {
           this.currentTabDataService.savedItem[this.currentTabDataService.INVENTORY] = result;
           if (res.isExecuted) {
-            this.details.patchValue({ 'itemNumber' : res.data.newItemNumber }); 
+            this.details.patchValue({ 'itemNumber' : res.data.newItemNumber });
             this.sendNotification({newItemNumber: res.data.newItemNumber});
           } else {
             this.global.ShowToastr(ToasterType.Error,ToasterMessages.ItemNumberExists,  ToasterTitle.Error);
@@ -130,9 +130,9 @@ export class DetailComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {      
+    dialogRef.afterClosed().subscribe(result => {
       if (result && result != true) {
-        this.details.patchValue({        
+        this.details.patchValue({
           'category': result.category,
           'subCategory': result.subCategory
         });
@@ -141,7 +141,7 @@ export class DetailComponent implements OnInit {
     })
   }
 
-  public openUmDialog() { 
+  public openUmDialog() {
     let dialogRef:any = this.global.OpenDialog(UnitMeasureComponent, {
       height: DialogConstants.auto,
       width: '750px',
@@ -154,12 +154,13 @@ export class DetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       ;
       if(result !== '' && result !== true)
-      { 
+      {
         this.details.patchValue({
           'unitOfMeasure' : result
         });
-  
+
       }
+      this.sharedService.updateInvMasterState(result, true)
     })
   }
 

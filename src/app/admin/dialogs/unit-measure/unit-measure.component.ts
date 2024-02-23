@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import {MatDialogRef } from '@angular/material/dialog';
- 
+
 import labels from 'src/app/common/labels/labels.json';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
@@ -24,9 +24,9 @@ export class UnitMeasureComponent implements OnInit {
   constructor(
     public commonAPI : CommonApiService,
     private global:GlobalService,
-    
+
     private renderer: Renderer2,
-    public dialogRef: MatDialogRef<any>) 
+    public dialogRef: MatDialogRef<any>)
     { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class UnitMeasureComponent implements OnInit {
   }
   addUMRow(row : any){
     this.unitOfMeasure_list.unshift("");
-    this.enableButton.push({index:-1,value:true}) 
+    this.enableButton.push({index:-1,value:true})
 
     const lastIndex = this.unitOfMeasure_list.length - 1;
     setTimeout(() => {
@@ -78,16 +78,16 @@ export class UnitMeasureComponent implements OnInit {
       if(element.toLowerCase() == um.toLowerCase() && cond) {
         cond = false;
        this.global.ShowToastr(ToasterType.Error,'Already Exists', ToasterTitle.Error);
-       
-      }   
+
+      }
     });
   }
     if(um && cond){
-    let paylaod = {      
+    let paylaod = {
       "newValue": um,
       "oldValue": oldUM.toString()
     }
-    
+
     this.iCommonAPI.saveUnitOfMeasure(paylaod).subscribe((res) => {
       if(res.isExecuted){
         this.getUOM();
@@ -97,7 +97,7 @@ export class UnitMeasureComponent implements OnInit {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("saveUnitOfMeasure",res.responseMessage);
       }
-  
+
     });
   }
   }
@@ -108,8 +108,8 @@ export class UnitMeasureComponent implements OnInit {
   }
 
   dltUnitMeasure(um : any,fromDB:any) {
- 
-    
+
+
     const dialogRef:any = this.global.OpenDialog(DeleteConfirmationComponent, {
       height: 'auto',
       width: Style.w480px,
@@ -122,9 +122,9 @@ export class UnitMeasureComponent implements OnInit {
         let paylaod = {
           "newValue": um
         }
-        
+
         this.iCommonAPI.dltUnitOfMeasure(paylaod).subscribe((res) => {
-          
+
           if(res.isExecuted){
             this.getUOM();
           this.global.ShowToastr(ToasterType.Success,labels.alert.delete, ToasterTitle.Success);
@@ -139,15 +139,6 @@ export class UnitMeasureComponent implements OnInit {
       }
      }
     })
-
-
-
-
-
-
-
-
-  
   }
 
   selectUnitMeasure(selectedUM: any){
