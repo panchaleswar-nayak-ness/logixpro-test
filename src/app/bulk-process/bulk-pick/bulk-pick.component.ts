@@ -44,7 +44,7 @@ export class BulkPickComponent implements OnInit {
       if (res) {
         this.status = res;
         this.status.linesCount = 0;
-        if(this.status.batchCounts > 0){
+        if(this.status.batchCount > 0){
           this.bulkPickBatches();
           this.view = "batch";
         }
