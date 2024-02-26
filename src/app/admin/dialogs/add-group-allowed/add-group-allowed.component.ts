@@ -84,15 +84,16 @@ export class AddGroupAllowedComponent implements OnInit {
   onSend(form: any) {
     let payload = {
       "controlName": form.value.controlName, 
+      "username": this.data.userName
     }
     this.iAdminApiService.submitControlResponse(payload).subscribe((res: any) => {
       if (res.isExecuted) {
         this.dialog.closeAll();
-        this.global.ShowToastr(ToasterType.Error,labels.alert.success, ToasterTitle.Error); 
+        this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success); 
       }
       else{
         
-        this.global.ShowToastr(ToasterType, this.global.globalErrorMsg(), ToasterTitle.Error);
+        this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
         console.log("submitControlResponse",res.responseMessage);
       }
     });

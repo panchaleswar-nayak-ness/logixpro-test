@@ -24,7 +24,7 @@ export class BpSelectedOrdersComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes);
     if(this.view == "batch"){
-      this.tableHeading = "Selected Batches";
+      this.tableHeading = "Selected Orders";
     } 
     else if(this.view  == "tote"){
       this.tableHeading = "Selected Totes";

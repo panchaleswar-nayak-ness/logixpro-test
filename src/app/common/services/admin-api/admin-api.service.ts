@@ -800,7 +800,7 @@ export class AdminApiService implements IAdminApiService {
 
   public submitControlResponse(body: any) {
     const payload = {
-      username: this.userData.userName,
+      // username: this.userData.userName,
       wsid: this.userData.wsid,
       ...body
     }
