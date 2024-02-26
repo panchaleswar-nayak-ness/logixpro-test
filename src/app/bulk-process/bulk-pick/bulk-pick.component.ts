@@ -66,8 +66,7 @@ export class BulkPickComponent implements OnInit {
       "type": 'pick',
       "start": 1,
       "size": 500,
-      "status": "open",
-      "area":" "
+      "includeChildren": "false"
     }
     this.iBulkProcessApiService.bulkPickBatches(paylaod).subscribe((res: any) => {
       if (res) {
