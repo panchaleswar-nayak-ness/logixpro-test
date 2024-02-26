@@ -12,10 +12,10 @@
   <div class="w-100">
     <button (click)="confirmOK()" mat-stroked-button color="primary"
       class="w-100 btn-lg mb-3 prompt-action-accent-button">
-      Ok
+      {{buttonFields?'Yes':'Ok'}}
     </button>
     <button mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="true">
-      Cancel
+      {{buttonFields?'No':'Cancel'}}
     </button>
   </div>
 </div>

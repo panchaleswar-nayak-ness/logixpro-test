@@ -43,7 +43,10 @@ import { PreferencesComponent } from './preferences/preferences.component';
     MaterialModule,
     GeneralModule,
     BulkProcessRoutingModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+
+
+ 
   ]
 })
 export class BulkProcessModule { }

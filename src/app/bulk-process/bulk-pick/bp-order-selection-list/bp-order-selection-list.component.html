@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="row px-3">
-      <button mat-stroked-button color="primary" class="button-add-all mb-3 float-end count-primary-button" (click)="appendAll()">
+      <button mat-stroked-button color="primary" [disabled]="view == 'batch'" class="button-add-all mb-3 float-end count-primary-button" (click)="appendAll()">
         Append All
       </button>
     </div>

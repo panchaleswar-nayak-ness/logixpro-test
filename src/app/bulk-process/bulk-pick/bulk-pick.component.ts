@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
+import { DialogConstants } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
+import { GlobalService } from 'src/app/common/services/global.service';
 
 @Component({
   selector: 'app-bulk-pick',
@@ -12,20 +15,25 @@ export class BulkPickComponent implements OnInit {
   verifyBulkPicks: boolean = false;
   status: any = { }
   view:string = "";
+  NextToteID:any;
   ordersDisplayedColumns: string[] = ['batchPickId', 'quantity', 'priority', 'requiredDate','actions'];
-  selectedOrdersDisplayedColumns: string[] = ['batchPickId', 'toteNumber','actions'];
+  selectedOrdersDisplayedColumns: string[] = ['orderNumber', 'toteNumber'];
   orders: any = [];
+  Prefernces:any;
   selectedOrders:any = [];
 
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
-    public bulkProcessApiService: BulkProcessApiService
+    public bulkProcessApiService: BulkProcessApiService,
+    private global: GlobalService
   ) { 
     this.iBulkProcessApiService = bulkProcessApiService;
   }
 
   ngOnInit(): void {
     this.bulkPickoOrderBatchToteQty();
+    this.getworkstationbulkzone();
+    this.BatchNextTote();
   }
 
   bulkPickoOrderBatchToteQty(){
@@ -102,14 +110,16 @@ export class BulkPickComponent implements OnInit {
   }
 
   pickProcess() {
-    this.verifyBulkPicks = !this.verifyBulkPicks;
+    if(this.Prefernces?.pickToTotes ){
+        this.OpenNextToteId();
+    }else this.verifyBulkPicks = !this.verifyBulkPicks;
   }
 
   changeView(event:any){
     this.view = event;
     if(event == "batch"){
       this.ordersDisplayedColumns = ['batchPickId', 'quantity', 'priority', 'requiredDate','actions'];
-      this.selectedOrdersDisplayedColumns = ['batchPickId', 'toteNumber','actions'];
+      this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber']; //,'actions'
       this.bulkPickBatches();
     }
     else if(event == "tote"){
@@ -124,12 +134,41 @@ export class BulkPickComponent implements OnInit {
     }
   }
 
-  selectOrder(event:any){
-    this.selectedOrders = [...this.selectedOrders,event];
+  selectOrder(event:any){  
+    if(this.view == "batch"){
+      let paylaod = {
+        "type": 'pick',
+        "batchpickid": event.batchPickId, 
+        "status": "open", 
+      }
+      this.iBulkProcessApiService.bulkPickBatchId(paylaod).subscribe((res: any) => {
+        if (res) { 
+          this.selectedOrders = res;
+        }
+      });
+    }else   this.selectedOrders = [...this.selectedOrders,event]; 
     this.orders = this.orders.filter((x:any) => x.id != event.id);
     this.status.linesCount = this.status.linesCount + 1;
   }
-
+OpenNextToteId(){
+ let dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
+    height: 'auto',
+    width: '990px',
+    autoFocus: DialogConstants.autoFocus,
+    disableClose: true , 
+    data: {
+      selectedOrderList: this.selectedOrders,
+      nextToteID: this.NextToteID,
+      BulkProcess:true,
+      checkForValidTotes:this.Prefernces.checkForValidTotes
+    }
+  });
+  dialogRefTote.afterClosed().subscribe((result) => { 
+    if(result == true){
+      this.verifyBulkPicks = !this.verifyBulkPicks;
+    }
+  });
+}
   removeOrder(event:any){
     this.orders = [...this.orders,event];
     this.selectedOrders = this.selectedOrders.filter((x:any) => x.id != event.id);
@@ -140,11 +179,22 @@ export class BulkPickComponent implements OnInit {
     this.selectedOrders = [...this.selectedOrders,...this.orders];
     this.orders = [];
   }
+getworkstationbulkzone(){
+   this.iBulkProcessApiService.bulkPreferences().subscribe((res:any)=>{
+    this.Prefernces = res.workstationPreferences[0];
+  }) 
+}
+BatchNextTote(){
+  this.iBulkProcessApiService.BatchNextTote().subscribe((res:any)=>{
+   this.NextToteID = res;
+ }) 
+}
 
   removeAll(){
-    this.orders = [...this.orders,...this.selectedOrders];
+    if(this.view == "batch") this.bulkPickBatches();
+    else this.orders = [...this.orders,...this.selectedOrders];
     this.selectedOrders = [];
   }
-
+ 
 }
 

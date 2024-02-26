@@ -13,6 +13,7 @@ import {  ResponseStrings } from 'src/app/common/constants/strings.constants';
 export class ConfirmationDialogComponent implements OnInit {
   dialog_msg: string = '';
   dialog_heading: string = '';
+  buttonFields:any = false;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
   private global:GlobalService, 
    
@@ -21,6 +22,7 @@ export class ConfirmationDialogComponent implements OnInit {
   ngOnInit(): void {
     this.dialog_msg = this.data?.message;
     this.dialog_heading = this.data?.heading;
+    this.buttonFields = this.data?.buttonFields;
   }
 
   confirmOK()

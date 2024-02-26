@@ -21,6 +21,10 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public bulkPickBatches(body: any) {
     return this.Api.bulkPickBatches(body);
   }
+  public bulkPickBatchId(body: any) {
+    return this.Api.bulkPickBatchId(body);
+  }
+  
   public bulkPickOrders(body: any) {
     return this.Api.bulkPickOrders(body);
   }
@@ -46,4 +50,14 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public deleteBulkPickBulkZone(body: any) {
     return this.Api.deleteBulkPickBulkZone(body);
   }
+  public bulkPreferences() {
+    return this.Api.bulkPreferences();
+  }
+  public validtote(body:any) {
+    return this.Api.validtote(body);
+  }
+  public BatchNextTote() {
+    return this.Api.BatchNextTote();
+  }
+  
 }

@@ -3,7 +3,7 @@
     class="bm-toeid-width"></div>
     <h1 class="m-0" mat-dialog-title>Tote ID Entry</h1>
 
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="true">
+    <button mat-icon-button class="close-button dialog-close-button-fix" (click)="ClosePopup()">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -23,14 +23,11 @@
                     class="button-add-all bg-white button custom-button-width">
                     Print All
                 </button>
-                <button (click)="createNextTote()" mat-flat-button color="primary" class="add-icon-button">
+                <!-- <button (click)="createNextTote()" mat-flat-button color="primary" class="add-icon-button">
                     <span class="material-symbols-outlined">
                         add
                     </span>
-                </button>
-
-
-
+                </button> -->
             </div>
         </div>
     </div>
@@ -80,7 +77,10 @@
 
                                             <mat-form-field class="custom-form-field w-100" appearance="outline">
                                           
-                                                <input matInput type="text" maxlength="50" [value]="list.createNextToteID===undefined?'':list.createNextToteID">
+                                                <input matInput type="text" maxlength="50" 
+                                                (change)="validtote($event)"    
+                                                [(ngModel)]="list.createNextToteID"
+                                                [value]="list.createNextToteID===undefined?'':list.createNextToteID">
                                             </mat-form-field>
 
                                             <button (click)="removeToteID(i)" mat-flat-button color="warn" class="xsm-icon-button">
@@ -109,8 +109,13 @@
             </div>
         </ng-scrollbar>
 
-    </div>
-    <button (click)="submitOrder()" mat-flat-button color="primary" class="br-18 w-100 form-button-submit btn-lg mb-3 mt-3 ">
-        Submit
-    </button>
+    </div> 
+        <div class="d-flex gap-12 mt-3" mat-dialog-actions>
+        <button  mat-stroked-button class="btn-lg" (click)="createNextTote()" color="primary">
+            Create Tote ID's
+        </button>
+        <button (click)="submitOrder()" mat-flat-button color="primary" class="flex-grow-1 form-button-submit btn-lg">
+            Submit
+        </button>
+        </div> 
 </div>

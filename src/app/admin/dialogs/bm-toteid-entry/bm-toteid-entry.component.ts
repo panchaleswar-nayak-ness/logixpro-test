@@ -7,6 +7,8 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
+import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 
 @Component({
   selector: 'app-bm-toteid-entry',
@@ -16,11 +18,14 @@ import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style} from 
 export class BmToteidEntryComponent implements OnInit {
   selectedList: any;
   nextToteID: any;
+  checkForValidTotes:any;
   userData: any;
+  BulkProcess:any =false;
   public iAdminApiService: IAdminApiService;
-
+  public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public dialogRef: MatDialogRef<any>,
+    public bulkProcessApiService: BulkProcessApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private global:GlobalService,
     public adminApiService: AdminApiService,
@@ -28,7 +33,10 @@ export class BmToteidEntryComponent implements OnInit {
    ) {
     this.selectedList = data.selectedOrderList;
     this.iAdminApiService = adminApiService;
-    this.nextToteID = data.nextToteID; 
+    this.iBulkProcessApiService = bulkProcessApiService;
+    this.nextToteID = data.nextToteID;
+    this.checkForValidTotes = data.checkForValidTotes;  
+    this.BulkProcess = data.BulkProcess; 
   }
 
   ngOnInit(): void {
@@ -45,10 +53,11 @@ export class BmToteidEntryComponent implements OnInit {
   createNextTote() {
     const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
-      width: Style.w786px,
+      width: Style.w600px,
       data: {
-        message: 'Click OK to auto generate tote IDs for this batch of orders.',
-        heading: 'Batch Manager',
+        message: !this.BulkProcess?'Click OK to auto generate tote IDs for this batch of orders.':'Touch ‘Yes’ to automatically Create Tote ID’s for this batch of orders.',
+        heading: !this.BulkProcess?'Batch Manager':'Auto Generate Tote ID’s?' ,
+        buttonFields:true
       },
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
@@ -63,14 +72,14 @@ export class BmToteidEntryComponent implements OnInit {
     });
   }
 
-  submitOrder() {
+  submitOrder() { 
     if (this.selectedList.find((o) => o.createNextToteID === undefined)) {
       const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: Style.w786px,
         data: {
           message: 'All Tote IDs must be specified before submitting.',
-          heading: 'Batch Manager',
+          heading:  !this.BulkProcess?'Batch Manager':'Verify Bulk Pick' 
         },
         autoFocus: DialogConstants.autoFocus,
       disableClose:true,
@@ -80,7 +89,9 @@ export class BmToteidEntryComponent implements OnInit {
       this.updateToteID();
     }
   }
-
+ClosePopup(){
+  this.dialogRef.close(false);
+}
   updateToteID() {
     let orders: any = [];
     this.selectedList.forEach((element, i) => {
@@ -104,5 +115,29 @@ export class BmToteidEntryComponent implements OnInit {
           console.log("PickToteIDUpdate",res.responseMessage);
         }
       });
+  }
+  validtote($event:any){
+    if(this.checkForValidTotes && $event.target.value){
+      var obj = {
+        toteid:$event.target.value
+      }
+      this.iBulkProcessApiService.validtote(obj).subscribe((res:any)=>{
+        if(!res){
+          const dialogRef:any = this.global.OpenDialog(AlertConfirmationComponent, {
+            height: 'auto',
+            width: Style.w786px,
+            data: {
+              message: 'The Tote ID you have entered is not valid. please re-enter the Tote ID or see your supervisor for assistance.',
+              heading:  'Invalid Tote ID!' 
+            },
+            autoFocus: DialogConstants.autoFocus,
+          disableClose:true,
+          });
+          dialogRef.afterClosed().subscribe((result) => {
+            $event.target.value = null;
+          });
+        }
+      })
+    }
   }
 }

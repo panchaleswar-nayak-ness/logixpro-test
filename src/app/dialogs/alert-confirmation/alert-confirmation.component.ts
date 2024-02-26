@@ -21,6 +21,7 @@ export class AlertConfirmationComponent implements OnInit {
     this.message=this.data.message;
     this.heading=this.data.heading;
     this.buttonFields=this.data.buttonField;
+    debugger
     this.isAlert= this.data?.notificationPrimary;
     this.disableCancel=this.data?.disableCancel;
   }

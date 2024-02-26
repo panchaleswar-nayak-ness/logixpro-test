@@ -1,6 +1,7 @@
 export interface IBulkProcessApiService {
   bulkPickoOrderBatchToteQty(payload: any);
   bulkPickBatches(paylaod:any);
+  bulkPickBatchId(paylaod:any);
   bulkPickOrders(paylaod:any);
   bulkPickTotes(paylaod:any);
   bulkPickZones();
@@ -8,4 +9,7 @@ export interface IBulkProcessApiService {
   addBulkPickBulkZone(paylaod:any);
   updateBulkPickBulkZone(paylaod:any);
   deleteBulkPickBulkZone(paylaod:any);
+  bulkPreferences();
+  validtote(body);
+  BatchNextTote();
 }

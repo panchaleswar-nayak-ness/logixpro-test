@@ -1492,6 +1492,9 @@ public bulkPickoOrderBatchToteQty(body:any): Observable<any> {
 public bulkPickBatches(body:any): Observable<any> { 
   return this.ApiBase.Get("/batches",body);
 } 
+public bulkPickBatchId(body:any): Observable<any> { 
+  return this.ApiBase.Get(`/batches/${body.batchpickid}`,body);
+} 
 public bulkPickOrders(body:any): Observable<any> { 
   return this.ApiBase.Get("/orders",body);
 }
@@ -1528,5 +1531,14 @@ public ToteManagementUpdate(body:any):  Observable<any> {
 
 public LocationAssignmentFunctionsUpdate(body:any):  Observable<any> {
   return this.ApiBase.Put("/Admin/locationassignmentfunctions",body);
+}
+public bulkPreferences(): Observable<any> { 
+  return this.ApiBase.Get("/bulkpicks/bulkPreferences");
+}
+public validtote(body:any): Observable<any> { 
+  return this.ApiBase.Get("/totes/validtote",body);
+}
+public BatchNextTote(): Observable<any> { 
+  return this.ApiBase.Get("/totes/nexttote");
 }
 }
