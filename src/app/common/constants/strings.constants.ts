@@ -75,6 +75,7 @@ export const StringConditions = {
 export const ResponseStrings = {
     No: 'No',
     Yes: 'Yes',
+    Cancel:'Cancel',
     Empty: '',
     Null: null,
     DNE: 'DNE',

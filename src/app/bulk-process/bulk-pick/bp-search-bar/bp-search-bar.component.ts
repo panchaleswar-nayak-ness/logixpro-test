@@ -9,9 +9,11 @@ export class BpSearchBarComponent implements OnInit {
 
   @Input() view;
   @Input() orders;
+  @Input() selectedOrders;
   @Input() status;
   @Output() changeViewEmitter = new EventEmitter<any>();
   @Output() addItemEmitter = new EventEmitter<any>();
+  @Output() printDetailList = new EventEmitter<any>();
   searchText: string = "";
   suggestion: string = "";
   filteredOrders: any = [];
@@ -59,4 +61,11 @@ export class BpSearchBarComponent implements OnInit {
     this.searchText = "";
     this.suggestion = "";
   }
+
+  PrintDetailList(){
+    if(this.selectedOrders.length != 0){
+      this.printDetailList.emit();
+    }
+  }
+  
 }

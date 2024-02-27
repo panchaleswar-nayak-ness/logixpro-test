@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
-import { DialogConstants } from 'src/app/common/constants/strings.constants';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -13,20 +14,21 @@ import { GlobalService } from 'src/app/common/services/global.service';
 export class BulkPickComponent implements OnInit {
 
   verifyBulkPicks: boolean = false;
-  status: any = { }
-  view:string = "";
-  NextToteID:any;
-  ordersDisplayedColumns: string[] = ['batchPickId', 'quantity', 'priority', 'requiredDate','actions'];
+  status: any = {}
+  view: string = "";
+  NextToteID: any;
+  ordersDisplayedColumns: string[] = ['batchPickId', 'quantity', 'priority', 'requiredDate', 'actions'];
   selectedOrdersDisplayedColumns: string[] = ['orderNumber', 'toteNumber'];
   orders: any = [];
-  Prefernces:any;
-  selectedOrders:any = [];
+  Prefernces: any;
+  selectedOrders: any = [];
+  nextBatchId: string = '';
 
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     private global: GlobalService
-  ) { 
+  ) {
     this.iBulkProcessApiService = bulkProcessApiService;
   }
 
@@ -36,7 +38,7 @@ export class BulkPickComponent implements OnInit {
     this.BatchNextTote();
   }
 
-  bulkPickoOrderBatchToteQty(){
+  bulkPickoOrderBatchToteQty() {
     let paylaod = {
       "type": 'pick'
     }
@@ -44,15 +46,15 @@ export class BulkPickComponent implements OnInit {
       if (res) {
         this.status = res;
         this.status.linesCount = 0;
-        if(this.status.batchCount > 0){
+        if (this.status.batchCount > 0) {
           this.bulkPickBatches();
           this.view = "batch";
         }
-        else if(this.status.toteCount > 0){
+        else if (this.status.toteCount > 0) {
           this.bulkPickTotes();
           this.view = "tote";
         }
-        else{
+        else {
           this.bulkPickOrders();
           this.view = "order";
         }
@@ -61,7 +63,7 @@ export class BulkPickComponent implements OnInit {
     });
   }
 
-  bulkPickBatches(){
+  bulkPickBatches() {
     let paylaod = {
       "type": 'pick',
       "start": 1,
@@ -75,14 +77,14 @@ export class BulkPickComponent implements OnInit {
       }
     });
   }
-  
-  bulkPickTotes(){
+
+  bulkPickTotes() {
     let paylaod = {
       "type": 'pick',
       "start": 1,
       "size": 50,
       "status": "open",
-      "area":" "
+      "area": " "
     }
     this.iBulkProcessApiService.bulkPickTotes(paylaod).subscribe((res: any) => {
       if (res) {
@@ -92,13 +94,13 @@ export class BulkPickComponent implements OnInit {
     });
   }
 
-  bulkPickOrders(){
+  bulkPickOrders() {
     let paylaod = {
       "type": 'pick',
       "start": 1,
       "size": 50,
       "status": "open",
-      "area":" "
+      "area": " "
     }
     this.iBulkProcessApiService.bulkPickOrders(paylaod).subscribe((res: any) => {
       if (res) {
@@ -109,7 +111,7 @@ export class BulkPickComponent implements OnInit {
   }
 
   pickProcess() {
-    if(this.Prefernces?.pickToTotes) this.OpenNextToteId();
+    if (this.Prefernces?.pickToTotes) this.OpenNextToteId();
     else this.changeVisibiltyVerifyBulk();
   }
 
@@ -117,86 +119,146 @@ export class BulkPickComponent implements OnInit {
     this.verifyBulkPicks = !this.verifyBulkPicks;
   }
 
-  changeView(event:any){
+  changeView(event: any) {
     this.view = event;
-    if(event == "batch"){
-      this.ordersDisplayedColumns = ['batchPickId', 'quantity', 'priority', 'requiredDate','actions'];
+    if (event == "batch") {
+      this.ordersDisplayedColumns = ['batchPickId', 'quantity', 'priority', 'requiredDate', 'actions'];
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber']; //,'actions'
       this.bulkPickBatches();
     }
-    else if(event == "tote"){
-      this.ordersDisplayedColumns = ['toteId', 'quantity', 'priority', 'requiredDate','actions'];
-      this.selectedOrdersDisplayedColumns = ['toteId', 'toteNumber','actions'];
+    else if (event == "tote") {
+      this.ordersDisplayedColumns = ['toteId', 'quantity', 'priority', 'requiredDate', 'actions'];
+      this.selectedOrdersDisplayedColumns = ['toteId', 'toteNumber', 'actions'];
       this.bulkPickTotes();
     }
-    else if(event == "order"){
-      this.ordersDisplayedColumns = ['orderNumber', 'quantity', 'priority', 'requiredDate','actions'];
-      this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber','actions'];
+    else if (event == "order") {
+      this.ordersDisplayedColumns = ['orderNumber', 'quantity', 'priority', 'requiredDate', 'actions'];
+      this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
       this.bulkPickOrders();
     }
   }
 
-  selectOrder(event:any){  
-    if(this.view == "batch"){
+  selectOrder(event: any) {
+    if (this.view == "batch") {
       let paylaod = {
         "type": 'pick',
-        "batchpickid": event.batchPickId, 
-        "status": "open", 
+        "batchpickid": event.batchPickId,
+        "status": "open",
       }
       this.iBulkProcessApiService.bulkPickBatchId(paylaod).subscribe((res: any) => {
-        if (res) { 
+        if (res) {
           this.selectedOrders = res;
         }
       });
-    }else   this.selectedOrders = [...this.selectedOrders,event]; 
-    this.orders = this.orders.filter((x:any) => x.id != event.id);
+    } else this.selectedOrders = [...this.selectedOrders, event];
+    this.orders = this.orders.filter((x: any) => x.id != event.id);
     this.status.linesCount = this.status.linesCount + 1;
   }
-OpenNextToteId(){
- let dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
-    height: 'auto',
-    width: '990px',
-    autoFocus: DialogConstants.autoFocus,
-    disableClose: true , 
-    data: {
-      selectedOrderList: this.selectedOrders,
-      nextToteID: this.NextToteID,
-      BulkProcess:true,
-      checkForValidTotes:this.Prefernces.checkForValidTotes
-    }
-  });
-  dialogRefTote.afterClosed().subscribe((result) => { 
-    if(result == true){
-      this.verifyBulkPicks = !this.verifyBulkPicks;
-    }
-  });
-}
-  removeOrder(event:any){
-    this.orders = [...this.orders,event];
-    this.selectedOrders = this.selectedOrders.filter((x:any) => x.id != event.id);
+
+  OpenNextToteId() {
+    let dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
+      height: 'auto',
+      width: '990px',
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        selectedOrderList: this.selectedOrders,
+        nextToteID: this.NextToteID,
+        BulkProcess: true,
+        checkForValidTotes: this.Prefernces.checkForValidTotes
+      }
+    });
+    dialogRefTote.afterClosed().subscribe((result) => {
+      if (result == true) {
+        this.verifyBulkPicks = !this.verifyBulkPicks;
+      }
+    });
+  }
+
+  removeOrder(event: any) {
+    this.orders = [...this.orders, event];
+    this.selectedOrders = this.selectedOrders.filter((x: any) => x.id != event.id);
     this.status.linesCount = this.status.linesCount - 1;
   }
 
-  appendAll(){
-    this.selectedOrders = [...this.selectedOrders,...this.orders];
+  appendAll() {
+    this.selectedOrders = [...this.selectedOrders, ...this.orders];
     this.orders = [];
   }
-getworkstationbulkzone(){
-   this.iBulkProcessApiService.bulkPreferences().subscribe((res:any)=>{
-    this.Prefernces = res.workstationPreferences[0];
-  }) 
-}
-BatchNextTote(){
-  this.iBulkProcessApiService.BatchNextTote().subscribe((res:any)=>{
-   this.NextToteID = res;
- }) 
-}
 
-  removeAll(){
-    if(this.view == "batch") this.bulkPickBatches();
-    else this.orders = [...this.orders,...this.selectedOrders];
+  getworkstationbulkzone() {
+    this.iBulkProcessApiService.bulkPreferences().subscribe((res: any) => {
+      this.Prefernces = res.workstationPreferences[0];
+    })
+  }
+
+  BatchNextTote() {
+    this.iBulkProcessApiService.BatchNextTote().subscribe((res: any) => {
+      this.NextToteID = res;
+    })
+  }
+
+  removeAll() {
+    if (this.view == "batch") this.bulkPickBatches();
+    else this.orders = [...this.orders, ...this.selectedOrders];
     this.selectedOrders = [];
   }
- 
+
+  async printDetailList(event: any) {
+    const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: `Touch 'Yes' to print all orders as a batch`,
+        message2: `Touch 'No' to print a page for each order.`,
+        heading: 'Print Batch Or Order',
+        buttonFields: true,
+        threeButtons: true
+      },
+    });
+    dialogRef1.afterClosed().subscribe(async (res: any) => {
+      if (res == ResponseStrings.Yes) {
+
+      }
+      else if (res == ResponseStrings.No) {
+
+      }
+      else if (res == ResponseStrings.Cancel) {
+        await this.createBatchNow();
+      }
+    });
+  }
+
+  async createBatchNow() {
+    let res: any = await this.iBulkProcessApiService.BatchesNextBatchID();
+    if (res?.status == 200) {
+      this.nextBatchId = res.body;
+      const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+        height: 'auto',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+        data: {
+          message: `Touch ‘Yes’ to Assign the Selected Orders to Batch ID ${this.nextBatchId}. Touch ‘No’ to Cancel Batching.`,
+          heading: 'Create Batch Now?',
+          buttonFields: true
+        },
+      });
+      dialogRef1.afterClosed().subscribe(async (resp: any) => {
+        if (resp == ResponseStrings.Yes) {
+          let payload = {
+            "BatchData": this.selectedOrders.map((x:any) => ({orderNumber:x.orderNumber,toteNumber:x.toteNumber})),
+            "nextBatchID": this.nextBatchId,
+            "transType": "Pick"
+          }
+          let res2: any = await this.iBulkProcessApiService.BulkPickCreateBatch(payload);
+          if (res2?.status == 200) {
+          }
+        }
+      });
+    }
+  }
 }
 

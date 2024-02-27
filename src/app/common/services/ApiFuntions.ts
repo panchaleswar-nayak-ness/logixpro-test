@@ -1541,4 +1541,10 @@ public validtote(body:any): Observable<any> {
 public BatchNextTote(): Observable<any> { 
   return this.ApiBase.Get("/totes/nexttote");
 }
+public BatchesNextBatchID() { 
+  return this.ApiBase.GetHttpResponse("/batches/nextbatchid");
+}
+public async BulkPickCreateBatch(body:any){ 
+  return await this.ApiBase.PostHttpResponse("/batches", body);
+}
 }

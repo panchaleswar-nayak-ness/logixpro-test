@@ -12,4 +12,6 @@ export interface IBulkProcessApiService {
   bulkPreferences();
   validtote(body);
   BatchNextTote();
+  BatchesNextBatchID();
+  BulkPickCreateBatch(body);
 }

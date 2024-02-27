@@ -11,7 +11,7 @@
                         appearance="outline">
                         <mat-label>Actions</mat-label>
                         <mat-select class="employees-action" placeholder="Actions">
-                            <mat-option value="add_new_transaction">Print Detail List</mat-option>
+                            <mat-option value="add_new_transaction" (click)="PrintDetailList()" [disabled]="selectedOrders.length == 0">Print Detail List</mat-option>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                     </mat-form-field>

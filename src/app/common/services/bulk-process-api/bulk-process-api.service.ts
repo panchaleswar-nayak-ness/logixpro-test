@@ -59,5 +59,12 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public BatchNextTote() {
     return this.Api.BatchNextTote();
   }
+
+  public BatchesNextBatchID() {
+    return this.Api.BatchesNextBatchID();
+  }
+  public BulkPickCreateBatch(body: any) {
+    return this.Api.BulkPickCreateBatch(body);
+  }
   
 }
