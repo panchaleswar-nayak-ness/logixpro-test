@@ -109,9 +109,12 @@ export class BulkPickComponent implements OnInit {
   }
 
   pickProcess() {
-    if(this.Prefernces?.pickToTotes ){
-        this.OpenNextToteId();
-    }else this.verifyBulkPicks = !this.verifyBulkPicks;
+    if(this.Prefernces?.pickToTotes) this.OpenNextToteId();
+    else this.changeVisibiltyVerifyBulk();
+  }
+
+  changeVisibiltyVerifyBulk() {
+    this.verifyBulkPicks = !this.verifyBulkPicks;
   }
 
   changeView(event:any){

@@ -25,7 +25,7 @@
 <div class="container-fluid p-0" *ngIf="verifyBulkPicks">
     <div class="row">
         <div class="col-xl-12 mb-3">
-            <app-bp-verify-bulk-pick [SelectedList]="selectedOrders" [NextToteID]="this.NextToteID" (back)="pickProcess()"></app-bp-verify-bulk-pick>
+            <app-bp-verify-bulk-pick [SelectedList]="selectedOrders" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk()"></app-bp-verify-bulk-pick>
         </div>
     </div>
     <div>

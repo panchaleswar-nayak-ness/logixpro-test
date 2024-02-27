@@ -19,7 +19,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.CopyAllOrder();
+    // this.CopyAllOrder();
   }
 ViewByLocation(){
   debugger
