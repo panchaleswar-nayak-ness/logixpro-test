@@ -23,7 +23,7 @@ export class BulkPickComponent implements OnInit {
   Prefernces: any;
   selectedOrders: any = [];
   nextBatchId: string = '';
-  batchSeleted:boolean = false;
+  batchSeleted: boolean = false;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -49,17 +49,22 @@ export class BulkPickComponent implements OnInit {
         if (this.status.batchCount > 0) {
           this.bulkPickBatches();
           this.view = "batch";
+          this.ordersDisplayedColumns = ['batchPickId', 'quantity', 'priority', 'requiredDate', 'actions'];
+          this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber'];
         }
         else if (this.status.toteCount > 0) {
           this.bulkPickTotes();
           this.view = "tote";
+          this.ordersDisplayedColumns = ['toteId', 'quantity', 'priority', 'requiredDate', 'actions'];
+          this.selectedOrdersDisplayedColumns = ['toteId', 'toteNumber', 'actions'];
         }
         else {
           this.bulkPickOrders();
           this.view = "order";
+          this.ordersDisplayedColumns = ['orderNumber', 'quantity', 'priority', 'requiredDate', 'actions'];
+          this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
         }
       }
-      this.changeView(this.view);
     });
   }
 
@@ -123,7 +128,7 @@ export class BulkPickComponent implements OnInit {
     this.view = event;
     if (event == "batch") {
       this.ordersDisplayedColumns = ['batchPickId', 'quantity', 'priority', 'requiredDate', 'actions'];
-      this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber']; //,'actions'
+      this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber'];
       this.bulkPickBatches();
     }
     else if (event == "tote") {
@@ -154,9 +159,9 @@ export class BulkPickComponent implements OnInit {
           this.batchSeleted = true;
         }
       });
-    } 
+    }
     else {
-      this.selectedOrders.forEach((element:any,index:any) => {element.toteNumber = index+1});
+      this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
       this.selectedOrders = [...this.selectedOrders, event];
     }
     this.orders = this.orders.filter((x: any) => x.id != event.id);
@@ -186,7 +191,7 @@ export class BulkPickComponent implements OnInit {
   removeOrder(event: any) {
     this.orders = [...this.orders, event];
     this.selectedOrders = this.selectedOrders.filter((x: any) => x.id != event.id);
-    this.selectedOrders.forEach((element:any,index:any) => {element.toteNumber = index+1});
+    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
     this.status.linesCount = this.status.linesCount - 1;
   }
 
@@ -260,7 +265,7 @@ export class BulkPickComponent implements OnInit {
       dialogRef1.afterClosed().subscribe(async (resp: any) => {
         if (resp == ResponseStrings.Yes) {
           let payload = {
-            "BatchData": this.selectedOrders.map((x:any,index:any) => ({orderNumber:x.orderNumber,toteNumber:x.toteNumber})),
+            "BatchData": this.selectedOrders.map((x: any, index: any) => ({ orderNumber: x.orderNumber, toteNumber: x.toteNumber })),
             "nextBatchID": this.nextBatchId,
             "transactionType": "Pick"
           }
@@ -273,7 +278,7 @@ export class BulkPickComponent implements OnInit {
     }
   }
 
-  printItemLabelsNow(){
+  printItemLabelsNow() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: Style.w560px,
