@@ -71,7 +71,7 @@ export class BulkPickComponent implements OnInit {
   bulkPickBatches() {
     let paylaod = {
       "type": 'pick',
-      "start": 1,
+      "start": 0,
       "size": 5000,
       "includeChildren": "false"
     }
@@ -86,7 +86,7 @@ export class BulkPickComponent implements OnInit {
   bulkPickTotes() {
     let paylaod = {
       "type": 'pick',
-      "start": 1,
+      "start": 0,
       "size": 5000,
       "status": "open",
       "area": " "
@@ -102,7 +102,7 @@ export class BulkPickComponent implements OnInit {
   bulkPickOrders() {
     let paylaod = {
       "type": 'pick',
-      "start": 1,
+      "start": 0,
       "size": 5000,
       "status": "open",
       "area": " "
