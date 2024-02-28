@@ -57,7 +57,7 @@ table{
                 padding-left: 12px !important;
             }
             &:last-child{
-                width: auto !important;
+                width: 100px !important;
             }
         }
     }
@@ -65,4 +65,15 @@ table{
 
 .view-all-loacation-heading {
     width:48px
+}
+
+.mat-column-CompletedQty,.mat-column-ToteID 
+{
+ width: 100px ;
+  mat-form-field{
+    width: 100px;
+  }
+}
+.mat-column-OrderQty{ 
+cursor: pointer;
 }

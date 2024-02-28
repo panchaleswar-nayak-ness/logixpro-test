@@ -9,7 +9,7 @@
     </div>
     <div class="row">
         <div class="col-xl-7 mb-3">
-            <app-bp-order-selection-list [orders]="orders" [view]="view" [ordersDisplayedColumns]="ordersDisplayedColumns" (selectOrderEmitter)="selectOrder($event)" (appendAllEmitter)="appendAll()"></app-bp-order-selection-list>
+            <app-bp-order-selection-list [batchSeleted]="batchSeleted" [orders]="orders" [view]="view" [ordersDisplayedColumns]="ordersDisplayedColumns" (selectOrderEmitter)="selectOrder($event)" (appendAllEmitter)="appendAll()"></app-bp-order-selection-list>
         </div>
         <div class="col-xl-5 mb-3">
             <app-bp-selected-orders [selectedOrders]="selectedOrders" [view]="view" [selectedOrdersDisplayedColumns]="selectedOrdersDisplayedColumns" (removeOrderEmitter)="removeOrder($event)" (removeAllEmitter)="removeAll()"></app-bp-selected-orders>

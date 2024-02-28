@@ -11,6 +11,7 @@ export class BpOrderSelectionListComponent implements OnInit {
   @Input() ordersDisplayedColumns: string[];
   @Input() orders: any = [];
   @Input() view;
+  @Input() batchSeleted;
   @Output() selectOrderEmitter = new EventEmitter<any>();
   @Output() appendAllEmitter = new EventEmitter<any>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -35,8 +36,10 @@ export class BpOrderSelectionListComponent implements OnInit {
   }
 
   selectOrder(order:any){
-    this.selectOrderEmitter.emit(order);
-    this.orders = this.orders.filter((x:any) => x.id != order.id);
+    if(!this.batchSeleted){
+      this.selectOrderEmitter.emit(order);
+      this.orders = this.orders.filter((x:any) => x.id != order.id);
+    }
   }
 
   appendAll(){

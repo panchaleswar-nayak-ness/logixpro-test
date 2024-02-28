@@ -48,7 +48,7 @@
           <ng-container matColumnDef="actions" stickyEnd>
             <th width="10%" class="text-center px-2" mat-header-cell *matHeaderCellDef>Action</th>
             <td class="pe-0" mat-cell *matCellDef="let element; let i = index" width="10%">
-              <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete" matTooltip="Add"
+              <button class="mx-auto xsm-icon-button" mat-flat-button aria-label="Delete" matTooltip="Add" [disabled]="batchSeleted"
                 matTooltipPosition="right" color="primary">
                 <mat-icon (click)="selectOrder(element)">add</mat-icon>
               </button>

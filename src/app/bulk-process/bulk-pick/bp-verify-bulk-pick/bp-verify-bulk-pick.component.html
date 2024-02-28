@@ -99,15 +99,15 @@
           <ng-container matColumnDef="CompletedQty" stickyEnd>
             <th mat-header-cell *matHeaderCellDef> Completed Qty</th>
             <td mat-cell *matCellDef="let element"  (click)="openDialog(element)"> 
-                <mat-form-field class="custom-form-field w-100" appearance="outline">
-                    <input  matInput type="text" disabled [(ngModel)]="element.completedQuantity" maxlength="50">
+                <mat-form-field class="custom-form-field" appearance="outline" style="width:100px">
+                    <input  matInput type="text" readonly [(ngModel)]="element.completedQuantity" maxlength="50">
                   </mat-form-field>    
             </td>
           </ng-container>
           <ng-container matColumnDef="ToteID" stickyEnd>
             <th mat-header-cell *matHeaderCellDef> Tote ID</th>
             <td mat-cell *matCellDef="let element"> 
-                <mat-form-field class="custom-form-field w-100" appearance="outline">
+                <mat-form-field class="custom-form-field" appearance="outline" style="width:100px">
                     <input  matInput type="text" [(ngModel)]="element.toteId" maxlength="50">
                   </mat-form-field>     </td>
           </ng-container>

@@ -22,7 +22,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
     // this.CopyAllOrder();
   }
 ViewByLocation(){
-  debugger
+  debugger;
   this.SelectedList = this.SelectedList.sort((a, b) => a.location - b.location);
 }
 ViewByOrderItem(){

@@ -23,7 +23,7 @@ export class BulkPickComponent implements OnInit {
   Prefernces: any;
   selectedOrders: any = [];
   nextBatchId: string = '';
-
+  batchSeleted:boolean = false;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -67,7 +67,7 @@ export class BulkPickComponent implements OnInit {
     let paylaod = {
       "type": 'pick',
       "start": 1,
-      "size": 500,
+      "size": 5000,
       "includeChildren": "false"
     }
     this.iBulkProcessApiService.bulkPickBatches(paylaod).subscribe((res: any) => {
@@ -82,7 +82,7 @@ export class BulkPickComponent implements OnInit {
     let paylaod = {
       "type": 'pick',
       "start": 1,
-      "size": 50,
+      "size": 5000,
       "status": "open",
       "area": " "
     }
@@ -98,7 +98,7 @@ export class BulkPickComponent implements OnInit {
     let paylaod = {
       "type": 'pick',
       "start": 1,
-      "size": 50,
+      "size": 5000,
       "status": "open",
       "area": " "
     }
@@ -111,7 +111,7 @@ export class BulkPickComponent implements OnInit {
   }
 
   pickProcess() {
-    if (this.Prefernces?.pickToTotes) this.OpenNextToteId();
+    if (!this.Prefernces?.pickToTotes) this.OpenNextToteId();
     else this.changeVisibiltyVerifyBulk();
   }
 
@@ -136,9 +136,12 @@ export class BulkPickComponent implements OnInit {
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
       this.bulkPickOrders();
     }
+    this.status.linesCount = 0;
+    this.batchSeleted = false;
   }
 
   selectOrder(event: any) {
+    event.toteNumber = this.selectedOrders.length + 1;
     if (this.view == "batch") {
       let paylaod = {
         "type": 'pick',
@@ -148,9 +151,14 @@ export class BulkPickComponent implements OnInit {
       this.iBulkProcessApiService.bulkPickBatchId(paylaod).subscribe((res: any) => {
         if (res) {
           this.selectedOrders = res;
+          this.batchSeleted = true;
         }
       });
-    } else this.selectedOrders = [...this.selectedOrders, event];
+    } 
+    else {
+      this.selectedOrders.forEach((element:any,index:any) => {element.toteNumber = index+1});
+      this.selectedOrders = [...this.selectedOrders, event];
+    }
     this.orders = this.orders.filter((x: any) => x.id != event.id);
     this.status.linesCount = this.status.linesCount + 1;
   }
@@ -178,6 +186,7 @@ export class BulkPickComponent implements OnInit {
   removeOrder(event: any) {
     this.orders = [...this.orders, event];
     this.selectedOrders = this.selectedOrders.filter((x: any) => x.id != event.id);
+    this.selectedOrders.forEach((element:any,index:any) => {element.toteNumber = index+1});
     this.status.linesCount = this.status.linesCount - 1;
   }
 
@@ -202,6 +211,8 @@ export class BulkPickComponent implements OnInit {
     if (this.view == "batch") this.bulkPickBatches();
     else this.orders = [...this.orders, ...this.selectedOrders];
     this.selectedOrders = [];
+    this.status.linesCount = 0;
+    this.batchSeleted = false;
   }
 
   async printDetailList(event: any) {
@@ -249,16 +260,37 @@ export class BulkPickComponent implements OnInit {
       dialogRef1.afterClosed().subscribe(async (resp: any) => {
         if (resp == ResponseStrings.Yes) {
           let payload = {
-            "BatchData": this.selectedOrders.map((x:any) => ({orderNumber:x.orderNumber,toteNumber:x.toteNumber})),
+            "BatchData": this.selectedOrders.map((x:any,index:any) => ({orderNumber:x.orderNumber,toteNumber:x.toteNumber})),
             "nextBatchID": this.nextBatchId,
-            "transType": "Pick"
+            "transactionType": "Pick"
           }
           let res2: any = await this.iBulkProcessApiService.BulkPickCreateBatch(payload);
           if (res2?.status == 200) {
+            this.printItemLabelsNow();
           }
         }
       });
     }
+  }
+
+  printItemLabelsNow(){
+    const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: `Touch ‘Yes’ to print a label for each item in this batch`,
+        heading: 'Print Item Labels Now?',
+        buttonFields: true
+      },
+    });
+    dialogRef1.afterClosed().subscribe(async (resp: any) => {
+      if (resp == ResponseStrings.Yes) {
+      }
+      this.selectedOrders = [];
+      this.bulkPickoOrderBatchToteQty();
+    });
   }
 }
 
