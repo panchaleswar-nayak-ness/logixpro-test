@@ -21,6 +21,7 @@ export class InputFilterComponent implements OnInit {
   SendData: any;
   condition: any;
   columnName: any;
+  dynamicText: string = 'Dynamic Text';
   constructor(
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -29,6 +30,7 @@ export class InputFilterComponent implements OnInit {
   ngOnInit(): void {
     this.condition = this.data.Condition;
     this.columnName = this.data.FilterColumnName;
+    this.dynamicText = this.data.dynamicText;
   }
   onSend(form?: any) {
     if (

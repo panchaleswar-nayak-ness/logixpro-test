@@ -18,9 +18,10 @@ import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/
 export class BmToteidEntryComponent implements OnInit {
   selectedList: any;
   nextToteID: any;
-  ValidateToteIDs: boolean = false;
+  preferences: any;
   userData: any;
   BulkProcess: any = false;
+  view:any;
   public iAdminApiService: IAdminApiService;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
@@ -36,17 +37,21 @@ export class BmToteidEntryComponent implements OnInit {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.nextToteID = data.nextToteID;
     this.BulkProcess = data.BulkProcess;
+    this.view = data.view;
   }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
+    if(this.view == 'tote'){
+      this.selectedList.forEach((x:any) => {x.createNextToteID = x.toteId});
+    }
     this.companyInfo();
   }
 
   companyInfo() {
     this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
-        this.ValidateToteIDs = res.data.validateToteIDs;
+        this.preferences = res.data;
       }
     })
   }
@@ -119,6 +124,9 @@ export class BmToteidEntryComponent implements OnInit {
       .PickToteIDUpdate(paylaod)
       .subscribe((res: any) => {
         if (res.isExecuted) {
+          if(this.preferences.autoPrintTote){
+            // print list and labels.
+          }
           this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
           this.dialogRef.close(true);
         } else {
@@ -131,7 +139,7 @@ export class BmToteidEntryComponent implements OnInit {
   }
 
   validtote($event: any) {
-    if (this.ValidateToteIDs && $event.target.value) {
+    if (this.preferences.ValidateToteIDs && $event.target.value) {
       var obj = {
         toteid: $event.target.value
       }

@@ -8,6 +8,7 @@
       {{dialog_heading}}
     </h1>
     <p class="bold text-tritary-900 mb-4" *ngIf="data && data.message" >{{dialog_msg}}
+      <span *ngIf="data && data.message2"><br></span>
       <span *ngIf="data && data.message2"><br>{{dialog_msg2}}</span>
     </p>
   </div>

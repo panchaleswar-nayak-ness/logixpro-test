@@ -9,53 +9,53 @@
     <div class="card p-3 mb-3">
         <mat-form-field class="custom-form-field custom-form-field-bg-white w-100 mat-form-field-disabled mb-3" appearance="outline">
             <mat-label>Current Quantity</mat-label>
-            <input matInput type="text" value="2" readonly>
+            <input matInput type="text" readonly [(ngModel)]="data.completedQuantity">
         </mat-form-field>
         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
             <mat-label>Quantity</mat-label>
-            <input matInput type="text" value="2">
-            <button matSuffix class="clear-btn" matTooltip="Clear" matTooltipPosition="above"><mat-icon class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
+            <input matInput type="text" [(ngModel)]="newQuantity">
+            <button matSuffix class="clear-btn" matTooltip="Clear" matTooltipPosition="above" (click)="this.newQuantity = ''"><mat-icon class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
         </mat-form-field>
 
         <div class="d-flex gap-12 justify-content-between">
             <div class="d-flex flex-wrap justify-content-center gap-12 w-288px">
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('1')">
                     1
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('2')">
                     2
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('3')">
                     3
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('4')">
                     4
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('5')">
                     5
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('6')">
                     6
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('7')">
                     7
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('8')">
                     8
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('9')">
                     9
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('0')">
                     0
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('00')">
                     00
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('000')">
                     000
                 </button>
-                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold">
+                <button mat-mini-fab color="Default" class="button-default-i icon-button-8br text-primary-500 bold" (click)="add('.')">
                     .
                 </button>
 
@@ -65,7 +65,7 @@
 </div>
 
 <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-    <button mat-flat-button color="primary" class="btn-lg flex-grow-1">
+    <button mat-flat-button color="primary" class="btn-lg flex-grow-1" (click)="done()">
         Done
     </button>
   </div>
