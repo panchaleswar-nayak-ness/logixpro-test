@@ -177,8 +177,7 @@ export class BulkPickComponent implements OnInit {
       data: {
         selectedOrderList: this.selectedOrders,
         nextToteID: this.NextToteID,
-        BulkProcess: true,
-        checkForValidTotes: this.Prefernces.checkForValidTotes
+        BulkProcess: true
       }
     });
     dialogRefTote.afterClosed().subscribe((result) => {
