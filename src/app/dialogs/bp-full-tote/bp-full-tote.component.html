@@ -8,7 +8,7 @@
 <div mat-dialog-content>
 <div class="d-flex align-items-center justify-content-center flex-wrap px-5 gap-12 mb-3">
     <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Order Number:&nbsp;<b>{{data.orderNumber}}</b></span></div>
-    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Pick Qty:&nbsp;<b>{{data.oldtransactionQuantity}}</b></span></div>
+    <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Pick Qty:&nbsp;<b>{{data.transactionQuantity}}</b></span></div>
     <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Item Number:&nbsp;<b>{{data.itemNumber}}</b></span></div>
     <div class="text-center"> <span class="label label-gray px-2 f-14 mb-1">Description:&nbsp;<b>{{data.description}}</b></span></div>
 </div>
@@ -28,8 +28,8 @@
         </div>
         <div class="col-xl-4">
             <mat-form-field class="custom-form-field w-100 mat-form-field-disabled" appearance="outline">
-                <mat-label>Qty Put in New Tote</mat-label>
-                <input matInput type="text" [value]="data.transactionQuantity" readonly>
+                <mat-label>Qty Put in Full Tote</mat-label>
+                <input matInput type="text" [value]="data.PutFullToteQty" readonly>
             </mat-form-field>
         </div>
     </div>

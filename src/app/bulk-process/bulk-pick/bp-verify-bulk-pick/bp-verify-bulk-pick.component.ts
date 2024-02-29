@@ -46,7 +46,8 @@ export class BpVerifyBulkPickComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
-        completedQuantity: element.completedQuantity
+        completedQuantity: element.completedQuantity,
+        from: "completed quantity"
       }
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {

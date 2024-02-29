@@ -16,6 +16,7 @@ export class BpNumberSelectionComponent implements OnInit {
   newQuantity: string = '';
   Prefernces: any;
   public iBulkProcessApiService: IBulkProcessApiService;
+  from:string = "completed quantity";
 
   constructor(
     public dialogRef: MatDialogRef<BpNumberSelectionComponent>,
@@ -24,6 +25,7 @@ export class BpNumberSelectionComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
+    this.from = this.data.from;
   }
 
   ngOnInit(): void {
@@ -41,33 +43,38 @@ export class BpNumberSelectionComponent implements OnInit {
   }
 
   done() {
-    if (this.Prefernces.systempreferences.zeroLocationQuantityCheck) {
-      const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-        height: 'auto',
-        width: Style.w560px,
-        autoFocus: DialogConstants.autoFocus,
-        disableClose: true,
-        data: {
-          message: `Is this location empty after this Pick?`,
-          message2: `Touch ‘Yes’ to update the location quantity to zero.
-          Touch ‘No’ to type in the actual location quantity after this Pick.
-          Touch ‘Cancel’ to re-enter quantity picked.`,
-          heading: 'Location Empty?',
-          buttonFields: true,
-          threeButtons: true
-        },
-      });
-      dialogRef1.afterClosed().subscribe(async (resp: any) => {
-        if (resp == ResponseStrings.Yes) {
-          this.dialogRef.close({newQuantity:this.newQuantity,type:ResponseStrings.Yes});
-        }
-        else if (resp == ResponseStrings.No) {
-          this.dialogRef.close({newQuantity:this.newQuantity,type:ResponseStrings.No});
-        }
-        else if (resp == ResponseStrings.Cancel) {
-          this.dialogRef.close({newQuantity:this.newQuantity,type:ResponseStrings.Cancel});
-        }
-      });
+    if(this.from == "completed quantity"){
+      if (this.Prefernces.systempreferences.zeroLocationQuantityCheck) {
+        const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+          height: 'auto',
+          width: Style.w560px,
+          autoFocus: DialogConstants.autoFocus,
+          disableClose: true,
+          data: {
+            message: `Is this location empty after this Pick?`,
+            message2: `Touch ‘Yes’ to update the location quantity to zero.
+            Touch ‘No’ to type in the actual location quantity after this Pick.
+            Touch ‘Cancel’ to re-enter quantity picked.`,
+            heading: 'Location Empty?',
+            buttonFields: true,
+            threeButtons: true
+          },
+        });
+        dialogRef1.afterClosed().subscribe(async (resp: any) => {
+          if (resp == ResponseStrings.Yes) {
+            this.dialogRef.close({newQuantity:this.newQuantity,type:ResponseStrings.Yes});
+          }
+          else if (resp == ResponseStrings.No) {
+            this.dialogRef.close({newQuantity:this.newQuantity,type:ResponseStrings.No});
+          }
+          else if (resp == ResponseStrings.Cancel) {
+            this.dialogRef.close({newQuantity:this.newQuantity,type:ResponseStrings.Cancel});
+          }
+        });
+      }
+    }
+    else if(this.from == "qunatity put in new tote"){
+      this.dialogRef.close(this.newQuantity);
     }
   }
 }
