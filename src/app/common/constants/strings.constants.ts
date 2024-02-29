@@ -497,7 +497,8 @@ export const Style = {
     w50vw:'50vw',
     w480px:'480px',
     w600px:'600px',
-    w786px:'786px'
+    w786px:'786px',
+    w402px:'402px',
 }  
 export const FilterColumnName = {
     unitOfMeasure:'Unit of Measure'

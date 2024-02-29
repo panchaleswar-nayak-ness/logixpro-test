@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { DialogConstants } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, Style } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { BpNumberSelectionComponent } from '../bp-number-selection/bp-number-selection.component';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -22,11 +22,17 @@ export class BpFullToteComponent implements OnInit {
   ngOnInit(): void {
   }
   openNumberSelection(){
-    this.global.OpenDialog(BpNumberSelectionComponent, {
+    const dialogRef1: any = this.global.OpenDialog(BpNumberSelectionComponent, {
       height: 'auto',
-      width: '402px',
+      width: Style.w402px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
+      data: {
+        completedQuantity: 11
+      }
+    });
+    dialogRef1.afterClosed().subscribe(async (resp: any) => {
+
     });
   }
   CreateNextToteID(){

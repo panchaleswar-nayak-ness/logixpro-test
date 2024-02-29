@@ -42,7 +42,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
     element.NextToteID = this.NextToteID;
     const dialogRef1: any = this.global.OpenDialog(BpNumberSelectionComponent, {
       height: 'auto',
-      width: '402px',
+      width: Style.w402px,
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
@@ -84,6 +84,18 @@ export class BpVerifyBulkPickComponent implements OnInit {
   CopyAllOrder() {
     this.SelectedList.forEach(element => {
       element.completedQuantity = element.transactionQuantity;
+    });
+  }
+
+  fullTote(element:any){
+    const dialogRef1: any = this.global.OpenDialog(BpFullToteComponent, {
+      height: 'auto',
+      width: Style.w786px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose:true,
+      data:element
+    });
+    dialogRef1.afterClosed().subscribe(async (resp: any) => {
     });
   }
 }

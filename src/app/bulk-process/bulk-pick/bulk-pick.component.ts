@@ -116,7 +116,7 @@ export class BulkPickComponent implements OnInit {
   }
 
   pickProcess() {
-    if (this.Prefernces?.pickToTotes) this.OpenNextToteId();
+    if (!this.Prefernces?.pickToTotes) this.OpenNextToteId();
     else this.changeVisibiltyVerifyBulk();
   }
 
