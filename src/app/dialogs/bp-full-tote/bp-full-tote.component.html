@@ -51,7 +51,7 @@
                 <mat-label>Qty Put in New Tote</mat-label>
                 <input matInput type="text" [value]="data.PutNewToteQty">
             </mat-form-field>
-            <button mat-stroked-button color="primary" class="btn-regular w-100">
+            <button mat-stroked-button color="primary" class="btn-regular w-100" (click)="putAllInNewTote()">
                 Put All in New Tote
             </button>
         </div>
