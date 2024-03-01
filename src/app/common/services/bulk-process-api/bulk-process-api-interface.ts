@@ -10,8 +10,9 @@ export interface IBulkProcessApiService {
   updateBulkPickBulkZone(paylaod:any);
   deleteBulkPickBulkZone(paylaod:any);
   bulkPreferences();
-  validtote(body);
+  validtote(body:any);
   BatchNextTote();
   BatchesNextBatchID();
-  BulkPickCreateBatch(body);
+  BulkPickCreateBatch(body:any);
+  updateLocationQuantity(body:any);
 }
