@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { BpFullToteComponent } from 'src/app/dialogs/bp-full-tote/bp-full-tote.component';
@@ -18,20 +19,25 @@ export class BpVerifyBulkPickComponent implements OnInit {
 
   constructor(
     private global: GlobalService
-  ) { }
+  ) { 
+
+  }
 
   ngOnInit(): void {
+    this.SelectedList = new MatTableDataSource(
+      this.SelectedList
+    );
     // this.CopyAllOrder();
   }
 
   ViewByLocation() {
-    debugger;
-    this.SelectedList = this.SelectedList.sort((a, b) => a.location - b.location);
+    var list = this.SelectedList.filteredData.sort((a, b) =>  b.location.localeCompare(a.location));
+    this.SelectedList = new MatTableDataSource(list);
   }
 
   ViewByOrderItem() {
-    debugger
-    this.SelectedList = this.SelectedList.sort((a, b) => (a.orderNumber - b.orderNumber) && (a.itemNumber - b.itemNumber));
+    var list =  this.SelectedList.filteredData.sort((a, b) =>  b.orderNumber.localeCompare(a.orderNumber) && a.itemNumber.localeCompare(b.itemNumber));
+    this.SelectedList = new MatTableDataSource(list);
   }
 
   backButton() {
@@ -77,13 +83,13 @@ export class BpVerifyBulkPickComponent implements OnInit {
   }
 
   ResetAllCompletedQty() {
-    this.SelectedList.forEach(element => {
+    this.SelectedList.filteredData.forEach(element => {
       element.completedQuantity = 0;
     });
   }
 
   CopyAllOrder() {
-    this.SelectedList.forEach(element => {
+    this.SelectedList.filteredData.forEach(element => {
       element.completedQuantity = element.transactionQuantity;
     });
   }
