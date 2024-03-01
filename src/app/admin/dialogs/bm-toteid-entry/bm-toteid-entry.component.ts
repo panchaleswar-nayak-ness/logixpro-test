@@ -43,7 +43,7 @@ export class BmToteidEntryComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.authService.userData();
     if(this.view == 'tote'){
-      this.selectedList.forEach((x:any) => {x.createNextToteID = x.toteId});
+      this.selectedList.forEach((x:any) => {x.toteId = x.toteId});
     }
     this.companyInfo();
   }
@@ -58,12 +58,12 @@ export class BmToteidEntryComponent implements OnInit {
 
   clearAll() {
     this.selectedList.forEach((element, i) => {
-      this.selectedList[i]['createNextToteID'] = undefined;
+      this.selectedList[i]['toteId'] = undefined;
     });
   }
 
   removeToteID(index) {
-    this.selectedList[index]['createNextToteID'] = undefined;
+    this.selectedList[index]['toteId'] = undefined;
   }
 
   createNextTote() {
@@ -81,7 +81,7 @@ export class BmToteidEntryComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === ResponseStrings.Yes) {
         this.selectedList.forEach((element, i) => {
-          this.selectedList[i]['createNextToteID'] =
+          this.selectedList[i]['toteId'] =
             parseInt(this.nextToteID) + i + 1;
         });
       }
@@ -89,7 +89,7 @@ export class BmToteidEntryComponent implements OnInit {
   }
 
   submitOrder() {
-    if (this.selectedList.find((o) => o.createNextToteID === undefined)) {
+    if (this.selectedList.find((o) => o.toteId === undefined)) {
       const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: Style.w786px,
@@ -113,7 +113,7 @@ export class BmToteidEntryComponent implements OnInit {
   updateToteID() {
     let orders: any = [];
     this.selectedList.forEach((element, i) => {
-      orders[i] = [element.orderNumber, element.createNextToteID.toString()];
+      orders[i] = [element.orderNumber, element.toteId.toString()];
     });
 
     let paylaod = {
@@ -128,7 +128,7 @@ export class BmToteidEntryComponent implements OnInit {
             // print list and labels.
           }
           this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
-          this.dialogRef.close(true);
+          this.dialogRef.close(this.selectedList);
         } else {
 
           this.global.ShowToastr(ToasterType.Error, res.responseMessage, ToasterTitle.Error);

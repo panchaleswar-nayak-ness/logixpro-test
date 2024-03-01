@@ -182,7 +182,8 @@ export class BulkPickComponent implements OnInit {
       }
     });
     dialogRefTote.afterClosed().subscribe((result) => {
-      if (result == true) {
+      if (result.length > 0) {
+        this.selectedOrders = result;
         this.verifyBulkPicks = !this.verifyBulkPicks;
       }
     });
@@ -197,6 +198,7 @@ export class BulkPickComponent implements OnInit {
 
   appendAll() {
     this.selectedOrders = [...this.selectedOrders, ...this.orders];
+    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
     this.orders = [];
   }
 
