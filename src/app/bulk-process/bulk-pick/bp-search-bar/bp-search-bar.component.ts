@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-bp-search-bar',
@@ -17,6 +19,7 @@ export class BpSearchBarComponent implements OnInit {
   searchText: string = "";
   suggestion: string = "";
   filteredOrders: any = [];
+  @ViewChild('openAction') openAction: MatSelect;
 
   constructor() { }
 
@@ -66,6 +69,14 @@ export class BpSearchBarComponent implements OnInit {
     if(this.selectedOrders.length != 0){
       this.printDetailList.emit();
     }
+  }
+
+  clearMatSelectList() {
+    this.openAction?.options.forEach((data: MatOption) => data.deselect());
+  }
+
+  generateTranscAction(event: any) {
+    this.clearMatSelectList();
   }
   
 }
