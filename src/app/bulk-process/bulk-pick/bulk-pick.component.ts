@@ -245,7 +245,7 @@ export class BulkPickComponent implements OnInit {
 
       }
       else if (res == ResponseStrings.Cancel) {
-        await this.createBatchNow();
+        if (this.view != "batch") await this.createBatchNow(); 
       }
     });
   }

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table'; 
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -49,7 +50,23 @@ export class BpVerifyBulkPickComponent implements OnInit {
   this.SelectedList.filter = filterValue;
   }
   backButton() {
-    this.back.emit();
+    const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: `Transaction verification is currently underway.
+        Leaving will remove transactions, otherwise continue with transaction verification`,
+        heading: 'Verify Bulk Pick',
+        buttonFields: true,
+      },
+    });
+    dialogRef1.afterClosed().subscribe(async (resp: any) => {
+      if (resp == ResponseStrings.Yes) {
+        this.back.emit();
+      }
+    });
   }
 
   numberSelection(element) {

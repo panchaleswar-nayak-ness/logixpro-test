@@ -27,7 +27,7 @@
                 <div class="d-block d-lg-flex d-flex w-100 justify-content-end">
                 <mat-form-field class="action-dropdown mb-3 flex-1" appearance="outline">
                     <mat-label>Action</mat-label>
-                    <mat-select class="employees-action">
+                    <mat-select class="employees-action" placeholder="Actions">
                         <mat-option (click)="exportRange()">Export Range</mat-option>
                         <mat-option *ngIf="isAdmin" (click)="deleteRange()">Delete Range</mat-option>
                         <mat-option (click)="printRange()">Print Range (By Date)</mat-option>
