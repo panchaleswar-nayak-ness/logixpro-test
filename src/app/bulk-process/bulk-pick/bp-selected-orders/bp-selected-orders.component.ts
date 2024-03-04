@@ -1,5 +1,9 @@
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { LiveAnnouncerMessage } from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-bp-selected-orders',
@@ -11,12 +15,14 @@ export class BpSelectedOrdersComponent implements OnInit {
   @Input() selectedOrdersDisplayedColumns: string[];
   @Input() selectedOrders: any = [];
   @Input() view;
+  @ViewChild(MatSort) sort: MatSort;
   @Output() removeOrderEmitter = new EventEmitter<any>();
   @Output() removeAllEmitter = new EventEmitter<any>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   tableHeading = "Selected Batches";
+  datasource:any = [];
 
-  constructor() { }
+  constructor(private _liveAnnouncer: LiveAnnouncer) { }
 
   ngOnInit(): void {
   }
@@ -32,14 +38,23 @@ export class BpSelectedOrdersComponent implements OnInit {
     else if(this.view  == "order"){
       this.tableHeading = "Selected Orders";
     }
+    this.datasource = new MatTableDataSource(this.selectedOrders);
+    if(this.selectedOrders.length) this.datasource.sort = this.sort;
   }
 
   removeOrder(order: any) {
     this.removeOrderEmitter.emit(order);
-    this.selectedOrders = this.selectedOrders.filter((x: any) => x.id != order.id);
+    this.datasource = new MatTableDataSource(this.datasource.filteredData.filter((x: any) => x.id != order.id));
   }
 
-  
+  announceSortChange(sortState: Sort) { 
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce(LiveAnnouncerMessage.SortingCleared);
+    }
+    this.datasource.sort = this.sort;
+  }
   removeAll(){
     this.removeAllEmitter.emit();
   }
