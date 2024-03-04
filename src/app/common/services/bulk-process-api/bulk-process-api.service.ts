@@ -67,4 +67,7 @@ export class BulkProcessApiService implements IBulkProcessApiService {
     return this.Api.BulkPickCreateBatch(body);
   }
   
+  public updateLocationQuantity(body: any) {
+    return this.Api.updateLocationQuantity(body);
+  }
 }

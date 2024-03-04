@@ -1547,4 +1547,8 @@ public BatchesNextBatchID() {
 public async BulkPickCreateBatch(body:any){ 
   return await this.ApiBase.PostHttpResponse("/batches", body);
 }
+
+public async updateLocationQuantity(body:any){
+  return await this.ApiBase.PutHttpResponse("/bulkpicks/locationquantity", body);
+}
 }
