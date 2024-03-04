@@ -22,7 +22,7 @@ export class BpOrderSelectionListComponent implements OnInit {
   @Output() appendAllEmitter = new EventEmitter<any>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   tableHeading = "Batch Selection List";
-
+  @ViewChild('paginator1') paginator1: MatPaginator;
   constructor( private _liveAnnouncer: LiveAnnouncer) { }
 
   ngOnInit(): void {
@@ -42,6 +42,7 @@ export class BpOrderSelectionListComponent implements OnInit {
     }  
     this.datasource = new MatTableDataSource(this.orders);
     if(this.orders.length) this.datasource.sort = this.sort;
+    this.datasource.paginator = this.paginator1;
   }
   announceSortChange(sortState: Sort) { 
     if (sortState.direction) {
@@ -55,6 +56,7 @@ export class BpOrderSelectionListComponent implements OnInit {
     if(!this.batchSeleted){
       this.selectOrderEmitter.emit(order);
       this.datasource = new MatTableDataSource(this.datasource.filteredData.filter((x:any) => x.id != order.id));
+      this.datasource.paginator = this.paginator1;
        this.datasource.sort = this.sort;
     }
   }

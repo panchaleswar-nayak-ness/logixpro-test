@@ -17,8 +17,8 @@ export class BpSelectedOrdersComponent implements OnInit {
   @Input() view;
   @ViewChild(MatSort) sort: MatSort;
   @Output() removeOrderEmitter = new EventEmitter<any>();
-  @Output() removeAllEmitter = new EventEmitter<any>();
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @Output() removeAllEmitter = new EventEmitter<any>(); 
+  @ViewChild('paginator1') paginator1: MatPaginator;
   tableHeading = "Selected Batches";
   datasource:any = [];
 
@@ -40,11 +40,14 @@ export class BpSelectedOrdersComponent implements OnInit {
     }
     this.datasource = new MatTableDataSource(this.selectedOrders);
     if(this.selectedOrders.length) this.datasource.sort = this.sort;
+    this.datasource.paginator = this.paginator1;
   }
 
   removeOrder(order: any) {
     this.removeOrderEmitter.emit(order);
     this.datasource = new MatTableDataSource(this.datasource.filteredData.filter((x: any) => x.id != order.id));
+    this.datasource.sort = this.sort;
+    this.datasource.paginator = this.paginator1;
   }
 
   announceSortChange(sortState: Sort) { 

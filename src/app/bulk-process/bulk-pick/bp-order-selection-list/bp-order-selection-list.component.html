@@ -59,6 +59,12 @@
           <tr mat-row *matRowDef="let row; columns: ordersDisplayedColumns;"></tr>
         </table>
       </ng-scrollbar>
+      <div class="table-pagination d-flex justify-content-start" >
+        <mat-paginator [pageSize]="10" #paginator1 [length]="datasource.filteredData.length" [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons
+        [pageSizeOptions]="[10, 20, 100]"></mat-paginator>
+
+
+        </div>
     </div>
   </mat-card-content>
 </mat-card>
