@@ -200,6 +200,7 @@ export class BulkPickComponent implements OnInit {
     this.selectedOrders = [...this.selectedOrders, ...this.orders];
     this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
     this.orders = [];
+    this.status.linesCount = this.selectedOrders.length;
   }
 
   getworkstationbulkzone() {

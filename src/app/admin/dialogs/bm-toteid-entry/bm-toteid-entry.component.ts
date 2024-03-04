@@ -139,7 +139,7 @@ export class BmToteidEntryComponent implements OnInit {
   }
 
   validtote($event: any) {
-    if (this.preferences.ValidateToteIDs && $event.target.value) {
+    if ($event.target.value) {
       var obj = {
         toteid: $event.target.value
       }
