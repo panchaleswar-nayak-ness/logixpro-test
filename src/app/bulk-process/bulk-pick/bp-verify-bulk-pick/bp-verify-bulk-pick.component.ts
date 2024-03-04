@@ -18,7 +18,8 @@ export class BpVerifyBulkPickComponent implements OnInit {
   @Input() SelectedList: any = [];
   @Input() NextToteID: any;
   @Input() ordersDisplayedColumns: string[] = ["OrderNo", "ItemNo", "Description", "LineNo", "Location", "LotNo", "SerialNo", "Whse", "OrderQty", "CompletedQty", "ToteID", "Action"];
-
+ 
+  SearchString:any;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -27,7 +28,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
     this.iBulkProcessApiService = bulkProcessApiService;
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
     this.SelectedList = new MatTableDataSource(
       this.SelectedList
     );
@@ -43,7 +44,11 @@ export class BpVerifyBulkPickComponent implements OnInit {
     var list =  this.SelectedList.filteredData.sort((a, b) =>  b.orderNumber.localeCompare(a.orderNumber) && a.itemNumber.localeCompare(b.itemNumber));
     this.SelectedList = new MatTableDataSource(list);
   }
-
+  Search($event:any){
+    debugger
+    let filterValue = $event.trim().toLowerCase(); // Remove leading and trailing whitespace & convert to lowercase
+  this.SelectedList.filter = filterValue;
+  }
   backButton() {
     this.back.emit();
   }
