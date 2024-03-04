@@ -45,8 +45,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
     var list = this.SelectedList.filteredData.sort((a, b) => b.orderNumber.localeCompare(a.orderNumber) && a.itemNumber.localeCompare(b.itemNumber));
     this.SelectedList = new MatTableDataSource(list);
   }
-  Search($event: any) {
-    debugger
+  Search($event:any){ 
     let filterValue = $event.trim().toLowerCase(); // Remove leading and trailing whitespace & convert to lowercase
     this.SelectedList.filter = filterValue;
   }
