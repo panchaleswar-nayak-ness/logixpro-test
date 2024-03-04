@@ -16,6 +16,7 @@ export class ConfirmationDialogComponent implements OnInit {
   dialog_heading: string = '';
   buttonFields:any = false;
   threeButtons:boolean = false;
+  singleButton:boolean = false;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
   private global:GlobalService, 
    
@@ -27,6 +28,7 @@ export class ConfirmationDialogComponent implements OnInit {
     this.dialog_heading = this.data?.heading;
     this.buttonFields = this.data?.buttonFields;
     this.threeButtons = this.data?.threeButtons;
+    this.singleButton = this.data?.singleButton;
   }
 
   confirmOK()

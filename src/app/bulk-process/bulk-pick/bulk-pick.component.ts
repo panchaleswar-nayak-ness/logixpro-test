@@ -117,10 +117,13 @@ export class BulkPickComponent implements OnInit {
 
   pickProcess() {
     if (this.Prefernces?.pickToTotes) this.OpenNextToteId();
-    else this.changeVisibiltyVerifyBulk();
+    else this.changeVisibiltyVerifyBulk(false);
   }
 
-  changeVisibiltyVerifyBulk() {
+  changeVisibiltyVerifyBulk(event: any) {
+    if (event) {
+      this.bulkPickoOrderBatchToteQty();
+    }
     this.verifyBulkPicks = !this.verifyBulkPicks;
   }
 
@@ -245,7 +248,7 @@ export class BulkPickComponent implements OnInit {
 
       }
       else if (res == ResponseStrings.Cancel) {
-        if (this.view != "batch") await this.createBatchNow(); 
+        if (this.view != "batch") await this.createBatchNow();
       }
     });
   }

@@ -22,4 +22,4 @@
     </div>
 </div>
 
-<app-bp-verify-bulk-pick *ngIf="verifyBulkPicks" [SelectedList]="selectedOrders" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk()"></app-bp-verify-bulk-pick>
+<app-bp-verify-bulk-pick *ngIf="verifyBulkPicks" [SelectedList]="selectedOrders" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk($event)"></app-bp-verify-bulk-pick>

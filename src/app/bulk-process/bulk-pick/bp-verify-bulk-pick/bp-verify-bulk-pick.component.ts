@@ -22,6 +22,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
 
   SearchString: any;
   public iBulkProcessApiService: IBulkProcessApiService;
+  taskCompleted: boolean = false;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     private global: GlobalService
@@ -45,7 +46,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
     var list = this.SelectedList.filteredData.sort((a, b) => b.orderNumber.localeCompare(a.orderNumber) && a.itemNumber.localeCompare(b.itemNumber));
     this.SelectedList = new MatTableDataSource(list);
   }
-  Search($event:any){ 
+  Search($event: any) {
     let filterValue = $event.trim().toLowerCase(); // Remove leading and trailing whitespace & convert to lowercase
     this.SelectedList.filter = filterValue;
   }
@@ -64,7 +65,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
       if (resp == ResponseStrings.Yes) {
-        this.back.emit();
+        this.back.emit(this.taskCompleted);
       }
     });
   }
@@ -146,18 +147,57 @@ export class BpVerifyBulkPickComponent implements OnInit {
 
 
   async taskComplete() {
-    // let payload: any = {
-    //   "otid": 13503889,
-    //   "pickqty": 0,
-    //   "toteID": "",
-    //   "serialNumber": "",
-    //   "lotNumber": "",
-    //   "pickedQty": 4,
-    //   "countQty": 0
-    // };
-    // let res: any = await this.iBulkProcessApiService.bulkPickTaskComplete(payload);
-    // if (res?.status == 200) {
-    //   this.global.ShowToastr(ToasterType.Success, "Task Completed Successfully", ToasterTitle.Success);
-    // }
+    const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: `You will now confirm the actual Completed Quantities entered are correct!`,
+        message2: `
+        ‘No’ changes may be made after posting!
+        Touch ‘Yes’ to continue.`,
+        heading: 'Post Completed Quantity?',
+        buttonFields: true,
+      },
+    });
+    dialogRef1.afterClosed().subscribe(async (resp: any) => {
+      if (resp == ResponseStrings.Yes) {
+        let orders: any = [];
+        this.SelectedList.filteredData.forEach((x: any) => {
+          orders.push(
+            {
+              "otid": x.id,
+              "toteID": x.toteId,
+              "serialNumber": x.serialNumber,
+              "lotNumber": x.lotNumber,
+              "pickedQty": x.transactionQuantity,
+              "countQty": x.completedQuantity
+            }
+          );
+        });
+        let res: any = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
+        if (res?.status == 200) {
+          this.taskCompleted = true;
+          const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+            height: 'auto',
+            width: Style.w560px,
+            autoFocus: DialogConstants.autoFocus,
+            disableClose: true,
+            data: {
+              message: `There are no remaining picks for the selected orders.`,
+              message2: `Please move the order to Packaging/Shipping.`,
+              heading: 'No Remaining Picks',
+              singleButton: true
+            },
+          });
+          dialogRef1.afterClosed().subscribe(async (resp: any) => {
+            if (resp == ResponseStrings.Yes) {
+              this.back.emit(this.taskCompleted);
+            }
+          });
+        }
+      }
+    });
   }
 }
