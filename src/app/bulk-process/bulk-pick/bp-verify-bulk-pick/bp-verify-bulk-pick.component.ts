@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table'; 
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -17,7 +18,8 @@ export class BpVerifyBulkPickComponent implements OnInit {
   @Input() SelectedList: any = [];
   @Input() NextToteID: any;
   @Input() ordersDisplayedColumns: string[] = ["OrderNo", "ItemNo", "Description", "LineNo", "Location", "LotNo", "SerialNo", "Whse", "OrderQty", "CompletedQty", "ToteID", "Action"];
-
+ 
+  SearchString:any;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -26,20 +28,27 @@ export class BpVerifyBulkPickComponent implements OnInit {
     this.iBulkProcessApiService = bulkProcessApiService;
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
+    this.SelectedList = new MatTableDataSource(
+      this.SelectedList
+    );
     // this.CopyAllOrder();
   }
 
   ViewByLocation() {
-    debugger;
-    this.SelectedList = this.SelectedList.sort((a, b) => a.location - b.location);
+    var list = this.SelectedList.filteredData.sort((a, b) =>  b.location.localeCompare(a.location));
+    this.SelectedList = new MatTableDataSource(list);
   }
 
   ViewByOrderItem() {
-    debugger
-    this.SelectedList = this.SelectedList.sort((a, b) => (a.orderNumber - b.orderNumber) && (a.itemNumber - b.itemNumber));
+    var list =  this.SelectedList.filteredData.sort((a, b) =>  b.orderNumber.localeCompare(a.orderNumber) && a.itemNumber.localeCompare(b.itemNumber));
+    this.SelectedList = new MatTableDataSource(list);
   }
-
+  Search($event:any){
+    debugger
+    let filterValue = $event.trim().toLowerCase(); // Remove leading and trailing whitespace & convert to lowercase
+  this.SelectedList.filter = filterValue;
+  }
   backButton() {
     this.back.emit();
   }
@@ -96,13 +105,13 @@ export class BpVerifyBulkPickComponent implements OnInit {
   }
 
   ResetAllCompletedQty() {
-    this.SelectedList.forEach(element => {
+    this.SelectedList.filteredData.forEach(element => {
       element.completedQuantity = 0;
     });
   }
 
   CopyAllOrder() {
-    this.SelectedList.forEach(element => {
+    this.SelectedList.filteredData.forEach(element => {
       element.completedQuantity = element.transactionQuantity;
     });
   }

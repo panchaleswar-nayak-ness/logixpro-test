@@ -35,7 +35,7 @@
                 <div class="flex-grow-1 mb-xl-0 mb-3">
                     <mat-form-field class="w-100 br-14 custom-form-field-bg-white" appearance="outline">
                         <span class="material-symbols-outlined icon-search pe-2">search</span>
-                        <input type="text" placeholder="Search" aria-label="Search" matInput maxlength="50"
+                        <input type="text" (ngModelChange)="Search($event)" [(ngModel)]="SearchString" placeholder="Search" aria-label="Search" matInput maxlength="50"
                             #autoFocusField>
                     </mat-form-field>
                 </div>
