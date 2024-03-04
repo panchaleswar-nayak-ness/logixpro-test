@@ -22,15 +22,4 @@
     </div>
 </div>
 
-<div class="container-fluid p-0" *ngIf="verifyBulkPicks">
-    <div class="row">
-        <div class="col-xl-12 mb-3">
-            <app-bp-verify-bulk-pick [SelectedList]="selectedOrders" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk()"></app-bp-verify-bulk-pick>
-        </div>
-    </div>
-    <div>
-        <button mat-flat-button color="primary" class="btn-lg w-100">
-            Task Complete
-        </button>
-    </div>
-</div>
+<app-bp-verify-bulk-pick *ngIf="verifyBulkPicks" [SelectedList]="selectedOrders" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk()"></app-bp-verify-bulk-pick>

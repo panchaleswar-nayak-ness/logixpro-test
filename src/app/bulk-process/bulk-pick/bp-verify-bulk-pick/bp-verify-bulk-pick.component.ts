@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table'; 
+import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
@@ -19,8 +19,8 @@ export class BpVerifyBulkPickComponent implements OnInit {
   @Input() SelectedList: any = [];
   @Input() NextToteID: any;
   @Input() ordersDisplayedColumns: string[] = ["OrderNo", "ItemNo", "Description", "LineNo", "Location", "LotNo", "SerialNo", "Whse", "OrderQty", "CompletedQty", "ToteID", "Action"];
- 
-  SearchString:any;
+
+  SearchString: any;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -29,7 +29,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
     this.iBulkProcessApiService = bulkProcessApiService;
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.SelectedList = new MatTableDataSource(
       this.SelectedList
     );
@@ -37,17 +37,17 @@ export class BpVerifyBulkPickComponent implements OnInit {
   }
 
   ViewByLocation() {
-    var list = this.SelectedList.filteredData.sort((a, b) =>  b.location.localeCompare(a.location));
+    var list = this.SelectedList.filteredData.sort((a, b) => b.location.localeCompare(a.location));
     this.SelectedList = new MatTableDataSource(list);
   }
 
   ViewByOrderItem() {
-    var list =  this.SelectedList.filteredData.sort((a, b) =>  b.orderNumber.localeCompare(a.orderNumber) && a.itemNumber.localeCompare(b.itemNumber));
+    var list = this.SelectedList.filteredData.sort((a, b) => b.orderNumber.localeCompare(a.orderNumber) && a.itemNumber.localeCompare(b.itemNumber));
     this.SelectedList = new MatTableDataSource(list);
   }
   Search($event:any){ 
     let filterValue = $event.trim().toLowerCase(); // Remove leading and trailing whitespace & convert to lowercase
-  this.SelectedList.filter = filterValue;
+    this.SelectedList.filter = filterValue;
   }
   backButton() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -142,5 +142,22 @@ export class BpVerifyBulkPickComponent implements OnInit {
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
     });
+  }
+
+
+  async taskComplete() {
+    // let payload: any = {
+    //   "otid": 13503889,
+    //   "pickqty": 0,
+    //   "toteID": "",
+    //   "serialNumber": "",
+    //   "lotNumber": "",
+    //   "pickedQty": 4,
+    //   "countQty": 0
+    // };
+    // let res: any = await this.iBulkProcessApiService.bulkPickTaskComplete(payload);
+    // if (res?.status == 200) {
+    //   this.global.ShowToastr(ToasterType.Success, "Task Completed Successfully", ToasterTitle.Success);
+    // }
   }
 }
