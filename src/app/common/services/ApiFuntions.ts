@@ -1551,4 +1551,8 @@ public async BulkPickCreateBatch(body:any){
 public async updateLocationQuantity(body:any){
   return await this.ApiBase.PutHttpResponse("/bulkpicks/locationquantity", body);
 }
+
+public async bulkPickTaskComplete(body:any){ 
+  return await this.ApiBase.PostHttpResponse("/bulkpicks/taskcomplete", body);
+}
 }

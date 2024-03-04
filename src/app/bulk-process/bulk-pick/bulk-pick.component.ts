@@ -300,5 +300,6 @@ export class BulkPickComponent implements OnInit {
       this.bulkPickoOrderBatchToteQty();
     });
   }
+
 }
 
