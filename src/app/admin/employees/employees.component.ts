@@ -41,6 +41,7 @@ export class EmployeesComponent implements OnInit {
   public lookUpEvnt:any=false;
   public isGroupLookUp: boolean = false;
   public env;
+  public lastAddedEmployee: any;
   @ViewChild('matRef') matRef: MatSelect;
   public allGroups:any = [];
   public searchfuncAllowed = '';
@@ -461,7 +462,11 @@ export class EmployeesComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-          if(result == true) this.employeesLookup.EmployeeLookUp();
+      if(result.mode === 'add-employee'){
+        result.data.userName = result.data.username; // ugly hack because of case mismatch in backend
+        this.updateIsLookUp({userData: result.data, isLookUp: true});
+      }
+      if(result == true) this.employeesLookup.EmployeeLookUp();
     });
   }
 

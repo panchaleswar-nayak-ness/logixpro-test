@@ -164,7 +164,8 @@ ChangePassword(data){
         this.iAdminApiService.saveAdminEmployee(form.value)
           .subscribe((response: AdminEmployeeLookupResponse) => {
             if (response.isExecuted) {
-              this.dialogRef.close(true);
+              this.dialogRef.close({mode: 'add-employee', data: response.data});
+              
               this.global.ShowToastr(ToasterType.Success,labels.alert.success, ToasterTitle.Success);
               
             }

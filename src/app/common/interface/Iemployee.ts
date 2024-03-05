@@ -111,6 +111,7 @@ export interface AdminEmployeeLookup {
 export interface AdminEmployeeLookupResponse {
   
     responseData: AdminEmployeeLookup|null;
+    data?:any;
     responseMessage: string;
     isExecuted: boolean;
 }
