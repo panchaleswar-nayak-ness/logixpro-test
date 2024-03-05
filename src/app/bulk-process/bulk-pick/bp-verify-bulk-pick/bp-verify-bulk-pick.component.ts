@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
+import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -21,20 +23,33 @@ export class BpVerifyBulkPickComponent implements OnInit {
   @Input() ordersDisplayedColumns: string[] = ["OrderNo", "ItemNo", "Description", "LineNo", "Location", "LotNo", "SerialNo", "Whse", "OrderQty", "CompletedQty", "ToteID", "Action"];
 
   SearchString: any;
-  public iBulkProcessApiService: IBulkProcessApiService;
   taskCompleted: boolean = false;
+  preferences: any;
+  public iBulkProcessApiService: IBulkProcessApiService;
+  public iAdminApiService: IAdminApiService;
+
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
+    public adminApiService: AdminApiService,
     private global: GlobalService
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
+    this.iAdminApiService = adminApiService;
   }
 
   ngOnInit(): void {
     this.SelectedList = new MatTableDataSource(
       this.SelectedList
     );
-    // this.CopyAllOrder();
+    this.companyInfo();
+  }
+
+  companyInfo() {
+    this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.preferences = res.data;
+      }
+    })
   }
 
   ViewByLocation() {
@@ -179,24 +194,55 @@ export class BpVerifyBulkPickComponent implements OnInit {
         let res: any = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
         if (res?.status == 204) {
           this.taskCompleted = true;
-          const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-            height: 'auto',
-            width: Style.w560px,
-            autoFocus: DialogConstants.autoFocus,
-            disableClose: true,
-            data: {
-              message: `There are no remaining picks for the selected orders.`,
-              message2: `Please move the order to Packaging/Shipping.`,
-              heading: 'No Remaining Picks',
-              singleButton: true
-            },
-          });
-          dialogRef1.afterClosed().subscribe(async (resp: any) => {
-            if (resp == ResponseStrings.Yes) {
-              this.back.emit(this.taskCompleted);
-            }
-          });
+          let offCarouselPickToteManifest: any = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting == 1 ? true : false;
+          let autoPrintOffCarouselPickToteManifest: any = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting == 1 ? true : false;
+          if (offCarouselPickToteManifest && autoPrintOffCarouselPickToteManifest) {
+            // print report
+            this.noRemainingPicks();
+          }
+          else if (offCarouselPickToteManifest) {
+            const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+              height: 'auto',
+              width: Style.w560px,
+              autoFocus: DialogConstants.autoFocus,
+              disableClose: true,
+              data: {
+                message: `Touch Yes to print a Tote Manifest.`,
+                heading: 'Would you like to print a Tote Manifest?',
+                buttonFields:true
+              },
+            });
+            dialogRef1.afterClosed().subscribe(async (resp: any) => {
+              if (resp == ResponseStrings.Yes) {
+                // print report
+              }
+              this.noRemainingPicks();
+            });
+          }
+          else {
+            this.noRemainingPicks();
+          }
         }
+      }
+    });
+  }
+
+  noRemainingPicks() {
+    const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: `There are no remaining picks for the selected orders.`,
+        message2: `Please move the order to Packaging/Shipping.`,
+        heading: 'No Remaining Picks',
+        singleButton: true
+      },
+    });
+    dialogRef1.afterClosed().subscribe(async (resp: any) => {
+      if (resp == ResponseStrings.Yes) {
+        this.back.emit(this.taskCompleted);
       }
     });
   }
