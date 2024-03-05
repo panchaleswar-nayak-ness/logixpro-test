@@ -21,7 +21,7 @@ export class BmToteidEntryComponent implements OnInit {
   preferences: any;
   userData: any;
   BulkProcess: any = false;
-  view:any;
+  view: any;
   public iAdminApiService: IAdminApiService;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
@@ -42,8 +42,8 @@ export class BmToteidEntryComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
-    if(this.view == 'tote'){
-      this.selectedList.forEach((x:any) => {x.toteId = x.toteId});
+    if (this.view == 'tote') {
+      this.selectedList.forEach((x: any) => { x.toteId = x.toteId });
     }
     this.companyInfo();
   }
@@ -124,7 +124,7 @@ export class BmToteidEntryComponent implements OnInit {
       .PickToteIDUpdate(paylaod)
       .subscribe((res: any) => {
         if (res.isExecuted) {
-          if(this.preferences.autoPrintTote){
+          if (this.preferences.autoPrintTote) {
             // print list and labels.
           }
           this.global.ShowToastr(ToasterType.Success, res.responseMessage, ToasterTitle.Success);
@@ -138,28 +138,27 @@ export class BmToteidEntryComponent implements OnInit {
       });
   }
 
-  validtote($event: any) {
+  async validtote($event: any) {
     if ($event.target.value) {
       var obj = {
         toteid: $event.target.value
       }
-      this.iBulkProcessApiService.validtote(obj).subscribe((res: any) => {
-        if (!res) {
-          const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
-            height: 'auto',
-            width: Style.w786px,
-            data: {
-              message: 'The Tote ID you have entered is not valid. please re-enter the Tote ID or see your supervisor for assistance.',
-              heading: 'Invalid Tote ID!'
-            },
-            autoFocus: DialogConstants.autoFocus,
-            disableClose: true,
-          });
-          dialogRef.afterClosed().subscribe((result) => {
-            $event.target.value = null;
-          });
-        }
-      })
+      let res: any = await this.iBulkProcessApiService.validtote(obj);
+      if (res?.status == 204) {
+        const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
+          height: 'auto',
+          width: Style.w786px,
+          data: {
+            message: 'The Tote ID you have entered is not valid. please re-enter the Tote ID or see your supervisor for assistance.',
+            heading: 'Invalid Tote ID!'
+          },
+          autoFocus: DialogConstants.autoFocus,
+          disableClose: true,
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+          $event.target.value = null;
+        });
+      }
     }
   }
 }

@@ -1535,8 +1535,8 @@ public LocationAssignmentFunctionsUpdate(body:any):  Observable<any> {
 public bulkPreferences(): Observable<any> { 
   return this.ApiBase.Get("/bulkpicks/bulkPreferences");
 }
-public validtote(body:any): Observable<any> { 
-  return this.ApiBase.Get("/totes/validtote",body);
+public validtote(body:any) { 
+  return this.ApiBase.GetHttpResponse("/totes/validtote",body);
 }
 public BatchNextTote(): Observable<any> { 
   return this.ApiBase.Get("/totes/nexttote");
@@ -1553,6 +1553,6 @@ public async updateLocationQuantity(body:any){
 }
 
 public async bulkPickTaskComplete(body:any){ 
-  return await this.ApiBase.PostHttpResponse("/bulkpicks/taskcomplete", body);
+  return await this.ApiBase.PutHttpResponse("/bulkpicks/taskcomplete", body);
 }
 }

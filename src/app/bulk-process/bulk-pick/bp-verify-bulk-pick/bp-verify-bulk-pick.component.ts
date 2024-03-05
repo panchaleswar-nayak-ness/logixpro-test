@@ -169,7 +169,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
             {
               "otid": x.id,
               "toteID": x.toteId,
-              "serialNumber": x.serialNumber,
+              "serialNumber": "",
               "lotNumber": x.lotNumber,
               "pickedQty": x.transactionQuantity,
               "countQty": x.completedQuantity
@@ -177,7 +177,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
           );
         });
         let res: any = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
-        if (res?.status == 200) {
+        if (res?.status == 204) {
           this.taskCompleted = true;
           const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
             height: 'auto',
