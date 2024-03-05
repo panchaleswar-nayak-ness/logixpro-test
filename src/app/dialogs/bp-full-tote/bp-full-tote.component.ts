@@ -5,6 +5,7 @@ import { BpNumberSelectionComponent } from '../bp-number-selection/bp-number-sel
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
+import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 
 @Component({
   selector: 'app-bp-full-tote',
@@ -61,5 +62,29 @@ export class BpFullToteComponent implements OnInit {
 
   putAllInNewTote(){
     this.data.PutNewToteQty = this.data.PutFullToteQty;
+  }
+
+  async validtote($event: any) {
+    if ($event.target.value) {
+      var obj = {
+        toteid: $event.target.value
+      }
+      let res: any = await this.iBulkProcessApiService.validtote(obj);
+      if (res?.status == 204) {
+        const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
+          height: 'auto',
+          width: Style.w786px,
+          data: {
+            message: 'The Tote ID you have entered is not valid. please re-enter the Tote ID or see your supervisor for assistance.',
+            heading: 'Invalid Tote ID!'
+          },
+          autoFocus: DialogConstants.autoFocus,
+          disableClose: true,
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+          $event.target.value = null;
+        });
+      }
+    }
   }
 }
