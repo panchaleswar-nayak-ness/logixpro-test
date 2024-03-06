@@ -1555,4 +1555,8 @@ public async updateLocationQuantity(body:any){
 public async bulkPickTaskComplete(body:any){ 
   return await this.ApiBase.PutHttpResponse("/bulkpicks/taskcomplete", body);
 }
+
+public async fullTote(body:any){
+  return await this.ApiBase.PutHttpResponse("/totes/fulltote", body);
+}
 }

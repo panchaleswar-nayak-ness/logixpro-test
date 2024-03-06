@@ -195,7 +195,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
           );
         });
         let res: any = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
-        if (res?.status == 204) {
+        if (res?.status == 201) {
           this.taskCompleted = true;
           let offCarouselPickToteManifest: any = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting == 1 ? true : false;
           let autoPrintOffCarouselPickToteManifest: any = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting == 1 ? true : false;

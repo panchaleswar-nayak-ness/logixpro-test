@@ -16,4 +16,5 @@ export interface IBulkProcessApiService {
   BulkPickCreateBatch(body:any);
   updateLocationQuantity(body:any);
   bulkPickTaskComplete(body:any);
+  fullTote(body:any);
 }
