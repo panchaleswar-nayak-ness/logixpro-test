@@ -18,7 +18,7 @@
       {{buttonFields?'Yes':'Ok'}}
     </button>
     <button *ngIf="!threeButtons && !singleButton" mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="true">
-      {{buttonFields?'Noo':'Cancel'}}
+      {{buttonFields?'No':'Cancel'}}
     </button>
     <button *ngIf="threeButtons" mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg mb-2" (click)="confirmNo()">
       {{buttonFields?'No':'Cancel'}}
