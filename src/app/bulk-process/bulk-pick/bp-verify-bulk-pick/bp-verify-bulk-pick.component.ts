@@ -76,10 +76,13 @@ export class BpVerifyBulkPickComponent implements OnInit {
         Leaving will remove transactions, otherwise continue with transaction verification`,
         heading: 'Verify Bulk Pick',
         buttonFields: true,
+        customButtonText:true,
+        btn1Text:'Continue Verification',
+        btn2Text:'Leave Anyway'
       },
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if (resp == ResponseStrings.Yes) {
+      if (resp != ResponseStrings.Yes) {
         this.back.emit(this.taskCompleted);
       }
     });
