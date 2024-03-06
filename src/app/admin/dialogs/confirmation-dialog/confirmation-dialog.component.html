@@ -15,13 +15,13 @@
   <div class="w-100">
     <button (click)="confirmOK()" mat-stroked-button color="primary"
       class="w-100 btn-lg mb-2 prompt-action-accent-button">
-      {{buttonFields?'Yes':'Ok'}}
+      {{customButtonText ? btn1Text : buttonFields?'Yes':'Ok'}}
     </button>
     <button *ngIf="!threeButtons && !singleButton" mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" [mat-dialog-close]="true">
-      {{buttonFields?'Noo':'Cancel'}}
+      {{customButtonText ? btn2Text : buttonFields?'No':'Cancel'}}
     </button>
     <button *ngIf="threeButtons" mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg mb-2" (click)="confirmNo()">
-      {{buttonFields?'No':'Cancel'}}
+      {{customButtonText ? btn2Text : buttonFields?'No':'Cancel'}}
     </button>
     <button *ngIf="threeButtons" mat-stroked-button color="basic" class="custom-btn bg-white w-100 btn-lg" (click)="confirmCancel()">
       Cancel
