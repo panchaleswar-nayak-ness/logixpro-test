@@ -98,7 +98,7 @@ export class BpFullToteComponent implements OnInit {
         "Type": "pick",
         "newToteQTY": this.data.PutNewToteQty
       }
-      let res: any = await this.iBulkProcessApiService.validtote(payload);
+      let res: any = await this.iBulkProcessApiService.fullTote(payload);
       if (res?.status == 201) {
         this.dialogRef.close(true);
       }
