@@ -23,10 +23,10 @@
                                 appearance="outline">
                                 <mat-label>Actions</mat-label>
                                 <mat-select class="employees-action" placeholder="Actions">
-                                    <mat-option value="add_new_transaction" (click)="ViewByLocation()">View By Location</mat-option>
-                                    <mat-option value="add_new_transaction" (click)="ViewByOrderItem()">View By Order / Item</mat-option>
-                                    <mat-option value="add_new_transaction">Print List</mat-option>
-                                    <mat-option value="add_new_transaction">Print All Labels</mat-option>
+                                    <mat-option value="add_new_transaction"  matTooltip="Press to view line items sorted by Location." (click)="ViewByLocation()">View By Location</mat-option>
+                                    <mat-option value="add_new_transaction" matTooltip="Press to view line items sorted by Order than Item Number/Location." (click)="ViewByOrderItem()">View By Order / Item</mat-option>
+                                    <mat-option value="add_new_transaction"  matTooltip="Press to Print a traveler - off Carousel list for this Batch.">Print List</mat-option>
+                                    <mat-option value="add_new_transaction" matTooltip="Press to Print a Off-Carousel Pick Item Label for all of this Batch.">Print All Labels</mat-option>
                                 </mat-select>
                                 <span class="material-symbols-outlined icon-expand-more">expand_more</span>
                             </mat-form-field>
@@ -43,12 +43,12 @@
                             </mat-form-field>
                         </div>
                         <div class="mb-xl-0 mb-3">
-                            <button mat-stroked-button color="primary" class="button-secondary btn-md w-100" (click)="ResetAllCompletedQty()">
+                            <button mat-stroked-button color="primary" matTooltip="Touch to change the Completed Quantity to zero for all transactions." class="button-secondary btn-md w-100" (click)="ResetAllCompletedQty()">
                                 Reset All Completed Qty’s to Zero
                             </button>
                         </div>
                         <div class="mb-xl-0 mb-3">
-                            <button mat-stroked-button color="primary" class="button-secondary btn-md w-100" (click)="CopyAllOrder()">
+                            <button mat-stroked-button color="primary" class="button-secondary btn-md w-100" matTooltip="Press to copy the Order Quantity to the Completed Quantity for all transactions." (click)="CopyAllOrder()">
                                 Copy All Order Qty’s to Completed Qty’s
                             </button>
                         </div>
@@ -97,19 +97,19 @@
                   </ng-container>
                   <ng-container matColumnDef="OrderQty">
                     <th mat-header-cell *matHeaderCellDef> Order Qty</th>
-                    <td mat-cell *matCellDef="let element" (click)="element.completedQuantity = element.transactionQuantity"> {{element.transactionQuantity}} </td>
+                    <td mat-cell *matCellDef="let element" matTooltip="Display the Order Quantity. Touch once to copy to the  Completed Quantity." (click)="element.completedQuantity = element.transactionQuantity"> {{element.transactionQuantity}} </td>
                   </ng-container>
                   <ng-container matColumnDef="CompletedQty" stickyEnd>
-                    <th mat-header-cell *matHeaderCellDef> Completed Qty</th>
-                    <td mat-cell *matCellDef="let element"  (click)="numberSelection(element)"> 
+                    <th mat-header-cell *matHeaderCellDef > Completed Qty</th>
+                    <td mat-cell *matCellDef="let element" matTooltip='Press "Copy Quantities" to update the Completed Quantity to the Order Quantity. Or double-click in the Completed Quantity field.' (click)="numberSelection(element)"> 
                         <mat-form-field class="custom-form-field" appearance="outline" style="width:100px">
                             <input  matInput type="text" readonly [(ngModel)]="element.completedQuantity" maxlength="50">
                           </mat-form-field>    
                     </td>
                   </ng-container>
                   <ng-container matColumnDef="ToteID" stickyEnd>
-                    <th mat-header-cell *matHeaderCellDef> Tote ID</th>
-                    <td mat-cell *matCellDef="let element"> 
+                    <th mat-header-cell *matHeaderCellDef > Tote ID</th>
+                    <td mat-cell *matCellDef="let element" matTooltip="Display  the Tote ID."> 
                         <mat-form-field class="custom-form-field" appearance="outline" style="width:100px">
                             <input  matInput type="text" [(ngModel)]="element.toteId" maxlength="50">
                           </mat-form-field>     </td>
@@ -124,8 +124,8 @@
                       </button>
         
                       <mat-menu #appMenu="matMenu">
-                        <button mat-menu-item >Print Single Label</button>
-                        <button mat-menu-item (click)="fullTote(element)">Full Tote</button>
+                        <button mat-menu-item matTooltip="Press to Print a Off-Carousel Pick Item Label for the currently selected record." >Print Single Label</button>
+                        <button mat-menu-item matTooltip="Press to split this transaction into more than one tote." (click)="fullTote(element)">Full Tote</button>
                       </mat-menu>
                     </td>
         
