@@ -20,7 +20,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() SelectedList: any = [];
   @Input() NextToteID: any;
-  @Input() ordersDisplayedColumns: string[] = ["OrderNo", "ItemNo", "Description", "LineNo", "Location", "LotNo", "SerialNo", "Whse", "OrderQty", "CompletedQty", "ToteID", "Action"];
+  @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
 
   SearchString: any;
   taskCompleted: boolean = false;
@@ -195,7 +195,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
           );
         });
         let res: any = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
-        if (res?.status == 204) {
+        if (res?.status == 201) {
           this.taskCompleted = true;
           let offCarouselPickToteManifest: any = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting == 1 ? true : false;
           let autoPrintOffCarouselPickToteManifest: any = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting == 1 ? true : false;

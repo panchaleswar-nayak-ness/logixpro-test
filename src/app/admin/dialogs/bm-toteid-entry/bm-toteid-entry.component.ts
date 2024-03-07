@@ -67,24 +67,9 @@ export class BmToteidEntryComponent implements OnInit {
   }
 
   createNextTote() {
-    const dialogRef: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
-      width: Style.w600px,
-      data: {
-        message: !this.BulkProcess ? 'Click OK to auto generate tote IDs for this batch of orders.' : 'Touch ‘Yes’ to automatically Create Tote ID’s for this batch of orders.',
-        heading: !this.BulkProcess ? 'Batch Manager' : 'Auto Generate Tote ID’s?',
-        buttonFields: true
-      },
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === ResponseStrings.Yes) {
-        this.selectedList.forEach((element, i) => {
-          this.selectedList[i]['toteId'] =
-            parseInt(this.nextToteID) + i + 1;
-        });
-      }
+    this.selectedList.forEach((element, i) => {
+      this.selectedList[i]['toteId'] =
+        parseInt(this.nextToteID) + i + 1;
     });
   }
 

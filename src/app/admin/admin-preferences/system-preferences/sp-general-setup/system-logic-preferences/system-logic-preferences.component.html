@@ -44,7 +44,7 @@
           <mat-label>Pick Type</mat-label>
           <mat-select
             [(ngModel)]="CompanyObj.pickType"
-            (change)="payload()"
+            (ngModelChange)="payload()"
             class="employees-action"
             value="pick"
           >
