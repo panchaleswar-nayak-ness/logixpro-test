@@ -20,7 +20,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() SelectedList: any = [];
   @Input() NextToteID: any;
-  @Input() ordersDisplayedColumns: string[] = ["OrderNo", "ItemNo", "Description", "LineNo", "Location", "LotNo", "SerialNo", "Whse", "OrderQty", "CompletedQty", "ToteID", "Action"];
+  @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
 
   SearchString: any;
   taskCompleted: boolean = false;
