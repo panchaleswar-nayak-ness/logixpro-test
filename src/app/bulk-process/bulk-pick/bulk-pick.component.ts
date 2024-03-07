@@ -159,6 +159,7 @@ export class BulkPickComponent implements OnInit {
       this.iBulkProcessApiService.bulkPickBatchId(paylaod).subscribe((res: any) => {
         if (res) {
           this.selectedOrders = res;
+          this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
           this.batchSeleted = true;
         }
       });

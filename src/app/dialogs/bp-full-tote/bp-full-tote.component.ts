@@ -64,6 +64,7 @@ export class BpFullToteComponent implements OnInit {
 
   putAllInNewTote() {
     this.data.PutNewToteQty = this.data.PutFullToteQty;
+    this.data.PutFullToteQty = 0;
   }
 
   async validtote($event: any) {
