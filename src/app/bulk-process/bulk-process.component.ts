@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../common/services/shared.service';
+import { AuthService } from '../common/init/auth.service';
 
 @Component({
   selector: 'app-bulk-process',
@@ -7,15 +8,22 @@ import { SharedService } from '../common/services/shared.service';
   styleUrls: ['./bulk-process.component.scss']
 })
 export class BulkProcessComponent implements OnInit {
-updateMenu(arg0: string,arg1: string) {
-throw new Error('Method not implemented.');
-}
+ 
 
   tabHoverColor:string = '#cf9bff3d';
 
   constructor(
     private sharedService: SharedService,
+    public authService: AuthService
     ) { }
   ngOnInit(): void {
+  }
+  
+  updateMenu(menu = '', route = ''){   
+    this.sharedService.updateBulkProcessMenu({menu , route});
+  }
+
+  isAuthorized(controlName:any) {
+    return !this.authService.isAuthorized(controlName);
   }
 }

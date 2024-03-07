@@ -49,8 +49,9 @@ export class SharedService {
   updateMenuFromInside: Subject<any> = new Subject<any>();
   sideMenuHideObserver: Subject<any> = new Subject<any>();
   PrintServiceObserver: Subject<any> = new Subject<any>();
+  updateBulkProcessMenuObserver: Subject<any> = new Subject<any>();
   
-
+  
   BroadCastInductionMenuUpdate(str: any) {
     this.updateInductionMenuObserver.next(str);
   }
@@ -67,7 +68,11 @@ export class SharedService {
   updateAdminMenu() {
     this.updateAdminMenuObserver.next(true);
   }
-
+  updateBulkProcessMenu(
+    menu // on side menu update induction menu
+  ) {
+    this.updateBulkProcessMenuObserver.next(menu);
+  }
   updateInductionAdminMenu(
     menu // on side menu update induction menu
   ) {
