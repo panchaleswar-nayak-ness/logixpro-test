@@ -64,11 +64,11 @@ export class MainComponent implements OnInit {
       (res: any) => {
         if (res?.data) {
           // temp BulkProcess
-          res.data.wsAllAppPermission.push("BulkProcess");
-          res.data.appLicenses.BulkProcess = JSON.parse(JSON.stringify(res.data.appLicenses.FlowRackReplenish));
-          res.data.appLicenses.BulkProcess.info.displayName = "BulkProcess";
-          res.data.appLicenses.BulkProcess.info.name = "BulkProcess";
-          res.data.appLicenses.BulkProcess.info.url = "BulkProcess";
+          res.data.wsAllAppPermission.push("BulkTransactions");
+          res.data.appLicenses.BulkTransactions = JSON.parse(JSON.stringify(res.data.appLicenses.FlowRackReplenish));
+          res.data.appLicenses.BulkTransactions.info.displayName = "BulkTransactions";
+          res.data.appLicenses.BulkTransactions.info.name = "BulkTransactions";
+          res.data.appLicenses.BulkTransactions.info.url = "BulkTransactions";
           // temp BulkProcess
           
           this.convertToObj(res.data);
@@ -138,11 +138,11 @@ export class MainComponent implements OnInit {
         permission: 'FlowRack Replenish',
       },
       {
-        appName: 'BulkProcess',
-        route: '/BulkProcess',
+        appName: 'BulkTransactions',
+        route: '/BulkTransactions',
         iconName: 'process_chart',
-        name: 'BulkProcess',
-        updateMenu: 'BulkProcess',
+        name: 'BulkTransactions',
+        updateMenu: 'BulkTransactions',
         permission: 'FlowRack Replenish',
       },
       {
@@ -201,7 +201,7 @@ export class MainComponent implements OnInit {
     else if (menu == RouteUpdateMenu.OrderManager) this.sharedService.BroadCastMenuUpdate(obj.route);
     else if (menu == RouteUpdateMenu.Consolidation) this.sharedService.BroadCastMenuUpdate(obj.route);
     else if (menu === RouteUpdateMenu.FlowReplenishment) this.sharedService.updateFlowrackMenu(menu);
-    else if (menu === RouteUpdateMenu.BulkProcess)this.sharedService.BroadCastMenuUpdate(obj.route);
+    else if (menu === RouteUpdateMenu.BulkTransactions)this.sharedService.BroadCastMenuUpdate(obj.route);
 
     this.sharedService.updateSidebar();
   }

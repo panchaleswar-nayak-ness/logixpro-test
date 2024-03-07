@@ -29,7 +29,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'insert_chart', title: AppPermissions.ConsolidationManager, route: '/ConsolidationManager', permission: AppPermissions.ConsolidationManager },
     { icon: 'pending_actions', title: AppPermissions.OrderManager, route: '/OrderManager', permission: AppPermissions.OrderManager },
     { icon: 'schema', title: 'FlowRack Replenishment', route: '/FlowrackReplenish', permission: 'FlowRack Replenish' },
-    { icon: 'process_chart', title: 'Bulk Process', route: '/BulkProcess', permission: 'FlowRack Replenish' }
+    { icon: 'process_chart', title: 'Bulk Transactions', route: '/BulkTransactions', permission: 'FlowRack Replenish' }
   ];
   globalMenus: any = [
     { icon: 'door_front', title: 'Home', route: '/globalconfig/home', permission: true },
@@ -106,10 +106,10 @@ export class SideNavComponent implements OnInit {
     { icon: 'tune', title: 'Preferences ', route: '/FlowrackReplenish/Preferences', permission: 'FlowRack Replenish' },
   ];
   bulkProcessMenus: any = [
-    { icon: 'arrow_back', title: 'Bulk Process', route: '/BulkProcess', class: UniqueConstants.backClass, permission: 'FlowRack Replenish' },
-    { icon: 'archive', title: 'Bulk Pick', route: '/BulkProcess/BulkPick', permission: 'FlowRack Replenish' },
-    { icon: 'unarchive', title: 'Bulk Put Away', route: '/BulkProcess/BulkPutAway', permission: true },
-    { icon: 'tune', title: 'Preferences', route: '/BulkProcess/Preferences', permission: 'FlowRack Replenish' },
+    { icon: 'arrow_back', title: 'Bulk Transactions', route: '/BulkTransactions', class: UniqueConstants.backClass, permission: 'FlowRack Replenish' },
+    { icon: 'archive', title: 'Bulk Pick', route: '/BulkTransactions/BulkPick', permission: 'FlowRack Replenish' },
+    { icon: 'unarchive', title: 'Bulk Put Away', route: '/BulkTransactions/BulkPutAway', permission: true },
+    { icon: 'tune', title: 'Preferences', route: '/BulkTransactions/Preferences', permission: 'FlowRack Replenish' },
   ];
 
 
@@ -321,10 +321,10 @@ export class SideNavComponent implements OnInit {
       this.isChildMenu = true;
     }
 
-    if (menu.route.includes("/BulkProcess")) {
+    if (menu.route.includes("/BulkTransactions")) {
       let splittedRoute = menu.route.split('/');
       if (splittedRoute[2] === undefined) this.bulkProcessMenus[0].route = AppRoutes.Dashboard;
-      else this.bulkProcessMenus[0].route = '/BulkProcess';
+      else this.bulkProcessMenus[0].route = '/BulkTransactions';
       this.childMenus = this.bulkProcessMenus;
       this.isParentMenu = false;
       this.isChildMenu = true;

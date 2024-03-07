@@ -190,11 +190,11 @@ export class LoginComponent {
         (res: any) => {
           if (res?.data) {
             // temp BulkProcess
-          res.data.wsAllAppPermission.push("BulkProcess");
-          res.data.appLicenses.BulkProcess = res.data.appLicenses.FlowRackReplenish;
-          res.data.appLicenses.BulkProcess.info.displayName = "BulkProcess";
-          res.data.appLicenses.BulkProcess.info.name = "BulkProcess";
-          res.data.appLicenses.BulkProcess.info.url = "BulkProcess";
+          res.data.wsAllAppPermission.push("BulkTransactions");
+          res.data.appLicenses.BulkTransactions = res.data.appLicenses.FlowRackReplenish;
+          res.data.appLicenses.BulkTransactions.info.displayName = "BulkTransactions";
+          res.data.appLicenses.BulkTransactions.info.name = "BulkTransactions";
+          res.data.appLicenses.BulkTransactions.info.url = "BulkTransactions";
           // temp BulkProcess
             this.convertToObj(res.data);
             localStorage.setItem('availableApps',JSON.stringify(this.applicationData))

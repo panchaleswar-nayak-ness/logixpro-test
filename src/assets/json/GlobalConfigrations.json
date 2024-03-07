@@ -229,19 +229,19 @@
     },
 
     {
-        "path": "/BulkProcess",
+        "path": "/BulkTransactions",
         "Permission": "FlowRack Replenish"
     },
     {
-        "path": "/BulkProcess/BulkPick",
+        "path": "/BulkTransactions/BulkPick",
         "Permission": "FlowRack Replenish"
     },
     {
-        "path": "/BulkProcess/BulkPutAway",
+        "path": "/BulkTransactions/BulkPutAway",
         "Permission": "FlowRack Replenish"
     },
     {
-        "path": "/BulkProcess/Preferences",
+        "path": "/BulkTransactions/Preferences",
         "Permission": "FlowRack Replenish"
     }
     

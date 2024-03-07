@@ -182,7 +182,7 @@ export const AppNames = {
     Markout: 'Markout',
     OrderManager: 'OrderManager',
     WorkManager: 'WorkManager',
-    BulkProcess: 'BulkProcess',
+    BulkTransactions: 'BulkTransactions',
    
 }
 
@@ -241,7 +241,7 @@ export const RouteUpdateMenu = {
     OrderManager: 'orderManager',
     TransactionAdmin: 'transaction-admin',
     FlowReplenishment: 'FlowReplenishment',
-    BulkProcess: 'BulkProcess',
+    BulkTransactions: 'BulkTransactions',
     RouteFromInduction:'routeFromInduction'
     
 }
