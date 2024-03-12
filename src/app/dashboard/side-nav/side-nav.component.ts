@@ -107,8 +107,8 @@ export class SideNavComponent implements OnInit {
   ];
   bulkProcessMenus: any = [
     { icon: 'arrow_back', title: 'Bulk Transactions', route: '/BulkTransactions', class: UniqueConstants.backClass, permission: 'FlowRack Replenish' },
-    { icon: 'archive', title: 'Bulk Pick', route: '/BulkTransactions/BulkPick', permission: 'FlowRack Replenish' },
-    { icon: 'unarchive', title: 'Bulk Put Away', route: '/BulkTransactions/BulkPutAway', permission: true },
+    { icon: 'unarchive', title: 'Bulk Pick', route: '/BulkTransactions/BulkPick', permission: 'FlowRack Replenish' },
+    { icon: 'archive', title: 'Bulk Put Away', route: '/BulkTransactions/BulkPutAway', permission: true },
     { icon: 'tune', title: 'Preferences', route: '/BulkTransactions/Preferences', permission: 'FlowRack Replenish' },
   ];
 

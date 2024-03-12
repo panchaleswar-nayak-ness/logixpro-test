@@ -66,7 +66,7 @@ export class MainComponent implements OnInit {
           // temp BulkProcess
           res.data.wsAllAppPermission.push("BulkTransactions");
           res.data.appLicenses.BulkTransactions = JSON.parse(JSON.stringify(res.data.appLicenses.FlowRackReplenish));
-          res.data.appLicenses.BulkTransactions.info.displayName = "BulkTransactions";
+          res.data.appLicenses.BulkTransactions.info.displayName = "Bulk Transactions";
           res.data.appLicenses.BulkTransactions.info.name = "BulkTransactions";
           res.data.appLicenses.BulkTransactions.info.url = "BulkTransactions";
           // temp BulkProcess
