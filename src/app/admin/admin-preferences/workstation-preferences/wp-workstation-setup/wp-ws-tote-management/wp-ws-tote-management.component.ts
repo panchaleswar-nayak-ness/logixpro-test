@@ -39,8 +39,6 @@ export class WpWsToteManagementComponent implements OnInit {
         this.companyObj.carManifest = res.data.pfSettingsII.filter((x: any) => x.pfName == "Carousel Manifest")[0].pfSetting == 1 ? true : false;
         this.companyObj.offCarManifest = res.data.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting == 1 ? true : false;
         this.companyObj.batchHotPut = res.data.pfSettingsII.filter((x: any) => x.pfName == "Batch Hot Put Away")[0].pfSetting;
-        this.companyObj.ValidateToteIDs = res.data.validateToteIDs;
-        this.companyObj.MaintainBulkPickBatchID = res.data.maintainBulkPickBatchID;
       }
       else {
         this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
@@ -59,8 +57,6 @@ export class WpWsToteManagementComponent implements OnInit {
       "carManifest": this.companyObj.carManifest,
       "offCarManifest": this.companyObj.offCarManifest,
       "autoToteManifest": this.companyObj.autoToteManifest,
-      "ValidateToteIDs": this.companyObj.ValidateToteIDs,
-      "MaintainBulkPickBatchID": this.companyObj.MaintainBulkPickBatchID
     }
     this.saveForm(payload);
   }
