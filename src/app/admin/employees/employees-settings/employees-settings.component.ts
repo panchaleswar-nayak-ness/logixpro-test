@@ -338,7 +338,7 @@ export class EmployeesSettingsComponent implements OnInit {
   saveMaximumOrders() {
     this.initialzeEmpForm();
     this.empForm.value.wsid = "TESTWID";
-    this.empForm.value.username = this.empData.username;
+    this.empForm.value.username = this.empData.userName;
     this.empForm.value.groupName = "";
     this.iAdminApiService.updateAdminEmployee(this.empForm.value).subscribe((res: any) => {
       if (res.isExecuted) this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
