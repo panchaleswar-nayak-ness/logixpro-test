@@ -128,7 +128,6 @@ export class SideNavComponent implements OnInit {
     this.iGlobalConfigApi = globalConfigApi;
     this.sharedService?.sideMenuHideObserver?.subscribe(menu => this.isMenuHide = menu);
     this.sharedService?.SidebarMenupdate?.subscribe((data: any) => {
-      debugger
       let Menuobj = this.menus.find(x => x.route == data);
       if (Menuobj == null && this.authService.UserPermissonByFuncName('Admin Menu')) Menuobj = this.adminMenus.find(x => x.route == data);
       this.loadMenus(Menuobj);
@@ -235,7 +234,6 @@ export class SideNavComponent implements OnInit {
   }
 
   loadMenus(menu: any) {
-    debugger
     this.sharedService.updateLoggedInUser(this.userData.userName, this.userData.wsid, menu.route);
     if (!menu) menu = { route: AppRoutes.Dashboard };
 

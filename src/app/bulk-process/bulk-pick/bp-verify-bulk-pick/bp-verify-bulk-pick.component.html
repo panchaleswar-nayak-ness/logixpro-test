@@ -22,7 +22,7 @@
                                 class="action-dropdown custom-form-field-bg-white float-end flex-grow-1 flexOne"
                                 appearance="outline">
                                 <mat-label>Actions</mat-label>
-                                <mat-select class="employees-action" placeholder="Actions">
+                                <mat-select class="employees-action" placeholder="Actions" #openAction (selectionChange)="generateTranscAction($event)">
                                     <mat-option value="add_new_transaction"  matTooltip="Press to view line items sorted by Location." (click)="ViewByLocation()">View By Location</mat-option>
                                     <mat-option value="add_new_transaction" matTooltip="Press to view line items sorted by Order than Item Number/Location." (click)="ViewByOrderItem()">View By Order / Item</mat-option>
                                     <mat-option value="add_new_transaction"  matTooltip="Press to Print a traveler - off Carousel list for this Batch.">Print List</mat-option>

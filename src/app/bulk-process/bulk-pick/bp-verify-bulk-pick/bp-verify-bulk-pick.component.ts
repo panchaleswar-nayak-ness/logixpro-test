@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
@@ -27,6 +29,8 @@ export class BpVerifyBulkPickComponent implements OnInit {
   preferences: any;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
+
+  @ViewChild('openAction') openAction: MatSelect;
 
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -89,7 +93,6 @@ export class BpVerifyBulkPickComponent implements OnInit {
   }
 
   numberSelection(element) {
-    console.log(element);
     element.NextToteID = this.NextToteID;
     const dialogRef1: any = this.global.OpenDialog(BpNumberSelectionComponent, {
       height: 'auto',
@@ -249,4 +252,9 @@ export class BpVerifyBulkPickComponent implements OnInit {
       }
     });
   }
+
+  generateTranscAction(event: any) {
+    this.openAction?.options.forEach((data: MatOption) => data.deselect());
+  }
+
 }

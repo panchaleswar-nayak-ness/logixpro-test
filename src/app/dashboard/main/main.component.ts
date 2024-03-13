@@ -193,7 +193,6 @@ export class MainComponent implements OnInit {
   }
 
   updateMenu(menu = '', obj: any = null) {
-    debugger
     if (menu != '') this.sharedService.updateLoggedInUser(this.userData.userName, this.userData.wsid, menu);
 
     if (menu == RouteUpdateMenu.Admin) this.sharedService.updateAdminMenu();

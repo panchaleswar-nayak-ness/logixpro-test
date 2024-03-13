@@ -405,7 +405,6 @@ export class AddInvMapLocationComponent implements OnInit {
       quantityAllocatedPutAway: new FormControl(this.getDetailInventoryMapData.quantityAllocatedPutAway || 0),
       itemQuantity: new FormControl(this.getDetailInventoryMapData.itemQuantity || 0),
     }, { validators: this.validateQuantity });
-    debugger
   }
 
   validateQuantity(control: AbstractControl): ValidationErrors | null {
