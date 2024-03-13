@@ -49,7 +49,7 @@
         <div class="col-xl-6">
             <mat-form-field class="custom-form-field w-100 mb-2" appearance="outline" (click)="openNumberSelection()">
                 <mat-label>Qty Put in New Tote</mat-label>
-                <input matInput type="text" [value]="data.PutNewToteQty">
+                <input matInput type="text" [value]="data.PutNewToteQty" readonly>
             </mat-form-field>
             <button mat-stroked-button color="primary" class="btn-regular w-100" (click)="putAllInNewTote()">
                 Put All in New Tote
