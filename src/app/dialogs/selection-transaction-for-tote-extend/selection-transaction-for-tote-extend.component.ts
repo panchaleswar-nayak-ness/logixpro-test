@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { formatDate } from '@angular/common' 
+import { formatDate } from '@angular/common'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component'; 
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { CrossDockTransactionComponent } from '../cross-dock-transaction/cross-dock-transaction.component';
 import labels from 'src/app/common/labels/labels.json';
 import { CellSizeComponent } from 'src/app/admin/dialogs/cell-size/cell-size.component';
-import { VelocityCodeComponent } from 'src/app/admin/dialogs/velocity-code/velocity-code.component';  
+import { VelocityCodeComponent } from 'src/app/admin/dialogs/velocity-code/velocity-code.component';
 import { ChooseLocationComponent } from '../choose-location/choose-location.component';
 import { WarehouseComponent } from 'src/app/admin/dialogs/warehouse/warehouse.component';
 import { Router } from '@angular/router';
@@ -52,17 +52,17 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   public iAdminApiService : IAdminApiService;
   public iCommonAPI : ICommonApi;
   event: Event;
-  
+
   constructor(
-    private renderer: Renderer2, 
+    private renderer: Renderer2,
     private elementRef: ElementRef,
     public commonAPI : CommonApiService,
     public dialogRef : MatDialogRef<SelectionTransactionForToteExtendComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public adminApiService: AdminApiService,
     public formBuilder : FormBuilder,
-    private authService : AuthService, 
-    public inductionManagerApi: InductionManagerApiService, 
+    private authService : AuthService,
+    public inductionManagerApi: InductionManagerApiService,
     public router: Router,
     private global:GlobalService,
   ) {
@@ -82,7 +82,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       subCategory                       : new FormControl('', Validators.compose([])),
       userField1                        : new FormControl('', Validators.compose([])),
       userField2                        : new FormControl('', Validators.compose([])),
-      lotNumber                         : new FormControl('', Validators.compose([])),                  
+      lotNumber                         : new FormControl('', Validators.compose([])),
       expirationDate                    : new FormControl('', Validators.compose([])),
       serialNumber                      : new FormControl('', Validators.compose([])),
       transactionQuantity               : new FormControl('', Validators.compose([])),
@@ -128,13 +128,13 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       dedicated                         : new FormControl(false, Validators.compose([])),
     });
   }
-  
+
   ngOnInit(): void {
     this.userData = this.authService.userData();
     this.OSFieldFilterNames();
     this.getCellSizeList();
     this.getVelocityCodeList();
-    this.getDetails();    
+    this.getDetails();
     this.imPreferences = this.global.getImPreferences();
     this.pickToteSetupIndex();
   }
@@ -143,10 +143,10 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.fieldFocus?.nativeElement.focus();
   }
 
-  public OSFieldFilterNames() { 
+  public OSFieldFilterNames() {
     this.iAdminApiService.ColumnAlias().subscribe((res: any) => {
       if (res.data && res.isExecuted) this.fieldNames = res.data;
-      else this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error); 
+      else this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
     });
   }
 
@@ -166,14 +166,14 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   getDetails() {
     try {
-      let payload = { 
+      let payload = {
         "otid": this.data.otid,
-        "itemNumber": this.data.itemNumber, 
+        "itemNumber": this.data.itemNumber,
       }
       this.iInductionManagerApi.ItemDetails(payload).subscribe(
         (res: any) => {
           if (res.data && res.isExecuted) {
-            const values = res.data[0];  
+            const values = res.data[0];
             this.isWarehouseSensitive = values.warehouseSensitive;
             this.orderNum = values.orderNumber;
             this.totes = this.data.totes;
@@ -192,7 +192,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               subCategory                       : values.subCategory,
               userField1                        : values.userField1,
               userField2                        : values.userField2,
-              lotNumber                         : values.lotNumber,                  
+              lotNumber                         : values.lotNumber,
               expirationDate                    : values.expirationDate ? formatDate(values.expirationDate, 'yyyy-MM-dd', 'en') : '',
               serialNumber                      : values.serialNumber,
               transactionQuantity               : this.data.transactionQuantity ? this.data.transactionQuantity : this.data.defaultPutAwayQuantity,
@@ -264,13 +264,13 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         this.toteForm.patchValue({
           userField1                        : '',
           userField2                        : '',
-          lotNumber                         : '',                  
+          lotNumber                         : '',
           expirationDate                    : '',
           serialNumber                      : '',
           warehouse                         : '',
-        }); 
+        });
       }
-    });    
+    });
   }
 
   getCellSizeList() {
@@ -304,11 +304,11 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
           message: 'Click OK to save current cell sizes and velocity codes for this item to the inventory master.',
         },
       });
-  
+
       dialogRef.afterClosed().subscribe((result) => {
         if (result == ResponseStrings.Yes) {
           const values = this.toteForm.value;
-          let payload = { 
+          let payload = {
             "itemNumber": values.itemNumber,
             "ccell": values.carouselCellSize,
             "bcell": values.bulkCellSize,
@@ -317,12 +317,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             "bvel": values.bulkVelocity,
             "cFvel": values.cfVelocity,
             "pzone": values.primaryPickZone,
-            "szone": values.secondaryPickZone, 
+            "szone": values.secondaryPickZone,
           }
-          
+
           this.iInductionManagerApi.IMUpdate(payload).subscribe(
             (res: any) => {
-              if (res.data && res.isExecuted) this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);            
+              if (res.data && res.isExecuted) this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success);
               else {
                 this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
                 console.log("IMUpdate",res.responseMessage);
@@ -331,7 +331,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
             (error) => { }
           );
         }
-      }); 
+      });
     } catch (error) {}
   }
 
@@ -341,7 +341,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     if(param == UniqueConstants.cellSize) currentValue = this.toteForm.controls['carouselCellSize'].value;
     else if(param == 'bulkCellSize') currentValue = this.toteForm.controls['bulkCellSize'].value;
     else if(param == 'cfCellSize') currentValue = this.toteForm.controls['cfCellSize'].value;
-    
+
     let dialogRef:any = this.global.OpenDialog(CellSizeComponent, {
       height: 'auto',
       width: '750px',
@@ -368,7 +368,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     if(param == UniqueConstants.goldenZone) currentValue  = this.toteForm.controls['carouselVelocity'].value;
     else if(param == 'bulkVelocity') currentValue  = this.toteForm.controls['bulkVelocity'].value;
     else if(param == 'cfVelocity') currentValue  = this.toteForm.controls['cfVelocity'].value;
-    
+
     let dialogRef:any = this.global.OpenDialog(VelocityCodeComponent, {
       height: 'auto',
       width: '750px',
@@ -386,7 +386,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         else if(param == 'bulkVelocity') this.toteForm.patchValue({ 'bulkVelocity' : result });
         else if(param == 'cfVelocity') this.toteForm.patchValue({ 'cfVelocity' : result });
       this.getVelocityCodeList();
-    });    
+    });
   }
 
   onNoClick(): void {
@@ -404,7 +404,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      if (res?.responseMessage  === "Reserved Successfully") {        
+      if (res?.responseMessage  === "Reserved Successfully") {
         this.toteForm.patchValue({
           zone                              : res.zone,
           carousel                          : res.carousel,
@@ -441,8 +441,15 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                   message: 'There is a need for ' + res.data + ' of item: ' + values.itemNumber + '. Press OK to find a location needing replenishment. Otherwise press CANCEL to do a normal location search',
                 }
               });
-  
-              dialogRef.afterClosed().subscribe((result) => { if (result == ResponseStrings.Yes) this.findLocation(true, res.data) });
+
+              dialogRef.afterClosed().subscribe((result) => {
+                if (result == ResponseStrings.Yes) {
+                  this.findLocation(true, res.data)
+                } else {
+                  this.findLocation(false, 0);
+                }
+              });
+
             } else this.findLocation(false, 0);
           }
           else {
@@ -451,8 +458,8 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
           }
         },
         (error) => { console.log(error); }
-      );      
-    } catch (error) {console.log(error); }    
+      );
+    } catch (error) {console.log(error); }
   }
 
   findLocation(replenfwd : any, repQty : number) {
@@ -480,7 +487,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         "rts": false,
         "expDate": values.expirationDate,
         "primaryZone": values.primaryPickZone,
-        "secondaryZone": values.secondaryPickZone, 
+        "secondaryZone": values.secondaryPickZone,
       };
       this.iInductionManagerApi.FindLocation(payLoad).subscribe(
         (res: any) => {
@@ -499,7 +506,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                 maximumQuantity                   : res.data.locMaxQty,
                 quantityAllocatedPutAway          : res.data.qtyAlloc,
                 invMapID                          : res.data.invMapID
-              }); 
+              });
             } else this.global.ShowToastr(ToasterType.Error,'No available locations were found for this item.', ToasterTitle.Error);
           } else {
             this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
@@ -507,7 +514,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
           }
         },
         (error) => { console.log(error); }
-      );      
+      );
     } catch (error) {
       console.log(error)
     }
@@ -515,7 +522,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
 
   openCrossDockTransactionDialogue() {
     const values = this.toteForm.value;
-    
+
     const dialogRef:any = this.global.OpenDialog(CrossDockTransactionComponent, {
       height: 'auto',
       width: '70vw',
@@ -542,7 +549,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       if(res.data == "Submit") this.completeTransaction();
     });
   }
-  
+
   openWareHouse() {
     if(!this.isWarehouseSensitive) return;
     const values = this.toteForm.value;
@@ -558,7 +565,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
         check: 'fromReelDetail'
       },
     });
-    dialogRef.afterClosed().subscribe((res) => {      
+    dialogRef.afterClosed().subscribe((res) => {
       if(res && res != StringConditions.clear) {
         this.toteForm.patchValue({ 'warehouse' : res });
         this.findLocation(false, 0);
@@ -571,13 +578,13 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       if (val.invMapID <= 0 || !val.invMapID || val.zone == "") {
         this.global.ShowToastr(ToasterType.Error,'You must select a location for this transaction before it can be processed.', ToasterTitle.Error);
         return false;
-      } 
+      }
 
       if (this.toteForm.getRawValue().dateSensitive && !val.expirationDate) {
         this.global.ShowToastr(ToasterType.Error,'This item is date sensitive. You must provide an expiration date.', ToasterTitle.Error);
         return false;
       }
-    }    
+    }
 
     if (this.toteForm.getRawValue().fifo && val.fifoDate.toLowerCase() == 'expiration date' && !val.expirationDate) {
       this.global.ShowToastr(ToasterType.Error,'This item is marked as FIFO with Expiration Date and its FIFO Date.You must provide an Expiration Date.', ToasterTitle.Error);
@@ -587,7 +594,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     if (this.toteForm.getRawValue().warehouseSensitive && !val.warehouse) {
       this.global.ShowToastr(ToasterType.Error,'This item is warehouse sensitive and must be assigned a warehouse before process can continue.', ToasterTitle.Error);
       return false;
-    }    
+    }
 
     if (val.toteQty <= 0) {
       this.global.ShowToastr(ToasterType.Error,'Quantity should be greater 0', ToasterTitle.Error);
@@ -618,7 +625,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               });
 
               dialogRef.afterClosed().subscribe((res) => {
-                if(res == ResponseStrings.Yes) this.dialogRef.close("New Batch");   
+                if(res == ResponseStrings.Yes) this.dialogRef.close("New Batch");
               });
             } else {
               let payLoad = {
@@ -628,9 +635,9 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                   values.itemNumber,
                   values.warehouse,
                   "1=1"
-                ], 
+                ],
               };
-        
+
               this.iInductionManagerApi.CrossDock(payLoad).subscribe(
                 (res: any) => {
                   if (res.data && res.isExecuted) {
@@ -644,11 +651,11 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                           message: 'Cross Dock opportunity!  Click OK to view backorder transactions for the item you are putting away.',
                         },
                       });
-      
+
                       dialogRef.afterClosed().subscribe((result) => {
                         if (result == ResponseStrings.Yes) this.openCrossDockTransactionDialogue();
                         else this.complete(values);
-                      });                
+                      });
                     }
                     else this.complete(values);
                   } else {
@@ -657,7 +664,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
                   }
                 },
                 (error) => { console.log(error); }
-              );   
+              );
             }
           }
           else {
@@ -686,7 +693,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   taskComplete(values : any) {
     let payload2 = {
       "otid": this.data.otid,
-      "splitQty": values.splitQty || 0, 
+      "splitQty": values.splitQty || 0,
       "qty": values.toteQty,
       'toteID': values.toteID,
       "batchID": this.data.batchID,
@@ -711,7 +718,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       "dedicate": values.dedicated,
       "orderNumber": values.orderNumber,
     }
-    
+
     this.iInductionManagerApi.TaskComplete(payload2).subscribe(
       (res: any) => {
         if (res.data && res.isExecuted) {
@@ -738,7 +745,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               else for (let i = 0; i < numLabel; i++) this.global.Print(`FileName:PrintPutAwayItemLabels|OTID:${OTID}`);
           }
           this.dialogRef.close("Task Completed");
-          this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success );            
+          this.global.ShowToastr(ToasterType.Success,labels.alert.update, ToasterTitle.Success );
         } else {
           this.global.ShowToastr(ToasterType.Error,ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
           console.log("TaskComplete",res.responseMessage);
@@ -796,13 +803,13 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
               if (result == ResponseStrings.Yes) splitQty = parseInt(values.transactionQuantity) - parseInt(values.toteQty);
               this.taskComplete({ splitQty : splitQty, ...values });
             });
-          } else this.taskComplete(values);      
-        }                      
+          } else this.taskComplete(values);
+        }
       }
     });
   }
 
-  onViewItemDetail(itemNum:any) { 
+  onViewItemDetail(itemNum:any) {
     this.router.navigate([]).then(() => {
       window.open(`/#/admin/inventoryMaster?itemNumber=${itemNum}`, UniqueConstants._blank);
     });
@@ -811,7 +818,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   forSameSKU() {
     this.toteForm.patchValue({
       orderNumber                       : '',
-      lotNumber                         : '',                  
+      lotNumber                         : '',
       expirationDate                    : '',
       serialNumber                      : '',
       transactionQuantity               : '',
@@ -829,12 +836,12 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
       quantityAllocatedPutAway          : '',
 
       toteQty                           : this.data.defaultPutAwayQuantity
-    }); 
+    });
   }
 
   selectTotePosOrID(col : string, value : string) {
     let data = this.totes.filter((e: any) => e[col] == value?.toString());
-    if (data.length > 0) {  
+    if (data.length > 0) {
       this.toteForm.patchValue({
         toteID   : data[0].toteID,
         totePos  : data[0].totesPosition,
@@ -859,7 +866,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
   tooltipShowDelay: number = 100000;
   lastScrollPosition: number = 1000;
   scrollDirection: string = '';
-  
+
   onScroll(event: Event) {
     const currentScrollPosition = (event.target as Element).scrollTop;
     // Check if the input field is focused
@@ -869,8 +876,8 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     }
     if (this.initialFocus) {
       this.inputToteQty.nativeElement.focus();
-      this.initialFocus = false;  
-      this.tooltipShowDelay = 100000;  
+      this.initialFocus = false;
+      this.tooltipShowDelay = 100000;
     }
     else if(currentScrollPosition < this.lastScrollPosition){
       this.tooltip.hide();
@@ -879,5 +886,5 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     if (currentScrollPosition > this.lastScrollPosition) this.tooltipShowDelay = 100000;
     this.lastScrollPosition = currentScrollPosition; // Update last known scroll position
   }
-  
+
 }
