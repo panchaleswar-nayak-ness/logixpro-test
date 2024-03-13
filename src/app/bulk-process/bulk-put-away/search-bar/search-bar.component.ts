@@ -15,6 +15,8 @@ export class SearchBarComponent implements OnInit {
   @Output() changeViewEmitter = new EventEmitter<any>();
   @Output() addItemEmitter = new EventEmitter<any>();
   @Output() printDetailList = new EventEmitter<any>();
+  @Output() createBatchEmit = new EventEmitter<any>();
+  
   searchText: string = "";
   suggestion: string = "";
   filteredOrders: any = [];
@@ -28,7 +30,9 @@ export class SearchBarComponent implements OnInit {
   changeView(event: any) {
     this.changeViewEmitter.emit(event.value);
   }
-
+  CreateBatch(){
+    this.createBatchEmit.emit(true);
+  }
   search(event: any) {
     if (this.view == "batch") {
       this.filteredOrders = this.orders.filter(function (str) { return str.batchPickId.startsWith(event); });

@@ -44,6 +44,7 @@ export class BulkPutAwayComponent implements OnInit {
   Prefernces: any;
   selectedOrders: any = [];
   nextBatchId: string = '';
+  IsBatch: boolean = false;
   batchSeleted: boolean = false;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
@@ -275,7 +276,8 @@ export class BulkPutAwayComponent implements OnInit {
     });
   }
 
-  async createBatchNow() {
+  async createBatchNow($event:any = false) {
+    this.IsBatch = $event;
     let res: any = await this.iBulkProcessApiService.BatchesNextBatchID();
     if (res?.status == 200) {
       this.nextBatchId = res.body;
@@ -299,7 +301,11 @@ export class BulkPutAwayComponent implements OnInit {
           }
           let res2: any = await this.iBulkProcessApiService.BulkPickCreateBatch(payload);
           if (res2?.status == 200) {
-            this.printItemLabelsNow();
+           if(!this.IsBatch) this.printItemLabelsNow();
+           else {
+            this.selectedOrders = [];
+            this.bulkPutAwayoOrderBatchToteQty();
+           }
           }
         }
       });
