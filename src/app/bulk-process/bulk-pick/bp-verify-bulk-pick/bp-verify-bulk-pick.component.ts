@@ -1,3 +1,4 @@
+import { HttpStatusCode } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
@@ -45,10 +46,10 @@ export class BpVerifyBulkPickComponent implements OnInit {
     this.SelectedList = new MatTableDataSource(
       this.SelectedList
     );
-    this.companyInfo();
+    this.getWorkstationSetupInfo();
   }
 
-  companyInfo() {
+  getWorkstationSetupInfo() {
     this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
       if (res.isExecuted && res.data) {
         this.preferences = res.data;
@@ -111,7 +112,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
           "locationqty": 0
         };
         let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
-        if (res?.status == 200) {
+        if (res?.status == HttpStatusCode.Ok) {
           this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
         }
         element.completedQuantity = resp.newQuantity;
@@ -133,7 +134,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
             "locationqty": parseInt(result.SelectedItem)
           };
           let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
-          if (res?.status == 200) {
+          if (res?.status == HttpStatusCode.Ok) {
             this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
           }
         });
@@ -198,13 +199,13 @@ export class BpVerifyBulkPickComponent implements OnInit {
           );
         });
         let res: any = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
-        if (res?.status == 201) {
+        if (res?.status == HttpStatusCode.Created) {
           this.taskCompleted = true;
-          let offCarouselPickToteManifest: any = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting == 1 ? true : false;
-          let autoPrintOffCarouselPickToteManifest: any = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting == 1 ? true : false;
+          let offCarouselPickToteManifest: boolean = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting == 1 ? true : false;
+          let autoPrintOffCarouselPickToteManifest: boolean = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting == 1 ? true : false;
           if (offCarouselPickToteManifest && autoPrintOffCarouselPickToteManifest) {
             // print report
-            this.noRemainingPicks();
+            this.showNoRemainingPicks();
           }
           else if (offCarouselPickToteManifest) {
             const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
@@ -222,18 +223,18 @@ export class BpVerifyBulkPickComponent implements OnInit {
               if (resp == ResponseStrings.Yes) {
                 // print report
               }
-              this.noRemainingPicks();
+              this.showNoRemainingPicks();
             });
           }
           else {
-            this.noRemainingPicks();
+            this.showNoRemainingPicks();
           }
         }
       }
     });
   }
 
-  noRemainingPicks() {
+  showNoRemainingPicks() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: Style.w560px,

@@ -2,13 +2,13 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 import { AuthService } from 'src/app/common/init/auth.service';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { ToasterTitle, ToasterType, ResponseStrings, DialogConstants, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-bm-toteid-entry',
@@ -129,7 +129,7 @@ export class BmToteidEntryComponent implements OnInit {
         toteid: $event.target.value
       }
       let res: any = await this.iBulkProcessApiService.validtote(obj);
-      if (res?.status == 204) {
+      if (res?.status == HttpStatusCode.NoContent) {
         const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
           width: Style.w786px,
