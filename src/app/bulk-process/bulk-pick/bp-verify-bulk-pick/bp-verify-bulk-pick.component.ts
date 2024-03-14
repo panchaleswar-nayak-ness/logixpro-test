@@ -1,5 +1,5 @@
 import { HttpStatusCode } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
@@ -32,6 +32,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
   public iAdminApiService: IAdminApiService;
 
   @ViewChild('openAction') openAction: MatSelect;
+  @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -47,6 +48,12 @@ export class BpVerifyBulkPickComponent implements OnInit {
       this.SelectedList
     );
     this.getWorkstationSetupInfo();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.searchBoxField?.nativeElement.focus();
+    }, 500);
   }
 
   getWorkstationSetupInfo() {
