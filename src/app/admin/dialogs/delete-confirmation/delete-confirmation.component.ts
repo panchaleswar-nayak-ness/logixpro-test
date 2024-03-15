@@ -13,7 +13,7 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { ICommonApi } from 'src/app/common/services/common-api/common-api-interface';
 import { CommonApiService } from 'src/app/common/services/common-api/common-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { Mode, ToasterTitle, ToasterType ,ResponseStrings,dataCredientials} from 'src/app/common/constants/strings.constants';
+import { Mode, ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-delete-confirmation',
@@ -187,8 +187,7 @@ export class DeleteConfirmationComponent implements OnInit {
       } else if (this.data.mode === Mode.DeleteEmp) {
         let emp_data = {
           userName: this.data.emp_data.userName,
-          deleteBy: this.userData.userName,
-          wsid: dataCredientials.testWsid,
+          deleteBy: this.userData.userName
         };
         this.iAdminApiService
           .deleteAdminEmployee(emp_data)

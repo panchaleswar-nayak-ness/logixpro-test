@@ -11,7 +11,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,dataCredientials,Style,StringConditions} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,StringConditions} from 'src/app/common/constants/strings.constants';
 
 export interface DialogData {
   animal: 'panda' | 'unicorn' | 'lion';
@@ -141,7 +141,7 @@ ChangePassword(data){
         if(this.groupChanged){
           let requpdateAccessGroup = await this.iAdminApiService.updateAccessGroup({"group": this.empForm.value.groupName,"Username" : this.username}).toPromise();
           if(requpdateAccessGroup.isExecuted){
-            let reqgetAdminEmployeeDetails = await this.iAdminApiService.getAdminEmployeeDetails({"user": this.username,"wsid": dataCredientials.testWsid}).toPromise();
+            let reqgetAdminEmployeeDetails = await this.iAdminApiService.getAdminEmployeeDetails({"user": this.username}).toPromise();
             if(reqgetAdminEmployeeDetails.isExecuted){
               this.functionsAllowedList = reqgetAdminEmployeeDetails.data.userRights;
             }
