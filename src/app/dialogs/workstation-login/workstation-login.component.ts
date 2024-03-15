@@ -13,6 +13,7 @@ type ValidWorkstation = {pcName: string, wsid: string};
 })
 export class WorkstationLoginComponent{
 
+  acknowledgeRisks: boolean = false;
   existingWorkstations: ValidWorkstation[] = [];
   selectedWorkstation: ValidWorkstation;
   advanced: boolean = false;
@@ -65,6 +66,7 @@ export class WorkstationLoginComponent{
 
   createWorkstation(endpoint: string){
     this.apiBase.Put(endpoint, {PcName: this.wsName}).subscribe((res: any) => {
+      console.log(res); 
       let cookiesString = document.cookie;
       let cookiesArray = cookiesString.split(';');
       let workstationID = cookiesArray.find((cookie) => {
@@ -84,6 +86,9 @@ export class WorkstationLoginComponent{
     });
   }
 
+  shouldShowError(){
+    return this.errorMessage || this.wsName == this.invalidWorkstationName && this.wsName && this.wsName.length > 0;
+  }
 
   close(){
     this.showError = true;

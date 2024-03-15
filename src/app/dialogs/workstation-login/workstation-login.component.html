@@ -84,9 +84,17 @@
             
         </div>
     </div>  
+
+    <!-- we should also add a little checkbox/label to acknowledge the risks -->
+    <div class="d-flex align-items-center mb-3" style="margin-top: 20px;">
+        <mat-checkbox class="me-2" [(ngModel)]="acknowledgeRisks" color="primary"></mat-checkbox>
+        <span style="line-height: normal;">I acknowledge the risks and wish to proceed with an existing workstation profile.</span>
+    </div>
+    
+
     <!--submit existing button-->
     <div class="d-flex gap-12 mb-1" mat-dialog-actions>
-        <button mat-flat-button color="primary" class="btn-lg flex-grow-1" [disabled]="!selectedWorkstation" (click)="submitExisting()">
+        <button mat-flat-button color="primary" class="btn-lg flex-grow-1" [disabled]="(!selectedWorkstation || !acknowledgeRisks)" (click)="submitExisting()">
             Submit
         </button>
     </div>
