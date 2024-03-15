@@ -63,10 +63,14 @@
                     </app-icon-heading-component>
                 </div>
                 <div class="card p-3">
-                    <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline">
+                    <mat-form-field class="action-dropdown custom-form-field-bg-white w-100" appearance="outline"
+                        *ngIf="companyInfo">
                         <mat-label>Order Sort</mat-label>
-                        <mat-select class="employees-action">
-                            <mat-option value="1">1</mat-option>
+                        <mat-select class="employees-action" [(ngModel)]="companyInfo.orderSort"
+                            (ngModelChange)="payload()">
+                            <ng-container *ngFor="let item of orderSortOptions">
+                                <mat-option [value]="item">{{ item }}</mat-option>
+                            </ng-container>
                         </mat-select>
                         <span class="material-symbols-outlined icon-expand-more">
                             expand_more
