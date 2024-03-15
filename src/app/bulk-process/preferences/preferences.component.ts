@@ -1,3 +1,4 @@
+import { HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
@@ -30,27 +31,32 @@ export class PreferencesComponent implements OnInit {
 
   async bulkPickZones() {
     let res: any = await this.iBulkProcessApiService.bulkPickZones();
-    if (res?.status == 200) {
+    if (res?.status == HttpStatusCode.Ok) {
       this.zoneOptions = res.body;
     }
   }
 
   async bulkPickBulkZone() {
     let res: any = await this.iBulkProcessApiService.bulkPickBulkZone();
-    if (res?.status == 200) {
+    if (res?.status == HttpStatusCode.Ok) {
       this.bulkZones = res.body;
+      await this.bulkPickZones();
+      
+      let wsZones = this.bulkZones.map((x:any) => x.zone);
+
       this.bulkZones.forEach(element => {
         element.isNew = false;
         element.oldZone = element.zone;
+        element.options = [...this.zoneOptions.filter((x:any) => !wsZones.includes(x.zone)) , ...this.zoneOptions.filter((x:any) => x.zone == element.zone)].sort((a,b) => (a.zone > b.zone) ? 1 : ((b.zone > a.zone) ? -1 : 0));
       });
-      this.bulkPickZones();
       this.newRecord = false;
     }
   }
 
   addRecord() {
     if (!this.newRecord) {
-      this.bulkZones = [{ isNew: true }, ...this.bulkZones];
+      let wsZones = this.bulkZones.map((x:any) => x.zone);
+      this.bulkZones = [{ isNew: true ,options:this.zoneOptions.filter((x:any) => !wsZones.includes(x.zone))}, ...this.bulkZones];
       this.newRecord = true;
     }
   }
@@ -61,7 +67,7 @@ export class PreferencesComponent implements OnInit {
         "zone": event.value,
       }
       let res: any = await this.iBulkProcessApiService.addBulkPickBulkZone(payload);
-      if (res?.status == 200) {
+      if (res?.status == HttpStatusCode.Ok) {
         this.bulkPickBulkZone();
         this.global.ShowToastr(ToasterType.Success, "Zone Added Successfully", ToasterTitle.Success);
       }
@@ -72,7 +78,7 @@ export class PreferencesComponent implements OnInit {
         "newzone": event.value
       }
       let res: any = await this.iBulkProcessApiService.updateBulkPickBulkZone(payload);
-      if (res?.status == 200) {
+      if (res?.status == HttpStatusCode.Ok) {
         this.bulkPickBulkZone();
         this.global.ShowToastr(ToasterType.Success, "Zone updated Successfully", ToasterTitle.Success);
       }
@@ -89,7 +95,7 @@ export class PreferencesComponent implements OnInit {
         "zone": this.bulkZones[index].zone,
       }
       let res: any = await this.iBulkProcessApiService.deleteBulkPickBulkZone(payload);
-      if (res?.status == 200) {
+      if (res?.status == HttpStatusCode.Ok) {
         this.bulkPickBulkZone();
         this.global.ShowToastr(ToasterType.Success, "Zone Deleted Successfully", ToasterTitle.Success);
       }

@@ -34,7 +34,7 @@
                                         <mat-form-field class="custom-form-field w-100 shorting" appearance="outline">
                                             <mat-select [value]="element.zone"
                                                 (selectionChange)="addupdateBulkPickBulkZone($event,i)">
-                                                <mat-option *ngFor="let st of zoneOptions" value="{{st.zone}}">
+                                                <mat-option *ngFor="let st of element.options" value="{{st.zone}}">
                                                     {{st.zone}}
                                                 </mat-option>
                                             </mat-select>
