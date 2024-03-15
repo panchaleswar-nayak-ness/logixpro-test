@@ -122,9 +122,9 @@ export class BulkPickComponent implements OnInit {
   }
 
   changeVisibiltyVerifyBulk(event: any) {
-    if (event) {
+    // if (event) {
       this.bulkPickoOrderBatchToteQty();
-    }
+    // }
     this.verifyBulkPicks = !this.verifyBulkPicks;
   }
 
