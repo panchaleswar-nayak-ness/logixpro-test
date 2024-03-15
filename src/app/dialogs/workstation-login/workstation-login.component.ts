@@ -5,6 +5,11 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { BaseService } from 'src/app/common/services/base-service.service';
 
 type ValidWorkstation = {pcName: string, wsid: string};
+interface LinkedResource<T> {
+  resource: T;
+  _links: {rel: string, href: string}[];
+}
+
 
 @Component({
   selector: 'app-workstation-login',
@@ -13,9 +18,10 @@ type ValidWorkstation = {pcName: string, wsid: string};
 })
 export class WorkstationLoginComponent{
 
+  cookieLink: string;
   acknowledgeRisks: boolean = false;
-  existingWorkstations: ValidWorkstation[] = [];
-  selectedWorkstation: ValidWorkstation;
+  existingWorkstations: LinkedResource<ValidWorkstation>[] = [];
+  selectedWorkstation: LinkedResource<ValidWorkstation>;
   advanced: boolean = false;
   wizardIndex: number = 0;
   wsName:string;
@@ -33,7 +39,7 @@ export class WorkstationLoginComponent{
       this.endpointObservable = this.api.GetApiEndpoint("validworkstations");
       this.endpointObservable.subscribe((res: string) => {
         this.workstationsEndpoint = res;
-        this.apiBase.Get<[ValidWorkstation]>(this.workstationsEndpoint).subscribe((res: [ValidWorkstation]) => {
+        this.apiBase.Get<[LinkedResource<ValidWorkstation>]>(this.workstationsEndpoint).subscribe((res: [LinkedResource<ValidWorkstation>]) => {
           this.existingWorkstations = res;
         });
       });
@@ -59,23 +65,21 @@ export class WorkstationLoginComponent{
   }
 
   submitExisting(){
-    // actually we are not submitting anything here, just setting the WorksationId cookie to the wsid and closing the dialog
-    document.cookie = `WorkstationId=${this.selectedWorkstation.wsid}; path=/`;
-    this.dialogRef.close(this.selectedWorkstation.pcName);
+    // let endpoint = this.selectedWorkstation._links.self;
+    // actually we need to find the cookie link from the list
+    let cookieLink = this.selectedWorkstation._links.find((link) => link.rel == "cookie")!;
+    this.apiBase.Get(cookieLink.href).subscribe((res: any) => {
+      this.dialogRef.close(this.selectedWorkstation.resource.pcName);
+    },
+    (err) => {
+      console.log(err);
+      this.errorMessage = err.error;
+      this.showError = true;
+    });
   }
 
   createWorkstation(endpoint: string){
     this.apiBase.Put(endpoint, {PcName: this.wsName}).subscribe((res: any) => {
-      console.log(res); 
-      let cookiesString = document.cookie;
-      let cookiesArray = cookiesString.split(';');
-      let workstationID = cookiesArray.find((cookie) => {
-        return cookie.includes("WorkstationId");
-      })?.split('=')[1];
-      if(workstationID == undefined){
-        this.showError = true;
-        return;
-      }
       this.dialogRef.close(this.wsName);
     },
     (err) => {

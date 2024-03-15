@@ -74,7 +74,7 @@
                 <mat-label>Select Existing Workstation</mat-label>
                 <mat-select [(ngModel)]="selectedWorkstation" >
                     <mat-option *ngFor="let ws of existingWorkstations" [value]="ws">
-                        {{ws.pcName}}
+                        {{ws.resource.pcName}}
                     </mat-option>
                 </mat-select>
                 <span class="material-symbols-outlined icon-expand-more">
