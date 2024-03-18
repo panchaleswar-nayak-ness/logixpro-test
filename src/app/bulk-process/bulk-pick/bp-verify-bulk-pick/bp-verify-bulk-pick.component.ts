@@ -5,6 +5,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
+import { SetTimeout } from 'src/app/common/constants/numbers.constants';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
@@ -54,7 +55,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.searchBoxField?.nativeElement.focus();
-    }, 500);
+    }, SetTimeout['500Milliseconds']);
   }
 
   getWorkstationSetupInfo() {
