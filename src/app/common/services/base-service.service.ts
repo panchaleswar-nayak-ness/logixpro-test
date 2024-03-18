@@ -5,6 +5,14 @@ import { Observable, lastValueFrom } from 'rxjs';
 import { GlobalService } from './global.service';
 import { ToasterTitle, ToasterType } from '../constants/strings.constants';
 
+export interface LinkedResource<T> {
+  resource: T;
+  _links: {rel: string, href: string}[];
+}
+
+export type Link = {rel: string, href: string};
+export type Links = {_links: Link[]};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +22,30 @@ export class BaseService {
     private http: HttpClient,
     private injector: Injector
   ) { }
+
+
+  public GetEndpoint(rel: string, links: Link[]): string {
+    let endpoint = "";
+    links.forEach(link => {
+      if(link.rel == rel){
+        endpoint = link.href;
+      }
+    });
+    return endpoint;
+  }
+
+  public GetApiResources() : Observable<Links> {
+    return this.Get<Links>("");
+  }
+
+  public GetApiEndpoint(rel: string) : Observable<string> {
+    let resources = this.GetApiResources();
+    return new Observable<string>(observer => {
+      resources.subscribe((res: Links) => {
+        observer.next(this.GetEndpoint(rel, res._links));
+      });
+    });
+  }
 
   Get<T>(endPoint: string, payload?, isLoader: boolean = false): Observable<T> {
     let queryParams = new HttpParams();

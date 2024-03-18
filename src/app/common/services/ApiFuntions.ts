@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable'; 
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
+import { Links, Link } from './base-service.service';
 
-type Link = {rel: string, href: string};
-type Links = {_links: Link[]};
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,28 +14,7 @@ export class ApiFuntions {
    
   constructor(private ApiBase: BaseService,private authService:AuthService) { }
 
-  public GetEndpoint(rel: string, links: Link[]): string {
-    let endpoint = "";
-    links.forEach(link => {
-      if(link.rel == rel){
-        endpoint = link.href;
-      }
-    });
-    return endpoint;
-  }
 
-  public GetApiResources() : Observable<Links> {
-    return this.ApiBase.Get<Links>("");
-  }
-
-  public GetApiEndpoint(rel: string) : Observable<string> {
-    let resources = this.GetApiResources();
-    return new Observable<string>(observer => {
-      resources.subscribe((res: Links) => {
-        observer.next(this.GetEndpoint(rel, res._links));
-      });
-    });
-  }
 
 
 
