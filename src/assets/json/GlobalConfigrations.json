@@ -243,6 +243,10 @@
     {
         "path": "/BulkTransactions/Preferences",
         "Permission": "FlowRack Replenish"
+    },
+    {
+        "path": "/BulkTransactions/BulkCount",
+        "Permission": "FlowRack Replenish"
     }
     
 ]
