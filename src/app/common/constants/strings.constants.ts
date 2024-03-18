@@ -503,7 +503,5 @@ export const Style = {
 export const FilterColumnName = {
     unitOfMeasure:'Unit of Measure'
 }
-export const dataCredientials={
-    testWsid: 'TESTWSID'
-}
+
 

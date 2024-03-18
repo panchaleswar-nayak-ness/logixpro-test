@@ -15,13 +15,13 @@ export class BaseService {
     private injector: Injector
   ) { }
 
-  Get(endPoint: string, payload?, isLoader: boolean = false): Observable<any> {
+  Get<T>(endPoint: string, payload?, isLoader: boolean = false): Observable<T> {
     let queryParams = new HttpParams();
     if (payload != null)
       for (let key in payload)
         if (payload[key] != undefined) queryParams = queryParams.append(key, payload[key]);
 
-    return this.http.get<any>(`${environment.apiUrl}${endPoint}`, {
+    return this.http.get<T>(this.GetUrl(endPoint), {
       headers: this.GetHeaders(),
       params: queryParams,
       withCredentials: true
@@ -34,7 +34,7 @@ export class BaseService {
       for (let key in payload)
         if (payload[key] != undefined) queryParams = queryParams.append(key, payload[key]);
 
-    return await this.http.get<any>(`${environment.apiUrl}${endPoint}`, {
+    return await this.http.get<any>(this.GetUrl(endPoint), {
       headers: this.GetHeaders(),
       params: queryParams,
       withCredentials: true
@@ -53,32 +53,34 @@ export class BaseService {
   }
 
   public Post(endPoint: string, reqPaylaod: any) {
-    return this.http.post<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
+    return this.http.post<any>(this.GetUrl(endPoint), reqPaylaod, {
       headers: this.GetHeaders(),
       withCredentials: true
     });
   }
 
   public PostFormData(endPoint: string, reqPaylaod: any) {
-    return this.http.post<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
+    return this.http.post<any>(this.GetUrl(endPoint), reqPaylaod, {
       headers: this.GetHeadersFormData(),
       withCredentials: true
     });
   }
 
   public Put(endPoint: string, reqPaylaod: any) {
-    return this.http.put<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
+    return this.http.put<any>(this.GetUrl(endPoint), reqPaylaod, {
       headers: this.GetHeaders(),
       withCredentials: true
     });
   }
+
+
 
   public Delete(endPoint: string, reqPaylaod: any = null) {
     let queryParams = new HttpParams();
     for (let key in reqPaylaod)
       queryParams = queryParams.append(key, reqPaylaod[key]);
 
-    return this.http.delete<any>(`${environment.apiUrl}${endPoint}`, {
+    return this.http.delete<any>(this.GetUrl(endPoint), {
       headers: this.GetHeaders(),
       params: queryParams,
       withCredentials: true
@@ -115,7 +117,7 @@ export class BaseService {
         if (reqPaylaod[key] != undefined) queryParams = queryParams.append(key, reqPaylaod[key]);
     let res: any;
     try {
-      res = await lastValueFrom(this.http.get<any>(`${environment.apiUrl}${endPoint}`, {
+      res = await lastValueFrom(this.http.get<any>(this.GetUrl(endPoint), {
         headers: this.GetHeaders(),
         observe: 'response',
         params: queryParams,
@@ -133,7 +135,7 @@ export class BaseService {
     let queryParams = new HttpParams();
     let res: any;
     try {
-      res = await lastValueFrom(this.http.post<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
+      res = await lastValueFrom(this.http.post<any>(this.GetUrl(endPoint), reqPaylaod, {
         headers: this.GetHeaders(),
         observe: 'response',
         params: queryParams,
@@ -151,7 +153,7 @@ export class BaseService {
     let queryParams = new HttpParams();
     let res: any;
     try {
-      res = await lastValueFrom(this.http.put<any>(`${environment.apiUrl}${endPoint}`, reqPaylaod, {
+      res = await lastValueFrom(this.http.put<any>(this.GetUrl(endPoint), reqPaylaod, {
         headers: this.GetHeaders(),
         observe: 'response',
         params: queryParams,
@@ -172,7 +174,7 @@ export class BaseService {
         if (reqPaylaod[key] != undefined) queryParams = queryParams.append(key, reqPaylaod[key]);
     let res: any;
     try {
-      res = await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}${endPoint}`, {
+      res = await lastValueFrom(this.http.delete<any>(this.GetUrl(endPoint), {
         headers: this.GetHeaders(),
         observe: 'response',
         params: queryParams,
@@ -195,5 +197,13 @@ export class BaseService {
     else if (err.status < 500 && err.status >= 400) {
       this.injector.get(GlobalService).ShowToastr(ToasterType.Error, this.injector.get(GlobalService).globalErrorMsg(), ToasterTitle.Error);
     }
+  }
+
+  private GetUrl(endPoint: string) : string {
+    let url = endPoint;
+    if (!endPoint.startsWith(environment.apiUrl)) {
+      url = `${environment.apiUrl}${endPoint}`;
+    }
+    return url;
   }
 }

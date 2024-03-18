@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 
@@ -20,10 +20,17 @@ export class BpSearchBarComponent implements OnInit {
   suggestion: string = "";
   filteredOrders: any = [];
   @ViewChild('openAction') openAction: MatSelect;
+  @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.searchBoxField?.nativeElement.focus();
+    }, 500);
   }
 
   changeView(event: any) {

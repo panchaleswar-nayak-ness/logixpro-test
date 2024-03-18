@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-bp-full-tote',
@@ -67,13 +68,13 @@ export class BpFullToteComponent implements OnInit {
     this.data.PutFullToteQty = 0;
   }
 
-  async validtote($event: any) {
-    if ($event.target.value) {
+  async validtote($event: Event) {
+    if (($event.target as HTMLInputElement).value) {
       var obj = {
-        toteid: $event.target.value
+        toteid: ($event.target as HTMLInputElement).value
       }
       let res: any = await this.iBulkProcessApiService.validtote(obj);
-      if (res?.status == 204) {
+      if (res?.status == HttpStatusCode.NoContent) {
         const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
           width: Style.w786px,
@@ -85,7 +86,7 @@ export class BpFullToteComponent implements OnInit {
           disableClose: true,
         });
         dialogRef.afterClosed().subscribe((result) => {
-          $event.target.value = null;
+          ($event.target as HTMLInputElement).value = "";
         });
       }
     }
@@ -101,7 +102,7 @@ export class BpFullToteComponent implements OnInit {
         "newToteQTY": parseInt(this.data.PutNewToteQty)
       }
       let res: any = await this.iBulkProcessApiService.fullTote(payload);
-      if (res?.status == 201) {
+      if (res?.status == HttpStatusCode.Created) {
         this.dialogRef.close(true);
       }
     }

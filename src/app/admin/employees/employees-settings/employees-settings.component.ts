@@ -12,7 +12,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import labels from 'src/app/common/labels/labels.json';
 import { AddGroupAllowedComponent } from '../../dialogs/add-group-allowed/add-group-allowed.component';
 import { GroupAllowedComponent } from '../../dialogs/group-allowed/group-allowed.component';
-import { LiveAnnouncerMessage, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,dataCredientials,Style} from 'src/app/common/constants/strings.constants';
+import { LiveAnnouncerMessage, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
 
 @Component({
   selector: 'app-employees-settings',
@@ -127,8 +127,7 @@ export class EmployeesSettingsComponent implements OnInit {
 
   reloadData() {
     const emp_data = {
-      "user": this.grpData,
-      "wsid": dataCredientials.testWsid
+      "user": this.grpData
     };
     this.iAdminApiService.getAdminEmployeeDetails(emp_data)
       .subscribe((response: any) => {
@@ -361,8 +360,7 @@ export class EmployeesSettingsComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        userName: this.grpData,
-        wsid: dataCredientials.testWsid
+        userName: this.grpData
       }
     });
     dialogRef.afterClosed().subscribe(result => {

@@ -1,3 +1,4 @@
+import { HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -121,9 +122,9 @@ export class BulkPickComponent implements OnInit {
   }
 
   changeVisibiltyVerifyBulk(event: any) {
-    if (event) {
+    // if (event) {
       this.bulkPickoOrderBatchToteQty();
-    }
+    // }
     this.verifyBulkPicks = !this.verifyBulkPicks;
   }
 
@@ -256,7 +257,7 @@ export class BulkPickComponent implements OnInit {
 
   async createBatchNow() {
     let res: any = await this.iBulkProcessApiService.BatchesNextBatchID();
-    if (res?.status == 200) {
+    if (res?.status == HttpStatusCode.Ok) {
       this.nextBatchId = res.body;
       const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
@@ -277,7 +278,7 @@ export class BulkPickComponent implements OnInit {
             "transactionType": "Pick"
           }
           let res2: any = await this.iBulkProcessApiService.BulkPickCreateBatch(payload);
-          if (res2?.status == 200) {
+          if (res2?.status == HttpStatusCode.Ok) {
             this.printItemLabelsNow();
           }
         }
