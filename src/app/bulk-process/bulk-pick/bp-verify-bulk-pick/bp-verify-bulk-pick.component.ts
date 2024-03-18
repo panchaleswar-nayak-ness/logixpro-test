@@ -4,6 +4,7 @@ import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
@@ -25,9 +26,9 @@ export class BpVerifyBulkPickComponent implements OnInit {
   @Input() NextToteID: any;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
 
-  SearchString: any;
+  SearchString: string;
   taskCompleted: boolean = false;
-  preferences: any;
+  workstationPreferences: WorkStationSetupResponse;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
 
@@ -57,9 +58,9 @@ export class BpVerifyBulkPickComponent implements OnInit {
   }
 
   getWorkstationSetupInfo() {
-    this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
+    this.iAdminApiService.WorkstationSetupInfo().subscribe((res) => {
       if (res.isExecuted && res.data) {
-        this.preferences = res.data;
+        this.workstationPreferences = res.data;
       }
     })
   }
@@ -73,10 +74,12 @@ export class BpVerifyBulkPickComponent implements OnInit {
     var list = this.SelectedList.filteredData.sort((a, b) => b.orderNumber.localeCompare(a.orderNumber) && a.itemNumber.localeCompare(b.itemNumber));
     this.SelectedList = new MatTableDataSource(list);
   }
+
   Search($event: any) {
-    let filterValue = $event.trim().toLowerCase(); // Remove leading and trailing whitespace & convert to lowercase
+    let filterValue = $event.trim().toLowerCase();
     this.SelectedList.filter = filterValue;
   }
+
   backButton() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
@@ -88,9 +91,9 @@ export class BpVerifyBulkPickComponent implements OnInit {
         Leaving will remove transactions, otherwise continue with transaction verification`,
         heading: 'Verify Bulk Pick',
         buttonFields: true,
-        customButtonText:true,
-        btn1Text:'Continue Verification',
-        btn2Text:'Leave Anyway'
+        customButtonText: true,
+        btn1Text: 'Continue Verification',
+        btn2Text: 'Leave Anyway'
       },
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
@@ -114,10 +117,9 @@ export class BpVerifyBulkPickComponent implements OnInit {
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
       if (resp.type == ResponseStrings.Yes) {
-        let payload: any = {
-          "InvMapId": element.invMapId,
-          "locationqty": 0
-        };
+        let payload: UpdateLocationQuantityRequest = new UpdateLocationQuantityRequest();
+        payload.invMapId = element.invMapId;
+        payload.locationQty = 0;
         let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
         if (res?.status == HttpStatusCode.Ok) {
           this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
@@ -136,10 +138,9 @@ export class BpVerifyBulkPickComponent implements OnInit {
           disableClose: true,
         });
         dialogRef.afterClosed().subscribe(async (result: any) => {
-          let payload: any = {
-            "InvMapId": element.invMapId,
-            "locationqty": parseInt(result.SelectedItem)
-          };
+          let payload: UpdateLocationQuantityRequest = new UpdateLocationQuantityRequest();
+          payload.invMapId = element.invMapId;
+          payload.locationQty = parseInt(result.SelectedItem);
           let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
           if (res?.status == HttpStatusCode.Ok) {
             this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
@@ -192,12 +193,12 @@ export class BpVerifyBulkPickComponent implements OnInit {
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
       if (resp == ResponseStrings.Yes) {
-        let orders: any = [];
+        let orders: TaskCompleteRequest[] = new Array();
         this.SelectedList.filteredData.forEach((x: any) => {
           orders.push(
             {
-              "otid": x.id,
-              "toteID": x.toteId,
+              "otId": x.id,
+              "toteId": x.toteId,
               "serialNumber": "",
               "lotNumber": x.lotNumber,
               "pickedQty": x.transactionQuantity,
@@ -205,11 +206,11 @@ export class BpVerifyBulkPickComponent implements OnInit {
             }
           );
         });
-        let res: any = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
+        let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
         if (res?.status == HttpStatusCode.Created) {
           this.taskCompleted = true;
-          let offCarouselPickToteManifest: boolean = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting == 1 ? true : false;
-          let autoPrintOffCarouselPickToteManifest: boolean = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting == 1 ? true : false;
+          let offCarouselPickToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting === "1" ? true : false;
+          let autoPrintOffCarouselPickToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting === "1" ? true : false;
           if (offCarouselPickToteManifest && autoPrintOffCarouselPickToteManifest) {
             // print report
             this.showNoRemainingPicks();
@@ -223,7 +224,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
               data: {
                 message: `Touch Yes to print a Tote Manifest.`,
                 heading: 'Would you like to print a Tote Manifest?',
-                buttonFields:true
+                buttonFields: true
               },
             });
             dialogRef1.afterClosed().subscribe(async (resp: any) => {

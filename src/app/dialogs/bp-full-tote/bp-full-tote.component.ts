@@ -7,6 +7,7 @@ import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { HttpStatusCode } from '@angular/common/http';
+import { FullToteRequest, ValidateToteRequest } from 'src/app/common/Model/bulk-transactions';
 
 @Component({
   selector: 'app-bp-full-tote',
@@ -35,7 +36,7 @@ export class BpFullToteComponent implements OnInit {
   }
 
   BatchNextTote() {
-    this.iBulkProcessApiService.BatchNextTote().subscribe((res: any) => {
+    this.iBulkProcessApiService.BatchNextTote().subscribe((res: number) => {
       this.NextToteID = res;
     })
   }
@@ -70,10 +71,9 @@ export class BpFullToteComponent implements OnInit {
 
   async validtote($event: Event) {
     if (($event.target as HTMLInputElement).value) {
-      var obj = {
-        toteid: ($event.target as HTMLInputElement).value
-      }
-      let res: any = await this.iBulkProcessApiService.validtote(obj);
+      let paylaod: ValidateToteRequest = new ValidateToteRequest();
+      paylaod.toteid = ($event.target as HTMLInputElement).value;
+      let res = await this.iBulkProcessApiService.validtote(paylaod);
       if (res?.status == HttpStatusCode.NoContent) {
         const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
           height: 'auto',
@@ -85,7 +85,7 @@ export class BpFullToteComponent implements OnInit {
           autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         });
-        dialogRef.afterClosed().subscribe((result) => {
+        dialogRef.afterClosed().subscribe(() => {
           ($event.target as HTMLInputElement).value = "";
         });
       }
@@ -93,14 +93,12 @@ export class BpFullToteComponent implements OnInit {
   }
 
   async done() {
-
     if (this.data.NewToteID != "") {
-      var payload = {
-        "ToteId": this.data.NewToteID,
-        "OrderNumber": this.data.orderNumber,
-        "Type": "pick",
-        "newToteQTY": parseInt(this.data.PutNewToteQty)
-      }
+      let payload: FullToteRequest = new FullToteRequest();
+      payload.toteId = this.data.NewToteID;
+      payload.orderNumber = this.data.orderNumber;
+      payload.type = "pick";
+      payload.newToteQty = parseInt(this.data.PutNewToteQty);
       let res: any = await this.iBulkProcessApiService.fullTote(payload);
       if (res?.status == HttpStatusCode.Created) {
         this.dialogRef.close(true);

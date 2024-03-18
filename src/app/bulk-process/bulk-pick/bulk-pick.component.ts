@@ -2,6 +2,7 @@ import { HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderResource, OrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
 import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -40,10 +41,9 @@ export class BulkPickComponent implements OnInit {
   }
 
   bulkPickoOrderBatchToteQty() {
-    let paylaod = {
-      "type": 'pick'
-    }
-    this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(paylaod).subscribe((res: any) => {
+    let payload: OrderBatchToteQtyRequest = new OrderBatchToteQtyRequest();
+    payload.type = 'pick';
+    this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(payload).subscribe((res: OrderBatchToteQtyResponse) => {
       if (res) {
         this.status = res;
         this.status.linesCount = 0;
@@ -70,13 +70,12 @@ export class BulkPickComponent implements OnInit {
   }
 
   bulkPickBatches() {
-    let paylaod = {
-      "type": 'pick',
-      "start": 0,
-      "size": 5000,
-      "includeChildren": "false"
-    }
-    this.iBulkProcessApiService.bulkPickBatches(paylaod).subscribe((res: any) => {
+    let payload: BatchesRequest = new BatchesRequest();
+    payload.type = "pick";
+    payload.start = 0;
+    payload.size = 5000;
+    payload.includeChildren = "false";
+    this.iBulkProcessApiService.bulkPickBatches(payload).subscribe((res: BatchesResponse[]) => {
       if (res) {
         this.orders = res;
         this.selectedOrders = [];
@@ -85,14 +84,13 @@ export class BulkPickComponent implements OnInit {
   }
 
   bulkPickTotes() {
-    let paylaod = {
-      "type": 'pick',
-      "start": 0,
-      "size": 5000,
-      "status": "open",
-      "area": " "
-    }
-    this.iBulkProcessApiService.bulkPickTotes(paylaod).subscribe((res: any) => {
+    let payload: TotesRequest = new TotesRequest();
+    payload.type = "pick";
+    payload.start = 0;
+    payload.size = 5000;
+    payload.status = "open";
+    payload.area = " ";
+    this.iBulkProcessApiService.bulkPickTotes(payload).subscribe((res: TotesResponse[]) => {
       if (res) {
         this.orders = res;
         this.selectedOrders = [];
@@ -101,14 +99,13 @@ export class BulkPickComponent implements OnInit {
   }
 
   bulkPickOrders() {
-    let paylaod = {
-      "type": 'pick',
-      "start": 0,
-      "size": 5000,
-      "status": "open",
-      "area": " "
-    }
-    this.iBulkProcessApiService.bulkPickOrders(paylaod).subscribe((res: any) => {
+    let payload: OrdersRequest = new OrdersRequest();
+    payload.type = "pick";
+    payload.start = 0;
+    payload.size = 5000;
+    payload.status = "open";
+    payload.area = " ";
+    this.iBulkProcessApiService.bulkPickOrders(payload).subscribe((res: OrderResource[]) => {
       if (res) {
         this.orders = res;
         this.selectedOrders = [];
@@ -122,9 +119,9 @@ export class BulkPickComponent implements OnInit {
   }
 
   changeVisibiltyVerifyBulk(event: any) {
-    // if (event) {
-      this.bulkPickoOrderBatchToteQty();
-    // }
+    if (event) {
+    this.bulkPickoOrderBatchToteQty();
+    }
     this.verifyBulkPicks = !this.verifyBulkPicks;
   }
 
@@ -152,12 +149,11 @@ export class BulkPickComponent implements OnInit {
   selectOrder(event: any) {
     event.toteNumber = this.selectedOrders.length + 1;
     if (this.view == "batch") {
-      let paylaod = {
-        "type": 'pick',
-        "batchpickid": event.batchPickId,
-        "status": "open",
-      }
-      this.iBulkProcessApiService.bulkPickBatchId(paylaod).subscribe((res: any) => {
+      let payload: BatchesByIdRequest = new BatchesByIdRequest();
+      payload.type = "pick";
+      payload.batchpickid = event.batchPickId;
+      payload.status = "open";
+      this.iBulkProcessApiService.bulkPickBatchId(payload).subscribe((res: BatchesResponse[]) => {
         if (res) {
           this.selectedOrders = res;
           this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
@@ -209,13 +205,13 @@ export class BulkPickComponent implements OnInit {
   }
 
   getworkstationbulkzone() {
-    this.iBulkProcessApiService.bulkPreferences().subscribe((res: any) => {
+    this.iBulkProcessApiService.bulkPreferences().subscribe((res: BulkPreferences) => {
       this.Prefernces = res.workstationPreferences[0];
     })
   }
 
   BatchNextTote() {
-    this.iBulkProcessApiService.BatchNextTote().subscribe((res: any) => {
+    this.iBulkProcessApiService.BatchNextTote().subscribe((res: number) => {
       this.NextToteID = res;
     })
   }
@@ -228,7 +224,7 @@ export class BulkPickComponent implements OnInit {
     this.batchSeleted = false;
   }
 
-  async printDetailList(event: any) {
+  async printDetailList() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: Style.w560px,
@@ -256,10 +252,10 @@ export class BulkPickComponent implements OnInit {
   }
 
   async createBatchNow() {
-    let res: any = await this.iBulkProcessApiService.BatchesNextBatchID();
+    let res = await this.iBulkProcessApiService.BatchesNextBatchID();
     if (res?.status == HttpStatusCode.Ok) {
       this.nextBatchId = res.body;
-      const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
@@ -272,12 +268,11 @@ export class BulkPickComponent implements OnInit {
       });
       dialogRef1.afterClosed().subscribe(async (resp: any) => {
         if (resp == ResponseStrings.Yes) {
-          let payload = {
-            "BatchData": this.selectedOrders.map((x: any, index: any) => ({ orderNumber: x.orderNumber, toteNumber: x.toteNumber })),
-            "nextBatchID": this.nextBatchId,
-            "transactionType": "Pick"
-          }
-          let res2: any = await this.iBulkProcessApiService.BulkPickCreateBatch(payload);
+          let payload: CreateBatchRequest = new CreateBatchRequest();
+          payload.nextBatchID = this.nextBatchId;
+          payload.transactionType = "Pick";
+          payload.BatchData = this.selectedOrders.map((item) => ({ orderNumber: item.orderNumber, toteNumber: item.toteNumber }));
+          let res2 = await this.iBulkProcessApiService.BulkPickCreateBatch(payload);
           if (res2?.status == HttpStatusCode.Ok) {
             this.printItemLabelsNow();
           }
