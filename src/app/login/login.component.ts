@@ -19,12 +19,15 @@ import { BaseService } from 'src/app/common/services/base-service.service';
 import { ValidWorkstation } from 'src/app/common/types/CommonTypes';
 import { LinkedResource } from 'src/app/common/services/base-service.service';
 
+type Version = {version: string};
+
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  apiVersion: string;
   login: ILogin;
   @ViewChild('passwordInput') passwordInput: ElementRef;
   returnUrl: string;
@@ -55,6 +58,11 @@ export class LoginComponent {
   ) { 
     this.iGlobalConfigApi = globalConfigApi;
     this.iUserApi = userApi;
+    this.apiBase.GetApiEndpoint("version").subscribe((endpoint: string) => {
+      this.apiBase.Get<Version>(endpoint).subscribe((res: Version) => {
+        this.apiVersion = res.version;
+      });
+    });
     this.url = this.router.url;
     let wsName = global.getCookie("WSName");
     if(wsName){
