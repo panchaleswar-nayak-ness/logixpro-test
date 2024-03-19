@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, Router } from '@angular/router';
 import { ConfirmationDialogComponent } from '../../admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { GlobalService } from '../services/global.service';
+import { DialogConstants, ResponseStrings, Style } from '../constants/strings.constants';
+import { Title } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,12 @@ export class ConfirmationGuard implements CanDeactivate<any> {
   ) { }
   async  canDeactivate(component: any,route:ActivatedRouteSnapshot):Promise<boolean> { 
     if(component.ifAllowed){ 
-   return     this.OpenConfirmationDialog(route.data['title']);
+      debugger
+      if(route.data['title'].indexOf('Bulk') > -1){
+        return   this.backButton(route.data['title'])
+      }else{
+        return this.OpenConfirmationDialog(route.data['title']);
+      }
     } 
     return true;
   }
@@ -41,5 +48,31 @@ export class ConfirmationGuard implements CanDeactivate<any> {
         }
       });
     });
+  }
+  async   backButton(title:any): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+    const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      height: 'auto',
+      width: Style.w560px,
+      autoFocus: DialogConstants.autoFocus,
+      disableClose: true,
+      data: {
+        message: `Transaction verification is currently underway.
+        Leaving will remove transactions, otherwise continue with transaction verification`,
+        heading: 'Verify '+ title,
+        buttonFields: true,
+        customButtonText: true,
+        btn1Text: 'Continue Verification',
+        btn2Text: 'Leave Anyway'
+      },
+    });
+    dialogRef1.afterClosed().subscribe(async (resp: any) => {
+      if (resp != ResponseStrings.Yes) {
+        resolve(true);
+      }else{
+        resolve(false);
+      }
+    });
+  });
   }
 }

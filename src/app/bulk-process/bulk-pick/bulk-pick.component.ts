@@ -14,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./bulk-pick.component.scss']
 })
 export class BulkPickComponent implements OnInit {
-
+  ifAllowed:boolean;
   verifyBulkPicks: boolean = false;
   status: any = {}
   view: string = "";
@@ -38,6 +38,7 @@ export class BulkPickComponent implements OnInit {
     this.bulkPickoOrderBatchToteQty();
     this.getworkstationbulkzone();
     this.BatchNextTote();
+    this.ifAllowed = false;
   }
 
   bulkPickoOrderBatchToteQty() {
@@ -115,14 +116,15 @@ export class BulkPickComponent implements OnInit {
 
   pickProcess() {
     if (this.Prefernces?.pickToTotes) this.OpenNextToteId();
-    else this.changeVisibiltyVerifyBulk(false);
-  }
+    else  this.changeVisibiltyVerifyBulk(false);  
+}
 
   changeVisibiltyVerifyBulk(event: any) {
     if (event) {
     this.bulkPickoOrderBatchToteQty();
     }
     this.verifyBulkPicks = !this.verifyBulkPicks;
+    this.ifAllowed = this.verifyBulkPicks; 
   }
 
   changeView(event: any) {
@@ -155,6 +157,7 @@ export class BulkPickComponent implements OnInit {
       payload.status = "open";
       this.iBulkProcessApiService.bulkPickBatchId(payload).subscribe((res: BatchesResponse[]) => {
         if (res) {
+          res.forEach(order => {order.completedQuantity = 0;});
           this.selectedOrders = res;
           this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
           this.batchSeleted = true;

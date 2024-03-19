@@ -1,8 +1,9 @@
-<div class="container-fluid p-0" *ngIf="!verifyBulkCount">
+<div class="container-fluid p-0" *ngIf="!verifyBulkCounts">
     <div class="row">
         <div class="col-xl-7 mb-3">
-            <app-search-bar (changeViewEmitter)="changeView($event)" [status]="status" [view]="view" [orders]="orders" [selectedOrders]="selectedOrders" (addItemEmitter)="selectOrder($event)" (createBatchEmit)="createBatchNow($event)"
-            (printDetailList)="printDetailList($event)"></app-search-bar>
+            <app-search-bar (changeViewEmitter)="changeView($event)" [status]="status" [view]="view" [orders]="orders" [selectedOrders]="selectedOrders" (addItemEmitter)="selectOrder($event)"
+             (createBatchEmit)="createBatchNow($event)"
+            (printDetailList)="printDetailList()"></app-search-bar>
         </div>
         <div class="col-xl-5 mb-3">
             <app-status [status]="status"></app-status>
@@ -17,10 +18,10 @@
         </div>
     </div>
     <div>
-        <button mat-flat-button color="primary" class="btn-lg w-100" (click)="putawayProcess()" [disabled]="!(selectedOrders.length > 0)">
+        <button mat-flat-button color="primary" class="btn-lg w-100" (click)="CountProcess()" [disabled]="!(selectedOrders.length > 0)">
             Verify Bulk Count
         </button>
     </div>
 </div>
 
-<app-verify-bulk-count *ngIf="verifyBulkCount" [SelectedList]="selectedOrders" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk($event)"></app-verify-bulk-count>
+<app-verify-bulk-count *ngIf="verifyBulkCounts" [SelectedList]="selectedOrders" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk($event)"></app-verify-bulk-count>

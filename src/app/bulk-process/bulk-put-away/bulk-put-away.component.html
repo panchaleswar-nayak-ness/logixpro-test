@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xl-7 mb-3">
             <app-search-bar (changeViewEmitter)="changeView($event)" [status]="status" [view]="view" [orders]="orders" [selectedOrders]="selectedOrders" (addItemEmitter)="selectOrder($event)" (createBatchEmit)="createBatchNow($event)"
-            (printDetailList)="printDetailList($event)"></app-search-bar>
+            (printDetailList)="printDetailList()"></app-search-bar>
         </div>
         <div class="col-xl-5 mb-3">
             <app-status [status]="status"></app-status>

@@ -235,6 +235,7 @@ export class SideNavComponent implements OnInit {
   }
 
   loadMenus(menu: any) {
+    debugger
     this.sharedService.updateLoggedInUser(this.userData.userName, this.userData.wsid, menu.route);
     if (!menu) menu = { route: AppRoutes.Dashboard };
 

@@ -1,8 +1,10 @@
+import { HttpStatusCode } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderResource, OrdersRequest, TotesRequest, TotesResponse, WorkstationPreference } from 'src/app/common/Model/bulk-transactions';
 import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -34,6 +36,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./bulk-put-away.component.scss']
 })
 export class BulkPutAwayComponent implements OnInit {
+  ifAllowed:boolean;
   verifyBulkPutAway: boolean = false;
   status: any = {}
   view: string = "";
@@ -41,11 +44,11 @@ export class BulkPutAwayComponent implements OnInit {
   ordersDisplayedColumns: string[] = ['batchPickId', 'transactionQuantity', 'priority', 'requiredDate', 'actions'];
   selectedOrdersDisplayedColumns: string[] = ['orderNumber', 'toteNumber'];
   orders: any = [];
-  Prefernces: any;
+  Prefernces: WorkstationPreference;
   selectedOrders: any = [];
   nextBatchId: string = '';
-  IsBatch: boolean = false;
   batchSeleted: boolean = false;
+  IsBatch: boolean = false;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -55,16 +58,16 @@ export class BulkPutAwayComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.bulkPutAwayoOrderBatchToteQty();
+    this.bulkPutAwayOrderBatchToteQty();
     this.getworkstationbulkzone();
     this.BatchNextTote();
+    this.ifAllowed = false;
   }
 
-  bulkPutAwayoOrderBatchToteQty() {
-    let paylaod = {
-      "type": 'Put Away'
-    }
-    this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(paylaod).subscribe((res: any) => {
+  bulkPutAwayOrderBatchToteQty() {
+    let payload: OrderBatchToteQtyRequest = new OrderBatchToteQtyRequest();
+    payload.type = 'Put Away';
+    this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(payload).subscribe((res: OrderBatchToteQtyResponse) => {
       if (res) {
         this.status = res;
         this.status.linesCount = 0;
@@ -91,13 +94,12 @@ export class BulkPutAwayComponent implements OnInit {
   }
 
   bulkPutAwayBatches() {
-    let paylaod = {
-      "type": 'Put Away',
-      "start": 0,
-      "size": 5000,
-      "includeChildren": "false"
-    }
-    this.iBulkProcessApiService.bulkPickBatches(paylaod).subscribe((res: any) => {
+    let payload: BatchesRequest = new BatchesRequest();
+    payload.type = "Put Away";
+    payload.start = 0;
+    payload.size = 5000;
+    payload.includeChildren = "false";
+    this.iBulkProcessApiService.bulkPickBatches(payload).subscribe((res: BatchesResponse[]) => {
       if (res) {
         this.orders = res;
         this.selectedOrders = [];
@@ -106,14 +108,13 @@ export class BulkPutAwayComponent implements OnInit {
   }
 
   bulkPutAwayTotes() {
-    let paylaod = {
-      "type": 'Put Away',
-      "start": 0,
-      "size": 5000,
-      "status": "open",
-      "area": " "
-    }
-    this.iBulkProcessApiService.bulkPickTotes(paylaod).subscribe((res: any) => {
+    let payload: TotesRequest = new TotesRequest();
+    payload.type = "Put Away";
+    payload.start = 0;
+    payload.size = 5000;
+    payload.status = "open";
+    payload.area = " ";
+    this.iBulkProcessApiService.bulkPickTotes(payload).subscribe((res: TotesResponse[]) => {
       if (res) {
         this.orders = res;
         this.selectedOrders = [];
@@ -122,14 +123,13 @@ export class BulkPutAwayComponent implements OnInit {
   }
 
   bulkPutAwayOrders() {
-    let paylaod = {
-      "type": 'Put Away',
-      "start": 0,
-      "size": 5000,
-      "status": "open",
-      "area": " "
-    }
-    this.iBulkProcessApiService.bulkPickOrders(paylaod).subscribe((res: any) => {
+    let payload: OrdersRequest = new OrdersRequest();
+    payload.type = "Put Away";
+    payload.start = 0;
+    payload.size = 5000;
+    payload.status = "open";
+    payload.area = " ";
+    this.iBulkProcessApiService.bulkPickOrders(payload).subscribe((res: OrderResource[]) => {
       if (res) {
         this.orders = res;
         this.selectedOrders = [];
@@ -139,14 +139,15 @@ export class BulkPutAwayComponent implements OnInit {
 
   putawayProcess() {
     if (this.Prefernces?.pickToTotes) this.OpenNextToteId();
-    else this.changeVisibiltyVerifyBulk(false);
+    else  this.changeVisibiltyVerifyBulk(false);  
   }
 
   changeVisibiltyVerifyBulk(event: any) {
     if (event) {
-      this.bulkPutAwayoOrderBatchToteQty();
+    this.bulkPutAwayOrderBatchToteQty();
     }
     this.verifyBulkPutAway = !this.verifyBulkPutAway;
+    this.ifAllowed = this.verifyBulkPutAway; 
   }
 
   changeView(event: any) {
@@ -173,12 +174,11 @@ export class BulkPutAwayComponent implements OnInit {
   selectOrder(event: any) {
     event.toteNumber = this.selectedOrders.length + 1;
     if (this.view == "batch") {
-      let paylaod = {
-        "type": 'Put Away',
-        "batchpickid": event.batchPickId,
-        "status": "open",
-      }
-      this.iBulkProcessApiService.bulkPickBatchId(paylaod).subscribe((res: any) => {
+      let payload: BatchesByIdRequest = new BatchesByIdRequest();
+      payload.type = "Put Away";
+      payload.batchpickid = event.batchPickId;
+      payload.status = "open";
+      this.iBulkProcessApiService.bulkPickBatchId(payload).subscribe((res: BatchesResponse[]) => {
         if (res) {
           this.selectedOrders = res;
           this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
@@ -230,13 +230,13 @@ export class BulkPutAwayComponent implements OnInit {
   }
 
   getworkstationbulkzone() {
-    this.iBulkProcessApiService.bulkPreferences().subscribe((res: any) => {
+    this.iBulkProcessApiService.bulkPreferences().subscribe((res: BulkPreferences) => {
       this.Prefernces = res.workstationPreferences[0];
     })
   }
 
   BatchNextTote() {
-    this.iBulkProcessApiService.BatchNextTote().subscribe((res: any) => {
+    this.iBulkProcessApiService.BatchNextTote().subscribe((res: number) => {
       this.NextToteID = res;
     })
   }
@@ -249,7 +249,7 @@ export class BulkPutAwayComponent implements OnInit {
     this.batchSeleted = false;
   }
 
-  async printDetailList(event: any) {
+  async printDetailList() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: Style.w560px,
@@ -272,16 +272,17 @@ export class BulkPutAwayComponent implements OnInit {
       }
       else if (res == ResponseStrings.Cancel) {
         if (this.view != "batch") await this.createBatchNow();
+        
       }
     });
   }
 
   async createBatchNow($event:any = false) {
     this.IsBatch = $event;
-    let res: any = await this.iBulkProcessApiService.BatchesNextBatchID();
-    if (res?.status == 200) {
+    let res = await this.iBulkProcessApiService.BatchesNextBatchID();
+    if (res?.status == HttpStatusCode.Ok) {
       this.nextBatchId = res.body;
-      const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
@@ -294,18 +295,17 @@ export class BulkPutAwayComponent implements OnInit {
       });
       dialogRef1.afterClosed().subscribe(async (resp: any) => {
         if (resp == ResponseStrings.Yes) {
-          let payload = {
-            "BatchData": this.selectedOrders.map((x: any, index: any) => ({ orderNumber: x.orderNumber, toteNumber: x.toteNumber })),
-            "nextBatchID": this.nextBatchId,
-            "transactionType": "Put Away"
-          }
-          let res2: any = await this.iBulkProcessApiService.BulkPickCreateBatch(payload);
-          if (res2?.status == 200) {
-           if(!this.IsBatch) this.printItemLabelsNow();
-           else {
-            this.selectedOrders = [];
-            this.bulkPutAwayoOrderBatchToteQty();
-           }
+          let payload: CreateBatchRequest = new CreateBatchRequest();
+          payload.nextBatchID = this.nextBatchId;
+          payload.transactionType = "Put Away";
+          payload.BatchData = this.selectedOrders.map((item) => ({ orderNumber: item.orderNumber, toteNumber: item.toteNumber }));
+          let res2 = await this.iBulkProcessApiService.BulkPickCreateBatch(payload);
+          if (res2?.status == HttpStatusCode.Ok) {
+            if(!this.IsBatch) this.printItemLabelsNow();
+            else {
+             this.selectedOrders = [];
+             this.bulkPutAwayOrderBatchToteQty();
+            }
           }
         }
       });
@@ -328,7 +328,7 @@ export class BulkPutAwayComponent implements OnInit {
       if (resp == ResponseStrings.Yes) {
       }
       this.selectedOrders = [];
-      this.bulkPutAwayoOrderBatchToteQty();
+      this.bulkPutAwayOrderBatchToteQty();
     });
   }
 
