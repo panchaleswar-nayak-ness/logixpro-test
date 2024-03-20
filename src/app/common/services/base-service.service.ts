@@ -220,6 +220,21 @@ export class BaseService {
     return res;
   }
 
+  DownloadFile(endPoint: string) : Observable<any> {
+
+      let httpHeaders = new HttpHeaders();
+      const { _token } = JSON.parse(localStorage.getItem('user') ?? "{}");
+      if (_token != null) httpHeaders = httpHeaders.set('_token', _token);
+      let observableResponse  = this.http.get(this.GetUrl(endPoint), {
+        headers: httpHeaders,
+        observe: 'response',
+        responseType: 'blob',
+        withCredentials: true
+      });
+
+    return observableResponse;
+  }
+
   handleError(err: any) {
     if (err.status == 500) {
       this.injector.get(GlobalService).ShowToastr(ToasterType.Error, this.injector.get(GlobalService).globalErrorMsg(), ToasterTitle.Error);

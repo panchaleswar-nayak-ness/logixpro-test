@@ -12,6 +12,7 @@ import { IInductionManagerApiService } from 'src/app/common/services/induction-m
 import { InductionManagerApiService } from 'src/app/common/services/induction-manager-api/induction-manager-api.service';
 import { ToastrService } from 'ngx-toastr';
 import { DialogConstants, ToasterTitle, ToasterType } from '../constants/strings.constants';
+import { BaseService } from 'src/app/common/services/base-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +58,7 @@ export class GlobalService {
   public iAdminApiService: IAdminApiService;
 
   constructor(
+    private apiBase: BaseService,
     public orderManagerApi : OrderManagerApiService, 
     private dialog : MatDialog,
     private toastr : ToastrService,
@@ -268,9 +270,37 @@ export class GlobalService {
         this.ShowToastr(ToasterType.Success, "Export successfully completed", ToasterTitle.Success);  
           if(res.data.fileName.indexOf("txt") > -1 || res.data.fileName.indexOf("csv") > -1) this.downloadTextFile(res.data.fileName, res.data.fileContent);
           else {
-            document.getElementById('CurrentDownload')?.setAttribute("href",""); //Force Href to "" to just download file
-            document.getElementById('CurrentDownload')?.setAttribute("download",res.data.fileName);
-            document.getElementById('CurrentDownload')?.click();
+            this.apiBase.DownloadFile(res.data.url).subscribe((response) => {
+              if (response.body) {
+                const blobUrl = URL.createObjectURL(response.body);
+                const anchor = document.createElement('a');
+                anchor.href = blobUrl;
+                let headers = response.headers;
+                let disposition = headers.get('content-disposition');
+                let dispositions = disposition.split(';');
+                let filename = dispositions.find((d) => d.includes('filename'));
+                filename = filename.split('=')[1];
+                anchor.download = filename;
+
+                document.body.appendChild(anchor);
+                anchor.click();
+                document.body.removeChild(anchor);
+                URL.revokeObjectURL(blobUrl);
+      
+              }
+              else {
+                this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error);
+              }
+              
+            },
+            (error) => {
+              this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error);
+            }
+            );
+
+
+            
+
           }   
       } else this.ShowToastr(ToasterType.Error, "Export unsuccessfully complete", ToasterTitle.Error);
     })
