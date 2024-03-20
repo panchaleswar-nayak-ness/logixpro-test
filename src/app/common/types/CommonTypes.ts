@@ -10,3 +10,5 @@ export interface TableHeaderDefinitions {
     colHeader: string,
     colDef: string
 } 
+
+export type ValidWorkstation = {pcName: string, wsid: string};

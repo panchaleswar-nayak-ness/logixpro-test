@@ -15,6 +15,11 @@ import { GlobalService } from '../common/services/global.service';
 import {  AppNames ,AppPermissions,AppRoutes,ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
 import { MatDialog } from '@angular/material/dialog';
 import { WorkstationLoginComponent } from '../dialogs/workstation-login/workstation-login.component';
+import { BaseService } from 'src/app/common/services/base-service.service';
+import { ValidWorkstation } from 'src/app/common/types/CommonTypes';
+import { LinkedResource } from 'src/app/common/services/base-service.service';
+
+type Version = {version: string};
 
 @Component({
   selector: 'login',
@@ -22,6 +27,7 @@ import { WorkstationLoginComponent } from '../dialogs/workstation-login/workstat
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  apiVersion: string;
   login: ILogin;
   @ViewChild('passwordInput') passwordInput: ElementRef;
   returnUrl: string;
@@ -47,16 +53,48 @@ export class LoginComponent {
     public globalConfigApi: GlobalConfigApiService,
     private auth: AuthService, 
     private sharedService: SharedService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private apiBase: BaseService
   ) { 
     this.iGlobalConfigApi = globalConfigApi;
     this.iUserApi = userApi;
+    this.apiBase.GetApiEndpoint("version").subscribe((endpoint: string) => {
+      this.apiBase.Get<Version>(endpoint).subscribe((res: Version) => {
+        this.apiVersion = res.version;
+      });
+    });
     this.url = this.router.url;
-    if(!global.getCookie("WSName")){
-      this.openWS();
+    let wsName = global.getCookie("WSName");
+    if(wsName){
+      this.apiBase.GetApiEndpoint("validworkstations").subscribe((endpoint: string) => {
+        this.apiBase.Get<[LinkedResource<ValidWorkstation>]>(endpoint).subscribe((res: [LinkedResource<ValidWorkstation>]) => {
+          // see if the wsName is in the list of valid workstations
+          let workstationResource = res.find((w) => w.resource.pcName === wsName);
+          // follow the cookie link if it is
+          if (workstationResource) {
+            let links = workstationResource._links;
+            let cookieLink = links.find((l) => l.rel === "cookie");
+            if (cookieLink) {
+              this.apiBase.Get<string>(cookieLink.href).subscribe((cookie: string) => {
+                // if we got a cookie, we're good to go
+                this.workstationD = true;
+              },
+              (error) => {
+                this.global.deleteAllCookies();
+                this.openWS();
+              });
+            }
+          }
+          else {
+            this.global.deleteAllCookies();
+            this.openWS();
+          }
+        });
+      });
     }
     else{
-      this.workstationD = true;
+      this.global.deleteAllCookies();
+      this.openWS();
     }
   }
   

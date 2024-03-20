@@ -77,3 +77,18 @@ table{
 .mat-column-OrderQty{ 
 cursor: pointer;
 }
+
+.suggest {
+    position: absolute;
+    left: 30px;
+    top: 4px;
+    z-index: 7;
+    border: none;
+    width: 100%;
+    // font-size: 20px;
+    background-color: transparent;
+  }
+  .autocomplete {
+    color: silver;
+    z-index: 1;
+  }

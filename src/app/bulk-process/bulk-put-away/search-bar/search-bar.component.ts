@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 
@@ -8,6 +8,7 @@ import { MatSelect } from '@angular/material/select';
   styleUrls: ['./search-bar.component.scss']
 })
 export class SearchBarComponent implements OnInit {
+ 
   @Input() view;
   @Input() orders;
   @Input() selectedOrders;
@@ -16,15 +17,21 @@ export class SearchBarComponent implements OnInit {
   @Output() addItemEmitter = new EventEmitter<any>();
   @Output() printDetailList = new EventEmitter<any>();
   @Output() createBatchEmit = new EventEmitter<any>();
-  
   searchText: string = "";
   suggestion: string = "";
   filteredOrders: any = [];
   @ViewChild('openAction') openAction: MatSelect;
+  @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.searchBoxField?.nativeElement.focus();
+    }, 500);
   }
 
   changeView(event: any) {
@@ -33,6 +40,7 @@ export class SearchBarComponent implements OnInit {
   CreateBatch(){
     this.createBatchEmit.emit(true);
   }
+
   search(event: any) {
     if (this.view == "batch") {
       this.filteredOrders = this.orders.filter(function (str) { return str.batchPickId.startsWith(event); });

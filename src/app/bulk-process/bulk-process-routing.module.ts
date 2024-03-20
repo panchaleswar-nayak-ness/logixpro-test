@@ -6,35 +6,36 @@ import { AuthGuardGuard } from '../common/guard/auth-guard.guard';
 import { BulkPutAwayComponent } from './bulk-put-away/bulk-put-away.component';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { BulkCountComponent } from './bulk-count/bulk-count.component';
+import { ConfirmationGuard } from '../common/guard/confirmation-guard.guard';
 
 const routes: Routes = [
 { 
   path: '', 
-  component: BulkProcessComponent,
-  canActivate: [AuthGuardGuard]
+  component: BulkProcessComponent, 
+  canActivate: [AuthGuardGuard],
+
 },
 {
   path: 'BulkPick',
   component: BulkPickComponent,
-  canActivate: [AuthGuardGuard],
+  canActivate: [AuthGuardGuard], 
+  canDeactivate: [ConfirmationGuard],
+  data: {title: 'Bulk Pick'}
 },
 {
   path: 'BulkPutAway',
   loadChildren: () =>
     import('./bulk-put-away/bulk-put-away.module').then((m) => m.BulkPutAwayModule),
   canActivate: [AuthGuardGuard],
+
 },
 {
   path: 'BulkCount',
   loadChildren: () =>
     import('./bulk-count/bulk-count.module').then((m) => m.BulkCountModule),
-  canActivate: [AuthGuardGuard],
+  canActivate: [AuthGuardGuard], 
 }, 
-{
-  path: 'BulkCount',
-  component: BulkCountComponent,
-  canActivate: [AuthGuardGuard],
-},
+ 
 {
   path: 'Preferences',
   component: PreferencesComponent,

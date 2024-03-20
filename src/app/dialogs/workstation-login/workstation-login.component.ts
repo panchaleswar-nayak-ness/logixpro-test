@@ -3,12 +3,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { BaseService } from 'src/app/common/services/base-service.service';
+import { ValidWorkstation } from 'src/app/common/types/CommonTypes';
+import { LinkedResource } from 'src/app/common/services/base-service.service';
 
-type ValidWorkstation = {pcName: string, wsid: string};
-interface LinkedResource<T> {
-  resource: T;
-  _links: {rel: string, href: string}[];
-}
 
 
 @Component({
@@ -32,11 +29,10 @@ export class WorkstationLoginComponent{
   errorMessage: string;
   constructor(
     public dialogRef: MatDialogRef<WorkstationLoginComponent>,
-    private api: ApiFuntions,
     private apiBase: BaseService
     ) 
     {
-      this.endpointObservable = this.api.GetApiEndpoint("validworkstations");
+      this.endpointObservable = this.apiBase.GetApiEndpoint("validworkstations");
       this.endpointObservable.subscribe((res: string) => {
         this.workstationsEndpoint = res;
         this.apiBase.Get<[LinkedResource<ValidWorkstation>]>(this.workstationsEndpoint).subscribe((res: [LinkedResource<ValidWorkstation>]) => {

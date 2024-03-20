@@ -935,7 +935,7 @@ export class InventoryMasterComponent implements OnInit {
     }
   }
 
-  async ConfirmationDialog(tabIndex) {
+  async ConfirmationDialog(tabIndex) { 
     const dialogRef:any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: Style.w560px,
