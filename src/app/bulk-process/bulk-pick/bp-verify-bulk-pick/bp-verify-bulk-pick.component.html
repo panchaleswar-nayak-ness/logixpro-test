@@ -36,11 +36,21 @@
                 <div class="bg-light-blue bg-50 br-none px-4 py-4 br-20 mb-3">
                     <div class="d-xl-flex d-block gap-20 flex-wrap">
                         <div class="flex-grow-1 mb-xl-0 mb-3">
+                     
+
                             <mat-form-field class="w-100 br-14 custom-form-field-bg-white" appearance="outline">
-                                <span class="material-symbols-outlined icon-search pe-2">search</span>
-                                <input type="text" (ngModelChange)="Search($event)" [(ngModel)]="SearchString" placeholder="Search" aria-label="Search" matInput maxlength="50"
-                                    #autoFocusField>
-                            </mat-form-field>
+                              <span class="material-symbols-outlined text-20 icon-search pe-2">search</span>
+                              <input type="text" name="suggest"  class="suggest" matInput    (ngModelChange)="Search($event)" 
+                              [(ngModel)]="SearchString"
+                               (keyup.enter)="addItem()"  #autoFocusField/>
+                              <input type="text" class="suggest autocomplete" name="suggest1"   [value]="suggestion" matInput  
+                              [placeholder]="SearchString ? '' : 'Search'"/> 
+                          </mat-form-field>
+
+
+
+
+
                         </div>
                         <div class="mb-xl-0 mb-3">
                             <button mat-stroked-button color="primary" matTooltip="Touch to change the Completed Quantity to zero for all transactions." class="button-secondary btn-md w-100" (click)="ResetAllCompletedQty()">

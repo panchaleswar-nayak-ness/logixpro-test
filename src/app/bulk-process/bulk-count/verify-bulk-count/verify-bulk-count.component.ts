@@ -1,6 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { HttpStatusCode } from '@angular/common/http';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
+import { SetTimeout } from 'src/app/common/constants/numbers.constants';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
@@ -19,14 +24,19 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
 export class VerifyBulkCountComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() SelectedList: any = [];
+  OldSelectedList:any=[];
   @Input() NextToteID: any;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
 
-  SearchString: any;
+  suggestion:string= "";
+  SearchString: string = "";
   taskCompleted: boolean = false;
-  preferences: any;
+  workstationPreferences: WorkStationSetupResponse;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
+
+  @ViewChild('openAction') openAction: MatSelect;
+  @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -38,33 +48,50 @@ export class VerifyBulkCountComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.OldSelectedList = this.SelectedList;
     this.SelectedList = new MatTableDataSource(
       this.SelectedList
     );
-    this.companyInfo();
+    this.getWorkstationSetupInfo();
+  }
+  addItem(){
+    this.SearchString = this.suggestion;
+    let filterValue = this.suggestion.trim().toLowerCase();
+    this.SelectedList.filter = filterValue;
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.searchBoxField?.nativeElement.focus();
+    }, SetTimeout['500Milliseconds']);
   }
 
-  companyInfo() {
-    this.iAdminApiService.WorkstationSetupInfo().subscribe((res: any) => {
+  getWorkstationSetupInfo() {
+    this.iAdminApiService.WorkstationSetupInfo().subscribe((res) => {
       if (res.isExecuted && res.data) {
-        this.preferences = res.data;
+        this.workstationPreferences = res.data;
       }
     })
   }
 
   ViewByLocation() {
-    var list = this.SelectedList.filteredData.sort((a, b) => b.location.localeCompare(a.location));
+    var list = this.SelectedList.filteredData.sort((a, b) => a.location.localeCompare(b.location));
     this.SelectedList = new MatTableDataSource(list);
   }
 
   ViewByOrderItem() {
-    var list = this.SelectedList.filteredData.sort((a, b) => b.orderNumber.localeCompare(a.orderNumber) && a.itemNumber.localeCompare(b.itemNumber));
+    var list = this.SelectedList.filteredData.sort((a, b) => a.orderNumber.localeCompare(b.orderNumber) || a.itemNumber.localeCompare(b.itemNumber));
     this.SelectedList = new MatTableDataSource(list);
   }
+
   Search($event: any) {
-    let filterValue = $event.trim().toLowerCase(); // Remove leading and trailing whitespace & convert to lowercase
-    this.SelectedList.filter = filterValue;
+    let filteredData;
+    if($event.length> 0){
+      filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.startsWith($event); });
+      if(filteredData.length > 0) this.suggestion = filteredData[0].itemNumber;
+      else this.suggestion = ""
+    }else    this.suggestion = "";
   }
+
   backButton() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
@@ -76,9 +103,9 @@ export class VerifyBulkCountComponent implements OnInit {
         Leaving will remove transactions, otherwise continue with transaction verification`,
         heading: 'Verify Bulk Count',
         buttonFields: true,
-        customButtonText:true,
-        btn1Text:'Continue Verification',
-        btn2Text:'Leave Anyway'
+        customButtonText: true,
+        btn1Text: 'Continue Verification',
+        btn2Text: 'Leave Anyway'
       },
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
@@ -89,7 +116,6 @@ export class VerifyBulkCountComponent implements OnInit {
   }
 
   numberSelection(element) {
-    console.log(element);
     element.NextToteID = this.NextToteID;
     const dialogRef1: any = this.global.OpenDialog(BpNumberSelectionComponent, {
       height: 'auto',
@@ -103,12 +129,11 @@ export class VerifyBulkCountComponent implements OnInit {
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
       if (resp.type == ResponseStrings.Yes) {
-        let payload: any = {
-          "InvMapId": element.invMapId,
-          "locationqty": 0
-        };
+        let payload: UpdateLocationQuantityRequest = new UpdateLocationQuantityRequest();
+        payload.invMapId = element.invMapId;
+        payload.locationQty = 0;
         let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
-        if (res?.status == 200) {
+        if (res?.status == HttpStatusCode.Ok) {
           this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
         }
         element.completedQuantity = resp.newQuantity;
@@ -118,19 +143,18 @@ export class VerifyBulkCountComponent implements OnInit {
           height: DialogConstants.auto,
           width: '480px',
           data: {
-            FilterColumnName: 'Enter the Location Quantity after this Put Away',
+            FilterColumnName: 'Enter the Location Quantity after this Count',
             dynamicText: 'Enter Location Quantity'
           },
           autoFocus: DialogConstants.autoFocus,
           disableClose: true,
         });
         dialogRef.afterClosed().subscribe(async (result: any) => {
-          let payload: any = {
-            "InvMapId": element.invMapId,
-            "locationqty": parseInt(result.SelectedItem)
-          };
+          let payload: UpdateLocationQuantityRequest = new UpdateLocationQuantityRequest();
+          payload.invMapId = element.invMapId;
+          payload.locationQty = parseInt(result.SelectedItem);
           let res: any = await this.iBulkProcessApiService.updateLocationQuantity(payload);
-          if (res?.status == 200) {
+          if (res?.status == HttpStatusCode.Ok) {
             this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
           }
         });
@@ -181,12 +205,12 @@ export class VerifyBulkCountComponent implements OnInit {
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
       if (resp == ResponseStrings.Yes) {
-        let orders: any = [];
+        let orders: TaskCompleteRequest[] = new Array();
         this.SelectedList.filteredData.forEach((x: any) => {
           orders.push(
             {
-              "otid": x.id,
-              "toteID": x.toteId,
+              "otId": x.id,
+              "toteId": x.toteId,
               "serialNumber": "",
               "lotNumber": x.lotNumber,
               "pickedQty": x.transactionQuantity,
@@ -194,16 +218,16 @@ export class VerifyBulkCountComponent implements OnInit {
             }
           );
         });
-        let res: any = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
-        if (res?.status == 201) {
+        let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
+        if (res?.status == HttpStatusCode.Created) {
           this.taskCompleted = true;
-          let offCarouselPickToteManifest: any = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting == 1 ? true : false;
-          let autoPrintOffCarouselPickToteManifest: any = this.preferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting == 1 ? true : false;
-          if (offCarouselPickToteManifest && autoPrintOffCarouselPickToteManifest) {
+          let offCarouselCountToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting === "1" ? true : false;
+          let autoPrintOffCarouselCountToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting === "1" ? true : false;
+          if (offCarouselCountToteManifest && autoPrintOffCarouselCountToteManifest) {
             // print report
-            this.noRemainingPicks();
+            this.showNoRemainingCounts();
           }
-          else if (offCarouselPickToteManifest) {
+          else if (offCarouselCountToteManifest) {
             const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
               height: 'auto',
               width: Style.w560px,
@@ -212,34 +236,34 @@ export class VerifyBulkCountComponent implements OnInit {
               data: {
                 message: `Touch Yes to print a Tote Manifest.`,
                 heading: 'Would you like to print a Tote Manifest?',
-                buttonFields:true
+                buttonFields: true
               },
             });
             dialogRef1.afterClosed().subscribe(async (resp: any) => {
               if (resp == ResponseStrings.Yes) {
                 // print report
               }
-              this.noRemainingPicks();
+              this.showNoRemainingCounts();
             });
           }
           else {
-            this.noRemainingPicks();
+            this.showNoRemainingCounts();
           }
         }
       }
     });
   }
 
-  noRemainingPicks() {
+  showNoRemainingCounts() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        message: `There are no remaining Put Aways for the selected orders.`,
+        message: `There are no remaining counts for the selected orders.`,
         message2: `Please move the order to Packaging/Shipping.`,
-        heading: 'No Remaining Put Aways',
+        heading: 'No Remaining Counts',
         singleButton: true
       },
     });
@@ -249,4 +273,9 @@ export class VerifyBulkCountComponent implements OnInit {
       }
     });
   }
+
+  generateTranscAction(event: any) {
+    this.openAction?.options.forEach((data: MatOption) => data.deselect());
+  }
+
 }

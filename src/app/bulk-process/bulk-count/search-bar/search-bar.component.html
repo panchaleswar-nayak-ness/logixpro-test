@@ -38,7 +38,7 @@
                 <span class="v-br d-xl-block d-none mb-3 mb-xl-0">-</span>
                 <mat-form-field class="w-100 br-14 custom-form-field-bg-white" appearance="outline">
                     <span class="material-symbols-outlined text-20 icon-search pe-2">search</span>
-                    <input type="text"  class="suggest" matInput  [matAutocomplete]="auto1" (ngModelChange)="search($event)" [(ngModel)]="searchText" (keyup.enter)="addItem()" />
+                    <input type="text"  class="suggest" matInput  [matAutocomplete]="auto1" (ngModelChange)="search($event)" [(ngModel)]="searchText" (keyup.enter)="addItem()" #autoFocusField/>
                     <input type="text" class="suggest autocomplete" disabled [value]="suggestion" matInput [placeholder]="searchText ? '' : 'Search'"/>
                     <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="dropdownSelect($event)"
                         #autocompleteMesaage>

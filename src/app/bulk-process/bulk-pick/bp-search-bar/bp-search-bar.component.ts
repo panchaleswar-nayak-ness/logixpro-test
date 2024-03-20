@@ -39,15 +39,15 @@ export class BpSearchBarComponent implements OnInit {
 
   search(event: any) {
     if (this.view == "batch") {
-      this.filteredOrders = this.orders.filter(function (str) { return str.batchPickId.startsWith(event); });
+      this.filteredOrders = this.orders.filter(function (str) { return str.batchPickId.toLowerCase().startsWith(event.toLowerCase()); });
       this.suggestion = this.filteredOrders[0]?.batchPickId;
     }
     else if (this.view == "tote") {
-      this.filteredOrders = this.orders.filter(function (str) { return str.toteId.toString().startsWith(event); });
+      this.filteredOrders = this.orders.filter(function (str) { return str.toteId.toString().toLowerCase().startsWith(event.toLowerCase()); });
       this.suggestion = this.filteredOrders[0]?.toteId;
     }
     else if (this.view == "order") {
-      this.filteredOrders = this.orders.filter(function (str) { return str.orderNumber.startsWith(event); });
+      this.filteredOrders = this.orders.filter(function (str) { return str.orderNumber.toLowerCase().startsWith(event.toLowerCase()); });
       this.suggestion = this.filteredOrders[0]?.orderNumber;
     }
     if (event == "" || this.filteredOrders.length == 0) {

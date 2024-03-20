@@ -44,11 +44,11 @@ export class LocationAssignmentComponent implements OnInit {
     this.iAdminApiService.GetTransactionTypeCounts(payload).subscribe((res =>{
       if (res.isExecuted && res.data) {
         res.data.forEach(item => {
-          if (item.transactionType === "Count") {
+          if (item.transactionType.toUpperCase() === "Count".toUpperCase()) {
             this.countLabel = `Count (${item.count})`;
-          } else if (item.transactionType === "Pick") {
+          } else if (item.transactionType.toUpperCase() === "Pick".toUpperCase()) {
             this.pickLabel = `Pick (${item.count})`;
-          } else if (item.transactionType === TransactionType.PutAway) {
+          } else if (item.transactionType.toUpperCase() === TransactionType.PutAway.toUpperCase()) {
             this.putAwayLabel = `Put Away (${item.count})`;
           }
         });

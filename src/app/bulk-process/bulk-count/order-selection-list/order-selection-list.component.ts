@@ -30,7 +30,6 @@ export class OrderSelectionListComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if(this.view == "batch"){
       this.tableHeading = "Batch Selection List";
     } 

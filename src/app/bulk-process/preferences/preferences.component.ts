@@ -76,13 +76,11 @@ export class PreferencesComponent implements OnInit {
     if (res?.status == HttpStatusCode.Ok) {
       this.bulkZones = res.body;
       await this.bulkPickZones();
-
-      let wsZones = this.bulkZones.map((x: any) => x.zone);
-
+      let wsZones = this.bulkZones.map((bulkZone) => bulkZone.zone);
       this.bulkZones.forEach(element => {
         element.isNew = false;
         element.oldZone = element.zone;
-        element.options = [...this.zoneOptions.filter((x: any) => !wsZones.includes(x.zone)), ...this.zoneOptions.filter((x: any) => x.zone == element.zone)].sort((a, b) => (a.zone > b.zone) ? 1 : ((b.zone > a.zone) ? -1 : 0));
+        element.options = [...this.zoneOptions.filter((bulkZone) => !wsZones.includes(bulkZone.zone)), ...this.zoneOptions.filter((bulkZone) => bulkZone.zone == element.zone)].sort((a, b) => (a.zone > b.zone) ? 1 : ((b.zone > a.zone) ? -1 : 0));
       });
       this.newRecord = false;
     }
@@ -90,8 +88,8 @@ export class PreferencesComponent implements OnInit {
 
   addRecord() {
     if (!this.newRecord) {
-      let wsZones = this.bulkZones.map((x: any) => x.zone);
-      this.bulkZones = [{ isNew: true, options: this.zoneOptions.filter((x: any) => !wsZones.includes(x.zone)) }, ...this.bulkZones];
+      let wsZones = this.bulkZones.map((bulkZone) => bulkZone.zone);
+      this.bulkZones = [{ isNew: true, options: this.zoneOptions.filter((option) => !wsZones.includes(option.zone)) }, ...this.bulkZones];
       this.newRecord = true;
     }
   }

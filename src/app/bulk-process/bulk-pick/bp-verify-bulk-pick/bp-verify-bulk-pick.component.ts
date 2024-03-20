@@ -24,10 +24,11 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
 export class BpVerifyBulkPickComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() SelectedList: any = [];
+  OldSelectedList:any=[];
   @Input() NextToteID: any;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
-
-  SearchString: string;
+  suggestion:string= "";
+  SearchString: string = "";
   taskCompleted: boolean = false;
   workstationPreferences: WorkStationSetupResponse;
   public iBulkProcessApiService: IBulkProcessApiService;
@@ -46,12 +47,17 @@ export class BpVerifyBulkPickComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.OldSelectedList = this.SelectedList;
     this.SelectedList = new MatTableDataSource(
       this.SelectedList
     );
     this.getWorkstationSetupInfo();
   }
-
+  addItem(){
+    this.SearchString = this.suggestion;
+    let filterValue = this.suggestion.trim().toLowerCase();
+    this.SelectedList.filter = filterValue;
+  }
   ngAfterViewInit() {
     setTimeout(() => {
       this.searchBoxField?.nativeElement.focus();
@@ -67,18 +73,22 @@ export class BpVerifyBulkPickComponent implements OnInit {
   }
 
   ViewByLocation() {
-    var list = this.SelectedList.filteredData.sort((a, b) => b.location.localeCompare(a.location));
+    var list = this.SelectedList.filteredData.sort((a, b) => a.location.localeCompare(b.location));
     this.SelectedList = new MatTableDataSource(list);
   }
 
   ViewByOrderItem() {
-    var list = this.SelectedList.filteredData.sort((a, b) => b.orderNumber.localeCompare(a.orderNumber) && a.itemNumber.localeCompare(b.itemNumber));
+    var list = this.SelectedList.filteredData.sort((a, b) => a.orderNumber.localeCompare(b.orderNumber) || a.itemNumber.localeCompare(b.itemNumber));
     this.SelectedList = new MatTableDataSource(list);
   }
 
   Search($event: any) {
-    let filterValue = $event.trim().toLowerCase();
-    this.SelectedList.filter = filterValue;
+    let filteredData;
+    if($event.length> 0){
+      filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.startsWith($event); });
+      if(filteredData.length > 0) this.suggestion = filteredData[0].itemNumber;
+      else this.suggestion = ""
+    }else    this.suggestion = "";
   }
 
   backButton() {
