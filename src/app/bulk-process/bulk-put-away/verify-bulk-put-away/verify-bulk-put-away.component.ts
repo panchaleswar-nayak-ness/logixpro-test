@@ -96,7 +96,7 @@ export class VerifyBulkPutAwayComponent implements OnInit {
       },
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if (resp != ResponseStrings.Yes) {
+      if (resp != ResponseStrings.Yes) { 
         this.back.emit(this.taskCompleted);
       }
     });

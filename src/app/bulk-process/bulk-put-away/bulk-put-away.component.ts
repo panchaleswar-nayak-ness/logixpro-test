@@ -66,7 +66,7 @@ export class BulkPutAwayComponent implements OnInit {
 
   bulkPutAwayOrderBatchToteQty() {
     let payload: OrderBatchToteQtyRequest = new OrderBatchToteQtyRequest();
-    payload.type = 'Put Away';
+    payload.type = 'Put Away'; 
     this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(payload).subscribe((res: OrderBatchToteQtyResponse) => {
       if (res) {
         this.status = res;
@@ -92,7 +92,6 @@ export class BulkPutAwayComponent implements OnInit {
       }
     });
   }
-
   bulkPutAwayBatches() {
     let payload: BatchesRequest = new BatchesRequest();
     payload.type = "Put Away";
@@ -143,6 +142,7 @@ export class BulkPutAwayComponent implements OnInit {
   }
 
   changeVisibiltyVerifyBulk(event: any) {
+    debugger
     if (event) {
     this.bulkPutAwayOrderBatchToteQty();
     }
