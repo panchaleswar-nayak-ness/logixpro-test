@@ -38,7 +38,7 @@
                         </th>
                         <td mat-cell *matCellDef="let element"
                         #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.orderNumber" 
-       .pick-select-card
+       class="pick-select-card"
         [matTooltipDisabled]="element.orderNumber && element.orderNumber.length>=20?false:true"
                         > {{element.orderNumber}} </td>
                     </ng-container>
@@ -49,7 +49,7 @@
                         </th>
                         <td mat-cell *matCellDef="let element"
                         #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.itemCount" 
-       .pick-select-card
+       class="pick-select-card"
         [matTooltipDisabled]="element.itemCount && element.itemCount.length>=20?false:true"
                         > {{element.itemCount}} </td>
                     </ng-container>
@@ -60,7 +60,7 @@
                         </th>
                         <td mat-cell *matCellDef="let element"
                         #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.priority" 
-       .pick-select-card
+       class="pick-select-card"
         [matTooltipDisabled]="element.priority && element.priority.length>=20?false:true"
                         > {{element.priority}} </td>
                     </ng-container>
@@ -71,7 +71,7 @@
                         </th>
                         <td mat-cell *matCellDef="let element"
                         #tooltip="matTooltip" matTooltipPosition="above" [matTooltip]="element.requiredDate" 
-       .pick-select-card
+       class="pick-select-card"
         [matTooltipDisabled]="element.requiredDate && element.requiredDate.length>=20?false:true"
                         > {{element.requiredDate}} </td>
                     </ng-container>
