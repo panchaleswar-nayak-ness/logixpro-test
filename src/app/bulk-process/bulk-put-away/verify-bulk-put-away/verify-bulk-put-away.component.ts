@@ -48,6 +48,7 @@ export class VerifyBulkPutAwayComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    debugger
     this.OldSelectedList = this.SelectedList;
     this.SelectedList = new MatTableDataSource(
       this.SelectedList

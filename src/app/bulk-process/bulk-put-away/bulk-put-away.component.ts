@@ -46,6 +46,7 @@ export class BulkPutAwayComponent implements OnInit {
   orders: any = [];
   Prefernces: WorkstationPreference;
   selectedOrders: any = [];
+  SelectedOrderLine:any= [];
   nextBatchId: string = '';
   batchSeleted: boolean = false;
   IsBatch: boolean = false;
@@ -172,23 +173,23 @@ export class BulkPutAwayComponent implements OnInit {
   }
 
   selectOrder(event: any) {
+    this.SelectedOrderLine = [];
     event.toteNumber = this.selectedOrders.length + 1;
     if (this.view == "batch") {
-      let payload: BatchesByIdRequest = new BatchesByIdRequest();
-      payload.type = "Put Away";
-      payload.batchpickid = event.batchPickId;
-      payload.status = "open";
-      this.iBulkProcessApiService.bulkPickBatchId(payload).subscribe((res: BatchesResponse[]) => {
-        if (res) {
-          this.selectedOrders = res;
+   
+          this.selectedOrders = event.orders;
+          this.SelectedOrderLine = event.orders[0].orderLines;
           this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
           this.batchSeleted = true;
-        }
-      });
+       
     }
     else {
-      this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
       this.selectedOrders = [...this.selectedOrders, event];
+      this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1;
+        element.orderLines.forEach(order => {
+          this.SelectedOrderLine.push(order);
+        });});
+
     }
     this.orders = this.orders.filter((x: any) => x.id != event.id);
     this.status.linesCount = this.status.linesCount + 1;
@@ -201,7 +202,7 @@ export class BulkPutAwayComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        selectedOrderList: this.selectedOrders,
+        selectedOrderList: this.selectedOrders.orderLines,
         nextToteID: this.NextToteID,
         BulkProcess: true,
         view: this.view
@@ -209,22 +210,31 @@ export class BulkPutAwayComponent implements OnInit {
     });
     dialogRefTote.afterClosed().subscribe((result) => {
       if (result.length > 0) {
-        this.selectedOrders = result;
+        this.selectedOrders.orderLines = result;
         this.verifyBulkPutAway = !this.verifyBulkPutAway;
       }
     });
   }
 
   removeOrder(event: any) {
+    this.SelectedOrderLine = [];
     this.orders = [...this.orders, event];
     this.selectedOrders = this.selectedOrders.filter((x: any) => x.id != event.id);
-    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
+    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 ;
+      element.orderLines.forEach(order => {
+        this.SelectedOrderLine.push(order);
+      })
+    });
     this.status.linesCount = this.status.linesCount - 1;
   }
 
   appendAll() {
-    this.selectedOrders = [...this.selectedOrders, ...this.orders];
-    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
+    this.SelectedOrderLine = [];
+    this.selectedOrders = [...this.selectedOrders, ...this.orders]; 
+    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 
+      element.orderLines.forEach(order => {
+        this.SelectedOrderLine.push(order);
+      })});
     this.orders = [];
     this.status.linesCount = this.selectedOrders.length;
   }
@@ -245,6 +255,7 @@ export class BulkPutAwayComponent implements OnInit {
     if (this.view == "batch") this.bulkPutAwayBatches();
     else this.orders = [...this.orders, ...this.selectedOrders];
     this.selectedOrders = [];
+    this.SelectedOrderLine = [];
     this.status.linesCount = 0;
     this.batchSeleted = false;
   }

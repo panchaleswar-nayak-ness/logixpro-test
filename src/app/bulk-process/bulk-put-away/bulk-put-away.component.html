@@ -23,4 +23,4 @@
     </div>
 </div>
 
-<app-verify-bulk-put-away *ngIf="verifyBulkPutAway" [SelectedList]="selectedOrders" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk(true)"></app-verify-bulk-put-away>
+<app-verify-bulk-put-away *ngIf="verifyBulkPutAway" [SelectedList]="SelectedOrderLine" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk(true)"></app-verify-bulk-put-away>
