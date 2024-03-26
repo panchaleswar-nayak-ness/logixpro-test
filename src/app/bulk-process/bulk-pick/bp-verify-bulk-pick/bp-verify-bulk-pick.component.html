@@ -44,9 +44,8 @@
                               [(ngModel)]="SearchString"
                                (keyup.enter)="addItem()"  #autoFocusField/>
                               <input type="text" class="suggest autocomplete" name="suggest1"   [value]="suggestion" matInput  
-                              [placeholder]="SearchString ? '' : 'Search'"/> 
-                              <button matSuffix class="clear-btn" (click)="ClearSearch()" 
-                              matTooltip="Cancel Full Tote process and close this screen." matTooltipPosition="above"><mat-icon 
+                              [placeholder]="SearchString ? '' : 'Search by Item No'"/> 
+                              <button matSuffix class="clear-btn" (click)="ClearSearch()" ><mat-icon 
                               class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
                               <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="addItem($event)"
                               #autocompleteMesaage>
