@@ -285,5 +285,6 @@ export class VerifyBulkCountComponent implements OnInit {
     this.suggestion = ''; 
      this.SearchString = '';
      this.filteredData = [];
+     this.SelectedList.filter = "";
   }
 }
