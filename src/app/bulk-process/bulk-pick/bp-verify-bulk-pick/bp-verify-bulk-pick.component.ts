@@ -23,12 +23,12 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
 })
 export class BpVerifyBulkPickComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
-  @Input() SelectedList: any = [];
-  OldSelectedList:any=[];
-  filteredData:any = [];
+  @Input() orderLines: any = [];
+  OldSelectedList: any = [];
+  filteredData: any = [];
   @Input() NextToteID: any;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
-  suggestion:string= "";
+  suggestion: string = "";
   SearchString: string = "";
   taskCompleted: boolean = false;
   workstationPreferences: WorkStationSetupResponse;
@@ -48,21 +48,23 @@ export class BpVerifyBulkPickComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.OldSelectedList = this.SelectedList;
-    this.SelectedList = new MatTableDataSource(
-      this.SelectedList
+    this.OldSelectedList = this.orderLines;
+    this.orderLines = new MatTableDataSource(
+      this.orderLines
     );
     this.getWorkstationSetupInfo();
   }
-  addItem($event:any = null){
+
+  addItem($event: any = null) {
     this.SearchString = this.suggestion;
-    if(!$event) this.Search(this.SearchString); 
-    if($event){
+    if (!$event) this.Search(this.SearchString);
+    if ($event) {
       let filterValue = this.suggestion.trim().toLowerCase();
-      this.SelectedList.filter = filterValue;
+      this.orderLines.filter = filterValue;
       this.filteredData = []
     }
   }
+
   ngAfterViewInit() {
     setTimeout(() => {
       this.searchBoxField?.nativeElement.focus();
@@ -78,26 +80,28 @@ export class BpVerifyBulkPickComponent implements OnInit {
   }
 
   ViewByLocation() {
-    var list = this.SelectedList.filteredData.sort((a, b) => a.location.localeCompare(b.location));
-    this.SelectedList = new MatTableDataSource(list);
-  }
-ClearSearch(){ 
-  this.suggestion = ''; 
-   this.SearchString = '';
-   this.filteredData = [];
-   this.SelectedList.filter = "";
-}
-  ViewByOrderItem() {
-    var list = this.SelectedList.filteredData.sort((a, b) => a.orderNumber.localeCompare(b.orderNumber) || a.itemNumber.localeCompare(b.itemNumber));
-    this.SelectedList = new MatTableDataSource(list);
+    var list = this.orderLines.filteredData.sort((a, b) => a.location.localeCompare(b.location));
+    this.orderLines = new MatTableDataSource(list);
   }
 
-  Search($event: any) { 
-    if($event.length> 0){
+  ClearSearch() {
+    this.suggestion = '';
+    this.SearchString = '';
+    this.filteredData = [];
+    this.orderLines.filter = "";
+  }
+
+  ViewByOrderItem() {
+    var list = this.orderLines.filteredData.sort((a, b) => a.orderNumber.localeCompare(b.orderNumber) || a.itemNumber.localeCompare(b.itemNumber));
+    this.orderLines = new MatTableDataSource(list);
+  }
+
+  Search($event: any) {
+    if ($event.length > 0) {
       this.filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.startsWith($event); });
-      if(this.filteredData.length > 0) this.suggestion = this.filteredData[0].itemNumber;
+      if (this.filteredData.length > 0) this.suggestion = this.filteredData[0].itemNumber;
       else this.suggestion = ""
-    }else    this.suggestion = "";
+    } else this.suggestion = "";
   }
 
   backButton() {
@@ -172,13 +176,13 @@ ClearSearch(){
   }
 
   ResetAllCompletedQty() {
-    this.SelectedList.filteredData.forEach(element => {
+    this.orderLines.filteredData.forEach(element => {
       element.completedQuantity = 0;
     });
   }
 
   CopyAllOrder() {
-    this.SelectedList.filteredData.forEach(element => {
+    this.orderLines.filteredData.forEach(element => {
       element.completedQuantity = element.transactionQuantity;
     });
   }
@@ -194,8 +198,7 @@ ClearSearch(){
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
     });
   }
-
-
+  
   async taskComplete() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
@@ -214,7 +217,7 @@ ClearSearch(){
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
       if (resp == ResponseStrings.Yes) {
         let orders: TaskCompleteRequest[] = new Array();
-        this.SelectedList.filteredData.forEach((x: any) => {
+        this.orderLines.filteredData.forEach((x: any) => {
           orders.push(
             {
               "otId": x.id,

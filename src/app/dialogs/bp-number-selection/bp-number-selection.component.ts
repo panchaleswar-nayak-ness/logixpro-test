@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { BulkPreferences } from 'src/app/common/Model/bulk-transactions';
 import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -14,9 +15,9 @@ import { GlobalService } from 'src/app/common/services/global.service';
 export class BpNumberSelectionComponent implements OnInit {
 
   newQuantity: string = '';
-  Prefernces: any;
+  Prefernces: BulkPreferences;
   public iBulkProcessApiService: IBulkProcessApiService;
-  from:string = "completed quantity";
+  from: string = "completed quantity";
 
   constructor(
     public dialogRef: MatDialogRef<BpNumberSelectionComponent>,
@@ -43,8 +44,8 @@ export class BpNumberSelectionComponent implements OnInit {
   }
 
   done() {
-    if(this.from == "completed quantity"){
-      if (this.Prefernces.systempreferences.zeroLocationQuantityCheck) {
+    if (this.from == "completed quantity") {
+      if (this.Prefernces.systemPreferences.zeroLocationQuantityCheck) {
         const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
           height: 'auto',
           width: Style.w560px,
@@ -62,18 +63,18 @@ export class BpNumberSelectionComponent implements OnInit {
         });
         dialogRef1.afterClosed().subscribe(async (resp: any) => {
           if (resp == ResponseStrings.Yes) {
-            this.dialogRef.close({newQuantity:this.newQuantity,type:ResponseStrings.Yes});
+            this.dialogRef.close({ newQuantity: this.newQuantity, type: ResponseStrings.Yes });
           }
           else if (resp == ResponseStrings.No) {
-            this.dialogRef.close({newQuantity:this.newQuantity,type:ResponseStrings.No});
+            this.dialogRef.close({ newQuantity: this.newQuantity, type: ResponseStrings.No });
           }
           else if (resp == ResponseStrings.Cancel) {
-            this.dialogRef.close({newQuantity:this.newQuantity,type:ResponseStrings.Cancel});
+            this.dialogRef.close({ newQuantity: this.newQuantity, type: ResponseStrings.Cancel });
           }
         });
       }
     }
-    else if(this.from == "qunatity put in new tote"){
+    else if (this.from == "qunatity put in new tote") {
       this.dialogRef.close(this.newQuantity);
     }
   }

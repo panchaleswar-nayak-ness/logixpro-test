@@ -255,7 +255,7 @@ export class SystemPreference {
 }
 
 export class BulkPreferences {
-    systempreferences: SystemPreference;
+    systemPreferences: SystemPreference;
     workstationPreferences: WorkstationPreference;
 }
 
