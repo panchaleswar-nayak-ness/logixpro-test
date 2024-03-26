@@ -19,7 +19,7 @@ export class BulkPickComponent implements OnInit {
   status: any = {}
   view: string = "";
   NextToteID: any;
-  ordersDisplayedColumns: string[] = ['batchPickId', 'transactionQuantity', 'priority', 'requiredDate', 'actions'];
+  ordersDisplayedColumns: string[] = ['batchId', 'lineCount', 'priority', 'actions'];
   selectedOrdersDisplayedColumns: string[] = ['orderNumber', 'toteNumber'];
   orders: any = [];
   Prefernces: any;
@@ -50,19 +50,19 @@ export class BulkPickComponent implements OnInit {
         if (this.status.batchCount > 0) {
           this.bulkPickBatches();
           this.view = "batch";
-          this.ordersDisplayedColumns = ['batchPickId', 'transactionQuantity', 'priority', 'requiredDate', 'actions'];
+          this.ordersDisplayedColumns = ['batchId', 'lineCount', 'priority', 'actions'];
           this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber'];
         }
         else if (this.status.toteCount > 0) {
           this.bulkPickTotes();
           this.view = "tote";
-          this.ordersDisplayedColumns = ['toteId', 'transactionQuantity', 'priority', 'requiredDate', 'actions'];
+          this.ordersDisplayedColumns = ['toteId', 'lineCount', 'priority', 'requiredDate', 'actions'];
           this.selectedOrdersDisplayedColumns = ['toteId', 'toteNumber', 'actions'];
         }
         else {
           this.bulkPickOrders();
           this.view = "order";
-          this.ordersDisplayedColumns = ['orderNumber', 'transactionQuantity', 'priority', 'requiredDate', 'actions'];
+          this.ordersDisplayedColumns = ['orderNumber', 'lineCount', 'priority', 'requiredDate', 'actions'];
           this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
         }
       }
@@ -131,17 +131,17 @@ export class BulkPickComponent implements OnInit {
     this.orders = [];
     this.selectedOrders = [];
     if (event == "batch") {
-      this.ordersDisplayedColumns = ['batchPickId', 'transactionQuantity', 'priority', 'requiredDate', 'actions'];
+      this.ordersDisplayedColumns = ['batchId', 'lineCount', 'priority', 'actions'];
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber'];
       this.bulkPickBatches();
     }
     else if (event == "tote") {
-      this.ordersDisplayedColumns = ['toteId', 'transactionQuantity', 'priority', 'requiredDate', 'actions'];
+      this.ordersDisplayedColumns = ['toteId', 'lineCount', 'priority', 'requiredDate', 'actions'];
       this.selectedOrdersDisplayedColumns = ['toteId', 'toteNumber', 'actions'];
       this.bulkPickTotes();
     }
     else if (event == "order") {
-      this.ordersDisplayedColumns = ['orderNumber', 'transactionQuantity', 'priority', 'requiredDate', 'actions'];
+      this.ordersDisplayedColumns = ['orderNumber', 'lineCount', 'priority', 'requiredDate', 'actions'];
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
       this.bulkPickOrders();
     }
