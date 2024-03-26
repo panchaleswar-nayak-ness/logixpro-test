@@ -75,10 +75,10 @@
                                     <div class="col-4">
                                         <div class="d-flex gap-12 align-items-center">
 
-                                            <mat-form-field class="custom-form-field w-100" appearance="outline">
+                                            <mat-form-field class="custom-form-field w-100"   [ngClass]="{'mat-form-field-invalid':list.IsError == true}"  appearance="outline">
                                           
                                                 <input matInput type="text" maxlength="50" 
-                                                (change)="validtote($event)"    
+                                                (change)="validtote($event,i)"    
                                                 [(ngModel)]="list.toteId"
                                                 [value]="list.toteId===undefined?'':list.toteId">
                                             </mat-form-field>

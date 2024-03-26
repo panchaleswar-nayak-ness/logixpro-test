@@ -25,6 +25,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() SelectedList: any = [];
   OldSelectedList:any=[];
+  filteredData:any = [];
   @Input() NextToteID: any;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
   suggestion:string= "";
@@ -53,10 +54,14 @@ export class BpVerifyBulkPickComponent implements OnInit {
     );
     this.getWorkstationSetupInfo();
   }
-  addItem(){
+  addItem($event:any = null){
     this.SearchString = this.suggestion;
-    let filterValue = this.suggestion.trim().toLowerCase();
-    this.SelectedList.filter = filterValue;
+    if(!$event) this.Search(this.SearchString); 
+    if($event){
+      let filterValue = this.suggestion.trim().toLowerCase();
+      this.SelectedList.filter = filterValue;
+      this.filteredData = []
+    }
   }
   ngAfterViewInit() {
     setTimeout(() => {
@@ -76,17 +81,21 @@ export class BpVerifyBulkPickComponent implements OnInit {
     var list = this.SelectedList.filteredData.sort((a, b) => a.location.localeCompare(b.location));
     this.SelectedList = new MatTableDataSource(list);
   }
-
+ClearSearch(){ 
+  this.suggestion = ''; 
+   this.SearchString = '';
+   this.filteredData = [];
+   this.SelectedList.filter = "";
+}
   ViewByOrderItem() {
     var list = this.SelectedList.filteredData.sort((a, b) => a.orderNumber.localeCompare(b.orderNumber) || a.itemNumber.localeCompare(b.itemNumber));
     this.SelectedList = new MatTableDataSource(list);
   }
 
-  Search($event: any) {
-    let filteredData;
+  Search($event: any) { 
     if($event.length> 0){
-      filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.startsWith($event); });
-      if(filteredData.length > 0) this.suggestion = filteredData[0].itemNumber;
+      this.filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.startsWith($event); });
+      if(this.filteredData.length > 0) this.suggestion = this.filteredData[0].itemNumber;
       else this.suggestion = ""
     }else    this.suggestion = "";
   }

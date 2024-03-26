@@ -68,13 +68,29 @@ export class BmToteidEntryComponent implements OnInit {
 
   createNextTote() {
     this.selectedList.forEach((element, i) => {
+      this.selectedList[i].IsTote = false;
+      this.selectedList[i].IsError = false;
       this.selectedList[i]['toteId'] =
         parseInt(this.nextToteID) + i + 1;
     });
   }
 
   submitOrder() {
-    if (this.selectedList.find((o) => o.toteId === undefined)) {
+    if(this.selectedList.find(x=>x.IsTote == true)){
+      const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
+        height: 'auto',
+        width: Style.w786px,
+        data: {
+          message: 'The Tote ID you have entered is not valid. please re-enter the Tote ID or see your supervisor for assistance.',
+          heading: 'Invalid Tote ID!'
+        },
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        this.selectedList.filter(x=>x.IsTote == true).forEach(obj => { obj.IsError = true;});
+      });
+    }else if (this.selectedList.find((o) => o.toteId === undefined)) {
       const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: Style.w786px,
@@ -123,27 +139,19 @@ export class BmToteidEntryComponent implements OnInit {
       });
   }
 
-  async validtote($event: any) {
+  async validtote($event: any,i:any = null) {
     if ($event.target.value) {
       var obj = {
         toteid: $event.target.value
       }
+      debugger
       let res: any = await this.iBulkProcessApiService.validtote(obj);
       if (res?.status == HttpStatusCode.NoContent) {
-        const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
-          height: 'auto',
-          width: Style.w786px,
-          data: {
-            message: 'The Tote ID you have entered is not valid. please re-enter the Tote ID or see your supervisor for assistance.',
-            heading: 'Invalid Tote ID!'
-          },
-          autoFocus: DialogConstants.autoFocus,
-          disableClose: true,
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-          $event.target.value = null;
-        });
-      }
+        this.selectedList[i].IsTote = true; 
+      }else {
+        this.selectedList[i].IsTote = false;
+        this.selectedList[i].IsError =  false;
     }
+  }
   }
 }

@@ -24,6 +24,7 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
 export class VerifyBulkCountComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() SelectedList: any = [];
+  filteredData:any = [];
   OldSelectedList:any=[];
   @Input() NextToteID: any;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
@@ -53,12 +54,7 @@ export class VerifyBulkCountComponent implements OnInit {
       this.SelectedList
     );
     this.getWorkstationSetupInfo();
-  }
-  addItem(){
-    this.SearchString = this.suggestion;
-    let filterValue = this.suggestion.trim().toLowerCase();
-    this.SelectedList.filter = filterValue;
-  }
+  } 
   ngAfterViewInit() {
     setTimeout(() => {
       this.searchBoxField?.nativeElement.focus();
@@ -82,16 +78,7 @@ export class VerifyBulkCountComponent implements OnInit {
     var list = this.SelectedList.filteredData.sort((a, b) => a.orderNumber.localeCompare(b.orderNumber) || a.itemNumber.localeCompare(b.itemNumber));
     this.SelectedList = new MatTableDataSource(list);
   }
-
-  Search($event: any) {
-    let filteredData;
-    if($event.length> 0){
-      filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.startsWith($event); });
-      if(filteredData.length > 0) this.suggestion = filteredData[0].itemNumber;
-      else this.suggestion = ""
-    }else    this.suggestion = "";
-  }
-
+ 
   backButton() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
@@ -277,5 +264,26 @@ export class VerifyBulkCountComponent implements OnInit {
   generateTranscAction(event: any) {
     this.openAction?.options.forEach((data: MatOption) => data.deselect());
   }
+  addItem($event:any = null){
+    this.SearchString = this.suggestion;
+    if(!$event) this.Search(this.SearchString); 
+    if($event){
+      let filterValue = this.suggestion.trim().toLowerCase();
+      this.SelectedList.filter = filterValue;
+      this.filteredData = []
+    }
+  }
+  Search($event: any) { 
+    if($event.length> 0){
+      this.filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.startsWith($event); });
+      if(this.filteredData.length > 0) this.suggestion = this.filteredData[0].itemNumber;
+      else this.suggestion = ""
+    }else    this.suggestion = "";
+  }
 
+  ClearSearch(){ 
+    this.suggestion = ''; 
+     this.SearchString = '';
+     this.filteredData = [];
+  }
 }

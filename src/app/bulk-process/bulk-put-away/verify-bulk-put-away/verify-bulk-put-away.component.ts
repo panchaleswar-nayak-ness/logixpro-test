@@ -25,6 +25,7 @@ export class VerifyBulkPutAwayComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() SelectedList: any = [];
   @Input() NextToteID: any;
+  filteredData:any = [];
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
   OldSelectedList:any=[];
   suggestion: string = "";
@@ -264,17 +265,27 @@ export class VerifyBulkPutAwayComponent implements OnInit {
   generateTranscAction(event: any) {
     this.openAction?.options.forEach((data: MatOption) => data.deselect());
   }
-  addItem(){
+  addItem($event:any = null){
     this.SearchString = this.suggestion;
-    let filterValue = this.suggestion.trim().toLowerCase();
-    this.SelectedList.filter = filterValue;
+    if(!$event) this.Search(this.SearchString); 
+    if($event){
+      let filterValue = this.suggestion.trim().toLowerCase();
+      this.SelectedList.filter = filterValue;
+      this.filteredData = []
+    }
   }
-  Search($event: any) {
-    let filteredData;
+  Search($event: any) { 
     if($event.length> 0){
-      filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.startsWith($event); });
-      if(filteredData.length > 0) this.suggestion = filteredData[0].itemNumber;
+      this.filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.startsWith($event); });
+      if(this.filteredData.length > 0) this.suggestion = this.filteredData[0].itemNumber;
       else this.suggestion = ""
     }else    this.suggestion = "";
+  }
+
+  ClearSearch(){ 
+    this.suggestion = ''; 
+     this.SearchString = '';
+     this.filteredData = [];
+     this.SelectedList.filter = "";
   }
 }

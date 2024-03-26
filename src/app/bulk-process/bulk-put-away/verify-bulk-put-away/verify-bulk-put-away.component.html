@@ -36,14 +36,30 @@
                   <div class="bg-light-blue bg-50 br-none px-4 py-4 br-20 mb-3">
                       <div class="d-xl-flex d-block gap-20 flex-wrap">
                           <div class="flex-grow-1 mb-xl-0 mb-3">
-                            <mat-form-field class="w-100 br-14 custom-form-field-bg-white" appearance="outline">
+                            <mat-form-field class="w-100  custom-form-field w-100 " appearance="outline">
                               <span class="material-symbols-outlined text-20 icon-search pe-2">search</span>
-                              <input type="text" name="suggest"  class="suggest" matInput    (ngModelChange)="Search($event)" 
+                              <input type="text" name="suggest"  class="suggest" matInput [matAutocomplete]="auto1"    (ngModelChange)="Search($event)" 
                               [(ngModel)]="SearchString"
                                (keyup.enter)="addItem()"  #autoFocusField/>
                               <input type="text" class="suggest autocomplete" name="suggest1"   [value]="suggestion" matInput  
                               [placeholder]="SearchString ? '' : 'Search'"/> 
+                              <button matSuffix class="clear-btn" (click)="ClearSearch()" 
+                              matTooltip="Cancel Full Tote process and close this screen." matTooltipPosition="above"><mat-icon
+                              
+                              (click)="ClearSearch()" class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
+                              <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="addItem($event)"
+                              #autocompleteMesaage>
+                              <ng-container *ngIf="SearchString.length > 0">
+                              <mat-option *ngFor="let option of filteredData" [value]="option.itemNumber">
+                                  {{option.itemNumber}}
+                              </mat-option>
+                            </ng-container>
+                              <mat-option *ngIf="filteredData?.length ==0 || SearchString.length == 0" disabled>
+                                  No data found
+                              </mat-option>
+                          </mat-autocomplete>
                           </mat-form-field>
+
 
                           </div>
                           <div class="mb-xl-0 mb-3">
