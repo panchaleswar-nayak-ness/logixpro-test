@@ -2,7 +2,7 @@ import { HttpStatusCode } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core'; 
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderResource, OrdersRequest, TotesRequest, TotesResponse, WorkstationPreference } from 'src/app/common/Model/bulk-transactions';
+import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderResponse, OrdersRequest, TotesRequest, TotesResponse, WorkstationPreference } from 'src/app/common/Model/bulk-transactions';
 import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -128,7 +128,7 @@ export class BulkCountComponent implements OnInit {
     payload.size = 5000;
     payload.status = "open";
     payload.area = " ";
-    this.iBulkProcessApiService.bulkPickOrders(payload).subscribe((res: OrderResource[]) => {
+    this.iBulkProcessApiService.bulkPickOrders(payload).subscribe((res: OrderResponse[]) => {
       if (res) {
         this.orders = res;
         this.selectedOrders = [];
