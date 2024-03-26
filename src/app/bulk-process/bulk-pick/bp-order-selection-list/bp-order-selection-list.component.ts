@@ -15,7 +15,7 @@ export class BpOrderSelectionListComponent implements OnInit {
   @Input() ordersDisplayedColumns: string[];
   @Input() orders: any = [];
   @Input() view;
-  @Input() batchSeleted;
+  @Input() batchSeleted: boolean;
   datasource:any = [];
   @ViewChild(MatSort) sort: MatSort;
   @Output() selectOrderEmitter = new EventEmitter<any>();

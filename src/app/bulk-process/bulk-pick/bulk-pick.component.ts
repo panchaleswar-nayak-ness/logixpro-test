@@ -2,7 +2,7 @@ import { HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderResponse, OrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
+import { BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderResponse, OrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
 import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -14,18 +14,19 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./bulk-pick.component.scss']
 })
 export class BulkPickComponent implements OnInit {
-  ifAllowed:boolean;
+  ifAllowed: boolean;
   verifyBulkPicks: boolean = false;
-  status: any = {}
+  status: OrderBatchToteQtyResponse;
   view: string = "";
-  NextToteID: any;
+  NextToteID: number;
   ordersDisplayedColumns: string[] = ['batchId', 'lineCount', 'priority', 'actions'];
   selectedOrdersDisplayedColumns: string[] = ['orderNumber', 'toteNumber'];
   orders: any = [];
-  Prefernces: any;
+  Prefernces: BulkPreferences;
   selectedOrders: any = [];
   nextBatchId: string = '';
   batchSeleted: boolean = false;
+
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -115,19 +116,19 @@ export class BulkPickComponent implements OnInit {
   }
 
   pickProcess() {
-    if (this.Prefernces?.pickToTotes) this.OpenNextToteId();
-    else  this.changeVisibiltyVerifyBulk(false);  
-}
-
-  changeVisibiltyVerifyBulk(event: any) {
-    if (event) {
-    this.bulkPickoOrderBatchToteQty();
-    }
-    this.verifyBulkPicks = !this.verifyBulkPicks;
-    this.ifAllowed = this.verifyBulkPicks; 
+    if (this.Prefernces?.workstationPreferences?.pickToTotes) this.OpenNextToteId();
+    else this.changeVisibiltyVerifyBulk(false);
   }
 
-  changeView(event: any) {
+  changeVisibiltyVerifyBulk(event: boolean) {
+    if (event) {
+      this.bulkPickoOrderBatchToteQty();
+    }
+    this.verifyBulkPicks = !this.verifyBulkPicks;
+    this.ifAllowed = this.verifyBulkPicks;
+  }
+
+  changeView(event: string) {
     this.view = event;
     this.orders = [];
     this.selectedOrders = [];
@@ -152,13 +153,21 @@ export class BulkPickComponent implements OnInit {
   selectOrder(event: any) {
     event.toteNumber = this.selectedOrders.length + 1;
     if (this.view == "batch") {
-
+      this.selectedOrders = event.orders;
+      this.orders = this.orders.filter((element) => element.batchId != event.batchId);
+      this.batchSeleted = true;
     }
-    else {
+    else if (this.view == "tote") {
       this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
       this.selectedOrders = [...this.selectedOrders, event];
+      this.orders = this.orders.filter((element) => element.toteId != event.toteId);
     }
-    this.orders = this.orders.filter((element) => element.id != event.id);
+    else if (this.view == "order") {
+      this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
+      this.selectedOrders = [...this.selectedOrders, event];
+      this.orders = this.orders.filter((element) => element.orderNumber != event.orderNumber);
+    }
+    this.status.orderLinesCount = this.status.orderLinesCount + event.lineCount; 
   }
 
   OpenNextToteId() {
@@ -183,20 +192,28 @@ export class BulkPickComponent implements OnInit {
   }
 
   removeOrder(event) {
-    this.orders = [...this.orders, event];
-    this.selectedOrders = this.selectedOrders.filter((element) => element.id != event.id);
-    this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
+    if (this.view == "tote") {
+      this.orders = [...this.orders, event];
+      this.selectedOrders = this.selectedOrders.filter((element) => element.toteId != event.toteId);
+      this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
+    }
+    else if (this.view == "order") {
+      this.orders = [...this.orders, event];
+      this.selectedOrders = this.selectedOrders.filter((element) => element.orderNumber != event.orderNumber);
+      this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
+    }
+    this.status.orderLinesCount = this.status.orderLinesCount - event.lineCount; 
   }
 
   appendAll() {
     this.selectedOrders = [...this.selectedOrders, ...this.orders];
-    this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
+    this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1; this.status.orderLinesCount = this.status.orderLinesCount + element.lineCount;});
     this.orders = [];
   }
 
   getworkstationbulkzone() {
     this.iBulkProcessApiService.bulkPreferences().subscribe((res: BulkPreferences) => {
-      this.Prefernces = res.workstationPreferences[0];
+      this.Prefernces = res[0];
     })
   }
 
@@ -211,6 +228,7 @@ export class BulkPickComponent implements OnInit {
     else this.orders = [...this.orders, ...this.selectedOrders];
     this.selectedOrders = [];
     this.batchSeleted = false;
+    this.status.orderLinesCount = 0;
   }
 
   async printDetailList() {
