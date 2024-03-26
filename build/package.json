@@ -1,0 +1,9 @@
+{
+    "name": "@peak/LogixPro",
+    "version": "1.0.0",
+    "main": "index.html",
+    "scripts": {},
+    "dependencies": {},
+    "publishConfig":{"registry":"https://peaklogix.jfrog.io/artifactory/api/npm/peaklogix-npm-prod-local/"}
+  }
+  
