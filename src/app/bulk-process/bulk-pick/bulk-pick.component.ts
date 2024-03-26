@@ -47,7 +47,6 @@ export class BulkPickComponent implements OnInit {
     this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(payload).subscribe((res: OrderBatchToteQtyResponse) => {
       if (res) {
         this.status = res;
-        this.status.linesCount = 0;
         if (this.status.batchCount > 0) {
           this.bulkPickBatches();
           this.view = "batch";
@@ -129,6 +128,8 @@ export class BulkPickComponent implements OnInit {
 
   changeView(event: any) {
     this.view = event;
+    this.orders = [];
+    this.selectedOrders = [];
     if (event == "batch") {
       this.ordersDisplayedColumns = ['batchPickId', 'transactionQuantity', 'priority', 'requiredDate', 'actions'];
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber'];
@@ -144,7 +145,6 @@ export class BulkPickComponent implements OnInit {
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
       this.bulkPickOrders();
     }
-    this.status.linesCount = 0;
     this.batchSeleted = false;
   }
 
@@ -159,17 +159,16 @@ export class BulkPickComponent implements OnInit {
         if (res) {
           res.forEach(order => {order.completedQuantity = 0;});
           this.selectedOrders = res;
-          this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
+          this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
           this.batchSeleted = true;
         }
       });
     }
     else {
-      this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
+      this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
       this.selectedOrders = [...this.selectedOrders, event];
     }
-    this.orders = this.orders.filter((x: any) => x.id != event.id);
-    this.status.linesCount = this.status.linesCount + 1;
+    this.orders = this.orders.filter((element) => element.id != event.id);
   }
 
   OpenNextToteId() {
@@ -193,18 +192,16 @@ export class BulkPickComponent implements OnInit {
     });
   }
 
-  removeOrder(event: any) {
+  removeOrder(event) {
     this.orders = [...this.orders, event];
-    this.selectedOrders = this.selectedOrders.filter((x: any) => x.id != event.id);
-    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
-    this.status.linesCount = this.status.linesCount - 1;
+    this.selectedOrders = this.selectedOrders.filter((element) => element.id != event.id);
+    this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
   }
 
   appendAll() {
     this.selectedOrders = [...this.selectedOrders, ...this.orders];
-    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
+    this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
     this.orders = [];
-    this.status.linesCount = this.selectedOrders.length;
   }
 
   getworkstationbulkzone() {
@@ -223,7 +220,6 @@ export class BulkPickComponent implements OnInit {
     if (this.view == "batch") this.bulkPickBatches();
     else this.orders = [...this.orders, ...this.selectedOrders];
     this.selectedOrders = [];
-    this.status.linesCount = 0;
     this.batchSeleted = false;
   }
 
