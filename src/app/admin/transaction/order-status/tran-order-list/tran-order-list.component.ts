@@ -1,21 +1,21 @@
-import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit, Input, EventEmitter, Output } from '@angular/core';
-import { MatSort, Sort } from '@angular/material/sort';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/common/init/auth.service';
-import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { FormControl } from '@angular/forms';
-import { FloatLabelType } from '@angular/material/form-field';
-import { SharedService } from 'src/app/common/services/shared.service';
-import { FilterToteComponent } from 'src/app/admin/dialogs/filter-tote/filter-tote.component';
-import { OmChangePriorityComponent } from 'src/app/dialogs/om-change-priority/om-change-priority.component';
-import { ContextMenuFiltersService } from 'src/app/common/init/context-menu-filters.service';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {MatSort, Sort} from '@angular/material/sort';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+import {Router} from '@angular/router';
+import {AuthService} from 'src/app/common/init/auth.service';
+import {debounceTime, distinctUntilChanged, Subject, Subscription} from 'rxjs';
+import {LiveAnnouncer} from '@angular/cdk/a11y';
+import {FormControl} from '@angular/forms';
+import {FloatLabelType} from '@angular/material/form-field';
+import {SharedService} from 'src/app/common/services/shared.service';
+import {FilterToteComponent} from 'src/app/admin/dialogs/filter-tote/filter-tote.component';
+import {OmChangePriorityComponent} from 'src/app/dialogs/om-change-priority/om-change-priority.component';
+import {ContextMenuFiltersService} from 'src/app/common/init/context-menu-filters.service';
 import { ShippingCompleteDialogComponent } from 'src/app/dialogs/shipping-complete-dialog/shipping-complete-dialog.component';
-import { GlobalService } from 'src/app/common/services/global.service';
-import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
-import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
+import {GlobalService} from 'src/app/common/services/global.service';
+import {IAdminApiService} from 'src/app/common/services/admin-api/admin-api-interface';
+import {AdminApiService} from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
 import { AppRoutes, Column, DialogConstants, RouteNames, StringConditions, ToasterTitle, ToasterType ,TableConstant,LiveAnnouncerMessage,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
 
@@ -148,7 +148,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
 
   @Input()
   set deleteEvnt(event: Event) {
-    if (event) this.getContentData(); 
+    if (event) this.getContentData();
   }
 
   @Input() set orderNoEvent(event: any) {
@@ -217,11 +217,11 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   shippingComplete = false;
 
   public iAdminApiService: IAdminApiService;
-  
+
   constructor(
     private authService: AuthService,
     private _liveAnnouncer: LiveAnnouncer,
-    private sharedService: SharedService, 
+    private sharedService: SharedService,
     public adminApiService: AdminApiService,
     private global:GlobalService,
     public router: Router,
@@ -233,9 +233,9 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     if(router.url == AppRoutes.OrderManagerOrderStatus || router.url == `${AppRoutes.OrderManagerOrderStatus}?type=TransactionHistory`|| this.setVal == StringConditions.True) this.priority = true;
     else if(router.url == AppRoutes.AdminTrans) this.priority = false;
   }
-  
+
   getContentData() {
-    this.payload = { 
+    this.payload = {
       draw: 0,
       compDate: this.compDate,
       identify: this.orderNo ? 0 : 1,
@@ -262,7 +262,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
           this.columnValues = res.data?.orderStatusColSequence;
           this.customPagination.total = res.data?.totalRecords;
           this.getOrderForTote = res?.data?.orderStatus[0]?.orderNumber;
-          
+
           if (res.data) {
             this.onOpenOrderChange(res.data?.opLines);
             this.onCompleteOrderChange(res.data?.compLines);
@@ -278,22 +278,23 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
             this.totalLinesOrderChange(res.data?.totalRecords);
             this.sharedService.updateOrderStatusSelect({ totalRecords: res.data?.totalRecords });
           }
-          
+
           if (res.data?.onCar.length) {
             res.data.onCar.filter((item) => {
               let carouselValue = StringConditions.on;
               item.carousel = carouselValue
               return item.carousel;
             });
-            this.onLocationZoneChange(res.data?.onCar);
-          } else if (res.data?.offCar.length) {
+          }
+          if (res.data?.offCar.length) {
             res.data.offCar.filter((item) => {
               let carouselValue = StringConditions.off;
               item.carousel = carouselValue
               return item.carousel;
             });
-            this.onLocationZoneChange(res.data?.offCar);
-          } else this.onLocationZoneChange(res.data?.onCar);
+          }
+          const combinedData = res.data?.onCar.concat(res.data?.offCar);
+          this.onLocationZoneChange(combinedData);
         }
         else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
@@ -329,7 +330,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
       orderNumber: '',
       id: 0,
       itemNumber: '',
-      lineNumber: '', 
+      lineNumber: '',
     };
 
     this.iAdminApiService.DeleteOrder(this.payload).subscribe({
@@ -373,7 +374,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   onLocationZoneChange(event) {
     this.locationZones.emit(event);
   }
-  
+
   getTransactionModelIndex() {
     let paylaod = {
       viewToShow: 2,
@@ -446,7 +447,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
         }
       });
   }
-  
+
   sortChange(event) {
     if (!this.dataSource._data._value || event.direction == '' || event.direction == this.sortOrder) return;
     let index;
@@ -551,12 +552,12 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.subscription.unsubscribe();
   }
 
-  openGcBeginTest() { 
-    const dialogRef : any = this.global.OpenDialog(OmChangePriorityComponent, { 
+  openGcBeginTest() {
+    const dialogRef : any = this.global.OpenDialog(OmChangePriorityComponent, {
       height: DialogConstants.auto,
       width: Style.w560px,
       autoFocus: DialogConstants.autoFocus,
-      disableClose: true, 
+      disableClose: true,
       data: {
         orderNo: this.orderNo,
         priorityTable: this.dataSource.filteredData[0].priority,
@@ -581,7 +582,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
   optionSelected(filter : string) {
     this.filterString = filter;
     this.resetPagination();
-    this.getContentData();    
+    this.getContentData();
     this.isActiveTrigger = false;
   }
 
@@ -605,7 +606,7 @@ export class TranOrderListComponent implements OnInit, AfterViewInit {
     this.global.Print(`FileName:printOSReport|OrderNum:${this.orderNo}|ToteID:|Identifier:0`)
   }
 
-  previewReport(){ 
+  previewReport(){
     window.open(`/#/report-view?file=OrderStatus-lst-prv|field:Order Number|exptype:=|expone:${this.orderNo}|exptwo:`, UniqueConstants._blank, 'width=' + screen.width + ',height=' + screen.height + ',toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0')
   }
 }
