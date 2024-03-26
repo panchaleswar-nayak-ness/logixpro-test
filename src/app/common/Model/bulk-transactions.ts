@@ -19,70 +19,48 @@ export class BatchesRequest {
 }
 
 export class BatchesResponse {
-    id: number;
-    waveId: string = "";
-    batchId: string = "";
-    type: string = "";
+    batchId: string;
     priority: number;
-    importDate: Date | null;
-    importBy: string | null;
-    importFilename: string | null;
-    transactionType: string = "";
-    orderNumber: string = "";
-    lineNumber: number;
-    lineSequence: number;
-    requiredDate: Date | null;
-    itemNumber: string | null;
-    unitOfMeasure: string | null;
-    lotNumber: string | null;
-    expirationDate: Date | null;
-    serialNumber: string | null;
-    description: string | null;
-    revision: string | null;
-    transactionQuantity: number;
-    location: string | null;
-    warehouse: string | null;
-    zone: string | null;
-    carousel: string | null;
-    shelf: string | null;
-    bin: string | null;
-    invMapId: number;
-    completedDate: Date | null;
-    completedBy: string | null;
-    completedQuantity: number;
-    batchPickId: string | null;
-    notes: string | null;
-    exportFileName: string | null;
-    exportDate: Date | null;
-    exportedBy: string | null;
-    exportBatchId: string | null;
-    tableType: string | null;
-    statusCode: string | null;
-    masterRecord: boolean;
-    masterRecordId: number;
-    label: boolean;
-    inProcess: boolean;
-    toteId: string | null;
-    toteNumber: number;
-    cell: string | null;
-    hostTransactionId: string | null;
-    emergency: boolean;
+    orders: OrderResponse[];
+    lineCount: number;
+}
 
-    constructor() {
-        this.id = 0;
-        this.priority = 0;
-        this.lineNumber = 0;
-        this.lineSequence = 0;
-        this.transactionQuantity = 0;
-        this.invMapId = 0;
-        this.completedQuantity = 0;
-        this.masterRecord = false;
-        this.masterRecordId = 0;
-        this.label = false;
-        this.inProcess = false;
-        this.toteNumber = 0;
-        this.emergency = false;
-    }
+export class OrderResponse {
+    orderNumber: string;
+    toteId?: string | null;
+    lineCount: number;
+    priority: number;
+    importDate?: Date | null;
+    batchId?: string | null;
+    importFilename?: string | null;
+    requiredDate?: Date | null;
+    exportBatchId?: string | null;
+    toteNumber: number;
+    orderLines: OrderLineResource[];
+}
+
+export class OrderLineResource {
+    id: number;
+    orderNumber: string;
+    itemNumber: string;
+    description: string;
+    lineNumber: number;
+    batchId?: string | null;
+    toteId?: string | null;
+    transactionQuantity: number;
+    zone?: string | null;
+    completedBy?: string | null;
+    completedDate?: Date | null;
+    completedQuantity: number;
+    transactionType: string;
+    unitOfMeasure?: string | null;
+    lotNumber?: string | null;
+    expirationDate?: Date | null;
+    serialNumber?: string | null;
+    statusCode?: string | null;
+    warehouse?: string | null;
+    location?: string | null;
+    assignedUser?: string | null;
 }
 
 export class TotesRequest {
@@ -168,88 +146,6 @@ export class OrdersRequest {
     area: string
 }
 
-export class OrderResource {
-    id: number;
-    orderNumber: string = "";
-    waveId: string = "";
-    batchId: string = "";
-    toteId: string | null;
-    orderType: string = "";
-    orderStatus: string = "";
-    orderDate: string = "";
-    lineCount: number;
-    type: string | null;
-    priority: number;
-    importDate: Date | null;
-    importBy: string | null;
-    importFilename: string | null;
-    transactionType: string | null;
-    lineNumber: number;
-    lineSequence: number;
-    requiredDate: Date | null;
-    itemNumber: string | null;
-    unitOfMeasure: string | null;
-    lotNumber: string | null;
-    expirationDate: Date | null;
-    serialNumber: string | null;
-    description: string | null;
-    revision: string | null;
-    transactionQuantity: number;
-    location: string | null;
-    warehouse: string | null;
-    zone: string | null;
-    carousel: string | null;
-    shelf: string | null;
-    bin: string | null;
-    invMapId: number;
-    completedDate: Date | null;
-    completedBy: string | null;
-    completedQuantity: number;
-    batchPickId: string | null;
-    notes: string | null;
-    exportFileName: string | null;
-    exportDate: Date | null;
-    exportedBy: string | null;
-    exportBatchId: string | null;
-    tableType: string | null;
-    statusCode: string | null;
-    masterRecord: boolean;
-    masterRecordId: number;
-    label: boolean;
-    inProcess: boolean;
-    toteNumber: number;
-    cell: string | null;
-    hostTransactionId: string | null;
-    emergency: boolean;
-    row: string | null;
-    userField1: string | null;
-    userField2: string | null;
-    userField3: string | null;
-    userField4: string | null;
-    userField5: string | null;
-    userField6: string | null;
-    userField7: string | null;
-    userField8: string | null;
-    userField9: string | null;
-    userField10: string | null;
-
-    constructor() {
-        this.id = 0;
-        this.lineCount = 0;
-        this.priority = 0;
-        this.lineNumber = 0;
-        this.lineSequence = 0;
-        this.transactionQuantity = 0;
-        this.invMapId = 0;
-        this.completedQuantity = 0;
-        this.masterRecord = false;
-        this.masterRecordId = 0;
-        this.label = false;
-        this.inProcess = false;
-        this.toteNumber = 0;
-        this.emergency = false;
-    }
-}
 
 export class BatchesByIdRequest {
     type: string;
@@ -463,8 +359,8 @@ export class TaskCompleteRequest {
     countQty: number;
 }
 
-export class ValidateToteRequest{
-    toteid:string
+export class ValidateToteRequest {
+    toteid: string
 }
 
 

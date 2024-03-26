@@ -234,7 +234,7 @@ export class SideNavComponent implements OnInit {
     this.router.navigate([`${localStorage.getItem('reportNav')}`]);
   }
 
-  loadMenus(menu: any) { 
+  loadMenus(menu: any) {
     this.sharedService.updateLoggedInUser(this.userData.userName, this.userData.wsid, menu.route);
     if (!menu) menu = { route: AppRoutes.Dashboard };
 

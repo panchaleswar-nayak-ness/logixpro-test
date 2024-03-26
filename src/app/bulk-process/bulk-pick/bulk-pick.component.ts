@@ -2,7 +2,7 @@ import { HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderResource, OrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
+import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderResponse, OrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
 import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -47,6 +47,7 @@ export class BulkPickComponent implements OnInit {
     this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(payload).subscribe((res: OrderBatchToteQtyResponse) => {
       if (res) {
         this.status = res;
+        this.status.orderLinesCount = 0;
         if (this.status.batchCount > 0) {
           this.bulkPickBatches();
           this.view = "batch";
@@ -105,7 +106,7 @@ export class BulkPickComponent implements OnInit {
     payload.size = 5000;
     payload.status = "open";
     payload.area = " ";
-    this.iBulkProcessApiService.bulkPickOrders(payload).subscribe((res: OrderResource[]) => {
+    this.iBulkProcessApiService.bulkPickOrders(payload).subscribe((res: OrderResponse[]) => {
       if (res) {
         this.orders = res;
         this.selectedOrders = [];
@@ -151,18 +152,7 @@ export class BulkPickComponent implements OnInit {
   selectOrder(event: any) {
     event.toteNumber = this.selectedOrders.length + 1;
     if (this.view == "batch") {
-      let payload: BatchesByIdRequest = new BatchesByIdRequest();
-      payload.type = "pick";
-      payload.batchpickid = event.batchPickId;
-      payload.status = "open";
-      this.iBulkProcessApiService.bulkPickBatchId(payload).subscribe((res: BatchesResponse[]) => {
-        if (res) {
-          res.forEach(order => {order.completedQuantity = 0;});
-          this.selectedOrders = res;
-          this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
-          this.batchSeleted = true;
-        }
-      });
+
     }
     else {
       this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
