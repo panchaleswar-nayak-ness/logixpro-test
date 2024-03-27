@@ -155,7 +155,7 @@
                   </ng-container>
         
                   <tr mat-header-row *matHeaderRowDef="ordersDisplayedColumns; sticky:true"></tr>
-                  <tr mat-row *matRowDef="let row; columns: ordersDisplayedColumns;"></tr>
+                  <tr mat-row *matRowDef="let row; columns: ordersDisplayedColumns;" (click)="selectRow(row)"></tr>
                 </table>
                     </ng-scrollbar>
                 </div>
