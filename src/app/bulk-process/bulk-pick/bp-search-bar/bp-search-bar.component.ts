@@ -33,7 +33,11 @@ export class BpSearchBarComponent implements OnInit {
       this.searchBoxField?.nativeElement.focus();
     }, 500);
   }
-
+  ClearSearch(){
+    this.suggestion = "";
+    this.searchText = ""
+    this.filteredOrders = []; 
+    } 
   changeView(event: any) {
     this.changeViewEmitter.emit(event.value);
   }
