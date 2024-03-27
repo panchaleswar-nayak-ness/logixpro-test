@@ -40,6 +40,8 @@
                     <span class="material-symbols-outlined text-20 icon-search pe-2">search</span>
                     <input type="text"  class="suggest" matInput  [matAutocomplete]="auto1" (ngModelChange)="search($event)" [(ngModel)]="searchText" (keyup.enter)="addItem()" #autoFocusField/>
                     <input type="text" class="suggest autocomplete" disabled [value]="suggestion" matInput [placeholder]="searchText ? '' : 'Search'"/>
+                    <button matSuffix class="clear-btn" (click)="ClearSearch()" *ngIf="searchText.length > 0" ><mat-icon 
+                        class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
                     <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="dropdownSelect($event)"
                         #autocompleteMesaage>
                         <mat-option *ngFor="let option of filteredOrders" [value]="option">

@@ -27,7 +27,11 @@ export class SearchBarComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  ClearSearch(){
+    this.suggestion = "";
+    this.searchText = ""
+    this.filteredOrders = []; 
+    } 
   ngAfterViewInit() {
     setTimeout(() => {
       this.searchBoxField?.nativeElement.focus();

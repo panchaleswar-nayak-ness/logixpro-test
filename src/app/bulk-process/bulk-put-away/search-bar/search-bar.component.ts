@@ -85,7 +85,11 @@ export class SearchBarComponent implements OnInit {
   clearMatSelectList() {
     this.openAction?.options.forEach((data: MatOption) => data.deselect());
   }
-
+  ClearSearch(){
+    this.suggestion = "";
+    this.searchText = ""
+    this.filteredOrders = []; 
+    } 
   generateTranscAction(event: any) {
     this.clearMatSelectList();
   }
