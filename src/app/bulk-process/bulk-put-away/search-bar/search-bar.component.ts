@@ -94,6 +94,8 @@ export class SearchBarComponent implements OnInit {
     this.clearMatSelectList();
   }
   CreateBatch(){
+    if (this.selectedOrders.length != 0) {
     this.createBatchEmit.emit(true);
   }
+}
 }
