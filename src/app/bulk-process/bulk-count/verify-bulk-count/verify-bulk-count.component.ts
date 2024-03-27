@@ -289,4 +289,15 @@ export class VerifyBulkCountComponent implements OnInit {
     this.openAction?.options.forEach((data: MatOption) => data.deselect());
   }
 
+  selectRow(row: any) {
+    this.orderLines.filteredData.forEach(element => {
+      if(row != element){
+        element.selected = false;
+      }
+    });
+    const selectedRow = this.orderLines.filteredData.find((x: any) => x === row);
+    if (selectedRow) {
+      selectedRow.selected = !selectedRow.selected;
+    }
+  }
 }
