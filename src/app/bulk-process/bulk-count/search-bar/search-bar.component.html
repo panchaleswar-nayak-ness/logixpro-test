@@ -45,7 +45,7 @@
                     <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="dropdownSelect($event)"
                         #autocompleteMesaage>
                         <mat-option *ngFor="let option of filteredOrders" [value]="option">
-                            {{view == "batch" ? option.batchPickId : (view == "tote" ? option.toteId : option.orderNumber)}}
+                            {{view == "batch" ? option.batchId : (view == "tote" ? option.toteId : option.orderNumber)}}
                         </mat-option>
                         <mat-option *ngIf="filteredOrders?.length ==0" disabled>
                             No data found

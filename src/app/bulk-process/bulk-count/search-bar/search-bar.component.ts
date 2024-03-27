@@ -13,10 +13,11 @@ export class SearchBarComponent implements OnInit {
   @Input() orders;
   @Input() selectedOrders;
   @Input() status;
+  @Input() batchSeleted: boolean;
   @Output() changeViewEmitter = new EventEmitter<any>();
   @Output() addItemEmitter = new EventEmitter<any>();
-  @Output() printDetailList = new EventEmitter<any>();
   @Output() createBatchEmit = new EventEmitter<any>();
+  @Output() printDetailList = new EventEmitter<any>();
   searchText: string = "";
   suggestion: string = "";
   filteredOrders: any = [];
@@ -27,35 +28,32 @@ export class SearchBarComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  ClearSearch(){
-    this.suggestion = "";
-    this.searchText = ""
-    this.filteredOrders = []; 
-    } 
+
   ngAfterViewInit() {
     setTimeout(() => {
       this.searchBoxField?.nativeElement.focus();
     }, 500);
   }
-
+  ClearSearch(){
+    this.suggestion = "";
+    this.searchText = ""
+    this.filteredOrders = []; 
+    } 
   changeView(event: any) {
     this.changeViewEmitter.emit(event.value);
   }
-  CreateBatch(){
-    this.createBatchEmit.emit(true);
-  }
 
-  search(event: any) {
+  search(event: string) {
     if (this.view == "batch") {
-      this.filteredOrders = this.orders.filter(function (str) { return str.batchPickId.startsWith(event); });
-      this.suggestion = this.filteredOrders[0]?.batchPickId;
+      this.filteredOrders = this.orders.filter(function (str) { return str.batchId.toLowerCase().startsWith(event.toLowerCase()); });
+      this.suggestion = this.filteredOrders[0]?.batchId;
     }
     else if (this.view == "tote") {
-      this.filteredOrders = this.orders.filter(function (str) { return str.toteId.toString().startsWith(event); });
+      this.filteredOrders = this.orders.filter(function (str) { return str.toteId.toString().toLowerCase().startsWith(event.toLowerCase()); });
       this.suggestion = this.filteredOrders[0]?.toteId;
     }
     else if (this.view == "order") {
-      this.filteredOrders = this.orders.filter(function (str) { return str.orderNumber.startsWith(event); });
+      this.filteredOrders = this.orders.filter(function (str) { return str.orderNumber.toLowerCase().startsWith(event.toLowerCase()); });
       this.suggestion = this.filteredOrders[0]?.orderNumber;
     }
     if (event == "" || this.filteredOrders.length == 0) {
@@ -65,23 +63,25 @@ export class SearchBarComponent implements OnInit {
   }
 
   addItem() {
-    if (this.filteredOrders.length > 0) {
+    if (!this.batchSeleted && this.filteredOrders.length > 0) {
       this.addItemEmitter.emit(this.filteredOrders[0]);
       this.filteredOrders = [];
-      this.searchText = "";
-      this.suggestion = "";
     }
-  }
-
-  dropdownSelect(event: any) {
-    this.addItemEmitter.emit(event.option.value);
-    this.filteredOrders = [];
     this.searchText = "";
     this.suggestion = "";
   }
 
-  PrintDetailList(){
-    if(this.selectedOrders.length != 0){
+  dropdownSelect(event: any) {
+    if (!this.batchSeleted) {
+      this.addItemEmitter.emit(event.option.value);
+      this.filteredOrders = [];
+    }
+    this.searchText = "";
+    this.suggestion = "";
+  }
+
+  PrintDetailList() {
+    if (this.selectedOrders.length != 0) {
       this.printDetailList.emit();
     }
   }
@@ -93,5 +93,7 @@ export class SearchBarComponent implements OnInit {
   generateTranscAction(event: any) {
     this.clearMatSelectList();
   }
-  
+  CreateBatch(){
+    this.createBatchEmit.emit(true);
+  }
 }

@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderResponse, OrdersRequest, TotesRequest, TotesResponse, WorkstationPreference } from 'src/app/common/Model/bulk-transactions';
+import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, TotesRequest, TotesResponse, WorkstationPreference } from 'src/app/common/Model/bulk-transactions';
 import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -36,20 +36,21 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./bulk-put-away.component.scss']
 })
 export class BulkPutAwayComponent implements OnInit {
-  ifAllowed:boolean;
+  ifAllowed: boolean;
   verifyBulkPutAway: boolean = false;
-  status: any = {}
+  status: OrderBatchToteQtyResponse;
   view: string = "";
-  NextToteID: any;
+  NextToteID: number;
   ordersDisplayedColumns: string[] = ['batchId', 'lineCount', 'priority', 'actions'];
   selectedOrdersDisplayedColumns: string[] = ['orderNumber', 'toteNumber'];
   orders: any = [];
-  Prefernces: WorkstationPreference;
+  Prefernces: BulkPreferences;
   selectedOrders: any = [];
-  SelectedOrderLine:any= [];
+  IsBatch:any = false;
   nextBatchId: string = '';
   batchSeleted: boolean = false;
-  IsBatch: boolean = false;
+  orderLines: OrderLineResource[] = [];
+
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -67,11 +68,12 @@ export class BulkPutAwayComponent implements OnInit {
 
   bulkPutAwayOrderBatchToteQty() {
     let payload: OrderBatchToteQtyRequest = new OrderBatchToteQtyRequest();
-    payload.type = 'Put Away'; 
+    payload.type = 'Put Away';
     this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(payload).subscribe((res: OrderBatchToteQtyResponse) => {
       if (res) {
+        this.orderLines = [];
         this.status = res;
-        this.status.linesCount = 0;
+        this.status.orderLinesCount = 0;
         if (this.status.batchCount > 0) {
           this.bulkPutAwayBatches();
           this.view = "batch";
@@ -93,6 +95,7 @@ export class BulkPutAwayComponent implements OnInit {
       }
     });
   }
+
   bulkPutAwayBatches() {
     let payload: BatchesRequest = new BatchesRequest();
     payload.type = "Put Away";
@@ -138,21 +141,22 @@ export class BulkPutAwayComponent implements OnInit {
   }
 
   putawayProcess() {
-    if (this.Prefernces?.pickToTotes) this.OpenNextToteId();
-    else  this.changeVisibiltyVerifyBulk(false);  
+    if (this.Prefernces?.workstationPreferences?.pickToTotes) this.OpenNextToteId();
+    else this.changeVisibiltyVerifyBulk(false);
   }
 
-  changeVisibiltyVerifyBulk(event: any) {
-    debugger
+  changeVisibiltyVerifyBulk(event: boolean) {
     if (event) {
-    this.bulkPutAwayOrderBatchToteQty();
+      this.bulkPutAwayOrderBatchToteQty();
     }
     this.verifyBulkPutAway = !this.verifyBulkPutAway;
-    this.ifAllowed = this.verifyBulkPutAway; 
+    this.ifAllowed = this.verifyBulkPutAway;
   }
 
-  changeView(event: any) {
+  changeView(event: string) {
     this.view = event;
+    this.orders = [];
+    this.selectedOrders = [];
     if (event == "batch") {
       this.ordersDisplayedColumns = ['batchId', 'lineCount', 'priority', 'actions'];
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber'];
@@ -168,31 +172,29 @@ export class BulkPutAwayComponent implements OnInit {
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
       this.bulkPutAwayOrders();
     }
-    this.status.linesCount = 0;
     this.batchSeleted = false;
   }
 
   selectOrder(event: any) {
-    this.SelectedOrderLine = [];
     event.toteNumber = this.selectedOrders.length + 1;
+    this.orderLines = [];
     if (this.view == "batch") {
-   
-          this.selectedOrders = event.orders;
-          this.SelectedOrderLine = event.orders[0].orderLines;
-          this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
-          this.batchSeleted = true;
-       
+      this.selectedOrders = event.orders;
+      this.orders = this.orders.filter((element) => element.batchId != event.batchId);
+      this.batchSeleted = true;
     }
-    else {
+    else if (this.view == "tote") {
+      this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
       this.selectedOrders = [...this.selectedOrders, event];
-      this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1;
-        element.orderLines.forEach(order => {
-          this.SelectedOrderLine.push(order);
-        });});
-
+      this.orders = this.orders.filter((element) => element.toteId != event.toteId);
     }
-    this.orders = this.orders.filter((x: any) => x.id != event.id);
-    this.status.linesCount = this.status.linesCount + 1;
+    else if (this.view == "order") {
+      this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
+      this.selectedOrders = [...this.selectedOrders, event];
+      this.orders = this.orders.filter((element) => element.orderNumber != event.orderNumber);
+    }
+    this.status.orderLinesCount = this.status.orderLinesCount + event.lineCount;
+    this.selectedOrders.forEach((element) => { this.orderLines = this.orderLines.concat(element.orderLines) });
   }
 
   OpenNextToteId() {
@@ -202,7 +204,7 @@ export class BulkPutAwayComponent implements OnInit {
       autoFocus: DialogConstants.autoFocus,
       disableClose: true,
       data: {
-        selectedOrderList: this.selectedOrders.orderLines,
+        selectedOrderList: this.selectedOrders,
         nextToteID: this.NextToteID,
         BulkProcess: true,
         view: this.view
@@ -210,38 +212,41 @@ export class BulkPutAwayComponent implements OnInit {
     });
     dialogRefTote.afterClosed().subscribe((result) => {
       if (result.length > 0) {
-        this.selectedOrders.orderLines = result;
+        this.selectedOrders = result;
+        this.selectedOrders.forEach((order) => {
+          order.orderLines.forEach((orderLine) => {
+            orderLine.toteId = order.toteId;
+          });
+        });
         this.verifyBulkPutAway = !this.verifyBulkPutAway;
       }
     });
   }
 
-  removeOrder(event: any) {
-    this.SelectedOrderLine = [];
-    this.orders = [...this.orders, event];
-    this.selectedOrders = this.selectedOrders.filter((x: any) => x.id != event.id);
-    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 ;
-      element.orderLines.forEach(order => {
-        this.SelectedOrderLine.push(order);
-      })
-    });
-    this.status.linesCount = this.status.linesCount - 1;
+  removeOrder(event) {
+    this.orderLines = [];
+    if (this.view == "tote") {
+      this.orders = [...this.orders, event];
+      this.selectedOrders = this.selectedOrders.filter((element) => element.toteId != event.toteId);
+    }
+    else if (this.view == "order") {
+      this.orders = [...this.orders, event];
+      this.selectedOrders = this.selectedOrders.filter((element) => element.orderNumber != event.orderNumber);
+    }
+    this.status.orderLinesCount = this.status.orderLinesCount - event.lineCount;
+    this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1; this.orderLines = this.orderLines.concat(element.orderLines)});
   }
 
   appendAll() {
-    this.SelectedOrderLine = [];
-    this.selectedOrders = [...this.selectedOrders, ...this.orders]; 
-    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 
-      element.orderLines.forEach(order => {
-        this.SelectedOrderLine.push(order);
-      })});
+    this.orderLines = [];
+    this.selectedOrders = [...this.selectedOrders, ...this.orders];
+    this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1; this.status.orderLinesCount = this.status.orderLinesCount + element.lineCount; this.orderLines = this.orderLines.concat(element.orderLines); });
     this.orders = [];
-    this.status.linesCount = this.selectedOrders.length;
   }
 
   getworkstationbulkzone() {
     this.iBulkProcessApiService.bulkPreferences().subscribe((res: BulkPreferences) => {
-      this.Prefernces = res.workstationPreferences[0];
+      this.Prefernces = res;
     })
   }
 
@@ -255,9 +260,9 @@ export class BulkPutAwayComponent implements OnInit {
     if (this.view == "batch") this.bulkPutAwayBatches();
     else this.orders = [...this.orders, ...this.selectedOrders];
     this.selectedOrders = [];
-    this.SelectedOrderLine = [];
-    this.status.linesCount = 0;
     this.batchSeleted = false;
+    this.status.orderLinesCount = 0;
+    this.orderLines = [];
   }
 
   async printDetailList() {
@@ -283,7 +288,6 @@ export class BulkPutAwayComponent implements OnInit {
       }
       else if (res == ResponseStrings.Cancel) {
         if (this.view != "batch") await this.createBatchNow();
-        
       }
     });
   }
@@ -308,7 +312,7 @@ export class BulkPutAwayComponent implements OnInit {
         if (resp == ResponseStrings.Yes) {
           let payload: CreateBatchRequest = new CreateBatchRequest();
           payload.nextBatchID = this.nextBatchId;
-          payload.transactionType = "Put Away";
+          payload.transactionType = "Count";
           payload.BatchData = this.selectedOrders.map((item) => ({ orderNumber: item.orderNumber, toteNumber: item.toteNumber }));
           let res2 = await this.iBulkProcessApiService.BulkPickCreateBatch(payload);
           if (res2?.status == HttpStatusCode.Ok) {

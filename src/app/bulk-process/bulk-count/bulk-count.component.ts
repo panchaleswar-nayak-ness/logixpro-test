@@ -2,7 +2,7 @@ import { HttpStatusCode } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core'; 
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderResponse, OrdersRequest, TotesRequest, TotesResponse, WorkstationPreference } from 'src/app/common/Model/bulk-transactions';
+import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, TotesRequest, TotesResponse, WorkstationPreference } from 'src/app/common/Model/bulk-transactions';
 import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -34,20 +34,21 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./bulk-count.component.scss']
 })
 export class BulkCountComponent implements OnInit {
-  SelectedOrderLine:any = [];
-  ifAllowed: boolean = false;
+  ifAllowed: boolean;
   verifyBulkCounts: boolean = false;
-  status: any = {}
+  status: OrderBatchToteQtyResponse;
   view: string = "";
-  NextToteID: any;
+  NextToteID: number;
   ordersDisplayedColumns: string[] = ['batchId', 'lineCount', 'priority', 'actions'];
   selectedOrdersDisplayedColumns: string[] = ['orderNumber', 'toteNumber'];
   orders: any = [];
-  Prefernces: WorkstationPreference;
+  Prefernces: BulkPreferences;
   selectedOrders: any = [];
+  IsBatch:any = false;
   nextBatchId: string = '';
   batchSeleted: boolean = false;
-  IsBatch: boolean = false;
+  orderLines: OrderLineResource[] = [];
+
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
@@ -68,8 +69,9 @@ export class BulkCountComponent implements OnInit {
     payload.type = 'Count';
     this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(payload).subscribe((res: OrderBatchToteQtyResponse) => {
       if (res) {
+        this.orderLines = [];
         this.status = res;
-        this.status.linesCount = 0;
+        this.status.orderLinesCount = 0;
         if (this.status.batchCount > 0) {
           this.bulkCountBatches();
           this.view = "batch";
@@ -137,20 +139,22 @@ export class BulkCountComponent implements OnInit {
   }
 
   CountProcess() {
-    if (this.Prefernces?.pickToTotes) this.OpenNextToteId();
-    else    this.changeVisibiltyVerifyBulk(false);  
+    if (this.Prefernces?.workstationPreferences?.pickToTotes) this.OpenNextToteId();
+    else this.changeVisibiltyVerifyBulk(false);
   }
 
-  changeVisibiltyVerifyBulk(event: any) {
+  changeVisibiltyVerifyBulk(event: boolean) {
     if (event) {
-    this.bulkCountOrderBatchToteQty();
+      this.bulkCountOrderBatchToteQty();
     }
     this.verifyBulkCounts = !this.verifyBulkCounts;
-    this.ifAllowed = this.verifyBulkCounts; 
+    this.ifAllowed = this.verifyBulkCounts;
   }
 
-  changeView(event: any) {
+  changeView(event: string) {
     this.view = event;
+    this.orders = [];
+    this.selectedOrders = [];
     if (event == "batch") {
       this.ordersDisplayedColumns = ['batchId', 'lineCount', 'priority', 'actions'];
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber'];
@@ -166,28 +170,29 @@ export class BulkCountComponent implements OnInit {
       this.selectedOrdersDisplayedColumns = ['orderNumber', 'toteNumber', 'actions'];
       this.bulkCountOrders();
     }
-    this.status.linesCount = 0;
     this.batchSeleted = false;
   }
 
   selectOrder(event: any) {
-    this.SelectedOrderLine = [];
     event.toteNumber = this.selectedOrders.length + 1;
+    this.orderLines = [];
     if (this.view == "batch") {
       this.selectedOrders = event.orders;
-      this.SelectedOrderLine = event.orders[0].orderLines;
-      this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 });
+      this.orders = this.orders.filter((element) => element.batchId != event.batchId);
       this.batchSeleted = true;
     }
-    else {
+    else if (this.view == "tote") {
+      this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
       this.selectedOrders = [...this.selectedOrders, event];
-      this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1;
-        element.orderLines.forEach(order => {
-          this.SelectedOrderLine.push(order);
-        });});
+      this.orders = this.orders.filter((element) => element.toteId != event.toteId);
     }
-    this.orders = this.orders.filter((x: any) => x.id != event.id);
-    this.status.linesCount = this.status.linesCount + 1;
+    else if (this.view == "order") {
+      this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1 });
+      this.selectedOrders = [...this.selectedOrders, event];
+      this.orders = this.orders.filter((element) => element.orderNumber != event.orderNumber);
+    }
+    this.status.orderLinesCount = this.status.orderLinesCount + event.lineCount;
+    this.selectedOrders.forEach((element) => { this.orderLines = this.orderLines.concat(element.orderLines) });
   }
 
   OpenNextToteId() {
@@ -206,38 +211,40 @@ export class BulkCountComponent implements OnInit {
     dialogRefTote.afterClosed().subscribe((result) => {
       if (result.length > 0) {
         this.selectedOrders = result;
+        this.selectedOrders.forEach((order) => {
+          order.orderLines.forEach((orderLine) => {
+            orderLine.toteId = order.toteId;
+          });
+        });
         this.verifyBulkCounts = !this.verifyBulkCounts;
       }
     });
   }
 
-  removeOrder(event: any) {
-    this.SelectedOrderLine = [];
-    this.orders = [...this.orders, event];
-    this.selectedOrders = this.selectedOrders.filter((x: any) => x.id != event.id);
-    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 ;
-      element.orderLines.forEach(order => {
-        this.SelectedOrderLine.push(order);
-      })
-    });
-    this.status.linesCount = this.status.linesCount - 1;
+  removeOrder(event) {
+    this.orderLines = [];
+    if (this.view == "tote") {
+      this.orders = [...this.orders, event];
+      this.selectedOrders = this.selectedOrders.filter((element) => element.toteId != event.toteId);
+    }
+    else if (this.view == "order") {
+      this.orders = [...this.orders, event];
+      this.selectedOrders = this.selectedOrders.filter((element) => element.orderNumber != event.orderNumber);
+    }
+    this.status.orderLinesCount = this.status.orderLinesCount - event.lineCount;
+    this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1; this.orderLines = this.orderLines.concat(element.orderLines)});
   }
 
   appendAll() {
-    this.SelectedOrderLine = [];
-    this.selectedOrders = [...this.selectedOrders, ...this.orders]; 
-    this.selectedOrders.forEach((element: any, index: any) => { element.toteNumber = index + 1 
-      element.orderLines.forEach(order => {
-        this.SelectedOrderLine.push(order);
-      })});
+    this.orderLines = [];
+    this.selectedOrders = [...this.selectedOrders, ...this.orders];
+    this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1; this.status.orderLinesCount = this.status.orderLinesCount + element.lineCount; this.orderLines = this.orderLines.concat(element.orderLines); });
     this.orders = [];
-    this.status.linesCount = this.selectedOrders.length;
   }
-
 
   getworkstationbulkzone() {
     this.iBulkProcessApiService.bulkPreferences().subscribe((res: BulkPreferences) => {
-      this.Prefernces = res.workstationPreferences[0];
+      this.Prefernces = res;
     })
   }
 
@@ -251,9 +258,9 @@ export class BulkCountComponent implements OnInit {
     if (this.view == "batch") this.bulkCountBatches();
     else this.orders = [...this.orders, ...this.selectedOrders];
     this.selectedOrders = [];
-    this.SelectedOrderLine = [];
-    this.status.linesCount = 0;
     this.batchSeleted = false;
+    this.status.orderLinesCount = 0;
+    this.orderLines = [];
   }
 
   async printDetailList() {
@@ -279,7 +286,6 @@ export class BulkCountComponent implements OnInit {
       }
       else if (res == ResponseStrings.Cancel) {
         if (this.view != "batch") await this.createBatchNow();
-        
       }
     });
   }

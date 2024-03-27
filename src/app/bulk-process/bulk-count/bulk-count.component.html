@@ -24,4 +24,4 @@
     </div>
 </div>
 
-<app-verify-bulk-count *ngIf="verifyBulkCounts" [SelectedList]="SelectedOrderLine" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk(true)"></app-verify-bulk-count>
+<app-verify-bulk-count *ngIf="verifyBulkCounts" [orderLines]="orderLines" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk(true)"></app-verify-bulk-count>

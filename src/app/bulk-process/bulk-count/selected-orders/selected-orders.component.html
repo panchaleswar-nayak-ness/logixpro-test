@@ -17,9 +17,9 @@
           <table mat-table [dataSource]="datasource" class="custom-table w-100" matSort
             (matSortChange)="announceSortChange($event)">
   
-            <ng-container matColumnDef="batchPickId">
+            <ng-container matColumnDef="batchId">
               <th mat-header-cell mat-sort-header *matHeaderCellDef> Batch ID </th>
-              <td mat-cell *matCellDef="let element">{{element.batchPickId}} </td>
+              <td mat-cell *matCellDef="let element">{{element.batchId}} </td>
             </ng-container>
   
             <ng-container matColumnDef="toteId">
