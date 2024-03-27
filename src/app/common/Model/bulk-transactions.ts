@@ -315,9 +315,9 @@ export class ValidateToteRequest {
 }
 
 export class FullToteRequest {
-    toteId?: string | null;
-    orderNumber?: string | null;
-    type?: string | null;
-    newToteQty: number;
-
+    NewToteID: string;
+    FullToteID:string;
+    Id: number;
+    FullToteQTY: number;
+    NewToteQTY: number;
 }

@@ -95,12 +95,13 @@ export class BpFullToteComponent implements OnInit {
   async done() {
     if (this.data.NewToteID != "") {
       let payload: FullToteRequest = new FullToteRequest();
-      payload.toteId = this.data.NewToteID;
-      payload.orderNumber = this.data.orderNumber;
-      payload.type = "pick";
-      payload.newToteQty = parseInt(this.data.PutNewToteQty);
+      payload.NewToteID = this.data.NewToteID;
+      payload.NewToteQTY = parseInt(this.data.PutNewToteQty);
+      payload.FullToteID = this.data.toteId;
+      payload.FullToteQTY= this.data.PutFullToteQty;
+      payload.Id = this.data.id;
       let res: any = await this.iBulkProcessApiService.fullTote(payload);
-      if (res?.status == HttpStatusCode.Created) {
+      if (res?.status == HttpStatusCode.Ok) {
         this.dialogRef.close(true);
       }
     }
