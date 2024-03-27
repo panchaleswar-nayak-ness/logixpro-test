@@ -154,6 +154,7 @@ export class BulkPickComponent implements OnInit {
 
   selectOrder(event: any) {
     event.toteNumber = this.selectedOrders.length + 1;
+    this.orderLines = [];
     if (this.view == "batch") {
       this.selectedOrders = event.orders;
       this.orders = this.orders.filter((element) => element.batchId != event.batchId);
@@ -200,6 +201,7 @@ export class BulkPickComponent implements OnInit {
   }
 
   removeOrder(event) {
+    this.orderLines = [];
     if (this.view == "tote") {
       this.orders = [...this.orders, event];
       this.selectedOrders = this.selectedOrders.filter((element) => element.toteId != event.toteId);
@@ -213,6 +215,7 @@ export class BulkPickComponent implements OnInit {
   }
 
   appendAll() {
+    this.orderLines = [];
     this.selectedOrders = [...this.selectedOrders, ...this.orders];
     this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1; this.status.orderLinesCount = this.status.orderLinesCount + element.lineCount; this.orderLines = this.orderLines.concat(element.orderLines); });
     this.orders = [];
