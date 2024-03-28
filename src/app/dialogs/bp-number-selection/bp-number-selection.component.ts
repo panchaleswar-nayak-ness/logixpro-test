@@ -14,7 +14,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class BpNumberSelectionComponent implements OnInit {
 
-  newQuantity: string = '';
+  newQuantity: number;
   Prefernces: BulkPreferences;
   public iBulkProcessApiService: IBulkProcessApiService;
   from: string = "completed quantity";
@@ -40,7 +40,12 @@ export class BpNumberSelectionComponent implements OnInit {
   }
 
   add(string: string) {
-    this.newQuantity = this.newQuantity + string;
+    if(this.newQuantity){
+      this.newQuantity = parseFloat(this.newQuantity.toString() + string);
+    }
+    else{
+      this.newQuantity = parseFloat(string);
+    }
   }
 
   done() {
@@ -63,19 +68,19 @@ export class BpNumberSelectionComponent implements OnInit {
         });
         dialogRef1.afterClosed().subscribe(async (resp: any) => {
           if (resp == ResponseStrings.Yes) {
-            this.dialogRef.close({ newQuantity: this.newQuantity, type: ResponseStrings.Yes });
+            this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.Yes });
           }
           else if (resp == ResponseStrings.No) {
-            this.dialogRef.close({ newQuantity: this.newQuantity, type: ResponseStrings.No });
+            this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.No });
           }
           else if (resp == ResponseStrings.Cancel) {
-            this.dialogRef.close({ newQuantity: this.newQuantity, type: ResponseStrings.Cancel });
+            this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.Cancel });
           }
         });
       }
     }
     else if (this.from == "qunatity put in new tote") {
-      this.dialogRef.close(this.newQuantity);
+      this.dialogRef.close(this.newQuantity.toString());
     }
   }
 }
