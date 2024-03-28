@@ -136,14 +136,14 @@
                     <ng-container matColumnDef="Action" stickyEnd> 
                       <th width="10%"  class="actionContainer-Header" mat-header-cell *matHeaderCellDef>Action</th>
           
-                      <td mat-cell *matCellDef="let element" class="actionContainerdata" >
+                      <td mat-cell *matCellDef="let element;let i = index" class="actionContainerdata" >
                         <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="" [ngClass]="{'active-btn':element.selected}" class="circle-icon-o" appearance="outline">
                           <mat-icon>more_horiz</mat-icon>
                         </button>
           
                         <mat-menu #appMenu="matMenu">
                           <button mat-menu-item matTooltip="Press to Print a Off-Carousel Put Away Item Label for the currently selected record." >Print Single Label</button>
-                          <button mat-menu-item matTooltip="Press to split this transaction into more than one tote." (click)="fullTote(element)">Full Tote</button>
+                          <button mat-menu-item matTooltip="Press to split this transaction into more than one tote." (click)="fullTote(element,i)">Full Tote</button>
                         </mat-menu>
                       </td>
           

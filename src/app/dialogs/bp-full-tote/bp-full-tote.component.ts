@@ -102,7 +102,7 @@ export class BpFullToteComponent implements OnInit {
       payload.Id = this.data.id;
       let res: any = await this.iBulkProcessApiService.fullTote(payload);
       if (res?.status == HttpStatusCode.Ok) {
-        this.dialogRef.close(true);
+        this.dialogRef.close(payload);
       }
     }
   }

@@ -196,7 +196,7 @@ export class VerifyBulkCountComponent implements OnInit {
     });
   }
 
-  fullTote(element: any) {
+  fullTote(element: any,i:any=null) {
     const dialogRef1: any = this.global.OpenDialog(BpFullToteComponent, {
       height: 'auto',
       width: Style.w786px,
@@ -205,6 +205,10 @@ export class VerifyBulkCountComponent implements OnInit {
       data: element
     });
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
+      if(resp){
+        this.orderLines.filteredData[i].toteId = resp.NewToteID;
+        this.orderLines.filteredData[i].transactionQuantity = resp.NewToteQTY;
+      }
     });
   }
   
