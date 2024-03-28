@@ -1,5 +1,6 @@
 import { HttpStatusCode } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, TotesRequest, TotesResponse } from 'src/app/common/Model/bulk-transactions';
@@ -15,6 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class BulkPickComponent implements OnInit {
   ifAllowed: boolean;
+ 
   verifyBulkPicks: boolean = false;
   status: OrderBatchToteQtyResponse;
   view: string = "";
@@ -27,12 +29,12 @@ export class BulkPickComponent implements OnInit {
   nextBatchId: string = '';
   batchSeleted: boolean = false;
   orderLines: OrderLineResource[] = [];
-
   public iBulkProcessApiService: IBulkProcessApiService;
+  
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     private global: GlobalService
-  ) {
+  ) { 
     this.iBulkProcessApiService = bulkProcessApiService;
   }
 

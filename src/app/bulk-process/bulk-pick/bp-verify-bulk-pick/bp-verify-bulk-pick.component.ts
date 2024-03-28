@@ -1,6 +1,7 @@
 import { HttpStatusCode } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -21,12 +22,14 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
   templateUrl: './bp-verify-bulk-pick.component.html',
   styleUrls: ['./bp-verify-bulk-pick.component.scss']
 })
-export class BpVerifyBulkPickComponent implements OnInit {
+export class BpVerifyBulkPickComponent implements OnInit  {
   @Output() back = new EventEmitter<any>();
   @Input() orderLines: any = [];
   OldSelectedList: any = [];
   filteredData: any = [];
   @Input() NextToteID: any;
+  
+  @ViewChild('paginator') paginator: MatPaginator;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
   suggestion: string = "";
   SearchString: string = "";
@@ -48,13 +51,9 @@ export class BpVerifyBulkPickComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.OldSelectedList = this.orderLines;
-    this.orderLines = new MatTableDataSource(
-      this.orderLines
-    );
-    this.getWorkstationSetupInfo();
+  
   }
-
+  
   addItem($event: any = null) {
     this.SearchString = this.suggestion;
     if (!$event) this.Search(this.SearchString);
@@ -66,6 +65,13 @@ export class BpVerifyBulkPickComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    debugger
+    this.OldSelectedList = this.orderLines;
+    this.orderLines = new MatTableDataSource(
+      this.orderLines
+    );
+    this.orderLines.paginator = this.paginator;
+    this.getWorkstationSetupInfo();
     setTimeout(() => {
       this.searchBoxField?.nativeElement.focus();
     }, SetTimeout['500Milliseconds']);
@@ -82,6 +88,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
   ViewByLocation() {
     var list = this.orderLines.filteredData.sort((a, b) => a.location.localeCompare(b.location));
     this.orderLines = new MatTableDataSource(list);
+    this.orderLines.paginator = this.paginator;
   }
 
   ClearSearch() {
@@ -94,6 +101,7 @@ export class BpVerifyBulkPickComponent implements OnInit {
   ViewByOrderItem() {
     var list = this.orderLines.filteredData.sort((a, b) => a.orderNumber.localeCompare(b.orderNumber) || a.itemNumber.localeCompare(b.itemNumber));
     this.orderLines = new MatTableDataSource(list);
+    this.orderLines.paginator = this.paginator;
   }
 
   Search($event: any) {

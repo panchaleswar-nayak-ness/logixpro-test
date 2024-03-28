@@ -19,8 +19,7 @@ export class BpOrderSelectionListComponent implements OnInit {
   datasource:any = [];
   @ViewChild(MatSort) sort: MatSort;
   @Output() selectOrderEmitter = new EventEmitter<any>();
-  @Output() appendAllEmitter = new EventEmitter<any>();
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @Output() appendAllEmitter = new EventEmitter<any>(); 
   tableHeading = "Batch Selection List";
   @ViewChild('paginator1') paginator1: MatPaginator;
   constructor( private _liveAnnouncer: LiveAnnouncer) { }

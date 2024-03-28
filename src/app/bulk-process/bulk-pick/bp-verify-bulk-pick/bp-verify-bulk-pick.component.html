@@ -159,6 +159,10 @@
                 </table>
                     </ng-scrollbar>
                 </div>
+                <div class="table-pagination d-flex justify-content-start">
+                  <mat-paginator [pageSize]="10" #paginator [length]="orderLines?.filteredData?.length"
+                    [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons [pageSizeOptions]="[10, 20, 100]"></mat-paginator>
+                </div>
             </mat-card-content>
         </mat-card>
       </div>

@@ -1,6 +1,7 @@
 import { HttpStatusCode } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -31,6 +32,7 @@ export class VerifyBulkPutAwayComponent implements OnInit {
   suggestion: string = "";
   SearchString: string = "";
   taskCompleted: boolean = false;
+  @ViewChild('paginator') paginator: MatPaginator;
   workstationPreferences: WorkStationSetupResponse;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
@@ -48,11 +50,7 @@ export class VerifyBulkPutAwayComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.OldSelectedList = this.orderLines;
-    this.orderLines = new MatTableDataSource(
-      this.orderLines
-    );
-    this.getWorkstationSetupInfo();
+  
   }
 
   addItem($event: any = null) {
@@ -66,6 +64,13 @@ export class VerifyBulkPutAwayComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    debugger
+    this.OldSelectedList = this.orderLines;
+    this.orderLines = new MatTableDataSource(
+      this.orderLines
+    );
+    this.orderLines.paginator = this.paginator;
+    this.getWorkstationSetupInfo();
     setTimeout(() => {
       this.searchBoxField?.nativeElement.focus();
     }, SetTimeout['500Milliseconds']);
@@ -82,6 +87,7 @@ export class VerifyBulkPutAwayComponent implements OnInit {
   ViewByLocation() {
     var list = this.orderLines.filteredData.sort((a, b) => a.location.localeCompare(b.location));
     this.orderLines = new MatTableDataSource(list);
+    this.orderLines.paginator = this.paginator;
   }
 
   ClearSearch() {
@@ -94,6 +100,7 @@ export class VerifyBulkPutAwayComponent implements OnInit {
   ViewByOrderItem() {
     var list = this.orderLines.filteredData.sort((a, b) => a.orderNumber.localeCompare(b.orderNumber) || a.itemNumber.localeCompare(b.itemNumber));
     this.orderLines = new MatTableDataSource(list);
+    this.orderLines.paginator = this.paginator;
   }
 
   Search($event: any) {
