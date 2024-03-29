@@ -1,7 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { BulkPreferences } from 'src/app/common/Model/bulk-transactions';
+import { SetTimeout } from 'src/app/common/constants/numbers.constants';
 import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -18,6 +19,7 @@ export class BpNumberSelectionComponent implements OnInit {
   Prefernces: BulkPreferences;
   public iBulkProcessApiService: IBulkProcessApiService;
   from: string = "completed quantity";
+  @ViewChild('autoFocusField') searchBoxField: ElementRef;
 
   constructor(
     public dialogRef: MatDialogRef<BpNumberSelectionComponent>,
@@ -31,6 +33,12 @@ export class BpNumberSelectionComponent implements OnInit {
 
   ngOnInit(): void {
     this.getworkstationbulkzone();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.searchBoxField?.nativeElement.focus();
+    }, SetTimeout['500Milliseconds']);
   }
 
   getworkstationbulkzone() {
