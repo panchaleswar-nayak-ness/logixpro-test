@@ -52,6 +52,9 @@ export class VerifyBulkComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.orderLines.forEach(element => {
+      element.completedQuantity = 0;
+    });
   
   }
   
