@@ -247,6 +247,17 @@
     {
         "path": "/BulkTransactions/BulkCount",
         "Permission": "FlowRack Replenish"
+    },
+    {
+        "path": "/BulkTransactions/count",
+        "Permission": true
+    },
+    {
+        "path": "/BulkTransactions/pick",
+        "Permission": true
+    },
+    {
+        "path": "/BulkTransactions/putaway",
+        "Permission": true
     }
-    
 ]

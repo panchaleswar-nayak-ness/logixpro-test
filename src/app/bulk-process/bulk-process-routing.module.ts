@@ -16,31 +16,51 @@ const routes: Routes = [
 
 },
 {
-  path: 'BulkPick',
+  path: 'BulkPick12',
   component: BulkPickComponent,
   canActivate: [AuthGuardGuard], 
   canDeactivate: [ConfirmationGuard],
   data: {title: 'Bulk Pick'}
 },
 {
-  path: 'BulkPutAway',
+  path: 'BulkPutAway12',
   loadChildren: () =>
     import('./bulk-put-away/bulk-put-away.module').then((m) => m.BulkPutAwayModule),
   canActivate: [AuthGuardGuard],
 
 },
 {
-  path: 'BulkCount',
+  path: 'BulkCount12',
   loadChildren: () =>
     import('./bulk-count/bulk-count.module').then((m) => m.BulkCountModule),
   canActivate: [AuthGuardGuard], 
-}, 
- 
+},  
 {
   path: 'Preferences',
   component: PreferencesComponent,
   canActivate: [AuthGuardGuard],
 },
+{
+  path: 'BulkCount',
+  loadChildren: () =>
+    import('./bulk-transaction/bulk-transaction.module').then((m) => m.BulkTransactionModule),
+  canActivate: [AuthGuardGuard], 
+  data: {title: 'Bulk Count'}
+},  
+{
+  path: 'BulkPick',
+  loadChildren: () =>
+    import('./bulk-transaction/bulk-transaction.module').then((m) => m.BulkTransactionModule),
+  canActivate: [AuthGuardGuard], 
+  data: {title: 'Bulk Pick'}
+},  
+{
+  path: 'BulkPutAway',
+  loadChildren: () =>
+    import('./bulk-transaction/bulk-transaction.module').then((m) => m.BulkTransactionModule),
+  canActivate: [AuthGuardGuard], 
+  data: {title: 'Bulk Put Away'}
+},  
 ]
 
 @NgModule({
