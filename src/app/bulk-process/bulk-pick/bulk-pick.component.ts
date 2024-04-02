@@ -50,6 +50,7 @@ export class BulkPickComponent implements OnInit {
     payload.type = 'pick';
     this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(payload).subscribe((res: OrderBatchToteQtyResponse) => {
       if (res) {
+        this.batchSeleted = false;
         this.orderLines = [];
         this.status = res;
         this.status.orderLinesCount = 0;

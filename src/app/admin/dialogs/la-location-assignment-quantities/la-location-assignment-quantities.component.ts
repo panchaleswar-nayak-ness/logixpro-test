@@ -43,14 +43,14 @@ export class LaLocationAssignmentQuantitiesComponent implements OnInit {
   getTotalValues() {
     this.totalCount = this.data.totalCount;
     this.totalCount.forEach(item => {
-      switch (item.transactionType) {
-        case TransactionType.Count:
+      switch (item.transactionType.toUpperCase()) {
+        case TransactionType.Count.toUpperCase():
           this.count = item.count;
           break;
-        case TransactionType.Pick:
+        case TransactionType.Pick.toUpperCase():
           this.pick = item.count;
           break;
-        case TransactionType.PutAway:
+        case TransactionType.PutAway.toUpperCase(): 
           this.putAway = item.count;
           break;
         default:

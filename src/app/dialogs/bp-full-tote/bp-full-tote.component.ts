@@ -17,7 +17,7 @@ import { FullToteRequest, ValidateToteRequest } from 'src/app/common/Model/bulk-
 export class BpFullToteComponent implements OnInit {
 
   NextToteID: any;
-
+  allPut:boolean = false;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public dialogRef: MatDialogRef<BpFullToteComponent>,
@@ -65,8 +65,11 @@ export class BpFullToteComponent implements OnInit {
   }
 
   putAllInNewTote() {
-    this.data.PutNewToteQty = this.data.PutFullToteQty;
-    this.data.PutFullToteQty = 0;
+    if(!this.allPut){
+      this.data.PutNewToteQty = this.data.PutFullToteQty;
+      this.data.PutFullToteQty = 0;
+      this.allPut = true;
+    }
   }
 
   async validtote($event: Event) {
