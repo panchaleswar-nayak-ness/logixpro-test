@@ -13,7 +13,7 @@
         </mat-form-field>
         <mat-form-field class="custom-form-field w-100 mb-3" appearance="outline">
             <mat-label>Quantity</mat-label>
-            <input matInput type="number" [(ngModel)]="newQuantity" #autoFocusField>
+            <input matInput type="number" (keypress)="numberOnly($event)"   pattern="^[0-9]*$" [(ngModel)]="newQuantity" #autoFocusField>
             <button matSuffix class="clear-btn" matTooltip="Clear" matTooltipPosition="above" (click)="this.newQuantity = 0"><mat-icon class="text-22 text-chrome-600  d-flex align-items-center">cancel</mat-icon></button>
         </mat-form-field>
 

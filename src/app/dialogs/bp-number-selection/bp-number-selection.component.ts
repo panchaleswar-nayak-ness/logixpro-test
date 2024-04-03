@@ -4,6 +4,7 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 import { BulkPreferences } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
 import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
+import { CustomValidatorService } from 'src/app/common/init/custom-validator.service';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
@@ -25,6 +26,7 @@ export class BpNumberSelectionComponent implements OnInit {
     public dialogRef: MatDialogRef<BpNumberSelectionComponent>,
     public bulkProcessApiService: BulkProcessApiService,
     private global: GlobalService,
+    private cusValidator: CustomValidatorService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
@@ -55,7 +57,9 @@ export class BpNumberSelectionComponent implements OnInit {
       this.newQuantity = parseFloat(string);
     }
   }
-
+  numberOnly(event): boolean {
+    return this.cusValidator.numberOnly(event);
+  }
   done() {
     if (this.from == "completed quantity") {
       if (this.Prefernces.systemPreferences.zeroLocationQuantityCheck) {
