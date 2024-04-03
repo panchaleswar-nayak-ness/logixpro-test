@@ -1,5 +1,15 @@
 
+# take in a string argument to know if we should publish the package or not
+# so we can run the script with the argument "publish" and nothing else to publish the package
+param(
+    [string]$publish = ""
+)
 
+# assert that the argument is either empty or "publish"
+if ($publish -ne "" -and $publish -ne "publish") {
+    write-host "Invalid argument. Must be empty or 'publish'"
+    exit 1
+}
 
 
 $scriptDirectory = $PSScriptRoot
@@ -50,7 +60,14 @@ npm pack --pack-destination "$projectDirectory/output"
 # publish the package to the npm registry
 
 write-host "Publishing npm package"
-npm publish
+# only run if the argument is "publish"
+if ($publish -eq "publish") {
+    npm publish
+}
+else {
+    write-host "Skipping publish"
+
+}
 
 
 Set-Location $originalDirectory

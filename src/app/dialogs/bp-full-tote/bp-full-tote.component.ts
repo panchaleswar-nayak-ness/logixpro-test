@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { DialogConstants, Style } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { BpNumberSelectionComponent } from '../bp-number-selection/bp-number-selection.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -8,6 +8,7 @@ import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/
 import { AlertConfirmationComponent } from '../alert-confirmation/alert-confirmation.component';
 import { HttpStatusCode } from '@angular/common/http';
 import { FullToteRequest, ValidateToteRequest } from 'src/app/common/Model/bulk-transactions';
+import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-bp-full-tote',
@@ -106,6 +107,22 @@ export class BpFullToteComponent implements OnInit {
       let res: any = await this.iBulkProcessApiService.fullTote(payload);
       if (res?.status == HttpStatusCode.Ok) {
         this.dialogRef.close(payload);
+        const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
+          height: 'auto',
+          width: Style.w560px,
+          autoFocus: DialogConstants.autoFocus,
+          disableClose: true,
+          data: {
+            message: `Touch ‘Yes’ to Print Label(s) Now. Touch ‘No’ to continue without printing tote labels.`,
+            heading: 'Print Tote Label(s) Now?',
+            buttonFields: true
+          },
+        });
+        dialogRef1.afterClosed().subscribe(async (resp: any) => {
+          if (resp == ResponseStrings.Yes) {
+            // List and Lable
+          }
+        });
       }
     }
   }

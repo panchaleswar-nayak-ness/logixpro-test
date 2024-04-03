@@ -327,12 +327,14 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   gridAction(action: any) {
     if (action == 'assignAll') {
+      this.getCurrentToteID();
       for (let index = 0; index < this.pickBatchQuantity; index++) {
         if (!this.ELEMENT_DATA[index].locked) {
           this.ELEMENT_DATA[index].toteid = this.currentToteID.toString();
           this.currentToteID++;
         }
       }
+      this.updateNxtTote();
       this.actionDropDown = null;
     } else this.actionDropDown = null;
     this.clearMatSelectList()
@@ -671,6 +673,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.getCurrentToteID();
       if(result){
         this.ELEMENT_DATA.length = 0;
         for (let index = 0; index < this.pickBatchQuantity; index++) {
@@ -691,7 +694,7 @@ export class ProcessPutAwaysComponent implements OnInit {
             this.currentToteID++;
           }
         }
-        
+        this.updateNxtTote();
         this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
       }
     });
@@ -701,6 +704,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     //Getting and setting next batch ID
     this.getNextBatchID();
     //setup totes
+    this.getCurrentToteID();
     this.ELEMENT_DATA.length = 0;
     for (let index = 0; index < this.pickBatchQuantity; index++) {
       if (!this.autoPutToteIDS) {
