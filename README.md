@@ -1,5 +1,5 @@
 # Release Notes Template
-[Release Notes](https://github.com/scotttechpickpro/Documents/blob/main/software/ReleaseNotesTemplate.md)
+[Template](https://github.com/scotttechpickpro/Documents/blob/main/software/ReleaseNotesTemplate.md)
 
 # ClientApp
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.3.
