@@ -657,6 +657,8 @@ export class ProcessPutAwaysComponent implements OnInit {
         console.log("NextToteUpdate",res.responseMessage);
       }
     });
+    //This helps prevent a bug where the request for next tote seems to go through before the update takes, resulting in repeated tote IDs
+    this.getCurrentToteID();
   }
 
   startNewBatchWithID() {
@@ -832,9 +834,11 @@ async clearBatchData(){
 
   assignToteAtPosition(element: any, clear = 0,index?) {
     if (clear == 0) {
+      this.getCurrentToteID();
       this.ELEMENT_DATA[index].toteid =
         this.currentToteID.toString();
       this.currentToteID++;
+      this.updateNxtTote();
     } else {
       this.ELEMENT_DATA[index].toteid = '';
     }
