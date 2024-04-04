@@ -134,7 +134,7 @@
                       <th mat-header-cell *matHeaderCellDef > Tote ID</th>
                       <td mat-cell *matCellDef="let element" matTooltip="Display  the Tote ID."> 
                           <mat-form-field class="custom-form-field" appearance="outline" style="width:100px">
-                              <input  matInput type="text" [(ngModel)]="element.toteId" maxlength="50">
+                              <input  matInput type="text" [(ngModel)]="element.toteId" maxlength="50" readonly>
                             </mat-form-field>     </td>
                     </ng-container>
                 
