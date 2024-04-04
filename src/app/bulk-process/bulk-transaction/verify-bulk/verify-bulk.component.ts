@@ -246,7 +246,8 @@ export class VerifyBulkComponent implements OnInit {
           );
         });
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
-        if (res?.status == HttpStatusCode.Created) {
+        if (res?.status == HttpStatusCode.Ok) {
+          this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
           this.taskCompleted = true;
           let offCarouselToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting === "1" ? true : false;
           let autoPrintOffCarouselToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting === "1" ? true : false;
