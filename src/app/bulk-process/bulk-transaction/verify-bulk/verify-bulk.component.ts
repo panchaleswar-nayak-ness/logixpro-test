@@ -69,7 +69,6 @@ export class VerifyBulkComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    debugger
     this.OldSelectedList = this.orderLines;
     this.orderLines = new MatTableDataSource(
       this.orderLines
@@ -207,9 +206,14 @@ export class VerifyBulkComponent implements OnInit {
       disableClose: true,
       data: element
     });
+    let toteId = this.orderLines.filteredData[i].toteId;
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
       if(resp){
-        this.orderLines.filteredData[i].toteId = resp.NewToteID;
+        this.orderLines.filteredData.forEach((element:any) => {
+          if(element.toteId == toteId){
+            element.toteId = resp.NewToteID;
+          }
+        });
         this.orderLines.filteredData[i].transactionQuantity = resp.NewToteQTY;
       }
     });
