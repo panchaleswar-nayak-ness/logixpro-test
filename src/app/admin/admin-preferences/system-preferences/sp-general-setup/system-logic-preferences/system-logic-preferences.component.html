@@ -107,10 +107,18 @@
             color="primary"
           ></mat-slide-toggle>
         </div>
-        <div class="d-flex justify-content-between mb-0">
+        <div class="d-flex justify-content-between mb-3">
           Create Transactions When (Un)Quarantining
           <mat-slide-toggle
             [(ngModel)]="CompanyObj.generateQuarantineTransactions"
+            (change)="payload()"
+            color="primary"
+          ></mat-slide-toggle>
+        </div>
+        <div class="d-flex justify-content-between mb-0">
+          Short Pick Find New Location
+          <mat-slide-toggle
+            [(ngModel)]="CompanyObj.shortPickFindNewLocation"
             (change)="payload()"
             color="primary"
           ></mat-slide-toggle>
