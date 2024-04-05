@@ -53,6 +53,7 @@ export class BulkTransactionComponent implements OnInit {
   bulkOrderBatchToteQty() {
     let payload: OrderBatchToteQtyRequest = new OrderBatchToteQtyRequest();
     payload.type = this.capitalizeWords(this.url);
+    this.batchSeleted = false;
     this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(payload).subscribe((res: OrderBatchToteQtyResponse) => {
       if (res) {
         this.orderLines = [];
