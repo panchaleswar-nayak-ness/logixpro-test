@@ -56,7 +56,7 @@ export class BpFullToteComponent implements OnInit {
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
       if (resp) {
         this.data.PutNewToteQty = parseInt(resp);
-        this.data.PutFullToteQty = this.data.PutFullToteQty - resp;
+        this.data.PutFullToteQty = this.data.transactionQuantity - parseInt(resp);
       }
     });
   }
