@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
+import { OrderLineResource, TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
@@ -219,7 +219,7 @@ export class VerifyBulkComponent implements OnInit {
     });
   }
 
-  async taskComplete(withZero:boolean = true) {
+  async taskComplete(withZero: boolean = true) {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: Style.w560px,
@@ -238,50 +238,57 @@ export class VerifyBulkComponent implements OnInit {
       if (resp == ResponseStrings.Yes) {
         let orders: TaskCompleteRequest[] = new Array();
         this.orderLines.filteredData.forEach((x: any) => {
-          if(withZero || ( !withZero && x.completedQuantity != 0))
-          orders.push(
-            {
-              "id": x.id,
-              "toteId": x.toteId,
-              "serialNumber": "",
-              "lotNumber": x.lotNumber,
-              "pickedQty": x.transactionQuantity,
-              "countQty": x.completedQuantity
-            }
-          );
+          if (withZero || (!withZero && x.completedQuantity != 0))
+            orders.push(
+              {
+                "id": x.id,
+                "toteId": x.toteId,
+                "serialNumber": "",
+                "lotNumber": x.lotNumber,
+                "pickedQty": x.transactionQuantity,
+                "countQty": x.completedQuantity
+              }
+            );
         });
-        let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
-        if (res?.status == HttpStatusCode.Ok) {
+        if (orders.length > 0) {
+          let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
+          if (res?.status == HttpStatusCode.Ok) {
+            this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
+            this.taskCompleted = true;
+            let offCarouselToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting === "1" ? true : false;
+            let autoPrintOffCarouselToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting === "1" ? true : false;
+            if (offCarouselToteManifest && autoPrintOffCarouselToteManifest) {
+              // print report
+              this.showNoRemainings();
+            }
+            else if (offCarouselToteManifest) {
+              const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+                height: 'auto',
+                width: Style.w560px,
+                autoFocus: DialogConstants.autoFocus,
+                disableClose: true,
+                data: {
+                  message: `Touch Yes to print a Tote Manifest.`,
+                  heading: 'Would you like to print a Tote Manifest?',
+                  buttonFields: true
+                },
+              });
+              dialogRef1.afterClosed().subscribe(async (resp: any) => {
+                if (resp == ResponseStrings.Yes) {
+                  // print report
+                }
+                this.showNoRemainings();
+              });
+            }
+            else {
+              this.showNoRemainings();
+            }
+          }
+        }
+        else {
           this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
           this.taskCompleted = true;
-          let offCarouselToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting === "1" ? true : false;
-          let autoPrintOffCarouselToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting === "1" ? true : false;
-          if (offCarouselToteManifest && autoPrintOffCarouselToteManifest) {
-            // print report
-            this.showNoRemainings();
-          }
-          else if (offCarouselToteManifest) {
-            const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-              height: 'auto',
-              width: Style.w560px,
-              autoFocus: DialogConstants.autoFocus,
-              disableClose: true,
-              data: {
-                message: `Touch Yes to print a Tote Manifest.`,
-                heading: 'Would you like to print a Tote Manifest?',
-                buttonFields: true
-              },
-            });
-            dialogRef1.afterClosed().subscribe(async (resp: any) => {
-              if (resp == ResponseStrings.Yes) {
-                // print report
-              }
-              this.showNoRemainings();
-            });
-          }
-          else {
-            this.showNoRemainings();
-          }
+          this.back.emit(this.taskCompleted);
         }
       }
     });
@@ -289,13 +296,16 @@ export class VerifyBulkComponent implements OnInit {
 
   async validateTaskComplete() {
     let isZeroCompletedQuantity: boolean = false;
-    this.orderLines.filteredData.forEach((x: any) => {
+    this.orderLines.filteredData.forEach((x: OrderLineResource) => {
       if (x.completedQuantity == 0) {
         isZeroCompletedQuantity = true;
       }
     });
+    if (['Put Away', 'Count'].indexOf(this.url) > -1) {
+      isZeroCompletedQuantity = false;
+    }
     if (isZeroCompletedQuantity) {
-      const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+      const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
         width: Style.w560px,
         autoFocus: DialogConstants.autoFocus,
@@ -310,7 +320,7 @@ export class VerifyBulkComponent implements OnInit {
           threeButtons: true
         },
       });
-      dialogRef1.afterClosed().subscribe(async (res: any) => {
+      dialogRef1.afterClosed().subscribe(async (res: string) => {
         if (res == ResponseStrings.Yes) {
           await this.taskComplete(false);
         }
@@ -319,7 +329,7 @@ export class VerifyBulkComponent implements OnInit {
         }
       });
     }
-    else{
+    else {
       await this.taskComplete();
     }
   }
