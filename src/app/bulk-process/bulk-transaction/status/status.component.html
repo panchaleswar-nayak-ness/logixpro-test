@@ -1,6 +1,6 @@
 <mat-card class="mat-elevation-z g-card">
     <mat-card-content>
-        <div class="row">
+        <div class="row mb-2">
             <div class="col">
                 <app-icon-heading-component heading="Status" icon="browse_activity">
                 </app-icon-heading-component>
@@ -9,10 +9,10 @@
         <div class="custom bg-white bg-50 br-14 row">
             
             <div class="col-xl-8">
-              <div class="counter bg-tertiary-10">
+              <div class="counter bg-tertiary-10 mt-0">
                 <div>
                   <h6 class="text-tertiary-900"><b>System Status</b></h6>
-                  <div class="d-flex gap-20 justify-content-center flex-wrap">
+                  <div class="d-flex gap-12 justify-content-center flex-wrap">
                     <div class="employees text-center">
                       <app-stats-circle [value]="status?.orderCount" title="Orders"></app-stats-circle>
                     </div>
@@ -28,7 +28,7 @@
               </div>
             </div>
             <div class="col-xl-4">
-              <div class="counter bg-tertiary-10">
+              <div class="counter bg-tertiary-10 mt-0">
                 <div>
                   <h6 class="text-tertiary-900"><b>Batch Status</b></h6>
                   <div class="d-flex gap-20 justify-content-center flex-wrap">
