@@ -327,12 +327,14 @@ export class ProcessPutAwaysComponent implements OnInit {
 
   gridAction(action: any) {
     if (action == 'assignAll') {
+      this.getCurrentToteID();
       for (let index = 0; index < this.pickBatchQuantity; index++) {
         if (!this.ELEMENT_DATA[index].locked) {
           this.ELEMENT_DATA[index].toteid = this.currentToteID.toString();
           this.currentToteID++;
         }
       }
+      this.updateNxtTote();
       this.actionDropDown = null;
     } else this.actionDropDown = null;
     this.clearMatSelectList()
@@ -655,6 +657,8 @@ export class ProcessPutAwaysComponent implements OnInit {
         console.log("NextToteUpdate",res.responseMessage);
       }
     });
+    //This helps prevent a bug where the request for next tote seems to go through before the update takes, resulting in repeated tote IDs
+    this.getCurrentToteID();
   }
 
   startNewBatchWithID() {
@@ -671,6 +675,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.getCurrentToteID();
       if(result){
         this.ELEMENT_DATA.length = 0;
         for (let index = 0; index < this.pickBatchQuantity; index++) {
@@ -691,7 +696,7 @@ export class ProcessPutAwaysComponent implements OnInit {
             this.currentToteID++;
           }
         }
-        
+        this.updateNxtTote();
         this.dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
       }
     });
@@ -701,6 +706,7 @@ export class ProcessPutAwaysComponent implements OnInit {
     //Getting and setting next batch ID
     this.getNextBatchID();
     //setup totes
+    this.getCurrentToteID();
     this.ELEMENT_DATA.length = 0;
     for (let index = 0; index < this.pickBatchQuantity; index++) {
       if (!this.autoPutToteIDS) {
@@ -828,9 +834,11 @@ async clearBatchData(){
 
   assignToteAtPosition(element: any, clear = 0,index?) {
     if (clear == 0) {
+      this.getCurrentToteID();
       this.ELEMENT_DATA[index].toteid =
         this.currentToteID.toString();
       this.currentToteID++;
+      this.updateNxtTote();
     } else {
       this.ELEMENT_DATA[index].toteid = '';
     }

@@ -52,7 +52,7 @@ export class SystemLogicPreferencesComponent implements OnInit{
 
   payload() {
     const payload:any = {
-      "preference": [StringConditions.True,String(this.CompanyObj.fifoPickAcrossWarehouse),StringConditions.True,String(this.CompanyObj.replenishDedicatedOnly),StringConditions.True,StringConditions.True,String(this.CompanyObj.zeroLocationQuantityCheck),StringConditions.True,StringConditions.True,StringConditions.True,StringConditions.True,
+      "preference": [StringConditions.True,String(this.CompanyObj.fifoPickAcrossWarehouse),StringConditions.True,String(this.CompanyObj.replenishDedicatedOnly),StringConditions.True,String(this.CompanyObj.shortPickFindNewLocation),String(this.CompanyObj.zeroLocationQuantityCheck),StringConditions.True,StringConditions.True,StringConditions.True,StringConditions.True,
        String(this.CompanyObj.reelTrackingPickLogic) ,StringConditions.True,StringConditions.True,String(this.CompanyObj.showTransQty),
       String(this.CompanyObj.nextToteID),String(this.CompanyObj.nextSerialNumber),"",String(this.CompanyObj.pickType),String(this.CompanyObj.otTemptoOTPending)
       ,String(this.CompanyObj.distinctKitOrders),String(this.CompanyObj.printReplenPutLabels),String(this.CompanyObj.generateQuarantineTransactions)],

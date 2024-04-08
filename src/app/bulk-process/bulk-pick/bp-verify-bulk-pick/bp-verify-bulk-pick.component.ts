@@ -232,7 +232,7 @@ export class BpVerifyBulkPickComponent implements OnInit  {
         this.orderLines.filteredData.forEach((x: any) => {
           orders.push(
             {
-              "otId": x.id,
+              "id": x.id,
               "toteId": x.toteId,
               "serialNumber": "",
               "lotNumber": x.lotNumber,

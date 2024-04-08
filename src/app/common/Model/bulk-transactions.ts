@@ -302,7 +302,7 @@ export class UpdateLocationQuantityRequest {
 }
 
 export class TaskCompleteRequest {
-    otId: number;
+    id: number;
     toteId?: string | null;
     serialNumber?: string | null;
     lotNumber?: string | null;

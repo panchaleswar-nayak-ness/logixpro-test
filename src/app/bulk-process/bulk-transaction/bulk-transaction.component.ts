@@ -53,6 +53,7 @@ export class BulkTransactionComponent implements OnInit {
   bulkOrderBatchToteQty() {
     let payload: OrderBatchToteQtyRequest = new OrderBatchToteQtyRequest();
     payload.type = this.capitalizeWords(this.url);
+    this.batchSeleted = false;
     this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(payload).subscribe((res: OrderBatchToteQtyResponse) => {
       if (res) {
         this.orderLines = [];
@@ -214,11 +215,11 @@ export class BulkTransactionComponent implements OnInit {
   removeOrder(event) {
     this.orderLines = [];
     if (this.view == "tote") {
-      this.orders = [...this.orders, event];
+      this.orders = [event, ...this.orders];
       this.selectedOrders = this.selectedOrders.filter((element) => element.toteId != event.toteId);
     }
     else if (this.view == "order") {
-      this.orders = [...this.orders, event];
+      this.orders = [event, ...this.orders];
       this.selectedOrders = this.selectedOrders.filter((element) => element.orderNumber != event.orderNumber);
     }
     this.status.orderLinesCount = this.status.orderLinesCount - event.lineCount;

@@ -25,11 +25,11 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
 export class VerifyBulkComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() orderLines: any = [];
-  @Input() url:any;
+  @Input() url: any;
   OldSelectedList: any = [];
   filteredData: any = [];
   @Input() NextToteID: any;
-  
+
   @ViewChild('paginator') paginator: MatPaginator;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
   suggestion: string = "";
@@ -52,9 +52,12 @@ export class VerifyBulkComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  
+    this.orderLines.forEach(element => {
+      element.completedQuantity = 0;
+    });
+
   }
-  
+
   addItem($event: any = null) {
     this.SearchString = this.suggestion;
     if (!$event) this.Search(this.SearchString);
@@ -66,7 +69,6 @@ export class VerifyBulkComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    debugger
     this.OldSelectedList = this.orderLines;
     this.orderLines = new MatTableDataSource(
       this.orderLines
@@ -196,7 +198,7 @@ export class VerifyBulkComponent implements OnInit {
     });
   }
 
-  fullTote(element: any,i:any=null) {
+  fullTote(element: any, i: any = null) {
     const dialogRef1: any = this.global.OpenDialog(BpFullToteComponent, {
       height: 'auto',
       width: Style.w786px,
@@ -204,15 +206,20 @@ export class VerifyBulkComponent implements OnInit {
       disableClose: true,
       data: element
     });
+    let toteId = this.orderLines.filteredData[i].toteId;
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if(resp){
-        this.orderLines.filteredData[i].toteId = resp.NewToteID;
+      if (resp) {
+        this.orderLines.filteredData.forEach((element: any) => {
+          if (element.toteId == toteId) {
+            element.toteId = resp.NewToteID;
+          }
+        });
         this.orderLines.filteredData[i].transactionQuantity = resp.NewToteQTY;
       }
     });
   }
-  
-  async taskComplete() {
+
+  async taskComplete(withZero:boolean = true) {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: Style.w560px,
@@ -231,9 +238,10 @@ export class VerifyBulkComponent implements OnInit {
       if (resp == ResponseStrings.Yes) {
         let orders: TaskCompleteRequest[] = new Array();
         this.orderLines.filteredData.forEach((x: any) => {
+          if(withZero || ( !withZero && x.completedQuantity != 0))
           orders.push(
             {
-              "otId": x.id,
+              "id": x.id,
               "toteId": x.toteId,
               "serialNumber": "",
               "lotNumber": x.lotNumber,
@@ -243,7 +251,8 @@ export class VerifyBulkComponent implements OnInit {
           );
         });
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
-        if (res?.status == HttpStatusCode.Created) {
+        if (res?.status == HttpStatusCode.Ok) {
+          this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
           this.taskCompleted = true;
           let offCarouselToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting === "1" ? true : false;
           let autoPrintOffCarouselToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Auto Tote Manifest")[0].pfSetting === "1" ? true : false;
@@ -278,6 +287,43 @@ export class VerifyBulkComponent implements OnInit {
     });
   }
 
+  async validateTaskComplete() {
+    let isZeroCompletedQuantity: boolean = false;
+    this.orderLines.filteredData.forEach((x: any) => {
+      if (x.completedQuantity == 0) {
+        isZeroCompletedQuantity = true;
+      }
+    });
+    if (isZeroCompletedQuantity) {
+      const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+        height: 'auto',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+        data: {
+          message: `There is a completed quantity of ZERO for one or more lineitems!`,
+          message2: `Touch 'Yes' to to leave the transactions open.
+          Touch 'No' to complete with zero qunatities.
+          Touch Cancel to continue varification.`,
+          heading: 'Zero Completed Qunatity - Leave Open?',
+          buttonFields: true,
+          threeButtons: true
+        },
+      });
+      dialogRef1.afterClosed().subscribe(async (res: any) => {
+        if (res == ResponseStrings.Yes) {
+          await this.taskComplete(false);
+        }
+        else if (res == ResponseStrings.No) {
+          await this.taskComplete();
+        }
+      });
+    }
+    else{
+      await this.taskComplete();
+    }
+  }
+
   showNoRemainings() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
@@ -304,7 +350,7 @@ export class VerifyBulkComponent implements OnInit {
 
   selectRow(row: any) {
     this.orderLines.filteredData.forEach(element => {
-      if(row != element){
+      if (row != element) {
         element.selected = false;
       }
     });
