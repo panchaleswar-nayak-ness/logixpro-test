@@ -297,6 +297,7 @@ body {
 
 //  To add label entries in pagination ....
 .mat-paginator-range-label {
+  margin: 0 18px 0 16px !important;
   &::after {
     position: relative;
     content: 'Entries';
