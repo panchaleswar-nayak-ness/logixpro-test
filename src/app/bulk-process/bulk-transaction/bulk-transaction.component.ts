@@ -39,7 +39,6 @@ export class BulkTransactionComponent implements OnInit {
     private route:Router
   ) { 
     this.iBulkProcessApiService = bulkProcessApiService;
-    debugger
     this.url = route.url.split("/")[2].replace("Bulk","");
   }
 
@@ -57,6 +56,7 @@ export class BulkTransactionComponent implements OnInit {
     this.iBulkProcessApiService.bulkPickoOrderBatchToteQty(payload).subscribe((res: OrderBatchToteQtyResponse) => {
       if (res) {
         this.orderLines = [];
+        this.selectedOrders = [];
         this.status = res;
         this.status.orderLinesCount = 0;
         if (this.status.batchCount > 0) {

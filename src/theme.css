@@ -2056,13 +2056,15 @@ td.mat-footer-cell {
 
 .mat-form-field-label {
   /* color: rgba(0, 0, 0, .6) */
-  color: var(--clr-tertiary-900);
+  color: rgba(var(--clr-tertiary-rgb-900), 0.5);
 }
 
 .mat-hint {
   color: rgba(0, 0, 0, .6)
 }
-
+.mat-form-field.mat-form-field-should-float .mat-form-field-label {
+  color: rgba(var(--clr-primary-rgb-900),0.6)
+}
 .mat-form-field.mat-focused .mat-form-field-label {
   color: rgba(var(--clr-primary-rgb-900), 0.6)
 }

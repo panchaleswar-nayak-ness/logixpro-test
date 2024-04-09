@@ -1,11 +1,11 @@
 <div class="container-fluid p-0" *ngIf="!verifyBulks">
     <div class="row">
-        <div class="col-xl-7 mb-3">
+        <div class="col-xxl-7 mb-3">
             <app-search-bar (changeViewEmitter)="changeView($event)" [url]="capitalizeWords(url)" [status]="status" [view]="view" [orders]="orders" [batchSeleted]="batchSeleted"
              [selectedOrders]="selectedOrders" (addItemEmitter)="selectOrder($event)" (printDetailList)="printDetailList()"
              (createBatchEmit)="createBatchNow($event)"></app-search-bar>
         </div>
-        <div class="col-xl-5 mb-3">
+        <div class="col-xxl-5 mb-3">
             <app-status [status]="status"></app-status>
         </div>
     </div>

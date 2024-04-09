@@ -1,6 +1,6 @@
 <mat-card class="mat-elevation-z g-card">
     <mat-card-content>
-        <div class="row mb-3">
+        <div class="row flex-row align-items-center mb-2">
             <div class="col mb-3 mb-xl-0">
                 <app-icon-heading-component heading="Bulk {{this.url}}" icon="unarchive">
                 </app-icon-heading-component>
@@ -10,7 +10,7 @@
                     <mat-form-field class="action-dropdown custom-form-field-bg-white float-end flex-grow-1 flexOne"
                         appearance="outline">
                         <mat-label>Actions</mat-label>
-                        <mat-select class="employees-action" placeholder="Actions" #openAction (selectionChange)="generateTranscAction($event)">
+                        <mat-select class="employees-action" #openAction (selectionChange)="generateTranscAction($event)">
                             <mat-option value="add_new_transaction" (click)="PrintDetailList()" 
                             [matTooltip]="selectedOrders.length == 0 ? '':'Press to a print detail list for the Batch of orders in the Queue.'"
                             [disabled]="selectedOrders.length == 0">Print Detail List</mat-option>
