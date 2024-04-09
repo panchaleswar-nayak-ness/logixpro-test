@@ -92,14 +92,8 @@
               "outputHashing": "all"
             },
 			      "local": {
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                },
-                "fonts": false
-              },
+              "optimization": false,
+              "sourceMap": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -121,14 +115,8 @@
               "outputHashing": "all"
             },
             "demo": {
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                },
-                "fonts": false
-              },
+              "optimization": false,
+              "sourceMap": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -144,20 +132,14 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.dev.ts"
+                  "with": "src/environments/environment.demo.ts"
                 }
               ],
               "outputHashing": "all"
             },
             "qa": {
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                },
-                "fonts": false
-              },
+              "optimization": false,
+              "sourceMap": true,
               "budgets": [
                 {
                   "type": "initial",
