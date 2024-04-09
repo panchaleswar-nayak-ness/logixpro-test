@@ -25,7 +25,6 @@ export type Links = {_links: Link[]};
 export class BaseService {
 
   
-  private apiUrlSubject = new ReplaySubject<string>(1);
   private apiUrl$: Observable<string>;
 
   constructor(
@@ -183,7 +182,7 @@ export class BaseService {
     if (reqPaylaod != null)
       for (let key in reqPaylaod)
         if (reqPaylaod[key] != undefined) queryParams = queryParams.append(key, reqPaylaod[key]);
-    let observable = this.GetUrlObservable(endPoint);
+    let observable = this.GetUrlOfEndpoint(endPoint);
     return new Observable<any>(observer => {
       observable.subscribe(url => {
         this.http.get<any>(url, {
@@ -238,7 +237,7 @@ export class BaseService {
     let httpHeaders = new HttpHeaders();
     const { _token } = JSON.parse(localStorage.getItem('user') ?? "{}");
     if (_token != null) httpHeaders = httpHeaders.set('_token', _token);
-    let observable = this.GetUrlObservable(endPoint);
+    let observable = this.GetUrlOfEndpoint(endPoint);
 
     return new Observable<any>(observer => {
       observable.subscribe(url => {
@@ -270,11 +269,12 @@ export class BaseService {
 
   
 
-  public GetUrlObservable(endPoint: string): Observable<string> {
-    return this.apiUrlSubject.pipe(
-      map(apiUrl => {
-        if (!endPoint.startsWith(apiUrl)) {
-          return `${apiUrl}${endPoint}`;
+  public GetUrlOfEndpoint(endPoint: string): Observable<string> {
+
+    return this.apiUrl$.pipe(
+      map((url: string) => {
+        if (!endPoint.startsWith(url)) {
+          return `${url}${endPoint}`;
         }
         return endPoint;
       })
@@ -283,7 +283,7 @@ export class BaseService {
   
 
   public GetApiUrl() : Observable<string> {
-    return this.apiUrlSubject.asObservable();
+    return this.apiUrl$;
   }
 
 }
