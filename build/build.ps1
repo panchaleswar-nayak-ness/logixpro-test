@@ -28,7 +28,7 @@ Set-Location $projectDirectory
 write-host "Building project in $projectDirectory"
 
 write-host "Running npm install"
-npm ci
+npm install
 
 write-host "Deleting dist directory"
 Remove-Item -Recurse -Force "dist"
