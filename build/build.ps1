@@ -34,7 +34,7 @@ write-host "Deleting dist directory"
 Remove-Item -Recurse -Force "dist"
 
 write-host "Running ng build"
-ng build -c development
+ng build -c stage
 
 $angularJsonPath = "$projectDirectory/angular.json"
 $angularJson = Get-Content -Path $angularJsonPath -Raw
