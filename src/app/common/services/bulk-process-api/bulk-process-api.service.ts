@@ -73,7 +73,7 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public bulkPickTaskComplete(body: any) {
     return this.Api.bulkPickTaskComplete(body);
   }
-  public fullTote(body: any) {
-    return this.Api.fullTote(body);
+  public async fullTote(body: any) {
+    return await this.Api.fullTote(body);
   }
 }

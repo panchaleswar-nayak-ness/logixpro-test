@@ -97,6 +97,7 @@ export class BpFullToteComponent implements OnInit {
   }
 
   async done() {
+    
     if (this.data.NewToteID != "") {
       let payload: FullToteRequest = new FullToteRequest();
       payload.NewToteID = this.data.NewToteID;

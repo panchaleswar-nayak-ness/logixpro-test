@@ -1510,19 +1510,19 @@ public bulkPickTotes(body:any): Observable<any> {
   return this.ApiBase.Get("/totes",body);
 }
 public async bulkPickZones() { 
-  return await this.ApiBase.GetHttpResponse("/zones");
+  return await this.ApiBase.GetAsync("/zones");
 }
 public async bulkPickBulkZone() { 
-  return await this.ApiBase.GetHttpResponse("/zones/bulkzone");
+  return await this.ApiBase.GetAsync("/zones/bulkzone");
 }
 public async addBulkPickBulkZone(body:any){ 
-  return await this.ApiBase.PostHttpResponse("/zones/bulkzone", body);
+  return await this.ApiBase.PostAsync("/zones/bulkzone", body);
 }
 public async updateBulkPickBulkZone(body:any) { 
-  return await this.ApiBase.PutHttpResponse("/zones/bulkzone", body);
+  return await this.ApiBase.PutAsync("/zones/bulkzone", body);
 }
 public async deleteBulkPickBulkZone(body:any) { 
-  return await this.ApiBase.DeleteHttpResponse("/zones/bulkzone", body);
+  return await this.ApiBase.DeleteAsync("/zones/bulkzone", body);
 }
 
 public WorkstationSetupInfo(): Observable<any> { 
@@ -1544,27 +1544,27 @@ public bulkPreferences(): Observable<any> {
   return this.ApiBase.Get("/bulktransactions/bulkPreferences");
 }
 public validtote(body:any) { 
-  return this.ApiBase.GetHttpResponse("/totes/validtote",body);
+  return this.ApiBase.GetAsync("/totes/validtote",body);
 }
 public BatchNextTote(): Observable<any> { 
   return this.ApiBase.Get("/totes/nexttote");
 }
 public BatchesNextBatchID() { 
-  return this.ApiBase.GetHttpResponse("/batches/nextbatchid");
+  return this.ApiBase.GetAsync("/batches/nextbatchid");
 }
 public async BulkPickCreateBatch(body:any){ 
-  return await this.ApiBase.PostHttpResponse("/batches", body);
+  return await this.ApiBase.PostAsync("/batches", body);
 }
 
 public async updateLocationQuantity(body:any){
-  return await this.ApiBase.PutHttpResponse("/bulktransactions/locationquantity", body);
+  return await this.ApiBase.PutAsync("/bulktransactions/locationquantity", body);
 }
 
 public async bulkPickTaskComplete(body:any){ 
-  return await this.ApiBase.PutHttpResponse("/bulktransactions/taskcomplete", body);
+  return await this.ApiBase.PutAsync("/bulktransactions/taskcomplete", body);
 }
 
 public async fullTote(body:any){
-  return await this.ApiBase.PutHttpResponse("/totes/fulltote", body);
+  return await this.ApiBase.PutAsync("/totes/fulltote", body);
 }
 }

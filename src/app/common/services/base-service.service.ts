@@ -54,6 +54,7 @@ export class BaseService {
     return this.apiUrl$.pipe(
       take(1),
       switchMap(apiUrl => {
+        debugger
         const url = endPoint.startsWith(apiUrl) ? endPoint : `${apiUrl}${endPoint}`;
         return this.http.request<T>(method, url, {
           ...options,
@@ -217,7 +218,22 @@ export class BaseService {
     //     });
     //   });
     // });
-    return this.request<any>('DELETE', endPoint, { params: queryParams });
+    // return this.request<any>('DELETE', endPoint, { params: queryParams });
+    return this.http.delete<any>(this.GetUrl(endPoint), {
+      headers: this.GetHeaders(),
+      params: queryParams,
+      withCredentials: true
+    });
+  }
+  public async DeleteAsync(endPoint: string, reqPaylaod: any = null) {
+    let queryParams = new HttpParams();
+    for (let key in reqPaylaod)
+      queryParams = queryParams.append(key, reqPaylaod[key]); 
+    return await lastValueFrom(this.http.delete<any>(this.GetUrl(endPoint), {
+      headers: this.GetHeaders(),
+      params: queryParams,
+      withCredentials: true
+    }));
   }
 
   token: string;
@@ -289,7 +305,7 @@ export class BaseService {
     
   }
 
-  async PutHttpResponse(endPoint: string, reqPaylaod: any) {
+  async PutAsync(endPoint: string, reqPaylaod: any) {
     let queryParams = new HttpParams();
     // let observable = this.GetUrlObservable(endPoint);
     // return new Observable<any>(observer => {
@@ -307,7 +323,18 @@ export class BaseService {
     //     });
     //   });
     // });
-    return this.request<any>('PUT', endPoint, { body: reqPaylaod });
+    // return this.request<any>('PUT', endPoint, { body: reqPaylaod });
+    return  await lastValueFrom(this.http.put<any>(this.GetUrl(endPoint), reqPaylaod, {
+      headers: this.GetHeaders(),
+      withCredentials: true
+    }));
+  }
+  private GetUrl(endPoint: string) : string {
+    let url = endPoint;
+    if (!endPoint.startsWith(environment.apiUrl)) {
+      url = `${environment.apiUrl}${endPoint}`;
+    }
+    return url;
   }
 
   async DeleteHttpResponse(endPoint: string, reqPaylaod: any) {
