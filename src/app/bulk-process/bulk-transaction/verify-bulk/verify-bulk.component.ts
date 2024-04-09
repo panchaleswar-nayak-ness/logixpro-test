@@ -215,6 +215,7 @@ export class VerifyBulkComponent implements OnInit {
           }
         });
         this.orderLines.filteredData[i].transactionQuantity = resp.NewToteQTY;
+        this.orderLines.filteredData[i].completedQuantity = resp.NewToteQTY;
       }
     });
   }
@@ -242,16 +243,14 @@ export class VerifyBulkComponent implements OnInit {
           orders.push(
             {
               "id": x.id,
-              "toteId": x.toteId,
-              "serialNumber": "",
-              "lotNumber": x.lotNumber,
-              "pickedQty": x.transactionQuantity,
-              "countQty": x.completedQuantity
+              "completedQty": x.completedQuantity
             }
           );
         });
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
         if (res?.status == HttpStatusCode.Ok) {
+            // if(this.workstationPreferences)
+         
           this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
           this.taskCompleted = true;
           let offCarouselToteManifest: boolean = this.workstationPreferences.pfSettingsII.filter((x: any) => x.pfName == "Off Carousel Manifest")[0].pfSetting === "1" ? true : false;

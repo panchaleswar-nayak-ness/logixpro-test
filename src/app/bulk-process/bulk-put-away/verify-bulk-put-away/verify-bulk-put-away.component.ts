@@ -232,11 +232,7 @@ export class VerifyBulkPutAwayComponent implements OnInit {
           orders.push(
             {
               "id": x.id,
-              "toteId": x.toteId,
-              "serialNumber": "",
-              "lotNumber": x.lotNumber,
-              "pickedQty": x.transactionQuantity,
-              "countQty": x.completedQuantity
+               "completedQty": x.completedQuantity
             }
           );
         });
