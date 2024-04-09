@@ -54,7 +54,6 @@ export class BaseService {
     return this.apiUrl$.pipe(
       take(1),
       switchMap(apiUrl => {
-        debugger
         const url = endPoint.startsWith(apiUrl) ? endPoint : `${apiUrl}${endPoint}`;
         return this.http.request<T>(method, url, {
           ...options,
@@ -326,7 +325,8 @@ export class BaseService {
     // return this.request<any>('PUT', endPoint, { body: reqPaylaod });
     return  await lastValueFrom(this.http.put<any>(this.GetUrl(endPoint), reqPaylaod, {
       headers: this.GetHeaders(),
-      withCredentials: true
+      withCredentials: true,
+      observe: 'response'
     }));
   }
   private GetUrl(endPoint: string) : string {

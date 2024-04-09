@@ -105,6 +105,7 @@ export class BpFullToteComponent implements OnInit {
       payload.FullToteID = this.data.toteId;
       payload.FullToteQTY= this.data.PutFullToteQty;
       payload.Id = this.data.id;
+      debugger
       let res: any = await this.iBulkProcessApiService.fullTote(payload);
       if (res?.status == HttpStatusCode.Ok) {
         this.dialogRef.close(payload);
