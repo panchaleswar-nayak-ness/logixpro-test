@@ -211,6 +211,9 @@ export class InventoryMasterComponent implements OnInit {
   public setVal: boolean = false;
 
   async ngOnInit() {
+    if(localStorage.getItem("prevTab")){
+      localStorage.setItem("newTabNavigated","true");
+    }
     const paramName = this.route.snapshot.queryParamMap.get('itemNumber');
     let initialValue;
     this.userData = this.authService.userData();

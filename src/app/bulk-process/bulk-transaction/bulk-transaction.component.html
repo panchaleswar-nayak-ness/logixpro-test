@@ -10,10 +10,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-7 mb-3">
+        <div class="col-xxl-7 mb-3">
             <app-order-selection-list  [batchSeleted]="batchSeleted" [url]="capitalizeWords(url)" [orders]="orders" [view]="view" [ordersDisplayedColumns]="ordersDisplayedColumns" (selectOrderEmitter)="selectOrder($event)" (appendAllEmitter)="appendAll()"></app-order-selection-list>
         </div>
-        <div class="col-xl-5 mb-3">
+        <div class="col-xxl-5 mb-3">
             <app-selected-orders [selectedOrders]="selectedOrders" [url]="capitalizeWords(url)" [view]="view" [selectedOrdersDisplayedColumns]="selectedOrdersDisplayedColumns" (removeOrderEmitter)="removeOrder($event)" (removeAllEmitter)="removeAll()"></app-selected-orders>
         </div>
     </div>

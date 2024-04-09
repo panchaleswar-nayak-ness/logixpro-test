@@ -235,6 +235,16 @@ export class SideNavComponent implements OnInit {
   }
 
   loadMenus(menu: any) {
+    if(localStorage.getItem("prevTab") && localStorage.getItem("newTabNavigated")){
+      let prevTab:string = localStorage.getItem("prevTab") || "";
+      localStorage.removeItem("prevTab");
+      localStorage.removeItem("newTabNavigated");
+      this.router.navigate([prevTab])
+      .then(() => {
+        window.location.reload();
+      });
+    }
+
     this.sharedService.updateLoggedInUser(this.userData.userName, this.userData.wsid, menu.route);
     if (!menu) menu = { route: AppRoutes.Dashboard };
 

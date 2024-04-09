@@ -813,6 +813,7 @@ export class SelectionTransactionForToteExtendComponent implements OnInit {
     this.router.navigate([]).then(() => {
       window.open(`/#/admin/inventoryMaster?itemNumber=${itemNum}`, UniqueConstants._blank);
     });
+    localStorage.setItem("prevTab","/InductionManager/ProcessPutAways");
   }
 
   forSameSKU() {

@@ -220,7 +220,7 @@ export class VerifyBulkComponent implements OnInit {
     });
   }
 
-  async taskComplete(withZero: boolean = true) {
+  async taskComplete() {
     const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
       height: 'auto',
       width: Style.w560px,
@@ -239,7 +239,6 @@ export class VerifyBulkComponent implements OnInit {
       if (resp == ResponseStrings.Yes) {
         let orders: TaskCompleteRequest[] = new Array();
         this.orderLines.filteredData.forEach((x: any) => {
-          if(withZero || ( !withZero && x.completedQuantity != 0))
           orders.push(
             {
               "id": x.id,
@@ -287,7 +286,8 @@ export class VerifyBulkComponent implements OnInit {
       });
       dialogRef1.afterClosed().subscribe(async (res: string) => {
         if (res == ResponseStrings.Yes) {
-          await this.taskComplete(false);
+          this.taskCompleted = true;
+          this.back.emit(this.taskCompleted);
         }
         else if (res == ResponseStrings.No) {
           await this.taskComplete();
