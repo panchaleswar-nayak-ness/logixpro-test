@@ -91,7 +91,7 @@
               ],
               "outputHashing": "all"
             },
-			"local": {
+			      "local": {
               "optimization": {
                 "scripts": true,
                 "styles": {
@@ -120,7 +120,7 @@
               ],
               "outputHashing": "all"
             },
-            "dev": {
+            "demo": {
               "optimization": {
                 "scripts": true,
                 "styles": {
@@ -213,7 +213,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "production": { 
+            "production": {
               "browserTarget": "ClientApp:build:production"
             },
             "development": {
