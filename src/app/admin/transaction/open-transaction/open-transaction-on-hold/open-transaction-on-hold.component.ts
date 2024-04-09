@@ -380,6 +380,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   }
 
   viewInInventoryMaster(row) {    
+    localStorage.setItem("prevTab","/admin/transaction");
     if(this.spliUrl[1] == AppNames.OrderManager) this.router.navigate([]).then(() => window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self));
     else if(this.spliUrl[1] == AppNames.InductionManager) window.open(`/#${AppRoutes.InductionManagerAdminInvMap}?itemNumber=${row.itemNumber}`, UniqueConstants._self);
     else {
