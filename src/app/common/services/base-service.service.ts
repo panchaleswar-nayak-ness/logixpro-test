@@ -93,21 +93,7 @@ export class BaseService {
       for (let key in payload)
         if (payload[key] != undefined) queryParams = queryParams.append(key, payload[key]);
 
-    // let observable = this.GetUrlObservable(endPoint);
-    // return new Observable<T>(observer => {
-    //   observable.subscribe(url => {
-    //     this.http.get<T>(url, {
-    //       headers: this.GetHeaders(),
-    //       params: queryParams,
-    //       withCredentials: true
-    //     }).subscribe(res => {
-    //       observer.next(res);
-    //     },
-    //     (err) => {
-    //       observer.error(err);
-    //     });
-    //   });
-    // });
+
     return this.request<T>('GET', endPoint, { params: queryParams });
   }
 
@@ -117,22 +103,14 @@ export class BaseService {
       for (let key in payload)
         if (payload[key] != undefined) queryParams = queryParams.append(key, payload[key]);
 
-    // let observable = this.GetUrlObservable(endPoint);
-    // let apiUrl = await lastValueFrom(observable);
-    // return await lastValueFrom(this.http.get<any>(apiUrl, {
-    //   headers: this.GetHeaders(),
-    //   params: queryParams,
-    //   withCredentials: true
-    // }));
+
     return await lastValueFrom(this.request<any>('GET', endPoint, { params: queryParams }));
   }
 
   async PostAsync(endPoint: string, model: any): Promise<any> {
     let res;
     try {
-      // let observable = this.GetUrlObservable(endPoint);
-      // let apiUrl = await lastValueFrom(observable);
-      // res = await lastValueFrom(this.http.post<any>(apiUrl, model, { headers: this.GetHeaders() }));
+
       res = await lastValueFrom(this.request<any>('POST', endPoint, { body: model }));
 
     } catch (err) {
@@ -143,58 +121,15 @@ export class BaseService {
   }
 
   public Post(endPoint: string, reqPaylaod: any) {
-    // let observable = this.GetUrlObservable(endPoint);
-    // return new Observable<any>(observer => {
-    //   observable.subscribe(url => {
-    //     this.http.post<any>(url, reqPaylaod, {
-    //       headers: this.GetHeaders(),
-    //       withCredentials: true
-    //     }).subscribe(res => {
-    //       observer.next(res);
-    //     },
-    //     (err) => {
-    //       observer.error(err);
-    //     });
-    //   });
-    // });
     return this.request<any>('POST', endPoint, { body: reqPaylaod });
   }
 
-  public Put(endPoint: string, reqPaylaod: any) {
-    // let observable = this.GetUrlObservable(endPoint);
-    // return new Observable<any>(observer => {
-    //   observable.subscribe(url => {
-    //     this.http.put<any>(url, reqPaylaod, {
-    //       headers: this.GetHeaders(),
-    //       withCredentials: true
-    //     }).subscribe(res => {
-    //       observer.next(res);
-    //     },
-    //     (err) => {
-    //       // propagate the error
-    //       observer.error(err);
-    //     });
-    //   });
-    // });
-    
+  public Put(endPoint: string, reqPaylaod: any) {  
     return this.request<any>('PUT', endPoint, { body: reqPaylaod });
   }
 
   public PostFormData(endPoint: string, reqPaylaod: any) {
-    // let observable = this.GetUrlObservable(endPoint);
-    // return new Observable<any>(observer => {
-    //   observable.subscribe(url => {
-    //     this.http.post<any>(url, reqPaylaod, {
-    //       headers: this.GetHeadersFormData(),
-    //       withCredentials: true
-    //     }).subscribe(res => {
-    //       observer.next(res);
-    //     },
-    //     (err) => {
-    //       observer.error(err);
-    //     });
-    //   });
-    // });
+
     return this.request<any>('POST', endPoint, { body: reqPaylaod });
   }
 
@@ -202,22 +137,7 @@ export class BaseService {
     let queryParams = new HttpParams();
     for (let key in reqPaylaod)
       queryParams = queryParams.append(key, reqPaylaod[key]);
-    // let observable = this.GetUrlObservable(endPoint);
-    // return new Observable<any>(observer => {
-    //   observable.subscribe(url => {
-    //     this.http.delete<any>(url, {
-    //       headers: this.GetHeaders(),
-    //       params: queryParams,
-    //       withCredentials: true
-    //     }).subscribe(res => {
-    //       observer.next(res);
-    //     },
-    //     (err) => {
-    //       observer.error(err);
-    //     });
-    //   });
-    // });
-    // return this.request<any>('DELETE', endPoint, { params: queryParams });
+
     return this.http.delete<any>(this.GetUrl(endPoint), {
       headers: this.GetHeaders(),
       params: queryParams,
@@ -284,45 +204,13 @@ export class BaseService {
 
   async PostHttpResponse(endPoint: string, reqPaylaod: any) {
     let queryParams = new HttpParams();
-    // let observable = this.GetUrlObservable(endPoint);
-    // return new Observable<any>(observer => {
-    //   observable.subscribe(url => {
-    //     this.http.post<any>(url, reqPaylaod, {
-    //       headers: this.GetHeaders(),
-    //       observe: 'response',
-    //       params: queryParams,
-    //       withCredentials: true
-    //     }).subscribe(res => {
-    //       observer.next(res);
-    //     },
-    //     (err) => {
-    //       observer.error(err);
-    //     });
-    //   });
-    // });
+
     return this.request<any>('POST', endPoint, { body: reqPaylaod });
     
   }
 
   async PutAsync(endPoint: string, reqPaylaod: any) {
     let queryParams = new HttpParams();
-    // let observable = this.GetUrlObservable(endPoint);
-    // return new Observable<any>(observer => {
-    //   observable.subscribe(url => {
-    //     this.http.put<any>(url, reqPaylaod, {
-    //       headers: this.GetHeaders(),
-    //       observe: 'response',
-    //       params: queryParams,
-    //       withCredentials: true
-    //     }).subscribe(res => {
-    //       observer.next(res);
-    //     },
-    //     (err) => {
-    //       observer.error(err);
-    //     });
-    //   });
-    // });
-    // return this.request<any>('PUT', endPoint, { body: reqPaylaod });
     return  await lastValueFrom(this.http.put<any>(this.GetUrl(endPoint), reqPaylaod, {
       headers: this.GetHeaders(),
       withCredentials: true,
@@ -342,22 +230,7 @@ export class BaseService {
     if (reqPaylaod != null)
       for (let key in reqPaylaod)
         if (reqPaylaod[key] != undefined) queryParams = queryParams.append(key, reqPaylaod[key]);
-    // let observable = this.GetUrlObservable(endPoint);
-    // return new Observable<any>(observer => {
-    //   observable.subscribe(url => {
-    //     this.http.delete<any>(url, {
-    //       headers: this.GetHeaders(),
-    //       observe: 'response',
-    //       params: queryParams,
-    //       withCredentials: true
-    //     }).subscribe(res => {
-    //       observer.next(res);
-    //     },
-    //     (err) => {
-    //       observer.error(err);
-    //     });
-    //   });
-    // });
+
     return this.request<any>('DELETE', endPoint, { params: queryParams });
   }
 
