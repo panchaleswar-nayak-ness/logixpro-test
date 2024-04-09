@@ -303,11 +303,7 @@ export class UpdateLocationQuantityRequest {
 
 export class TaskCompleteRequest {
     id: number;
-    toteId?: string | null;
-    serialNumber?: string | null;
-    lotNumber?: string | null;
-    pickedQty: number;
-    countQty: number;
+    completedQty: number;
 }
 
 export class ValidateToteRequest {
