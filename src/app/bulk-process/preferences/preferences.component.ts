@@ -54,7 +54,7 @@ export class PreferencesComponent implements OnInit {
     });
   }
 
-  payload(){ 
+  payload(){
     const payload: any = {
       "preference": [
         this.companyInfo.orderSort,this.companyInfo.cartonFlowDisplay,this.companyInfo.autoDisplayImage,
@@ -97,42 +97,44 @@ export class PreferencesComponent implements OnInit {
   }
 
   async addupdateBulkPickBulkZone(event: any, index: any) {
-    if (this.bulkZones[index].isNew) {
-      let payload: any = {
-        "zone": event.value,
+      if (this.bulkZones[index].isNew) {
+        let payload: any = {
+          "zone": event.value,
+        }
+        let res: any = await this.iBulkProcessApiService.addBulkPickBulkZone(payload);
+        // Need to fix status codes
+        if (true) {
+          this.bulkPickBulkZone();
+          this.global.ShowToastr(ToasterType.Success, "Zone Added Successfully", ToasterTitle.Success);
+        }
       }
-      let res: any = await this.iBulkProcessApiService.addBulkPickBulkZone(payload);
-      if (res?.status == HttpStatusCode.Ok) {
-        this.bulkPickBulkZone();
-        this.global.ShowToastr(ToasterType.Success, "Zone Added Successfully", ToasterTitle.Success);
-      }
-    }
-    else {
-      let payload: any = {
-        "oldzone": this.bulkZones[index].oldZone,
-        "newzone": event.value
-      }
-      let res: any = await this.iBulkProcessApiService.updateBulkPickBulkZone(payload);
-      if (res?.status == HttpStatusCode.Ok) {
-        this.bulkPickBulkZone();
-        this.global.ShowToastr(ToasterType.Success, "Zone updated Successfully", ToasterTitle.Success);
-      }
+      else {
+        let payload: any = {
+          "oldzone": this.bulkZones[index].oldZone,
+          "newzone": event.value
+        }
+        let res: any = await this.iBulkProcessApiService.updateBulkPickBulkZone(payload);
+        if (res?.status == HttpStatusCode.Ok) {
+          this.bulkPickBulkZone();
+          this.global.ShowToastr(ToasterType.Success, "Zone updated Successfully", ToasterTitle.Success);
+        }
     }
   }
 
   async deleteBulkPickBulkZone(index: any) {
-    if (this.bulkZones[index].isNew) {
-      this.bulkZones = this.bulkZones.filter((x: any) => !x.isNew);
-      this.newRecord = false;
+      if (this.bulkZones[index].isNew) {
+        this.bulkZones = this.bulkZones.filter((x: any) => !x.isNew);
+        this.newRecord = false;
     }
     else {
-      let payload: any = {
-        "zone": this.bulkZones[index].zone,
-      }
-      let res: any = await this.iBulkProcessApiService.deleteBulkPickBulkZone(payload);
-      if (res?.status == HttpStatusCode.Ok) {
-        this.bulkPickBulkZone();
-        this.global.ShowToastr(ToasterType.Success, "Zone Deleted Successfully", ToasterTitle.Success);
+        let payload: any = {
+          "zone": this.bulkZones[index].zone,
+        }
+        let res: any = await this.iBulkProcessApiService.deleteBulkPickBulkZone(payload);
+        // Need to Fix Status codes
+        if (true) {
+          this.bulkPickBulkZone();
+          this.global.ShowToastr(ToasterType.Success, "Zone Deleted Successfully", ToasterTitle.Success);
       }
     }
   }
