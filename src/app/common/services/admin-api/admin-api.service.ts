@@ -978,13 +978,8 @@ export class AdminApiService implements IAdminApiService {
     return this.Api.updateInventoryMap(payload);
   } 
    // check api call 
-  public createInventoryMap(body?:any) {
-    const asArray = Object.entries(body); 
-    let payload = Object.fromEntries(asArray); 
-    let userData = this.authService.userData();
-    payload['username'] = userData.userName;
-    payload["wsid"] =userData.wsid; 
-    return this.Api.createInventoryMap(payload);
+  public createInventoryMap<T>(body?: T) {
+    return this.Api.createInventoryMap(body);
   } 
   public GetLocAssCountTable(){
     return this.Api.GetLocAssCountTable();

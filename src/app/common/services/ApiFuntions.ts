@@ -1018,11 +1018,6 @@ public updateInventoryMap(body: any ,mapID?): Observable<any> {
 } 
   
 public createInventoryMap(body?:any): Observable<any> {
-  const asArray = Object.entries(body); 
-  let payload = Object.fromEntries(asArray); 
-  let userData = this.authService.userData();
-  payload['username'] = userData.userName;
-  payload["wsid"] =userData.wsid; 
   return this.ApiBase.Post(`/Admin/inventorymap`,body);
 } 
 public ConnectedUser(): Observable<any> {

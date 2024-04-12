@@ -49,7 +49,7 @@ export class BaseService {
     }
   }
 
-  private request<T>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', endPoint: string, options: { body?: any; params?: HttpParams } = {}): Observable<T> {
+  private request<T>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', endPoint: string, options: { body?: T; params?: HttpParams } = {}): Observable<T> {
     return this.apiUrl$.pipe(
       take(1),
       switchMap(apiUrl => {
@@ -106,11 +106,11 @@ export class BaseService {
     return await lastValueFrom(this.request<any>('GET', endPoint, { params: queryParams }));
   }
 
-  async PostAsync(endPoint: string, model: any): Promise<any> {
+  async PostAsync<T>(endPoint: string, model: T): Promise<any> {
     let res;
     try {
 
-      res = await lastValueFrom(this.request<any>('POST', endPoint, { body: model }));
+      res = await lastValueFrom(this.request<T>('POST', endPoint, { body: model }));
 
     } catch (err) {
       console.log(err);
@@ -119,17 +119,17 @@ export class BaseService {
     return res;
   }
 
-  public Post(endPoint: string, reqPaylaod: any) {
-    return this.request<any>('POST', endPoint, { body: reqPaylaod });
+  public Post<T>(endPoint: string, reqPaylaod: T) {
+    return this.request<T>('POST', endPoint, { body: reqPaylaod });
   }
 
-  public Put(endPoint: string, reqPaylaod: any) {  
-    return this.request<any>('PUT', endPoint, { body: reqPaylaod });
+  public Put<T>(endPoint: string, reqPaylaod: T) {  
+    return this.request<T>('PUT', endPoint, { body: reqPaylaod });
   }
 
-  public PostFormData(endPoint: string, reqPaylaod: any) {
+  public PostFormData<T>(endPoint: string, reqPaylaod: T) {
 
-    return this.request<any>('POST', endPoint, { body: reqPaylaod });
+    return this.request<T>('POST', endPoint, { body: reqPaylaod });
   }
 
   public Delete(endPoint: string, reqPaylaod: any = null) {
@@ -201,16 +201,16 @@ export class BaseService {
 
   }
 
-  async PostHttpResponse(endPoint: string, reqPaylaod: any) {
+  async PostHttpResponse<T>(endPoint: string, reqPaylaod: T) {
     let queryParams = new HttpParams();
 
-    return this.request<any>('POST', endPoint, { body: reqPaylaod });
+    return this.request<T>('POST', endPoint, { body: reqPaylaod });
     
   }
 
-  async PutAsync(endPoint: string, reqPaylaod: any) {
+  async PutAsync<T>(endPoint: string, reqPaylaod: T) {
     let queryParams = new HttpParams();
-    return  await lastValueFrom(this.http.put<any>(this.GetUrl(endPoint), reqPaylaod, {
+    return  await lastValueFrom(this.http.put<T>(this.GetUrl(endPoint), reqPaylaod, {
       headers: this.GetHeaders(),
       withCredentials: true,
       observe: 'response'

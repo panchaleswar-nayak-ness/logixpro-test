@@ -29,7 +29,43 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FloatLabelType } from '@angular/material/form-field';
 import { DialogConstants, ToasterTitle, ToasterType ,zoneType,ColumnDef,Column,TableConstant,UniqueConstants,StringConditions} from 'src/app/common/constants/strings.constants';
 
-
+type InventoryMapFormData = {
+  location: FormControl<string | null>;
+  zone: FormControl<string | null>;
+  carousel: FormControl<string | null>;
+  row: FormControl<string | null>;
+  shelf: FormControl<string | null>;
+  bin: FormControl<string | null>;
+  item: FormControl<string | null>;
+  itemQuantity: FormControl<string | number | null>;
+  description: FormControl<string | null>;
+  clear: FormControl<string | number | null>;
+  cell: FormControl<string | null>;
+  velocity: FormControl<string | null>;
+  maxQuantity: FormControl<string | number | null>;
+  dedicated: FormControl<boolean | null>;
+  serialNumber: FormControl<string | number | null>;
+  lotNumber: FormControl<string | number | null>;
+  expirationDate: FormControl<string | null>;
+  unitOfMeasure: FormControl<string | null>;
+  quantityAllocatedPick: FormControl<string | number | null>;
+  quantityAllocatedPutAway: FormControl<string | number | null>;
+  putAwayDate: FormControl<string | null>;
+  warehouse: FormControl<string | null>;
+  revision: FormControl<string | null>;
+  inventoryMapID: FormControl<string | null>;
+  userField1: FormControl<string | null>;
+  userField2: FormControl<string | null>;
+  masterLocation: FormControl<string | boolean | null>;
+  dateSensitive: FormControl<boolean | null>;
+  masterInventoryMapID: FormControl<string | null>;
+  minQuantity: FormControl<string | number | null>;
+  laserX: FormControl<string | number | null>;
+  laserY: FormControl<string | number | null>;
+  locationNumber: FormControl<string | null>;
+  locationID: FormControl<string | null>;
+  altLight: FormControl<string | number | null>;
+};
 export interface InventoryMapDataStructure {
   invMapID: string;
   locationID: string;
@@ -67,14 +103,14 @@ export interface InventoryMapDataStructure {
   rn: string;
   velocity: string;
   altLight: string;
-}
+};
 @Component({
   selector: 'app-add-inv-map-location',
   templateUrl: './add-inv-map-location.component.html',
   styleUrls: ['./add-inv-map-location.component.scss']
 })
 export class AddInvMapLocationComponent implements OnInit {
-  addInvMapLocation: FormGroup;
+  addInvMapLocation: FormGroup<InventoryMapFormData>;
   clearInvMapLocation: FormGroup;
 
   locZoneList: any[] = [];
@@ -373,8 +409,8 @@ export class AddInvMapLocationComponent implements OnInit {
       itemQuantity: new FormControl({value:this.getDetailInventoryMapData.itemQuantity || 0,disabled:this.getDetailInventoryMapData.itemNumber ===''}),
       description: [this.getDetailInventoryMapData.description || ""],
       clear:new FormControl({ value: this.getDetailInventoryMapData.itemNumber || 0, disabled: true }),
-      cell: [this.getDetailInventoryMapData.cellSize || ''],
-      velocity: [this.getDetailInventoryMapData.goldenZone || ''],
+      cell: [this.getDetailInventoryMapData.cellSize || '', [Validators.required]],
+      velocity: [this.getDetailInventoryMapData.goldenZone || '', [Validators.required]],
       maxQuantity: [this.getDetailInventoryMapData.maxQuantity || 0, [Validators.maxLength(9)]],
       dedicated: [this.getDetailInventoryMapData.dedicated || false],
       serialNumber: new FormControl({ value: this.getDetailInventoryMapData.serialNumber || 0, disabled: true }),
@@ -419,8 +455,9 @@ export class AddInvMapLocationComponent implements OnInit {
   }
 
   onMinChange(event: KeyboardEvent) {
-    let max = parseInt(this.addInvMapLocation.get("maxQuantity")?.value ? this.addInvMapLocation.get("maxQuantity")?.value : 0);
-    let min = parseInt(this.addInvMapLocation.get("minQuantity")?.value ? this.addInvMapLocation.get("minQuantity")?.value : 0);
+    
+    let max = parseInt(this.addInvMapLocation.get("maxQuantity")?.value?.toString() ?? '0', 10);
+    let min = parseInt(this.addInvMapLocation.get("minQuantity")?.value?.toString() ?? '0', 10);
     if(min > max){
       this.addInvMapLocation.get("minQuantity")?.setValue("");
     }
@@ -432,11 +469,13 @@ export class AddInvMapLocationComponent implements OnInit {
     this.addInvMapLocation.get("minQuantity")?.setValue("0");
   }
 
+
+
   onchangeItemNumber() {
     let value = this.addInvMapLocation.controls[TableConstant.zone].value + this.addInvMapLocation.controls[zoneType.carousel].value + this.addInvMapLocation.controls[Column.Row].value + this.addInvMapLocation.controls[TableConstant.shelf].value + this.addInvMapLocation.controls[ColumnDef.Bin].value;
     this.addInvMapLocation.controls['locationNumber'].setValue(value);
   }
-  onSubmit(form: FormGroup) {
+  onSubmit(form: FormGroup<InventoryMapFormData>) {
     let invMapIDs={
       invMapID:this.getDetailInventoryMapData.invMapID,
       masterInvMapID:this.getDetailInventoryMapData.masterInvMapID
@@ -453,7 +492,7 @@ export class AddInvMapLocationComponent implements OnInit {
               this.global.ShowToastr(ToasterType.Error,"The selected item is warehouse sensitive.  Please set a warehouse to continue.", ToasterTitle.Warning);
               return
             }
-            if(this.dateSensitive && form.value.dateSensitive == ''){
+            if(this.dateSensitive && form.value.dateSensitive){
               this.global.ShowToastr(ToasterType.Error,"Item is date sensitive. Please set date sensitive before saving.", ToasterTitle.Warning);
               return
             }
@@ -478,11 +517,12 @@ export class AddInvMapLocationComponent implements OnInit {
               this.global.ShowToastr(ToasterType.Error,"The selected item is warehouse sensitive.  Please set a warehouse to continue.", ToasterTitle.Warning);
               return
             }
-            if(this.dateSensitive && form.value.dateSensitive == ''){
+            if(this.dateSensitive && form.value.dateSensitive){
               this.global.ShowToastr(ToasterType.Error,"Item is date sensitive. Please set date sensitive before saving.", ToasterTitle.Warning );
               return
             }
-            this.iAdminApiService.createInventoryMap(form.value).subscribe((res) => {
+            
+            this.iAdminApiService.createInventoryMap(form.getRawValue()).subscribe((res) => {
               this.clickSubmit = true;
               if (res.isExecuted) {
                 this.global.ShowToastr(ToasterType.Success,"Your details have been added", ToasterTitle.Success);
@@ -596,7 +636,6 @@ export class AddInvMapLocationComponent implements OnInit {
   zoneChecker(zone, location) { //To check if the zone and location are selected from dropdown.
     return this.locZoneList.some(item => item.zone === zone && item.locationName === location);
   }
-
 
   loadItemDetails(item: any) {
     this.itemNumberList.forEach(val => {
