@@ -109,7 +109,19 @@ export class VerifyBulkComponent implements OnInit {
 
   Search($event: any) {
     if ($event.length > 0) {
-      this.filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.toLowerCase().startsWith($event.toLowerCase()); });
+      //this.filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.toLowerCase().startsWith($event.toLowerCase()); });      
+      this.filteredData = this.OldSelectedList.filter((function() {
+        const seen = new Set();
+        return function(str) {
+            const itemNumberLower = str.itemNumber.toLowerCase();
+            if (!seen.has(itemNumberLower) && itemNumberLower.startsWith($event.toLowerCase())) {
+                seen.add(itemNumberLower);
+                return true;
+            }
+            return false;
+        };
+    })());
+
       if (this.filteredData.length > 0) this.suggestion = this.filteredData[0].itemNumber;
       else this.suggestion = ""
     } else this.suggestion = "";
