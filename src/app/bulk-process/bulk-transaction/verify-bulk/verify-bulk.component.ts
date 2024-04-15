@@ -277,9 +277,9 @@ export class VerifyBulkComponent implements OnInit {
         isZeroCompletedQuantity = true;
       }
     });
-    if (['Put Away', 'Count'].indexOf(this.url) > -1) {
-      isZeroCompletedQuantity = false;
-    }
+    // if (['Put Away', 'Count'].indexOf(this.url) > -1) {
+    //   isZeroCompletedQuantity = false;
+    // }
     if (isZeroCompletedQuantity) {
       const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',
