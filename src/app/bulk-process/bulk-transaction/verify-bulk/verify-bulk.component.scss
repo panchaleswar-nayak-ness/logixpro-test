@@ -74,9 +74,9 @@ table{
     width: 100px;
   }
 }
-.mat-column-OrderQty{ 
-cursor: pointer;
-}
+// .mat-column-OrderQty{ 
+// cursor: pointer;
+// }
 .suggest {
     position: absolute;
     left: 30px;
@@ -90,4 +90,26 @@ cursor: pointer;
   .autocomplete {
     color: silver;
     z-index: 1;
+  }
+
+  .show-arrow{
+    span{
+        cursor: pointer;
+        display:none;
+        background: var(--clr-primary-10);
+        height: auto;
+        width: auto;
+        border-radius: 999px;
+        align-items: center;
+        transition: all 0.3s;
+    }
+    &:hover{
+        span{
+            display: flex;
+            transition: all 0.3s;
+            &:hover{
+                background: var(--clr-primary-50);
+            }
+        }
+    }
   }

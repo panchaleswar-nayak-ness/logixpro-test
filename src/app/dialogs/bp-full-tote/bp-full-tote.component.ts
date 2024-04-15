@@ -18,7 +18,6 @@ import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-
 export class BpFullToteComponent implements OnInit {
 
   NextToteID: any;
-  allPut:boolean = false;
   public iBulkProcessApiService: IBulkProcessApiService;
   constructor(
     public dialogRef: MatDialogRef<BpFullToteComponent>,
@@ -66,11 +65,8 @@ export class BpFullToteComponent implements OnInit {
   }
 
   putAllInNewTote() {
-    if(!this.allPut){
-      this.data.PutNewToteQty = this.data.PutNewToteQty + this.data.PutFullToteQty;
-      this.data.PutFullToteQty = 0;
-      this.allPut = true;
-    }
+    this.data.PutNewToteQty = this.data.PutNewToteQty + this.data.PutFullToteQty;
+    this.data.PutFullToteQty = 0;
   }
 
   async validtote($event: Event) {
@@ -97,7 +93,6 @@ export class BpFullToteComponent implements OnInit {
   }
 
   async done() {
-    
     if (this.data.NewToteID != "") {
       let payload: FullToteRequest = new FullToteRequest();
       payload.NewToteID = this.data.NewToteID;
@@ -105,7 +100,6 @@ export class BpFullToteComponent implements OnInit {
       payload.FullToteID = this.data.toteId;
       payload.FullToteQTY= this.data.PutFullToteQty;
       payload.Id = this.data.id;
-      debugger
       let res: any = await this.iBulkProcessApiService.fullTote(payload);
       if (res?.status == HttpStatusCode.Ok) {
         this.dialogRef.close(payload);
