@@ -1702,7 +1702,12 @@ public CommonExport(body) {
   }
   return this.Api.CommonExport(payload);
 }
-
+public   orderline(id:any)  { 
+  return    this.Api.orderline(id);
+} 
+public   endofbatch(body:any)  { 
+   return    this.Api.endofbatch(body);
+} 
 public async CommonPrint(body)  {
   const payload = {
     username: this.userData.userName,
@@ -1711,7 +1716,6 @@ public async CommonPrint(body)  {
   }
    return  await this.Api.CommonPrint(payload);
 } 
-
 public SetReprocessIds(body: any ) {
   const payload = {
     username: this.userData.userName,

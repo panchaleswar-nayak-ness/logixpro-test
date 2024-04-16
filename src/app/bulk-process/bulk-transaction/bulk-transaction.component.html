@@ -24,4 +24,4 @@
     </div>
 </div>
 
-<app-verify-bulk *ngIf="verifyBulks" [orderLines]="orderLines" [url]="capitalizeWords(url)" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk(true)"></app-verify-bulk>
+<app-verify-bulk *ngIf="verifyBulks" [Preferences]="Prefernces.systemPreferences" [orderLines]="orderLines" [url]="capitalizeWords(url)" [NextToteID]="this.NextToteID" (back)="changeVisibiltyVerifyBulk(true)"></app-verify-bulk>

@@ -30,6 +30,8 @@ export interface IAdminApiService
       ordersort() ;
       OSFieldFilterNames();
       AdminCompanyInfo();
+      endofbatch(id:any);
+      orderline(id:any);
       ColumnAlias() ;
       FieldNameSave(payload : any);
       RemoveccQueueRow(payload : any);

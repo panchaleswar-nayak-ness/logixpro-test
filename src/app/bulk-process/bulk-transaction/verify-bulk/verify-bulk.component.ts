@@ -16,6 +16,8 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { BpFullToteComponent } from 'src/app/dialogs/bp-full-tote/bp-full-tote.component';
 import { BpNumberSelectionComponent } from 'src/app/dialogs/bp-number-selection/bp-number-selection.component';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
+import { PickRemainingComponent } from '../pick-remaining/pick-remaining.component';
+import { SpinnerService } from 'src/app/common/init/spinner.service';
 
 @Component({
   selector: 'app-verify-bulk',
@@ -26,10 +28,11 @@ export class VerifyBulkComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() orderLines: any = [];
   @Input() url: any;
+  IsLoading:boolean= true;
   OldSelectedList: any = [];
   filteredData: any = [];
   @Input() NextToteID: any;
-
+  @Input() Preferences:any;
   @ViewChild('paginator') paginator: MatPaginator;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
   suggestion: string = "";
@@ -45,19 +48,19 @@ export class VerifyBulkComponent implements OnInit {
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     public adminApiService: AdminApiService,
-    private global: GlobalService
+    private global: GlobalService,
+    private spinnerService:SpinnerService
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.iAdminApiService = adminApiService;
   }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
     this.orderLines.forEach(element => {
       element.completedQuantity = 0;
-    });
-
+    });  
   }
-
+ 
   addItem($event: any = null) {
     this.SearchString = this.suggestion;
     if (!$event) this.Search(this.SearchString);
@@ -249,10 +252,50 @@ export class VerifyBulkComponent implements OnInit {
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
         if (res?.status == HttpStatusCode.Ok) {
             // if(this.workstationPreferences)
-         
+              this.spinnerService.IsLoader = true;
           this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
           this.taskCompleted = true;
-          this.back.emit(this.taskCompleted);
+          
+          let order = this.orderLines.filteredData.filter(x=> (x.transactionQuantity < x.completedQuantity));
+          if(this.Preferences.shortPickFindNewLocation) {
+            if(order.length > 0){
+              let apiCalled = false;
+                  for (let i = 0; i < 10 && !apiCalled; i++) { 
+                        setTimeout(() => {
+                            if (!apiCalled) {
+                                this.iAdminApiService.orderline(order[0].id).subscribe((res: any) => {
+                                    if (res.zone != "" && res.zone) {
+                                        apiCalled = true;
+                                    }
+                                });
+                            }
+                        }, 2000 * i);
+                    }
+          }
+           if(this.Preferences.shortPickFindNewLocation || this.Preferences.displayEob){ 
+            setTimeout(() => {
+              const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
+              this.iAdminApiService.endofbatch({orderNumbers:orderNumbers}).subscribe((res: any) => {
+                this.spinnerService.IsLoader = false;
+                const dialogRef1: any = this.global.OpenDialog(PickRemainingComponent, {
+                  height: 'auto',
+                  width: Style.w786px,
+                  autoFocus: DialogConstants.autoFocus,
+                  disableClose: true,
+                  data: res
+                });
+                dialogRef1.afterClosed().subscribe(async (resp: any) => { 
+                    this.back.emit(this.taskCompleted); 
+                });
+              });
+            }, this.Preferences.shortPickFindNewLocation ? 5000:0);
+
+          }
+          }
+          else {
+            this.back.emit(this.taskCompleted);
+            this.spinnerService.IsLoader = false}
+          
         }
       }
     });
@@ -334,5 +377,5 @@ export class VerifyBulkComponent implements OnInit {
       selectedRow.selected = !selectedRow.selected;
     }
   }
-
+  
 }

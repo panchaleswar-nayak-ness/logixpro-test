@@ -11,6 +11,7 @@ import { VerifyBulkComponent } from './verify-bulk/verify-bulk.component';
 import { GeneralModule } from 'src/app/gen-module';
 import { MaterialModule } from 'src/app/material-module';
 import { SharedComponentsModule } from 'src/app/common/globalComponents/shared-components.module';
+import { PickRemainingComponent } from './pick-remaining/pick-remaining.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { SharedComponentsModule } from 'src/app/common/globalComponents/shared-c
     SearchBarComponent,
     SelectedOrdersComponent,
     StatusComponent,
-    VerifyBulkComponent
+    VerifyBulkComponent,
+    PickRemainingComponent
   ],
   imports: [
     CommonModule,

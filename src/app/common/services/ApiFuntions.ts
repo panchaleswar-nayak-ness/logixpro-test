@@ -1561,5 +1561,12 @@ public async bulkPickTaskComplete(body:any){
 
 public async fullTote(body:any){
   return await this.ApiBase.PutAsync("/totes/fulltote", body);
-}
+} 
+public   orderline(id:any){
+  return   this.ApiBase.Get(`/OrderLine/${id}`);
+} 
+
+public endofbatch(body:any){
+  return   this.ApiBase.Post(`/bulktransactions/endofbatch`, body);
+} 
 }
