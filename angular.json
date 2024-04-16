@@ -161,6 +161,8 @@
               "outputHashing": "all"
             },
             "stage": {
+              "optimization": false,
+              "sourceMap": true,
               "budgets": [
                 {
                   "type": "initial",
