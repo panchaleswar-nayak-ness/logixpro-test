@@ -32,8 +32,7 @@ export class VerifyBulkComponent implements OnInit {
   IsLoading:boolean= true;
   OldSelectedList: any = [];
   filteredData: any = [];
-  @Input() NextToteID: any;
-  @Input() Preferences:any;
+  @Input() NextToteID: any; 
   @ViewChild('paginator') paginator: MatPaginator;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
   suggestion: string = "";
@@ -276,7 +275,7 @@ export class VerifyBulkComponent implements OnInit {
           this.taskCompleted = true;
           
           let order = this.orderLines.filteredData.filter(x=> (x.transactionQuantity < x.completedQuantity));
-          if(this.Preferences.shortPickFindNewLocation) {
+          if(this.Prefernces.systemPreferences.shortPickFindNewLocation) {
             if(order.length > 0){
               let apiCalled = false;
                   for (let i = 0; i < 10 && !apiCalled; i++) { 
@@ -291,7 +290,7 @@ export class VerifyBulkComponent implements OnInit {
                         }, 2000 * i);
                     }
           }
-           if(this.Preferences.shortPickFindNewLocation || this.Preferences.displayEob){ 
+           if(this.Prefernces.systemPreferences.shortPickFindNewLocation || this.Prefernces.systemPreferences.displayEob){ 
             setTimeout(() => {
               const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
               this.iAdminApiService.endofbatch({orderNumbers:orderNumbers}).subscribe((res: any) => {
@@ -307,7 +306,7 @@ export class VerifyBulkComponent implements OnInit {
                     this.back.emit(this.taskCompleted); 
                 });
               });
-            }, this.Preferences.shortPickFindNewLocation ? 5000:0);
+            }, this.Prefernces?.systemPreferences?.shortPickFindNewLocation ? 5000:0);
 
           }
           }
