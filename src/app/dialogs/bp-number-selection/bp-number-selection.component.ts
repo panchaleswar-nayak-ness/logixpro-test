@@ -62,7 +62,7 @@ export class BpNumberSelectionComponent implements OnInit {
   }
   done() {
     if (this.from == "completed quantity") {
-      if (this.Prefernces.systemPreferences.zeroLocationQuantityCheck) {
+      //if (this.Prefernces.systemPreferences.zeroLocationQuantityCheck) {
         const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
           height: 'auto',
           width: Style.w560px,
@@ -89,7 +89,7 @@ export class BpNumberSelectionComponent implements OnInit {
             this.dialogRef.close({ newQuantity: this.newQuantity.toString(), type: ResponseStrings.Cancel });
           }
         });
-      }
+    //  }
     }
     else if (this.from == "qunatity put in new tote") {
       this.dialogRef.close(this.newQuantity.toString());

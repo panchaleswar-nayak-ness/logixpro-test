@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { OrderLineResource, TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
+import { BulkPreferences, OrderLineResource, TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
@@ -25,6 +25,7 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
 export class VerifyBulkComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() orderLines: any = [];
+  @Input() Prefernces: BulkPreferences;
   @Input() url: any;
   OldSelectedList: any = [];
   filteredData: any = [];
@@ -277,6 +278,9 @@ export class VerifyBulkComponent implements OnInit {
         isZeroCompletedQuantity = true;
       }
     });
+    if (!this.Prefernces.systemPreferences.zeroLocationQuantityCheck) {
+      isZeroCompletedQuantity = false;
+    }
     // if (['Put Away', 'Count'].indexOf(this.url) > -1) {
     //   isZeroCompletedQuantity = false;
     // }
