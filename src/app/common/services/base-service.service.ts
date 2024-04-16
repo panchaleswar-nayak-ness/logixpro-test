@@ -101,22 +101,23 @@ export class BaseService {
     if (payload != null)
       for (let key in payload)
         if (payload[key] != undefined) queryParams = queryParams.append(key, payload[key]);
-
-
-    return await lastValueFrom(this.request<any>('GET', endPoint, { params: queryParams }));
+ 
+    return await lastValueFrom(this.http.get<any>(this.GetUrl(endPoint), {
+      headers: this.GetHeaders(),
+      params:queryParams,
+      withCredentials: true,
+      observe: 'response',  
+    }));
+  //  return await lastValueFrom(this.request<any>('GET', endPoint, { params: queryParams }));
   }
 
-  async PostAsync<T>(endPoint: string, model: T): Promise<any> {
-    let res;
-    try {
-
-      res = await lastValueFrom(this.request<T>('POST', endPoint, { body: model }));
-
-    } catch (err) {
-      console.log(err);
-      res = null;
-    }
-    return res;
+  async PostAsync(endPoint: string, payload?, isLoader: boolean = false): Promise<any> {
+    return await lastValueFrom(this.http.post<any>(this.GetUrl(endPoint),payload, {
+      headers: this.GetHeaders(),
+      withCredentials: true,
+      observe: 'response',  
+    }));
+  //  return await lastValueFrom(this.request<any>('GET', endPoint, { params: queryParams }));
   }
 
   public Post<T>(endPoint: string, reqPaylaod: T) {
@@ -137,21 +138,14 @@ export class BaseService {
     for (let key in reqPaylaod)
       queryParams = queryParams.append(key, reqPaylaod[key]);
 
-    return this.http.delete<any>(this.GetUrl(endPoint), {
-      headers: this.GetHeaders(),
-      params: queryParams,
-      withCredentials: true
-    });
+    return this.request<any>('DELETE', endPoint, { params: queryParams });
   }
   public async DeleteAsync(endPoint: string, reqPaylaod: any = null) {
     let queryParams = new HttpParams();
     for (let key in reqPaylaod)
       queryParams = queryParams.append(key, reqPaylaod[key]); 
-    return await lastValueFrom(this.http.delete<any>(this.GetUrl(endPoint), {
-      headers: this.GetHeaders(),
-      params: queryParams,
-      withCredentials: true
-    }));
+
+    return await lastValueFrom(this.request<any>('DELETE', endPoint, { params: queryParams }));
   }
 
   token: string;

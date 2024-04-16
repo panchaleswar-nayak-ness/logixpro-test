@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { OrderLineResource, TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
+import { BulkPreferences, OrderLineResource, TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
@@ -27,6 +27,7 @@ import { SpinnerService } from 'src/app/common/init/spinner.service';
 export class VerifyBulkComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() orderLines: any = [];
+  @Input() Prefernces: BulkPreferences;
   @Input() url: any;
   IsLoading:boolean= true;
   OldSelectedList: any = [];
@@ -72,7 +73,13 @@ export class VerifyBulkComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.OldSelectedList = this.orderLines;
+    const map = new Map();
+    this.orderLines.forEach((obj: { itemNumber: any; }) => {
+        if (!map.has(obj.itemNumber)) {
+            map.set(obj.itemNumber, obj);
+        }
+    });
+    this.OldSelectedList = Array.from(map.values());
     this.orderLines = new MatTableDataSource(
       this.orderLines
     );
@@ -112,7 +119,19 @@ export class VerifyBulkComponent implements OnInit {
 
   Search($event: any) {
     if ($event.length > 0) {
-      this.filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.toLowerCase().startsWith($event.toLowerCase()); });
+      //this.filteredData = this.OldSelectedList.filter(function (str) { return str.itemNumber.toLowerCase().startsWith($event.toLowerCase()); });      
+      this.filteredData = this.OldSelectedList.filter((function() {
+        const seen = new Set();
+        return function(str) {
+            const itemNumberLower = str.itemNumber.toLowerCase();
+            if (!seen.has(itemNumberLower) && itemNumberLower.startsWith($event.toLowerCase())) {
+                seen.add(itemNumberLower);
+                return true;
+            }
+            return false;
+        };
+    })());
+
       if (this.filteredData.length > 0) this.suggestion = this.filteredData[0].itemNumber;
       else this.suggestion = ""
     } else this.suggestion = "";
@@ -308,9 +327,12 @@ export class VerifyBulkComponent implements OnInit {
         isZeroCompletedQuantity = true;
       }
     });
-    if (['Put Away', 'Count'].indexOf(this.url) > -1) {
+    if (!this.Prefernces.systemPreferences.zeroLocationQuantityCheck) {
       isZeroCompletedQuantity = false;
     }
+    // if (['Put Away', 'Count'].indexOf(this.url) > -1) {
+    //   isZeroCompletedQuantity = false;
+    // }
     if (isZeroCompletedQuantity) {
       const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
         height: 'auto',

@@ -24,6 +24,7 @@ export class BulkTransactionComponent implements OnInit {
   ordersDisplayedColumns: string[] = ['batchId', 'lineCount', 'priority', 'actions'];
   selectedOrdersDisplayedColumns: string[] = ['orderNumber', 'toteNumber'];
   orders: any = [];
+  originalOrders: any = [];
   Prefernces: BulkPreferences;
   selectedOrders: any = [];
   nextBatchId: string = '';
@@ -90,6 +91,7 @@ export class BulkTransactionComponent implements OnInit {
     this.iBulkProcessApiService.bulkPickBatches(payload).subscribe((res: BatchesResponse[]) => {
       if (res) {
         this.orders = res;
+        this.originalOrders = res;
         this.selectedOrders = [];
       }
     });
@@ -105,6 +107,7 @@ export class BulkTransactionComponent implements OnInit {
     this.iBulkProcessApiService.bulkPickTotes(payload).subscribe((res: TotesResponse[]) => {
       if (res) {
         this.orders = res;
+        this.originalOrders = res;
         this.selectedOrders = [];
       }
     });
@@ -120,6 +123,7 @@ export class BulkTransactionComponent implements OnInit {
     this.iBulkProcessApiService.bulkPickOrders(payload).subscribe((res: OrderResponse[]) => {
       if (res) {
         this.orders = res;
+        this.originalOrders = res;
         this.selectedOrders = [];
       }
     });
@@ -184,7 +188,24 @@ export class BulkTransactionComponent implements OnInit {
     }
     this.status.orderLinesCount = this.status.orderLinesCount + event.lineCount;
     this.selectedOrders.forEach((element) => { this.orderLines = this.orderLines.concat(element.orderLines) });
+    this.orderLines = this.sortByLocation(this.orderLines);
   }
+  sortByLocation(data) {
+    // Sorts the array in ascending order based on the 'location' property
+    return data.sort((a, b) => {
+        // Normalize the location strings to ensure accurate sorting
+        let locA = a.location.toUpperCase(); // to handle case-insensitivity
+        let locB = b.location.toUpperCase(); // to handle case-insensitivity
+
+        if (locA < locB) {
+            return -1;
+        }
+        if (locA > locB) {
+            return 1;
+        }
+        return 0; // if the locations are equal
+    });
+}
 
   OpenNextToteId() {
     let dialogRefTote = this.global.OpenDialog(BmToteidEntryComponent, {
@@ -215,21 +236,28 @@ export class BulkTransactionComponent implements OnInit {
   removeOrder(event) {
     this.orderLines = [];
     if (this.view == "tote") {
-      this.orders = [event, ...this.orders];
+      //this.orders = [event, ...this.orders];
+      const index = this.originalOrders.findIndex(x => x===event);
+      this.orders.splice(index, 0, event);
       this.selectedOrders = this.selectedOrders.filter((element) => element.toteId != event.toteId);
     }
     else if (this.view == "order") {
-      this.orders = [event, ...this.orders];
+      //this.orders = [event, ...this.orders];
+      const index = this.originalOrders.findIndex(x => x===event);
+      this.orders.splice(index, 0, event);
+      this.orders = [...this.orders];
       this.selectedOrders = this.selectedOrders.filter((element) => element.orderNumber != event.orderNumber);
     }
     this.status.orderLinesCount = this.status.orderLinesCount - event.lineCount;
     this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1; this.orderLines = this.orderLines.concat(element.orderLines)});
+    this.orderLines = this.sortByLocation(this.orderLines);
   }
 
   appendAll() {
     this.orderLines = [];
     this.selectedOrders = [...this.selectedOrders, ...this.orders];
     this.selectedOrders.forEach((element, index) => { element.toteNumber = index + 1; this.status.orderLinesCount = this.status.orderLinesCount + element.lineCount; this.orderLines = this.orderLines.concat(element.orderLines); });
+    this.orderLines = this.sortByLocation(this.orderLines);
     this.orders = [];
   }
 
@@ -247,8 +275,12 @@ export class BulkTransactionComponent implements OnInit {
 
   removeAll() {
     if (this.view == "batch") this.bulkBatches();
-    else this.orders = [...this.orders, ...this.selectedOrders];
-    this.selectedOrders = [];
+    //else this.orders = [...this.orders, ...this.selectedOrders];
+    else {
+      while(this.selectedOrders.length > 0)
+        this.removeOrder(this.selectedOrders[0]);
+    }
+    //this.selectedOrders = [];
     this.batchSeleted = false;
     this.status.orderLinesCount = 0;
     this.orderLines = [];

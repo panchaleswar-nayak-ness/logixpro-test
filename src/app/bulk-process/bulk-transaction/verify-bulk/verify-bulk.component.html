@@ -120,7 +120,10 @@
                     </ng-container>
                     <ng-container matColumnDef="OrderQty" stickyEnd>
                       <th mat-header-cell *matHeaderCellDef> Order Qty</th>
-                      <td mat-cell *matCellDef="let element" matTooltip="Display the Order Quantity. Touch once to copy to the  Completed Quantity." (click)="element.completedQuantity = element.transactionQuantity"> {{element.transactionQuantity}} </td>
+                      <td mat-cell *matCellDef="let element"   class="show-arrow"> 
+                        <div class="d-flex align-items-center justify-content-between">{{element.transactionQuantity}}
+                          <span matTooltip="Copy to Completed Qty." matTooltipPosition="above" (click)="element.completedQuantity = element.transactionQuantity"><mat-icon class="material-symbols-outlined text-20 d-flex align-items-center justify-content-center">arrow_forward</mat-icon></span></div>
+                      </td>
                     </ng-container>
                     <ng-container matColumnDef="CompletedQty" stickyEnd>
                       <th mat-header-cell *matHeaderCellDef > Completed Qty</th>
