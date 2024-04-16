@@ -144,7 +144,6 @@ export class BmToteidEntryComponent implements OnInit {
       var obj = {
         toteid: $event.target.value
       }
-      debugger
       let res: any = await this.iBulkProcessApiService.validtote(obj);
       if (res?.status == HttpStatusCode.NoContent) {
         this.selectedList[i].IsTote = true; 
