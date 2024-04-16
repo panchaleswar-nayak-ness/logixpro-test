@@ -138,21 +138,14 @@ export class BaseService {
     for (let key in reqPaylaod)
       queryParams = queryParams.append(key, reqPaylaod[key]);
 
-    return this.http.delete<any>(this.GetUrl(endPoint), {
-      headers: this.GetHeaders(),
-      params: queryParams,
-      withCredentials: true
-    });
+    return this.request<any>('DELETE', endPoint, { params: queryParams });
   }
   public async DeleteAsync(endPoint: string, reqPaylaod: any = null) {
     let queryParams = new HttpParams();
     for (let key in reqPaylaod)
       queryParams = queryParams.append(key, reqPaylaod[key]); 
-    return await lastValueFrom(this.http.delete<any>(this.GetUrl(endPoint), {
-      headers: this.GetHeaders(),
-      params: queryParams,
-      withCredentials: true
-    }));
+
+    return await lastValueFrom(this.request<any>('DELETE', endPoint, { params: queryParams }));
   }
 
   token: string;
