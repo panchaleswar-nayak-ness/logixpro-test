@@ -16,7 +16,6 @@ export class ConfirmationGuard implements CanDeactivate<any> {
   ) { }
   async  canDeactivate(component: any,route:ActivatedRouteSnapshot):Promise<boolean> { 
     if(component.ifAllowed){ 
-      debugger
       if(route.data['title'].indexOf('Bulk') > -1){
         return   this.backButton(route.data['title'])
       }else{

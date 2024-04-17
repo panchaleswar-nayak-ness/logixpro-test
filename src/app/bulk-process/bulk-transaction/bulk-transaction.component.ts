@@ -130,7 +130,8 @@ export class BulkTransactionComponent implements OnInit {
   }
 
   Process() {
-    if (this.Prefernces?.workstationPreferences?.pickToTotes) this.OpenNextToteId();
+    if (this.Prefernces?.workstationPreferences?.pickToTotes && this.url == "Pick") this.OpenNextToteId();
+    else if (this.Prefernces?.workstationPreferences?.putAwayFromTotes && this.url == "PutAway") this.OpenNextToteId();
     else this.changeVisibiltyVerifyBulk(false);
   }
 

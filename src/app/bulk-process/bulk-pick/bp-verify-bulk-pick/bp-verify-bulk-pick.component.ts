@@ -65,7 +65,6 @@ export class BpVerifyBulkPickComponent implements OnInit  {
   }
 
   ngAfterViewInit() {
-    debugger
     this.OldSelectedList = this.orderLines;
     this.orderLines = new MatTableDataSource(
       this.orderLines
