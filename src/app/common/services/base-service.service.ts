@@ -49,16 +49,16 @@ export class BaseService {
     }
   }
 
-  private request<T>(method: Method, endPoint: string, options: { body?: T; params?: HttpParams } = {},observe:any = "body", headers?: HttpHeaders): Observable<any> {
+  private request<T>(method: Method, endPoint: string, options: { body?: T; params?: HttpParams } = {}, headers?: HttpHeaders,observe:any = "body"): Observable<HttpResponse<T>> {
     return this.apiUrl$.pipe(
       take(1),
       switchMap(apiUrl => {
         const url = endPoint.startsWith(apiUrl) ? endPoint : `${apiUrl}${endPoint}`;
         return this.http.request<T>(method, url, {
-          ...options, 
+          ...options,
+          observe: 'response',
           withCredentials: true,
-          headers: headers || this.GetHeaders(),
-          observe:observe
+          headers: headers || this.GetHeaders()
         });
       })
     );
@@ -112,11 +112,11 @@ export class BaseService {
       for (let key in payload)
         if (payload[key] != undefined) queryParams = queryParams.append(key, payload[key]);
  
-    return await lastValueFrom(this.request('GET', endPoint, { params: queryParams },  "response"));
+    return await lastValueFrom(this.request('GET', endPoint, { params: queryParams }));
   }
 
   async PostAsync<T, R>(endPoint: string, model: T, isLoader: boolean = false): Promise<HttpResponse<R>> {
-    return await lastValueFrom(this.request('GET', endPoint,{ body: model },"response"));
+    return await lastValueFrom(this.request('GET', endPoint));
   }
 
   public Post<T>(endPoint: string, reqPaylaod: T) {
@@ -152,7 +152,7 @@ export class BaseService {
     for (let key in reqPaylaod)
       queryParams = queryParams.append(key, reqPaylaod[key]); 
 
-    return await lastValueFrom(this.request<any>('DELETE', endPoint, { params: queryParams }, "response"));
+    return await lastValueFrom(this.request<any>('DELETE', endPoint, { params: queryParams }));
   }
 
   async PutAsync<T>(endPoint: string, reqPaylaod: T) {
