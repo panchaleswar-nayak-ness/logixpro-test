@@ -115,8 +115,8 @@ export class BaseService {
     return await lastValueFrom(this.request('GET', endPoint, { params: queryParams }));
   }
 
-  async PostAsync<T, R>(endPoint: string, model: T, isLoader: boolean = false): Promise<HttpResponse<R>> {
-    return await lastValueFrom(this.request('GET', endPoint));
+  async PostAsync<T, R>(endPoint: string, model: T, isLoader: boolean = false): Promise<HttpResponse<T>> {
+    return await lastValueFrom(this.request('POST', endPoint,{body:model}));
   }
 
   public Post<T>(endPoint: string, reqPaylaod: T) {

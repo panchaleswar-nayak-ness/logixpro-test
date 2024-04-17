@@ -100,8 +100,7 @@ export class PreferencesComponent implements OnInit {
           "zone": event.value,
         }
         let res: any = await this.iBulkProcessApiService.addBulkPickBulkZone(payload);
-        // Need to fix status codes
-        if (true) {
+        if (res?.status == HttpStatusCode.Ok) {
           this.bulkPickBulkZone();
           this.global.ShowToastr(ToasterType.Success, "Zone Added Successfully", ToasterTitle.Success);
         }
