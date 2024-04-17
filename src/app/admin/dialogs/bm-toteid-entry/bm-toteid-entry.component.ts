@@ -67,12 +67,16 @@ export class BmToteidEntryComponent implements OnInit {
   }
 
   createNextTote() {
-    this.selectedList.forEach((element, i) => {
-      this.selectedList[i].IsTote = false;
-      this.selectedList[i].IsError = false;
-      this.selectedList[i]['toteId'] =
-        parseInt(this.nextToteID) + i + 1;
-    });
+      this.bulkProcessApiService.BatchNextTote(this.selectedList.length).then((res  ) => {
+        this.nextToteID = res.body?.nextId;
+
+        this.selectedList.forEach((element, i) => {
+          this.selectedList[i].IsTote = false;
+          this.selectedList[i].IsError = false;
+          this.selectedList[i]['toteId'] =
+            parseInt(this.nextToteID) + i + 1;
+        });
+      });
   }
 
   submitOrder() {
@@ -146,7 +150,7 @@ export class BmToteidEntryComponent implements OnInit {
       }
       let res: any = await this.iBulkProcessApiService.validtote(obj);
       if (res?.status == HttpStatusCode.NoContent) {
-        this.selectedList[i].IsTote = true; 
+        this.selectedList[i].IsTote = true;
       }else {
         this.selectedList[i].IsTote = false;
         this.selectedList[i].IsError =  false;

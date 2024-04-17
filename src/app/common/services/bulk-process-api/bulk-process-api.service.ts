@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IBulkProcessApiService } from './bulk-process-api-interface'
+import { NextToteId} from "../../Model/bulk-transactions";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public bulkPickBatchId(body: any) {
     return this.Api.bulkPickBatchId(body);
   }
-  
+
   public bulkPickOrders(body: any) {
     return this.Api.bulkPickOrders(body);
   }
@@ -56,8 +57,10 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public validtote(body:any) {
     return this.Api.validtote(body);
   }
-  public BatchNextTote() {
-    return this.Api.BatchNextTote();
+  public BatchNextTote(numberOfIds: number) {
+    let payload = new NextToteId();
+    payload.numberOfIds = numberOfIds;
+    return this.Api.BatchNextTote(payload);
   }
 
   public BatchesNextBatchID() {
@@ -66,7 +69,7 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public BulkPickCreateBatch(body: any) {
     return this.Api.BulkPickCreateBatch(body);
   }
-  
+
   public updateLocationQuantity(body: any) {
     return this.Api.updateLocationQuantity(body);
   }

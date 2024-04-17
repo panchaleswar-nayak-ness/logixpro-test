@@ -16,7 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class BulkPickComponent implements OnInit {
   ifAllowed: boolean;
- 
+
   verifyBulkPicks: boolean = false;
   status: OrderBatchToteQtyResponse;
   view: string = "";
@@ -30,18 +30,17 @@ export class BulkPickComponent implements OnInit {
   batchSeleted: boolean = false;
   orderLines: OrderLineResource[] = [];
   public iBulkProcessApiService: IBulkProcessApiService;
-  
+
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     private global: GlobalService
-  ) { 
+  ) {
     this.iBulkProcessApiService = bulkProcessApiService;
   }
 
   ngOnInit(): void {
     this.bulkPickOrderBatchToteQty();
     this.getworkstationbulkzone();
-    this.BatchNextTote();
     this.ifAllowed = false;
   }
 
@@ -227,12 +226,6 @@ export class BulkPickComponent implements OnInit {
   getworkstationbulkzone() {
     this.iBulkProcessApiService.bulkPreferences().subscribe((res: BulkPreferences) => {
       this.Prefernces = res;
-    })
-  }
-
-  BatchNextTote() {
-    this.iBulkProcessApiService.BatchNextTote().subscribe((res: number) => {
-      this.NextToteID = res;
     })
   }
 

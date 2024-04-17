@@ -1,5 +1,5 @@
 import { HttpStatusCode } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -16,7 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
 })
 export class BulkTransactionComponent implements OnInit {
   ifAllowed: boolean;
- 
+
   verifyBulks: boolean = false;
   status: OrderBatchToteQtyResponse;
   view: string = "";
@@ -33,12 +33,12 @@ export class BulkTransactionComponent implements OnInit {
   url:string;
   IsBatch:any = false;
   public iBulkProcessApiService: IBulkProcessApiService;
-  
+
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     private global: GlobalService,
     private route:Router
-  ) { 
+  ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.url = route.url.split("/")[2].replace("Bulk","");
   }
@@ -46,7 +46,6 @@ export class BulkTransactionComponent implements OnInit {
   ngOnInit(): void {
     this.bulkOrderBatchToteQty();
     this.getworkstationbulkzone();
-    this.BatchNextTote();
     this.ifAllowed = false;
   }
 
@@ -164,7 +163,7 @@ export class BulkTransactionComponent implements OnInit {
     }
     this.batchSeleted = false;
   }
-   
+
   capitalizeWords(inputString) {
     // Use regular expression to insert space before each capital letter
     return inputString.replace(/([a-z])([A-Z])/g, '$1 $2');
@@ -268,12 +267,6 @@ export class BulkTransactionComponent implements OnInit {
     })
   }
 
-  BatchNextTote() {
-    this.iBulkProcessApiService.BatchNextTote().subscribe((res: number) => {
-      this.NextToteID = res;
-    })
-  }
-
   removeAll() {
     if (this.view == "batch") this.bulkBatches();
     //else this.orders = [...this.orders, ...this.selectedOrders];
@@ -342,7 +335,7 @@ export class BulkTransactionComponent implements OnInit {
             else {
              this.selectedOrders = [];
              this.bulkOrderBatchToteQty();
-            } 
+            }
           }
         }
       });

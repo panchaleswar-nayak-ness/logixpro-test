@@ -301,6 +301,11 @@ export class UpdateLocationQuantityRequest {
     locationQty: number;
 }
 
+export class NextToteId {
+    numberOfIds?: number;
+    nextId?: number;
+}
+
 export class TaskCompleteRequest {
     id: number;
     completedQty: number;

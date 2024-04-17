@@ -36,7 +36,7 @@ export class BpFullToteComponent implements OnInit {
   }
 
   BatchNextTote() {
-    this.iBulkProcessApiService.BatchNextTote().subscribe((res: number) => {
+    this.iBulkProcessApiService.BatchNextTote(1).subscribe((res: number) => {
       this.NextToteID = res;
     })
   }

@@ -62,7 +62,6 @@ export class BulkPutAwayComponent implements OnInit {
   ngOnInit(): void {
     this.bulkPutAwayOrderBatchToteQty();
     this.getworkstationbulkzone();
-    this.BatchNextTote();
     this.ifAllowed = false;
   }
 
@@ -247,12 +246,6 @@ export class BulkPutAwayComponent implements OnInit {
   getworkstationbulkzone() {
     this.iBulkProcessApiService.bulkPreferences().subscribe((res: BulkPreferences) => {
       this.Prefernces = res;
-    })
-  }
-
-  BatchNextTote() {
-    this.iBulkProcessApiService.BatchNextTote().subscribe((res: number) => {
-      this.NextToteID = res;
     })
   }
 
