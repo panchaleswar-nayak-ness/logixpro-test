@@ -61,7 +61,8 @@ export class BpFullToteComponent implements OnInit {
   }
 
   CreateNextToteID() {
-    this.data.NewToteID = this.NextToteID;
+    if(this.data.NewToteID < this.NextToteID) this.data.NewToteID = this.NextToteID;
+    else this.data.NewToteID = this.data.NewToteID+1;
   }
 
   putAllInNewTote() {

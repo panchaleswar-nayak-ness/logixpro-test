@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Observable, lastValueFrom } from 'rxjs';
+import { Observable, lastValueFrom, observable } from 'rxjs';
 import { GlobalService } from './global.service';
 import { ToasterTitle, ToasterType } from '../constants/strings.constants';
 import { ReplaySubject } from 'rxjs';
@@ -49,7 +49,8 @@ export class BaseService {
     }
   }
 
-  private request<T>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', endPoint: string, options: { body?: T; params?: HttpParams } = {}): Observable<T> {
+
+  private request<T>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', endPoint: string, options: { body?: T; params?: HttpParams } = {},    observe:any = "body"): Observable<any> {
     return this.apiUrl$.pipe(
       take(1),
       switchMap(apiUrl => {
@@ -57,7 +58,8 @@ export class BaseService {
         return this.http.request<T>(method, url, {
           ...options,
           withCredentials: true,
-          headers: this.GetHeaders()
+          headers: this.GetHeaders(),
+          observe:observe
         });
       })
     );
@@ -100,24 +102,14 @@ export class BaseService {
     let queryParams = new HttpParams();
     if (payload != null)
       for (let key in payload)
-        if (payload[key] != undefined) queryParams = queryParams.append(key, payload[key]);
- 
-    return await lastValueFrom(this.http.get<any>(this.GetUrl(endPoint), {
-      headers: this.GetHeaders(),
-      params:queryParams,
-      withCredentials: true,
-      observe: 'response',  
-    }));
-  //  return await lastValueFrom(this.request<any>('GET', endPoint, { params: queryParams }));
+        if (payload[key] != undefined) queryParams = queryParams.append(key, payload[key]); 
+    return await lastValueFrom(this.request<any>('GET', endPoint, { params: queryParams }, "response"));
   }
 
-  async PostAsync(endPoint: string, payload?, isLoader: boolean = false): Promise<any> {
-    return await lastValueFrom(this.http.post<any>(this.GetUrl(endPoint),payload, {
-      headers: this.GetHeaders(),
-      withCredentials: true,
-      observe: 'response',  
-    }));
+  async PostAsync<T>(endPoint: string, model: T): Promise<any> {
   //  return await lastValueFrom(this.request<any>('GET', endPoint, { params: queryParams }));
+ return await lastValueFrom(this.request<T>('POST', endPoint, { body: model }, "response"));
+  
   }
 
   public Post<T>(endPoint: string, reqPaylaod: T) {
@@ -145,7 +137,7 @@ export class BaseService {
     for (let key in reqPaylaod)
       queryParams = queryParams.append(key, reqPaylaod[key]); 
 
-    return await lastValueFrom(this.request<any>('DELETE', endPoint, { params: queryParams }));
+    return await lastValueFrom(this.request<any>('DELETE', endPoint, { params: queryParams }, "response"));
   }
 
   token: string;
@@ -170,35 +162,12 @@ export class BaseService {
     if (_token != null) httpHeaders = httpHeaders.set('_token', _token);
     return httpHeaders;
   }
-
-  async GetHttpResponse(endPoint: string, reqPaylaod?: any) {
-    let queryParams = new HttpParams();
-    if (reqPaylaod != null)
-      for (let key in reqPaylaod)
-        if (reqPaylaod[key] != undefined) queryParams = queryParams.append(key, reqPaylaod[key]);
-    let observable = this.GetUrlOfEndpoint(endPoint);
-    return new Observable<any>(observer => {
-      observable.subscribe(url => {
-        this.http.get<any>(url, {
-          headers: this.GetHeaders(),
-          observe: 'response',
-          params: queryParams,
-          withCredentials: true
-        }).subscribe(res => {
-          observer.next(res);
-        },
-        (err) => {
-          observer.error(err);
-        });
-      });
-    });
-
-  }
+ 
 
   async PostHttpResponse<T>(endPoint: string, reqPaylaod: T) {
     let queryParams = new HttpParams();
 
-    return this.request<T>('POST', endPoint, { body: reqPaylaod });
+    return this.request<T>('POST', endPoint, { body: reqPaylaod }, "response");
     
   }
 
@@ -224,7 +193,7 @@ export class BaseService {
       for (let key in reqPaylaod)
         if (reqPaylaod[key] != undefined) queryParams = queryParams.append(key, reqPaylaod[key]);
 
-    return this.request<any>('DELETE', endPoint, { params: queryParams });
+    return this.request<any>('DELETE', endPoint, { params: queryParams }, "response");
   }
 
   DownloadFile(endPoint: string) : Observable<any> {
