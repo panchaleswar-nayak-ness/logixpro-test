@@ -95,7 +95,7 @@ table{
   .show-arrow{
     span{
         cursor: pointer;
-        display:none;
+        display: flex;
         background: var(--clr-primary-10);
         height: auto;
         width: auto;
