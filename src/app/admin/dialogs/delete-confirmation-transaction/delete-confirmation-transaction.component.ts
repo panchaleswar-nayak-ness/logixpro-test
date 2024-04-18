@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../common/init/auth.service'; 
@@ -13,10 +13,16 @@ import { ToasterTitle, ToasterType ,ResponseStrings} from 'src/app/common/consta
   templateUrl: './delete-confirmation-transaction.component.html',
 })
 export class DeleteConfirmationTransactionComponent implements OnInit {
-  isChecked: boolean = true;
+  isChecked: boolean = false;
   public userData;
   public iAdminApiService: IAdminApiService;
-  accessLevel = 'Selected Only';
+
+  // Selection Type Fields
+  @ViewChild('selectionTypeDropdown', { read: ElementRef }) selectionTypeDropdown: ElementRef;
+  public readonly selectedType: string = 'selected';
+  public readonly allType: string = 'all';
+  public readonly allValue: string = "-1";
+  selectionType = this.selectedType;
   
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, 
@@ -36,7 +42,7 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
     let deletePayload = {
       transType: this.data.transType,
       orderNumber: this.data.orderNo,
-      id: this.data.id,
+      id: this.selectedType == this.allType ? this.allValue : this.data.id, // If we're selecting all, then we want the "allValue" which is checked against in the SP.
       itemNumber: '',
       lineNumber: ''
     };
@@ -61,7 +67,9 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
   }
 
   checkOptions(event: MatCheckboxChange): void {
-    if (event.checked) this.isChecked = false;
-    else this.isChecked = true;
+    this.isChecked = event.checked;
+    if (event.checked) {
+      this.selectionTypeDropdown.nativeElement.focus();
+    }
   }
 }

@@ -30,10 +30,10 @@
 
 
     <mat-form-field class="action-dropdown custom-form-field w-100 h-100 " appearance="outline">
-        <mat-label>Transaction Type</mat-label>
-        <mat-select class="employees-action" [(ngModel)]="accessLevel">
-            <mat-option value="selected">Selected Only</mat-option>
-            <mat-option value="all">All By Transaction Type</mat-option>
+        <mat-label>Selection Type</mat-label>
+        <mat-select class="employees-action" [(ngModel)]="selectionType" #selectionTypeDropdown>
+            <mat-option [value]="selectedType">Selected Only</mat-option>
+            <mat-option [value]="allType">All By Transaction Type</mat-option>
         </mat-select>
         <span class="material-symbols-outlined icon-expand-more">
             expand_more
@@ -42,7 +42,7 @@
 
     <mat-dialog-actions class="d-flex flex-column justify-content-center m-0 p-0">
         <button class="mat-button-base prompt-action-danger-button  mb-3 btn-lg w-100" mat-stroked-button mat-button
-            (click)="onConfirmdelete()" tabindex="1" [disabled]="isChecked"
+            (click)="onConfirmdelete()" tabindex="1" [disabled]="!isChecked"
             [ngStyle]="{'opacity': isChecked ? '0.8' : '1' }">Delete</button>
         <button class="mat-button-base prompt-action-basic-button btn-lg w-100" mat-button mat-dialog-close
             tabindex="-1">
