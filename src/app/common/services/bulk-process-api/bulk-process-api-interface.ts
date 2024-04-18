@@ -1,3 +1,5 @@
+import {NextToteId} from "../../Model/bulk-transactions";
+
 export interface IBulkProcessApiService {
   bulkPickoOrderBatchToteQty(payload: any);
   bulkPickBatches(paylaod:any);
@@ -11,7 +13,7 @@ export interface IBulkProcessApiService {
   deleteBulkPickBulkZone(paylaod:any);
   bulkPreferences();
   validtote(body:any);
-  BatchNextTote();
+  BatchNextTote(numberOfIds: number);
   BatchesNextBatchID();
   BulkPickCreateBatch(body:any);
   updateLocationQuantity(body:any);

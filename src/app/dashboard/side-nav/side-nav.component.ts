@@ -234,7 +234,22 @@ export class SideNavComponent implements OnInit {
     this.router.navigate([`${localStorage.getItem('reportNav')}`]);
   }
 
+  childRouterLink(childMenu:any){
+    if((this.router.url == "/BulkTransactions/BulkPick" || this.router.url == "/BulkTransactions/BulkPutAway" || this.router.url == "/BulkTransactions/BulkCount") && localStorage.getItem("verifyBulks") == "true"){
+      return this.router.url;
+    }
+    else{
+      return childMenu.route;
+    }
+  }
+
   loadMenus(menu: any) {
+
+    if((this.router.url == "/BulkTransactions/BulkPick" || this.router.url == "/BulkTransactions/BulkPutAway" || this.router.url == "/BulkTransactions/BulkCount") && localStorage.getItem("verifyBulks") == "true"){
+      this.sharedService.verifyBulkTransBack();
+      return;
+    }
+
     if(localStorage.getItem("prevTab") && localStorage.getItem("newTabNavigated")){
       let prevTab:string = localStorage.getItem("prevTab") || "";
       localStorage.removeItem("prevTab");
@@ -338,6 +353,8 @@ export class SideNavComponent implements OnInit {
       this.isParentMenu = false;
       this.isChildMenu = true;
     }
+
+    this.router.navigate([menu.route]);
   }
 
   isAuthorized(controlName: any) {

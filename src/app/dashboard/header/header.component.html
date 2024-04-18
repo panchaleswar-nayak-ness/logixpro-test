@@ -67,3 +67,11 @@
     <mat-spinner [diameter]="50"></mat-spinner>
   </div>
 </div>
+<div class="overlay z-index-999999 dark" *ngIf="spinnerService.IsLoader">
+  <div class="center d-flex flex-column align-items-center">
+    <mat-spinner [diameter]="50"></mat-spinner>
+    <p >
+      Finding your location
+    </p>
+  </div>
+</div>

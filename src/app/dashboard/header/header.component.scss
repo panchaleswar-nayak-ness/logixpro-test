@@ -20,6 +20,9 @@
   left: 0;
   position: fixed;
 }
+.dark{
+  backdrop-filter: blur(4px);
+}
 
 // .mat-toolbar {
 //   z-index: 10000;

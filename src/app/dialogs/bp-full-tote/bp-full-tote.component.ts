@@ -31,13 +31,13 @@ export class BpFullToteComponent implements OnInit {
   ngOnInit(): void {
     this.data.NewToteID = "";
     this.data.PutNewToteQty = 0;
-    this.data.PutFullToteQty = this.data.transactionQuantity;
-    this.BatchNextTote();
+    this.data.PutFullToteQty = this.data.transactionQuantity; 
   }
 
-  BatchNextTote() {
-    this.iBulkProcessApiService.BatchNextTote().subscribe((res: number) => {
-      this.NextToteID = res;
+  async BatchNextTote() {
+    debugger
+    await this.iBulkProcessApiService.BatchNextTote(1).then((res) => {
+      this.NextToteID = res.body?.nextId;
     })
   }
 
@@ -60,8 +60,9 @@ export class BpFullToteComponent implements OnInit {
     });
   }
 
-  CreateNextToteID() {
-    this.data.NewToteID = this.NextToteID;
+  async CreateNextToteID() {
+   await this.BatchNextTote();
+      this.data.NewToteID = this.NextToteID;
   }
 
   putAllInNewTote() {

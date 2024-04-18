@@ -1,5 +1,5 @@
 import { HttpStatusCode } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -8,6 +8,7 @@ import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constant
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 
 @Component({
   selector: 'app-bulk-transaction',
@@ -15,7 +16,6 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./bulk-transaction.component.scss']
 })
 export class BulkTransactionComponent implements OnInit {
-  ifAllowed: boolean;
  
   verifyBulks: boolean = false;
   status: OrderBatchToteQtyResponse;
@@ -33,12 +33,13 @@ export class BulkTransactionComponent implements OnInit {
   url:string;
   IsBatch:any = false;
   public iBulkProcessApiService: IBulkProcessApiService;
-  
+
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     private global: GlobalService,
-    private route:Router
-  ) { 
+    private route:Router,
+    private sharedService: SharedService,
+  ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.url = route.url.split("/")[2].replace("Bulk","");
   }
@@ -46,8 +47,7 @@ export class BulkTransactionComponent implements OnInit {
   ngOnInit(): void {
     this.bulkOrderBatchToteQty();
     this.getworkstationbulkzone();
-    this.BatchNextTote();
-    this.ifAllowed = false;
+    localStorage.removeItem("verifyBulks");
   }
 
   bulkOrderBatchToteQty() {
@@ -130,16 +130,18 @@ export class BulkTransactionComponent implements OnInit {
   }
 
   Process() {
-    if (this.Prefernces?.workstationPreferences?.pickToTotes) this.OpenNextToteId();
+    if (this.Prefernces?.workstationPreferences?.pickToTotes && this.url == "Pick") this.OpenNextToteId();
+    else if (this.Prefernces?.workstationPreferences?.putAwayFromTotes && this.url == "PutAway") this.OpenNextToteId();
     else this.changeVisibiltyVerifyBulk(false);
   }
 
   changeVisibiltyVerifyBulk(event: boolean) {
     if (event) {
       this.bulkOrderBatchToteQty();
+      localStorage.removeItem("verifyBulks");
     }
     this.verifyBulks = !this.verifyBulks;
-    this.ifAllowed = this.verifyBulks;
+    localStorage.setItem("verifyBulks",this.verifyBulks.toString());
   }
 
   changeView(event: string) {
@@ -163,7 +165,7 @@ export class BulkTransactionComponent implements OnInit {
     }
     this.batchSeleted = false;
   }
-   
+
   capitalizeWords(inputString) {
     // Use regular expression to insert space before each capital letter
     return inputString.replace(/([a-z])([A-Z])/g, '$1 $2');
@@ -229,6 +231,7 @@ export class BulkTransactionComponent implements OnInit {
           });
         });
         this.verifyBulks = !this.verifyBulks;
+        localStorage.setItem("verifyBulks",this.verifyBulks.toString());
       }
     });
   }
@@ -239,6 +242,7 @@ export class BulkTransactionComponent implements OnInit {
       //this.orders = [event, ...this.orders];
       const index = this.originalOrders.findIndex(x => x===event);
       this.orders.splice(index, 0, event);
+      this.orders = [...this.orders];
       this.selectedOrders = this.selectedOrders.filter((element) => element.toteId != event.toteId);
     }
     else if (this.view == "order") {
@@ -264,12 +268,6 @@ export class BulkTransactionComponent implements OnInit {
   getworkstationbulkzone() {
     this.iBulkProcessApiService.bulkPreferences().subscribe((res: BulkPreferences) => {
       this.Prefernces = res;
-    })
-  }
-
-  BatchNextTote() {
-    this.iBulkProcessApiService.BatchNextTote().subscribe((res: number) => {
-      this.NextToteID = res;
     })
   }
 
@@ -341,7 +339,7 @@ export class BulkTransactionComponent implements OnInit {
             else {
              this.selectedOrders = [];
              this.bulkOrderBatchToteQty();
-            } 
+            }
           }
         }
       });

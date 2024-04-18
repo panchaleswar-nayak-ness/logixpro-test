@@ -161,16 +161,18 @@
               "outputHashing": "all"
             },
             "stage": {
+              "optimization": false,
+              "sourceMap": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "3mb"
+                  "maximumWarning": "20mb",
+                  "maximumError": "30mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "20kb",
-                  "maximumError": "40kb"
+                  "maximumWarning": "20mb",
+                  "maximumError": "30mb"
                 }
               ],
               "fileReplacements": [

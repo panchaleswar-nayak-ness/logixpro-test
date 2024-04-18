@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { OrderLineResource, TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
+import { BulkPreferences, OrderLineResource, TaskCompleteRequest, UpdateLocationQuantityRequest, WorkStationSetupResponse } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
 import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
@@ -16,6 +16,9 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { BpFullToteComponent } from 'src/app/dialogs/bp-full-tote/bp-full-tote.component';
 import { BpNumberSelectionComponent } from 'src/app/dialogs/bp-number-selection/bp-number-selection.component';
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
+import { PickRemainingComponent } from '../pick-remaining/pick-remaining.component';
+import { SpinnerService } from 'src/app/common/init/spinner.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 
 @Component({
   selector: 'app-verify-bulk',
@@ -25,16 +28,19 @@ import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.
 export class VerifyBulkComponent implements OnInit {
   @Output() back = new EventEmitter<any>();
   @Input() orderLines: any = [];
+  @Input() Prefernces: BulkPreferences;
   @Input() url: any;
+  IsLoading:boolean= true;
   OldSelectedList: any = [];
   filteredData: any = [];
-  @Input() NextToteID: any;
-
+  @Input() NextToteID: any; 
   @ViewChild('paginator') paginator: MatPaginator;
   @Input() ordersDisplayedColumns: string[] = ["ItemNo", "Description", "LineNo", "Whse", "Location", "LotNo", "SerialNo", "OrderNo", "OrderQty", "CompletedQty", "ToteID", "Action"];
   suggestion: string = "";
   SearchString: string = "";
   taskCompleted: boolean = false;
+  backSubscription;
+  backCount:number = 0;
   workstationPreferences: WorkStationSetupResponse;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
@@ -45,17 +51,26 @@ export class VerifyBulkComponent implements OnInit {
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     public adminApiService: AdminApiService,
-    private global: GlobalService
+    private global: GlobalService,
+    private spinnerService:SpinnerService,
+    private sharedService: SharedService,
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.iAdminApiService = adminApiService;
   }
-
-  ngOnInit(): void {
+  
+    ngOnInit(): void {
     this.orderLines.forEach(element => {
       element.completedQuantity = 0;
+    });  
+    this.backSubscription =  this.sharedService.verifyBulkTransBackObserver.subscribe((data: any) => {
+      this.backCount++;
+      // this.backButton();
     });
-
+  }
+ 
+  ngOnDestroy() {
+    this.backSubscription.unsubscribe();
   }
 
   addItem($event: any = null) {
@@ -128,26 +143,29 @@ export class VerifyBulkComponent implements OnInit {
   }
 
   backButton() {
-    const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
-      width: Style.w560px,
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-      data: {
-        message: `Transaction verification is currently underway.
-        Leaving will remove transactions, otherwise continue with transaction verification`,
-        heading: `Verify Bulk ${this.url}`,
-        buttonFields: true,
-        customButtonText: true,
-        btn1Text: 'Continue Verification',
-        btn2Text: 'Leave Anyway'
-      },
-    });
-    dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if (resp != ResponseStrings.Yes) {
-        this.back.emit(this.taskCompleted);
-      }
-    });
+    if(this.backCount < 2){   
+      const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+        height: 'auto',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+        data: {
+          message: `Transaction verification is currently underway.
+          Leaving will remove transactions, otherwise continue with transaction verification`,
+          heading: `Verify Bulk ${this.url}`,
+          buttonFields: true,
+          customButtonText: true,
+          btn1Text: 'Continue Verification',
+          btn2Text: 'Leave Anyway'
+        },
+      });
+      dialogRef1.afterClosed().subscribe(async (resp: any) => {
+        if (resp != ResponseStrings.Yes) {
+          this.back.emit(this.taskCompleted);
+        }
+        this.backCount = 0;
+      });
+    }
   }
 
   numberSelection(element) {
@@ -261,10 +279,50 @@ export class VerifyBulkComponent implements OnInit {
         let res = await this.iBulkProcessApiService.bulkPickTaskComplete(orders);
         if (res?.status == HttpStatusCode.Ok) {
             // if(this.workstationPreferences)
-         
+              this.spinnerService.IsLoader = true;
           this.global.ShowToastr(ToasterType.Success, "Record Updated Successfully", ToasterTitle.Success);
           this.taskCompleted = true;
-          this.back.emit(this.taskCompleted);
+          
+          let order = this.orderLines.filteredData.filter(x=> (x.transactionQuantity < x.completedQuantity));
+          if(this.Prefernces.systemPreferences.shortPickFindNewLocation) {
+            if(order.length > 0){
+              let apiCalled = false;
+                  for (let i = 0; i < 10 && !apiCalled; i++) { 
+                        setTimeout(() => {
+                            if (!apiCalled) {
+                                this.iAdminApiService.orderline(order[0].id).subscribe((res: any) => {
+                                    if (res.zone != "" && res.zone) {
+                                        apiCalled = true;
+                                    }
+                                });
+                            }
+                        }, 2000 * i);
+                    }
+          }
+           if(this.Prefernces.systemPreferences.shortPickFindNewLocation || this.Prefernces.systemPreferences.displayEob){ 
+            setTimeout(() => {
+              const orderNumbers: string[] = Array.from(new Set(order.map(item => item.orderNumber)));
+              this.iAdminApiService.endofbatch({orderNumbers:orderNumbers}).subscribe((res: any) => {
+                this.spinnerService.IsLoader = false;
+                const dialogRef1: any = this.global.OpenDialog(PickRemainingComponent, {
+                  height: 'auto',
+                  width: Style.w786px,
+                  autoFocus: DialogConstants.autoFocus,
+                  disableClose: true,
+                  data: res
+                });
+                dialogRef1.afterClosed().subscribe(async (resp: any) => { 
+                    this.back.emit(this.taskCompleted); 
+                });
+              });
+            }, this.Prefernces?.systemPreferences?.shortPickFindNewLocation ? 5000:0);
+
+          }
+          }
+          else {
+            this.back.emit(this.taskCompleted);
+            this.spinnerService.IsLoader = false}
+          
         }
       }
     });
@@ -277,6 +335,9 @@ export class VerifyBulkComponent implements OnInit {
         isZeroCompletedQuantity = true;
       }
     });
+    if (!this.Prefernces.systemPreferences.zeroLocationQuantityCheck) {
+      isZeroCompletedQuantity = false;
+    }
     // if (['Put Away', 'Count'].indexOf(this.url) > -1) {
     //   isZeroCompletedQuantity = false;
     // }
@@ -346,5 +407,5 @@ export class VerifyBulkComponent implements OnInit {
       selectedRow.selected = !selectedRow.selected;
     }
   }
-
+  
 }

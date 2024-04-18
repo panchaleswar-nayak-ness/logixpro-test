@@ -1,5 +1,5 @@
 import { HttpStatusCode } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core'; 
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { BmToteidEntryComponent } from 'src/app/admin/dialogs/bm-toteid-entry/bm-toteid-entry.component';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { BatchesByIdRequest, BatchesRequest, BatchesResponse, BulkPreferences, CreateBatchRequest, OrderBatchToteQtyRequest, OrderBatchToteQtyResponse, OrderLineResource, OrderResponse, OrdersRequest, TotesRequest, TotesResponse, WorkstationPreference } from 'src/app/common/Model/bulk-transactions';
@@ -60,7 +60,6 @@ export class BulkCountComponent implements OnInit {
   ngOnInit(): void {
     this.bulkCountOrderBatchToteQty();
     this.getworkstationbulkzone();
-    this.BatchNextTote();
     this.ifAllowed = false;
   }
 
@@ -245,12 +244,6 @@ export class BulkCountComponent implements OnInit {
   getworkstationbulkzone() {
     this.iBulkProcessApiService.bulkPreferences().subscribe((res: BulkPreferences) => {
       this.Prefernces = res;
-    })
-  }
-
-  BatchNextTote() {
-    this.iBulkProcessApiService.BatchNextTote().subscribe((res: number) => {
-      this.NextToteID = res;
     })
   }
 

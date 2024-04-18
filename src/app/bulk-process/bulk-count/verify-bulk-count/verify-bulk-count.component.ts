@@ -64,7 +64,6 @@ export class VerifyBulkCountComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    debugger
     this.OldSelectedList = this.orderLines;
     this.orderLines = new MatTableDataSource(
       this.orderLines
@@ -230,7 +229,6 @@ export class VerifyBulkCountComponent implements OnInit {
     dialogRef1.afterClosed().subscribe(async (resp: any) => {
       if (resp == ResponseStrings.Yes) {
         let orders: TaskCompleteRequest[] = new Array();
-        debugger
         this.orderLines.filteredData.forEach((x: any) => {
           orders.push(
             {
