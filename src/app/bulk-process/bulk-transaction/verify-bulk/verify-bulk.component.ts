@@ -69,13 +69,7 @@ export class VerifyBulkComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    const map = new Map();
-    this.orderLines.forEach((obj: { itemNumber: any; }) => {
-        if (!map.has(obj.itemNumber)) {
-            map.set(obj.itemNumber, obj);
-        }
-    });
-    this.OldSelectedList = Array.from(map.values());
+    this.OldSelectedList = this.orderLines;
     this.orderLines = new MatTableDataSource(
       this.orderLines
     );
