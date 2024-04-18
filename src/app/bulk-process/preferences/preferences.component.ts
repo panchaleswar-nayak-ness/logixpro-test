@@ -66,15 +66,17 @@ export class PreferencesComponent implements OnInit {
 
   async bulkPickZones() {
     let res: any = await this.iBulkProcessApiService.bulkPickZones();
-    if (res?.status == HttpStatusCode.Ok) {
-      this.zoneOptions = res.body;
+    // Temporary Fix need to revisit
+    if (true) { // res?.status == HttpStatusCode.Ok
+      this.zoneOptions = res;
     }
   }
 
   async bulkPickBulkZone() {
     let res: any = await this.iBulkProcessApiService.bulkPickBulkZone();
-    if (res?.status == HttpStatusCode.Ok) {
-      this.bulkZones = res.body;
+    // Temporary Fix need to revisit
+    if (true) { // res?.status == HttpStatusCode.Ok
+      this.bulkZones = res;
       await this.bulkPickZones();
       let wsZones = this.bulkZones.map((bulkZone) => bulkZone.zone);
       this.bulkZones.forEach(element => {
