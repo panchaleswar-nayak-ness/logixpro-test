@@ -8,6 +8,7 @@ import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constant
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 
 @Component({
   selector: 'app-bulk-transaction',
@@ -36,7 +37,8 @@ export class BulkTransactionComponent implements OnInit {
   constructor(
     public bulkProcessApiService: BulkProcessApiService,
     private global: GlobalService,
-    private route:Router
+    private route:Router,
+    private sharedService: SharedService,
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.url = route.url.split("/")[2].replace("Bulk","");

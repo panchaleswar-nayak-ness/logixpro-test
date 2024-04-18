@@ -39,6 +39,8 @@ export class VerifyBulkComponent implements OnInit {
   suggestion: string = "";
   SearchString: string = "";
   taskCompleted: boolean = false;
+  backSubscription;
+  backCount:number = 0;
   workstationPreferences: WorkStationSetupResponse;
   public iBulkProcessApiService: IBulkProcessApiService;
   public iAdminApiService: IAdminApiService;
@@ -55,18 +57,22 @@ export class VerifyBulkComponent implements OnInit {
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.iAdminApiService = adminApiService;
-
-    this.sharedService.verifyBulkTransBackObserver.subscribe((data: any) => {
-      this.backButton();
-    });
   }
-
+  
     ngOnInit(): void {
     this.orderLines.forEach(element => {
       element.completedQuantity = 0;
     });  
+    this.backSubscription =  this.sharedService.verifyBulkTransBackObserver.subscribe((data: any) => {
+      this.backCount++;
+      // this.backButton();
+    });
   }
  
+  ngOnDestroy() {
+    this.backSubscription.unsubscribe();
+  }
+
   addItem($event: any = null) {
     this.SearchString = this.suggestion;
     if (!$event) this.Search(this.SearchString);
@@ -143,26 +149,29 @@ export class VerifyBulkComponent implements OnInit {
   }
 
   backButton() {
-    const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
-      height: 'auto',
-      width: Style.w560px,
-      autoFocus: DialogConstants.autoFocus,
-      disableClose: true,
-      data: {
-        message: `Transaction verification is currently underway.
-        Leaving will remove transactions, otherwise continue with transaction verification`,
-        heading: `Verify Bulk ${this.url}`,
-        buttonFields: true,
-        customButtonText: true,
-        btn1Text: 'Continue Verification',
-        btn2Text: 'Leave Anyway'
-      },
-    });
-    dialogRef1.afterClosed().subscribe(async (resp: any) => {
-      if (resp != ResponseStrings.Yes) {
-        this.back.emit(this.taskCompleted);
-      }
-    });
+    if(this.backCount < 2){   
+      const dialogRef1: any = this.global.OpenDialog(ConfirmationDialogComponent, {
+        height: 'auto',
+        width: Style.w560px,
+        autoFocus: DialogConstants.autoFocus,
+        disableClose: true,
+        data: {
+          message: `Transaction verification is currently underway.
+          Leaving will remove transactions, otherwise continue with transaction verification`,
+          heading: `Verify Bulk ${this.url}`,
+          buttonFields: true,
+          customButtonText: true,
+          btn1Text: 'Continue Verification',
+          btn2Text: 'Leave Anyway'
+        },
+      });
+      dialogRef1.afterClosed().subscribe(async (resp: any) => {
+        if (resp != ResponseStrings.Yes) {
+          this.back.emit(this.taskCompleted);
+        }
+        this.backCount = 0;
+      });
+    }
   }
 
   numberSelection(element) {
