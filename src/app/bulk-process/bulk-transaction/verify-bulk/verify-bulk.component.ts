@@ -18,6 +18,7 @@ import { BpNumberSelectionComponent } from 'src/app/dialogs/bp-number-selection/
 import { InputFilterComponent } from 'src/app/dialogs/input-filter/input-filter.component';
 import { PickRemainingComponent } from '../pick-remaining/pick-remaining.component';
 import { SpinnerService } from 'src/app/common/init/spinner.service';
+import { SharedService } from 'src/app/common/services/shared.service';
 
 @Component({
   selector: 'app-verify-bulk',
@@ -49,10 +50,15 @@ export class VerifyBulkComponent implements OnInit {
     public bulkProcessApiService: BulkProcessApiService,
     public adminApiService: AdminApiService,
     private global: GlobalService,
-    private spinnerService:SpinnerService
+    private spinnerService:SpinnerService,
+    private sharedService: SharedService,
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.iAdminApiService = adminApiService;
+
+    this.sharedService.verifyBulkTransBackObserver.subscribe((data: any) => {
+      this.backButton();
+    });
   }
 
     ngOnInit(): void {

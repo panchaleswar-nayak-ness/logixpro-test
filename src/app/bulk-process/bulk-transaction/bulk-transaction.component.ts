@@ -15,8 +15,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./bulk-transaction.component.scss']
 })
 export class BulkTransactionComponent implements OnInit {
-  ifAllowed: boolean;
-
+ 
   verifyBulks: boolean = false;
   status: OrderBatchToteQtyResponse;
   view: string = "";
@@ -46,7 +45,7 @@ export class BulkTransactionComponent implements OnInit {
   ngOnInit(): void {
     this.bulkOrderBatchToteQty();
     this.getworkstationbulkzone();
-    this.ifAllowed = false;
+    localStorage.removeItem("verifyBulks");
   }
 
   bulkOrderBatchToteQty() {
@@ -137,9 +136,10 @@ export class BulkTransactionComponent implements OnInit {
   changeVisibiltyVerifyBulk(event: boolean) {
     if (event) {
       this.bulkOrderBatchToteQty();
+      localStorage.removeItem("verifyBulks");
     }
     this.verifyBulks = !this.verifyBulks;
-    this.ifAllowed = this.verifyBulks;
+    localStorage.setItem("verifyBulks",this.verifyBulks.toString());
   }
 
   changeView(event: string) {
@@ -229,6 +229,7 @@ export class BulkTransactionComponent implements OnInit {
           });
         });
         this.verifyBulks = !this.verifyBulks;
+        localStorage.setItem("verifyBulks",this.verifyBulks.toString());
       }
     });
   }

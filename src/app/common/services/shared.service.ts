@@ -50,7 +50,14 @@ export class SharedService {
   sideMenuHideObserver: Subject<any> = new Subject<any>();
   PrintServiceObserver: Subject<any> = new Subject<any>();
   updateBulkProcessMenuObserver: Subject<any> = new Subject<any>();
+
+
+  verifyBulkTransBackObserver: Subject<any> = new Subject<any>();
   
+  
+  verifyBulkTransBack(){
+    this.verifyBulkTransBackObserver.next(true);
+  }
   
   BroadCastInductionMenuUpdate(str: any) {
     this.updateInductionMenuObserver.next(str);
