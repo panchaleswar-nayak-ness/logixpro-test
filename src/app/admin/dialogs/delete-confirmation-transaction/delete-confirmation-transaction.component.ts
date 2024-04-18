@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatCheckboxChange, MatCheckbox } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../common/init/auth.service'; 
 import labels from 'src/app/common/labels/labels.json';
@@ -17,17 +17,23 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
   public userData;
   public iAdminApiService: IAdminApiService;
 
+  // Confirmation CheckBox
+  @ViewChild('confirmationCheckBox', { static: false, read: ElementRef }) confirmationCheckBox: ElementRef;
+
   // Selection Type Fields
   @ViewChild('selectionTypeDropdown', { read: ElementRef }) selectionTypeDropdown: ElementRef;
   public readonly selectedType: string = 'selected';
   public readonly allType: string = 'all';
   public readonly allValue: string = "-1";
-  selectionType = this.selectedType;
-  
+  public selectionType = '';
+
+  // Confirmation CheckBox
+  @ViewChild('deleteButton', { read: ElementRef }) deleteButton: ElementRef;
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any, 
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public adminApiService: AdminApiService,
-    private global:GlobalService,
+    private global: GlobalService,
     public dialogRef: MatDialogRef<DeleteConfirmationTransactionComponent>,
     private authService: AuthService
   ) {
@@ -42,20 +48,20 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
     let deletePayload = {
       transType: this.data.transType,
       orderNumber: this.data.orderNo,
-      id: this.selectedType == this.allType ? this.allValue : this.data.id, // If we're selecting all, then we want the "allValue" which is checked against in the SP.
+      id: this.selectionType == this.allType ? this.allValue : this.data.id, // If we're selecting all, then we want the "allValue" which is checked against in the SP.
       itemNumber: '',
       lineNumber: ''
     };
 
     this.iAdminApiService.DeleteOrder(deletePayload).subscribe(
       (res: any) => {
-        if(res.isExecuted){
+        if (res.isExecuted) {
           this.dialogRef.close(ResponseStrings.Yes);
           this.global.ShowToastr(ToasterType.Success, labels.alert.delete, ToasterTitle.Success);
         }
         else {
           this.global.ShowToastr(ToasterType.Error, this.global.globalErrorMsg(), ToasterTitle.Error);
-          console.log("DeleteOrder",res.responseMessage);
+          console.log("DeleteOrder", res.responseMessage);
         }
       },
       (error) => {
@@ -68,8 +74,31 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
 
   checkOptions(event: MatCheckboxChange): void {
     this.isChecked = event.checked;
-    if (event.checked) {
-      this.selectionTypeDropdown.nativeElement.focus();
+
+    if (!event.checked) {
+      this.confirmationCheckBox.nativeElement.focus();
+      this.confirmationCheckBox.nativeElement.classList.add('cdk-keyboard-focused');
+      return;
     }
+
+    if (this.selectionType == '') {
+      this.selectionTypeDropdown.nativeElement.focus();
+    } else {
+      this.deleteButton.nativeElement.focus();
+      this.deleteButton.nativeElement.classList.add('cdk-keyboard-focused');
+    }
+  }
+
+  selectionChanged(selection: string) {
+    this.selectionTypeDropdown.nativeElement.blur();
+
+    if (!this.isChecked) {
+      this.confirmationCheckBox.nativeElement.focus();
+      this.confirmationCheckBox.nativeElement.classList.add('cdk-keyboard-focused');
+      return;
+    }
+
+    this.deleteButton.nativeElement.focus();
+    this.deleteButton.nativeElement.classList.add('cdk-keyboard-focused');
   }
 }

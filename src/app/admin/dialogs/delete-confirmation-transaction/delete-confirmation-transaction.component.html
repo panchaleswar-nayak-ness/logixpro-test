@@ -12,7 +12,7 @@
             </p>
             <p class="bold text-danger mb-4">This action can not be redone.</p>
             <div class="br-14 px-4 py-3 checkbox-background mb-4">
-                <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary">I understand data
+                <mat-checkbox (change)="checkOptions($event)" class="example-margin" color="primary" #confirmationCheckBox>I understand data
                     cannot be recovered</mat-checkbox>
             </div>
         </div>
@@ -32,8 +32,8 @@
     <mat-form-field class="action-dropdown custom-form-field w-100 h-100 " appearance="outline">
         <mat-label>Selection Type</mat-label>
         <mat-select class="employees-action" [(ngModel)]="selectionType" #selectionTypeDropdown>
-            <mat-option [value]="selectedType">Selected Only</mat-option>
-            <mat-option [value]="allType">All By Transaction Type</mat-option>
+            <mat-option [value]="selectedType" (click)="selectionChanged(selectedType)">Selected Only</mat-option>
+            <mat-option [value]="allType" (click)="selectionChanged(allType)">All By Transaction Type</mat-option>
         </mat-select>
         <span class="material-symbols-outlined icon-expand-more">
             expand_more
@@ -42,8 +42,9 @@
 
     <mat-dialog-actions class="d-flex flex-column justify-content-center m-0 p-0">
         <button class="mat-button-base prompt-action-danger-button  mb-3 btn-lg w-100" mat-stroked-button mat-button
-            (click)="onConfirmdelete()" tabindex="1" [disabled]="!isChecked"
-            [ngStyle]="{'opacity': isChecked ? '0.8' : '1' }">Delete</button>
+            (click)="onConfirmdelete()" tabindex="1" [disabled]="!isChecked || selectionType == ''"
+            [ngStyle]="{'opacity': isChecked ? '0.8' : '1' }"
+            #deleteButton >Delete</button>
         <button class="mat-button-base prompt-action-basic-button btn-lg w-100" mat-button mat-dialog-close
             tabindex="-1">
             Close
