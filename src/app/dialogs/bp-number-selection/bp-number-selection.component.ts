@@ -48,6 +48,7 @@ export class BpNumberSelectionComponent implements OnInit {
       this.Prefernces = res;
     })
   }
+  
 
   add(string: string) {
     if(this.newQuantity){
