@@ -240,6 +240,7 @@ export class BulkTransactionComponent implements OnInit {
       //this.orders = [event, ...this.orders];
       const index = this.originalOrders.findIndex(x => x===event);
       this.orders.splice(index, 0, event);
+      this.orders = [...this.orders];
       this.selectedOrders = this.selectedOrders.filter((element) => element.toteId != event.toteId);
     }
     else if (this.view == "order") {
