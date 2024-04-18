@@ -464,13 +464,15 @@ export class GenerateTransactionComponent implements OnInit {
   }
 
   updateTransactionFunction() {
-    if (
-      this.transQuantity === '0' ||
-      this.transQuantity === 0 ||
-      this.transQuantity < 0
-    ) {
+    if(this.transQuantity < 0){
       this.transactionQtyInvalid = true;
       this.message = `Transaction Quantity must be a positive integer for transaction type ${this.transType} `;
+    }else if (
+      (this.transQuantity === '0' || this.transQuantity === 0 ) &&
+      this.transType != 'Count'
+    ) {
+      this.transactionQtyInvalid = true;
+      this.message = `Transaction Quantity must be greater than zero for transaction type ${this.transType} `;
     } else if (this.warehouseSensitivity === 'True' && this.wareHouse == '') {
       this.transactionQtyInvalid = true;
       this.message = 'Specified Item Number must have a Warehouse';
