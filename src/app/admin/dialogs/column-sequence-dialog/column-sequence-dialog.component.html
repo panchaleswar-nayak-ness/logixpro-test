@@ -1,9 +1,13 @@
-<div class="d-flex justify-content-between mb-4 align-items-center" mat-dialog-title>
-    <div class="column-sequence-card"></div>
-    <h1 class="m-0" mat-dialog-title>Set Column Sequence</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
-        <mat-icon class="close-icon">close</mat-icon>
-    </button>
+<div class="d-flex justify-content-between align-items-center" mat-dialog-title>
+  <div class="column-sequence-card"></div>
+  <div class="d-flex flex-column justify-content-between align-items-center">
+    <h1 class="m-0 mb-4" mat-dialog-title>Set Column Sequence</h1>
+    <h5>Default sort will be on the first column descending</h5>
+  </div>
+
+  <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
 </div>
 
 <div class="d-flex flex-column justify-content-between" mat-dialog-content>
@@ -19,8 +23,8 @@
                                 <mat-list cdkDropList [cdkDropListData]="unorderedCol" class="example-list"
                                     (cdkDropListDropped)="drop($event)" class="zones-list g-card-list list-style-1"
                                     role="list">
-    
-                                    <mat-list-item *ngFor="let item of unorderedCol ; let indexOfelement=index;" 
+
+                                    <mat-list-item *ngFor="let item of unorderedCol ; let indexOfelement=index;"
                                         class="pe-0" role="listitem" cdkDrag>
                                         <div class="d-flex w-100 justify-content-between __grab_cursor ">
                                             <span class="list-label zone-list-label d-flex align-items-center">
@@ -34,7 +38,7 @@
                                             </button>
                                         </div>
                                     </mat-list-item>
-    
+
                                 </mat-list>
                         </div>
                     </div>
@@ -51,8 +55,8 @@
                                 <mat-list cdkDropList [cdkDropListData]="defaultCol" class="example-list"
                                     (cdkDropListDropped)="drop($event)" class="zones-list g-card-list list-style-1"
                                     role="list">
-    
-                                    <mat-list-item *ngFor="let item of defaultCol ; let indexOfelement=index;" 
+
+                                    <mat-list-item *ngFor="let item of defaultCol ; let indexOfelement=index;"
                                         class="pe-0" role="listitem" cdkDrag>
                                         <div class="d-flex w-100 justify-content-between __grab_cursor ">
                                             <span class="list-label zone-list-label d-flex align-items-center">
@@ -67,7 +71,7 @@
                                         </div>
                                     </mat-list-item>
                                 </mat-list>
-                          
+
                             </div>
                     </div>
                 </div>
@@ -75,7 +79,7 @@
             </div>
         </div>
     </div>
-   
+
 </div>
 <mat-dialog-actions class="d-block">
     <div class="d-xl-flex d-lg-block gap-12 mb-0 mb-xl-3">

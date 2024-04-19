@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject, takeUntil, Subscription } from 'rxjs';
 import { AdjustQuantityComponent } from 'src/app/admin/dialogs/adjust-quantity/adjust-quantity.component';
-import { AuthService } from 'src/app/common/init/auth.service'; 
+import { AuthService } from 'src/app/common/init/auth.service';
 import { DeleteConfirmationTransactionComponent } from 'src/app/admin/dialogs/delete-confirmation-transaction/delete-confirmation-transaction.component';
 import { FloatLabelType } from '@angular/material/form-field';
 import { ColumnSequenceDialogComponent } from 'src/app/admin/dialogs/column-sequence-dialog/column-sequence-dialog.component';
@@ -95,7 +95,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   @Output() startDateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
   @Output() endDateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
   @Output() viewOrderChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
-  
+
   isActiveTrigger: boolean = false;
   floatLabelControl = new FormControl('auto' as FloatLabelType);
   floatLabelControlColumn = new FormControl('auto' as FloatLabelType);
@@ -108,7 +108,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   searchAutocompleteList: any;
   searchAutocompleteListByCol: any;
   isDeleteVisible: any = localStorage.getItem(RouteUpdateMenu.RouteFromInduction);
- 
+
   /*for data col. */
   public columnValues: any = [];
   onDestroy$: Subject<boolean> = new Subject();
@@ -117,7 +117,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   public dataSource: any = new MatTableDataSource();
   public payload: any;
   public sortCol: any = 0;
-  public sortOrder: any = UniqueConstants.Asc;
+  public sortOrder: any = UniqueConstants.Desc;
   selectedVariable;
   public filterLoc: any = 'Nothing';
   public itemList: any;
@@ -165,7 +165,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   toteId: string = '';
   sDate: any = new Date(1973,10,7);
   eDate: any = new Date();
-  
+
   public transType: any = [
     {
       type: StringConditions.AllTransactions,
@@ -225,7 +225,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   public iAdminApiService: IAdminApiService;
 
   constructor(
-    private router: Router, 
+    private router: Router,
     public adminApiService: AdminApiService,
     public datepipe:DatePipe,
     public authService: AuthService,
@@ -243,7 +243,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       };
     }
   }
-  
+
   filterVals: any = {
     transactions: '',
   };
@@ -287,7 +287,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     });
 
     this.userData = this.authService.userData();
-    this.getColumnsData(true);    
+    this.getColumnsData(true);
   }
 
   viewOrderInOrder(row) {
@@ -361,7 +361,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       searchPayload = {
         query: this.columnSearch.searchValue,
         tableName: 2,
-        column: this.columnSearch.searchColumn.colDef, 
+        column: this.columnSearch.searchColumn.colDef,
       };
     }
 
@@ -379,7 +379,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     });
   }
 
-  viewInInventoryMaster(row) {    
+  viewInInventoryMaster(row) {
     localStorage.setItem("prevTab","/admin/transaction");
     if(this.spliUrl[1] == AppNames.OrderManager) this.router.navigate([]).then(() => window.open(`/#/OrderManager/InventoryMaster?itemNumber=${row.itemNumber}`, UniqueConstants._self));
     else if(this.spliUrl[1] == AppNames.InductionManager) window.open(`/#${AppRoutes.InductionManagerAdminInvMap}?itemNumber=${row.itemNumber}`, UniqueConstants._self);
@@ -479,7 +479,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       toteID: this.toteId,
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
-      filter: this.filterString, 
+      filter: this.filterString,
     };
     this.iAdminApiService.OpenTransactionTable(this.payload).subscribe({
       next: (res: any) => {
@@ -496,7 +496,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       error: (error) => {}
     });
   }
-  
+
   applySavedItem() {
     if (this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS]) {
       let item = this.currentTabDataService.savedItem[this.currentTabDataService.TRANSACTIONS];
@@ -537,7 +537,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
       itemNumber: '',
       holds: false,
       orderStatusOrder: '',
-      app: RouteNames.Admin, 
+      app: RouteNames.Admin,
     };
     this.iAdminApiService.TransactionModelIndex(paylaod).subscribe({
       next: (res: any) => {
@@ -637,7 +637,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
     this.subscription.unsubscribe();
   }
 
-  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault()
     this.isActiveTrigger = true;
     setTimeout(() => this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType), 100);
@@ -648,8 +648,8 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   optionSelected(filter : string) {
     this.filterString = filter;
     this.resetPagination();
-    this.getContentData();  
-    this.isActiveTrigger = false;  
+    this.getContentData();
+    this.isActiveTrigger = false;
   }
 
   resetPagination(){

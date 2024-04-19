@@ -15,7 +15,7 @@ export const TransactionType = {
 export const DialogConstants = {
     auto: 'auto',
     close: 'close',
-    autoFocus:'__non_existing_element__' 
+    autoFocus:'__non_existing_element__'
 }
 
 export const StringConditions = {
@@ -183,7 +183,7 @@ export const AppNames = {
     OrderManager: 'OrderManager',
     WorkManager: 'WorkManager',
     BulkTransactions: 'BulkTransactions',
-   
+
 }
 
 export const AppRoutes = {
@@ -208,7 +208,7 @@ export const AppRoutes = {
     InductionManagerAdminInventoryMap:'/InductionManager/Admin/InventoryMap',
     Dashboard: '/dashboard',
     InductionManagerAdmin:'/InductionManager/Admin',
-    
+
 }
 
 export const AppIcons = {
@@ -243,7 +243,7 @@ export const RouteUpdateMenu = {
     FlowReplenishment: 'FlowReplenishment',
     BulkTransactions: 'BulkTransactions',
     RouteFromInduction:'routeFromInduction'
-    
+
 }
 
 export const AppPermissions = {
@@ -332,7 +332,7 @@ export const alertMessage = {
     EnterSerialNo: 'Please enter a serial number',
     SerialNoAlreadyScan: 'Serial Number already scanned',
     DeleteMessage:'You are about to mark the scanned reels as empty. This will delete ALL current open transactions associated with the scanned reels.'
-} 
+}
 
 export const showNotificationHeading = {
     FieldsMissing:'Fields Missing',
@@ -473,6 +473,7 @@ export const UniqueConstants = {
     event:'$event',
     delete:'delete',
     Asc:'asc',
+    Desc:'desc',
     Description:"description",
     Priority:'priority',
     constantDate:"12/14/2022",
@@ -489,7 +490,7 @@ export const UniqueConstants = {
     Ibl:'lbl',
     OrderNumber:'orderNumber',
     Regx:"^[0-9]*$"
-    
+
 }
 export const Style = {
     w560px:'560px',
@@ -499,7 +500,7 @@ export const Style = {
     w600px:'600px',
     w786px:'786px',
     w402px:'402px',
-}  
+}
 export const FilterColumnName = {
     unitOfMeasure:'Unit of Measure'
 }

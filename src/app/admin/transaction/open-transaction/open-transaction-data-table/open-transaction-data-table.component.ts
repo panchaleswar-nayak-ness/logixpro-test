@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator'; 
-import { AuthService } from 'src/app/common/init/auth.service'; 
+import { PageEvent } from '@angular/material/paginator';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { HoldReasonComponent } from 'src/app/admin/dialogs/hold-reason/hold-reason.component';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
@@ -40,8 +40,8 @@ export class OpenTransactionDataTableComponent implements OnInit {
     startIndex: 0,
     endIndex: 10,
   };
-  public sortCol: any = 5;
-  public sortOrder: any = UniqueConstants.Asc;
+  public sortCol: any = 0;
+  public sortOrder: any = UniqueConstants.Desc;
   public columnValues: any = [];
   pageEvent: PageEvent;
 

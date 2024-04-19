@@ -121,7 +121,7 @@ export class ReprocessTransactionComponent implements OnInit {
   deleteByItemNumber=false; //Only visible if searched
   deleteByOrderNumber=false; //Only visible if searched
   private subscription: Subscription = new Subscription();
- 
+
   @ViewChild(UniqueConstants.Description) description: TemplateRef<any>;
 
   idx: any;
@@ -147,8 +147,8 @@ export class ReprocessTransactionComponent implements OnInit {
   @ViewChild('viewAllLocation') customTemplate: TemplateRef<any>;
   pageEvent: PageEvent;
   searchAutocompleteListByCol: any;
-  public sortCol: any = 5;
-  public sortOrder: any = UniqueConstants.Asc;
+  public sortCol: any = 0;
+  public sortOrder: any = UniqueConstants.Desc;
 
   cols = [];
   customPagination: any = {
@@ -191,7 +191,7 @@ export class ReprocessTransactionComponent implements OnInit {
 
   public iAdminApiService: IAdminApiService;
 
-  constructor( 
+  constructor(
     private authService: AuthService,
     private global:GlobalService,
     private sharedService: SharedService,
@@ -302,7 +302,7 @@ export class ReprocessTransactionComponent implements OnInit {
   }
 
   async autoCompleteSearchColumn(isSearchByOrder: boolean = false) {
-   
+
     this.setQueryString();
 
     let searchPayload;
@@ -316,7 +316,7 @@ export class ReprocessTransactionComponent implements OnInit {
       searchPayload = {
         query: this.queryString != '' ? this.queryString : this.columnSearch.searchValue,
         tableName: 4,
-        column: this.columnSearch.searchColumn.colDef, 
+        column: this.columnSearch.searchColumn.colDef,
       };
     }
     this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
@@ -336,7 +336,7 @@ export class ReprocessTransactionComponent implements OnInit {
     this.orderNumber = value;
     this.isHistory ? this.getHistoryData() : this.getContentData();
   }
-  
+
   selectedItemNum(value: any) {
     this.itemNumber = value;
     this.isHistory ? this.getHistoryData() : this.getContentData();
@@ -452,7 +452,7 @@ export class ReprocessTransactionComponent implements OnInit {
           default:
             break;
         }
-        
+
         const dialogRef: any = this.global.OpenDialog(DeleteConfirmationComponent, {
             height: DialogConstants.auto,
             width: Style.w480px,
@@ -471,7 +471,7 @@ export class ReprocessTransactionComponent implements OnInit {
                 this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
                 this.getContentData('1');
                 this.getOrdersWithStatus();
-              } 
+              }
               else this.global.ShowToastr(ToasterType.Error, ToasterMessages.SomethingWentWrong, ToasterTitle.Error);
             });
           } else this.selectedVariable = '';
@@ -568,11 +568,11 @@ export class ReprocessTransactionComponent implements OnInit {
 
           let payload = {
             Column: column,
-            MarkAsTrue: MarkAsTrue, 
+            MarkAsTrue: MarkAsTrue,
           };
           this.iAdminApiService.SetAllReprocessColumn(payload).subscribe({
             next: (res: any) => {
-              if (res.data && res.isExecuted) { 
+              if (res.data && res.isExecuted) {
                 this.getContentData();
                 this.getOrdersWithStatus();
                 this.global.ShowToastr(ToasterType.Success, labels.alert.update, ToasterTitle.Success);
@@ -603,7 +603,7 @@ export class ReprocessTransactionComponent implements OnInit {
           reprocess: 0,
           postComplete: 0,
           sendHistory: 0,
-          field: "", 
+          field: "",
         }
         this.iAdminApiService.ReprocessIncludeSet(payloadForReprocess).subscribe({
           next: (res: any) => {
@@ -643,7 +643,7 @@ export class ReprocessTransactionComponent implements OnInit {
   itemUpdatedEvent() {
     this.getContentData('1');
     this.getOrdersWithStatus();
-    this.isEnabled = false; 
+    this.isEnabled = false;
     this.clearTransactionData();
   }
 
@@ -685,14 +685,14 @@ export class ReprocessTransactionComponent implements OnInit {
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
       itemNumber: clear == "" ? this.itemNumber : "",
-      hold: this.isHold, 
+      hold: this.isHold,
     };
     this.iAdminApiService.ReprocessTransactionTable(payload).subscribe({
       next: (res: any) => {
-        if(res.isExecuted && res.data) { 
+        if(res.isExecuted && res.data) {
           this.detailDataInventoryMap = res.data?.transactions;
           this.dataSource = new MatTableDataSource(res.data?.transactions);
-          this.customPagination.total = res.data?.recordsFiltered;        
+          this.customPagination.total = res.data?.recordsFiltered;
           this.dataSource.sort = this.sort;
         }
         else {
@@ -716,7 +716,7 @@ export class ReprocessTransactionComponent implements OnInit {
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
       orderNumber: "",
-      itemNumber: this.itemNumber, 
+      itemNumber: this.itemNumber,
     };
     this.iAdminApiService.ReprocessedTransactionHistoryTable(payload).subscribe({
       next: (res: any) => {
@@ -734,7 +734,7 @@ export class ReprocessTransactionComponent implements OnInit {
     this.clearTransactionData();
   }
 
-  handlePageEvent(e: PageEvent) {    
+  handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.customPagination.startIndex = e.pageSize * e.pageIndex;
     this.customPagination.endIndex = e.pageSize * e.pageIndex + e.pageSize;
