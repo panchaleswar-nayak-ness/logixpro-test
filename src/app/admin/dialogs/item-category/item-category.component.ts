@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, ElementRef, Inject, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../common/init/auth.service';
 import labels from 'src/app/common/labels/labels.json';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
@@ -19,7 +19,8 @@ export class  ItemCategoryComponent implements OnInit {
   public categoryList: any;
   public userData: any;
   enableButton = [{ index : -1, value : true }];
-
+  public category:string;
+  public subCategory:string;
   public iCommonAPI : ICommonApi;
 
   constructor(
@@ -28,11 +29,14 @@ export class  ItemCategoryComponent implements OnInit {
     private authService: AuthService,
     private renderer: Renderer2,
     public dialogRef: MatDialogRef<any>, 
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public route: Router
     ) { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
     this.userData = this.authService.userData();
+   this.category =  this.data.category;
+    this.subCategory = this.data.subCategory;
     this.getCategoryList();
   }
 
@@ -47,6 +51,7 @@ export class  ItemCategoryComponent implements OnInit {
       this.enableButton=[];
       for(let i = 0; i < this.categoryList.length; i++) {
         this.categoryList.fromDB = true;
+        if(this.categoryList[i].category == this.category && this.categoryList[i].subCategory == this.subCategory) this.categoryList[i].IsSelected = true;
         this.enableButton.push({index : i, value : true});
       }
       setTimeout(() => {

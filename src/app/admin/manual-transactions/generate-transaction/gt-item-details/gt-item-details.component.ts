@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatOption } from '@angular/material/core';
+import { data } from 'jquery';
 import { AddNotesComponent } from 'src/app/admin/dialogs/add-notes/add-notes.component';
 import { SupplierItemIdComponent } from 'src/app/admin/dialogs/supplier-item-id/supplier-item-id.component';
 import { UnitMeasureComponent } from 'src/app/admin/dialogs/unit-measure/unit-measure.component';
@@ -67,6 +68,9 @@ openUnitOfMeasureDialogue() {
     width: '800px',
     autoFocus: DialogConstants.autoFocus,
     disableClose:true,
+    data:{
+      UOM:this.uom
+    }
   });
   dialogRef.afterClosed().subscribe((res) => {
     this.uom = res;

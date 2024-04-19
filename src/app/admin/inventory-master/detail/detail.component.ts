@@ -127,6 +127,8 @@ export class DetailComponent implements OnInit {
       disableClose:true,
       data: {
         mode: '',
+        category:this.details.controls['category'].value,
+        subCategory:this.details.controls['subCategory'].value
       }
     });
 
@@ -149,6 +151,7 @@ export class DetailComponent implements OnInit {
       disableClose:true,
       data: {
         mode: '',
+        UOM:this.details.controls['unitOfMeasure'].value
       }
     })
     dialogRef.afterClosed().subscribe(result => {

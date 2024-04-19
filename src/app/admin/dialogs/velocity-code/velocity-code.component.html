@@ -50,7 +50,7 @@
                                                 (click)="saveVlCode(vlname.value, vlcode)">
                                                 <mat-icon class="material-symbols-outlined">save</mat-icon>
                                             </button>
-                                            <button mat-flat-button color="warn" class="xsm-icon-button"
+                                            <button mat-flat-button color="warn" [disabled]="vlcode==currentVelocity" class="xsm-icon-button"
                                                 (click)="deleteVC(vlcode);">
                                                 <mat-icon class="material-symbols-outlined">close</mat-icon>
                                             </button>

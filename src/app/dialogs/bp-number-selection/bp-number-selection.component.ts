@@ -1,9 +1,10 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogComponent } from 'src/app/admin/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { BulkPreferences } from 'src/app/common/Model/bulk-transactions';
 import { SetTimeout } from 'src/app/common/constants/numbers.constants';
-import { DialogConstants, ResponseStrings, Style } from 'src/app/common/constants/strings.constants';
+import { DialogConstants, ResponseStrings, Style, ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
 import { CustomValidatorService } from 'src/app/common/init/custom-validator.service';
 import { IBulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api-interface';
 import { BulkProcessApiService } from 'src/app/common/services/bulk-process-api/bulk-process-api.service';
@@ -15,7 +16,7 @@ import { GlobalService } from 'src/app/common/services/global.service';
   styleUrls: ['./bp-number-selection.component.scss']
 })
 export class BpNumberSelectionComponent implements OnInit {
-
+  toteQuantity:number;
   newQuantity: number;
   Prefernces: BulkPreferences;
   public iBulkProcessApiService: IBulkProcessApiService;
@@ -25,12 +26,13 @@ export class BpNumberSelectionComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<BpNumberSelectionComponent>,
     public bulkProcessApiService: BulkProcessApiService,
-    private global: GlobalService,
+    private global: GlobalService, 
     private cusValidator: CustomValidatorService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.iBulkProcessApiService = bulkProcessApiService;
     this.from = this.data.from;
+    this.toteQuantity = this.data?.toteQuantity;
   }
 
   ngOnInit(): void {
@@ -51,14 +53,22 @@ export class BpNumberSelectionComponent implements OnInit {
   
 
   add(string: string) {
+    let newQuantity:number;
     if(this.newQuantity){
-      this.newQuantity = parseFloat(this.newQuantity.toString() + string);
-    }
+      newQuantity = parseFloat(this.newQuantity.toString() + string); 
+      }
     else{
-      this.newQuantity = parseFloat(string);
+        newQuantity = parseFloat(string); 
     }
+    if(!this.toteQuantity || newQuantity <= this.toteQuantity) this.newQuantity = newQuantity;
+    else  this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " + this.toteQuantity, ToasterTitle.Error);
   }
   numberOnly(event): boolean {
+    debugger
+    if(!this.toteQuantity || event.target.value > this.toteQuantity){
+      this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " +this.toteQuantity, ToasterTitle.Error);
+    }
+
     return this.cusValidator.numberOnly(event);
   }
   done() {

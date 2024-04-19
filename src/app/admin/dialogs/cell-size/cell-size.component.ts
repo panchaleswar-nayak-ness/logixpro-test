@@ -18,7 +18,7 @@ import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style,Column
 export class CellSizeComponent implements OnInit {
 
 
-
+  
  
   public iCommonAPI : ICommonApi;
   constructor(

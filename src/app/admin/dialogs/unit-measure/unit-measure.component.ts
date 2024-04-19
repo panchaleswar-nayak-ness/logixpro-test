@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import {MatDialogRef } from '@angular/material/dialog';
+import { Component, ElementRef, Inject, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import labels from 'src/app/common/labels/labels.json';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
@@ -16,7 +16,7 @@ import { ToasterTitle, ToasterType ,ResponseStrings,DialogConstants,Style} from 
 export class UnitMeasureComponent implements OnInit {
   @ViewChildren('unit_name', { read: ElementRef }) unit_name: QueryList<ElementRef>;
   public unitOfMeasure_list: any;
-  enableButton=[{index:-1,value:true}];
+  enableButton=[{index:-1,value:true,IsSelected:false}];
 
 
   public iCommonAPI : ICommonApi;
@@ -24,7 +24,7 @@ export class UnitMeasureComponent implements OnInit {
   constructor(
     public commonAPI : CommonApiService,
     private global:GlobalService,
-
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private renderer: Renderer2,
     public dialogRef: MatDialogRef<any>)
     { this.iCommonAPI = commonAPI; }
@@ -40,8 +40,10 @@ export class UnitMeasureComponent implements OnInit {
 
         for(let i=0;i<this.unitOfMeasure_list.length;i++)
       {
+        let IsSelected:boolean = false;
+        if(this.unitOfMeasure_list[i] == this.data.UOM) IsSelected = true;
         this.unitOfMeasure_list.fromDB = true;
-        this.enableButton.push({index:i,value:true});
+        this.enableButton.push({index:i,value:true,IsSelected:IsSelected});
       }
       setTimeout(() => {
         const inputElements = this.unit_name.toArray();
@@ -58,7 +60,7 @@ export class UnitMeasureComponent implements OnInit {
   }
   addUMRow(row : any){
     this.unitOfMeasure_list.unshift("");
-    this.enableButton.push({index:-1,value:true})
+    this.enableButton.push({index:-1,value:true,IsSelected:false})
 
     const lastIndex = this.unitOfMeasure_list.length - 1;
     setTimeout(() => {

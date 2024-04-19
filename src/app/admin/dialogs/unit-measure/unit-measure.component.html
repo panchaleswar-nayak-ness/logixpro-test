@@ -50,7 +50,7 @@
                                         </mat-icon>
                                     </button>
 
-                                    <button mat-flat-button color="warn" class="xsm-icon-button" (click)="dltUnitMeasure(unitMeasure.value,unit.fromDb)" >
+                                    <button mat-flat-button color="warn" [disabled]="enableButton[i].IsSelected" class="xsm-icon-button" (click)="dltUnitMeasure(unitMeasure.value,unit.fromDb)" >
                                         <mat-icon class="material-symbols-outlined">
                                             close
                                         </mat-icon>
