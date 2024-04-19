@@ -155,10 +155,10 @@ export class BmToteidEntryComponent implements OnInit {
       }
       let res: any = await this.iBulkProcessApiService.validtote(obj);
       if (res?.status == HttpStatusCode.NoContent) {
-        this.selectedList[i].IsTote = true;
-      } else {
         this.selectedList[i].IsTote = false;
         this.selectedList[i].IsError = false;
+      } else {
+        this.selectedList[i].IsTote = true;
       }
     }
   }
