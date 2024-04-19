@@ -57,13 +57,17 @@ export class BmToteidEntryComponent implements OnInit {
   }
 
   clearAll() {
-    this.selectedList.forEach((element, i) => {
-      this.selectedList[i]['toteId'] = undefined;
-    });
+    if(this.view != 'batch' && this.view != 'tote'){
+      this.selectedList.forEach((element, i) => {
+        this.selectedList[i]['toteId'] = undefined;
+      });
+    }
   }
 
   removeToteID(index) {
-    this.selectedList[index]['toteId'] = undefined;
+    if(this.view != 'batch' && this.view != 'tote'){
+      this.selectedList[index]['toteId'] = undefined;
+    }
   }
 
   createNextTote() {

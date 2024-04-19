@@ -14,7 +14,7 @@
         <div class="">
             <div class="d-flex gap-12 my-4 justify-content-end w-100">
                 
-                <button (click)="clearAll()" mat-stroked-button color="warn"
+                <button (click)="clearAll()" [disabled]="view == 'batch' || view == 'tote'" mat-stroked-button color="warn"
                     class="button-remove-all-w-stroke bg-white button custom-button-width">
                     Clear All
                 </button>
@@ -84,7 +84,7 @@
                                                 [disabled]="view == 'batch' || view == 'tote'">
                                             </mat-form-field>
 
-                                            <button (click)="removeToteID(i)" mat-flat-button color="warn" class="xsm-icon-button">
+                                            <button (click)="removeToteID(i)" [disabled]="view == 'batch' || view == 'tote'" mat-flat-button color="warn" class="xsm-icon-button">
                                                 <mat-icon class="material-symbols-outlined">close</mat-icon>
                                             </button>
 
