@@ -65,7 +65,7 @@ export class VerifyBulkComponent implements OnInit {
     });  
     this.backSubscription =  this.sharedService.verifyBulkTransBackObserver.subscribe((data: any) => {
       this.backCount++;
-      // this.backButton();
+      this.backButton();
     });
   }
  
