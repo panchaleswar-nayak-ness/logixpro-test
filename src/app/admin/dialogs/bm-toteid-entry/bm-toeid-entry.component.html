@@ -14,7 +14,7 @@
         <div class="">
             <div class="d-flex gap-12 my-4 justify-content-end w-100">
                 
-                <button (click)="clearAll()" mat-stroked-button color="warn"
+                <button (click)="clearAll()" [disabled]="view == 'batch' || view == 'tote'" mat-stroked-button color="warn"
                     class="button-remove-all-w-stroke bg-white button custom-button-width">
                     Clear All
                 </button>
@@ -80,10 +80,11 @@
                                                 <input matInput type="text" maxlength="50" 
                                                 (change)="validtote($event,i)"    
                                                 [(ngModel)]="list.toteId"
-                                                [value]="list.toteId===undefined?'':list.toteId">
+                                                [value]="list.toteId===undefined?'':list.toteId"
+                                                [disabled]="view == 'batch' || view == 'tote'">
                                             </mat-form-field>
 
-                                            <button (click)="removeToteID(i)" mat-flat-button color="warn" class="xsm-icon-button">
+                                            <button (click)="removeToteID(i)" [disabled]="view == 'batch' || view == 'tote'" mat-flat-button color="warn" class="xsm-icon-button">
                                                 <mat-icon class="material-symbols-outlined">close</mat-icon>
                                             </button>
 
@@ -111,7 +112,7 @@
 
     </div> 
         <div class="d-flex gap-12 mt-3" mat-dialog-actions>
-        <button  mat-stroked-button class="btn-lg" (click)="createNextTote()" color="primary">
+        <button  mat-stroked-button class="btn-lg" (click)="createNextTote()" [disabled]="view == 'batch' || view == 'tote'" color="primary">
             Create Tote ID's
         </button>
         <button (click)="submitOrder()" mat-flat-button color="primary" class="flex-grow-1 form-button-submit btn-lg">

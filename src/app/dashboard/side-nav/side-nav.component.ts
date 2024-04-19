@@ -120,7 +120,7 @@ export class SideNavComponent implements OnInit {
   public iGlobalConfigApi: IGlobalConfigApi
 
   constructor(
-    private router: Router,
+    public router: Router,
     private authService: AuthService,
     private sharedService: SharedService,
     private currentTabDataService: CurrentTabDataService,
@@ -233,18 +233,9 @@ export class SideNavComponent implements OnInit {
   redirect() {
     this.router.navigate([`${localStorage.getItem('reportNav')}`]);
   }
-
-  childRouterLink(childMenu:any){
-    if((this.router.url == "/BulkTransactions/BulkPick" || this.router.url == "/BulkTransactions/BulkPutAway" || this.router.url == "/BulkTransactions/BulkCount") && localStorage.getItem("verifyBulks") == "true"){
-      return this.router.url;
-    }
-    else{
-      return childMenu.route;
-    }
-  }
-
+ 
   loadMenus(menu: any) {
-
+ 
     if((this.router.url == "/BulkTransactions/BulkPick" || this.router.url == "/BulkTransactions/BulkPutAway" || this.router.url == "/BulkTransactions/BulkCount") && localStorage.getItem("verifyBulks") == "true"){
       this.sharedService.verifyBulkTransBack();
       return;
@@ -301,7 +292,7 @@ export class SideNavComponent implements OnInit {
       else this.consolidationMenus[0].route = '/ConsolidationManager';
       this.childMenus = this.consolidationMenus;
       this.isParentMenu = false;
-      this.isChildMenu = true;
+      this.isChildMenu = true; 
       return
     }
 
@@ -338,23 +329,34 @@ export class SideNavComponent implements OnInit {
 
     if (menu.route.includes('/FlowrackReplenish')) {
       let splittedRoute = menu.route.split('/');
-      if (splittedRoute[2] === undefined) this.flowrackReplenishmentMenus[0].route = AppRoutes.Dashboard;
-      else this.flowrackReplenishmentMenus[0].route = '/FlowrackReplenish';
-      this.childMenus = this.flowrackReplenishmentMenus;
+      if (splittedRoute[2] === undefined && this.router.url == menu.route){
+        this.flowrackReplenishmentMenus[0].route = AppRoutes.Dashboard;
+        this.childMenus = this.dynamicMenu;
+      } 
+      else{
+        this.flowrackReplenishmentMenus[0].route = '/FlowrackReplenish';
+        this.childMenus = this.flowrackReplenishmentMenus;
+      } 
       this.isParentMenu = false;
       this.isChildMenu = true;
     }
 
     if (menu.route.includes("/BulkTransactions")) {
       let splittedRoute = menu.route.split('/');
-      if (splittedRoute[2] === undefined) this.bulkProcessMenus[0].route = AppRoutes.Dashboard;
-      else this.bulkProcessMenus[0].route = '/BulkTransactions';
-      this.childMenus = this.bulkProcessMenus;
+      if (splittedRoute[2] === undefined && this.router.url == menu.route){
+        this.bulkProcessMenus[0].route = AppRoutes.Dashboard;
+        this.childMenus = this.dynamicMenu;
+      } 
+      else{
+        this.bulkProcessMenus[0].route = '/BulkTransactions';
+        this.childMenus = this.bulkProcessMenus;
+      }
       this.isParentMenu = false;
       this.isChildMenu = true;
     }
 
-    this.router.navigate([menu.route]);
+    this.router.navigate([menu.route])
+ 
   }
 
   isAuthorized(controlName: any) {

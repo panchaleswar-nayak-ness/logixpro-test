@@ -4,8 +4,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Subject, takeUntil, Subscription } from 'rxjs'; 
-import { AuthService } from 'src/app/common/init/auth.service'; 
+import { Subject, takeUntil, Subscription } from 'rxjs';
+import { AuthService } from 'src/app/common/init/auth.service';
 import { FloatLabelType } from '@angular/material/form-field';
 import { ColumnSequenceDialogComponent } from 'src/app/admin/dialogs/column-sequence-dialog/column-sequence-dialog.component';
 import { SharedService } from 'src/app/common/services/shared.service';
@@ -99,7 +99,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public orderNo: any;
   public payload: any;
   public sortCol: any = 0;
-  public sortOrder: any = UniqueConstants.Asc;
+  public sortOrder: any = UniqueConstants.Desc;
   selectedVariable: any;
   selectedDropdown = '';
   floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -122,7 +122,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     }
   }
   @Input() set resetEvent(event: any) {
-    if (event) { 
+    if (event) {
       this.startDate = event.endDate;
       this.endDate = event.startDate;
       this.getContentData();
@@ -175,7 +175,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     private sharedService: SharedService,
     private filterService: ContextMenuFiltersService
   ) {
-    this.userData = this.authService.userData(); 
+    this.userData = this.authService.userData();
     this.iAdminApiService = adminApiService;
   }
 
@@ -187,7 +187,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       endIndex: 20,
     };
     this.searchBar.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
-      this.autoCompleteSearchColumn(); 
+      this.autoCompleteSearchColumn();
       this.getContentData();
     });
     this.getColumnsData();
@@ -196,7 +196,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.subscription.add(
-    this.sharedService.historyItemObserver.subscribe(itemNo => { 
+    this.sharedService.historyItemObserver.subscribe(itemNo => {
         if(itemNo) {
           this.selectedDropdown = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
@@ -205,7 +205,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     );
 
     this.subscription.add(
-      this.sharedService.reprocessItemObserver.subscribe(itemNo => { 
+      this.sharedService.reprocessItemObserver.subscribe(itemNo => {
         if(itemNo){
           this.selectedDropdown = Column.ItemNumber;
           this.columnSearch.searchValue = itemNo;
@@ -217,7 +217,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       this.sharedService.historyLocObserver.subscribe(loc => {
         if(loc){
           this.selectedDropdown = Column.Location;
-          this.columnSearch.searchValue = loc;        
+          this.columnSearch.searchValue = loc;
         }
       })
     );
@@ -316,8 +316,8 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
       sortColumnNumber: this.sortCol,
       sortOrder: this.sortOrder,
       filter: this.filterString
-    }; 
-    
+    };
+
     this.iAdminApiService.TransactionHistoryTable(payload).subscribe({
       next: (res: any) => {
         if(res.isExecuted && res.data) {
@@ -382,7 +382,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
 
   @ViewChild('trigger') trigger: MatMenuTrigger;
 
-  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) { 
+  onContextMenuCommand(SelectedItem: any, FilterColumnName: any, Condition: any, Type: any) {
     this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, StringConditions.clear, Type);
     if(FilterColumnName != "" || Condition == StringConditions.clear) {
       this.filterString = this.filterService.onContextMenuCommand(SelectedItem, FilterColumnName, Condition, Type);
@@ -392,7 +392,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) { 
+  onContextMenu(event: MouseEvent, SelectedItem: any, FilterColumnName?: any, FilterConditon?: any, FilterItemType?: any) {
     event.preventDefault();
     this.isActiveTrigger = true;
     setTimeout(() => this.contextMenuService.updateContextMenuState(event, SelectedItem, FilterColumnName, FilterConditon, FilterItemType), 100);
@@ -403,7 +403,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   optionSelected(filter : string) {
     this.filterString = filter;
     this.resetPagination();
-    this.getContentData();   
+    this.getContentData();
     this.isActiveTrigger = false;
   }
 

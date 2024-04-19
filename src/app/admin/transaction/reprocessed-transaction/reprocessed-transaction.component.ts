@@ -53,8 +53,8 @@ export class ReprocessedTransactionComponent implements OnInit {
   searchBar = new Subject<string>();
   searchAutocompleteList: any;
   public iAdminApiService: IAdminApiService;
-  public sortCol:any=5;
-  public sortOrder:any=UniqueConstants.Asc;
+  public sortCol:any=0;
+  public sortOrder:any=UniqueConstants.Desc;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('matRef') matRef: MatSelect;
@@ -76,7 +76,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   };
   sortColumn: any = {
     columnName: 0,
-    sortOrder: UniqueConstants.Asc,
+    sortOrder: UniqueConstants.Desc,
   };
   constructor(
     private authService: AuthService,
@@ -126,7 +126,7 @@ export class ReprocessedTransactionComponent implements OnInit {
       itemNumber: '',
       holds: false,
       orderStatusOrder: '',
-      app: RouteNames.Admin, 
+      app: RouteNames.Admin,
     };
     this.iAdminApiService.TransactionModelIndex(paylaod).subscribe({
       next: (res: any) => {
@@ -139,7 +139,7 @@ export class ReprocessedTransactionComponent implements OnInit {
     });
   }
 
-  getContentData() {   
+  getContentData() {
     this.payload = {
       draw: 0,
       searchString: this.columnSearch.searchValue,
@@ -147,7 +147,7 @@ export class ReprocessedTransactionComponent implements OnInit {
       start: this.customPagination.startIndex,
       length: this.customPagination.endIndex,
       sortColumnNumber: this.sortCol,
-      sortOrder: this.sortOrder, 
+      sortOrder: this.sortOrder,
     };
     this.iAdminApiService.ReprocessedTransactionTable(this.payload).subscribe({
       next: (res: any) => {
@@ -177,7 +177,7 @@ export class ReprocessedTransactionComponent implements OnInit {
     let searchPayload = {
       query: this.columnSearch.searchValue,
       tableName: 6,
-      column: this.columnSearch.searchColumn.colDef, 
+      column: this.columnSearch.searchColumn.colDef,
     };
     this.iAdminApiService.NextSuggestedTransactions(searchPayload).subscribe({
       next: (res: any) => {

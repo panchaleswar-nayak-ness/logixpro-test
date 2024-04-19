@@ -57,30 +57,35 @@ export class BmToteidEntryComponent implements OnInit {
   }
 
   clearAll() {
-    this.selectedList.forEach((element, i) => {
-      this.selectedList[i]['toteId'] = undefined;
-    });
+    if(this.view != 'batch' && this.view != 'tote'){
+      this.selectedList.forEach((element, i) => {
+        this.selectedList[i]['toteId'] = undefined;
+      });
+    }
   }
 
   removeToteID(index) {
-    this.selectedList[index]['toteId'] = undefined;
+    if(this.view != 'batch' && this.view != 'tote'){
+      this.selectedList[index]['toteId'] = undefined;
+    }
   }
 
   createNextTote() {
-      this.bulkProcessApiService.BatchNextTote(this.selectedList.length).then((res  ) => {
+    if(this.view != 'batch' && this.view != 'tote'){
+      this.bulkProcessApiService.BatchNextTote(this.selectedList.length).then((res) => {
         this.nextToteID = res.body?.nextId;
-
         this.selectedList.forEach((element, i) => {
           this.selectedList[i].IsTote = false;
           this.selectedList[i].IsError = false;
           this.selectedList[i]['toteId'] =
-            parseInt(this.nextToteID) + i + 1;
+          parseInt(this.nextToteID) + i + 1;
         });
       });
+    }
   }
 
   submitOrder() {
-    if(this.selectedList.find(x=>x.IsTote == true)){
+    if (this.selectedList.find(x => x.IsTote == true)) {
       const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: Style.w786px,
@@ -92,9 +97,9 @@ export class BmToteidEntryComponent implements OnInit {
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe((result) => {
-        this.selectedList.filter(x=>x.IsTote == true).forEach(obj => { obj.IsError = true;});
+        this.selectedList.filter(x => x.IsTote == true).forEach(obj => { obj.IsError = true; });
       });
-    }else if (this.selectedList.find((o) => o.toteId === undefined)) {
+    } else if (this.selectedList.find((o) => o.toteId === undefined)) {
       const dialogRef: any = this.global.OpenDialog(AlertConfirmationComponent, {
         height: 'auto',
         width: Style.w786px,
@@ -143,7 +148,7 @@ export class BmToteidEntryComponent implements OnInit {
       });
   }
 
-  async validtote($event: any,i:any = null) {
+  async validtote($event: any, i: any = null) {
     if ($event.target.value) {
       var obj = {
         toteid: $event.target.value
@@ -151,10 +156,10 @@ export class BmToteidEntryComponent implements OnInit {
       let res: any = await this.iBulkProcessApiService.validtote(obj);
       if (res?.status == HttpStatusCode.NoContent) {
         this.selectedList[i].IsTote = true;
-      }else {
+      } else {
         this.selectedList[i].IsTote = false;
-        this.selectedList[i].IsError =  false;
+        this.selectedList[i].IsError = false;
+      }
     }
-  }
   }
 }

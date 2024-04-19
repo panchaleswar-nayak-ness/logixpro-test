@@ -35,7 +35,6 @@ export class BpFullToteComponent implements OnInit {
   }
 
   async BatchNextTote() {
-    debugger
     await this.iBulkProcessApiService.BatchNextTote(1).then((res) => {
       this.NextToteID = res.body?.nextId;
     })

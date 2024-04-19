@@ -218,7 +218,7 @@ export class OmAddRecordComponent implements OnInit {
       if (!check) {
         return;
       }
-      this.oTTempUpdatePayload.importDate = this.oTTempUpdatePayload.importDate ? new Date(this.oTTempUpdatePayload.importDate).getMonth()+1 + '/' +  new Date(this.oTTempUpdatePayload.importDate).getDate() + '/' + new Date(this.oTTempUpdatePayload.importDate).getFullYear() : "";
+      this.oTTempUpdatePayload.importDate = this.oTTempUpdatePayload.importDate ? new Date(this.oTTempUpdatePayload.importDate).getMonth()+1 + '/' +  new Date(this.oTTempUpdatePayload.importDate).getDate() + '/' + new Date(this.oTTempUpdatePayload.importDate).getFullYear() + " " + new Date().toTimeString().split(" ")[0] : "";
       this.oTTempUpdatePayload.requiredDate = this.oTTempUpdatePayload.requiredDate ? new Date(this.oTTempUpdatePayload.requiredDate).getMonth()+1 + '/' +  new Date(this.oTTempUpdatePayload.requiredDate).getDate() + '/' + new Date(this.oTTempUpdatePayload.requiredDate).getFullYear() : "";
       this.oTTempUpdatePayload.expirationDate = this.oTTempUpdatePayload.expirationDate ? new Date(this.oTTempUpdatePayload.expirationDate).getMonth()+1 + '/' +  new Date(this.oTTempUpdatePayload.expirationDate).getDate() + '/' + new Date(this.oTTempUpdatePayload.expirationDate).getFullYear() : "";
       if (!this.isEdit) {
