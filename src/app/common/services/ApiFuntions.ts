@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { BaseService } from './base-service.service';
 import { AuthService } from '../init/auth.service';
 import { Links, Link } from './base-service.service';
-import {BatchesResponse, NextToteId} from "../Model/bulk-transactions";
+import {AssignToteToOrderDto, BatchesResponse, NextToteId} from "../Model/bulk-transactions";
 
 
 
@@ -1571,4 +1571,8 @@ public   orderline(id:any){
 public endofbatch(body:any){
   return   this.ApiBase.Post(`/bulktransactions/endofbatch`, body);
 }
+
+public async AssignToteToOrder(body: AssignToteToOrderDto[]) {
+    return await this.ApiBase.PostAsync<AssignToteToOrderDto[]>("/orders/assign-tote", body);
+  }
 }

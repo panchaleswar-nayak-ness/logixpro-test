@@ -1,4 +1,4 @@
-import {NextToteId} from "../../Model/bulk-transactions";
+import {AssignToteToOrderDto, NextToteId} from "../../Model/bulk-transactions";
 
 export interface IBulkProcessApiService {
   bulkPickoOrderBatchToteQty(payload: any);
@@ -19,4 +19,5 @@ export interface IBulkProcessApiService {
   updateLocationQuantity(body:any);
   bulkPickTaskComplete(body:any);
   fullTote(body:any);
+  AssignToteToOrder(orders: AssignToteToOrderDto[]);
 }

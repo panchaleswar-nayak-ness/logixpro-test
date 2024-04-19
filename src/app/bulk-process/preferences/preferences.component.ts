@@ -67,7 +67,6 @@ export class PreferencesComponent implements OnInit {
   async bulkPickZones() {
     let res: any = await this.iBulkProcessApiService.bulkPickZones();
     // Temporary Fix need to revisit
-    debugger
     if (true) { // res?.status == HttpStatusCode.Ok
       this.zoneOptions = res.body;
     }
@@ -76,7 +75,6 @@ export class PreferencesComponent implements OnInit {
   async bulkPickBulkZone() {
     let res: any = await this.iBulkProcessApiService.bulkPickBulkZone();
     // Temporary Fix need to revisit
-    debugger
     if (true) { // res?.status == HttpStatusCode.Ok
       this.bulkZones = res.body;
       await this.bulkPickZones();

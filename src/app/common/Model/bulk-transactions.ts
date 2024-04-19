@@ -322,3 +322,8 @@ export class FullToteRequest {
     FullToteQTY: number;
     NewToteQTY: number;
 }
+
+export class AssignToteToOrderDto {
+  orderNumber: string;
+  toteId: string;
+}
