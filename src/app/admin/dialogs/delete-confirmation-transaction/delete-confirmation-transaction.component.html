@@ -32,8 +32,8 @@
     <mat-form-field class="action-dropdown custom-form-field w-100 h-100 " appearance="outline">
         <mat-label>Selection Type</mat-label>
         <mat-select class="employees-action" [(ngModel)]="selectionType" #selectionTypeDropdown>
-            <mat-option [value]="selectedType" (click)="selectionChanged(selectedType)">Selected Only</mat-option>
-            <mat-option [value]="allType" (click)="selectionChanged(allType)">All By Transaction Type</mat-option>
+            <mat-option [value]="selectedType">Selected Only</mat-option>
+            <mat-option [value]="allType">All By Transaction Type</mat-option>
         </mat-select>
         <span class="material-symbols-outlined icon-expand-more">
             expand_more

@@ -17,18 +17,11 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
   public userData;
   public iAdminApiService: IAdminApiService;
 
-  // Confirmation CheckBox
-  @ViewChild('confirmationCheckBox', { static: false, read: ElementRef }) confirmationCheckBox: ElementRef;
-
   // Selection Type Fields
-  @ViewChild('selectionTypeDropdown', { read: ElementRef }) selectionTypeDropdown: ElementRef;
   public readonly selectedType: string = 'selected';
   public readonly allType: string = 'all';
   public readonly allValue: string = "-1";
   public selectionType = '';
-
-  // Confirmation CheckBox
-  @ViewChild('deleteButton', { read: ElementRef }) deleteButton: ElementRef;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -74,31 +67,6 @@ export class DeleteConfirmationTransactionComponent implements OnInit {
 
   checkOptions(event: MatCheckboxChange): void {
     this.isChecked = event.checked;
-
-    if (!event.checked) {
-      this.confirmationCheckBox.nativeElement.focus();
-      this.confirmationCheckBox.nativeElement.classList.add('cdk-keyboard-focused');
-      return;
-    }
-
-    if (this.selectionType == '') {
-      this.selectionTypeDropdown.nativeElement.focus();
-    } else {
-      this.deleteButton.nativeElement.focus();
-      this.deleteButton.nativeElement.classList.add('cdk-keyboard-focused');
-    }
   }
 
-  selectionChanged(selection: string) {
-    this.selectionTypeDropdown.nativeElement.blur();
-
-    if (!this.isChecked) {
-      this.confirmationCheckBox.nativeElement.focus();
-      this.confirmationCheckBox.nativeElement.classList.add('cdk-keyboard-focused');
-      return;
-    }
-
-    this.deleteButton.nativeElement.focus();
-    this.deleteButton.nativeElement.classList.add('cdk-keyboard-focused');
-  }
 }

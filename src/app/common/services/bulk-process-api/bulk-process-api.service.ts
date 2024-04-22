@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiFuntions } from '../ApiFuntions';
 import { AuthService } from 'src/app/common/init/auth.service';
 import { IBulkProcessApiService } from './bulk-process-api-interface'
-import { NextToteId} from "../../Model/bulk-transactions";
+import {AssignToteToOrderDto, NextToteId} from "../../Model/bulk-transactions";
 
 @Injectable({
   providedIn: 'root'
@@ -79,4 +79,8 @@ export class BulkProcessApiService implements IBulkProcessApiService {
   public async fullTote(body: any) {
     return await this.Api.fullTote(body);
   }
+  public AssignToteToOrder(orders: AssignToteToOrderDto[]) {
+    return this.Api.AssignToteToOrder(orders);
+  }
+
 }

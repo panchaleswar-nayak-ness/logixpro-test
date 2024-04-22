@@ -24,13 +24,13 @@ export type Links = {_links: Link[]};
 })
 export class BaseService {
 
-  
+
   private apiUrl$: Observable<string>;
 
   constructor(
     private http: HttpClient,
     private injector: Injector
-  ) 
+  )
   {
     this.initializeApiUrl();
 
@@ -111,11 +111,11 @@ export class BaseService {
     if (payload != null)
       for (let key in payload)
         if (payload[key] != undefined) queryParams = queryParams.append(key, payload[key]);
- 
+
     return await lastValueFrom(this.request('GET', endPoint, { params: queryParams }));
   }
 
-  async PostAsync<T, R>(endPoint: string, model: T, isLoader: boolean = false): Promise<HttpResponse<T>> {
+  async PostAsync<T>(endPoint: string, model: T, isLoader: boolean = false): Promise<HttpResponse<T>> {
     return await lastValueFrom(this.request('POST', endPoint,{body:model}));
   }
 
@@ -125,7 +125,7 @@ export class BaseService {
     );
   }
 
-  public Put<T>(endPoint: string, reqPaylaod: T) {  
+  public Put<T>(endPoint: string, reqPaylaod: T) {
     return this.request<T>('PUT', endPoint, { body: reqPaylaod }).pipe( // piping out the body for now for backward compatibility
       map(response => response.body)
     );
@@ -150,7 +150,7 @@ export class BaseService {
   public async DeleteAsync(endPoint: string, reqPaylaod: any = null) {
     let queryParams = new HttpParams();
     for (let key in reqPaylaod)
-      queryParams = queryParams.append(key, reqPaylaod[key]); 
+      queryParams = queryParams.append(key, reqPaylaod[key]);
 
     return await lastValueFrom(this.request<any>('DELETE', endPoint, { params: queryParams }));
   }
@@ -203,7 +203,7 @@ export class BaseService {
       })
     );
   }
-  
+
   public GetApiUrl() : Observable<string> {
     return this.apiUrl$;
   }
