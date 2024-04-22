@@ -54,8 +54,7 @@ export class ItemSetupComponent {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      debugger
+    dialogRef.afterClosed().subscribe(result => { 
         if(result != DialogConstants.close){
         if(param == UniqueConstants.cellSize) this.itemSetup.patchValue({ "cellSize" : result });
         else if(param == 'bulkCellSize') this.itemSetup.patchValue({ 'bulkCellSize' : result });
