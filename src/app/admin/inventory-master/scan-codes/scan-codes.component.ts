@@ -228,11 +228,12 @@ export class ScanCodesComponent{
       autoFocus: DialogConstants.autoFocus,
       disableClose:true,
       data: {
+        scanType:item.scanType,
         mode: '',
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if(result != DialogConstants.close){
         item.scanType = result
         this.sharedService.updateInvMasterState(result,true)
       }
