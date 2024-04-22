@@ -55,12 +55,13 @@ export class ItemSetupComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      debugger
+        if(result != DialogConstants.close){
         if(param == UniqueConstants.cellSize) this.itemSetup.patchValue({ "cellSize" : result });
         else if(param == 'bulkCellSize') this.itemSetup.patchValue({ 'bulkCellSize' : result });
         else if(param == 'cfCellSize') this.itemSetup.patchValue({ 'cfCellSize' : result });
         this.sharedService.updateInvMasterState(result,true)
-      }
+       }
     });
   } 
 
@@ -82,7 +83,7 @@ export class ItemSetupComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if(result != DialogConstants.close){
         if(param == UniqueConstants.goldenZone) this.itemSetup.patchValue({ 'goldenZone' : result });
         else if(param == 'bulkVelocity') this.itemSetup.patchValue({ 'bulkVelocity' : result });
         else if(param == 'cfVelocity') this.itemSetup.patchValue({ 'cfVelocity' : result });

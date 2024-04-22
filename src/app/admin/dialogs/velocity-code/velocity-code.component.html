@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="divWithClass"></div>
     <h1 class="m-0" mat-dialog-title>Velocity - Add, Delete, Edit and Set</h1>
-    <button mat-icon-button class="close-button dialog-close-button-fix" [mat-dialog-close]="false">
+    <button mat-icon-button class="close-button dialog-close-button-fix" (click)="clearVlCode()">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
 </div>
@@ -50,7 +50,7 @@
                                                 (click)="saveVlCode(vlname.value, vlcode)">
                                                 <mat-icon class="material-symbols-outlined">save</mat-icon>
                                             </button>
-                                            <button mat-flat-button color="warn" [disabled]="vlcode==currentVelocity" class="xsm-icon-button"
+                                            <button mat-flat-button color="warn"  class="xsm-icon-button"
                                                 (click)="deleteVC(vlcode);">
                                                 <mat-icon class="material-symbols-outlined">close</mat-icon>
                                             </button>

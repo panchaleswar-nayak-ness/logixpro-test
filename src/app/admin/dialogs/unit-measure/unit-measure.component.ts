@@ -148,7 +148,7 @@ export class UnitMeasureComponent implements OnInit {
   }
 
   clearUnitMeasure(){
-    this.dialogRef.close('');
+    this.dialogRef.close(false);
   }
 
 }
