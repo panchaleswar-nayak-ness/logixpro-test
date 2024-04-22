@@ -34,7 +34,6 @@ export class  ItemCategoryComponent implements OnInit {
     ) { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
-    debugger
     this.userData = this.authService.userData();
    this.category =  this.data.category;
     this.subCategory = this.data.subCategory;
