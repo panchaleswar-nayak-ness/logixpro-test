@@ -155,7 +155,7 @@ export class DetailComponent implements OnInit {
       }
     })
     dialogRef.afterClosed().subscribe(result => {
-    if(result != false){
+    if(result != DialogConstants.close){
       this.details.patchValue({
         'unitOfMeasure' : result
       });

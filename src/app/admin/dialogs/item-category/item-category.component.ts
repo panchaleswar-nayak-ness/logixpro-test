@@ -34,6 +34,7 @@ export class  ItemCategoryComponent implements OnInit {
     ) { this.iCommonAPI = commonAPI; }
 
   ngOnInit(): void {
+    debugger
     this.userData = this.authService.userData();
    this.category =  this.data.category;
     this.subCategory = this.data.subCategory;
@@ -132,11 +133,14 @@ export class  ItemCategoryComponent implements OnInit {
   }
 
   selectCategory(selectedCat: any){
-      this.dialogRef.close(selectedCat);
+    if(selectedCat.category != '' || selectedCat.subCategory != '')  this.dialogRef.close(selectedCat);
   }
 
   clearCategory(){
-    this.dialogRef.close('');
+    this.dialogRef.close(DialogConstants.close);
+  }
+  ClearSelection(){ 
+    this.dialogRef.close({category:'',subCategory:''});
   }
 
   openPrintRangeDialog(){

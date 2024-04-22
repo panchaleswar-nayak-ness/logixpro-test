@@ -168,4 +168,7 @@ export class VelocityCodeComponent implements OnInit {
     this.dialogRef.close(DialogConstants.close);
   }
 
+  ClearSelection(){ 
+    this.dialogRef.close("");
+  }
 }

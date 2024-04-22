@@ -63,8 +63,7 @@ export class BpNumberSelectionComponent implements OnInit {
     if(!this.toteQuantity || newQuantity <= this.toteQuantity) this.newQuantity = newQuantity;
     else  this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " + this.toteQuantity, ToasterTitle.Error);
   }
-  numberOnly(event): boolean {
-    debugger
+  numberOnly(event): boolean { 
     if(!this.toteQuantity || event.target.value > this.toteQuantity){
       this.global.ShowToastr(ToasterType.Error, "This tote only needs a quantity of " +this.toteQuantity, ToasterTitle.Error);
     }
