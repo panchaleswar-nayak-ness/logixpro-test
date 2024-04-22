@@ -8,7 +8,8 @@ import { ApiFuntions } from 'src/app/common/services/ApiFuntions';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,AppPermissions} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType } from 'src/app/common/constants/strings.constants';
+import { AppPermissions } from 'src/app/common/constants/menu.constants';
 @Component({
   selector: 'app-user-account',
   templateUrl: './user-account.component.html',

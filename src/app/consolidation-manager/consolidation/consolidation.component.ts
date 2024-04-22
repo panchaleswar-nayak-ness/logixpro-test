@@ -20,7 +20,8 @@ import { GlobalService } from 'src/app/common/services/global.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IConsolidationApi } from 'src/app/common/services/consolidation-api/consolidation-api-interface';
 import { ConsolidationApiService } from 'src/app/common/services/consolidation-api/consolidation-api.service';
-import { AppRoutes, ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,DialogConstants,ColumnDef,Style,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
+import { ConfirmationMessages, LiveAnnouncerMessage, ResponseStrings, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,Column,DialogConstants,ColumnDef,Style,UniqueConstants,TableConstant} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, } from 'src/app/common/constants/menu.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 
 @Component({

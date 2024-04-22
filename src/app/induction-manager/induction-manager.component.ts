@@ -5,7 +5,8 @@ import { AuthService } from '../common/init/auth.service';
 import { SharedService } from '../common/services/shared.service';
 import { IInductionManagerApiService } from '../common/services/induction-manager-api/induction-manager-api-interface';
 import { InductionManagerApiService } from '../common/services/induction-manager-api/induction-manager-api.service';
-import {  AppNames ,StringConditions,RouteUpdateMenu} from 'src/app/common/constants/strings.constants';
+import { StringConditions} from 'src/app/common/constants/strings.constants';
+import { AppNames, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 
 @Component({
   selector: 'app-induction-manager',

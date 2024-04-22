@@ -112,6 +112,8 @@ export const ConfirmationHeadings = {
     BatchManager: 'Batch Manager'
 }
 
+
+
 export const ConfirmationMessages = {
     NoOrdersSelected: 'No Orders Selected.',
     BatchIDMustBeSpecified: 'Batch ID must be specified.',
@@ -172,93 +174,7 @@ export const ToasterMessages = {
     ItemNumberExists:'Item Number Already Exists.'
 }
 
-export const AppNames = {
-    ICSAdmin: 'ICSAdmin',
-    ConsolidationManager: 'Consolidation Manager',
-    Induction: 'Induction',
-    InductionManager: 'InductionManager',
-    FlowRackReplenish: 'FlowRackReplenish',
-    ImportExport: 'ImportExport',
-    Markout: 'Markout',
-    OrderManager: 'OrderManager',
-    WorkManager: 'WorkManager',
-    BulkTransactions: 'BulkTransactions',
 
-}
-
-export const AppRoutes = {
-    Admin: '/admin',
-    ConsolidationManager: '/ConsolidationManager',
-    InductionManager: '/InductionManager',
-    InductionManagerAdminInvMap: '/InductionManager/Admin/InventoryMaster',
-    FlowrackReplenish: '/FlowrackReplenish',
-    Hash: '#',
-    OrderManager: '/OrderManager',
-    OrderManagerEventLog: '/OrderManager/EventLog',
-    OrderManagerOrderStatus: '/OrderManager/OrderStatus',
-    AdminTransaction:'/#/admin/transaction',
-    AdminTrans:'/admin/transaction',
-    AdminInventoryMaster:'/admin/inventoryMaster',
-    ReportView:'/#/report-view',
-    Logon:'/#/Logon/',
-    AdminCreateCounts: '/admin/createCounts',
-    AdminCreateCountBatches: '/admin/createCountBatches',
-    OrderManagerInventoryMap:'/OrderManager/InventoryMap',
-    AdminInventoryMap:'/admin/inventoryMap',
-    InductionManagerAdminInventoryMap:'/InductionManager/Admin/InventoryMap',
-    Dashboard: '/dashboard',
-    InductionManagerAdmin:'/InductionManager/Admin',
-
-}
-
-export const AppIcons = {
-    ManageAccounts: 'manage_accounts',
-    InsertChart: 'insert_chart',
-    CheckList: 'checklist',
-    Schema: 'schema',
-    ElectricBolt: 'electric_bolt',
-    PendingActions: 'pending_actions',
-    FactCheck: 'fact_check'
-}
-
-export const RouteNames = {
-    Admin: 'Admin',
-    ConsolidationManager: 'Consolidation Manager',
-    InductionManager: 'Induction Manager',
-    FlowRackReplenishment: 'FlowRack Replenishment',
-    ImportExport: 'Import Export',
-    Markout: 'Markout',
-    OrderManager: 'Order Manager',
-    WorkManager: 'Work Manager'
-}
-
-
-export const RouteUpdateMenu = {
-    Admin: 'admin',
-    Consolidation: 'consolidation',
-    Induction: 'induction',
-    Empty: '',
-    OrderManager: 'orderManager',
-    TransactionAdmin: 'transaction-admin',
-    FlowReplenishment: 'FlowReplenishment',
-    BulkTransactions: 'BulkTransactions',
-    RouteFromInduction:'routeFromInduction'
-
-}
-
-export const AppPermissions = {
-    AdminMenu: 'Admin Menu',
-    ConsolidationManager: 'Consolidation Manager',
-    InductionManager: 'Induction Manager',
-    FlowRackReplenish: 'FlowRack Replenish',
-    ImportExport: 'Import Export',
-    Markout: 'Markout',
-    OrderManager: 'Order Manager',
-    WorkManager: 'Work Manager',
-    OrderStatus: 'Order Status',
-    Home: 'Home',
-    Dashboard: 'Dashboard'
-}
 
 export const LiveAnnouncerMessage = {
     SortingCleared: 'Sorting cleared'

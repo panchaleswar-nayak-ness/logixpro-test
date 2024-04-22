@@ -4,7 +4,9 @@ import { NavigationEnd, Router} from '@angular/router';
 import { GlobalService } from '../common/services/global.service';
 import { OrderManagerApiService } from 'src/app/common/services/orderManager-api/order-manager-api.service';
 import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-api/order-manager-api-interface';
-import { ToasterTitle, ToasterType ,AppNames,StringConditions,RouteUpdateMenu} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType ,StringConditions } from 'src/app/common/constants/strings.constants';
+import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
+import {  AppNames } from 'src/app/common/constants/menu.constants';
 
 @Component({
   selector: 'app-order-manager',

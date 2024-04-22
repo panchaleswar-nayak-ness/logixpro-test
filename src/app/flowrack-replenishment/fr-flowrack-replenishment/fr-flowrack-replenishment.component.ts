@@ -6,7 +6,9 @@ import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/m
 import { IFlowRackReplenishApi } from 'src/app/common/services/flowrackreplenish-api/flowrackreplenish-api-interface';
 import { FlowRackReplenishApiService } from 'src/app/common/services/flowrackreplenish-api/flowrackreplenish-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppIcons, AppNames, AppPermissions, AppRoutes, ResponseStrings, RouteNames, RouteUpdateMenu, StringAssignments, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ResponseStrings, StringAssignments, ToasterMessages, ToasterTitle, ToasterType ,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { AppIcons, RouteNames, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
+import { AppNames ,AppPermissions,AppRoutes, } from 'src/app/common/constants/menu.constants';
 import { KeyboardCodes } from 'src/app/common/enums/CommonEnums';
 
 @Component({

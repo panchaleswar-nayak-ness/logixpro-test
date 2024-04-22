@@ -17,7 +17,8 @@ import {GlobalService} from 'src/app/common/services/global.service';
 import {IAdminApiService} from 'src/app/common/services/admin-api/admin-api-interface';
 import {AdminApiService} from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppRoutes, Column, DialogConstants, RouteNames, StringConditions, ToasterTitle, ToasterType ,TableConstant,LiveAnnouncerMessage,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, StringConditions, ToasterTitle, ToasterType ,TableConstant,LiveAnnouncerMessage,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, RouteNames } from 'src/app/common/constants/menu.constants';
 
 @Component({
   selector: 'app-tran-order-list',

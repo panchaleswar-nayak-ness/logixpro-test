@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppRoutes } from 'src/app/common/constants/strings.constants';
+import { AppRoutes } from 'src/app/common/constants/menu.constants';
 
 @Component({
   selector: 'app-cycle-counts',

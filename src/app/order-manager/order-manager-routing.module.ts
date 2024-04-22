@@ -10,7 +10,7 @@ import { TransactionComponent } from '../admin/transaction/transaction.component
 import { InventoryMasterComponent } from '../admin/inventory-master/inventory-master.component';
 import { InventoryMapComponent } from '../admin/inventory-map/inventory-map.component';
 import { ReportsComponent } from '../admin/reports/reports.component';
-import {  AppNames } from 'src/app/common/constants/strings.constants';
+import {  AppNames } from 'src/app/common/constants/menu.constants';
 
 const routes: Routes = [
   { path: '', component: OrderManagerComponent, canActivate: [AuthGuardGuard] },

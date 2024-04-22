@@ -7,7 +7,8 @@ import { AuthService } from 'src/app/common/init/auth.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppRoutes, ToasterTitle, ToasterType ,RouteUpdateMenu,TableConstant} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType, TableConstant} from 'src/app/common/constants/strings.constants';
+import { AppRoutes, RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
 
 @Component({
   selector: 'app-transaction',

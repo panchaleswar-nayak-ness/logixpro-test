@@ -19,7 +19,8 @@ import { SharedService } from 'src/app/common/services/shared.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppPermissions, AppRoutes, DialogConstants, LiveAnnouncerMessage, ToasterTitle, ToasterType, localStorageKeys ,StringConditions,UniqueConstants, KeyboardKeys, Style} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, LiveAnnouncerMessage, ToasterTitle, ToasterType, localStorageKeys ,StringConditions,UniqueConstants, KeyboardKeys, Style} from 'src/app/common/constants/strings.constants';
+import { AppPermissions, AppRoutes } from 'src/app/common/constants/menu.constants';
 import { AlertConfirmationComponent } from 'src/app/dialogs/alert-confirmation/alert-confirmation.component';
 
 @Component({

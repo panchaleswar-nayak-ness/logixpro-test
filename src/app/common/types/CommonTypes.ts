@@ -12,3 +12,9 @@ export interface TableHeaderDefinitions {
 } 
 
 export type ValidWorkstation = {pcName: string, wsid: string};
+
+export interface ApiResponse<T> {
+    data: T;
+    responseMessage: string;
+    isExecuted: boolean;
+}

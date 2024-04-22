@@ -16,7 +16,8 @@ import { SteServicesComponent } from './global-config/ste-services/ste-services.
 import { ImportExportComponent } from './import-export/import-export.component';
 import { WrdComponent } from './list-and-label/wrd/wrd.component';
 import { WrvComponent } from './list-and-label/wrv/wrv.component';
-import {  AppNames } from 'src/app/common/constants/strings.constants';
+import {  AppNames } from 'src/app/common/constants/menu.constants';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

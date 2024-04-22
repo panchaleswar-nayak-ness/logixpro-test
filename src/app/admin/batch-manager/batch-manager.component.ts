@@ -4,7 +4,8 @@ import { CurrentTabDataService } from '../inventory-master/current-tab-data-serv
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { AppPermissions, StringConditions, ToasterTitle, ToasterType, TransactionType, localStorageKeys ,Column,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { StringConditions, ToasterTitle, ToasterType, TransactionType, localStorageKeys ,Column,ColumnDef,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { AppPermissions } from 'src/app/common/constants/menu.constants';
 
 @Component({
   selector: 'app-batch-manager',

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {  AppPermissions } from 'src/app/common/constants/strings.constants';
+import {  AppPermissions } from 'src/app/common/constants/menu.constants';
 
 @Injectable({
   providedIn: 'root'

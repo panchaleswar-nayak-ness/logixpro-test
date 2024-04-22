@@ -9,7 +9,8 @@ import { MatOption } from '@angular/material/core';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { ToasterTitle, ToasterType ,AppPermissions,DialogConstants,Style} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle, ToasterType, DialogConstants, Style} from 'src/app/common/constants/strings.constants';
+import { AppPermissions } from 'src/app/common/constants/menu.constants';
 export interface PeriodicElement {
   position: string;
 }

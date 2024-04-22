@@ -20,7 +20,9 @@ import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-ta
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { AppNames, AppRoutes, Column, DialogConstants, Mode, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,TransactionType,zoneType,ColumnDef,Style,UniqueConstants,FilterColumnName,RouteUpdateMenu} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, Mode, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType, TransactionType, ColumnDef, Style, UniqueConstants } from 'src/app/common/constants/strings.constants';
+import { RouteUpdateMenu } from 'src/app/common/constants/menu.constants';
+import { AppNames, AppRoutes, RouteNames} from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
 
 @Component({

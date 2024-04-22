@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppRoutes, StringConditions ,RouteUpdateMenu} from 'src/app/common/constants/strings.constants';
+import { StringConditions } from 'src/app/common/constants/strings.constants';
+import { AppRoutes, RouteUpdateMenu} from 'src/app/common/constants/menu.constants';
 
 @Component({
   selector: 'app-ie-transfer-settings',

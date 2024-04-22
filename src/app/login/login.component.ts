@@ -12,12 +12,14 @@ import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api
 import { IUserAPIService } from '../common/services/user-api/user-api-interface';
 import { UserApiService } from '../common/services/user-api/user-api.service';
 import { GlobalService } from '../common/services/global.service';
-import {  AppNames ,AppPermissions,AppRoutes,ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { ToasterTitle,ToasterType,DialogConstants} from 'src/app/common/constants/strings.constants';
+import { AppName, AppNames, AppPermissions, AppRoutes, RouteName, RouteNames, RouteMenu, RouteUpdateMenu, AppPermission } from 'src/app/common/constants/menu.constants';
 import { MatDialog } from '@angular/material/dialog';
 import { WorkstationLoginComponent } from '../dialogs/workstation-login/workstation-login.component';
 import { BaseService } from 'src/app/common/services/base-service.service';
-import { ValidWorkstation } from 'src/app/common/types/CommonTypes';
+import { ValidWorkstation, ApiResponse } from 'src/app/common/types/CommonTypes';
 import { LinkedResource } from 'src/app/common/services/base-service.service';
+import { AppInfo, App, AppData, AppLicense, AppNameByWorkstationResponse } from 'src/app/dashboard/main/main.component';
 
 type Version = {version: string};
 
@@ -36,7 +38,7 @@ export class LoginComponent {
   url = '';
   isReadOnly: boolean = true;
   version : string;
-  applicationData: any = [];
+  applicationData: App[] = [];
   isAppAccess=false;
   info:any=  {};
   @ViewChild('workstationSelect') workstationSelectTemplate: TemplateRef<any>;
@@ -136,7 +138,7 @@ export class LoginComponent {
     this.login = this.addLoginForm;
     this.iUserApi
       .login(this.login)
-      .subscribe((response: any) => {
+      .subscribe((response: ApiResponse<any>) => {
         const exe = response.isExecuted
         if (exe == true) {
           let data = {
@@ -160,9 +162,6 @@ export class LoginComponent {
             window.location.href = "/#/dashboard"
             window.location.reload();
           }
-          // ----default app redirection ----
-          // this.getDefaultApp(response.data.wsid);
-          // ----end default app redirection ----
         }
         else {
           const errorMessage = response.responseMessage;
@@ -196,7 +195,7 @@ export class LoginComponent {
       this.router.navigate([AppRoutes.Dashboard]);
     }
     else{
-      this.iUserApi.getSecurityEnvironment().subscribe((res:any) => {
+      this.iUserApi.getSecurityEnvironment().subscribe((res:ApiResponse<any>) => {
         if(res?.isExecuted)
         {
           this.env = res.data.securityEnvironment;
@@ -206,7 +205,7 @@ export class LoginComponent {
           localStorage.setItem('workStation', JSON.stringify(workStation));
         }
         else{
-          this.global.ShowToastr(ToasterType.Error,'Kindly contact to administrator', 'Workstation is not set!');
+          this.global.ShowToastr(ToasterType.Error,'Please contact your administrator', 'Workstation is not set!');
           
         }
         }
@@ -220,7 +219,6 @@ export class LoginComponent {
    this.CompanyInfo();
   }
 
-  // moved getAppLicense,convertToObj ,sortAppsData,appNameDictionary & setMenuData from Menu Component to handle access to the Apps on login
   getAppLicense(wsid) {
     let userData=JSON.parse(localStorage.getItem('user')?? '{}');
     let payload = {
@@ -228,16 +226,10 @@ export class LoginComponent {
     };
     this.iGlobalConfigApi.AppNameByWorkstation(payload)
       .subscribe(
-        (res: any) => {
+        (res: ApiResponse<AppNameByWorkstationResponse>) => {
           if (res?.data) {
-            // temp BulkProcess
-          res.data.wsAllAppPermission.push("BulkTransactions");
-          res.data.appLicenses.BulkTransactions = res.data.appLicenses.FlowRackReplenish;
-          res.data.appLicenses.BulkTransactions.info.displayName = "BulkTransactions";
-          res.data.appLicenses.BulkTransactions.info.name = "BulkTransactions";
-          res.data.appLicenses.BulkTransactions.info.url = "BulkTransactions";
-          // temp BulkProcess
-            this.convertToObj(res.data);
+
+            this.setApplicationData(res.data);
             localStorage.setItem('availableApps',JSON.stringify(this.applicationData))
             this.sharedService.setMenuData(this.applicationData)
             this.getDefaultApp(wsid);
@@ -252,17 +244,18 @@ export class LoginComponent {
       );
   }
 
-  convertToObj(data) {
-    data.wsAllAppPermission.forEach((item,i) => {
-      for (const key of Object.keys(data.appLicenses)) {
-        if (item.includes(key)  && data.appLicenses[key].isLicenseValid) {
+  setApplicationData(data: AppNameByWorkstationResponse) {
+    data.wsAllAppPermission?.forEach((item, i) => {
+      let licences: { [key: string]: AppLicense;} | null = data.appLicenses;
+      for (const key in licences) {
+        if (item.includes(key) && licences[key].isLicenseValid) {
           this.applicationData.push({
-            appname: data.appLicenses[key].info.name,
-            displayname: data.appLicenses[key].info.displayName,
-            license: data.appLicenses[key].info.licenseString,
-            numlicense: data.appLicenses[key].numLicenses,
-            info: this.appNameDictionary(item),
-            appurl: data.appLicenses[key].info.url,
+            appname: licences[key].info.name,
+            displayname: licences[key].info.displayName,
+            license: licences[key].info.licenseString,
+            numlicense: licences[key].numLicenses,
+            info: this.appNameDictionary(item)!,
+            appurl: licences[key].info.url,
             isButtonDisable: true,
           });
         }
@@ -285,17 +278,24 @@ export class LoginComponent {
   }
 
   appNameDictionary(appName) {
-    let routes = [
+    let routes: {
+      appName: AppName;
+      route: string;
+      iconName: string;
+      name: RouteName;
+      updateMenu: RouteMenu;
+      permission: AppPermission;
+  }[] = [
       {
-        appName: 'ICSAdmin',
+        appName: AppNames.ICSAdmin,
         route: '/admin',
         iconName: 'manage_accounts',
-        name: 'Admin',
-        updateMenu: 'admin',
-        permission: 'Admin Menu',
+        name: RouteNames.Admin,
+        updateMenu: RouteUpdateMenu.Admin,
+        permission: AppPermissions.AdminMenu,
       },
       {
-        appName: 'FlowRackReplenish',
+        appName: AppNames.FlowRackReplenish,
         route: '/FlowrackReplenish',
         iconName: 'schema',
         name: 'FlowRack Replenishment',
@@ -303,56 +303,64 @@ export class LoginComponent {
         permission: 'FlowRack Replenish',
       },
       {
-        appName: AppPermissions.ConsolidationManager,
+        appName: AppNames.ConsolidationManager,
         route: '/ConsolidationManager',
         iconName: 'insert_chart',
-        name: AppPermissions.ConsolidationManager,
-        updateMenu: '',
+        name: RouteNames.ConsolidationManager,
+        updateMenu: RouteUpdateMenu.Empty,
         permission: AppPermissions.ConsolidationManager,
       },
       {
-        appName: 'Induction',
+        appName: AppNames.Induction,
         route: '/InductionManager',
         iconName: 'checklist',
-        name: AppPermissions.InductionManager,
-        updateMenu: 'induction',
+        name: RouteNames.InductionManager,
+        updateMenu: RouteUpdateMenu.Induction,
         permission: AppPermissions.InductionManager,
       },
       {
-        appName: 'ImportExport',
+        appName: AppNames.ImportExport,
         route: '/ImportExport',
         iconName: 'electric_bolt',
-        name: 'Import Export',
-        updateMenu: '',
-        permission: 'Import Export',
+        name: RouteNames.ImportExport,
+        updateMenu: RouteUpdateMenu.Empty,
+        permission: AppPermissions.ImportExport,
       },
       {
-        appName: 'Markout',
+        appName: AppNames.Markout,
         route: '#',
         iconName: 'manage_accounts',
-        name: 'Markout',
-        updateMenu: '',
-        permission: 'Markout',
+        name: RouteNames.Markout,
+        updateMenu: RouteUpdateMenu.Empty,
+        permission: AppPermissions.Markout,
       },
       {
         appName: AppNames.OrderManager,
         route: '/OrderManager',
         iconName: 'pending_actions',
-        name: AppPermissions.OrderManager,
-        updateMenu: '',
+        name: RouteNames.OrderManager,
+        updateMenu: RouteUpdateMenu.Empty,
         permission: AppPermissions.OrderManager,
       },
       {
-        appName: 'WorkManager',
+        appName: AppNames.WorkManager,
         route: '#',
         iconName: 'fact_check',
-        name: 'Work Manager',
-        updateMenu: '',
-        permission: 'Work Manager',
+        name: RouteNames.WorkManager,
+        updateMenu: RouteUpdateMenu.Empty,
+        permission: AppPermissions.WorkManager
       },
+      {
+        appName: AppNames.BulkTransactions,
+        route: '/BulkTransactions',
+        iconName: 'process_chart',
+        name: RouteNames.BulkTransactions,
+        updateMenu: RouteUpdateMenu.BulkTransactions,
+        permission: AppPermissions.BulkTransactions
+      }
     ];
 
-    let obj: any = routes.find((o) => o.appName === appName);
+    let obj = routes.find((o) => o.appName === appName);
     return obj;
   }
 
@@ -462,16 +470,17 @@ export class LoginComponent {
 
   private addCustomPermission(userRights: any) {
     let customPerm = [
-      'Home',
-      'Import Export',
+      AppPermissions.ImportExport,
       AppPermissions.InductionManager,
-      'Work Manager',
+      AppPermissions.WorkManager,
       AppPermissions.ConsolidationManager,
       AppPermissions.OrderManager,
-      'Admin Menu',
-      'FlowRack Replenish',
-      'Markout',
-      'Dashboard',
+      AppPermissions.AdminMenu,
+      AppPermissions.BulkTransactions,
+      AppPermissions.FlowRackReplenish,
+      AppPermissions.Markout,
+      AppPermissions.Dashboard,
+      AppPermissions.Home
     ];
     localStorage.setItem('customPerm', JSON.stringify(customPerm));
     return [...userRights, ...customPerm];

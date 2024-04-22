@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppRoutes ,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { UniqueConstants, ColumnDef} from 'src/app/common/constants/strings.constants';
+import { AppRoutes } from 'src/app/common/constants/menu.constants';
 
 
 export interface PeriodicElement {

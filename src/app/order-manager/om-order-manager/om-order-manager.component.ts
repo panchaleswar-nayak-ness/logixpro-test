@@ -19,7 +19,8 @@ import { IOrderManagerAPIService } from 'src/app/common/services/orderManager-ap
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Case, Column, KeyboardKeys, RouteNames, StringConditions, ToasterMessages, ToasterTitle, ToasterType ,AppPermissions,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
+import { Case, Column, KeyboardKeys, StringConditions, ToasterMessages, ToasterTitle, ToasterType,DialogConstants,TableConstant,ColumnDef,Style,UniqueConstants,FilterColumnName} from 'src/app/common/constants/strings.constants';
+import { RouteNames, AppPermissions } from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
 
 @Component({

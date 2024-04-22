@@ -5,7 +5,8 @@ import { AuthService } from '../../common/init/auth.service';
 import { CurrentTabDataService } from 'src/app/admin/inventory-master/current-tab-data-service';
 import { IGlobalConfigApi } from 'src/app/common/services/globalConfig-api/global-config-api-interface';
 import { GlobalConfigApiService } from 'src/app/common/services/globalConfig-api/global-config-api.service';
-import { AppNames, AppPermissions, AppRoutes, RouteUpdateMenu, UniqueConstants, TableConstant } from 'src/app/common/constants/strings.constants';
+import { UniqueConstants, TableConstant } from 'src/app/common/constants/strings.constants';
+import { RouteUpdateMenu, AppNames, AppPermissions, AppRoutes, } from 'src/app/common/constants/menu.constants';
 
 @Component({
   selector: 'app-side-nav',
@@ -41,7 +42,7 @@ export class SideNavComponent implements OnInit {
     { icon: 'subtitles', title: 'STE', route: '/globalconfig/ste', permission: true },
 
   ];
-  adminMenus: any = [
+  adminMenus = [
     { icon: 'arrow_back', title: 'Admin', route: AppRoutes.Dashboard, class: UniqueConstants.backClass, permission: 'Dashboard' },
     { icon: 'dashboard', title: 'Inventory', route: '/admin/inventoryMaster', permission: 'Inventory' },
     { icon: 'directions_alt', title: 'Inventory Map', route: '/admin/inventoryMap', permission: 'Inventory Map' },

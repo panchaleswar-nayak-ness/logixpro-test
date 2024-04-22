@@ -17,7 +17,8 @@ import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-in
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { GlobalService } from 'src/app/common/services/global.service';
 import { TableContextMenuService } from 'src/app/common/globalComponents/table-context-menu-component/table-context-menu.service';
-import { Column, DialogConstants, RouteNames, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType ,TableConstant,zoneType,ColumnDef,FilterColumnName,UniqueConstants} from 'src/app/common/constants/strings.constants';
+import { Column, DialogConstants, StringConditions, TableName, ToasterMessages, ToasterTitle, ToasterType, UniqueConstants } from 'src/app/common/constants/strings.constants';
+import { RouteNames } from 'src/app/common/constants/menu.constants';
 import { DatePipe } from '@angular/common';
 
 @Component({

@@ -12,7 +12,8 @@ import { ColumnSequenceDialogComponent } from '../../dialogs/column-sequence-dia
 import { AdminApiService } from 'src/app/common/services/admin-api/admin-api.service';
 import { IAdminApiService } from 'src/app/common/services/admin-api/admin-api-interface';
 import { GlobalService } from 'src/app/common/services/global.service';
-import { DialogConstants, RouteNames, TableName, ToasterMessages, ToasterTitle, ToasterType ,Column,TableConstant,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { DialogConstants, TableName, ToasterMessages, ToasterTitle, ToasterType ,Column,TableConstant,UniqueConstants,ColumnDef} from 'src/app/common/constants/strings.constants';
+import { RouteNames } from 'src/app/common/constants/menu.constants';
 
 @Component({
   selector: 'app-reprocessed-transaction',
