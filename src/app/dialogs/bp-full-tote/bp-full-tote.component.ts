@@ -103,6 +103,7 @@ export class BpFullToteComponent implements OnInit {
       payload.Id = this.data.id;
       let res: any = await this.iBulkProcessApiService.fullTote(payload);
       if (res?.status == HttpStatusCode.Ok) {
+        payload.Id = res.body;
         this.dialogRef.close(payload);
         const dialogRef1 = this.global.OpenDialog(ConfirmationDialogComponent, {
           height: 'auto',

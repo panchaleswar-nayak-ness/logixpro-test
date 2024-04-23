@@ -252,6 +252,7 @@ export class VerifyBulkComponent implements OnInit {
         });
         this.orderLines.filteredData[i].transactionQuantity = resp.NewToteQTY;
         this.orderLines.filteredData[i].completedQuantity = resp.NewToteQTY;
+        this.orderLines.filteredData[i].id = resp.Id;
       }
     });
   }
