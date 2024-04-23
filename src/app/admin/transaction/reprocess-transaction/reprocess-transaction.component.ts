@@ -148,7 +148,7 @@ export class ReprocessTransactionComponent implements OnInit {
   pageEvent: PageEvent;
   searchAutocompleteListByCol: any;
   public sortCol: any = 0;
-  public sortOrder: any = UniqueConstants.Desc;
+  public sortOrder: any = UniqueConstants.Asc;
 
   cols = [];
   customPagination: any = {

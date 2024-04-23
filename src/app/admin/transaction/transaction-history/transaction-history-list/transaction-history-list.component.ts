@@ -100,7 +100,7 @@ export class TransactionHistoryListComponent implements OnInit, AfterViewInit {
   public orderNo: any;
   public payload: any;
   public sortCol: any = 0;
-  public sortOrder: any = UniqueConstants.Desc;
+  public sortOrder: any = UniqueConstants.Asc;
   selectedVariable: any;
   selectedDropdown = '';
   floatLabelControl = new FormControl('auto' as FloatLabelType);

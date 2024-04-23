@@ -41,7 +41,7 @@ export class OpenTransactionDataTableComponent implements OnInit {
     endIndex: 10,
   };
   public sortCol: any = 0;
-  public sortOrder: any = UniqueConstants.Desc;
+  public sortOrder: any = UniqueConstants.Asc;
   public columnValues: any = [];
   pageEvent: PageEvent;
 

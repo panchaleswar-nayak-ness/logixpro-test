@@ -119,7 +119,7 @@ export class OpenTransactionOnHoldComponent implements OnInit, AfterViewInit {
   public dataSource: any = new MatTableDataSource();
   public payload: any;
   public sortCol: any = 0;
-  public sortOrder: any = UniqueConstants.Desc;
+  public sortOrder: any = UniqueConstants.Asc;
   selectedVariable;
   public filterLoc: any = 'Nothing';
   public itemList: any;

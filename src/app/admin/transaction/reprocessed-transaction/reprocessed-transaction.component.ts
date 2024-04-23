@@ -55,7 +55,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   searchAutocompleteList: any;
   public iAdminApiService: IAdminApiService;
   public sortCol:any=0;
-  public sortOrder:any=UniqueConstants.Desc;
+  public sortOrder:any=UniqueConstants.Asc;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('matRef') matRef: MatSelect;
@@ -77,7 +77,7 @@ export class ReprocessedTransactionComponent implements OnInit {
   };
   sortColumn: any = {
     columnName: 0,
-    sortOrder: UniqueConstants.Desc,
+    sortOrder: UniqueConstants.Asc,
   };
   constructor(
     private authService: AuthService,
