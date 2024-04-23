@@ -62,13 +62,23 @@ export class CountComponent implements OnInit {
   @ViewChild('deleteAction') quarantineTemp: TemplateRef<any>;
 
   @ViewChild('addOrder') addOrderTemp: TemplateRef<any>;
-  @Output() newItemEvent = new EventEmitter<Event>(); 
 
   public userData: any;
 
   ngOnInit(): void {
     this.userData = this.authService.userData()
-    this.openLAQ();
+    this.GetLocAssCountTable();
+  }
+
+  GetLocAssCountTable(loader: boolean = false) {
+    this.iAdminApiService.GetLocAssCountTable().subscribe((res: any) => {
+      if (res.isExecuted && res.data) {
+        this.leftTable = new MatTableDataSource(res.data);
+        this.leftTable.paginator = this.paginator1;
+      } else {
+        this.leftTable = new MatTableDataSource([]);
+      }
+    });
   }
 
   announceSortChangeLeftTable(sortState: Sort) {
@@ -145,32 +155,6 @@ export class CountComponent implements OnInit {
     this.rightTable = new MatTableDataSource([]);
     this.leftTable.paginator = this.paginator
     this.rightTable.paginator = this.paginator1
-  }
-  
-  openLAQ() {
-    let payload = { 
-    }
-
-    this.iAdminApiService.GetTransactionTypeCounts(payload).subscribe((res =>{
-    let dialogRef:any = this.global.OpenDialog(LaLocationAssignmentQuantitiesComponent, {
-      height: 'auto',
-      width: Style.w560px,
-      autoFocus: DialogConstants.autoFocus,
-      disableClose:true,
-      data: {  
-        'totalCount': res.data
-      }
-   
-    
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      this.leftTable = new MatTableDataSource(result);
-      this.leftTable.paginator = this.paginator
-      this.newItemEvent.emit(result.tabIndex); 
-      
-    })
-  }))
-    
   }
 
   add(e:any){

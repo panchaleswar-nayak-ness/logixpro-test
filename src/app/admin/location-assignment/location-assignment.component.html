@@ -1,11 +1,12 @@
-<mat-tab-group dynamicHeight [(selectedIndex)]="Tab" >
-  <mat-tab [label]="countLabel">
-    <app-count (newItemEvent)="addItem($event)"></app-count>
+<mat-label *ngIf="autoLocCountsTab && autoLocPicksTab && autoLocPutsTab && isLoaded"><b style="font-size: 150%;">All Transaction Types set for Auto Location Assignment</b></mat-label>
+<mat-tab-group dynamicHeight [(selectedIndex)]="Tab">
+  <mat-tab [label]="countLabel" *ngIf="!autoLocCountsTab">
+    <app-count></app-count>
   </mat-tab>
-  <mat-tab [label]="pickLabel">
+  <mat-tab [label]="pickLabel" *ngIf="!autoLocPicksTab">
     <app-pick></app-pick>
   </mat-tab>
-  <mat-tab [label]="putAwayLabel">
+  <mat-tab [label]="putAwayLabel" *ngIf="!autoLocPutsTab">
     <app-put-away></app-put-away>
   </mat-tab>
 </mat-tab-group>
